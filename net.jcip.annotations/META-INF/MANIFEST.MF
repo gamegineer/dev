@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundleName
+Bundle-SymbolicName: net.jcip.annotations
+Bundle-Version: 1.0.0
+Bundle-Vendor: %bundleVendor
+Bundle-Localization: plugin
+Bundle-ClassPath: lib/jcip-annotations.jar
+Export-Package: net.jcip.annotations
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
