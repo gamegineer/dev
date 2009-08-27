@@ -1,0 +1,19 @@
+# Debugging options for the org.gamegineer.common.core bundle.
+
+# Turn on debugging for the entire bundle.
+org.gamegineer.common.core/debug=false
+
+# Reports services package activity.
+org.gamegineer.common.core/debug/services=false
+
+# Reports component service package activity.
+org.gamegineer.common.core/debug/services/component=false
+
+# Reports logging service package activity.
+org.gamegineer.common.core/debug/services/logging=false
+
+# Reports utility package activity.
+org.gamegineer.common.core/debug/util=false
+
+# Reports logging package activity.
+org.gamegineer.common.core/debug/util/logging=false

@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.gamegineer.common.core">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.gamegineer.common.core" id="componentFactories" name="Component Factories"/>
+      </appInfo>
+      <documentation>
+         This extension point is used to register component factory extensions.  The component service uses this extension point to discover the available component factories installed on the platform.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="componentFactory" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the fully-qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="componentFactory">
+      <annotation>
+         <documentation>
+            an element that will be used to create a component factory
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the fully-qualified name of the class that implements &lt;tt&gt;org.gamegineer.common.core.services.component.IComponentFactory&lt;/tt&gt; interface
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.gamegineer.common.core.services.component.IComponentFactory"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of a component factory extension definition:
+
+&lt;pre&gt;
+    &lt;extension point=&quot;org.gamegineer.common.core.componentFactories&quot;&gt;
+        &lt;componentFactory
+                class=&quot;org.gamegineer.client.internal.ui.console.commandlets.CommandletFactory&quot; /&gt;
+    &lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The value of the &lt;tt&gt;class&lt;/tt&gt; attribute must represent an implementation of &lt;tt&gt;org.gamegineer.common.core.services.component.IComponentFactory&lt;/tt&gt;.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         The platform does not supply any component factories.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright 2008-2009 Gamegineer contributors and others.  All rights reserved.
+      </documentation>
+   </annotation>
+
+</schema>
