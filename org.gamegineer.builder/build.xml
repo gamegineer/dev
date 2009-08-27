@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="gamegineer" default="build" basedir=".">
+
+    <property environment="env" />
+
+    <!--
+        Builds the entire Gamegineer workspace.
+
+        This target should be run from the org.gamegineer.builder directory
+        and assumes the environment has been set up appropriately according
+        to the Gamegineer build system guidelines.
+    -->
+    <target name="build">
+        <java
+                classname="org.eclipse.core.launcher.Main"
+                failonerror="true"
+                fork="true"
+                maxmemory="256m">
+            <classpath>
+                <fileset dir="${env.ECLIPSE_HOME}/plugins">
+                    <include name="org.eclipse.equinox.launcher_*.jar" />
+                </fileset>
+            </classpath>
+            <arg value="-application" />
+            <arg value="org.eclipse.pde.build.Build" />
+            <arg value="-DbuildDirectory=${basedir}" />
+            <arg value="-DJavaSE-1.6=${env.JAVA_HOME}/jre/lib/rt.jar" />
+        </java>
+    </target>
+
+</project>

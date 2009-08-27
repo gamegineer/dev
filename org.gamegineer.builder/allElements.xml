@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="allElements Delegator">
+
+    <!-- ===================================================================== -->
+    <!-- Run a given ${target} on all elements being built                     -->
+    <!-- Replace element.id with the id of the top level element being built.  -->
+    <!-- If element.id does not exist in ${buildDirectory}/features/element.id -->
+    <!-- or ${baseLocation}/features/element.id, then you must provide the     -->
+    <!-- location by setting the property "pluginPath"                         -->
+    <!-- Add on <ant> task for each top level element being built.             -->
+    <!--                                                                       -->
+    <!-- NOTE THAT THE ORDER OF THESE ELEMENTS IS IMPORTANT!  Elements that    -->
+    <!-- have a dependency on other elements must appear AFTER those elements  -->
+    <!-- in the list below.                                                    -->
+    <!-- ===================================================================== -->
+    <target name="allElementsDelegator">
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.test.feature.base" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.common.feature.base" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.common.feature.base.tests" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.engine.feature.base" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.engine.feature.base.tests" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.game.feature.base" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.game.feature.client" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.game.feature.base.tests" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.game.feature.client.tests" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.server.feature.base" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.server.feature.base.tests" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.client.feature.base" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.client.feature.base.tests" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.client.feature.console" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.client.feature.console.tests" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.tictactoe.feature.base" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.tictactoe.feature.client" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.tictactoe.feature.base.tests" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.tictactoe.feature.client.tests" />
+        </ant>
+    </target>
+
+    <!-- ===================================================================== -->
+    <!-- Targets to assemble the built elements for particular configurations  -->
+    <!-- These generally call the generated assemble scripts (named in         -->
+    <!-- ${assembleScriptName}) but may also add pre and post processing       -->
+    <!-- Add one target for each root element and each configuration           -->
+    <!-- Replace element.id with the id of the top level element being built   -->
+    <!-- <target name="assemble.element.id[.config.spec]">                     -->
+    <!-- ===================================================================== -->
+    <target name="assemble.org.gamegineer.test.feature.base">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.common.feature.base">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.common.feature.base.tests">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.engine.feature.base">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.engine.feature.base.tests">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.game.feature.base">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.game.feature.client">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.game.feature.base.tests">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.game.feature.client.tests">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.server.feature.base">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.server.feature.base.tests">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.client.feature.base">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.client.feature.base.tests">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.client.feature.console">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.client.feature.console.tests">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.tictactoe.feature.base">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.tictactoe.feature.client">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.tictactoe.feature.base.tests">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.tictactoe.feature.client.tests">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+
+</project>
