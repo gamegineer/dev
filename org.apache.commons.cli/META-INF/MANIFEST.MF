@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundleName
+Bundle-SymbolicName: org.apache.commons.cli
+Bundle-Version: 1.1.0
+Bundle-Vendor: %bundleVendor
+Bundle-Localization: plugin
+Bundle-ClassPath: lib/commons-cli-1.1.jar
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.apache.commons.cli;version="1.1.0"
