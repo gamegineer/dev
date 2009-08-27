@@ -1,0 +1,7 @@
+# Debugging options for the org.gamegineer.game.ui bundle.
+
+# Turn on debugging for the entire bundle.
+org.gamegineer.game.ui/debug=false
+
+# Reports game system user interface activity.
+org.gamegineer.game.ui/debug/system=false

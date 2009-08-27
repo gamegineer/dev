@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.gamegineer.game.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.gamegineer.game.ui" id="gameSystemUis" name="Game System User Interfaces"/>
+      </appInfo>
+      <documentation>
+         This extension point is used to register game system user interface extensions.  Game clients use this extension point to obtain a user interface for a game system installed on the platform.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="gameSystemUi" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the fully-qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="gameSystemUi">
+      <annotation>
+         <documentation>
+            an element that will be used to create a game system user interface
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the unique identifier of the game system
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the fully-qualified name of the class that implements &lt;tt&gt;org.gamegineer.game.ui.system.IGameSystemUi&lt;/tt&gt; interface
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.gamegineer.game.ui.system.IGameSystemUi"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         The following is an example of a game system user interface extension definition:
+
+&lt;pre&gt;
+    &lt;extension point=&quot;org.gamegineer.game.ui.gameSystemUis&quot;&gt;
+        &lt;gameSystemUi
+                class=&quot;org.gamegineer.game.ui.system.xml.XmlGameSystemUiExtensionFactory:/tictactoe.xml&quot;
+                id=&quot;org.gamegineer.tictactoe&quot; /&gt;
+    &lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The value of the &lt;tt&gt;class&lt;/tt&gt; attribute must represent an implementation of &lt;tt&gt;org.gamegineer.game.ui.system.IGameSystemUi&lt;/tt&gt;.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         The platform does not supply any game system user interfaces.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright 2008-2009 Gamegineer contributors and others.  All rights reserved.
+      </documentation>
+   </annotation>
+
+</schema>
