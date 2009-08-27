@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+        id="org.gamegineer.client.feature.console.tests"
+        label="%featureName"
+        version="0.1.0"
+        provider-name="%providerName">
+
+    <description>
+        %description
+    </description>
+
+    <copyright>
+        %copyright
+    </copyright>
+
+    <license url="%licenseUrl">
+        %license
+    </license>
+
+    <requires>
+        <import feature="org.gamegineer.client.feature.console" version="0.1.0" />
+        <import feature="org.gamegineer.client.feature.base.tests" version="0.1.0" />
+    </requires>
+
+    <plugin
+            id="org.gamegineer.client.product.console.tests"
+            download-size="0"
+            install-size="0"
+            version="0.0.0"
+            unpack="true"
+            fragment="true" />
+    <plugin
+            id="org.gamegineer.client.ui.console.tests"
+            download-size="0"
+            install-size="0"
+            version="0.0.0"
+            unpack="true"
+            fragment="true" />
+
+</feature>
