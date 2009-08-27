@@ -1,0 +1,98 @@
+/*
+ * IMemento.java
+ * Copyright 2008 Gamegineer.org
+ * All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Created on Jun 29, 2008 at 10:23:43 PM.
+ */
+
+package org.gamegineer.common.persistence.memento;
+
+import java.util.Set;
+
+/**
+ * A memento for saving and restoring the state of an object.
+ * 
+ * <p>
+ * An implementation of this interface should be immutable to ensure it is
+ * thread-safe.
+ * </p>
+ * 
+ * <p>
+ * This interface is intended to be implemented but not extended by clients.
+ * </p>
+ */
+public interface IMemento
+{
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Indicates this memento contains the specified attribute.
+     * 
+     * @param name
+     *        The attribute name; must not be {@code null}.
+     * 
+     * @return {@code true} if this memento contains the specified attribute;
+     *         otherwise {@code false}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code name} is {@code null}.
+     */
+    public boolean containsAttribute(
+        /* @NonNull */
+        String name );
+
+    /**
+     * Gets an attribute from this memento.
+     * 
+     * @param <T>
+     *        The type of the attribute value.
+     * @param name
+     *        The attribute name; must not be {@code null}.
+     * 
+     * @return The attribute value; may be {@code null}.
+     * 
+     * @throws java.lang.ClassCastException
+     *         If the attribute value cannot be converted to the requested type.
+     * @throws java.lang.IllegalArgumentException
+     *         If an attribute with the specified name does not exist in this
+     *         memento.
+     * @throws java.lang.NullPointerException
+     *         If {@code name} is {@code null}.
+     */
+    /* @Nullable */
+    public <T> T getAttribute(
+        /* @NonNull */
+        String name );
+
+    /**
+     * Gets an immutable set view of the attribute names contained in this
+     * memento.
+     * 
+     * <p>
+     * The set is backed by the memento, so changes to the memento are reflected
+     * in the set. If the memento is modified while an iteration over the set is
+     * in progress, the results of the iteration are undefined.
+     * </p>
+     * 
+     * @return An immutable set view of the attribute names contained in this
+     *         memento; never {@code null}.
+     */
+    /* @NonNull */
+    public Set<String> getAttributeNames();
+}
