@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<game-system-ui id="org.gamegineer.tictactoe" name="%gameSystem.name">
+    <roles>
+        <role id="x" name="%role.x.name" />
+        <role id="o" name="%role.o.name" />
+    </roles>
+</game-system-ui>
