@@ -1,0 +1,4 @@
+# Debugging options for the org.gamegineer.common.remoting bundle.
+
+# Turn on debugging for the entire bundle.
+org.gamegineer.common.remoting/debug=false
