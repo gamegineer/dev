@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.pde.ui.EquinoxLauncher">
+<booleanAttribute key="append.args" value="true"/>
+<booleanAttribute key="automaticAdd" value="true"/>
+<booleanAttribute key="automaticValidate" value="false"/>
+<stringAttribute key="bootstrap" value=""/>
+<stringAttribute key="checked" value="[NONE]"/>
+<booleanAttribute key="clearConfig" value="false"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/org.gamegineer.client.product.console"/>
+<booleanAttribute key="default_auto_start" value="true"/>
+<intAttribute key="default_start_level" value="4"/>
+<stringAttribute key="deselected_workspace_plugins" value="org.gamegineer.game.core.tests,org.gamegineer.engine.core.tests,org.gamegineer.game.ui.tests,org.gamegineer.client.product.console.tests,org.gamegineer.common.persistence.tests,org.gamegineer.common.core.tests,org.gamegineer.tictactoe.ui.tests,org.gamegineer.tictactoe.ui.console.tests,org.gamegineer.client.ui.console.tests,org.gamegineer.common.remoting.tests,org.gamegineer.tictactoe.core.tests,org.gamegineer.server.core.tests,org.gamegineer.client.core.tests"/>
+<booleanAttribute key="includeOptional" value="false"/>
+<booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -product org.gamegineer.client.product.console.product"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.application.registerDescriptors=true -Declipse.ignoreApp=false -Dosgi.noShutdown=false"/>
+<stringAttribute key="pde.version" value="3.3"/>
+<stringAttribute key="target_bundles" value="org.eclipse.core.contenttype@default:default,org.eclipse.core.jobs@default:default,org.eclipse.core.runtime@default:default,org.eclipse.core.runtime.compatibility.registry@default:default,org.eclipse.equinox.app@default:default,org.eclipse.equinox.app@default:default,org.eclipse.equinox.common@default:default,org.eclipse.equinox.common@default:default,org.eclipse.equinox.preferences@default:default,org.eclipse.equinox.preferences@default:default,org.eclipse.equinox.registry@default:default,org.eclipse.equinox.registry@default:default,org.eclipse.osgi@:,org.eclipse.osgi@:"/>
+<booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useDefaultConfigArea" value="true"/>
+<stringAttribute key="workspace_bundles" value="net.jcip.annotations@default:default,org.apache.commons.cli@default:default,org.gamegineer.client.core@default:default,org.gamegineer.client.product.console@default:default,org.gamegineer.client.ui.console@default:default,org.gamegineer.common.core@default:default,org.gamegineer.common.persistence@default:default,org.gamegineer.common.remoting@default:default,org.gamegineer.engine.core@default:default,org.gamegineer.game.core@default:default,org.gamegineer.game.ui@default:default,org.gamegineer.server.core@default:default,org.gamegineer.test.core@default:default,org.gamegineer.tictactoe.core@default:default,org.gamegineer.tictactoe.ui@default:default,org.gamegineer.tictactoe.ui.console@default:default"/>
+</launchConfiguration>

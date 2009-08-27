@@ -1,0 +1,4 @@
+# Debugging options for the org.gamegineer.client.product.console bundle.
+
+# Turn on debugging for the entire bundle.
+org.gamegineer.client.product.console/debug=false
