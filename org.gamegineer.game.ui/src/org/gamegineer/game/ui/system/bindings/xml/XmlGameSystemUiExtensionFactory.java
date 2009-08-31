@@ -159,7 +159,7 @@ public final class XmlGameSystemUiExtensionFactory
         {
             return (String)data;
         }
-        else if( data instanceof Map<?,?> )
+        else if( data instanceof Map<?, ?> )
         {
             @SuppressWarnings( "unchecked" )
             final Map<String, String> map = (Map<String, String>)data;
