@@ -283,7 +283,6 @@ public abstract class AbstractCommandHistoryTestCase
      * Ensures the {@code getCommands} method returns the expected command
      * history.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetCommands_ReturnValue_Expected()
     {

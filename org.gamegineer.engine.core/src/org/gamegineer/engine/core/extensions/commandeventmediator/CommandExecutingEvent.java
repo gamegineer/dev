@@ -1,6 +1,6 @@
 /*
  * CommandExecutingEvent.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,6 +35,14 @@ public abstract class CommandExecutingEvent
     extends CommandEvent
     implements ICommandExecutingEvent
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** Serializable class version number. */
+    private static final long serialVersionUID = 6658471327823023108L;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================

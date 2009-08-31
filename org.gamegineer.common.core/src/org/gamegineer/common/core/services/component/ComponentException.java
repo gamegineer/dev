@@ -1,6 +1,6 @@
 /*
  * ComponentException.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,6 +32,14 @@ package org.gamegineer.common.core.services.component;
 public abstract class ComponentException
     extends Exception
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** Serializable class version number. */
+    private static final long serialVersionUID = 3507566325273810049L;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================

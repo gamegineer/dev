@@ -91,7 +91,6 @@ public final class InitializeEngineCommand
     /*
      * @see org.gamegineer.engine.core.ICommand#execute(org.gamegineer.engine.core.IEngineContext)
      */
-    @SuppressWarnings( "boxing" )
     public Void execute(
         final IEngineContext context )
         throws EngineException

@@ -591,7 +591,7 @@ final class Engine
             return false;
         }
 
-        return behavior.writeLockRequired() && !(command instanceof IInvertibleCommand);
+        return behavior.writeLockRequired() && !(command instanceof IInvertibleCommand<?>);
     }
 
     /**

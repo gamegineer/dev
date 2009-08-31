@@ -1,6 +1,6 @@
 /*
  * StateEvent.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,6 +36,14 @@ public abstract class StateEvent
     extends EventObject
     implements IStateEvent
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** Serializable class version number. */
+    private static final long serialVersionUID = -5134228718643489674L;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================

@@ -424,13 +424,5 @@ public final class StringBundleFactoryTest
 
             return Collections.emptyMap();
         }
-
-        /**
-         * Resets the set of locales that were queried for a string bundle node.
-         */
-        void resetQueriedLocales()
-        {
-            m_queriedLocales.clear();
-        }
     }
 }

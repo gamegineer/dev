@@ -305,7 +305,6 @@ public final class GameTest
 
         final ICommand<Boolean> isStageStrategyActiveCommand = new AbstractCommand<Boolean>()
         {
-            @SuppressWarnings( "boxing" )
             public Boolean execute(
                 @SuppressWarnings( "unused" )
                 final IEngineContext context )

@@ -24,9 +24,7 @@ package org.gamegineer.client.internal.ui.console.commandlets.connection;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.client.core.connection.GameServerConnectionFactory;
 import org.gamegineer.client.core.connection.IGameServerConnection;
@@ -295,18 +293,6 @@ public final class ConnectServerCommandlet
             assert name != null;
 
             return m_properties.get( name );
-        }
-
-        /**
-         * Gets an immutable collection of connection property names.
-         * 
-         * @return An immutable collection of connection property names; never
-         *         {@code null}.
-         */
-        /* @NonNull */
-        Set<String> getPropertyNames()
-        {
-            return Collections.unmodifiableSet( m_properties.keySet() );
         }
 
         /**
