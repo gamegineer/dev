@@ -1,18 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?pde version="3.2"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.5"?>
 
 <target name="Gamegineer IDE">
-
-   <location path="${project_loc}/target"/>
-
-   <content useAllPlugins="true">
-      <plugins>
-      </plugins>
-      <features>
-      </features>
-      <extraLocations>
-         <location path="${eclipse_home}"/>
-      </extraLocations>
-   </content>
-
+    <locations>
+        <location path="${eclipse_home}" type="Directory" />
+        <location path="${workspace_loc}/org.gamegineer.builder/target" type="Profile" />
+    </locations>
 </target>
