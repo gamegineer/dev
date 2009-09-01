@@ -1,6 +1,6 @@
 /*
  * StageVersionTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -166,7 +166,6 @@ public final class StageVersionTest
      * Ensures the {@code hashCode} method returns the same hash code for equal
      * objects.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testHashCode_Equal()
     {
@@ -181,7 +180,6 @@ public final class StageVersionTest
      * Ensures the {@code increment} method returns a new stage version with the
      * same instance identifier but an incremented modification count.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testIncrement()
     {

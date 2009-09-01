@@ -7,8 +7,8 @@ Bundle-Activator: org.gamegineer.common.internal.remoting.Activator
 Bundle-Vendor: %bundleVendor
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Require-Bundle: org.gamegineer.common.core
-Import-Package: org.eclipse.osgi.service.debug;version="[1.0.0,1.0.0]",
- org.osgi.framework;version="[1.4.0,1.4.0]"
+Import-Package: org.eclipse.osgi.service.debug;version="1.1.0",
+ org.osgi.framework;version="1.5.0"
 Export-Package: org.gamegineer.common.remoting

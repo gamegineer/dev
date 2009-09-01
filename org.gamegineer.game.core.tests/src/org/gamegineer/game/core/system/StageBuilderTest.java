@@ -73,8 +73,8 @@ public final class StageBuilderTest
      * @param builder
      *        The stage builder; must not be {@code null}.
      * 
-     * @return A legal stage list for the specified stage builder; never
-     *         {@code null}.
+     * @return A legal stage list for the specified stage builder; never {@code
+     *         null}.
      */
     /* @NonNull */
     private static List<IStage> createLegalStageList(
@@ -115,7 +115,6 @@ public final class StageBuilderTest
     /**
      * Ensures the {@code addStage} method adds a stage to the resulting stage.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testAddStage_AddsStage()
     {
@@ -159,7 +158,6 @@ public final class StageBuilderTest
      * Ensures the {@code addStages} method adds a collection of stages to the
      * resulting stage.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testAddStages_AddsStages()
     {
@@ -210,7 +208,6 @@ public final class StageBuilderTest
      * Ensures the {@code setCardinality} method sets the cardinality on the
      * resulting stage.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testSetCardinality_SetsCardinality()
     {
@@ -322,10 +319,10 @@ public final class StageBuilderTest
      * the builder results in an illegal stage.
      * 
      * <p>
-     * The purpose of this test is simply to ensure <i>any</i> illegal
-     * attribute will cause an exception to be thrown. The primary collection of
-     * tests for all possible permutations of illegal stage attributes is
-     * located in the {@code GameSystemUtilsTest} class.
+     * The purpose of this test is simply to ensure <i>any</i> illegal attribute
+     * will cause an exception to be thrown. The primary collection of tests for
+     * all possible permutations of illegal stage attributes is located in the
+     * {@code GameSystemUtilsTest} class.
      * </p>
      */
     @Test( expected = IllegalStateException.class )

@@ -151,7 +151,6 @@ public final class GameConfigurationBuilderTest
      * Ensures the {@code addPlayer} method adds a player to the resulting
      * configuration.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testAddPlayer_AddsPlayer()
     {
@@ -195,7 +194,6 @@ public final class GameConfigurationBuilderTest
      * Ensures the {@code addPlayers} method adds a collection of players to the
      * resulting configuration.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testAddPlayers_AddsPlayers()
     {
@@ -351,10 +349,10 @@ public final class GameConfigurationBuilderTest
      * the state of the builder results in an illegal game configuration.
      * 
      * <p>
-     * The purpose of this test is simply to ensure <i>any</i> illegal
-     * attribute will cause an exception to be thrown. The primary collection of
-     * tests for all possible permutations of illegal game configuration
-     * attributes is located in the {@code ConfigurationUtilsTest} class.
+     * The purpose of this test is simply to ensure <i>any</i> illegal attribute
+     * will cause an exception to be thrown. The primary collection of tests for
+     * all possible permutations of illegal game configuration attributes is
+     * located in the {@code ConfigurationUtilsTest} class.
      * </p>
      */
     @Test( expected = IllegalStateException.class )

@@ -101,7 +101,6 @@ public final class CommandHistoryTest
      * Ensures the {@code add(IInvertibleCommand, CommandContext)} method adds
      * commands to the command history as expected.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testAddWithCommand()
     {
@@ -152,7 +151,6 @@ public final class CommandHistoryTest
      * Ensures the {@code add(CommandHistory.Entry)} method adds commands to the
      * command history as expected.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testAddWithEntry()
     {
@@ -322,7 +320,6 @@ public final class CommandHistoryTest
      * Ensures the {@code hashCode} method returns the same value for two
      * different instances which are equal.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testHashCode_ReturnValue_EqualInstances()
     {

@@ -1,6 +1,6 @@
 /*
  * AttributeNameTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -212,7 +212,6 @@ public final class AttributeNameTest
      * Ensures the {@code hashCode} method returns the same hash code for equal
      * attribute names.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testHashCode_Equal()
     {

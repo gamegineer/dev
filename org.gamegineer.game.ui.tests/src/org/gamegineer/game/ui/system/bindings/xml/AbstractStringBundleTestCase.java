@@ -156,7 +156,6 @@ public abstract class AbstractStringBundleTestCase
      * Ensures the {@code getKeys} method returns a collection containing all
      * the keys in the bundle when the bundle contains at least one entry.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetKeys_OneOrMoreEntries()
     {
@@ -195,7 +194,6 @@ public abstract class AbstractStringBundleTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetKeys_ZeroEntries()
         throws Exception

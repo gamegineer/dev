@@ -198,7 +198,6 @@ public final class GameServerTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetGames()
         throws Exception

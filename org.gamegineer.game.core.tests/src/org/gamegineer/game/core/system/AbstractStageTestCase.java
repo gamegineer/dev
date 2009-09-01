@@ -120,7 +120,6 @@ public abstract class AbstractStageTestCase
     /**
      * Ensures the {@code getStages} method returns a copy of the stage list.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetStages_ReturnValue_Copy()
     {

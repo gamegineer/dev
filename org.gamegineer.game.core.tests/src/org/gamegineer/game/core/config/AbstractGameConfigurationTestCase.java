@@ -47,8 +47,8 @@ public abstract class AbstractGameConfigurationTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractGameConfigurationTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractGameConfigurationTestCase} class.
      */
     protected AbstractGameConfigurationTestCase()
     {
@@ -121,7 +121,6 @@ public abstract class AbstractGameConfigurationTestCase
      * Ensures the {@code getPlayers} method returns a copy of the player
      * configuration list.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetPlayers_ReturnValue_Copy()
     {

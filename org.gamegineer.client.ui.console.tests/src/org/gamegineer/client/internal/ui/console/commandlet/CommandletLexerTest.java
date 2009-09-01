@@ -72,7 +72,6 @@ public final class CommandletLexerTest
      * Ensures the {@code tokenize} method correctly parses a legal line with
      * quoted commandlet arguments.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testTokenize_Line_Legal_WithQuotedArgs()
     {
@@ -89,7 +88,6 @@ public final class CommandletLexerTest
      * Ensures the {@code tokenize} method correctly parses a legal line with
      * quoted commandlet arguments which themselves contain quotes.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testTokenize_Line_Legal_WithQuotedArgs_EmbeddedQuotes()
     {
@@ -106,7 +104,6 @@ public final class CommandletLexerTest
      * Ensures the {@code tokenize} method correctly parses a legal line with
      * quoted commandlet arguments which themselves are empty.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testTokenize_Line_Legal_WithQuotedArgs_Empty()
     {
@@ -123,7 +120,6 @@ public final class CommandletLexerTest
      * Ensures the {@code tokenize} method correctly parses a legal line with
      * unquoted commandlet arguments.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testTokenize_Line_Legal_WithUnquotedArgs()
     {
@@ -139,7 +135,6 @@ public final class CommandletLexerTest
      * Ensures the {@code tokenize} method correctly parses a legal line without
      * commandlet arguments.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testTokenize_Line_Legal_WithoutArgs()
     {

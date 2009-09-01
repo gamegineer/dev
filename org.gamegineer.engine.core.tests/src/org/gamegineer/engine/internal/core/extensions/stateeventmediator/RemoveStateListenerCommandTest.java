@@ -1,6 +1,6 @@
 /*
  * RemoveStateListenerCommandTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -93,7 +93,6 @@ public final class RemoveStateListenerCommandTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testExecute_Listener_Registered()
         throws Exception
@@ -113,7 +112,6 @@ public final class RemoveStateListenerCommandTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testExecute_Listener_Registered_AllHandlersInvoked()
         throws Exception

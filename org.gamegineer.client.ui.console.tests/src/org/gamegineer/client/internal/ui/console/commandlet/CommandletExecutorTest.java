@@ -108,7 +108,6 @@ public final class CommandletExecutorTest
      * Ensures the constructor makes a deep copy of the commandlet argument
      * list.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testConstructor_CommandletArgs_DeepCopy()
     {
@@ -192,8 +191,8 @@ public final class CommandletExecutorTest
     }
 
     /**
-     * Ensures the {@code getCommandletArguments} method does not return
-     * {@code null}.
+     * Ensures the {@code getCommandletArguments} method does not return {@code
+     * null}.
      */
     @Test
     public void testGetCommandletArguments_ReturnValue_NonNull()

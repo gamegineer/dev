@@ -233,7 +233,6 @@ public abstract class AbstractGameServerTestCase
      * Ensures the {@code getGameSystems} method returns a copy of the game
      * system collection.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetGameSystems_ReturnValue_Copy()
     {
@@ -258,7 +257,6 @@ public abstract class AbstractGameServerTestCase
      * Ensures the {@code getGames} method returns a copy of the game
      * collection.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetGames_ReturnValue_Copy()
     {

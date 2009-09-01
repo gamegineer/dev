@@ -16,16 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 19, 2008 at 10:48:33 PM.
+ * Created on Aug 31, 2009 at 11:48:59 PM.
  */
 
-package org.gamegineer.client.internal.product.console;
+package org.gamegineer.test.internal.core;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 /**
- * The bundle activator for the org.gamegineer.client.product.console bundle.
+ * The bundle activator for the org.gamegineer.test.core bundle.
  */
 public final class Activator
     implements BundleActivator
@@ -35,7 +35,7 @@ public final class Activator
     // ======================================================================
 
     /** The plugin identifier. */
-    public final static String SYMBOLIC_NAME = "org.gamegineer.client.product.console"; //$NON-NLS-1$
+    public final static String SYMBOLIC_NAME = "org.gamegineer.test.core"; //$NON-NLS-1$
 
     /** The singleton instance of the bundle activator. */
     private static Activator c_instance;

@@ -119,7 +119,6 @@ public abstract class AbstractGameClientTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testConnect_Connection_Opened()
         throws Exception
@@ -168,7 +167,6 @@ public abstract class AbstractGameClientTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testConnect_PreviousConnection_Closed()
         throws Exception
@@ -187,7 +185,6 @@ public abstract class AbstractGameClientTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testDisconnect_Connection_Closed()
         throws Exception
@@ -301,7 +298,6 @@ public abstract class AbstractGameClientTestCase
      * Ensures the {@code getGameSystemUis} method returns a copy of the game
      * system user interface collection.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetGameSystemUis_ReturnValue_Copy()
     {

@@ -202,7 +202,6 @@ public final class XmlStageTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testUnmarshal_Success_NoCardinality()
         throws Exception

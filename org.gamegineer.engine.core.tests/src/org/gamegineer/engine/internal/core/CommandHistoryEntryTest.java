@@ -182,7 +182,6 @@ public final class CommandHistoryEntryTest
      * Ensures the {@code hashCode} method returns the same value for two
      * different instances which are equal.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testHashCode_ReturnValue_EqualInstances()
     {

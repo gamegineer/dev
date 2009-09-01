@@ -141,7 +141,6 @@ public final class GameSystemBuilderTest
      * Ensures the {@code addRole} method adds a role to the resulting game
      * system.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testAddRole_AddsRole()
     {
@@ -185,7 +184,6 @@ public final class GameSystemBuilderTest
      * Ensures the {@code addRoles} method adds a collection of roles to the
      * resulting game system.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testAddRoles_AddsRoles()
     {
@@ -226,7 +224,6 @@ public final class GameSystemBuilderTest
      * Ensures the {@code addStage} method adds a stage to the resulting game
      * system.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testAddStage_AddsStage()
     {
@@ -270,7 +267,6 @@ public final class GameSystemBuilderTest
      * Ensures the {@code addStages} method adds a collection of stages to the
      * resulting game system.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testAddStages_AddsStages()
     {
@@ -347,10 +343,10 @@ public final class GameSystemBuilderTest
      * state of the builder results in an illegal game system.
      * 
      * <p>
-     * The purpose of this test is simply to ensure <i>any</i> illegal
-     * attribute will cause an exception to be thrown. The primary collection of
-     * tests for all possible permutations of illegal game system attributes is
-     * located in the {@code GameSystemUtilsTest} class.
+     * The purpose of this test is simply to ensure <i>any</i> illegal attribute
+     * will cause an exception to be thrown. The primary collection of tests for
+     * all possible permutations of illegal game system attributes is located in
+     * the {@code GameSystemUtilsTest} class.
      * </p>
      */
     @Test( expected = IllegalStateException.class )

@@ -49,8 +49,8 @@ public abstract class AbstractGameSystemSourceTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractGameSystemSourceTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractGameSystemSourceTestCase} class.
      */
     protected AbstractGameSystemSourceTestCase()
     {
@@ -105,7 +105,6 @@ public abstract class AbstractGameSystemSourceTestCase
      * Ensures the {@code getGameSystems} method returns a copy of the game
      * system collection.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetGameSystems_ReturnValue_Copy()
     {

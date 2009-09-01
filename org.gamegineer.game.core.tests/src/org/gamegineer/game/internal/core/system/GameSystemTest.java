@@ -99,7 +99,6 @@ public final class GameSystemTest
      * Ensures the {@code createGameSystem} method makes a copy of the role
      * list.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testCreateGameSystem_Roles_Copy()
     {
@@ -126,7 +125,6 @@ public final class GameSystemTest
      * Ensures the {@code createGameSystem} method makes a copy of the stage
      * list.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testCreateGameSystem_Stages_Copy()
     {

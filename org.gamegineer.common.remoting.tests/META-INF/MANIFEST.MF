@@ -7,7 +7,7 @@ Bundle-Vendor: %bundleVendor
 Bundle-Localization: fragment-tests
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Fragment-Host: org.gamegineer.common.remoting;bundle-version="0.1.0"
-Import-Package: junit.framework;version="[4.3.1,4.3.1]",
+Import-Package: junit.framework;version="4.5.0",
  org.gamegineer.test.core,
- org.junit;version="[4.3.1,4.3.1]"
+ org.junit;version="4.5.0"
 Bundle-ClassPath: tests.jar

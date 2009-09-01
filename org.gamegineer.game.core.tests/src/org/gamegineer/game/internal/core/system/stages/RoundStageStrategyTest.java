@@ -104,14 +104,13 @@ public final class RoundStageStrategyTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testActivate_CurrentRoundIdentifierAdded()
         throws Exception
     {
         m_strategy.activate( createDummy( IStage.class ), m_engineContext );
 
-        assertEquals( 1, GameAttributes.CURRENT_ROUND_ID.getValue( m_engineContext.getState() ) );
+        assertEquals( 1, GameAttributes.CURRENT_ROUND_ID.getValue( m_engineContext.getState() ).intValue() );
     }
 
     /**
@@ -133,7 +132,7 @@ public final class RoundStageStrategyTest
 
         m_strategy.activate( stage, m_engineContext );
 
-        assertEquals( originalCurrentRoundId + 1, GameAttributes.CURRENT_ROUND_ID.getValue( m_engineContext.getState() ) );
+        assertEquals( originalCurrentRoundId + 1, GameAttributes.CURRENT_ROUND_ID.getValue( m_engineContext.getState() ).intValue() );
     }
 
     /**

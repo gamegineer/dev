@@ -54,8 +54,8 @@ public abstract class AbstractGameSystemUiRegistryTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractGameSystemUiRegistryTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractGameSystemUiRegistryTestCase} class.
      */
     protected AbstractGameSystemUiRegistryTestCase()
     {
@@ -146,7 +146,6 @@ public abstract class AbstractGameSystemUiRegistryTestCase
      * Ensures the {@code getGameSystemUis} method returns a copy of the
      * registered game system user interface collection.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetGameSystemUis_ReturnValue_Copy()
     {
@@ -185,7 +184,6 @@ public abstract class AbstractGameSystemUiRegistryTestCase
      * Ensures the {@code registerGameSystemUi} method properly ignores a game
      * system user interface whose identifier has already been registered.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testRegisterGameSystemUi_GameSystemUi_Registered_DifferentInstance()
     {
@@ -203,7 +201,6 @@ public abstract class AbstractGameSystemUiRegistryTestCase
      * Ensures the {@code registerGameSystemUi} method properly ignores a game
      * system user interface instance that has already been registered.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testRegisterGameSystemUi_GameSystemUi_Registered_SameInstance()
     {
@@ -246,7 +243,6 @@ public abstract class AbstractGameSystemUiRegistryTestCase
      * user interface whose identifier was previously registered but by a
      * different game system user interface instance.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testUnregisterGameSystemUi_GameSystemUi_Registered_DifferentInstance()
     {
@@ -264,7 +260,6 @@ public abstract class AbstractGameSystemUiRegistryTestCase
      * Ensures the {@code unregisterGameSystemUi} method unregisters a
      * previously registered game system user interface.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testUnregisterGameSystemUi_GameSystemUi_Registered_SameInstance()
     {
@@ -282,7 +277,6 @@ public abstract class AbstractGameSystemUiRegistryTestCase
      * Ensures the {@code unregisterGameSystemUi} properly ignores a game system
      * user interface that was not previously registered.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testUnregisterGameSystemUi_GameSystemUi_Unregistered()
     {

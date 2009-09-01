@@ -1,6 +1,6 @@
 /*
  * BundleSuiteBuilder.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,6 +38,7 @@ import javax.xml.xpath.XPathFactory;
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.gamegineer.test.internal.core.Services;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
 import org.w3c.dom.Element;
@@ -181,14 +182,17 @@ public final class BundleSuiteBuilder
         assert hostBundle != null;
         assert fragmentName != null;
 
-        for( final Enumeration<?> entries = hostBundle.findEntries( "META-INF", "MANIFEST.MF", false ); entries.hasMoreElements(); ) //$NON-NLS-1$ //$NON-NLS-2$
+        final Bundle[] fragments = Services.getDefault().getPackageAdministrationService().getFragments( hostBundle );
+        if( fragments == null )
         {
-            // OSGi bundle URLs are of the form "bundleentry://<bundle-id>/<entry-path>"
-            final URL url = (URL)entries.nextElement();
-            final Bundle bundle = hostBundle.getBundleContext().getBundle( Long.parseLong( url.getHost() ) );
-            if( fragmentName.equals( bundle.getSymbolicName() ) )
+            return null;
+        }
+
+        for( final Bundle fragment : fragments )
+        {
+            if( fragmentName.equals( fragment.getSymbolicName() ) )
             {
-                return bundle;
+                return fragment;
             }
         }
 
@@ -207,8 +211,8 @@ public final class BundleSuiteBuilder
      * @param bundle
      *        The bundle in which to search; must not be {@code null}.
      * 
-     * @return A read-only collection of test class names found; never
-     *         {@code null}.
+     * @return A read-only collection of test class names found; never {@code
+     *         null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -255,11 +259,11 @@ public final class BundleSuiteBuilder
      * @param bundle
      *        The bundle in which to search; must not be {@code null}.
      * @param path
-     *        The path to the JAR file in which to search; must not be
-     *        {@code null}.
+     *        The path to the JAR file in which to search; must not be {@code
+     *        null}.
      * 
-     * @return A read-only collection of test class names found; never
-     *         {@code null}.
+     * @return A read-only collection of test class names found; never {@code
+     *         null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -313,8 +317,8 @@ public final class BundleSuiteBuilder
      * @param path
      *        The bundle directory in which to search; must not be {@code null}.
      * 
-     * @return A read-only collection of test class names found; never
-     *         {@code null}.
+     * @return A read-only collection of test class names found; never {@code
+     *         null}.
      */
     /* @NonNull */
     private static Collection<String> getTestClassNamesFromPath(
@@ -386,7 +390,8 @@ public final class BundleSuiteBuilder
      *        The bundle hosting the fragment; must not be {@code null}. This
      *        must not be a bundle fragment.
      * @param fragmentName
-     *        The symbolic name of the bundle fragment; must not be {@code null}.
+     *        The symbolic name of the bundle fragment; must not be {@code null}
+     *        .
      * 
      * @return A test suite containing all tests in the specified bundle
      *         fragment; never {@code null}.

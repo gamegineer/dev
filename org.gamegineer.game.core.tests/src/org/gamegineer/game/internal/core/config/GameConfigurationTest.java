@@ -125,7 +125,6 @@ public final class GameConfigurationTest
      * Ensures the {@code createGameConfiguration} method makes a copy of the
      * player configuration list.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testCreateGameConfiguration_PlayerConfigs_Copy()
     {

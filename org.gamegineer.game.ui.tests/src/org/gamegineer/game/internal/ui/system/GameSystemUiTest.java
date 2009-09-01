@@ -110,7 +110,6 @@ public final class GameSystemUiTest
      * Ensures the {@code createGameSystemUi} method makes a copy of the role
      * user interface list.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testCreateGameSystemUi_RoleUis_Copy()
     {

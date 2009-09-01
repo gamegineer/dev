@@ -1,6 +1,6 @@
 /*
  * LoggerConfigurationTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -250,7 +250,6 @@ public final class LoggerConfigurationTest
      * Ensures the {@code getHandlers} method returns the expected value when
      * the logger is configured.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetHandlers_Configured()
     {
@@ -292,7 +291,6 @@ public final class LoggerConfigurationTest
      * Ensures the {@code getHandlers} method does not include handlers that
      * have an illegal name when the logger is configured.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetHandlers_Configured_IllegalHandler()
     {

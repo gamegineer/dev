@@ -1,6 +1,6 @@
 /*
  * CommandletAliasManagerTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -109,7 +109,6 @@ public final class CommandletAliasManagerTest
      * Ensures the {@code getCommandletClassNames} method returns the expected
      * set when the alias matches one commandlet.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetCommandletClassNames_Alias_Match_One()
     {
@@ -122,7 +121,6 @@ public final class CommandletAliasManagerTest
      * Ensures the {@code getCommandletClassNames} method returns the expected
      * set when the alias matches two commandlets.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetCommandletClassNames_Alias_Match_Two()
     {
@@ -135,7 +133,6 @@ public final class CommandletAliasManagerTest
      * Ensures the {@code getCommandletClassNames} method returns an empty set
      * when the alias does not match any commandlets.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetCommandletClassNames_Alias_NoMatch()
     {

@@ -52,9 +52,9 @@ public final class Assert
      * Asserts that two game system user interfaces are equal.
      * 
      * <p>
-     * If the two game system user interfaces are not equal, an
-     * {@code AssertionError} without a message is thrown. If {@code expected}
-     * and {@code actual} are {@code null}, they are considered equal.
+     * If the two game system user interfaces are not equal, an {@code
+     * AssertionError} without a message is thrown. If {@code expected} and
+     * {@code actual} are {@code null}, they are considered equal.
      * </p>
      * 
      * @param expected
@@ -62,7 +62,6 @@ public final class Assert
      * @param actual
      *        The actual game system user interface; may be {@code null}.
      */
-    @SuppressWarnings( "boxing" )
     public static void assertGameSystemUiEquals(
         /* @Nullable */
         final IGameSystemUi expected,

@@ -49,8 +49,8 @@ public abstract class AbstractGameSystemUiSourceTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractGameSystemUiSourceTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractGameSystemUiSourceTestCase} class.
      */
     protected AbstractGameSystemUiSourceTestCase()
     {
@@ -65,8 +65,8 @@ public abstract class AbstractGameSystemUiSourceTestCase
     /**
      * Creates the game system user interface source to be tested.
      * 
-     * @return The game system user interface source to be tested; never
-     *         {@code null}.
+     * @return The game system user interface source to be tested; never {@code
+     *         null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -106,7 +106,6 @@ public abstract class AbstractGameSystemUiSourceTestCase
      * Ensures the {@code getGameSystemUis} method returns a copy of the game
      * system user interface collection.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetGameSystemUis_ReturnValue_Copy()
     {

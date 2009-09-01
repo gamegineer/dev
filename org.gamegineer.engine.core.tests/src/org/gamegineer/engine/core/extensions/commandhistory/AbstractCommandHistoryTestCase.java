@@ -267,7 +267,6 @@ public abstract class AbstractCommandHistoryTestCase
      * Ensures the {@code getCommands} method returns a copy of the command
      * history.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetCommands_ReturnValue_Copy()
     {
@@ -322,7 +321,6 @@ public abstract class AbstractCommandHistoryTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testRedo()
         throws Exception
@@ -340,8 +338,8 @@ public abstract class AbstractCommandHistoryTestCase
     }
 
     /**
-     * Ensures the {@code redo} method throws an exception when passed a
-     * {@code null} context.
+     * Ensures the {@code redo} method throws an exception when passed a {@code
+     * null} context.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -374,7 +372,6 @@ public abstract class AbstractCommandHistoryTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testUndo()
         throws Exception
@@ -411,8 +408,8 @@ public abstract class AbstractCommandHistoryTestCase
     }
 
     /**
-     * Ensures the {@code undo} method throws an exception when passed a
-     * {@code null} context.
+     * Ensures the {@code undo} method throws an exception when passed a {@code
+     * null} context.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -451,7 +448,9 @@ public abstract class AbstractCommandHistoryTestCase
         /** The command identifier. */
         private final String m_id;
 
-        /** Indicates this command instance should perform the inverse operation. */
+        /**
+         * Indicates this command instance should perform the inverse operation.
+         */
         private final boolean m_isInverse;
 
 

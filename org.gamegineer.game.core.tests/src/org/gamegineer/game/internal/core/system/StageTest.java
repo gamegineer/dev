@@ -103,7 +103,6 @@ public final class StageTest
     /**
      * Ensures the {@code createStage} method makes a copy of the stage list.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testCreateStage_Stages_Copy()
     {

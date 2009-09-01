@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -64,20 +64,24 @@ public final class Activator
     /**
      * Gets the bundle context.
      * 
-     * @return The bundle context.
+     * @return The bundle context; never {@code null}.
      */
+    /* @NonNull */
     public BundleContext getBundleContext()
     {
+        assert m_context != null;
         return m_context;
     }
 
     /**
      * Gets the default instance of the bundle activator.
      * 
-     * @return The default instance of the bundle activator.
+     * @return The default instance of the bundle activator; never {@code null}.
      */
+    /* @NonNull */
     public static Activator getDefault()
     {
+        assert c_instance != null;
         return c_instance;
     }
 

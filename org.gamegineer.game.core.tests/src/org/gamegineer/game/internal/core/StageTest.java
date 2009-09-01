@@ -249,7 +249,6 @@ public final class StageTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testActivate_Active_Executing_ChildActivated()
         throws Exception
@@ -288,7 +287,6 @@ public final class StageTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testActivate_Active_NotExecuting_ActiveChildIsExecuting_GrandchildActivated()
         throws Exception
@@ -343,7 +341,6 @@ public final class StageTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testActivate_Inactive_StrategyInvoked()
         throws Exception
@@ -425,7 +422,6 @@ public final class StageTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testCommandExecuted_Active_Executing_StrategyInvoked()
         throws Exception
@@ -446,7 +442,6 @@ public final class StageTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testCommandExecuted_Active_NotExecuting_DelegateToActiveChildStage()
         throws Exception
@@ -488,7 +483,6 @@ public final class StageTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testCommandExecuting_Active_Executing_StrategyInvoked()
         throws Exception
@@ -509,7 +503,6 @@ public final class StageTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testCommandExecuting_Active_NotExecuting_DelegateToActiveChildStage()
         throws Exception
@@ -561,7 +554,6 @@ public final class StageTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testDeactivate_Active_Executing_StrategyInvoked()
         throws Exception
@@ -584,7 +576,6 @@ public final class StageTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testDeactivate_Active_NotExecuting_ActiveChildIsExecuting_ActiveChildDeactivated()
         throws Exception
@@ -836,7 +827,6 @@ public final class StageTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testStateChanged_Active_Executing_StrategyInvoked()
         throws Exception
@@ -857,7 +847,6 @@ public final class StageTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testStateChanged_Active_NotExecuting_DelegateToActiveChildStage()
         throws Exception
@@ -879,7 +868,6 @@ public final class StageTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testStateChanging_Active_Executing_StrategyInvoked()
         throws Exception
@@ -900,7 +888,6 @@ public final class StageTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testStateChanging_Active_NotExecuting_DelegateToActiveChildStage()
         throws Exception

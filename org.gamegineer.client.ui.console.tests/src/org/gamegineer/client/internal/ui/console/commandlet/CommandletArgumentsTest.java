@@ -152,7 +152,6 @@ public final class CommandletArgumentsTest
      * Ensures the {@code parseNamedValueList} method correctly parses a named
      * value list with one entry.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testParseNamedValueList_Arg_OneEntry()
     {
@@ -170,7 +169,6 @@ public final class CommandletArgumentsTest
      * Ensures the {@code parseNamedValueList} method correctly parses a named
      * value list with two entries.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testParseNamedValueList_Arg_TwoEntries()
     {
@@ -191,7 +189,6 @@ public final class CommandletArgumentsTest
      * Ensures the {@code parseNamedValueList} method correctly parses a named
      * value list with zero entries.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testParseNamedValueList_Arg_ZeroEntries()
     {

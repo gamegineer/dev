@@ -96,7 +96,6 @@ public final class CommandletTokenCollectionTest
     /**
      * Ensures the constructor makes a deep copy of the argument list.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testConstructor_Args_DeepCopy()
     {

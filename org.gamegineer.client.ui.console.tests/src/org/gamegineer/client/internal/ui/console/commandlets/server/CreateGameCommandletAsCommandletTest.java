@@ -61,8 +61,8 @@ public final class CreateGameCommandletAsCommandletTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code CreateGameCommandletAsCommandletTest} class.
+     * Initializes a new instance of the {@code
+     * CreateGameCommandletAsCommandletTest} class.
      */
     public CreateGameCommandletAsCommandletTest()
     {
@@ -218,7 +218,6 @@ public final class CreateGameCommandletAsCommandletTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testExecute_GameConfig_Legal()
         throws Exception

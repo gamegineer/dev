@@ -111,7 +111,6 @@ public abstract class AbstractGameSystemTestCase
     /**
      * Ensures the {@code getRoles} method returns a copy of the role list.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetRoles_ReturnValue_Copy()
     {
@@ -135,7 +134,6 @@ public abstract class AbstractGameSystemTestCase
     /**
      * Ensures the {@code getStages} method returns a copy of the stage list.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetStages_ReturnValue_Copy()
     {

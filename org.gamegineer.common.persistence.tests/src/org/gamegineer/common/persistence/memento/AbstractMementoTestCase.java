@@ -1,6 +1,6 @@
 /*
  * AbstractMementoTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -177,7 +177,6 @@ public abstract class AbstractMementoTestCase
      * Ensures the {@code getAttributeNames} method returns all the attribute
      * names in the memento when the memento contains at least one attribute.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetAttributeNames()
     {

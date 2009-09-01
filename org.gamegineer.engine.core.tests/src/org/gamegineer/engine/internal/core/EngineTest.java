@@ -245,7 +245,6 @@ public final class EngineTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testExecuteCommand_Command_PhantomCommand()
         throws Exception
@@ -478,7 +477,6 @@ public final class EngineTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testExecuteCommand_Listeners_Command_Successful()
         throws Exception
@@ -825,8 +823,8 @@ public final class EngineTest
     }
 
     /**
-     * Ensures the {@code getExtensionRegistry} method does not return
-     * {@code null}.
+     * Ensures the {@code getExtensionRegistry} method does not return {@code
+     * null}.
      */
     @Test
     public void testGetExtensionRegistry_ReturnValue_NonNull()

@@ -149,7 +149,6 @@ public abstract class AbstractGameSystemUiTestCase
      * Ensures the {@code getRoles} method returns a copy of the role user
      * interface list.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetRoles_ReturnValue_Copy()
     {

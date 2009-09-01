@@ -7,7 +7,7 @@ Bundle-Activator: org.gamegineer.tictactoe.internal.ui.console.Activator
 Bundle-Vendor: %bundleVendor
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Require-Bundle: org.gamegineer.common.core,
  org.gamegineer.game.core,
  org.gamegineer.game.ui,
@@ -16,6 +16,6 @@ Require-Bundle: org.gamegineer.common.core,
  org.gamegineer.server.core,
  org.gamegineer.tictactoe.core
 Import-Package: net.jcip.annotations,
- org.eclipse.osgi.service.debug;version="[1.0.0,1.0.0]",
- org.eclipse.osgi.util;version="[1.1.0,1.1.0]",
- org.osgi.framework;version="[1.4.0,1.4.0]"
+ org.eclipse.osgi.service.debug;version="1.1.0",
+ org.eclipse.osgi.util;version="1.1.0",
+ org.osgi.framework;version="1.5.0"

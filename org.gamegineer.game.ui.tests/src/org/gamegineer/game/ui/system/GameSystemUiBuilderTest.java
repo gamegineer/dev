@@ -130,7 +130,6 @@ public final class GameSystemUiBuilderTest
      * Ensures the {@code addRole} method adds a role to the resulting game
      * system user interface.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testAddRole_AddsRole()
     {
@@ -174,7 +173,6 @@ public final class GameSystemUiBuilderTest
      * Ensures the {@code addRoles} method adds a collection of roles to the
      * resulting game system user interface.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testAddRoles_AddsRoles()
     {
@@ -286,9 +284,9 @@ public final class GameSystemUiBuilderTest
      * state of the builder results in an illegal game system user interface.
      * 
      * <p>
-     * The purpose of this test is simply to ensure <i>any</i> illegal
-     * attribute will cause an exception to be thrown. The primary collection of
-     * tests for all possible permutations of illegal game system user interface
+     * The purpose of this test is simply to ensure <i>any</i> illegal attribute
+     * will cause an exception to be thrown. The primary collection of tests for
+     * all possible permutations of illegal game system user interface
      * attributes is located in the {@code GameSystemUiUtilsTest} class.
      * </p>
      */

@@ -1,6 +1,6 @@
 /*
  * DefaultDisplayTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -83,8 +83,8 @@ public final class DefaultDisplayTest
     }
 
     /**
-     * Ensures the primary constructor throws an exception when passed a
-     * {@code null} input stream reader.
+     * Ensures the primary constructor throws an exception when passed a {@code
+     * null} input stream reader.
      */
     @Test( expected = AssertionError.class )
     public void testConstructor_Primary_Reader_Null()
@@ -93,8 +93,8 @@ public final class DefaultDisplayTest
     }
 
     /**
-     * Ensures the primary constructor throws an exception when passed a
-     * {@code null} output stream writer.
+     * Ensures the primary constructor throws an exception when passed a {@code
+     * null} output stream writer.
      */
     @Test( expected = AssertionError.class )
     public void testConstructor_Primary_Writer_Null()
@@ -175,7 +175,6 @@ public final class DefaultDisplayTest
      * Ensures the {@code readSecureLine} method properly handles the case when
      * a carriage return line separator is adjacent to another carriage return.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testReadSecureLine_LineSeparator_CarriageReturn_HandlesAdjacentCarriageReturn()
     {

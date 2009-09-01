@@ -52,8 +52,8 @@ public final class Assert
      * 
      * <p>
      * If the two game systems are not equal, an {@code AssertionError} without
-     * a message is thrown. If {@code expected} and {@code actual} are
-     * {@code null}, they are considered equal.
+     * a message is thrown. If {@code expected} and {@code actual} are {@code
+     * null}, they are considered equal.
      * </p>
      * 
      * @param expected
@@ -61,7 +61,6 @@ public final class Assert
      * @param actual
      *        The actual game system; may be {@code null}.
      */
-    @SuppressWarnings( "boxing" )
     public static void assertGameSystemEquals(
         /* @Nullable */
         final IGameSystem expected,
@@ -99,8 +98,8 @@ public final class Assert
      * 
      * <p>
      * If the two roles are not equal, an {@code AssertionError} without a
-     * message is thrown. If {@code expected} and {@code actual} are
-     * {@code null}, they are considered equal.
+     * message is thrown. If {@code expected} and {@code actual} are {@code
+     * null}, they are considered equal.
      * </p>
      * 
      * @param expected
@@ -129,8 +128,8 @@ public final class Assert
      * 
      * <p>
      * If the two stages are not equal, an {@code AssertionError} without a
-     * message is thrown. If {@code expected} and {@code actual} are
-     * {@code null}, they are considered equal.
+     * message is thrown. If {@code expected} and {@code actual} are {@code
+     * null}, they are considered equal.
      * </p>
      * 
      * @param expected
@@ -138,7 +137,6 @@ public final class Assert
      * @param actual
      *        The actual stage; may be {@code null}.
      */
-    @SuppressWarnings( "boxing" )
     public static void assertStageEquals(
         /* @Nullable */
         final IStage expected,

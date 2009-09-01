@@ -189,7 +189,6 @@ public final class GameTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testCommandExecuted_DelegateToActiveStage()
         throws Exception
@@ -210,7 +209,6 @@ public final class GameTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testCommandExecuting_DelegateToActiveStage()
         throws Exception
@@ -245,7 +243,6 @@ public final class GameTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testStateChanged_DelegateToActiveStage()
         throws Exception
@@ -266,7 +263,6 @@ public final class GameTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testStateChanging_DelegateToActiveStage()
         throws Exception

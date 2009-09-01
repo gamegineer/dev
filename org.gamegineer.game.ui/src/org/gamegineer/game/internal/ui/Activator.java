@@ -67,20 +67,24 @@ public final class Activator
     /**
      * Gets the bundle context.
      * 
-     * @return The bundle context.
+     * @return The bundle context; never {@code null}.
      */
+    /* @NonNull */
     public BundleContext getBundleContext()
     {
+        assert m_context != null;
         return m_context;
     }
 
     /**
      * Gets the default instance of the bundle activator.
      * 
-     * @return The default instance of the bundle activator.
+     * @return The default instance of the bundle activator; never {@code null}.
      */
+    /* @NonNull */
     public static Activator getDefault()
     {
+        assert c_instance != null;
         return c_instance;
     }
 

@@ -1,6 +1,6 @@
 /*
  * NullDebugOptionsTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -125,7 +125,6 @@ public final class NullDebugOptionsTest
      * Ensures the {@code getIntegerOption} method always returns the default
      * value.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetIntegerOption_ReturnsDefaultValue()
     {
@@ -182,5 +181,55 @@ public final class NullDebugOptionsTest
     {
         final String value = "defaultValue"; //$NON-NLS-1$
         assertEquals( value, m_debugOptions.getOption( OPTION, value ) );
+    }
+
+    /**
+     * Ensures the {@code newDebugTrace(String)} method throws an exception when
+     * passed a {@code null} bundle symbolic name.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testNewDebugTrace_BundleSymbolicName_Null()
+    {
+        m_debugOptions.newDebugTrace( null );
+    }
+
+    /**
+     * Ensures the {@code newDebugTrace(String,Class)} method throws an
+     * exception when passed a {@code null} bundle symbolic name.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testNewDebugTraceWithTraceEntryClass_BundleSymbolicName_Null()
+    {
+        m_debugOptions.newDebugTrace( null, Object.class );
+    }
+
+    /**
+     * Ensures the {@code newDebugTrace(String,Class)} method throws an
+     * exception when passed a {@code null} trace entry class.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testNewDebugTraceWithTraceEntryClass_TraceEntryClass_Null()
+    {
+        m_debugOptions.newDebugTrace( "", null ); //$NON-NLS-1$
+    }
+
+    /**
+     * Ensures the {@code removeOption} method throws an exception when passed a
+     * {@code null} option.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testRemoveOption_Option_Null()
+    {
+        m_debugOptions.removeOption( null );
+    }
+
+    /**
+     * Ensures the {@code setOption} method throws an exception when passed a
+     * {@code null} option.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetOption_Option_Null()
+    {
+        m_debugOptions.setOption( null, "" ); //$NON-NLS-1$
     }
 }

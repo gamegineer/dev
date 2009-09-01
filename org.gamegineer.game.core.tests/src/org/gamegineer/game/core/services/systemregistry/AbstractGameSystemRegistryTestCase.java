@@ -53,8 +53,8 @@ public abstract class AbstractGameSystemRegistryTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractGameSystemRegistryTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractGameSystemRegistryTestCase} class.
      */
     protected AbstractGameSystemRegistryTestCase()
     {
@@ -144,7 +144,6 @@ public abstract class AbstractGameSystemRegistryTestCase
      * Ensures the {@code getGameSystems} method returns a copy of the
      * registered game system collection.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetGameSystems_ReturnValue_Copy()
     {
@@ -183,7 +182,6 @@ public abstract class AbstractGameSystemRegistryTestCase
      * Ensures the {@code registerGameSystem} method properly ignores a game
      * system whose identifier has already been registered.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testRegisterGameSystem_GameSystem_Registered_DifferentInstance()
     {
@@ -201,7 +199,6 @@ public abstract class AbstractGameSystemRegistryTestCase
      * Ensures the {@code registerGameSystem} method properly ignores a game
      * system instance that has already been registered.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testRegisterGameSystem_GameSystem_Registered_SameInstance()
     {
@@ -244,7 +241,6 @@ public abstract class AbstractGameSystemRegistryTestCase
      * whose identifier was previously registered but by a different game system
      * instance.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testUnregisterGameSystem_GameSystem_Registered_DifferentInstance()
     {
@@ -262,7 +258,6 @@ public abstract class AbstractGameSystemRegistryTestCase
      * Ensures the {@code unregisterGameSystem} method unregisters a previously
      * registered game system.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testUnregisterGameSystem_GameSystem_Registered_SameInstance()
     {
@@ -280,7 +275,6 @@ public abstract class AbstractGameSystemRegistryTestCase
      * Ensures the {@code unregisterGameSystem} properly ignores a game system
      * that was not previously registered.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testUnregisterGameSystem_GameSystem_Unregistered()
     {

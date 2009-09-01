@@ -1,6 +1,6 @@
 /*
  * LoggingPropertiesTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -107,7 +107,6 @@ public final class LoggingPropertiesTest
     /**
      * Ensures the {@code asMap} method returns a map view of all properties.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testAsMap()
     {
@@ -162,8 +161,8 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@code getAncestorLoggerNames} method does not return
-     * {@code null} when there are no ancestors for the specified logger.
+     * Ensures the {@code getAncestorLoggerNames} method does not return {@code
+     * null} when there are no ancestors for the specified logger.
      */
     @Test
     public void testGetAncestorLoggerNames_ReturnValue_NonNull()
@@ -177,7 +176,6 @@ public final class LoggingPropertiesTest
      * Ensures the {@code getAncestorLoggerNames} method returns a non-empty
      * name list in order from nearest ancestor to furthest ancestor.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testGetAncestorLoggerNames_ReturnValue_Ordered()
     {
@@ -199,8 +197,8 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@code getLoggerConfiguration} method does not return
-     * {@code null} when there is not configuration for the named logger.
+     * Ensures the {@code getLoggerConfiguration} method does not return {@code
+     * null} when there is not configuration for the named logger.
      */
     @Test
     public void testGetLoggerConfiguration_ReturnValue_NonNull()

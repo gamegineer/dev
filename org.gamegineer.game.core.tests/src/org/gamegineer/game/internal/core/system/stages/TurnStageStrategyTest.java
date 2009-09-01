@@ -73,8 +73,8 @@ public final class TurnStageStrategyTest
     // ======================================================================
 
     /**
-     * Creates a player list suitable for use as the value of the
-     * {@code PLAYER_LIST} attribute.
+     * Creates a player list suitable for use as the value of the {@code
+     * PLAYER_LIST} attribute.
      * 
      * @return A player list; never {@code null}.
      */
@@ -144,7 +144,6 @@ public final class TurnStageStrategyTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testActivate_CurrentPlayerIndexAdded()
         throws Exception
@@ -153,7 +152,7 @@ public final class TurnStageStrategyTest
 
         m_strategy.activate( createDummy( IStage.class ), m_engineContext );
 
-        assertEquals( 0, GameAttributes.CURRENT_PLAYER_INDEX.getValue( m_engineContext.getState() ) );
+        assertEquals( 0, GameAttributes.CURRENT_PLAYER_INDEX.getValue( m_engineContext.getState() ).intValue() );
     }
 
     /**
@@ -163,7 +162,6 @@ public final class TurnStageStrategyTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testActivate_CurrentPlayerIndexIncremented()
         throws Exception
@@ -176,7 +174,7 @@ public final class TurnStageStrategyTest
 
         m_strategy.activate( stage, m_engineContext );
 
-        assertEquals( 1, GameAttributes.CURRENT_PLAYER_INDEX.getValue( m_engineContext.getState() ) );
+        assertEquals( 1, GameAttributes.CURRENT_PLAYER_INDEX.getValue( m_engineContext.getState() ).intValue() );
     }
 
     /**

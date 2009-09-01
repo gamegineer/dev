@@ -1,6 +1,6 @@
 /*
  * NullDebugOptions.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,10 @@
 package org.gamegineer.common.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.io.File;
 import net.jcip.annotations.Immutable;
 import org.eclipse.osgi.service.debug.DebugOptions;
+import org.eclipse.osgi.service.debug.DebugTrace;
 
 /**
  * A null object implementation of the
@@ -67,6 +69,14 @@ final class NullDebugOptions
     }
 
     /*
+     * @see org.eclipse.osgi.service.debug.DebugOptions#getFile()
+     */
+    public File getFile()
+    {
+        return null;
+    }
+
+    /*
      * @see org.eclipse.osgi.service.debug.DebugOptions#getIntegerOption(java.lang.String, int)
      */
     public int getIntegerOption(
@@ -103,14 +113,79 @@ final class NullDebugOptions
     }
 
     /*
+     * @see org.eclipse.osgi.service.debug.DebugOptions#isDebugEnabled()
+     */
+    public boolean isDebugEnabled()
+    {
+        return false;
+    }
+
+    /*
+     * @see org.eclipse.osgi.service.debug.DebugOptions#newDebugTrace(java.lang.String)
+     */
+    public DebugTrace newDebugTrace(
+        final String bundleSymbolicName )
+    {
+        assertArgumentNotNull( bundleSymbolicName, "bundleSymbolicName" ); //$NON-NLS-1$
+
+        throw new UnsupportedOperationException();
+    }
+
+    /*
+     * @see org.eclipse.osgi.service.debug.DebugOptions#newDebugTrace(java.lang.String, java.lang.Class)
+     */
+    @SuppressWarnings( "unchecked" )
+    public DebugTrace newDebugTrace(
+        final String bundleSymbolicName,
+        final Class traceEntryClass )
+    {
+        assertArgumentNotNull( bundleSymbolicName, "bundleSymbolicName" ); //$NON-NLS-1$
+        assertArgumentNotNull( traceEntryClass, "traceEntryClass" ); //$NON-NLS-1$
+
+        throw new UnsupportedOperationException();
+    }
+
+    /*
+     * @see org.eclipse.osgi.service.debug.DebugOptions#removeOption(java.lang.String)
+     */
+    public void removeOption(
+        final String option )
+    {
+        assertArgumentNotNull( option, "option" ); //$NON-NLS-1$
+
+        throw new UnsupportedOperationException();
+    }
+
+    /*
+     * @see org.eclipse.osgi.service.debug.DebugOptions#setDebugEnabled(boolean)
+     */
+    public void setDebugEnabled(
+        @SuppressWarnings( "unused" )
+        final boolean value )
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /*
+     * @see org.eclipse.osgi.service.debug.DebugOptions#setFile(java.io.File)
+     */
+    public void setFile(
+        @SuppressWarnings( "unused" )
+        final File newFile )
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /*
      * @see org.eclipse.osgi.service.debug.DebugOptions#setOption(java.lang.String, java.lang.String)
      */
     public void setOption(
-        @SuppressWarnings( "unused" )
         final String option,
         @SuppressWarnings( "unused" )
         final String value )
     {
+        assertArgumentNotNull( option, "option" ); //$NON-NLS-1$
+
         throw new UnsupportedOperationException();
     }
 }

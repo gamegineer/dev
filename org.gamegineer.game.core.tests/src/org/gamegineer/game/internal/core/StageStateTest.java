@@ -1,6 +1,6 @@
 /*
  * StageStateTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -175,7 +175,6 @@ public final class StageStateTest
      * Ensures the {@code activateChildStage} method returns a new stage state
      * that reflects the new active child stage index.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testActivateChildStage_State_Legal()
     {
@@ -223,7 +222,6 @@ public final class StageStateTest
      * Ensures the {@code deactivateChildStage} method returns a new stage state
      * that reflects the new active and previous child stage indexes.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testDeactivateChildStage_State_Legal()
     {

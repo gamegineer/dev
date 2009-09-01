@@ -203,7 +203,6 @@ public abstract class AbstractPrincipalTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testHashCode_Equal()
         throws Exception

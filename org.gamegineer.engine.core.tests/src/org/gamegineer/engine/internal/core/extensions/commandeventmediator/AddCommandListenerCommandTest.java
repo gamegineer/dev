@@ -1,6 +1,6 @@
 /*
  * AddCommandListenerCommandTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -94,7 +94,6 @@ public final class AddCommandListenerCommandTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testExecute_Listener_Unregistered()
         throws Exception
@@ -114,7 +113,6 @@ public final class AddCommandListenerCommandTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testExecute_Listener_Unregistered_NoHandlersInvoked()
         throws Exception
