@@ -1,4 +1,4 @@
-#Sun Aug 30 23:19:20 EDT 2009
+#Tue Sep 01 23:32:37 EDT 2009
 /instance/org.eclipse.team.ui/org.eclipse.team.ui.first_time=false
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.product\:https\://bugs.eclipse.org/bugs=ACTF\!AJDT\!ALF\!ATF\!Albireo\!Amalgam\!Aperi\!Apogee\!AspectJ\!BIRT\!BPEL\!Babel\!Buckminster\!CDT\!Cobol\!Community\!Corona\!Cosmos\!DD\!DLTK\!DSDP\!Dali JPA Tools\!Dash\!Data Tools\!ECF\!EMF\!EMFT\!EPF\!EPP\!EPS(EclipseLink)\!ERCP\!Equinox\!GEF\!GMF\!GMT\!Hibachi\!Higgins\!Hyades\!IMP\!JDT\!JSR220-ORM\!JWT\!Java Server Faces\!Kepler\!Linux Distros\!M2M\!M2T\!MDDi\!MDT\!MTJ\!Maynstall\!Modeling\!Mylyn\!NAB\!Nebula\!OFMP\!OHF\!OSEE\!Orbit\!PDE\!PDT\!PTP\!Phoenix\!Photran\!Platform\!RAP\!Riena\!SOA\!SOC\!Spaces\!Subversive\!Swordfish\!TMF\!TPTP ASF\!TPTP Agent Controller\!TPTP Build to Manage\!TPTP Common Logging\!TPTP GLA\!TPTP Line Coverage\!TPTP Log Analyzer\!TPTP Probe Instrumentation\!TPTP Profiling\!TPTP Release Engineering\!TPTP Resource Monitoring\!TPTP Static Analysis\!TPTP Testing\!Target Management\!Tigerstripe\!TmL\!VE\!VTP\!Web Tools\!gEclipse\!z_Archived\!
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.version\:https\://bugs.eclipse.org/bugs\:TPTP\ Static\ Analysis=4.0\!4.0.1\!4.0.1.3\!4.0.2\!4.1\!4.2\!4.2.1\!4.2.1.1\!4.2.2\!4.3\!4.3.1\!4.4\!4.4.0.1\!4.4.0.2\!4.4.0.3\!4.4.1\!4.5\!future\!unspecified\!
@@ -67,17 +67,17 @@
 /instance/org.eclipse.jdt.ui/cleanup.remove_unused_private_types=true
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.classpathVariable.JRE_SRC=C\:/Program Files (x86)/Java/jdk1.6.0_16/src.zip
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.invalidJavadoc=warning
-/instance/org.eclipse.pde.core/additional_locations=
+/instance/org.eclipse.pde.core/additional_locations=D\:\\Projects\\Gamegineer\\trunk\\org.gamegineer.builder\\target
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.component\:https\://bugs.eclipse.org/bugs\:EPS(EclipseLink)=DBWS\!EIS\!Foundation\!ORM\!OXM\!
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.target\:https\://bugs.eclipse.org/bugs\:z_Archived=---\!
 /instance/org.eclipse.jdt.ui/cleanup_profile=_Gamegineer
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.indent_breaks_compare_to_cases=true
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_before_comma_in_parameterized_type_reference=do not insert
-/instance/org.eclipse.pde.core/saved_platform3=C\:\\Program Files (x86)\\Eclipse\\3.5\\
-/instance/org.eclipse.pde.core/saved_platform2=D\:\\Projects\\Gamegineer\\trunk\\org.gamegineer.client.core\\target
+/instance/org.eclipse.pde.core/saved_platform3=C\:\\Program Files (x86)\\Eclipse\\3.3.1.1
+/instance/org.eclipse.pde.core/saved_platform2=C\:\\Program Files (x86)\\Eclipse\\3.5\\
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.target\:https\://bugs.eclipse.org/bugs\:Swordfish=---\!
-/instance/org.eclipse.pde.core/saved_platform1=D\:\\Projects\\Gamegineer\\trunk\\org.gamegineer.builder\\target
-/instance/org.eclipse.pde.core/saved_platform0=C\:\\Program Files (x86)\\Eclipse\\3.5
+/instance/org.eclipse.pde.core/saved_platform1=C\:\\Program Files (x86)\\Eclipse\\3.5
+/instance/org.eclipse.pde.core/saved_platform0=D\:\\Projects\\Gamegineer\\trunk\\org.gamegineer.builder\\target
 /instance/org.eclipse.jdt.ui/cleanup.format_source_code_changes_only=false
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_constructor_declaration=insert
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_after_comma_in_enum_constant_arguments=insert
@@ -100,7 +100,7 @@
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.version\:https\://bugs.eclipse.org/bugs\:TPTP\ Testing=4.0\!4.0.1\!4.0.1.3\!4.0.2\!4.1\!4.2\!4.2.1\!4.2.1.1\!4.2.2\!4.3\!4.3.1\!4.4\!4.4.0.1\!4.4.0.2\!4.4.0.3\!4.4.1\!4.5\!future\!unspecified\!
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_new_line_before_else_in_if_statement=insert
 /instance/org.eclipse.pde.core/pooled_bundles=
-/instance/org.eclipse.pde.core/workspace_target_handle=resource\:/org.gamegineer.builder/build.target
+/instance/org.eclipse.pde.core/workspace_target_handle=resource\:/org.gamegineer.builder/ide.target
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_before_opening_angle_bracket_in_type_parameters=do not insert
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.target\:https\://bugs.eclipse.org/bugs\:VE=---\!0.5.0\!1.0.0 M1\!1.0.0 M2\!1.0.0 M3\!1.0.1.1\!1.0.2\!1.0.2.2\!1.1M1\!1.1M2\!1.1\!1.1.0.1\!1.2M1\!1.2M2\!1.2M3\!1.2\!1.2.1\!1.3\!Future\!
 /instance/org.eclipse.core.resources/version=1
@@ -118,7 +118,7 @@
 /instance/org.eclipse.jdt.ui/cleanup.remove_private_constructors=true
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.component\:https\://bugs.eclipse.org/bugs\:Albireo=core\!doc\!
 /instance/org.eclipse.pde.core/org.eclipse.pde.ui.ws=win32
-/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.classpathVariable.ECLIPSE_HOME=C\:/Program Files (x86)/Eclipse/3.5
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.classpathVariable.ECLIPSE_HOME=D\:/Projects/Gamegineer/trunk/org.gamegineer.builder/target
 /instance/org.eclipse.jdt.ui/fontPropagated=true
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.version\:https\://bugs.eclipse.org/bugs\:OFMP=unspecified\!
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.parameterAssignment=warning
@@ -306,8 +306,8 @@
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.version\:https\://bugs.eclipse.org/bugs\:MDDi=unspecified\!
 /configuration/org.eclipse.ui.ide/RECENT_WORKSPACES_PROTOCOL=3
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_after_closing_paren_in_cast=do not insert
-/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_before_colon_in_case=do not insert
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.comment.insert_new_line_for_parameter=insert
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_before_colon_in_case=do not insert
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.target\:https\://bugs.eclipse.org/bugs\:MDDi=---\!
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.version\:https\://bugs.eclipse.org/bugs\:Mylyn=0.2\!0.3\!0.4\!0.5\!0.6\!0.7\!0.8\!0.9\!1.0\!2.0\!2.0 M1\!2.0 M2\!2.1\!2.2\!dev\!unspecified\!
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.version\:https\://bugs.eclipse.org/bugs\:Albireo=unspecified\!
@@ -366,7 +366,7 @@
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.component\:https\://bugs.eclipse.org/bugs\:OSEE=Action Tracking System (ATS)\!Application Development\!BLAM\!Define\!OSEE Application Framework\!OSEE Test Environment (OTE)\!
 /instance/org.eclipse.jdt.ui/spelling_locale_initialized=true
 /instance/org.eclipse.jdt.ui/cleanup.add_missing_override_annotations=true
-/instance/org.eclipse.jdt.launching/org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<vmSettings defaultVM\="57,org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType13,1251594754085">\r\n<vmType id\="org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType">\r\n<vm id\="1251601874824" javadocURL\="http\://java.sun.com/javase/6/docs/api/" name\="jre1.6.0_16" path\="C\:\\Program Files (x86)\\Java\\jre1.6.0_16"/>\r\n<vm id\="1251594754085" javadocURL\="http\://java.sun.com/javase/6/docs/api/" name\="jdk1.6.0_16" path\="C\:\\Program Files (x86)\\Java\\jdk1.6.0_16"/>\r\n</vmType>\r\n</vmSettings>\r\n
+/instance/org.eclipse.jdt.launching/org.eclipse.jdt.launching.PREF_VM_XML=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<vmSettings defaultVM\="57,org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType13,1251594754085" defaultVMConnector\="">\r\n<vmType id\="org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType">\r\n<vm id\="1251601874824" javadocURL\="http\://java.sun.com/javase/6/docs/api/" name\="jre1.6.0_16" path\="C\:\\Program Files (x86)\\Java\\jre1.6.0_16"/>\r\n<vm id\="1251594754085" javadocURL\="http\://java.sun.com/javase/6/docs/api/" name\="jdk1.6.0_16" path\="C\:\\Program Files (x86)\\Java\\jdk1.6.0_16"/>\r\n</vmType>\r\n</vmSettings>\r\n
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_synchronized=insert
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.potentialNullReference=warning
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.version\:https\://bugs.eclipse.org/bugs\:RAP=1.0\!unspecified\!
@@ -442,6 +442,7 @@
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.incompleteEnumSwitch=warning
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_new_line_before_finally_in_try_statement=insert
 /instance/org.eclipse.jdt.ui/spelling_ignore_java_strings=true
+/instance/org.eclipse.pde.ui/Preferences.MainPage.overwriteBuildFilesOnExport=prompt
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.component\:https\://bugs.eclipse.org/bugs\:Orbit=bundles\!releng\!
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.alignment_for_superclass_in_type_declaration=33
 /instance/org.eclipse.jdt.ui/tabWidthPropagated=true
@@ -503,7 +504,7 @@
 /instance/org.eclipse.jdt.ui/cleanup.qualify_static_method_accesses_with_declaring_class=false
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_between_empty_brackets_in_array_allocation_expression=do not insert
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_before_opening_brace_in_annotation_type_declaration=insert
-/instance/org.eclipse.pde.core/target_mode=useOther
+/instance/org.eclipse.pde.core/target_mode=useThis
 /instance/org.eclipse.pde.core/group_plugins=true
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_after_opening_angle_bracket_in_parameterized_type_reference=do not insert
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.blank_lines_between_import_groups=0
@@ -588,7 +589,7 @@
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_new_line_before_while_in_do_statement=do not insert
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.target\:https\://bugs.eclipse.org/bugs\:TPTP\ Line\ Coverage=---\!3.3.0.2\!4.0\!4.0i1\!4.0i2\!4.0i3\!4.0i4\!4.0.1\!4.0.1.1\!4.0.1.3\!4.0.2\!4.1\!4.1.0.1\!4.1i1\!4.1i2\!4.1i3\!4.2\!4.2i1\!4.2i2\!4.2i3\!4.2i4\!4.2.0.1\!4.2.1\!4.2.1.1\!4.2.2\!4.3\!4.3i1\!4.3i2\!4.3i3\!4.3.1\!4.4\!4.4i1\!4.4i2\!4.4i3\!4.4i4\!4.4.0.1\!4.4.0.2\!4.4.0.3\!4.4.1\!4.5\!4.5i3\!4.5i4\!4.5i5\!4.5i6\!4.5i7\!4.5i8\!future\!
 file_export_version=3.0
-/instance/org.eclipse.pde.core/platform_path=D\:\\Projects\\Gamegineer\\trunk\\org.gamegineer.builder\\target
+/instance/org.eclipse.pde.core/platform_path=C\:\\Program Files (x86)\\Eclipse\\3.5
 @org.eclipse.jdt.debug.ui=3.4.0.v20090527
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.never_indent_block_comments_on_first_column=false
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.component\:https\://bugs.eclipse.org/bugs\:TmL=API\!Core\!Doc\!Emulator\!
