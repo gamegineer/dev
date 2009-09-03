@@ -191,21 +191,6 @@
 
         <!-- Unzip Eclipse Test Framework into workspace. -->
         <unzip src="${env.ECLIPSE_TEST_FRAMEWORK_HOME}/eclipse-test-framework-${eclipseBuildId}.zip" dest="${buildDirectory}/${buildLabel}/test-workspace" overwrite="true" />
-        <unzip src="${env.ECLIPSE_TEST_FRAMEWORK_HOME}/ETF_Patch.zip" dest="${buildDirectory}/${buildLabel}/test-workspace/${archivePrefix}/plugins" overwrite="true">
-            <patternset>
-                <include name="org.eclipse.test.dispatcher_*/**/*" />
-            </patternset>
-        </unzip>
-        <delete includeEmptyDirs="true">
-            <fileset dir="${buildDirectory}/${buildLabel}/test-workspace/${archivePrefix}/plugins" includes="org.junit4_*/**/*" />
-            <dirset dir="${buildDirectory}/${buildLabel}/test-workspace/${archivePrefix}/plugins" includes="org.junit4_*" />
-        </delete>
-        <unzip src="${env.ECLIPSE_TEST_FRAMEWORK_HOME}/ETF_Patch.zip" dest="${buildDirectory}/${buildLabel}/test-workspace" overwrite="true">
-            <patternset>
-                <include name="junit.zip" />
-            </patternset>
-        </unzip>
-        <unzip src="${buildDirectory}/${buildLabel}/test-workspace/junit.zip" dest="${buildDirectory}/${buildLabel}/test-workspace/${archivePrefix}/plugins" overwrite="true" />
 
         <!-- Unzip all Gamegineer features into workspace. -->
         <unzip dest="${buildDirectory}/${buildLabel}/test-workspace" overwrite="true">
