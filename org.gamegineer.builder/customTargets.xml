@@ -191,6 +191,7 @@
 
         <!-- Unzip Eclipse Test Framework into workspace. -->
         <unzip src="${env.ECLIPSE_TEST_FRAMEWORK_HOME}/eclipse-test-framework-${eclipseBuildId}.zip" dest="${buildDirectory}/${buildLabel}/test-workspace" overwrite="true" />
+        <unzip src="${env.ECLIPSE_TEST_FRAMEWORK_HOME}/eclipse-test-framework-${eclipseBuildId}-patch.zip" dest="${buildDirectory}/${buildLabel}/test-workspace" overwrite="true" />
 
         <!-- Unzip all Gamegineer features into workspace. -->
         <unzip dest="${buildDirectory}/${buildLabel}/test-workspace" overwrite="true">
