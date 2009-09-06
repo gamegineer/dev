@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.eclipse.test.patch" default="build" basedir=".">
+
+    <!--
+        Builds the ETF_Patch.zip file.
+    -->
+    <target name="build">
+        <zip destfile="${java.io.tmpdir}/junit.zip">
+            <zipfileset dir="org.junit4_1.0.0" prefix="org.junit4_1.0.0" />
+            <zipfileset dir="org.junit_4.3.1" prefix="org.junit_4.3.1" />
+        </zip>
+        <zip destfile="bin/ETF_Patch.zip">
+            <zipfileset dir="org.eclipse.test.dispatcher_1.0.0" prefix="org.eclipse.test.dispatcher_1.0.0" />
+            <fileset file="org.eclipse.test_patch" />
+            <fileset file="${java.io.tmpdir}/junit.zip" />
+        </zip>
+        <delete file="${java.io.tmpdir}/junit.zip" />
+    </target>
+
+</project>
