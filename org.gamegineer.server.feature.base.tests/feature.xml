@@ -2,7 +2,7 @@
 <feature
         id="org.gamegineer.server.feature.base.tests"
         label="%featureName"
-        version="0.1.0"
+        version="0.2.0"
         provider-name="%providerName">
 
     <description>
@@ -18,8 +18,8 @@
     </license>
 
     <requires>
-        <import feature="org.gamegineer.server.feature.base" version="0.1.0" />
-        <import feature="org.gamegineer.test.feature.base" version="0.1.0" />
+        <import feature="org.gamegineer.server.feature.base" version="0.2.0" />
+        <import feature="org.gamegineer.test.feature.base" version="0.2.0" />
     </requires>
 
     <plugin

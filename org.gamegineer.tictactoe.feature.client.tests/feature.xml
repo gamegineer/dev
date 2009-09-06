@@ -2,7 +2,7 @@
 <feature
         id="org.gamegineer.tictactoe.feature.client.tests"
         label="%featureName"
-        version="0.1.0"
+        version="0.2.0"
         provider-name="%providerName">
 
     <description>
@@ -18,8 +18,8 @@
     </license>
 
     <requires>
-        <import feature="org.gamegineer.tictactoe.feature.client" version="0.1.0" />
-        <import feature="org.gamegineer.tictactoe.feature.base.tests" version="0.1.0" />
+        <import feature="org.gamegineer.tictactoe.feature.client" version="0.2.0" />
+        <import feature="org.gamegineer.tictactoe.feature.base.tests" version="0.2.0" />
     </requires>
 
     <plugin

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.gamegineer.server.core
-Bundle-Version: 0.1.0
+Bundle-Version: 0.2.0
 Bundle-Activator: org.gamegineer.server.internal.core.Activator
 Bundle-Vendor: %bundleVendor
 Bundle-Localization: plugin
