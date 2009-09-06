@@ -1,40 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?pde version="3.1"?>
+<?pde version="3.5"?>
 
-<product name="Gamegineer Console" id="org.gamegineer.client.product.console.product" application="org.gamegineer.client.product.console.application" useFeatures="true">
+<product name="Gamegineer Console" id="org.gamegineer.client.product.console.product" application="org.gamegineer.client.product.console.application" useFeatures="true" includeLaunchers="true">
 
+    <configIni use="default">
+    </configIni>
 
-   <configIni use="default"/>
+    <launcherArgs>
+        <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+    </launcherArgs>
 
-   <launcherArgs>
-      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
-   </launcherArgs>
+    <windowImages />
 
-   <windowImages/>
+    <launcher>
+        <solaris />
+        <win useIco="false">
+            <bmp />
+        </win>
+    </launcher>
 
+    <vm>
+    </vm>
 
-   <launcher>
-      <solaris/>
-      <win useIco="false">
-         <bmp/>
-      </win>
-   </launcher>
+    <plugins>
+    </plugins>
 
-
-   <vm>
-   </vm>
-
-   <plugins>
-   </plugins>
-
-   <features>
-      <feature id="org.eclipse.equinox" version="3.3.1.R33x_r20070918-7n7LECgEKVsLIM1aGBO4b00"/>
-      <feature id="org.eclipse.rcp" version="3.3.2.R33x_r20071022-8y8eE9CEV3FspP8HJrY1M2dS"/>
-      <feature id="org.gamegineer.common.feature.base" version="0.1.0"/>
-      <feature id="org.gamegineer.engine.feature.base" version="0.1.0"/>
-      <feature id="org.gamegineer.game.feature.base" version="0.1.0"/>
-      <feature id="org.gamegineer.client.feature.base" version="0.1.0"/>
-      <feature id="org.gamegineer.client.feature.console" version="0.1.0"/>
-   </features>
+    <features>
+        <feature id="org.eclipse.rcp" version="3.5.0.v20090519-9SA0FwxFv6x089WEf-TWh11" />
+        <feature id="org.gamegineer.common.feature.base" version="0.1.0" />
+        <feature id="org.gamegineer.engine.feature.base" version="0.1.0" />
+        <feature id="org.gamegineer.game.feature.base" version="0.1.0" />
+        <feature id="org.gamegineer.game.feature.client" version="0.1.0" />
+        <feature id="org.gamegineer.client.feature.base" version="0.1.0" />
+        <feature id="org.gamegineer.client.feature.console" version="0.1.0" />
+        <feature id="org.gamegineer.server.feature.base" version="0.1.0" />
+    </features>
 
 </product>
