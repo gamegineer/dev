@@ -10,7 +10,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.equinox.common;bundle-version="3.5.0",
  org.gamegineer.common.core
-Import-Package: net.jcip.annotations,
+Import-Package: net.jcip.annotations;version="1.0.0",
  org.eclipse.osgi.service.debug;version="1.1.0",
  org.eclipse.osgi.util;version="1.1.0",
  org.osgi.framework;version="1.5.0",

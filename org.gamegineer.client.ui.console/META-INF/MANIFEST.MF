@@ -14,7 +14,7 @@ Require-Bundle: org.gamegineer.common.core,
  org.gamegineer.game.ui,
  org.gamegineer.server.core,
  org.gamegineer.client.core
-Import-Package: net.jcip.annotations,
+Import-Package: net.jcip.annotations;version="1.0.0",
  org.apache.commons.cli;version="1.1.0",
  org.eclipse.osgi.service.debug;version="1.1.0",
  org.eclipse.osgi.util;version="1.1.0",
