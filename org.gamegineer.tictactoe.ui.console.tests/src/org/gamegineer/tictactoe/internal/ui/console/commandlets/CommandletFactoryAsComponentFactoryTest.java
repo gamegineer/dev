@@ -40,8 +40,8 @@ public final class CommandletFactoryAsComponentFactoryTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code CommandletFactoryAsComponentFactoryTest} class.
+     * Initializes a new instance of the {@code
+     * CommandletFactoryAsComponentFactoryTest} class.
      */
     public CommandletFactoryAsComponentFactoryTest()
     {
@@ -58,10 +58,10 @@ public final class CommandletFactoryAsComponentFactoryTest
      */
     @Override
     protected IComponentFactory createComponentFactory(
-        final Map<String, Object> attributeMap )
+        final Map<String, Object> attributes )
     {
         final CommandletFactory factory = new CommandletFactory();
-        for( final Map.Entry<String, Object> entry : attributeMap.entrySet() )
+        for( final Map.Entry<String, Object> entry : attributes.entrySet() )
         {
             factory.setAttribute( entry.getKey(), entry.getValue() );
         }

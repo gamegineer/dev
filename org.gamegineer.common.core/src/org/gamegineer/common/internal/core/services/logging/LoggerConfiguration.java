@@ -127,7 +127,7 @@ final class LoggerConfiguration
     /* @NonNull */
     List<Handler> getHandlers()
     {
-        final List<Handler> handlerList = new ArrayList<Handler>();
+        final List<Handler> handlers = new ArrayList<Handler>();
         final String value = props_.getProperty( name_, "handlers" ); //$NON-NLS-1$
         if( value != null )
         {
@@ -135,7 +135,7 @@ final class LoggerConfiguration
             {
                 try
                 {
-                    handlerList.add( (Handler)AbstractLoggingComponentFactory.createNamedLoggingComponent( name, props_.asMap() ) );
+                    handlers.add( (Handler)AbstractLoggingComponentFactory.createNamedLoggingComponent( name, props_.asMap() ) );
                 }
                 catch( final Exception e )
                 {
@@ -147,7 +147,7 @@ final class LoggerConfiguration
             }
         }
 
-        return handlerList;
+        return handlers;
     }
 
     /**

@@ -196,10 +196,10 @@ public final class Console
     {
         try
         {
-            final List<String> argList = advisor_.getApplicationArguments();
+            final List<String> args = advisor_.getApplicationArguments();
             final CommandLineParser commandLineParser = new GnuParser();
             final Options options = CommandLineOptions.getOptions();
-            final CommandLine commandLine = commandLineParser.parse( options, argList.toArray( new String[ argList.size() ] ) );
+            final CommandLine commandLine = commandLineParser.parse( options, args.toArray( new String[ args.size() ] ) );
 
             if( commandLine.hasOption( CommandLineOptions.OPTION_HELP ) )
             {

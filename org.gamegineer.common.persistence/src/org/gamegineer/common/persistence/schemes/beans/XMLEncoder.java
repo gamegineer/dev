@@ -59,8 +59,11 @@ public final class XMLEncoder
     /** The platform adapter manager. */
     private final IAdapterManager adapterManager_;
 
-    /** The map of persistence delegates registered through the adapter manager. */
-    private final Map<Class<?>, PersistenceDelegate> delegateMap_;
+    /**
+     * The collection of persistence delegates registered through the adapter
+     * manager.
+     */
+    private final Map<Class<?>, PersistenceDelegate> delegates_;
 
 
     // ======================================================================
@@ -85,7 +88,7 @@ public final class XMLEncoder
         assertArgumentNotNull( out, "out" ); //$NON-NLS-1$
 
         adapterManager_ = Services.getDefault().getAdapterManager();
-        delegateMap_ = new HashMap<Class<?>, PersistenceDelegate>();
+        delegates_ = new HashMap<Class<?>, PersistenceDelegate>();
     }
 
 
@@ -100,7 +103,7 @@ public final class XMLEncoder
     public PersistenceDelegate getPersistenceDelegate(
         final Class<?> type )
     {
-        final PersistenceDelegate delegate = delegateMap_.get( type );
+        final PersistenceDelegate delegate = delegates_.get( type );
         if( delegate != null )
         {
             return delegate;
@@ -128,10 +131,10 @@ public final class XMLEncoder
         // delegate when it has already indicated none have been registered for the
         // object's class.
 
-        if( (o != null) && !delegateMap_.containsKey( o.getClass() ) )
+        if( (o != null) && !delegates_.containsKey( o.getClass() ) )
         {
             final PersistenceDelegate delegate = (PersistenceDelegate)adapterManager_.getAdapter( o, PersistenceDelegate.class );
-            delegateMap_.put( o.getClass(), delegate );
+            delegates_.put( o.getClass(), delegate );
         }
 
         super.writeObject( o );

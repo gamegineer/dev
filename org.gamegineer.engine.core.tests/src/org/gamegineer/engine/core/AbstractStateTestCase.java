@@ -219,26 +219,27 @@ public abstract class AbstractStateTestCase
         final AttributeName name2 = new AttributeName( Scope.ENGINE_CONTROL, "name2" ); //$NON-NLS-1$
         state_.addAttribute( name1, "value1" ); //$NON-NLS-1$
         state_.addAttribute( name2, "value2" ); //$NON-NLS-1$
-        final Set<AttributeName> nameSet = state_.getAttributeNames();
-        assertTrue( nameSet.size() == 2 );
-        assertTrue( nameSet.contains( name1 ) );
-        assertTrue( nameSet.contains( name2 ) );
+        final Set<AttributeName> names = state_.getAttributeNames();
+        assertTrue( names.size() == 2 );
+        assertTrue( names.contains( name1 ) );
+        assertTrue( names.contains( name2 ) );
     }
 
     /**
-     * Ensures the {@code getAttributeNames} method returns an empty set when
-     * the state contains no attributes.
+     * Ensures the {@code getAttributeNames} method returns an empty collection
+     * when the state contains no attributes.
      */
     @Test
     public void testGetAttributeNames_Empty()
     {
-        final Set<AttributeName> nameSet = state_.getAttributeNames();
-        assertNotNull( nameSet );
-        assertTrue( nameSet.size() == 0 );
+        final Set<AttributeName> names = state_.getAttributeNames();
+        assertNotNull( names );
+        assertTrue( names.size() == 0 );
     }
 
     /**
-     * Ensures the {@code getAttributeNames} method returns an immutable set.
+     * Ensures the {@code getAttributeNames} method returns an immutable
+     * collection.
      */
     @Test
     public void testGetAttributeNames_ReturnValue_Immutable()

@@ -38,8 +38,8 @@ final class Messages
 
     // --- ComponentCreationContext -----------------------------------------
 
-    /** The initial attribute map contains a {@code null} value. */
-    public static String ComponentCreationContext_attributeMap_containsNullValue;
+    /** The initial attribute collection contains a {@code null} value. */
+    public static String ComponentCreationContext_attributes_containsNullValue;
 
 
     // ======================================================================

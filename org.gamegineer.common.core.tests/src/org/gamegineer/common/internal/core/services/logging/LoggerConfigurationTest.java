@@ -258,12 +258,12 @@ public final class LoggerConfigurationTest
         {
             serviceRegistration = Activator.getDefault().getBundleContext().registerService( IComponentFactory.class.getName(), new MockHandlerFactory(), null );
 
-            final List<Handler> handlerList = config_.getHandlers();
-            assertEquals( 2, handlerList.size() );
-            assertEquals( HANDLER_INSTANCE_NAME_1, ((MockHandler)handlerList.get( 0 )).getName() );
-            assertEquals( Level.SEVERE, handlerList.get( 0 ).getLevel() );
-            assertEquals( HANDLER_INSTANCE_NAME_2, ((MockHandler)handlerList.get( 1 )).getName() );
-            assertEquals( Level.WARNING, handlerList.get( 1 ).getLevel() );
+            final List<Handler> handlers = config_.getHandlers();
+            assertEquals( 2, handlers.size() );
+            assertEquals( HANDLER_INSTANCE_NAME_1, ((MockHandler)handlers.get( 0 )).getName() );
+            assertEquals( Level.SEVERE, handlers.get( 0 ).getLevel() );
+            assertEquals( HANDLER_INSTANCE_NAME_2, ((MockHandler)handlers.get( 1 )).getName() );
+            assertEquals( Level.WARNING, handlers.get( 1 ).getLevel() );
         }
         finally
         {
@@ -282,9 +282,9 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetHandlers_Configured_HandlerCreationFailed()
     {
-        final List<Handler> handlerList = config_.getHandlers();
-        assertNotNull( handlerList );
-        assertTrue( handlerList.isEmpty() );
+        final List<Handler> handlers = config_.getHandlers();
+        assertNotNull( handlers );
+        assertTrue( handlers.isEmpty() );
     }
 
     /**
@@ -300,9 +300,9 @@ public final class LoggerConfigurationTest
             serviceRegistration = Activator.getDefault().getBundleContext().registerService( IComponentFactory.class.getName(), new MockHandlerFactory(), null );
 
             final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.illegalHandler" ); //$NON-NLS-1$
-            final List<Handler> handlerList = config.getHandlers();
-            assertEquals( 1, handlerList.size() );
-            assertEquals( HANDLER_INSTANCE_NAME_1, ((MockHandler)handlerList.get( 0 )).getName() );
+            final List<Handler> handlers = config.getHandlers();
+            assertEquals( 1, handlers.size() );
+            assertEquals( HANDLER_INSTANCE_NAME_1, ((MockHandler)handlers.get( 0 )).getName() );
         }
         finally
         {
@@ -321,9 +321,9 @@ public final class LoggerConfigurationTest
     public void testGetHandlers_Configured_NoHandlers()
     {
         final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.noHandlers" ); //$NON-NLS-1$
-        final List<Handler> handlerList = config.getHandlers();
-        assertNotNull( handlerList );
-        assertTrue( handlerList.isEmpty() );
+        final List<Handler> handlers = config.getHandlers();
+        assertNotNull( handlers );
+        assertTrue( handlers.isEmpty() );
     }
 
     /**
@@ -334,9 +334,9 @@ public final class LoggerConfigurationTest
     public void testGetHandlers_NotConfigured()
     {
         final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.unknown" ); //$NON-NLS-1$
-        final List<Handler> handlerList = config.getHandlers();
-        assertNotNull( handlerList );
-        assertTrue( handlerList.isEmpty() );
+        final List<Handler> handlers = config.getHandlers();
+        assertNotNull( handlers );
+        assertTrue( handlers.isEmpty() );
     }
 
     /**

@@ -67,11 +67,11 @@ final class StageStrategyFactory
      */
     static
     {
-        final List<String> classNameList = new ArrayList<String>();
+        final List<String> classNames = new ArrayList<String>();
 
-        classNameList.add( GameStageStrategy.class.getName() );
+        classNames.add( GameStageStrategy.class.getName() );
 
-        stageStrategyClassNames_ = Collections.unmodifiableList( classNameList );
+        stageStrategyClassNames_ = Collections.unmodifiableList( classNames );
     }
 
     /**

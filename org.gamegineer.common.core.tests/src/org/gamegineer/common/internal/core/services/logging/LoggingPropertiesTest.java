@@ -167,23 +167,23 @@ public final class LoggingPropertiesTest
     @Test
     public void testGetAncestorLoggerNames_ReturnValue_NonNull()
     {
-        final List<String> nameList = props_.getAncestorLoggerNames( "z" ); //$NON-NLS-1$
-        assertNotNull( nameList );
-        assertTrue( nameList.isEmpty() );
+        final List<String> names = props_.getAncestorLoggerNames( "z" ); //$NON-NLS-1$
+        assertNotNull( names );
+        assertTrue( names.isEmpty() );
     }
 
     /**
      * Ensures the {@code getAncestorLoggerNames} method returns a non-empty
-     * name list in order from nearest ancestor to furthest ancestor.
+     * name collection in order from nearest ancestor to furthest ancestor.
      */
     @Test
     public void testGetAncestorLoggerNames_ReturnValue_Ordered()
     {
-        final List<String> nameList = props_.getAncestorLoggerNames( "a.b.c.d.e.f" ); //$NON-NLS-1$
-        assertEquals( 3, nameList.size() );
-        assertEquals( "a.b.c.d", nameList.get( 0 ) ); //$NON-NLS-1$
-        assertEquals( "a.b", nameList.get( 1 ) ); //$NON-NLS-1$
-        assertEquals( "a", nameList.get( 2 ) ); //$NON-NLS-1$
+        final List<String> names = props_.getAncestorLoggerNames( "a.b.c.d.e.f" ); //$NON-NLS-1$
+        assertEquals( 3, names.size() );
+        assertEquals( "a.b.c.d", names.get( 0 ) ); //$NON-NLS-1$
+        assertEquals( "a.b", names.get( 1 ) ); //$NON-NLS-1$
+        assertEquals( "a", names.get( 2 ) ); //$NON-NLS-1$
     }
 
     /**

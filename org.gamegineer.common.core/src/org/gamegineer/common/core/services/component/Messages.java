@@ -1,6 +1,6 @@
 /*
  * Messages.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,8 +38,8 @@ final class Messages
 
     // --- ComponentCreationContextBuilder ----------------------------------
 
-    /** The initial attribute map contains a {@code null} value. */
-    public static String ComponentCreationContextBuilder_attributeMap_containsNullValue;
+    /** The initial attribute collection contains a {@code null} value. */
+    public static String ComponentCreationContextBuilder_attributes_containsNullValue;
 
 
     // ======================================================================

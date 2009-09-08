@@ -48,8 +48,8 @@ public class FakeCommandletContext
     // Fields
     // ======================================================================
 
-    /** The commandlet argument list. */
-    private final List<String> argList_;
+    /** The commandlet argument collection. */
+    private final List<String> args_;
 
     /** The console from which the commandlet was executed. */
     private final IConsole console_;
@@ -76,11 +76,11 @@ public class FakeCommandletContext
      * @param gameClient
      *        The game client against which the commandlet is executed; must not
      *        be {@code null}.
-     * @param argList
-     *        The commandlet argument list; must not be {@code null}.
+     * @param args
+     *        The commandlet argument collection; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code console}, {@code gameClient}, or {@code argList} is
+     *         If {@code console}, {@code gameClient}, or {@code args} is
      *         {@code null}.
      */
     public FakeCommandletContext(
@@ -91,17 +91,17 @@ public class FakeCommandletContext
         /* @NonNull */
         final IGameClient gameClient,
         /* @NonNull */
-        final List<String> argList )
+        final List<String> args )
     {
         assertArgumentNotNull( console, "console" ); //$NON-NLS-1$
         assertArgumentNotNull( statelet, "statelet" ); //$NON-NLS-1$
         assertArgumentNotNull( gameClient, "gameClient" ); //$NON-NLS-1$
-        assertArgumentNotNull( argList, "argList" ); //$NON-NLS-1$
+        assertArgumentNotNull( args, "args" ); //$NON-NLS-1$
 
         console_ = console;
         statelet_ = statelet;
         gameClient_ = gameClient;
-        argList_ = Collections.unmodifiableList( argList );
+        args_ = Collections.unmodifiableList( args );
     }
 
 
@@ -114,7 +114,7 @@ public class FakeCommandletContext
      */
     public List<String> getArguments()
     {
-        return argList_;
+        return args_;
     }
 
     /*

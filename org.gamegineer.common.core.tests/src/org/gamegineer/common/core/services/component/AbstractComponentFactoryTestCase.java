@@ -68,22 +68,23 @@ public abstract class AbstractComponentFactoryTestCase
     /**
      * Creates the component factory to be tested.
      * 
-     * @param attributeMap
-     *        The map of initialization attributes; must not be {@code null}.
+     * @param attributes
+     *        The collection of initialization attributes; must not be {@code
+     *        null}.
      * 
      * @return The component factory to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      * @throws java.lang.IllegalArgumentException
-     *         If any value in {@code attributeMap} is {@code null}.
+     *         If any value in {@code attributes} is {@code null}.
      * @throws java.lang.NullPointerException
-     *         If {@code attributeMap} is {@code null}.
+     *         If {@code attributes} is {@code null}.
      */
     /* @NonNull */
     protected abstract IComponentFactory createComponentFactory(
         /* @NonNull */
-        Map<String, Object> attributeMap )
+        Map<String, Object> attributes )
         throws Exception;
 
     /**
@@ -96,12 +97,12 @@ public abstract class AbstractComponentFactoryTestCase
     public void setUp()
         throws Exception
     {
-        final Map<String, Object> attributeMap = new HashMap<String, Object>();
-        attributeMap.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put( "name4", "value4" ); //$NON-NLS-1$ //$NON-NLS-2$
-        factory_ = createComponentFactory( attributeMap );
+        final Map<String, Object> attributes = new HashMap<String, Object>();
+        attributes.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        attributes.put( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        attributes.put( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
+        attributes.put( "name4", "value4" ); //$NON-NLS-1$ //$NON-NLS-2$
+        factory_ = createComponentFactory( attributes );
         assertNotNull( factory_ );
     }
 

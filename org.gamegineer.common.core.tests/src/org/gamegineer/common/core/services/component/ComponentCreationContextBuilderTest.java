@@ -97,10 +97,10 @@ public final class ComponentCreationContextBuilderTest
     @Test
     public void testConstructor_Primary_AddsInitialAttributes()
     {
-        final Map<String, Object> attributeMap = new HashMap<String, Object>();
-        attributeMap.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        final ComponentCreationContextBuilder builder = new ComponentCreationContextBuilder( attributeMap );
+        final Map<String, Object> attributes = new HashMap<String, Object>();
+        attributes.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        attributes.put( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        final ComponentCreationContextBuilder builder = new ComponentCreationContextBuilder( attributes );
         final IComponentCreationContext context = builder.toComponentCreationContext();
         assertEquals( "value1", context.getAttribute( "name1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals( "value2", context.getAttribute( "name2" ) ); //$NON-NLS-1$ //$NON-NLS-2$
@@ -108,26 +108,26 @@ public final class ComponentCreationContextBuilderTest
 
     /**
      * Ensures the primary constructor throws an exception when passed a {@code
-     * null} attribute map.
+     * null} attribute collection.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_Primary_AttributeMap_Null()
+    public void testConstructor_Primary_Attributes_Null()
     {
         new ComponentCreationContextBuilder( null );
     }
 
     /**
-     * Ensures the constructor throws an exception when passed an attribute map
-     * which contains one or more {@code null} values.
+     * Ensures the constructor throws an exception when passed an attribute
+     * collection which contains one or more {@code null} values.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_Primary_AttributeMap_NullValues()
+    public void testConstructor_Primary_Attributes_NullValues()
     {
-        final Map<String, Object> attributeMap = new HashMap<String, Object>();
-        attributeMap.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put( "name2", null ); //$NON-NLS-1$
-        attributeMap.put( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
-        new ComponentCreationContextBuilder( attributeMap );
+        final Map<String, Object> attributes = new HashMap<String, Object>();
+        attributes.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        attributes.put( "name2", null ); //$NON-NLS-1$
+        attributes.put( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
+        new ComponentCreationContextBuilder( attributes );
     }
 
     /**
@@ -169,20 +169,20 @@ public final class ComponentCreationContextBuilderTest
     @Test
     public void testCreateComponentCreationContext_AddsAttributes()
     {
-        final Map<String, Object> attributeMap = new HashMap<String, Object>();
-        attributeMap.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        final IComponentCreationContext context = ComponentCreationContextBuilder.createComponentCreationContext( attributeMap );
+        final Map<String, Object> attributes = new HashMap<String, Object>();
+        attributes.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        attributes.put( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        final IComponentCreationContext context = ComponentCreationContextBuilder.createComponentCreationContext( attributes );
         assertEquals( "value1", context.getAttribute( "name1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals( "value2", context.getAttribute( "name2" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
      * Ensures the {@code createComponentCreationContext} method throws an
-     * exception when passed a {@code null} attribute map.
+     * exception when passed a {@code null} attribute collection.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateComponentCreationContext_AttributeMap_Null()
+    public void testCreateComponentCreationContext_Attributes_Null()
     {
         ComponentCreationContextBuilder.createComponentCreationContext( null );
     }

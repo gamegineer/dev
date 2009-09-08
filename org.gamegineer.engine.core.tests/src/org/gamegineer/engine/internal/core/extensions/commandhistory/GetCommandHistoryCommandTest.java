@@ -85,19 +85,19 @@ public final class GetCommandHistoryCommandTest
         final ICommand<Void> command1 = MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name1" ), "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
         final ICommand<Void> command2 = MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name2" ), "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
         final ICommand<Void> command3 = MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name3" ), "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
-        final List<ICommand<?>> expectedCommandList = Arrays.asList( new ICommand<?>[] {
+        final List<ICommand<?>> expectedCommands = Arrays.asList( new ICommand<?>[] {
             command1, command2, command3
         } );
-        for( final ICommand<?> command : expectedCommandList )
+        for( final ICommand<?> command : expectedCommands )
         {
             engine.executeCommand( command );
         }
 
-        final List<IInvertibleCommand<?>> actualCommandList = engine.executeCommand( getCommand() );
-        assertEquals( expectedCommandList.size(), actualCommandList.size() );
-        for( int index = 0, size = expectedCommandList.size(); index < size; ++index )
+        final List<IInvertibleCommand<?>> actualCommands = engine.executeCommand( getCommand() );
+        assertEquals( expectedCommands.size(), actualCommands.size() );
+        for( int index = 0, size = expectedCommands.size(); index < size; ++index )
         {
-            assertEquals( expectedCommandList.get( index ), actualCommandList.get( index ) );
+            assertEquals( expectedCommands.get( index ), actualCommands.get( index ) );
         }
     }
 
@@ -117,8 +117,8 @@ public final class GetCommandHistoryCommandTest
         engine.executeCommand( new MockInvertibleCommand<Void>() );
         engine.executeCommand( new MockInvertibleCommand<Void>() );
 
-        final List<IInvertibleCommand<?>> actualCommandList = engine.executeCommand( getCommand() );
-        assertEquals( 0, actualCommandList.size() );
+        final List<IInvertibleCommand<?>> actualCommands = engine.executeCommand( getCommand() );
+        assertEquals( 0, actualCommands.size() );
     }
 
     /**
@@ -137,8 +137,8 @@ public final class GetCommandHistoryCommandTest
         engine.executeCommand( new MockCommand<Void>() );
         engine.executeCommand( new MockCommand<Void>() );
 
-        final List<IInvertibleCommand<?>> actualCommandList = engine.executeCommand( getCommand() );
-        assertEquals( 0, actualCommandList.size() );
+        final List<IInvertibleCommand<?>> actualCommands = engine.executeCommand( getCommand() );
+        assertEquals( 0, actualCommands.size() );
     }
 
     /**

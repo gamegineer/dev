@@ -40,8 +40,8 @@ public final class StageStrategyFactoryAsComponentFactoryTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code StageStrategyFactoryAsComponentFactoryTest} class.
+     * Initializes a new instance of the {@code
+     * StageStrategyFactoryAsComponentFactoryTest} class.
      */
     public StageStrategyFactoryAsComponentFactoryTest()
     {
@@ -58,10 +58,10 @@ public final class StageStrategyFactoryAsComponentFactoryTest
      */
     @Override
     protected IComponentFactory createComponentFactory(
-        final Map<String, Object> attributeMap )
+        final Map<String, Object> attributes )
     {
         final StageStrategyFactory factory = new StageStrategyFactory();
-        for( final Map.Entry<String, Object> entry : attributeMap.entrySet() )
+        for( final Map.Entry<String, Object> entry : attributes.entrySet() )
         {
             factory.setAttribute( entry.getKey(), entry.getValue() );
         }

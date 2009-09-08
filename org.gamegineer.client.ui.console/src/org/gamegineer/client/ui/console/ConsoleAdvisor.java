@@ -47,8 +47,8 @@ public final class ConsoleAdvisor
     // Fields
     // ======================================================================
 
-    /** The application argument list. */
-    private final List<String> appArgList_;
+    /** The application argument collection. */
+    private final List<String> appArgs_;
 
     /** The application version. */
     private final Version appVersion_;
@@ -60,7 +60,7 @@ public final class ConsoleAdvisor
 
     /**
      * Initializes a new instance of the {@code ConsoleAdvisor} class with an
-     * empty application argument list and empty application version.
+     * empty application argument collection and empty application version.
      */
     public ConsoleAdvisor()
     {
@@ -69,26 +69,26 @@ public final class ConsoleAdvisor
 
     /**
      * Initializes a new instance of the {@code ConsoleAdvisor} class from the
-     * specified application argument list and application version.
+     * specified application argument collection and application version.
      * 
-     * @param appArgList
-     *        The application argument list; must not be {@code null}.
+     * @param appArgs
+     *        The application argument collection; must not be {@code null}.
      * @param appVersion
      *        The application version; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code appArgList} or {@code appVersion} is {@code null}.
+     *         If {@code appArgs} or {@code appVersion} is {@code null}.
      */
     public ConsoleAdvisor(
         /* @NonNull */
-        final List<String> appArgList,
+        final List<String> appArgs,
         /* @NonNull */
         final Version appVersion )
     {
-        assertArgumentNotNull( appArgList, "appArgList" ); //$NON-NLS-1$
+        assertArgumentNotNull( appArgs, "appArgs" ); //$NON-NLS-1$
         assertArgumentNotNull( appVersion, "appVersion" ); //$NON-NLS-1$
 
-        appArgList_ = Collections.unmodifiableList( new ArrayList<String>( appArgList ) );
+        appArgs_ = Collections.unmodifiableList( new ArrayList<String>( appArgs ) );
         appVersion_ = appVersion;
     }
 
@@ -102,7 +102,7 @@ public final class ConsoleAdvisor
      */
     public List<String> getApplicationArguments()
     {
-        return appArgList_;
+        return appArgs_;
     }
 
     /*

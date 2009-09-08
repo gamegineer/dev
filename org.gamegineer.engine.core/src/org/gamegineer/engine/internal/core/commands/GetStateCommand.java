@@ -1,6 +1,6 @@
 /*
  * GetStateCommand.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -71,12 +71,12 @@ public final class GetStateCommand
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
         final IState state = context.getState();
-        final Map<AttributeName, Object> attributeMap = new HashMap<AttributeName, Object>();
+        final Map<AttributeName, Object> attributes = new HashMap<AttributeName, Object>();
         for( final AttributeName attributeName : state.getAttributeNames() )
         {
-            attributeMap.put( attributeName, state.getAttribute( attributeName ) );
+            attributes.put( attributeName, state.getAttribute( attributeName ) );
         }
 
-        return attributeMap;
+        return attributes;
     }
 }

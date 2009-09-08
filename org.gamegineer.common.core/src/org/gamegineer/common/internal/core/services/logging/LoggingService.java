@@ -58,9 +58,9 @@ public final class LoggingService
     /** The instance lock. */
     private final Object lock_;
 
-    /** The map of managed loggers. The key is the logger name. */
+    /** The collection of managed loggers. The key is the logger name. */
     @GuardedBy( "lock_" )
-    private final Map<String, WeakReference<Logger>> loggerMap_;
+    private final Map<String, WeakReference<Logger>> loggers_;
 
 
     // ======================================================================
@@ -73,7 +73,7 @@ public final class LoggingService
     public LoggingService()
     {
         lock_ = new Object();
-        loggerMap_ = new HashMap<String, WeakReference<Logger>>();
+        loggers_ = new HashMap<String, WeakReference<Logger>>();
     }
 
 
@@ -107,11 +107,11 @@ public final class LoggingService
 
         for( final String ancestorLoggerName : props.getAncestorLoggerNames( loggerName ) )
         {
-            final WeakReference<Logger> loggerRef = loggerMap_.get( ancestorLoggerName );
+            final WeakReference<Logger> loggerRef = loggers_.get( ancestorLoggerName );
             if( (loggerRef == null) || (loggerRef.get() == null) )
             {
                 final Logger logger = Logger.getLogger( ancestorLoggerName );
-                loggerMap_.put( ancestorLoggerName, new WeakReference<Logger>( logger ) );
+                loggers_.put( ancestorLoggerName, new WeakReference<Logger>( logger ) );
                 configureLogger( logger, props.getLoggerConfiguration( ancestorLoggerName ) );
             }
         }
@@ -172,7 +172,7 @@ public final class LoggingService
 
         synchronized( lock_ )
         {
-            final WeakReference<Logger> loggerRef = loggerMap_.get( loggerName );
+            final WeakReference<Logger> loggerRef = loggers_.get( loggerName );
             if( loggerRef != null )
             {
                 logger = loggerRef.get();
@@ -183,7 +183,7 @@ public final class LoggingService
             }
 
             logger = Logger.getLogger( loggerName );
-            loggerMap_.put( loggerName, new WeakReference<Logger>( logger ) );
+            loggers_.put( loggerName, new WeakReference<Logger>( logger ) );
 
             final LoggingProperties props = getLoggingProperties( bundle );
             if( props != null )

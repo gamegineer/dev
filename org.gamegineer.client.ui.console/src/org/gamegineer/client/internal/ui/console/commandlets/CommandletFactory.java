@@ -76,29 +76,29 @@ final class CommandletFactory
      */
     static
     {
-        final List<String> classNameList = new ArrayList<String>();
+        final List<String> classNames = new ArrayList<String>();
 
         // Core commandlets
-        classNameList.add( HelpCommandlet.class.getName() );
-        classNameList.add( QuitCommandlet.class.getName() );
+        classNames.add( HelpCommandlet.class.getName() );
+        classNames.add( QuitCommandlet.class.getName() );
 
         // Farm commandlets
-        classNameList.add( GetLocalServersCommandlet.class.getName() );
-        classNameList.add( StartLocalServerCommandlet.class.getName() );
-        classNameList.add( StopLocalServerCommandlet.class.getName() );
+        classNames.add( GetLocalServersCommandlet.class.getName() );
+        classNames.add( StartLocalServerCommandlet.class.getName() );
+        classNames.add( StopLocalServerCommandlet.class.getName() );
 
         // Connection commandlets
-        classNameList.add( ConnectServerCommandlet.class.getName() );
-        classNameList.add( DisconnectServerCommandlet.class.getName() );
-        classNameList.add( GetServerCommandlet.class.getName() );
+        classNames.add( ConnectServerCommandlet.class.getName() );
+        classNames.add( DisconnectServerCommandlet.class.getName() );
+        classNames.add( GetServerCommandlet.class.getName() );
 
         // Server commandlets
-        classNameList.add( CreateGameCommandlet.class.getName() );
-        classNameList.add( GetGameCommandlet.class.getName() );
-        classNameList.add( GetGameSystemsCommandlet.class.getName() );
-        classNameList.add( GetGamesCommandlet.class.getName() );
+        classNames.add( CreateGameCommandlet.class.getName() );
+        classNames.add( GetGameCommandlet.class.getName() );
+        classNames.add( GetGameSystemsCommandlet.class.getName() );
+        classNames.add( GetGamesCommandlet.class.getName() );
 
-        commandletClassNames_ = Collections.unmodifiableList( classNameList );
+        commandletClassNames_ = Collections.unmodifiableList( classNames );
     }
 
     /**

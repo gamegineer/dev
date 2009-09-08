@@ -1,6 +1,6 @@
 /*
  * EngineFactoryAsComponentFactoryTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,8 +40,8 @@ public final class EngineFactoryAsComponentFactoryTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code EngineFactoryAsComponentFactoryTest} class.
+     * Initializes a new instance of the {@code
+     * EngineFactoryAsComponentFactoryTest} class.
      */
     public EngineFactoryAsComponentFactoryTest()
     {
@@ -58,10 +58,10 @@ public final class EngineFactoryAsComponentFactoryTest
      */
     @Override
     protected IComponentFactory createComponentFactory(
-        final Map<String, Object> attributeMap )
+        final Map<String, Object> attributes )
     {
         final EngineFactory factory = new EngineFactory();
-        for( final Map.Entry<String, Object> entry : attributeMap.entrySet() )
+        for( final Map.Entry<String, Object> entry : attributes.entrySet() )
         {
             factory.setAttribute( entry.getKey(), entry.getValue() );
         }

@@ -47,17 +47,17 @@ final class State
     // Fields
     // ======================================================================
 
-    /** The attribute map. */
-    private Map<AttributeName, Object> attributeMap_;
+    /** The attribute collection. */
+    private Map<AttributeName, Object> attributes_;
 
-    /** The backup attribute map stored during a transaction. */
-    private Map<AttributeName, Object> backupAttributeMap_;
+    /** The backup attribute collection stored during a transaction. */
+    private Map<AttributeName, Object> backupAttributes_;
 
     /**
-     * The set of attribute names whose values <i>may</i> have been changed
-     * during a transaction.
+     * The collection of attribute names whose values <i>may</i> have been
+     * changed during a transaction.
      */
-    private final Set<AttributeName> changedAttributeNameSet_;
+    private final Set<AttributeName> changedAttributeNames_;
 
     /** The transaction state. */
     private TransactionState transactionState_;
@@ -72,9 +72,9 @@ final class State
      */
     State()
     {
-        attributeMap_ = new HashMap<AttributeName, Object>();
-        backupAttributeMap_ = null;
-        changedAttributeNameSet_ = new HashSet<AttributeName>();
+        attributes_ = new HashMap<AttributeName, Object>();
+        backupAttributes_ = null;
+        changedAttributeNames_ = new HashSet<AttributeName>();
         transactionState_ = TransactionState.INACTIVE;
     }
 
@@ -95,11 +95,11 @@ final class State
         final Object value )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( !attributeMap_.containsKey( name ), "name", Messages.State_attribute_present( name ) ); //$NON-NLS-1$
+        assertArgumentLegal( !attributes_.containsKey( name ), "name", Messages.State_attribute_present( name ) ); //$NON-NLS-1$
         assertStateLegal( transactionState_ == TransactionState.ACTIVE, Messages.State_transaction_notActiveWritable );
 
-        changedAttributeNameSet_.add( name );
-        attributeMap_.put( name, value );
+        changedAttributeNames_.add( name );
+        attributes_.put( name, value );
     }
 
     /**
@@ -111,9 +111,9 @@ final class State
     void beginTransaction()
     {
         assertStateLegal( !isTransactionActive(), Messages.State_transaction_active );
-        assert changedAttributeNameSet_.isEmpty();
+        assert changedAttributeNames_.isEmpty();
 
-        backupAttributeMap_ = new HashMap<AttributeName, Object>( attributeMap_ );
+        backupAttributes_ = new HashMap<AttributeName, Object>( attributes_ );
         transactionState_ = TransactionState.ACTIVE;
     }
 
@@ -127,9 +127,9 @@ final class State
     {
         assertStateLegal( isTransactionActive(), Messages.State_transaction_notActive );
 
-        backupAttributeMap_.clear();
-        backupAttributeMap_ = null;
-        changedAttributeNameSet_.clear();
+        backupAttributes_.clear();
+        backupAttributes_ = null;
+        changedAttributeNames_.clear();
         transactionState_ = TransactionState.INACTIVE;
     }
 
@@ -141,7 +141,7 @@ final class State
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return attributeMap_.containsKey( name );
+        return attributes_.containsKey( name );
     }
 
     /*
@@ -151,9 +151,9 @@ final class State
         final AttributeName name )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( attributeMap_.containsKey( name ), "name", Messages.State_attribute_absent( name ) ); //$NON-NLS-1$
+        assertArgumentLegal( attributes_.containsKey( name ), "name", Messages.State_attribute_absent( name ) ); //$NON-NLS-1$
 
-        return attributeMap_.get( name );
+        return attributes_.get( name );
     }
 
     /**
@@ -178,10 +178,10 @@ final class State
         assert name != null;
         assert isTransactionActive();
 
-        final boolean isPresentCurrent = attributeMap_.containsKey( name );
-        final Object valueCurrent = attributeMap_.get( name );
-        final boolean isPresentBackup = backupAttributeMap_.containsKey( name );
-        final Object valueBackup = backupAttributeMap_.get( name );
+        final boolean isPresentCurrent = attributes_.containsKey( name );
+        final Object valueCurrent = attributes_.get( name );
+        final boolean isPresentBackup = backupAttributes_.containsKey( name );
+        final Object valueBackup = backupAttributes_.get( name );
         if( !isPresentCurrent && !isPresentBackup )
         {
             return null;
@@ -229,17 +229,17 @@ final class State
     {
         assertStateLegal( isTransactionActive(), Messages.State_transaction_notActive );
 
-        final Map<AttributeName, IAttributeChange> attributeChangeMap = new HashMap<AttributeName, IAttributeChange>();
-        for( final AttributeName name : changedAttributeNameSet_ )
+        final Map<AttributeName, IAttributeChange> attributeChanges = new HashMap<AttributeName, IAttributeChange>();
+        for( final AttributeName name : changedAttributeNames_ )
         {
             final IAttributeChange change = getAttributeChange( name );
             if( change != null )
             {
-                attributeChangeMap.put( name, change );
+                attributeChanges.put( name, change );
             }
         }
 
-        return attributeChangeMap;
+        return attributeChanges;
     }
 
     /*
@@ -247,7 +247,7 @@ final class State
      */
     public Set<AttributeName> getAttributeNames()
     {
-        return Collections.unmodifiableSet( attributeMap_.keySet() );
+        return Collections.unmodifiableSet( attributes_.keySet() );
     }
 
     /**
@@ -267,15 +267,15 @@ final class State
     {
         assert scope != null;
 
-        final Set<AttributeName> nameSet = new HashSet<AttributeName>();
-        for( final AttributeName name : attributeMap_.keySet() )
+        final Set<AttributeName> names = new HashSet<AttributeName>();
+        for( final AttributeName name : attributes_.keySet() )
         {
             if( name.getScope() == scope )
             {
-                nameSet.add( name );
+                names.add( name );
             }
         }
-        return nameSet;
+        return names;
     }
 
     /**
@@ -339,11 +339,11 @@ final class State
         final AttributeName name )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( attributeMap_.containsKey( name ), "name", Messages.State_attribute_absent( name ) ); //$NON-NLS-1$
+        assertArgumentLegal( attributes_.containsKey( name ), "name", Messages.State_attribute_absent( name ) ); //$NON-NLS-1$
         assertStateLegal( transactionState_ == TransactionState.ACTIVE, Messages.State_transaction_notActiveWritable );
 
-        changedAttributeNameSet_.add( name );
-        attributeMap_.remove( name );
+        changedAttributeNames_.add( name );
+        attributes_.remove( name );
     }
 
     /**
@@ -356,9 +356,9 @@ final class State
     {
         assertStateLegal( isTransactionActive(), Messages.State_transaction_notActive );
 
-        attributeMap_ = backupAttributeMap_;
-        backupAttributeMap_ = null;
-        changedAttributeNameSet_.clear();
+        attributes_ = backupAttributes_;
+        backupAttributes_ = null;
+        changedAttributeNames_.clear();
         transactionState_ = TransactionState.INACTIVE;
     }
 
@@ -374,11 +374,11 @@ final class State
         final Object value )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( attributeMap_.containsKey( name ), "name", Messages.State_attribute_absent( name ) ); //$NON-NLS-1$
+        assertArgumentLegal( attributes_.containsKey( name ), "name", Messages.State_attribute_absent( name ) ); //$NON-NLS-1$
         assertStateLegal( transactionState_ == TransactionState.ACTIVE, Messages.State_transaction_notActiveWritable );
 
-        changedAttributeNameSet_.add( name );
-        attributeMap_.put( name, value );
+        changedAttributeNames_.add( name );
+        attributes_.put( name, value );
     }
 
 

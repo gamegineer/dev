@@ -208,8 +208,8 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
         };
         engine_.executeCommand( command );
 
-        final List<IInvertibleCommand<?>> commandList = getCommandHistory( engine_ );
-        assertTrue( commandList.contains( command ) );
+        final List<IInvertibleCommand<?>> commands = getCommandHistory( engine_ );
+        assertTrue( commands.contains( command ) );
     }
 
     /**
@@ -272,8 +272,8 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
         };
         engine_.executeCommand( command );
 
-        final List<IInvertibleCommand<?>> commandList = getCommandHistory( engine_ );
-        assertFalse( commandList.contains( command ) );
+        final List<IInvertibleCommand<?>> commands = getCommandHistory( engine_ );
+        assertFalse( commands.contains( command ) );
     }
 
     /**
@@ -299,8 +299,8 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
         };
         engine_.executeCommand( command );
 
-        final List<IInvertibleCommand<?>> commandList = getCommandHistory( engine_ );
-        assertFalse( commandList.contains( command ) );
+        final List<IInvertibleCommand<?>> commands = getCommandHistory( engine_ );
+        assertFalse( commands.contains( command ) );
     }
 
     /**

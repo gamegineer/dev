@@ -149,10 +149,10 @@ public final class MementoBuilderTest
         final String value1 = "value1"; //$NON-NLS-1$
         final String name2 = "name2"; //$NON-NLS-1$
         final String value2 = "value2"; //$NON-NLS-1$
-        final Map<String, Object> attributeMap = new HashMap<String, Object>();
-        attributeMap.put( name1, value1 );
-        attributeMap.put( name2, value2 );
-        final MementoBuilder builder = new MementoBuilder( attributeMap );
+        final Map<String, Object> attributes = new HashMap<String, Object>();
+        attributes.put( name1, value1 );
+        attributes.put( name2, value2 );
+        final MementoBuilder builder = new MementoBuilder( attributes );
         final IMemento memento = builder.toMemento();
         assertEquals( value1, memento.getAttribute( name1 ) );
         assertEquals( value2, memento.getAttribute( name2 ) );
@@ -160,10 +160,10 @@ public final class MementoBuilderTest
 
     /**
      * Ensures the primary constructor throws an exception when passed a {@code
-     * null} attribute map.
+     * null} attribute collection.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_Primary_AttributeMap_Null()
+    public void testConstructor_Primary_Attributes_Null()
     {
         new MementoBuilder( null );
     }

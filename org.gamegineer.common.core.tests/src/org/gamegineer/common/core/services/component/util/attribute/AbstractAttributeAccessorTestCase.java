@@ -67,20 +67,21 @@ public abstract class AbstractAttributeAccessorTestCase
     /**
      * Creates the attribute accessor to be tested.
      * 
-     * @param attributeMap
-     *        The map of initialization attributes; must not be {@code null}.
+     * @param attributes
+     *        The collection of initialization attributes; must not be {@code
+     *        null}.
      * 
      * @return The attribute accessor to be tested; never {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If any value in {@code attributeMap} is {@code null}.
+     *         If any value in {@code attributes} is {@code null}.
      * @throws java.lang.NullPointerException
-     *         If {@code attributeMap} is {@code null}.
+     *         If {@code attributes} is {@code null}.
      */
     /* @NonNull */
     protected abstract IAttributeAccessor createAttributeAccessor(
         /* @NonNull */
-        Map<String, Object> attributeMap );
+        Map<String, Object> attributes );
 
     /**
      * Sets up the test fixture.
@@ -92,12 +93,12 @@ public abstract class AbstractAttributeAccessorTestCase
     public void setUp()
         throws Exception
     {
-        final Map<String, Object> attributeMap = new HashMap<String, Object>();
-        attributeMap.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put( "name4", "value4" ); //$NON-NLS-1$ //$NON-NLS-2$
-        accessor_ = createAttributeAccessor( attributeMap );
+        final Map<String, Object> attributes = new HashMap<String, Object>();
+        attributes.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        attributes.put( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        attributes.put( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
+        attributes.put( "name4", "value4" ); //$NON-NLS-1$ //$NON-NLS-2$
+        accessor_ = createAttributeAccessor( attributes );
         assertNotNull( accessor_ );
     }
 

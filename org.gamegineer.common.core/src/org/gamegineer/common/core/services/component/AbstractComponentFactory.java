@@ -48,8 +48,8 @@ public abstract class AbstractComponentFactory
     // Fields
     // ======================================================================
 
-    /** The map of factory attributes. */
-    private final ConcurrentMap<String, Object> attributeMap_;
+    /** The collection of factory attributes. */
+    private final ConcurrentMap<String, Object> attributes_;
 
 
     // ======================================================================
@@ -61,7 +61,7 @@ public abstract class AbstractComponentFactory
      */
     protected AbstractComponentFactory()
     {
-        attributeMap_ = new ConcurrentHashMap<String, Object>();
+        attributes_ = new ConcurrentHashMap<String, Object>();
     }
 
 
@@ -77,7 +77,7 @@ public abstract class AbstractComponentFactory
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return attributeMap_.containsKey( name );
+        return attributes_.containsKey( name );
     }
 
     /*
@@ -89,7 +89,7 @@ public abstract class AbstractComponentFactory
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return attributeMap_.get( name );
+        return attributes_.get( name );
     }
 
     /*
@@ -102,6 +102,6 @@ public abstract class AbstractComponentFactory
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
         assertArgumentNotNull( value, "value" ); //$NON-NLS-1$
 
-        attributeMap_.put( name, value );
+        attributes_.put( name, value );
     }
 }

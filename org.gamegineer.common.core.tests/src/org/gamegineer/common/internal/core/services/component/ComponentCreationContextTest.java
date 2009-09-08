@@ -1,6 +1,6 @@
 /*
  * ComponentCreationContextTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -52,25 +52,25 @@ public final class ComponentCreationContextTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * attribute map.
+     * attribute collection.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_AttributeMap_Null()
+    public void testConstructor_Attributes_Null()
     {
         new ComponentCreationContext( null );
     }
 
     /**
-     * Ensures the constructor throws an exception when passed an attribute map
-     * which contains one or more {@code null} values.
+     * Ensures the constructor throws an exception when passed an attribute
+     * collection which contains one or more {@code null} values.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_AttributeMap_NullValues()
+    public void testConstructor_Attributes_NullValues()
     {
-        final Map<String, Object> attributeMap = new HashMap<String, Object>();
-        attributeMap.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put( "name2", null ); //$NON-NLS-1$
-        attributeMap.put( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
-        new ComponentCreationContext( attributeMap );
+        final Map<String, Object> attributes = new HashMap<String, Object>();
+        attributes.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        attributes.put( "name2", null ); //$NON-NLS-1$
+        attributes.put( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
+        new ComponentCreationContext( attributes );
     }
 }

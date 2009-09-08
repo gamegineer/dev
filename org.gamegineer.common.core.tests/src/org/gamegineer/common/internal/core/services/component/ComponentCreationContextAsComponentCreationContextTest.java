@@ -1,6 +1,6 @@
 /*
  * ComponentCreationContextAsComponentCreationContextTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,8 +40,8 @@ public final class ComponentCreationContextAsComponentCreationContextTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code ComponentCreationContextAsComponentCreationContextTest} class.
+     * Initializes a new instance of the {@code
+     * ComponentCreationContextAsComponentCreationContextTest} class.
      */
     public ComponentCreationContextAsComponentCreationContextTest()
     {
@@ -58,8 +58,8 @@ public final class ComponentCreationContextAsComponentCreationContextTest
      */
     @Override
     protected IComponentCreationContext createComponentCreationContext(
-        final Map<String, Object> attributeMap )
+        final Map<String, Object> attributes )
     {
-        return new ComponentCreationContext( attributeMap );
+        return new ComponentCreationContext( attributes );
     }
 }

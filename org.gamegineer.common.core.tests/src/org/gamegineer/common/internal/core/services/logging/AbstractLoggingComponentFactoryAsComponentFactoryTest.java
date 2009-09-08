@@ -1,6 +1,6 @@
 /*
  * AbstractLoggingComponentFactoryAsComponentFactoryTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,8 +40,8 @@ public final class AbstractLoggingComponentFactoryAsComponentFactoryTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractLoggingComponentFactoryAsComponentFactoryTest} class.
+     * Initializes a new instance of the {@code
+     * AbstractLoggingComponentFactoryAsComponentFactoryTest} class.
      */
     public AbstractLoggingComponentFactoryAsComponentFactoryTest()
     {
@@ -58,13 +58,13 @@ public final class AbstractLoggingComponentFactoryAsComponentFactoryTest
      */
     @Override
     protected IComponentFactory createComponentFactory(
-        final Map<String, Object> attributeMap )
+        final Map<String, Object> attributes )
     {
         final AbstractLoggingComponentFactory<MockLoggingComponent> factory = new AbstractLoggingComponentFactory<MockLoggingComponent>( MockLoggingComponent.class )
         {
             // no overrides
         };
-        for( final Map.Entry<String, Object> entry : attributeMap.entrySet() )
+        for( final Map.Entry<String, Object> entry : attributes.entrySet() )
         {
             factory.setAttribute( entry.getKey(), entry.getValue() );
         }

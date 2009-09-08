@@ -99,13 +99,13 @@ public final class TurnStageStrategyTest
     {
         assert playerCount > 0;
 
-        final List<Player> playerList = new ArrayList<Player>( playerCount );
+        final List<Player> players = new ArrayList<Player>( playerCount );
         for( int index = 0; index < playerCount; ++index )
         {
-            playerList.add( Players.createUniquePlayer() );
+            players.add( Players.createUniquePlayer() );
         }
 
-        return playerList;
+        return players;
     }
 
     /**

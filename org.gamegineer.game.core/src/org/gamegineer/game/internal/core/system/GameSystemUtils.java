@@ -138,11 +138,11 @@ public final class GameSystemUtils
     {
         assert roles != null;
 
-        final Set<String> idSet = new HashSet<String>();
+        final Set<String> ids = new HashSet<String>();
 
         for( final IRole aRole : roles )
         {
-            if( !isRoleIdentifierUnionUnique( idSet, aRole ) )
+            if( !isRoleIdentifierUnionUnique( ids, aRole ) )
             {
                 return false;
             }
@@ -150,7 +150,7 @@ public final class GameSystemUtils
 
         if( role != null )
         {
-            if( !isRoleIdentifierUnionUnique( idSet, role ) )
+            if( !isRoleIdentifierUnionUnique( ids, role ) )
             {
                 return false;
             }
@@ -163,7 +163,7 @@ public final class GameSystemUtils
      * Determines if the union of the specified role identifier set and the role
      * identifier of the specified role is unique.
      * 
-     * @param idSet
+     * @param ids
      *        A set of role identifiers; must not be {@code null}. The role
      *        identifier of the specified role will be added to this set before
      *        returning.
@@ -175,19 +175,19 @@ public final class GameSystemUtils
      */
     private static boolean isRoleIdentifierUnionUnique(
         /* @NonNull */
-        final Set<String> idSet,
+        final Set<String> ids,
         /* @NonNull */
         final IRole role )
     {
-        assert idSet != null;
+        assert ids != null;
         assert role != null;
 
-        if( idSet.contains( role.getId() ) )
+        if( ids.contains( role.getId() ) )
         {
             return false;
         }
 
-        idSet.add( role.getId() );
+        ids.add( role.getId() );
         return true;
     }
 
@@ -217,16 +217,16 @@ public final class GameSystemUtils
     {
         assert stages != null;
 
-        final Set<String> idSet = new HashSet<String>();
+        final Set<String> ids = new HashSet<String>();
 
         if( id != null )
         {
-            idSet.add( id );
+            ids.add( id );
         }
 
         for( final IStage aStage : stages )
         {
-            if( !isStageIdentifierUnionUnique( idSet, aStage ) )
+            if( !isStageIdentifierUnionUnique( ids, aStage ) )
             {
                 return false;
             }
@@ -234,7 +234,7 @@ public final class GameSystemUtils
 
         if( stage != null )
         {
-            if( !isStageIdentifierUnionUnique( idSet, stage ) )
+            if( !isStageIdentifierUnionUnique( ids, stage ) )
             {
                 return false;
             }
@@ -248,7 +248,7 @@ public final class GameSystemUtils
      * stage identifiers of the specified stage and all its descendants are
      * unique.
      * 
-     * @param idSet
+     * @param ids
      *        A set of stage identifiers; must not be {@code null}. The
      *        identifier of the specified stage and those of its descendants
      *        will be added to this set before returning.
@@ -260,22 +260,22 @@ public final class GameSystemUtils
      */
     private static boolean isStageIdentifierUnionUnique(
         /* @NonNull */
-        final Set<String> idSet,
+        final Set<String> ids,
         /* @NonNull */
         final IStage stage )
     {
-        assert idSet != null;
+        assert ids != null;
         assert stage != null;
 
-        if( idSet.contains( stage.getId() ) )
+        if( ids.contains( stage.getId() ) )
         {
             return false;
         }
-        idSet.add( stage.getId() );
+        ids.add( stage.getId() );
 
         for( final IStage aStage : stage.getStages() )
         {
-            if( !isStageIdentifierUnionUnique( idSet, aStage ) )
+            if( !isStageIdentifierUnionUnique( ids, aStage ) )
             {
                 return false;
             }

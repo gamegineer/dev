@@ -50,8 +50,8 @@ public final class Memento
     // Fields
     // ======================================================================
 
-    /** The attribute map. */
-    private final Map<String, Object> attributeMap_;
+    /** The attribute collection. */
+    private final Map<String, Object> attributes_;
 
 
     // ======================================================================
@@ -61,19 +61,19 @@ public final class Memento
     /**
      * Initializes a new instance of the {@code Memento} class.
      * 
-     * @param attributeMap
-     *        The attribute map; must not be {@code null}.
+     * @param attributes
+     *        The attribute collection; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code attributeMap} is {@code null}.
+     *         If {@code attributes} is {@code null}.
      */
     public Memento(
         /* @NonNull */
-        final Map<String, Object> attributeMap )
+        final Map<String, Object> attributes )
     {
-        assertArgumentNotNull( attributeMap, "attributeMap" ); //$NON-NLS-1$
+        assertArgumentNotNull( attributes, "attributes" ); //$NON-NLS-1$
 
-        attributeMap_ = Collections.unmodifiableMap( new HashMap<String, Object>( attributeMap ) );
+        attributes_ = Collections.unmodifiableMap( new HashMap<String, Object>( attributes ) );
     }
 
 
@@ -89,7 +89,7 @@ public final class Memento
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return attributeMap_.containsKey( name );
+        return attributes_.containsKey( name );
     }
 
     /*
@@ -110,12 +110,12 @@ public final class Memento
         }
 
         final IMemento other = (IMemento)obj;
-        final Map<String, Object> otherAttributeMap = new HashMap<String, Object>();
+        final Map<String, Object> otherAttributes = new HashMap<String, Object>();
         for( final String name : other.getAttributeNames() )
         {
-            otherAttributeMap.put( name, other.getAttribute( name ) );
+            otherAttributes.put( name, other.getAttribute( name ) );
         }
-        return attributeMap_.equals( otherAttributeMap );
+        return attributes_.equals( otherAttributes );
     }
 
     /*
@@ -125,10 +125,10 @@ public final class Memento
         final String name )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( attributeMap_.containsKey( name ), "name", Messages.Memento_attribute_absent( name ) ); //$NON-NLS-1$
+        assertArgumentLegal( attributes_.containsKey( name ), "name", Messages.Memento_attribute_absent( name ) ); //$NON-NLS-1$
 
         @SuppressWarnings( "unchecked" )
-        final T value = (T)attributeMap_.get( name );
+        final T value = (T)attributes_.get( name );
         return value;
     }
 
@@ -137,7 +137,7 @@ public final class Memento
      */
     public Set<String> getAttributeNames()
     {
-        return attributeMap_.keySet();
+        return attributes_.keySet();
     }
 
     /**
@@ -150,7 +150,7 @@ public final class Memento
     /* @NonNull */
     public Map<String, Object> getAttributes()
     {
-        return attributeMap_;
+        return attributes_;
     }
 
     /*
@@ -160,7 +160,7 @@ public final class Memento
     public int hashCode()
     {
         int result = 17;
-        result = result * 31 + attributeMap_.hashCode();
+        result = result * 31 + attributes_.hashCode();
         return result;
     }
 }

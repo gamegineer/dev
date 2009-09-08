@@ -98,13 +98,13 @@ public final class BundleSuiteBuilder
             return Collections.emptyList();
         }
 
-        final List<String> classpathEntryList = new ArrayList<String>();
+        final List<String> classpathEntries = new ArrayList<String>();
         for( final String classpathEntry : classpath.split( "\\s*,\\s*" ) ) //$NON-NLS-1$
         {
-            classpathEntryList.add( classpathEntry );
+            classpathEntries.add( classpathEntry );
         }
 
-        return Collections.unmodifiableList( classpathEntryList );
+        return Collections.unmodifiableList( classpathEntries );
     }
 
     /**
@@ -135,7 +135,7 @@ public final class BundleSuiteBuilder
             return Collections.emptyList();
         }
 
-        final List<String> classpathEntryList = new ArrayList<String>();
+        final List<String> classpathEntries = new ArrayList<String>();
         final InputStream is = url.openStream();
         try
         {
@@ -149,7 +149,7 @@ public final class BundleSuiteBuilder
                 final String classpathEntry = element.getAttribute( "path" ); //$NON-NLS-1$
                 if( classpathEntry != null )
                 {
-                    classpathEntryList.add( classpathEntry );
+                    classpathEntries.add( classpathEntry );
                 }
             }
         }
@@ -158,7 +158,7 @@ public final class BundleSuiteBuilder
             is.close();
         }
 
-        return Collections.unmodifiableList( classpathEntryList );
+        return Collections.unmodifiableList( classpathEntries );
     }
 
     /**
@@ -286,7 +286,7 @@ public final class BundleSuiteBuilder
         }
 
         final JarInputStream is = new JarInputStream( url.openStream() );
-        final List<String> classNameList = new ArrayList<String>();
+        final List<String> classNames = new ArrayList<String>();
         final Pattern CLASS_NAME_PATTERN = Pattern.compile( "^(.*Test)\\.class$" ); //$NON-NLS-1$
         try
         {
@@ -296,7 +296,7 @@ public final class BundleSuiteBuilder
                 final Matcher matcher = CLASS_NAME_PATTERN.matcher( entry.getName() );
                 if( matcher.matches() )
                 {
-                    classNameList.add( matcher.group( 1 ).replace( '/', '.' ) );
+                    classNames.add( matcher.group( 1 ).replace( '/', '.' ) );
                 }
             }
         }
@@ -305,7 +305,7 @@ public final class BundleSuiteBuilder
             is.close();
         }
 
-        return Collections.unmodifiableList( classNameList );
+        return Collections.unmodifiableList( classNames );
     }
 
     /**
@@ -331,7 +331,7 @@ public final class BundleSuiteBuilder
         assert path != null;
         assert path.charAt( 0 ) != '/';
 
-        final List<String> classNameList = new ArrayList<String>();
+        final List<String> classNames = new ArrayList<String>();
         final Pattern CLASS_NAME_PATTERN = Pattern.compile( String.format( "^/%1$s/(.+)\\.class$", path ) ); //$NON-NLS-1$
         final String FILE_PATTERN = "*Test.class"; //$NON-NLS-1$
         for( final Enumeration<?> entries = bundle.findEntries( path, FILE_PATTERN, true ); entries.hasMoreElements(); )
@@ -342,10 +342,10 @@ public final class BundleSuiteBuilder
             {
                 throw new RuntimeException( "unexpected bundle entry URL format" ); //$NON-NLS-1$
             }
-            classNameList.add( matcher.group( 1 ).replace( '/', '.' ) );
+            classNames.add( matcher.group( 1 ).replace( '/', '.' ) );
         }
 
-        return Collections.unmodifiableList( classNameList );
+        return Collections.unmodifiableList( classNames );
     }
 
     /**

@@ -41,11 +41,11 @@ public final class MementoProxy
     private static final long serialVersionUID = -6656702327504675392L;
 
     /**
-     * The attribute map.
+     * The attribute collection.
      * 
      * @serial
      */
-    private Map<String, Object> attributeMap_;
+    private Map<String, Object> attributes_;
 
 
     // ======================================================================
@@ -58,7 +58,7 @@ public final class MementoProxy
     @SuppressWarnings( "unused" )
     private MementoProxy()
     {
-        attributeMap_ = null;
+        attributes_ = null;
     }
 
     /**
@@ -77,7 +77,7 @@ public final class MementoProxy
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
-        attributeMap_ = new HashMap<String, Object>( memento.getAttributes() );
+        attributes_ = new HashMap<String, Object>( memento.getAttributes() );
     }
 
 
@@ -95,6 +95,6 @@ public final class MementoProxy
     /* @NonNull */
     private Object readResolve()
     {
-        return new Memento( attributeMap_ );
+        return new Memento( attributes_ );
     }
 }

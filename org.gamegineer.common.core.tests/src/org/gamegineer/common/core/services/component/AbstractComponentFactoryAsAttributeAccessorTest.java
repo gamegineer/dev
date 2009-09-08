@@ -1,6 +1,6 @@
 /*
  * AbstractComponentFactoryAsAttributeAccessorTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,8 +40,8 @@ public final class AbstractComponentFactoryAsAttributeAccessorTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractComponentFactoryAsAttributeAccessorTest} class.
+     * Initializes a new instance of the {@code
+     * AbstractComponentFactoryAsAttributeAccessorTest} class.
      */
     public AbstractComponentFactoryAsAttributeAccessorTest()
     {
@@ -58,7 +58,7 @@ public final class AbstractComponentFactoryAsAttributeAccessorTest
      */
     @Override
     protected IAttributeAccessor createAttributeAccessor(
-        final Map<String, Object> attributeMap )
+        final Map<String, Object> attributes )
     {
         final AbstractComponentFactory factory = new AbstractComponentFactory()
         {
@@ -69,7 +69,7 @@ public final class AbstractComponentFactoryAsAttributeAccessorTest
                 throw new UnsupportedOperationException();
             }
         };
-        for( final Map.Entry<String, Object> entry : attributeMap.entrySet() )
+        for( final Map.Entry<String, Object> entry : attributes.entrySet() )
         {
             factory.setAttribute( entry.getKey(), entry.getValue() );
         }

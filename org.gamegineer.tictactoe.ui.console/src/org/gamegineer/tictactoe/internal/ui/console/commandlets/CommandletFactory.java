@@ -64,11 +64,11 @@ public final class CommandletFactory
      */
     static
     {
-        final List<String> classNameList = new ArrayList<String>();
+        final List<String> classNames = new ArrayList<String>();
 
-        classNameList.add( GetBoardCommandlet.class.getName() );
+        classNames.add( GetBoardCommandlet.class.getName() );
 
-        commandletClassNames_ = Collections.unmodifiableList( classNameList );
+        commandletClassNames_ = Collections.unmodifiableList( classNames );
     }
 
     /**

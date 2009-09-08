@@ -45,8 +45,8 @@ public final class ComponentCreationContext
     // Fields
     // ======================================================================
 
-    /** The map of initialization attributes. */
-    private final Map<String, Object> attributeMap_;
+    /** The collection of initialization attributes. */
+    private final Map<String, Object> attributes_;
 
 
     // ======================================================================
@@ -55,24 +55,25 @@ public final class ComponentCreationContext
 
     /**
      * Initializes a new instance of the {@code ComponentCreationContext} class
-     * using the specified attribute mappings.
+     * using the specified attribute collection.
      * 
-     * @param attributeMap
-     *        The map of initialization attributes; must not be {@code null}.
+     * @param attributes
+     *        The collection of initialization attributes; must not be {@code
+     *        null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If any value in {@code attributeMap} is {@code null}.
+     *         If any value in {@code attributes} is {@code null}.
      * @throws java.lang.NullPointerException
-     *         If {@code attributeMap} is {@code null}.
+     *         If {@code attributes} is {@code null}.
      */
     public ComponentCreationContext(
         /* @NonNull */
-        final Map<String, Object> attributeMap )
+        final Map<String, Object> attributes )
     {
-        assertArgumentNotNull( attributeMap, "attributeMap" ); //$NON-NLS-1$
-        assertArgumentLegal( !attributeMap.containsValue( null ), "attributeMap", Messages.ComponentCreationContext_attributeMap_containsNullValue ); //$NON-NLS-1$
+        assertArgumentNotNull( attributes, "attributes" ); //$NON-NLS-1$
+        assertArgumentLegal( !attributes.containsValue( null ), "attributes", Messages.ComponentCreationContext_attributes_containsNullValue ); //$NON-NLS-1$
 
-        attributeMap_ = new HashMap<String, Object>( attributeMap );
+        attributes_ = new HashMap<String, Object>( attributes );
     }
 
 
@@ -88,7 +89,7 @@ public final class ComponentCreationContext
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return attributeMap_.containsKey( name );
+        return attributes_.containsKey( name );
     }
 
     /*
@@ -99,6 +100,6 @@ public final class ComponentCreationContext
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return attributeMap_.get( name );
+        return attributes_.get( name );
     }
 }

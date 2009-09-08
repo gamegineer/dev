@@ -42,8 +42,8 @@ public class FakeState
     // Fields
     // ======================================================================
 
-    /** The attribute map. */
-    private Map<AttributeName, Object> attributeMap_;
+    /** The attribute collection. */
+    private Map<AttributeName, Object> attributes_;
 
 
     // ======================================================================
@@ -55,7 +55,7 @@ public class FakeState
      */
     public FakeState()
     {
-        attributeMap_ = new HashMap<AttributeName, Object>();
+        attributes_ = new HashMap<AttributeName, Object>();
     }
 
 
@@ -71,9 +71,9 @@ public class FakeState
         final Object value )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( !attributeMap_.containsKey( name ), "name" ); //$NON-NLS-1$
+        assertArgumentLegal( !attributes_.containsKey( name ), "name" ); //$NON-NLS-1$
 
-        attributeMap_.put( name, value );
+        attributes_.put( name, value );
     }
 
     /*
@@ -84,7 +84,7 @@ public class FakeState
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return attributeMap_.containsKey( name );
+        return attributes_.containsKey( name );
     }
 
     /*
@@ -94,9 +94,9 @@ public class FakeState
         final AttributeName name )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( attributeMap_.containsKey( name ), "name" ); //$NON-NLS-1$
+        assertArgumentLegal( attributes_.containsKey( name ), "name" ); //$NON-NLS-1$
 
-        return attributeMap_.get( name );
+        return attributes_.get( name );
     }
 
     /*
@@ -104,7 +104,7 @@ public class FakeState
      */
     public Set<AttributeName> getAttributeNames()
     {
-        return Collections.unmodifiableSet( attributeMap_.keySet() );
+        return Collections.unmodifiableSet( attributes_.keySet() );
     }
 
     /*
@@ -114,9 +114,9 @@ public class FakeState
         final AttributeName name )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( attributeMap_.containsKey( name ), "name" ); //$NON-NLS-1$
+        assertArgumentLegal( attributes_.containsKey( name ), "name" ); //$NON-NLS-1$
 
-        attributeMap_.remove( name );
+        attributes_.remove( name );
     }
 
     /*
@@ -127,8 +127,8 @@ public class FakeState
         final Object value )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( attributeMap_.containsKey( name ), "name" ); //$NON-NLS-1$
+        assertArgumentLegal( attributes_.containsKey( name ), "name" ); //$NON-NLS-1$
 
-        attributeMap_.put( name, value );
+        attributes_.put( name, value );
     }
 }

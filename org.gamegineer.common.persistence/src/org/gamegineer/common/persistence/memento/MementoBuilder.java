@@ -52,8 +52,8 @@ public final class MementoBuilder
     // Fields
     // ======================================================================
 
-    /** The attribute map. */
-    private final Map<String, Object> attributeMap_;
+    /** The attribute collection. */
+    private final Map<String, Object> attributes_;
 
 
     // ======================================================================
@@ -71,21 +71,22 @@ public final class MementoBuilder
 
     /**
      * Initializes a new instance of the {@code MementoBuilder} class with the
-     * specified attribute mappings initially.
+     * specified attribute collection initially.
      * 
-     * @param attributeMap
-     *        The map of initialization attributes; must not be {@code null}.
+     * @param attributes
+     *        The collection of initialization attributes; must not be {@code
+     *        null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code attributeMap} is {@code null}.
+     *         If {@code attributes} is {@code null}.
      */
     public MementoBuilder(
         /* @NonNull */
-        final Map<String, Object> attributeMap )
+        final Map<String, Object> attributes )
     {
-        assertArgumentNotNull( attributeMap, "attributeMap" ); //$NON-NLS-1$
+        assertArgumentNotNull( attributes, "attributes" ); //$NON-NLS-1$
 
-        attributeMap_ = new HashMap<String, Object>( attributeMap );
+        attributes_ = new HashMap<String, Object>( attributes );
     }
 
 
@@ -116,9 +117,9 @@ public final class MementoBuilder
         final T value )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( !attributeMap_.containsKey( name ), "name", Messages.MementoBuilder_attribute_present( name ) ); //$NON-NLS-1$
+        assertArgumentLegal( !attributes_.containsKey( name ), "name", Messages.MementoBuilder_attribute_present( name ) ); //$NON-NLS-1$
 
-        attributeMap_.put( name, value );
+        attributes_.put( name, value );
     }
 
     /**
@@ -139,7 +140,7 @@ public final class MementoBuilder
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return attributeMap_.containsKey( name );
+        return attributes_.containsKey( name );
     }
 
     /**
@@ -150,6 +151,6 @@ public final class MementoBuilder
     /* @NonNull */
     public IMemento toMemento()
     {
-        return new Memento( attributeMap_ );
+        return new Memento( attributes_ );
     }
 }

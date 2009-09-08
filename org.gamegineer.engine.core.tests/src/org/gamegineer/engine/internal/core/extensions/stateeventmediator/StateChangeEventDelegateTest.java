@@ -55,10 +55,10 @@ public final class StateChangeEventDelegateTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * attribute change map.
+     * attribute change collection.
      */
     @Test( expected = AssertionError.class )
-    public void testConstructor_AttributeChangeMap_Null()
+    public void testConstructor_AttributeChanges_Null()
     {
         new StateChangeEventDelegate( createDummy( IEngineContext.class ), null );
     }

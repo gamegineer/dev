@@ -112,11 +112,11 @@ public final class GameSystemUiUtils
     {
         assert roleUis != null;
 
-        final Set<String> idSet = new HashSet<String>();
+        final Set<String> ids = new HashSet<String>();
 
         for( final IRoleUi ui : roleUis )
         {
-            if( !isRoleIdentifierUnionUnique( idSet, ui ) )
+            if( !isRoleIdentifierUnionUnique( ids, ui ) )
             {
                 return false;
             }
@@ -124,7 +124,7 @@ public final class GameSystemUiUtils
 
         if( roleUi != null )
         {
-            if( !isRoleIdentifierUnionUnique( idSet, roleUi ) )
+            if( !isRoleIdentifierUnionUnique( ids, roleUi ) )
             {
                 return false;
             }
@@ -137,7 +137,7 @@ public final class GameSystemUiUtils
      * Determines if the union of the specified role identifier set and the role
      * identifier of the specified role user interface is unique.
      * 
-     * @param idSet
+     * @param ids
      *        A set of role identifiers; must not be {@code null}. The role
      *        identifier of the specified role user interface will be added to
      *        this set before returning.
@@ -149,19 +149,19 @@ public final class GameSystemUiUtils
      */
     private static boolean isRoleIdentifierUnionUnique(
         /* @NonNull */
-        final Set<String> idSet,
+        final Set<String> ids,
         /* @NonNull */
         final IRoleUi roleUi )
     {
-        assert idSet != null;
+        assert ids != null;
         assert roleUi != null;
 
-        if( idSet.contains( roleUi.getId() ) )
+        if( ids.contains( roleUi.getId() ) )
         {
             return false;
         }
 
-        idSet.add( roleUi.getId() );
+        ids.add( roleUi.getId() );
         return true;
     }
 }

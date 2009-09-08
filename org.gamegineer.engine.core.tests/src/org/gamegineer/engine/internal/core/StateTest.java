@@ -256,21 +256,21 @@ public final class StateTest
         state_.addAttribute( name2, "value2" ); //$NON-NLS-1$
         state_.commitTransaction();
 
-        final Set<AttributeName> nameSet = state_.getAttributeNames( Scope.APPLICATION );
-        assertTrue( nameSet.size() == 1 );
-        assertTrue( nameSet.contains( name1 ) );
+        final Set<AttributeName> names = state_.getAttributeNames( Scope.APPLICATION );
+        assertTrue( names.size() == 1 );
+        assertTrue( names.contains( name1 ) );
     }
 
     /**
-     * Ensures the {@code getAttributeNames(Scope)} method returns an empty set
-     * when the state contains no attributes in the specified scope.
+     * Ensures the {@code getAttributeNames(Scope)} method returns an empty
+     * collection when the state contains no attributes in the specified scope.
      */
     @Test
     public void testGetAttributeNamesWithScope_Empty()
     {
-        final Set<AttributeName> nameSet = state_.getAttributeNames( Scope.APPLICATION );
-        assertNotNull( nameSet );
-        assertTrue( nameSet.size() == 0 );
+        final Set<AttributeName> names = state_.getAttributeNames( Scope.APPLICATION );
+        assertNotNull( names );
+        assertTrue( names.size() == 0 );
     }
 
     /**
@@ -352,7 +352,7 @@ public final class StateTest
 
     /**
      * Ensures the {@code removeAllAttributes} method throws an exception when
-     * passed a {@code null} name set.
+     * passed a {@code null} name collection.
      */
     @Test( expected = AssertionError.class )
     public void testRemoveAllAttributes_Names_Null()

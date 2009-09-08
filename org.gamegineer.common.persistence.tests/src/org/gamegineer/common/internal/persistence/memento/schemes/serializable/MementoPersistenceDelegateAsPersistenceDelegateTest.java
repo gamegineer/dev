@@ -1,6 +1,6 @@
 /*
  * MementoPersistenceDelegateAsPersistenceDelegateTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,8 +40,8 @@ public final class MementoPersistenceDelegateAsPersistenceDelegateTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code MementoPersistenceDelegateAsPersistenceDelegateTest} class.
+     * Initializes a new instance of the {@code
+     * MementoPersistenceDelegateAsPersistenceDelegateTest} class.
      */
     public MementoPersistenceDelegateAsPersistenceDelegateTest()
     {
@@ -59,13 +59,13 @@ public final class MementoPersistenceDelegateAsPersistenceDelegateTest
     @Override
     protected Object createSubject()
     {
-        final Map<String, Object> attributeMap = new HashMap<String, Object>();
-        attributeMap.put( "nullName", null ); //$NON-NLS-1$
-        attributeMap.put( "stringName", "string" ); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put( "integerName", new Integer( 2112 ) ); //$NON-NLS-1$
-        attributeMap.put( "doubleName", new Double( -42.0 ) ); //$NON-NLS-1$
-        attributeMap.put( "longListName", Collections.singletonList( new Long( 1001001L ) ) ); //$NON-NLS-1$
-        return new Memento( attributeMap );
+        final Map<String, Object> attributes = new HashMap<String, Object>();
+        attributes.put( "nullName", null ); //$NON-NLS-1$
+        attributes.put( "stringName", "string" ); //$NON-NLS-1$ //$NON-NLS-2$
+        attributes.put( "integerName", new Integer( 2112 ) ); //$NON-NLS-1$
+        attributes.put( "doubleName", new Double( -42.0 ) ); //$NON-NLS-1$
+        attributes.put( "longListName", Collections.singletonList( new Long( 1001001L ) ) ); //$NON-NLS-1$
+        return new Memento( attributes );
     }
 
     /*

@@ -1,6 +1,6 @@
 /*
  * MementoAsMementoTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,8 +56,8 @@ public final class MementoAsMementoTest
      */
     @Override
     protected IMemento createMemento(
-        final Map<String, Object> attributeMap )
+        final Map<String, Object> attributes )
     {
-        return new Memento( attributeMap );
+        return new Memento( attributes );
     }
 }

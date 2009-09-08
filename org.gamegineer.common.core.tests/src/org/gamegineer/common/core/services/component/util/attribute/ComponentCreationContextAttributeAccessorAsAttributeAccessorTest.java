@@ -1,6 +1,6 @@
 /*
  * ComponentCreationContextAttributeAccessorAsAttributeAccessorTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,9 +39,8 @@ public final class ComponentCreationContextAttributeAccessorAsAttributeAccessorT
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code ComponentCreationContextAttributeAccessorAsAttributeAccessorTest}
-     * class.
+     * Initializes a new instance of the {@code
+     * ComponentCreationContextAttributeAccessorAsAttributeAccessorTest} class.
      */
     public ComponentCreationContextAttributeAccessorAsAttributeAccessorTest()
     {
@@ -58,8 +57,8 @@ public final class ComponentCreationContextAttributeAccessorAsAttributeAccessorT
      */
     @Override
     protected IAttributeAccessor createAttributeAccessor(
-        final Map<String, Object> attributeMap )
+        final Map<String, Object> attributes )
     {
-        return new ComponentCreationContextAttributeAccessor( ComponentCreationContextBuilder.createComponentCreationContext( attributeMap ) );
+        return new ComponentCreationContextAttributeAccessor( ComponentCreationContextBuilder.createComponentCreationContext( attributes ) );
     }
 }

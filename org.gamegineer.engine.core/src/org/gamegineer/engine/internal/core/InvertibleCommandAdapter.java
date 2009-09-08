@@ -70,14 +70,14 @@ public final class InvertibleCommandAdapter<T>
      * The collection of attributes added by the command; {@code null} if no
      * attributes were added.
      */
-    private Set<AttributeName> addedAttributeSet_;
+    private Set<AttributeName> addedAttributes_;
 
     /**
      * The collection of attributes changed by the command; {@code null} if no
      * attributes were changed. The attribute value at the time it was changed
      * is recorded.
      */
-    private Map<AttributeName, Object> changedAttributeMap_;
+    private Map<AttributeName, Object> changedAttributes_;
 
     /** The non-invertible command. */
     private final ICommand<T> command_;
@@ -87,7 +87,7 @@ public final class InvertibleCommandAdapter<T>
      * attributes were removed. The attribute value at the time it was removed
      * is recorded.
      */
-    private Map<AttributeName, Object> removedAttributeMap_;
+    private Map<AttributeName, Object> removedAttributes_;
 
 
     // ======================================================================
@@ -110,9 +110,9 @@ public final class InvertibleCommandAdapter<T>
         assertArgumentNotNull( command, "command" ); //$NON-NLS-1$
 
         command_ = command;
-        addedAttributeSet_ = null;
-        changedAttributeMap_ = null;
-        removedAttributeMap_ = null;
+        addedAttributes_ = null;
+        changedAttributes_ = null;
+        removedAttributes_ = null;
     }
 
 
@@ -182,23 +182,23 @@ public final class InvertibleCommandAdapter<T>
         assert context != null;
 
         final IState state = context.getState();
-        if( addedAttributeSet_ != null )
+        if( addedAttributes_ != null )
         {
-            for( final AttributeName name : addedAttributeSet_ )
+            for( final AttributeName name : addedAttributes_ )
             {
                 state.removeAttribute( name );
             }
         }
-        if( changedAttributeMap_ != null )
+        if( changedAttributes_ != null )
         {
-            for( final Map.Entry<AttributeName, Object> entry : changedAttributeMap_.entrySet() )
+            for( final Map.Entry<AttributeName, Object> entry : changedAttributes_.entrySet() )
             {
                 state.setAttribute( entry.getKey(), entry.getValue() );
             }
         }
-        if( removedAttributeMap_ != null )
+        if( removedAttributes_ != null )
         {
-            for( final Map.Entry<AttributeName, Object> entry : removedAttributeMap_.entrySet() )
+            for( final Map.Entry<AttributeName, Object> entry : removedAttributes_.entrySet() )
             {
                 state.addAttribute( entry.getKey(), entry.getValue() );
             }
@@ -243,8 +243,8 @@ public final class InvertibleCommandAdapter<T>
             }
         }
 
-        addedAttributeSet_ = addedAttributes.isEmpty() ? null : addedAttributes;
-        changedAttributeMap_ = changedAttributes.isEmpty() ? null : changedAttributes;
-        removedAttributeMap_ = removedAttributes.isEmpty() ? null : removedAttributes;
+        addedAttributes_ = addedAttributes.isEmpty() ? null : addedAttributes;
+        changedAttributes_ = changedAttributes.isEmpty() ? null : changedAttributes;
+        removedAttributes_ = removedAttributes.isEmpty() ? null : removedAttributes;
     }
 }

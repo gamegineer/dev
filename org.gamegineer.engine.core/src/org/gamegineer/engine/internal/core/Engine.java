@@ -146,22 +146,22 @@ final class Engine
     }
 
     /**
-     * Indicates the specified attribute change map contains at least one
+     * Indicates the specified attribute change collection contains at least one
      * application attribute change.
      * 
-     * @param attributeChangeMap
-     *        The attribute change map; must not be {@code null}.
+     * @param attributeChanges
+     *        The attribute change collection; must not be {@code null}.
      * 
-     * @return {@code true} if the attribute change map contains at least one
-     *         application attribute change; otherwise {@code false}.
+     * @return {@code true} if the attribute change collection contains at least
+     *         one application attribute change; otherwise {@code false}.
      */
     private static boolean containsApplicationAttributeChange(
         /* @NonNull */
-        final Map<AttributeName, IAttributeChange> attributeChangeMap )
+        final Map<AttributeName, IAttributeChange> attributeChanges )
     {
-        assert attributeChangeMap != null;
+        assert attributeChanges != null;
 
-        for( final AttributeName name : attributeChangeMap.keySet() )
+        for( final AttributeName name : attributeChanges.keySet() )
         {
             if( name.getScope() == Scope.APPLICATION )
             {
@@ -343,7 +343,7 @@ final class Engine
             }
 
             final T result;
-            final Map<AttributeName, IAttributeChange> attributeChangeMap;
+            final Map<AttributeName, IAttributeChange> attributeChanges;
             final boolean addCommandToCommandHistory;
             try
             {
@@ -364,18 +364,18 @@ final class Engine
                     // an out parameter to State.getAttributeChanges.  If that's not possible,
                     // probably have to add an overload that accepts the out parameter to not
                     // require clients to request that information.
-                    attributeChangeMap = state_.getAttributeChanges();
-                    addCommandToCommandHistory = containsApplicationAttributeChange( attributeChangeMap );
-                    if( fireEvents && !attributeChangeMap.isEmpty() )
+                    attributeChanges = state_.getAttributeChanges();
+                    addCommandToCommandHistory = containsApplicationAttributeChange( attributeChanges );
+                    if( fireEvents && !attributeChanges.isEmpty() )
                     {
-                        StateEventMediatorExtension.fireStateChanging( engineContext, attributeChangeMap );
+                        StateEventMediatorExtension.fireStateChanging( engineContext, attributeChanges );
                     }
 
                     state_.commitTransaction();
                 }
                 else
                 {
-                    attributeChangeMap = Collections.emptyMap();
+                    attributeChanges = Collections.emptyMap();
                     addCommandToCommandHistory = false;
                 }
             }
@@ -395,9 +395,9 @@ final class Engine
             if( fireEvents )
             {
                 CommandEventMediatorExtension.fireSuccessfulCommandExecuted( engineContext, command, result );
-                if( !attributeChangeMap.isEmpty() )
+                if( !attributeChanges.isEmpty() )
                 {
-                    StateEventMediatorExtension.fireStateChanged( engineContext, attributeChangeMap );
+                    StateEventMediatorExtension.fireStateChanged( engineContext, attributeChanges );
                 }
             }
 

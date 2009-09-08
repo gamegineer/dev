@@ -106,19 +106,19 @@ final class LoggingProperties
         assert name != null;
 
         // Build a list of all possible ancestor names from nearest to furthest ancestor
-        final List<String> ancestorNameList = new ArrayList<String>();
+        final List<String> ancestorNames = new ArrayList<String>();
         String parentName = name;
         int index = parentName.lastIndexOf( '.' );
         while( index != -1 )
         {
             parentName = parentName.substring( 0, index );
-            ancestorNameList.add( parentName );
+            ancestorNames.add( parentName );
             index = parentName.lastIndexOf( '.' );
         }
 
         // Remove any ancestor name which doesn't have an associated configuration property
         final Set<Object> propertyNames = props_.keySet();
-        for( final Iterator<String> iter = ancestorNameList.iterator(); iter.hasNext(); )
+        for( final Iterator<String> iter = ancestorNames.iterator(); iter.hasNext(); )
         {
             final String ancestorName = iter.next();
             final Pattern pattern = Pattern.compile( String.format( "^%1$s\\.[^.]+$", ancestorName ) ); //$NON-NLS-1$
@@ -138,7 +138,7 @@ final class LoggingProperties
             }
         }
 
-        return ancestorNameList;
+        return ancestorNames;
     }
 
     /**

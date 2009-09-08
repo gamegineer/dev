@@ -66,44 +66,45 @@ public final class MementoTest
     // ======================================================================
 
     /**
-     * Creates an attribute map for a memento.
+     * Creates an attribute collection for a memento.
      * 
      * @param size
-     *        The size of the attribute map; must be greater than or equal to
-     *        zero.
+     *        The size of the attribute collection; must be greater than or
+     *        equal to zero.
      * @param firstIndex
      *        The starting index of the counter that is appended to the name and
      *        value of each attribute; must be greater than or equal to zero.
      * 
-     * @return An attribute map for a memento; never {@code null}.
+     * @return An attribute collection for a memento; never {@code null}.
      */
     /* @NonNull */
-    private static Map<String, Object> createAttributeMap(
+    private static Map<String, Object> createAttributes(
         final int size,
         final int firstIndex )
     {
         assert size >= 0;
         assert firstIndex >= 0;
 
-        final Map<String, Object> attributeMap = new HashMap<String, Object>();
+        final Map<String, Object> attributes = new HashMap<String, Object>();
         for( int index = 0; index < size; ++index )
         {
             final String name = "name" + (index + firstIndex); //$NON-NLS-1$
             final String value = "value" + (index + firstIndex); //$NON-NLS-1$
-            attributeMap.put( name, value );
+            attributes.put( name, value );
         }
-        return attributeMap;
+        return attributes;
     }
 
     /**
-     * Creates an attribute map for the fixture memento.
+     * Creates an attribute collection for the fixture memento.
      * 
-     * @return An attribute map for the fixture memento; never {@code null}.
+     * @return An attribute collection for the fixture memento; never {@code
+     *         null}.
      */
     /* @NonNull */
-    private static Map<String, Object> createFixtureAttributeMap()
+    private static Map<String, Object> createFixtureAttributes()
     {
-        return createAttributeMap( 4, 1 );
+        return createAttributes( 4, 1 );
     }
 
     /**
@@ -116,7 +117,7 @@ public final class MementoTest
     public void setUp()
         throws Exception
     {
-        memento_ = new Memento( createFixtureAttributeMap() );
+        memento_ = new Memento( createFixtureAttributes() );
     }
 
     /**
@@ -134,10 +135,10 @@ public final class MementoTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * attribute map.
+     * attribute collection.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_AttributeMap_Null()
+    public void testConstructor_Attributes_Null()
     {
         new Memento( null );
     }
@@ -150,7 +151,7 @@ public final class MementoTest
     public void testEquals_Equal_NotSame()
     {
         final Memento memento1 = memento_;
-        final Memento memento2 = new Memento( createFixtureAttributeMap() );
+        final Memento memento2 = new Memento( createFixtureAttributes() );
         assertNotSame( memento1, memento2 );
         assertEquals( memento1, memento2 );
         assertEquals( memento2, memento1 ); // symmetric
@@ -178,13 +179,13 @@ public final class MementoTest
 
     /**
      * Ensures the {@code equals} method correctly indicates two mementos whose
-     * attribute map sizes differ are unequal.
+     * attribute collection sizes differ are unequal.
      */
     @Test
     public void testEquals_Unequal_Size()
     {
         final Memento memento1 = memento_;
-        final Memento memento2 = new Memento( createAttributeMap( 3, 1 ) );
+        final Memento memento2 = new Memento( createAttributes( 3, 1 ) );
         assertFalse( memento1.equals( memento2 ) );
     }
 
@@ -196,7 +197,7 @@ public final class MementoTest
     public void testEquals_Unequal_Values()
     {
         final Memento memento1 = memento_;
-        final Memento memento2 = new Memento( createAttributeMap( 4, 2 ) );
+        final Memento memento2 = new Memento( createAttributes( 4, 2 ) );
         assertFalse( memento1.equals( memento2 ) );
     }
 
@@ -207,25 +208,25 @@ public final class MementoTest
     @Test
     public void testGetAttributes()
     {
-        final Map<String, Object> attributeMap = memento_.getAttributes();
-        assertEquals( createFixtureAttributeMap(), attributeMap );
+        final Map<String, Object> attributes = memento_.getAttributes();
+        assertEquals( createFixtureAttributes(), attributes );
     }
 
     /**
-     * Ensures the {@code getAttributes} method returns an empty map when the
-     * memento contains no attributes.
+     * Ensures the {@code getAttributes} method returns an empty collection when
+     * the memento contains no attributes.
      */
     @Test
     public void testGetAttributes_Empty()
     {
         final Memento memento = new Memento( Collections.<String, Object>emptyMap() );
-        final Map<String, Object> attributeMap = memento.getAttributes();
-        assertNotNull( attributeMap );
-        assertTrue( attributeMap.size() == 0 );
+        final Map<String, Object> attributes = memento.getAttributes();
+        assertNotNull( attributes );
+        assertTrue( attributes.size() == 0 );
     }
 
     /**
-     * Ensures the {@code getAttributes} method returns an immutable map.
+     * Ensures the {@code getAttributes} method returns an immutable collection.
      */
     @Test
     public void testGetAttributes_ReturnValue_Immutable()
@@ -241,7 +242,7 @@ public final class MementoTest
     public void testHashCode_Equal()
     {
         final Memento memento1 = memento_;
-        final Memento memento2 = new Memento( createFixtureAttributeMap() );
+        final Memento memento2 = new Memento( createFixtureAttributes() );
         assertNotSame( memento1, memento2 );
         assertEquals( memento1.hashCode(), memento2.hashCode() );
     }

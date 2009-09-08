@@ -68,18 +68,18 @@ public abstract class AbstractMementoTestCase
     /**
      * Creates the memento to be tested.
      * 
-     * @param attributeMap
-     *        The attribute map; must not be {@code null}.
+     * @param attributes
+     *        The attribute collection; must not be {@code null}.
      * 
      * @return The memento to be tested; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code attributeMap} is {@code null}.
+     *         If {@code attributes} is {@code null}.
      */
     /* @NonNull */
     protected abstract IMemento createMemento(
         /* @NonNull */
-        Map<String, Object> attributeMap );
+        Map<String, Object> attributes );
 
     /**
      * Sets up the test fixture.
@@ -91,12 +91,12 @@ public abstract class AbstractMementoTestCase
     public void setUp()
         throws Exception
     {
-        final Map<String, Object> attributeMap = new HashMap<String, Object>();
-        attributeMap.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
-        attributeMap.put( "name4", "value4" ); //$NON-NLS-1$ //$NON-NLS-2$
-        memento_ = createMemento( attributeMap );
+        final Map<String, Object> attributes = new HashMap<String, Object>();
+        attributes.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        attributes.put( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        attributes.put( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
+        attributes.put( "name4", "value4" ); //$NON-NLS-1$ //$NON-NLS-2$
+        memento_ = createMemento( attributes );
         assertNotNull( memento_ );
     }
 
@@ -180,29 +180,30 @@ public abstract class AbstractMementoTestCase
     @Test
     public void testGetAttributeNames()
     {
-        final Set<String> nameSet = memento_.getAttributeNames();
-        assertEquals( 4, nameSet.size() );
-        assertTrue( nameSet.contains( "name1" ) ); //$NON-NLS-1$
-        assertTrue( nameSet.contains( "name2" ) ); //$NON-NLS-1$
-        assertTrue( nameSet.contains( "name3" ) ); //$NON-NLS-1$
-        assertTrue( nameSet.contains( "name4" ) ); //$NON-NLS-1$
+        final Set<String> names = memento_.getAttributeNames();
+        assertEquals( 4, names.size() );
+        assertTrue( names.contains( "name1" ) ); //$NON-NLS-1$
+        assertTrue( names.contains( "name2" ) ); //$NON-NLS-1$
+        assertTrue( names.contains( "name3" ) ); //$NON-NLS-1$
+        assertTrue( names.contains( "name4" ) ); //$NON-NLS-1$
     }
 
     /**
-     * Ensures the {@code getAttributeNames} method returns an empty set when
-     * the memento contains no attributes.
+     * Ensures the {@code getAttributeNames} method returns an empty collection
+     * when the memento contains no attributes.
      */
     @Test
     public void testGetAttributeNames_Empty()
     {
         final IMemento memento = createMemento( Collections.<String, Object>emptyMap() );
-        final Set<String> nameSet = memento.getAttributeNames();
-        assertNotNull( nameSet );
-        assertTrue( nameSet.size() == 0 );
+        final Set<String> names = memento.getAttributeNames();
+        assertNotNull( names );
+        assertTrue( names.size() == 0 );
     }
 
     /**
-     * Ensures the {@code getAttributeNames} method returns an immutable set.
+     * Ensures the {@code getAttributeNames} method returns an immutable
+     * collection.
      */
     @Test
     public void testGetAttributeNames_ReturnValue_Immutable()

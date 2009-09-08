@@ -1,6 +1,6 @@
 /*
  * ConsoleAdvisorTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -50,10 +50,10 @@ public final class ConsoleAdvisorTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * application argument list.
+     * application argument collection.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_AppArgList_Null()
+    public void testConstructor_AppArgs_Null()
     {
         new ConsoleAdvisor( null, Version.emptyVersion );
     }
