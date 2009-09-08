@@ -1,4 +1,4 @@
-#Sat Sep 05 22:26:09 EDT 2009
+#Mon Sep 07 21:56:05 EDT 2009
 /instance/org.eclipse.team.ui/org.eclipse.team.ui.first_time=false
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.product\:https\://bugs.eclipse.org/bugs=ACTF\!AJDT\!ALF\!ATF\!Albireo\!Amalgam\!Aperi\!Apogee\!AspectJ\!BIRT\!BPEL\!Babel\!Buckminster\!CDT\!Cobol\!Community\!Corona\!Cosmos\!DD\!DLTK\!DSDP\!Dali JPA Tools\!Dash\!Data Tools\!ECF\!EMF\!EMFT\!EPF\!EPP\!EPS(EclipseLink)\!ERCP\!Equinox\!GEF\!GMF\!GMT\!Hibachi\!Higgins\!Hyades\!IMP\!JDT\!JSR220-ORM\!JWT\!Java Server Faces\!Kepler\!Linux Distros\!M2M\!M2T\!MDDi\!MDT\!MTJ\!Maynstall\!Modeling\!Mylyn\!NAB\!Nebula\!OFMP\!OHF\!OSEE\!Orbit\!PDE\!PDT\!PTP\!Phoenix\!Photran\!Platform\!RAP\!Riena\!SOA\!SOC\!Spaces\!Subversive\!Swordfish\!TMF\!TPTP ASF\!TPTP Agent Controller\!TPTP Build to Manage\!TPTP Common Logging\!TPTP GLA\!TPTP Line Coverage\!TPTP Log Analyzer\!TPTP Probe Instrumentation\!TPTP Profiling\!TPTP Release Engineering\!TPTP Resource Monitoring\!TPTP Static Analysis\!TPTP Testing\!Target Management\!Tigerstripe\!TmL\!VE\!VTP\!Web Tools\!gEclipse\!z_Archived\!
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.version\:https\://bugs.eclipse.org/bugs\:TPTP\ Static\ Analysis=4.0\!4.0.1\!4.0.1.3\!4.0.2\!4.1\!4.2\!4.2.1\!4.2.1.1\!4.2.2\!4.3\!4.3.1\!4.4\!4.4.0.1\!4.4.0.2\!4.4.0.3\!4.4.1\!4.5\!future\!unspecified\!
@@ -33,6 +33,7 @@
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.target\:https\://bugs.eclipse.org/bugs\:Cobol=---\!
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.comment.clear_blank_lines_in_block_comment=false
 /instance/org.eclipse.jdt.ui/useAnnotationsPrefPage=true
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.indirectStaticAccess=ignore
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.component\:https\://bugs.eclipse.org/bugs\:PDE=API Tools\!Build\!Doc\!Incubators\!UI\!
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.target\:https\://bugs.eclipse.org/bugs\:MTJ=---\!
 /instance/org.eclipse.jdt.ui/formatter_profile=_Gamegineer
@@ -302,7 +303,7 @@
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_before_opening_paren_in_synchronized=do not insert
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_before_comma_in_superinterfaces=do not insert
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_between_empty_parens_in_constructor_declaration=do not insert
-/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.staticFieldSuffixes=
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.staticFieldSuffixes=_
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.version\:https\://bugs.eclipse.org/bugs\:MDDi=unspecified\!
 /configuration/org.eclipse.ui.ide/RECENT_WORKSPACES_PROTOCOL=3
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_after_closing_paren_in_cast=do not insert
@@ -370,6 +371,7 @@
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_after_opening_paren_in_synchronized=insert
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.potentialNullReference=warning
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.version\:https\://bugs.eclipse.org/bugs\:RAP=1.0\!unspecified\!
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.unqualifiedFieldAccess=ignore
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.component\:https\://bugs.eclipse.org/bugs\:TPTP\ GLA=Documentation\!GLA.Model\!Monitor.Execution\!Monitor.UI.GLARules\!
 /configuration/org.eclipse.ui.ide/SHOW_WORKSPACE_SELECTION_DIALOG=false
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.brace_position_for_anonymous_type_declaration=next_line
@@ -520,7 +522,7 @@
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.brace_position_for_enum_declaration=next_line
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.target\:https\://bugs.eclipse.org/bugs\:CDT=---\!1.0 - Release\!1.1.1\!1.2.1\!1.2\!2.0 - Release\!2.0 - Future\!2.0\!2.0.1\!2.0.3\!2.1\!2.1.1\!3.0\!3.0 M4\!3.0 M5\!3.0 M6\!3.0 M7\!3.0 RC1\!3.0 RC2\!3.0 RC3\!3.0 RC4\!3.0.1\!3.1\!3.0.2\!3.1.1\!3.1.2\!3.1.3\!4.0\!4.0 M4\!4.0 M5\!4.0 M6\!4.0 RC0\!4.0 M7\!4.0 RC2\!4.0 RC3\!4.0 RC4\!4.0.1\!4.0.2\!4.0.3\!5.0\!Future\!
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_space_before_semicolon=do not insert
-/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.fieldSuffixes=
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.fieldSuffixes=_
 /instance/org.eclipse.jdt.ui/content_assist_number_of_computers=13
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.codeComplete.localSuffixes=
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.component\:https\://bugs.eclipse.org/bugs\:Nebula=CDateTime\!CompositeTable\!Core\!CTableTree\!CTree\!DateChooser\!FormattedText\!Gallery\!Grid\!PGroup\!PShelf\!
