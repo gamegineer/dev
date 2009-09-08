@@ -1,6 +1,6 @@
 /*
  * AttributeName.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -57,13 +57,13 @@ public final class AttributeName
     // ======================================================================
 
     /** The regex that specifies the format of an attribute name string. */
-    private final static Pattern PATTERN = Pattern.compile( "^\\{(.+)\\}(.+)$" ); //$NON-NLS-1$
+    private static final Pattern PATTERN = Pattern.compile( "^\\{(.+)\\}(.+)$" ); //$NON-NLS-1$
 
     /** The local name of the attribute. */
-    private final String m_localName;
+    private final String localName_;
 
     /** The attribute scope. */
-    private final Scope m_scope;
+    private final Scope scope_;
 
 
     // ======================================================================
@@ -93,8 +93,8 @@ public final class AttributeName
         assertArgumentNotNull( localName, "localName" ); //$NON-NLS-1$
         assertArgumentLegal( !localName.isEmpty(), "localName", Messages.AttributeName_localName_empty ); //$NON-NLS-1$
 
-        m_scope = scope;
-        m_localName = localName;
+        scope_ = scope;
+        localName_ = localName;
     }
 
 
@@ -120,7 +120,7 @@ public final class AttributeName
         }
 
         final AttributeName other = (AttributeName)obj;
-        return (m_scope == other.m_scope) && m_localName.equals( other.m_localName );
+        return (scope_ == other.scope_) && localName_.equals( other.localName_ );
     }
 
     /**
@@ -162,7 +162,7 @@ public final class AttributeName
     /* @NonNull */
     public String getLocalName()
     {
-        return m_localName;
+        return localName_;
     }
 
     /**
@@ -173,7 +173,7 @@ public final class AttributeName
     /* @NonNull */
     public Scope getScope()
     {
-        return m_scope;
+        return scope_;
     }
 
     /*
@@ -183,8 +183,8 @@ public final class AttributeName
     public int hashCode()
     {
         int result = 17;
-        result = result * 31 + m_scope.hashCode();
-        result = result * 31 + m_localName.hashCode();
+        result = result * 31 + scope_.hashCode();
+        result = result * 31 + localName_.hashCode();
         return result;
     }
 
@@ -195,19 +195,20 @@ public final class AttributeName
      * The attribute name string representation is of the form:
      * </p>
      * 
-     * <p> {<i>{@literal <scope-name>}</i>}<i>{@literal <local-name>}</i>
+     * <p>
+     * {<i>{@literal <scope-name>}</i>}<i>{@literal <local-name>}</i>
      * </p>
      * 
      * <p>
      * where <i>scope-name</i> is the value of {@code Scope.toString}.
      * </p>
      * 
-     * @return A string representation of this attribute name; never
-     *         {@code null}.
+     * @return A string representation of this attribute name; never {@code
+     *         null}.
      */
     @Override
     public String toString()
     {
-        return String.format( "{%1$s}%2$s", m_scope, m_localName ); //$NON-NLS-1$
+        return String.format( "{%1$s}%2$s", scope_, localName_ ); //$NON-NLS-1$
     }
 }

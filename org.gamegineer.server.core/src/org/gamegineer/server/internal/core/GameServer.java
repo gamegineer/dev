@@ -53,10 +53,10 @@ final class GameServer
     // ======================================================================
 
     /** The game server configuration. */
-    private final IGameServerConfiguration m_config;
+    private final IGameServerConfiguration config_;
 
     /** The collection of games managed by this server. */
-    private final ConcurrentMap<String, IGame> m_games;
+    private final ConcurrentMap<String, IGame> games_;
 
 
     // ======================================================================
@@ -75,8 +75,8 @@ final class GameServer
     {
         assert gameServerConfig != null;
 
-        m_config = gameServerConfig;
-        m_games = new ConcurrentHashMap<String, IGame>();
+        config_ = gameServerConfig;
+        games_ = new ConcurrentHashMap<String, IGame>();
     }
 
 
@@ -94,7 +94,7 @@ final class GameServer
         assertArgumentNotNull( gameConfig, "gameConfig" ); //$NON-NLS-1$
 
         final IGame game = GameFactory.createGame( gameConfig );
-        if( m_games.putIfAbsent( game.getId(), game ) != null )
+        if( games_.putIfAbsent( game.getId(), game ) != null )
         {
             throw new GameConfigurationException( Messages.GameServer_createGame_duplicateGameId( game.getId() ) );
         }
@@ -107,8 +107,8 @@ final class GameServer
      * @param gameServerConfig
      *        The game server configuration; must not be {@code null}.
      * 
-     * @return A new instance of the {@code GameServer} class; never
-     *         {@code null}.
+     * @return A new instance of the {@code GameServer} class; never {@code
+     *         null}.
      * 
      * @throws org.gamegineer.server.core.GameServerConfigurationException
      *         If an error occurs while creating the game server.
@@ -141,7 +141,7 @@ final class GameServer
     {
         assertArgumentNotNull( gameId, "gameId" ); //$NON-NLS-1$
 
-        return m_games.get( gameId );
+        return games_.get( gameId );
     }
 
     /*
@@ -168,7 +168,7 @@ final class GameServer
      */
     public Collection<IGameSystem> getGameSystems()
     {
-        return m_config.getGameSystemSource().getGameSystems();
+        return config_.getGameSystemSource().getGameSystems();
     }
 
     /*
@@ -176,7 +176,7 @@ final class GameServer
      */
     public Collection<IGame> getGames()
     {
-        return new ArrayList<IGame>( m_games.values() );
+        return new ArrayList<IGame>( games_.values() );
     }
 
     /*
@@ -184,6 +184,6 @@ final class GameServer
      */
     public String getName()
     {
-        return m_config.getName();
+        return config_.getName();
     }
 }

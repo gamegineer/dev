@@ -47,7 +47,7 @@ public final class StateManagerExtension
     // ======================================================================
 
     /** The state manager to which all operations are delegated. */
-    private final IStateManager m_delegate;
+    private final IStateManager delegate_;
 
 
     // ======================================================================
@@ -72,7 +72,7 @@ public final class StateManagerExtension
 
         assertArgumentNotNull( delegate, "delegate" ); //$NON-NLS-1$
 
-        m_delegate = delegate;
+        delegate_ = delegate;
     }
 
 
@@ -89,7 +89,7 @@ public final class StateManagerExtension
     /* @NonNull */
     IStateManager getDelegate()
     {
-        return m_delegate;
+        return delegate_;
     }
 
     /**
@@ -104,7 +104,7 @@ public final class StateManagerExtension
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertExtensionStarted();
 
-        return m_delegate.getMemento( context );
+        return delegate_.getMemento( context );
     }
 
     /**
@@ -123,6 +123,6 @@ public final class StateManagerExtension
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
         assertExtensionStarted();
 
-        m_delegate.setMemento( context, memento );
+        delegate_.setMemento( context, memento );
     }
 }

@@ -45,7 +45,7 @@ public final class CommandEventMediatorExtensionTest
     // ======================================================================
 
     /** The command event mediator extension under test in the fixture. */
-    private CommandEventMediatorExtension m_extension;
+    private CommandEventMediatorExtension extension_;
 
 
     // ======================================================================
@@ -53,8 +53,8 @@ public final class CommandEventMediatorExtensionTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code CommandEventMediatorExtensionTest} class.
+     * Initializes a new instance of the {@code
+     * CommandEventMediatorExtensionTest} class.
      */
     public CommandEventMediatorExtensionTest()
     {
@@ -76,7 +76,7 @@ public final class CommandEventMediatorExtensionTest
     public void setUp()
         throws Exception
     {
-        m_extension = new CommandEventMediatorExtension();
+        extension_ = new CommandEventMediatorExtension();
     }
 
     /**
@@ -89,7 +89,7 @@ public final class CommandEventMediatorExtensionTest
     public void tearDown()
         throws Exception
     {
-        m_extension = null;
+        extension_ = null;
     }
 
     /**
@@ -99,7 +99,7 @@ public final class CommandEventMediatorExtensionTest
     @Test( expected = IllegalStateException.class )
     public void testAddCommandListener_ExtensionNotStarted()
     {
-        m_extension.addCommandListener( createDummy( IEngineContext.class ), createDummy( ICommandListener.class ) );
+        extension_.addCommandListener( createDummy( IEngineContext.class ), createDummy( ICommandListener.class ) );
     }
 
     /**
@@ -235,6 +235,6 @@ public final class CommandEventMediatorExtensionTest
     public void testRemoveCommandListener_ExtensionNotStarted()
         throws Exception
     {
-        m_extension.removeCommandListener( createDummy( IEngineContext.class ), createDummy( ICommandListener.class ) );
+        extension_.removeCommandListener( createDummy( IEngineContext.class ), createDummy( ICommandListener.class ) );
     }
 }

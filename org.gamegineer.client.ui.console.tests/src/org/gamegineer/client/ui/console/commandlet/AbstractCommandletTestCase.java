@@ -45,13 +45,13 @@ public abstract class AbstractCommandletTestCase
     // ======================================================================
 
     /** The commandlet under test in the fixture. */
-    private ICommandlet m_commandlet;
+    private ICommandlet commandlet_;
 
     /** A default game client for use in the fixture. */
-    private IGameClient m_defaultGameClient;
+    private IGameClient defaultGameClient_;
 
     /** A default statelet for use in the fixture. */
-    private IStatelet m_defaultStatelet;
+    private IStatelet defaultStatelet_;
 
 
     // ======================================================================
@@ -131,7 +131,7 @@ public abstract class AbstractCommandletTestCase
         assertArgumentNotNull( console, "console" ); //$NON-NLS-1$
         assertArgumentNotNull( args, "args" ); //$NON-NLS-1$
 
-        return new FakeCommandletContext( console, m_defaultStatelet, m_defaultGameClient, args );
+        return new FakeCommandletContext( console, defaultStatelet_, defaultGameClient_, args );
     }
 
     /**
@@ -142,8 +142,8 @@ public abstract class AbstractCommandletTestCase
     /* @NonNull */
     protected final ICommandlet getCommandlet()
     {
-        assertNotNull( m_commandlet );
-        return m_commandlet;
+        assertNotNull( commandlet_ );
+        return commandlet_;
     }
 
     /**
@@ -156,10 +156,10 @@ public abstract class AbstractCommandletTestCase
     public void setUp()
         throws Exception
     {
-        m_defaultStatelet = new FakeStatelet();
-        m_defaultGameClient = GameClientFactory.createGameClient( Configurations.createGameClientConfiguration() );
-        m_commandlet = createCommandlet();
-        assertNotNull( m_commandlet );
+        defaultStatelet_ = new FakeStatelet();
+        defaultGameClient_ = GameClientFactory.createGameClient( Configurations.createGameClientConfiguration() );
+        commandlet_ = createCommandlet();
+        assertNotNull( commandlet_ );
     }
 
     /**
@@ -172,9 +172,9 @@ public abstract class AbstractCommandletTestCase
     public void tearDown()
         throws Exception
     {
-        m_commandlet = null;
-        m_defaultGameClient = null;
-        m_defaultStatelet = null;
+        commandlet_ = null;
+        defaultGameClient_ = null;
+        defaultStatelet_ = null;
     }
 
     /**
@@ -188,6 +188,6 @@ public abstract class AbstractCommandletTestCase
     public void testExecute_Context_Null()
         throws Exception
     {
-        m_commandlet.execute( null );
+        commandlet_.execute( null );
     }
 }

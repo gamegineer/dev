@@ -48,7 +48,7 @@ public final class XmlGameSystemUiExtensionFactoryTest
      * The XML game system user interface extension factory under test in the
      * fixture.
      */
-    private XmlGameSystemUiExtensionFactory m_factory;
+    private XmlGameSystemUiExtensionFactory factory_;
 
 
     // ======================================================================
@@ -56,8 +56,8 @@ public final class XmlGameSystemUiExtensionFactoryTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code XmlGameSystemUiExtensionFactoryTest} class.
+     * Initializes a new instance of the {@code
+     * XmlGameSystemUiExtensionFactoryTest} class.
      */
     public XmlGameSystemUiExtensionFactoryTest()
     {
@@ -79,7 +79,7 @@ public final class XmlGameSystemUiExtensionFactoryTest
     public void setUp()
         throws Exception
     {
-        m_factory = new XmlGameSystemUiExtensionFactory();
+        factory_ = new XmlGameSystemUiExtensionFactory();
     }
 
     /**
@@ -92,7 +92,7 @@ public final class XmlGameSystemUiExtensionFactoryTest
     public void tearDown()
         throws Exception
     {
-        m_factory = null;
+        factory_ = null;
     }
 
     /**
@@ -166,7 +166,7 @@ public final class XmlGameSystemUiExtensionFactoryTest
     public void testSetInitializationData_Config_Null()
         throws Exception
     {
-        m_factory.setInitializationData( null, "propertyName", new Object() ); //$NON-NLS-1$
+        factory_.setInitializationData( null, "propertyName", new Object() ); //$NON-NLS-1$
     }
 
     /**
@@ -180,7 +180,7 @@ public final class XmlGameSystemUiExtensionFactoryTest
     public void testSetInitializationData_PropertyName_Null()
         throws Exception
     {
-        m_factory.setInitializationData( createDummy( IConfigurationElement.class ), null, new Object() );
+        factory_.setInitializationData( createDummy( IConfigurationElement.class ), null, new Object() );
     }
 
 
@@ -189,8 +189,8 @@ public final class XmlGameSystemUiExtensionFactoryTest
     // ======================================================================
 
     /**
-     * A class for transparently accessing inaccessible members of the
-     * {@code XmlGameSystemUiExtensionFactory} class for testing purposes.
+     * A class for transparently accessing inaccessible members of the {@code
+     * XmlGameSystemUiExtensionFactory} class for testing purposes.
      */
     private static final class XmlGameSystemUiExtensionFactoryFacade
     {
@@ -199,8 +199,8 @@ public final class XmlGameSystemUiExtensionFactoryTest
         // ==================================================================
 
         /**
-         * Initializes a new instance of the
-         * {@code XmlGameSystemUiExtensionFactoryFacade} class.
+         * Initializes a new instance of the {@code
+         * XmlGameSystemUiExtensionFactoryFacade} class.
          */
         private XmlGameSystemUiExtensionFactoryFacade()
         {
@@ -215,8 +215,8 @@ public final class XmlGameSystemUiExtensionFactoryTest
         /**
          * Accessible facade for the {@code ATTR_PATH} class field.
          * 
-         * @return The value of the {@code ATTR_PATH} class field; never
-         *         {@code null}.
+         * @return The value of the {@code ATTR_PATH} class field; never {@code
+         *         null}.
          */
         /* @NonNull */
         static String ATTR_PATH()

@@ -48,7 +48,7 @@ public final class CommandHistoryTest
     // ======================================================================
 
     /** The command history under test in the fixture. */
-    private CommandHistory m_history;
+    private CommandHistory history_;
 
 
     // ======================================================================
@@ -78,10 +78,10 @@ public final class CommandHistoryTest
     public void setUp()
         throws Exception
     {
-        m_history = new CommandHistory();
-        m_history.add( new MockInvertibleCommand<Void>(), new FakeCommandContext() );
-        m_history.add( new MockInvertibleCommand<Void>(), new FakeCommandContext() );
-        m_history.add( new MockInvertibleCommand<Void>(), new FakeCommandContext() );
+        history_ = new CommandHistory();
+        history_.add( new MockInvertibleCommand<Void>(), new FakeCommandContext() );
+        history_.add( new MockInvertibleCommand<Void>(), new FakeCommandContext() );
+        history_.add( new MockInvertibleCommand<Void>(), new FakeCommandContext() );
     }
 
     /**
@@ -94,7 +94,7 @@ public final class CommandHistoryTest
     public void tearDown()
         throws Exception
     {
-        m_history = null;
+        history_ = null;
     }
 
     /**
@@ -119,7 +119,7 @@ public final class CommandHistoryTest
     @Test( expected = AssertionError.class )
     public void testAddWithCommand_Command_Null()
     {
-        m_history.add( null, createDummy( ICommandContext.class ) );
+        history_.add( null, createDummy( ICommandContext.class ) );
     }
 
     /**
@@ -129,7 +129,7 @@ public final class CommandHistoryTest
     @Test( expected = AssertionError.class )
     public void testAddWithCommand_CommandContext_Null()
     {
-        m_history.add( createDummy( IInvertibleCommand.class ), null );
+        history_.add( createDummy( IInvertibleCommand.class ), null );
     }
 
     /**
@@ -139,12 +139,12 @@ public final class CommandHistoryTest
     @Test
     public void testAddWithCommand_UndoHistory_Cleared()
     {
-        m_history.undo();
-        assertTrue( m_history.canRedo() );
+        history_.undo();
+        assertTrue( history_.canRedo() );
 
-        m_history.add( new MockInvertibleCommand<Void>(), new FakeCommandContext() );
+        history_.add( new MockInvertibleCommand<Void>(), new FakeCommandContext() );
 
-        assertFalse( m_history.canRedo() );
+        assertFalse( history_.canRedo() );
     }
 
     /**
@@ -169,7 +169,7 @@ public final class CommandHistoryTest
     @Test( expected = AssertionError.class )
     public void testAddWithEntry_Entry_Null()
     {
-        m_history.add( null );
+        history_.add( null );
     }
 
     /**
@@ -179,12 +179,12 @@ public final class CommandHistoryTest
     @Test
     public void testAddWithEntry_UndoHistory_Cleared()
     {
-        m_history.undo();
-        assertTrue( m_history.canRedo() );
+        history_.undo();
+        assertTrue( history_.canRedo() );
 
-        m_history.add( new CommandHistory.Entry( new MockInvertibleCommand<Void>(), new FakeCommandContext() ) );
+        history_.add( new CommandHistory.Entry( new MockInvertibleCommand<Void>(), new FakeCommandContext() ) );
 
-        assertFalse( m_history.canRedo() );
+        assertFalse( history_.canRedo() );
     }
 
     /**
@@ -194,9 +194,9 @@ public final class CommandHistoryTest
     @Test
     public void testCanRedo_Redo_Allowed()
     {
-        m_history.undo();
+        history_.undo();
 
-        assertTrue( m_history.canRedo() );
+        assertTrue( history_.canRedo() );
     }
 
     /**
@@ -206,7 +206,7 @@ public final class CommandHistoryTest
     @Test
     public void testCanRedo_Redo_Disallowed()
     {
-        assertFalse( m_history.canRedo() );
+        assertFalse( history_.canRedo() );
     }
 
     /**
@@ -216,7 +216,7 @@ public final class CommandHistoryTest
     @Test
     public void testCanUndo_Undo_Allowed()
     {
-        assertTrue( m_history.canUndo() );
+        assertTrue( history_.canUndo() );
     }
 
     /**
@@ -255,7 +255,7 @@ public final class CommandHistoryTest
     @Test
     public void testEquals_Object_Null()
     {
-        assertFalse( m_history.equals( null ) );
+        assertFalse( history_.equals( null ) );
     }
 
     /**
@@ -279,7 +279,7 @@ public final class CommandHistoryTest
     @Test
     public void testEquals_Object_WrongType()
     {
-        assertFalse( m_history.equals( new Object() ) );
+        assertFalse( history_.equals( new Object() ) );
     }
 
     /**
@@ -301,7 +301,7 @@ public final class CommandHistoryTest
     @Test( expected = AssertionError.class )
     public void testGetRedoEntry_Redo_Disallowed()
     {
-        m_history.getRedoEntry();
+        history_.getRedoEntry();
     }
 
     /**
@@ -363,7 +363,7 @@ public final class CommandHistoryTest
     @Test( expected = AssertionError.class )
     public void testRedo_Redo_Disallowed()
     {
-        m_history.redo();
+        history_.redo();
     }
 
     /**
@@ -372,18 +372,18 @@ public final class CommandHistoryTest
     @Test
     public void testReset()
     {
-        final int newEntriesSize = m_history.getEntries().size() / 2;
+        final int newEntriesSize = history_.getEntries().size() / 2;
         final List<CommandHistory.Entry> newEntries = new ArrayList<CommandHistory.Entry>();
         for( int index = 0; index < newEntriesSize; ++index )
         {
             newEntries.add( new CommandHistory.Entry( new MockInvertibleCommand<Void>(), new FakeCommandContext() ) );
         }
 
-        m_history.reset( newEntries );
+        history_.reset( newEntries );
 
-        assertEquals( newEntries, m_history.getEntries() );
-        assertFalse( m_history.canRedo() );
-        assertTrue( m_history.canUndo() );
+        assertEquals( newEntries, history_.getEntries() );
+        assertFalse( history_.canRedo() );
+        assertTrue( history_.canUndo() );
     }
 
     /**
@@ -393,7 +393,7 @@ public final class CommandHistoryTest
     @Test( expected = AssertionError.class )
     public void testReset_Entries_Null()
     {
-        m_history.reset( null );
+        history_.reset( null );
     }
 
     /**

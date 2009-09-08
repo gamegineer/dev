@@ -47,7 +47,7 @@ public abstract class AbstractGameServerTestCase
     // ======================================================================
 
     /** The game server under test in the fixture. */
-    private IGameServer m_gameServer;
+    private IGameServer gameServer_;
 
 
     // ======================================================================
@@ -95,8 +95,8 @@ public abstract class AbstractGameServerTestCase
     /* @NonNull */
     protected final IGameServer getGameServer()
     {
-        assertNotNull( m_gameServer );
-        return m_gameServer;
+        assertNotNull( gameServer_ );
+        return gameServer_;
     }
 
     /**
@@ -109,8 +109,8 @@ public abstract class AbstractGameServerTestCase
     public void setUp()
         throws Exception
     {
-        m_gameServer = createGameServer( Configurations.createGameServerConfiguration() );
-        assertNotNull( m_gameServer );
+        gameServer_ = createGameServer( Configurations.createGameServerConfiguration() );
+        assertNotNull( gameServer_ );
     }
 
     /**
@@ -123,7 +123,7 @@ public abstract class AbstractGameServerTestCase
     public void tearDown()
         throws Exception
     {
-        m_gameServer = null;
+        gameServer_ = null;
     }
 
     /**
@@ -138,7 +138,7 @@ public abstract class AbstractGameServerTestCase
     public void testCreateGame_GameConfig_Illegal()
         throws Exception
     {
-        m_gameServer.createGame( org.gamegineer.game.core.config.Configurations.createIllegalGameConfiguration() );
+        gameServer_.createGame( org.gamegineer.game.core.config.Configurations.createIllegalGameConfiguration() );
     }
 
     /**
@@ -155,10 +155,10 @@ public abstract class AbstractGameServerTestCase
     {
         final String gameId = "game-id"; //$NON-NLS-1$
         final IGameConfiguration gameConfig1 = org.gamegineer.game.core.config.Configurations.createGameConfiguration( gameId );
-        m_gameServer.createGame( gameConfig1 );
+        gameServer_.createGame( gameConfig1 );
         final IGameConfiguration gameConfig2 = org.gamegineer.game.core.config.Configurations.createGameConfiguration( gameId );
 
-        m_gameServer.createGame( gameConfig2 );
+        gameServer_.createGame( gameConfig2 );
     }
 
     /**
@@ -172,7 +172,7 @@ public abstract class AbstractGameServerTestCase
     public void testCreateGame_GameConfig_Legal()
         throws Exception
     {
-        assertNotNull( m_gameServer.createGame( org.gamegineer.game.core.config.Configurations.createMinimalGameConfiguration() ) );
+        assertNotNull( gameServer_.createGame( org.gamegineer.game.core.config.Configurations.createMinimalGameConfiguration() ) );
     }
 
     /**
@@ -186,7 +186,7 @@ public abstract class AbstractGameServerTestCase
     public void testCreateGame_GameConfig_Null()
         throws Exception
     {
-        m_gameServer.createGame( null );
+        gameServer_.createGame( null );
     }
 
     /**
@@ -196,7 +196,7 @@ public abstract class AbstractGameServerTestCase
     @Test
     public void testGetGame_GameId_Absent()
     {
-        assertNull( m_gameServer.getGame( "unknownId" ) ); //$NON-NLS-1$
+        assertNull( gameServer_.getGame( "unknownId" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -206,7 +206,7 @@ public abstract class AbstractGameServerTestCase
     @Test( expected = NullPointerException.class )
     public void testGetGame_GameId_Null()
     {
-        m_gameServer.getGame( null );
+        gameServer_.getGame( null );
     }
 
     /**
@@ -216,7 +216,7 @@ public abstract class AbstractGameServerTestCase
     @Test
     public void testGetGameSystem_GameSystemId_Absent()
     {
-        assertNull( m_gameServer.getGameSystem( "unknownId" ) ); //$NON-NLS-1$
+        assertNull( gameServer_.getGameSystem( "unknownId" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -226,7 +226,7 @@ public abstract class AbstractGameServerTestCase
     @Test( expected = NullPointerException.class )
     public void testGetGameSystem_GameSystemId_Null()
     {
-        m_gameServer.getGameSystem( null );
+        gameServer_.getGameSystem( null );
     }
 
     /**
@@ -236,12 +236,12 @@ public abstract class AbstractGameServerTestCase
     @Test
     public void testGetGameSystems_ReturnValue_Copy()
     {
-        final Collection<IGameSystem> gameSystems = m_gameServer.getGameSystems();
+        final Collection<IGameSystem> gameSystems = gameServer_.getGameSystems();
         final int expectedGameSystemsSize = gameSystems.size();
 
         gameSystems.add( createDummy( IGameSystem.class ) );
 
-        assertEquals( expectedGameSystemsSize, m_gameServer.getGameSystems().size() );
+        assertEquals( expectedGameSystemsSize, gameServer_.getGameSystems().size() );
     }
 
     /**
@@ -250,7 +250,7 @@ public abstract class AbstractGameServerTestCase
     @Test
     public void testGetGameSystems_ReturnValue_NonNull()
     {
-        assertNotNull( m_gameServer.getGameSystems() );
+        assertNotNull( gameServer_.getGameSystems() );
     }
 
     /**
@@ -260,12 +260,12 @@ public abstract class AbstractGameServerTestCase
     @Test
     public void testGetGames_ReturnValue_Copy()
     {
-        final Collection<IGame> games = m_gameServer.getGames();
+        final Collection<IGame> games = gameServer_.getGames();
         final int expectedGamesSize = games.size();
 
         games.add( createDummy( IGame.class ) );
 
-        assertEquals( expectedGamesSize, m_gameServer.getGames().size() );
+        assertEquals( expectedGamesSize, gameServer_.getGames().size() );
     }
 
     /**
@@ -274,7 +274,7 @@ public abstract class AbstractGameServerTestCase
     @Test
     public void testGetGames_ReturnValue_NonNull()
     {
-        assertNotNull( m_gameServer.getGames() );
+        assertNotNull( gameServer_.getGames() );
     }
 
     /**
@@ -283,6 +283,6 @@ public abstract class AbstractGameServerTestCase
     @Test
     public void testGetName_ReturnValue_NonNull()
     {
-        assertNotNull( m_gameServer.getName() );
+        assertNotNull( gameServer_.getName() );
     }
 }

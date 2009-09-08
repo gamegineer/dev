@@ -45,7 +45,7 @@ public final class ThreadPrincipals
     // ======================================================================
 
     /** The thread user principal. */
-    private static final ThreadLocal<Principal> c_principal = new ThreadLocal<Principal>()
+    private static final ThreadLocal<Principal> principal_ = new ThreadLocal<Principal>()
     {
         @Override
         protected Principal initialValue()
@@ -94,7 +94,7 @@ public final class ThreadPrincipals
     /* @NonNull */
     public static Principal getUserPrincipal()
     {
-        return c_principal.get();
+        return principal_.get();
     }
 
     /**
@@ -112,6 +112,6 @@ public final class ThreadPrincipals
     {
         assertArgumentNotNull( principal, "principal" ); //$NON-NLS-1$
 
-        c_principal.set( principal );
+        principal_.set( principal );
     }
 }

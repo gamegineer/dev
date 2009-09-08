@@ -61,7 +61,7 @@ public abstract class AbstractGameTestCase<T extends IGame>
     // ======================================================================
 
     /** The game configuration for the game under test. */
-    private IGameConfiguration m_gameConfig;
+    private IGameConfiguration gameConfig_;
 
 
     // ======================================================================
@@ -88,8 +88,8 @@ public abstract class AbstractGameTestCase<T extends IGame>
     protected final T createEngine()
         throws Exception
     {
-        assertNotNull( m_gameConfig );
-        return createGame( m_gameConfig );
+        assertNotNull( gameConfig_ );
+        return createGame( gameConfig_ );
     }
 
     /*
@@ -187,7 +187,7 @@ public abstract class AbstractGameTestCase<T extends IGame>
     public void setUp()
         throws Exception
     {
-        m_gameConfig = Configurations.createUniqueGameConfiguration();
+        gameConfig_ = Configurations.createUniqueGameConfiguration();
 
         super.setUp();
     }
@@ -202,7 +202,7 @@ public abstract class AbstractGameTestCase<T extends IGame>
     {
         super.tearDown();
 
-        m_gameConfig = null;
+        gameConfig_ = null;
     }
 
     /*
@@ -224,7 +224,7 @@ public abstract class AbstractGameTestCase<T extends IGame>
     @Test
     public void testGetId()
     {
-        assertEquals( m_gameConfig.getId(), getGame().getId() );
+        assertEquals( gameConfig_.getId(), getGame().getId() );
     }
 
     /**
@@ -233,7 +233,7 @@ public abstract class AbstractGameTestCase<T extends IGame>
     @Test
     public void testGetName()
     {
-        assertEquals( m_gameConfig.getName(), getGame().getName() );
+        assertEquals( gameConfig_.getName(), getGame().getName() );
     }
 
     /**
@@ -242,7 +242,7 @@ public abstract class AbstractGameTestCase<T extends IGame>
     @Test
     public void testGetSystemId()
     {
-        assertEquals( m_gameConfig.getSystem().getId(), getGame().getSystemId() );
+        assertEquals( gameConfig_.getSystem().getId(), getGame().getSystemId() );
     }
 
     /**

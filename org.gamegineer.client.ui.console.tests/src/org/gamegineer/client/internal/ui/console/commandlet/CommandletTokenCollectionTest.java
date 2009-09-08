@@ -43,7 +43,7 @@ public final class CommandletTokenCollectionTest
     // ======================================================================
 
     /** The commandlet token collection under test in the fixture. */
-    private CommandletTokenCollection m_collection;
+    private CommandletTokenCollection collection_;
 
 
     // ======================================================================
@@ -77,7 +77,7 @@ public final class CommandletTokenCollectionTest
         final List<String> args = new ArrayList<String>();
         args.add( "arg1" ); //$NON-NLS-1$
         args.add( "arg2" ); //$NON-NLS-1$
-        m_collection = new CommandletTokenCollection( "name", args ); //$NON-NLS-1$
+        collection_ = new CommandletTokenCollection( "name", args ); //$NON-NLS-1$
     }
 
     /**
@@ -90,7 +90,7 @@ public final class CommandletTokenCollectionTest
     public void tearDown()
         throws Exception
     {
-        m_collection = null;
+        collection_ = null;
     }
 
     /**
@@ -142,7 +142,7 @@ public final class CommandletTokenCollectionTest
     @Test
     public void testGetArguments_ReturnValue_Immutable()
     {
-        assertImmutableCollection( m_collection.getArguments() );
+        assertImmutableCollection( collection_.getArguments() );
     }
 
     /**
@@ -151,7 +151,7 @@ public final class CommandletTokenCollectionTest
     @Test
     public void testGetArguments_ReturnValue_NonNull()
     {
-        assertNotNull( m_collection.getArguments() );
+        assertNotNull( collection_.getArguments() );
     }
 
     /**
@@ -160,6 +160,6 @@ public final class CommandletTokenCollectionTest
     @Test
     public void testGetName_ReturnValue_NonNull()
     {
-        assertNotNull( m_collection.getName() );
+        assertNotNull( collection_.getName() );
     }
 }

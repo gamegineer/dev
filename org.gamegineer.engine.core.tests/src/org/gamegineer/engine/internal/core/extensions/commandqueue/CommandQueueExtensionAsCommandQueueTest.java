@@ -47,8 +47,8 @@ public final class CommandQueueExtensionAsCommandQueueTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code CommandQueueExtensionAsCommandQueueTest} class.
+     * Initializes a new instance of the {@code
+     * CommandQueueExtensionAsCommandQueueTest} class.
      */
     public CommandQueueExtensionAsCommandQueueTest()
     {
@@ -108,7 +108,7 @@ public final class CommandQueueExtensionAsCommandQueueTest
          * The executor service used to execute commands submitted to this
          * queue.
          */
-        private final ExecutorService m_executorService;
+        private final ExecutorService executorService_;
 
 
         // ==================================================================
@@ -120,7 +120,7 @@ public final class CommandQueueExtensionAsCommandQueueTest
          */
         FakeCommandQueue()
         {
-            m_executorService = Executors.newSingleThreadExecutor();
+            executorService_ = Executors.newSingleThreadExecutor();
         }
 
 
@@ -133,7 +133,7 @@ public final class CommandQueueExtensionAsCommandQueueTest
          */
         void shutdown()
         {
-            m_executorService.shutdown();
+            executorService_.shutdown();
         }
 
         /*
@@ -157,7 +157,7 @@ public final class CommandQueueExtensionAsCommandQueueTest
 
             try
             {
-                return m_executorService.submit( callable );
+                return executorService_.submit( callable );
             }
             catch( final RejectedExecutionException e )
             {

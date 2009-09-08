@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractStateEventTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,7 +39,7 @@ public abstract class AbstractAbstractStateEventTestCase
     // ======================================================================
 
     /** The state event under test in the fixture. */
-    private StateEvent m_event;
+    private StateEvent event_;
 
 
     // ======================================================================
@@ -47,8 +47,8 @@ public abstract class AbstractAbstractStateEventTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractAbstractStateEventTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractAbstractStateEventTestCase} class.
      */
     protected AbstractAbstractStateEventTestCase()
     {
@@ -78,8 +78,8 @@ public abstract class AbstractAbstractStateEventTestCase
     public void setUp()
         throws Exception
     {
-        m_event = createStateEvent();
-        assertNotNull( m_event );
+        event_ = createStateEvent();
+        assertNotNull( event_ );
     }
 
     /**
@@ -92,16 +92,16 @@ public abstract class AbstractAbstractStateEventTestCase
     public void tearDown()
         throws Exception
     {
-        m_event = null;
+        event_ = null;
     }
 
     /**
-     * Ensures the {@code getSource} method returns the same object as
-     * {@code getEngineContext}.
+     * Ensures the {@code getSource} method returns the same object as {@code
+     * getEngineContext}.
      */
     @Test
     public void testGetSource_ReturnValue_SameEngineContext()
     {
-        assertSame( m_event.getEngineContext(), m_event.getSource() );
+        assertSame( event_.getEngineContext(), event_.getSource() );
     }
 }

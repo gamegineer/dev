@@ -239,10 +239,10 @@ public final class ConnectServerCommandlet
         // ==================================================================
 
         /** The connection properties. */
-        private final Map<String, String> m_properties;
+        private final Map<String, String> properties_;
 
         /** The connection type. */
-        private final String m_type;
+        private final String type_;
 
 
         // ==================================================================
@@ -255,8 +255,8 @@ public final class ConnectServerCommandlet
          * @param type
          *        The connection type; must not be {@code null}.
          * @param properties
-         *        The connection properties; must not be {@code null}. Note
-         *        that no copy of this collection is made.
+         *        The connection properties; must not be {@code null}. Note that
+         *        no copy of this collection is made.
          */
         ConnectionDescriptor(
             /* @NonNull */
@@ -267,8 +267,8 @@ public final class ConnectServerCommandlet
             assert type != null;
             assert properties != null;
 
-            m_type = type;
-            m_properties = properties;
+            type_ = type;
+            properties_ = properties;
         }
 
 
@@ -292,7 +292,7 @@ public final class ConnectServerCommandlet
         {
             assert name != null;
 
-            return m_properties.get( name );
+            return properties_.get( name );
         }
 
         /**
@@ -303,7 +303,7 @@ public final class ConnectServerCommandlet
         /* @NonNull */
         String getType()
         {
-            return m_type;
+            return type_;
         }
     }
 }

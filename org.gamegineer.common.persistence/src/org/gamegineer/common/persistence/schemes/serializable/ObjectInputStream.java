@@ -1,6 +1,6 @@
 /*
  * ObjectInputStream.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,7 +48,7 @@ public final class ObjectInputStream
     // ======================================================================
 
     /** The platform adapter manager. */
-    private final IAdapterManager m_adapterManager;
+    private final IAdapterManager adapterManager_;
 
 
     // ======================================================================
@@ -75,7 +75,7 @@ public final class ObjectInputStream
     {
         super( in );
 
-        m_adapterManager = Services.getDefault().getAdapterManager();
+        adapterManager_ = Services.getDefault().getAdapterManager();
 
         enableResolveObject( true );
     }
@@ -93,7 +93,7 @@ public final class ObjectInputStream
         final Object obj )
         throws IOException
     {
-        final IPersistenceDelegate delegate = (IPersistenceDelegate)m_adapterManager.getAdapter( obj, IPersistenceDelegate.class );
+        final IPersistenceDelegate delegate = (IPersistenceDelegate)adapterManager_.getAdapter( obj, IPersistenceDelegate.class );
         if( delegate != null )
         {
             return delegate.resolveObject( obj );

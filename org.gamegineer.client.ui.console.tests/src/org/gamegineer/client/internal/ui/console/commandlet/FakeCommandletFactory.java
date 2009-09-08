@@ -1,6 +1,6 @@
 /*
  * FakeCommandletFactory.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -50,7 +50,7 @@ public final class FakeCommandletFactory
     // ======================================================================
 
     /** The collection of commandlet class names provided by this factory. */
-    private final Set<String> m_commandletClassNames;
+    private final Set<String> commandletClassNames_;
 
 
     // ======================================================================
@@ -73,9 +73,9 @@ public final class FakeCommandletFactory
     {
         assertArgumentNotNull( commandletClassNames, "commandletClassNames" ); //$NON-NLS-1$
 
-        m_commandletClassNames = new HashSet<String>( commandletClassNames );
-        SupportedClassNamesAttribute.INSTANCE.setValue( this, m_commandletClassNames );
-        SupportedCommandletClassNamesAttribute.INSTANCE.setValue( this, m_commandletClassNames );
+        commandletClassNames_ = new HashSet<String>( commandletClassNames );
+        SupportedClassNamesAttribute.INSTANCE.setValue( this, commandletClassNames_ );
+        SupportedCommandletClassNamesAttribute.INSTANCE.setValue( this, commandletClassNames_ );
     }
 
 

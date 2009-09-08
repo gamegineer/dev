@@ -39,7 +39,7 @@ public abstract class AbstractGameConfigurationTestCase
     // ======================================================================
 
     /** The game configuration under test in the fixture. */
-    private IGameConfiguration m_config;
+    private IGameConfiguration config_;
 
 
     // ======================================================================
@@ -82,8 +82,8 @@ public abstract class AbstractGameConfigurationTestCase
     public void setUp()
         throws Exception
     {
-        m_config = createGameConfiguration();
-        assertNotNull( m_config );
+        config_ = createGameConfiguration();
+        assertNotNull( config_ );
     }
 
     /**
@@ -96,7 +96,7 @@ public abstract class AbstractGameConfigurationTestCase
     public void tearDown()
         throws Exception
     {
-        m_config = null;
+        config_ = null;
     }
 
     /**
@@ -105,7 +105,7 @@ public abstract class AbstractGameConfigurationTestCase
     @Test
     public void testGetId_ReturnValue_NonNull()
     {
-        assertNotNull( m_config.getId() );
+        assertNotNull( config_.getId() );
     }
 
     /**
@@ -114,7 +114,7 @@ public abstract class AbstractGameConfigurationTestCase
     @Test
     public void testGetName_ReturnValue_NonNull()
     {
-        assertNotNull( m_config.getName() );
+        assertNotNull( config_.getName() );
     }
 
     /**
@@ -124,12 +124,12 @@ public abstract class AbstractGameConfigurationTestCase
     @Test
     public void testGetPlayers_ReturnValue_Copy()
     {
-        final List<IPlayerConfiguration> playerConfigs = m_config.getPlayers();
+        final List<IPlayerConfiguration> playerConfigs = config_.getPlayers();
         final int originalListSize = playerConfigs.size();
 
         playerConfigs.add( null );
 
-        assertEquals( originalListSize, m_config.getPlayers().size() );
+        assertEquals( originalListSize, config_.getPlayers().size() );
     }
 
     /**
@@ -138,7 +138,7 @@ public abstract class AbstractGameConfigurationTestCase
     @Test
     public void testGetPlayers_ReturnValue_NonNull()
     {
-        assertNotNull( m_config.getPlayers() );
+        assertNotNull( config_.getPlayers() );
     }
 
     /**
@@ -147,6 +147,6 @@ public abstract class AbstractGameConfigurationTestCase
     @Test
     public void testGetSystem_ReturnValue_NonNull()
     {
-        assertNotNull( m_config.getSystem() );
+        assertNotNull( config_.getSystem() );
     }
 }

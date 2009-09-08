@@ -62,7 +62,7 @@ public final class GameSystemRegistry
     private static final String ATTR_ID = "id"; //$NON-NLS-1$
 
     /** The collection of game systems directly managed by this object. */
-    private final ConcurrentMap<String, IGameSystem> m_gameSystems;
+    private final ConcurrentMap<String, IGameSystem> gameSystems_;
 
 
     // ======================================================================
@@ -74,7 +74,7 @@ public final class GameSystemRegistry
      */
     public GameSystemRegistry()
     {
-        m_gameSystems = new ConcurrentHashMap<String, IGameSystem>();
+        gameSystems_ = new ConcurrentHashMap<String, IGameSystem>();
     }
 
 
@@ -159,7 +159,7 @@ public final class GameSystemRegistry
     /* @NonNull */
     private Map<String, IGameSystem> getGameSystemMap()
     {
-        final Map<String, IGameSystem> gameSystems = new HashMap<String, IGameSystem>( m_gameSystems );
+        final Map<String, IGameSystem> gameSystems = new HashMap<String, IGameSystem>( gameSystems_ );
         for( final IGameSystem gameSystem : getForeignGameSystems() )
         {
             if( gameSystems.containsKey( gameSystem.getId() ) )
@@ -190,7 +190,7 @@ public final class GameSystemRegistry
     {
         assertArgumentNotNull( gameSystem, "gameSystem" ); //$NON-NLS-1$
 
-        m_gameSystems.putIfAbsent( gameSystem.getId(), gameSystem );
+        gameSystems_.putIfAbsent( gameSystem.getId(), gameSystem );
     }
 
     /*
@@ -201,6 +201,6 @@ public final class GameSystemRegistry
     {
         assertArgumentNotNull( gameSystem, "gameSystem" ); //$NON-NLS-1$
 
-        m_gameSystems.remove( gameSystem.getId(), gameSystem );
+        gameSystems_.remove( gameSystem.getId(), gameSystem );
     }
 }

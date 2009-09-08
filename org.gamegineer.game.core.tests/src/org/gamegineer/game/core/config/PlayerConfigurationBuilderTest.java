@@ -40,7 +40,7 @@ public final class PlayerConfigurationBuilderTest
     // ======================================================================
 
     /** The player configuration builder under test in the fixture. */
-    private PlayerConfigurationBuilder m_builder;
+    private PlayerConfigurationBuilder builder_;
 
 
     // ======================================================================
@@ -71,7 +71,7 @@ public final class PlayerConfigurationBuilderTest
     public void setUp()
         throws Exception
     {
-        m_builder = new PlayerConfigurationBuilder();
+        builder_ = new PlayerConfigurationBuilder();
     }
 
     /**
@@ -84,7 +84,7 @@ public final class PlayerConfigurationBuilderTest
     public void tearDown()
         throws Exception
     {
-        m_builder = null;
+        builder_ = null;
     }
 
     /**
@@ -94,7 +94,7 @@ public final class PlayerConfigurationBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetRoleId_RoleId_Null()
     {
-        m_builder.setRoleId( null );
+        builder_.setRoleId( null );
     }
 
     /**
@@ -103,7 +103,7 @@ public final class PlayerConfigurationBuilderTest
     @Test
     public void testSetRoleId_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setRoleId( "role-id" ) ); //$NON-NLS-1$
+        assertSame( builder_, builder_.setRoleId( "role-id" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -129,7 +129,7 @@ public final class PlayerConfigurationBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetUserId_UserId_Null()
     {
-        m_builder.setUserId( null );
+        builder_.setUserId( null );
     }
 
     /**
@@ -138,7 +138,7 @@ public final class PlayerConfigurationBuilderTest
     @Test
     public void testSetUserId_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setUserId( "user-id" ) ); //$NON-NLS-1$
+        assertSame( builder_, builder_.setUserId( "user-id" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -162,10 +162,10 @@ public final class PlayerConfigurationBuilderTest
      * the state of the builder results in an illegal player configuration.
      * 
      * <p>
-     * The purpose of this test is simply to ensure <i>any</i> illegal
-     * attribute will cause an exception to be thrown. The primary collection of
-     * tests for all possible permutations of illegal player configuration
-     * attributes is located in the {@code ConfigurationUtilsTest} class.
+     * The purpose of this test is simply to ensure <i>any</i> illegal attribute
+     * will cause an exception to be thrown. The primary collection of tests for
+     * all possible permutations of illegal player configuration attributes is
+     * located in the {@code ConfigurationUtilsTest} class.
      * </p>
      */
     @Ignore( "Currently, there is no way to create an illegal player configuration." )

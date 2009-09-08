@@ -1,6 +1,6 @@
 /*
  * AbstractCommandListenerTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ public abstract class AbstractCommandListenerTestCase
     // ======================================================================
 
     /** The command listener under test in the fixture. */
-    private ICommandListener m_listener;
+    private ICommandListener listener_;
 
 
     // ======================================================================
@@ -81,8 +81,8 @@ public abstract class AbstractCommandListenerTestCase
     public void setUp()
         throws Exception
     {
-        m_listener = createCommandListener();
-        assertNotNull( m_listener );
+        listener_ = createCommandListener();
+        assertNotNull( listener_ );
     }
 
     /**
@@ -95,7 +95,7 @@ public abstract class AbstractCommandListenerTestCase
     public void tearDown()
         throws Exception
     {
-        m_listener = null;
+        listener_ = null;
     }
 
     /**
@@ -105,7 +105,7 @@ public abstract class AbstractCommandListenerTestCase
     @Test( expected = NullPointerException.class )
     public void testCommandExecuted_Event_Null()
     {
-        m_listener.commandExecuted( null );
+        listener_.commandExecuted( null );
     }
 
     /**
@@ -119,6 +119,6 @@ public abstract class AbstractCommandListenerTestCase
     public void testCommandExecuting_Event_Null()
         throws Exception
     {
-        m_listener.commandExecuting( null );
+        listener_.commandExecuting( null );
     }
 }

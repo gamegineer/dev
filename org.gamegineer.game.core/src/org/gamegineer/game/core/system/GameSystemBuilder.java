@@ -47,13 +47,13 @@ public final class GameSystemBuilder
     // ======================================================================
 
     /** The game system identifier. */
-    private String m_id;
+    private String id_;
 
     /** The role list. */
-    private final List<IRole> m_roles;
+    private final List<IRole> roles_;
 
     /** The stage list. */
-    private final List<IStage> m_stages;
+    private final List<IStage> stages_;
 
 
     // ======================================================================
@@ -66,9 +66,9 @@ public final class GameSystemBuilder
      */
     public GameSystemBuilder()
     {
-        m_id = null;
-        m_roles = new ArrayList<IRole>();
-        m_stages = new ArrayList<IStage>();
+        id_ = null;
+        roles_ = new ArrayList<IRole>();
+        stages_ = new ArrayList<IStage>();
     }
 
 
@@ -94,7 +94,7 @@ public final class GameSystemBuilder
     {
         assertArgumentNotNull( role, "role" ); //$NON-NLS-1$
 
-        m_roles.add( role );
+        roles_.add( role );
 
         return this;
     }
@@ -117,7 +117,7 @@ public final class GameSystemBuilder
     {
         assertArgumentNotNull( roles, "roles" ); //$NON-NLS-1$
 
-        m_roles.addAll( roles );
+        roles_.addAll( roles );
 
         return this;
     }
@@ -140,7 +140,7 @@ public final class GameSystemBuilder
     {
         assertArgumentNotNull( stage, "stage" ); //$NON-NLS-1$
 
-        m_stages.add( stage );
+        stages_.add( stage );
 
         return this;
     }
@@ -163,7 +163,7 @@ public final class GameSystemBuilder
     {
         assertArgumentNotNull( stages, "stages" ); //$NON-NLS-1$
 
-        m_stages.addAll( stages );
+        stages_.addAll( stages );
 
         return this;
     }
@@ -186,7 +186,7 @@ public final class GameSystemBuilder
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
-        m_id = id;
+        id_ = id;
 
         return this;
     }
@@ -203,11 +203,11 @@ public final class GameSystemBuilder
     /* @NonNull */
     public IGameSystem toGameSystem()
     {
-        assertStateLegal( m_id != null, Messages.GameSystemBuilder_id_notSet );
+        assertStateLegal( id_ != null, Messages.GameSystemBuilder_id_notSet );
 
         try
         {
-            return GameSystem.createGameSystem( m_id, m_roles, m_stages );
+            return GameSystem.createGameSystem( id_, roles_, stages_ );
         }
         catch( final IllegalArgumentException e )
         {

@@ -1,6 +1,6 @@
 /*
  * Services.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,10 +40,10 @@ public final class Services
     // ======================================================================
 
     /** The singleton instance. */
-    private static final Services c_instance = new Services();
+    private static final Services instance_ = new Services();
 
     /** The CommandletFactory registration token. */
-    private ServiceRegistration m_commandletFactoryRegistration;
+    private ServiceRegistration commandletFactoryRegistration_;
 
 
     // ======================================================================
@@ -68,23 +68,23 @@ public final class Services
      */
     public void close()
     {
-        if( m_commandletFactoryRegistration != null )
+        if( commandletFactoryRegistration_ != null )
         {
-            m_commandletFactoryRegistration.unregister();
-            m_commandletFactoryRegistration = null;
+            commandletFactoryRegistration_.unregister();
+            commandletFactoryRegistration_ = null;
         }
     }
 
     /**
      * Gets the default instance of the {@code Services} class.
      * 
-     * @return The default instance of the {@code Services} class; never
-     *         {@code null}.
+     * @return The default instance of the {@code Services} class; never {@code
+     *         null}.
      */
     /* @NonNull */
     public static Services getDefault()
     {
-        return c_instance;
+        return instance_;
     }
 
     /**
@@ -102,6 +102,6 @@ public final class Services
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        m_commandletFactoryRegistration = context.registerService( IComponentFactory.class.getName(), new CommandletFactory(), null );
+        commandletFactoryRegistration_ = context.registerService( IComponentFactory.class.getName(), new CommandletFactory(), null );
     }
 }

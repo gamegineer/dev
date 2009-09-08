@@ -46,7 +46,7 @@ public final class ExtensionRegistryExtensionTest
     // ======================================================================
 
     /** The extension registry extension under test in the fixture. */
-    private ExtensionRegistryExtension m_extension;
+    private ExtensionRegistryExtension extension_;
 
 
     // ======================================================================
@@ -77,7 +77,7 @@ public final class ExtensionRegistryExtensionTest
     public void setUp()
         throws Exception
     {
-        m_extension = new ExtensionRegistryExtension();
+        extension_ = new ExtensionRegistryExtension();
     }
 
     /**
@@ -90,7 +90,7 @@ public final class ExtensionRegistryExtensionTest
     public void tearDown()
         throws Exception
     {
-        m_extension = null;
+        extension_ = null;
     }
 
     /**
@@ -100,7 +100,7 @@ public final class ExtensionRegistryExtensionTest
     @Test( expected = IllegalStateException.class )
     public void testGetExtension_ExtensionNotStarted()
     {
-        m_extension.getExtension( createDummy( IEngineContext.class ), Object.class );
+        extension_.getExtension( createDummy( IEngineContext.class ), Object.class );
     }
 
     /**
@@ -148,7 +148,7 @@ public final class ExtensionRegistryExtensionTest
     public void testRegisterExtension_ExtensionNotStarted()
         throws Exception
     {
-        m_extension.registerExtension( createDummy( IEngineContext.class ), createDummy( IExtension.class ) );
+        extension_.registerExtension( createDummy( IEngineContext.class ), createDummy( IExtension.class ) );
     }
 
     /**
@@ -163,9 +163,9 @@ public final class ExtensionRegistryExtensionTest
     {
         final IEngineContext context = new FakeEngineContext();
 
-        m_extension.start( context );
+        extension_.start( context );
 
-        assertSame( m_extension, m_extension.getExtension( context, IExtensionRegistry.class ) );
+        assertSame( extension_, extension_.getExtension( context, IExtensionRegistry.class ) );
     }
 
     /**
@@ -175,6 +175,6 @@ public final class ExtensionRegistryExtensionTest
     @Test( expected = IllegalStateException.class )
     public void testUnregisterExtension_ExtensionNotStarted()
     {
-        m_extension.unregisterExtension( createDummy( IEngineContext.class ), createDummy( IExtension.class ) );
+        extension_.unregisterExtension( createDummy( IEngineContext.class ), createDummy( IExtension.class ) );
     }
 }

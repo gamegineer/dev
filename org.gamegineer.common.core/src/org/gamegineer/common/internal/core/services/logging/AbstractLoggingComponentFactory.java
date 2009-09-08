@@ -1,6 +1,6 @@
 /*
  * AbstractLoggingComponentFactory.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -53,7 +53,7 @@ public abstract class AbstractLoggingComponentFactory<T>
     // ======================================================================
 
     /** The type of the logging component. */
-    private final Class<T> m_type;
+    private final Class<T> type_;
 
 
     // ======================================================================
@@ -76,7 +76,7 @@ public abstract class AbstractLoggingComponentFactory<T>
     {
         assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
 
-        m_type = type;
+        type_ = type;
 
         SupportedClassNamesAttribute.INSTANCE.setValue( this, type.getName() );
     }
@@ -97,9 +97,9 @@ public abstract class AbstractLoggingComponentFactory<T>
      * @param component
      *        The logging component; must not be {@code null}.
      * @param instanceName
-     *        The instance name of the logging component; must not be
-     *        {@code null}. This name is used to discover the component's
-     *        properties in the specified logging properties.
+     *        The instance name of the logging component; must not be {@code
+     *        null}. This name is used to discover the component's properties in
+     *        the specified logging properties.
      * @param loggingProperties
      *        The logging properties; may be {@code null}.
      * 
@@ -146,7 +146,7 @@ public abstract class AbstractLoggingComponentFactory<T>
         final String instanceName = InstanceNameAttribute.INSTANCE.getValue( accessor );
         final Map<String, String> loggingProperties = LoggingPropertiesAttribute.INSTANCE.tryGetValue( accessor );
 
-        if( !m_type.getName().equals( className ) )
+        if( !type_.getName().equals( className ) )
         {
             throw new IllegalArgumentException( Messages.AbstractLoggingComponentFactory_createComponent_unsupportedType( className ) );
         }
@@ -167,9 +167,9 @@ public abstract class AbstractLoggingComponentFactory<T>
      * </p>
      * 
      * @param instanceName
-     *        The instance name of the logging component; must not be
-     *        {@code null}. This name is used to discover the component's
-     *        properties in the specified logging properties.
+     *        The instance name of the logging component; must not be {@code
+     *        null}. This name is used to discover the component's properties in
+     *        the specified logging properties.
      * @param loggingProperties
      *        The logging properties; may be {@code null}.
      * 
@@ -177,8 +177,7 @@ public abstract class AbstractLoggingComponentFactory<T>
      * 
      * @throws java.lang.NullPointerException
      *         If {@code instanceName} is {@code null}.
-     * @throws
-     *         org.gamegineer.common.core.services.component.ComponentCreationException
+     * @throws org.gamegineer.common.core.services.component.ComponentCreationException
      *         If an error occurred during component creation.
      */
     /* @NonNull */
@@ -193,15 +192,15 @@ public abstract class AbstractLoggingComponentFactory<T>
 
         try
         {
-            return m_type.newInstance();
+            return type_.newInstance();
         }
         catch( final IllegalAccessException e )
         {
-            throw new ComponentCreationException( Messages.AbstractLoggingComponentFactory_createLoggingComponent_failed( instanceName, m_type.getName() ), e );
+            throw new ComponentCreationException( Messages.AbstractLoggingComponentFactory_createLoggingComponent_failed( instanceName, type_.getName() ), e );
         }
         catch( final InstantiationException e )
         {
-            throw new ComponentCreationException( Messages.AbstractLoggingComponentFactory_createLoggingComponent_failed( instanceName, m_type.getName() ), e );
+            throw new ComponentCreationException( Messages.AbstractLoggingComponentFactory_createLoggingComponent_failed( instanceName, type_.getName() ), e );
         }
     }
 
@@ -224,8 +223,8 @@ public abstract class AbstractLoggingComponentFactory<T>
      * </p>
      * 
      * @param name
-     *        The fully-qualified name of the component; must not be
-     *        {@code null}.
+     *        The fully-qualified name of the component; must not be {@code
+     *        null}.
      * @param loggingProperties
      *        The logging properties; may be {@code null}.
      * 
@@ -239,7 +238,7 @@ public abstract class AbstractLoggingComponentFactory<T>
      *         If the component could not be created.
      */
     /* @NonNull */
-    public final static Object createNamedLoggingComponent(
+    public static final Object createNamedLoggingComponent(
         /* @NonNull */
         final String name,
         /* @Nullable */
@@ -280,8 +279,8 @@ public abstract class AbstractLoggingComponentFactory<T>
      * Gets the specified logging property.
      * 
      * @param instanceName
-     *        The instance name of the logging component; must not be
-     *        {@code null}.
+     *        The instance name of the logging component; must not be {@code
+     *        null}.
      * @param propertyName
      *        The property name; must not be {@code null}.
      * @param loggingProperties
@@ -291,8 +290,8 @@ public abstract class AbstractLoggingComponentFactory<T>
      *         does not exist.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code instanceName}, {@code propertyName}, or
-     *         {@code loggingProperties} is {@code null}.
+     *         If {@code instanceName}, {@code propertyName}, or {@code
+     *         loggingProperties} is {@code null}.
      */
     /* @Nullable */
     protected final String getLoggingProperty(
@@ -307,7 +306,7 @@ public abstract class AbstractLoggingComponentFactory<T>
         assertArgumentNotNull( propertyName, "propertyName" ); //$NON-NLS-1$
         assertArgumentNotNull( loggingProperties, "loggingProperties" ); //$NON-NLS-1$
 
-        return loggingProperties.get( String.format( "%1$s.%2$s.%3$s", m_type.getName(), instanceName, propertyName ) ); //$NON-NLS-1$
+        return loggingProperties.get( String.format( "%1$s.%2$s.%3$s", type_.getName(), instanceName, propertyName ) ); //$NON-NLS-1$
     }
 
     /**
@@ -319,7 +318,7 @@ public abstract class AbstractLoggingComponentFactory<T>
     /* @NonNull */
     public final Class<T> getType()
     {
-        return m_type;
+        return type_;
     }
 
     /*

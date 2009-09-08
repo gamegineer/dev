@@ -60,7 +60,7 @@ public final class LocalizedStringReplacer
     // ======================================================================
 
     /** The string bundle containing the localized strings. */
-    private final IStringBundle m_bundle;
+    private final IStringBundle bundle_;
 
 
     // ======================================================================
@@ -83,7 +83,7 @@ public final class LocalizedStringReplacer
     {
         assertArgumentNotNull( bundle, "bundle" ); //$NON-NLS-1$
 
-        m_bundle = bundle;
+        bundle_ = bundle;
     }
 
 
@@ -108,7 +108,7 @@ public final class LocalizedStringReplacer
             final String localeNeutralKey = getLocaleNeutralKey( target, field );
             if( localeNeutralKey != null )
             {
-                final String localizedString = m_bundle.getString( localeNeutralKey );
+                final String localizedString = bundle_.getString( localeNeutralKey );
                 if( localizedString != null )
                 {
                     setLocalizedString( target, field, localizedString );
@@ -125,8 +125,8 @@ public final class LocalizedStringReplacer
      * @param field
      *        The field; must not be {@code null}.
      * 
-     * @return The locale-neutral key read from the specified field or
-     *         {@code null} if the field does not contain a locale-neutral key.
+     * @return The locale-neutral key read from the specified field or {@code
+     *         null} if the field does not contain a locale-neutral key.
      */
     /* @Nullable */
     private static String getLocaleNeutralKey(

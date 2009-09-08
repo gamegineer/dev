@@ -40,7 +40,7 @@ public final class RoleBuilderTest
     // ======================================================================
 
     /** The role builder under test in the fixture. */
-    private RoleBuilder m_builder;
+    private RoleBuilder builder_;
 
 
     // ======================================================================
@@ -70,7 +70,7 @@ public final class RoleBuilderTest
     public void setUp()
         throws Exception
     {
-        m_builder = new RoleBuilder();
+        builder_ = new RoleBuilder();
     }
 
     /**
@@ -83,7 +83,7 @@ public final class RoleBuilderTest
     public void tearDown()
         throws Exception
     {
-        m_builder = null;
+        builder_ = null;
     }
 
     /**
@@ -93,7 +93,7 @@ public final class RoleBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetId_Id_Null()
     {
-        m_builder.setId( null );
+        builder_.setId( null );
     }
 
     /**
@@ -102,7 +102,7 @@ public final class RoleBuilderTest
     @Test
     public void testSetId_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setId( "id" ) ); //$NON-NLS-1$
+        assertSame( builder_, builder_.setId( "id" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -138,10 +138,10 @@ public final class RoleBuilderTest
      * the builder results in an illegal role.
      * 
      * <p>
-     * The purpose of this test is simply to ensure <i>any</i> illegal
-     * attribute will cause an exception to be thrown. The primary collection of
-     * tests for all possible permutations of illegal role attributes is located
-     * in the {@code GameSystemUtilsTest} class.
+     * The purpose of this test is simply to ensure <i>any</i> illegal attribute
+     * will cause an exception to be thrown. The primary collection of tests for
+     * all possible permutations of illegal role attributes is located in the
+     * {@code GameSystemUtilsTest} class.
      * </p>
      */
     @Ignore( "Currently, there is no way to create an illegal role." )

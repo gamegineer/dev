@@ -52,7 +52,7 @@ public final class XmlRole
 
     /** The role identifier. */
     @XmlAttribute( name = NAME_ID, required = true )
-    private final String m_id;
+    private final String id_;
 
 
     // ======================================================================
@@ -64,7 +64,7 @@ public final class XmlRole
      */
     private XmlRole()
     {
-        m_id = null;
+        id_ = null;
     }
 
 
@@ -89,7 +89,7 @@ public final class XmlRole
         try
         {
             final RoleBuilder builder = new RoleBuilder();
-            builder.setId( m_id );
+            builder.setId( id_ );
             return builder.toRole();
         }
         catch( final RuntimeException e )

@@ -1,6 +1,6 @@
 /*
  * Attribute.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -57,7 +57,7 @@ public class Attribute<T>
     // ======================================================================
 
     /** The attribute name. */
-    private final AttributeName m_name;
+    private final AttributeName name_;
 
 
     // ======================================================================
@@ -80,7 +80,7 @@ public class Attribute<T>
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        m_name = name;
+        name_ = name;
     }
 
     /**
@@ -121,7 +121,7 @@ public class Attribute<T>
         assertArgumentNotNull( state, "state" ); //$NON-NLS-1$
         assertArgumentLegal( isLegalValue( value ), "value" ); //$NON-NLS-1$
 
-        state.addAttribute( m_name, decorateValue( value ) );
+        state.addAttribute( name_, decorateValue( value ) );
     }
 
     /**
@@ -160,7 +160,7 @@ public class Attribute<T>
      */
     public AttributeName getName()
     {
-        return m_name;
+        return name_;
     }
 
     /*
@@ -172,7 +172,7 @@ public class Attribute<T>
     {
         assertArgumentNotNull( state, "state" ); //$NON-NLS-1$
 
-        return (T)state.getAttribute( m_name );
+        return (T)state.getAttribute( name_ );
     }
 
     /**
@@ -203,7 +203,7 @@ public class Attribute<T>
     {
         assertArgumentNotNull( state, "state" ); //$NON-NLS-1$
 
-        return state.containsAttribute( m_name );
+        return state.containsAttribute( name_ );
     }
 
     /*
@@ -214,7 +214,7 @@ public class Attribute<T>
     {
         assertArgumentNotNull( state, "state" ); //$NON-NLS-1$
 
-        state.removeAttribute( m_name );
+        state.removeAttribute( name_ );
     }
 
     /*
@@ -227,6 +227,6 @@ public class Attribute<T>
         assertArgumentNotNull( state, "state" ); //$NON-NLS-1$
         assertArgumentLegal( isLegalValue( value ), "value" ); //$NON-NLS-1$
 
-        state.setAttribute( m_name, decorateValue( value ) );
+        state.setAttribute( name_, decorateValue( value ) );
     }
 }

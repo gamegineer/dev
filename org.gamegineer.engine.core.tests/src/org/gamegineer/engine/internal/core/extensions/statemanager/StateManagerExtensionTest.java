@@ -41,7 +41,7 @@ public final class StateManagerExtensionTest
     // ======================================================================
 
     /** The state manager extension under test in the fixture. */
-    private StateManagerExtension m_extension;
+    private StateManagerExtension extension_;
 
 
     // ======================================================================
@@ -72,7 +72,7 @@ public final class StateManagerExtensionTest
     public void setUp()
         throws Exception
     {
-        m_extension = new StateManagerExtension( createDummy( IStateManager.class ) );
+        extension_ = new StateManagerExtension( createDummy( IStateManager.class ) );
     }
 
     /**
@@ -85,7 +85,7 @@ public final class StateManagerExtensionTest
     public void tearDown()
         throws Exception
     {
-        m_extension = null;
+        extension_ = null;
     }
 
     /**
@@ -105,7 +105,7 @@ public final class StateManagerExtensionTest
     @Test( expected = IllegalStateException.class )
     public void testGetMemento_ExtensionNotStarted()
     {
-        m_extension.getMemento( createDummy( IEngineContext.class ) );
+        extension_.getMemento( createDummy( IEngineContext.class ) );
     }
 
     /**
@@ -119,6 +119,6 @@ public final class StateManagerExtensionTest
     public void testSetMemento_ExtensionNotStarted()
         throws Exception
     {
-        m_extension.setMemento( createDummy( IEngineContext.class ), createDummy( IMemento.class ) );
+        extension_.setMemento( createDummy( IEngineContext.class ), createDummy( IMemento.class ) );
     }
 }

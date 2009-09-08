@@ -38,7 +38,7 @@ public class FakeEngineContext
     // ======================================================================
 
     /** The engine state. */
-    private final IState m_state;
+    private final IState state_;
 
 
     // ======================================================================
@@ -50,7 +50,7 @@ public class FakeEngineContext
      */
     public FakeEngineContext()
     {
-        m_state = new FakeState();
+        state_ = new FakeState();
     }
 
 
@@ -89,6 +89,6 @@ public class FakeEngineContext
      */
     public IState getState()
     {
-        return m_state;
+        return state_;
     }
 }

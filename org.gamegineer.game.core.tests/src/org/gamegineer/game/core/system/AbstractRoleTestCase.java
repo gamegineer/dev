@@ -37,7 +37,7 @@ public abstract class AbstractRoleTestCase
     // ======================================================================
 
     /** The role under test in the fixture. */
-    private IRole m_role;
+    private IRole role_;
 
 
     // ======================================================================
@@ -79,8 +79,8 @@ public abstract class AbstractRoleTestCase
     public void setUp()
         throws Exception
     {
-        m_role = createRole();
-        assertNotNull( m_role );
+        role_ = createRole();
+        assertNotNull( role_ );
     }
 
     /**
@@ -93,7 +93,7 @@ public abstract class AbstractRoleTestCase
     public void tearDown()
         throws Exception
     {
-        m_role = null;
+        role_ = null;
     }
 
     /**
@@ -102,6 +102,6 @@ public abstract class AbstractRoleTestCase
     @Test
     public void testGetId_ReturnValue_NonNull()
     {
-        assertNotNull( m_role.getId() );
+        assertNotNull( role_.getId() );
     }
 }

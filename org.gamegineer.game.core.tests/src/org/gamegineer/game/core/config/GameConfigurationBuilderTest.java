@@ -46,7 +46,7 @@ public final class GameConfigurationBuilderTest
     // ======================================================================
 
     /** The game configuration builder under test in the fixture. */
-    private GameConfigurationBuilder m_builder;
+    private GameConfigurationBuilder builder_;
 
 
     // ======================================================================
@@ -131,7 +131,7 @@ public final class GameConfigurationBuilderTest
     public void setUp()
         throws Exception
     {
-        m_builder = new GameConfigurationBuilder();
+        builder_ = new GameConfigurationBuilder();
     }
 
     /**
@@ -144,7 +144,7 @@ public final class GameConfigurationBuilderTest
     public void tearDown()
         throws Exception
     {
-        m_builder = null;
+        builder_ = null;
     }
 
     /**
@@ -178,7 +178,7 @@ public final class GameConfigurationBuilderTest
     @Test( expected = NullPointerException.class )
     public void testAddPlayer_PlayerConfig_Null()
     {
-        m_builder.addPlayer( null );
+        builder_.addPlayer( null );
     }
 
     /**
@@ -187,7 +187,7 @@ public final class GameConfigurationBuilderTest
     @Test
     public void testAddPlayer_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.addPlayer( createDummy( IPlayerConfiguration.class ) ) );
+        assertSame( builder_, builder_.addPlayer( createDummy( IPlayerConfiguration.class ) ) );
     }
 
     /**
@@ -218,7 +218,7 @@ public final class GameConfigurationBuilderTest
     @Test( expected = NullPointerException.class )
     public void testAddPlayers_PlayerConfigs_Null()
     {
-        m_builder.addPlayers( null );
+        builder_.addPlayers( null );
     }
 
     /**
@@ -227,7 +227,7 @@ public final class GameConfigurationBuilderTest
     @Test
     public void testAddPlayers_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.addPlayers( Collections.<IPlayerConfiguration>emptyList() ) );
+        assertSame( builder_, builder_.addPlayers( Collections.<IPlayerConfiguration>emptyList() ) );
     }
 
     /**
@@ -236,7 +236,7 @@ public final class GameConfigurationBuilderTest
     @Test
     public void testGetPlayers_ReturnValue_Immutable()
     {
-        assertImmutableCollection( m_builder.getPlayers() );
+        assertImmutableCollection( builder_.getPlayers() );
     }
 
     /**
@@ -246,7 +246,7 @@ public final class GameConfigurationBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetId_Id_Null()
     {
-        m_builder.setId( null );
+        builder_.setId( null );
     }
 
     /**
@@ -255,7 +255,7 @@ public final class GameConfigurationBuilderTest
     @Test
     public void testSetId_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setId( "id" ) ); //$NON-NLS-1$
+        assertSame( builder_, builder_.setId( "id" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -281,7 +281,7 @@ public final class GameConfigurationBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetName_Name_Null()
     {
-        m_builder.setName( null );
+        builder_.setName( null );
     }
 
     /**
@@ -290,7 +290,7 @@ public final class GameConfigurationBuilderTest
     @Test
     public void testSetName_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setName( "name" ) ); //$NON-NLS-1$
+        assertSame( builder_, builder_.setName( "name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -316,7 +316,7 @@ public final class GameConfigurationBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetSystem_System_Null()
     {
-        m_builder.setSystem( null );
+        builder_.setSystem( null );
     }
 
     /**
@@ -325,7 +325,7 @@ public final class GameConfigurationBuilderTest
     @Test
     public void testSetSystem_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setSystem( createDummy( IGameSystem.class ) ) );
+        assertSame( builder_, builder_.setSystem( createDummy( IGameSystem.class ) ) );
     }
 
     /**

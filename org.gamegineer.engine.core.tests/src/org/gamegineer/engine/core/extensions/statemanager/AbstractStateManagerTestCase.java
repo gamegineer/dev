@@ -42,10 +42,10 @@ public abstract class AbstractStateManagerTestCase
     // ======================================================================
 
     /** The engine context for use in the fixture. */
-    private IEngineContext m_context;
+    private IEngineContext context_;
 
     /** The state manager under test in the fixture. */
-    private IStateManager m_stateManager;
+    private IStateManager stateManager_;
 
 
     // ======================================================================
@@ -115,9 +115,9 @@ public abstract class AbstractStateManagerTestCase
     public void setUp()
         throws Exception
     {
-        m_context = createEngineContext();
-        m_stateManager = createStateManager( m_context );
-        assertNotNull( m_stateManager );
+        context_ = createEngineContext();
+        stateManager_ = createStateManager( context_ );
+        assertNotNull( stateManager_ );
     }
 
     /**
@@ -130,8 +130,8 @@ public abstract class AbstractStateManagerTestCase
     public void tearDown()
         throws Exception
     {
-        m_stateManager = null;
-        m_context = null;
+        stateManager_ = null;
+        context_ = null;
     }
 
     /**
@@ -141,7 +141,7 @@ public abstract class AbstractStateManagerTestCase
     @Test( expected = NullPointerException.class )
     public void testGetMemento_Context_Null()
     {
-        m_stateManager.getMemento( null );
+        stateManager_.getMemento( null );
     }
 
     /**
@@ -150,7 +150,7 @@ public abstract class AbstractStateManagerTestCase
     @Test
     public void testGetMemento_ReturnValue_NonNull()
     {
-        assertNotNull( m_stateManager.getMemento( m_context ) );
+        assertNotNull( stateManager_.getMemento( context_ ) );
     }
 
     /**
@@ -164,7 +164,7 @@ public abstract class AbstractStateManagerTestCase
     public void testSetMemento_Context_Null()
         throws Exception
     {
-        m_stateManager.setMemento( null, createDummy( IMemento.class ) );
+        stateManager_.setMemento( null, createDummy( IMemento.class ) );
     }
 
     /**
@@ -178,6 +178,6 @@ public abstract class AbstractStateManagerTestCase
     public void testSetMemento_Memento_Null()
         throws Exception
     {
-        m_stateManager.setMemento( m_context, null );
+        stateManager_.setMemento( context_, null );
     }
 }

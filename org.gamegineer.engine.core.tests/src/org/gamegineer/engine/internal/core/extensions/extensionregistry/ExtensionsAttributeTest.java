@@ -44,7 +44,7 @@ public final class ExtensionsAttributeTest
     // ======================================================================
 
     /** The attribute under test in the fixture. */
-    private IAttribute<Map<Class<?>, IExtension>> m_attribute;
+    private IAttribute<Map<Class<?>, IExtension>> attribute_;
 
 
     // ======================================================================
@@ -74,7 +74,7 @@ public final class ExtensionsAttributeTest
     public void setUp()
         throws Exception
     {
-        m_attribute = ExtensionRegistryExtensionFacade.EXTENSIONS_ATTRIBUTE();
+        attribute_ = ExtensionRegistryExtensionFacade.EXTENSIONS_ATTRIBUTE();
     }
 
     /**
@@ -87,7 +87,7 @@ public final class ExtensionsAttributeTest
     public void tearDown()
         throws Exception
     {
-        m_attribute = null;
+        attribute_ = null;
     }
 
     /**
@@ -99,9 +99,9 @@ public final class ExtensionsAttributeTest
     {
         final IState state = new FakeState();
 
-        m_attribute.add( state, new HashMap<Class<?>, IExtension>() );
+        attribute_.add( state, new HashMap<Class<?>, IExtension>() );
 
-        assertImmutableMap( m_attribute.getValue( state ) );
+        assertImmutableMap( attribute_.getValue( state ) );
     }
 
     /**
@@ -112,10 +112,10 @@ public final class ExtensionsAttributeTest
     public void testSetValue_Value_Immutable()
     {
         final IState state = new FakeState();
-        m_attribute.add( state, new HashMap<Class<?>, IExtension>() );
+        attribute_.add( state, new HashMap<Class<?>, IExtension>() );
 
-        m_attribute.setValue( state, new HashMap<Class<?>, IExtension>() );
+        attribute_.setValue( state, new HashMap<Class<?>, IExtension>() );
 
-        assertImmutableMap( m_attribute.getValue( state ) );
+        assertImmutableMap( attribute_.getValue( state ) );
     }
 }

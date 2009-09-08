@@ -50,7 +50,7 @@ public final class Board
     private static final int SQUARE_COUNT = SquareId.values().length;
 
     /** The collection of board squares. */
-    private final EnumMap<SquareId, ISquare> m_squares;
+    private final EnumMap<SquareId, ISquare> squares_;
 
 
     // ======================================================================
@@ -76,10 +76,10 @@ public final class Board
         assertArgumentNotNull( squares, "squares" ); //$NON-NLS-1$
         assertArgumentLegal( isSquareCollectionLegal( squares ), "squares", Messages.Board_squares_illegal ); //$NON-NLS-1$
 
-        m_squares = new EnumMap<SquareId, ISquare>( SquareId.class );
+        squares_ = new EnumMap<SquareId, ISquare>( SquareId.class );
         for( final ISquare square : squares )
         {
-            m_squares.put( square.getId(), square );
+            squares_.put( square.getId(), square );
         }
     }
 
@@ -96,7 +96,7 @@ public final class Board
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
-        return m_squares.get( id );
+        return squares_.get( id );
     }
 
     /**

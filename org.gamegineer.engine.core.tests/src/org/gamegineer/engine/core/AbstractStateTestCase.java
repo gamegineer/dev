@@ -1,6 +1,6 @@
 /*
  * AbstractStateTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -43,7 +43,7 @@ public abstract class AbstractStateTestCase
     // ======================================================================
 
     /** The state under test in the fixture. */
-    private IState m_state;
+    private IState state_;
 
 
     // ======================================================================
@@ -81,8 +81,8 @@ public abstract class AbstractStateTestCase
     public void setUp()
         throws Exception
     {
-        m_state = createState();
-        assertNotNull( m_state );
+        state_ = createState();
+        assertNotNull( state_ );
     }
 
     /**
@@ -95,7 +95,7 @@ public abstract class AbstractStateTestCase
     public void tearDown()
         throws Exception
     {
-        m_state = null;
+        state_ = null;
     }
 
     /**
@@ -107,8 +107,8 @@ public abstract class AbstractStateTestCase
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
         final String value = "value"; //$NON-NLS-1$
-        m_state.addAttribute( name, value );
-        assertSame( value, m_state.getAttribute( name ) );
+        state_.addAttribute( name, value );
+        assertSame( value, state_.getAttribute( name ) );
     }
 
     /**
@@ -120,8 +120,8 @@ public abstract class AbstractStateTestCase
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
         final String value = "value"; //$NON-NLS-1$
-        m_state.addAttribute( name, value );
-        m_state.addAttribute( name, value );
+        state_.addAttribute( name, value );
+        state_.addAttribute( name, value );
     }
 
     /**
@@ -131,7 +131,7 @@ public abstract class AbstractStateTestCase
     @Test( expected = NullPointerException.class )
     public void testAddAttribute_Name_Null()
     {
-        m_state.addAttribute( null, "value" ); //$NON-NLS-1$
+        state_.addAttribute( null, "value" ); //$NON-NLS-1$
     }
 
     /**
@@ -140,7 +140,7 @@ public abstract class AbstractStateTestCase
     @Test
     public void testAddAttribute_Value_Null()
     {
-        m_state.addAttribute( new AttributeName( Scope.APPLICATION, "name" ), null ); //$NON-NLS-1$
+        state_.addAttribute( new AttributeName( Scope.APPLICATION, "name" ), null ); //$NON-NLS-1$
     }
 
     /**
@@ -150,7 +150,7 @@ public abstract class AbstractStateTestCase
     @Test
     public void testContainsAttribute_Attribute_Absent()
     {
-        assertFalse( m_state.containsAttribute( new AttributeName( Scope.APPLICATION, "name" ) ) ); //$NON-NLS-1$
+        assertFalse( state_.containsAttribute( new AttributeName( Scope.APPLICATION, "name" ) ) ); //$NON-NLS-1$
     }
 
     /**
@@ -161,8 +161,8 @@ public abstract class AbstractStateTestCase
     public void testContainsAttribute_Attribute_Present()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.addAttribute( name, "value" ); //$NON-NLS-1$
-        assertTrue( m_state.containsAttribute( name ) );
+        state_.addAttribute( name, "value" ); //$NON-NLS-1$
+        assertTrue( state_.containsAttribute( name ) );
     }
 
     /**
@@ -172,7 +172,7 @@ public abstract class AbstractStateTestCase
     @Test( expected = NullPointerException.class )
     public void testContainsAttribute_Name_Null()
     {
-        m_state.containsAttribute( null );
+        state_.containsAttribute( null );
     }
 
     /**
@@ -182,7 +182,7 @@ public abstract class AbstractStateTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testGetAttribute_Attribute_Absent()
     {
-        m_state.getAttribute( new AttributeName( Scope.APPLICATION, "name" ) ); //$NON-NLS-1$
+        state_.getAttribute( new AttributeName( Scope.APPLICATION, "name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -194,8 +194,8 @@ public abstract class AbstractStateTestCase
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
         final String value = "value"; //$NON-NLS-1$
-        m_state.addAttribute( name, value );
-        assertSame( value, m_state.getAttribute( name ) );
+        state_.addAttribute( name, value );
+        assertSame( value, state_.getAttribute( name ) );
     }
 
     /**
@@ -205,7 +205,7 @@ public abstract class AbstractStateTestCase
     @Test( expected = NullPointerException.class )
     public void testGetAttribute_Name_Null()
     {
-        m_state.getAttribute( null );
+        state_.getAttribute( null );
     }
 
     /**
@@ -217,9 +217,9 @@ public abstract class AbstractStateTestCase
     {
         final AttributeName name1 = new AttributeName( Scope.APPLICATION, "name1" ); //$NON-NLS-1$
         final AttributeName name2 = new AttributeName( Scope.ENGINE_CONTROL, "name2" ); //$NON-NLS-1$
-        m_state.addAttribute( name1, "value1" ); //$NON-NLS-1$
-        m_state.addAttribute( name2, "value2" ); //$NON-NLS-1$
-        final Set<AttributeName> nameSet = m_state.getAttributeNames();
+        state_.addAttribute( name1, "value1" ); //$NON-NLS-1$
+        state_.addAttribute( name2, "value2" ); //$NON-NLS-1$
+        final Set<AttributeName> nameSet = state_.getAttributeNames();
         assertTrue( nameSet.size() == 2 );
         assertTrue( nameSet.contains( name1 ) );
         assertTrue( nameSet.contains( name2 ) );
@@ -232,7 +232,7 @@ public abstract class AbstractStateTestCase
     @Test
     public void testGetAttributeNames_Empty()
     {
-        final Set<AttributeName> nameSet = m_state.getAttributeNames();
+        final Set<AttributeName> nameSet = state_.getAttributeNames();
         assertNotNull( nameSet );
         assertTrue( nameSet.size() == 0 );
     }
@@ -244,8 +244,8 @@ public abstract class AbstractStateTestCase
     public void testGetAttributeNames_ReturnValue_Immutable()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.addAttribute( name, "value" ); //$NON-NLS-1$
-        assertImmutableCollection( m_state.getAttributeNames() );
+        state_.addAttribute( name, "value" ); //$NON-NLS-1$
+        assertImmutableCollection( state_.getAttributeNames() );
     }
 
     /**
@@ -255,7 +255,7 @@ public abstract class AbstractStateTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveAttribute_Attribute_Absent()
     {
-        m_state.removeAttribute( new AttributeName( Scope.APPLICATION, "name" ) ); //$NON-NLS-1$
+        state_.removeAttribute( new AttributeName( Scope.APPLICATION, "name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -266,10 +266,10 @@ public abstract class AbstractStateTestCase
     public void testRemoveAttribute_Attribute_Present()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.addAttribute( name, "value" ); //$NON-NLS-1$
-        assertTrue( m_state.containsAttribute( name ) );
-        m_state.removeAttribute( name );
-        assertFalse( m_state.containsAttribute( name ) );
+        state_.addAttribute( name, "value" ); //$NON-NLS-1$
+        assertTrue( state_.containsAttribute( name ) );
+        state_.removeAttribute( name );
+        assertFalse( state_.containsAttribute( name ) );
     }
 
     /**
@@ -279,7 +279,7 @@ public abstract class AbstractStateTestCase
     @Test( expected = NullPointerException.class )
     public void testRemoveAttribute_Name_Null()
     {
-        m_state.removeAttribute( null );
+        state_.removeAttribute( null );
     }
 
     /**
@@ -289,7 +289,7 @@ public abstract class AbstractStateTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testSetAttribute_Attribute_Absent()
     {
-        m_state.setAttribute( new AttributeName( Scope.APPLICATION, "name" ), "value" ); //$NON-NLS-1$ //$NON-NLS-2$
+        state_.setAttribute( new AttributeName( Scope.APPLICATION, "name" ), "value" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -302,9 +302,9 @@ public abstract class AbstractStateTestCase
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
         final String value1 = "value1"; //$NON-NLS-1$
         final String value2 = "value2"; //$NON-NLS-1$
-        m_state.addAttribute( name, value1 );
-        m_state.setAttribute( name, value2 );
-        assertSame( value2, m_state.getAttribute( name ) );
+        state_.addAttribute( name, value1 );
+        state_.setAttribute( name, value2 );
+        assertSame( value2, state_.getAttribute( name ) );
     }
 
     /**
@@ -314,7 +314,7 @@ public abstract class AbstractStateTestCase
     @Test( expected = NullPointerException.class )
     public void testSetAttribute_Name_Null()
     {
-        m_state.setAttribute( null, "value" ); //$NON-NLS-1$
+        state_.setAttribute( null, "value" ); //$NON-NLS-1$
     }
 
     /**
@@ -324,7 +324,7 @@ public abstract class AbstractStateTestCase
     public void testSetAttribute_Value_Null()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.addAttribute( name, "value" ); //$NON-NLS-1$
-        m_state.setAttribute( name, null );
+        state_.addAttribute( name, "value" ); //$NON-NLS-1$
+        state_.setAttribute( name, null );
     }
 }

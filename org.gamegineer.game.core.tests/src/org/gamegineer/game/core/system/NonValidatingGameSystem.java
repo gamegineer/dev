@@ -48,13 +48,13 @@ public final class NonValidatingGameSystem
     // ======================================================================
 
     /** The game system identifier. */
-    private final String m_id;
+    private final String id_;
 
     /** The role list. */
-    private final List<IRole> m_roles;
+    private final List<IRole> roles_;
 
     /** The stage list. */
-    private final List<IStage> m_stages;
+    private final List<IStage> stages_;
 
 
     // ======================================================================
@@ -79,9 +79,9 @@ public final class NonValidatingGameSystem
         /* @Nullable */
         final List<IStage> stages )
     {
-        m_id = id;
-        m_roles = (roles != null) ? new ArrayList<IRole>( roles ) : null;
-        m_stages = (stages != null) ? new ArrayList<IStage>( stages ) : null;
+        id_ = id;
+        roles_ = (roles != null) ? new ArrayList<IRole>( roles ) : null;
+        stages_ = (stages != null) ? new ArrayList<IStage>( stages ) : null;
     }
 
 
@@ -97,7 +97,7 @@ public final class NonValidatingGameSystem
     /* @Nullable */
     public String getId()
     {
-        return m_id;
+        return id_;
     }
 
     /**
@@ -108,7 +108,7 @@ public final class NonValidatingGameSystem
     /* @Nullable */
     public List<IRole> getRoles()
     {
-        return (m_roles != null) ? new ArrayList<IRole>( m_roles ) : null;
+        return (roles_ != null) ? new ArrayList<IRole>( roles_ ) : null;
     }
 
     /**
@@ -119,6 +119,6 @@ public final class NonValidatingGameSystem
     /* @Nullable */
     public List<IStage> getStages()
     {
-        return (m_stages != null) ? new ArrayList<IStage>( m_stages ) : null;
+        return (stages_ != null) ? new ArrayList<IStage>( stages_ ) : null;
     }
 }

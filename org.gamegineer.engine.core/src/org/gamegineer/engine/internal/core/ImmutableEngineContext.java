@@ -44,7 +44,7 @@ public final class ImmutableEngineContext
     // ======================================================================
 
     /** The engine context for which an immutable view is provided. */
-    private final IEngineContext m_context;
+    private final IEngineContext context_;
 
 
     // ======================================================================
@@ -67,7 +67,7 @@ public final class ImmutableEngineContext
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        m_context = context;
+        context_ = context;
     }
 
 
@@ -81,7 +81,7 @@ public final class ImmutableEngineContext
     public <T> T getContext(
         final Class<T> type )
     {
-        return m_context.getContext( type );
+        return context_.getContext( type );
     }
 
     /*
@@ -90,7 +90,7 @@ public final class ImmutableEngineContext
     public <T> T getExtension(
         final Class<T> type )
     {
-        return m_context.getExtension( type );
+        return context_.getExtension( type );
     }
 
     /*
@@ -98,7 +98,7 @@ public final class ImmutableEngineContext
      */
     public IState getState()
     {
-        return new ImmutableState( m_context.getState() );
+        return new ImmutableState( context_.getState() );
     }
 
 
@@ -117,7 +117,7 @@ public final class ImmutableEngineContext
         // ==================================================================
 
         /** The state for which an immutable view is provided. */
-        private final IState m_state;
+        private final IState state_;
 
 
         // ==================================================================
@@ -137,7 +137,7 @@ public final class ImmutableEngineContext
         {
             assert state != null;
 
-            m_state = state;
+            state_ = state;
         }
 
 
@@ -163,7 +163,7 @@ public final class ImmutableEngineContext
         public boolean containsAttribute(
             final AttributeName name )
         {
-            return m_state.containsAttribute( name );
+            return state_.containsAttribute( name );
         }
 
         /*
@@ -172,7 +172,7 @@ public final class ImmutableEngineContext
         public Object getAttribute(
             final AttributeName name )
         {
-            return m_state.getAttribute( name );
+            return state_.getAttribute( name );
         }
 
         /*
@@ -180,7 +180,7 @@ public final class ImmutableEngineContext
          */
         public Set<AttributeName> getAttributeNames()
         {
-            return m_state.getAttributeNames();
+            return state_.getAttributeNames();
         }
 
         /*

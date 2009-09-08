@@ -42,7 +42,7 @@ public abstract class AbstractExtensionContextTestCase
     // ======================================================================
 
     /** The extension context under test in the fixture. */
-    private IExtensionContext m_context;
+    private IExtensionContext context_;
 
 
     // ======================================================================
@@ -50,8 +50,8 @@ public abstract class AbstractExtensionContextTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractExtensionContextTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractExtensionContextTestCase} class.
      */
     protected AbstractExtensionContextTestCase()
     {
@@ -85,8 +85,8 @@ public abstract class AbstractExtensionContextTestCase
     public void setUp()
         throws Exception
     {
-        m_context = createExtensionContext();
-        assertNotNull( m_context );
+        context_ = createExtensionContext();
+        assertNotNull( context_ );
     }
 
     /**
@@ -99,7 +99,7 @@ public abstract class AbstractExtensionContextTestCase
     public void tearDown()
         throws Exception
     {
-        m_context = null;
+        context_ = null;
     }
 
     /**
@@ -112,9 +112,9 @@ public abstract class AbstractExtensionContextTestCase
         final String name = "name"; //$NON-NLS-1$
         final Object value = new Object();
 
-        m_context.addAttribute( name, value );
+        context_.addAttribute( name, value );
 
-        assertEquals( value, m_context.getAttribute( name ) );
+        assertEquals( value, context_.getAttribute( name ) );
     }
 
     /**
@@ -126,9 +126,9 @@ public abstract class AbstractExtensionContextTestCase
     {
         final String name = "name"; //$NON-NLS-1$
         final Object value = new Object();
-        m_context.addAttribute( name, value );
+        context_.addAttribute( name, value );
 
-        m_context.addAttribute( name, value );
+        context_.addAttribute( name, value );
     }
 
     /**
@@ -138,7 +138,7 @@ public abstract class AbstractExtensionContextTestCase
     @Test( expected = NullPointerException.class )
     public void testAddAttribute_Name_Null()
     {
-        m_context.addAttribute( null, new Object() );
+        context_.addAttribute( null, new Object() );
     }
 
     /**
@@ -148,7 +148,7 @@ public abstract class AbstractExtensionContextTestCase
     @Test( expected = NullPointerException.class )
     public void testAddAttribute_Value_Null()
     {
-        m_context.addAttribute( "name", null ); //$NON-NLS-1$
+        context_.addAttribute( "name", null ); //$NON-NLS-1$
     }
 
     /**
@@ -158,7 +158,7 @@ public abstract class AbstractExtensionContextTestCase
     @Test
     public void testContainsAttribute_Attribute_Absent()
     {
-        assertFalse( m_context.containsAttribute( "name" ) ); //$NON-NLS-1$
+        assertFalse( context_.containsAttribute( "name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -170,9 +170,9 @@ public abstract class AbstractExtensionContextTestCase
     {
         final String name = "name"; //$NON-NLS-1$
         final Object value = new Object();
-        m_context.addAttribute( name, value );
+        context_.addAttribute( name, value );
 
-        assertTrue( m_context.containsAttribute( name ) );
+        assertTrue( context_.containsAttribute( name ) );
     }
 
     /**
@@ -182,7 +182,7 @@ public abstract class AbstractExtensionContextTestCase
     @Test( expected = NullPointerException.class )
     public void testContainsAttribute_Name_Null()
     {
-        m_context.containsAttribute( null );
+        context_.containsAttribute( null );
     }
 
     /**
@@ -192,7 +192,7 @@ public abstract class AbstractExtensionContextTestCase
     @Test
     public void testGetAttribute_Attribute_Absent()
     {
-        assertNull( m_context.getAttribute( "name" ) ); //$NON-NLS-1$
+        assertNull( context_.getAttribute( "name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -204,9 +204,9 @@ public abstract class AbstractExtensionContextTestCase
     {
         final String name = "name"; //$NON-NLS-1$
         final Object value = new Object();
-        m_context.addAttribute( name, value );
+        context_.addAttribute( name, value );
 
-        assertEquals( value, m_context.getAttribute( name ) );
+        assertEquals( value, context_.getAttribute( name ) );
     }
 
     /**
@@ -216,6 +216,6 @@ public abstract class AbstractExtensionContextTestCase
     @Test( expected = NullPointerException.class )
     public void testGetAttribute_Name_Null()
     {
-        m_context.getAttribute( null );
+        context_.getAttribute( null );
     }
 }

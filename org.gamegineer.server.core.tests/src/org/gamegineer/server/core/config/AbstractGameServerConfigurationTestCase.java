@@ -37,7 +37,7 @@ public abstract class AbstractGameServerConfigurationTestCase
     // ======================================================================
 
     /** The game server configuration under test in the fixture. */
-    private IGameServerConfiguration m_config;
+    private IGameServerConfiguration config_;
 
 
     // ======================================================================
@@ -45,8 +45,8 @@ public abstract class AbstractGameServerConfigurationTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractGameServerConfigurationTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractGameServerConfigurationTestCase} class.
      */
     protected AbstractGameServerConfigurationTestCase()
     {
@@ -80,8 +80,8 @@ public abstract class AbstractGameServerConfigurationTestCase
     public void setUp()
         throws Exception
     {
-        m_config = createGameServerConfiguration();
-        assertNotNull( m_config );
+        config_ = createGameServerConfiguration();
+        assertNotNull( config_ );
     }
 
     /**
@@ -94,17 +94,17 @@ public abstract class AbstractGameServerConfigurationTestCase
     public void tearDown()
         throws Exception
     {
-        m_config = null;
+        config_ = null;
     }
 
     /**
-     * Ensures the {@code getGameSystemSource} method does not return
-     * {@code null}.
+     * Ensures the {@code getGameSystemSource} method does not return {@code
+     * null}.
      */
     @Test
     public void testGetGameSystemSource_ReturnValue_NonNull()
     {
-        assertNotNull( m_config.getGameSystemSource() );
+        assertNotNull( config_.getGameSystemSource() );
     }
 
     /**
@@ -113,6 +113,6 @@ public abstract class AbstractGameServerConfigurationTestCase
     @Test
     public void testGetName_ReturnValue_NonNull()
     {
-        assertNotNull( m_config.getName() );
+        assertNotNull( config_.getName() );
     }
 }

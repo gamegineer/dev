@@ -45,7 +45,7 @@ public abstract class AbstractGameSystemRegistryTestCase
     // ======================================================================
 
     /** The game system registry under test in the fixture. */
-    private IGameSystemRegistry m_registry;
+    private IGameSystemRegistry registry_;
 
 
     // ======================================================================
@@ -88,8 +88,8 @@ public abstract class AbstractGameSystemRegistryTestCase
     public void setUp()
         throws Exception
     {
-        m_registry = createGameSystemRegistry();
-        assertNotNull( m_registry );
+        registry_ = createGameSystemRegistry();
+        assertNotNull( registry_ );
     }
 
     /**
@@ -102,7 +102,7 @@ public abstract class AbstractGameSystemRegistryTestCase
     public void tearDown()
         throws Exception
     {
-        m_registry = null;
+        registry_ = null;
     }
 
     /**
@@ -112,7 +112,7 @@ public abstract class AbstractGameSystemRegistryTestCase
     @Test
     public void testGetGameSystem_Id_Absent()
     {
-        assertNull( m_registry.getGameSystem( "unknownId" ) ); //$NON-NLS-1$
+        assertNull( registry_.getGameSystem( "unknownId" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -122,7 +122,7 @@ public abstract class AbstractGameSystemRegistryTestCase
     @Test( expected = NullPointerException.class )
     public void testGetGameSystem_Id_Null()
     {
-        m_registry.getGameSystem( null );
+        registry_.getGameSystem( null );
     }
 
     /**
@@ -133,9 +133,9 @@ public abstract class AbstractGameSystemRegistryTestCase
     public void testGetGameSystem_Id_Present()
     {
         final IGameSystem expectedGameSystem = GameSystems.createUniqueGameSystem();
-        m_registry.registerGameSystem( expectedGameSystem );
+        registry_.registerGameSystem( expectedGameSystem );
 
-        final IGameSystem actualGameSystem = m_registry.getGameSystem( expectedGameSystem.getId() );
+        final IGameSystem actualGameSystem = registry_.getGameSystem( expectedGameSystem.getId() );
 
         assertSame( expectedGameSystem, actualGameSystem );
     }
@@ -147,12 +147,12 @@ public abstract class AbstractGameSystemRegistryTestCase
     @Test
     public void testGetGameSystems_ReturnValue_Copy()
     {
-        final Collection<IGameSystem> gameSystems = m_registry.getGameSystems();
+        final Collection<IGameSystem> gameSystems = registry_.getGameSystems();
         final int expectedGameSystemsSize = gameSystems.size();
 
         gameSystems.add( GameSystems.createUniqueGameSystem() );
 
-        assertEquals( expectedGameSystemsSize, m_registry.getGameSystems().size() );
+        assertEquals( expectedGameSystemsSize, registry_.getGameSystems().size() );
     }
 
     /**
@@ -162,10 +162,10 @@ public abstract class AbstractGameSystemRegistryTestCase
     @Test
     public void testGetGameSystems_ReturnValue_Snapshot()
     {
-        final Collection<IGameSystem> gameSystems = m_registry.getGameSystems();
-        m_registry.registerGameSystem( GameSystems.createUniqueGameSystem() );
+        final Collection<IGameSystem> gameSystems = registry_.getGameSystems();
+        registry_.registerGameSystem( GameSystems.createUniqueGameSystem() );
 
-        assertTrue( gameSystems.size() != m_registry.getGameSystems().size() );
+        assertTrue( gameSystems.size() != registry_.getGameSystems().size() );
     }
 
     /**
@@ -175,7 +175,7 @@ public abstract class AbstractGameSystemRegistryTestCase
     @Test( expected = NullPointerException.class )
     public void testRegisterGameSystem_GameSystem_Null()
     {
-        m_registry.registerGameSystem( null );
+        registry_.registerGameSystem( null );
     }
 
     /**
@@ -186,13 +186,13 @@ public abstract class AbstractGameSystemRegistryTestCase
     public void testRegisterGameSystem_GameSystem_Registered_DifferentInstance()
     {
         final IGameSystem gameSystem = GameSystems.createUniqueGameSystem();
-        final int originalGameSystemCount = m_registry.getGameSystems().size();
-        m_registry.registerGameSystem( gameSystem );
+        final int originalGameSystemCount = registry_.getGameSystems().size();
+        registry_.registerGameSystem( gameSystem );
 
-        m_registry.registerGameSystem( GameSystems.createGameSystem( gameSystem.getId() ) );
+        registry_.registerGameSystem( GameSystems.createGameSystem( gameSystem.getId() ) );
 
-        assertTrue( m_registry.getGameSystems().contains( gameSystem ) );
-        assertEquals( originalGameSystemCount + 1, m_registry.getGameSystems().size() );
+        assertTrue( registry_.getGameSystems().contains( gameSystem ) );
+        assertEquals( originalGameSystemCount + 1, registry_.getGameSystems().size() );
     }
 
     /**
@@ -203,13 +203,13 @@ public abstract class AbstractGameSystemRegistryTestCase
     public void testRegisterGameSystem_GameSystem_Registered_SameInstance()
     {
         final IGameSystem gameSystem = GameSystems.createUniqueGameSystem();
-        final int originalGameSystemCount = m_registry.getGameSystems().size();
-        m_registry.registerGameSystem( gameSystem );
+        final int originalGameSystemCount = registry_.getGameSystems().size();
+        registry_.registerGameSystem( gameSystem );
 
-        m_registry.registerGameSystem( gameSystem );
+        registry_.registerGameSystem( gameSystem );
 
-        assertTrue( m_registry.getGameSystems().contains( gameSystem ) );
-        assertEquals( originalGameSystemCount + 1, m_registry.getGameSystems().size() );
+        assertTrue( registry_.getGameSystems().contains( gameSystem ) );
+        assertEquals( originalGameSystemCount + 1, registry_.getGameSystems().size() );
     }
 
     /**
@@ -221,9 +221,9 @@ public abstract class AbstractGameSystemRegistryTestCase
     {
         final IGameSystem gameSystem = GameSystems.createUniqueGameSystem();
 
-        m_registry.registerGameSystem( gameSystem );
+        registry_.registerGameSystem( gameSystem );
 
-        assertTrue( m_registry.getGameSystems().contains( gameSystem ) );
+        assertTrue( registry_.getGameSystems().contains( gameSystem ) );
     }
 
     /**
@@ -233,7 +233,7 @@ public abstract class AbstractGameSystemRegistryTestCase
     @Test( expected = NullPointerException.class )
     public void testUnregisterGameSystem_GameSystem_Null()
     {
-        m_registry.unregisterGameSystem( null );
+        registry_.unregisterGameSystem( null );
     }
 
     /**
@@ -245,13 +245,13 @@ public abstract class AbstractGameSystemRegistryTestCase
     public void testUnregisterGameSystem_GameSystem_Registered_DifferentInstance()
     {
         final IGameSystem gameSystem = GameSystems.createUniqueGameSystem();
-        final int originalGameSystemCount = m_registry.getGameSystems().size();
-        m_registry.registerGameSystem( gameSystem );
-        assertEquals( originalGameSystemCount + 1, m_registry.getGameSystems().size() );
+        final int originalGameSystemCount = registry_.getGameSystems().size();
+        registry_.registerGameSystem( gameSystem );
+        assertEquals( originalGameSystemCount + 1, registry_.getGameSystems().size() );
 
-        m_registry.unregisterGameSystem( GameSystems.createGameSystem( gameSystem.getId() ) );
+        registry_.unregisterGameSystem( GameSystems.createGameSystem( gameSystem.getId() ) );
 
-        assertEquals( originalGameSystemCount + 1, m_registry.getGameSystems().size() );
+        assertEquals( originalGameSystemCount + 1, registry_.getGameSystems().size() );
     }
 
     /**
@@ -262,13 +262,13 @@ public abstract class AbstractGameSystemRegistryTestCase
     public void testUnregisterGameSystem_GameSystem_Registered_SameInstance()
     {
         final IGameSystem gameSystem = GameSystems.createUniqueGameSystem();
-        final int originalGameSystemCount = m_registry.getGameSystems().size();
-        m_registry.registerGameSystem( gameSystem );
-        assertEquals( originalGameSystemCount + 1, m_registry.getGameSystems().size() );
+        final int originalGameSystemCount = registry_.getGameSystems().size();
+        registry_.registerGameSystem( gameSystem );
+        assertEquals( originalGameSystemCount + 1, registry_.getGameSystems().size() );
 
-        m_registry.unregisterGameSystem( gameSystem );
+        registry_.unregisterGameSystem( gameSystem );
 
-        assertEquals( originalGameSystemCount, m_registry.getGameSystems().size() );
+        assertEquals( originalGameSystemCount, registry_.getGameSystems().size() );
     }
 
     /**
@@ -279,10 +279,10 @@ public abstract class AbstractGameSystemRegistryTestCase
     public void testUnregisterGameSystem_GameSystem_Unregistered()
     {
         final IGameSystem gameSystem = GameSystems.createUniqueGameSystem();
-        final int originalGameSystemCount = m_registry.getGameSystems().size();
+        final int originalGameSystemCount = registry_.getGameSystems().size();
 
-        m_registry.unregisterGameSystem( gameSystem );
+        registry_.unregisterGameSystem( gameSystem );
 
-        assertEquals( originalGameSystemCount, m_registry.getGameSystems().size() );
+        assertEquals( originalGameSystemCount, registry_.getGameSystems().size() );
     }
 }

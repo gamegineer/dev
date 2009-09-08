@@ -47,7 +47,7 @@ public final class NullGameServerConnection
     // ======================================================================
 
     /** The connection to which all operations are delegated. */
-    private final IGameServerConnection m_connection;
+    private final IGameServerConnection connection_;
 
 
     // ======================================================================
@@ -59,7 +59,7 @@ public final class NullGameServerConnection
      */
     public NullGameServerConnection()
     {
-        m_connection = new LocalGameServerConnection( GameServerFactory.createNullGameServer(), Principals.getAnonymousUserPrincipal() );
+        connection_ = new LocalGameServerConnection( GameServerFactory.createNullGameServer(), Principals.getAnonymousUserPrincipal() );
     }
 
 
@@ -73,7 +73,7 @@ public final class NullGameServerConnection
     public void close()
         throws IOException
     {
-        m_connection.close();
+        connection_.close();
     }
 
     /*
@@ -81,7 +81,7 @@ public final class NullGameServerConnection
      */
     public IGameServer getGameServer()
     {
-        return m_connection.getGameServer();
+        return connection_.getGameServer();
     }
 
     /*
@@ -97,7 +97,7 @@ public final class NullGameServerConnection
      */
     public Principal getUserPrincipal()
     {
-        return m_connection.getUserPrincipal();
+        return connection_.getUserPrincipal();
     }
 
     /*
@@ -106,6 +106,6 @@ public final class NullGameServerConnection
     public void open()
         throws IOException
     {
-        m_connection.open();
+        connection_.open();
     }
 }

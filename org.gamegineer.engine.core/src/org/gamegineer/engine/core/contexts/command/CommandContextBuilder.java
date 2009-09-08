@@ -47,7 +47,7 @@ public final class CommandContextBuilder
     // ======================================================================
 
     /** The collection of context attributes. */
-    private final Map<String, Object> m_attributes;
+    private final Map<String, Object> attributes_;
 
 
     // ======================================================================
@@ -59,7 +59,7 @@ public final class CommandContextBuilder
      */
     public CommandContextBuilder()
     {
-        m_attributes = new HashMap<String, Object>();
+        attributes_ = new HashMap<String, Object>();
     }
 
 
@@ -90,10 +90,10 @@ public final class CommandContextBuilder
         final Object value )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( !m_attributes.containsKey( name ), "name", Messages.CommandContextBuilder_attribute_exists( name ) ); //$NON-NLS-1$
+        assertArgumentLegal( !attributes_.containsKey( name ), "name", Messages.CommandContextBuilder_attribute_exists( name ) ); //$NON-NLS-1$
         assertArgumentNotNull( value, "value" ); //$NON-NLS-1$
 
-        m_attributes.put( name, value );
+        attributes_.put( name, value );
 
         return this;
     }
@@ -106,6 +106,6 @@ public final class CommandContextBuilder
     /* @NonNull */
     public ICommandContext toCommandContext()
     {
-        return new CommandContext( m_attributes );
+        return new CommandContext( attributes_ );
     }
 }

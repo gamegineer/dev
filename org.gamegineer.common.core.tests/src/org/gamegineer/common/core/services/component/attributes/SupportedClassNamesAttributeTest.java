@@ -1,6 +1,6 @@
 /*
  * SupportedClassNamesAttributeTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ public final class SupportedClassNamesAttributeTest
     // ======================================================================
 
     /** The attribute under test in the fixture. */
-    private SupportedClassNamesAttribute m_attribute;
+    private SupportedClassNamesAttribute attribute_;
 
 
     // ======================================================================
@@ -46,8 +46,8 @@ public final class SupportedClassNamesAttributeTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code SupportedClassNamesAttributeTest} class.
+     * Initializes a new instance of the {@code
+     * SupportedClassNamesAttributeTest} class.
      */
     public SupportedClassNamesAttributeTest()
     {
@@ -69,7 +69,7 @@ public final class SupportedClassNamesAttributeTest
     public void setUp()
         throws Exception
     {
-        m_attribute = SupportedClassNamesAttribute.INSTANCE;
+        attribute_ = SupportedClassNamesAttribute.INSTANCE;
     }
 
     /**
@@ -82,7 +82,7 @@ public final class SupportedClassNamesAttributeTest
     public void tearDown()
         throws Exception
     {
-        m_attribute = null;
+        attribute_ = null;
     }
 
     /**
@@ -93,7 +93,7 @@ public final class SupportedClassNamesAttributeTest
     public void testSetValueString_ClassName_Null()
     {
         final String className = null;
-        m_attribute.setValue( new MockComponentFactory(), className );
+        attribute_.setValue( new MockComponentFactory(), className );
     }
 
     /**
@@ -103,6 +103,6 @@ public final class SupportedClassNamesAttributeTest
     @Test( expected = NullPointerException.class )
     public void testSetValueString_Mutator_Null()
     {
-        m_attribute.setValue( null, Object.class.getName() );
+        attribute_.setValue( null, Object.class.getName() );
     }
 }

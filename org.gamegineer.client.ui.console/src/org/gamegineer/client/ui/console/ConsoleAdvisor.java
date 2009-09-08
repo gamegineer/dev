@@ -1,6 +1,6 @@
 /*
  * ConsoleAdvisor.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,10 +48,10 @@ public final class ConsoleAdvisor
     // ======================================================================
 
     /** The application argument list. */
-    private final List<String> m_appArgList;
+    private final List<String> appArgList_;
 
     /** The application version. */
-    private final Version m_appVersion;
+    private final Version appVersion_;
 
 
     // ======================================================================
@@ -88,8 +88,8 @@ public final class ConsoleAdvisor
         assertArgumentNotNull( appArgList, "appArgList" ); //$NON-NLS-1$
         assertArgumentNotNull( appVersion, "appVersion" ); //$NON-NLS-1$
 
-        m_appArgList = Collections.unmodifiableList( new ArrayList<String>( appArgList ) );
-        m_appVersion = appVersion;
+        appArgList_ = Collections.unmodifiableList( new ArrayList<String>( appArgList ) );
+        appVersion_ = appVersion;
     }
 
 
@@ -102,7 +102,7 @@ public final class ConsoleAdvisor
      */
     public List<String> getApplicationArguments()
     {
-        return m_appArgList;
+        return appArgList_;
     }
 
     /*
@@ -110,6 +110,6 @@ public final class ConsoleAdvisor
      */
     public Version getApplicationVersion()
     {
-        return m_appVersion;
+        return appVersion_;
     }
 }

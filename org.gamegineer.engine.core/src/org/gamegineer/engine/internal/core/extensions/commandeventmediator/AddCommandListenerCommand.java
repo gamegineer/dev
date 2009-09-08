@@ -48,7 +48,7 @@ public final class AddCommandListenerCommand
     // ======================================================================
 
     /** The command listener to add. */
-    private final ICommandListener m_listener;
+    private final ICommandListener listener_;
 
 
     // ======================================================================
@@ -71,7 +71,7 @@ public final class AddCommandListenerCommand
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
 
-        m_listener = listener;
+        listener_ = listener;
     }
 
 
@@ -94,7 +94,7 @@ public final class AddCommandListenerCommand
             throw new EngineException( Messages.Common_commandEventMediatorExtension_unavailable );
         }
 
-        mediator.addCommandListener( context, m_listener );
+        mediator.addCommandListener( context, listener_ );
 
         return null;
     }
@@ -104,6 +104,6 @@ public final class AddCommandListenerCommand
      */
     public IInvertibleCommand<Void> getInverseCommand()
     {
-        return new RemoveCommandListenerCommand( m_listener );
+        return new RemoveCommandListenerCommand( listener_ );
     }
 }

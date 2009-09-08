@@ -44,7 +44,7 @@ public final class StateListenersAttributeTest
     // ======================================================================
 
     /** The attribute under test in the fixture. */
-    private IAttribute<List<IStateListener>> m_attribute;
+    private IAttribute<List<IStateListener>> attribute_;
 
 
     // ======================================================================
@@ -75,7 +75,7 @@ public final class StateListenersAttributeTest
     public void setUp()
         throws Exception
     {
-        m_attribute = StateEventMediatorExtensionFacade.STATE_LISTENERS_ATTRIBUTE();
+        attribute_ = StateEventMediatorExtensionFacade.STATE_LISTENERS_ATTRIBUTE();
     }
 
     /**
@@ -88,7 +88,7 @@ public final class StateListenersAttributeTest
     public void tearDown()
         throws Exception
     {
-        m_attribute = null;
+        attribute_ = null;
     }
 
     /**
@@ -100,9 +100,9 @@ public final class StateListenersAttributeTest
     {
         final IState state = new FakeState();
 
-        m_attribute.add( state, new ArrayList<IStateListener>() );
+        attribute_.add( state, new ArrayList<IStateListener>() );
 
-        assertImmutableCollection( m_attribute.getValue( state ) );
+        assertImmutableCollection( attribute_.getValue( state ) );
     }
 
     /**
@@ -113,10 +113,10 @@ public final class StateListenersAttributeTest
     public void testSetValue_Value_Immutable()
     {
         final IState state = new FakeState();
-        m_attribute.add( state, new ArrayList<IStateListener>() );
+        attribute_.add( state, new ArrayList<IStateListener>() );
 
-        m_attribute.setValue( state, new ArrayList<IStateListener>() );
+        attribute_.setValue( state, new ArrayList<IStateListener>() );
 
-        assertImmutableCollection( m_attribute.getValue( state ) );
+        assertImmutableCollection( attribute_.getValue( state ) );
     }
 }

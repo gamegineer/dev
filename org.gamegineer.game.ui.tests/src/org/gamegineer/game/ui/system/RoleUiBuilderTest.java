@@ -42,10 +42,10 @@ public final class RoleUiBuilderTest
     // ======================================================================
 
     /** The role user interface builder under test in the fixture. */
-    private RoleUiBuilder m_builder;
+    private RoleUiBuilder builder_;
 
     /** The role on which the user interface is based. */
-    private IRole m_role;
+    private IRole role_;
 
 
     // ======================================================================
@@ -75,8 +75,8 @@ public final class RoleUiBuilderTest
     public void setUp()
         throws Exception
     {
-        m_role = GameSystems.createUniqueRole();
-        m_builder = new RoleUiBuilder();
+        role_ = GameSystems.createUniqueRole();
+        builder_ = new RoleUiBuilder();
     }
 
     /**
@@ -89,8 +89,8 @@ public final class RoleUiBuilderTest
     public void tearDown()
         throws Exception
     {
-        m_builder = null;
-        m_role = null;
+        builder_ = null;
+        role_ = null;
     }
 
     /**
@@ -100,7 +100,7 @@ public final class RoleUiBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetId_Id_Null()
     {
-        m_builder.setId( null );
+        builder_.setId( null );
     }
 
     /**
@@ -109,7 +109,7 @@ public final class RoleUiBuilderTest
     @Test
     public void testSetId_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setId( "id" ) ); //$NON-NLS-1$
+        assertSame( builder_, builder_.setId( "id" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -119,7 +119,7 @@ public final class RoleUiBuilderTest
     @Test
     public void testSetId_SetsId()
     {
-        final RoleUiBuilder builder = GameSystemUis.createIncompleteRoleUiBuilder( m_role, GameSystemUis.RoleUiAttribute.ID );
+        final RoleUiBuilder builder = GameSystemUis.createIncompleteRoleUiBuilder( role_, GameSystemUis.RoleUiAttribute.ID );
         final String expectedId = "id"; //$NON-NLS-1$
 
         builder.setId( expectedId );
@@ -135,7 +135,7 @@ public final class RoleUiBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetName_Name_Null()
     {
-        m_builder.setName( null );
+        builder_.setName( null );
     }
 
     /**
@@ -144,7 +144,7 @@ public final class RoleUiBuilderTest
     @Test
     public void testSetName_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setName( "name" ) ); //$NON-NLS-1$
+        assertSame( builder_, builder_.setName( "name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -154,7 +154,7 @@ public final class RoleUiBuilderTest
     @Test
     public void testSetName_SetsName()
     {
-        final RoleUiBuilder builder = GameSystemUis.createIncompleteRoleUiBuilder( m_role, GameSystemUis.RoleUiAttribute.NAME );
+        final RoleUiBuilder builder = GameSystemUis.createIncompleteRoleUiBuilder( role_, GameSystemUis.RoleUiAttribute.NAME );
         final String expectedName = "name"; //$NON-NLS-1$
 
         builder.setName( expectedName );
@@ -170,7 +170,7 @@ public final class RoleUiBuilderTest
     @Test( expected = IllegalStateException.class )
     public void testToRoleUi_Id_NotSet()
     {
-        final RoleUiBuilder builder = GameSystemUis.createIncompleteRoleUiBuilder( m_role, GameSystemUis.RoleUiAttribute.ID );
+        final RoleUiBuilder builder = GameSystemUis.createIncompleteRoleUiBuilder( role_, GameSystemUis.RoleUiAttribute.ID );
 
         builder.toRoleUi();
     }
@@ -182,7 +182,7 @@ public final class RoleUiBuilderTest
     @Test( expected = IllegalStateException.class )
     public void testToRoleUi_Name_NotSet()
     {
-        final RoleUiBuilder builder = GameSystemUis.createIncompleteRoleUiBuilder( m_role, GameSystemUis.RoleUiAttribute.NAME );
+        final RoleUiBuilder builder = GameSystemUis.createIncompleteRoleUiBuilder( role_, GameSystemUis.RoleUiAttribute.NAME );
 
         builder.toRoleUi();
     }
@@ -192,10 +192,10 @@ public final class RoleUiBuilderTest
      * the builder results in an illegal role user interface.
      * 
      * <p>
-     * The purpose of this test is simply to ensure <i>any</i> illegal
-     * attribute will cause an exception to be thrown. The primary collection of
-     * tests for all possible permutations of illegal role user interface
-     * attributes is located in the {@code GameSystemUiUtilsTest} class.
+     * The purpose of this test is simply to ensure <i>any</i> illegal attribute
+     * will cause an exception to be thrown. The primary collection of tests for
+     * all possible permutations of illegal role user interface attributes is
+     * located in the {@code GameSystemUiUtilsTest} class.
      * </p>
      */
     @Ignore( "Currently, there is no way to create an illegal role user interface." )

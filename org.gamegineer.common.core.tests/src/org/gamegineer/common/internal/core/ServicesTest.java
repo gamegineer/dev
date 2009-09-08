@@ -37,7 +37,7 @@ public final class ServicesTest
     // ======================================================================
 
     /** The services under test in the fixture. */
-    private Services m_services;
+    private Services services_;
 
 
     // ======================================================================
@@ -67,7 +67,7 @@ public final class ServicesTest
     public void setUp()
         throws Exception
     {
-        m_services = Services.getDefault();
+        services_ = Services.getDefault();
     }
 
     /**
@@ -80,37 +80,37 @@ public final class ServicesTest
     public void tearDown()
         throws Exception
     {
-        m_services = null;
+        services_ = null;
     }
 
     /**
-     * Ensures the {@code getComponentService} method does not return
-     * {@code null}, which validates the component service was registered with
-     * OSGi correctly.
+     * Ensures the {@code getComponentService} method does not return {@code
+     * null}, which validates the component service was registered with OSGi
+     * correctly.
      */
     @Test
     public void testGetComponentService_ReturnValue_NonNull()
     {
-        assertNotNull( m_services.getComponentService() );
+        assertNotNull( services_.getComponentService() );
     }
 
     /**
-     * Ensures the {@code getLoggingService} method does not return {@code null},
-     * which validates the logging service was registered with OSGi correctly.
+     * Ensures the {@code getLoggingService} method does not return {@code null}
+     * , which validates the logging service was registered with OSGi correctly.
      */
     @Test
     public void testGetLoggingService_ReturnValue_NonNull()
     {
-        assertNotNull( m_services.getLoggingService() );
+        assertNotNull( services_.getLoggingService() );
     }
 
     /**
-     * Ensures the {@code open} method throws an exception when passed a
-     * {@code null} bundle context.
+     * Ensures the {@code open} method throws an exception when passed a {@code
+     * null} bundle context.
      */
     @Test( expected = NullPointerException.class )
     public void testOpen_Context_Null()
     {
-        m_services.open( null );
+        services_.open( null );
     }
 }

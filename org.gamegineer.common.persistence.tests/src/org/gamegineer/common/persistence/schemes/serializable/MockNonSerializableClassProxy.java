@@ -1,6 +1,6 @@
 /*
  * MockNonSerializableClassProxy.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,14 +45,14 @@ public final class MockNonSerializableClassProxy
      * 
      * @serial
      */
-    private int m_intField;
+    private int intField_;
 
     /**
      * The string field.
      * 
      * @serial
      */
-    private String m_stringField;
+    private String stringField_;
 
 
     // ======================================================================
@@ -66,8 +66,8 @@ public final class MockNonSerializableClassProxy
     @SuppressWarnings( "unused" )
     private MockNonSerializableClassProxy()
     {
-        m_intField = 0;
-        m_stringField = null;
+        intField_ = 0;
+        stringField_ = null;
     }
 
     /**
@@ -75,8 +75,8 @@ public final class MockNonSerializableClassProxy
      * class from the specified {@code MockNonSerializableClass} instance.
      * 
      * @param subject
-     *        The {@code MockNonSerializableClass} instance; must not be
-     *        {@code null}.
+     *        The {@code MockNonSerializableClass} instance; must not be {@code
+     *        null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code subject} is {@code null}.
@@ -85,8 +85,8 @@ public final class MockNonSerializableClassProxy
         /* @NonNull */
         final MockNonSerializableClass subject )
     {
-        m_intField = subject.getIntField();
-        m_stringField = subject.getStringField();
+        intField_ = subject.getIntField();
+        stringField_ = subject.getStringField();
     }
 
 
@@ -104,6 +104,6 @@ public final class MockNonSerializableClassProxy
     /* @NonNull */
     private Object readResolve()
     {
-        return new MockNonSerializableClass( m_intField, m_stringField );
+        return new MockNonSerializableClass( intField_, stringField_ );
     }
 }

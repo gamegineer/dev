@@ -44,10 +44,10 @@ public final class GameStageStrategyTest
     // ======================================================================
 
     /** An engine context for use in the test. */
-    private IEngineContext m_engineContext;
+    private IEngineContext engineContext_;
 
     /** The game stage strategy under test in the fixture. */
-    private GameStageStrategy m_strategy;
+    private GameStageStrategy strategy_;
 
 
     // ======================================================================
@@ -77,8 +77,8 @@ public final class GameStageStrategyTest
     public void setUp()
         throws Exception
     {
-        m_engineContext = new FakeEngineContext();
-        m_strategy = new GameStageStrategy();
+        engineContext_ = new FakeEngineContext();
+        strategy_ = new GameStageStrategy();
     }
 
     /**
@@ -91,8 +91,8 @@ public final class GameStageStrategyTest
     public void tearDown()
         throws Exception
     {
-        m_strategy = null;
-        m_engineContext = null;
+        strategy_ = null;
+        engineContext_ = null;
     }
 
     /**
@@ -107,9 +107,9 @@ public final class GameStageStrategyTest
     public void testActivate_GameCompleteIndicatorAdded()
         throws Exception
     {
-        m_strategy.activate( createDummy( IStage.class ), m_engineContext );
+        strategy_.activate( createDummy( IStage.class ), engineContext_ );
 
-        assertFalse( GameAttributes.GAME_COMPLETE.getValue( m_engineContext.getState() ) );
+        assertFalse( GameAttributes.GAME_COMPLETE.getValue( engineContext_.getState() ) );
     }
 
     /**
@@ -124,11 +124,11 @@ public final class GameStageStrategyTest
         throws Exception
     {
         final IStage stage = createDummy( IStage.class );
-        m_strategy.activate( stage, m_engineContext );
+        strategy_.activate( stage, engineContext_ );
 
-        m_strategy.deactivate( stage, m_engineContext );
+        strategy_.deactivate( stage, engineContext_ );
 
-        assertFalse( GameAttributes.GAME_COMPLETE.isPresent( m_engineContext.getState() ) );
+        assertFalse( GameAttributes.GAME_COMPLETE.isPresent( engineContext_.getState() ) );
     }
 
     /**
@@ -139,9 +139,9 @@ public final class GameStageStrategyTest
     @Test
     public void testIsComplete_Game_Complete()
     {
-        GameAttributes.GAME_COMPLETE.add( m_engineContext.getState(), true );
+        GameAttributes.GAME_COMPLETE.add( engineContext_.getState(), true );
 
-        final boolean isComplete = m_strategy.isComplete( createDummy( IStage.class ), m_engineContext );
+        final boolean isComplete = strategy_.isComplete( createDummy( IStage.class ), engineContext_ );
 
         assertTrue( isComplete );
     }
@@ -154,9 +154,9 @@ public final class GameStageStrategyTest
     @Test
     public void testIsComplete_Game_Incomplete()
     {
-        GameAttributes.GAME_COMPLETE.add( m_engineContext.getState(), false );
+        GameAttributes.GAME_COMPLETE.add( engineContext_.getState(), false );
 
-        final boolean isComplete = m_strategy.isComplete( createDummy( IStage.class ), m_engineContext );
+        final boolean isComplete = strategy_.isComplete( createDummy( IStage.class ), engineContext_ );
 
         assertFalse( isComplete );
     }

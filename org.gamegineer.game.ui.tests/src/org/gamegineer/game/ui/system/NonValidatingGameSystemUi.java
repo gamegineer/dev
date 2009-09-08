@@ -31,8 +31,8 @@ import net.jcip.annotations.Immutable;
  * 
  * <p>
  * This implementation allows malformed game system user interfaces and thus may
- * violate the contract of {@code IGameSystemUi}. It is only intended to be
- * used during testing.
+ * violate the contract of {@code IGameSystemUi}. It is only intended to be used
+ * during testing.
  * </p>
  * 
  * <p>
@@ -48,13 +48,13 @@ public final class NonValidatingGameSystemUi
     // ======================================================================
 
     /** The game system identifier. */
-    private final String m_id;
+    private final String id_;
 
     /** The game system name. */
-    private final String m_name;
+    private final String name_;
 
     /** The role user interface list. */
-    private final List<IRoleUi> m_roleUis;
+    private final List<IRoleUi> roleUis_;
 
 
     // ======================================================================
@@ -80,9 +80,9 @@ public final class NonValidatingGameSystemUi
         /* @Nullable */
         final List<IRoleUi> roleUis )
     {
-        m_id = id;
-        m_name = name;
-        m_roleUis = (roleUis != null) ? new ArrayList<IRoleUi>( roleUis ) : null;
+        id_ = id;
+        name_ = name;
+        roleUis_ = (roleUis != null) ? new ArrayList<IRoleUi>( roleUis ) : null;
     }
 
 
@@ -98,7 +98,7 @@ public final class NonValidatingGameSystemUi
     /* @Nullable */
     public String getId()
     {
-        return m_id;
+        return id_;
     }
 
     /**
@@ -109,7 +109,7 @@ public final class NonValidatingGameSystemUi
     /* @Nullable */
     public String getName()
     {
-        return m_name;
+        return name_;
     }
 
     /**
@@ -120,6 +120,6 @@ public final class NonValidatingGameSystemUi
     /* @Nullable */
     public List<IRoleUi> getRoles()
     {
-        return (m_roleUis != null) ? new ArrayList<IRoleUi>( m_roleUis ) : null;
+        return (roleUis_ != null) ? new ArrayList<IRoleUi>( roleUis_ ) : null;
     }
 }

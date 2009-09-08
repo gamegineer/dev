@@ -39,7 +39,7 @@ public abstract class AbstractGameSystemTestCase
     // ======================================================================
 
     /** The game system under test in the fixture. */
-    private IGameSystem m_gameSystem;
+    private IGameSystem gameSystem_;
 
 
     // ======================================================================
@@ -82,8 +82,8 @@ public abstract class AbstractGameSystemTestCase
     public void setUp()
         throws Exception
     {
-        m_gameSystem = createGameSystem();
-        assertNotNull( m_gameSystem );
+        gameSystem_ = createGameSystem();
+        assertNotNull( gameSystem_ );
     }
 
     /**
@@ -96,7 +96,7 @@ public abstract class AbstractGameSystemTestCase
     public void tearDown()
         throws Exception
     {
-        m_gameSystem = null;
+        gameSystem_ = null;
     }
 
     /**
@@ -105,7 +105,7 @@ public abstract class AbstractGameSystemTestCase
     @Test
     public void testGetId_ReturnValue_NonNull()
     {
-        assertNotNull( m_gameSystem.getId() );
+        assertNotNull( gameSystem_.getId() );
     }
 
     /**
@@ -114,12 +114,12 @@ public abstract class AbstractGameSystemTestCase
     @Test
     public void testGetRoles_ReturnValue_Copy()
     {
-        final List<IRole> roles = m_gameSystem.getRoles();
+        final List<IRole> roles = gameSystem_.getRoles();
         final int originalRolesSize = roles.size();
 
         roles.add( null );
 
-        assertEquals( originalRolesSize, m_gameSystem.getRoles().size() );
+        assertEquals( originalRolesSize, gameSystem_.getRoles().size() );
     }
 
     /**
@@ -128,7 +128,7 @@ public abstract class AbstractGameSystemTestCase
     @Test
     public void testGetRoles_ReturnValue_NonNull()
     {
-        assertNotNull( m_gameSystem.getRoles() );
+        assertNotNull( gameSystem_.getRoles() );
     }
 
     /**
@@ -137,12 +137,12 @@ public abstract class AbstractGameSystemTestCase
     @Test
     public void testGetStages_ReturnValue_Copy()
     {
-        final List<IStage> stages = m_gameSystem.getStages();
+        final List<IStage> stages = gameSystem_.getStages();
         final int originalStagesSize = stages.size();
 
         stages.add( null );
 
-        assertEquals( originalStagesSize, m_gameSystem.getStages().size() );
+        assertEquals( originalStagesSize, gameSystem_.getStages().size() );
     }
 
     /**
@@ -151,6 +151,6 @@ public abstract class AbstractGameSystemTestCase
     @Test
     public void testGetStages_ReturnValue_NonNull()
     {
-        assertNotNull( m_gameSystem.getStages() );
+        assertNotNull( gameSystem_.getStages() );
     }
 }

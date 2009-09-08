@@ -1,6 +1,6 @@
 /*
  * StateTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,7 +44,7 @@ public final class StateTest
     // ======================================================================
 
     /** The state under test in the fixture. */
-    private State m_state;
+    private State state_;
 
 
     // ======================================================================
@@ -74,7 +74,7 @@ public final class StateTest
     public void setUp()
         throws Exception
     {
-        m_state = new State();
+        state_ = new State();
     }
 
     /**
@@ -87,7 +87,7 @@ public final class StateTest
     public void tearDown()
         throws Exception
     {
-        m_state = null;
+        state_ = null;
     }
 
     /**
@@ -97,9 +97,9 @@ public final class StateTest
     @Test( expected = IllegalStateException.class )
     public void testAddAttribute_Transaction_ActiveReadOnly()
     {
-        m_state.beginTransaction();
-        m_state.prepareToCommitTransaction();
-        m_state.addAttribute( new AttributeName( Scope.APPLICATION, "name" ), "value" ); //$NON-NLS-1$ //$NON-NLS-2$
+        state_.beginTransaction();
+        state_.prepareToCommitTransaction();
+        state_.addAttribute( new AttributeName( Scope.APPLICATION, "name" ), "value" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -109,7 +109,7 @@ public final class StateTest
     @Test( expected = IllegalStateException.class )
     public void testAddAttribute_Transaction_Inactive()
     {
-        m_state.addAttribute( new AttributeName( Scope.APPLICATION, "name" ), "value" ); //$NON-NLS-1$ //$NON-NLS-2$
+        state_.addAttribute( new AttributeName( Scope.APPLICATION, "name" ), "value" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -119,8 +119,8 @@ public final class StateTest
     @Test( expected = IllegalStateException.class )
     public void testBeginTransaction_Transaction_Active()
     {
-        m_state.beginTransaction();
-        m_state.beginTransaction();
+        state_.beginTransaction();
+        state_.beginTransaction();
     }
 
     /**
@@ -130,9 +130,9 @@ public final class StateTest
     @Test( expected = IllegalStateException.class )
     public void testBeginTransaction_Transaction_ActiveReadOnly()
     {
-        m_state.beginTransaction();
-        m_state.prepareToCommitTransaction();
-        m_state.beginTransaction();
+        state_.beginTransaction();
+        state_.prepareToCommitTransaction();
+        state_.beginTransaction();
     }
 
     /**
@@ -142,8 +142,8 @@ public final class StateTest
     @Test
     public void testBeginTransaction_Transaction_Inactive()
     {
-        m_state.beginTransaction();
-        assertTrue( m_state.isTransactionActive() );
+        state_.beginTransaction();
+        assertTrue( state_.isTransactionActive() );
     }
 
     /**
@@ -154,15 +154,15 @@ public final class StateTest
     public void testCommitTransaction_Transaction_Active()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.beginTransaction();
-        m_state.addAttribute( name, "value1" ); //$NON-NLS-1$
-        m_state.commitTransaction();
+        state_.beginTransaction();
+        state_.addAttribute( name, "value1" ); //$NON-NLS-1$
+        state_.commitTransaction();
 
-        m_state.beginTransaction();
-        m_state.setAttribute( name, "value2" ); //$NON-NLS-1$
-        m_state.commitTransaction();
-        assertFalse( m_state.isTransactionActive() );
-        assertEquals( "value2", m_state.getAttribute( name ) ); //$NON-NLS-1$
+        state_.beginTransaction();
+        state_.setAttribute( name, "value2" ); //$NON-NLS-1$
+        state_.commitTransaction();
+        assertFalse( state_.isTransactionActive() );
+        assertEquals( "value2", state_.getAttribute( name ) ); //$NON-NLS-1$
     }
 
     /**
@@ -174,16 +174,16 @@ public final class StateTest
     public void testCommitTransaction_Transaction_ActiveReadOnly()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.beginTransaction();
-        m_state.addAttribute( name, "value1" ); //$NON-NLS-1$
-        m_state.commitTransaction();
+        state_.beginTransaction();
+        state_.addAttribute( name, "value1" ); //$NON-NLS-1$
+        state_.commitTransaction();
 
-        m_state.beginTransaction();
-        m_state.setAttribute( name, "value2" ); //$NON-NLS-1$
-        m_state.prepareToCommitTransaction();
-        m_state.commitTransaction();
-        assertFalse( m_state.isTransactionActive() );
-        assertEquals( "value2", m_state.getAttribute( name ) ); //$NON-NLS-1$
+        state_.beginTransaction();
+        state_.setAttribute( name, "value2" ); //$NON-NLS-1$
+        state_.prepareToCommitTransaction();
+        state_.commitTransaction();
+        assertFalse( state_.isTransactionActive() );
+        assertEquals( "value2", state_.getAttribute( name ) ); //$NON-NLS-1$
     }
 
     /**
@@ -193,7 +193,7 @@ public final class StateTest
     @Test( expected = IllegalStateException.class )
     public void testCommitTransaction_Transaction_Inactive()
     {
-        m_state.commitTransaction();
+        state_.commitTransaction();
     }
 
     /**
@@ -203,7 +203,7 @@ public final class StateTest
     @Test
     public void testContainsAttribute_Transaction_Inactive()
     {
-        m_state.containsAttribute( new AttributeName( Scope.APPLICATION, "name" ) ); //$NON-NLS-1$
+        state_.containsAttribute( new AttributeName( Scope.APPLICATION, "name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -214,11 +214,11 @@ public final class StateTest
     public void testGetAttribute_Transaction_Inactive()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.beginTransaction();
-        m_state.addAttribute( name, "value" ); //$NON-NLS-1$
-        m_state.commitTransaction();
+        state_.beginTransaction();
+        state_.addAttribute( name, "value" ); //$NON-NLS-1$
+        state_.commitTransaction();
 
-        m_state.getAttribute( name );
+        state_.getAttribute( name );
     }
 
     /**
@@ -228,7 +228,7 @@ public final class StateTest
     @Test( expected = IllegalStateException.class )
     public void testGetAttributeChanges_Transaction_Inactive()
     {
-        m_state.getAttributeChanges();
+        state_.getAttributeChanges();
     }
 
     /**
@@ -238,7 +238,7 @@ public final class StateTest
     @Test
     public void testGetAttributeNames_Transaction_Inactive()
     {
-        m_state.getAttributeNames();
+        state_.getAttributeNames();
     }
 
     /**
@@ -251,12 +251,12 @@ public final class StateTest
     {
         final AttributeName name1 = new AttributeName( Scope.APPLICATION, "name1" ); //$NON-NLS-1$
         final AttributeName name2 = new AttributeName( Scope.ENGINE_CONTROL, "name2" ); //$NON-NLS-1$
-        m_state.beginTransaction();
-        m_state.addAttribute( name1, "value1" ); //$NON-NLS-1$
-        m_state.addAttribute( name2, "value2" ); //$NON-NLS-1$
-        m_state.commitTransaction();
+        state_.beginTransaction();
+        state_.addAttribute( name1, "value1" ); //$NON-NLS-1$
+        state_.addAttribute( name2, "value2" ); //$NON-NLS-1$
+        state_.commitTransaction();
 
-        final Set<AttributeName> nameSet = m_state.getAttributeNames( Scope.APPLICATION );
+        final Set<AttributeName> nameSet = state_.getAttributeNames( Scope.APPLICATION );
         assertTrue( nameSet.size() == 1 );
         assertTrue( nameSet.contains( name1 ) );
     }
@@ -268,7 +268,7 @@ public final class StateTest
     @Test
     public void testGetAttributeNamesWithScope_Empty()
     {
-        final Set<AttributeName> nameSet = m_state.getAttributeNames( Scope.APPLICATION );
+        final Set<AttributeName> nameSet = state_.getAttributeNames( Scope.APPLICATION );
         assertNotNull( nameSet );
         assertTrue( nameSet.size() == 0 );
     }
@@ -280,7 +280,7 @@ public final class StateTest
     @Test( expected = AssertionError.class )
     public void testGetAttributeNamesWithScope_Scope_Null()
     {
-        m_state.getAttributeNames( null );
+        state_.getAttributeNames( null );
     }
 
     /**
@@ -290,7 +290,7 @@ public final class StateTest
     @Test
     public void testGetAttributeNamesWithScope_Transaction_Inactive()
     {
-        m_state.getAttributeNames( Scope.APPLICATION );
+        state_.getAttributeNames( Scope.APPLICATION );
     }
 
     /**
@@ -300,9 +300,9 @@ public final class StateTest
     @Test( expected = IllegalStateException.class )
     public void testPrepareToCommitTransaction_Transaction_ActiveReadOnly()
     {
-        m_state.beginTransaction();
-        m_state.prepareToCommitTransaction();
-        m_state.prepareToCommitTransaction();
+        state_.beginTransaction();
+        state_.prepareToCommitTransaction();
+        state_.prepareToCommitTransaction();
     }
 
     /**
@@ -312,7 +312,7 @@ public final class StateTest
     @Test( expected = IllegalStateException.class )
     public void testPrepareToCommitTransaction_Transaction_Inactive()
     {
-        m_state.prepareToCommitTransaction();
+        state_.prepareToCommitTransaction();
     }
 
     /**
@@ -324,9 +324,9 @@ public final class StateTest
     {
         final Set<AttributeName> names = new HashSet<AttributeName>();
         names.add( new AttributeName( Scope.APPLICATION, "name" ) ); //$NON-NLS-1$
-        m_state.beginTransaction();
-        m_state.removeAllAttributes( names );
-        m_state.commitTransaction();
+        state_.beginTransaction();
+        state_.removeAllAttributes( names );
+        state_.commitTransaction();
     }
 
     /**
@@ -337,17 +337,17 @@ public final class StateTest
     public void testRemoveAllAttributes_Attribute_Present()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.beginTransaction();
-        m_state.addAttribute( name, "value" ); //$NON-NLS-1$
-        m_state.commitTransaction();
-        assertTrue( m_state.containsAttribute( name ) );
+        state_.beginTransaction();
+        state_.addAttribute( name, "value" ); //$NON-NLS-1$
+        state_.commitTransaction();
+        assertTrue( state_.containsAttribute( name ) );
 
         final Set<AttributeName> names = new HashSet<AttributeName>();
         names.add( name );
-        m_state.beginTransaction();
-        m_state.removeAllAttributes( names );
-        m_state.commitTransaction();
-        assertFalse( m_state.containsAttribute( name ) );
+        state_.beginTransaction();
+        state_.removeAllAttributes( names );
+        state_.commitTransaction();
+        assertFalse( state_.containsAttribute( name ) );
     }
 
     /**
@@ -357,7 +357,7 @@ public final class StateTest
     @Test( expected = AssertionError.class )
     public void testRemoveAllAttributes_Names_Null()
     {
-        m_state.removeAllAttributes( null );
+        state_.removeAllAttributes( null );
     }
 
     /**
@@ -368,15 +368,15 @@ public final class StateTest
     public void testRemoveAllAttributes_Transaction_ActiveReadOnly()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.beginTransaction();
-        m_state.addAttribute( name, "value" ); //$NON-NLS-1$
-        m_state.commitTransaction();
+        state_.beginTransaction();
+        state_.addAttribute( name, "value" ); //$NON-NLS-1$
+        state_.commitTransaction();
 
         final Set<AttributeName> names = new HashSet<AttributeName>();
         names.add( name );
-        m_state.beginTransaction();
-        m_state.prepareToCommitTransaction();
-        m_state.removeAllAttributes( names );
+        state_.beginTransaction();
+        state_.prepareToCommitTransaction();
+        state_.removeAllAttributes( names );
     }
 
     /**
@@ -387,13 +387,13 @@ public final class StateTest
     public void testRemoveAllAttributes_Transaction_Inactive()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.beginTransaction();
-        m_state.addAttribute( name, "value" ); //$NON-NLS-1$
-        m_state.commitTransaction();
+        state_.beginTransaction();
+        state_.addAttribute( name, "value" ); //$NON-NLS-1$
+        state_.commitTransaction();
 
         final Set<AttributeName> names = new HashSet<AttributeName>();
         names.add( name );
-        m_state.removeAllAttributes( names );
+        state_.removeAllAttributes( names );
     }
 
     /**
@@ -404,13 +404,13 @@ public final class StateTest
     public void testRemoveAttribute_Transaction_ActiveReadOnly()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.beginTransaction();
-        m_state.addAttribute( name, "value" ); //$NON-NLS-1$
-        m_state.commitTransaction();
+        state_.beginTransaction();
+        state_.addAttribute( name, "value" ); //$NON-NLS-1$
+        state_.commitTransaction();
 
-        m_state.beginTransaction();
-        m_state.prepareToCommitTransaction();
-        m_state.removeAttribute( name );
+        state_.beginTransaction();
+        state_.prepareToCommitTransaction();
+        state_.removeAttribute( name );
     }
 
     /**
@@ -421,11 +421,11 @@ public final class StateTest
     public void testRemoveAttribute_Transaction_Inactive()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.beginTransaction();
-        m_state.addAttribute( name, "value" ); //$NON-NLS-1$
-        m_state.commitTransaction();
+        state_.beginTransaction();
+        state_.addAttribute( name, "value" ); //$NON-NLS-1$
+        state_.commitTransaction();
 
-        m_state.removeAttribute( name );
+        state_.removeAttribute( name );
     }
 
     /**
@@ -436,15 +436,15 @@ public final class StateTest
     public void testRollbackTransaction_Transaction_Active()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.beginTransaction();
-        m_state.addAttribute( name, "value1" ); //$NON-NLS-1$
-        m_state.commitTransaction();
+        state_.beginTransaction();
+        state_.addAttribute( name, "value1" ); //$NON-NLS-1$
+        state_.commitTransaction();
 
-        m_state.beginTransaction();
-        m_state.setAttribute( name, "value2" ); //$NON-NLS-1$
-        m_state.rollbackTransaction();
-        assertFalse( m_state.isTransactionActive() );
-        assertEquals( "value1", m_state.getAttribute( name ) ); //$NON-NLS-1$
+        state_.beginTransaction();
+        state_.setAttribute( name, "value2" ); //$NON-NLS-1$
+        state_.rollbackTransaction();
+        assertFalse( state_.isTransactionActive() );
+        assertEquals( "value1", state_.getAttribute( name ) ); //$NON-NLS-1$
     }
 
     /**
@@ -456,16 +456,16 @@ public final class StateTest
     public void testRollbackTransaction_Transaction_ActiveReadOnly()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.beginTransaction();
-        m_state.addAttribute( name, "value1" ); //$NON-NLS-1$
-        m_state.commitTransaction();
+        state_.beginTransaction();
+        state_.addAttribute( name, "value1" ); //$NON-NLS-1$
+        state_.commitTransaction();
 
-        m_state.beginTransaction();
-        m_state.setAttribute( name, "value2" ); //$NON-NLS-1$
-        m_state.prepareToCommitTransaction();
-        m_state.rollbackTransaction();
-        assertFalse( m_state.isTransactionActive() );
-        assertEquals( "value1", m_state.getAttribute( name ) ); //$NON-NLS-1$
+        state_.beginTransaction();
+        state_.setAttribute( name, "value2" ); //$NON-NLS-1$
+        state_.prepareToCommitTransaction();
+        state_.rollbackTransaction();
+        assertFalse( state_.isTransactionActive() );
+        assertEquals( "value1", state_.getAttribute( name ) ); //$NON-NLS-1$
     }
 
     /**
@@ -475,7 +475,7 @@ public final class StateTest
     @Test( expected = IllegalStateException.class )
     public void testRollbackTransaction_Transaction_Inactive()
     {
-        m_state.rollbackTransaction();
+        state_.rollbackTransaction();
     }
 
     /**
@@ -486,13 +486,13 @@ public final class StateTest
     public void testSetAttribute_Transaction_ActiveReadOnly()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.beginTransaction();
-        m_state.addAttribute( name, "value" ); //$NON-NLS-1$
-        m_state.commitTransaction();
+        state_.beginTransaction();
+        state_.addAttribute( name, "value" ); //$NON-NLS-1$
+        state_.commitTransaction();
 
-        m_state.beginTransaction();
-        m_state.prepareToCommitTransaction();
-        m_state.setAttribute( name, "value" ); //$NON-NLS-1$
+        state_.beginTransaction();
+        state_.prepareToCommitTransaction();
+        state_.setAttribute( name, "value" ); //$NON-NLS-1$
     }
 
     /**
@@ -503,10 +503,10 @@ public final class StateTest
     public void testSetAttribute_Transaction_Inactive()
     {
         final AttributeName name = new AttributeName( Scope.APPLICATION, "name" ); //$NON-NLS-1$
-        m_state.beginTransaction();
-        m_state.addAttribute( name, "value" ); //$NON-NLS-1$
-        m_state.commitTransaction();
+        state_.beginTransaction();
+        state_.addAttribute( name, "value" ); //$NON-NLS-1$
+        state_.commitTransaction();
 
-        m_state.setAttribute( name, "value" ); //$NON-NLS-1$
+        state_.setAttribute( name, "value" ); //$NON-NLS-1$
     }
 }

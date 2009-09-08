@@ -68,7 +68,7 @@ public final class LocalizedStringReplacerTest
     private static final String PROPERTY_VALUE_F = "localizedValueF"; //$NON-NLS-1$
 
     /** The localized string replacer under test in the fixture. */
-    private LocalizedStringReplacer m_replacer;
+    private LocalizedStringReplacer replacer_;
 
 
     // ======================================================================
@@ -110,7 +110,7 @@ public final class LocalizedStringReplacerTest
         entries.put( PROPERTY_KEY_A, PROPERTY_VALUE_A );
         entries.put( PROPERTY_KEY_B, PROPERTY_VALUE_B );
         entries.put( PROPERTY_KEY_F, PROPERTY_VALUE_F );
-        m_replacer = new LocalizedStringReplacer( new FakeStringBundle( entries ) );
+        replacer_ = new LocalizedStringReplacer( new FakeStringBundle( entries ) );
 
         super.setUp();
     }
@@ -125,7 +125,7 @@ public final class LocalizedStringReplacerTest
     {
         super.tearDown();
 
-        m_replacer = null;
+        replacer_ = null;
     }
 
     /**
@@ -135,7 +135,7 @@ public final class LocalizedStringReplacerTest
     @Test( expected = NullPointerException.class )
     public void testAfterUnmarshal_Target_Null()
     {
-        m_replacer.afterUnmarshal( null, new Object() );
+        replacer_.afterUnmarshal( null, new Object() );
     }
 
     /**
@@ -171,7 +171,7 @@ public final class LocalizedStringReplacerTest
         sb.append( String.format( "  <E>%1$s</E>", LocaleNeutralKey.decorateKey( PROPERTY_KEY_E ) ) ); //$NON-NLS-1$
         sb.append( String.format( "  <F>%1$s</F>", LocaleNeutralKey.decorateKey( PROPERTY_KEY_F ) ) ); //$NON-NLS-1$
         sb.append( "</root>" ); //$NON-NLS-1$
-        getUnmarshaller().setListener( m_replacer );
+        getUnmarshaller().setListener( replacer_ );
 
         final FakeRootElement root = (FakeRootElement)getUnmarshaller().unmarshal( new StringReader( sb.toString() ) );
 
@@ -204,30 +204,30 @@ public final class LocalizedStringReplacerTest
         /** Localizable string property A. */
         @Localizable
         @XmlAttribute( name = "A", required = true )
-        private final String m_propertyA;
+        private final String propertyA_;
 
         /** Localizable string property B. */
         @Localizable
         @XmlElement( name = "B", required = true )
-        private final String m_propertyB;
+        private final String propertyB_;
 
         /** Non-localizable integer property C. */
         @XmlElement( name = "C", required = true )
-        private final Integer m_propertyC;
+        private final Integer propertyC_;
 
         /** Localizable string property D. */
         @Localizable
         @XmlElement( name = "D", required = true )
-        private final String m_propertyD;
+        private final String propertyD_;
 
         /** Localizable string property E. */
         @Localizable
         @XmlElement( name = "E", required = true )
-        private final String m_propertyE;
+        private final String propertyE_;
 
         /** Non-localizable string property F. */
         @XmlElement( name = "F", required = true )
-        private final String m_propertyF;
+        private final String propertyF_;
 
 
         // ==================================================================
@@ -239,12 +239,12 @@ public final class LocalizedStringReplacerTest
          */
         private FakeRootElement()
         {
-            m_propertyA = null;
-            m_propertyB = null;
-            m_propertyC = null;
-            m_propertyD = null;
-            m_propertyE = null;
-            m_propertyF = null;
+            propertyA_ = null;
+            propertyB_ = null;
+            propertyC_ = null;
+            propertyD_ = null;
+            propertyE_ = null;
+            propertyF_ = null;
         }
 
 
@@ -255,25 +255,25 @@ public final class LocalizedStringReplacerTest
         /**
          * Gets the value of localizable string property A.
          * 
-         * @return The value of localizable string property A; may be
-         *         {@code null}.
+         * @return The value of localizable string property A; may be {@code
+         *         null}.
          */
         /* @Nullable */
         String getPropertyA()
         {
-            return m_propertyA;
+            return propertyA_;
         }
 
         /**
          * Gets the value of localizable string property B.
          * 
-         * @return The value of localizable string property B; may be
-         *         {@code null}.
+         * @return The value of localizable string property B; may be {@code
+         *         null}.
          */
         /* @Nullable */
         String getPropertyB()
         {
-            return m_propertyB;
+            return propertyB_;
         }
 
         /**
@@ -285,31 +285,31 @@ public final class LocalizedStringReplacerTest
         /* @Nullable */
         Integer getPropertyC()
         {
-            return m_propertyC;
+            return propertyC_;
         }
 
         /**
          * Gets the value of localizable string property D.
          * 
-         * @return The value of localizable string property D; may be
-         *         {@code null}.
+         * @return The value of localizable string property D; may be {@code
+         *         null}.
          */
         /* @Nullable */
         String getPropertyD()
         {
-            return m_propertyD;
+            return propertyD_;
         }
 
         /**
          * Gets the value of localizable string property E.
          * 
-         * @return The value of localizable string property E; may be
-         *         {@code null}.
+         * @return The value of localizable string property E; may be {@code
+         *         null}.
          */
         /* @Nullable */
         String getPropertyE()
         {
-            return m_propertyE;
+            return propertyE_;
         }
 
         /**
@@ -321,7 +321,7 @@ public final class LocalizedStringReplacerTest
         /* @Nullable */
         String getPropertyF()
         {
-            return m_propertyF;
+            return propertyF_;
         }
     }
 }

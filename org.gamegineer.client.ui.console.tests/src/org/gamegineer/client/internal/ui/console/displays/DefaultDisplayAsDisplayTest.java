@@ -1,6 +1,6 @@
 /*
  * DefaultDisplayAsDisplayTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,13 +48,13 @@ public final class DefaultDisplayAsDisplayTest
     // ======================================================================
 
     /** The display under test in the fixture. */
-    private DefaultDisplay m_display;
+    private DefaultDisplay display_;
 
     /** The writer that pipes input to the display input stream. */
-    private PrintWriter m_inputWriter;
+    private PrintWriter inputWriter_;
 
     /** The reader that pipes output from the display output stream. */
-    private BufferedReader m_outputReader;
+    private BufferedReader outputReader_;
 
 
     // ======================================================================
@@ -82,7 +82,7 @@ public final class DefaultDisplayAsDisplayTest
     protected IDisplay createDisplay()
         throws Exception
     {
-        return m_display;
+        return display_;
     }
 
     /*
@@ -93,11 +93,11 @@ public final class DefaultDisplayAsDisplayTest
         final IDisplay display )
     {
         assertArgumentNotNull( display, "display" ); //$NON-NLS-1$
-        assertSame( m_display, display );
+        assertSame( display_, display );
 
         try
         {
-            return m_outputReader.readLine();
+            return outputReader_.readLine();
         }
         catch( final IOException e )
         {
@@ -117,9 +117,9 @@ public final class DefaultDisplayAsDisplayTest
         final PipedReader inputReader = new PipedReader( inputWriter );
         final PipedReader outputReader = new PipedReader();
         final PipedWriter outputWriter = new PipedWriter( outputReader );
-        m_outputReader = new BufferedReader( outputReader );
-        m_inputWriter = new PrintWriter( inputWriter );
-        m_display = new DefaultDisplay( inputReader, new PrintWriter( outputWriter ) );
+        outputReader_ = new BufferedReader( outputReader );
+        inputWriter_ = new PrintWriter( inputWriter );
+        display_ = new DefaultDisplay( inputReader, new PrintWriter( outputWriter ) );
 
         super.setUp();
     }
@@ -134,9 +134,9 @@ public final class DefaultDisplayAsDisplayTest
     {
         super.tearDown();
 
-        m_display = null;
-        m_inputWriter = null;
-        m_outputReader = null;
+        display_ = null;
+        inputWriter_ = null;
+        outputReader_ = null;
     }
 
     /*
@@ -148,10 +148,10 @@ public final class DefaultDisplayAsDisplayTest
         final String s )
     {
         assertArgumentNotNull( display, "display" ); //$NON-NLS-1$
-        assertSame( m_display, display );
+        assertSame( display_, display );
         assertArgumentNotNull( s, "s" ); //$NON-NLS-1$
 
-        m_inputWriter.print( s );
-        m_inputWriter.flush();
+        inputWriter_.print( s );
+        inputWriter_.flush();
     }
 }

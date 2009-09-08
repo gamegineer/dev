@@ -45,7 +45,7 @@ public final class NonValidatingRoleBuilder
     // ======================================================================
 
     /** The role identifier. */
-    private String m_id;
+    private String id_;
 
 
     // ======================================================================
@@ -58,7 +58,7 @@ public final class NonValidatingRoleBuilder
      */
     public NonValidatingRoleBuilder()
     {
-        m_id = null;
+        id_ = null;
     }
 
     /**
@@ -66,7 +66,8 @@ public final class NonValidatingRoleBuilder
      * using the specified role.
      * 
      * @param role
-     *        The role used to initialize this builder; must not be {@code null}.
+     *        The role used to initialize this builder; must not be {@code null}
+     *        .
      * 
      * @throws java.lang.NullPointerException
      *         If {@code role} is {@code null}.
@@ -77,7 +78,7 @@ public final class NonValidatingRoleBuilder
     {
         assertArgumentNotNull( role, "role" ); //$NON-NLS-1$
 
-        m_id = role.getId();
+        id_ = role.getId();
     }
 
 
@@ -98,7 +99,7 @@ public final class NonValidatingRoleBuilder
         /* @Nullable */
         final String id )
     {
-        m_id = id;
+        id_ = id;
 
         return this;
     }
@@ -111,6 +112,6 @@ public final class NonValidatingRoleBuilder
     /* @NonNull */
     public IRole toRole()
     {
-        return new NonValidatingRole( m_id );
+        return new NonValidatingRole( id_ );
     }
 }

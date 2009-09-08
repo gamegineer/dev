@@ -38,10 +38,10 @@ public final class StageStateTest
     // ======================================================================
 
     /** The stage associated with the stage state under test. */
-    private Stage m_stage;
+    private Stage stage_;
 
     /** The stage state under test in the fixture. */
-    private StageState m_state;
+    private StageState state_;
 
 
     // ======================================================================
@@ -71,8 +71,8 @@ public final class StageStateTest
     public void setUp()
         throws Exception
     {
-        m_stage = Stages.createUniqueStageWithChildren();
-        m_state = new StageState( m_stage );
+        stage_ = Stages.createUniqueStageWithChildren();
+        state_ = new StageState( stage_ );
     }
 
     /**
@@ -85,8 +85,8 @@ public final class StageStateTest
     public void tearDown()
         throws Exception
     {
-        m_state = null;
-        m_stage = null;
+        state_ = null;
+        stage_ = null;
     }
 
     /**
@@ -96,7 +96,7 @@ public final class StageStateTest
     @Test( expected = AssertionError.class )
     public void testActivateChildStage_Index_Illegal_MaxNegativeValue()
     {
-        m_state.activateChildStage( -1 );
+        state_.activateChildStage( -1 );
     }
 
     /**
@@ -106,7 +106,7 @@ public final class StageStateTest
     @Test( expected = AssertionError.class )
     public void testActivateChildStage_Index_Illegal_MaxPositiveValue()
     {
-        m_state.activateChildStage( Integer.MAX_VALUE );
+        state_.activateChildStage( Integer.MAX_VALUE );
     }
 
     /**
@@ -116,7 +116,7 @@ public final class StageStateTest
     @Test( expected = AssertionError.class )
     public void testActivateChildStage_Index_Illegal_MinNegativeValue()
     {
-        m_state.activateChildStage( Integer.MIN_VALUE );
+        state_.activateChildStage( Integer.MIN_VALUE );
     }
 
     /**
@@ -126,7 +126,7 @@ public final class StageStateTest
     @Test( expected = AssertionError.class )
     public void testActivateChildStage_Index_Illegal_MinPositiveValue()
     {
-        m_state.activateChildStage( m_stage.getStages().size() );
+        state_.activateChildStage( stage_.getStages().size() );
     }
 
     /**
@@ -136,7 +136,7 @@ public final class StageStateTest
     @Test
     public void testActivateChildStage_Index_Legal_MaxValue()
     {
-        m_state.activateChildStage( m_stage.getStages().size() - 1 );
+        state_.activateChildStage( stage_.getStages().size() - 1 );
     }
 
     /**
@@ -146,7 +146,7 @@ public final class StageStateTest
     @Test
     public void testActivateChildStage_Index_Legal_MinValue()
     {
-        m_state.activateChildStage( 0 );
+        state_.activateChildStage( 0 );
     }
 
     /**
@@ -156,9 +156,9 @@ public final class StageStateTest
     @Test
     public void testActivateChildStage_NewVersion()
     {
-        final StageState newState = m_state.activateChildStage( 0 );
+        final StageState newState = state_.activateChildStage( 0 );
 
-        assertFalse( m_state.getVersion().equals( newState.getVersion() ) );
+        assertFalse( state_.getVersion().equals( newState.getVersion() ) );
     }
 
     /**
@@ -168,7 +168,7 @@ public final class StageStateTest
     @Test( expected = AssertionError.class )
     public void testActivateChildStage_State_Illegal()
     {
-        m_state.activateChildStage( 0 ).activateChildStage( 1 );
+        state_.activateChildStage( 0 ).activateChildStage( 1 );
     }
 
     /**
@@ -178,7 +178,7 @@ public final class StageStateTest
     @Test
     public void testActivateChildStage_State_Legal()
     {
-        final StageState newState = m_state.activateChildStage( 0 );
+        final StageState newState = state_.activateChildStage( 0 );
 
         assertEquals( 0, newState.getActiveChildStageIndex() );
         assertEquals( -1, newState.getPreviousChildStageIndex() );
@@ -201,7 +201,7 @@ public final class StageStateTest
     @Test
     public void testDeactivateChildStage_NewVersion()
     {
-        final StageState initialState = m_state.activateChildStage( 0 );
+        final StageState initialState = state_.activateChildStage( 0 );
 
         final StageState newState = initialState.deactivateChildStage();
 
@@ -215,7 +215,7 @@ public final class StageStateTest
     @Test( expected = AssertionError.class )
     public void testDeactivateChildStage_State_Illegal()
     {
-        m_state.deactivateChildStage();
+        state_.deactivateChildStage();
     }
 
     /**
@@ -225,7 +225,7 @@ public final class StageStateTest
     @Test
     public void testDeactivateChildStage_State_Legal()
     {
-        final StageState newState = m_state.activateChildStage( 0 ).deactivateChildStage();
+        final StageState newState = state_.activateChildStage( 0 ).deactivateChildStage();
 
         assertEquals( -1, newState.getActiveChildStageIndex() );
         assertEquals( 0, newState.getPreviousChildStageIndex() );

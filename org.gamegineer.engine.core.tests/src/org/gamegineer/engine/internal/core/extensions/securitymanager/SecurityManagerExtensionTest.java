@@ -43,7 +43,7 @@ public final class SecurityManagerExtensionTest
     // ======================================================================
 
     /** The security manager extension under test in the fixture. */
-    private SecurityManagerExtension m_extension;
+    private SecurityManagerExtension extension_;
 
 
     // ======================================================================
@@ -65,8 +65,8 @@ public final class SecurityManagerExtensionTest
     // ======================================================================
 
     /**
-     * Creates an engine context suitable for testing the methods of
-     * {@code SecurityManagerExtension}.
+     * Creates an engine context suitable for testing the methods of {@code
+     * SecurityManagerExtension}.
      * 
      * @return An engine context; never {@code null}.
      */
@@ -120,7 +120,7 @@ public final class SecurityManagerExtensionTest
     public void setUp()
         throws Exception
     {
-        m_extension = new SecurityManagerExtension();
+        extension_ = new SecurityManagerExtension();
     }
 
     /**
@@ -133,7 +133,7 @@ public final class SecurityManagerExtensionTest
     public void tearDown()
         throws Exception
     {
-        m_extension = null;
+        extension_ = null;
     }
 
     /**
@@ -147,9 +147,9 @@ public final class SecurityManagerExtensionTest
     public void testGetUserPrincipal_Context_NoCommandContext()
         throws Exception
     {
-        m_extension.start( new FakeEngineContext() );
+        extension_.start( new FakeEngineContext() );
 
-        m_extension.getUserPrincipal( createEngineContext( new FakeCommandContext() ) );
+        extension_.getUserPrincipal( createEngineContext( new FakeCommandContext() ) );
     }
 
     /**
@@ -164,9 +164,9 @@ public final class SecurityManagerExtensionTest
     public void testGetUserPrincipal_Context_NoUserPrincipal()
         throws Exception
     {
-        m_extension.start( new FakeEngineContext() );
+        extension_.start( new FakeEngineContext() );
 
-        m_extension.getUserPrincipal( new FakeEngineContext() );
+        extension_.getUserPrincipal( new FakeEngineContext() );
     }
 
     /**
@@ -176,7 +176,7 @@ public final class SecurityManagerExtensionTest
     @Test( expected = IllegalStateException.class )
     public void testGetUserPrincipal_ExtensionNotStarted()
     {
-        m_extension.getUserPrincipal( createEngineContext() );
+        extension_.getUserPrincipal( createEngineContext() );
     }
 
     /**

@@ -45,10 +45,10 @@ public final class RoleUiBuilder
     // ======================================================================
 
     /** The role identifier. */
-    private String m_id;
+    private String id_;
 
     /** The role name. */
-    private String m_name;
+    private String name_;
 
 
     // ======================================================================
@@ -61,8 +61,8 @@ public final class RoleUiBuilder
      */
     public RoleUiBuilder()
     {
-        m_id = null;
-        m_name = null;
+        id_ = null;
+        name_ = null;
     }
 
 
@@ -88,7 +88,7 @@ public final class RoleUiBuilder
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
-        m_id = id;
+        id_ = id;
 
         return this;
     }
@@ -111,7 +111,7 @@ public final class RoleUiBuilder
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        m_name = name;
+        name_ = name;
 
         return this;
     }
@@ -129,12 +129,12 @@ public final class RoleUiBuilder
     /* @NonNull */
     public IRoleUi toRoleUi()
     {
-        assertStateLegal( m_id != null, Messages.RoleUiBuilder_id_notSet );
-        assertStateLegal( m_name != null, Messages.RoleUiBuilder_name_notSet );
+        assertStateLegal( id_ != null, Messages.RoleUiBuilder_id_notSet );
+        assertStateLegal( name_ != null, Messages.RoleUiBuilder_name_notSet );
 
         try
         {
-            return RoleUi.createRoleUi( m_id, m_name );
+            return RoleUi.createRoleUi( id_, name_ );
         }
         catch( final IllegalArgumentException e )
         {

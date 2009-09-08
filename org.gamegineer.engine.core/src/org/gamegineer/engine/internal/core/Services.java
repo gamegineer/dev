@@ -40,10 +40,10 @@ public final class Services
     // ======================================================================
 
     /** The singleton instance. */
-    private static final Services c_instance = new Services();
+    private static final Services instance_ = new Services();
 
     /** The EngineFactory registration token. */
-    private ServiceRegistration m_engineFactoryRegistration;
+    private ServiceRegistration engineFactoryRegistration_;
 
 
     // ======================================================================
@@ -73,23 +73,23 @@ public final class Services
         // Unregister package-specific services
 
         // Unregister bundle-specific services
-        if( m_engineFactoryRegistration != null )
+        if( engineFactoryRegistration_ != null )
         {
-            m_engineFactoryRegistration.unregister();
-            m_engineFactoryRegistration = null;
+            engineFactoryRegistration_.unregister();
+            engineFactoryRegistration_ = null;
         }
     }
 
     /**
      * Gets the default instance of the {@code Services} class.
      * 
-     * @return The default instance of the {@code Services} class; never
-     *         {@code null}.
+     * @return The default instance of the {@code Services} class; never {@code
+     *         null}.
      */
     /* @NonNull */
     public static Services getDefault()
     {
-        return c_instance;
+        return instance_;
     }
 
     /**
@@ -108,7 +108,7 @@ public final class Services
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
         // Register bundle-specific services
-        m_engineFactoryRegistration = context.registerService( IComponentFactory.class.getName(), new EngineFactory(), null );
+        engineFactoryRegistration_ = context.registerService( IComponentFactory.class.getName(), new EngineFactory(), null );
 
         // Register package-specific services
 

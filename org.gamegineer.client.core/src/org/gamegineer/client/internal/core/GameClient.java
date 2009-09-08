@@ -51,14 +51,14 @@ public final class GameClient
     // ======================================================================
 
     /** The game client configuration. */
-    private final IGameClientConfiguration m_config;
+    private final IGameClientConfiguration config_;
 
     /** The game server connection. */
-    @GuardedBy( "m_lock" )
-    private IGameServerConnection m_connection;
+    @GuardedBy( "lock_" )
+    private IGameServerConnection connection_;
 
     /** The instance lock. */
-    private final Object m_lock;
+    private final Object lock_;
 
 
     // ======================================================================
@@ -76,8 +76,8 @@ public final class GameClient
     {
         assert gameClientConfig != null;
 
-        m_lock = new Object();
-        m_config = gameClientConfig;
+        lock_ = new Object();
+        config_ = gameClientConfig;
         resetConnection();
     }
 
@@ -95,11 +95,11 @@ public final class GameClient
     {
         assertArgumentNotNull( connection, "connection" ); //$NON-NLS-1$
 
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
             disconnect();
             connection.open();
-            m_connection = connection;
+            connection_ = connection;
         }
     }
 
@@ -109,8 +109,8 @@ public final class GameClient
      * @param gameClientConfig
      *        The game client configuration; must not be {@code null}.
      * 
-     * @return A new instance of the {@code GameClient} class; never
-     *         {@code null}.
+     * @return A new instance of the {@code GameClient} class; never {@code
+     *         null}.
      * 
      * @throws org.gamegineer.client.core.GameClientConfigurationException
      *         If an error occurs while creating the game client.
@@ -140,11 +140,11 @@ public final class GameClient
      */
     public void disconnect()
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
             try
             {
-                m_connection.close();
+                connection_.close();
             }
             catch( final IOException e )
             {
@@ -160,9 +160,9 @@ public final class GameClient
      */
     public IGameServerConnection getGameServerConnection()
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            return m_connection;
+            return connection_;
         }
     }
 
@@ -190,7 +190,7 @@ public final class GameClient
      */
     public Collection<IGameSystemUi> getGameSystemUis()
     {
-        return m_config.getGameSystemUiSource().getGameSystemUis();
+        return config_.getGameSystemUiSource().getGameSystemUis();
     }
 
     /**
@@ -198,10 +198,10 @@ public final class GameClient
      */
     private void resetConnection()
     {
-        m_connection = GameServerConnectionFactory.createNullGameServerConnection();
+        connection_ = GameServerConnectionFactory.createNullGameServerConnection();
         try
         {
-            m_connection.open();
+            connection_.open();
         }
         catch( final IOException e )
         {

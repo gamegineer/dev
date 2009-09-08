@@ -63,7 +63,7 @@ public final class StageTest
     // ======================================================================
 
     /** A mock engine context for use in the test. */
-    private MockEngineContext m_engineContext;
+    private MockEngineContext engineContext_;
 
 
     // ======================================================================
@@ -226,7 +226,7 @@ public final class StageTest
     public void setUp()
         throws Exception
     {
-        m_engineContext = new MockEngineContext();
+        engineContext_ = new MockEngineContext();
     }
 
     /**
@@ -239,7 +239,7 @@ public final class StageTest
     public void tearDown()
         throws Exception
     {
-        m_engineContext = null;
+        engineContext_ = null;
     }
 
     /**
@@ -254,12 +254,12 @@ public final class StageTest
         throws Exception
     {
         final Stage stage = createStage( createCompleteStageStrategy(), createCompleteStageStrategy() );
-        stage.activate( m_engineContext ); // activate stage
+        stage.activate( engineContext_ ); // activate stage
 
-        stage.activate( m_engineContext ); // activate stage.childStages[0]
+        stage.activate( engineContext_ ); // activate stage.childStages[0]
 
-        assertTrue( GameAttributes.stageState( stage.getStages().get( 0 ).getId() ).isPresent( m_engineContext.getState() ) );
-        assertEquals( 0, GameAttributes.stageState( stage.getId() ).getValue( m_engineContext.getState() ).getActiveChildStageIndex() );
+        assertTrue( GameAttributes.stageState( stage.getStages().get( 0 ).getId() ).isPresent( engineContext_.getState() ) );
+        assertEquals( 0, GameAttributes.stageState( stage.getId() ).getValue( engineContext_.getState() ).getActiveChildStageIndex() );
     }
 
     /**
@@ -274,9 +274,9 @@ public final class StageTest
         throws Exception
     {
         final Stage stage = createStage( createCompleteStageStrategy() );
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
     }
 
     /**
@@ -292,13 +292,13 @@ public final class StageTest
         throws Exception
     {
         final Stage stage = createStage( createCompleteStageStrategy(), createCompleteStageStrategy(), createCompleteStageStrategy() );
-        stage.activate( m_engineContext ); // activate stage
-        stage.activate( m_engineContext ); // activate stage.childStages[0]
+        stage.activate( engineContext_ ); // activate stage
+        stage.activate( engineContext_ ); // activate stage.childStages[0]
 
-        stage.activate( m_engineContext ); // activate stage.childStages[0].childStages[0]
+        stage.activate( engineContext_ ); // activate stage.childStages[0].childStages[0]
 
-        assertTrue( GameAttributes.stageState( stage.getStages().get( 0 ).getStages().get( 0 ).getId() ).isPresent( m_engineContext.getState() ) );
-        assertEquals( 0, GameAttributes.stageState( stage.getId() ).getValue( m_engineContext.getState() ).getActiveChildStageIndex() );
+        assertTrue( GameAttributes.stageState( stage.getStages().get( 0 ).getStages().get( 0 ).getId() ).isPresent( engineContext_.getState() ) );
+        assertEquals( 0, GameAttributes.stageState( stage.getId() ).getValue( engineContext_.getState() ).getActiveChildStageIndex() );
     }
 
     /**
@@ -329,9 +329,9 @@ public final class StageTest
     {
         final Stage stage = createStage( createCompleteStageStrategy() );
 
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
-        assertTrue( GameAttributes.stageState( stage.getId() ).isPresent( m_engineContext.getState() ) );
+        assertTrue( GameAttributes.stageState( stage.getId() ).isPresent( engineContext_.getState() ) );
     }
 
     /**
@@ -348,7 +348,7 @@ public final class StageTest
         final MockStageStrategy strategy = createCompleteStageStrategy();
         final Stage stage = createStage( strategy );
 
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
         assertEquals( 1, strategy.getActivateCallCount() );
     }
@@ -366,12 +366,12 @@ public final class StageTest
     {
         final String expectedSubmittedCommandType = new DeactivateStageCommand( "dummyId", new StageVersion() ).getType(); //$NON-NLS-1$
         final Stage stage = createStage( createCompleteStageStrategy() );
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
-        stage.commandExecuted( new MockCommandExecutedEvent( m_engineContext ) );
+        stage.commandExecuted( new MockCommandExecutedEvent( engineContext_ ) );
 
-        assertNotNull( m_engineContext.getSubmittedCommand() );
-        assertEquals( expectedSubmittedCommandType, m_engineContext.getSubmittedCommand().getType() );
+        assertNotNull( engineContext_.getSubmittedCommand() );
+        assertEquals( expectedSubmittedCommandType, engineContext_.getSubmittedCommand().getType() );
     }
 
     /**
@@ -388,12 +388,12 @@ public final class StageTest
     {
         final String expectedSubmittedCommandType = new ActivateStageCommand( "dummyId", new StageVersion() ).getType(); //$NON-NLS-1$
         final Stage stage = createStage( createIncompleteStageStrategy(), createCompleteStageStrategy() );
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
-        stage.commandExecuted( new MockCommandExecutedEvent( m_engineContext ) );
+        stage.commandExecuted( new MockCommandExecutedEvent( engineContext_ ) );
 
-        assertNotNull( m_engineContext.getSubmittedCommand() );
-        assertEquals( expectedSubmittedCommandType, m_engineContext.getSubmittedCommand().getType() );
+        assertNotNull( engineContext_.getSubmittedCommand() );
+        assertEquals( expectedSubmittedCommandType, engineContext_.getSubmittedCommand().getType() );
     }
 
     /**
@@ -408,11 +408,11 @@ public final class StageTest
         throws Exception
     {
         final Stage stage = createStage( createIncompleteStageStrategy() );
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
-        stage.commandExecuted( new MockCommandExecutedEvent( m_engineContext ) );
+        stage.commandExecuted( new MockCommandExecutedEvent( engineContext_ ) );
 
-        assertNull( m_engineContext.getSubmittedCommand() );
+        assertNull( engineContext_.getSubmittedCommand() );
     }
 
     /**
@@ -428,9 +428,9 @@ public final class StageTest
     {
         final MockStageStrategy strategy = createCompleteStageStrategy();
         final Stage stage = createStage( strategy );
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
-        stage.commandExecuted( new MockCommandExecutedEvent( m_engineContext ) );
+        stage.commandExecuted( new MockCommandExecutedEvent( engineContext_ ) );
 
         assertEquals( 1, strategy.getCommandExecutedCallCount() );
     }
@@ -448,10 +448,10 @@ public final class StageTest
     {
         final MockStageStrategy childStrategy = createCompleteStageStrategy();
         final Stage stage = createStage( createCompleteStageStrategy(), childStrategy );
-        stage.activate( m_engineContext ); // activate stage
-        stage.activate( m_engineContext ); // activate stage.childStages[0]
+        stage.activate( engineContext_ ); // activate stage
+        stage.activate( engineContext_ ); // activate stage.childStages[0]
 
-        stage.commandExecuted( new MockCommandExecutedEvent( m_engineContext ) );
+        stage.commandExecuted( new MockCommandExecutedEvent( engineContext_ ) );
 
         assertEquals( 1, childStrategy.getCommandExecutedCallCount() );
     }
@@ -468,12 +468,12 @@ public final class StageTest
         throws Exception
     {
         final Stage stage = createStage( createCompleteStageStrategy() );
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
-        m_engineContext.shutdown();
-        stage.commandExecuted( new MockCommandExecutedEvent( m_engineContext ) );
+        engineContext_.shutdown();
+        stage.commandExecuted( new MockCommandExecutedEvent( engineContext_ ) );
 
-        assertNotNull( m_engineContext.getSubmittedCommand() );
+        assertNotNull( engineContext_.getSubmittedCommand() );
     }
 
     /**
@@ -489,9 +489,9 @@ public final class StageTest
     {
         final MockStageStrategy strategy = createCompleteStageStrategy();
         final Stage stage = createStage( strategy );
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
-        stage.commandExecuting( new MockCommandExecutingEvent( m_engineContext ) );
+        stage.commandExecuting( new MockCommandExecutingEvent( engineContext_ ) );
 
         assertEquals( 1, strategy.getCommandExecutingCallCount() );
     }
@@ -509,10 +509,10 @@ public final class StageTest
     {
         final MockStageStrategy childStrategy = createCompleteStageStrategy();
         final Stage stage = createStage( createCompleteStageStrategy(), childStrategy );
-        stage.activate( m_engineContext ); // activate stage
-        stage.activate( m_engineContext ); // activate stage.childStages[0]
+        stage.activate( engineContext_ ); // activate stage
+        stage.activate( engineContext_ ); // activate stage.childStages[0]
 
-        stage.commandExecuting( new MockCommandExecutingEvent( m_engineContext ) );
+        stage.commandExecuting( new MockCommandExecutingEvent( engineContext_ ) );
 
         assertEquals( 1, childStrategy.getCommandExecutingCallCount() );
     }
@@ -539,12 +539,12 @@ public final class StageTest
         throws Exception
     {
         final Stage stage = createStage( createCompleteStageStrategy() );
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
-        final boolean deactivated = stage.deactivate( m_engineContext );
+        final boolean deactivated = stage.deactivate( engineContext_ );
 
         assertTrue( deactivated );
-        assertFalse( GameAttributes.stageState( stage.getId() ).isPresent( m_engineContext.getState() ) );
+        assertFalse( GameAttributes.stageState( stage.getId() ).isPresent( engineContext_.getState() ) );
     }
 
     /**
@@ -560,9 +560,9 @@ public final class StageTest
     {
         final MockStageStrategy strategy = createCompleteStageStrategy();
         final Stage stage = createStage( strategy );
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
-        final boolean deactivated = stage.deactivate( m_engineContext );
+        final boolean deactivated = stage.deactivate( engineContext_ );
 
         assertTrue( deactivated );
         assertEquals( 1, strategy.getDeactivateCallCount() );
@@ -581,14 +581,14 @@ public final class StageTest
         throws Exception
     {
         final Stage stage = createStage( createCompleteStageStrategy(), createCompleteStageStrategy() );
-        stage.activate( m_engineContext ); // activate stage
-        stage.activate( m_engineContext ); // activate stage.childStages[0]
+        stage.activate( engineContext_ ); // activate stage
+        stage.activate( engineContext_ ); // activate stage.childStages[0]
 
-        final boolean deactivated = stage.deactivate( m_engineContext );
+        final boolean deactivated = stage.deactivate( engineContext_ );
 
         assertFalse( deactivated );
-        assertFalse( GameAttributes.stageState( stage.getStages().get( 0 ).getId() ).isPresent( m_engineContext.getState() ) );
-        assertEquals( -1, GameAttributes.stageState( stage.getId() ).getValue( m_engineContext.getState() ).getActiveChildStageIndex() );
+        assertFalse( GameAttributes.stageState( stage.getStages().get( 0 ).getId() ).isPresent( engineContext_.getState() ) );
+        assertEquals( -1, GameAttributes.stageState( stage.getId() ).getValue( engineContext_.getState() ).getActiveChildStageIndex() );
     }
 
     /**
@@ -604,15 +604,15 @@ public final class StageTest
         throws Exception
     {
         final Stage stage = createStage( createCompleteStageStrategy(), createCompleteStageStrategy(), createCompleteStageStrategy() );
-        stage.activate( m_engineContext ); // activate stage
-        stage.activate( m_engineContext ); // activate stage.childStages[0]
-        stage.activate( m_engineContext ); // activate stage.childStages[0].childStages[0]
+        stage.activate( engineContext_ ); // activate stage
+        stage.activate( engineContext_ ); // activate stage.childStages[0]
+        stage.activate( engineContext_ ); // activate stage.childStages[0].childStages[0]
 
-        final boolean deactivated = stage.deactivate( m_engineContext );
+        final boolean deactivated = stage.deactivate( engineContext_ );
 
         assertFalse( deactivated );
-        assertTrue( GameAttributes.stageState( stage.getStages().get( 0 ).getId() ).isPresent( m_engineContext.getState() ) );
-        assertTrue( -1 != GameAttributes.stageState( stage.getId() ).getValue( m_engineContext.getState() ).getActiveChildStageIndex() );
+        assertTrue( GameAttributes.stageState( stage.getStages().get( 0 ).getId() ).isPresent( engineContext_.getState() ) );
+        assertTrue( -1 != GameAttributes.stageState( stage.getId() ).getValue( engineContext_.getState() ).getActiveChildStageIndex() );
     }
 
     /**
@@ -644,7 +644,7 @@ public final class StageTest
     {
         final Stage stage = createStage( createCompleteStageStrategy() );
 
-        stage.deactivate( m_engineContext );
+        stage.deactivate( engineContext_ );
     }
 
     /**
@@ -659,9 +659,9 @@ public final class StageTest
         throws Exception
     {
         final Stage stage = createStage( createCompleteStageStrategy() );
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
-        assertSame( stage, Stage.getActiveStage( m_engineContext.getState(), stage.getId() ) );
+        assertSame( stage, Stage.getActiveStage( engineContext_.getState(), stage.getId() ) );
     }
 
     /**
@@ -673,7 +673,7 @@ public final class StageTest
     {
         final Stage stage = createStage( createCompleteStageStrategy() );
 
-        assertNull( Stage.getActiveStage( m_engineContext.getState(), stage.getId() ) );
+        assertNull( Stage.getActiveStage( engineContext_.getState(), stage.getId() ) );
     }
 
     /**
@@ -705,7 +705,7 @@ public final class StageTest
     {
         final Stage stage = createStage( createCompleteStageStrategy() );
 
-        stage.getVersion( m_engineContext.getState() );
+        stage.getVersion( engineContext_.getState() );
     }
 
     /**
@@ -732,9 +732,9 @@ public final class StageTest
         throws Exception
     {
         final Stage stage = createStage( createCompleteStageStrategy() );
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
-        assertTrue( stage.isActive( m_engineContext.getState() ) );
+        assertTrue( stage.isActive( engineContext_.getState() ) );
     }
 
     /**
@@ -746,7 +746,7 @@ public final class StageTest
     {
         final Stage stage = createStage( createCompleteStageStrategy() );
 
-        assertFalse( stage.isActive( m_engineContext.getState() ) );
+        assertFalse( stage.isActive( engineContext_.getState() ) );
     }
 
     /**
@@ -773,9 +773,9 @@ public final class StageTest
         throws Exception
     {
         final Stage stage = createStage( createCompleteStageStrategy() );
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
-        assertTrue( stage.isExecuting( m_engineContext.getState() ) );
+        assertTrue( stage.isExecuting( engineContext_.getState() ) );
     }
 
     /**
@@ -790,10 +790,10 @@ public final class StageTest
         throws Exception
     {
         final Stage stage = createStage( createCompleteStageStrategy(), createCompleteStageStrategy() );
-        stage.activate( m_engineContext ); // activate stage
-        stage.activate( m_engineContext ); // activate stage.childStages[0]
+        stage.activate( engineContext_ ); // activate stage
+        stage.activate( engineContext_ ); // activate stage.childStages[0]
 
-        assertFalse( stage.isExecuting( m_engineContext.getState() ) );
+        assertFalse( stage.isExecuting( engineContext_.getState() ) );
     }
 
     /**
@@ -805,7 +805,7 @@ public final class StageTest
     {
         final Stage stage = createStage( createCompleteStageStrategy() );
 
-        assertFalse( stage.isExecuting( m_engineContext.getState() ) );
+        assertFalse( stage.isExecuting( engineContext_.getState() ) );
     }
 
     /**
@@ -833,9 +833,9 @@ public final class StageTest
     {
         final MockStageStrategy strategy = createCompleteStageStrategy();
         final Stage stage = createStage( strategy );
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
-        stage.stateChanged( new MockStateChangeEvent( m_engineContext ) );
+        stage.stateChanged( new MockStateChangeEvent( engineContext_ ) );
 
         assertEquals( 1, strategy.getStateChangedCallCount() );
     }
@@ -853,10 +853,10 @@ public final class StageTest
     {
         final MockStageStrategy childStrategy = createCompleteStageStrategy();
         final Stage stage = createStage( createCompleteStageStrategy(), childStrategy );
-        stage.activate( m_engineContext ); // activate stage
-        stage.activate( m_engineContext ); // activate stage.childStages[0]
+        stage.activate( engineContext_ ); // activate stage
+        stage.activate( engineContext_ ); // activate stage.childStages[0]
 
-        stage.stateChanged( new MockStateChangeEvent( m_engineContext ) );
+        stage.stateChanged( new MockStateChangeEvent( engineContext_ ) );
 
         assertEquals( 1, childStrategy.getStateChangedCallCount() );
     }
@@ -874,9 +874,9 @@ public final class StageTest
     {
         final MockStageStrategy strategy = createCompleteStageStrategy();
         final Stage stage = createStage( strategy );
-        stage.activate( m_engineContext );
+        stage.activate( engineContext_ );
 
-        stage.stateChanging( new MockStateChangeEvent( m_engineContext ) );
+        stage.stateChanging( new MockStateChangeEvent( engineContext_ ) );
 
         assertEquals( 1, strategy.getStateChangingCallCount() );
     }
@@ -894,10 +894,10 @@ public final class StageTest
     {
         final MockStageStrategy childStrategy = createCompleteStageStrategy();
         final Stage stage = createStage( createCompleteStageStrategy(), childStrategy );
-        stage.activate( m_engineContext ); // activate stage
-        stage.activate( m_engineContext ); // activate stage.childStages[0]
+        stage.activate( engineContext_ ); // activate stage
+        stage.activate( engineContext_ ); // activate stage.childStages[0]
 
-        stage.stateChanging( new MockStateChangeEvent( m_engineContext ) );
+        stage.stateChanging( new MockStateChangeEvent( engineContext_ ) );
 
         assertEquals( 1, childStrategy.getStateChangingCallCount() );
     }
@@ -921,7 +921,7 @@ public final class StageTest
         private static final long serialVersionUID = 1L;
 
         /** The engine context. */
-        private final IEngineContext m_context;
+        private final IEngineContext context_;
 
 
         // ==================================================================
@@ -946,7 +946,7 @@ public final class StageTest
         {
             super( source );
 
-            m_context = source;
+            context_ = source;
         }
 
 
@@ -967,7 +967,7 @@ public final class StageTest
          */
         public IEngineContext getEngineContext()
         {
-            return m_context;
+            return context_;
         }
 
         /*
@@ -1009,7 +1009,7 @@ public final class StageTest
         private static final long serialVersionUID = 1L;
 
         /** The engine context. */
-        private final IEngineContext m_context;
+        private final IEngineContext context_;
 
 
         // ==================================================================
@@ -1034,7 +1034,7 @@ public final class StageTest
         {
             super( source );
 
-            m_context = source;
+            context_ = source;
         }
 
         // ==================================================================
@@ -1056,7 +1056,7 @@ public final class StageTest
         @Override
         public IEngineContext getEngineContext()
         {
-            return m_context;
+            return context_;
         }
     }
 
@@ -1072,10 +1072,10 @@ public final class StageTest
         // ==================================================================
 
         /** Indicates the engine has been shut down. */
-        private boolean m_isShutdown;
+        private boolean isShutdown_;
 
         /** The most recent command submitted to the command queue extension. */
-        private ICommand<?> m_submittedCommand;
+        private ICommand<?> submittedCommand_;
 
 
         // ==================================================================
@@ -1087,8 +1087,8 @@ public final class StageTest
          */
         MockEngineContext()
         {
-            m_isShutdown = false;
-            m_submittedCommand = null;
+            isShutdown_ = false;
+            submittedCommand_ = null;
         }
 
 
@@ -1106,7 +1106,7 @@ public final class StageTest
         /* @Nullable */
         ICommand<?> getSubmittedCommand()
         {
-            return m_submittedCommand;
+            return submittedCommand_;
         }
 
         /*
@@ -1131,7 +1131,7 @@ public final class StageTest
          */
         void shutdown()
         {
-            m_isShutdown = true;
+            isShutdown_ = true;
         }
 
         /*
@@ -1145,9 +1145,9 @@ public final class StageTest
             assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
             assertArgumentNotNull( command, "command" ); //$NON-NLS-1$
 
-            m_submittedCommand = command;
+            submittedCommand_ = command;
 
-            if( m_isShutdown )
+            if( isShutdown_ )
             {
                 throw new IllegalStateException();
             }
@@ -1170,7 +1170,7 @@ public final class StageTest
         private static final long serialVersionUID = 1L;
 
         /** The engine context. */
-        private final IEngineContext m_context;
+        private final IEngineContext context_;
 
 
         // ==================================================================
@@ -1194,7 +1194,7 @@ public final class StageTest
         {
             super( source );
 
-            m_context = source;
+            context_ = source;
         }
 
 
@@ -1235,7 +1235,7 @@ public final class StageTest
          */
         public IEngineContext getEngineContext()
         {
-            return m_context;
+            return context_;
         }
     }
 }

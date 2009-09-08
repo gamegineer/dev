@@ -53,7 +53,7 @@ public final class PlatformUi
     // ======================================================================
 
     /** The platform console. */
-    private static final AtomicReference<Console> c_console;
+    private static final AtomicReference<Console> console_;
 
 
     // ======================================================================
@@ -65,7 +65,7 @@ public final class PlatformUi
      */
     static
     {
-        c_console = new AtomicReference<Console>();
+        console_ = new AtomicReference<Console>();
     }
 
     /**
@@ -86,9 +86,9 @@ public final class PlatformUi
      * and runs it.
      * 
      * <p>
-     * This method is intended to be called by the Equinox application's
-     * {@code start} method. It will fail if the platform console has already
-     * been created.
+     * This method is intended to be called by the Equinox application's {@code
+     * start} method. It will fail if the platform console has already been
+     * created.
      * </p>
      * 
      * @param display
@@ -163,7 +163,7 @@ public final class PlatformUi
         assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
 
         final Console console = new Console( display, advisor );
-        assertStateLegal( c_console.compareAndSet( null, console ), Messages.PlatformUi_console_alreadyCreated );
+        assertStateLegal( console_.compareAndSet( null, console ), Messages.PlatformUi_console_alreadyCreated );
 
         return new Callable<ConsoleResult>()
         {
@@ -203,7 +203,7 @@ public final class PlatformUi
     /* @NonNull */
     public static IConsole getConsole()
     {
-        final Console console = c_console.get();
+        final Console console = console_.get();
         assertStateLegal( console != null, Messages.PlatformUi_console_notCreated );
         return console;
     }
@@ -216,7 +216,7 @@ public final class PlatformUi
      */
     public static boolean isConsoleRunning()
     {
-        final Console console = c_console.get();
+        final Console console = console_.get();
         return (console != null) && console.isRunning();
     }
 }

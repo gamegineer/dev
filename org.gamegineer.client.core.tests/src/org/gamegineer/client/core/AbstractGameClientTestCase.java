@@ -47,7 +47,7 @@ public abstract class AbstractGameClientTestCase
     // ======================================================================
 
     /** The game client under test in the fixture. */
-    private IGameClient m_gameClient;
+    private IGameClient gameClient_;
 
 
     // ======================================================================
@@ -96,8 +96,8 @@ public abstract class AbstractGameClientTestCase
     public void setUp()
         throws Exception
     {
-        m_gameClient = createGameClient( Configurations.createGameClientConfiguration() );
-        assertNotNull( m_gameClient );
+        gameClient_ = createGameClient( Configurations.createGameClientConfiguration() );
+        assertNotNull( gameClient_ );
     }
 
     /**
@@ -110,7 +110,7 @@ public abstract class AbstractGameClientTestCase
     public void tearDown()
         throws Exception
     {
-        m_gameClient = null;
+        gameClient_ = null;
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class AbstractGameClientTestCase
     {
         final MockGameServerConnection mockConnection = new MockGameServerConnection();
 
-        m_gameClient.connect( mockConnection );
+        gameClient_.connect( mockConnection );
 
         assertEquals( 1, mockConnection.getOpenCallCount() );
     }
@@ -144,7 +144,7 @@ public abstract class AbstractGameClientTestCase
         final MockGameServerConnection mockConnection = new MockGameServerConnection();
         mockConnection.setThrowExceptionWhenOpened( true );
 
-        m_gameClient.connect( mockConnection );
+        gameClient_.connect( mockConnection );
     }
 
     /**
@@ -158,7 +158,7 @@ public abstract class AbstractGameClientTestCase
     public void testConnect_Connection_Null()
         throws Exception
     {
-        m_gameClient.connect( null );
+        gameClient_.connect( null );
     }
 
     /**
@@ -172,9 +172,9 @@ public abstract class AbstractGameClientTestCase
         throws Exception
     {
         final MockGameServerConnection mockConnection = new MockGameServerConnection();
-        m_gameClient.connect( mockConnection );
+        gameClient_.connect( mockConnection );
 
-        m_gameClient.connect( new MockGameServerConnection() );
+        gameClient_.connect( new MockGameServerConnection() );
 
         assertEquals( 1, mockConnection.getCloseCallCount() );
     }
@@ -190,9 +190,9 @@ public abstract class AbstractGameClientTestCase
         throws Exception
     {
         final MockGameServerConnection mockConnection = new MockGameServerConnection();
-        m_gameClient.connect( mockConnection );
+        gameClient_.connect( mockConnection );
 
-        m_gameClient.disconnect();
+        gameClient_.disconnect();
 
         assertEquals( 1, mockConnection.getCloseCallCount() );
     }
@@ -210,9 +210,9 @@ public abstract class AbstractGameClientTestCase
     {
         final MockGameServerConnection mockConnection = new MockGameServerConnection();
         mockConnection.setThrowExceptionWhenClosed( true );
-        m_gameClient.connect( mockConnection );
+        gameClient_.connect( mockConnection );
 
-        m_gameClient.disconnect();
+        gameClient_.disconnect();
     }
 
     /**
@@ -222,9 +222,9 @@ public abstract class AbstractGameClientTestCase
     @Test
     public void testDisconnect_Disconnected()
     {
-        m_gameClient.disconnect();
+        gameClient_.disconnect();
 
-        m_gameClient.disconnect();
+        gameClient_.disconnect();
     }
 
     /**
@@ -238,9 +238,9 @@ public abstract class AbstractGameClientTestCase
     public void testGetGameServerConnection_Connected_ReturnValue_NonNull()
         throws Exception
     {
-        m_gameClient.connect( new MockGameServerConnection() );
+        gameClient_.connect( new MockGameServerConnection() );
 
-        assertNotNull( m_gameClient.getGameServerConnection() );
+        assertNotNull( gameClient_.getGameServerConnection() );
     }
 
     /**
@@ -256,8 +256,8 @@ public abstract class AbstractGameClientTestCase
     @Test
     public void testGetGameServerConnection_Disconnected_GetGameServer_ReturnValue_NonNull()
     {
-        m_gameClient.disconnect();
-        final IGameServerConnection connection = m_gameClient.getGameServerConnection();
+        gameClient_.disconnect();
+        final IGameServerConnection connection = gameClient_.getGameServerConnection();
 
         assertNotNull( connection.getGameServer() );
     }
@@ -269,9 +269,9 @@ public abstract class AbstractGameClientTestCase
     @Test
     public void testGetGameServerConnection_Disconnected_ReturnValue_NonNull()
     {
-        m_gameClient.disconnect();
+        gameClient_.disconnect();
 
-        assertNotNull( m_gameClient.getGameServerConnection() );
+        assertNotNull( gameClient_.getGameServerConnection() );
     }
 
     /**
@@ -281,7 +281,7 @@ public abstract class AbstractGameClientTestCase
     @Test
     public void testGetGameSystemUi_GameSystemId_Absent()
     {
-        assertNull( m_gameClient.getGameSystemUi( "unknownId" ) ); //$NON-NLS-1$
+        assertNull( gameClient_.getGameSystemUi( "unknownId" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -291,7 +291,7 @@ public abstract class AbstractGameClientTestCase
     @Test( expected = NullPointerException.class )
     public void testGetGameSystemUi_GameSystemId_Null()
     {
-        m_gameClient.getGameSystemUi( null );
+        gameClient_.getGameSystemUi( null );
     }
 
     /**
@@ -301,12 +301,12 @@ public abstract class AbstractGameClientTestCase
     @Test
     public void testGetGameSystemUis_ReturnValue_Copy()
     {
-        final Collection<IGameSystemUi> gameSystemUis = m_gameClient.getGameSystemUis();
+        final Collection<IGameSystemUi> gameSystemUis = gameClient_.getGameSystemUis();
         final int expectedGameSystemUisSize = gameSystemUis.size();
 
         gameSystemUis.add( createDummy( IGameSystemUi.class ) );
 
-        assertEquals( expectedGameSystemUisSize, m_gameClient.getGameSystemUis().size() );
+        assertEquals( expectedGameSystemUisSize, gameClient_.getGameSystemUis().size() );
     }
 
     /**
@@ -315,6 +315,6 @@ public abstract class AbstractGameClientTestCase
     @Test
     public void testGetGameSystemUis_ReturnValue_NonNull()
     {
-        assertNotNull( m_gameClient.getGameSystemUis() );
+        assertNotNull( gameClient_.getGameSystemUis() );
     }
 }

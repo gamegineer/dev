@@ -1,6 +1,6 @@
 /*
  * Adapters.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,19 +39,19 @@ public final class Adapters
     // ======================================================================
 
     /** The singleton instance. */
-    private static final Adapters c_instance = new Adapters();
+    private static final Adapters instance_ = new Adapters();
 
     /**
      * The adapter factory for the JavaBeans persistence framework persistence
      * delegate.
      */
-    private IAdapterFactory m_beansAdapterFactory;
+    private IAdapterFactory beansAdapterFactory_;
 
     /**
      * The adapter factory for the Java object serialization framework
      * persistence delegate.
      */
-    private IAdapterFactory m_serializableAdapterFactory;
+    private IAdapterFactory serializableAdapterFactory_;
 
 
     // ======================================================================
@@ -74,13 +74,13 @@ public final class Adapters
     /**
      * Gets the default instance of the {@code Adapters} class.
      * 
-     * @return The default instance of the {@code Adapters} class; never
-     *         {@code null}.
+     * @return The default instance of the {@code Adapters} class; never {@code
+     *         null}.
      */
     /* @NonNull */
     public static Adapters getDefault()
     {
-        return c_instance;
+        return instance_;
     }
 
     /**
@@ -98,10 +98,10 @@ public final class Adapters
     {
         assertArgumentNotNull( manager, "manager" ); //$NON-NLS-1$
 
-        m_beansAdapterFactory = new org.gamegineer.common.internal.persistence.memento.schemes.beans.MementoPersistenceDelegate.AdapterFactory();
-        manager.registerAdapters( m_beansAdapterFactory, Memento.class );
-        m_serializableAdapterFactory = new org.gamegineer.common.internal.persistence.memento.schemes.serializable.MementoPersistenceDelegate.AdapterFactory();
-        manager.registerAdapters( m_serializableAdapterFactory, Memento.class );
+        beansAdapterFactory_ = new org.gamegineer.common.internal.persistence.memento.schemes.beans.MementoPersistenceDelegate.AdapterFactory();
+        manager.registerAdapters( beansAdapterFactory_, Memento.class );
+        serializableAdapterFactory_ = new org.gamegineer.common.internal.persistence.memento.schemes.serializable.MementoPersistenceDelegate.AdapterFactory();
+        manager.registerAdapters( serializableAdapterFactory_, Memento.class );
     }
 
     /**
@@ -119,9 +119,9 @@ public final class Adapters
     {
         assertArgumentNotNull( manager, "manager" ); //$NON-NLS-1$
 
-        manager.unregisterAdapters( m_serializableAdapterFactory );
-        m_serializableAdapterFactory = null;
-        manager.unregisterAdapters( m_beansAdapterFactory );
-        m_beansAdapterFactory = null;
+        manager.unregisterAdapters( serializableAdapterFactory_ );
+        serializableAdapterFactory_ = null;
+        manager.unregisterAdapters( beansAdapterFactory_ );
+        beansAdapterFactory_ = null;
     }
 }

@@ -48,7 +48,7 @@ public final class CommandletExecutorTest
     // ======================================================================
 
     /** The commandlet executor under test in the fixture. */
-    private CommandletExecutor m_executor;
+    private CommandletExecutor executor_;
 
 
     // ======================================================================
@@ -78,7 +78,7 @@ public final class CommandletExecutorTest
     public void setUp()
         throws Exception
     {
-        m_executor = new CommandletExecutor( createDummy( ICommandlet.class ), new ArrayList<String>() );
+        executor_ = new CommandletExecutor( createDummy( ICommandlet.class ), new ArrayList<String>() );
     }
 
     /**
@@ -91,7 +91,7 @@ public final class CommandletExecutorTest
     public void tearDown()
         throws Exception
     {
-        m_executor = null;
+        executor_ = null;
     }
 
     /**
@@ -140,7 +140,7 @@ public final class CommandletExecutorTest
     public void testExecute_Console_Null()
         throws Exception
     {
-        m_executor.execute( null, createDummy( IStatelet.class ), createDummy( IGameClient.class ) );
+        executor_.execute( null, createDummy( IStatelet.class ), createDummy( IGameClient.class ) );
     }
 
     /**
@@ -154,7 +154,7 @@ public final class CommandletExecutorTest
     public void testExecute_GameClient_Null()
         throws Exception
     {
-        m_executor.execute( createDummy( IConsole.class ), createDummy( IStatelet.class ), null );
+        executor_.execute( createDummy( IConsole.class ), createDummy( IStatelet.class ), null );
     }
 
     /**
@@ -168,7 +168,7 @@ public final class CommandletExecutorTest
     public void testExecute_Statelet_Null()
         throws Exception
     {
-        m_executor.execute( createDummy( IConsole.class ), null, createDummy( IGameClient.class ) );
+        executor_.execute( createDummy( IConsole.class ), null, createDummy( IGameClient.class ) );
     }
 
     /**
@@ -177,7 +177,7 @@ public final class CommandletExecutorTest
     @Test
     public void testGetCommandlet_ReturnValue_NonNull()
     {
-        assertNotNull( m_executor.getCommandlet() );
+        assertNotNull( executor_.getCommandlet() );
     }
 
     /**
@@ -187,7 +187,7 @@ public final class CommandletExecutorTest
     @Test
     public void testGetCommandletArguments_ReturnValue_Immutable()
     {
-        assertImmutableCollection( m_executor.getCommandletArguments() );
+        assertImmutableCollection( executor_.getCommandletArguments() );
     }
 
     /**
@@ -197,6 +197,6 @@ public final class CommandletExecutorTest
     @Test
     public void testGetCommandletArguments_ReturnValue_NonNull()
     {
-        assertNotNull( m_executor.getCommandletArguments() );
+        assertNotNull( executor_.getCommandletArguments() );
     }
 }

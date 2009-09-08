@@ -1,6 +1,6 @@
 /*
  * State.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,19 +48,19 @@ final class State
     // ======================================================================
 
     /** The attribute map. */
-    private Map<AttributeName, Object> m_attributeMap;
+    private Map<AttributeName, Object> attributeMap_;
 
     /** The backup attribute map stored during a transaction. */
-    private Map<AttributeName, Object> m_backupAttributeMap;
+    private Map<AttributeName, Object> backupAttributeMap_;
 
     /**
      * The set of attribute names whose values <i>may</i> have been changed
      * during a transaction.
      */
-    private final Set<AttributeName> m_changedAttributeNameSet;
+    private final Set<AttributeName> changedAttributeNameSet_;
 
     /** The transaction state. */
-    private TransactionState m_transactionState;
+    private TransactionState transactionState_;
 
 
     // ======================================================================
@@ -72,10 +72,10 @@ final class State
      */
     State()
     {
-        m_attributeMap = new HashMap<AttributeName, Object>();
-        m_backupAttributeMap = null;
-        m_changedAttributeNameSet = new HashSet<AttributeName>();
-        m_transactionState = TransactionState.INACTIVE;
+        attributeMap_ = new HashMap<AttributeName, Object>();
+        backupAttributeMap_ = null;
+        changedAttributeNameSet_ = new HashSet<AttributeName>();
+        transactionState_ = TransactionState.INACTIVE;
     }
 
 
@@ -95,11 +95,11 @@ final class State
         final Object value )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( !m_attributeMap.containsKey( name ), "name", Messages.State_attribute_present( name ) ); //$NON-NLS-1$
-        assertStateLegal( m_transactionState == TransactionState.ACTIVE, Messages.State_transaction_notActiveWritable );
+        assertArgumentLegal( !attributeMap_.containsKey( name ), "name", Messages.State_attribute_present( name ) ); //$NON-NLS-1$
+        assertStateLegal( transactionState_ == TransactionState.ACTIVE, Messages.State_transaction_notActiveWritable );
 
-        m_changedAttributeNameSet.add( name );
-        m_attributeMap.put( name, value );
+        changedAttributeNameSet_.add( name );
+        attributeMap_.put( name, value );
     }
 
     /**
@@ -111,10 +111,10 @@ final class State
     void beginTransaction()
     {
         assertStateLegal( !isTransactionActive(), Messages.State_transaction_active );
-        assert m_changedAttributeNameSet.isEmpty();
+        assert changedAttributeNameSet_.isEmpty();
 
-        m_backupAttributeMap = new HashMap<AttributeName, Object>( m_attributeMap );
-        m_transactionState = TransactionState.ACTIVE;
+        backupAttributeMap_ = new HashMap<AttributeName, Object>( attributeMap_ );
+        transactionState_ = TransactionState.ACTIVE;
     }
 
     /**
@@ -127,10 +127,10 @@ final class State
     {
         assertStateLegal( isTransactionActive(), Messages.State_transaction_notActive );
 
-        m_backupAttributeMap.clear();
-        m_backupAttributeMap = null;
-        m_changedAttributeNameSet.clear();
-        m_transactionState = TransactionState.INACTIVE;
+        backupAttributeMap_.clear();
+        backupAttributeMap_ = null;
+        changedAttributeNameSet_.clear();
+        transactionState_ = TransactionState.INACTIVE;
     }
 
     /*
@@ -141,7 +141,7 @@ final class State
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return m_attributeMap.containsKey( name );
+        return attributeMap_.containsKey( name );
     }
 
     /*
@@ -151,9 +151,9 @@ final class State
         final AttributeName name )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( m_attributeMap.containsKey( name ), "name", Messages.State_attribute_absent( name ) ); //$NON-NLS-1$
+        assertArgumentLegal( attributeMap_.containsKey( name ), "name", Messages.State_attribute_absent( name ) ); //$NON-NLS-1$
 
-        return m_attributeMap.get( name );
+        return attributeMap_.get( name );
     }
 
     /**
@@ -178,10 +178,10 @@ final class State
         assert name != null;
         assert isTransactionActive();
 
-        final boolean isPresentCurrent = m_attributeMap.containsKey( name );
-        final Object valueCurrent = m_attributeMap.get( name );
-        final boolean isPresentBackup = m_backupAttributeMap.containsKey( name );
-        final Object valueBackup = m_backupAttributeMap.get( name );
+        final boolean isPresentCurrent = attributeMap_.containsKey( name );
+        final Object valueCurrent = attributeMap_.get( name );
+        final boolean isPresentBackup = backupAttributeMap_.containsKey( name );
+        final Object valueBackup = backupAttributeMap_.get( name );
         if( !isPresentCurrent && !isPresentBackup )
         {
             return null;
@@ -230,7 +230,7 @@ final class State
         assertStateLegal( isTransactionActive(), Messages.State_transaction_notActive );
 
         final Map<AttributeName, IAttributeChange> attributeChangeMap = new HashMap<AttributeName, IAttributeChange>();
-        for( final AttributeName name : m_changedAttributeNameSet )
+        for( final AttributeName name : changedAttributeNameSet_ )
         {
             final IAttributeChange change = getAttributeChange( name );
             if( change != null )
@@ -247,7 +247,7 @@ final class State
      */
     public Set<AttributeName> getAttributeNames()
     {
-        return Collections.unmodifiableSet( m_attributeMap.keySet() );
+        return Collections.unmodifiableSet( attributeMap_.keySet() );
     }
 
     /**
@@ -268,7 +268,7 @@ final class State
         assert scope != null;
 
         final Set<AttributeName> nameSet = new HashSet<AttributeName>();
-        for( final AttributeName name : m_attributeMap.keySet() )
+        for( final AttributeName name : attributeMap_.keySet() )
         {
             if( name.getScope() == scope )
             {
@@ -281,12 +281,12 @@ final class State
     /**
      * Indicates a transaction is active.
      * 
-     * @return {@code true} if there is an active transaction; otherwise
-     *         {@code false}.
+     * @return {@code true} if there is an active transaction; otherwise {@code
+     *         false}.
      */
     boolean isTransactionActive()
     {
-        return m_transactionState != TransactionState.INACTIVE;
+        return transactionState_ != TransactionState.INACTIVE;
     }
 
     /**
@@ -300,17 +300,17 @@ final class State
      */
     void prepareToCommitTransaction()
     {
-        assertStateLegal( m_transactionState == TransactionState.ACTIVE, Messages.State_transaction_notActiveWritable );
+        assertStateLegal( transactionState_ == TransactionState.ACTIVE, Messages.State_transaction_notActiveWritable );
 
-        m_transactionState = TransactionState.ACTIVE_READ_ONLY;
+        transactionState_ = TransactionState.ACTIVE_READ_ONLY;
     }
 
     /**
      * Removes all attributes with the specified names from this state.
      * 
      * @param names
-     *        The names of the attributes to be removed; must not be
-     *        {@code null}.
+     *        The names of the attributes to be removed; must not be {@code
+     *        null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If any of the specified attributes do not exist in this state.
@@ -339,11 +339,11 @@ final class State
         final AttributeName name )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( m_attributeMap.containsKey( name ), "name", Messages.State_attribute_absent( name ) ); //$NON-NLS-1$
-        assertStateLegal( m_transactionState == TransactionState.ACTIVE, Messages.State_transaction_notActiveWritable );
+        assertArgumentLegal( attributeMap_.containsKey( name ), "name", Messages.State_attribute_absent( name ) ); //$NON-NLS-1$
+        assertStateLegal( transactionState_ == TransactionState.ACTIVE, Messages.State_transaction_notActiveWritable );
 
-        m_changedAttributeNameSet.add( name );
-        m_attributeMap.remove( name );
+        changedAttributeNameSet_.add( name );
+        attributeMap_.remove( name );
     }
 
     /**
@@ -356,10 +356,10 @@ final class State
     {
         assertStateLegal( isTransactionActive(), Messages.State_transaction_notActive );
 
-        m_attributeMap = m_backupAttributeMap;
-        m_backupAttributeMap = null;
-        m_changedAttributeNameSet.clear();
-        m_transactionState = TransactionState.INACTIVE;
+        attributeMap_ = backupAttributeMap_;
+        backupAttributeMap_ = null;
+        changedAttributeNameSet_.clear();
+        transactionState_ = TransactionState.INACTIVE;
     }
 
     /**
@@ -374,11 +374,11 @@ final class State
         final Object value )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( m_attributeMap.containsKey( name ), "name", Messages.State_attribute_absent( name ) ); //$NON-NLS-1$
-        assertStateLegal( m_transactionState == TransactionState.ACTIVE, Messages.State_transaction_notActiveWritable );
+        assertArgumentLegal( attributeMap_.containsKey( name ), "name", Messages.State_attribute_absent( name ) ); //$NON-NLS-1$
+        assertStateLegal( transactionState_ == TransactionState.ACTIVE, Messages.State_transaction_notActiveWritable );
 
-        m_changedAttributeNameSet.add( name );
-        m_attributeMap.put( name, value );
+        changedAttributeNameSet_.add( name );
+        attributeMap_.put( name, value );
     }
 
 

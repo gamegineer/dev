@@ -44,7 +44,7 @@ public final class NullGameSystemUi
     // ======================================================================
 
     /** The game system identifier. */
-    private final String m_id;
+    private final String id_;
 
 
     // ======================================================================
@@ -66,7 +66,7 @@ public final class NullGameSystemUi
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
-        m_id = id;
+        id_ = id;
     }
 
 
@@ -79,7 +79,7 @@ public final class NullGameSystemUi
      */
     public String getId()
     {
-        return m_id;
+        return id_;
     }
 
     /*
@@ -87,7 +87,7 @@ public final class NullGameSystemUi
      */
     public String getName()
     {
-        return Messages.NullGameSystemUi_name( m_id );
+        return Messages.NullGameSystemUi_name( id_ );
     }
 
     /*

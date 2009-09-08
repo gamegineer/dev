@@ -53,7 +53,7 @@ public final class GameTest
     // ======================================================================
 
     /** The game under test in the fixture. */
-    private Game m_game;
+    private Game game_;
 
 
     // ======================================================================
@@ -162,7 +162,7 @@ public final class GameTest
     public void setUp()
         throws Exception
     {
-        m_game = null;
+        game_ = null;
     }
 
     /**
@@ -175,10 +175,10 @@ public final class GameTest
     public void tearDown()
         throws Exception
     {
-        if( m_game != null )
+        if( game_ != null )
         {
-            m_game.shutdown();
-            m_game = null;
+            game_.shutdown();
+            game_ = null;
         }
     }
 
@@ -194,10 +194,10 @@ public final class GameTest
         throws Exception
     {
         final MockStageStrategy strategy = createIncompleteStageStrategy();
-        m_game = createOneStageGame( strategy );
+        game_ = createOneStageGame( strategy );
 
         final int originalCommandExecutedCallCount = strategy.getCommandExecutedCallCount();
-        m_game.executeCommand( new MockCommand<Void>() );
+        game_.executeCommand( new MockCommand<Void>() );
 
         assertEquals( originalCommandExecutedCallCount + 1, strategy.getCommandExecutedCallCount() );
     }
@@ -214,10 +214,10 @@ public final class GameTest
         throws Exception
     {
         final MockStageStrategy strategy = createIncompleteStageStrategy();
-        m_game = createOneStageGame( strategy );
+        game_ = createOneStageGame( strategy );
 
         final int originalCommandExecutingCallCount = strategy.getCommandExecutingCallCount();
-        m_game.executeCommand( new MockCommand<Void>() );
+        game_.executeCommand( new MockCommand<Void>() );
 
         assertEquals( originalCommandExecutingCallCount + 1, strategy.getCommandExecutingCallCount() );
     }
@@ -248,10 +248,10 @@ public final class GameTest
         throws Exception
     {
         final MockStageStrategy strategy = createIncompleteStageStrategy();
-        m_game = createOneStageGame( strategy );
+        game_ = createOneStageGame( strategy );
 
         final int originalStateChangedCallCount = strategy.getStateChangedCallCount();
-        m_game.executeCommand( createWriteCommand() );
+        game_.executeCommand( createWriteCommand() );
 
         assertEquals( originalStateChangedCallCount + 1, strategy.getStateChangedCallCount() );
     }
@@ -268,10 +268,10 @@ public final class GameTest
         throws Exception
     {
         final MockStageStrategy strategy = createIncompleteStageStrategy();
-        m_game = createOneStageGame( strategy );
+        game_ = createOneStageGame( strategy );
 
         final int originalStateChangingCallCount = strategy.getStateChangingCallCount();
-        m_game.executeCommand( createWriteCommand() );
+        game_.executeCommand( createWriteCommand() );
 
         assertEquals( originalStateChangingCallCount + 1, strategy.getStateChangingCallCount() );
     }

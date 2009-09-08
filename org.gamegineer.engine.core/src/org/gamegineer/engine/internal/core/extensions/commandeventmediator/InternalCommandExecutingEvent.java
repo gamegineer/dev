@@ -30,7 +30,8 @@ import org.gamegineer.engine.core.extensions.commandeventmediator.ICommandExecut
 
 /**
  * Implementation of
- * {@link org.gamegineer.engine.core.extensions.commandeventmediator.CommandExecutingEvent}.
+ * {@link org.gamegineer.engine.core.extensions.commandeventmediator.CommandExecutingEvent}
+ * .
  * 
  * <p>
  * This class is immutable.
@@ -51,7 +52,7 @@ final class InternalCommandExecutingEvent
      * The command executing event implementation to which all behavior is
      * delegated.
      */
-    private final ICommandExecutingEvent m_delegate;
+    private final ICommandExecutingEvent delegate_;
 
 
     // ======================================================================
@@ -75,7 +76,7 @@ final class InternalCommandExecutingEvent
     {
         super( delegate.getEngineContext() );
 
-        m_delegate = delegate;
+        delegate_ = delegate;
     }
 
 
@@ -116,7 +117,7 @@ final class InternalCommandExecutingEvent
      */
     public ICommand<?> getCommand()
     {
-        return m_delegate.getCommand();
+        return delegate_.getCommand();
     }
 
     /*
@@ -124,6 +125,6 @@ final class InternalCommandExecutingEvent
      */
     public IEngineContext getEngineContext()
     {
-        return m_delegate.getEngineContext();
+        return delegate_.getEngineContext();
     }
 }

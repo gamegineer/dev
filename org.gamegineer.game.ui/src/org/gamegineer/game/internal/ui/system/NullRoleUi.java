@@ -41,7 +41,7 @@ public final class NullRoleUi
     // ======================================================================
 
     /** The role identifier. */
-    private final String m_id;
+    private final String id_;
 
 
     // ======================================================================
@@ -63,7 +63,7 @@ public final class NullRoleUi
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
-        m_id = id;
+        id_ = id;
     }
 
 
@@ -76,7 +76,7 @@ public final class NullRoleUi
      */
     public String getId()
     {
-        return m_id;
+        return id_;
     }
 
     /*
@@ -84,6 +84,6 @@ public final class NullRoleUi
      */
     public String getName()
     {
-        return Messages.NullRoleUi_name( m_id );
+        return Messages.NullRoleUi_name( id_ );
     }
 }

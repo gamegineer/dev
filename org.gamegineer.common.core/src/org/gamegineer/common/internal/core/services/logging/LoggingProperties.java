@@ -1,6 +1,6 @@
 /*
  * LoggingProperties.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,7 +46,7 @@ final class LoggingProperties
     // ======================================================================
 
     /** The logging properties. */
-    private final Properties m_props;
+    private final Properties props_;
 
 
     // ======================================================================
@@ -65,7 +65,7 @@ final class LoggingProperties
     {
         assert props != null;
 
-        m_props = props;
+        props_ = props;
     }
 
 
@@ -76,15 +76,15 @@ final class LoggingProperties
     /**
      * Gets an immutable map view of the logging properties.
      * 
-     * @return An immutable map view of the logging properties; never
-     *         {@code null}.
+     * @return An immutable map view of the logging properties; never {@code
+     *         null}.
      */
     /* @NonNull */
     @SuppressWarnings( "unchecked" )
     Map<String, String> asMap()
     {
         // HACK: Cast to raw type required because of the legacy nature of java.util.Properties
-        return Collections.<String, String>unmodifiableMap( (Map)m_props );
+        return Collections.<String, String>unmodifiableMap( (Map)props_ );
     }
 
     /**
@@ -117,7 +117,7 @@ final class LoggingProperties
         }
 
         // Remove any ancestor name which doesn't have an associated configuration property
-        final Set<Object> propertyNames = m_props.keySet();
+        final Set<Object> propertyNames = props_.keySet();
         for( final Iterator<String> iter = ancestorNameList.iterator(); iter.hasNext(); )
         {
             final String ancestorName = iter.next();
@@ -147,9 +147,9 @@ final class LoggingProperties
      * @param name
      *        The logger name; must not be {@code null}.
      * 
-     * @return The configuration for the specified logger; never {@code null}.
-     *         A default configuration is returned if no configuration exists
-     *         for the specified logger.
+     * @return The configuration for the specified logger; never {@code null}. A
+     *         default configuration is returned if no configuration exists for
+     *         the specified logger.
      */
     /* @NonNull */
     LoggerConfiguration getLoggerConfiguration(
@@ -184,6 +184,6 @@ final class LoggingProperties
         assert propertyName != null;
         assert propertyName.indexOf( '.' ) == -1;
 
-        return m_props.getProperty( entityName + "." + propertyName ); //$NON-NLS-1$
+        return props_.getProperty( entityName + "." + propertyName ); //$NON-NLS-1$
     }
 }

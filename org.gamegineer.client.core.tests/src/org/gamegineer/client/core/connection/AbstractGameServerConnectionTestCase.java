@@ -44,7 +44,7 @@ public abstract class AbstractGameServerConnectionTestCase
     // ======================================================================
 
     /** The game server connection under test in the fixture. */
-    private IGameServerConnection m_gameServerConnection;
+    private IGameServerConnection gameServerConnection_;
 
 
     // ======================================================================
@@ -52,8 +52,8 @@ public abstract class AbstractGameServerConnectionTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractGameServerConnectionTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractGameServerConnectionTestCase} class.
      */
     protected AbstractGameServerConnectionTestCase()
     {
@@ -87,8 +87,8 @@ public abstract class AbstractGameServerConnectionTestCase
     public void setUp()
         throws Exception
     {
-        m_gameServerConnection = createGameServerConnection();
-        assertNotNull( m_gameServerConnection );
+        gameServerConnection_ = createGameServerConnection();
+        assertNotNull( gameServerConnection_ );
     }
 
     /**
@@ -101,7 +101,7 @@ public abstract class AbstractGameServerConnectionTestCase
     public void tearDown()
         throws Exception
     {
-        m_gameServerConnection = null;
+        gameServerConnection_ = null;
     }
 
     /**
@@ -115,9 +115,9 @@ public abstract class AbstractGameServerConnectionTestCase
     public void testClose_Closed()
         throws Exception
     {
-        m_gameServerConnection.close();
+        gameServerConnection_.close();
 
-        m_gameServerConnection.close();
+        gameServerConnection_.close();
     }
 
     /**
@@ -131,9 +131,9 @@ public abstract class AbstractGameServerConnectionTestCase
     public void testClose_Open()
         throws Exception
     {
-        m_gameServerConnection.open();
+        gameServerConnection_.open();
 
-        m_gameServerConnection.close();
+        gameServerConnection_.close();
     }
 
     /**
@@ -147,9 +147,9 @@ public abstract class AbstractGameServerConnectionTestCase
     public void testClose_Pristine()
         throws Exception
     {
-        m_gameServerConnection.close();
+        gameServerConnection_.close();
 
-        m_gameServerConnection.open();
+        gameServerConnection_.open();
     }
 
     /**
@@ -163,9 +163,9 @@ public abstract class AbstractGameServerConnectionTestCase
     public void testGetGameServer_Closed()
         throws Exception
     {
-        m_gameServerConnection.close();
+        gameServerConnection_.close();
 
-        m_gameServerConnection.getGameServer();
+        gameServerConnection_.getGameServer();
     }
 
     /**
@@ -180,9 +180,9 @@ public abstract class AbstractGameServerConnectionTestCase
     public void testGetGameServer_Closed_GameServerThrowsRemoteException()
         throws Exception
     {
-        m_gameServerConnection.open();
-        final IGameServer gameServer = m_gameServerConnection.getGameServer();
-        m_gameServerConnection.close();
+        gameServerConnection_.open();
+        final IGameServer gameServer = gameServerConnection_.getGameServer();
+        gameServerConnection_.close();
 
         for( final Method method : IGameServer.class.getMethods() )
         {
@@ -215,9 +215,9 @@ public abstract class AbstractGameServerConnectionTestCase
     public void testGetGameServer_Open_ReturnValue_NonNull()
         throws Exception
     {
-        m_gameServerConnection.open();
+        gameServerConnection_.open();
 
-        assertNotNull( m_gameServerConnection.getGameServer() );
+        assertNotNull( gameServerConnection_.getGameServer() );
     }
 
     /**
@@ -231,7 +231,7 @@ public abstract class AbstractGameServerConnectionTestCase
     public void testGetGameServer_Pristine()
         throws Exception
     {
-        m_gameServerConnection.getGameServer();
+        gameServerConnection_.getGameServer();
     }
 
     /**
@@ -245,9 +245,9 @@ public abstract class AbstractGameServerConnectionTestCase
     public void testGetName_Closed_ReturnValue_NonNull()
         throws Exception
     {
-        m_gameServerConnection.close();
+        gameServerConnection_.close();
 
-        assertNotNull( m_gameServerConnection.getName() );
+        assertNotNull( gameServerConnection_.getName() );
     }
 
     /**
@@ -261,9 +261,9 @@ public abstract class AbstractGameServerConnectionTestCase
     public void testGetName_Open_ReturnValue_NonNull()
         throws Exception
     {
-        m_gameServerConnection.open();
+        gameServerConnection_.open();
 
-        assertNotNull( m_gameServerConnection.getName() );
+        assertNotNull( gameServerConnection_.getName() );
     }
 
     /**
@@ -273,7 +273,7 @@ public abstract class AbstractGameServerConnectionTestCase
     @Test
     public void testGetName_Pristine_ReturnValue_NonNull()
     {
-        assertNotNull( m_gameServerConnection.getName() );
+        assertNotNull( gameServerConnection_.getName() );
     }
 
     /**
@@ -287,9 +287,9 @@ public abstract class AbstractGameServerConnectionTestCase
     public void testGetUserPrincipal_Closed_ReturnValue_NonNull()
         throws Exception
     {
-        m_gameServerConnection.close();
+        gameServerConnection_.close();
 
-        assertNotNull( m_gameServerConnection.getUserPrincipal() );
+        assertNotNull( gameServerConnection_.getUserPrincipal() );
     }
 
     /**
@@ -303,9 +303,9 @@ public abstract class AbstractGameServerConnectionTestCase
     public void testGetUserPrincipal_Open_ReturnValue_NonNull()
         throws Exception
     {
-        m_gameServerConnection.open();
+        gameServerConnection_.open();
 
-        assertNotNull( m_gameServerConnection.getUserPrincipal() );
+        assertNotNull( gameServerConnection_.getUserPrincipal() );
     }
 
     /**
@@ -315,7 +315,7 @@ public abstract class AbstractGameServerConnectionTestCase
     @Test
     public void testGetUserPrincipal_Pristine_ReturnValue_NonNull()
     {
-        assertNotNull( m_gameServerConnection.getUserPrincipal() );
+        assertNotNull( gameServerConnection_.getUserPrincipal() );
     }
 
     /**
@@ -329,9 +329,9 @@ public abstract class AbstractGameServerConnectionTestCase
     public void testOpen_Closed()
         throws Exception
     {
-        m_gameServerConnection.close();
+        gameServerConnection_.close();
 
-        m_gameServerConnection.open();
+        gameServerConnection_.open();
     }
 
     /**
@@ -344,8 +344,8 @@ public abstract class AbstractGameServerConnectionTestCase
     public void testOpen_Open()
         throws Exception
     {
-        m_gameServerConnection.open();
+        gameServerConnection_.open();
 
-        m_gameServerConnection.open();
+        gameServerConnection_.open();
     }
 }

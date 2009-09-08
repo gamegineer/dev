@@ -44,7 +44,7 @@ public class FakeConsole
     // ======================================================================
 
     /** The display associated with the console. */
-    private final IDisplay m_display;
+    private final IDisplay display_;
 
 
     // ======================================================================
@@ -66,7 +66,7 @@ public class FakeConsole
     {
         assertArgumentNotNull( display, "display" ); //$NON-NLS-1$
 
-        m_display = display;
+        display_ = display;
     }
 
 
@@ -87,6 +87,6 @@ public class FakeConsole
      */
     public IDisplay getDisplay()
     {
-        return m_display;
+        return display_;
     }
 }

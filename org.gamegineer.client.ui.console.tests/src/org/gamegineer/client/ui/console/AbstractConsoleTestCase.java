@@ -43,13 +43,13 @@ public abstract class AbstractConsoleTestCase
     // ======================================================================
 
     /** The console under test in the fixture. */
-    private IConsole m_console;
+    private IConsole console_;
 
     /** The executor used to run the console. */
-    private ExecutorService m_executor;
+    private ExecutorService executor_;
 
     /** The console task associated with the executor. */
-    private Future<?> m_task;
+    private Future<?> task_;
 
 
     // ======================================================================
@@ -105,8 +105,8 @@ public abstract class AbstractConsoleTestCase
      * Creates the console to be tested.
      * 
      * @param display
-     *        The display to associate with the console; must not be
-     *        {@code null}.
+     *        The display to associate with the console; must not be {@code
+     *        null}.
      * @param advisor
      *        The console advisor; must not be {@code null}.
      * 
@@ -154,11 +154,11 @@ public abstract class AbstractConsoleTestCase
     public void setUp()
         throws Exception
     {
-        m_console = createConsole( new FakeDisplay(), new ConsoleAdvisor() );
-        assertNotNull( m_console );
+        console_ = createConsole( new FakeDisplay(), new ConsoleAdvisor() );
+        assertNotNull( console_ );
 
-        m_executor = Executors.newSingleThreadExecutor();
-        m_task = null;
+        executor_ = Executors.newSingleThreadExecutor();
+        task_ = null;
     }
 
     /**
@@ -171,16 +171,16 @@ public abstract class AbstractConsoleTestCase
     public void tearDown()
         throws Exception
     {
-        m_executor.shutdown();
-        if( m_task != null )
+        executor_.shutdown();
+        if( task_ != null )
         {
-            m_task.cancel( true );
-            m_task = null;
+            task_.cancel( true );
+            task_ = null;
         }
-        assertTrue( m_executor.awaitTermination( 1, TimeUnit.SECONDS ) );
-        m_executor = null;
+        assertTrue( executor_.awaitTermination( 1, TimeUnit.SECONDS ) );
+        executor_ = null;
 
-        m_console = null;
+        console_ = null;
     }
 
     /**
@@ -194,12 +194,12 @@ public abstract class AbstractConsoleTestCase
     public void testClose_Finished()
         throws Exception
     {
-        m_task = m_executor.submit( createConsoleRunner( m_console ) );
-        awaitConsoleRunning( m_console );
-        m_task.cancel( true );
-        awaitConsoleFinished( m_console );
+        task_ = executor_.submit( createConsoleRunner( console_ ) );
+        awaitConsoleRunning( console_ );
+        task_.cancel( true );
+        awaitConsoleFinished( console_ );
 
-        m_console.close();
+        console_.close();
     }
 
     /**
@@ -213,9 +213,9 @@ public abstract class AbstractConsoleTestCase
     public void testClose_Pristine()
         throws Exception
     {
-        m_console.close();
-        m_task = m_executor.submit( createConsoleRunner( m_console ) );
-        awaitConsoleFinished( m_console );
+        console_.close();
+        task_ = executor_.submit( createConsoleRunner( console_ ) );
+        awaitConsoleFinished( console_ );
     }
 
     /**
@@ -229,12 +229,12 @@ public abstract class AbstractConsoleTestCase
     public void testClose_Running()
         throws Exception
     {
-        m_task = m_executor.submit( createConsoleRunner( m_console ) );
-        awaitConsoleRunning( m_console );
+        task_ = executor_.submit( createConsoleRunner( console_ ) );
+        awaitConsoleRunning( console_ );
 
-        m_console.close();
+        console_.close();
 
-        awaitConsoleFinished( m_console );
+        awaitConsoleFinished( console_ );
     }
 
     /**
@@ -248,12 +248,12 @@ public abstract class AbstractConsoleTestCase
     public void testGetDisplay_Finished_ReturnValue_NonNull()
         throws Exception
     {
-        m_task = m_executor.submit( createConsoleRunner( m_console ) );
-        awaitConsoleRunning( m_console );
-        m_task.cancel( true );
-        awaitConsoleFinished( m_console );
+        task_ = executor_.submit( createConsoleRunner( console_ ) );
+        awaitConsoleRunning( console_ );
+        task_.cancel( true );
+        awaitConsoleFinished( console_ );
 
-        assertNotNull( m_console.getDisplay() );
+        assertNotNull( console_.getDisplay() );
     }
 
     /**
@@ -263,7 +263,7 @@ public abstract class AbstractConsoleTestCase
     @Test
     public void testGetDisplay_Pristine_ReturnValue_NonNull()
     {
-        assertNotNull( m_console.getDisplay() );
+        assertNotNull( console_.getDisplay() );
     }
 
     /**
@@ -277,9 +277,9 @@ public abstract class AbstractConsoleTestCase
     public void testGetDisplay_Running_ReturnValue_NonNull()
         throws Exception
     {
-        m_task = m_executor.submit( createConsoleRunner( m_console ) );
-        awaitConsoleRunning( m_console );
+        task_ = executor_.submit( createConsoleRunner( console_ ) );
+        awaitConsoleRunning( console_ );
 
-        assertNotNull( m_console.getDisplay() );
+        assertNotNull( console_.getDisplay() );
     }
 }

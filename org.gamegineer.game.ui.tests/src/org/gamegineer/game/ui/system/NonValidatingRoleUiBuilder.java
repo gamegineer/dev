@@ -46,10 +46,10 @@ public final class NonValidatingRoleUiBuilder
     // ======================================================================
 
     /** The role identifier. */
-    private String m_id;
+    private String id_;
 
     /** The role name. */
-    private String m_name;
+    private String name_;
 
 
     // ======================================================================
@@ -62,8 +62,8 @@ public final class NonValidatingRoleUiBuilder
      */
     public NonValidatingRoleUiBuilder()
     {
-        m_id = null;
-        m_name = null;
+        id_ = null;
+        name_ = null;
     }
 
     /**
@@ -83,8 +83,8 @@ public final class NonValidatingRoleUiBuilder
     {
         assertArgumentNotNull( roleUi, "roleUi" ); //$NON-NLS-1$
 
-        m_id = roleUi.getId();
-        m_name = roleUi.getName();
+        id_ = roleUi.getId();
+        name_ = roleUi.getName();
     }
 
 
@@ -105,7 +105,7 @@ public final class NonValidatingRoleUiBuilder
         /* @Nullable */
         final String id )
     {
-        m_id = id;
+        id_ = id;
 
         return this;
     }
@@ -123,7 +123,7 @@ public final class NonValidatingRoleUiBuilder
         /* @Nullable */
         final String name )
     {
-        m_name = name;
+        name_ = name;
 
         return this;
     }
@@ -137,6 +137,6 @@ public final class NonValidatingRoleUiBuilder
     /* @NonNull */
     public IRoleUi toRoleUi()
     {
-        return new NonValidatingRoleUi( m_id, m_name );
+        return new NonValidatingRoleUi( id_, name_ );
     }
 }

@@ -37,7 +37,7 @@ public final class ServicesTest
     // ======================================================================
 
     /** The services under test in the fixture. */
-    private Services m_services;
+    private Services services_;
 
 
     // ======================================================================
@@ -67,7 +67,7 @@ public final class ServicesTest
     public void setUp()
         throws Exception
     {
-        m_services = Services.getDefault();
+        services_ = Services.getDefault();
     }
 
     /**
@@ -80,27 +80,27 @@ public final class ServicesTest
     public void tearDown()
         throws Exception
     {
-        m_services = null;
+        services_ = null;
     }
 
     /**
-     * Ensures the {@code getGameSystemRegistry} method does not return
-     * {@code null}, which validates the game system registry service was
-     * registered with OSGi correctly.
+     * Ensures the {@code getGameSystemRegistry} method does not return {@code
+     * null}, which validates the game system registry service was registered
+     * with OSGi correctly.
      */
     @Test
     public void testGetGameSystemRegistry_ReturnValue_NonNull()
     {
-        assertNotNull( m_services.getGameSystemRegistry() );
+        assertNotNull( services_.getGameSystemRegistry() );
     }
 
     /**
-     * Ensures the {@code open} method throws an exception when passed a
-     * {@code null} bundle context.
+     * Ensures the {@code open} method throws an exception when passed a {@code
+     * null} bundle context.
      */
     @Test( expected = NullPointerException.class )
     public void testOpen_Context_Null()
     {
-        m_services.open( null );
+        services_.open( null );
     }
 }

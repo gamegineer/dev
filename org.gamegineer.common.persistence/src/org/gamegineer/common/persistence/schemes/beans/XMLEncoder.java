@@ -1,6 +1,6 @@
 /*
  * XMLEncoder.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -57,10 +57,10 @@ public final class XMLEncoder
     // ======================================================================
 
     /** The platform adapter manager. */
-    private final IAdapterManager m_adapterManager;
+    private final IAdapterManager adapterManager_;
 
     /** The map of persistence delegates registered through the adapter manager. */
-    private final Map<Class<?>, PersistenceDelegate> m_delegateMap;
+    private final Map<Class<?>, PersistenceDelegate> delegateMap_;
 
 
     // ======================================================================
@@ -84,8 +84,8 @@ public final class XMLEncoder
 
         assertArgumentNotNull( out, "out" ); //$NON-NLS-1$
 
-        m_adapterManager = Services.getDefault().getAdapterManager();
-        m_delegateMap = new HashMap<Class<?>, PersistenceDelegate>();
+        adapterManager_ = Services.getDefault().getAdapterManager();
+        delegateMap_ = new HashMap<Class<?>, PersistenceDelegate>();
     }
 
 
@@ -100,7 +100,7 @@ public final class XMLEncoder
     public PersistenceDelegate getPersistenceDelegate(
         final Class<?> type )
     {
-        final PersistenceDelegate delegate = m_delegateMap.get( type );
+        final PersistenceDelegate delegate = delegateMap_.get( type );
         if( delegate != null )
         {
             return delegate;
@@ -128,10 +128,10 @@ public final class XMLEncoder
         // delegate when it has already indicated none have been registered for the
         // object's class.
 
-        if( (o != null) && !m_delegateMap.containsKey( o.getClass() ) )
+        if( (o != null) && !delegateMap_.containsKey( o.getClass() ) )
         {
-            final PersistenceDelegate delegate = (PersistenceDelegate)m_adapterManager.getAdapter( o, PersistenceDelegate.class );
-            m_delegateMap.put( o.getClass(), delegate );
+            final PersistenceDelegate delegate = (PersistenceDelegate)adapterManager_.getAdapter( o, PersistenceDelegate.class );
+            delegateMap_.put( o.getClass(), delegate );
         }
 
         super.writeObject( o );

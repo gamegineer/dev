@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractLoggingComponentFactoryTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -54,7 +54,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     private static final Map<String, String> DEFAULT_LOGGING_PROPERTIES = Collections.emptyMap();
 
     /** The logging component factory under test in the fixture. */
-    private F m_factory;
+    private F factory_;
 
 
     // ======================================================================
@@ -62,8 +62,8 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractAbstractLoggingComponentFactoryTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractAbstractLoggingComponentFactoryTestCase} class.
      */
     protected AbstractAbstractLoggingComponentFactoryTestCase()
     {
@@ -89,9 +89,9 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
      * @param component
      *        The logging component; must not be {@code null}.
      * @param instanceName
-     *        The instance name of the logging component; must not be
-     *        {@code null}. This name is used to discover the component's
-     *        properties in the specified logging properties.
+     *        The instance name of the logging component; must not be {@code
+     *        null}. This name is used to discover the component's properties in
+     *        the specified logging properties.
      * @param loggingProperties
      *        The logging properties; may be {@code null}.
      * 
@@ -106,7 +106,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
         /* @Nullable */
         final Map<String, String> loggingProperties )
     {
-        m_factory.configureLoggingComponent( component, instanceName, loggingProperties );
+        factory_.configureLoggingComponent( component, instanceName, loggingProperties );
     }
 
     /**
@@ -121,9 +121,9 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
      * </p>
      * 
      * @param instanceName
-     *        The instance name of the logging component; must not be
-     *        {@code null}. This name is used to discover the component's
-     *        properties in the specified logging properties.
+     *        The instance name of the logging component; must not be {@code
+     *        null}. This name is used to discover the component's properties in
+     *        the specified logging properties.
      * @param loggingProperties
      *        The logging properties; may be {@code null}.
      * 
@@ -131,8 +131,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
      * 
      * @throws java.lang.NullPointerException
      *         If {@code instanceName} is {@code null}.
-     * @throws
-     *         org.gamegineer.common.core.services.component.ComponentCreationException
+     * @throws org.gamegineer.common.core.services.component.ComponentCreationException
      *         If an error occurred during component creation.
      */
     /* @NonNull */
@@ -143,7 +142,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
         final Map<String, String> loggingProperties )
         throws ComponentCreationException
     {
-        return m_factory.createLoggingComponent( instanceName, loggingProperties );
+        return factory_.createLoggingComponent( instanceName, loggingProperties );
     }
 
     /**
@@ -163,8 +162,8 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     /* @NonNull */
     protected final F getLoggingComponentFactory()
     {
-        assertNotNull( m_factory );
-        return m_factory;
+        assertNotNull( factory_ );
+        return factory_;
     }
 
     /**
@@ -177,8 +176,8 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     public void setUp()
         throws Exception
     {
-        m_factory = createLoggingComponentFactory();
-        assertNotNull( m_factory );
+        factory_ = createLoggingComponentFactory();
+        assertNotNull( factory_ );
     }
 
     /**
@@ -191,7 +190,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     public void tearDown()
         throws Exception
     {
-        m_factory = null;
+        factory_ = null;
     }
 
     /**
@@ -201,7 +200,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     @Test( expected = NullPointerException.class )
     public void testConfigureLoggingComponent_Component_Null()
     {
-        m_factory.configureLoggingComponent( null, DEFAULT_INSTANCE_NAME, DEFAULT_LOGGING_PROPERTIES );
+        factory_.configureLoggingComponent( null, DEFAULT_INSTANCE_NAME, DEFAULT_LOGGING_PROPERTIES );
     }
 
     /**
@@ -215,8 +214,8 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     public void testConfigureLoggingComponent_InstanceName_Null()
         throws Exception
     {
-        final T component = m_factory.createLoggingComponent( DEFAULT_INSTANCE_NAME, DEFAULT_LOGGING_PROPERTIES );
-        m_factory.configureLoggingComponent( component, null, DEFAULT_LOGGING_PROPERTIES );
+        final T component = factory_.createLoggingComponent( DEFAULT_INSTANCE_NAME, DEFAULT_LOGGING_PROPERTIES );
+        factory_.configureLoggingComponent( component, null, DEFAULT_LOGGING_PROPERTIES );
     }
 
     /**
@@ -230,7 +229,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     public void testCreateLoggingComponent_InstanceName_Null()
         throws Exception
     {
-        m_factory.createLoggingComponent( null, DEFAULT_LOGGING_PROPERTIES );
+        factory_.createLoggingComponent( null, DEFAULT_LOGGING_PROPERTIES );
     }
 
     /**
@@ -245,7 +244,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     public void testCreateLoggingComponent_LoggingProperties_Empty()
         throws Exception
     {
-        assertNotNull( m_factory.createLoggingComponent( DEFAULT_INSTANCE_NAME, DEFAULT_LOGGING_PROPERTIES ) );
+        assertNotNull( factory_.createLoggingComponent( DEFAULT_INSTANCE_NAME, DEFAULT_LOGGING_PROPERTIES ) );
     }
 
     /**
@@ -260,12 +259,12 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     public void testCreateLoggingComponent_LoggingProperties_Null()
         throws Exception
     {
-        assertNotNull( m_factory.createLoggingComponent( DEFAULT_INSTANCE_NAME, null ) );
+        assertNotNull( factory_.createLoggingComponent( DEFAULT_INSTANCE_NAME, null ) );
     }
 
     /**
-     * Ensures the {@code createLoggingComponent} method does not return
-     * {@code null} when passed legal arguments.
+     * Ensures the {@code createLoggingComponent} method does not return {@code
+     * null} when passed legal arguments.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -274,7 +273,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     public void testCreateLoggingComponent_ReturnValue_NonNull()
         throws Exception
     {
-        final T component = m_factory.createLoggingComponent( DEFAULT_INSTANCE_NAME, DEFAULT_LOGGING_PROPERTIES );
+        final T component = factory_.createLoggingComponent( DEFAULT_INSTANCE_NAME, DEFAULT_LOGGING_PROPERTIES );
         assertNotNull( component );
     }
 
@@ -286,9 +285,9 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     public void testGetAttribute_SupportedClassNames()
     {
         boolean foundClassName = false;
-        for( final String className : SupportedClassNamesAttribute.INSTANCE.getValue( m_factory ) )
+        for( final String className : SupportedClassNamesAttribute.INSTANCE.getValue( factory_ ) )
         {
-            if( className.equals( m_factory.getType().getName() ) )
+            if( className.equals( factory_.getType().getName() ) )
             {
                 foundClassName = true;
                 break;

@@ -40,7 +40,7 @@ public final class EngineContextTest
     // ======================================================================
 
     /** The engine context under test in the fixture. */
-    private EngineContext m_context;
+    private EngineContext context_;
 
 
     // ======================================================================
@@ -70,7 +70,7 @@ public final class EngineContextTest
     public void setUp()
         throws Exception
     {
-        m_context = new EngineContext( Engine.createEngine(), createDummy( ICommandContext.class ) );
+        context_ = new EngineContext( Engine.createEngine(), createDummy( ICommandContext.class ) );
     }
 
     /**
@@ -83,7 +83,7 @@ public final class EngineContextTest
     public void tearDown()
         throws Exception
     {
-        m_context = null;
+        context_ = null;
     }
 
     /**
@@ -117,7 +117,7 @@ public final class EngineContextTest
     @Test
     public void testGetContext_CommandContext_ReturnValue_NonNull()
     {
-        assertNotNull( m_context.getContext( ICommandContext.class ) );
+        assertNotNull( context_.getContext( ICommandContext.class ) );
     }
 
     /**
@@ -127,6 +127,6 @@ public final class EngineContextTest
     @Test
     public void testGetContext_ExtensionContext_ReturnValue_NonNull()
     {
-        assertNotNull( m_context.getContext( IExtensionContext.class ) );
+        assertNotNull( context_.getContext( IExtensionContext.class ) );
     }
 }

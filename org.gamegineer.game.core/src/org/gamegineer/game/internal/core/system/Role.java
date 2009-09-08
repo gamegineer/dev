@@ -41,7 +41,7 @@ public final class Role
     // ======================================================================
 
     /** The role identifier. */
-    private final String m_id;
+    private final String id_;
 
 
     // ======================================================================
@@ -60,7 +60,7 @@ public final class Role
     {
         assert id != null;
 
-        m_id = id;
+        id_ = id;
     }
 
 
@@ -98,6 +98,6 @@ public final class Role
      */
     public String getId()
     {
-        return m_id;
+        return id_;
     }
 }

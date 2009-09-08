@@ -51,10 +51,10 @@ public final class GameServerTest
     // ======================================================================
 
     /** The game server under test in the fixture. */
-    private GameServer m_gameServer;
+    private GameServer gameServer_;
 
     /** The game server configuration. */
-    private IGameServerConfiguration m_gameServerConfig;
+    private IGameServerConfiguration gameServerConfig_;
 
 
     // ======================================================================
@@ -105,8 +105,8 @@ public final class GameServerTest
     public void setUp()
         throws Exception
     {
-        m_gameServerConfig = createGameServerConfiguration();
-        m_gameServer = GameServer.createGameServer( m_gameServerConfig );
+        gameServerConfig_ = createGameServerConfiguration();
+        gameServer_ = GameServer.createGameServer( gameServerConfig_ );
     }
 
     /**
@@ -119,8 +119,8 @@ public final class GameServerTest
     public void tearDown()
         throws Exception
     {
-        m_gameServer = null;
-        m_gameServerConfig = null;
+        gameServer_ = null;
+        gameServerConfig_ = null;
     }
 
     /**
@@ -159,9 +159,9 @@ public final class GameServerTest
         throws Exception
     {
         final IGameConfiguration gameConfig = Configurations.createUniqueGameConfiguration();
-        final IGame expectedGame = m_gameServer.createGame( gameConfig );
+        final IGame expectedGame = gameServer_.createGame( gameConfig );
 
-        final IGame actualGame = m_gameServer.getGame( gameConfig.getId() );
+        final IGame actualGame = gameServer_.getGame( gameConfig.getId() );
 
         assertEquals( expectedGame.getId(), actualGame.getId() );
     }
@@ -172,9 +172,9 @@ public final class GameServerTest
     @Test
     public void testGetGameSystem()
     {
-        final String expectedGameSystemId = m_gameServerConfig.getGameSystemSource().getGameSystems().iterator().next().getId();
+        final String expectedGameSystemId = gameServerConfig_.getGameSystemSource().getGameSystems().iterator().next().getId();
 
-        final IGameSystem actualGameSystem = m_gameServer.getGameSystem( expectedGameSystemId );
+        final IGameSystem actualGameSystem = gameServer_.getGameSystem( expectedGameSystemId );
 
         assertNotNull( actualGameSystem );
         assertEquals( expectedGameSystemId, actualGameSystem.getId() );
@@ -186,10 +186,10 @@ public final class GameServerTest
     @Test
     public void testGetGameSystems()
     {
-        final Collection<IGameSystem> actualGameSystems = m_gameServer.getGameSystems();
+        final Collection<IGameSystem> actualGameSystems = gameServer_.getGameSystems();
 
         assertNotNull( actualGameSystems );
-        assertEquals( m_gameServerConfig.getGameSystemSource().getGameSystems(), actualGameSystems );
+        assertEquals( gameServerConfig_.getGameSystemSource().getGameSystems(), actualGameSystems );
     }
 
     /**
@@ -202,10 +202,10 @@ public final class GameServerTest
     public void testGetGames()
         throws Exception
     {
-        m_gameServer.createGame( Configurations.createUniqueGameConfiguration() );
-        m_gameServer.createGame( Configurations.createUniqueGameConfiguration() );
+        gameServer_.createGame( Configurations.createUniqueGameConfiguration() );
+        gameServer_.createGame( Configurations.createUniqueGameConfiguration() );
 
-        final Collection<IGame> actualGames = m_gameServer.getGames();
+        final Collection<IGame> actualGames = gameServer_.getGames();
 
         assertEquals( 2, actualGames.size() );
     }

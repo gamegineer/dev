@@ -44,7 +44,7 @@ public abstract class AbstractDisplayTestCase
     private static final String LINE_SEPARATOR = System.getProperty( "line.separator" ); //$NON-NLS-1$
 
     /** The display under test in the fixture. */
-    private IDisplay m_display;
+    private IDisplay display_;
 
 
     // ======================================================================
@@ -106,8 +106,8 @@ public abstract class AbstractDisplayTestCase
     public void setUp()
         throws Exception
     {
-        m_display = createDisplay();
-        assertNotNull( m_display );
+        display_ = createDisplay();
+        assertNotNull( display_ );
     }
 
     /**
@@ -120,7 +120,7 @@ public abstract class AbstractDisplayTestCase
     public void tearDown()
         throws Exception
     {
-        m_display = null;
+        display_ = null;
     }
 
     /**
@@ -130,7 +130,7 @@ public abstract class AbstractDisplayTestCase
     @Test( expected = IllegalFormatException.class )
     public void testFormat_Args_InsufficientArguments()
     {
-        m_display.format( "%1$s %2$s", new Object() ); //$NON-NLS-1$
+        display_.format( "%1$s %2$s", new Object() ); //$NON-NLS-1$
     }
 
     /**
@@ -141,7 +141,7 @@ public abstract class AbstractDisplayTestCase
     public void testFormat_Args_Null()
     {
         final Object[] args = null;
-        m_display.format( "", args ); //$NON-NLS-1$
+        display_.format( "", args ); //$NON-NLS-1$
     }
 
     /**
@@ -151,7 +151,7 @@ public abstract class AbstractDisplayTestCase
     @Test( expected = NullPointerException.class )
     public void testFormat_Format_Null()
     {
-        m_display.format( null, new Object[ 0 ] );
+        display_.format( null, new Object[ 0 ] );
     }
 
     /**
@@ -161,7 +161,7 @@ public abstract class AbstractDisplayTestCase
     @Test( expected = IllegalFormatException.class )
     public void testFormat_Format_Illegal()
     {
-        m_display.format( "%1$@", new Object() ); //$NON-NLS-1$
+        display_.format( "%1$@", new Object() ); //$NON-NLS-1$
     }
 
     /**
@@ -176,10 +176,10 @@ public abstract class AbstractDisplayTestCase
         };
         final String expectedOutput = String.format( format, args );
 
-        m_display.format( format, args );
-        m_display.format( LINE_SEPARATOR );
+        display_.format( format, args );
+        display_.format( LINE_SEPARATOR );
 
-        assertEquals( expectedOutput, readDisplayOutput( m_display ) );
+        assertEquals( expectedOutput, readDisplayOutput( display_ ) );
     }
 
     /**
@@ -188,7 +188,7 @@ public abstract class AbstractDisplayTestCase
     @Test
     public void testFormat_ReturnValue_SameDisplay()
     {
-        assertSame( m_display, m_display.format( "" ) ); //$NON-NLS-1$
+        assertSame( display_, display_.format( "" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -197,7 +197,7 @@ public abstract class AbstractDisplayTestCase
     @Test
     public void testGetReader_ReturnValue_NonNull()
     {
-        assertNotNull( m_display.getReader() );
+        assertNotNull( display_.getReader() );
     }
 
     /**
@@ -206,7 +206,7 @@ public abstract class AbstractDisplayTestCase
     @Test
     public void testGetWriter_ReturnValue_NonNull()
     {
-        assertNotNull( m_display.getWriter() );
+        assertNotNull( display_.getWriter() );
     }
 
     /**
@@ -216,9 +216,9 @@ public abstract class AbstractDisplayTestCase
     public void testReadLine_Input()
     {
         final String expectedInput = "The quick brown fox jumped over the lazy dog."; //$NON-NLS-1$
-        writeDisplayInput( m_display, expectedInput + LINE_SEPARATOR );
+        writeDisplayInput( display_, expectedInput + LINE_SEPARATOR );
 
-        final String actualInput = m_display.readLine();
+        final String actualInput = display_.readLine();
 
         assertEquals( expectedInput, actualInput );
     }
@@ -230,7 +230,7 @@ public abstract class AbstractDisplayTestCase
     @Test( expected = IllegalFormatException.class )
     public void testReadLineWithPrompt_Args_InsufficientArguments()
     {
-        m_display.readLine( "%1$s %2$s", new Object() ); //$NON-NLS-1$
+        display_.readLine( "%1$s %2$s", new Object() ); //$NON-NLS-1$
     }
 
     /**
@@ -240,9 +240,9 @@ public abstract class AbstractDisplayTestCase
     @Test
     public void testReadLineWithPrompt_Args_Null()
     {
-        writeDisplayInput( m_display, LINE_SEPARATOR );
+        writeDisplayInput( display_, LINE_SEPARATOR );
         final Object[] args = null;
-        m_display.readLine( "", args ); //$NON-NLS-1$
+        display_.readLine( "", args ); //$NON-NLS-1$
     }
 
     /**
@@ -252,7 +252,7 @@ public abstract class AbstractDisplayTestCase
     @Test( expected = NullPointerException.class )
     public void testReadLineWithPrompt_Format_Null()
     {
-        m_display.readLine( null, new Object[ 0 ] );
+        display_.readLine( null, new Object[ 0 ] );
     }
 
     /**
@@ -262,7 +262,7 @@ public abstract class AbstractDisplayTestCase
     @Test( expected = IllegalFormatException.class )
     public void testReadLineWithPrompt_Format_Illegal()
     {
-        m_display.readLine( "%1$@", new Object() ); //$NON-NLS-1$
+        display_.readLine( "%1$@", new Object() ); //$NON-NLS-1$
     }
 
     /**
@@ -273,9 +273,9 @@ public abstract class AbstractDisplayTestCase
     public void testReadLineWithPrompt_Input()
     {
         final String expectedInput = "The quick brown fox jumped over the lazy dog."; //$NON-NLS-1$
-        writeDisplayInput( m_display, expectedInput + LINE_SEPARATOR );
+        writeDisplayInput( display_, expectedInput + LINE_SEPARATOR );
 
-        final String actualInput = m_display.readLine( "Prompt:" ); //$NON-NLS-1$
+        final String actualInput = display_.readLine( "Prompt:" ); //$NON-NLS-1$
 
         assertEquals( expectedInput, actualInput );
     }
@@ -292,11 +292,11 @@ public abstract class AbstractDisplayTestCase
             new Integer( 10 ), "years" //$NON-NLS-1$
         };
         final String expectedOutput = String.format( format, args );
-        writeDisplayInput( m_display, LINE_SEPARATOR );
+        writeDisplayInput( display_, LINE_SEPARATOR );
 
-        m_display.readLine( format + LINE_SEPARATOR, args );
+        display_.readLine( format + LINE_SEPARATOR, args );
 
-        assertEquals( expectedOutput, readDisplayOutput( m_display ) );
+        assertEquals( expectedOutput, readDisplayOutput( display_ ) );
     }
 
     /**
@@ -308,9 +308,9 @@ public abstract class AbstractDisplayTestCase
         final char[] expectedInput = new char[] {
             'p', 'a', 's', 's', 'w', 'o', 'r', 'd'
         };
-        writeDisplayInput( m_display, new String( expectedInput ) + LINE_SEPARATOR );
+        writeDisplayInput( display_, new String( expectedInput ) + LINE_SEPARATOR );
 
-        final char[] actualInput = m_display.readSecureLine();
+        final char[] actualInput = display_.readSecureLine();
 
         assertArrayEquals( expectedInput, actualInput );
     }
@@ -322,7 +322,7 @@ public abstract class AbstractDisplayTestCase
     @Test( expected = IllegalFormatException.class )
     public void testReadSecureLineWithPrompt_Args_InsufficientArguments()
     {
-        m_display.readSecureLine( "%1$s %2$s", new Object() ); //$NON-NLS-1$
+        display_.readSecureLine( "%1$s %2$s", new Object() ); //$NON-NLS-1$
     }
 
     /**
@@ -332,9 +332,9 @@ public abstract class AbstractDisplayTestCase
     @Test
     public void testReadSecureLineWithPrompt_Args_Null()
     {
-        writeDisplayInput( m_display, LINE_SEPARATOR );
+        writeDisplayInput( display_, LINE_SEPARATOR );
         final Object[] args = null;
-        m_display.readSecureLine( "", args ); //$NON-NLS-1$
+        display_.readSecureLine( "", args ); //$NON-NLS-1$
     }
 
     /**
@@ -344,7 +344,7 @@ public abstract class AbstractDisplayTestCase
     @Test( expected = NullPointerException.class )
     public void testReadSecureLineWithPrompt_Format_Null()
     {
-        m_display.readSecureLine( null, new Object[ 0 ] );
+        display_.readSecureLine( null, new Object[ 0 ] );
     }
 
     /**
@@ -354,7 +354,7 @@ public abstract class AbstractDisplayTestCase
     @Test( expected = IllegalFormatException.class )
     public void testReadSecureLineWithPrompt_Format_Illegal()
     {
-        m_display.readSecureLine( "%1$@", new Object() ); //$NON-NLS-1$
+        display_.readSecureLine( "%1$@", new Object() ); //$NON-NLS-1$
     }
 
     /**
@@ -367,9 +367,9 @@ public abstract class AbstractDisplayTestCase
         final char[] expectedInput = new char[] {
             'p', 'a', 's', 's', 'w', 'o', 'r', 'd'
         };
-        writeDisplayInput( m_display, new String( expectedInput ) + LINE_SEPARATOR );
+        writeDisplayInput( display_, new String( expectedInput ) + LINE_SEPARATOR );
 
-        final char[] actualInput = m_display.readSecureLine( "Prompt:" ); //$NON-NLS-1$
+        final char[] actualInput = display_.readSecureLine( "Prompt:" ); //$NON-NLS-1$
 
         assertArrayEquals( expectedInput, actualInput );
     }
@@ -386,11 +386,11 @@ public abstract class AbstractDisplayTestCase
             new Integer( 10 ), "years" //$NON-NLS-1$
         };
         final String expectedOutput = String.format( format, args );
-        writeDisplayInput( m_display, LINE_SEPARATOR );
+        writeDisplayInput( display_, LINE_SEPARATOR );
 
-        m_display.readSecureLine( format + LINE_SEPARATOR, args );
+        display_.readSecureLine( format + LINE_SEPARATOR, args );
 
-        assertEquals( expectedOutput, readDisplayOutput( m_display ) );
+        assertEquals( expectedOutput, readDisplayOutput( display_ ) );
     }
 
     /**

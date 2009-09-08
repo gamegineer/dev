@@ -39,10 +39,10 @@ public final class Services
     // ======================================================================
 
     /** The singleton instance. */
-    private static final Services c_instance = new Services();
+    private static final Services instance_ = new Services();
 
     /** The package administration service tracker. */
-    private ServiceTracker m_packageAdminServiceTracker;
+    private ServiceTracker packageAdminServiceTracker_;
 
 
     // ======================================================================
@@ -68,10 +68,10 @@ public final class Services
     void close()
     {
         // Close bundle-specific services
-        if( m_packageAdminServiceTracker != null )
+        if( packageAdminServiceTracker_ != null )
         {
-            m_packageAdminServiceTracker.close();
-            m_packageAdminServiceTracker = null;
+            packageAdminServiceTracker_.close();
+            packageAdminServiceTracker_ = null;
         }
 
         // Unregister package-specific services
@@ -88,7 +88,7 @@ public final class Services
     /* @NonNull */
     public static Services getDefault()
     {
-        return c_instance;
+        return instance_;
     }
 
     /**
@@ -103,12 +103,12 @@ public final class Services
     /* @NonNull */
     public PackageAdmin getPackageAdministrationService()
     {
-        if( m_packageAdminServiceTracker == null )
+        if( packageAdminServiceTracker_ == null )
         {
             throw new IllegalStateException( "package admin service tracker not set" ); //$NON-NLS-1$
         }
 
-        return (PackageAdmin)m_packageAdminServiceTracker.getService();
+        return (PackageAdmin)packageAdminServiceTracker_.getService();
     }
 
     /**
@@ -134,7 +134,7 @@ public final class Services
         // Register package-specific services
 
         // Open bundle-specific services
-        m_packageAdminServiceTracker = new ServiceTracker( context, PackageAdmin.class.getName(), null );
-        m_packageAdminServiceTracker.open();
+        packageAdminServiceTracker_ = new ServiceTracker( context, PackageAdmin.class.getName(), null );
+        packageAdminServiceTracker_.open();
     }
 }

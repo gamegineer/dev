@@ -31,7 +31,8 @@ import org.gamegineer.engine.core.IExtension;
 
 /**
  * Fake implementation of
- * {@link org.gamegineer.engine.core.extensions.extensionregistry.IExtensionRegistry}.
+ * {@link org.gamegineer.engine.core.extensions.extensionregistry.IExtensionRegistry}
+ * .
  * 
  * <p>
  * This class is intended to be extended by clients.
@@ -49,7 +50,7 @@ public class FakeExtensionRegistry
     // ======================================================================
 
     /** The collection of registered extensions. */
-    private final Map<Class<?>, IExtension> m_extensions;
+    private final Map<Class<?>, IExtension> extensions_;
 
 
     // ======================================================================
@@ -61,7 +62,7 @@ public class FakeExtensionRegistry
      */
     public FakeExtensionRegistry()
     {
-        m_extensions = new HashMap<Class<?>, IExtension>();
+        extensions_ = new HashMap<Class<?>, IExtension>();
     }
 
 
@@ -79,7 +80,7 @@ public class FakeExtensionRegistry
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
 
-        return m_extensions.get( type );
+        return extensions_.get( type );
     }
 
     /*
@@ -93,7 +94,7 @@ public class FakeExtensionRegistry
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertArgumentNotNull( extension, "extension" ); //$NON-NLS-1$
 
-        if( m_extensions.containsKey( extension.getExtensionType() ) )
+        if( extensions_.containsKey( extension.getExtensionType() ) )
         {
             throw new TooManyExtensionsException();
         }
@@ -111,7 +112,7 @@ public class FakeExtensionRegistry
             throw new EngineException( e );
         }
 
-        m_extensions.put( extension.getExtensionType(), extension );
+        extensions_.put( extension.getExtensionType(), extension );
     }
 
     /*
@@ -123,9 +124,9 @@ public class FakeExtensionRegistry
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertArgumentNotNull( extension, "extension" ); //$NON-NLS-1$
-        assertArgumentLegal( m_extensions.get( extension.getExtensionType() ) == extension, "extension" ); //$NON-NLS-1$
+        assertArgumentLegal( extensions_.get( extension.getExtensionType() ) == extension, "extension" ); //$NON-NLS-1$
 
-        m_extensions.remove( extension.getExtensionType() );
+        extensions_.remove( extension.getExtensionType() );
 
         try
         {

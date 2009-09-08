@@ -43,7 +43,7 @@ public final class GameSystemBuilderTest
     // ======================================================================
 
     /** The game system builder under test in the fixture. */
-    private GameSystemBuilder m_builder;
+    private GameSystemBuilder builder_;
 
 
     // ======================================================================
@@ -121,7 +121,7 @@ public final class GameSystemBuilderTest
     public void setUp()
         throws Exception
     {
-        m_builder = new GameSystemBuilder();
+        builder_ = new GameSystemBuilder();
     }
 
     /**
@@ -134,7 +134,7 @@ public final class GameSystemBuilderTest
     public void tearDown()
         throws Exception
     {
-        m_builder = null;
+        builder_ = null;
     }
 
     /**
@@ -168,7 +168,7 @@ public final class GameSystemBuilderTest
     @Test( expected = NullPointerException.class )
     public void testAddRole_Role_Null()
     {
-        m_builder.addRole( null );
+        builder_.addRole( null );
     }
 
     /**
@@ -177,7 +177,7 @@ public final class GameSystemBuilderTest
     @Test
     public void testAddRole_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.addRole( createDummy( IRole.class ) ) );
+        assertSame( builder_, builder_.addRole( createDummy( IRole.class ) ) );
     }
 
     /**
@@ -208,7 +208,7 @@ public final class GameSystemBuilderTest
     @Test( expected = NullPointerException.class )
     public void testAddRoles_Roles_Null()
     {
-        m_builder.addRoles( null );
+        builder_.addRoles( null );
     }
 
     /**
@@ -217,7 +217,7 @@ public final class GameSystemBuilderTest
     @Test
     public void testAddRoles_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.addRoles( Collections.<IRole>emptyList() ) );
+        assertSame( builder_, builder_.addRoles( Collections.<IRole>emptyList() ) );
     }
 
     /**
@@ -251,7 +251,7 @@ public final class GameSystemBuilderTest
     @Test( expected = NullPointerException.class )
     public void testAddStage_Stage_Null()
     {
-        m_builder.addStage( null );
+        builder_.addStage( null );
     }
 
     /**
@@ -260,7 +260,7 @@ public final class GameSystemBuilderTest
     @Test
     public void testAddStage_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.addStage( createDummy( IStage.class ) ) );
+        assertSame( builder_, builder_.addStage( createDummy( IStage.class ) ) );
     }
 
     /**
@@ -291,7 +291,7 @@ public final class GameSystemBuilderTest
     @Test( expected = NullPointerException.class )
     public void testAddStages_Stages_Null()
     {
-        m_builder.addStages( null );
+        builder_.addStages( null );
     }
 
     /**
@@ -300,7 +300,7 @@ public final class GameSystemBuilderTest
     @Test
     public void testAddStages_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.addStages( Collections.<IStage>emptyList() ) );
+        assertSame( builder_, builder_.addStages( Collections.<IStage>emptyList() ) );
     }
 
     /**
@@ -310,7 +310,7 @@ public final class GameSystemBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetId_Id_Null()
     {
-        m_builder.setId( null );
+        builder_.setId( null );
     }
 
     /**
@@ -319,7 +319,7 @@ public final class GameSystemBuilderTest
     @Test
     public void testSetId_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setId( "id" ) ); //$NON-NLS-1$
+        assertSame( builder_, builder_.setId( "id" ) ); //$NON-NLS-1$
     }
 
     /**

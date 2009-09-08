@@ -44,10 +44,10 @@ public final class LocalizedGameSystemUi
     // ======================================================================
 
     /** The string bundle used for localization. */
-    private final IStringBundle m_bundle;
+    private final IStringBundle bundle_;
 
     /** The decorated game system user interface. */
-    private final IGameSystemUi m_gameSystemUi;
+    private final IGameSystemUi gameSystemUi_;
 
 
     // ======================================================================
@@ -58,7 +58,8 @@ public final class LocalizedGameSystemUi
      * Initializes a new instance of the {@code LocalizedGameSystemUi} class.
      * 
      * @param gameSystemUi
-     *        The decorated game system user interface; must not be {@code null}.
+     *        The decorated game system user interface; must not be {@code null}
+     *        .
      * @param bundle
      *        The string bundle used for localization; must not be {@code null}.
      * 
@@ -74,8 +75,8 @@ public final class LocalizedGameSystemUi
         assertArgumentNotNull( gameSystemUi, "gameSystemUi" ); //$NON-NLS-1$
         assertArgumentNotNull( bundle, "bundle" ); //$NON-NLS-1$
 
-        m_gameSystemUi = gameSystemUi;
-        m_bundle = bundle;
+        gameSystemUi_ = gameSystemUi;
+        bundle_ = bundle;
     }
 
 
@@ -88,7 +89,7 @@ public final class LocalizedGameSystemUi
      */
     public String getId()
     {
-        return m_gameSystemUi.getId();
+        return gameSystemUi_.getId();
     }
 
     /*
@@ -96,10 +97,10 @@ public final class LocalizedGameSystemUi
      */
     public String getName()
     {
-        final String value = m_gameSystemUi.getName();
+        final String value = gameSystemUi_.getName();
         if( LocaleNeutralKey.isDecoratedKey( value ) )
         {
-            final String localizedValue = m_bundle.getString( LocaleNeutralKey.undecorateKey( value ) );
+            final String localizedValue = bundle_.getString( LocaleNeutralKey.undecorateKey( value ) );
             if( localizedValue != null )
             {
                 return localizedValue;
@@ -114,6 +115,6 @@ public final class LocalizedGameSystemUi
      */
     public List<IRoleUi> getRoles()
     {
-        return m_gameSystemUi.getRoles();
+        return gameSystemUi_.getRoles();
     }
 }

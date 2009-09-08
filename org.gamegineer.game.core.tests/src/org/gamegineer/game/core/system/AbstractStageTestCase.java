@@ -40,7 +40,7 @@ public abstract class AbstractStageTestCase
     // ======================================================================
 
     /** The stage under test in the fixture. */
-    private IStage m_stage;
+    private IStage stage_;
 
 
     // ======================================================================
@@ -82,8 +82,8 @@ public abstract class AbstractStageTestCase
     public void setUp()
         throws Exception
     {
-        m_stage = createStage();
-        assertNotNull( m_stage );
+        stage_ = createStage();
+        assertNotNull( stage_ );
     }
 
     /**
@@ -96,7 +96,7 @@ public abstract class AbstractStageTestCase
     public void tearDown()
         throws Exception
     {
-        m_stage = null;
+        stage_ = null;
     }
 
     /**
@@ -105,7 +105,7 @@ public abstract class AbstractStageTestCase
     @Test
     public void testGetCardinality_ReturnValue_NonNegative()
     {
-        assertTrue( m_stage.getCardinality() >= 0 );
+        assertTrue( stage_.getCardinality() >= 0 );
     }
 
     /**
@@ -114,7 +114,7 @@ public abstract class AbstractStageTestCase
     @Test
     public void testGetId_ReturnValue_NonNull()
     {
-        assertNotNull( m_stage.getId() );
+        assertNotNull( stage_.getId() );
     }
 
     /**
@@ -123,12 +123,12 @@ public abstract class AbstractStageTestCase
     @Test
     public void testGetStages_ReturnValue_Copy()
     {
-        final List<IStage> stages = m_stage.getStages();
+        final List<IStage> stages = stage_.getStages();
         final int originalStagesSize = stages.size();
 
         stages.add( null );
 
-        assertEquals( originalStagesSize, m_stage.getStages().size() );
+        assertEquals( originalStagesSize, stage_.getStages().size() );
     }
 
     /**
@@ -137,7 +137,7 @@ public abstract class AbstractStageTestCase
     @Test
     public void testGetStages_ReturnValue_NonNull()
     {
-        assertNotNull( m_stage.getStages() );
+        assertNotNull( stage_.getStages() );
     }
 
     /**
@@ -146,6 +146,6 @@ public abstract class AbstractStageTestCase
     @Test
     public void testGetStrategy_ReturnValue_NonNull()
     {
-        assertNotNull( m_stage.getStrategy() );
+        assertNotNull( stage_.getStrategy() );
     }
 }

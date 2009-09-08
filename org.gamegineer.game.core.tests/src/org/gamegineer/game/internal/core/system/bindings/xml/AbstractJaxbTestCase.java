@@ -46,7 +46,7 @@ public abstract class AbstractJaxbTestCase
     // ======================================================================
 
     /** The unmarshaller for use in the fixture. */
-    private Unmarshaller m_unmarshaller;
+    private Unmarshaller unmarshaller_;
 
 
     // ======================================================================
@@ -128,8 +128,8 @@ public abstract class AbstractJaxbTestCase
     /* @NonNull */
     protected final Unmarshaller getUnmarshaller()
     {
-        assertNotNull( m_unmarshaller );
-        return m_unmarshaller;
+        assertNotNull( unmarshaller_ );
+        return unmarshaller_;
     }
 
     /**
@@ -144,7 +144,7 @@ public abstract class AbstractJaxbTestCase
     {
         final Class<?> rootElementType = getRootElementType();
         assertNotNull( rootElementType );
-        m_unmarshaller = createUnmarshaller( rootElementType );
+        unmarshaller_ = createUnmarshaller( rootElementType );
     }
 
     /**
@@ -157,6 +157,6 @@ public abstract class AbstractJaxbTestCase
     public void tearDown()
         throws Exception
     {
-        m_unmarshaller = null;
+        unmarshaller_ = null;
     }
 }

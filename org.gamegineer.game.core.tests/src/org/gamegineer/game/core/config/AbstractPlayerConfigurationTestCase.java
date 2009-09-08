@@ -37,7 +37,7 @@ public abstract class AbstractPlayerConfigurationTestCase
     // ======================================================================
 
     /** The player configuration under test in the fixture. */
-    private IPlayerConfiguration m_config;
+    private IPlayerConfiguration config_;
 
 
     // ======================================================================
@@ -45,8 +45,8 @@ public abstract class AbstractPlayerConfigurationTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractPlayerConfigurationTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractPlayerConfigurationTestCase} class.
      */
     protected AbstractPlayerConfigurationTestCase()
     {
@@ -80,8 +80,8 @@ public abstract class AbstractPlayerConfigurationTestCase
     public void setUp()
         throws Exception
     {
-        m_config = createPlayerConfiguration();
-        assertNotNull( m_config );
+        config_ = createPlayerConfiguration();
+        assertNotNull( config_ );
     }
 
     /**
@@ -94,7 +94,7 @@ public abstract class AbstractPlayerConfigurationTestCase
     public void tearDown()
         throws Exception
     {
-        m_config = null;
+        config_ = null;
     }
 
     /**
@@ -103,7 +103,7 @@ public abstract class AbstractPlayerConfigurationTestCase
     @Test
     public void testGetRole_ReturnValue_NonNull()
     {
-        assertNotNull( m_config.getRoleId() );
+        assertNotNull( config_.getRoleId() );
     }
 
     /**
@@ -112,6 +112,6 @@ public abstract class AbstractPlayerConfigurationTestCase
     @Test
     public void testGetUser_ReturnValue_NonNull()
     {
-        assertNotNull( m_config.getUserId() );
+        assertNotNull( config_.getUserId() );
     }
 }

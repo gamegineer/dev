@@ -42,16 +42,16 @@ public class MockGameServerConnection
     // ======================================================================
 
     /** The call count for the {@code close} method. */
-    private int m_closeCallCount;
+    private int closeCallCount_;
 
     /** The call count for the {@code open} method. */
-    private int m_openCallCount;
+    private int openCallCount_;
 
     /** Indicates an exception should be thrown when the connection is closed. */
-    private boolean m_throwExceptionWhenClosed;
+    private boolean throwExceptionWhenClosed_;
 
     /** Indicates an exception should be thrown when the connection is opened. */
-    private boolean m_throwExceptionWhenOpened;
+    private boolean throwExceptionWhenOpened_;
 
 
     // ======================================================================
@@ -63,10 +63,10 @@ public class MockGameServerConnection
      */
     public MockGameServerConnection()
     {
-        m_closeCallCount = 0;
-        m_openCallCount = 0;
-        m_throwExceptionWhenClosed = false;
-        m_throwExceptionWhenOpened = false;
+        closeCallCount_ = 0;
+        openCallCount_ = 0;
+        throwExceptionWhenClosed_ = false;
+        throwExceptionWhenOpened_ = false;
     }
 
 
@@ -80,9 +80,9 @@ public class MockGameServerConnection
     public void close()
         throws IOException
     {
-        ++m_closeCallCount;
+        ++closeCallCount_;
 
-        if( m_throwExceptionWhenClosed )
+        if( throwExceptionWhenClosed_ )
         {
             throw new IOException();
         }
@@ -103,7 +103,7 @@ public class MockGameServerConnection
      */
     public int getCloseCallCount()
     {
-        return m_closeCallCount;
+        return closeCallCount_;
     }
 
     /*
@@ -121,7 +121,7 @@ public class MockGameServerConnection
      */
     public int getOpenCallCount()
     {
-        return m_openCallCount;
+        return openCallCount_;
     }
 
     /*
@@ -138,9 +138,9 @@ public class MockGameServerConnection
     public void open()
         throws IOException
     {
-        ++m_openCallCount;
+        ++openCallCount_;
 
-        if( m_throwExceptionWhenOpened )
+        if( throwExceptionWhenOpened_ )
         {
             throw new IOException();
         }
@@ -159,7 +159,7 @@ public class MockGameServerConnection
     public MockGameServerConnection setThrowExceptionWhenClosed(
         final boolean throwExceptionWhenClosed )
     {
-        m_throwExceptionWhenClosed = throwExceptionWhenClosed;
+        throwExceptionWhenClosed_ = throwExceptionWhenClosed;
         return this;
     }
 
@@ -176,7 +176,7 @@ public class MockGameServerConnection
     public MockGameServerConnection setThrowExceptionWhenOpened(
         final boolean throwExceptionWhenOpened )
     {
-        m_throwExceptionWhenOpened = throwExceptionWhenOpened;
+        throwExceptionWhenOpened_ = throwExceptionWhenOpened;
         return this;
     }
 }

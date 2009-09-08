@@ -47,16 +47,16 @@ public final class StageBuilder
     // ======================================================================
 
     /** The stage cardinality. */
-    private Integer m_cardinality;
+    private Integer cardinality_;
 
     /** The stage identifier. */
-    private String m_id;
+    private String id_;
 
     /** The child stage list. */
-    private final List<IStage> m_stages;
+    private final List<IStage> stages_;
 
     /** The stage strategy. */
-    private IStageStrategy m_strategy;
+    private IStageStrategy strategy_;
 
 
     // ======================================================================
@@ -69,10 +69,10 @@ public final class StageBuilder
      */
     public StageBuilder()
     {
-        m_id = null;
-        m_strategy = null;
-        m_cardinality = null;
-        m_stages = new ArrayList<IStage>();
+        id_ = null;
+        strategy_ = null;
+        cardinality_ = null;
+        stages_ = new ArrayList<IStage>();
     }
 
 
@@ -98,7 +98,7 @@ public final class StageBuilder
     {
         assertArgumentNotNull( stage, "stage" ); //$NON-NLS-1$
 
-        m_stages.add( stage );
+        stages_.add( stage );
 
         return this;
     }
@@ -121,7 +121,7 @@ public final class StageBuilder
     {
         assertArgumentNotNull( stages, "stages" ); //$NON-NLS-1$
 
-        m_stages.addAll( stages );
+        stages_.addAll( stages );
 
         return this;
     }
@@ -134,7 +134,7 @@ public final class StageBuilder
     /* @Nullable */
     String getId()
     {
-        return m_id;
+        return id_;
     }
 
     /**
@@ -150,7 +150,7 @@ public final class StageBuilder
     public StageBuilder setCardinality(
         final int cardinality )
     {
-        m_cardinality = cardinality;
+        cardinality_ = cardinality;
 
         return this;
     }
@@ -173,7 +173,7 @@ public final class StageBuilder
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
-        m_id = id;
+        id_ = id;
 
         return this;
     }
@@ -196,7 +196,7 @@ public final class StageBuilder
     {
         assertArgumentNotNull( strategy, "strategy" ); //$NON-NLS-1$
 
-        m_strategy = strategy;
+        strategy_ = strategy;
 
         return this;
     }
@@ -214,13 +214,13 @@ public final class StageBuilder
     @SuppressWarnings( "boxing" )
     public IStage toStage()
     {
-        assertStateLegal( m_id != null, Messages.StageBuilder_id_notSet );
-        assertStateLegal( m_strategy != null, Messages.StageBuilder_strategy_notSet );
-        assertStateLegal( m_cardinality != null, Messages.StageBuilder_cardinality_notSet );
+        assertStateLegal( id_ != null, Messages.StageBuilder_id_notSet );
+        assertStateLegal( strategy_ != null, Messages.StageBuilder_strategy_notSet );
+        assertStateLegal( cardinality_ != null, Messages.StageBuilder_cardinality_notSet );
 
         try
         {
-            return Stage.createStage( m_id, m_strategy, m_cardinality, m_stages );
+            return Stage.createStage( id_, strategy_, cardinality_, stages_ );
         }
         catch( final IllegalArgumentException e )
         {

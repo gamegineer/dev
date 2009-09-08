@@ -1,6 +1,6 @@
 /*
  * MementoBuilderTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,7 +41,7 @@ public final class MementoBuilderTest
     // ======================================================================
 
     /** The builder under test in the fixture. */
-    private MementoBuilder m_builder;
+    private MementoBuilder builder_;
 
 
     // ======================================================================
@@ -71,7 +71,7 @@ public final class MementoBuilderTest
     public void setUp()
         throws Exception
     {
-        m_builder = new MementoBuilder();
+        builder_ = new MementoBuilder();
     }
 
     /**
@@ -84,7 +84,7 @@ public final class MementoBuilderTest
     public void tearDown()
         throws Exception
     {
-        m_builder = null;
+        builder_ = null;
     }
 
     /**
@@ -98,9 +98,9 @@ public final class MementoBuilderTest
         final String value1 = "value1"; //$NON-NLS-1$
         final String name2 = "name2"; //$NON-NLS-1$
         final String value2 = "value2"; //$NON-NLS-1$
-        m_builder.addAttribute( name1, value1 );
-        m_builder.addAttribute( name2, value2 );
-        final IMemento memento = m_builder.toMemento();
+        builder_.addAttribute( name1, value1 );
+        builder_.addAttribute( name2, value2 );
+        final IMemento memento = builder_.toMemento();
         assertEquals( value1, memento.getAttribute( name1 ) );
         assertEquals( value2, memento.getAttribute( name2 ) );
     }
@@ -114,8 +114,8 @@ public final class MementoBuilderTest
     {
         final String name = "name"; //$NON-NLS-1$
         final String value = "value"; //$NON-NLS-1$
-        m_builder.addAttribute( name, value );
-        m_builder.addAttribute( name, value );
+        builder_.addAttribute( name, value );
+        builder_.addAttribute( name, value );
     }
 
     /**
@@ -125,7 +125,7 @@ public final class MementoBuilderTest
     @Test( expected = NullPointerException.class )
     public void testAddAttribute_Name_Null()
     {
-        m_builder.addAttribute( null, new Object() );
+        builder_.addAttribute( null, new Object() );
     }
 
     /**
@@ -135,7 +135,7 @@ public final class MementoBuilderTest
     @Test
     public void testAddAttribute_Value_Null()
     {
-        m_builder.addAttribute( "name", null ); //$NON-NLS-1$
+        builder_.addAttribute( "name", null ); //$NON-NLS-1$
     }
 
     /**
@@ -159,8 +159,8 @@ public final class MementoBuilderTest
     }
 
     /**
-     * Ensures the primary constructor throws an exception when passed a
-     * {@code null} attribute map.
+     * Ensures the primary constructor throws an exception when passed a {@code
+     * null} attribute map.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Primary_AttributeMap_Null()
@@ -175,7 +175,7 @@ public final class MementoBuilderTest
     @Test
     public void testContainsAttribute_Attribute_Absent()
     {
-        assertFalse( m_builder.containsAttribute( "unknown_name" ) ); //$NON-NLS-1$
+        assertFalse( builder_.containsAttribute( "unknown_name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -186,8 +186,8 @@ public final class MementoBuilderTest
     public void testContainsAttribute_Attribute_Present()
     {
         final String name = "name1"; //$NON-NLS-1$
-        m_builder.addAttribute( name, "value1" ); //$NON-NLS-1$
-        assertTrue( m_builder.containsAttribute( name ) );
+        builder_.addAttribute( name, "value1" ); //$NON-NLS-1$
+        assertTrue( builder_.containsAttribute( name ) );
     }
 
     /**
@@ -197,6 +197,6 @@ public final class MementoBuilderTest
     @Test( expected = NullPointerException.class )
     public void testContainsAttribute_Name_Null()
     {
-        m_builder.containsAttribute( null );
+        builder_.containsAttribute( null );
     }
 }

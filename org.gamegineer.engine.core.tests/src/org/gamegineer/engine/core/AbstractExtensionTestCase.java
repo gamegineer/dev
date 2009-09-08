@@ -37,7 +37,7 @@ public abstract class AbstractExtensionTestCase
     // ======================================================================
 
     /** The extension under test in the fixture. */
-    private IExtension m_extension;
+    private IExtension extension_;
 
 
     // ======================================================================
@@ -96,8 +96,8 @@ public abstract class AbstractExtensionTestCase
     public void setUp()
         throws Exception
     {
-        m_extension = createExtension();
-        assertNotNull( m_extension );
+        extension_ = createExtension();
+        assertNotNull( extension_ );
     }
 
     /**
@@ -110,7 +110,7 @@ public abstract class AbstractExtensionTestCase
     public void tearDown()
         throws Exception
     {
-        m_extension = null;
+        extension_ = null;
     }
 
     /**
@@ -119,7 +119,7 @@ public abstract class AbstractExtensionTestCase
     @Test
     public void testGetExtensionType_ReturnValue_NonNull()
     {
-        assertNotNull( m_extension.getExtensionType() );
+        assertNotNull( extension_.getExtensionType() );
     }
 
     /**
@@ -133,7 +133,7 @@ public abstract class AbstractExtensionTestCase
     public void testStart_EngineContext_Null()
         throws Exception
     {
-        m_extension.start( null );
+        extension_.start( null );
     }
 
     /**
@@ -148,13 +148,13 @@ public abstract class AbstractExtensionTestCase
         throws Exception
     {
         final IEngineContext context = createEngineContext();
-        m_extension.start( context );
-        m_extension.start( context );
+        extension_.start( context );
+        extension_.start( context );
     }
 
     /**
-     * Ensures the {@code stop} method throws an exception when passed a
-     * {@code null} engine context.
+     * Ensures the {@code stop} method throws an exception when passed a {@code
+     * null} engine context.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -163,7 +163,7 @@ public abstract class AbstractExtensionTestCase
     public void testStop_EngineContext_Null()
         throws Exception
     {
-        m_extension.stop( null );
+        extension_.stop( null );
     }
 
     /**
@@ -177,6 +177,6 @@ public abstract class AbstractExtensionTestCase
     public void testStop_ExtensionNotStarted()
         throws Exception
     {
-        m_extension.stop( createEngineContext() );
+        extension_.stop( createEngineContext() );
     }
 }

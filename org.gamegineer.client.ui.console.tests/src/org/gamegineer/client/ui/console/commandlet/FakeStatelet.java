@@ -44,7 +44,7 @@ public class FakeStatelet
     // ======================================================================
 
     /** The attribute collection. */
-    private final Map<String, Object> m_attributes;
+    private final Map<String, Object> attributes_;
 
 
     // ======================================================================
@@ -56,7 +56,7 @@ public class FakeStatelet
      */
     public FakeStatelet()
     {
-        m_attributes = new HashMap<String, Object>();
+        attributes_ = new HashMap<String, Object>();
     }
 
 
@@ -72,9 +72,9 @@ public class FakeStatelet
         final Object value )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( !m_attributes.containsKey( name ), "name" ); //$NON-NLS-1$
+        assertArgumentLegal( !attributes_.containsKey( name ), "name" ); //$NON-NLS-1$
 
-        m_attributes.put( name, value );
+        attributes_.put( name, value );
     }
 
     /*
@@ -85,7 +85,7 @@ public class FakeStatelet
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return m_attributes.containsKey( name );
+        return attributes_.containsKey( name );
     }
 
     /*
@@ -95,9 +95,9 @@ public class FakeStatelet
         final String name )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( m_attributes.containsKey( name ), "name" ); //$NON-NLS-1$
+        assertArgumentLegal( attributes_.containsKey( name ), "name" ); //$NON-NLS-1$
 
-        return m_attributes.get( name );
+        return attributes_.get( name );
     }
 
     /*
@@ -105,7 +105,7 @@ public class FakeStatelet
      */
     public Set<String> getAttributeNames()
     {
-        return Collections.unmodifiableSet( m_attributes.keySet() );
+        return Collections.unmodifiableSet( attributes_.keySet() );
     }
 
     /*
@@ -115,9 +115,9 @@ public class FakeStatelet
         final String name )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( m_attributes.containsKey( name ), "name" ); //$NON-NLS-1$
+        assertArgumentLegal( attributes_.containsKey( name ), "name" ); //$NON-NLS-1$
 
-        m_attributes.remove( name );
+        attributes_.remove( name );
     }
 
     /*
@@ -128,8 +128,8 @@ public class FakeStatelet
         final Object value )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( m_attributes.containsKey( name ), "name" ); //$NON-NLS-1$
+        assertArgumentLegal( attributes_.containsKey( name ), "name" ); //$NON-NLS-1$
 
-        m_attributes.put( name, value );
+        attributes_.put( name, value );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * ConsoleResult.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -42,7 +42,7 @@ public enum ConsoleResult
     // ======================================================================
 
     /** The exit code associated with this result. */
-    private final int m_exitCode;
+    private final int exitCode_;
 
 
     // ======================================================================
@@ -58,7 +58,7 @@ public enum ConsoleResult
     private ConsoleResult(
         final int exitCode )
     {
-        m_exitCode = exitCode;
+        exitCode_ = exitCode;
     }
 
 
@@ -78,6 +78,6 @@ public enum ConsoleResult
      */
     public int getExitCode()
     {
-        return m_exitCode;
+        return exitCode_;
     }
 }

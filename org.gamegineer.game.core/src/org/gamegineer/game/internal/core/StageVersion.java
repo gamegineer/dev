@@ -1,6 +1,6 @@
 /*
  * StageVersion.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,12 +32,12 @@ import net.jcip.annotations.Immutable;
  * </p>
  * 
  * <ol>
- * <li> <b>A stage instance identifier.</b> Each time a stage is activated, a
- * new instance identifier is generated to uniquely identify that particular
- * activation. </li>
- * <li> <b>A stage modification count.</b> During a stage activation, every
+ * <li><b>A stage instance identifier.</b> Each time a stage is activated, a new
+ * instance identifier is generated to uniquely identify that particular
+ * activation.</li>
+ * <li><b>A stage modification count.</b> During a stage activation, every
  * modification made to the stage causes its modification count to be
- * incremented. </li>
+ * incremented.</li>
  * </ol>
  * 
  * <p>
@@ -52,10 +52,10 @@ public final class StageVersion
     // ======================================================================
 
     /** The stage instance identifier. */
-    private final String m_instanceId;
+    private final String instanceId_;
 
     /** The stage modification count. */
-    private final int m_modificationCount;
+    private final int modificationCount_;
 
 
     // ======================================================================
@@ -87,8 +87,8 @@ public final class StageVersion
     {
         assert instanceId != null;
 
-        m_instanceId = instanceId;
-        m_modificationCount = modificationCount;
+        instanceId_ = instanceId;
+        modificationCount_ = modificationCount;
     }
 
 
@@ -114,7 +114,7 @@ public final class StageVersion
         }
 
         final StageVersion other = (StageVersion)obj;
-        return m_instanceId.equals( other.m_instanceId ) && (m_modificationCount == other.m_modificationCount);
+        return instanceId_.equals( other.instanceId_ ) && (modificationCount_ == other.modificationCount_);
     }
 
     /**
@@ -124,7 +124,7 @@ public final class StageVersion
      */
     String getInstanceId()
     {
-        return m_instanceId;
+        return instanceId_;
     }
 
     /**
@@ -134,7 +134,7 @@ public final class StageVersion
      */
     int getModificationCount()
     {
-        return m_modificationCount;
+        return modificationCount_;
     }
 
     /*
@@ -144,8 +144,8 @@ public final class StageVersion
     public int hashCode()
     {
         int result = 17;
-        result = result * 31 + m_instanceId.hashCode();
-        result = result * 31 + m_modificationCount;
+        result = result * 31 + instanceId_.hashCode();
+        result = result * 31 + modificationCount_;
         return result;
     }
 
@@ -158,7 +158,7 @@ public final class StageVersion
     /* @NonNull */
     StageVersion increment()
     {
-        return new StageVersion( m_instanceId, m_modificationCount + 1 );
+        return new StageVersion( instanceId_, modificationCount_ + 1 );
     }
 
     /*
@@ -168,6 +168,6 @@ public final class StageVersion
     @SuppressWarnings( "boxing" )
     public String toString()
     {
-        return String.format( "StageVersion[m_instanceId='%1$s', m_modificationCount='%2$d']", m_instanceId, m_modificationCount ); //$NON-NLS-1$
+        return String.format( "StageVersion[instanceId_='%1$s', modificationCount_='%2$d']", instanceId_, modificationCount_ ); //$NON-NLS-1$
     }
 }

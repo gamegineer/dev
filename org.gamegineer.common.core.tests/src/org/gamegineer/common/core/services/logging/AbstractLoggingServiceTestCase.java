@@ -1,6 +1,6 @@
 /*
  * AbstractLoggingServiceTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,7 +41,7 @@ public abstract class AbstractLoggingServiceTestCase
     // ======================================================================
 
     /** The log service under test in the fixture. */
-    private ILoggingService m_service;
+    private ILoggingService service_;
 
 
     // ======================================================================
@@ -80,8 +80,8 @@ public abstract class AbstractLoggingServiceTestCase
     public void setUp()
         throws Exception
     {
-        m_service = createLogService();
-        assertNotNull( m_service );
+        service_ = createLogService();
+        assertNotNull( service_ );
     }
 
     /**
@@ -94,7 +94,7 @@ public abstract class AbstractLoggingServiceTestCase
     public void tearDown()
         throws Exception
     {
-        m_service = null;
+        service_ = null;
     }
 
     /**
@@ -104,16 +104,17 @@ public abstract class AbstractLoggingServiceTestCase
     @Test( expected = NullPointerException.class )
     public void testGetDefaultLogger_Bundle_Null()
     {
-        m_service.getLogger( null );
+        service_.getLogger( null );
     }
 
     /**
-     * Ensures the {@code getLogger(Bundle)} method does not return {@code null}.
+     * Ensures the {@code getLogger(Bundle)} method does not return {@code null}
+     * .
      */
     @Test
     public void testGetDefaultLogger_ReturnValue_NonNull()
     {
-        assertNotNull( m_service.getLogger( Activator.getDefault().getBundleContext().getBundle() ) );
+        assertNotNull( service_.getLogger( Activator.getDefault().getBundleContext().getBundle() ) );
     }
 
     /**
@@ -123,7 +124,7 @@ public abstract class AbstractLoggingServiceTestCase
     @Test( expected = NullPointerException.class )
     public void testGetLogger_Bundle_Null()
     {
-        m_service.getLogger( null, "name" ); //$NON-NLS-1$
+        service_.getLogger( null, "name" ); //$NON-NLS-1$
     }
 
     /**
@@ -134,7 +135,7 @@ public abstract class AbstractLoggingServiceTestCase
     public void testGetLogger_Name_Empty()
     {
         final Bundle bundle = Activator.getDefault().getBundleContext().getBundle();
-        assertSame( m_service.getLogger( bundle ), m_service.getLogger( bundle, "" ) ); //$NON-NLS-1$
+        assertSame( service_.getLogger( bundle ), service_.getLogger( bundle, "" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -145,7 +146,7 @@ public abstract class AbstractLoggingServiceTestCase
     public void testGetLogger_Name_Null()
     {
         final Bundle bundle = Activator.getDefault().getBundleContext().getBundle();
-        assertSame( m_service.getLogger( bundle ), m_service.getLogger( bundle, null ) );
+        assertSame( service_.getLogger( bundle ), service_.getLogger( bundle, null ) );
     }
 
     /**
@@ -155,6 +156,6 @@ public abstract class AbstractLoggingServiceTestCase
     @Test
     public void testGetLogger_ReturnValue_NonNull()
     {
-        assertNotNull( m_service.getLogger( Activator.getDefault().getBundleContext().getBundle(), "name" ) ); //$NON-NLS-1$
+        assertNotNull( service_.getLogger( Activator.getDefault().getBundleContext().getBundle(), "name" ) ); //$NON-NLS-1$
     }
 }

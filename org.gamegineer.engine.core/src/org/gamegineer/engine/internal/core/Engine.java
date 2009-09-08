@@ -95,13 +95,13 @@ final class Engine
     private static final Attribute<Object> COMMAND_HISTORY_ATTRIBUTE = new Attribute<Object>( Scope.ENGINE_CONTROL, "org.gamegineer.engine.internal.core.commandHistory" ); //$NON-NLS-1$
 
     /** The engine command history. */
-    private final CommandHistory m_commandHistory;
+    private final CommandHistory commandHistory_;
 
     /** The command executor service. */
-    private final ExecutorService m_executorService;
+    private final ExecutorService executorService_;
 
     /** The state of the engine. */
-    private final State m_state;
+    private final State state_;
 
 
     // ======================================================================
@@ -113,9 +113,9 @@ final class Engine
      */
     private Engine()
     {
-        m_commandHistory = new CommandHistory();
-        m_executorService = Executors.newSingleThreadExecutor( new WorkerThreadFactory() );
-        m_state = new State();
+        commandHistory_ = new CommandHistory();
+        executorService_ = Executors.newSingleThreadExecutor( new WorkerThreadFactory() );
+        state_ = new State();
     }
 
 
@@ -131,7 +131,7 @@ final class Engine
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        return m_commandHistory.canRedo();
+        return commandHistory_.canRedo();
     }
 
     /*
@@ -142,7 +142,7 @@ final class Engine
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        return m_commandHistory.canUndo();
+        return commandHistory_.canUndo();
     }
 
     /**
@@ -243,18 +243,18 @@ final class Engine
             {
                 try
                 {
-                    engine.m_state.beginTransaction();
+                    engine.state_.beginTransaction();
                     engine.initializeExtensions( context );
                     command.execute( context );
-                    engine.m_state.commitTransaction();
+                    engine.state_.commitTransaction();
 
                     return null;
                 }
                 finally
                 {
-                    if( engine.m_state.isTransactionActive() )
+                    if( engine.state_.isTransactionActive() )
                     {
-                        engine.m_state.rollbackTransaction();
+                        engine.state_.rollbackTransaction();
                     }
                 }
             }
@@ -349,14 +349,14 @@ final class Engine
             {
                 if( isTransactionRequired( command ) )
                 {
-                    m_state.beginTransaction();
+                    state_.beginTransaction();
                 }
 
                 result = command.execute( engineContext );
 
-                if( m_state.isTransactionActive() )
+                if( state_.isTransactionActive() )
                 {
-                    m_state.prepareToCommitTransaction();
+                    state_.prepareToCommitTransaction();
 
                     // TODO: We should get the set of scopes which have changed at the same time
                     // we get the attribute changes to avoid having to iterate over the changes
@@ -364,14 +364,14 @@ final class Engine
                     // an out parameter to State.getAttributeChanges.  If that's not possible,
                     // probably have to add an overload that accepts the out parameter to not
                     // require clients to request that information.
-                    attributeChangeMap = m_state.getAttributeChanges();
+                    attributeChangeMap = state_.getAttributeChanges();
                     addCommandToCommandHistory = containsApplicationAttributeChange( attributeChangeMap );
                     if( fireEvents && !attributeChangeMap.isEmpty() )
                     {
                         StateEventMediatorExtension.fireStateChanging( engineContext, attributeChangeMap );
                     }
 
-                    m_state.commitTransaction();
+                    state_.commitTransaction();
                 }
                 else
                 {
@@ -381,15 +381,15 @@ final class Engine
             }
             finally
             {
-                if( m_state.isTransactionActive() )
+                if( state_.isTransactionActive() )
                 {
-                    m_state.rollbackTransaction();
+                    state_.rollbackTransaction();
                 }
             }
 
             if( updateCommandHistory && addCommandToCommandHistory )
             {
-                m_commandHistory.add( (IInvertibleCommand<?>)command, commandContext );
+                commandHistory_.add( (IInvertibleCommand<?>)command, commandContext );
             }
 
             if( fireEvents )
@@ -477,7 +477,7 @@ final class Engine
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
         final List<IInvertibleCommand<?>> commands = new ArrayList<IInvertibleCommand<?>>();
-        for( final CommandHistory.Entry commandHistoryEntry : m_commandHistory.getEntries() )
+        for( final CommandHistory.Entry commandHistoryEntry : commandHistory_.getEntries() )
         {
             commands.add( commandHistoryEntry.getCommand() );
         }
@@ -492,7 +492,7 @@ final class Engine
     /* @NonNull */
     IExtensionRegistry getExtensionRegistry()
     {
-        return ExtensionRegistryExtension.getExtensionRegistry( m_state );
+        return ExtensionRegistryExtension.getExtensionRegistry( state_ );
     }
 
     /*
@@ -506,12 +506,12 @@ final class Engine
         final MementoBuilder builder = new MementoBuilder();
 
         // Add persistent engine control attributes
-        builder.addAttribute( COMMAND_HISTORY_ATTRIBUTE.getName().toString(), m_commandHistory.getEntries() );
+        builder.addAttribute( COMMAND_HISTORY_ATTRIBUTE.getName().toString(), commandHistory_.getEntries() );
 
         // All application attributes are persistent
-        for( final AttributeName name : m_state.getAttributeNames( Scope.APPLICATION ) )
+        for( final AttributeName name : state_.getAttributeNames( Scope.APPLICATION ) )
         {
-            builder.addAttribute( name.toString(), m_state.getAttribute( name ) );
+            builder.addAttribute( name.toString(), state_.getAttribute( name ) );
         }
 
         return builder.toMemento();
@@ -525,7 +525,7 @@ final class Engine
     /* @NonNull */
     State getState()
     {
-        return m_state;
+        return state_;
     }
 
     /**
@@ -550,7 +550,7 @@ final class Engine
 
         // Command history (NB: the actual attribute exists outside the state, so we add a
         // bogus value to ensure the attribute name is reserved)
-        COMMAND_HISTORY_ATTRIBUTE.add( m_state, new Object() );
+        COMMAND_HISTORY_ATTRIBUTE.add( state_, new Object() );
         extensionRegistry.registerExtension( context, new CommandHistoryExtension( this ) );
 
         // Command queue
@@ -617,7 +617,7 @@ final class Engine
      */
     public boolean isShutdown()
     {
-        return m_executorService.isShutdown();
+        return executorService_.isShutdown();
     }
 
     /**
@@ -652,11 +652,11 @@ final class Engine
         throws EngineException
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
-        assertStateLegal( m_commandHistory.canRedo(), Messages.Engine_redo_notAvailable );
+        assertStateLegal( commandHistory_.canRedo(), Messages.Engine_redo_notAvailable );
 
-        final CommandHistory.Entry redoEntry = m_commandHistory.getRedoEntry();
+        final CommandHistory.Entry redoEntry = commandHistory_.getRedoEntry();
         executeCommand( redoEntry.getCommand(), redoEntry.getCommandContext(), false, false );
-        m_commandHistory.redo();
+        commandHistory_.redo();
     }
 
     /*
@@ -674,9 +674,9 @@ final class Engine
 
         try
         {
-            m_state.beginTransaction();
+            state_.beginTransaction();
 
-            m_state.removeAllAttributes( m_state.getAttributeNames( Scope.APPLICATION ) );
+            state_.removeAllAttributes( state_.getAttributeNames( Scope.APPLICATION ) );
 
             for( final String mementoAttrName : memento.getAttributeNames() )
             {
@@ -693,7 +693,7 @@ final class Engine
                 switch( stateAttrName.getScope() )
                 {
                     case APPLICATION:
-                        m_state.addAttribute( stateAttrName, memento.getAttribute( mementoAttrName ) );
+                        state_.addAttribute( stateAttrName, memento.getAttribute( mementoAttrName ) );
                         break;
 
                     case ENGINE_CONTROL:
@@ -717,17 +717,17 @@ final class Engine
                 throw new EngineException( Messages.Engine_setMemento_commandHistory_absent );
             }
 
-            m_state.commitTransaction();
+            state_.commitTransaction();
         }
         finally
         {
-            if( m_state.isTransactionActive() )
+            if( state_.isTransactionActive() )
             {
-                m_state.rollbackTransaction();
+                state_.rollbackTransaction();
             }
         }
 
-        m_commandHistory.reset( commandHistory );
+        commandHistory_.reset( commandHistory );
     }
 
     /*
@@ -736,8 +736,8 @@ final class Engine
     public void shutdown()
         throws InterruptedException
     {
-        m_executorService.shutdown();
-        m_executorService.awaitTermination( Long.MAX_VALUE, TimeUnit.NANOSECONDS );
+        executorService_.shutdown();
+        executorService_.awaitTermination( Long.MAX_VALUE, TimeUnit.NANOSECONDS );
     }
 
     /*
@@ -813,7 +813,7 @@ final class Engine
 
         try
         {
-            return new SafeFuture<T>( m_executorService.submit( callable ) );
+            return new SafeFuture<T>( executorService_.submit( callable ) );
         }
         catch( final RejectedExecutionException e )
         {
@@ -829,11 +829,11 @@ final class Engine
         throws EngineException
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
-        assertStateLegal( m_commandHistory.canUndo(), Messages.Engine_undo_notAvailable );
+        assertStateLegal( commandHistory_.canUndo(), Messages.Engine_undo_notAvailable );
 
-        final CommandHistory.Entry undoEntry = m_commandHistory.getUndoEntry();
+        final CommandHistory.Entry undoEntry = commandHistory_.getUndoEntry();
         executeCommand( undoEntry.getCommand().getInverseCommand(), undoEntry.getCommandContext(), false, false );
-        m_commandHistory.undo();
+        commandHistory_.undo();
     }
 
 
@@ -857,7 +857,7 @@ final class Engine
         // ==================================================================
 
         /** The asynchronous task to which all operations are delegated. */
-        private final Future<V> m_future;
+        private final Future<V> future_;
 
 
         // ==================================================================
@@ -877,7 +877,7 @@ final class Engine
         {
             assert future != null;
 
-            m_future = future;
+            future_ = future;
         }
 
 
@@ -902,7 +902,7 @@ final class Engine
         public boolean cancel(
             final boolean mayInterruptIfRunning )
         {
-            return m_future.cancel( mayInterruptIfRunning );
+            return future_.cancel( mayInterruptIfRunning );
         }
 
         /*
@@ -913,7 +913,7 @@ final class Engine
         {
             assertNotWorkerThread();
 
-            return m_future.get();
+            return future_.get();
         }
 
         /*
@@ -926,7 +926,7 @@ final class Engine
         {
             assertNotWorkerThread();
 
-            return m_future.get( timeout, unit );
+            return future_.get( timeout, unit );
         }
 
         /*
@@ -934,7 +934,7 @@ final class Engine
          */
         public boolean isCancelled()
         {
-            return m_future.isCancelled();
+            return future_.isCancelled();
         }
 
         /*
@@ -942,7 +942,7 @@ final class Engine
          */
         public boolean isDone()
         {
-            return m_future.isDone();
+            return future_.isDone();
         }
     }
 
@@ -957,7 +957,7 @@ final class Engine
         // ==================================================================
 
         /** Indicates a thread is an engine worker thread. */
-        private static final ThreadLocal<Boolean> c_isWorkerThread = new ThreadLocal<Boolean>()
+        private static final ThreadLocal<Boolean> isWorkerThread_ = new ThreadLocal<Boolean>()
         {
             @Override
             protected Boolean initialValue()
@@ -1001,7 +1001,7 @@ final class Engine
          */
         static boolean isWorkerThread()
         {
-            return c_isWorkerThread.get().booleanValue();
+            return isWorkerThread_.get().booleanValue();
         }
 
         /*
@@ -1010,7 +1010,7 @@ final class Engine
         @Override
         public void run()
         {
-            c_isWorkerThread.set( Boolean.TRUE );
+            isWorkerThread_.set( Boolean.TRUE );
 
             super.run();
         }
@@ -1027,13 +1027,13 @@ final class Engine
         // ==================================================================
 
         /** The unique identifier for the next thread factory. */
-        private static final AtomicInteger c_poolNumber = new AtomicInteger();
+        private static final AtomicInteger poolNumber_ = new AtomicInteger();
 
         /** The name prefix for all threads created by this factory. */
-        private final String m_namePrefix;
+        private final String namePrefix_;
 
         /** The unique identifier for the next thread created by this factory. */
-        private final AtomicInteger m_threadNumber;
+        private final AtomicInteger threadNumber_;
 
 
         // ==================================================================
@@ -1045,8 +1045,8 @@ final class Engine
          */
         WorkerThreadFactory()
         {
-            m_namePrefix = "GamegineerEngine-Pool-" + c_poolNumber.incrementAndGet() + "-Thread-"; //$NON-NLS-1$ //$NON-NLS-2$
-            m_threadNumber = new AtomicInteger();
+            namePrefix_ = "GamegineerEngine-Pool-" + poolNumber_.incrementAndGet() + "-Thread-"; //$NON-NLS-1$ //$NON-NLS-2$
+            threadNumber_ = new AtomicInteger();
         }
 
 
@@ -1060,7 +1060,7 @@ final class Engine
         public Thread newThread(
             final Runnable r )
         {
-            return new WorkerThread( r, m_namePrefix + m_threadNumber.incrementAndGet() );
+            return new WorkerThread( r, namePrefix_ + threadNumber_.incrementAndGet() );
         }
     }
 }

@@ -48,8 +48,10 @@ public class FakeGameSystemUiSource
     // Fields
     // ======================================================================
 
-    /** The collection of game system user interfaces available from this source. */
-    private final Collection<IGameSystemUi> m_gameSystemUis;
+    /**
+     * The collection of game system user interfaces available from this source.
+     */
+    private final Collection<IGameSystemUi> gameSystemUis_;
 
 
     // ======================================================================
@@ -82,7 +84,7 @@ public class FakeGameSystemUiSource
     {
         assertArgumentNotNull( gameSystemUis, "gameSystemUis" ); //$NON-NLS-1$
 
-        m_gameSystemUis = new ArrayList<IGameSystemUi>( gameSystemUis );
+        gameSystemUis_ = new ArrayList<IGameSystemUi>( gameSystemUis );
     }
 
 
@@ -95,6 +97,6 @@ public class FakeGameSystemUiSource
      */
     public Collection<IGameSystemUi> getGameSystemUis()
     {
-        return new ArrayList<IGameSystemUi>( m_gameSystemUis );
+        return new ArrayList<IGameSystemUi>( gameSystemUis_ );
     }
 }

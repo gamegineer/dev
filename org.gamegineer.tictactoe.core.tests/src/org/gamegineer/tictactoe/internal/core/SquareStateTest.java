@@ -39,7 +39,7 @@ public final class SquareStateTest
     // ======================================================================
 
     /** The square state under test in the fixture. */
-    private SquareState m_state;
+    private SquareState state_;
 
 
     // ======================================================================
@@ -69,7 +69,7 @@ public final class SquareStateTest
     public void setUp()
         throws Exception
     {
-        m_state = new SquareState( SquareId.MIDDLE_CENTER );
+        state_ = new SquareState( SquareId.MIDDLE_CENTER );
     }
 
     /**
@@ -82,7 +82,7 @@ public final class SquareStateTest
     public void tearDown()
         throws Exception
     {
-        m_state = null;
+        state_ = null;
     }
 
     /**
@@ -93,7 +93,7 @@ public final class SquareStateTest
     public void testChangeOwner_State_Legal()
     {
         final String expectedOwnerRoleId = "role-id"; //$NON-NLS-1$
-        final SquareState newState = m_state.changeOwner( expectedOwnerRoleId );
+        final SquareState newState = state_.changeOwner( expectedOwnerRoleId );
 
         assertEquals( expectedOwnerRoleId, newState.getOwnerRoleId() );
     }
@@ -114,6 +114,6 @@ public final class SquareStateTest
     @Test
     public void testGetId_ReturnValue_NonNull()
     {
-        assertNotNull( m_state.getId() );
+        assertNotNull( state_.getId() );
     }
 }

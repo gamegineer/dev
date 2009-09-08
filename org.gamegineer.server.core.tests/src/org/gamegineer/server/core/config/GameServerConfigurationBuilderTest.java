@@ -44,7 +44,7 @@ public final class GameServerConfigurationBuilderTest
     // ======================================================================
 
     /** The game server configuration builder under test in the fixture. */
-    private GameServerConfigurationBuilder m_builder;
+    private GameServerConfigurationBuilder builder_;
 
 
     // ======================================================================
@@ -52,8 +52,8 @@ public final class GameServerConfigurationBuilderTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code GameServerConfigurationBuilderTest} class.
+     * Initializes a new instance of the {@code
+     * GameServerConfigurationBuilderTest} class.
      */
     public GameServerConfigurationBuilderTest()
     {
@@ -75,7 +75,7 @@ public final class GameServerConfigurationBuilderTest
     public void setUp()
         throws Exception
     {
-        m_builder = new GameServerConfigurationBuilder();
+        builder_ = new GameServerConfigurationBuilder();
     }
 
     /**
@@ -88,7 +88,7 @@ public final class GameServerConfigurationBuilderTest
     public void tearDown()
         throws Exception
     {
-        m_builder = null;
+        builder_ = null;
     }
 
     /**
@@ -98,7 +98,7 @@ public final class GameServerConfigurationBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetGameSystemSource_GameSystemSource_Null()
     {
-        m_builder.setGameSystemSource( null );
+        builder_.setGameSystemSource( null );
     }
 
     /**
@@ -108,7 +108,7 @@ public final class GameServerConfigurationBuilderTest
     @Test
     public void testSetGameSystemSource_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setGameSystemSource( createDummy( IGameSystemSource.class ) ) );
+        assertSame( builder_, builder_.setGameSystemSource( createDummy( IGameSystemSource.class ) ) );
     }
 
     /**
@@ -134,7 +134,7 @@ public final class GameServerConfigurationBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetName_Name_Null()
     {
-        m_builder.setName( null );
+        builder_.setName( null );
     }
 
     /**
@@ -143,7 +143,7 @@ public final class GameServerConfigurationBuilderTest
     @Test
     public void testSetName_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setName( "name" ) ); //$NON-NLS-1$
+        assertSame( builder_, builder_.setName( "name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -180,10 +180,10 @@ public final class GameServerConfigurationBuilderTest
      * configuration.
      * 
      * <p>
-     * The purpose of this test is simply to ensure <i>any</i> illegal
-     * attribute will cause an exception to be thrown. The primary collection of
-     * tests for all possible permutations of illegal game server configuration
-     * attributes is located in the {@code ConfigurationUtilsTest} class.
+     * The purpose of this test is simply to ensure <i>any</i> illegal attribute
+     * will cause an exception to be thrown. The primary collection of tests for
+     * all possible permutations of illegal game server configuration attributes
+     * is located in the {@code ConfigurationUtilsTest} class.
      * </p>
      */
     @Ignore( "Currently, there is no way to create an illegal game server configuration." )

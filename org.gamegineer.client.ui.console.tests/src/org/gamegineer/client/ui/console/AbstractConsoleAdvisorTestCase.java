@@ -38,7 +38,7 @@ public abstract class AbstractConsoleAdvisorTestCase
     // ======================================================================
 
     /** The console advisor under test in the fixture. */
-    private IConsoleAdvisor m_advisor;
+    private IConsoleAdvisor advisor_;
 
 
     // ======================================================================
@@ -81,8 +81,8 @@ public abstract class AbstractConsoleAdvisorTestCase
     public void setUp()
         throws Exception
     {
-        m_advisor = createConsoleAdvisor();
-        assertNotNull( m_advisor );
+        advisor_ = createConsoleAdvisor();
+        assertNotNull( advisor_ );
     }
 
     /**
@@ -95,7 +95,7 @@ public abstract class AbstractConsoleAdvisorTestCase
     public void tearDown()
         throws Exception
     {
-        m_advisor = null;
+        advisor_ = null;
     }
 
     /**
@@ -105,7 +105,7 @@ public abstract class AbstractConsoleAdvisorTestCase
     @Test
     public void testGetApplicationArguments_ReturnValue_Immutable()
     {
-        assertImmutableCollection( m_advisor.getApplicationArguments() );
+        assertImmutableCollection( advisor_.getApplicationArguments() );
     }
 
     /**
@@ -115,16 +115,16 @@ public abstract class AbstractConsoleAdvisorTestCase
     @Test
     public void testGetApplicationArguments_ReturnValue_NonNull()
     {
-        assertNotNull( m_advisor.getApplicationArguments() );
+        assertNotNull( advisor_.getApplicationArguments() );
     }
 
     /**
-     * Ensures the {@code getApplicationVersion} method does not return
-     * {@code null}.
+     * Ensures the {@code getApplicationVersion} method does not return {@code
+     * null}.
      */
     @Test
     public void testGetVersion_ReturnValue_NonNull()
     {
-        assertNotNull( m_advisor.getApplicationVersion() );
+        assertNotNull( advisor_.getApplicationVersion() );
     }
 }

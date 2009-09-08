@@ -45,7 +45,7 @@ public abstract class AbstractMementoTestCase
     // ======================================================================
 
     /** The memento under test in the fixture. */
-    private IMemento m_memento;
+    private IMemento memento_;
 
 
     // ======================================================================
@@ -96,8 +96,8 @@ public abstract class AbstractMementoTestCase
         attributeMap.put( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
         attributeMap.put( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
         attributeMap.put( "name4", "value4" ); //$NON-NLS-1$ //$NON-NLS-2$
-        m_memento = createMemento( attributeMap );
-        assertNotNull( m_memento );
+        memento_ = createMemento( attributeMap );
+        assertNotNull( memento_ );
     }
 
     /**
@@ -110,7 +110,7 @@ public abstract class AbstractMementoTestCase
     public void tearDown()
         throws Exception
     {
-        m_memento = null;
+        memento_ = null;
     }
 
     /**
@@ -120,7 +120,7 @@ public abstract class AbstractMementoTestCase
     @Test
     public void testContainsAttribute_Attribute_Absent()
     {
-        assertFalse( m_memento.containsAttribute( "unknown_name" ) ); //$NON-NLS-1$
+        assertFalse( memento_.containsAttribute( "unknown_name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -130,7 +130,7 @@ public abstract class AbstractMementoTestCase
     @Test
     public void testContainsAttribute_Attribute_Present()
     {
-        assertTrue( m_memento.containsAttribute( "name1" ) ); //$NON-NLS-1$
+        assertTrue( memento_.containsAttribute( "name1" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -140,7 +140,7 @@ public abstract class AbstractMementoTestCase
     @Test( expected = NullPointerException.class )
     public void testContainsAttribute_Name_Null()
     {
-        m_memento.containsAttribute( null );
+        memento_.containsAttribute( null );
     }
 
     /**
@@ -150,7 +150,7 @@ public abstract class AbstractMementoTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testGetAttribute_Attribute_Absent()
     {
-        m_memento.getAttribute( "unknown_name" ); //$NON-NLS-1$
+        memento_.getAttribute( "unknown_name" ); //$NON-NLS-1$
     }
 
     /**
@@ -160,7 +160,7 @@ public abstract class AbstractMementoTestCase
     @Test
     public void testGetAttribute_Attribute_Present()
     {
-        assertEquals( "value1", m_memento.getAttribute( "name1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals( "value1", memento_.getAttribute( "name1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -170,7 +170,7 @@ public abstract class AbstractMementoTestCase
     @Test( expected = NullPointerException.class )
     public void testGetAttribute_Name_Null()
     {
-        m_memento.getAttribute( null );
+        memento_.getAttribute( null );
     }
 
     /**
@@ -180,7 +180,7 @@ public abstract class AbstractMementoTestCase
     @Test
     public void testGetAttributeNames()
     {
-        final Set<String> nameSet = m_memento.getAttributeNames();
+        final Set<String> nameSet = memento_.getAttributeNames();
         assertEquals( 4, nameSet.size() );
         assertTrue( nameSet.contains( "name1" ) ); //$NON-NLS-1$
         assertTrue( nameSet.contains( "name2" ) ); //$NON-NLS-1$
@@ -207,6 +207,6 @@ public abstract class AbstractMementoTestCase
     @Test
     public void testGetAttributeNames_ReturnValue_Immutable()
     {
-        assertImmutableCollection( m_memento.getAttributeNames() );
+        assertImmutableCollection( memento_.getAttributeNames() );
     }
 }

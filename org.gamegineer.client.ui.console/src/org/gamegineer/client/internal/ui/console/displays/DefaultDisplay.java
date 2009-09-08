@@ -1,6 +1,6 @@
 /*
  * DefaultDisplay.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -37,8 +37,8 @@ import org.gamegineer.client.ui.console.IDisplay;
  * an arbitrary input stream reader and output stream writer.
  * 
  * <p>
- * Note that this implementation cannot guarantee that the
- * {@code readSecureLine} methods will not echo characters.
+ * Note that this implementation cannot guarantee that the {@code
+ * readSecureLine} methods will not echo characters.
  * </p>
  * 
  * <p>
@@ -54,10 +54,10 @@ public final class DefaultDisplay
     // ======================================================================
 
     /** The input stream reader. */
-    private final SecureBufferedReader m_reader;
+    private final SecureBufferedReader reader_;
 
     /** The output stream writer. */
-    private final PrintWriter m_writer;
+    private final PrintWriter writer_;
 
 
     // ======================================================================
@@ -91,8 +91,8 @@ public final class DefaultDisplay
         assert reader != null;
         assert writer != null;
 
-        m_reader = new SecureBufferedReader( reader );
-        m_writer = new PrintWriter( writer, true )
+        reader_ = new SecureBufferedReader( reader );
+        writer_ = new PrintWriter( writer, true )
         {
             @Override
             public void close()
@@ -112,7 +112,7 @@ public final class DefaultDisplay
      */
     public void flush()
     {
-        m_writer.flush();
+        writer_.flush();
     }
 
     /*
@@ -122,7 +122,7 @@ public final class DefaultDisplay
         final String format,
         final Object... args )
     {
-        m_writer.format( format, args );
+        writer_.format( format, args );
         return this;
     }
 
@@ -131,7 +131,7 @@ public final class DefaultDisplay
      */
     public Reader getReader()
     {
-        return m_reader;
+        return reader_;
     }
 
     /*
@@ -139,7 +139,7 @@ public final class DefaultDisplay
      */
     public PrintWriter getWriter()
     {
-        return m_writer;
+        return writer_;
     }
 
     /*
@@ -149,7 +149,7 @@ public final class DefaultDisplay
     {
         try
         {
-            return m_reader.readLine();
+            return reader_.readLine();
         }
         catch( final IOException e )
         {
@@ -175,7 +175,7 @@ public final class DefaultDisplay
     {
         try
         {
-            return m_reader.readSecureLine();
+            return reader_.readSecureLine();
         }
         catch( final IOException e )
         {
@@ -244,8 +244,8 @@ public final class DefaultDisplay
          * Reads a single line of text from this reader in a secure manner.
          * 
          * @return A character array containing the line read from this reader
-         *         not including any line-termination characters, or
-         *         {@code null} if the end of stream has been reached.
+         *         not including any line-termination characters, or {@code
+         *         null} if the end of stream has been reached.
          * 
          * @throws java.io.IOException
          *         If an I/O error occurs.

@@ -44,7 +44,7 @@ public abstract class AbstractComponentFactoryTestCase
     // ======================================================================
 
     /** The component factory under test in the fixture. */
-    private IComponentFactory m_factory;
+    private IComponentFactory factory_;
 
 
     // ======================================================================
@@ -52,8 +52,8 @@ public abstract class AbstractComponentFactoryTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractComponentFactoryTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractComponentFactoryTestCase} class.
      */
     protected AbstractComponentFactoryTestCase()
     {
@@ -101,8 +101,8 @@ public abstract class AbstractComponentFactoryTestCase
         attributeMap.put( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
         attributeMap.put( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
         attributeMap.put( "name4", "value4" ); //$NON-NLS-1$ //$NON-NLS-2$
-        m_factory = createComponentFactory( attributeMap );
-        assertNotNull( m_factory );
+        factory_ = createComponentFactory( attributeMap );
+        assertNotNull( factory_ );
     }
 
     /**
@@ -115,7 +115,7 @@ public abstract class AbstractComponentFactoryTestCase
     public void tearDown()
         throws Exception
     {
-        m_factory = null;
+        factory_ = null;
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class AbstractComponentFactoryTestCase
     @Test
     public void testContainsAttribute_Attribute_Absent()
     {
-        assertFalse( m_factory.containsAttribute( "unknown_name" ) ); //$NON-NLS-1$
+        assertFalse( factory_.containsAttribute( "unknown_name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -135,7 +135,7 @@ public abstract class AbstractComponentFactoryTestCase
     @Test
     public void testContainsAttribute_Attribute_Present()
     {
-        assertTrue( m_factory.containsAttribute( "name1" ) ); //$NON-NLS-1$
+        assertTrue( factory_.containsAttribute( "name1" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -145,7 +145,7 @@ public abstract class AbstractComponentFactoryTestCase
     @Test( expected = NullPointerException.class )
     public void testContainsAttribute_Name_Null()
     {
-        m_factory.containsAttribute( null );
+        factory_.containsAttribute( null );
     }
 
     /**
@@ -159,7 +159,7 @@ public abstract class AbstractComponentFactoryTestCase
     public void testCreateComponent_Context_Null()
         throws Exception
     {
-        m_factory.createComponent( null );
+        factory_.createComponent( null );
     }
 
     /**
@@ -169,7 +169,7 @@ public abstract class AbstractComponentFactoryTestCase
     @Test
     public void testGetAttribute_Attribute_Absent()
     {
-        assertNull( m_factory.getAttribute( "unknown_name" ) ); //$NON-NLS-1$
+        assertNull( factory_.getAttribute( "unknown_name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -179,7 +179,7 @@ public abstract class AbstractComponentFactoryTestCase
     @Test
     public void testGetAttribute_Attribute_Present()
     {
-        assertEquals( "value1", m_factory.getAttribute( "name1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals( "value1", factory_.getAttribute( "name1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -189,6 +189,6 @@ public abstract class AbstractComponentFactoryTestCase
     @Test( expected = NullPointerException.class )
     public void testGetAttribute_Name_Null()
     {
-        m_factory.getAttribute( null );
+        factory_.getAttribute( null );
     }
 }

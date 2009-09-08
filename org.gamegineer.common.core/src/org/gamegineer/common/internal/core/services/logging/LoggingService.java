@@ -1,6 +1,6 @@
 /*
  * LoggingService.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,11 +56,11 @@ public final class LoggingService
     private static final String LOGGING_PROPERTIES_PATH = "logging.properties"; //$NON-NLS-1$
 
     /** The instance lock. */
-    private final Object m_lock;
+    private final Object lock_;
 
     /** The map of managed loggers. The key is the logger name. */
-    @GuardedBy( "m_lock" )
-    private final Map<String, WeakReference<Logger>> m_loggerMap;
+    @GuardedBy( "lock_" )
+    private final Map<String, WeakReference<Logger>> loggerMap_;
 
 
     // ======================================================================
@@ -72,8 +72,8 @@ public final class LoggingService
      */
     public LoggingService()
     {
-        m_lock = new Object();
-        m_loggerMap = new HashMap<String, WeakReference<Logger>>();
+        lock_ = new Object();
+        loggerMap_ = new HashMap<String, WeakReference<Logger>>();
     }
 
 
@@ -86,7 +86,7 @@ public final class LoggingService
      * which have a configuration defined in the specified logging properties.
      * 
      * <p>
-     * This method must be called while {@code m_lock} is held.
+     * This method must be called while {@code lock_} is held.
      * </p>
      * 
      * @param loggerName
@@ -94,7 +94,7 @@ public final class LoggingService
      * @param props
      *        The logging properties; must not be {@code null}.
      */
-    @GuardedBy( "m_lock" )
+    @GuardedBy( "lock_" )
     private void configureAncestorLoggers(
         /* @NonNull */
         final String loggerName,
@@ -103,15 +103,15 @@ public final class LoggingService
     {
         assert loggerName != null;
         assert props != null;
-        assert Thread.holdsLock( m_lock );
+        assert Thread.holdsLock( lock_ );
 
         for( final String ancestorLoggerName : props.getAncestorLoggerNames( loggerName ) )
         {
-            final WeakReference<Logger> loggerRef = m_loggerMap.get( ancestorLoggerName );
+            final WeakReference<Logger> loggerRef = loggerMap_.get( ancestorLoggerName );
             if( (loggerRef == null) || (loggerRef.get() == null) )
             {
                 final Logger logger = Logger.getLogger( ancestorLoggerName );
-                m_loggerMap.put( ancestorLoggerName, new WeakReference<Logger>( logger ) );
+                loggerMap_.put( ancestorLoggerName, new WeakReference<Logger>( logger ) );
                 configureLogger( logger, props.getLoggerConfiguration( ancestorLoggerName ) );
             }
         }
@@ -170,9 +170,9 @@ public final class LoggingService
         Logger logger = null;
         final String loggerName = getLoggerName( bundle, name );
 
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            final WeakReference<Logger> loggerRef = m_loggerMap.get( loggerName );
+            final WeakReference<Logger> loggerRef = loggerMap_.get( loggerName );
             if( loggerRef != null )
             {
                 logger = loggerRef.get();
@@ -183,7 +183,7 @@ public final class LoggingService
             }
 
             logger = Logger.getLogger( loggerName );
-            m_loggerMap.put( loggerName, new WeakReference<Logger>( logger ) );
+            loggerMap_.put( loggerName, new WeakReference<Logger>( logger ) );
 
             final LoggingProperties props = getLoggingProperties( bundle );
             if( props != null )

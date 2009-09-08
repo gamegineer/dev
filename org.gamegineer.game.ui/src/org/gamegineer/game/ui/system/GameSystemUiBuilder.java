@@ -47,13 +47,13 @@ public final class GameSystemUiBuilder
     // ======================================================================
 
     /** The game system identifier. */
-    private String m_id;
+    private String id_;
 
     /** The game system name. */
-    private String m_name;
+    private String name_;
 
     /** The role user interface list. */
-    private final List<IRoleUi> m_roleUis;
+    private final List<IRoleUi> roleUis_;
 
 
     // ======================================================================
@@ -66,9 +66,9 @@ public final class GameSystemUiBuilder
      */
     public GameSystemUiBuilder()
     {
-        m_id = null;
-        m_name = null;
-        m_roleUis = new ArrayList<IRoleUi>();
+        id_ = null;
+        name_ = null;
+        roleUis_ = new ArrayList<IRoleUi>();
     }
 
 
@@ -94,7 +94,7 @@ public final class GameSystemUiBuilder
     {
         assertArgumentNotNull( roleUi, "roleUi" ); //$NON-NLS-1$
 
-        m_roleUis.add( roleUi );
+        roleUis_.add( roleUi );
 
         return this;
     }
@@ -117,7 +117,7 @@ public final class GameSystemUiBuilder
     {
         assertArgumentNotNull( roleUis, "roleUis" ); //$NON-NLS-1$
 
-        m_roleUis.addAll( roleUis );
+        roleUis_.addAll( roleUis );
 
         return this;
     }
@@ -140,7 +140,7 @@ public final class GameSystemUiBuilder
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
-        m_id = id;
+        id_ = id;
 
         return this;
     }
@@ -163,7 +163,7 @@ public final class GameSystemUiBuilder
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        m_name = name;
+        name_ = name;
 
         return this;
     }
@@ -181,12 +181,12 @@ public final class GameSystemUiBuilder
     /* @NonNull */
     public IGameSystemUi toGameSystemUi()
     {
-        assertStateLegal( m_id != null, Messages.GameSystemUiBuilder_id_notSet );
-        assertStateLegal( m_name != null, Messages.GameSystemUiBuilder_name_notSet );
+        assertStateLegal( id_ != null, Messages.GameSystemUiBuilder_id_notSet );
+        assertStateLegal( name_ != null, Messages.GameSystemUiBuilder_name_notSet );
 
         try
         {
-            return GameSystemUi.createGameSystemUi( m_id, m_name, m_roleUis );
+            return GameSystemUi.createGameSystemUi( id_, name_, roleUis_ );
         }
         catch( final IllegalArgumentException e )
         {

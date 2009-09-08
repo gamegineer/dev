@@ -46,7 +46,7 @@ public final class GameClientConfigurationBuilder
     // ======================================================================
 
     /** The game system user interface source. */
-    private IGameSystemUiSource m_gameSystemUiSource;
+    private IGameSystemUiSource gameSystemUiSource_;
 
 
     // ======================================================================
@@ -59,7 +59,7 @@ public final class GameClientConfigurationBuilder
      */
     public GameClientConfigurationBuilder()
     {
-        m_gameSystemUiSource = null;
+        gameSystemUiSource_ = null;
     }
 
 
@@ -85,7 +85,7 @@ public final class GameClientConfigurationBuilder
     {
         assertArgumentNotNull( gameSystemUiSource, "gameSystemUiSource" ); //$NON-NLS-1$
 
-        m_gameSystemUiSource = gameSystemUiSource;
+        gameSystemUiSource_ = gameSystemUiSource;
 
         return this;
     }
@@ -103,11 +103,11 @@ public final class GameClientConfigurationBuilder
     /* @NonNull */
     public IGameClientConfiguration toGameClientConfiguration()
     {
-        assertStateLegal( m_gameSystemUiSource != null, Messages.GameClientConfigurationBuilder_gameSystemUiSource_notSet );
+        assertStateLegal( gameSystemUiSource_ != null, Messages.GameClientConfigurationBuilder_gameSystemUiSource_notSet );
 
         try
         {
-            return GameClientConfiguration.createGameClientConfiguration( m_gameSystemUiSource );
+            return GameClientConfiguration.createGameClientConfiguration( gameSystemUiSource_ );
         }
         catch( final IllegalArgumentException e )
         {

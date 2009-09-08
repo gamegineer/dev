@@ -61,7 +61,7 @@ public final class ComponentService
     private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
     /** The collection of component factories directly managed by this object. */
-    private final CopyOnWriteArrayList<IComponentFactory> m_factories;
+    private final CopyOnWriteArrayList<IComponentFactory> factories_;
 
 
     // ======================================================================
@@ -73,7 +73,7 @@ public final class ComponentService
      */
     public ComponentService()
     {
-        m_factories = new CopyOnWriteArrayList<IComponentFactory>();
+        factories_ = new CopyOnWriteArrayList<IComponentFactory>();
     }
 
 
@@ -108,7 +108,7 @@ public final class ComponentService
      */
     public Collection<IComponentFactory> getComponentFactories()
     {
-        final List<IComponentFactory> factories = new ArrayList<IComponentFactory>( m_factories );
+        final List<IComponentFactory> factories = new ArrayList<IComponentFactory>( factories_ );
         factories.addAll( getForeignComponentFactories() );
         return Collections.unmodifiableList( factories );
     }
@@ -213,7 +213,7 @@ public final class ComponentService
     {
         assertArgumentNotNull( factory, "factory" ); //$NON-NLS-1$
 
-        m_factories.addIfAbsent( factory );
+        factories_.addIfAbsent( factory );
     }
 
     /*
@@ -224,6 +224,6 @@ public final class ComponentService
     {
         assertArgumentNotNull( factory, "factory" ); //$NON-NLS-1$
 
-        m_factories.remove( factory );
+        factories_.remove( factory );
     }
 }

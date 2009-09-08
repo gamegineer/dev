@@ -1,6 +1,6 @@
 /*
  * ComponentCreationContextBuilderTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -43,7 +43,7 @@ public final class ComponentCreationContextBuilderTest
     // ======================================================================
 
     /** The builder under test in the fixture. */
-    private ComponentCreationContextBuilder m_builder;
+    private ComponentCreationContextBuilder builder_;
 
 
     // ======================================================================
@@ -51,8 +51,8 @@ public final class ComponentCreationContextBuilderTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code ComponentCreationContextBuilderTest} class.
+     * Initializes a new instance of the {@code
+     * ComponentCreationContextBuilderTest} class.
      */
     public ComponentCreationContextBuilderTest()
     {
@@ -74,7 +74,7 @@ public final class ComponentCreationContextBuilderTest
     public void setUp()
         throws Exception
     {
-        m_builder = new ComponentCreationContextBuilder();
+        builder_ = new ComponentCreationContextBuilder();
     }
 
     /**
@@ -87,7 +87,7 @@ public final class ComponentCreationContextBuilderTest
     public void tearDown()
         throws Exception
     {
-        m_builder = null;
+        builder_ = null;
     }
 
     /**
@@ -107,8 +107,8 @@ public final class ComponentCreationContextBuilderTest
     }
 
     /**
-     * Ensures the primary constructor throws an exception when passed a
-     * {@code null} attribute map.
+     * Ensures the primary constructor throws an exception when passed a {@code
+     * null} attribute map.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Primary_AttributeMap_Null()
@@ -137,7 +137,7 @@ public final class ComponentCreationContextBuilderTest
     @Test
     public void testContainsAttribute_Attribute_Absent()
     {
-        assertFalse( m_builder.containsAttribute( "unknown_name" ) ); //$NON-NLS-1$
+        assertFalse( builder_.containsAttribute( "unknown_name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -148,8 +148,8 @@ public final class ComponentCreationContextBuilderTest
     public void testContainsAttribute_Attribute_Present()
     {
         final String name = "name1"; //$NON-NLS-1$
-        m_builder.setAttribute( name, "value1" ); //$NON-NLS-1$
-        assertTrue( m_builder.containsAttribute( name ) );
+        builder_.setAttribute( name, "value1" ); //$NON-NLS-1$
+        assertTrue( builder_.containsAttribute( name ) );
     }
 
     /**
@@ -159,7 +159,7 @@ public final class ComponentCreationContextBuilderTest
     @Test( expected = NullPointerException.class )
     public void testContainsAttribute_Name_Null()
     {
-        m_builder.containsAttribute( null );
+        builder_.containsAttribute( null );
     }
 
     /**
@@ -194,7 +194,7 @@ public final class ComponentCreationContextBuilderTest
     @Test
     public void testGetAttribute_Attribute_Absent()
     {
-        assertNull( m_builder.getAttribute( "unknown_name" ) ); //$NON-NLS-1$
+        assertNull( builder_.getAttribute( "unknown_name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -206,8 +206,8 @@ public final class ComponentCreationContextBuilderTest
     {
         final String name = "name1"; //$NON-NLS-1$
         final String value = "value1"; //$NON-NLS-1$
-        m_builder.setAttribute( name, value );
-        assertEquals( value, m_builder.getAttribute( name ) );
+        builder_.setAttribute( name, value );
+        assertEquals( value, builder_.getAttribute( name ) );
     }
 
     /**
@@ -217,7 +217,7 @@ public final class ComponentCreationContextBuilderTest
     @Test( expected = NullPointerException.class )
     public void testGetAttribute_Name_Null()
     {
-        m_builder.getAttribute( null );
+        builder_.getAttribute( null );
     }
 
     /**
@@ -231,9 +231,9 @@ public final class ComponentCreationContextBuilderTest
         final String value1 = "value1"; //$NON-NLS-1$
         final String name2 = "name2"; //$NON-NLS-1$
         final String value2 = "value2"; //$NON-NLS-1$
-        m_builder.setAttribute( name1, value1 );
-        m_builder.setAttribute( name2, value2 );
-        final IComponentCreationContext context = m_builder.toComponentCreationContext();
+        builder_.setAttribute( name1, value1 );
+        builder_.setAttribute( name2, value2 );
+        final IComponentCreationContext context = builder_.toComponentCreationContext();
         assertEquals( value1, context.getAttribute( name1 ) );
         assertEquals( value2, context.getAttribute( name2 ) );
     }

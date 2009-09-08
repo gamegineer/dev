@@ -1,6 +1,6 @@
 /*
  * LoggerConfiguration.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,10 +44,10 @@ final class LoggerConfiguration
     // ======================================================================
 
     /** The name of the logger associated with the configuration. */
-    private final String m_name;
+    private final String name_;
 
     /** The logging properties which contains the configuration. */
-    private final LoggingProperties m_props;
+    private final LoggingProperties props_;
 
 
     // ======================================================================
@@ -73,8 +73,8 @@ final class LoggerConfiguration
         assert props != null;
         assert name != null;
 
-        m_props = props;
-        m_name = name;
+        props_ = props;
+        name_ = name;
     }
 
 
@@ -98,12 +98,12 @@ final class LoggerConfiguration
         /* @Nullable */
         final Filter defaultValue )
     {
-        final String value = m_props.getProperty( m_name, "filter" ); //$NON-NLS-1$
+        final String value = props_.getProperty( name_, "filter" ); //$NON-NLS-1$
         if( value != null )
         {
             try
             {
-                return (Filter)AbstractLoggingComponentFactory.createNamedLoggingComponent( value, m_props.asMap() );
+                return (Filter)AbstractLoggingComponentFactory.createNamedLoggingComponent( value, props_.asMap() );
             }
             catch( final Exception e )
             {
@@ -128,14 +128,14 @@ final class LoggerConfiguration
     List<Handler> getHandlers()
     {
         final List<Handler> handlerList = new ArrayList<Handler>();
-        final String value = m_props.getProperty( m_name, "handlers" ); //$NON-NLS-1$
+        final String value = props_.getProperty( name_, "handlers" ); //$NON-NLS-1$
         if( value != null )
         {
             for( final String name : value.split( "[,\\s]+" ) ) //$NON-NLS-1$
             {
                 try
                 {
-                    handlerList.add( (Handler)AbstractLoggingComponentFactory.createNamedLoggingComponent( name, m_props.asMap() ) );
+                    handlerList.add( (Handler)AbstractLoggingComponentFactory.createNamedLoggingComponent( name, props_.asMap() ) );
                 }
                 catch( final Exception e )
                 {
@@ -168,7 +168,7 @@ final class LoggerConfiguration
     {
         try
         {
-            final String value = m_props.getProperty( m_name, "level" ); //$NON-NLS-1$
+            final String value = props_.getProperty( name_, "level" ); //$NON-NLS-1$
             if( value != null )
             {
                 return Level.parse( value );
@@ -193,7 +193,7 @@ final class LoggerConfiguration
     /* @NonNull */
     String getName()
     {
-        return m_name;
+        return name_;
     }
 
     /**
@@ -209,7 +209,7 @@ final class LoggerConfiguration
     boolean getUseParentHandlers(
         final boolean defaultValue )
     {
-        final String value = m_props.getProperty( m_name, "useParentHandlers" ); //$NON-NLS-1$
+        final String value = props_.getProperty( name_, "useParentHandlers" ); //$NON-NLS-1$
         if( value != null )
         {
             return Boolean.parseBoolean( value );

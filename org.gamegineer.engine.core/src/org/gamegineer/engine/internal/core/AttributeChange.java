@@ -1,6 +1,6 @@
 /*
  * AttributeChange.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,8 @@ import org.gamegineer.engine.core.extensions.stateeventmediator.IAttributeChange
 
 /**
  * Implementation of
- * {@link org.gamegineer.engine.core.extensions.stateeventmediator.IAttributeChange}.
+ * {@link org.gamegineer.engine.core.extensions.stateeventmediator.IAttributeChange}
+ * .
  * 
  * <p>
  * This class is immutable.
@@ -43,19 +44,19 @@ final class AttributeChange
     // ======================================================================
 
     /** Indicates the attribute has a new value. */
-    private final boolean m_hasNewValue;
+    private final boolean hasNewValue_;
 
     /** Indicates the attribute has an old value. */
-    private final boolean m_hasOldValue;
+    private final boolean hasOldValue_;
 
     /** The attribute name. */
-    private final AttributeName m_name;
+    private final AttributeName name_;
 
     /** The new attribute value. */
-    private final Object m_newValue;
+    private final Object newValue_;
 
     /** The old attribute value. */
-    private final Object m_oldValue;
+    private final Object oldValue_;
 
 
     // ======================================================================
@@ -93,11 +94,11 @@ final class AttributeChange
         assert name != null;
         assert hasOldValue || hasNewValue;
 
-        m_name = name;
-        m_hasOldValue = hasOldValue;
-        m_oldValue = oldValue;
-        m_hasNewValue = hasNewValue;
-        m_newValue = newValue;
+        name_ = name;
+        hasOldValue_ = hasOldValue;
+        oldValue_ = oldValue;
+        hasNewValue_ = hasNewValue;
+        newValue_ = newValue;
     }
 
 
@@ -177,7 +178,7 @@ final class AttributeChange
      */
     public AttributeName getName()
     {
-        return m_name;
+        return name_;
     }
 
     /*
@@ -185,9 +186,9 @@ final class AttributeChange
      */
     public Object getNewValue()
     {
-        assertStateLegal( m_hasNewValue, Messages.AttributeChange_newValue_absent );
+        assertStateLegal( hasNewValue_, Messages.AttributeChange_newValue_absent );
 
-        return m_newValue;
+        return newValue_;
     }
 
     /*
@@ -195,9 +196,9 @@ final class AttributeChange
      */
     public Object getOldValue()
     {
-        assertStateLegal( m_hasOldValue, Messages.AttributeChange_oldValue_absent );
+        assertStateLegal( hasOldValue_, Messages.AttributeChange_oldValue_absent );
 
-        return m_oldValue;
+        return oldValue_;
     }
 
     /*
@@ -205,7 +206,7 @@ final class AttributeChange
      */
     public boolean hasNewValue()
     {
-        return m_hasNewValue;
+        return hasNewValue_;
     }
 
     /*
@@ -213,6 +214,6 @@ final class AttributeChange
      */
     public boolean hasOldValue()
     {
-        return m_hasOldValue;
+        return hasOldValue_;
     }
 }

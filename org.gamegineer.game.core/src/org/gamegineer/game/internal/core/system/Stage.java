@@ -44,16 +44,16 @@ public final class Stage
     // ======================================================================
 
     /** The stage cardinality. */
-    private final int m_cardinality;
+    private final int cardinality_;
 
     /** The stage identifier. */
-    private final String m_id;
+    private final String id_;
 
     /** The child stage list. */
-    private final List<IStage> m_stages;
+    private final List<IStage> stages_;
 
     /** The stage strategy. */
-    private final IStageStrategy m_strategy;
+    private final IStageStrategy strategy_;
 
 
     // ======================================================================
@@ -85,10 +85,10 @@ public final class Stage
         assert strategy != null;
         assert stages != null;
 
-        m_id = id;
-        m_strategy = strategy;
-        m_cardinality = cardinality;
-        m_stages = new ArrayList<IStage>( stages );
+        id_ = id;
+        strategy_ = strategy;
+        cardinality_ = cardinality;
+        stages_ = new ArrayList<IStage>( stages );
     }
 
 
@@ -113,8 +113,8 @@ public final class Stage
      * @throws java.lang.IllegalArgumentException
      *         If any argument will result in an illegal stage.
      * @throws java.lang.NullPointerException
-     *         If {@code id}, {@code strategy}, or {@code stages} is
-     *         {@code null}.
+     *         If {@code id}, {@code strategy}, or {@code stages} is {@code
+     *         null}.
      */
     /* @NonNull */
     public static Stage createStage(
@@ -140,7 +140,7 @@ public final class Stage
      */
     public int getCardinality()
     {
-        return m_cardinality;
+        return cardinality_;
     }
 
     /*
@@ -148,7 +148,7 @@ public final class Stage
      */
     public String getId()
     {
-        return m_id;
+        return id_;
     }
 
     /*
@@ -156,7 +156,7 @@ public final class Stage
      */
     public List<IStage> getStages()
     {
-        return new ArrayList<IStage>( m_stages );
+        return new ArrayList<IStage>( stages_ );
     }
 
     /*
@@ -164,6 +164,6 @@ public final class Stage
      */
     public IStageStrategy getStrategy()
     {
-        return m_strategy;
+        return strategy_;
     }
 }

@@ -46,7 +46,7 @@ public final class CommandHistoryEntryTest
     // ======================================================================
 
     /** The command history entry under test in the fixture. */
-    private CommandHistory.Entry m_entry;
+    private CommandHistory.Entry entry_;
 
 
     // ======================================================================
@@ -76,7 +76,7 @@ public final class CommandHistoryEntryTest
     public void setUp()
         throws Exception
     {
-        m_entry = new CommandHistory.Entry( createDummy( IInvertibleCommand.class ), createDummy( ICommandContext.class ) );
+        entry_ = new CommandHistory.Entry( createDummy( IInvertibleCommand.class ), createDummy( ICommandContext.class ) );
     }
 
     /**
@@ -89,7 +89,7 @@ public final class CommandHistoryEntryTest
     public void tearDown()
         throws Exception
     {
-        m_entry = null;
+        entry_ = null;
     }
 
     /**
@@ -134,7 +134,7 @@ public final class CommandHistoryEntryTest
     @Test
     public void testEquals_Object_Null()
     {
-        assertFalse( m_entry.equals( null ) );
+        assertFalse( entry_.equals( null ) );
     }
 
     /**
@@ -157,7 +157,7 @@ public final class CommandHistoryEntryTest
     @Test
     public void testEquals_Object_WrongType()
     {
-        assertFalse( m_entry.equals( new Object() ) );
+        assertFalse( entry_.equals( new Object() ) );
     }
 
     /**
@@ -166,16 +166,17 @@ public final class CommandHistoryEntryTest
     @Test
     public void testGetCommand_ReturnValue_NonNull()
     {
-        assertNotNull( m_entry.getCommand() );
+        assertNotNull( entry_.getCommand() );
     }
 
     /**
-     * Ensures the {@code getCommandContext} method does not return {@code null}.
+     * Ensures the {@code getCommandContext} method does not return {@code null}
+     * .
      */
     @Test
     public void testGetCommandContext_ReturnValue_NonNull()
     {
-        assertNotNull( m_entry.getCommandContext() );
+        assertNotNull( entry_.getCommandContext() );
     }
 
     /**

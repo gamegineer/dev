@@ -47,7 +47,7 @@ public final class SetMementoCommand
     // ======================================================================
 
     /** The memento. */
-    private final IMemento m_memento;
+    private final IMemento memento_;
 
 
     // ======================================================================
@@ -69,7 +69,7 @@ public final class SetMementoCommand
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
-        m_memento = memento;
+        memento_ = memento;
     }
 
 
@@ -93,7 +93,7 @@ public final class SetMementoCommand
             throw new EngineException( Messages.Common_stateManagerExtension_unavailable );
         }
 
-        manager.setMemento( context, m_memento );
+        manager.setMemento( context, memento_ );
 
         return null;
     }

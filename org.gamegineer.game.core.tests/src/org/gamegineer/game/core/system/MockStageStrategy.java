@@ -32,7 +32,8 @@ import org.gamegineer.engine.core.extensions.stateeventmediator.StateChangeEvent
 import org.gamegineer.game.core.GameException;
 
 /**
- * Mock implementation of {@link org.gamegineer.game.core.system.IStageStrategy}.
+ * Mock implementation of {@link org.gamegineer.game.core.system.IStageStrategy}
+ * .
  * 
  * <p>
  * This class is thread-safe.
@@ -50,32 +51,32 @@ public class MockStageStrategy
     // Fields
     // ======================================================================
 
-    /** The instance synchronization lock. */
-    private final Object m_lock;
-
     /** The call count for the {@code activate} method. */
-    @GuardedBy( "m_lock" )
-    private int m_activateCallCount;
+    @GuardedBy( "lock_" )
+    private int activateCallCount_;
 
     /** The call count for the {@code commandExecuted} method. */
-    @GuardedBy( "m_lock" )
-    private int m_commandExecutedCallCount;
+    @GuardedBy( "lock_" )
+    private int commandExecutedCallCount_;
 
     /** The call count for the {@code commandExecuting} method. */
-    @GuardedBy( "m_lock" )
-    private int m_commandExecutingCallCount;
+    @GuardedBy( "lock_" )
+    private int commandExecutingCallCount_;
 
     /** The call count for the {@code deactivate} method. */
-    @GuardedBy( "m_lock" )
-    private int m_deactivateCallCount;
+    @GuardedBy( "lock_" )
+    private int deactivateCallCount_;
+
+    /** The instance synchronization lock. */
+    private final Object lock_;
 
     /** The call count for the {@code stateChanged} method. */
-    @GuardedBy( "m_lock" )
-    private int m_stateChangedCallCount;
+    @GuardedBy( "lock_" )
+    private int stateChangedCallCount_;
 
     /** The call count for the {@code stateChanging} method. */
-    @GuardedBy( "m_lock" )
-    private int m_stateChangingCallCount;
+    @GuardedBy( "lock_" )
+    private int stateChangingCallCount_;
 
 
     // ======================================================================
@@ -87,13 +88,13 @@ public class MockStageStrategy
      */
     public MockStageStrategy()
     {
-        m_lock = new Object();
-        m_activateCallCount = 0;
-        m_commandExecutedCallCount = 0;
-        m_commandExecutingCallCount = 0;
-        m_deactivateCallCount = 0;
-        m_stateChangedCallCount = 0;
-        m_stateChangingCallCount = 0;
+        lock_ = new Object();
+        activateCallCount_ = 0;
+        commandExecutedCallCount_ = 0;
+        commandExecutingCallCount_ = 0;
+        deactivateCallCount_ = 0;
+        stateChangedCallCount_ = 0;
+        stateChangingCallCount_ = 0;
     }
 
 
@@ -110,9 +111,9 @@ public class MockStageStrategy
         final IEngineContext context )
         throws GameException
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            ++m_activateCallCount;
+            ++activateCallCount_;
         }
 
         super.activate( stage, context );
@@ -123,14 +124,14 @@ public class MockStageStrategy
      */
     public void clearCalls()
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            m_activateCallCount = 0;
-            m_commandExecutedCallCount = 0;
-            m_commandExecutingCallCount = 0;
-            m_deactivateCallCount = 0;
-            m_stateChangedCallCount = 0;
-            m_stateChangingCallCount = 0;
+            activateCallCount_ = 0;
+            commandExecutedCallCount_ = 0;
+            commandExecutingCallCount_ = 0;
+            deactivateCallCount_ = 0;
+            stateChangedCallCount_ = 0;
+            stateChangingCallCount_ = 0;
         }
     }
 
@@ -141,9 +142,9 @@ public class MockStageStrategy
     public void commandExecuted(
         final CommandExecutedEvent event )
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            ++m_commandExecutedCallCount;
+            ++commandExecutedCallCount_;
         }
 
         super.commandExecuted( event );
@@ -157,9 +158,9 @@ public class MockStageStrategy
         final CommandExecutingEvent event )
         throws EngineException
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            ++m_commandExecutingCallCount;
+            ++commandExecutingCallCount_;
         }
 
         super.commandExecuting( event );
@@ -174,9 +175,9 @@ public class MockStageStrategy
         final IEngineContext context )
         throws GameException
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            ++m_deactivateCallCount;
+            ++deactivateCallCount_;
         }
 
         super.deactivate( stage, context );
@@ -189,9 +190,9 @@ public class MockStageStrategy
      */
     public int getActivateCallCount()
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            return m_activateCallCount;
+            return activateCallCount_;
         }
     }
 
@@ -202,9 +203,9 @@ public class MockStageStrategy
      */
     public int getCommandExecutedCallCount()
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            return m_commandExecutedCallCount;
+            return commandExecutedCallCount_;
         }
     }
 
@@ -215,9 +216,9 @@ public class MockStageStrategy
      */
     public int getCommandExecutingCallCount()
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            return m_commandExecutingCallCount;
+            return commandExecutingCallCount_;
         }
     }
 
@@ -228,9 +229,9 @@ public class MockStageStrategy
      */
     public int getDeactivateCallCount()
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            return m_deactivateCallCount;
+            return deactivateCallCount_;
         }
     }
 
@@ -241,9 +242,9 @@ public class MockStageStrategy
      */
     public int getStateChangedCallCount()
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            return m_stateChangedCallCount;
+            return stateChangedCallCount_;
         }
     }
 
@@ -254,9 +255,9 @@ public class MockStageStrategy
      */
     public int getStateChangingCallCount()
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            return m_stateChangingCallCount;
+            return stateChangingCallCount_;
         }
     }
 
@@ -284,9 +285,9 @@ public class MockStageStrategy
     public void stateChanged(
         final StateChangeEvent event )
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            ++m_stateChangedCallCount;
+            ++stateChangedCallCount_;
         }
 
         super.stateChanged( event );
@@ -300,9 +301,9 @@ public class MockStageStrategy
         final StateChangeEvent event )
         throws EngineException
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            ++m_stateChangingCallCount;
+            ++stateChangingCallCount_;
         }
 
         super.stateChanging( event );

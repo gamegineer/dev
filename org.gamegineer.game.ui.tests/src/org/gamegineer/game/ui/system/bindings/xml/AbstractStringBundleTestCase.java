@@ -51,7 +51,7 @@ public abstract class AbstractStringBundleTestCase
     private static final String TEST_VALUE = "value"; //$NON-NLS-1$
 
     /** The string bundle under test in the fixture. */
-    private IStringBundle m_bundle;
+    private IStringBundle bundle_;
 
 
     // ======================================================================
@@ -101,8 +101,8 @@ public abstract class AbstractStringBundleTestCase
     public void setUp()
         throws Exception
     {
-        m_bundle = createStringBundle( Collections.singletonMap( TEST_KEY, TEST_VALUE ) );
-        assertNotNull( m_bundle );
+        bundle_ = createStringBundle( Collections.singletonMap( TEST_KEY, TEST_VALUE ) );
+        assertNotNull( bundle_ );
     }
 
     /**
@@ -115,7 +115,7 @@ public abstract class AbstractStringBundleTestCase
     public void tearDown()
         throws Exception
     {
-        m_bundle = null;
+        bundle_ = null;
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class AbstractStringBundleTestCase
     @Test
     public void testContainsKey_Key_Absent()
     {
-        final boolean isKeyPresent = m_bundle.containsKey( "unknown" ); //$NON-NLS-1$
+        final boolean isKeyPresent = bundle_.containsKey( "unknown" ); //$NON-NLS-1$
 
         assertFalse( isKeyPresent );
     }
@@ -137,7 +137,7 @@ public abstract class AbstractStringBundleTestCase
     @Test( expected = NullPointerException.class )
     public void testContainsKey_Key_Null()
     {
-        m_bundle.containsKey( null );
+        bundle_.containsKey( null );
     }
 
     /**
@@ -147,7 +147,7 @@ public abstract class AbstractStringBundleTestCase
     @Test
     public void testContainsKey_Key_Present()
     {
-        final boolean isKeyPresent = m_bundle.containsKey( TEST_KEY );
+        final boolean isKeyPresent = bundle_.containsKey( TEST_KEY );
 
         assertTrue( isKeyPresent );
     }
@@ -159,7 +159,7 @@ public abstract class AbstractStringBundleTestCase
     @Test
     public void testGetKeys_OneOrMoreEntries()
     {
-        final Set<String> keys = m_bundle.getKeys();
+        final Set<String> keys = bundle_.getKeys();
 
         assertEquals( 1, keys.size() );
         assertTrue( keys.contains( TEST_KEY ) );
@@ -171,7 +171,7 @@ public abstract class AbstractStringBundleTestCase
     @Test
     public void testGetKeys_ReturnValue_Immutable()
     {
-        final Set<String> keys = m_bundle.getKeys();
+        final Set<String> keys = bundle_.getKeys();
 
         assertImmutableCollection( keys );
     }
@@ -182,7 +182,7 @@ public abstract class AbstractStringBundleTestCase
     @Test
     public void testGetKeys_ReturnValue_NonNull()
     {
-        final Set<String> keys = m_bundle.getKeys();
+        final Set<String> keys = bundle_.getKeys();
 
         assertNotNull( keys );
     }
@@ -212,7 +212,7 @@ public abstract class AbstractStringBundleTestCase
     @Test
     public void testGetString_Key_Absent()
     {
-        final String actualValue = m_bundle.getString( "unknown" ); //$NON-NLS-1$
+        final String actualValue = bundle_.getString( "unknown" ); //$NON-NLS-1$
 
         assertNull( actualValue );
     }
@@ -224,7 +224,7 @@ public abstract class AbstractStringBundleTestCase
     @Test( expected = NullPointerException.class )
     public void testGetString_Key_Null()
     {
-        m_bundle.getString( null );
+        bundle_.getString( null );
     }
 
     /**
@@ -234,7 +234,7 @@ public abstract class AbstractStringBundleTestCase
     @Test
     public void testGetString_Key_Present()
     {
-        final String actualValue = m_bundle.getString( TEST_KEY );
+        final String actualValue = bundle_.getString( TEST_KEY );
 
         assertEquals( actualValue, TEST_VALUE );
     }

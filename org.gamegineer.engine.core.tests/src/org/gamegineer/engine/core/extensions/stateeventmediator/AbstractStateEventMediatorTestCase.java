@@ -41,10 +41,10 @@ public abstract class AbstractStateEventMediatorTestCase
     // ======================================================================
 
     /** The engine context for use in the fixture. */
-    private IEngineContext m_context;
+    private IEngineContext context_;
 
     /** The state event mediator under test in the fixture. */
-    private IStateEventMediator m_mediator;
+    private IStateEventMediator mediator_;
 
 
     // ======================================================================
@@ -52,8 +52,8 @@ public abstract class AbstractStateEventMediatorTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractStateEventMediatorTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractStateEventMediatorTestCase} class.
      */
     protected AbstractStateEventMediatorTestCase()
     {
@@ -114,9 +114,9 @@ public abstract class AbstractStateEventMediatorTestCase
     public void setUp()
         throws Exception
     {
-        m_context = createEngineContext();
-        m_mediator = createStateEventMediator( m_context );
-        assertNotNull( m_mediator );
+        context_ = createEngineContext();
+        mediator_ = createStateEventMediator( context_ );
+        assertNotNull( mediator_ );
     }
 
     /**
@@ -129,8 +129,8 @@ public abstract class AbstractStateEventMediatorTestCase
     public void tearDown()
         throws Exception
     {
-        m_mediator = null;
-        m_context = null;
+        mediator_ = null;
+        context_ = null;
     }
 
     /**
@@ -140,7 +140,7 @@ public abstract class AbstractStateEventMediatorTestCase
     @Test( expected = NullPointerException.class )
     public void testAddStateListener_Context_Null()
     {
-        m_mediator.addStateListener( null, createDummy( IStateListener.class ) );
+        mediator_.addStateListener( null, createDummy( IStateListener.class ) );
     }
 
     /**
@@ -150,7 +150,7 @@ public abstract class AbstractStateEventMediatorTestCase
     @Test( expected = NullPointerException.class )
     public void testAddStateListener_Listener_Null()
     {
-        m_mediator.addStateListener( m_context, null );
+        mediator_.addStateListener( context_, null );
     }
 
     /**
@@ -161,9 +161,9 @@ public abstract class AbstractStateEventMediatorTestCase
     public void testAddStateListener_Listener_Registered()
     {
         final IStateListener listener = new MockStateListener();
-        m_mediator.addStateListener( m_context, listener );
+        mediator_.addStateListener( context_, listener );
 
-        m_mediator.addStateListener( m_context, listener );
+        mediator_.addStateListener( context_, listener );
     }
 
     /**
@@ -173,7 +173,7 @@ public abstract class AbstractStateEventMediatorTestCase
     @Test( expected = NullPointerException.class )
     public void testRemoveStateListener_Context_Null()
     {
-        m_mediator.removeStateListener( null, createDummy( IStateListener.class ) );
+        mediator_.removeStateListener( null, createDummy( IStateListener.class ) );
     }
 
     /**
@@ -183,7 +183,7 @@ public abstract class AbstractStateEventMediatorTestCase
     @Test( expected = NullPointerException.class )
     public void testRemoveStateListener_Listener_Null()
     {
-        m_mediator.removeStateListener( m_context, null );
+        mediator_.removeStateListener( context_, null );
     }
 
     /**
@@ -193,6 +193,6 @@ public abstract class AbstractStateEventMediatorTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveStateListener_Listener_Unregistered()
     {
-        m_mediator.removeStateListener( m_context, new MockStateListener() );
+        mediator_.removeStateListener( context_, new MockStateListener() );
     }
 }

@@ -47,7 +47,7 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
     // ======================================================================
 
     /** The engine under test in the fixture. */
-    private T m_engine;
+    private T engine_;
 
 
     // ======================================================================
@@ -124,8 +124,8 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
     /* @NonNull */
     protected final T getEngine()
     {
-        assertNotNull( m_engine );
-        return m_engine;
+        assertNotNull( engine_ );
+        return engine_;
     }
 
     /**
@@ -138,8 +138,8 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
     public void setUp()
         throws Exception
     {
-        m_engine = createEngine();
-        assertNotNull( m_engine );
+        engine_ = createEngine();
+        assertNotNull( engine_ );
     }
 
     /**
@@ -152,8 +152,8 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
     public void tearDown()
         throws Exception
     {
-        m_engine.shutdown();
-        m_engine = null;
+        engine_.shutdown();
+        engine_ = null;
     }
 
     /**
@@ -206,9 +206,9 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
                 return null;
             }
         };
-        m_engine.executeCommand( command );
+        engine_.executeCommand( command );
 
-        final List<IInvertibleCommand<?>> commandList = getCommandHistory( m_engine );
+        final List<IInvertibleCommand<?>> commandList = getCommandHistory( engine_ );
         assertTrue( commandList.contains( command ) );
     }
 
@@ -234,7 +234,7 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
                 return null;
             }
         };
-        m_engine.executeCommand( writeCommand );
+        engine_.executeCommand( writeCommand );
 
         final ICommand<Object> readCommand = new MockCommand<Object>()
         {
@@ -245,7 +245,7 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
                 return context.getState().getAttribute( name );
             }
         };
-        assertEquals( value, m_engine.executeCommand( readCommand ) );
+        assertEquals( value, engine_.executeCommand( readCommand ) );
     }
 
     /**
@@ -270,9 +270,9 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
                 return null;
             }
         };
-        m_engine.executeCommand( command );
+        engine_.executeCommand( command );
 
-        final List<IInvertibleCommand<?>> commandList = getCommandHistory( m_engine );
+        final List<IInvertibleCommand<?>> commandList = getCommandHistory( engine_ );
         assertFalse( commandList.contains( command ) );
     }
 
@@ -297,9 +297,9 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
                 return null;
             }
         };
-        m_engine.executeCommand( command );
+        engine_.executeCommand( command );
 
-        final List<IInvertibleCommand<?>> commandList = getCommandHistory( m_engine );
+        final List<IInvertibleCommand<?>> commandList = getCommandHistory( engine_ );
         assertFalse( commandList.contains( command ) );
     }
 
@@ -325,7 +325,7 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
                 throw new EngineException();
             }
         };
-        m_engine.executeCommand( command );
+        engine_.executeCommand( command );
     }
 
     /**
@@ -339,7 +339,7 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
     public void testExecuteCommand_Command_Null()
         throws Exception
     {
-        m_engine.executeCommand( null );
+        engine_.executeCommand( null );
     }
 
     /**
@@ -363,7 +363,7 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
                 throw new UnsupportedOperationException();
             }
         };
-        m_engine.executeCommand( command );
+        engine_.executeCommand( command );
     }
 
     /**
@@ -387,7 +387,7 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
                 return result;
             }
         };
-        assertEquals( result, m_engine.executeCommand( command ) );
+        assertEquals( result, engine_.executeCommand( command ) );
     }
 
     /**
@@ -401,9 +401,9 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
     public void testExecuteCommand_Shutdown()
         throws Exception
     {
-        m_engine.shutdown();
+        engine_.shutdown();
 
-        m_engine.executeCommand( new MockCommand<Void>() );
+        engine_.executeCommand( new MockCommand<Void>() );
     }
 
     /**
@@ -413,7 +413,7 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
     @Test
     public void testIsShutdown_Running()
     {
-        assertFalse( m_engine.isShutdown() );
+        assertFalse( engine_.isShutdown() );
     }
 
     /**
@@ -427,9 +427,9 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
     public void testIsShutdown_Shutdown()
         throws Exception
     {
-        m_engine.shutdown();
+        engine_.shutdown();
 
-        assertTrue( m_engine.isShutdown() );
+        assertTrue( engine_.isShutdown() );
     }
 
     /**
@@ -443,11 +443,11 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
     public void testShutdown_MultipleCalls()
         throws Exception
     {
-        m_engine.shutdown();
+        engine_.shutdown();
 
-        m_engine.shutdown();
+        engine_.shutdown();
 
-        assertTrue( m_engine.isShutdown() );
+        assertTrue( engine_.isShutdown() );
     }
 
     /**
@@ -474,7 +474,7 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
         };
         try
         {
-            m_engine.submitCommand( command ).get();
+            engine_.submitCommand( command ).get();
         }
         catch( final ExecutionException e )
         {
@@ -495,7 +495,7 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
     @Test( expected = NullPointerException.class )
     public void testSubmitCommand_Command_Null()
     {
-        m_engine.submitCommand( null );
+        engine_.submitCommand( null );
     }
 
     /**
@@ -521,7 +521,7 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
         };
         try
         {
-            m_engine.submitCommand( command ).get();
+            engine_.submitCommand( command ).get();
         }
         catch( final ExecutionException e )
         {
@@ -556,7 +556,7 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
                 return result;
             }
         };
-        assertEquals( result, m_engine.submitCommand( command ).get() );
+        assertEquals( result, engine_.submitCommand( command ).get() );
     }
 
     /**
@@ -570,8 +570,8 @@ public abstract class AbstractEngineTestCase<T extends IEngine>
     public void testSubmitCommand_Shutdown()
         throws Exception
     {
-        m_engine.shutdown();
+        engine_.shutdown();
 
-        m_engine.submitCommand( new MockCommand<Void>() );
+        engine_.submitCommand( new MockCommand<Void>() );
     }
 }

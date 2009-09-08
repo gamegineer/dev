@@ -49,16 +49,16 @@ public class FakeCommandletContext
     // ======================================================================
 
     /** The commandlet argument list. */
-    private final List<String> m_argList;
+    private final List<String> argList_;
 
     /** The console from which the commandlet was executed. */
-    private final IConsole m_console;
+    private final IConsole console_;
 
     /** The game client against which the commandlet is executed. */
-    private final IGameClient m_gameClient;
+    private final IGameClient gameClient_;
 
     /** The console statelet. */
-    private final IStatelet m_statelet;
+    private final IStatelet statelet_;
 
 
     // ======================================================================
@@ -98,10 +98,10 @@ public class FakeCommandletContext
         assertArgumentNotNull( gameClient, "gameClient" ); //$NON-NLS-1$
         assertArgumentNotNull( argList, "argList" ); //$NON-NLS-1$
 
-        m_console = console;
-        m_statelet = statelet;
-        m_gameClient = gameClient;
-        m_argList = Collections.unmodifiableList( argList );
+        console_ = console;
+        statelet_ = statelet;
+        gameClient_ = gameClient;
+        argList_ = Collections.unmodifiableList( argList );
     }
 
 
@@ -114,7 +114,7 @@ public class FakeCommandletContext
      */
     public List<String> getArguments()
     {
-        return m_argList;
+        return argList_;
     }
 
     /*
@@ -122,7 +122,7 @@ public class FakeCommandletContext
      */
     public IConsole getConsole()
     {
-        return m_console;
+        return console_;
     }
 
     /*
@@ -130,7 +130,7 @@ public class FakeCommandletContext
      */
     public IGameClient getGameClient()
     {
-        return m_gameClient;
+        return gameClient_;
     }
 
     /*
@@ -138,6 +138,6 @@ public class FakeCommandletContext
      */
     public IStatelet getStatelet()
     {
-        return m_statelet;
+        return statelet_;
     }
 }

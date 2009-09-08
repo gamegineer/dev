@@ -47,7 +47,7 @@ public final class CommandQueueExtension
     // ======================================================================
 
     /** The command queue to which all operations are delegated. */
-    private final ICommandQueue m_delegate;
+    private final ICommandQueue delegate_;
 
 
     // ======================================================================
@@ -72,7 +72,7 @@ public final class CommandQueueExtension
 
         assertArgumentNotNull( delegate, "delegate" ); //$NON-NLS-1$
 
-        m_delegate = delegate;
+        delegate_ = delegate;
     }
 
 
@@ -89,7 +89,7 @@ public final class CommandQueueExtension
     /* @NonNull */
     ICommandQueue getDelegate()
     {
-        return m_delegate;
+        return delegate_;
     }
 
     /**
@@ -107,6 +107,6 @@ public final class CommandQueueExtension
         assertArgumentNotNull( command, "command" ); //$NON-NLS-1$
         assertExtensionStarted();
 
-        return m_delegate.submitCommand( context, command );
+        return delegate_.submitCommand( context, command );
     }
 }

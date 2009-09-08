@@ -1,6 +1,6 @@
 /*
  * Memento.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,7 +51,7 @@ public final class Memento
     // ======================================================================
 
     /** The attribute map. */
-    private final Map<String, Object> m_attributeMap;
+    private final Map<String, Object> attributeMap_;
 
 
     // ======================================================================
@@ -73,7 +73,7 @@ public final class Memento
     {
         assertArgumentNotNull( attributeMap, "attributeMap" ); //$NON-NLS-1$
 
-        m_attributeMap = Collections.unmodifiableMap( new HashMap<String, Object>( attributeMap ) );
+        attributeMap_ = Collections.unmodifiableMap( new HashMap<String, Object>( attributeMap ) );
     }
 
 
@@ -89,7 +89,7 @@ public final class Memento
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return m_attributeMap.containsKey( name );
+        return attributeMap_.containsKey( name );
     }
 
     /*
@@ -115,7 +115,7 @@ public final class Memento
         {
             otherAttributeMap.put( name, other.getAttribute( name ) );
         }
-        return m_attributeMap.equals( otherAttributeMap );
+        return attributeMap_.equals( otherAttributeMap );
     }
 
     /*
@@ -125,10 +125,10 @@ public final class Memento
         final String name )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( m_attributeMap.containsKey( name ), "name", Messages.Memento_attribute_absent( name ) ); //$NON-NLS-1$
+        assertArgumentLegal( attributeMap_.containsKey( name ), "name", Messages.Memento_attribute_absent( name ) ); //$NON-NLS-1$
 
         @SuppressWarnings( "unchecked" )
-        final T value = (T)m_attributeMap.get( name );
+        final T value = (T)attributeMap_.get( name );
         return value;
     }
 
@@ -137,7 +137,7 @@ public final class Memento
      */
     public Set<String> getAttributeNames()
     {
-        return m_attributeMap.keySet();
+        return attributeMap_.keySet();
     }
 
     /**
@@ -150,7 +150,7 @@ public final class Memento
     /* @NonNull */
     public Map<String, Object> getAttributes()
     {
-        return m_attributeMap;
+        return attributeMap_;
     }
 
     /*
@@ -160,7 +160,7 @@ public final class Memento
     public int hashCode()
     {
         int result = 17;
-        result = result * 31 + m_attributeMap.hashCode();
+        result = result * 31 + attributeMap_.hashCode();
         return result;
     }
 }

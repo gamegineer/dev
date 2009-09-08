@@ -37,7 +37,7 @@ public abstract class AbstractGameClientConfigurationTestCase
     // ======================================================================
 
     /** The game client configuration under test in the fixture. */
-    private IGameClientConfiguration m_config;
+    private IGameClientConfiguration config_;
 
 
     // ======================================================================
@@ -45,8 +45,8 @@ public abstract class AbstractGameClientConfigurationTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractGameClientConfigurationTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractGameClientConfigurationTestCase} class.
      */
     protected AbstractGameClientConfigurationTestCase()
     {
@@ -80,8 +80,8 @@ public abstract class AbstractGameClientConfigurationTestCase
     public void setUp()
         throws Exception
     {
-        m_config = createGameClientConfiguration();
-        assertNotNull( m_config );
+        config_ = createGameClientConfiguration();
+        assertNotNull( config_ );
     }
 
     /**
@@ -94,16 +94,16 @@ public abstract class AbstractGameClientConfigurationTestCase
     public void tearDown()
         throws Exception
     {
-        m_config = null;
+        config_ = null;
     }
 
     /**
-     * Ensures the {@code getGameSystemUiSource} method does not return
-     * {@code null}.
+     * Ensures the {@code getGameSystemUiSource} method does not return {@code
+     * null}.
      */
     @Test
     public void testGetGameSystemUiSource_ReturnValue_NonNull()
     {
-        assertNotNull( m_config.getGameSystemUiSource() );
+        assertNotNull( config_.getGameSystemUiSource() );
     }
 }

@@ -53,10 +53,10 @@ public final class Configurations
     // ======================================================================
 
     /** The next unique game identifier. */
-    private static final AtomicLong c_nextGameId = new AtomicLong();
+    private static final AtomicLong nextGameId_ = new AtomicLong();
 
     /** The next unique user identifier. */
-    private static final AtomicLong c_nextUserId = new AtomicLong();
+    private static final AtomicLong nextUserId_ = new AtomicLong();
 
 
     // ======================================================================
@@ -512,7 +512,7 @@ public final class Configurations
     @SuppressWarnings( "boxing" )
     private static String getUniqueGameIdentifier()
     {
-        return String.format( "game-%1$d", c_nextGameId.incrementAndGet() ); //$NON-NLS-1$
+        return String.format( "game-%1$d", nextGameId_.incrementAndGet() ); //$NON-NLS-1$
     }
 
     /**
@@ -524,7 +524,7 @@ public final class Configurations
     @SuppressWarnings( "boxing" )
     private static String getUniqueUserIdentifier()
     {
-        return String.format( "user-%1$d", c_nextUserId.incrementAndGet() ); //$NON-NLS-1$
+        return String.format( "user-%1$d", nextUserId_.incrementAndGet() ); //$NON-NLS-1$
     }
 
 

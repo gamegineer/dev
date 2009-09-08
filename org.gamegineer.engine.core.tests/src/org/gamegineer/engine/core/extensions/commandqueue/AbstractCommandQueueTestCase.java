@@ -46,10 +46,10 @@ public abstract class AbstractCommandQueueTestCase
     // ======================================================================
 
     /** The command queue under test in the fixture. */
-    private ICommandQueue m_commandQueue;
+    private ICommandQueue commandQueue_;
 
     /** The engine context for use in the fixture. */
-    private IEngineContext m_context;
+    private IEngineContext context_;
 
 
     // ======================================================================
@@ -119,9 +119,9 @@ public abstract class AbstractCommandQueueTestCase
     public void setUp()
         throws Exception
     {
-        m_context = createEngineContext();
-        m_commandQueue = createCommandQueue( m_context );
-        assertNotNull( m_commandQueue );
+        context_ = createEngineContext();
+        commandQueue_ = createCommandQueue( context_ );
+        assertNotNull( commandQueue_ );
     }
 
     /**
@@ -150,8 +150,8 @@ public abstract class AbstractCommandQueueTestCase
     public void tearDown()
         throws Exception
     {
-        m_commandQueue = null;
-        m_context = null;
+        commandQueue_ = null;
+        context_ = null;
     }
 
     /**
@@ -179,7 +179,7 @@ public abstract class AbstractCommandQueueTestCase
 
         try
         {
-            m_commandQueue.submitCommand( m_context, command ).get();
+            commandQueue_.submitCommand( context_, command ).get();
         }
         catch( final ExecutionException e )
         {
@@ -199,7 +199,7 @@ public abstract class AbstractCommandQueueTestCase
     @Test( expected = NullPointerException.class )
     public void testSubmitCommand_Command_Null()
     {
-        m_commandQueue.submitCommand( m_context, null );
+        commandQueue_.submitCommand( context_, null );
     }
 
     /**
@@ -226,7 +226,7 @@ public abstract class AbstractCommandQueueTestCase
 
         try
         {
-            m_commandQueue.submitCommand( m_context, command ).get();
+            commandQueue_.submitCommand( context_, command ).get();
         }
         catch( final ExecutionException e )
         {
@@ -247,7 +247,7 @@ public abstract class AbstractCommandQueueTestCase
     @Test( expected = NullPointerException.class )
     public void testSubmitCommand_Context_Null()
     {
-        m_commandQueue.submitCommand( null, new MockCommand<Void>() );
+        commandQueue_.submitCommand( null, new MockCommand<Void>() );
     }
 
     /**
@@ -272,7 +272,7 @@ public abstract class AbstractCommandQueueTestCase
             }
         };
 
-        final String actualResult = m_commandQueue.submitCommand( m_context, command ).get();
+        final String actualResult = commandQueue_.submitCommand( context_, command ).get();
 
         assertEquals( expectedResult, actualResult );
     }
@@ -289,8 +289,8 @@ public abstract class AbstractCommandQueueTestCase
         throws Exception
     {
         final ICommand<Void> command = new MockCommand<Void>();
-        shutdownCommandQueue( m_commandQueue );
+        shutdownCommandQueue( commandQueue_ );
 
-        m_commandQueue.submitCommand( m_context, command );
+        commandQueue_.submitCommand( context_, command );
     }
 }

@@ -97,7 +97,7 @@ public final class TicTacToeGameFactory
         // ==================================================================
 
         /** The actual game. */
-        private final IGame m_game;
+        private final IGame game_;
 
 
         // ==================================================================
@@ -116,7 +116,7 @@ public final class TicTacToeGameFactory
         {
             assert game != null;
 
-            m_game = game;
+            game_ = game;
         }
 
 
@@ -144,7 +144,7 @@ public final class TicTacToeGameFactory
          */
         public String getId()
         {
-            return m_game.getId();
+            return game_.getId();
         }
 
         /*
@@ -152,7 +152,7 @@ public final class TicTacToeGameFactory
          */
         public String getName()
         {
-            return m_game.getName();
+            return game_.getName();
         }
 
         /*
@@ -160,7 +160,7 @@ public final class TicTacToeGameFactory
          */
         public String getSystemId()
         {
-            return m_game.getSystemId();
+            return game_.getSystemId();
         }
 
         /*
@@ -168,7 +168,7 @@ public final class TicTacToeGameFactory
          */
         public boolean isComplete()
         {
-            return m_game.isComplete();
+            return game_.isComplete();
         }
 
         /*
@@ -178,7 +178,7 @@ public final class TicTacToeGameFactory
             final ICommand<T> command )
             throws EngineException
         {
-            return m_game.executeCommand( command );
+            return game_.executeCommand( command );
         }
 
         /*
@@ -186,7 +186,7 @@ public final class TicTacToeGameFactory
          */
         public boolean isShutdown()
         {
-            return m_game.isShutdown();
+            return game_.isShutdown();
         }
 
         /*
@@ -195,7 +195,7 @@ public final class TicTacToeGameFactory
         public void shutdown()
             throws InterruptedException
         {
-            m_game.shutdown();
+            game_.shutdown();
         }
 
         /*
@@ -204,7 +204,7 @@ public final class TicTacToeGameFactory
         public <T> Future<T> submitCommand(
             final ICommand<T> command )
         {
-            return m_game.submitCommand( command );
+            return game_.submitCommand( command );
         }
     }
 }

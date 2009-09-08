@@ -1,6 +1,6 @@
 /*
  * AbstractStateEventTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -43,7 +43,7 @@ public abstract class AbstractStateEventTestCase<T extends IStateEvent>
     // ======================================================================
 
     /** The state event under test in the fixture. */
-    private T m_event;
+    private T event_;
 
 
     // ======================================================================
@@ -80,8 +80,8 @@ public abstract class AbstractStateEventTestCase<T extends IStateEvent>
     /* @NonNull */
     protected final T getStateEvent()
     {
-        assertNotNull( m_event );
-        return m_event;
+        assertNotNull( event_ );
+        return event_;
     }
 
     /**
@@ -94,8 +94,8 @@ public abstract class AbstractStateEventTestCase<T extends IStateEvent>
     public void setUp()
         throws Exception
     {
-        m_event = createStateEvent();
-        assertNotNull( m_event );
+        event_ = createStateEvent();
+        assertNotNull( event_ );
     }
 
     /**
@@ -108,7 +108,7 @@ public abstract class AbstractStateEventTestCase<T extends IStateEvent>
     public void tearDown()
         throws Exception
     {
-        m_event = null;
+        event_ = null;
     }
 
     /**
@@ -117,7 +117,7 @@ public abstract class AbstractStateEventTestCase<T extends IStateEvent>
     @Test
     public void testGetEngineContext_ReturnValue_NonNull()
     {
-        assertNotNull( m_event.getEngineContext() );
+        assertNotNull( event_.getEngineContext() );
     }
 
     /**
@@ -127,6 +127,6 @@ public abstract class AbstractStateEventTestCase<T extends IStateEvent>
     @Test( expected = UnsupportedOperationException.class )
     public void testGetEngineContext_State_Immutable()
     {
-        m_event.getEngineContext().getState().addAttribute( new AttributeName( Scope.APPLICATION, "my_attribute_name" ), "value" ); //$NON-NLS-1$ //$NON-NLS-2$
+        event_.getEngineContext().getState().addAttribute( new AttributeName( Scope.APPLICATION, "my_attribute_name" ), "value" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

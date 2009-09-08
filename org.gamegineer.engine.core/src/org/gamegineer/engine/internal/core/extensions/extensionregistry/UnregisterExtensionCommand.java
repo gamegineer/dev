@@ -48,7 +48,7 @@ public final class UnregisterExtensionCommand
     // ======================================================================
 
     /** The extension to unregister. */
-    private final IExtension m_extension;
+    private final IExtension extension_;
 
 
     // ======================================================================
@@ -71,7 +71,7 @@ public final class UnregisterExtensionCommand
     {
         assertArgumentNotNull( extension, "extension" ); //$NON-NLS-1$
 
-        m_extension = extension;
+        extension_ = extension;
     }
 
 
@@ -94,7 +94,7 @@ public final class UnregisterExtensionCommand
             throw new EngineException( Messages.Common_extensionRegistryExtension_unavailable );
         }
 
-        registry.unregisterExtension( context, m_extension );
+        registry.unregisterExtension( context, extension_ );
 
         return null;
     }
@@ -104,6 +104,6 @@ public final class UnregisterExtensionCommand
      */
     public IInvertibleCommand<Void> getInverseCommand()
     {
-        return new RegisterExtensionCommand( m_extension );
+        return new RegisterExtensionCommand( extension_ );
     }
 }

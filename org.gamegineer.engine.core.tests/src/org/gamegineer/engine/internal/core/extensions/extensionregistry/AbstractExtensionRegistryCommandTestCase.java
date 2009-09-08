@@ -51,13 +51,13 @@ public abstract class AbstractExtensionRegistryCommandTestCase<C extends IComman
     // ======================================================================
 
     /** The mock extension to be manipulated by the command. */
-    protected final static IExtension MOCK_EXTENSION = new MockExtension( Object.class );
+    protected static final IExtension MOCK_EXTENSION = new MockExtension( Object.class );
 
     /** The command under test in the fixture. */
-    private C m_command;
+    private C command_;
 
     /** The engine context for the fixture. */
-    private EngineContext m_context;
+    private EngineContext context_;
 
 
     // ======================================================================
@@ -65,8 +65,8 @@ public abstract class AbstractExtensionRegistryCommandTestCase<C extends IComman
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractExtensionRegistryCommandTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractExtensionRegistryCommandTestCase} class.
      */
     protected AbstractExtensionRegistryCommandTestCase()
     {
@@ -98,8 +98,8 @@ public abstract class AbstractExtensionRegistryCommandTestCase<C extends IComman
     /* @NonNull */
     protected final C getCommand()
     {
-        assertNotNull( m_command );
-        return m_command;
+        assertNotNull( command_ );
+        return command_;
     }
 
     /**
@@ -114,8 +114,8 @@ public abstract class AbstractExtensionRegistryCommandTestCase<C extends IComman
     /* @NonNull */
     protected final EngineContext getEngineContext()
     {
-        assertNotNull( m_context );
-        return m_context;
+        assertNotNull( context_ );
+        return context_;
     }
 
     /**
@@ -128,9 +128,9 @@ public abstract class AbstractExtensionRegistryCommandTestCase<C extends IComman
     public void setUp()
         throws Exception
     {
-        m_command = createCommand();
-        assertNotNull( m_command );
-        m_context = new EngineContext();
+        command_ = createCommand();
+        assertNotNull( command_ );
+        context_ = new EngineContext();
     }
 
     /**
@@ -143,8 +143,8 @@ public abstract class AbstractExtensionRegistryCommandTestCase<C extends IComman
     public void tearDown()
         throws Exception
     {
-        m_context = null;
-        m_command = null;
+        context_ = null;
+        command_ = null;
     }
 
     /**
@@ -158,7 +158,7 @@ public abstract class AbstractExtensionRegistryCommandTestCase<C extends IComman
     public void testExecute_ExtensionRegistry_Unavailable()
         throws Exception
     {
-        m_command.execute( new FakeEngineContext() );
+        command_.execute( new FakeEngineContext() );
     }
 
     /**
@@ -191,7 +191,7 @@ public abstract class AbstractExtensionRegistryCommandTestCase<C extends IComman
         // ==================================================================
 
         /** The extension registry. */
-        private final FakeExtensionRegistry m_extensionRegistry;
+        private final FakeExtensionRegistry extensionRegistry_;
 
 
         // ==================================================================
@@ -203,7 +203,7 @@ public abstract class AbstractExtensionRegistryCommandTestCase<C extends IComman
          */
         EngineContext()
         {
-            m_extensionRegistry = new FakeExtensionRegistry();
+            extensionRegistry_ = new FakeExtensionRegistry();
         }
 
 
@@ -222,10 +222,10 @@ public abstract class AbstractExtensionRegistryCommandTestCase<C extends IComman
 
             if( type == IExtensionRegistry.class )
             {
-                return type.cast( m_extensionRegistry );
+                return type.cast( extensionRegistry_ );
             }
 
-            final IExtension extension = m_extensionRegistry.getExtension( this, type );
+            final IExtension extension = extensionRegistry_.getExtension( this, type );
             if( extension != null )
             {
                 return type.cast( extension );

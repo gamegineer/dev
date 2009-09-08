@@ -46,13 +46,13 @@ final class CommandHistory
      * executed by the engine.
      * 
      * <p>
-     * Entries with an index less than {@code m_nextEntryIndex} represent
+     * Entries with an index less than {@code nextEntryIndex_} represent
      * commands that can be undone. Entries with an index greater than or equal
-     * to {@code m_nextEntryIndex} represent commands that have been undone and
+     * to {@code nextEntryIndex_} represent commands that have been undone and
      * can be redone.
      * </p>
      */
-    private final List<Entry> m_entries;
+    private final List<Entry> entries_;
 
     /**
      * The index in the entry list representing the location where the next
@@ -64,7 +64,7 @@ final class CommandHistory
      * non-empty undo history, this index will point somewhere within the list.
      * </p>
      */
-    private int m_nextEntryIndex;
+    private int nextEntryIndex_;
 
 
     // ======================================================================
@@ -76,8 +76,8 @@ final class CommandHistory
      */
     CommandHistory()
     {
-        m_entries = new ArrayList<Entry>();
-        m_nextEntryIndex = 0;
+        entries_ = new ArrayList<Entry>();
+        nextEntryIndex_ = 0;
     }
 
 
@@ -117,9 +117,9 @@ final class CommandHistory
     {
         assert entry != null;
 
-        m_entries.subList( m_nextEntryIndex, m_entries.size() ).clear();
-        m_entries.add( entry );
-        ++m_nextEntryIndex;
+        entries_.subList( nextEntryIndex_, entries_.size() ).clear();
+        entries_.add( entry );
+        ++nextEntryIndex_;
     }
 
     /**
@@ -129,7 +129,7 @@ final class CommandHistory
      */
     boolean canRedo()
     {
-        return m_nextEntryIndex < m_entries.size();
+        return nextEntryIndex_ < entries_.size();
     }
 
     /**
@@ -139,7 +139,7 @@ final class CommandHistory
      */
     boolean canUndo()
     {
-        return m_nextEntryIndex > 0;
+        return nextEntryIndex_ > 0;
     }
 
     /*
@@ -160,7 +160,7 @@ final class CommandHistory
         }
 
         final CommandHistory other = (CommandHistory)obj;
-        return (m_nextEntryIndex == other.m_nextEntryIndex) && m_entries.equals( other.m_entries );
+        return (nextEntryIndex_ == other.nextEntryIndex_) && entries_.equals( other.entries_ );
     }
 
     /**
@@ -178,7 +178,7 @@ final class CommandHistory
     /* @NonNull */
     List<Entry> getEntries()
     {
-        return new ArrayList<Entry>( m_entries.subList( 0, m_nextEntryIndex ) );
+        return new ArrayList<Entry>( entries_.subList( 0, nextEntryIndex_ ) );
     }
 
     /**
@@ -200,7 +200,7 @@ final class CommandHistory
     {
         assert canRedo();
 
-        return m_entries.get( m_nextEntryIndex );
+        return entries_.get( nextEntryIndex_ );
     }
 
     /**
@@ -222,7 +222,7 @@ final class CommandHistory
     {
         assert canUndo();
 
-        return m_entries.get( m_nextEntryIndex - 1 );
+        return entries_.get( nextEntryIndex_ - 1 );
     }
 
     /*
@@ -232,8 +232,8 @@ final class CommandHistory
     public int hashCode()
     {
         int result = 17;
-        result = 37 * result + m_entries.hashCode();
-        result = 37 * result + m_nextEntryIndex;
+        result = 37 * result + entries_.hashCode();
+        result = 37 * result + nextEntryIndex_;
         return result;
     }
 
@@ -249,7 +249,7 @@ final class CommandHistory
     {
         assert canRedo();
 
-        ++m_nextEntryIndex;
+        ++nextEntryIndex_;
     }
 
     /**
@@ -265,9 +265,9 @@ final class CommandHistory
     {
         assert entries != null;
 
-        m_entries.clear();
-        m_entries.addAll( entries );
-        m_nextEntryIndex = m_entries.size();
+        entries_.clear();
+        entries_.addAll( entries );
+        nextEntryIndex_ = entries_.size();
     }
 
     /**
@@ -282,7 +282,7 @@ final class CommandHistory
     {
         assert canUndo();
 
-        --m_nextEntryIndex;
+        --nextEntryIndex_;
     }
 
 
@@ -312,10 +312,10 @@ final class CommandHistory
         // ==================================================================
 
         /** The command. */
-        private final IInvertibleCommand<?> m_command;
+        private final IInvertibleCommand<?> command_;
 
         /** The command context. */
-        private final ICommandContext m_commandContext;
+        private final ICommandContext commandContext_;
 
 
         // ==================================================================
@@ -339,8 +339,8 @@ final class CommandHistory
             assert command != null;
             assert commandContext != null;
 
-            m_command = command;
-            m_commandContext = commandContext;
+            command_ = command;
+            commandContext_ = commandContext;
         }
 
 
@@ -366,7 +366,7 @@ final class CommandHistory
             }
 
             final Entry other = (Entry)obj;
-            return m_command.equals( other.m_command ) && m_commandContext.equals( other.m_commandContext );
+            return command_.equals( other.command_ ) && commandContext_.equals( other.commandContext_ );
         }
 
         /**
@@ -377,7 +377,7 @@ final class CommandHistory
         /* @NonNull */
         IInvertibleCommand<?> getCommand()
         {
-            return m_command;
+            return command_;
         }
 
         /**
@@ -388,7 +388,7 @@ final class CommandHistory
         /* @NonNull */
         ICommandContext getCommandContext()
         {
-            return m_commandContext;
+            return commandContext_;
         }
 
         /*
@@ -398,8 +398,8 @@ final class CommandHistory
         public int hashCode()
         {
             int result = 17;
-            result = 37 * result + m_command.hashCode();
-            result = 37 * result + m_commandContext.hashCode();
+            result = 37 * result + command_.hashCode();
+            result = 37 * result + commandContext_.hashCode();
             return result;
         }
     }

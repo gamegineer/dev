@@ -57,7 +57,7 @@ public final class InitializeEngineCommand
     // ======================================================================
 
     /** The game configuration. */
-    private final IGameConfiguration m_gameConfig;
+    private final IGameConfiguration gameConfig_;
 
 
     // ======================================================================
@@ -80,7 +80,7 @@ public final class InitializeEngineCommand
     {
         assertArgumentNotNull( gameConfig, "gameConfig" ); //$NON-NLS-1$
 
-        m_gameConfig = gameConfig;
+        gameConfig_ = gameConfig;
     }
 
 
@@ -100,13 +100,13 @@ public final class InitializeEngineCommand
         final IState state = context.getState();
 
         // Add simple game attributes
-        GameAttributes.GAME_ID.add( state, m_gameConfig.getId() );
-        GameAttributes.GAME_NAME.add( state, m_gameConfig.getName() );
-        GameAttributes.GAME_SYSTEM_ID.add( state, m_gameConfig.getSystem().getId() );
+        GameAttributes.GAME_ID.add( state, gameConfig_.getId() );
+        GameAttributes.GAME_NAME.add( state, gameConfig_.getName() );
+        GameAttributes.GAME_SYSTEM_ID.add( state, gameConfig_.getSystem().getId() );
 
         // Add game player list
         final List<Player> players = new ArrayList<Player>();
-        for( final IPlayerConfiguration playerConfig : m_gameConfig.getPlayers() )
+        for( final IPlayerConfiguration playerConfig : gameConfig_.getPlayers() )
         {
             players.add( new Player( getRole( playerConfig.getRoleId() ), playerConfig.getUserId() ) );
         }
@@ -117,7 +117,7 @@ public final class InitializeEngineCommand
         builder.setId( "org.gamegineer.game.stage.root" ); //$NON-NLS-1$
         builder.setCardinality( 0 );
         builder.setStrategy( new RootStageStrategy() );
-        for( final IStage stage : m_gameConfig.getSystem().getStages() )
+        for( final IStage stage : gameConfig_.getSystem().getStages() )
         {
             builder.addStage( stage );
         }
@@ -160,7 +160,7 @@ public final class InitializeEngineCommand
     {
         assert roleId != null;
 
-        for( final IRole role : m_gameConfig.getSystem().getRoles() )
+        for( final IRole role : gameConfig_.getSystem().getRoles() )
         {
             if( roleId.equals( role.getId() ) )
             {

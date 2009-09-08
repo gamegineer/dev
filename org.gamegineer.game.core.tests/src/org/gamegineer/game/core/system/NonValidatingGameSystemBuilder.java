@@ -48,13 +48,13 @@ public final class NonValidatingGameSystemBuilder
     // ======================================================================
 
     /** The game system identifier. */
-    private String m_id;
+    private String id_;
 
     /** The role list. */
-    private List<IRole> m_roles;
+    private List<IRole> roles_;
 
     /** The stage list. */
-    private List<IStage> m_stages;
+    private List<IStage> stages_;
 
 
     // ======================================================================
@@ -67,9 +67,9 @@ public final class NonValidatingGameSystemBuilder
      */
     public NonValidatingGameSystemBuilder()
     {
-        m_id = null;
-        m_roles = null;
-        m_stages = null;
+        id_ = null;
+        roles_ = null;
+        stages_ = null;
     }
 
     /**
@@ -89,9 +89,9 @@ public final class NonValidatingGameSystemBuilder
     {
         assertArgumentNotNull( gameSystem, "gameSystem" ); //$NON-NLS-1$
 
-        m_id = gameSystem.getId();
-        m_roles = gameSystem.getRoles();
-        m_stages = gameSystem.getStages();
+        id_ = gameSystem.getId();
+        roles_ = gameSystem.getRoles();
+        stages_ = gameSystem.getStages();
     }
 
 
@@ -112,12 +112,12 @@ public final class NonValidatingGameSystemBuilder
         /* @Nullable */
         final IRole role )
     {
-        if( m_roles == null )
+        if( roles_ == null )
         {
-            m_roles = new ArrayList<IRole>();
+            roles_ = new ArrayList<IRole>();
         }
 
-        m_roles.add( role );
+        roles_.add( role );
 
         return this;
     }
@@ -135,12 +135,12 @@ public final class NonValidatingGameSystemBuilder
         /* @Nullable */
         final IStage stage )
     {
-        if( m_stages == null )
+        if( stages_ == null )
         {
-            m_stages = new ArrayList<IStage>();
+            stages_ = new ArrayList<IStage>();
         }
 
-        m_stages.add( stage );
+        stages_.add( stage );
 
         return this;
     }
@@ -153,7 +153,7 @@ public final class NonValidatingGameSystemBuilder
     /* @NonNull */
     public NonValidatingGameSystemBuilder clearRoles()
     {
-        m_roles = null;
+        roles_ = null;
 
         return this;
     }
@@ -166,7 +166,7 @@ public final class NonValidatingGameSystemBuilder
     /* @NonNull */
     public NonValidatingGameSystemBuilder clearStages()
     {
-        m_stages = null;
+        stages_ = null;
 
         return this;
     }
@@ -184,7 +184,7 @@ public final class NonValidatingGameSystemBuilder
         /* @Nullable */
         final String id )
     {
-        m_id = id;
+        id_ = id;
 
         return this;
     }
@@ -197,6 +197,6 @@ public final class NonValidatingGameSystemBuilder
     /* @NonNull */
     public IGameSystem toGameSystem()
     {
-        return new NonValidatingGameSystem( m_id, m_roles, m_stages );
+        return new NonValidatingGameSystem( id_, roles_, stages_ );
     }
 }

@@ -30,7 +30,8 @@ import org.gamegineer.engine.core.extensions.commandeventmediator.ICommandExecut
 
 /**
  * Implementation of
- * {@link org.gamegineer.engine.core.extensions.commandeventmediator.CommandExecutedEvent}.
+ * {@link org.gamegineer.engine.core.extensions.commandeventmediator.CommandExecutedEvent}
+ * .
  * 
  * <p>
  * This class is immutable.
@@ -51,7 +52,7 @@ final class InternalCommandExecutedEvent
      * The command executed event implementation to which all behavior is
      * delegated.
      */
-    private final ICommandExecutedEvent m_delegate;
+    private final ICommandExecutedEvent delegate_;
 
 
     // ======================================================================
@@ -75,7 +76,7 @@ final class InternalCommandExecutedEvent
     {
         super( delegate.getEngineContext() );
 
-        m_delegate = delegate;
+        delegate_ = delegate;
     }
 
 
@@ -93,8 +94,8 @@ final class InternalCommandExecutedEvent
      * @param command
      *        The command associated with the event; must not be {@code null}.
      * @param exception
-     *        The exception thrown during command execution; must not be
-     *        {@code null}.
+     *        The exception thrown during command execution; must not be {@code
+     *        null}.
      * 
      * @return A new instance of the {@code InternalCommandExecutedEvent} class
      *         for a failed command execution.
@@ -154,7 +155,7 @@ final class InternalCommandExecutedEvent
      */
     public ICommand<?> getCommand()
     {
-        return m_delegate.getCommand();
+        return delegate_.getCommand();
     }
 
     /*
@@ -162,7 +163,7 @@ final class InternalCommandExecutedEvent
      */
     public IEngineContext getEngineContext()
     {
-        return m_delegate.getEngineContext();
+        return delegate_.getEngineContext();
     }
 
     /*
@@ -170,7 +171,7 @@ final class InternalCommandExecutedEvent
      */
     public Exception getException()
     {
-        return m_delegate.getException();
+        return delegate_.getException();
     }
 
     /*
@@ -178,7 +179,7 @@ final class InternalCommandExecutedEvent
      */
     public Object getResult()
     {
-        return m_delegate.getResult();
+        return delegate_.getResult();
     }
 
     /*
@@ -186,6 +187,6 @@ final class InternalCommandExecutedEvent
      */
     public boolean hasException()
     {
-        return m_delegate.hasException();
+        return delegate_.hasException();
     }
 }

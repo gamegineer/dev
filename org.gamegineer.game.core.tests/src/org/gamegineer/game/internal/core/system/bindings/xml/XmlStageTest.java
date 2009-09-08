@@ -51,7 +51,7 @@ public final class XmlStageTest
     // ======================================================================
 
     /** The stage builder for use in the fixture. */
-    private NonValidatingStageBuilder m_builder;
+    private NonValidatingStageBuilder builder_;
 
 
     // ======================================================================
@@ -106,7 +106,7 @@ public final class XmlStageTest
     public void setUp()
         throws Exception
     {
-        m_builder = new NonValidatingStageBuilder( GameSystems.createUniqueStageList( 1 ).get( 0 ) );
+        builder_ = new NonValidatingStageBuilder( GameSystems.createUniqueStageList( 1 ).get( 0 ) );
 
         super.setUp();
     }
@@ -121,7 +121,7 @@ public final class XmlStageTest
     {
         super.tearDown();
 
-        m_builder = null;
+        builder_ = null;
     }
 
     /**
@@ -136,8 +136,8 @@ public final class XmlStageTest
     public void testToStage_Fail_Malformed()
         throws Exception
     {
-        m_builder.setCardinality( -1 );
-        final FakeRootElement root = (FakeRootElement)getUnmarshaller().unmarshal( createStageReader( m_builder.toStage() ) );
+        builder_.setCardinality( -1 );
+        final FakeRootElement root = (FakeRootElement)getUnmarshaller().unmarshal( createStageReader( builder_.toStage() ) );
         final XmlStage xmlStage = root.getStage();
 
         xmlStage.toStage();
@@ -154,7 +154,7 @@ public final class XmlStageTest
     public void testToStage_Success()
         throws Exception
     {
-        final IStage expectedStage = m_builder.toStage();
+        final IStage expectedStage = builder_.toStage();
         final FakeRootElement root = (FakeRootElement)getUnmarshaller().unmarshal( createStageReader( expectedStage ) );
         final XmlStage xmlStage = root.getStage();
 
@@ -174,9 +174,9 @@ public final class XmlStageTest
     public void testUnmarshal_Fail_NoId()
         throws Exception
     {
-        m_builder.setId( null );
+        builder_.setId( null );
 
-        getUnmarshaller().unmarshal( createStageReader( m_builder.toStage() ) );
+        getUnmarshaller().unmarshal( createStageReader( builder_.toStage() ) );
     }
 
     /**
@@ -190,9 +190,9 @@ public final class XmlStageTest
     public void testUnmarshal_Fail_NoStrategy()
         throws Exception
     {
-        m_builder.setStrategy( null );
+        builder_.setStrategy( null );
 
-        getUnmarshaller().unmarshal( createStageReader( m_builder.toStage() ) );
+        getUnmarshaller().unmarshal( createStageReader( builder_.toStage() ) );
     }
 
     /**
@@ -206,9 +206,9 @@ public final class XmlStageTest
     public void testUnmarshal_Success_NoCardinality()
         throws Exception
     {
-        m_builder.setCardinality( null );
+        builder_.setCardinality( null );
 
-        final FakeRootElement root = (FakeRootElement)getUnmarshaller().unmarshal( createStageReader( m_builder.toStage() ) );
+        final FakeRootElement root = (FakeRootElement)getUnmarshaller().unmarshal( createStageReader( builder_.toStage() ) );
         final IStage actualStage = root.getStage().toStage();
 
         assertEquals( 0, actualStage.getCardinality() );
@@ -225,7 +225,7 @@ public final class XmlStageTest
     public void testUnmarshal_Success_Complete()
         throws Exception
     {
-        final IStage expectedStage = m_builder.toStage();
+        final IStage expectedStage = builder_.toStage();
 
         final FakeRootElement root = (FakeRootElement)getUnmarshaller().unmarshal( createStageReader( expectedStage ) );
         final IStage actualStage = root.getStage().toStage();
@@ -255,7 +255,7 @@ public final class XmlStageTest
 
         /** The stage. */
         @XmlElement( name = XmlStage.NAME_STAGE, required = true )
-        private final XmlStage m_stage;
+        private final XmlStage stage_;
 
 
         // ==================================================================
@@ -267,7 +267,7 @@ public final class XmlStageTest
          */
         private FakeRootElement()
         {
-            m_stage = null;
+            stage_ = null;
         }
 
 
@@ -283,7 +283,7 @@ public final class XmlStageTest
         /* @NonNull */
         XmlStage getStage()
         {
-            return m_stage;
+            return stage_;
         }
     }
 }

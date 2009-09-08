@@ -48,10 +48,10 @@ public abstract class AbstractAttributeTestCase<T>
     // ======================================================================
 
     /** The attribute under test in the fixture. */
-    private IAttribute<T> m_attribute;
+    private IAttribute<T> attribute_;
 
     /** The engine state for use in the test. */
-    private IState m_state;
+    private IState state_;
 
 
     // ======================================================================
@@ -88,8 +88,8 @@ public abstract class AbstractAttributeTestCase<T>
      * Gets a collection of illegal values for the attribute to be tested.
      * 
      * @return A collection of illegal values for the attribute to be tested;
-     *         never {@code null}. An empty collection if the attribute does
-     *         not define any illegal values.
+     *         never {@code null}. An empty collection if the attribute does not
+     *         define any illegal values.
      */
     /* @NonNull */
     protected abstract Collection<T> getIllegalAttributeValues();
@@ -97,7 +97,8 @@ public abstract class AbstractAttributeTestCase<T>
     /**
      * Gets a legal value for the attribute to be tested.
      * 
-     * @return A legal value for the attribute to be tested; may be {@code null}.
+     * @return A legal value for the attribute to be tested; may be {@code null}
+     *         .
      */
     /* @Nullable */
     protected abstract T getLegalAttributeValue();
@@ -112,9 +113,9 @@ public abstract class AbstractAttributeTestCase<T>
     public void setUp()
         throws Exception
     {
-        m_state = new FakeState();
-        m_attribute = createAttribute();
-        assertNotNull( m_attribute );
+        state_ = new FakeState();
+        attribute_ = createAttribute();
+        assertNotNull( attribute_ );
     }
 
     /**
@@ -127,8 +128,8 @@ public abstract class AbstractAttributeTestCase<T>
     public void tearDown()
         throws Exception
     {
-        m_attribute = null;
-        m_state = null;
+        attribute_ = null;
+        state_ = null;
     }
 
     /**
@@ -139,9 +140,9 @@ public abstract class AbstractAttributeTestCase<T>
     {
         final T value = getLegalAttributeValue();
 
-        m_attribute.add( m_state, value );
+        attribute_.add( state_, value );
 
-        assertEquals( value, m_state.getAttribute( m_attribute.getName() ) );
+        assertEquals( value, state_.getAttribute( attribute_.getName() ) );
     }
 
     /**
@@ -155,12 +156,12 @@ public abstract class AbstractAttributeTestCase<T>
         {
             try
             {
-                m_attribute.add( m_state, value );
+                attribute_.add( state_, value );
                 fail( "expected exception of type java.lang.IllegalArgumentException" ); //$NON-NLS-1$
             }
             catch( final IllegalArgumentException e )
             {
-                assertFalse( m_state.containsAttribute( m_attribute.getName() ) );
+                assertFalse( state_.containsAttribute( attribute_.getName() ) );
             }
         }
     }
@@ -173,19 +174,19 @@ public abstract class AbstractAttributeTestCase<T>
     public void testAdd_Attribute_Present()
     {
         final T value = getLegalAttributeValue();
-        m_state.addAttribute( m_attribute.getName(), value );
+        state_.addAttribute( attribute_.getName(), value );
 
-        m_attribute.add( m_state, value );
+        attribute_.add( state_, value );
     }
 
     /**
-     * Ensures the {@code add} method throws an exception when passed a
-     * {@code null} state.
+     * Ensures the {@code add} method throws an exception when passed a {@code
+     * null} state.
      */
     @Test( expected = NullPointerException.class )
     public void testAdd_State_Null()
     {
-        m_attribute.add( null, getLegalAttributeValue() );
+        attribute_.add( null, getLegalAttributeValue() );
     }
 
     /**
@@ -194,7 +195,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test
     public void testGetName_ReturnValue_NonNull()
     {
-        assertNotNull( m_attribute.getName() );
+        assertNotNull( attribute_.getName() );
     }
 
     /**
@@ -204,7 +205,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test( expected = IllegalArgumentException.class )
     public void testGetValue_Attribute_Absent()
     {
-        m_attribute.getValue( m_state );
+        attribute_.getValue( state_ );
     }
 
     /**
@@ -215,9 +216,9 @@ public abstract class AbstractAttributeTestCase<T>
     public void testGetValue_Attribute_Present()
     {
         final T expectedValue = getLegalAttributeValue();
-        m_state.addAttribute( m_attribute.getName(), expectedValue );
+        state_.addAttribute( attribute_.getName(), expectedValue );
 
-        final T actualValue = m_attribute.getValue( m_state );
+        final T actualValue = attribute_.getValue( state_ );
 
         assertEquals( expectedValue, actualValue );
     }
@@ -229,7 +230,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test( expected = NullPointerException.class )
     public void testGetValue_State_Null()
     {
-        m_attribute.getValue( null );
+        attribute_.getValue( null );
     }
 
     /**
@@ -239,7 +240,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test
     public void testIsPresent_Attribute_Absent()
     {
-        assertFalse( m_attribute.isPresent( m_state ) );
+        assertFalse( attribute_.isPresent( state_ ) );
     }
 
     /**
@@ -249,9 +250,9 @@ public abstract class AbstractAttributeTestCase<T>
     @Test
     public void testIsPresent_Attribute_Present()
     {
-        m_state.addAttribute( m_attribute.getName(), getLegalAttributeValue() );
+        state_.addAttribute( attribute_.getName(), getLegalAttributeValue() );
 
-        assertTrue( m_attribute.isPresent( m_state ) );
+        assertTrue( attribute_.isPresent( state_ ) );
     }
 
     /**
@@ -261,7 +262,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test( expected = NullPointerException.class )
     public void testIsPresent_State_Null()
     {
-        m_attribute.isPresent( null );
+        attribute_.isPresent( null );
     }
 
     /**
@@ -271,7 +272,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test( expected = IllegalArgumentException.class )
     public void testRemove_Attribute_Absent()
     {
-        m_attribute.remove( m_state );
+        attribute_.remove( state_ );
     }
 
     /**
@@ -281,11 +282,11 @@ public abstract class AbstractAttributeTestCase<T>
     @Test
     public void testRemove_Attribute_Present()
     {
-        m_state.addAttribute( m_attribute.getName(), getLegalAttributeValue() );
+        state_.addAttribute( attribute_.getName(), getLegalAttributeValue() );
 
-        m_attribute.remove( m_state );
+        attribute_.remove( state_ );
 
-        assertFalse( m_state.containsAttribute( m_attribute.getName() ) );
+        assertFalse( state_.containsAttribute( attribute_.getName() ) );
     }
 
     /**
@@ -295,7 +296,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test( expected = NullPointerException.class )
     public void testRemove_State_Null()
     {
-        m_attribute.remove( null );
+        attribute_.remove( null );
     }
 
     /**
@@ -305,7 +306,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test( expected = IllegalArgumentException.class )
     public void testSetValue_Attribute_Absent()
     {
-        m_attribute.setValue( m_state, getLegalAttributeValue() );
+        attribute_.setValue( state_, getLegalAttributeValue() );
     }
 
     /**
@@ -316,18 +317,18 @@ public abstract class AbstractAttributeTestCase<T>
     public void testSetValue_Attribute_Absent_IllegalValue()
     {
         final T originalValue = getLegalAttributeValue();
-        m_state.addAttribute( m_attribute.getName(), originalValue );
+        state_.addAttribute( attribute_.getName(), originalValue );
 
         for( final T value : getIllegalAttributeValues() )
         {
             try
             {
-                m_attribute.setValue( m_state, value );
+                attribute_.setValue( state_, value );
                 fail( "expected exception of type java.lang.IllegalArgumentException" ); //$NON-NLS-1$
             }
             catch( final IllegalArgumentException e )
             {
-                assertEquals( originalValue, m_state.getAttribute( m_attribute.getName() ) );
+                assertEquals( originalValue, state_.getAttribute( attribute_.getName() ) );
             }
         }
     }
@@ -342,11 +343,11 @@ public abstract class AbstractAttributeTestCase<T>
         final T value1 = getLegalAttributeValue();
         final T value2 = getLegalAttributeValue();
         assertNotSame( value1, value2 );
-        m_state.addAttribute( m_attribute.getName(), value1 );
+        state_.addAttribute( attribute_.getName(), value1 );
 
-        m_attribute.setValue( m_state, value2 );
+        attribute_.setValue( state_, value2 );
 
-        assertEquals( value2, m_state.getAttribute( m_attribute.getName() ) );
+        assertEquals( value2, state_.getAttribute( attribute_.getName() ) );
     }
 
     /**
@@ -356,6 +357,6 @@ public abstract class AbstractAttributeTestCase<T>
     @Test( expected = NullPointerException.class )
     public void testSetValue_State_Null()
     {
-        m_attribute.setValue( null, getLegalAttributeValue() );
+        attribute_.setValue( null, getLegalAttributeValue() );
     }
 }

@@ -35,16 +35,16 @@ public final class Activator
     // ======================================================================
 
     /** The game system user interfaces extension point identifier. */
-    public final static String EXTENSION_GAME_SYSTEM_UIS = "gameSystemUis"; //$NON-NLS-1$
+    public static final String EXTENSION_GAME_SYSTEM_UIS = "gameSystemUis"; //$NON-NLS-1$
 
     /** The plugin identifier. */
-    public final static String SYMBOLIC_NAME = "org.gamegineer.game.ui"; //$NON-NLS-1$
+    public static final String SYMBOLIC_NAME = "org.gamegineer.game.ui"; //$NON-NLS-1$
 
     /** The singleton instance of the bundle activator. */
-    private static Activator c_instance;
+    private static Activator instance_;
 
     /** The bundle context. */
-    private BundleContext m_context;
+    private BundleContext context_;
 
 
     // ======================================================================
@@ -72,8 +72,8 @@ public final class Activator
     /* @NonNull */
     public BundleContext getBundleContext()
     {
-        assert m_context != null;
-        return m_context;
+        assert context_ != null;
+        return context_;
     }
 
     /**
@@ -84,8 +84,8 @@ public final class Activator
     /* @NonNull */
     public static Activator getDefault()
     {
-        assert c_instance != null;
-        return c_instance;
+        assert instance_ != null;
+        return instance_;
     }
 
     /*
@@ -95,10 +95,10 @@ public final class Activator
         final BundleContext context )
         throws Exception
     {
-        assert m_context == null;
-        m_context = context;
-        assert c_instance == null;
-        c_instance = this;
+        assert context_ == null;
+        context_ = context;
+        assert instance_ == null;
+        instance_ = this;
 
         Services.getDefault().open( context );
     }
@@ -113,7 +113,7 @@ public final class Activator
     {
         Services.getDefault().close();
 
-        c_instance = null;
-        m_context = null;
+        instance_ = null;
+        context_ = null;
     }
 }

@@ -65,16 +65,16 @@ public final class Console
     // ======================================================================
 
     /** The console advisor. */
-    private final IConsoleAdvisor m_advisor;
+    private final IConsoleAdvisor advisor_;
 
     /** The display associated with the console. */
-    private final IDisplay m_display;
+    private final IDisplay display_;
 
     /** Indicates the console has been closed by user request. */
-    private final AtomicBoolean m_isClosed;
+    private final AtomicBoolean isClosed_;
 
     /** The console state. */
-    private final AtomicReference<State> m_state;
+    private final AtomicReference<State> state_;
 
 
     // ======================================================================
@@ -101,10 +101,10 @@ public final class Console
         assertArgumentNotNull( display, "display" ); //$NON-NLS-1$
         assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
 
-        m_display = display;
-        m_advisor = advisor;
-        m_isClosed = new AtomicBoolean( false );
-        m_state = new AtomicReference<State>( State.PRISTINE );
+        display_ = display;
+        advisor_ = advisor;
+        isClosed_ = new AtomicBoolean( false );
+        state_ = new AtomicReference<State>( State.PRISTINE );
     }
 
 
@@ -117,7 +117,7 @@ public final class Console
      */
     public void close()
     {
-        m_isClosed.set( true );
+        isClosed_.set( true );
     }
 
     /**
@@ -161,7 +161,7 @@ public final class Console
      */
     public IDisplay getDisplay()
     {
-        return m_display;
+        return display_;
     }
 
     /**
@@ -171,7 +171,7 @@ public final class Console
      */
     State getState()
     {
-        return m_state.get();
+        return state_.get();
     }
 
     /**
@@ -181,7 +181,7 @@ public final class Console
      */
     public boolean isRunning()
     {
-        return m_state.get() == State.RUNNING;
+        return state_.get() == State.RUNNING;
     }
 
     /**
@@ -196,7 +196,7 @@ public final class Console
     {
         try
         {
-            final List<String> argList = m_advisor.getApplicationArguments();
+            final List<String> argList = advisor_.getApplicationArguments();
             final CommandLineParser commandLineParser = new GnuParser();
             final Options options = CommandLineOptions.getOptions();
             final CommandLine commandLine = commandLineParser.parse( options, argList.toArray( new String[ argList.size() ] ) );
@@ -204,13 +204,13 @@ public final class Console
             if( commandLine.hasOption( CommandLineOptions.OPTION_HELP ) )
             {
                 final HelpFormatter helpFormatter = new HelpFormatter();
-                helpFormatter.printHelp( m_display.getWriter(), HelpFormatter.DEFAULT_WIDTH, "gamegineer", null, options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null ); //$NON-NLS-1$
+                helpFormatter.printHelp( display_.getWriter(), HelpFormatter.DEFAULT_WIDTH, "gamegineer", null, options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null ); //$NON-NLS-1$
                 return ConsoleResult.OK;
             }
         }
         catch( final ParseException e )
         {
-            m_display.getWriter().println( e.getLocalizedMessage() );
+            display_.getWriter().println( e.getLocalizedMessage() );
             return ConsoleResult.FAIL;
         }
 
@@ -231,7 +231,7 @@ public final class Console
     private ConsoleResult run()
         throws Exception
     {
-        assertStateLegal( m_state.compareAndSet( State.PRISTINE, State.RUNNING ), Messages.Console_state_notPristine );
+        assertStateLegal( state_.compareAndSet( State.PRISTINE, State.RUNNING ), Messages.Console_state_notPristine );
 
         try
         {
@@ -241,18 +241,18 @@ public final class Console
                 return processCommandLineResult;
             }
 
-            m_display.getWriter().println( Messages.Console_output_bannerMessage( m_advisor.getApplicationVersion() ) );
+            display_.getWriter().println( Messages.Console_output_bannerMessage( advisor_.getApplicationVersion() ) );
 
             final IStatelet statelet = new Statelet();
             final IGameClient gameClient = createGameClient();
 
             final CommandletParser parser = new CommandletParser();
-            while( !m_isClosed.get() )
+            while( !isClosed_.get() )
             {
-                m_display.getWriter().println();
-                m_display.format( "g8r> " ); //$NON-NLS-1$
+                display_.getWriter().println();
+                display_.format( "g8r> " ); //$NON-NLS-1$
 
-                while( !m_isClosed.get() && !m_display.getReader().ready() )
+                while( !isClosed_.get() && !display_.getReader().ready() )
                 {
                     if( Thread.interrupted() )
                     {
@@ -262,12 +262,12 @@ public final class Console
                     Thread.sleep( 10 );
                 }
 
-                if( m_isClosed.get() )
+                if( isClosed_.get() )
                 {
                     break;
                 }
 
-                final String line = m_display.readLine();
+                final String line = display_.readLine();
                 if( line == null )
                 {
                     break;
@@ -281,12 +281,12 @@ public final class Console
                 catch( final CommandletException e )
                 {
                     Loggers.DEFAULT.log( Level.SEVERE, Messages.Console_run_commandletException, e );
-                    m_display.getWriter().println( e.getLocalizedMessage() );
+                    display_.getWriter().println( e.getLocalizedMessage() );
                 }
                 catch( final Exception e )
                 {
                     Loggers.DEFAULT.log( Level.SEVERE, Messages.Console_run_unexpectedCommandletException, e );
-                    m_display.getWriter().println( Messages.Console_output_unexpectedCommandletException );
+                    display_.getWriter().println( Messages.Console_output_unexpectedCommandletException );
                 }
             }
 
@@ -294,7 +294,7 @@ public final class Console
         }
         finally
         {
-            m_state.set( State.FINISHED );
+            state_.set( State.FINISHED );
         }
     }
 

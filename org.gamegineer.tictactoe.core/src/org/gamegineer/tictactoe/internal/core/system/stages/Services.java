@@ -40,10 +40,10 @@ public final class Services
     // ======================================================================
 
     /** The singleton instance. */
-    private static final Services c_instance = new Services();
+    private static final Services instance_ = new Services();
 
     /** The StageStrategyFactory registration token. */
-    private ServiceRegistration m_stageStrategyFactoryRegistration;
+    private ServiceRegistration stageStrategyFactoryRegistration_;
 
 
     // ======================================================================
@@ -68,23 +68,23 @@ public final class Services
      */
     public void close()
     {
-        if( m_stageStrategyFactoryRegistration != null )
+        if( stageStrategyFactoryRegistration_ != null )
         {
-            m_stageStrategyFactoryRegistration.unregister();
-            m_stageStrategyFactoryRegistration = null;
+            stageStrategyFactoryRegistration_.unregister();
+            stageStrategyFactoryRegistration_ = null;
         }
     }
 
     /**
      * Gets the default instance of the {@code Services} class.
      * 
-     * @return The default instance of the {@code Services} class; never
-     *         {@code null}.
+     * @return The default instance of the {@code Services} class; never {@code
+     *         null}.
      */
     /* @NonNull */
     public static Services getDefault()
     {
-        return c_instance;
+        return instance_;
     }
 
     /**
@@ -102,6 +102,6 @@ public final class Services
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        m_stageStrategyFactoryRegistration = context.registerService( IComponentFactory.class.getName(), new StageStrategyFactory(), null );
+        stageStrategyFactoryRegistration_ = context.registerService( IComponentFactory.class.getName(), new StageStrategyFactory(), null );
     }
 }

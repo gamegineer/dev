@@ -1,6 +1,6 @@
 /*
  * SupportedCommandletClassNamesAttributeTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,7 +39,7 @@ public final class SupportedCommandletClassNamesAttributeTest
     // ======================================================================
 
     /** The attribute under test in the fixture. */
-    private SupportedCommandletClassNamesAttribute m_attribute;
+    private SupportedCommandletClassNamesAttribute attribute_;
 
 
     // ======================================================================
@@ -47,8 +47,8 @@ public final class SupportedCommandletClassNamesAttributeTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code SupportedCommandletClassNamesAttributeTest} class.
+     * Initializes a new instance of the {@code
+     * SupportedCommandletClassNamesAttributeTest} class.
      */
     public SupportedCommandletClassNamesAttributeTest()
     {
@@ -70,7 +70,7 @@ public final class SupportedCommandletClassNamesAttributeTest
     public void setUp()
         throws Exception
     {
-        m_attribute = SupportedCommandletClassNamesAttribute.INSTANCE;
+        attribute_ = SupportedCommandletClassNamesAttribute.INSTANCE;
     }
 
     /**
@@ -83,7 +83,7 @@ public final class SupportedCommandletClassNamesAttributeTest
     public void tearDown()
         throws Exception
     {
-        m_attribute = null;
+        attribute_ = null;
     }
 
     /**
@@ -94,7 +94,7 @@ public final class SupportedCommandletClassNamesAttributeTest
     public void testSetValueString_ClassName_Null()
     {
         final String className = null;
-        m_attribute.setValue( createDummy( IAttributeMutator.class ), className );
+        attribute_.setValue( createDummy( IAttributeMutator.class ), className );
     }
 
     /**
@@ -104,6 +104,6 @@ public final class SupportedCommandletClassNamesAttributeTest
     @Test( expected = NullPointerException.class )
     public void testSetValueString_Mutator_Null()
     {
-        m_attribute.setValue( null, Object.class.getName() );
+        attribute_.setValue( null, Object.class.getName() );
     }
 }

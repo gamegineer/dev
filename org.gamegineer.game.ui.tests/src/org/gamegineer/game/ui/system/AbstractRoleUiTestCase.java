@@ -40,10 +40,10 @@ public abstract class AbstractRoleUiTestCase
     // ======================================================================
 
     /** The role on which the user interface is based. */
-    private IRole m_role;
+    private IRole role_;
 
     /** The role user interface under test in the fixture. */
-    private IRoleUi m_roleUi;
+    private IRoleUi roleUi_;
 
 
     // ======================================================================
@@ -67,8 +67,8 @@ public abstract class AbstractRoleUiTestCase
      * Creates the role user interface to be tested.
      * 
      * @param role
-     *        The role on which the user interface is based; must not be
-     *        {@code null}.
+     *        The role on which the user interface is based; must not be {@code
+     *        null}.
      * 
      * @return The role user interface to be tested; never {@code null}.
      * 
@@ -86,13 +86,14 @@ public abstract class AbstractRoleUiTestCase
     /**
      * Gets the role on which the user interface is based.
      * 
-     * @return The role on which the user interface is based; never {@code null}.
+     * @return The role on which the user interface is based; never {@code null}
+     *         .
      */
     /* @NonNull */
     protected final IRole getRole()
     {
-        assertNotNull( m_role );
-        return m_role;
+        assertNotNull( role_ );
+        return role_;
     }
 
     /**
@@ -105,9 +106,9 @@ public abstract class AbstractRoleUiTestCase
     public void setUp()
         throws Exception
     {
-        m_role = GameSystems.createUniqueRole();
-        m_roleUi = createRoleUi( m_role );
-        assertNotNull( m_roleUi );
+        role_ = GameSystems.createUniqueRole();
+        roleUi_ = createRoleUi( role_ );
+        assertNotNull( roleUi_ );
     }
 
     /**
@@ -120,8 +121,8 @@ public abstract class AbstractRoleUiTestCase
     public void tearDown()
         throws Exception
     {
-        m_roleUi = null;
-        m_role = null;
+        roleUi_ = null;
+        role_ = null;
     }
 
     /**
@@ -130,7 +131,7 @@ public abstract class AbstractRoleUiTestCase
     @Test
     public void testGetId()
     {
-        assertEquals( m_role.getId(), m_roleUi.getId() );
+        assertEquals( role_.getId(), roleUi_.getId() );
     }
 
     /**
@@ -139,6 +140,6 @@ public abstract class AbstractRoleUiTestCase
     @Test
     public void testGetName_ReturnValue_NonNull()
     {
-        assertNotNull( m_roleUi.getName() );
+        assertNotNull( roleUi_.getName() );
     }
 }

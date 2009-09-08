@@ -45,7 +45,7 @@ public final class NonValidatingRole
     // ======================================================================
 
     /** The role identifier. */
-    private final String m_id;
+    private final String id_;
 
 
     // ======================================================================
@@ -62,7 +62,7 @@ public final class NonValidatingRole
         /* @Nullable */
         final String id )
     {
-        m_id = id;
+        id_ = id;
     }
 
 
@@ -78,6 +78,6 @@ public final class NonValidatingRole
     /* @Nullable */
     public String getId()
     {
-        return m_id;
+        return id_;
     }
 }

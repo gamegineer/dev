@@ -59,16 +59,16 @@ public final class Stage
     // ======================================================================
 
     /** The stage cardinality. */
-    private final int m_cardinality;
+    private final int cardinality_;
 
     /** The stage identifier. */
-    private final String m_id;
+    private final String id_;
 
     /** The child stage list. */
-    private final List<Stage> m_stages;
+    private final List<Stage> stages_;
 
     /** The stage strategy. */
-    private final IStageStrategy m_strategy;
+    private final IStageStrategy strategy_;
 
 
     // ======================================================================
@@ -91,16 +91,16 @@ public final class Stage
     {
         assertArgumentNotNull( stage, "stage" ); //$NON-NLS-1$
 
-        m_cardinality = stage.getCardinality();
-        m_id = stage.getId();
-        m_strategy = stage.getStrategy();
+        cardinality_ = stage.getCardinality();
+        id_ = stage.getId();
+        strategy_ = stage.getStrategy();
 
         final List<Stage> childStages = new ArrayList<Stage>();
         for( final IStage childStage : stage.getStages() )
         {
             childStages.add( new Stage( childStage ) );
         }
-        m_stages = Collections.unmodifiableList( childStages );
+        stages_ = Collections.unmodifiableList( childStages );
     }
 
 
@@ -145,21 +145,21 @@ public final class Stage
         {
             if( getStageState( state ).getActiveChildStageIndex() == -1 )
             {
-                assertStateLegal( !m_stages.isEmpty(), Messages.Stage_activate_noChildStages );
-                final int newChildStageIndex = (getStageState( state ).getPreviousChildStageIndex() + 1) % m_stages.size();
+                assertStateLegal( !stages_.isEmpty(), Messages.Stage_activate_noChildStages );
+                final int newChildStageIndex = (getStageState( state ).getPreviousChildStageIndex() + 1) % stages_.size();
                 setStageState( state, getStageState( state ).activateChildStage( newChildStageIndex ) );
             }
 
-            m_stages.get( getStageState( state ).getActiveChildStageIndex() ).activate( context );
+            stages_.get( getStageState( state ).getActiveChildStageIndex() ).activate( context );
         }
         else
         {
             if( Debug.DEFAULT )
             {
-                Debug.trace( String.format( "Activating stage '%1$s'.", m_id ) ); //$NON-NLS-1$
+                Debug.trace( String.format( "Activating stage '%1$s'.", id_ ) ); //$NON-NLS-1$
             }
-            GameAttributes.stageState( m_id ).add( state, new StageState( this ) );
-            m_strategy.activate( this, context );
+            GameAttributes.stageState( id_ ).add( state, new StageState( this ) );
+            strategy_.activate( this, context );
         }
     }
 
@@ -176,20 +176,20 @@ public final class Stage
         final int activeChildStageIndex = stageState.getActiveChildStageIndex();
         if( activeChildStageIndex == -1 )
         {
-            m_strategy.commandExecuted( event );
+            strategy_.commandExecuted( event );
 
-            if( m_strategy.isComplete( this, context ) )
+            if( strategy_.isComplete( this, context ) )
             {
-                submitCommand( context, new DeactivateStageCommand( m_id, stageState.getVersion() ) );
+                submitCommand( context, new DeactivateStageCommand( id_, stageState.getVersion() ) );
             }
-            else if( !m_stages.isEmpty() )
+            else if( !stages_.isEmpty() )
             {
-                submitCommand( context, new ActivateStageCommand( m_id, stageState.getVersion() ) );
+                submitCommand( context, new ActivateStageCommand( id_, stageState.getVersion() ) );
             }
         }
         else
         {
-            m_stages.get( activeChildStageIndex ).commandExecuted( event );
+            stages_.get( activeChildStageIndex ).commandExecuted( event );
         }
     }
 
@@ -206,11 +206,11 @@ public final class Stage
         final int activeChildStageIndex = getStageState( context.getState() ).getActiveChildStageIndex();
         if( activeChildStageIndex == -1 )
         {
-            m_strategy.commandExecuting( event );
+            strategy_.commandExecuting( event );
         }
         else
         {
-            m_stages.get( activeChildStageIndex ).commandExecuting( event );
+            stages_.get( activeChildStageIndex ).commandExecuting( event );
         }
     }
 
@@ -227,9 +227,8 @@ public final class Stage
      * @param context
      *        The engine context; must not be {@code null}.
      * 
-     * @return {@code true} if this stage was deactivated; otherwise
-     *         {@code false} if a descendant stage of this stage was
-     *         deactivated.
+     * @return {@code true} if this stage was deactivated; otherwise {@code
+     *         false} if a descendant stage of this stage was deactivated.
      * 
      * @throws java.lang.IllegalStateException
      *         If this stage is not active.
@@ -250,7 +249,7 @@ public final class Stage
         final int activeChildStageIndex = getStageState( state ).getActiveChildStageIndex();
         if( activeChildStageIndex != -1 )
         {
-            if( m_stages.get( activeChildStageIndex ).deactivate( context ) )
+            if( stages_.get( activeChildStageIndex ).deactivate( context ) )
             {
                 setStageState( state, getStageState( state ).deactivateChildStage() );
             }
@@ -259,10 +258,10 @@ public final class Stage
 
         if( Debug.DEFAULT )
         {
-            Debug.trace( String.format( "Deactivating stage '%1$s'.", m_id ) ); //$NON-NLS-1$
+            Debug.trace( String.format( "Deactivating stage '%1$s'.", id_ ) ); //$NON-NLS-1$
         }
-        m_strategy.deactivate( this, context );
-        GameAttributes.stageState( m_id ).remove( state );
+        strategy_.deactivate( this, context );
+        GameAttributes.stageState( id_ ).remove( state );
         return true;
     }
 
@@ -274,8 +273,8 @@ public final class Stage
      * @param stageId
      *        The stage identifier; must not be {@code null}.
      * 
-     * @return The active stage with the specified stage identifier or
-     *         {@code null} if the specified stage is not active.
+     * @return The active stage with the specified stage identifier or {@code
+     *         null} if the specified stage is not active.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code state} or {@code stageId} is {@code null}.
@@ -303,7 +302,7 @@ public final class Stage
      */
     public int getCardinality()
     {
-        return m_cardinality;
+        return cardinality_;
     }
 
     /*
@@ -311,7 +310,7 @@ public final class Stage
      */
     public String getId()
     {
-        return m_id;
+        return id_;
     }
 
     /**
@@ -332,7 +331,7 @@ public final class Stage
         /* @NonNull */
         final IState state )
     {
-        return GameAttributes.stageState( m_id ).getValue( state );
+        return GameAttributes.stageState( id_ ).getValue( state );
     }
 
     /*
@@ -340,7 +339,7 @@ public final class Stage
      */
     public List<IStage> getStages()
     {
-        return new ArrayList<IStage>( m_stages );
+        return new ArrayList<IStage>( stages_ );
     }
 
     /*
@@ -348,7 +347,7 @@ public final class Stage
      */
     public IStageStrategy getStrategy()
     {
-        return m_strategy;
+        return strategy_;
     }
 
     /**
@@ -370,7 +369,7 @@ public final class Stage
         final IState state )
     {
         assertArgumentNotNull( state, "state" ); //$NON-NLS-1$
-        assertStateLegal( isActive( state ), Messages.Stage_notActive( m_id ) );
+        assertStateLegal( isActive( state ), Messages.Stage_notActive( id_ ) );
 
         return getStageState( state ).getVersion();
     }
@@ -443,7 +442,7 @@ public final class Stage
         /* @NonNull */
         final IState state )
     {
-        return GameAttributes.stageState( m_id ).isPresent( state );
+        return GameAttributes.stageState( id_ ).isPresent( state );
     }
 
     /**
@@ -465,7 +464,7 @@ public final class Stage
         /* @NonNull */
         final StageState stageState )
     {
-        GameAttributes.stageState( m_id ).setValue( state, stageState );
+        GameAttributes.stageState( id_ ).setValue( state, stageState );
     }
 
     /*
@@ -480,11 +479,11 @@ public final class Stage
         final int activeChildStageIndex = getStageState( context.getState() ).getActiveChildStageIndex();
         if( activeChildStageIndex == -1 )
         {
-            m_strategy.stateChanged( event );
+            strategy_.stateChanged( event );
         }
         else
         {
-            m_stages.get( activeChildStageIndex ).stateChanged( event );
+            stages_.get( activeChildStageIndex ).stateChanged( event );
         }
     }
 
@@ -501,11 +500,11 @@ public final class Stage
         final int activeChildStageIndex = getStageState( context.getState() ).getActiveChildStageIndex();
         if( activeChildStageIndex == -1 )
         {
-            m_strategy.stateChanging( event );
+            strategy_.stateChanging( event );
         }
         else
         {
-            m_stages.get( activeChildStageIndex ).stateChanging( event );
+            stages_.get( activeChildStageIndex ).stateChanging( event );
         }
     }
 
@@ -554,6 +553,6 @@ public final class Stage
     @Override
     public String toString()
     {
-        return String.format( "Stage[m_id='%1$s']", m_id ); //$NON-NLS-1$
+        return String.format( "Stage[id_='%1$s']", id_ ); //$NON-NLS-1$
     }
 }

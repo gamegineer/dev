@@ -38,7 +38,7 @@ public abstract class AbstractBoardTestCase
     // ======================================================================
 
     /** The board under test in the fixture. */
-    private IBoard m_board;
+    private IBoard board_;
 
 
     // ======================================================================
@@ -80,8 +80,8 @@ public abstract class AbstractBoardTestCase
     public void setUp()
         throws Exception
     {
-        m_board = createBoard();
-        assertNotNull( m_board );
+        board_ = createBoard();
+        assertNotNull( board_ );
     }
 
     /**
@@ -94,7 +94,7 @@ public abstract class AbstractBoardTestCase
     public void tearDown()
         throws Exception
     {
-        m_board = null;
+        board_ = null;
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class AbstractBoardTestCase
     @Test( expected = NullPointerException.class )
     public void testGetSquare_Id_Null()
     {
-        m_board.getSquare( null );
+        board_.getSquare( null );
     }
 
     /**
@@ -116,7 +116,7 @@ public abstract class AbstractBoardTestCase
     {
         for( final SquareId id : SquareId.values() )
         {
-            final ISquare square = m_board.getSquare( id );
+            final ISquare square = board_.getSquare( id );
             assertNotNull( square );
             assertEquals( id, square.getId() );
         }

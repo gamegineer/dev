@@ -1,6 +1,6 @@
 /*
  * ConsoleTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,13 +51,13 @@ public final class ConsoleTest
     // ======================================================================
 
     /** The console under test in the fixture. */
-    private Console m_console;
+    private Console console_;
 
     /** The executor used to run the console. */
-    private ExecutorService m_executor;
+    private ExecutorService executor_;
 
     /** The collection of console tasks associated with the executor. */
-    private Collection<Future<?>> m_tasks;
+    private Collection<Future<?>> tasks_;
 
 
     // ======================================================================
@@ -114,9 +114,9 @@ public final class ConsoleTest
     public void setUp()
         throws Exception
     {
-        m_console = new Console( new FakeDisplay(), new ConsoleAdvisor() );
-        m_executor = Executors.newCachedThreadPool();
-        m_tasks = new ArrayList<Future<?>>();
+        console_ = new Console( new FakeDisplay(), new ConsoleAdvisor() );
+        executor_ = Executors.newCachedThreadPool();
+        tasks_ = new ArrayList<Future<?>>();
     }
 
     /**
@@ -129,16 +129,16 @@ public final class ConsoleTest
     public void tearDown()
         throws Exception
     {
-        m_executor.shutdown();
-        for( final Future<?> task : m_tasks )
+        executor_.shutdown();
+        for( final Future<?> task : tasks_ )
         {
             task.cancel( true );
         }
-        m_tasks.clear();
-        m_tasks = null;
-        assertTrue( m_executor.awaitTermination( 1, TimeUnit.SECONDS ) );
-        m_executor = null;
-        m_console = null;
+        tasks_.clear();
+        tasks_ = null;
+        assertTrue( executor_.awaitTermination( 1, TimeUnit.SECONDS ) );
+        executor_ = null;
+        console_ = null;
     }
 
     /**
@@ -172,13 +172,13 @@ public final class ConsoleTest
     public void testCreateRunner_Finished()
         throws Exception
     {
-        final Future<?> task1 = m_executor.submit( m_console.createRunner() );
-        m_tasks.add( task1 );
-        awaitConsoleState( m_console, Console.State.RUNNING );
+        final Future<?> task1 = executor_.submit( console_.createRunner() );
+        tasks_.add( task1 );
+        awaitConsoleState( console_, Console.State.RUNNING );
         task1.cancel( true );
-        awaitConsoleState( m_console, Console.State.FINISHED );
-        final Future<?> task2 = m_executor.submit( m_console.createRunner() );
-        m_tasks.add( task2 );
+        awaitConsoleState( console_, Console.State.FINISHED );
+        final Future<?> task2 = executor_.submit( console_.createRunner() );
+        tasks_.add( task2 );
 
         try
         {
@@ -201,11 +201,11 @@ public final class ConsoleTest
     public void testCreateRunner_Running()
         throws Exception
     {
-        final Future<?> task1 = m_executor.submit( m_console.createRunner() );
-        m_tasks.add( task1 );
-        awaitConsoleState( m_console, Console.State.RUNNING );
-        final Future<?> task2 = m_executor.submit( m_console.createRunner() );
-        m_tasks.add( task2 );
+        final Future<?> task1 = executor_.submit( console_.createRunner() );
+        tasks_.add( task1 );
+        awaitConsoleState( console_, Console.State.RUNNING );
+        final Future<?> task2 = executor_.submit( console_.createRunner() );
+        tasks_.add( task2 );
 
         try
         {
@@ -228,13 +228,13 @@ public final class ConsoleTest
     public void testIsRunning_Finished()
         throws Exception
     {
-        final Future<?> task = m_executor.submit( m_console.createRunner() );
-        m_tasks.add( task );
-        awaitConsoleState( m_console, Console.State.RUNNING );
+        final Future<?> task = executor_.submit( console_.createRunner() );
+        tasks_.add( task );
+        awaitConsoleState( console_, Console.State.RUNNING );
         task.cancel( true );
-        awaitConsoleState( m_console, Console.State.FINISHED );
+        awaitConsoleState( console_, Console.State.FINISHED );
 
-        assertFalse( m_console.isRunning() );
+        assertFalse( console_.isRunning() );
     }
 
     /**
@@ -244,7 +244,7 @@ public final class ConsoleTest
     @Test
     public void testIsRunning_Pristine()
     {
-        assertFalse( m_console.isRunning() );
+        assertFalse( console_.isRunning() );
     }
 
     /**
@@ -258,10 +258,10 @@ public final class ConsoleTest
     public void testIsRunning_Running()
         throws Exception
     {
-        final Future<?> task = m_executor.submit( m_console.createRunner() );
-        m_tasks.add( task );
-        awaitConsoleState( m_console, Console.State.RUNNING );
+        final Future<?> task = executor_.submit( console_.createRunner() );
+        tasks_.add( task );
+        awaitConsoleState( console_, Console.State.RUNNING );
 
-        assertTrue( m_console.isRunning() );
+        assertTrue( console_.isRunning() );
     }
 }

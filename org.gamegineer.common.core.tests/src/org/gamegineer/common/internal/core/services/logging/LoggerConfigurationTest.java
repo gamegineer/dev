@@ -76,10 +76,10 @@ public final class LoggerConfigurationTest
     private static final String HANDLER_INSTANCE_NAME_2 = "handlerName2"; //$NON-NLS-1$
 
     /** The default logger configuration under test in the fixture. */
-    private LoggerConfiguration m_config;
+    private LoggerConfiguration config_;
 
     /** The logging properties which contains the logger configuration. */
-    private LoggingProperties m_props;
+    private LoggingProperties props_;
 
 
     // ======================================================================
@@ -138,8 +138,8 @@ public final class LoggerConfigurationTest
         // Handler 2
         props.put( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_2, MockHandlerFactory.PROPERTY_MOCK_LEVEL_PROPERTY ), Level.WARNING.getName() ); //$NON-NLS-1$
 
-        m_props = new LoggingProperties( props );
-        m_config = new LoggerConfiguration( m_props, "logger.default" ); //$NON-NLS-1$
+        props_ = new LoggingProperties( props );
+        config_ = new LoggerConfiguration( props_, "logger.default" ); //$NON-NLS-1$
     }
 
     /**
@@ -152,8 +152,8 @@ public final class LoggerConfigurationTest
     public void tearDown()
         throws Exception
     {
-        m_config = null;
-        m_props = null;
+        config_ = null;
+        props_ = null;
     }
 
     /**
@@ -173,7 +173,7 @@ public final class LoggerConfigurationTest
     @Test( expected = AssertionError.class )
     public void testConstructor_Name_Null()
     {
-        new LoggerConfiguration( m_props, null );
+        new LoggerConfiguration( props_, null );
     }
 
     /**
@@ -188,7 +188,7 @@ public final class LoggerConfigurationTest
         {
             serviceRegistration = Activator.getDefault().getBundleContext().registerService( IComponentFactory.class.getName(), new MockFilterFactory(), null );
 
-            final MockFilter filter = (MockFilter)m_config.getFilter( null );
+            final MockFilter filter = (MockFilter)config_.getFilter( null );
             assertNotNull( filter );
             assertEquals( FILTER_INSTANCE_NAME, filter.getName() );
             assertFalse( filter.getMockBooleanProperty() );
@@ -210,7 +210,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetFilter_Configured_FilterCreationFailed()
     {
-        assertNull( m_config.getFilter( null ) );
+        assertNull( config_.getFilter( null ) );
     }
 
     /**
@@ -220,7 +220,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetFilter_Configured_IllegalFilter()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( m_props, "logger.illegalFilter" ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.illegalFilter" ); //$NON-NLS-1$
         assertNull( config.getFilter( null ) );
     }
 
@@ -231,7 +231,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetFilter_Configured_NoFilter()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( m_props, "logger.noFilter" ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.noFilter" ); //$NON-NLS-1$
         assertNull( config.getFilter( null ) );
     }
 
@@ -242,7 +242,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetFilter_NotConfigured()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( m_props, "logger.unknown" ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.unknown" ); //$NON-NLS-1$
         assertNull( config.getFilter( null ) );
     }
 
@@ -258,7 +258,7 @@ public final class LoggerConfigurationTest
         {
             serviceRegistration = Activator.getDefault().getBundleContext().registerService( IComponentFactory.class.getName(), new MockHandlerFactory(), null );
 
-            final List<Handler> handlerList = m_config.getHandlers();
+            final List<Handler> handlerList = config_.getHandlers();
             assertEquals( 2, handlerList.size() );
             assertEquals( HANDLER_INSTANCE_NAME_1, ((MockHandler)handlerList.get( 0 )).getName() );
             assertEquals( Level.SEVERE, handlerList.get( 0 ).getLevel() );
@@ -282,7 +282,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetHandlers_Configured_HandlerCreationFailed()
     {
-        final List<Handler> handlerList = m_config.getHandlers();
+        final List<Handler> handlerList = config_.getHandlers();
         assertNotNull( handlerList );
         assertTrue( handlerList.isEmpty() );
     }
@@ -299,7 +299,7 @@ public final class LoggerConfigurationTest
         {
             serviceRegistration = Activator.getDefault().getBundleContext().registerService( IComponentFactory.class.getName(), new MockHandlerFactory(), null );
 
-            final LoggerConfiguration config = new LoggerConfiguration( m_props, "logger.illegalHandler" ); //$NON-NLS-1$
+            final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.illegalHandler" ); //$NON-NLS-1$
             final List<Handler> handlerList = config.getHandlers();
             assertEquals( 1, handlerList.size() );
             assertEquals( HANDLER_INSTANCE_NAME_1, ((MockHandler)handlerList.get( 0 )).getName() );
@@ -320,7 +320,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetHandlers_Configured_NoHandlers()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( m_props, "logger.noHandlers" ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.noHandlers" ); //$NON-NLS-1$
         final List<Handler> handlerList = config.getHandlers();
         assertNotNull( handlerList );
         assertTrue( handlerList.isEmpty() );
@@ -333,7 +333,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetHandlers_NotConfigured()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( m_props, "logger.unknown" ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.unknown" ); //$NON-NLS-1$
         final List<Handler> handlerList = config.getHandlers();
         assertNotNull( handlerList );
         assertTrue( handlerList.isEmpty() );
@@ -346,7 +346,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetLevel_Configured()
     {
-        assertEquals( Level.SEVERE, m_config.getLevel( null ) );
+        assertEquals( Level.SEVERE, config_.getLevel( null ) );
     }
 
     /**
@@ -356,7 +356,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetLevel_NotConfigured()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( m_props, "logger.unknown" ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.unknown" ); //$NON-NLS-1$
         assertEquals( null, config.getLevel( null ) );
     }
 
@@ -368,7 +368,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetUseParentHandlers_Configured()
     {
-        assertEquals( true, m_config.getUseParentHandlers( false ) );
+        assertEquals( true, config_.getUseParentHandlers( false ) );
     }
 
     /**
@@ -379,7 +379,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetUseParentHandlers_NotConfigured()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( m_props, "logger.unknown" ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.unknown" ); //$NON-NLS-1$
         assertEquals( false, config.getUseParentHandlers( false ) );
     }
 
@@ -408,10 +408,10 @@ public final class LoggerConfigurationTest
         // ==================================================================
 
         /** The mock Boolean property. */
-        private boolean m_mockBooleanProperty;
+        private boolean mockBooleanProperty_;
 
         /** The filter name. */
-        private final String m_name;
+        private final String name_;
 
 
         // ==================================================================
@@ -430,8 +430,8 @@ public final class LoggerConfigurationTest
         {
             assert name != null;
 
-            m_name = name;
-            m_mockBooleanProperty = true;
+            name_ = name;
+            mockBooleanProperty_ = true;
         }
 
 
@@ -446,7 +446,7 @@ public final class LoggerConfigurationTest
          */
         boolean getMockBooleanProperty()
         {
-            return m_mockBooleanProperty;
+            return mockBooleanProperty_;
         }
 
         /**
@@ -457,7 +457,7 @@ public final class LoggerConfigurationTest
         /* @NonNull */
         String getName()
         {
-            return m_name;
+            return name_;
         }
 
         /*
@@ -479,7 +479,7 @@ public final class LoggerConfigurationTest
         void setMockBooleanProperty(
             final boolean mockBooleanProperty )
         {
-            m_mockBooleanProperty = mockBooleanProperty;
+            mockBooleanProperty_ = mockBooleanProperty;
         }
     }
 
@@ -568,7 +568,7 @@ public final class LoggerConfigurationTest
         // ==================================================================
 
         /** The handler name. */
-        private final String m_name;
+        private final String name_;
 
 
         // ==================================================================
@@ -587,7 +587,7 @@ public final class LoggerConfigurationTest
         {
             assert name != null;
 
-            m_name = name;
+            name_ = name;
         }
 
 
@@ -622,7 +622,7 @@ public final class LoggerConfigurationTest
         /* @NonNull */
         String getName()
         {
-            return m_name;
+            return name_;
         }
 
         /*

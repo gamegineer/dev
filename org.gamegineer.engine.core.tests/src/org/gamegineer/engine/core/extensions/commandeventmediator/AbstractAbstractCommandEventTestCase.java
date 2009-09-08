@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractCommandEventTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,7 +39,7 @@ public abstract class AbstractAbstractCommandEventTestCase
     // ======================================================================
 
     /** The command event under test in the fixture. */
-    private CommandEvent m_event;
+    private CommandEvent event_;
 
 
     // ======================================================================
@@ -47,8 +47,8 @@ public abstract class AbstractAbstractCommandEventTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractAbstractCommandEventTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractAbstractCommandEventTestCase} class.
      */
     protected AbstractAbstractCommandEventTestCase()
     {
@@ -78,8 +78,8 @@ public abstract class AbstractAbstractCommandEventTestCase
     public void setUp()
         throws Exception
     {
-        m_event = createCommandEvent();
-        assertNotNull( m_event );
+        event_ = createCommandEvent();
+        assertNotNull( event_ );
     }
 
     /**
@@ -92,16 +92,16 @@ public abstract class AbstractAbstractCommandEventTestCase
     public void tearDown()
         throws Exception
     {
-        m_event = null;
+        event_ = null;
     }
 
     /**
-     * Ensures the {@code getSource} method returns the same object as
-     * {@code getEngineContext}.
+     * Ensures the {@code getSource} method returns the same object as {@code
+     * getEngineContext}.
      */
     @Test
     public void testGetSource_ReturnValue_SameEngineContext()
     {
-        assertSame( m_event.getEngineContext(), m_event.getSource() );
+        assertSame( event_.getEngineContext(), event_.getSource() );
     }
 }

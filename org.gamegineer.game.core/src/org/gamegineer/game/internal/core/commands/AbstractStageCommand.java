@@ -1,6 +1,6 @@
 /*
  * AbstractStageCommand.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -61,10 +61,10 @@ public abstract class AbstractStageCommand
     // ======================================================================
 
     /** The identifier of the stage that submitted the command. */
-    private final String m_sourceStageId;
+    private final String sourceStageId_;
 
     /** The version of the stage that submitted the command. */
-    private final StageVersion m_sourceStageVersion;
+    private final StageVersion sourceStageVersion_;
 
 
     // ======================================================================
@@ -82,8 +82,8 @@ public abstract class AbstractStageCommand
      *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code sourceStageId} or {@code sourceStageVersion} is
-     *         {@code null}.
+     *         If {@code sourceStageId} or {@code sourceStageVersion} is {@code
+     *         null}.
      */
     protected AbstractStageCommand(
         /* @NonNull */
@@ -94,8 +94,8 @@ public abstract class AbstractStageCommand
         assertArgumentNotNull( sourceStageId, "sourceStageId" ); //$NON-NLS-1$
         assertArgumentNotNull( sourceStageVersion, "sourceStageVersion" ); //$NON-NLS-1$
 
-        m_sourceStageId = sourceStageId;
-        m_sourceStageVersion = sourceStageVersion;
+        sourceStageId_ = sourceStageId;
+        sourceStageVersion_ = sourceStageVersion;
     }
 
 
@@ -116,7 +116,7 @@ public abstract class AbstractStageCommand
         {
             if( Debug.DEFAULT )
             {
-                Debug.trace( String.format( "Ignoring the command '%1$s' submitted by the stage '%2$s' (version='%3$s') because the stage is not in the same state it was when it submitted the command.", getType(), m_sourceStageId, m_sourceStageVersion ) ); //$NON-NLS-1$
+                Debug.trace( String.format( "Ignoring the command '%1$s' submitted by the stage '%2$s' (version='%3$s') because the stage is not in the same state it was when it submitted the command.", getType(), sourceStageId_, sourceStageVersion_ ) ); //$NON-NLS-1$
             }
         }
         else
@@ -162,7 +162,7 @@ public abstract class AbstractStageCommand
     {
         assert state != null;
 
-        final Stage stage = Stage.getActiveStage( state, m_sourceStageId );
+        final Stage stage = Stage.getActiveStage( state, sourceStageId_ );
         if( stage == null )
         {
             return true;
@@ -173,7 +173,7 @@ public abstract class AbstractStageCommand
             return true;
         }
 
-        if( !stage.getVersion( state ).equals( m_sourceStageVersion ) )
+        if( !stage.getVersion( state ).equals( sourceStageVersion_ ) )
         {
             return true;
         }

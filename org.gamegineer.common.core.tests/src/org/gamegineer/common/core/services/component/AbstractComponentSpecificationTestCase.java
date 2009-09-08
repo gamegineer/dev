@@ -40,7 +40,7 @@ public abstract class AbstractComponentSpecificationTestCase
     // ======================================================================
 
     /** The component specification under test in the fixture. */
-    private IComponentSpecification m_spec;
+    private IComponentSpecification spec_;
 
 
     // ======================================================================
@@ -48,8 +48,8 @@ public abstract class AbstractComponentSpecificationTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractComponentSpecificationTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractComponentSpecificationTestCase} class.
      */
     protected AbstractComponentSpecificationTestCase()
     {
@@ -109,8 +109,8 @@ public abstract class AbstractComponentSpecificationTestCase
     public void setUp()
         throws Exception
     {
-        m_spec = createComponentSpecification();
-        assertNotNull( m_spec );
+        spec_ = createComponentSpecification();
+        assertNotNull( spec_ );
     }
 
     /**
@@ -123,7 +123,7 @@ public abstract class AbstractComponentSpecificationTestCase
     public void tearDown()
         throws Exception
     {
-        m_spec = null;
+        spec_ = null;
     }
 
     /**
@@ -137,7 +137,7 @@ public abstract class AbstractComponentSpecificationTestCase
     public void testMatches_Factory_Match()
         throws Exception
     {
-        assertTrue( m_spec.matches( createMatchingComponentFactory() ) );
+        assertTrue( spec_.matches( createMatchingComponentFactory() ) );
     }
 
     /**
@@ -151,7 +151,7 @@ public abstract class AbstractComponentSpecificationTestCase
     public void testMatches_Factory_NoMatch()
         throws Exception
     {
-        assertFalse( m_spec.matches( createNonMatchingComponentFactory() ) );
+        assertFalse( spec_.matches( createNonMatchingComponentFactory() ) );
     }
 
     /**
@@ -161,6 +161,6 @@ public abstract class AbstractComponentSpecificationTestCase
     @Test( expected = NullPointerException.class )
     public void testMatches_Factory_Null()
     {
-        m_spec.matches( null );
+        spec_.matches( null );
     }
 }

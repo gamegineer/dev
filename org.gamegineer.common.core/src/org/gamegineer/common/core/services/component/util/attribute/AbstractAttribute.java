@@ -1,6 +1,6 @@
 /*
  * AbstractAttribute.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,8 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 
 /**
  * Superclass for all classes that implement
- * {@link org.gamegineer.common.core.services.component.util.attribute.IAttribute}.
+ * {@link org.gamegineer.common.core.services.component.util.attribute.IAttribute}
+ * .
  * 
  * @param <T>
  *        The type of the attribute.
@@ -38,7 +39,7 @@ public abstract class AbstractAttribute<T>
     // ======================================================================
 
     /** The attribute name. */
-    private final String m_name;
+    private final String name_;
 
     /**
      * The attribute type.
@@ -49,7 +50,7 @@ public abstract class AbstractAttribute<T>
      * is not reifiable and thus {@code Class<T>} is illegal.
      * </p>
      */
-    private final Class<?> m_type;
+    private final Class<?> type_;
 
 
     // ======================================================================
@@ -76,8 +77,8 @@ public abstract class AbstractAttribute<T>
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
         assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
 
-        m_type = type;
-        m_name = name;
+        type_ = type;
+        name_ = name;
     }
 
 
@@ -90,7 +91,7 @@ public abstract class AbstractAttribute<T>
      */
     public String getName()
     {
-        return m_name;
+        return name_;
     }
 
     /*
@@ -118,8 +119,8 @@ public abstract class AbstractAttribute<T>
      *         not present and {@code isRequired} is {@code false}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If the attribute is not present and {@code isRequired} is
-     *         {@code true}, or if the attribute value is illegal.
+     *         If the attribute is not present and {@code isRequired} is {@code
+     *         true}, or if the attribute value is illegal.
      * @throws java.lang.NullPointerException
      *         If {@code accessor} is {@code null}.
      */
@@ -131,26 +132,26 @@ public abstract class AbstractAttribute<T>
     {
         assertArgumentNotNull( accessor, "accessor" ); //$NON-NLS-1$
 
-        final Object value = accessor.getAttribute( m_name );
+        final Object value = accessor.getAttribute( name_ );
         if( value == null )
         {
             if( isRequired )
             {
-                throw new IllegalArgumentException( m_name );
+                throw new IllegalArgumentException( name_ );
             }
 
             return null;
         }
-        if( !m_type.isInstance( value ) )
+        if( !type_.isInstance( value ) )
         {
-            throw new IllegalArgumentException( m_name );
+            throw new IllegalArgumentException( name_ );
         }
 
         @SuppressWarnings( "unchecked" )
         final T typedValue = (T)value;
         if( !isLegalValue( typedValue ) )
         {
-            throw new IllegalArgumentException( m_name );
+            throw new IllegalArgumentException( name_ );
         }
 
         return typedValue;
@@ -166,8 +167,8 @@ public abstract class AbstractAttribute<T>
      * @param value
      *        The attribute value; must not be {@code null}.
      * 
-     * @return {@code true} if the attribute value is legal; otherwise
-     *         {@code false}.
+     * @return {@code true} if the attribute value is legal; otherwise {@code
+     *         false}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code value} is {@code null}.
@@ -189,7 +190,7 @@ public abstract class AbstractAttribute<T>
     {
         assertArgumentNotNull( accessor, "accessor" ); //$NON-NLS-1$
 
-        return accessor.containsAttribute( m_name );
+        return accessor.containsAttribute( name_ );
     }
 
     /*
@@ -212,10 +213,10 @@ public abstract class AbstractAttribute<T>
      *        The value of the attribute; may be {@code null} if no attribute
      *        value is to be written.
      * @param isRequired
-     *        {@code true} if the attribute value is required to be non-{@code null};
-     *        otherwise {@code false}. If {@code true}, an exception will be
-     *        thrown if the attribute value is {@code null}. If {@code false},
-     *        the underlying attribute collection will be unmodified.
+     *        {@code true} if the attribute value is required to be non-{@code
+     *        null}; otherwise {@code false}. If {@code true}, an exception will
+     *        be thrown if the attribute value is {@code null}. If {@code false}
+     *        , the underlying attribute collection will be unmodified.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the attribute value is illegal.
@@ -239,10 +240,10 @@ public abstract class AbstractAttribute<T>
 
         if( !isLegalValue( value ) )
         {
-            throw new IllegalArgumentException( m_name );
+            throw new IllegalArgumentException( name_ );
         }
 
-        mutator.setAttribute( m_name, value );
+        mutator.setAttribute( name_, value );
     }
 
     /*

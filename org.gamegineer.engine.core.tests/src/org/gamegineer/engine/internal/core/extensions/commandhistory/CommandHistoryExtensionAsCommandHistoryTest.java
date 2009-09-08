@@ -45,8 +45,8 @@ public final class CommandHistoryExtensionAsCommandHistoryTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code CommandHistoryExtensionAsCommandHistoryTest} class.
+     * Initializes a new instance of the {@code
+     * CommandHistoryExtensionAsCommandHistoryTest} class.
      */
     public CommandHistoryExtensionAsCommandHistoryTest()
     {
@@ -91,13 +91,13 @@ public final class CommandHistoryExtensionAsCommandHistoryTest
         // ==================================================================
 
         /** The command history commands. */
-        private final List<IInvertibleCommand<?>> m_commands;
+        private final List<IInvertibleCommand<?>> commands_;
 
         /**
          * The index in the command history representing the location where the
          * next command will be inserted.
          */
-        private int m_nextCommandIndex;
+        private int nextCommandIndex_;
 
 
         // ==================================================================
@@ -116,8 +116,8 @@ public final class CommandHistoryExtensionAsCommandHistoryTest
         {
             assert commands != null;
 
-            m_commands = new ArrayList<IInvertibleCommand<?>>( commands );
-            m_nextCommandIndex = commands.size();
+            commands_ = new ArrayList<IInvertibleCommand<?>>( commands );
+            nextCommandIndex_ = commands.size();
         }
 
 
@@ -133,7 +133,7 @@ public final class CommandHistoryExtensionAsCommandHistoryTest
         {
             assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-            return m_nextCommandIndex < m_commands.size();
+            return nextCommandIndex_ < commands_.size();
         }
 
         /*
@@ -144,7 +144,7 @@ public final class CommandHistoryExtensionAsCommandHistoryTest
         {
             assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-            return m_nextCommandIndex > 0;
+            return nextCommandIndex_ > 0;
         }
 
         /*
@@ -155,7 +155,7 @@ public final class CommandHistoryExtensionAsCommandHistoryTest
         {
             assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-            return new ArrayList<IInvertibleCommand<?>>( m_commands.subList( 0, m_nextCommandIndex ) );
+            return new ArrayList<IInvertibleCommand<?>>( commands_.subList( 0, nextCommandIndex_ ) );
         }
 
         /*
@@ -167,7 +167,7 @@ public final class CommandHistoryExtensionAsCommandHistoryTest
             assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
             assertStateLegal( canRedo( context ) );
 
-            ++m_nextCommandIndex;
+            ++nextCommandIndex_;
         }
 
         /*
@@ -179,7 +179,7 @@ public final class CommandHistoryExtensionAsCommandHistoryTest
             assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
             assertStateLegal( canUndo( context ) );
 
-            --m_nextCommandIndex;
+            --nextCommandIndex_;
         }
     }
 }

@@ -49,7 +49,7 @@ public final class XmlRoleTest
     // ======================================================================
 
     /** The role builder for use in the fixture. */
-    private NonValidatingRoleBuilder m_builder;
+    private NonValidatingRoleBuilder builder_;
 
 
     // ======================================================================
@@ -104,7 +104,7 @@ public final class XmlRoleTest
     public void setUp()
         throws Exception
     {
-        m_builder = new NonValidatingRoleBuilder( GameSystems.createUniqueRole() );
+        builder_ = new NonValidatingRoleBuilder( GameSystems.createUniqueRole() );
 
         super.setUp();
     }
@@ -119,7 +119,7 @@ public final class XmlRoleTest
     {
         super.tearDown();
 
-        m_builder = null;
+        builder_ = null;
     }
 
     /**
@@ -133,7 +133,7 @@ public final class XmlRoleTest
     public void testToRole_Success()
         throws Exception
     {
-        final IRole expectedRole = m_builder.toRole();
+        final IRole expectedRole = builder_.toRole();
         final FakeRootElement root = (FakeRootElement)getUnmarshaller().unmarshal( createRoleReader( expectedRole ) );
         final XmlRole xmlRole = root.getRole();
 
@@ -153,9 +153,9 @@ public final class XmlRoleTest
     public void testUnmarshal_Fail_NoId()
         throws Exception
     {
-        m_builder.setId( null );
+        builder_.setId( null );
 
-        getUnmarshaller().unmarshal( createRoleReader( m_builder.toRole() ) );
+        getUnmarshaller().unmarshal( createRoleReader( builder_.toRole() ) );
     }
 
     /**
@@ -169,7 +169,7 @@ public final class XmlRoleTest
     public void testUnmarshal_Success_Complete()
         throws Exception
     {
-        final IRole expectedRole = m_builder.toRole();
+        final IRole expectedRole = builder_.toRole();
 
         final FakeRootElement root = (FakeRootElement)getUnmarshaller().unmarshal( createRoleReader( expectedRole ) );
         final IRole actualRole = root.getRole().toRole();
@@ -199,7 +199,7 @@ public final class XmlRoleTest
 
         /** The role. */
         @XmlElement( name = XmlRole.NAME_ROLE, required = true )
-        private final XmlRole m_role;
+        private final XmlRole role_;
 
 
         // ==================================================================
@@ -211,7 +211,7 @@ public final class XmlRoleTest
          */
         private FakeRootElement()
         {
-            m_role = null;
+            role_ = null;
         }
 
 
@@ -227,7 +227,7 @@ public final class XmlRoleTest
         /* @NonNull */
         XmlRole getRole()
         {
-            return m_role;
+            return role_;
         }
     }
 }

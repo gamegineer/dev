@@ -44,7 +44,7 @@ public abstract class AbstractComponentServiceTestCase
     // ======================================================================
 
     /** The component service under test in the fixture. */
-    private IComponentService m_service;
+    private IComponentService service_;
 
 
     // ======================================================================
@@ -52,8 +52,8 @@ public abstract class AbstractComponentServiceTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractComponentServiceTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractComponentServiceTestCase} class.
      */
     protected AbstractComponentServiceTestCase()
     {
@@ -87,8 +87,8 @@ public abstract class AbstractComponentServiceTestCase
     public void setUp()
         throws Exception
     {
-        m_service = createComponentService();
-        assertNotNull( m_service );
+        service_ = createComponentService();
+        assertNotNull( service_ );
     }
 
     /**
@@ -101,7 +101,7 @@ public abstract class AbstractComponentServiceTestCase
     public void tearDown()
         throws Exception
     {
-        m_service = null;
+        service_ = null;
     }
 
     /**
@@ -115,7 +115,7 @@ public abstract class AbstractComponentServiceTestCase
     public void testCreateComponent_Context_Null()
         throws Exception
     {
-        m_service.createComponent( new MockComponentSpecification(), null );
+        service_.createComponent( new MockComponentSpecification(), null );
     }
 
     /**
@@ -129,7 +129,7 @@ public abstract class AbstractComponentServiceTestCase
     public void testCreateComponent_Specification_Null()
         throws Exception
     {
-        m_service.createComponent( null, ComponentCreationContextBuilder.emptyComponentCreationContext() );
+        service_.createComponent( null, ComponentCreationContextBuilder.emptyComponentCreationContext() );
     }
 
     /**
@@ -145,8 +145,8 @@ public abstract class AbstractComponentServiceTestCase
     {
         final IComponentFactory factory = new MockComponentFactory();
         final IComponentSpecification specification = new MockComponentSpecification( factory );
-        m_service.registerComponentFactory( factory );
-        assertNotNull( m_service.createComponent( specification, ComponentCreationContextBuilder.emptyComponentCreationContext() ) );
+        service_.registerComponentFactory( factory );
+        assertNotNull( service_.createComponent( specification, ComponentCreationContextBuilder.emptyComponentCreationContext() ) );
     }
 
     /**
@@ -166,7 +166,7 @@ public abstract class AbstractComponentServiceTestCase
         final ServiceRegistration serviceReg = bundleContext.registerService( IComponentFactory.class.getName(), factory, null );
         try
         {
-            assertNotNull( m_service.createComponent( specification, ComponentCreationContextBuilder.emptyComponentCreationContext() ) );
+            assertNotNull( service_.createComponent( specification, ComponentCreationContextBuilder.emptyComponentCreationContext() ) );
         }
         finally
         {
@@ -185,7 +185,7 @@ public abstract class AbstractComponentServiceTestCase
     public void testCreateComponent_Specification_Unsupported()
         throws Exception
     {
-        m_service.createComponent( new MockComponentSpecification(), ComponentCreationContextBuilder.emptyComponentCreationContext() );
+        service_.createComponent( new MockComponentSpecification(), ComponentCreationContextBuilder.emptyComponentCreationContext() );
     }
 
     /**
@@ -195,7 +195,7 @@ public abstract class AbstractComponentServiceTestCase
     @Test
     public void testGetComponentFactories_ImmutableCollectionReturned()
     {
-        assertImmutableCollection( m_service.getComponentFactories() );
+        assertImmutableCollection( service_.getComponentFactories() );
     }
 
     /**
@@ -205,9 +205,9 @@ public abstract class AbstractComponentServiceTestCase
     @Test
     public void testGetComponentFactories_SnapshotCollectionReturned()
     {
-        final Collection<IComponentFactory> factories = m_service.getComponentFactories();
-        m_service.registerComponentFactory( new MockComponentFactory() );
-        assertTrue( factories.size() != m_service.getComponentFactories().size() );
+        final Collection<IComponentFactory> factories = service_.getComponentFactories();
+        service_.registerComponentFactory( new MockComponentFactory() );
+        assertTrue( factories.size() != service_.getComponentFactories().size() );
     }
 
     /**
@@ -218,8 +218,8 @@ public abstract class AbstractComponentServiceTestCase
     public void testGetComponentFactoriesWithSpecification_ExpectedCollectionReturned()
     {
         final IComponentFactory factory = new MockComponentFactory();
-        m_service.registerComponentFactory( factory );
-        assertTrue( m_service.getComponentFactories( new MockComponentSpecification( factory ) ).contains( factory ) );
+        service_.registerComponentFactory( factory );
+        assertTrue( service_.getComponentFactories( new MockComponentSpecification( factory ) ).contains( factory ) );
     }
 
     /**
@@ -229,7 +229,7 @@ public abstract class AbstractComponentServiceTestCase
     @Test
     public void testGetComponentFactoriesWithSpecification_ImmutableCollectionReturned()
     {
-        assertImmutableCollection( m_service.getComponentFactories( new MockComponentSpecification() ) );
+        assertImmutableCollection( service_.getComponentFactories( new MockComponentSpecification() ) );
     }
 
     /**
@@ -242,9 +242,9 @@ public abstract class AbstractComponentServiceTestCase
     {
         final IComponentFactory factory = new MockComponentFactory();
         final IComponentSpecification specification = new MockComponentSpecification( factory );
-        final Collection<IComponentFactory> factories = m_service.getComponentFactories( specification );
-        m_service.registerComponentFactory( factory );
-        assertTrue( factories.size() != m_service.getComponentFactories( specification ).size() );
+        final Collection<IComponentFactory> factories = service_.getComponentFactories( specification );
+        service_.registerComponentFactory( factory );
+        assertTrue( factories.size() != service_.getComponentFactories( specification ).size() );
     }
 
     /**
@@ -258,7 +258,7 @@ public abstract class AbstractComponentServiceTestCase
     public void testGetComponentFactoriesWithSpecification_Specification_Null()
         throws Exception
     {
-        m_service.getComponentFactories( null );
+        service_.getComponentFactories( null );
     }
 
     /**
@@ -268,7 +268,7 @@ public abstract class AbstractComponentServiceTestCase
     @Test( expected = NullPointerException.class )
     public void testRegisterComponentFactory_Factory_Null()
     {
-        m_service.registerComponentFactory( null );
+        service_.registerComponentFactory( null );
     }
 
     /**
@@ -279,11 +279,11 @@ public abstract class AbstractComponentServiceTestCase
     public void testRegisterComponentFactory_Factory_Registered()
     {
         final IComponentFactory factory = new MockComponentFactory();
-        final int originalFactoryCount = m_service.getComponentFactories().size();
-        m_service.registerComponentFactory( factory );
-        m_service.registerComponentFactory( factory );
-        assertTrue( m_service.getComponentFactories().contains( factory ) );
-        assertTrue( (originalFactoryCount + 1) == m_service.getComponentFactories().size() );
+        final int originalFactoryCount = service_.getComponentFactories().size();
+        service_.registerComponentFactory( factory );
+        service_.registerComponentFactory( factory );
+        assertTrue( service_.getComponentFactories().contains( factory ) );
+        assertTrue( (originalFactoryCount + 1) == service_.getComponentFactories().size() );
     }
 
     /**
@@ -294,8 +294,8 @@ public abstract class AbstractComponentServiceTestCase
     public void testRegisterComponentFactory_Factory_Unregistered()
     {
         final IComponentFactory factory = new MockComponentFactory();
-        m_service.registerComponentFactory( factory );
-        assertTrue( m_service.getComponentFactories().contains( factory ) );
+        service_.registerComponentFactory( factory );
+        assertTrue( service_.getComponentFactories().contains( factory ) );
     }
 
     /**
@@ -305,7 +305,7 @@ public abstract class AbstractComponentServiceTestCase
     @Test( expected = NullPointerException.class )
     public void testUnregisterComponentFactory_Factory_Null()
     {
-        m_service.unregisterComponentFactory( null );
+        service_.unregisterComponentFactory( null );
     }
 
     /**
@@ -316,11 +316,11 @@ public abstract class AbstractComponentServiceTestCase
     public void testUnregisterComponentFactory_Factory_Registered()
     {
         final IComponentFactory factory = new MockComponentFactory();
-        final int originalFactoryCount = m_service.getComponentFactories().size();
-        m_service.registerComponentFactory( factory );
-        assertTrue( (originalFactoryCount + 1) == m_service.getComponentFactories().size() );
-        m_service.unregisterComponentFactory( factory );
-        assertTrue( originalFactoryCount == m_service.getComponentFactories().size() );
+        final int originalFactoryCount = service_.getComponentFactories().size();
+        service_.registerComponentFactory( factory );
+        assertTrue( (originalFactoryCount + 1) == service_.getComponentFactories().size() );
+        service_.unregisterComponentFactory( factory );
+        assertTrue( originalFactoryCount == service_.getComponentFactories().size() );
     }
 
     /**
@@ -331,9 +331,9 @@ public abstract class AbstractComponentServiceTestCase
     public void testUnregisterComponentFactory_Factory_Unregistered()
     {
         final IComponentFactory factory = new MockComponentFactory();
-        final int originalFactoryCount = m_service.getComponentFactories().size();
-        m_service.unregisterComponentFactory( factory );
-        assertTrue( originalFactoryCount == m_service.getComponentFactories().size() );
+        final int originalFactoryCount = service_.getComponentFactories().size();
+        service_.unregisterComponentFactory( factory );
+        assertTrue( originalFactoryCount == service_.getComponentFactories().size() );
     }
 
 
@@ -406,7 +406,7 @@ public abstract class AbstractComponentServiceTestCase
         // ==================================================================
 
         /** The component factory matched by this specification. */
-        private final IComponentFactory m_factory;
+        private final IComponentFactory factory_;
 
 
         // ==================================================================
@@ -434,7 +434,7 @@ public abstract class AbstractComponentServiceTestCase
             /* @Nullable */
             final IComponentFactory factory )
         {
-            m_factory = factory;
+            factory_ = factory;
         }
 
 
@@ -448,7 +448,7 @@ public abstract class AbstractComponentServiceTestCase
         public boolean matches(
             final IComponentFactory factory )
         {
-            return factory.equals( m_factory );
+            return factory.equals( factory_ );
         }
     }
 }

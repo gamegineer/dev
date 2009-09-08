@@ -50,7 +50,7 @@ public final class XmlRoleUiTest
     // ======================================================================
 
     /** The role user interface builder for use in the fixture. */
-    private NonValidatingRoleUiBuilder m_builder;
+    private NonValidatingRoleUiBuilder builder_;
 
 
     // ======================================================================
@@ -76,8 +76,8 @@ public final class XmlRoleUiTest
      * @param roleUi
      *        The role user interface; must not be {@code null}.
      * 
-     * @return A reader for the specified role user interface; never
-     *         {@code null}.
+     * @return A reader for the specified role user interface; never {@code
+     *         null}.
      */
     /* @NonNull */
     private static Reader createRoleUiReader(
@@ -106,7 +106,7 @@ public final class XmlRoleUiTest
     public void setUp()
         throws Exception
     {
-        m_builder = new NonValidatingRoleUiBuilder( GameSystemUis.createRoleUi( GameSystems.createUniqueRole() ) );
+        builder_ = new NonValidatingRoleUiBuilder( GameSystemUis.createRoleUi( GameSystems.createUniqueRole() ) );
 
         super.setUp();
     }
@@ -121,7 +121,7 @@ public final class XmlRoleUiTest
     {
         super.tearDown();
 
-        m_builder = null;
+        builder_ = null;
     }
 
     /**
@@ -135,7 +135,7 @@ public final class XmlRoleUiTest
     public void testToRoleUi_Success()
         throws Exception
     {
-        final IRoleUi expectedRoleUi = m_builder.toRoleUi();
+        final IRoleUi expectedRoleUi = builder_.toRoleUi();
         final FakeRootElement root = (FakeRootElement)getUnmarshaller().unmarshal( createRoleUiReader( expectedRoleUi ) );
         final XmlRoleUi xmlRoleUi = root.getRoleUi();
 
@@ -155,9 +155,9 @@ public final class XmlRoleUiTest
     public void testUnmarshal_Fail_NoId()
         throws Exception
     {
-        m_builder.setId( null );
+        builder_.setId( null );
 
-        getUnmarshaller().unmarshal( createRoleUiReader( m_builder.toRoleUi() ) );
+        getUnmarshaller().unmarshal( createRoleUiReader( builder_.toRoleUi() ) );
     }
 
     /**
@@ -171,7 +171,7 @@ public final class XmlRoleUiTest
     public void testUnmarshal_Success_Complete()
         throws Exception
     {
-        final IRoleUi expectedRoleUi = m_builder.toRoleUi();
+        final IRoleUi expectedRoleUi = builder_.toRoleUi();
 
         final FakeRootElement root = (FakeRootElement)getUnmarshaller().unmarshal( createRoleUiReader( expectedRoleUi ) );
         final IRoleUi actualRoleUi = root.getRoleUi().toRoleUi();
@@ -201,7 +201,7 @@ public final class XmlRoleUiTest
 
         /** The role user interface. */
         @XmlElement( name = XmlRoleUi.NAME_ROLE, required = true )
-        private final XmlRoleUi m_roleUi;
+        private final XmlRoleUi roleUi_;
 
 
         // ==================================================================
@@ -213,7 +213,7 @@ public final class XmlRoleUiTest
          */
         private FakeRootElement()
         {
-            m_roleUi = null;
+            roleUi_ = null;
         }
 
 
@@ -229,7 +229,7 @@ public final class XmlRoleUiTest
         /* @NonNull */
         XmlRoleUi getRoleUi()
         {
-            return m_roleUi;
+            return roleUi_;
         }
     }
 }

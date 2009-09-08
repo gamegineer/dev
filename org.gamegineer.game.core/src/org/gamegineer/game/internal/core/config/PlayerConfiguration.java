@@ -42,10 +42,10 @@ public final class PlayerConfiguration
     // ======================================================================
 
     /** The player role identifier. */
-    private final String m_roleId;
+    private final String roleId_;
 
     /** The player user identifier. */
-    private final String m_userId;
+    private final String userId_;
 
 
     // ======================================================================
@@ -69,8 +69,8 @@ public final class PlayerConfiguration
         assert roleId != null;
         assert userId != null;
 
-        m_roleId = roleId;
-        m_userId = userId;
+        roleId_ = roleId;
+        userId_ = userId;
     }
 
 
@@ -113,7 +113,7 @@ public final class PlayerConfiguration
      */
     public String getRoleId()
     {
-        return m_roleId;
+        return roleId_;
     }
 
     /*
@@ -121,6 +121,6 @@ public final class PlayerConfiguration
      */
     public String getUserId()
     {
-        return m_userId;
+        return userId_;
     }
 }

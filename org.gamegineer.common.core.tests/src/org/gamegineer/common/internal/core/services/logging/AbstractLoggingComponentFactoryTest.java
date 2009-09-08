@@ -1,6 +1,6 @@
 /*
  * AbstractLoggingComponentFactoryTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -59,7 +59,7 @@ public final class AbstractLoggingComponentFactoryTest
     private static final Map<String, String> DEFAULT_LOGGING_PROPERTIES = Collections.emptyMap();
 
     /** The logging component factory under test in the fixture. */
-    private AbstractLoggingComponentFactory<MockLoggingComponent> m_factory;
+    private AbstractLoggingComponentFactory<MockLoggingComponent> factory_;
 
 
     // ======================================================================
@@ -67,8 +67,8 @@ public final class AbstractLoggingComponentFactoryTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractLoggingComponentFactoryTest} class.
+     * Initializes a new instance of the {@code
+     * AbstractLoggingComponentFactoryTest} class.
      */
     public AbstractLoggingComponentFactoryTest()
     {
@@ -88,20 +88,20 @@ public final class AbstractLoggingComponentFactoryTest
      *        {@code true} to add the {@code className} attribute to the
      *        context; otherwise {@code false}.
      * @param className
-     *        The component class name; must not be {@code null} if
-     *        {@code addClassName} is {@code true}.
+     *        The component class name; must not be {@code null} if {@code
+     *        addClassName} is {@code true}.
      * @param addInstanceName
      *        {@code true} to add the {@code instanceName} attribute to the
      *        context; otherwise {@code false}.
      * @param instanceName
-     *        The component instance name; must not be {@code null} if
-     *        {@code addInstanceName} is {@code true}.
+     *        The component instance name; must not be {@code null} if {@code
+     *        addInstanceName} is {@code true}.
      * @param addLoggingProperties
      *        {@code true} to add the {@code loggingProperties} attribute to the
      *        context; otherwise {@code false}.
      * @param loggingProperties
-     *        The logging properties; must not be {@code null} if
-     *        {@code addLoggingProperties} is {@code true}.
+     *        The logging properties; must not be {@code null} if {@code
+     *        addLoggingProperties} is {@code true}.
      * 
      * @return A component creation context; never {@code null}.
      */
@@ -147,7 +147,7 @@ public final class AbstractLoggingComponentFactoryTest
     public void setUp()
         throws Exception
     {
-        m_factory = new AbstractLoggingComponentFactory<MockLoggingComponent>( MockLoggingComponent.class )
+        factory_ = new AbstractLoggingComponentFactory<MockLoggingComponent>( MockLoggingComponent.class )
         {
             // no overrides
         };
@@ -163,7 +163,7 @@ public final class AbstractLoggingComponentFactoryTest
     public void tearDown()
         throws Exception
     {
-        m_factory = null;
+        factory_ = null;
     }
 
     /**
@@ -190,7 +190,7 @@ public final class AbstractLoggingComponentFactoryTest
     public void testCreateComponent_Context_ClassNameAttribute_Absent()
         throws Exception
     {
-        m_factory.createComponent( createComponentCreationContext( false, null, true, DEFAULT_INSTANCE_NAME, true, DEFAULT_LOGGING_PROPERTIES ) );
+        factory_.createComponent( createComponentCreationContext( false, null, true, DEFAULT_INSTANCE_NAME, true, DEFAULT_LOGGING_PROPERTIES ) );
     }
 
     /**
@@ -205,7 +205,7 @@ public final class AbstractLoggingComponentFactoryTest
     public void testCreateComponent_Context_ClassNameAttribute_Present_WrongType()
         throws Exception
     {
-        m_factory.createComponent( createComponentCreationContext( true, Integer.class.getName(), true, DEFAULT_INSTANCE_NAME, true, DEFAULT_LOGGING_PROPERTIES ) );
+        factory_.createComponent( createComponentCreationContext( true, Integer.class.getName(), true, DEFAULT_INSTANCE_NAME, true, DEFAULT_LOGGING_PROPERTIES ) );
     }
 
     /**
@@ -219,7 +219,7 @@ public final class AbstractLoggingComponentFactoryTest
     public void testCreateComponent_Context_InstanceNameAttribute_Absent()
         throws Exception
     {
-        m_factory.createComponent( createComponentCreationContext( true, DEFAULT_CLASS_NAME, false, null, true, DEFAULT_LOGGING_PROPERTIES ) );
+        factory_.createComponent( createComponentCreationContext( true, DEFAULT_CLASS_NAME, false, null, true, DEFAULT_LOGGING_PROPERTIES ) );
     }
 
     /**
@@ -233,7 +233,7 @@ public final class AbstractLoggingComponentFactoryTest
     public void testCreateComponent_Context_LoggingPropertiesAttribute_Absent()
         throws Exception
     {
-        m_factory.createComponent( createComponentCreationContext( true, DEFAULT_CLASS_NAME, true, DEFAULT_INSTANCE_NAME, false, null ) );
+        factory_.createComponent( createComponentCreationContext( true, DEFAULT_CLASS_NAME, true, DEFAULT_INSTANCE_NAME, false, null ) );
     }
 
     /**
@@ -328,7 +328,7 @@ public final class AbstractLoggingComponentFactoryTest
     @Test( expected = NullPointerException.class )
     public void testGetLoggingProperty_InstanceName_Null()
     {
-        m_factory.getLoggingProperty( null, "name", DEFAULT_LOGGING_PROPERTIES ); //$NON-NLS-1$
+        factory_.getLoggingProperty( null, "name", DEFAULT_LOGGING_PROPERTIES ); //$NON-NLS-1$
     }
 
     /**
@@ -338,7 +338,7 @@ public final class AbstractLoggingComponentFactoryTest
     @Test( expected = NullPointerException.class )
     public void testGetLoggingProperty_LoggingProperties_Null()
     {
-        m_factory.getLoggingProperty( DEFAULT_INSTANCE_NAME, "name", null ); //$NON-NLS-1$
+        factory_.getLoggingProperty( DEFAULT_INSTANCE_NAME, "name", null ); //$NON-NLS-1$
     }
 
     /**
@@ -348,7 +348,7 @@ public final class AbstractLoggingComponentFactoryTest
     @Test
     public void testGetLoggingProperty_Property_Absent()
     {
-        assertNull( m_factory.getLoggingProperty( DEFAULT_INSTANCE_NAME, "name", DEFAULT_LOGGING_PROPERTIES ) ); //$NON-NLS-1$
+        assertNull( factory_.getLoggingProperty( DEFAULT_INSTANCE_NAME, "name", DEFAULT_LOGGING_PROPERTIES ) ); //$NON-NLS-1$
     }
 
     /**
@@ -362,7 +362,7 @@ public final class AbstractLoggingComponentFactoryTest
         final String value = "value"; //$NON-NLS-1$
         final String key = String.format( "%1$s.%2$s.%3$s", DEFAULT_CLASS_NAME, DEFAULT_INSTANCE_NAME, name ); //$NON-NLS-1$
         final Map<String, String> loggingProperties = Collections.singletonMap( key, value );
-        assertEquals( value, m_factory.getLoggingProperty( DEFAULT_INSTANCE_NAME, name, loggingProperties ) );
+        assertEquals( value, factory_.getLoggingProperty( DEFAULT_INSTANCE_NAME, name, loggingProperties ) );
     }
 
     /**
@@ -372,6 +372,6 @@ public final class AbstractLoggingComponentFactoryTest
     @Test( expected = NullPointerException.class )
     public void testGetLoggingProperty_PropertyName_Null()
     {
-        m_factory.getLoggingProperty( DEFAULT_INSTANCE_NAME, null, DEFAULT_LOGGING_PROPERTIES );
+        factory_.getLoggingProperty( DEFAULT_INSTANCE_NAME, null, DEFAULT_LOGGING_PROPERTIES );
     }
 }

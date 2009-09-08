@@ -1,6 +1,6 @@
 /*
  * MementoBuilder.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -53,7 +53,7 @@ public final class MementoBuilder
     // ======================================================================
 
     /** The attribute map. */
-    private final Map<String, Object> m_attributeMap;
+    private final Map<String, Object> attributeMap_;
 
 
     // ======================================================================
@@ -85,7 +85,7 @@ public final class MementoBuilder
     {
         assertArgumentNotNull( attributeMap, "attributeMap" ); //$NON-NLS-1$
 
-        m_attributeMap = new HashMap<String, Object>( attributeMap );
+        attributeMap_ = new HashMap<String, Object>( attributeMap );
     }
 
 
@@ -116,9 +116,9 @@ public final class MementoBuilder
         final T value )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( !m_attributeMap.containsKey( name ), "name", Messages.MementoBuilder_attribute_present( name ) ); //$NON-NLS-1$
+        assertArgumentLegal( !attributeMap_.containsKey( name ), "name", Messages.MementoBuilder_attribute_present( name ) ); //$NON-NLS-1$
 
-        m_attributeMap.put( name, value );
+        attributeMap_.put( name, value );
     }
 
     /**
@@ -139,7 +139,7 @@ public final class MementoBuilder
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return m_attributeMap.containsKey( name );
+        return attributeMap_.containsKey( name );
     }
 
     /**
@@ -150,6 +150,6 @@ public final class MementoBuilder
     /* @NonNull */
     public IMemento toMemento()
     {
-        return new Memento( m_attributeMap );
+        return new Memento( attributeMap_ );
     }
 }

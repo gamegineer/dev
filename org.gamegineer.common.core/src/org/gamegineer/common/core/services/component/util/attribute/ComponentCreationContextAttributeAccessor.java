@@ -1,6 +1,6 @@
 /*
  * ComponentCreationContextAttributeAccessor.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,7 +29,8 @@ import org.gamegineer.common.core.services.component.IComponentCreationContext;
  * Implementation of
  * {@link org.gamegineer.common.core.services.component.util.attribute.IAttributeAccessor}
  * for classes that implement
- * {@link org.gamegineer.common.core.services.component.IComponentCreationContext}.
+ * {@link org.gamegineer.common.core.services.component.IComponentCreationContext}
+ * .
  * 
  * <p>
  * This class is immutable.
@@ -48,7 +49,7 @@ public final class ComponentCreationContextAttributeAccessor
     // ======================================================================
 
     /** The component creation context. */
-    private final IComponentCreationContext m_context;
+    private final IComponentCreationContext context_;
 
 
     // ======================================================================
@@ -56,8 +57,8 @@ public final class ComponentCreationContextAttributeAccessor
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code ComponentCreationContextAttributeAccessor} class.
+     * Initializes a new instance of the {@code
+     * ComponentCreationContextAttributeAccessor} class.
      * 
      * @param context
      *        The component creation context; must not be {@code null}.
@@ -71,7 +72,7 @@ public final class ComponentCreationContextAttributeAccessor
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        m_context = context;
+        context_ = context;
     }
 
 
@@ -85,7 +86,7 @@ public final class ComponentCreationContextAttributeAccessor
     public boolean containsAttribute(
         final String name )
     {
-        return m_context.containsAttribute( name );
+        return context_.containsAttribute( name );
     }
 
     /*
@@ -94,6 +95,6 @@ public final class ComponentCreationContextAttributeAccessor
     public Object getAttribute(
         final String name )
     {
-        return m_context.getAttribute( name );
+        return context_.getAttribute( name );
     }
 }

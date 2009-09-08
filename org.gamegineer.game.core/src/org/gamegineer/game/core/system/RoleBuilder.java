@@ -45,7 +45,7 @@ public final class RoleBuilder
     // ======================================================================
 
     /** The role identifier. */
-    private String m_id;
+    private String id_;
 
 
     // ======================================================================
@@ -58,7 +58,7 @@ public final class RoleBuilder
      */
     public RoleBuilder()
     {
-        m_id = null;
+        id_ = null;
     }
 
 
@@ -84,7 +84,7 @@ public final class RoleBuilder
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
-        m_id = id;
+        id_ = id;
 
         return this;
     }
@@ -101,11 +101,11 @@ public final class RoleBuilder
     /* @NonNull */
     public IRole toRole()
     {
-        assertStateLegal( m_id != null, Messages.RoleBuilder_id_notSet );
+        assertStateLegal( id_ != null, Messages.RoleBuilder_id_notSet );
 
         try
         {
-            return Role.createRole( m_id );
+            return Role.createRole( id_ );
         }
         catch( final IllegalArgumentException e )
         {

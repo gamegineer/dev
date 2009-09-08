@@ -49,10 +49,10 @@ public abstract class AbstractExtensionRegistryTestCase
     // ======================================================================
 
     /** The engine context for use in the fixture. */
-    private IEngineContext m_context;
+    private IEngineContext context_;
 
     /** The extension registry under test in the fixture. */
-    private IExtensionRegistry m_extensionRegistry;
+    private IExtensionRegistry extensionRegistry_;
 
 
     // ======================================================================
@@ -60,8 +60,8 @@ public abstract class AbstractExtensionRegistryTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractExtensionRegistryTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractExtensionRegistryTestCase} class.
      */
     protected AbstractExtensionRegistryTestCase()
     {
@@ -122,9 +122,9 @@ public abstract class AbstractExtensionRegistryTestCase
     public void setUp()
         throws Exception
     {
-        m_context = createEngineContext();
-        m_extensionRegistry = createExtensionRegistry( m_context );
-        assertNotNull( m_extensionRegistry );
+        context_ = createEngineContext();
+        extensionRegistry_ = createExtensionRegistry( context_ );
+        assertNotNull( extensionRegistry_ );
     }
 
     /**
@@ -137,8 +137,8 @@ public abstract class AbstractExtensionRegistryTestCase
     public void tearDown()
         throws Exception
     {
-        m_extensionRegistry = null;
-        m_context = null;
+        extensionRegistry_ = null;
+        context_ = null;
     }
 
     /**
@@ -148,7 +148,7 @@ public abstract class AbstractExtensionRegistryTestCase
     @Test( expected = NullPointerException.class )
     public void testGetExtension_Context_Null()
     {
-        m_extensionRegistry.getExtension( null, Object.class );
+        extensionRegistry_.getExtension( null, Object.class );
     }
 
     /**
@@ -158,7 +158,7 @@ public abstract class AbstractExtensionRegistryTestCase
     @Test( expected = NullPointerException.class )
     public void testGetExtension_Type_Null()
     {
-        m_extensionRegistry.getExtension( m_context, null );
+        extensionRegistry_.getExtension( context_, null );
     }
 
     /**
@@ -172,7 +172,7 @@ public abstract class AbstractExtensionRegistryTestCase
     public void testRegisterExtension_Context_Null()
         throws Exception
     {
-        m_extensionRegistry.registerExtension( null, createDummy( IExtension.class ) );
+        extensionRegistry_.registerExtension( null, createDummy( IExtension.class ) );
     }
 
     /**
@@ -186,7 +186,7 @@ public abstract class AbstractExtensionRegistryTestCase
     public void testRegisterExtension_Extension_Null()
         throws Exception
     {
-        m_extensionRegistry.registerExtension( m_context, null );
+        extensionRegistry_.registerExtension( context_, null );
     }
 
     /**
@@ -201,9 +201,9 @@ public abstract class AbstractExtensionRegistryTestCase
         throws Exception
     {
         final IExtension extension = new MockExtension( Object.class );
-        m_extensionRegistry.registerExtension( m_context, extension );
+        extensionRegistry_.registerExtension( context_, extension );
 
-        m_extensionRegistry.registerExtension( m_context, extension );
+        extensionRegistry_.registerExtension( context_, extension );
     }
 
     /**
@@ -217,9 +217,9 @@ public abstract class AbstractExtensionRegistryTestCase
     public void testRegisterExtension_Extension_Registered_ExtensionType()
         throws Exception
     {
-        m_extensionRegistry.registerExtension( m_context, new MockExtension( Object.class ) );
+        extensionRegistry_.registerExtension( context_, new MockExtension( Object.class ) );
 
-        m_extensionRegistry.registerExtension( m_context, new MockExtension( Object.class ) );
+        extensionRegistry_.registerExtension( context_, new MockExtension( Object.class ) );
     }
 
     /**
@@ -235,7 +235,7 @@ public abstract class AbstractExtensionRegistryTestCase
     {
         final MockExtension extension = new MockExtension( Object.class );
 
-        m_extensionRegistry.registerExtension( m_context, extension );
+        extensionRegistry_.registerExtension( context_, extension );
 
         assertTrue( extension.isStarted() );
     }
@@ -264,7 +264,7 @@ public abstract class AbstractExtensionRegistryTestCase
             }
         };
 
-        m_extensionRegistry.registerExtension( m_context, extension );
+        extensionRegistry_.registerExtension( context_, extension );
     }
 
     /**
@@ -290,7 +290,7 @@ public abstract class AbstractExtensionRegistryTestCase
             }
         };
 
-        m_extensionRegistry.registerExtension( m_context, extension );
+        extensionRegistry_.registerExtension( context_, extension );
     }
 
     /**
@@ -306,9 +306,9 @@ public abstract class AbstractExtensionRegistryTestCase
     {
         final IExtension extension = new MockExtension( Object.class );
 
-        m_extensionRegistry.registerExtension( m_context, extension );
+        extensionRegistry_.registerExtension( context_, extension );
 
-        assertSame( extension, m_extensionRegistry.getExtension( m_context, Object.class ) );
+        assertSame( extension, extensionRegistry_.getExtension( context_, Object.class ) );
     }
 
     /**
@@ -318,7 +318,7 @@ public abstract class AbstractExtensionRegistryTestCase
     @Test( expected = NullPointerException.class )
     public void testUnregisterExtension_Context_Null()
     {
-        m_extensionRegistry.unregisterExtension( null, createDummy( IExtension.class ) );
+        extensionRegistry_.unregisterExtension( null, createDummy( IExtension.class ) );
     }
 
     /**
@@ -328,7 +328,7 @@ public abstract class AbstractExtensionRegistryTestCase
     @Test( expected = NullPointerException.class )
     public void testUnregisterExtension_Extension_Null()
     {
-        m_extensionRegistry.unregisterExtension( m_context, null );
+        extensionRegistry_.unregisterExtension( context_, null );
     }
 
     /**
@@ -343,12 +343,12 @@ public abstract class AbstractExtensionRegistryTestCase
         throws Exception
     {
         final IExtension extension = new MockExtension( Object.class );
-        m_extensionRegistry.registerExtension( m_context, extension );
-        assertSame( extension, m_extensionRegistry.getExtension( m_context, Object.class ) );
+        extensionRegistry_.registerExtension( context_, extension );
+        assertSame( extension, extensionRegistry_.getExtension( context_, Object.class ) );
 
-        m_extensionRegistry.unregisterExtension( m_context, extension );
+        extensionRegistry_.unregisterExtension( context_, extension );
 
-        assertNull( m_extensionRegistry.getExtension( m_context, Object.class ) );
+        assertNull( extensionRegistry_.getExtension( context_, Object.class ) );
     }
 
     /**
@@ -376,7 +376,7 @@ public abstract class AbstractExtensionRegistryTestCase
         };
         try
         {
-            m_extensionRegistry.registerExtension( m_context, extension );
+            extensionRegistry_.registerExtension( context_, extension );
         }
         catch( final Exception e )
         {
@@ -384,9 +384,9 @@ public abstract class AbstractExtensionRegistryTestCase
             throw e;
         }
 
-        m_extensionRegistry.unregisterExtension( m_context, extension );
+        extensionRegistry_.unregisterExtension( context_, extension );
 
-        assertNull( m_extensionRegistry.getExtension( m_context, Object.class ) );
+        assertNull( extensionRegistry_.getExtension( context_, Object.class ) );
     }
 
     /**
@@ -413,7 +413,7 @@ public abstract class AbstractExtensionRegistryTestCase
         };
         try
         {
-            m_extensionRegistry.registerExtension( m_context, extension );
+            extensionRegistry_.registerExtension( context_, extension );
         }
         catch( final Exception e )
         {
@@ -421,9 +421,9 @@ public abstract class AbstractExtensionRegistryTestCase
             throw e;
         }
 
-        m_extensionRegistry.unregisterExtension( m_context, extension );
+        extensionRegistry_.unregisterExtension( context_, extension );
 
-        assertNull( m_extensionRegistry.getExtension( m_context, Object.class ) );
+        assertNull( extensionRegistry_.getExtension( context_, Object.class ) );
     }
 
     /**
@@ -438,9 +438,9 @@ public abstract class AbstractExtensionRegistryTestCase
         throws Exception
     {
         final MockExtension extension = new MockExtension( Object.class );
-        m_extensionRegistry.registerExtension( m_context, extension );
+        extensionRegistry_.registerExtension( context_, extension );
 
-        m_extensionRegistry.unregisterExtension( m_context, extension );
+        extensionRegistry_.unregisterExtension( context_, extension );
 
         assertFalse( extension.isStarted() );
     }
@@ -457,9 +457,9 @@ public abstract class AbstractExtensionRegistryTestCase
     public void testUnregisterExtension_Extension_Unregistered_Extension()
         throws Exception
     {
-        m_extensionRegistry.registerExtension( m_context, new MockExtension( Object.class ) );
+        extensionRegistry_.registerExtension( context_, new MockExtension( Object.class ) );
 
-        m_extensionRegistry.unregisterExtension( m_context, new MockExtension( Object.class ) );
+        extensionRegistry_.unregisterExtension( context_, new MockExtension( Object.class ) );
     }
 
     /**
@@ -469,6 +469,6 @@ public abstract class AbstractExtensionRegistryTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testUnregisterExtension_Extension_Unregistered_ExtensionType()
     {
-        m_extensionRegistry.unregisterExtension( m_context, new MockExtension( Object.class ) );
+        extensionRegistry_.unregisterExtension( context_, new MockExtension( Object.class ) );
     }
 }

@@ -45,10 +45,10 @@ public final class LoggingPropertiesTest
     // ======================================================================
 
     /** The backing store for the logging properties. */
-    private Properties m_propStore;
+    private Properties propStore_;
 
     /** The logging properties under test in the fixture. */
-    private LoggingProperties m_props;
+    private LoggingProperties props_;
 
 
     // ======================================================================
@@ -78,16 +78,16 @@ public final class LoggingPropertiesTest
     public void setUp()
         throws Exception
     {
-        m_propStore = new Properties();
-        m_propStore.put( "a.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        m_propStore.put( "a.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        m_propStore.put( "a.b.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        m_propStore.put( "a.b.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        m_propStore.put( "a.b.c.d.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        m_propStore.put( "a.b.c.d.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        m_propStore.put( "a.b.c.d.e.f.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        m_propStore.put( "a.b.c.d.e.f.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        m_props = new LoggingProperties( m_propStore );
+        propStore_ = new Properties();
+        propStore_.put( "a.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propStore_.put( "a.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propStore_.put( "a.b.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propStore_.put( "a.b.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propStore_.put( "a.b.c.d.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propStore_.put( "a.b.c.d.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propStore_.put( "a.b.c.d.e.f.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        propStore_.put( "a.b.c.d.e.f.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        props_ = new LoggingProperties( propStore_ );
     }
 
     /**
@@ -100,8 +100,8 @@ public final class LoggingPropertiesTest
     public void tearDown()
         throws Exception
     {
-        m_props = null;
-        m_propStore = null;
+        props_ = null;
+        propStore_ = null;
     }
 
     /**
@@ -110,11 +110,11 @@ public final class LoggingPropertiesTest
     @Test
     public void testAsMap()
     {
-        final Map<String, String> propMap = m_props.asMap();
-        assertEquals( m_propStore.size(), propMap.size() );
-        for( final String name : m_propStore.stringPropertyNames() )
+        final Map<String, String> propMap = props_.asMap();
+        assertEquals( propStore_.size(), propMap.size() );
+        for( final String name : propStore_.stringPropertyNames() )
         {
-            assertEquals( m_propStore.getProperty( name ), propMap.get( name ) );
+            assertEquals( propStore_.getProperty( name ), propMap.get( name ) );
         }
     }
 
@@ -124,7 +124,7 @@ public final class LoggingPropertiesTest
     @Test
     public void testAsMap_ReturnValue_Immutable()
     {
-        assertImmutableMap( m_props.asMap() );
+        assertImmutableMap( props_.asMap() );
     }
 
     /**
@@ -157,7 +157,7 @@ public final class LoggingPropertiesTest
     @Test( expected = AssertionError.class )
     public void testGetAncestorLoggerNames_Name_Null()
     {
-        m_props.getAncestorLoggerNames( null );
+        props_.getAncestorLoggerNames( null );
     }
 
     /**
@@ -167,7 +167,7 @@ public final class LoggingPropertiesTest
     @Test
     public void testGetAncestorLoggerNames_ReturnValue_NonNull()
     {
-        final List<String> nameList = m_props.getAncestorLoggerNames( "z" ); //$NON-NLS-1$
+        final List<String> nameList = props_.getAncestorLoggerNames( "z" ); //$NON-NLS-1$
         assertNotNull( nameList );
         assertTrue( nameList.isEmpty() );
     }
@@ -179,7 +179,7 @@ public final class LoggingPropertiesTest
     @Test
     public void testGetAncestorLoggerNames_ReturnValue_Ordered()
     {
-        final List<String> nameList = m_props.getAncestorLoggerNames( "a.b.c.d.e.f" ); //$NON-NLS-1$
+        final List<String> nameList = props_.getAncestorLoggerNames( "a.b.c.d.e.f" ); //$NON-NLS-1$
         assertEquals( 3, nameList.size() );
         assertEquals( "a.b.c.d", nameList.get( 0 ) ); //$NON-NLS-1$
         assertEquals( "a.b", nameList.get( 1 ) ); //$NON-NLS-1$
@@ -193,7 +193,7 @@ public final class LoggingPropertiesTest
     @Test( expected = AssertionError.class )
     public void testGetLoggerConfiguration_Name_Null()
     {
-        m_props.getLoggerConfiguration( null );
+        props_.getLoggerConfiguration( null );
     }
 
     /**
@@ -203,7 +203,7 @@ public final class LoggingPropertiesTest
     @Test
     public void testGetLoggerConfiguration_ReturnValue_NonNull()
     {
-        assertNotNull( m_props.getLoggerConfiguration( "z" ) ); //$NON-NLS-1$
+        assertNotNull( props_.getLoggerConfiguration( "z" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -213,7 +213,7 @@ public final class LoggingPropertiesTest
     @Test( expected = AssertionError.class )
     public void testGetProperty_EntityName_Null()
     {
-        m_props.getProperty( null, "p1" ); //$NON-NLS-1$
+        props_.getProperty( null, "p1" ); //$NON-NLS-1$
     }
 
     /**
@@ -223,7 +223,7 @@ public final class LoggingPropertiesTest
     @Test
     public void testGetProperty_Property_Exists()
     {
-        assertEquals( "v1", m_props.getProperty( "a.b.c.d", "p1" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals( "v1", props_.getProperty( "a.b.c.d", "p1" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /**
@@ -233,7 +233,7 @@ public final class LoggingPropertiesTest
     @Test
     public void testGetProperty_Property_Nonexistent()
     {
-        assertNull( m_props.getProperty( "a.b.c.d", "p1000" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        assertNull( props_.getProperty( "a.b.c.d", "p1000" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -243,7 +243,7 @@ public final class LoggingPropertiesTest
     @Test( expected = AssertionError.class )
     public void testGetProperty_PropertyName_Dotted()
     {
-        m_props.getProperty( "a", "p.p" ); //$NON-NLS-1$ //$NON-NLS-2$
+        props_.getProperty( "a", "p.p" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -253,6 +253,6 @@ public final class LoggingPropertiesTest
     @Test( expected = AssertionError.class )
     public void testGetProperty_PropertyName_Null()
     {
-        m_props.getProperty( "a", null ); //$NON-NLS-1$
+        props_.getProperty( "a", null ); //$NON-NLS-1$
     }
 }

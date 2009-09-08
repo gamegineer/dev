@@ -48,7 +48,7 @@ public final class RemoveCommandListenerCommand
     // ======================================================================
 
     /** The command listener to remove. */
-    private final ICommandListener m_listener;
+    private final ICommandListener listener_;
 
 
     // ======================================================================
@@ -71,7 +71,7 @@ public final class RemoveCommandListenerCommand
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
 
-        m_listener = listener;
+        listener_ = listener;
     }
 
 
@@ -94,7 +94,7 @@ public final class RemoveCommandListenerCommand
             throw new EngineException( Messages.Common_commandEventMediatorExtension_unavailable );
         }
 
-        mediator.removeCommandListener( context, m_listener );
+        mediator.removeCommandListener( context, listener_ );
 
         return null;
     }
@@ -104,6 +104,6 @@ public final class RemoveCommandListenerCommand
      */
     public IInvertibleCommand<Void> getInverseCommand()
     {
-        return new AddCommandListenerCommand( m_listener );
+        return new AddCommandListenerCommand( listener_ );
     }
 }

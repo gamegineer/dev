@@ -41,10 +41,10 @@ public abstract class AbstractGameSystemUiTestCase
     // ======================================================================
 
     /** The game system on which the user interface is based. */
-    private IGameSystem m_gameSystem;
+    private IGameSystem gameSystem_;
 
     /** The game system user interface under test in the fixture. */
-    private IGameSystemUi m_gameSystemUi;
+    private IGameSystemUi gameSystemUi_;
 
 
     // ======================================================================
@@ -94,8 +94,8 @@ public abstract class AbstractGameSystemUiTestCase
     /* @NonNull */
     protected final IGameSystem getGameSystem()
     {
-        assertNotNull( m_gameSystem );
-        return m_gameSystem;
+        assertNotNull( gameSystem_ );
+        return gameSystem_;
     }
 
     /**
@@ -108,9 +108,9 @@ public abstract class AbstractGameSystemUiTestCase
     public void setUp()
         throws Exception
     {
-        m_gameSystem = GameSystems.createUniqueGameSystem();
-        m_gameSystemUi = createGameSystemUi( m_gameSystem );
-        assertNotNull( m_gameSystemUi );
+        gameSystem_ = GameSystems.createUniqueGameSystem();
+        gameSystemUi_ = createGameSystemUi( gameSystem_ );
+        assertNotNull( gameSystemUi_ );
     }
 
     /**
@@ -123,8 +123,8 @@ public abstract class AbstractGameSystemUiTestCase
     public void tearDown()
         throws Exception
     {
-        m_gameSystemUi = null;
-        m_gameSystem = null;
+        gameSystemUi_ = null;
+        gameSystem_ = null;
     }
 
     /**
@@ -133,7 +133,7 @@ public abstract class AbstractGameSystemUiTestCase
     @Test
     public void testGetId()
     {
-        assertEquals( m_gameSystem.getId(), m_gameSystemUi.getId() );
+        assertEquals( gameSystem_.getId(), gameSystemUi_.getId() );
     }
 
     /**
@@ -142,7 +142,7 @@ public abstract class AbstractGameSystemUiTestCase
     @Test
     public void testGetName_ReturnValue_NonNull()
     {
-        assertNotNull( m_gameSystemUi.getName() );
+        assertNotNull( gameSystemUi_.getName() );
     }
 
     /**
@@ -152,12 +152,12 @@ public abstract class AbstractGameSystemUiTestCase
     @Test
     public void testGetRoles_ReturnValue_Copy()
     {
-        final List<IRoleUi> roleUis = m_gameSystemUi.getRoles();
+        final List<IRoleUi> roleUis = gameSystemUi_.getRoles();
         final int originalRoleUisSize = roleUis.size();
 
         roleUis.add( null );
 
-        assertEquals( originalRoleUisSize, m_gameSystemUi.getRoles().size() );
+        assertEquals( originalRoleUisSize, gameSystemUi_.getRoles().size() );
     }
 
     /**
@@ -166,6 +166,6 @@ public abstract class AbstractGameSystemUiTestCase
     @Test
     public void testGetRoles_ReturnValue_NonNull()
     {
-        assertNotNull( m_gameSystemUi.getRoles() );
+        assertNotNull( gameSystemUi_.getRoles() );
     }
 }

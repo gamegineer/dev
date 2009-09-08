@@ -53,7 +53,7 @@ final class StateChangeEventDelegate
     // ======================================================================
 
     /** The collection of state attribute changes. */
-    private final Map<AttributeName, IAttributeChange> m_attributeChanges;
+    private final Map<AttributeName, IAttributeChange> attributeChanges_;
 
 
     // ======================================================================
@@ -66,8 +66,8 @@ final class StateChangeEventDelegate
      * @param context
      *        The engine context; must not be {@code null}.
      * @param attributeChanges
-     *        The collection of state attribute changes; must not be
-     *        {@code null}.
+     *        The collection of state attribute changes; must not be {@code
+     *        null}.
      */
     StateChangeEventDelegate(
         /* @NonNull */
@@ -79,7 +79,7 @@ final class StateChangeEventDelegate
 
         assert attributeChanges != null;
 
-        m_attributeChanges = Collections.unmodifiableMap( attributeChanges );
+        attributeChanges_ = Collections.unmodifiableMap( attributeChanges );
     }
 
 
@@ -95,7 +95,7 @@ final class StateChangeEventDelegate
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return m_attributeChanges.containsKey( name );
+        return attributeChanges_.containsKey( name );
     }
 
     /*
@@ -105,9 +105,9 @@ final class StateChangeEventDelegate
         final AttributeName name )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( m_attributeChanges.containsKey( name ), "name", Messages.StateChangeEventDelegate_attributeChange_absent( name ) ); //$NON-NLS-1$
+        assertArgumentLegal( attributeChanges_.containsKey( name ), "name", Messages.StateChangeEventDelegate_attributeChange_absent( name ) ); //$NON-NLS-1$
 
-        return m_attributeChanges.get( name );
+        return attributeChanges_.get( name );
     }
 
     /*
@@ -115,6 +115,6 @@ final class StateChangeEventDelegate
      */
     public Collection<IAttributeChange> getAttributeChanges()
     {
-        return m_attributeChanges.values();
+        return attributeChanges_.values();
     }
 }

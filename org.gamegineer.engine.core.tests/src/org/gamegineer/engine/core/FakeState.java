@@ -1,6 +1,6 @@
 /*
  * FakeState.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -43,7 +43,7 @@ public class FakeState
     // ======================================================================
 
     /** The attribute map. */
-    private Map<AttributeName, Object> m_attributeMap;
+    private Map<AttributeName, Object> attributeMap_;
 
 
     // ======================================================================
@@ -55,7 +55,7 @@ public class FakeState
      */
     public FakeState()
     {
-        m_attributeMap = new HashMap<AttributeName, Object>();
+        attributeMap_ = new HashMap<AttributeName, Object>();
     }
 
 
@@ -71,9 +71,9 @@ public class FakeState
         final Object value )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( !m_attributeMap.containsKey( name ), "name" ); //$NON-NLS-1$
+        assertArgumentLegal( !attributeMap_.containsKey( name ), "name" ); //$NON-NLS-1$
 
-        m_attributeMap.put( name, value );
+        attributeMap_.put( name, value );
     }
 
     /*
@@ -84,7 +84,7 @@ public class FakeState
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return m_attributeMap.containsKey( name );
+        return attributeMap_.containsKey( name );
     }
 
     /*
@@ -94,9 +94,9 @@ public class FakeState
         final AttributeName name )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( m_attributeMap.containsKey( name ), "name" ); //$NON-NLS-1$
+        assertArgumentLegal( attributeMap_.containsKey( name ), "name" ); //$NON-NLS-1$
 
-        return m_attributeMap.get( name );
+        return attributeMap_.get( name );
     }
 
     /*
@@ -104,7 +104,7 @@ public class FakeState
      */
     public Set<AttributeName> getAttributeNames()
     {
-        return Collections.unmodifiableSet( m_attributeMap.keySet() );
+        return Collections.unmodifiableSet( attributeMap_.keySet() );
     }
 
     /*
@@ -114,9 +114,9 @@ public class FakeState
         final AttributeName name )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( m_attributeMap.containsKey( name ), "name" ); //$NON-NLS-1$
+        assertArgumentLegal( attributeMap_.containsKey( name ), "name" ); //$NON-NLS-1$
 
-        m_attributeMap.remove( name );
+        attributeMap_.remove( name );
     }
 
     /*
@@ -127,8 +127,8 @@ public class FakeState
         final Object value )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( m_attributeMap.containsKey( name ), "name" ); //$NON-NLS-1$
+        assertArgumentLegal( attributeMap_.containsKey( name ), "name" ); //$NON-NLS-1$
 
-        m_attributeMap.put( name, value );
+        attributeMap_.put( name, value );
     }
 }

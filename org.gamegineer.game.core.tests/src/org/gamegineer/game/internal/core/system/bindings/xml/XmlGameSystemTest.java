@@ -47,7 +47,7 @@ public final class XmlGameSystemTest
     // ======================================================================
 
     /** The game system builder for use in the fixture. */
-    private NonValidatingGameSystemBuilder m_builder;
+    private NonValidatingGameSystemBuilder builder_;
 
 
     // ======================================================================
@@ -102,7 +102,7 @@ public final class XmlGameSystemTest
     public void setUp()
         throws Exception
     {
-        m_builder = new NonValidatingGameSystemBuilder( GameSystems.createUniqueGameSystem() );
+        builder_ = new NonValidatingGameSystemBuilder( GameSystems.createUniqueGameSystem() );
 
         super.setUp();
     }
@@ -117,7 +117,7 @@ public final class XmlGameSystemTest
     {
         super.tearDown();
 
-        m_builder = null;
+        builder_ = null;
     }
 
     /**
@@ -131,7 +131,7 @@ public final class XmlGameSystemTest
     public void testToGameSystem_Success()
         throws Exception
     {
-        final IGameSystem expectedGameSystem = m_builder.toGameSystem();
+        final IGameSystem expectedGameSystem = builder_.toGameSystem();
         final XmlGameSystem xmlGameSystem = (XmlGameSystem)getUnmarshaller().unmarshal( createGameSystemReader( expectedGameSystem ) );
 
         final IGameSystem actualGameSystem = xmlGameSystem.toGameSystem();
@@ -150,9 +150,9 @@ public final class XmlGameSystemTest
     public void testUnmarshal_Fail_NoId()
         throws Exception
     {
-        m_builder.setId( null );
+        builder_.setId( null );
 
-        getUnmarshaller().unmarshal( createGameSystemReader( m_builder.toGameSystem() ) );
+        getUnmarshaller().unmarshal( createGameSystemReader( builder_.toGameSystem() ) );
     }
 
     /**
@@ -167,9 +167,9 @@ public final class XmlGameSystemTest
     public void testUnmarshal_Fail_NoRoleContainer()
         throws Exception
     {
-        m_builder.clearRoles();
+        builder_.clearRoles();
 
-        getUnmarshaller().unmarshal( createGameSystemReader( m_builder.toGameSystem() ) );
+        getUnmarshaller().unmarshal( createGameSystemReader( builder_.toGameSystem() ) );
     }
 
     /**
@@ -183,9 +183,9 @@ public final class XmlGameSystemTest
     public void testUnmarshal_Fail_NoRoles()
         throws Exception
     {
-        m_builder.clearRoles().addRole( null );
+        builder_.clearRoles().addRole( null );
 
-        getUnmarshaller().unmarshal( createGameSystemReader( m_builder.toGameSystem() ) );
+        getUnmarshaller().unmarshal( createGameSystemReader( builder_.toGameSystem() ) );
     }
 
     /**
@@ -200,9 +200,9 @@ public final class XmlGameSystemTest
     public void testUnmarshal_Fail_NoStageContainer()
         throws Exception
     {
-        m_builder.clearStages();
+        builder_.clearStages();
 
-        getUnmarshaller().unmarshal( createGameSystemReader( m_builder.toGameSystem() ) );
+        getUnmarshaller().unmarshal( createGameSystemReader( builder_.toGameSystem() ) );
     }
 
     /**
@@ -216,9 +216,9 @@ public final class XmlGameSystemTest
     public void testUnmarshal_Fail_NoStages()
         throws Exception
     {
-        m_builder.clearStages().addStage( null );
+        builder_.clearStages().addStage( null );
 
-        getUnmarshaller().unmarshal( createGameSystemReader( m_builder.toGameSystem() ) );
+        getUnmarshaller().unmarshal( createGameSystemReader( builder_.toGameSystem() ) );
     }
 
     /**
@@ -232,7 +232,7 @@ public final class XmlGameSystemTest
     public void testUnmarshal_Success_Complete()
         throws Exception
     {
-        final IGameSystem expectedGameSystem = m_builder.toGameSystem();
+        final IGameSystem expectedGameSystem = builder_.toGameSystem();
 
         final XmlGameSystem xmlGameSystem = (XmlGameSystem)getUnmarshaller().unmarshal( createGameSystemReader( expectedGameSystem ) );
         final IGameSystem actualGameSystem = xmlGameSystem.toGameSystem();

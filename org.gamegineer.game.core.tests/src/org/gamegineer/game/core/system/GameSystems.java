@@ -46,13 +46,13 @@ public final class GameSystems
     // ======================================================================
 
     /** The next unique game system identifier. */
-    private static final AtomicLong c_nextGameSystemId = new AtomicLong();
+    private static final AtomicLong nextGameSystemId_ = new AtomicLong();
 
     /** The next unique role identifier. */
-    private static final AtomicLong c_nextRoleId = new AtomicLong();
+    private static final AtomicLong nextRoleId_ = new AtomicLong();
 
     /** The next unique stage identifier. */
-    private static final AtomicLong c_nextStageId = new AtomicLong();
+    private static final AtomicLong nextStageId_ = new AtomicLong();
 
 
     // ======================================================================
@@ -681,7 +681,7 @@ public final class GameSystems
     @SuppressWarnings( "boxing" )
     private static String getUniqueGameSystemIdentifier()
     {
-        return String.format( "game-system-%1$d", c_nextGameSystemId.incrementAndGet() ); //$NON-NLS-1$
+        return String.format( "game-system-%1$d", nextGameSystemId_.incrementAndGet() ); //$NON-NLS-1$
     }
 
     /**
@@ -693,7 +693,7 @@ public final class GameSystems
     @SuppressWarnings( "boxing" )
     private static String getUniqueRoleIdentifier()
     {
-        return String.format( "role-%1$d", c_nextRoleId.incrementAndGet() ); //$NON-NLS-1$
+        return String.format( "role-%1$d", nextRoleId_.incrementAndGet() ); //$NON-NLS-1$
     }
 
     /**
@@ -705,7 +705,7 @@ public final class GameSystems
     @SuppressWarnings( "boxing" )
     private static String getUniqueStageIdentifier()
     {
-        return String.format( "stage-%1$d", c_nextStageId.incrementAndGet() ); //$NON-NLS-1$
+        return String.format( "stage-%1$d", nextStageId_.incrementAndGet() ); //$NON-NLS-1$
     }
 
 

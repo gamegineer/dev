@@ -1,6 +1,6 @@
 /*
  * ReferenceTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ public final class ReferenceTest
     // ======================================================================
 
     /** The reference under test in the fixture. */
-    private Reference<Object> m_ref;
+    private Reference<Object> ref_;
 
 
     // ======================================================================
@@ -68,7 +68,7 @@ public final class ReferenceTest
     public void setUp()
         throws Exception
     {
-        m_ref = new Reference<Object>();
+        ref_ = new Reference<Object>();
     }
 
     /**
@@ -81,7 +81,7 @@ public final class ReferenceTest
     public void tearDown()
         throws Exception
     {
-        m_ref = null;
+        ref_ = null;
     }
 
     /**
@@ -123,8 +123,8 @@ public final class ReferenceTest
     public void testSet()
     {
         final Object obj = new Object();
-        m_ref.set( obj );
-        assertSame( obj, m_ref.get() );
+        ref_.set( obj );
+        assertSame( obj, ref_.get() );
     }
 
     /**
@@ -134,6 +134,6 @@ public final class ReferenceTest
     @Test
     public void testSet_Referent_Null()
     {
-        m_ref.set( null );
+        ref_.set( null );
     }
 }

@@ -50,7 +50,7 @@ public final class Application
     // ======================================================================
 
     /** The task associated with the running console. */
-    private final AtomicReference<Future<ConsoleResult>> m_task;
+    private final AtomicReference<Future<ConsoleResult>> task_;
 
 
     // ======================================================================
@@ -62,7 +62,7 @@ public final class Application
      */
     public Application()
     {
-        m_task = new AtomicReference<Future<ConsoleResult>>();
+        task_ = new AtomicReference<Future<ConsoleResult>>();
     }
 
 
@@ -124,12 +124,12 @@ public final class Application
         try
         {
             final Future<ConsoleResult> task = executor.submit( PlatformUi.createConsoleRunner( display, advisor ) );
-            m_task.set( task );
+            task_.set( task );
             return toApplicationExitObject( task.get() );
         }
         finally
         {
-            m_task.set( null );
+            task_.set( null );
             executor.shutdown();
             executor.awaitTermination( 10, TimeUnit.SECONDS );
         }
@@ -140,7 +140,7 @@ public final class Application
      */
     public void stop()
     {
-        final Future<?> task = m_task.get();
+        final Future<?> task = task_.get();
         if( task != null )
         {
             task.cancel( true );

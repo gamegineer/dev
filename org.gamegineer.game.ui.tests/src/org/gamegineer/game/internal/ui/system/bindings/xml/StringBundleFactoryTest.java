@@ -91,8 +91,8 @@ public final class StringBundleFactoryTest
      *        The string bundle node locale; must not be {@code null}.
      * 
      * @return The expected value associated with {@code TEST_KEY} in the string
-     *         bundle node associated with the specified locale; never
-     *         {@code null}.
+     *         bundle node associated with the specified locale; never {@code
+     *         null}.
      */
     /* @NonNull */
     private static String getNodeValue(
@@ -309,7 +309,7 @@ public final class StringBundleFactoryTest
         // ==================================================================
 
         /** The collection of string bundles. */
-        private final Map<Locale, Map<String, String>> m_bundles;
+        private final Map<Locale, Map<String, String>> bundles_;
 
 
         // ==================================================================
@@ -322,7 +322,7 @@ public final class StringBundleFactoryTest
          */
         FakeStringBundleResolver()
         {
-            m_bundles = new HashMap<Locale, Map<String, String>>();
+            bundles_ = new HashMap<Locale, Map<String, String>>();
         }
 
 
@@ -338,7 +338,7 @@ public final class StringBundleFactoryTest
         {
             assertArgumentNotNull( locale, "locale" ); //$NON-NLS-1$
 
-            final Map<String, String> entries = m_bundles.get( locale );
+            final Map<String, String> entries = bundles_.get( locale );
             if( entries == null )
             {
                 return Collections.emptyMap();
@@ -364,7 +364,7 @@ public final class StringBundleFactoryTest
             assert locale != null;
             assert entries != null;
 
-            m_bundles.put( locale, new HashMap<String, String>( entries ) );
+            bundles_.put( locale, new HashMap<String, String>( entries ) );
         }
     }
 
@@ -379,7 +379,7 @@ public final class StringBundleFactoryTest
         // ==================================================================
 
         /** The set of locales that were queried for a string bundle. */
-        private final Set<Locale> m_queriedLocales;
+        private final Set<Locale> queriedLocales_;
 
 
         // ==================================================================
@@ -392,7 +392,7 @@ public final class StringBundleFactoryTest
          */
         MockStringBundleResolver()
         {
-            m_queriedLocales = new HashSet<Locale>();
+            queriedLocales_ = new HashSet<Locale>();
         }
 
 
@@ -409,7 +409,7 @@ public final class StringBundleFactoryTest
         /* @NonNull */
         Set<Locale> getQueriedLocales()
         {
-            return new HashSet<Locale>( m_queriedLocales );
+            return new HashSet<Locale>( queriedLocales_ );
         }
 
         /*
@@ -420,7 +420,7 @@ public final class StringBundleFactoryTest
         {
             assertArgumentNotNull( locale, "locale" ); //$NON-NLS-1$
 
-            m_queriedLocales.add( locale );
+            queriedLocales_.add( locale );
 
             return Collections.emptyMap();
         }

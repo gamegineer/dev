@@ -1,6 +1,6 @@
 /*
  * MockCommands.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -88,16 +88,16 @@ public final class MockCommands
         // ==================================================================
 
         /** The attribute name. */
-        private final AttributeName m_attributeName;
+        private final AttributeName attributeName_;
 
         /** The attribute value. */
-        private final Object m_attributeValue;
+        private final Object attributeValue_;
 
         /**
          * Indicates the attribute should be added; otherwise it should be
          * removed.
          */
-        private final boolean m_isAddCommand;
+        private final boolean isAddCommand_;
 
 
         // ==================================================================
@@ -141,9 +141,9 @@ public final class MockCommands
         {
             assert attributeName != null;
 
-            m_attributeName = attributeName;
-            m_attributeValue = attributeValue;
-            m_isAddCommand = addAttribute;
+            attributeName_ = attributeName;
+            attributeValue_ = attributeValue;
+            isAddCommand_ = addAttribute;
         }
 
 
@@ -157,13 +157,13 @@ public final class MockCommands
         public Void execute(
             final IEngineContext context )
         {
-            if( m_isAddCommand )
+            if( isAddCommand_ )
             {
-                context.getState().addAttribute( m_attributeName, m_attributeValue );
+                context.getState().addAttribute( attributeName_, attributeValue_ );
             }
             else
             {
-                context.getState().removeAttribute( m_attributeName );
+                context.getState().removeAttribute( attributeName_ );
             }
 
             return null;
@@ -174,7 +174,7 @@ public final class MockCommands
          */
         public IInvertibleCommand<Void> getInverseCommand()
         {
-            return new AddAttributeCommand( m_attributeName, m_attributeValue, !m_isAddCommand );
+            return new AddAttributeCommand( attributeName_, attributeValue_, !isAddCommand_ );
         }
     }
 }

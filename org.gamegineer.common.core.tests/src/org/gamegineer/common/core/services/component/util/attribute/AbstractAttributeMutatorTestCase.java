@@ -1,6 +1,6 @@
 /*
  * AbstractAttributeMutatorTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,7 +40,7 @@ public abstract class AbstractAttributeMutatorTestCase
     // ======================================================================
 
     /** The attribute mutator under test in the fixture. */
-    private IAttributeMutator m_mutator;
+    private IAttributeMutator mutator_;
 
 
     // ======================================================================
@@ -48,8 +48,8 @@ public abstract class AbstractAttributeMutatorTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractAttributeMutatorTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractAttributeMutatorTestCase} class.
      */
     protected AbstractAttributeMutatorTestCase()
     {
@@ -73,16 +73,16 @@ public abstract class AbstractAttributeMutatorTestCase
      * Gets an attribute accessor for the specified attribute mutator.
      * 
      * <p>
-     * The default implementation simply tries to cast the mutator to an
-     * {@code IAttributeAccessor} and will throw a {@code ClassCastException} if
-     * the cast fails.
+     * The default implementation simply tries to cast the mutator to an {@code
+     * IAttributeAccessor} and will throw a {@code ClassCastException} if the
+     * cast fails.
      * </p>
      * 
      * @param mutator
      *        The attribute mutator; must not be {@code null}.
      * 
-     * @return An attribute accessor for the attribute mutator; never
-     *         {@code null}.
+     * @return An attribute accessor for the attribute mutator; never {@code
+     *         null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code mutator} is {@code null}.
@@ -107,12 +107,12 @@ public abstract class AbstractAttributeMutatorTestCase
     public void setUp()
         throws Exception
     {
-        m_mutator = createAttributeMutator();
-        assertNotNull( m_mutator );
-        m_mutator.setAttribute( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        m_mutator.setAttribute( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        m_mutator.setAttribute( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
-        m_mutator.setAttribute( "name4", "value4" ); //$NON-NLS-1$ //$NON-NLS-2$
+        mutator_ = createAttributeMutator();
+        assertNotNull( mutator_ );
+        mutator_.setAttribute( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        mutator_.setAttribute( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        mutator_.setAttribute( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
+        mutator_.setAttribute( "name4", "value4" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class AbstractAttributeMutatorTestCase
     public void tearDown()
         throws Exception
     {
-        m_mutator = null;
+        mutator_ = null;
     }
 
     /**
@@ -137,8 +137,8 @@ public abstract class AbstractAttributeMutatorTestCase
     {
         final String name = "unknown_name"; //$NON-NLS-1$
         final Object value = new Object();
-        m_mutator.setAttribute( name, value );
-        assertEquals( value, getAttributeAccessor( m_mutator ).getAttribute( name ) );
+        mutator_.setAttribute( name, value );
+        assertEquals( value, getAttributeAccessor( mutator_ ).getAttribute( name ) );
     }
 
     /**
@@ -148,11 +148,11 @@ public abstract class AbstractAttributeMutatorTestCase
     @Test
     public void testSetAttribute_Attribute_Present()
     {
-        final IAttributeAccessor accessor = getAttributeAccessor( m_mutator );
+        final IAttributeAccessor accessor = getAttributeAccessor( mutator_ );
         final String name = "name2"; //$NON-NLS-1$
         final Object value = new Object();
         assertEquals( "value2", accessor.getAttribute( name ) ); //$NON-NLS-1$
-        m_mutator.setAttribute( name, value );
+        mutator_.setAttribute( name, value );
         assertEquals( value, accessor.getAttribute( name ) );
     }
 
@@ -163,7 +163,7 @@ public abstract class AbstractAttributeMutatorTestCase
     @Test( expected = NullPointerException.class )
     public void testSetAttribute_Name_Null()
     {
-        m_mutator.setAttribute( null, new Object() );
+        mutator_.setAttribute( null, new Object() );
     }
 
     /**
@@ -173,6 +173,6 @@ public abstract class AbstractAttributeMutatorTestCase
     @Test( expected = NullPointerException.class )
     public void testSetAttribute_Value_Null()
     {
-        m_mutator.setAttribute( "name", null ); //$NON-NLS-1$
+        mutator_.setAttribute( "name", null ); //$NON-NLS-1$
     }
 }

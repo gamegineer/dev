@@ -41,10 +41,10 @@ public final class Services
     // ======================================================================
 
     /** The singleton instance. */
-    private static final Services c_instance = new Services();
+    private static final Services instance_ = new Services();
 
     /** The game system user interface registry service tracker. */
-    private ServiceTracker m_gameSystemUiRegistryServiceTracker;
+    private ServiceTracker gameSystemUiRegistryServiceTracker_;
 
 
     // ======================================================================
@@ -70,10 +70,10 @@ public final class Services
     void close()
     {
         // Close bundle-specific services
-        if( m_gameSystemUiRegistryServiceTracker != null )
+        if( gameSystemUiRegistryServiceTracker_ != null )
         {
-            m_gameSystemUiRegistryServiceTracker.close();
-            m_gameSystemUiRegistryServiceTracker = null;
+            gameSystemUiRegistryServiceTracker_.close();
+            gameSystemUiRegistryServiceTracker_ = null;
         }
 
         // Unregister package-specific services
@@ -84,13 +84,13 @@ public final class Services
     /**
      * Gets the default instance of the {@code Services} class.
      * 
-     * @return The default instance of the {@code Services} class; never
-     *         {@code null}.
+     * @return The default instance of the {@code Services} class; never {@code
+     *         null}.
      */
     /* @NonNull */
     public static Services getDefault()
     {
-        return c_instance;
+        return instance_;
     }
 
     /**
@@ -106,9 +106,9 @@ public final class Services
     /* @NonNull */
     public IGameSystemUiRegistry getGameSystemUiRegistry()
     {
-        assertStateLegal( m_gameSystemUiRegistryServiceTracker != null, Messages.Services_gameSystemUiRegistryServiceTracker_notSet );
+        assertStateLegal( gameSystemUiRegistryServiceTracker_ != null, Messages.Services_gameSystemUiRegistryServiceTracker_notSet );
 
-        return (IGameSystemUiRegistry)m_gameSystemUiRegistryServiceTracker.getService();
+        return (IGameSystemUiRegistry)gameSystemUiRegistryServiceTracker_.getService();
     }
 
     /**
@@ -131,7 +131,7 @@ public final class Services
         // Register package-specific services
 
         // Open bundle-specific services
-        m_gameSystemUiRegistryServiceTracker = new ServiceTracker( context, IGameSystemUiRegistry.class.getName(), null );
-        m_gameSystemUiRegistryServiceTracker.open();
+        gameSystemUiRegistryServiceTracker_ = new ServiceTracker( context, IGameSystemUiRegistry.class.getName(), null );
+        gameSystemUiRegistryServiceTracker_.open();
     }
 }

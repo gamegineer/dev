@@ -45,16 +45,16 @@ final class CommandletContext
     // ======================================================================
 
     /** The console from which the commandlet was executed. */
-    private final IConsole m_console;
+    private final IConsole console_;
 
     /** The executor that initiated the commandlet execution. */
-    private final CommandletExecutor m_executor;
+    private final CommandletExecutor executor_;
 
     /** The game client against which the commandlet is executed. */
-    private final IGameClient m_gameClient;
+    private final IGameClient gameClient_;
 
     /** The console statelet. */
-    private final IStatelet m_statelet;
+    private final IStatelet statelet_;
 
 
     // ======================================================================
@@ -91,10 +91,10 @@ final class CommandletContext
         assert statelet != null;
         assert gameClient != null;
 
-        m_executor = executor;
-        m_console = console;
-        m_statelet = statelet;
-        m_gameClient = gameClient;
+        executor_ = executor;
+        console_ = console;
+        statelet_ = statelet;
+        gameClient_ = gameClient;
     }
 
 
@@ -107,7 +107,7 @@ final class CommandletContext
      */
     public List<String> getArguments()
     {
-        return m_executor.getCommandletArguments();
+        return executor_.getCommandletArguments();
     }
 
     /*
@@ -115,7 +115,7 @@ final class CommandletContext
      */
     public IConsole getConsole()
     {
-        return m_console;
+        return console_;
     }
 
     /*
@@ -123,7 +123,7 @@ final class CommandletContext
      */
     public IGameClient getGameClient()
     {
-        return m_gameClient;
+        return gameClient_;
     }
 
     /*
@@ -131,6 +131,6 @@ final class CommandletContext
      */
     public IStatelet getStatelet()
     {
-        return m_statelet;
+        return statelet_;
     }
 }

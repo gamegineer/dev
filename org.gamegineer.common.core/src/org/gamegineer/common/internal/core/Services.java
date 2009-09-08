@@ -53,34 +53,34 @@ public final class Services
     // ======================================================================
 
     /** The default debug options service to use if no service was registered. */
-    private static final DebugOptions c_defaultDebugOptions = new NullDebugOptions();
+    private static final DebugOptions defaultDebugOptions_ = new NullDebugOptions();
 
     /** The singleton instance. */
-    private static final Services c_instance = new Services();
+    private static final Services instance_ = new Services();
 
     /** The component factory service tracker. */
-    private ServiceTracker m_componentFactoryServiceTracker;
+    private ServiceTracker componentFactoryServiceTracker_;
 
     /** The component service registration token. */
-    private ServiceRegistration m_componentServiceRegistration;
+    private ServiceRegistration componentServiceRegistration_;
 
     /** The component service tracker. */
-    private ServiceTracker m_componentServiceTracker;
+    private ServiceTracker componentServiceTracker_;
 
     /** The debug options service tracker. */
-    private ServiceTracker m_debugOptionsServiceTracker;
+    private ServiceTracker debugOptionsServiceTracker_;
 
     /** The extension registry service tracker. */
-    private ServiceTracker m_extensionRegistryServiceTracker;
+    private ServiceTracker extensionRegistryServiceTracker_;
 
     /** The framework log service tracker. */
-    private ServiceTracker m_frameworkLogServiceTracker;
+    private ServiceTracker frameworkLogServiceTracker_;
 
     /** The logging service registration token. */
-    private ServiceRegistration m_loggingServiceRegistration;
+    private ServiceRegistration loggingServiceRegistration_;
 
     /** The logging service tracker. */
-    private ServiceTracker m_loggingServiceTracker;
+    private ServiceTracker loggingServiceTracker_;
 
 
     // ======================================================================
@@ -106,50 +106,50 @@ public final class Services
     void close()
     {
         // Close bundle-specific services
-        if( m_loggingServiceTracker != null )
+        if( loggingServiceTracker_ != null )
         {
-            m_loggingServiceTracker.close();
-            m_loggingServiceTracker = null;
+            loggingServiceTracker_.close();
+            loggingServiceTracker_ = null;
         }
-        if( m_frameworkLogServiceTracker != null )
+        if( frameworkLogServiceTracker_ != null )
         {
-            m_frameworkLogServiceTracker.close();
-            m_frameworkLogServiceTracker = null;
+            frameworkLogServiceTracker_.close();
+            frameworkLogServiceTracker_ = null;
         }
-        if( m_extensionRegistryServiceTracker != null )
+        if( extensionRegistryServiceTracker_ != null )
         {
-            m_extensionRegistryServiceTracker.close();
-            m_extensionRegistryServiceTracker = null;
+            extensionRegistryServiceTracker_.close();
+            extensionRegistryServiceTracker_ = null;
         }
-        if( m_debugOptionsServiceTracker != null )
+        if( debugOptionsServiceTracker_ != null )
         {
-            m_debugOptionsServiceTracker.close();
-            m_debugOptionsServiceTracker = null;
+            debugOptionsServiceTracker_.close();
+            debugOptionsServiceTracker_ = null;
         }
-        if( m_componentFactoryServiceTracker != null )
+        if( componentFactoryServiceTracker_ != null )
         {
-            m_componentFactoryServiceTracker.close();
-            m_componentFactoryServiceTracker = null;
+            componentFactoryServiceTracker_.close();
+            componentFactoryServiceTracker_ = null;
         }
-        if( m_componentServiceTracker != null )
+        if( componentServiceTracker_ != null )
         {
-            m_componentServiceTracker.close();
-            m_componentServiceTracker = null;
+            componentServiceTracker_.close();
+            componentServiceTracker_ = null;
         }
 
         // Unregister package-specific services
         org.gamegineer.common.internal.core.util.logging.Services.getDefault().close();
 
         // Unregister bundle-specific services
-        if( m_loggingServiceRegistration != null )
+        if( loggingServiceRegistration_ != null )
         {
-            m_loggingServiceRegistration.unregister();
-            m_loggingServiceRegistration = null;
+            loggingServiceRegistration_.unregister();
+            loggingServiceRegistration_ = null;
         }
-        if( m_componentServiceRegistration != null )
+        if( componentServiceRegistration_ != null )
         {
-            m_componentServiceRegistration.unregister();
-            m_componentServiceRegistration = null;
+            componentServiceRegistration_.unregister();
+            componentServiceRegistration_ = null;
         }
     }
 
@@ -158,9 +158,9 @@ public final class Services
      * the OSGi Framework.
      * 
      * @return An immutable collection of all component factories registered
-     *         with the OSGi Framework; never {@code null}. This collection is
-     *         a snapshot of the component factories available at the time of
-     *         the call.
+     *         with the OSGi Framework; never {@code null}. This collection is a
+     *         snapshot of the component factories available at the time of the
+     *         call.
      * 
      * @throws java.lang.IllegalStateException
      *         If this object is not open.
@@ -168,9 +168,9 @@ public final class Services
     /* @NonNull */
     public Collection<IComponentFactory> getComponentFactories()
     {
-        assertStateLegal( m_componentFactoryServiceTracker != null, Messages.Services_componentFactoryServiceTracker_notSet );
+        assertStateLegal( componentFactoryServiceTracker_ != null, Messages.Services_componentFactoryServiceTracker_notSet );
 
-        final Object[] services = m_componentFactoryServiceTracker.getServices();
+        final Object[] services = componentFactoryServiceTracker_.getServices();
         if( (services == null) || (services.length == 0) )
         {
             return Collections.emptyList();
@@ -195,16 +195,16 @@ public final class Services
     /* @NonNull */
     public IComponentService getComponentService()
     {
-        assertStateLegal( m_componentServiceTracker != null, Messages.Services_componentServiceTracker_notSet );
+        assertStateLegal( componentServiceTracker_ != null, Messages.Services_componentServiceTracker_notSet );
 
-        return (IComponentService)m_componentServiceTracker.getService();
+        return (IComponentService)componentServiceTracker_.getService();
     }
 
     /**
      * Gets the debug options service managed by this object.
      * 
-     * @return The debug options service managed by this object; never
-     *         {@code null}.
+     * @return The debug options service managed by this object; never {@code
+     *         null}.
      * 
      * @throws java.lang.IllegalStateException
      *         If this object is not open.
@@ -212,12 +212,12 @@ public final class Services
     /* @NonNull */
     public DebugOptions getDebugOptions()
     {
-        assertStateLegal( m_debugOptionsServiceTracker != null, Messages.Services_debugOptionsServiceTracker_notSet );
+        assertStateLegal( debugOptionsServiceTracker_ != null, Messages.Services_debugOptionsServiceTracker_notSet );
 
-        final DebugOptions debugOptions = (DebugOptions)m_debugOptionsServiceTracker.getService();
+        final DebugOptions debugOptions = (DebugOptions)debugOptionsServiceTracker_.getService();
         if( debugOptions == null )
         {
-            return c_defaultDebugOptions;
+            return defaultDebugOptions_;
         }
 
         return debugOptions;
@@ -226,13 +226,13 @@ public final class Services
     /**
      * Gets the default instance of the {@code Services} class.
      * 
-     * @return The default instance of the {@code Services} class; never
-     *         {@code null}.
+     * @return The default instance of the {@code Services} class; never {@code
+     *         null}.
      */
     /* @NonNull */
     public static Services getDefault()
     {
-        return c_instance;
+        return instance_;
     }
 
     /**
@@ -247,16 +247,16 @@ public final class Services
     /* @NonNull */
     public IExtensionRegistry getExtensionRegistry()
     {
-        assertStateLegal( m_extensionRegistryServiceTracker != null, Messages.Services_extensionRegistryServiceTracker_notSet );
+        assertStateLegal( extensionRegistryServiceTracker_ != null, Messages.Services_extensionRegistryServiceTracker_notSet );
 
-        return (IExtensionRegistry)m_extensionRegistryServiceTracker.getService();
+        return (IExtensionRegistry)extensionRegistryServiceTracker_.getService();
     }
 
     /**
      * Gets the framework log service managed by this object.
      * 
-     * @return The framework log service managed by this object; never
-     *         {@code null}.
+     * @return The framework log service managed by this object; never {@code
+     *         null}.
      * 
      * @throws java.lang.IllegalStateException
      *         If this object is not open.
@@ -264,9 +264,9 @@ public final class Services
     /* @NonNull */
     public FrameworkLog getFrameworkLog()
     {
-        assertStateLegal( m_frameworkLogServiceTracker != null, Messages.Services_frameworkLogServiceTracker_notSet );
+        assertStateLegal( frameworkLogServiceTracker_ != null, Messages.Services_frameworkLogServiceTracker_notSet );
 
-        return (FrameworkLog)m_frameworkLogServiceTracker.getService();
+        return (FrameworkLog)frameworkLogServiceTracker_.getService();
     }
 
     /**
@@ -280,9 +280,9 @@ public final class Services
     /* @NonNull */
     public ILoggingService getLoggingService()
     {
-        assertStateLegal( m_loggingServiceTracker != null, Messages.Services_loggingServiceTracker_notSet );
+        assertStateLegal( loggingServiceTracker_ != null, Messages.Services_loggingServiceTracker_notSet );
 
-        return (ILoggingService)m_loggingServiceTracker.getService();
+        return (ILoggingService)loggingServiceTracker_.getService();
     }
 
     /**
@@ -301,24 +301,24 @@ public final class Services
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
         // Register bundle-specific services
-        m_componentServiceRegistration = context.registerService( IComponentService.class.getName(), new ComponentService(), null );
-        m_loggingServiceRegistration = context.registerService( ILoggingService.class.getName(), new LoggingService(), null );
+        componentServiceRegistration_ = context.registerService( IComponentService.class.getName(), new ComponentService(), null );
+        loggingServiceRegistration_ = context.registerService( ILoggingService.class.getName(), new LoggingService(), null );
 
         // Register package-specific services
         org.gamegineer.common.internal.core.util.logging.Services.getDefault().open( context );
 
         // Open bundle-specific services
-        m_componentServiceTracker = new ServiceTracker( context, m_componentServiceRegistration.getReference(), null );
-        m_componentServiceTracker.open();
-        m_componentFactoryServiceTracker = new ServiceTracker( context, IComponentFactory.class.getName(), null );
-        m_componentFactoryServiceTracker.open();
-        m_debugOptionsServiceTracker = new ServiceTracker( context, DebugOptions.class.getName(), null );
-        m_debugOptionsServiceTracker.open();
-        m_extensionRegistryServiceTracker = new ServiceTracker( context, IExtensionRegistry.class.getName(), null );
-        m_extensionRegistryServiceTracker.open();
-        m_frameworkLogServiceTracker = new ServiceTracker( context, FrameworkLog.class.getName(), null );
-        m_frameworkLogServiceTracker.open();
-        m_loggingServiceTracker = new ServiceTracker( context, m_loggingServiceRegistration.getReference(), null );
-        m_loggingServiceTracker.open();
+        componentServiceTracker_ = new ServiceTracker( context, componentServiceRegistration_.getReference(), null );
+        componentServiceTracker_.open();
+        componentFactoryServiceTracker_ = new ServiceTracker( context, IComponentFactory.class.getName(), null );
+        componentFactoryServiceTracker_.open();
+        debugOptionsServiceTracker_ = new ServiceTracker( context, DebugOptions.class.getName(), null );
+        debugOptionsServiceTracker_.open();
+        extensionRegistryServiceTracker_ = new ServiceTracker( context, IExtensionRegistry.class.getName(), null );
+        extensionRegistryServiceTracker_.open();
+        frameworkLogServiceTracker_ = new ServiceTracker( context, FrameworkLog.class.getName(), null );
+        frameworkLogServiceTracker_.open();
+        loggingServiceTracker_ = new ServiceTracker( context, loggingServiceRegistration_.getReference(), null );
+        loggingServiceTracker_.open();
     }
 }

@@ -49,10 +49,10 @@ public final class TurnStageStrategyTest
     // ======================================================================
 
     /** An engine context for use in the test. */
-    private IEngineContext m_engineContext;
+    private IEngineContext engineContext_;
 
     /** The turn stage strategy under test in the fixture. */
-    private TurnStageStrategy m_strategy;
+    private TurnStageStrategy strategy_;
 
 
     // ======================================================================
@@ -118,8 +118,8 @@ public final class TurnStageStrategyTest
     public void setUp()
         throws Exception
     {
-        m_engineContext = new FakeEngineContext();
-        m_strategy = new TurnStageStrategy();
+        engineContext_ = new FakeEngineContext();
+        strategy_ = new TurnStageStrategy();
     }
 
     /**
@@ -132,8 +132,8 @@ public final class TurnStageStrategyTest
     public void tearDown()
         throws Exception
     {
-        m_strategy = null;
-        m_engineContext = null;
+        strategy_ = null;
+        engineContext_ = null;
     }
 
     /**
@@ -148,11 +148,11 @@ public final class TurnStageStrategyTest
     public void testActivate_CurrentPlayerIndexAdded()
         throws Exception
     {
-        GameAttributes.PLAYER_LIST.add( m_engineContext.getState(), createPlayerList() );
+        GameAttributes.PLAYER_LIST.add( engineContext_.getState(), createPlayerList() );
 
-        m_strategy.activate( createDummy( IStage.class ), m_engineContext );
+        strategy_.activate( createDummy( IStage.class ), engineContext_ );
 
-        assertEquals( 0, GameAttributes.CURRENT_PLAYER_INDEX.getValue( m_engineContext.getState() ).intValue() );
+        assertEquals( 0, GameAttributes.CURRENT_PLAYER_INDEX.getValue( engineContext_.getState() ).intValue() );
     }
 
     /**
@@ -167,14 +167,14 @@ public final class TurnStageStrategyTest
         throws Exception
     {
         final int PLAYER_COUNT = 2;
-        GameAttributes.PLAYER_LIST.add( m_engineContext.getState(), createPlayerList( PLAYER_COUNT ) );
+        GameAttributes.PLAYER_LIST.add( engineContext_.getState(), createPlayerList( PLAYER_COUNT ) );
         final IStage stage = createDummy( IStage.class );
-        m_strategy.activate( stage, m_engineContext );
-        m_strategy.deactivate( stage, m_engineContext );
+        strategy_.activate( stage, engineContext_ );
+        strategy_.deactivate( stage, engineContext_ );
 
-        m_strategy.activate( stage, m_engineContext );
+        strategy_.activate( stage, engineContext_ );
 
-        assertEquals( 1, GameAttributes.CURRENT_PLAYER_INDEX.getValue( m_engineContext.getState() ).intValue() );
+        assertEquals( 1, GameAttributes.CURRENT_PLAYER_INDEX.getValue( engineContext_.getState() ).intValue() );
     }
 
     /**
@@ -190,18 +190,18 @@ public final class TurnStageStrategyTest
         throws Exception
     {
         final int PLAYER_COUNT = 2;
-        GameAttributes.PLAYER_LIST.add( m_engineContext.getState(), createPlayerList( PLAYER_COUNT ) );
-        GameAttributes.ROUND_COMPLETE.add( m_engineContext.getState(), false );
+        GameAttributes.PLAYER_LIST.add( engineContext_.getState(), createPlayerList( PLAYER_COUNT ) );
+        GameAttributes.ROUND_COMPLETE.add( engineContext_.getState(), false );
         final IStage stage = createDummy( IStage.class );
         for( int turn = 0; turn < PLAYER_COUNT; ++turn )
         {
-            m_strategy.activate( stage, m_engineContext );
-            m_strategy.deactivate( stage, m_engineContext );
+            strategy_.activate( stage, engineContext_ );
+            strategy_.deactivate( stage, engineContext_ );
         }
 
-        m_strategy.activate( stage, m_engineContext );
+        strategy_.activate( stage, engineContext_ );
 
-        assertTrue( GameAttributes.ROUND_COMPLETE.getValue( m_engineContext.getState() ) );
+        assertTrue( GameAttributes.ROUND_COMPLETE.getValue( engineContext_.getState() ) );
     }
 
     /**
@@ -216,9 +216,9 @@ public final class TurnStageStrategyTest
     public void testActivate_TurnCompleteIndicatorAdded()
         throws Exception
     {
-        m_strategy.activate( createDummy( IStage.class ), m_engineContext );
+        strategy_.activate( createDummy( IStage.class ), engineContext_ );
 
-        assertFalse( GameAttributes.TURN_COMPLETE.getValue( m_engineContext.getState() ) );
+        assertFalse( GameAttributes.TURN_COMPLETE.getValue( engineContext_.getState() ) );
     }
 
     /**
@@ -233,11 +233,11 @@ public final class TurnStageStrategyTest
         throws Exception
     {
         final IStage stage = createDummy( IStage.class );
-        m_strategy.activate( stage, m_engineContext );
+        strategy_.activate( stage, engineContext_ );
 
-        m_strategy.deactivate( stage, m_engineContext );
+        strategy_.deactivate( stage, engineContext_ );
 
-        assertTrue( GameAttributes.CURRENT_PLAYER_INDEX.isPresent( m_engineContext.getState() ) );
+        assertTrue( GameAttributes.CURRENT_PLAYER_INDEX.isPresent( engineContext_.getState() ) );
     }
 
     /**
@@ -252,11 +252,11 @@ public final class TurnStageStrategyTest
         throws Exception
     {
         final IStage stage = createDummy( IStage.class );
-        m_strategy.activate( stage, m_engineContext );
+        strategy_.activate( stage, engineContext_ );
 
-        m_strategy.deactivate( stage, m_engineContext );
+        strategy_.deactivate( stage, engineContext_ );
 
-        assertFalse( GameAttributes.TURN_COMPLETE.isPresent( m_engineContext.getState() ) );
+        assertFalse( GameAttributes.TURN_COMPLETE.isPresent( engineContext_.getState() ) );
     }
 
     /**
@@ -272,10 +272,10 @@ public final class TurnStageStrategyTest
         throws Exception
     {
         final IStage stage = createDummy( IStage.class );
-        m_strategy.activate( stage, m_engineContext );
-        GameAttributes.TURN_COMPLETE.setValue( m_engineContext.getState(), true );
+        strategy_.activate( stage, engineContext_ );
+        GameAttributes.TURN_COMPLETE.setValue( engineContext_.getState(), true );
 
-        final boolean isComplete = m_strategy.isComplete( stage, m_engineContext );
+        final boolean isComplete = strategy_.isComplete( stage, engineContext_ );
 
         assertTrue( isComplete );
     }
@@ -292,9 +292,9 @@ public final class TurnStageStrategyTest
         throws Exception
     {
         final IStage stage = createDummy( IStage.class );
-        m_strategy.activate( stage, m_engineContext );
+        strategy_.activate( stage, engineContext_ );
 
-        final boolean isComplete = m_strategy.isComplete( stage, m_engineContext );
+        final boolean isComplete = strategy_.isComplete( stage, engineContext_ );
 
         assertFalse( isComplete );
     }

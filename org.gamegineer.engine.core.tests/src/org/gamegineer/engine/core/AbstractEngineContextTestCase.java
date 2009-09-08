@@ -37,7 +37,7 @@ public abstract class AbstractEngineContextTestCase
     // ======================================================================
 
     /** The engine context under test in the fixture. */
-    private IEngineContext m_context;
+    private IEngineContext context_;
 
 
     // ======================================================================
@@ -80,8 +80,8 @@ public abstract class AbstractEngineContextTestCase
     public void setUp()
         throws Exception
     {
-        m_context = createEngineContext();
-        assertNotNull( m_context );
+        context_ = createEngineContext();
+        assertNotNull( context_ );
     }
 
     /**
@@ -94,7 +94,7 @@ public abstract class AbstractEngineContextTestCase
     public void tearDown()
         throws Exception
     {
-        m_context = null;
+        context_ = null;
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class AbstractEngineContextTestCase
     @Test( expected = NullPointerException.class )
     public void testGetContext_Type_Null()
     {
-        m_context.getContext( null );
+        context_.getContext( null );
     }
 
     /**
@@ -114,7 +114,7 @@ public abstract class AbstractEngineContextTestCase
     @Test( expected = NullPointerException.class )
     public void testGetExtension_Type_Null()
     {
-        m_context.getExtension( null );
+        context_.getExtension( null );
     }
 
     /**
@@ -123,6 +123,6 @@ public abstract class AbstractEngineContextTestCase
     @Test
     public void testGetState_ReturnValue_NonNull()
     {
-        assertNotNull( m_context.getState() );
+        assertNotNull( context_.getState() );
     }
 }

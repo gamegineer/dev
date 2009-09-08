@@ -41,7 +41,7 @@ public abstract class AbstractGameSystemUiSourceTestCase
     // ======================================================================
 
     /** The game system user interface source under test in the fixture. */
-    private IGameSystemUiSource m_source;
+    private IGameSystemUiSource source_;
 
 
     // ======================================================================
@@ -85,8 +85,8 @@ public abstract class AbstractGameSystemUiSourceTestCase
     public void setUp()
         throws Exception
     {
-        m_source = createGameSystemUiSource();
-        assertNotNull( m_source );
+        source_ = createGameSystemUiSource();
+        assertNotNull( source_ );
     }
 
     /**
@@ -99,7 +99,7 @@ public abstract class AbstractGameSystemUiSourceTestCase
     public void tearDown()
         throws Exception
     {
-        m_source = null;
+        source_ = null;
     }
 
     /**
@@ -109,12 +109,12 @@ public abstract class AbstractGameSystemUiSourceTestCase
     @Test
     public void testGetGameSystemUis_ReturnValue_Copy()
     {
-        final Collection<IGameSystemUi> gameSystemUis = m_source.getGameSystemUis();
+        final Collection<IGameSystemUi> gameSystemUis = source_.getGameSystemUis();
         final int expectedGameSystemUisSize = gameSystemUis.size();
 
         gameSystemUis.add( createDummy( IGameSystemUi.class ) );
 
-        assertEquals( expectedGameSystemUisSize, m_source.getGameSystemUis().size() );
+        assertEquals( expectedGameSystemUisSize, source_.getGameSystemUis().size() );
     }
 
     /**
@@ -123,6 +123,6 @@ public abstract class AbstractGameSystemUiSourceTestCase
     @Test
     public void testGetGameSystemUis_ReturnValue_NonNull()
     {
-        assertNotNull( m_source.getGameSystemUis() );
+        assertNotNull( source_.getGameSystemUis() );
     }
 }

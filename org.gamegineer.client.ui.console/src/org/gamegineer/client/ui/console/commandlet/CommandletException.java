@@ -1,6 +1,6 @@
 /*
  * CommandletException.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -47,7 +47,7 @@ public class CommandletException
     private static final long serialVersionUID = -2453552143168627812L;
 
     /** The localized detail message. */
-    private final String m_localizedMessage;
+    private final String localizedMessage_;
 
 
     // ======================================================================
@@ -117,7 +117,7 @@ public class CommandletException
     {
         super( message, cause );
 
-        m_localizedMessage = localizedMessage;
+        localizedMessage_ = localizedMessage;
     }
 
 
@@ -131,6 +131,6 @@ public class CommandletException
     @Override
     public String getLocalizedMessage()
     {
-        return m_localizedMessage;
+        return localizedMessage_;
     }
 }

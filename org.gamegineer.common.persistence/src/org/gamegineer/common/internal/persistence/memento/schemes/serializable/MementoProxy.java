@@ -1,6 +1,6 @@
 /*
  * MementoProxy.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,7 +45,7 @@ public final class MementoProxy
      * 
      * @serial
      */
-    private Map<String, Object> m_attributeMap;
+    private Map<String, Object> attributeMap_;
 
 
     // ======================================================================
@@ -58,7 +58,7 @@ public final class MementoProxy
     @SuppressWarnings( "unused" )
     private MementoProxy()
     {
-        m_attributeMap = null;
+        attributeMap_ = null;
     }
 
     /**
@@ -77,7 +77,7 @@ public final class MementoProxy
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
-        m_attributeMap = new HashMap<String, Object>( memento.getAttributes() );
+        attributeMap_ = new HashMap<String, Object>( memento.getAttributes() );
     }
 
 
@@ -95,6 +95,6 @@ public final class MementoProxy
     /* @NonNull */
     private Object readResolve()
     {
-        return new Memento( m_attributeMap );
+        return new Memento( attributeMap_ );
     }
 }

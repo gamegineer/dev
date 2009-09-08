@@ -1,6 +1,6 @@
 /*
  * StageState.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,16 +38,16 @@ final class StageState
     // ======================================================================
 
     /** The index of the active child stage. */
-    private final int m_activeChildStageIndex;
+    private final int activeChildStageIndex_;
 
     /** The index of the previous child stage. */
-    private final int m_previousChildStageIndex;
+    private final int previousChildStageIndex_;
 
     /** The stage associated with this state. */
-    private final Stage m_stage;
+    private final Stage stage_;
 
     /** The stage version. */
-    private final StageVersion m_version;
+    private final StageVersion version_;
 
 
     // ======================================================================
@@ -98,10 +98,10 @@ final class StageState
         assert (activeChildStageIndex >= -1) && (activeChildStageIndex < stage.getStages().size());
         assert (previousChildStageIndex >= -1) && (previousChildStageIndex < stage.getStages().size());
 
-        m_stage = stage;
-        m_version = version;
-        m_activeChildStageIndex = activeChildStageIndex;
-        m_previousChildStageIndex = previousChildStageIndex;
+        stage_ = stage;
+        version_ = version;
+        activeChildStageIndex_ = activeChildStageIndex;
+        previousChildStageIndex_ = previousChildStageIndex;
     }
 
 
@@ -127,9 +127,9 @@ final class StageState
         final int activeChildStageIndex )
     {
         assert activeChildStageIndex != -1;
-        assert m_activeChildStageIndex == -1;
+        assert activeChildStageIndex_ == -1;
 
-        return new StageState( m_stage, m_version.increment(), activeChildStageIndex, m_previousChildStageIndex );
+        return new StageState( stage_, version_.increment(), activeChildStageIndex, previousChildStageIndex_ );
     }
 
     /**
@@ -144,9 +144,9 @@ final class StageState
     /* @NonNull */
     StageState deactivateChildStage()
     {
-        assert m_activeChildStageIndex != -1;
+        assert activeChildStageIndex_ != -1;
 
-        return new StageState( m_stage, m_version.increment(), -1, m_activeChildStageIndex );
+        return new StageState( stage_, version_.increment(), -1, activeChildStageIndex_ );
     }
 
     /**
@@ -157,7 +157,7 @@ final class StageState
      */
     int getActiveChildStageIndex()
     {
-        return m_activeChildStageIndex;
+        return activeChildStageIndex_;
     }
 
     /**
@@ -168,7 +168,7 @@ final class StageState
      */
     int getPreviousChildStageIndex()
     {
-        return m_previousChildStageIndex;
+        return previousChildStageIndex_;
     }
 
     /**
@@ -179,7 +179,7 @@ final class StageState
     /* @NonNull */
     Stage getStage()
     {
-        return m_stage;
+        return stage_;
     }
 
     /**
@@ -190,6 +190,6 @@ final class StageState
     /* @NonNull */
     StageVersion getVersion()
     {
-        return m_version;
+        return version_;
     }
 }

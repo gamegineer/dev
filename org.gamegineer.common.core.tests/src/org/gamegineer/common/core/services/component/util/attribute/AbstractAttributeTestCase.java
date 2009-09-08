@@ -1,6 +1,6 @@
 /*
  * AbstractAttributeTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,7 +48,7 @@ public abstract class AbstractAttributeTestCase<T>
     // ======================================================================
 
     /** The attribute under test in the fixture. */
-    private IAttribute<T> m_attribute;
+    private IAttribute<T> attribute_;
 
 
     // ======================================================================
@@ -114,8 +114,8 @@ public abstract class AbstractAttributeTestCase<T>
     public void setUp()
         throws Exception
     {
-        m_attribute = createAttribute();
-        assertNotNull( m_attribute );
+        attribute_ = createAttribute();
+        assertNotNull( attribute_ );
     }
 
     /**
@@ -128,7 +128,7 @@ public abstract class AbstractAttributeTestCase<T>
     public void tearDown()
         throws Exception
     {
-        m_attribute = null;
+        attribute_ = null;
     }
 
     /**
@@ -137,7 +137,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test
     public void testGetName_ReturnValue_NonNull()
     {
-        assertNotNull( m_attribute.getName() );
+        assertNotNull( attribute_.getName() );
     }
 
     /**
@@ -147,7 +147,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test( expected = NullPointerException.class )
     public void testGetValue_Accessor_Null()
     {
-        m_attribute.getValue( null );
+        attribute_.getValue( null );
     }
 
     /**
@@ -157,7 +157,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test( expected = IllegalArgumentException.class )
     public void testGetValue_Value_Absent()
     {
-        m_attribute.getValue( new MockComponentFactory() );
+        attribute_.getValue( new MockComponentFactory() );
     }
 
     /**
@@ -170,10 +170,10 @@ public abstract class AbstractAttributeTestCase<T>
         for( final T value : getIllegalValues() )
         {
             final MockComponentFactory factory = new MockComponentFactory();
-            factory.setAttribute( m_attribute.getName(), value );
+            factory.setAttribute( attribute_.getName(), value );
             try
             {
-                m_attribute.getValue( factory );
+                attribute_.getValue( factory );
                 fail();
             }
             catch( final IllegalArgumentException e )
@@ -193,8 +193,8 @@ public abstract class AbstractAttributeTestCase<T>
         for( final T value : getLegalValues() )
         {
             final MockComponentFactory factory = new MockComponentFactory();
-            factory.setAttribute( m_attribute.getName(), value );
-            m_attribute.getValue( factory );
+            factory.setAttribute( attribute_.getName(), value );
+            attribute_.getValue( factory );
         }
     }
 
@@ -205,7 +205,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test( expected = NullPointerException.class )
     public void testIsPresent_Accessor_Null()
     {
-        m_attribute.isPresent( null );
+        attribute_.isPresent( null );
     }
 
     /**
@@ -215,7 +215,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test
     public void testIsPresent_Value_Absent()
     {
-        assertFalse( m_attribute.isPresent( new MockComponentFactory() ) );
+        assertFalse( attribute_.isPresent( new MockComponentFactory() ) );
     }
 
     /**
@@ -226,9 +226,9 @@ public abstract class AbstractAttributeTestCase<T>
     public void testIsPresent_Value_Present()
     {
         final MockComponentFactory factory = new MockComponentFactory();
-        factory.setAttribute( m_attribute.getName(), getLegalValues().get( 0 ) );
+        factory.setAttribute( attribute_.getName(), getLegalValues().get( 0 ) );
 
-        final boolean isPresent = m_attribute.isPresent( factory );
+        final boolean isPresent = attribute_.isPresent( factory );
 
         assertTrue( isPresent );
     }
@@ -240,7 +240,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test( expected = NullPointerException.class )
     public void testSetValue_Mutator_Null()
     {
-        m_attribute.setValue( null, getLegalValues().get( 0 ) );
+        attribute_.setValue( null, getLegalValues().get( 0 ) );
     }
 
     /**
@@ -254,7 +254,7 @@ public abstract class AbstractAttributeTestCase<T>
         {
             try
             {
-                m_attribute.setValue( new MockComponentFactory(), value );
+                attribute_.setValue( new MockComponentFactory(), value );
                 fail();
             }
             catch( final IllegalArgumentException e )
@@ -273,7 +273,7 @@ public abstract class AbstractAttributeTestCase<T>
     {
         for( final T value : getLegalValues() )
         {
-            m_attribute.setValue( new MockComponentFactory(), value );
+            attribute_.setValue( new MockComponentFactory(), value );
         }
     }
 
@@ -284,7 +284,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test( expected = NullPointerException.class )
     public void testSetValue_Value_Null()
     {
-        m_attribute.setValue( new MockComponentFactory(), null );
+        attribute_.setValue( new MockComponentFactory(), null );
     }
 
     /**
@@ -294,7 +294,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test( expected = NullPointerException.class )
     public void testTryGetValue_Accessor_Null()
     {
-        m_attribute.tryGetValue( null );
+        attribute_.tryGetValue( null );
     }
 
     /**
@@ -304,7 +304,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test
     public void testTryGetValue_Value_Absent()
     {
-        assertNull( m_attribute.tryGetValue( new MockComponentFactory() ) );
+        assertNull( attribute_.tryGetValue( new MockComponentFactory() ) );
     }
 
     /**
@@ -317,10 +317,10 @@ public abstract class AbstractAttributeTestCase<T>
         for( final T value : getIllegalValues() )
         {
             final MockComponentFactory factory = new MockComponentFactory();
-            factory.setAttribute( m_attribute.getName(), value );
+            factory.setAttribute( attribute_.getName(), value );
             try
             {
-                m_attribute.tryGetValue( factory );
+                attribute_.tryGetValue( factory );
                 fail();
             }
             catch( final IllegalArgumentException e )
@@ -340,8 +340,8 @@ public abstract class AbstractAttributeTestCase<T>
         for( final T value : getLegalValues() )
         {
             final MockComponentFactory factory = new MockComponentFactory();
-            factory.setAttribute( m_attribute.getName(), value );
-            m_attribute.tryGetValue( factory );
+            factory.setAttribute( attribute_.getName(), value );
+            attribute_.tryGetValue( factory );
         }
     }
 
@@ -352,7 +352,7 @@ public abstract class AbstractAttributeTestCase<T>
     @Test( expected = NullPointerException.class )
     public void testTrySetValue_Mutator_Null()
     {
-        m_attribute.trySetValue( null, getLegalValues().get( 0 ) );
+        attribute_.trySetValue( null, getLegalValues().get( 0 ) );
     }
 
     /**
@@ -366,7 +366,7 @@ public abstract class AbstractAttributeTestCase<T>
         {
             try
             {
-                m_attribute.trySetValue( new MockComponentFactory(), value );
+                attribute_.trySetValue( new MockComponentFactory(), value );
                 fail();
             }
             catch( final IllegalArgumentException e )
@@ -385,21 +385,21 @@ public abstract class AbstractAttributeTestCase<T>
     {
         for( final T value : getLegalValues() )
         {
-            m_attribute.trySetValue( new MockComponentFactory(), value );
+            attribute_.trySetValue( new MockComponentFactory(), value );
         }
     }
 
     /**
-     * Ensures the {@code trySetValue} method does nothing when passed a
-     * {@code null} value.
+     * Ensures the {@code trySetValue} method does nothing when passed a {@code
+     * null} value.
      */
     @Test
     public void testTrySetValue_Value_Null()
     {
         final MockComponentFactory factory = new MockComponentFactory();
 
-        m_attribute.trySetValue( factory, null );
+        attribute_.trySetValue( factory, null );
 
-        assertFalse( m_attribute.isPresent( factory ) );
+        assertFalse( attribute_.isPresent( factory ) );
     }
 }

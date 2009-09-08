@@ -1,6 +1,6 @@
 /*
  * AbstractAttributeTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ public final class AbstractAttributeTest
     // ======================================================================
 
     /** The attribute under test in the fixture. */
-    private AbstractAttribute<String> m_attribute;
+    private AbstractAttribute<String> attribute_;
 
 
     // ======================================================================
@@ -68,7 +68,7 @@ public final class AbstractAttributeTest
     public void setUp()
         throws Exception
     {
-        m_attribute = new AbstractAttribute<String>( "name", String.class ) //$NON-NLS-1$
+        attribute_ = new AbstractAttribute<String>( "name", String.class ) //$NON-NLS-1$
         {
             // no overrides
         };
@@ -84,7 +84,7 @@ public final class AbstractAttributeTest
     public void tearDown()
         throws Exception
     {
-        m_attribute = null;
+        attribute_ = null;
     }
 
     /**
@@ -121,8 +121,8 @@ public final class AbstractAttributeTest
     public void testGetValue_Value_Illegal_WrongType()
     {
         final MockComponentFactory factory = new MockComponentFactory();
-        factory.setAttribute( m_attribute.getName(), new Object() );
-        m_attribute.getValue( factory );
+        factory.setAttribute( attribute_.getName(), new Object() );
+        attribute_.getValue( factory );
     }
 
     /**
@@ -133,7 +133,7 @@ public final class AbstractAttributeTest
     public void testTryGetValue_Value_Illegal_WrongType()
     {
         final MockComponentFactory factory = new MockComponentFactory();
-        factory.setAttribute( m_attribute.getName(), new Object() );
-        m_attribute.tryGetValue( factory );
+        factory.setAttribute( attribute_.getName(), new Object() );
+        attribute_.tryGetValue( factory );
     }
 }

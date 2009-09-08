@@ -1,6 +1,6 @@
 /*
  * Services.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,22 +40,22 @@ public final class Services
     // ======================================================================
 
     /** The singleton instance. */
-    private static final Services c_instance = new Services();
+    private static final Services instance_ = new Services();
 
     /** The ConsoleHandlerFactory registration token. */
-    private ServiceRegistration m_consoleHandlerFactoryRegistration;
+    private ServiceRegistration consoleHandlerFactoryRegistration_;
 
     /** The FrameworkLogHandlerFactory registration token. */
-    private ServiceRegistration m_frameworkLogHandlerFactoryRegistration;
+    private ServiceRegistration frameworkLogHandlerFactoryRegistration_;
 
     /** The SimpleFormatterFactory registration token. */
-    private ServiceRegistration m_simpleFormatterFactoryRegistration;
+    private ServiceRegistration simpleFormatterFactoryRegistration_;
 
     /** The StandardOutputHandlerFactory registration token. */
-    private ServiceRegistration m_standardOutputHandlerFactoryRegistration;
+    private ServiceRegistration standardOutputHandlerFactoryRegistration_;
 
     /** The XmlFormatterFactory registration token. */
-    private ServiceRegistration m_xmlFormatterFactoryRegistration;
+    private ServiceRegistration xmlFormatterFactoryRegistration_;
 
 
     // ======================================================================
@@ -80,43 +80,43 @@ public final class Services
      */
     public void close()
     {
-        if( m_xmlFormatterFactoryRegistration != null )
+        if( xmlFormatterFactoryRegistration_ != null )
         {
-            m_xmlFormatterFactoryRegistration.unregister();
-            m_xmlFormatterFactoryRegistration = null;
+            xmlFormatterFactoryRegistration_.unregister();
+            xmlFormatterFactoryRegistration_ = null;
         }
-        if( m_standardOutputHandlerFactoryRegistration != null )
+        if( standardOutputHandlerFactoryRegistration_ != null )
         {
-            m_standardOutputHandlerFactoryRegistration.unregister();
-            m_standardOutputHandlerFactoryRegistration = null;
+            standardOutputHandlerFactoryRegistration_.unregister();
+            standardOutputHandlerFactoryRegistration_ = null;
         }
-        if( m_simpleFormatterFactoryRegistration != null )
+        if( simpleFormatterFactoryRegistration_ != null )
         {
-            m_simpleFormatterFactoryRegistration.unregister();
-            m_simpleFormatterFactoryRegistration = null;
+            simpleFormatterFactoryRegistration_.unregister();
+            simpleFormatterFactoryRegistration_ = null;
         }
-        if( m_frameworkLogHandlerFactoryRegistration != null )
+        if( frameworkLogHandlerFactoryRegistration_ != null )
         {
-            m_frameworkLogHandlerFactoryRegistration.unregister();
-            m_frameworkLogHandlerFactoryRegistration = null;
+            frameworkLogHandlerFactoryRegistration_.unregister();
+            frameworkLogHandlerFactoryRegistration_ = null;
         }
-        if( m_consoleHandlerFactoryRegistration != null )
+        if( consoleHandlerFactoryRegistration_ != null )
         {
-            m_consoleHandlerFactoryRegistration.unregister();
-            m_consoleHandlerFactoryRegistration = null;
+            consoleHandlerFactoryRegistration_.unregister();
+            consoleHandlerFactoryRegistration_ = null;
         }
     }
 
     /**
      * Gets the default instance of the {@code Services} class.
      * 
-     * @return The default instance of the {@code Services} class; never
-     *         {@code null}.
+     * @return The default instance of the {@code Services} class; never {@code
+     *         null}.
      */
     /* @NonNull */
     public static Services getDefault()
     {
-        return c_instance;
+        return instance_;
     }
 
     /**
@@ -134,10 +134,10 @@ public final class Services
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        m_consoleHandlerFactoryRegistration = context.registerService( IComponentFactory.class.getName(), new ConsoleHandlerFactory(), null );
-        m_frameworkLogHandlerFactoryRegistration = context.registerService( IComponentFactory.class.getName(), new FrameworkLogHandlerFactory(), null );
-        m_simpleFormatterFactoryRegistration = context.registerService( IComponentFactory.class.getName(), new SimpleFormatterFactory(), null );
-        m_standardOutputHandlerFactoryRegistration = context.registerService( IComponentFactory.class.getName(), new StandardOutputHandlerFactory(), null );
-        m_xmlFormatterFactoryRegistration = context.registerService( IComponentFactory.class.getName(), new XmlFormatterFactory(), null );
+        consoleHandlerFactoryRegistration_ = context.registerService( IComponentFactory.class.getName(), new ConsoleHandlerFactory(), null );
+        frameworkLogHandlerFactoryRegistration_ = context.registerService( IComponentFactory.class.getName(), new FrameworkLogHandlerFactory(), null );
+        simpleFormatterFactoryRegistration_ = context.registerService( IComponentFactory.class.getName(), new SimpleFormatterFactory(), null );
+        standardOutputHandlerFactoryRegistration_ = context.registerService( IComponentFactory.class.getName(), new StandardOutputHandlerFactory(), null );
+        xmlFormatterFactoryRegistration_ = context.registerService( IComponentFactory.class.getName(), new XmlFormatterFactory(), null );
     }
 }

@@ -55,7 +55,7 @@ final class StageStrategyFactory
      * The collection of stage strategy class names which this factory can
      * create.
      */
-    private static final Collection<String> c_stageStrategyClassNames;
+    private static final Collection<String> stageStrategyClassNames_;
 
 
     // ======================================================================
@@ -71,7 +71,7 @@ final class StageStrategyFactory
 
         classNameList.add( GameStageStrategy.class.getName() );
 
-        c_stageStrategyClassNames = Collections.unmodifiableList( classNameList );
+        stageStrategyClassNames_ = Collections.unmodifiableList( classNameList );
     }
 
     /**
@@ -79,7 +79,7 @@ final class StageStrategyFactory
      */
     StageStrategyFactory()
     {
-        SupportedClassNamesAttribute.INSTANCE.setValue( this, c_stageStrategyClassNames );
+        SupportedClassNamesAttribute.INSTANCE.setValue( this, stageStrategyClassNames_ );
     }
 
 
@@ -100,7 +100,7 @@ final class StageStrategyFactory
         final IAttributeAccessor accessor = new ComponentCreationContextAttributeAccessor( context );
         final String className = ClassNameAttribute.INSTANCE.getValue( accessor );
 
-        if( !c_stageStrategyClassNames.contains( className ) )
+        if( !stageStrategyClassNames_.contains( className ) )
         {
             throw new IllegalArgumentException( Messages.StageStrategyFactory_createComponent_unsupportedType( className ) );
         }

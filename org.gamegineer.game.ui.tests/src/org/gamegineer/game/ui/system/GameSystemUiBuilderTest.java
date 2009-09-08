@@ -44,10 +44,10 @@ public final class GameSystemUiBuilderTest
     // ======================================================================
 
     /** The game system user interface builder under test in the fixture. */
-    private GameSystemUiBuilder m_builder;
+    private GameSystemUiBuilder builder_;
 
     /** The game system on which the user interface is based. */
-    private IGameSystem m_gameSystem;
+    private IGameSystem gameSystem_;
 
 
     // ======================================================================
@@ -108,8 +108,8 @@ public final class GameSystemUiBuilderTest
     public void setUp()
         throws Exception
     {
-        m_gameSystem = GameSystems.createUniqueGameSystem();
-        m_builder = new GameSystemUiBuilder();
+        gameSystem_ = GameSystems.createUniqueGameSystem();
+        builder_ = new GameSystemUiBuilder();
     }
 
     /**
@@ -122,8 +122,8 @@ public final class GameSystemUiBuilderTest
     public void tearDown()
         throws Exception
     {
-        m_builder = null;
-        m_gameSystem = null;
+        builder_ = null;
+        gameSystem_ = null;
     }
 
     /**
@@ -133,8 +133,8 @@ public final class GameSystemUiBuilderTest
     @Test
     public void testAddRole_AddsRole()
     {
-        final GameSystemUiBuilder builder = GameSystemUis.createIncompleteGameSystemUiBuilder( m_gameSystem, GameSystemUis.GameSystemUiAttribute.ROLES );
-        final List<IRoleUi> expectedRoleUis = createLegalRoleUiList( m_gameSystem, builder );
+        final GameSystemUiBuilder builder = GameSystemUis.createIncompleteGameSystemUiBuilder( gameSystem_, GameSystemUis.GameSystemUiAttribute.ROLES );
+        final List<IRoleUi> expectedRoleUis = createLegalRoleUiList( gameSystem_, builder );
 
         for( final IRoleUi roleUi : expectedRoleUis )
         {
@@ -157,7 +157,7 @@ public final class GameSystemUiBuilderTest
     @Test( expected = NullPointerException.class )
     public void testAddRole_RoleUi_Null()
     {
-        m_builder.addRole( null );
+        builder_.addRole( null );
     }
 
     /**
@@ -166,7 +166,7 @@ public final class GameSystemUiBuilderTest
     @Test
     public void testAddRole_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.addRole( createDummy( IRoleUi.class ) ) );
+        assertSame( builder_, builder_.addRole( createDummy( IRoleUi.class ) ) );
     }
 
     /**
@@ -176,8 +176,8 @@ public final class GameSystemUiBuilderTest
     @Test
     public void testAddRoles_AddsRoles()
     {
-        final GameSystemUiBuilder builder = GameSystemUis.createIncompleteGameSystemUiBuilder( m_gameSystem, GameSystemUis.GameSystemUiAttribute.ROLES );
-        final List<IRoleUi> expectedRoleUis = createLegalRoleUiList( m_gameSystem, builder );
+        final GameSystemUiBuilder builder = GameSystemUis.createIncompleteGameSystemUiBuilder( gameSystem_, GameSystemUis.GameSystemUiAttribute.ROLES );
+        final List<IRoleUi> expectedRoleUis = createLegalRoleUiList( gameSystem_, builder );
 
         builder.addRoles( expectedRoleUis );
 
@@ -197,7 +197,7 @@ public final class GameSystemUiBuilderTest
     @Test( expected = NullPointerException.class )
     public void testAddRoles_RoleUis_Null()
     {
-        m_builder.addRoles( null );
+        builder_.addRoles( null );
     }
 
     /**
@@ -206,7 +206,7 @@ public final class GameSystemUiBuilderTest
     @Test
     public void testAddRoles_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.addRoles( Collections.<IRoleUi>emptyList() ) );
+        assertSame( builder_, builder_.addRoles( Collections.<IRoleUi>emptyList() ) );
     }
 
     /**
@@ -216,7 +216,7 @@ public final class GameSystemUiBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetId_Id_Null()
     {
-        m_builder.setId( null );
+        builder_.setId( null );
     }
 
     /**
@@ -225,7 +225,7 @@ public final class GameSystemUiBuilderTest
     @Test
     public void testSetId_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setId( "id" ) ); //$NON-NLS-1$
+        assertSame( builder_, builder_.setId( "id" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -235,7 +235,7 @@ public final class GameSystemUiBuilderTest
     @Test
     public void testSetId_SetsId()
     {
-        final GameSystemUiBuilder builder = GameSystemUis.createIncompleteGameSystemUiBuilder( m_gameSystem, GameSystemUis.GameSystemUiAttribute.ID );
+        final GameSystemUiBuilder builder = GameSystemUis.createIncompleteGameSystemUiBuilder( gameSystem_, GameSystemUis.GameSystemUiAttribute.ID );
         final String expectedId = "id"; //$NON-NLS-1$
 
         builder.setId( expectedId );
@@ -251,7 +251,7 @@ public final class GameSystemUiBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetName_Name_Null()
     {
-        m_builder.setName( null );
+        builder_.setName( null );
     }
 
     /**
@@ -260,7 +260,7 @@ public final class GameSystemUiBuilderTest
     @Test
     public void testSetName_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setName( "name" ) ); //$NON-NLS-1$
+        assertSame( builder_, builder_.setName( "name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -270,7 +270,7 @@ public final class GameSystemUiBuilderTest
     @Test
     public void testSetName_SetsName()
     {
-        final GameSystemUiBuilder builder = GameSystemUis.createIncompleteGameSystemUiBuilder( m_gameSystem, GameSystemUis.GameSystemUiAttribute.NAME );
+        final GameSystemUiBuilder builder = GameSystemUis.createIncompleteGameSystemUiBuilder( gameSystem_, GameSystemUis.GameSystemUiAttribute.NAME );
         final String expectedName = "name"; //$NON-NLS-1$
 
         builder.setName( expectedName );
@@ -295,7 +295,7 @@ public final class GameSystemUiBuilderTest
     {
         // TODO: See comment in GameConfigurationBuilderTest.testToGameConfiguration_GameConfig_Illegal().
 
-        final GameSystemUiBuilder builder = GameSystemUis.createIncompleteGameSystemUiBuilder( m_gameSystem, GameSystemUis.GameSystemUiAttribute.ROLES );
+        final GameSystemUiBuilder builder = GameSystemUis.createIncompleteGameSystemUiBuilder( gameSystem_, GameSystemUis.GameSystemUiAttribute.ROLES );
         builder.addRoles( GameSystemUis.createRoleUiList( GameSystems.createNonUniqueRoleList() ) );
 
         builder.toGameSystemUi();
@@ -308,7 +308,7 @@ public final class GameSystemUiBuilderTest
     @Test( expected = IllegalStateException.class )
     public void testToGameSystemUi_Id_NotSet()
     {
-        final GameSystemUiBuilder builder = GameSystemUis.createIncompleteGameSystemUiBuilder( m_gameSystem, GameSystemUis.GameSystemUiAttribute.ID );
+        final GameSystemUiBuilder builder = GameSystemUis.createIncompleteGameSystemUiBuilder( gameSystem_, GameSystemUis.GameSystemUiAttribute.ID );
 
         builder.toGameSystemUi();
     }
@@ -320,7 +320,7 @@ public final class GameSystemUiBuilderTest
     @Test( expected = IllegalStateException.class )
     public void testToGameSystemUi_Name_NotSet()
     {
-        final GameSystemUiBuilder builder = GameSystemUis.createIncompleteGameSystemUiBuilder( m_gameSystem, GameSystemUis.GameSystemUiAttribute.NAME );
+        final GameSystemUiBuilder builder = GameSystemUis.createIncompleteGameSystemUiBuilder( gameSystem_, GameSystemUis.GameSystemUiAttribute.NAME );
 
         builder.toGameSystemUi();
     }

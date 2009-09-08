@@ -37,7 +37,7 @@ public abstract class AbstractSquareTestCase
     // ======================================================================
 
     /** The square under test in the fixture. */
-    private ISquare m_square;
+    private ISquare square_;
 
 
     // ======================================================================
@@ -79,8 +79,8 @@ public abstract class AbstractSquareTestCase
     public void setUp()
         throws Exception
     {
-        m_square = createSquare();
-        assertNotNull( m_square );
+        square_ = createSquare();
+        assertNotNull( square_ );
     }
 
     /**
@@ -93,7 +93,7 @@ public abstract class AbstractSquareTestCase
     public void tearDown()
         throws Exception
     {
-        m_square = null;
+        square_ = null;
     }
 
     /**
@@ -102,6 +102,6 @@ public abstract class AbstractSquareTestCase
     @Test
     public void testGetId_ReturnValue_NonNull()
     {
-        assertNotNull( m_square.getId() );
+        assertNotNull( square_.getId() );
     }
 }

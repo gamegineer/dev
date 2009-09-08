@@ -53,13 +53,13 @@ public abstract class AbstractCommandHistoryTestCase
     // ======================================================================
 
     /** The command history under test in the fixture. */
-    private ICommandHistory m_commandHistory;
+    private ICommandHistory commandHistory_;
 
     /** The commands used to initialize the command history. */
-    private final List<IInvertibleCommand<?>> m_commands;
+    private final List<IInvertibleCommand<?>> commands_;
 
     /** The engine context for use in the fixture. */
-    private IEngineContext m_context;
+    private IEngineContext context_;
 
 
     // ======================================================================
@@ -73,10 +73,10 @@ public abstract class AbstractCommandHistoryTestCase
     protected AbstractCommandHistoryTestCase()
     {
         final int COMMAND_COUNT = 3;
-        m_commands = new ArrayList<IInvertibleCommand<?>>( COMMAND_COUNT );
+        commands_ = new ArrayList<IInvertibleCommand<?>>( COMMAND_COUNT );
         for( int index = 0; index < COMMAND_COUNT; ++index )
         {
-            m_commands.add( new Command( getCommandId( index ) ) );
+            commands_.add( new Command( getCommandId( index ) ) );
         }
     }
 
@@ -158,9 +158,9 @@ public abstract class AbstractCommandHistoryTestCase
     public void setUp()
         throws Exception
     {
-        m_context = createEngineContext();
-        m_commandHistory = createCommandHistory( m_context, m_commands );
-        assertNotNull( m_commandHistory );
+        context_ = createEngineContext();
+        commandHistory_ = createCommandHistory( context_, commands_ );
+        assertNotNull( commandHistory_ );
     }
 
     /**
@@ -173,8 +173,8 @@ public abstract class AbstractCommandHistoryTestCase
     public void tearDown()
         throws Exception
     {
-        m_commandHistory = null;
-        m_context = null;
+        commandHistory_ = null;
+        context_ = null;
     }
 
     /**
@@ -184,7 +184,7 @@ public abstract class AbstractCommandHistoryTestCase
     @Test( expected = NullPointerException.class )
     public void testCanRedo_Context_Null()
     {
-        m_commandHistory.canRedo( null );
+        commandHistory_.canRedo( null );
     }
 
     /**
@@ -198,9 +198,9 @@ public abstract class AbstractCommandHistoryTestCase
     public void testCanRedo_Redo_Allowed()
         throws Exception
     {
-        m_commandHistory.undo( m_context );
+        commandHistory_.undo( context_ );
 
-        assertTrue( m_commandHistory.canRedo( m_context ) );
+        assertTrue( commandHistory_.canRedo( context_ ) );
     }
 
     /**
@@ -210,7 +210,7 @@ public abstract class AbstractCommandHistoryTestCase
     @Test
     public void testCanRedo_Redo_Disallowed()
     {
-        assertFalse( m_commandHistory.canRedo( m_context ) );
+        assertFalse( commandHistory_.canRedo( context_ ) );
     }
 
     /**
@@ -220,7 +220,7 @@ public abstract class AbstractCommandHistoryTestCase
     @Test( expected = NullPointerException.class )
     public void testCanUndo_Context_Null()
     {
-        m_commandHistory.canUndo( null );
+        commandHistory_.canUndo( null );
     }
 
     /**
@@ -230,7 +230,7 @@ public abstract class AbstractCommandHistoryTestCase
     @Test
     public void testCanUndo_Undo_Allowed()
     {
-        assertTrue( m_commandHistory.canUndo( m_context ) );
+        assertTrue( commandHistory_.canUndo( context_ ) );
     }
 
     /**
@@ -244,13 +244,13 @@ public abstract class AbstractCommandHistoryTestCase
     public void testCanUndo_Undo_Disallowed()
         throws Exception
     {
-        final List<IInvertibleCommand<?>> actualCommands = m_commandHistory.getCommands( m_context );
+        final List<IInvertibleCommand<?>> actualCommands = commandHistory_.getCommands( context_ );
         for( int index = 0, size = actualCommands.size(); index < size; ++index )
         {
-            m_commandHistory.undo( m_context );
+            commandHistory_.undo( context_ );
         }
 
-        assertFalse( m_commandHistory.canUndo( m_context ) );
+        assertFalse( commandHistory_.canUndo( context_ ) );
     }
 
     /**
@@ -260,7 +260,7 @@ public abstract class AbstractCommandHistoryTestCase
     @Test( expected = NullPointerException.class )
     public void testGetCommands_Context_Null()
     {
-        m_commandHistory.getCommands( null );
+        commandHistory_.getCommands( null );
     }
 
     /**
@@ -270,12 +270,12 @@ public abstract class AbstractCommandHistoryTestCase
     @Test
     public void testGetCommands_ReturnValue_Copy()
     {
-        final List<IInvertibleCommand<?>> commands = m_commandHistory.getCommands( m_context );
+        final List<IInvertibleCommand<?>> commands = commandHistory_.getCommands( context_ );
         final int expectedCommandsSize = commands.size();
 
         commands.add( createDummy( IInvertibleCommand.class ) );
 
-        assertEquals( expectedCommandsSize, m_commandHistory.getCommands( m_context ).size() );
+        assertEquals( expectedCommandsSize, commandHistory_.getCommands( context_ ).size() );
     }
 
     /**
@@ -285,13 +285,13 @@ public abstract class AbstractCommandHistoryTestCase
     @Test
     public void testGetCommands_ReturnValue_Expected()
     {
-        final List<IInvertibleCommand<?>> actualCommands = m_commandHistory.getCommands( m_context );
-        assertTrue( m_commands.size() <= actualCommands.size() );
-        final int sizeDifference = actualCommands.size() - m_commands.size();
+        final List<IInvertibleCommand<?>> actualCommands = commandHistory_.getCommands( context_ );
+        assertTrue( commands_.size() <= actualCommands.size() );
+        final int sizeDifference = actualCommands.size() - commands_.size();
 
-        for( int index = 0, size = m_commands.size(); index < size; ++index )
+        for( int index = 0, size = commands_.size(); index < size; ++index )
         {
-            final Command expectedCommand = (Command)m_commands.get( index );
+            final Command expectedCommand = (Command)commands_.get( index );
             final Command actualCommand = (Command)actualCommands.get( index + sizeDifference );
             assertEquals( expectedCommand.getId(), actualCommand.getId() );
         }
@@ -325,13 +325,13 @@ public abstract class AbstractCommandHistoryTestCase
     public void testRedo()
         throws Exception
     {
-        final int originalCommandsSize = m_commandHistory.getCommands( m_context ).size();
-        final String expectedId = getCommandId( m_commands.size() - 1 );
-        m_commandHistory.undo( m_context );
+        final int originalCommandsSize = commandHistory_.getCommands( context_ ).size();
+        final String expectedId = getCommandId( commands_.size() - 1 );
+        commandHistory_.undo( context_ );
 
-        m_commandHistory.redo( m_context );
+        commandHistory_.redo( context_ );
 
-        final List<IInvertibleCommand<?>> commands = m_commandHistory.getCommands( m_context );
+        final List<IInvertibleCommand<?>> commands = commandHistory_.getCommands( context_ );
         assertEquals( originalCommandsSize, commands.size() );
         final Command lastCommand = (Command)commands.get( commands.size() - 1 );
         assertEquals( expectedId, lastCommand.getId() );
@@ -348,7 +348,7 @@ public abstract class AbstractCommandHistoryTestCase
     public void testRedo_Context_Null()
         throws Exception
     {
-        m_commandHistory.redo( null );
+        commandHistory_.redo( null );
     }
 
     /**
@@ -362,7 +362,7 @@ public abstract class AbstractCommandHistoryTestCase
     public void testRedo_UndoHistory_Empty()
         throws Exception
     {
-        m_commandHistory.redo( m_context );
+        commandHistory_.redo( context_ );
     }
 
     /**
@@ -376,12 +376,12 @@ public abstract class AbstractCommandHistoryTestCase
     public void testUndo()
         throws Exception
     {
-        final int originalCommandsSize = m_commandHistory.getCommands( m_context ).size();
-        final String expectedId = getCommandId( m_commands.size() - 2 );
+        final int originalCommandsSize = commandHistory_.getCommands( context_ ).size();
+        final String expectedId = getCommandId( commands_.size() - 2 );
 
-        m_commandHistory.undo( m_context );
+        commandHistory_.undo( context_ );
 
-        final List<IInvertibleCommand<?>> commands = m_commandHistory.getCommands( m_context );
+        final List<IInvertibleCommand<?>> commands = commandHistory_.getCommands( context_ );
         assertEquals( originalCommandsSize - 1, commands.size() );
         final Command lastCommand = (Command)commands.get( commands.size() - 1 );
         assertEquals( expectedId, lastCommand.getId() );
@@ -398,13 +398,13 @@ public abstract class AbstractCommandHistoryTestCase
     public void testUndo_CommandHistory_Empty()
         throws Exception
     {
-        final List<IInvertibleCommand<?>> actualCommands = m_commandHistory.getCommands( m_context );
+        final List<IInvertibleCommand<?>> actualCommands = commandHistory_.getCommands( context_ );
         for( int index = 0, size = actualCommands.size(); index < size; ++index )
         {
-            m_commandHistory.undo( m_context );
+            commandHistory_.undo( context_ );
         }
 
-        m_commandHistory.undo( m_context );
+        commandHistory_.undo( context_ );
     }
 
     /**
@@ -418,7 +418,7 @@ public abstract class AbstractCommandHistoryTestCase
     public void testUndo_Context_Null()
         throws Exception
     {
-        m_commandHistory.undo( null );
+        commandHistory_.undo( null );
     }
 
 
@@ -446,12 +446,12 @@ public abstract class AbstractCommandHistoryTestCase
         static final AttributeName ATTR_TEST = new AttributeName( Scope.APPLICATION, "AbstractCommandHistoryTestCase.Command.test" ); //$NON-NLS-1$
 
         /** The command identifier. */
-        private final String m_id;
+        private final String id_;
 
         /**
          * Indicates this command instance should perform the inverse operation.
          */
-        private final boolean m_isInverse;
+        private final boolean isInverse_;
 
 
         // ==================================================================
@@ -489,8 +489,8 @@ public abstract class AbstractCommandHistoryTestCase
         {
             assert id != null;
 
-            m_id = id;
-            m_isInverse = isInverse;
+            id_ = id;
+            isInverse_ = isInverse;
         }
 
 
@@ -513,7 +513,7 @@ public abstract class AbstractCommandHistoryTestCase
             {
                 state.addAttribute( ATTR_TEST, 0 );
             }
-            final Integer value = (Integer)state.getAttribute( ATTR_TEST ) + (m_isInverse ? -1 : +1);
+            final Integer value = (Integer)state.getAttribute( ATTR_TEST ) + (isInverse_ ? -1 : +1);
             state.setAttribute( ATTR_TEST, value );
             return value;
         }
@@ -526,7 +526,7 @@ public abstract class AbstractCommandHistoryTestCase
         /* @NonNull */
         String getId()
         {
-            return m_id;
+            return id_;
         }
 
         /*
@@ -534,7 +534,7 @@ public abstract class AbstractCommandHistoryTestCase
          */
         public IInvertibleCommand<Integer> getInverseCommand()
         {
-            return new Command( m_id + ".inverse", !m_isInverse ); //$NON-NLS-1$
+            return new Command( id_ + ".inverse", !isInverse_ ); //$NON-NLS-1$
         }
     }
 }

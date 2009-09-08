@@ -38,7 +38,7 @@ public abstract class AbstractCommandletHelpTestCase
     // ======================================================================
 
     /** The commandlet help under test in the fixture. */
-    private ICommandletHelp m_help;
+    private ICommandletHelp help_;
 
 
     // ======================================================================
@@ -81,8 +81,8 @@ public abstract class AbstractCommandletHelpTestCase
     public void setUp()
         throws Exception
     {
-        m_help = createCommandletHelp();
-        assertNotNull( m_help );
+        help_ = createCommandletHelp();
+        assertNotNull( help_ );
     }
 
     /**
@@ -95,17 +95,17 @@ public abstract class AbstractCommandletHelpTestCase
     public void tearDown()
         throws Exception
     {
-        m_help = null;
+        help_ = null;
     }
 
     /**
-     * Ensures the {@code getDetailedDescription} method does not return
-     * {@code null}.
+     * Ensures the {@code getDetailedDescription} method does not return {@code
+     * null}.
      */
     @Test
     public void testGetDetailedDescription_ReturnValue_NonNull()
     {
-        assertNotNull( m_help.getDetailedDescription() );
+        assertNotNull( help_.getDetailedDescription() );
     }
 
     /**
@@ -115,6 +115,6 @@ public abstract class AbstractCommandletHelpTestCase
     @Test
     public void testGetSynopsis_ReturnValue_NonNull()
     {
-        assertNotNull( m_help.getSynopsis() );
+        assertNotNull( help_.getSynopsis() );
     }
 }

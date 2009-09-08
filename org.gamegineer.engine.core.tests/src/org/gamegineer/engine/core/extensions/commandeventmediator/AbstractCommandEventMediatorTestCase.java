@@ -41,10 +41,10 @@ public abstract class AbstractCommandEventMediatorTestCase
     // ======================================================================
 
     /** The engine context for use in the fixture. */
-    private IEngineContext m_context;
+    private IEngineContext context_;
 
     /** The command event mediator under test in the fixture. */
-    private ICommandEventMediator m_mediator;
+    private ICommandEventMediator mediator_;
 
 
     // ======================================================================
@@ -52,8 +52,8 @@ public abstract class AbstractCommandEventMediatorTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractCommandEventMediatorTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractCommandEventMediatorTestCase} class.
      */
     protected AbstractCommandEventMediatorTestCase()
     {
@@ -115,9 +115,9 @@ public abstract class AbstractCommandEventMediatorTestCase
     public void setUp()
         throws Exception
     {
-        m_context = createEngineContext();
-        m_mediator = createCommandEventMediator( m_context );
-        assertNotNull( m_mediator );
+        context_ = createEngineContext();
+        mediator_ = createCommandEventMediator( context_ );
+        assertNotNull( mediator_ );
     }
 
     /**
@@ -130,8 +130,8 @@ public abstract class AbstractCommandEventMediatorTestCase
     public void tearDown()
         throws Exception
     {
-        m_mediator = null;
-        m_context = null;
+        mediator_ = null;
+        context_ = null;
     }
 
     /**
@@ -141,7 +141,7 @@ public abstract class AbstractCommandEventMediatorTestCase
     @Test( expected = NullPointerException.class )
     public void testAddCommandListener_Context_Null()
     {
-        m_mediator.addCommandListener( null, createDummy( ICommandListener.class ) );
+        mediator_.addCommandListener( null, createDummy( ICommandListener.class ) );
     }
 
     /**
@@ -151,7 +151,7 @@ public abstract class AbstractCommandEventMediatorTestCase
     @Test( expected = NullPointerException.class )
     public void testAddCommandListener_Listener_Null()
     {
-        m_mediator.addCommandListener( m_context, null );
+        mediator_.addCommandListener( context_, null );
     }
 
     /**
@@ -162,9 +162,9 @@ public abstract class AbstractCommandEventMediatorTestCase
     public void testAddCommandListener_Listener_Registered()
     {
         final ICommandListener listener = new MockCommandListener();
-        m_mediator.addCommandListener( m_context, listener );
+        mediator_.addCommandListener( context_, listener );
 
-        m_mediator.addCommandListener( m_context, listener );
+        mediator_.addCommandListener( context_, listener );
     }
 
     /**
@@ -174,7 +174,7 @@ public abstract class AbstractCommandEventMediatorTestCase
     @Test( expected = NullPointerException.class )
     public void testRemoveCommandListener_Context_Null()
     {
-        m_mediator.removeCommandListener( null, createDummy( ICommandListener.class ) );
+        mediator_.removeCommandListener( null, createDummy( ICommandListener.class ) );
     }
 
     /**
@@ -184,7 +184,7 @@ public abstract class AbstractCommandEventMediatorTestCase
     @Test( expected = NullPointerException.class )
     public void testRemoveCommandListener_Listener_Null()
     {
-        m_mediator.removeCommandListener( m_context, null );
+        mediator_.removeCommandListener( context_, null );
     }
 
     /**
@@ -194,6 +194,6 @@ public abstract class AbstractCommandEventMediatorTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveCommandListener_Listener_Unregistered()
     {
-        m_mediator.removeCommandListener( m_context, new MockCommandListener() );
+        mediator_.removeCommandListener( context_, new MockCommandListener() );
     }
 }

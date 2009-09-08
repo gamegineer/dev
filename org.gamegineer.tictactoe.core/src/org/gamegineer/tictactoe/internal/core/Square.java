@@ -42,10 +42,10 @@ public final class Square
     // ======================================================================
 
     /** The square identifier. */
-    private final SquareId m_id;
+    private final SquareId id_;
 
     /** The role identifier of the square owner. */
-    private final String m_ownerRoleId;
+    private final String ownerRoleId_;
 
 
     // ======================================================================
@@ -72,8 +72,8 @@ public final class Square
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
-        m_id = id;
-        m_ownerRoleId = ownerRoleId;
+        id_ = id;
+        ownerRoleId_ = ownerRoleId;
     }
 
 
@@ -86,7 +86,7 @@ public final class Square
      */
     public SquareId getId()
     {
-        return m_id;
+        return id_;
     }
 
     /*
@@ -94,6 +94,6 @@ public final class Square
      */
     public String getOwnerRoleId()
     {
-        return m_ownerRoleId;
+        return ownerRoleId_;
     }
 }

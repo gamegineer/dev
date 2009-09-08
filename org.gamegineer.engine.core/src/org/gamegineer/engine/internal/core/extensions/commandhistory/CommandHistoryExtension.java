@@ -48,7 +48,7 @@ public final class CommandHistoryExtension
     // ======================================================================
 
     /** The command history to which all operations are delegated. */
-    private final ICommandHistory m_delegate;
+    private final ICommandHistory delegate_;
 
 
     // ======================================================================
@@ -73,7 +73,7 @@ public final class CommandHistoryExtension
 
         assertArgumentNotNull( delegate, "delegate" ); //$NON-NLS-1$
 
-        m_delegate = delegate;
+        delegate_ = delegate;
     }
 
 
@@ -93,7 +93,7 @@ public final class CommandHistoryExtension
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertExtensionStarted();
 
-        return m_delegate.canRedo( context );
+        return delegate_.canRedo( context );
     }
 
     /**
@@ -108,7 +108,7 @@ public final class CommandHistoryExtension
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertExtensionStarted();
 
-        return m_delegate.canUndo( context );
+        return delegate_.canUndo( context );
     }
 
     /**
@@ -123,7 +123,7 @@ public final class CommandHistoryExtension
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertExtensionStarted();
 
-        return m_delegate.getCommands( context );
+        return delegate_.getCommands( context );
     }
 
     /**
@@ -135,7 +135,7 @@ public final class CommandHistoryExtension
     /* @NonNull */
     ICommandHistory getDelegate()
     {
-        return m_delegate;
+        return delegate_;
     }
 
     /**
@@ -151,7 +151,7 @@ public final class CommandHistoryExtension
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertExtensionStarted();
 
-        m_delegate.redo( context );
+        delegate_.redo( context );
     }
 
     /**
@@ -167,6 +167,6 @@ public final class CommandHistoryExtension
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertExtensionStarted();
 
-        m_delegate.undo( context );
+        delegate_.undo( context );
     }
 }

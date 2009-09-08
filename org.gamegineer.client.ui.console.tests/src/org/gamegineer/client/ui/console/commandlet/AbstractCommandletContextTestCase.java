@@ -39,7 +39,7 @@ public abstract class AbstractCommandletContextTestCase
     // ======================================================================
 
     /** The commandlet context under test in the fixture. */
-    private ICommandletContext m_context;
+    private ICommandletContext context_;
 
 
     // ======================================================================
@@ -47,8 +47,8 @@ public abstract class AbstractCommandletContextTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractCommandletContextTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractCommandletContextTestCase} class.
      */
     protected AbstractCommandletContextTestCase()
     {
@@ -82,8 +82,8 @@ public abstract class AbstractCommandletContextTestCase
     public void setUp()
         throws Exception
     {
-        m_context = createCommandletContext();
-        assertNotNull( m_context );
+        context_ = createCommandletContext();
+        assertNotNull( context_ );
     }
 
     /**
@@ -96,7 +96,7 @@ public abstract class AbstractCommandletContextTestCase
     public void tearDown()
         throws Exception
     {
-        m_context = null;
+        context_ = null;
     }
 
     /**
@@ -105,7 +105,7 @@ public abstract class AbstractCommandletContextTestCase
     @Test
     public void testGetArguments_ReturnValue_Immutable()
     {
-        assertImmutableCollection( m_context.getArguments() );
+        assertImmutableCollection( context_.getArguments() );
     }
 
     /**
@@ -114,7 +114,7 @@ public abstract class AbstractCommandletContextTestCase
     @Test
     public void testGetArguments_ReturnValue_NonNull()
     {
-        assertNotNull( m_context.getArguments() );
+        assertNotNull( context_.getArguments() );
     }
 
     /**
@@ -123,7 +123,7 @@ public abstract class AbstractCommandletContextTestCase
     @Test
     public void testGetConsole_ReturnValue_NonNull()
     {
-        assertNotNull( m_context.getConsole() );
+        assertNotNull( context_.getConsole() );
     }
 
     /**
@@ -132,7 +132,7 @@ public abstract class AbstractCommandletContextTestCase
     @Test
     public void testGetGameClient_ReturnValue_NonNull()
     {
-        assertNotNull( m_context.getGameClient() );
+        assertNotNull( context_.getGameClient() );
     }
 
     /**
@@ -141,6 +141,6 @@ public abstract class AbstractCommandletContextTestCase
     @Test
     public void testGetStatelet_ReturnValue_NonNull()
     {
-        assertNotNull( m_context.getStatelet() );
+        assertNotNull( context_.getStatelet() );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * AbstractCommandEventTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -43,7 +43,7 @@ public abstract class AbstractCommandEventTestCase<T extends ICommandEvent>
     // ======================================================================
 
     /** The command event under test in the fixture. */
-    private T m_event;
+    private T event_;
 
 
     // ======================================================================
@@ -80,8 +80,8 @@ public abstract class AbstractCommandEventTestCase<T extends ICommandEvent>
     /* @NonNull */
     protected final T getCommandEvent()
     {
-        assertNotNull( m_event );
-        return m_event;
+        assertNotNull( event_ );
+        return event_;
     }
 
     /**
@@ -94,8 +94,8 @@ public abstract class AbstractCommandEventTestCase<T extends ICommandEvent>
     public void setUp()
         throws Exception
     {
-        m_event = createCommandEvent();
-        assertNotNull( m_event );
+        event_ = createCommandEvent();
+        assertNotNull( event_ );
     }
 
     /**
@@ -108,7 +108,7 @@ public abstract class AbstractCommandEventTestCase<T extends ICommandEvent>
     public void tearDown()
         throws Exception
     {
-        m_event = null;
+        event_ = null;
     }
 
     /**
@@ -117,7 +117,7 @@ public abstract class AbstractCommandEventTestCase<T extends ICommandEvent>
     @Test
     public void testGetCommand_ReturnValue_NonNull()
     {
-        assertNotNull( m_event.getCommand() );
+        assertNotNull( event_.getCommand() );
     }
 
     /**
@@ -126,7 +126,7 @@ public abstract class AbstractCommandEventTestCase<T extends ICommandEvent>
     @Test
     public void testGetEngineContext_ReturnValue_NonNull()
     {
-        assertNotNull( m_event.getEngineContext() );
+        assertNotNull( event_.getEngineContext() );
     }
 
     /**
@@ -136,6 +136,6 @@ public abstract class AbstractCommandEventTestCase<T extends ICommandEvent>
     @Test( expected = UnsupportedOperationException.class )
     public void testGetEngineContext_State_Immutable()
     {
-        m_event.getEngineContext().getState().addAttribute( new AttributeName( Scope.APPLICATION, "my_attribute_name" ), "value" ); //$NON-NLS-1$ //$NON-NLS-2$
+        event_.getEngineContext().getState().addAttribute( new AttributeName( Scope.APPLICATION, "my_attribute_name" ), "value" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

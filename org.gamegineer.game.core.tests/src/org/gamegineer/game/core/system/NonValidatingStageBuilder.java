@@ -47,16 +47,16 @@ public final class NonValidatingStageBuilder
     // ======================================================================
 
     /** The stage cardinality. */
-    private Integer m_cardinality;
+    private Integer cardinality_;
 
     /** The stage identifier. */
-    private String m_id;
+    private String id_;
 
     /** The child stage list. */
-    private List<IStage> m_stages;
+    private List<IStage> stages_;
 
     /** The stage strategy. */
-    private IStageStrategy m_strategy;
+    private IStageStrategy strategy_;
 
 
     // ======================================================================
@@ -69,10 +69,10 @@ public final class NonValidatingStageBuilder
      */
     public NonValidatingStageBuilder()
     {
-        m_id = null;
-        m_strategy = null;
-        m_cardinality = null;
-        m_stages = null;
+        id_ = null;
+        strategy_ = null;
+        cardinality_ = null;
+        stages_ = null;
     }
 
     /**
@@ -80,8 +80,8 @@ public final class NonValidatingStageBuilder
      * using the specified stage.
      * 
      * @param stage
-     *        The stage used to initialize this builder; must not be
-     *        {@code null}.
+     *        The stage used to initialize this builder; must not be {@code
+     *        null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code stage} is {@code null}.
@@ -93,10 +93,10 @@ public final class NonValidatingStageBuilder
     {
         assertArgumentNotNull( stage, "stage" ); //$NON-NLS-1$
 
-        m_id = stage.getId();
-        m_strategy = stage.getStrategy();
-        m_cardinality = stage.getCardinality();
-        m_stages = stage.getStages();
+        id_ = stage.getId();
+        strategy_ = stage.getStrategy();
+        cardinality_ = stage.getCardinality();
+        stages_ = stage.getStages();
     }
 
 
@@ -117,12 +117,12 @@ public final class NonValidatingStageBuilder
         /* @Nullable */
         final IStage stage )
     {
-        if( m_stages == null )
+        if( stages_ == null )
         {
-            m_stages = new ArrayList<IStage>();
+            stages_ = new ArrayList<IStage>();
         }
 
-        m_stages.add( stage );
+        stages_.add( stage );
 
         return this;
     }
@@ -139,7 +139,7 @@ public final class NonValidatingStageBuilder
     public NonValidatingStageBuilder setCardinality(
         final Integer cardinality )
     {
-        m_cardinality = cardinality;
+        cardinality_ = cardinality;
 
         return this;
     }
@@ -157,7 +157,7 @@ public final class NonValidatingStageBuilder
         /* @Nullable */
         final String id )
     {
-        m_id = id;
+        id_ = id;
 
         return this;
     }
@@ -175,7 +175,7 @@ public final class NonValidatingStageBuilder
         /* @Nullable */
         final IStageStrategy strategy )
     {
-        m_strategy = strategy;
+        strategy_ = strategy;
 
         return this;
     }
@@ -188,6 +188,6 @@ public final class NonValidatingStageBuilder
     /* @NonNull */
     public IStage toStage()
     {
-        return new NonValidatingStage( m_id, m_strategy, m_cardinality, m_stages );
+        return new NonValidatingStage( id_, strategy_, cardinality_, stages_ );
     }
 }

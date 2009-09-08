@@ -50,22 +50,22 @@ public final class Services
     // ======================================================================
 
     /** The singleton instance. */
-    private static final Services c_instance = new Services();
+    private static final Services instance_ = new Services();
 
     /** The GameFactory registration token. */
-    private ServiceRegistration m_gameFactoryRegistration;
+    private ServiceRegistration gameFactoryRegistration_;
 
     /** The game system registry service registration token. */
-    private ServiceRegistration m_gameSystemRegistryServiceRegistration;
+    private ServiceRegistration gameSystemRegistryServiceRegistration_;
 
     /** The game system registry service tracker. */
-    private ServiceTracker m_gameSystemRegistryServiceTracker;
+    private ServiceTracker gameSystemRegistryServiceTracker_;
 
     /** The game system service tracker. */
-    private ServiceTracker m_gameSystemServiceTracker;
+    private ServiceTracker gameSystemServiceTracker_;
 
     /** The package administration service tracker. */
-    private ServiceTracker m_packageAdminServiceTracker;
+    private ServiceTracker packageAdminServiceTracker_;
 
 
     // ======================================================================
@@ -91,47 +91,47 @@ public final class Services
     void close()
     {
         // Close bundle-specific services
-        if( m_packageAdminServiceTracker != null )
+        if( packageAdminServiceTracker_ != null )
         {
-            m_packageAdminServiceTracker.close();
-            m_packageAdminServiceTracker = null;
+            packageAdminServiceTracker_.close();
+            packageAdminServiceTracker_ = null;
         }
-        if( m_gameSystemServiceTracker != null )
+        if( gameSystemServiceTracker_ != null )
         {
-            m_gameSystemServiceTracker.close();
-            m_gameSystemServiceTracker = null;
+            gameSystemServiceTracker_.close();
+            gameSystemServiceTracker_ = null;
         }
-        if( m_gameSystemRegistryServiceTracker != null )
+        if( gameSystemRegistryServiceTracker_ != null )
         {
-            m_gameSystemRegistryServiceTracker.close();
-            m_gameSystemRegistryServiceTracker = null;
+            gameSystemRegistryServiceTracker_.close();
+            gameSystemRegistryServiceTracker_ = null;
         }
 
         // Unregister package-specific services
 
         // Unregister bundle-specific services
-        if( m_gameFactoryRegistration != null )
+        if( gameFactoryRegistration_ != null )
         {
-            m_gameFactoryRegistration.unregister();
-            m_gameFactoryRegistration = null;
+            gameFactoryRegistration_.unregister();
+            gameFactoryRegistration_ = null;
         }
-        if( m_gameSystemRegistryServiceRegistration != null )
+        if( gameSystemRegistryServiceRegistration_ != null )
         {
-            m_gameSystemRegistryServiceRegistration.unregister();
-            m_gameSystemRegistryServiceRegistration = null;
+            gameSystemRegistryServiceRegistration_.unregister();
+            gameSystemRegistryServiceRegistration_ = null;
         }
     }
 
     /**
      * Gets the default instance of the {@code Services} class.
      * 
-     * @return The default instance of the {@code Services} class; never
-     *         {@code null}.
+     * @return The default instance of the {@code Services} class; never {@code
+     *         null}.
      */
     /* @NonNull */
     public static Services getDefault()
     {
-        return c_instance;
+        return instance_;
     }
 
     /**
@@ -146,9 +146,9 @@ public final class Services
     /* @NonNull */
     public IGameSystemRegistry getGameSystemRegistry()
     {
-        assertStateLegal( m_gameSystemRegistryServiceTracker != null, Messages.Services_gameSystemRegistryServiceTracker_notSet );
+        assertStateLegal( gameSystemRegistryServiceTracker_ != null, Messages.Services_gameSystemRegistryServiceTracker_notSet );
 
-        return (IGameSystemRegistry)m_gameSystemRegistryServiceTracker.getService();
+        return (IGameSystemRegistry)gameSystemRegistryServiceTracker_.getService();
     }
 
     /**
@@ -156,8 +156,8 @@ public final class Services
      * Framework.
      * 
      * @return An immutable collection of all game systems registered with the
-     *         OSGi Framework; never {@code null}. This collection is a
-     *         snapshot of the game systems available at the time of the call.
+     *         OSGi Framework; never {@code null}. This collection is a snapshot
+     *         of the game systems available at the time of the call.
      * 
      * @throws java.lang.IllegalStateException
      *         If this object is not open.
@@ -165,9 +165,9 @@ public final class Services
     /* @NonNull */
     public Collection<IGameSystem> getGameSystems()
     {
-        assertStateLegal( m_gameSystemServiceTracker != null, Messages.Services_gameSystemServiceTracker_notSet );
+        assertStateLegal( gameSystemServiceTracker_ != null, Messages.Services_gameSystemServiceTracker_notSet );
 
-        final Object[] services = m_gameSystemServiceTracker.getServices();
+        final Object[] services = gameSystemServiceTracker_.getServices();
         if( (services == null) || (services.length == 0) )
         {
             return Collections.emptyList();
@@ -193,9 +193,9 @@ public final class Services
     /* @NonNull */
     public PackageAdmin getPackageAdministrationService()
     {
-        assertStateLegal( m_packageAdminServiceTracker != null, Messages.Services_packageAdminServiceTracker_notSet );
+        assertStateLegal( packageAdminServiceTracker_ != null, Messages.Services_packageAdminServiceTracker_notSet );
 
-        return (PackageAdmin)m_packageAdminServiceTracker.getService();
+        return (PackageAdmin)packageAdminServiceTracker_.getService();
     }
 
     /**
@@ -214,17 +214,17 @@ public final class Services
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
         // Register bundle-specific services
-        m_gameFactoryRegistration = context.registerService( IComponentFactory.class.getName(), new GameFactory(), null );
-        m_gameSystemRegistryServiceRegistration = context.registerService( IGameSystemRegistry.class.getName(), new GameSystemRegistry(), null );
+        gameFactoryRegistration_ = context.registerService( IComponentFactory.class.getName(), new GameFactory(), null );
+        gameSystemRegistryServiceRegistration_ = context.registerService( IGameSystemRegistry.class.getName(), new GameSystemRegistry(), null );
 
         // Register package-specific services
 
         // Open bundle-specific services
-        m_gameSystemRegistryServiceTracker = new ServiceTracker( context, m_gameSystemRegistryServiceRegistration.getReference(), null );
-        m_gameSystemRegistryServiceTracker.open();
-        m_gameSystemServiceTracker = new ServiceTracker( context, IGameSystem.class.getName(), null );
-        m_gameSystemServiceTracker.open();
-        m_packageAdminServiceTracker = new ServiceTracker( context, PackageAdmin.class.getName(), null );
-        m_packageAdminServiceTracker.open();
+        gameSystemRegistryServiceTracker_ = new ServiceTracker( context, gameSystemRegistryServiceRegistration_.getReference(), null );
+        gameSystemRegistryServiceTracker_.open();
+        gameSystemServiceTracker_ = new ServiceTracker( context, IGameSystem.class.getName(), null );
+        gameSystemServiceTracker_.open();
+        packageAdminServiceTracker_ = new ServiceTracker( context, PackageAdmin.class.getName(), null );
+        packageAdminServiceTracker_.open();
     }
 }

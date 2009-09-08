@@ -64,7 +64,7 @@ final class CommandletFactory
     // ======================================================================
 
     /** The collection of commandlet class names which this factory can create. */
-    private static final Collection<String> c_commandletClassNames;
+    private static final Collection<String> commandletClassNames_;
 
 
     // ======================================================================
@@ -98,7 +98,7 @@ final class CommandletFactory
         classNameList.add( GetGameSystemsCommandlet.class.getName() );
         classNameList.add( GetGamesCommandlet.class.getName() );
 
-        c_commandletClassNames = Collections.unmodifiableList( classNameList );
+        commandletClassNames_ = Collections.unmodifiableList( classNameList );
     }
 
     /**
@@ -106,8 +106,8 @@ final class CommandletFactory
      */
     CommandletFactory()
     {
-        SupportedClassNamesAttribute.INSTANCE.setValue( this, c_commandletClassNames );
-        SupportedCommandletClassNamesAttribute.INSTANCE.setValue( this, c_commandletClassNames );
+        SupportedClassNamesAttribute.INSTANCE.setValue( this, commandletClassNames_ );
+        SupportedCommandletClassNamesAttribute.INSTANCE.setValue( this, commandletClassNames_ );
     }
 
 
@@ -127,7 +127,7 @@ final class CommandletFactory
         final IAttributeAccessor accessor = new ComponentCreationContextAttributeAccessor( context );
         final String className = ClassNameAttribute.INSTANCE.getValue( accessor );
 
-        if( !c_commandletClassNames.contains( className ) )
+        if( !commandletClassNames_.contains( className ) )
         {
             throw new IllegalArgumentException( Messages.CommandletFactory_createComponent_unsupportedType( className ) );
         }

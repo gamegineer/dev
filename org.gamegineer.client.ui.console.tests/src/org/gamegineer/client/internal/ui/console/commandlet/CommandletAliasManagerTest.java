@@ -42,10 +42,10 @@ public final class CommandletAliasManagerTest
     // ======================================================================
 
     /** A set of known commandlet class names for use in the fixture. */
-    private static final Set<String> c_commandletClassNames;
+    private static final Set<String> commandletClassNames_;
 
     /** A commandlet factory for use in the fixture. */
-    private IComponentFactory m_commandletFactory;
+    private IComponentFactory commandletFactory_;
 
 
     // ======================================================================
@@ -57,10 +57,10 @@ public final class CommandletAliasManagerTest
      */
     static
     {
-        c_commandletClassNames = new HashSet<String>();
-        c_commandletClassNames.add( "HelloCommandlet" ); //$NON-NLS-1$
-        c_commandletClassNames.add( "a.b.c.HelloCommandlet" ); //$NON-NLS-1$
-        c_commandletClassNames.add( "d.e.f.GoodbyeCommandlet" ); //$NON-NLS-1$
+        commandletClassNames_ = new HashSet<String>();
+        commandletClassNames_.add( "HelloCommandlet" ); //$NON-NLS-1$
+        commandletClassNames_.add( "a.b.c.HelloCommandlet" ); //$NON-NLS-1$
+        commandletClassNames_.add( "d.e.f.GoodbyeCommandlet" ); //$NON-NLS-1$
     }
 
     /**
@@ -87,8 +87,8 @@ public final class CommandletAliasManagerTest
     public void setUp()
         throws Exception
     {
-        m_commandletFactory = new FakeCommandletFactory( c_commandletClassNames );
-        Platform.getComponentService().registerComponentFactory( m_commandletFactory );
+        commandletFactory_ = new FakeCommandletFactory( commandletClassNames_ );
+        Platform.getComponentService().registerComponentFactory( commandletFactory_ );
     }
 
     /**
@@ -101,8 +101,8 @@ public final class CommandletAliasManagerTest
     public void tearDown()
         throws Exception
     {
-        Platform.getComponentService().unregisterComponentFactory( m_commandletFactory );
-        m_commandletFactory = null;
+        Platform.getComponentService().unregisterComponentFactory( commandletFactory_ );
+        commandletFactory_ = null;
     }
 
     /**

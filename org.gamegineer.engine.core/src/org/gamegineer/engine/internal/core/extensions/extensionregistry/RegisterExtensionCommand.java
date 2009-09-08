@@ -48,7 +48,7 @@ public final class RegisterExtensionCommand
     // ======================================================================
 
     /** The extension to register. */
-    private final IExtension m_extension;
+    private final IExtension extension_;
 
 
     // ======================================================================
@@ -70,7 +70,7 @@ public final class RegisterExtensionCommand
     {
         assertArgumentNotNull( extension, "extension" ); //$NON-NLS-1$
 
-        m_extension = extension;
+        extension_ = extension;
     }
 
 
@@ -93,7 +93,7 @@ public final class RegisterExtensionCommand
             throw new EngineException( Messages.Common_extensionRegistryExtension_unavailable );
         }
 
-        registry.registerExtension( context, m_extension );
+        registry.registerExtension( context, extension_ );
 
         return null;
     }
@@ -103,6 +103,6 @@ public final class RegisterExtensionCommand
      */
     public IInvertibleCommand<Void> getInverseCommand()
     {
-        return new UnregisterExtensionCommand( m_extension );
+        return new UnregisterExtensionCommand( extension_ );
     }
 }

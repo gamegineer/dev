@@ -1,6 +1,6 @@
 /*
  * MockStateListener.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,8 @@ import org.gamegineer.engine.core.EngineException;
 
 /**
  * Mock implementation of
- * {@link org.gamegineer.engine.core.extensions.stateeventmediator.IStateListener}.
+ * {@link org.gamegineer.engine.core.extensions.stateeventmediator.IStateListener}
+ * .
  * 
  * <p>
  * This class is intended to be extended by clients.
@@ -44,16 +45,16 @@ public class MockStateListener
     // ======================================================================
 
     /** The most recent state changed event received from the engine. */
-    private StateChangeEvent m_stateChangedEvent;
+    private StateChangeEvent stateChangedEvent_;
 
     /** The count of state changed events received from the engine. */
-    private int m_stateChangedEventCount;
+    private int stateChangedEventCount_;
 
     /** The most recent state changing event received from the engine. */
-    private StateChangeEvent m_stateChangingEvent;
+    private StateChangeEvent stateChangingEvent_;
 
     /** The count of state changing events received from the engine. */
-    private int m_stateChangingEventCount;
+    private int stateChangingEventCount_;
 
 
     // ======================================================================
@@ -65,10 +66,10 @@ public class MockStateListener
      */
     public MockStateListener()
     {
-        m_stateChangedEvent = null;
-        m_stateChangedEventCount = 0;
-        m_stateChangingEvent = null;
-        m_stateChangingEventCount = 0;
+        stateChangedEvent_ = null;
+        stateChangedEventCount_ = 0;
+        stateChangingEvent_ = null;
+        stateChangingEventCount_ = 0;
     }
 
 
@@ -81,10 +82,10 @@ public class MockStateListener
      */
     public void clearEvents()
     {
-        m_stateChangedEvent = null;
-        m_stateChangedEventCount = 0;
-        m_stateChangingEvent = null;
-        m_stateChangingEventCount = 0;
+        stateChangedEvent_ = null;
+        stateChangedEventCount_ = 0;
+        stateChangingEvent_ = null;
+        stateChangingEventCount_ = 0;
     }
 
     /**
@@ -96,7 +97,7 @@ public class MockStateListener
     /* @Nullable */
     public StateChangeEvent getStateChangedEvent()
     {
-        return m_stateChangedEvent;
+        return stateChangedEvent_;
     }
 
     /**
@@ -106,7 +107,7 @@ public class MockStateListener
      */
     public int getStateChangedEventCount()
     {
-        return m_stateChangedEventCount;
+        return stateChangedEventCount_;
     }
 
     /**
@@ -118,7 +119,7 @@ public class MockStateListener
     /* @Nullable */
     public StateChangeEvent getStateChangingEvent()
     {
-        return m_stateChangingEvent;
+        return stateChangingEvent_;
     }
 
     /**
@@ -128,7 +129,7 @@ public class MockStateListener
      */
     public int getStateChangingEventCount()
     {
-        return m_stateChangingEventCount;
+        return stateChangingEventCount_;
     }
 
     /*
@@ -139,8 +140,8 @@ public class MockStateListener
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        m_stateChangedEvent = event;
-        ++m_stateChangedEventCount;
+        stateChangedEvent_ = event;
+        ++stateChangedEventCount_;
     }
 
     /*
@@ -153,7 +154,7 @@ public class MockStateListener
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        m_stateChangingEvent = event;
-        ++m_stateChangingEventCount;
+        stateChangingEvent_ = event;
+        ++stateChangingEventCount_;
     }
 }

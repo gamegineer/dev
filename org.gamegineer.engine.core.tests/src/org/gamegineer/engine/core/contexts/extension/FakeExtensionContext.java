@@ -47,7 +47,7 @@ public class FakeExtensionContext
     // ======================================================================
 
     /** The collection of attributes. */
-    private final Map<String, Object> m_attributes;
+    private final Map<String, Object> attributes_;
 
 
     // ======================================================================
@@ -79,7 +79,7 @@ public class FakeExtensionContext
     {
         assertArgumentNotNull( attributes, "attributes" ); //$NON-NLS-1$
 
-        m_attributes = new HashMap<String, Object>( attributes );
+        attributes_ = new HashMap<String, Object>( attributes );
     }
 
 
@@ -95,10 +95,10 @@ public class FakeExtensionContext
         final Object value )
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
-        assertArgumentLegal( !m_attributes.containsKey( name ), "name" ); //$NON-NLS-1$
+        assertArgumentLegal( !attributes_.containsKey( name ), "name" ); //$NON-NLS-1$
         assertArgumentNotNull( value, "value" ); //$NON-NLS-1$
 
-        m_attributes.put( name, value );
+        attributes_.put( name, value );
     }
 
     /*
@@ -109,7 +109,7 @@ public class FakeExtensionContext
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return m_attributes.containsKey( name );
+        return attributes_.containsKey( name );
     }
 
     /*
@@ -120,6 +120,6 @@ public class FakeExtensionContext
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return m_attributes.get( name );
+        return attributes_.get( name );
     }
 }

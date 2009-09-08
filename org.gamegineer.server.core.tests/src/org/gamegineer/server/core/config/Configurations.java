@@ -43,7 +43,7 @@ public final class Configurations
     // ======================================================================
 
     /** The next unique game server identifier. */
-    private static final AtomicLong c_nextGameServerId = new AtomicLong();
+    private static final AtomicLong nextGameServerId_ = new AtomicLong();
 
 
     // ======================================================================
@@ -166,7 +166,7 @@ public final class Configurations
     @SuppressWarnings( "boxing" )
     private static String getUniqueGameServerIdentifier()
     {
-        return String.format( "game-server-%1$d", c_nextGameServerId.incrementAndGet() ); //$NON-NLS-1$
+        return String.format( "game-server-%1$d", nextGameServerId_.incrementAndGet() ); //$NON-NLS-1$
     }
 
 

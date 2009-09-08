@@ -47,10 +47,10 @@ class CommandEventDelegate
     // ======================================================================
 
     /** The command associated with the event. */
-    private final ICommand<?> m_command;
+    private final ICommand<?> command_;
 
     /** The engine context. */
-    private final IEngineContext m_context;
+    private final IEngineContext context_;
 
 
     // ======================================================================
@@ -74,8 +74,8 @@ class CommandEventDelegate
         assert context != null;
         assert command != null;
 
-        m_context = new ImmutableEngineContext( context );
-        m_command = command;
+        context_ = new ImmutableEngineContext( context );
+        command_ = command;
     }
 
 
@@ -88,7 +88,7 @@ class CommandEventDelegate
      */
     public final ICommand<?> getCommand()
     {
-        return m_command;
+        return command_;
     }
 
     /*
@@ -96,6 +96,6 @@ class CommandEventDelegate
      */
     public final IEngineContext getEngineContext()
     {
-        return m_context;
+        return context_;
     }
 }

@@ -55,11 +55,11 @@ public final class XmlRoleUi
 
     /** The role identifier. */
     @XmlAttribute( name = NAME_ID, required = true )
-    private final String m_id;
+    private final String id_;
 
     /** The role name. */
     @XmlAttribute( name = NAME_NAME, required = true )
-    private final String m_name;
+    private final String name_;
 
 
     // ======================================================================
@@ -71,8 +71,8 @@ public final class XmlRoleUi
      */
     private XmlRoleUi()
     {
-        m_id = null;
-        m_name = null;
+        id_ = null;
+        name_ = null;
     }
 
 
@@ -98,8 +98,8 @@ public final class XmlRoleUi
         try
         {
             final RoleUiBuilder builder = new RoleUiBuilder();
-            builder.setId( m_id );
-            builder.setName( m_name );
+            builder.setId( id_ );
+            builder.setName( name_ );
             return builder.toRoleUi();
         }
         catch( final RuntimeException e )

@@ -53,16 +53,16 @@ public class FakeDisplay
     private static final int PIPE_SIZE = 8 * 1024;
 
     /** The input stream reader. */
-    private final BufferedReader m_inputReader;
+    private final BufferedReader inputReader_;
 
     /** The input stream writer. */
-    private final PrintWriter m_inputWriter;
+    private final PrintWriter inputWriter_;
 
     /** The output stream reader. */
-    private final BufferedReader m_outputReader;
+    private final BufferedReader outputReader_;
 
     /** The output stream writer. */
-    private final PrintWriter m_outputWriter;
+    private final PrintWriter outputWriter_;
 
 
     // ======================================================================
@@ -81,12 +81,12 @@ public class FakeDisplay
         {
             final PipedWriter inputWriter = new PipedWriter();
             final PipedReader inputReader = new PipedReader( inputWriter, PIPE_SIZE );
-            m_inputWriter = new PrintWriter( inputWriter );
-            m_inputReader = new BufferedReader( inputReader );
+            inputWriter_ = new PrintWriter( inputWriter );
+            inputReader_ = new BufferedReader( inputReader );
             final PipedReader outputReader = new PipedReader( PIPE_SIZE );
             final PipedWriter outputWriter = new PipedWriter( outputReader );
-            m_outputReader = new BufferedReader( outputReader );
-            m_outputWriter = new PrintWriter( outputWriter, true );
+            outputReader_ = new BufferedReader( outputReader );
+            outputWriter_ = new PrintWriter( outputWriter, true );
         }
         catch( final IOException e )
         {
@@ -104,7 +104,7 @@ public class FakeDisplay
      */
     public void flush()
     {
-        m_outputWriter.flush();
+        outputWriter_.flush();
     }
 
     /*
@@ -114,7 +114,7 @@ public class FakeDisplay
         final String format,
         final Object... args )
     {
-        m_outputWriter.format( format, args );
+        outputWriter_.format( format, args );
         return this;
     }
 
@@ -143,7 +143,7 @@ public class FakeDisplay
     /* @NonNull */
     public PrintWriter getInputWriter()
     {
-        return m_inputWriter;
+        return inputWriter_;
     }
 
     /**
@@ -156,7 +156,7 @@ public class FakeDisplay
     /* @NonNull */
     public Reader getOutputReader()
     {
-        return m_outputReader;
+        return outputReader_;
     }
 
     /**
@@ -179,7 +179,7 @@ public class FakeDisplay
      */
     public Reader getReader()
     {
-        return m_inputReader;
+        return inputReader_;
     }
 
     /*
@@ -187,7 +187,7 @@ public class FakeDisplay
      */
     public PrintWriter getWriter()
     {
-        return m_outputWriter;
+        return outputWriter_;
     }
 
     /*
@@ -197,7 +197,7 @@ public class FakeDisplay
     {
         try
         {
-            return m_inputReader.readLine();
+            return inputReader_.readLine();
         }
         catch( final IOException e )
         {

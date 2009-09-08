@@ -46,10 +46,10 @@ public final class PlatformUiTest
     // ======================================================================
 
     /** The executor used to run the console. */
-    private ExecutorService m_executor;
+    private ExecutorService executor_;
 
     /** The console task associated with the executor. */
-    private Future<?> m_task;
+    private Future<?> task_;
 
 
     // ======================================================================
@@ -93,7 +93,7 @@ public final class PlatformUiTest
     private static void resetPlatformConsole()
         throws Exception
     {
-        final Field platformConsoleField = PlatformUi.class.getDeclaredField( "c_console" ); //$NON-NLS-1$
+        final Field platformConsoleField = PlatformUi.class.getDeclaredField( "console_" ); //$NON-NLS-1$
         platformConsoleField.setAccessible( true );
         final AtomicReference<?> platformConsole = (AtomicReference<?>)platformConsoleField.get( null );
         platformConsole.set( null );
@@ -109,8 +109,8 @@ public final class PlatformUiTest
     public void setUp()
         throws Exception
     {
-        m_executor = Executors.newSingleThreadExecutor();
-        m_task = null;
+        executor_ = Executors.newSingleThreadExecutor();
+        task_ = null;
     }
 
     /**
@@ -123,14 +123,14 @@ public final class PlatformUiTest
     public void tearDown()
         throws Exception
     {
-        m_executor.shutdown();
-        if( m_task != null )
+        executor_.shutdown();
+        if( task_ != null )
         {
-            m_task.cancel( true );
+            task_.cancel( true );
         }
-        m_task = null;
-        assertTrue( m_executor.awaitTermination( 1, TimeUnit.SECONDS ) );
-        m_executor = null;
+        task_ = null;
+        assertTrue( executor_.awaitTermination( 1, TimeUnit.SECONDS ) );
+        executor_ = null;
 
         resetPlatformConsole();
     }
@@ -154,7 +154,7 @@ public final class PlatformUiTest
                 return PlatformUi.createAndRunConsole( new FakeDisplay(), new ConsoleAdvisor() );
             }
         };
-        m_task = m_executor.submit( runner );
+        task_ = executor_.submit( runner );
         awaitConsoleRunning();
 
         PlatformUi.createAndRunConsole( new FakeDisplay(), new ConsoleAdvisor() );
@@ -239,7 +239,7 @@ public final class PlatformUiTest
     public void testGetConsole_ConsoleCreated_ReturnValue_NonNull()
         throws Exception
     {
-        m_task = m_executor.submit( PlatformUi.createConsoleRunner( new FakeDisplay(), new ConsoleAdvisor() ) );
+        task_ = executor_.submit( PlatformUi.createConsoleRunner( new FakeDisplay(), new ConsoleAdvisor() ) );
         awaitConsoleRunning();
 
         assertNotNull( PlatformUi.getConsole() );

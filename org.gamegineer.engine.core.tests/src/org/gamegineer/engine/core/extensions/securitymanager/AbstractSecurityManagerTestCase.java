@@ -40,10 +40,10 @@ public abstract class AbstractSecurityManagerTestCase
     // ======================================================================
 
     /** The engine context for use in the fixture. */
-    private IEngineContext m_context;
+    private IEngineContext context_;
 
     /** The security manager under test in the fixture. */
-    private ISecurityManager m_securityManager;
+    private ISecurityManager securityManager_;
 
 
     // ======================================================================
@@ -112,9 +112,9 @@ public abstract class AbstractSecurityManagerTestCase
     public void setUp()
         throws Exception
     {
-        m_context = createEngineContext();
-        m_securityManager = createSecurityManager( m_context );
-        assertNotNull( m_securityManager );
+        context_ = createEngineContext();
+        securityManager_ = createSecurityManager( context_ );
+        assertNotNull( securityManager_ );
     }
 
     /**
@@ -127,8 +127,8 @@ public abstract class AbstractSecurityManagerTestCase
     public void tearDown()
         throws Exception
     {
-        m_securityManager = null;
-        m_context = null;
+        securityManager_ = null;
+        context_ = null;
     }
 
     /**
@@ -138,7 +138,7 @@ public abstract class AbstractSecurityManagerTestCase
     @Test( expected = NullPointerException.class )
     public void testGetUserPrincipal_Context_Null()
     {
-        m_securityManager.getUserPrincipal( null );
+        securityManager_.getUserPrincipal( null );
     }
 
     /**
@@ -147,6 +147,6 @@ public abstract class AbstractSecurityManagerTestCase
     @Test
     public void testGetUserPrincipal_ReturnValue_NonNull()
     {
-        assertNotNull( m_securityManager.getUserPrincipal( m_context ) );
+        assertNotNull( securityManager_.getUserPrincipal( context_ ) );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * AdaptersTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,7 +36,7 @@ public final class AdaptersTest
     // ======================================================================
 
     /** The adapters under test in the fixture. */
-    private Adapters m_adapters;
+    private Adapters adapters_;
 
 
     // ======================================================================
@@ -66,7 +66,7 @@ public final class AdaptersTest
     public void setUp()
         throws Exception
     {
-        m_adapters = Adapters.getDefault();
+        adapters_ = Adapters.getDefault();
     }
 
     /**
@@ -79,7 +79,7 @@ public final class AdaptersTest
     public void tearDown()
         throws Exception
     {
-        m_adapters = null;
+        adapters_ = null;
     }
 
     /**
@@ -89,7 +89,7 @@ public final class AdaptersTest
     @Test( expected = NullPointerException.class )
     public void testRegister_Manager_Null()
     {
-        m_adapters.register( null );
+        adapters_.register( null );
     }
 
     /**
@@ -99,6 +99,6 @@ public final class AdaptersTest
     @Test( expected = NullPointerException.class )
     public void testUnregister_Manager_Null()
     {
-        m_adapters.unregister( null );
+        adapters_.unregister( null );
     }
 }

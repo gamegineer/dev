@@ -39,7 +39,7 @@ public abstract class AbstractStageStrategyTestCase
     // ======================================================================
 
     /** The stage strategy under test in the fixture. */
-    private IStageStrategy m_strategy;
+    private IStageStrategy strategy_;
 
 
     // ======================================================================
@@ -82,8 +82,8 @@ public abstract class AbstractStageStrategyTestCase
     public void setUp()
         throws Exception
     {
-        m_strategy = createStageStrategy();
-        assertNotNull( m_strategy );
+        strategy_ = createStageStrategy();
+        assertNotNull( strategy_ );
     }
 
     /**
@@ -96,7 +96,7 @@ public abstract class AbstractStageStrategyTestCase
     public void tearDown()
         throws Exception
     {
-        m_strategy = null;
+        strategy_ = null;
     }
 
     /**
@@ -110,7 +110,7 @@ public abstract class AbstractStageStrategyTestCase
     public void testActivate_Context_Null()
         throws Exception
     {
-        m_strategy.activate( createDummy( IStage.class ), null );
+        strategy_.activate( createDummy( IStage.class ), null );
     }
 
     /**
@@ -124,7 +124,7 @@ public abstract class AbstractStageStrategyTestCase
     public void testActivate_Stage_Null()
         throws Exception
     {
-        m_strategy.activate( null, createDummy( IEngineContext.class ) );
+        strategy_.activate( null, createDummy( IEngineContext.class ) );
     }
 
     /**
@@ -138,7 +138,7 @@ public abstract class AbstractStageStrategyTestCase
     public void testDeactivate_Context_Null()
         throws Exception
     {
-        m_strategy.deactivate( createDummy( IStage.class ), null );
+        strategy_.deactivate( createDummy( IStage.class ), null );
     }
 
     /**
@@ -152,7 +152,7 @@ public abstract class AbstractStageStrategyTestCase
     public void testDeactivate_Stage_Null()
         throws Exception
     {
-        m_strategy.deactivate( null, createDummy( IEngineContext.class ) );
+        strategy_.deactivate( null, createDummy( IEngineContext.class ) );
     }
 
     /**
@@ -162,7 +162,7 @@ public abstract class AbstractStageStrategyTestCase
     @Test( expected = NullPointerException.class )
     public void testIsComplete_Context_Null()
     {
-        m_strategy.isComplete( createDummy( IStage.class ), null );
+        strategy_.isComplete( createDummy( IStage.class ), null );
     }
 
     /**
@@ -172,6 +172,6 @@ public abstract class AbstractStageStrategyTestCase
     @Test( expected = NullPointerException.class )
     public void testIsComplete_Stage_Null()
     {
-        m_strategy.isComplete( null, createDummy( IEngineContext.class ) );
+        strategy_.isComplete( null, createDummy( IEngineContext.class ) );
     }
 }

@@ -46,7 +46,7 @@ class StateEventDelegate
     // ======================================================================
 
     /** The engine context. */
-    private final IEngineContext m_context;
+    private final IEngineContext context_;
 
 
     // ======================================================================
@@ -65,7 +65,7 @@ class StateEventDelegate
     {
         assert context != null;
 
-        m_context = new ImmutableEngineContext( context );
+        context_ = new ImmutableEngineContext( context );
     }
 
 
@@ -78,6 +78,6 @@ class StateEventDelegate
      */
     public final IEngineContext getEngineContext()
     {
-        return m_context;
+        return context_;
     }
 }

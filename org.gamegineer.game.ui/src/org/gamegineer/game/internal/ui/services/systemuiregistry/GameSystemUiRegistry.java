@@ -41,7 +41,8 @@ import org.gamegineer.game.ui.system.IGameSystemUi;
 
 /**
  * Implementation of
- * {@link org.gamegineer.game.ui.services.systemuiregistry.IGameSystemUiRegistry}.
+ * {@link org.gamegineer.game.ui.services.systemuiregistry.IGameSystemUiRegistry}
+ * .
  * 
  * <p>
  * This class is thread-safe.
@@ -68,7 +69,7 @@ public final class GameSystemUiRegistry
      * The collection of game system user interfaces directly managed by this
      * object.
      */
-    private final ConcurrentMap<String, IGameSystemUi> m_gameSystemUis;
+    private final ConcurrentMap<String, IGameSystemUi> gameSystemUis_;
 
 
     // ======================================================================
@@ -80,7 +81,7 @@ public final class GameSystemUiRegistry
      */
     public GameSystemUiRegistry()
     {
-        m_gameSystemUis = new ConcurrentHashMap<String, IGameSystemUi>();
+        gameSystemUis_ = new ConcurrentHashMap<String, IGameSystemUi>();
     }
 
 
@@ -165,7 +166,7 @@ public final class GameSystemUiRegistry
     /* @NonNull */
     private Map<String, IGameSystemUi> getGameSystemUiMap()
     {
-        final Map<String, IGameSystemUi> gameSystemUis = new HashMap<String, IGameSystemUi>( m_gameSystemUis );
+        final Map<String, IGameSystemUi> gameSystemUis = new HashMap<String, IGameSystemUi>( gameSystemUis_ );
         for( final IGameSystemUi gameSystemUi : getForeignGameSystemUis() )
         {
             if( gameSystemUis.containsKey( gameSystemUi.getId() ) )
@@ -196,7 +197,7 @@ public final class GameSystemUiRegistry
     {
         assertArgumentNotNull( gameSystemUi, "gameSystemUi" ); //$NON-NLS-1$
 
-        m_gameSystemUis.putIfAbsent( gameSystemUi.getId(), gameSystemUi );
+        gameSystemUis_.putIfAbsent( gameSystemUi.getId(), gameSystemUi );
     }
 
     /*
@@ -207,6 +208,6 @@ public final class GameSystemUiRegistry
     {
         assertArgumentNotNull( gameSystemUi, "gameSystemUi" ); //$NON-NLS-1$
 
-        m_gameSystemUis.remove( gameSystemUi.getId(), gameSystemUi );
+        gameSystemUis_.remove( gameSystemUi.getId(), gameSystemUi );
     }
 }

@@ -44,7 +44,7 @@ public final class NullDebugOptionsTest
     private static final String OPTION = "bundle/option"; //$NON-NLS-1$
 
     /** The debug options under test in the fixture. */
-    private DebugOptions m_debugOptions;
+    private DebugOptions debugOptions_;
 
 
     // ======================================================================
@@ -74,7 +74,7 @@ public final class NullDebugOptionsTest
     public void setUp()
         throws Exception
     {
-        m_debugOptions = new NullDebugOptions();
+        debugOptions_ = new NullDebugOptions();
     }
 
     /**
@@ -87,7 +87,7 @@ public final class NullDebugOptionsTest
     public void tearDown()
         throws Exception
     {
-        m_debugOptions = null;
+        debugOptions_ = null;
     }
 
     /**
@@ -97,7 +97,7 @@ public final class NullDebugOptionsTest
     @Test( expected = NullPointerException.class )
     public void testGetBooleanOption_Option_Null()
     {
-        m_debugOptions.getBooleanOption( null, false );
+        debugOptions_.getBooleanOption( null, false );
     }
 
     /**
@@ -107,8 +107,8 @@ public final class NullDebugOptionsTest
     @Test
     public void testGetBooleanOption_ReturnsDefaultValue()
     {
-        assertTrue( m_debugOptions.getBooleanOption( OPTION, true ) );
-        assertFalse( m_debugOptions.getBooleanOption( OPTION, false ) );
+        assertTrue( debugOptions_.getBooleanOption( OPTION, true ) );
+        assertFalse( debugOptions_.getBooleanOption( OPTION, false ) );
     }
 
     /**
@@ -118,7 +118,7 @@ public final class NullDebugOptionsTest
     @Test( expected = NullPointerException.class )
     public void testGetIntegerOption_Option_Null()
     {
-        m_debugOptions.getIntegerOption( null, 0 );
+        debugOptions_.getIntegerOption( null, 0 );
     }
 
     /**
@@ -128,9 +128,9 @@ public final class NullDebugOptionsTest
     @Test
     public void testGetIntegerOption_ReturnsDefaultValue()
     {
-        assertEquals( 1, m_debugOptions.getIntegerOption( OPTION, 1 ) );
-        assertEquals( 0, m_debugOptions.getIntegerOption( OPTION, 0 ) );
-        assertEquals( -1, m_debugOptions.getIntegerOption( OPTION, -1 ) );
+        assertEquals( 1, debugOptions_.getIntegerOption( OPTION, 1 ) );
+        assertEquals( 0, debugOptions_.getIntegerOption( OPTION, 0 ) );
+        assertEquals( -1, debugOptions_.getIntegerOption( OPTION, -1 ) );
     }
 
     /**
@@ -140,7 +140,7 @@ public final class NullDebugOptionsTest
     @Test( expected = NullPointerException.class )
     public void testGetOption_Option_Null()
     {
-        m_debugOptions.getOption( null );
+        debugOptions_.getOption( null );
     }
 
     /**
@@ -149,7 +149,7 @@ public final class NullDebugOptionsTest
     @Test
     public void testGetOption_ReturnsNull()
     {
-        assertNull( m_debugOptions.getOption( OPTION ) );
+        assertNull( debugOptions_.getOption( OPTION ) );
     }
 
     /**
@@ -159,7 +159,7 @@ public final class NullDebugOptionsTest
     @Test( expected = NullPointerException.class )
     public void testGetOptionWithDefault_DefaultValue_Null()
     {
-        m_debugOptions.getOption( OPTION, null );
+        debugOptions_.getOption( OPTION, null );
     }
 
     /**
@@ -169,7 +169,7 @@ public final class NullDebugOptionsTest
     @Test( expected = NullPointerException.class )
     public void testGetOptionWithDefault_Option_Null()
     {
-        m_debugOptions.getOption( null, "defaultValue" ); //$NON-NLS-1$
+        debugOptions_.getOption( null, "defaultValue" ); //$NON-NLS-1$
     }
 
     /**
@@ -180,7 +180,7 @@ public final class NullDebugOptionsTest
     public void testGetOptionWithDefault_ReturnsDefaultValue()
     {
         final String value = "defaultValue"; //$NON-NLS-1$
-        assertEquals( value, m_debugOptions.getOption( OPTION, value ) );
+        assertEquals( value, debugOptions_.getOption( OPTION, value ) );
     }
 
     /**
@@ -190,7 +190,7 @@ public final class NullDebugOptionsTest
     @Test( expected = NullPointerException.class )
     public void testNewDebugTrace_BundleSymbolicName_Null()
     {
-        m_debugOptions.newDebugTrace( null );
+        debugOptions_.newDebugTrace( null );
     }
 
     /**
@@ -200,7 +200,7 @@ public final class NullDebugOptionsTest
     @Test( expected = NullPointerException.class )
     public void testNewDebugTraceWithTraceEntryClass_BundleSymbolicName_Null()
     {
-        m_debugOptions.newDebugTrace( null, Object.class );
+        debugOptions_.newDebugTrace( null, Object.class );
     }
 
     /**
@@ -210,7 +210,7 @@ public final class NullDebugOptionsTest
     @Test( expected = NullPointerException.class )
     public void testNewDebugTraceWithTraceEntryClass_TraceEntryClass_Null()
     {
-        m_debugOptions.newDebugTrace( "", null ); //$NON-NLS-1$
+        debugOptions_.newDebugTrace( "", null ); //$NON-NLS-1$
     }
 
     /**
@@ -220,7 +220,7 @@ public final class NullDebugOptionsTest
     @Test( expected = NullPointerException.class )
     public void testRemoveOption_Option_Null()
     {
-        m_debugOptions.removeOption( null );
+        debugOptions_.removeOption( null );
     }
 
     /**
@@ -230,6 +230,6 @@ public final class NullDebugOptionsTest
     @Test( expected = NullPointerException.class )
     public void testSetOption_Option_Null()
     {
-        m_debugOptions.setOption( null, "" ); //$NON-NLS-1$
+        debugOptions_.setOption( null, "" ); //$NON-NLS-1$
     }
 }

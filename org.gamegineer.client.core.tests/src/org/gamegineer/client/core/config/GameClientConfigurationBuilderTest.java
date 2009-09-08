@@ -43,7 +43,7 @@ public final class GameClientConfigurationBuilderTest
     // ======================================================================
 
     /** The game client configuration builder under test in the fixture. */
-    private GameClientConfigurationBuilder m_builder;
+    private GameClientConfigurationBuilder builder_;
 
 
     // ======================================================================
@@ -51,8 +51,8 @@ public final class GameClientConfigurationBuilderTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code GameClientConfigurationBuilderTest} class.
+     * Initializes a new instance of the {@code
+     * GameClientConfigurationBuilderTest} class.
      */
     public GameClientConfigurationBuilderTest()
     {
@@ -74,7 +74,7 @@ public final class GameClientConfigurationBuilderTest
     public void setUp()
         throws Exception
     {
-        m_builder = new GameClientConfigurationBuilder();
+        builder_ = new GameClientConfigurationBuilder();
     }
 
     /**
@@ -87,7 +87,7 @@ public final class GameClientConfigurationBuilderTest
     public void tearDown()
         throws Exception
     {
-        m_builder = null;
+        builder_ = null;
     }
 
     /**
@@ -97,7 +97,7 @@ public final class GameClientConfigurationBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetGameSystemUiSource_GameSystemUiSource_Null()
     {
-        m_builder.setGameSystemUiSource( null );
+        builder_.setGameSystemUiSource( null );
     }
 
     /**
@@ -107,7 +107,7 @@ public final class GameClientConfigurationBuilderTest
     @Test
     public void testSetGameSystemUiSource_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setGameSystemUiSource( createDummy( IGameSystemUiSource.class ) ) );
+        assertSame( builder_, builder_.setGameSystemUiSource( createDummy( IGameSystemUiSource.class ) ) );
     }
 
     /**
@@ -132,10 +132,10 @@ public final class GameClientConfigurationBuilderTest
      * configuration.
      * 
      * <p>
-     * The purpose of this test is simply to ensure <i>any</i> illegal
-     * attribute will cause an exception to be thrown. The primary collection of
-     * tests for all possible permutations of illegal game client configuration
-     * attributes is located in the {@code ConfigurationUtilsTest} class.
+     * The purpose of this test is simply to ensure <i>any</i> illegal attribute
+     * will cause an exception to be thrown. The primary collection of tests for
+     * all possible permutations of illegal game client configuration attributes
+     * is located in the {@code ConfigurationUtilsTest} class.
      * </p>
      */
     @Ignore( "Currently, there is no way to create an illegal game client configuration." )

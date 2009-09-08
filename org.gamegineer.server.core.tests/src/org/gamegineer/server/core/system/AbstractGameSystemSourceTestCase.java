@@ -41,7 +41,7 @@ public abstract class AbstractGameSystemSourceTestCase
     // ======================================================================
 
     /** The game system source under test in the fixture. */
-    private IGameSystemSource m_source;
+    private IGameSystemSource source_;
 
 
     // ======================================================================
@@ -84,8 +84,8 @@ public abstract class AbstractGameSystemSourceTestCase
     public void setUp()
         throws Exception
     {
-        m_source = createGameSystemSource();
-        assertNotNull( m_source );
+        source_ = createGameSystemSource();
+        assertNotNull( source_ );
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class AbstractGameSystemSourceTestCase
     public void tearDown()
         throws Exception
     {
-        m_source = null;
+        source_ = null;
     }
 
     /**
@@ -108,12 +108,12 @@ public abstract class AbstractGameSystemSourceTestCase
     @Test
     public void testGetGameSystems_ReturnValue_Copy()
     {
-        final Collection<IGameSystem> gameSystems = m_source.getGameSystems();
+        final Collection<IGameSystem> gameSystems = source_.getGameSystems();
         final int expectedGameSystemsSize = gameSystems.size();
 
         gameSystems.add( createDummy( IGameSystem.class ) );
 
-        assertEquals( expectedGameSystemsSize, m_source.getGameSystems().size() );
+        assertEquals( expectedGameSystemsSize, source_.getGameSystems().size() );
     }
 
     /**
@@ -122,6 +122,6 @@ public abstract class AbstractGameSystemSourceTestCase
     @Test
     public void testGetGameSystems_ReturnValue_NonNull()
     {
-        assertNotNull( m_source.getGameSystems() );
+        assertNotNull( source_.getGameSystems() );
     }
 }

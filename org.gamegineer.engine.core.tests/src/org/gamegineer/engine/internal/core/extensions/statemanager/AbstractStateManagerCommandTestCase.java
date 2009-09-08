@@ -47,10 +47,10 @@ public abstract class AbstractStateManagerCommandTestCase<C extends ICommand<T>,
     // ======================================================================
 
     /** The command under test in the fixture. */
-    private C m_command;
+    private C command_;
 
     /** The engine for the fixture. */
-    private IEngine m_engine;
+    private IEngine engine_;
 
 
     // ======================================================================
@@ -58,8 +58,8 @@ public abstract class AbstractStateManagerCommandTestCase<C extends ICommand<T>,
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractStateManagerCommandTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractStateManagerCommandTestCase} class.
      */
     protected AbstractStateManagerCommandTestCase()
     {
@@ -91,8 +91,8 @@ public abstract class AbstractStateManagerCommandTestCase<C extends ICommand<T>,
     /* @NonNull */
     protected final C getCommand()
     {
-        assertNotNull( m_command );
-        return m_command;
+        assertNotNull( command_ );
+        return command_;
     }
 
     /**
@@ -107,8 +107,8 @@ public abstract class AbstractStateManagerCommandTestCase<C extends ICommand<T>,
     /* @NonNull */
     protected final IEngine getEngine()
     {
-        assertNotNull( m_engine );
-        return m_engine;
+        assertNotNull( engine_ );
+        return engine_;
     }
 
     /**
@@ -121,9 +121,9 @@ public abstract class AbstractStateManagerCommandTestCase<C extends ICommand<T>,
     public void setUp()
         throws Exception
     {
-        m_engine = EngineFactory.createEngine();
-        m_command = createCommand();
-        assertNotNull( m_command );
+        engine_ = EngineFactory.createEngine();
+        command_ = createCommand();
+        assertNotNull( command_ );
     }
 
     /**
@@ -136,8 +136,8 @@ public abstract class AbstractStateManagerCommandTestCase<C extends ICommand<T>,
     public void tearDown()
         throws Exception
     {
-        m_command = null;
-        m_engine = null;
+        command_ = null;
+        engine_ = null;
     }
 
     /**
@@ -151,6 +151,6 @@ public abstract class AbstractStateManagerCommandTestCase<C extends ICommand<T>,
     public void testExecute_StateManager_Unavailable()
         throws Exception
     {
-        m_command.execute( new FakeEngineContext() );
+        command_.execute( new FakeEngineContext() );
     }
 }

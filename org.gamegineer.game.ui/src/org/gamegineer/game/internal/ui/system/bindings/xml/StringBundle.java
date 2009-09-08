@@ -45,7 +45,7 @@ final class StringBundle
     // ======================================================================
 
     /** The string bundle entries. */
-    private final Map<String, String> m_entries;
+    private final Map<String, String> entries_;
 
 
     // ======================================================================
@@ -65,7 +65,7 @@ final class StringBundle
     {
         assert entries != null;
 
-        m_entries = Collections.unmodifiableMap( entries );
+        entries_ = Collections.unmodifiableMap( entries );
     }
 
 
@@ -81,7 +81,7 @@ final class StringBundle
     {
         assertArgumentNotNull( key, "key" ); //$NON-NLS-1$
 
-        return m_entries.containsKey( key );
+        return entries_.containsKey( key );
     }
 
     /*
@@ -89,7 +89,7 @@ final class StringBundle
      */
     public Set<String> getKeys()
     {
-        return m_entries.keySet();
+        return entries_.keySet();
     }
 
     /*
@@ -100,6 +100,6 @@ final class StringBundle
     {
         assertArgumentNotNull( key, "key" ); //$NON-NLS-1$
 
-        return m_entries.get( key );
+        return entries_.get( key );
     }
 }

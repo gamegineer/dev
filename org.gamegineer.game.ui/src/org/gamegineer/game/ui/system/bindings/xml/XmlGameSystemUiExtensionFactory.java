@@ -50,7 +50,8 @@ import org.osgi.framework.Bundle;
  * </p>
  * 
  * <p>
- * {@code class="org.gamegineer.game.ui.system.xml.XmlGameSystemUiExtensionFactory:/dir/gameSystemUi.xml"}
+ * {@code class="org.gamegineer.game.ui.system.xml.XmlGameSystemUiExtensionFactory:/dir/gameSystemUi.xml"
+ * }
  * </p>
  * 
  * <p>
@@ -70,8 +71,10 @@ import org.osgi.framework.Bundle;
  * </p>
  * 
  * <ul>
- * <li>&lt;<i>url</i>&gt;_&lt;<i>language</i>&gt;_&lt;<i>country</i>&gt;_&lt;<i>variant</i>&gt;.properties</li>
- * <li>&lt;<i>url</i>&gt;_&lt;<i>language</i>&gt;_&lt;<i>country</i>&gt;.properties</li>
+ * <li>&lt;<i>url</i>&gt;_&lt;<i>language</i>&gt;_&lt;<i>country</i>&gt;_&lt;<i>
+ * variant</i>&gt;.properties</li>
+ * <li>
+ * &lt;<i>url</i>&gt;_&lt;<i>language</i>&gt;_&lt;<i>country</i>&gt;.properties</li>
  * <li>&lt;<i>url</i>&gt;_&lt;<i>language</i>&gt;.properties</li>
  * <li>&lt;<i>url</i>&gt;.properties</li>
  * </ul>
@@ -98,7 +101,7 @@ public final class XmlGameSystemUiExtensionFactory
     private static final String ATTR_PATH = "path"; //$NON-NLS-1$
 
     /** The bundle URL of the game system user interface file. */
-    private URL m_gameSystemUiUrl;
+    private URL gameSystemUiUrl_;
 
 
     // ======================================================================
@@ -111,7 +114,7 @@ public final class XmlGameSystemUiExtensionFactory
      */
     public XmlGameSystemUiExtensionFactory()
     {
-        m_gameSystemUiUrl = null;
+        gameSystemUiUrl_ = null;
     }
 
 
@@ -125,14 +128,14 @@ public final class XmlGameSystemUiExtensionFactory
     public Object create()
         throws CoreException
     {
-        if( m_gameSystemUiUrl == null )
+        if( gameSystemUiUrl_ == null )
         {
             throw new CoreException( new Status( Status.ERROR, Activator.SYMBOLIC_NAME, Messages.XmlGameSystemUiExtensionFactory_create_urlNotSet ) );
         }
 
         try
         {
-            return XmlGameSystemUiFactory.createGameSystemUi( m_gameSystemUiUrl );
+            return XmlGameSystemUiFactory.createGameSystemUi( gameSystemUiUrl_ );
         }
         catch( final GameSystemUiException e )
         {
@@ -147,8 +150,8 @@ public final class XmlGameSystemUiExtensionFactory
      * @param data
      *        The extension point data; may be {@code null}.
      * 
-     * @return The bundle path of the game system user interface file or
-     *         {@code null} if the data could not be parsed.
+     * @return The bundle path of the game system user interface file or {@code
+     *         null} if the data could not be parsed.
      */
     /* @Nullable */
     private static String parsePath(
@@ -193,8 +196,8 @@ public final class XmlGameSystemUiExtensionFactory
             throw new CoreException( new Status( Status.ERROR, Activator.SYMBOLIC_NAME, Messages.XmlGameSystemUiExtensionFactory_setInitializationData_bundleNotFound( config.getNamespaceIdentifier() ) ) );
         }
 
-        m_gameSystemUiUrl = FileLocator.find( bundles[ 0 ], new Path( path ), null );
-        if( m_gameSystemUiUrl == null )
+        gameSystemUiUrl_ = FileLocator.find( bundles[ 0 ], new Path( path ), null );
+        if( gameSystemUiUrl_ == null )
         {
             throw new CoreException( new Status( Status.ERROR, Activator.SYMBOLIC_NAME, Messages.XmlGameSystemUiExtensionFactory_setInitializationData_fileNotFound( bundles[ 0 ], path ) ) );
         }

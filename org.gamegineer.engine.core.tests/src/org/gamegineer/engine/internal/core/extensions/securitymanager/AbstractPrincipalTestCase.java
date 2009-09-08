@@ -44,7 +44,7 @@ public abstract class AbstractPrincipalTestCase
     private static final String DEFAULT_NAME = "name"; //$NON-NLS-1$
 
     /** The principal under test in the fixture. */
-    private Principal m_principal;
+    private Principal principal_;
 
 
     // ======================================================================
@@ -94,8 +94,8 @@ public abstract class AbstractPrincipalTestCase
     public void setUp()
         throws Exception
     {
-        m_principal = createPrincipal( DEFAULT_NAME );
-        assertNotNull( m_principal );
+        principal_ = createPrincipal( DEFAULT_NAME );
+        assertNotNull( principal_ );
     }
 
     /**
@@ -108,7 +108,7 @@ public abstract class AbstractPrincipalTestCase
     public void tearDown()
         throws Exception
     {
-        m_principal = null;
+        principal_ = null;
     }
 
     /**
@@ -122,8 +122,8 @@ public abstract class AbstractPrincipalTestCase
     public void testEquals_Equal_NotSame()
         throws Exception
     {
-        final Principal principal1 = m_principal;
-        final Principal principal2 = createPrincipal( m_principal.getName() );
+        final Principal principal1 = principal_;
+        final Principal principal2 = createPrincipal( principal_.getName() );
 
         assertNotSame( principal1, principal2 );
         assertEquals( principal1, principal2 );
@@ -137,7 +137,7 @@ public abstract class AbstractPrincipalTestCase
     @Test
     public void testEquals_Equal_Null()
     {
-        assertFalse( m_principal.equals( null ) );
+        assertFalse( principal_.equals( null ) );
     }
 
     /**
@@ -147,7 +147,7 @@ public abstract class AbstractPrincipalTestCase
     @Test
     public void testEquals_Equal_Same()
     {
-        assertEquals( m_principal, m_principal ); // reflexive
+        assertEquals( principal_, principal_ ); // reflexive
     }
 
     /**
@@ -161,7 +161,7 @@ public abstract class AbstractPrincipalTestCase
     public void testEquals_Unequal_Names()
         throws Exception
     {
-        final Principal principal1 = m_principal;
+        final Principal principal1 = principal_;
         final Principal principal2 = createPrincipal( "other-name" ); //$NON-NLS-1$
 
         assertFalse( principal1.equals( principal2 ) );
@@ -174,13 +174,13 @@ public abstract class AbstractPrincipalTestCase
     @Test
     public void testEquals_Unequal_Types()
     {
-        final Principal principal1 = m_principal;
+        final Principal principal1 = principal_;
         final Principal principal2 = new Principal()
         {
             @SuppressWarnings( "synthetic-access" )
             public String getName()
             {
-                return m_principal.getName();
+                return principal_.getName();
             }
         };
 
@@ -193,7 +193,7 @@ public abstract class AbstractPrincipalTestCase
     @Test
     public void testGetName_ReturnValue_NonNull()
     {
-        assertNotNull( m_principal.getName() );
+        assertNotNull( principal_.getName() );
     }
 
     /**
@@ -207,8 +207,8 @@ public abstract class AbstractPrincipalTestCase
     public void testHashCode_Equal()
         throws Exception
     {
-        final Principal principal1 = m_principal;
-        final Principal principal2 = createPrincipal( m_principal.getName() );
+        final Principal principal1 = principal_;
+        final Principal principal2 = createPrincipal( principal_.getName() );
 
         assertNotSame( principal1, principal2 );
         assertEquals( principal1.hashCode(), principal2.hashCode() );

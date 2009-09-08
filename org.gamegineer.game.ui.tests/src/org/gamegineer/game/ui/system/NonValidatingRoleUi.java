@@ -46,10 +46,10 @@ public final class NonValidatingRoleUi
     // ======================================================================
 
     /** The role identifier. */
-    private final String m_id;
+    private final String id_;
 
     /** The role name. */
-    private final String m_name;
+    private final String name_;
 
 
     // ======================================================================
@@ -70,8 +70,8 @@ public final class NonValidatingRoleUi
         /* @Nullable */
         final String name )
     {
-        m_id = id;
-        m_name = name;
+        id_ = id;
+        name_ = name;
     }
 
 
@@ -87,7 +87,7 @@ public final class NonValidatingRoleUi
     /* @Nullable */
     public String getId()
     {
-        return m_id;
+        return id_;
     }
 
     /**
@@ -98,6 +98,6 @@ public final class NonValidatingRoleUi
     /* @Nullable */
     public String getName()
     {
-        return m_name;
+        return name_;
     }
 }

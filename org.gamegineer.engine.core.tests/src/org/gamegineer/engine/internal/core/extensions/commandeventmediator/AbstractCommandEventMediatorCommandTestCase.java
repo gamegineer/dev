@@ -49,13 +49,13 @@ public abstract class AbstractCommandEventMediatorCommandTestCase<C extends ICom
     // ======================================================================
 
     /** The command under test in the fixture. */
-    private C m_command;
+    private C command_;
 
     /** The engine for the fixture. */
-    private IEngine m_engine;
+    private IEngine engine_;
 
     /** The command listener for the fixture. */
-    private MockCommandListener m_listener;
+    private MockCommandListener listener_;
 
 
     // ======================================================================
@@ -63,8 +63,8 @@ public abstract class AbstractCommandEventMediatorCommandTestCase<C extends ICom
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractCommandEventMediatorCommandTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractCommandEventMediatorCommandTestCase} class.
      */
     protected AbstractCommandEventMediatorCommandTestCase()
     {
@@ -105,8 +105,8 @@ public abstract class AbstractCommandEventMediatorCommandTestCase<C extends ICom
     /* @NonNull */
     protected final C getCommand()
     {
-        assertNotNull( m_command );
-        return m_command;
+        assertNotNull( command_ );
+        return command_;
     }
 
     /**
@@ -121,8 +121,8 @@ public abstract class AbstractCommandEventMediatorCommandTestCase<C extends ICom
     /* @NonNull */
     protected final MockCommandListener getCommandListener()
     {
-        assertNotNull( m_listener );
-        return m_listener;
+        assertNotNull( listener_ );
+        return listener_;
     }
 
     /**
@@ -137,8 +137,8 @@ public abstract class AbstractCommandEventMediatorCommandTestCase<C extends ICom
     /* @NonNull */
     protected final IEngine getEngine()
     {
-        assertNotNull( m_engine );
-        return m_engine;
+        assertNotNull( engine_ );
+        return engine_;
     }
 
     /**
@@ -151,10 +151,10 @@ public abstract class AbstractCommandEventMediatorCommandTestCase<C extends ICom
     public void setUp()
         throws Exception
     {
-        m_engine = EngineFactory.createEngine();
-        m_listener = new MockCommandListener();
-        m_command = createCommand( m_listener );
-        assertNotNull( m_command );
+        engine_ = EngineFactory.createEngine();
+        listener_ = new MockCommandListener();
+        command_ = createCommand( listener_ );
+        assertNotNull( command_ );
     }
 
     /**
@@ -167,9 +167,9 @@ public abstract class AbstractCommandEventMediatorCommandTestCase<C extends ICom
     public void tearDown()
         throws Exception
     {
-        m_command = null;
-        m_listener = null;
-        m_engine = null;
+        command_ = null;
+        listener_ = null;
+        engine_ = null;
     }
 
     /**
@@ -183,7 +183,7 @@ public abstract class AbstractCommandEventMediatorCommandTestCase<C extends ICom
     public void testExecute_CommandEventMediator_Unavailable()
         throws Exception
     {
-        m_command.execute( new FakeEngineContext() );
+        command_.execute( new FakeEngineContext() );
     }
 
     /**
@@ -196,6 +196,6 @@ public abstract class AbstractCommandEventMediatorCommandTestCase<C extends ICom
     public void testExecute_ReturnValue_Null()
         throws Exception
     {
-        assertNull( m_engine.executeCommand( m_command ) );
+        assertNull( engine_.executeCommand( command_ ) );
     }
 }

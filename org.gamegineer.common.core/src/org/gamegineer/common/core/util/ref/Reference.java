@@ -1,6 +1,6 @@
 /*
  * Reference.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -43,7 +43,7 @@ public class Reference<T>
     // ======================================================================
 
     /** The referent. */
-    private T m_referent;
+    private T referent_;
 
 
     // ======================================================================
@@ -70,7 +70,7 @@ public class Reference<T>
         /* @Nullable */
         final T referent )
     {
-        m_referent = referent;
+        referent_ = referent;
     }
 
 
@@ -86,7 +86,7 @@ public class Reference<T>
     /* @Nullable */
     public T get()
     {
-        return m_referent;
+        return referent_;
     }
 
     /**
@@ -99,6 +99,6 @@ public class Reference<T>
         /* @Nullable */
         final T referent )
     {
-        m_referent = referent;
+        referent_ = referent;
     }
 }

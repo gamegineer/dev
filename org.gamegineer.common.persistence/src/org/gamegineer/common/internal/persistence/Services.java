@@ -41,10 +41,10 @@ public final class Services
     // ======================================================================
 
     /** The singleton instance. */
-    private static final Services c_instance = new Services();
+    private static final Services instance_ = new Services();
 
     /** The adapter manager service tracker. */
-    private ServiceTracker m_adapterManagerServiceTracker;
+    private ServiceTracker adapterManagerServiceTracker_;
 
 
     // ======================================================================
@@ -73,10 +73,10 @@ public final class Services
         org.gamegineer.common.internal.persistence.memento.Adapters.getDefault().register( getAdapterManager() );
 
         // Close bundle-specific services
-        if( m_adapterManagerServiceTracker != null )
+        if( adapterManagerServiceTracker_ != null )
         {
-            m_adapterManagerServiceTracker.close();
-            m_adapterManagerServiceTracker = null;
+            adapterManagerServiceTracker_.close();
+            adapterManagerServiceTracker_ = null;
         }
 
         // Unregister package-specific services
@@ -87,8 +87,8 @@ public final class Services
     /**
      * Gets the adapter manager service managed by this object.
      * 
-     * @return The adapter manager service managed by this object; never
-     *         {@code null}.
+     * @return The adapter manager service managed by this object; never {@code
+     *         null}.
      * 
      * @throws java.lang.IllegalStateException
      *         If this object is not open.
@@ -96,21 +96,21 @@ public final class Services
     /* @NonNull */
     public IAdapterManager getAdapterManager()
     {
-        assertStateLegal( m_adapterManagerServiceTracker != null, Messages.Services_adapterManagerServiceTracker_notSet );
+        assertStateLegal( adapterManagerServiceTracker_ != null, Messages.Services_adapterManagerServiceTracker_notSet );
 
-        return (IAdapterManager)m_adapterManagerServiceTracker.getService();
+        return (IAdapterManager)adapterManagerServiceTracker_.getService();
     }
 
     /**
      * Gets the default instance of the {@code Services} class.
      * 
-     * @return The default instance of the {@code Services} class; never
-     *         {@code null}.
+     * @return The default instance of the {@code Services} class; never {@code
+     *         null}.
      */
     /* @NonNull */
     public static Services getDefault()
     {
-        return c_instance;
+        return instance_;
     }
 
     /**
@@ -133,8 +133,8 @@ public final class Services
         // Register package-specific services
 
         // Open bundle-specific services
-        m_adapterManagerServiceTracker = new ServiceTracker( context, IAdapterManager.class.getName(), null );
-        m_adapterManagerServiceTracker.open();
+        adapterManagerServiceTracker_ = new ServiceTracker( context, IAdapterManager.class.getName(), null );
+        adapterManagerServiceTracker_.open();
 
         // Register package-specific adapters
         org.gamegineer.common.internal.persistence.memento.Adapters.getDefault().register( getAdapterManager() );

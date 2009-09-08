@@ -43,7 +43,7 @@ public final class GameClientConfiguration
     // ======================================================================
 
     /** The game system user interface source. */
-    private final IGameSystemUiSource m_gameSystemUiSource;
+    private final IGameSystemUiSource gameSystemUiSource_;
 
 
     // ======================================================================
@@ -62,7 +62,7 @@ public final class GameClientConfiguration
     {
         assert gameSystemUiSource != null;
 
-        m_gameSystemUiSource = gameSystemUiSource;
+        gameSystemUiSource_ = gameSystemUiSource;
     }
 
 
@@ -101,6 +101,6 @@ public final class GameClientConfiguration
      */
     public IGameSystemUiSource getGameSystemUiSource()
     {
-        return m_gameSystemUiSource;
+        return gameSystemUiSource_;
     }
 }

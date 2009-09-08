@@ -45,10 +45,10 @@ public final class PlayerConfigurationBuilder
     // ======================================================================
 
     /** The player role identifier. */
-    private String m_roleId;
+    private String roleId_;
 
     /** The player user identifier. */
-    private String m_userId;
+    private String userId_;
 
 
     // ======================================================================
@@ -61,8 +61,8 @@ public final class PlayerConfigurationBuilder
      */
     public PlayerConfigurationBuilder()
     {
-        m_roleId = null;
-        m_userId = null;
+        roleId_ = null;
+        userId_ = null;
     }
 
 
@@ -88,7 +88,7 @@ public final class PlayerConfigurationBuilder
     {
         assertArgumentNotNull( roleId, "roleId" ); //$NON-NLS-1$
 
-        m_roleId = roleId;
+        roleId_ = roleId;
 
         return this;
     }
@@ -111,7 +111,7 @@ public final class PlayerConfigurationBuilder
     {
         assertArgumentNotNull( userId, "userId" ); //$NON-NLS-1$
 
-        m_userId = userId;
+        userId_ = userId;
 
         return this;
     }
@@ -129,12 +129,12 @@ public final class PlayerConfigurationBuilder
     /* @NonNull */
     public IPlayerConfiguration toPlayerConfiguration()
     {
-        assertStateLegal( m_roleId != null, Messages.PlayerConfigurationBuilder_roleId_notSet );
-        assertStateLegal( m_userId != null, Messages.PlayerConfigurationBuilder_userId_notSet );
+        assertStateLegal( roleId_ != null, Messages.PlayerConfigurationBuilder_roleId_notSet );
+        assertStateLegal( userId_ != null, Messages.PlayerConfigurationBuilder_userId_notSet );
 
         try
         {
-            return PlayerConfiguration.createPlayerConfiguration( m_roleId, m_userId );
+            return PlayerConfiguration.createPlayerConfiguration( roleId_, userId_ );
         }
         catch( final IllegalArgumentException e )
         {

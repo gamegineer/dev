@@ -48,7 +48,7 @@ public final class AddStateListenerCommand
     // ======================================================================
 
     /** The state listener to add. */
-    private final IStateListener m_listener;
+    private final IStateListener listener_;
 
 
     // ======================================================================
@@ -70,7 +70,7 @@ public final class AddStateListenerCommand
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
 
-        m_listener = listener;
+        listener_ = listener;
     }
 
 
@@ -93,7 +93,7 @@ public final class AddStateListenerCommand
             throw new EngineException( Messages.Common_stateEventMediatorExtension_unavailable );
         }
 
-        mediator.addStateListener( context, m_listener );
+        mediator.addStateListener( context, listener_ );
 
         return null;
     }
@@ -103,6 +103,6 @@ public final class AddStateListenerCommand
      */
     public IInvertibleCommand<Void> getInverseCommand()
     {
-        return new RemoveStateListenerCommand( m_listener );
+        return new RemoveStateListenerCommand( listener_ );
     }
 }

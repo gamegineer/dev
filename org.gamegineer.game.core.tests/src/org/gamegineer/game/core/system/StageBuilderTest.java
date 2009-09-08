@@ -42,7 +42,7 @@ public final class StageBuilderTest
     // ======================================================================
 
     /** The stage builder under test in the fixture. */
-    private StageBuilder m_builder;
+    private StageBuilder builder_;
 
 
     // ======================================================================
@@ -96,7 +96,7 @@ public final class StageBuilderTest
     public void setUp()
         throws Exception
     {
-        m_builder = new StageBuilder();
+        builder_ = new StageBuilder();
     }
 
     /**
@@ -109,7 +109,7 @@ public final class StageBuilderTest
     public void tearDown()
         throws Exception
     {
-        m_builder = null;
+        builder_ = null;
     }
 
     /**
@@ -142,7 +142,7 @@ public final class StageBuilderTest
     @Test( expected = NullPointerException.class )
     public void testAddStage_Stage_Null()
     {
-        m_builder.addStage( null );
+        builder_.addStage( null );
     }
 
     /**
@@ -151,7 +151,7 @@ public final class StageBuilderTest
     @Test
     public void testAddStage_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.addStage( createDummy( IStage.class ) ) );
+        assertSame( builder_, builder_.addStage( createDummy( IStage.class ) ) );
     }
 
     /**
@@ -182,7 +182,7 @@ public final class StageBuilderTest
     @Test( expected = NullPointerException.class )
     public void testAddStages_Stages_Null()
     {
-        m_builder.addStages( null );
+        builder_.addStages( null );
     }
 
     /**
@@ -191,7 +191,7 @@ public final class StageBuilderTest
     @Test
     public void testAddStages_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.addStages( Collections.<IStage>emptyList() ) );
+        assertSame( builder_, builder_.addStages( Collections.<IStage>emptyList() ) );
     }
 
     /**
@@ -201,7 +201,7 @@ public final class StageBuilderTest
     @Test
     public void testSetCardinality_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setCardinality( 0 ) );
+        assertSame( builder_, builder_.setCardinality( 0 ) );
     }
 
     /**
@@ -226,7 +226,7 @@ public final class StageBuilderTest
     @Test
     public void testSetId_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setId( "id" ) ); //$NON-NLS-1$
+        assertSame( builder_, builder_.setId( "id" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -252,7 +252,7 @@ public final class StageBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetId_Identifier_Null()
     {
-        m_builder.setId( null );
+        builder_.setId( null );
     }
 
     /**
@@ -261,7 +261,7 @@ public final class StageBuilderTest
     @Test
     public void testSetStrategy_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.setStrategy( createDummy( IStageStrategy.class ) ) );
+        assertSame( builder_, builder_.setStrategy( createDummy( IStageStrategy.class ) ) );
     }
 
     /**
@@ -287,7 +287,7 @@ public final class StageBuilderTest
     @Test( expected = NullPointerException.class )
     public void testSetStrategy_Strategy_Null()
     {
-        m_builder.setStrategy( null );
+        builder_.setStrategy( null );
     }
 
     /**

@@ -46,10 +46,10 @@ public final class GameServerConfigurationBuilder
     // ======================================================================
 
     /** The game system source. */
-    private IGameSystemSource m_gameSystemSource;
+    private IGameSystemSource gameSystemSource_;
 
     /** The server name. */
-    private String m_name;
+    private String name_;
 
 
     // ======================================================================
@@ -62,8 +62,8 @@ public final class GameServerConfigurationBuilder
      */
     public GameServerConfigurationBuilder()
     {
-        m_name = null;
-        m_gameSystemSource = null;
+        name_ = null;
+        gameSystemSource_ = null;
     }
 
 
@@ -89,7 +89,7 @@ public final class GameServerConfigurationBuilder
     {
         assertArgumentNotNull( gameSystemSource, "gameSystemSource" ); //$NON-NLS-1$
 
-        m_gameSystemSource = gameSystemSource;
+        gameSystemSource_ = gameSystemSource;
 
         return this;
     }
@@ -112,7 +112,7 @@ public final class GameServerConfigurationBuilder
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        m_name = name;
+        name_ = name;
 
         return this;
     }
@@ -130,12 +130,12 @@ public final class GameServerConfigurationBuilder
     /* @NonNull */
     public IGameServerConfiguration toGameServerConfiguration()
     {
-        assertStateLegal( m_name != null, Messages.GameServerConfigurationBuilder_name_notSet );
-        assertStateLegal( m_gameSystemSource != null, Messages.GameServerConfigurationBuilder_gameSystemSource_notSet );
+        assertStateLegal( name_ != null, Messages.GameServerConfigurationBuilder_name_notSet );
+        assertStateLegal( gameSystemSource_ != null, Messages.GameServerConfigurationBuilder_gameSystemSource_notSet );
 
         try
         {
-            return GameServerConfiguration.createGameServerConfiguration( m_name, m_gameSystemSource );
+            return GameServerConfiguration.createGameServerConfiguration( name_, gameSystemSource_ );
         }
         catch( final IllegalArgumentException e )
         {

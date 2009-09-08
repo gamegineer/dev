@@ -46,7 +46,7 @@ public final class CommandContext
     // ======================================================================
 
     /** The collection of context attributes. */
-    private final Map<String, Object> m_attributes;
+    private final Map<String, Object> attributes_;
 
 
     // ======================================================================
@@ -81,7 +81,7 @@ public final class CommandContext
         assertArgumentNotNull( attributes, "attributes" ); //$NON-NLS-1$
         assertArgumentLegal( !attributes.containsValue( null ), "attributes", Messages.CommandContext_attributes_containsNullValue ); //$NON-NLS-1$
 
-        m_attributes = new HashMap<String, Object>( attributes );
+        attributes_ = new HashMap<String, Object>( attributes );
     }
 
 
@@ -97,7 +97,7 @@ public final class CommandContext
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return m_attributes.containsKey( name );
+        return attributes_.containsKey( name );
     }
 
     /*
@@ -108,6 +108,6 @@ public final class CommandContext
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return m_attributes.get( name );
+        return attributes_.get( name );
     }
 }

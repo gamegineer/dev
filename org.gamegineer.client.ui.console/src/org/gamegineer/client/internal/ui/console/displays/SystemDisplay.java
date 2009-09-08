@@ -1,6 +1,6 @@
 /*
  * SystemDisplay.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,7 +44,7 @@ public final class SystemDisplay
     // ======================================================================
 
     /** The system console to which all behavior will be delegated. */
-    private final Console m_console;
+    private final Console console_;
 
 
     // ======================================================================
@@ -64,7 +64,7 @@ public final class SystemDisplay
     {
         assert console != null;
 
-        m_console = console;
+        console_ = console;
     }
 
 
@@ -95,7 +95,7 @@ public final class SystemDisplay
      */
     public void flush()
     {
-        m_console.flush();
+        console_.flush();
     }
 
     /*
@@ -105,7 +105,7 @@ public final class SystemDisplay
         final String format,
         final Object... args )
     {
-        m_console.format( format, args );
+        console_.format( format, args );
         return this;
     }
 
@@ -114,7 +114,7 @@ public final class SystemDisplay
      */
     public Reader getReader()
     {
-        return m_console.reader();
+        return console_.reader();
     }
 
     /*
@@ -122,7 +122,7 @@ public final class SystemDisplay
      */
     public PrintWriter getWriter()
     {
-        return m_console.writer();
+        return console_.writer();
     }
 
     /*
@@ -130,7 +130,7 @@ public final class SystemDisplay
      */
     public String readLine()
     {
-        return m_console.readLine();
+        return console_.readLine();
     }
 
     /*
@@ -140,7 +140,7 @@ public final class SystemDisplay
         final String format,
         final Object... args )
     {
-        return m_console.readLine( format, args );
+        return console_.readLine( format, args );
     }
 
     /*
@@ -148,7 +148,7 @@ public final class SystemDisplay
      */
     public char[] readSecureLine()
     {
-        return m_console.readPassword();
+        return console_.readPassword();
     }
 
     /*
@@ -158,6 +158,6 @@ public final class SystemDisplay
         final String format,
         final Object... args )
     {
-        return m_console.readPassword( format, args );
+        return console_.readPassword( format, args );
     }
 }

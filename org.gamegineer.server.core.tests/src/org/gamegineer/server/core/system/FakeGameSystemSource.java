@@ -49,7 +49,7 @@ public class FakeGameSystemSource
     // ======================================================================
 
     /** The collection of game systems available from this source. */
-    private final Collection<IGameSystem> m_gameSystems;
+    private final Collection<IGameSystem> gameSystems_;
 
 
     // ======================================================================
@@ -82,7 +82,7 @@ public class FakeGameSystemSource
     {
         assertArgumentNotNull( gameSystems, "gameSystems" ); //$NON-NLS-1$
 
-        m_gameSystems = new ArrayList<IGameSystem>( gameSystems );
+        gameSystems_ = new ArrayList<IGameSystem>( gameSystems );
     }
 
 
@@ -95,6 +95,6 @@ public class FakeGameSystemSource
      */
     public Collection<IGameSystem> getGameSystems()
     {
-        return new ArrayList<IGameSystem>( m_gameSystems );
+        return new ArrayList<IGameSystem>( gameSystems_ );
     }
 }

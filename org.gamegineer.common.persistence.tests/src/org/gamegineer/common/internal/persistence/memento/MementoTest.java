@@ -45,7 +45,7 @@ public final class MementoTest
     // ======================================================================
 
     /** The memento under test in the fixture. */
-    private Memento m_memento;
+    private Memento memento_;
 
 
     // ======================================================================
@@ -116,7 +116,7 @@ public final class MementoTest
     public void setUp()
         throws Exception
     {
-        m_memento = new Memento( createFixtureAttributeMap() );
+        memento_ = new Memento( createFixtureAttributeMap() );
     }
 
     /**
@@ -129,7 +129,7 @@ public final class MementoTest
     public void tearDown()
         throws Exception
     {
-        m_memento = null;
+        memento_ = null;
     }
 
     /**
@@ -149,7 +149,7 @@ public final class MementoTest
     @Test
     public void testEquals_Equal_NotSame()
     {
-        final Memento memento1 = m_memento;
+        final Memento memento1 = memento_;
         final Memento memento2 = new Memento( createFixtureAttributeMap() );
         assertNotSame( memento1, memento2 );
         assertEquals( memento1, memento2 );
@@ -163,7 +163,7 @@ public final class MementoTest
     @Test
     public void testEquals_Equal_Null()
     {
-        assertFalse( m_memento.equals( null ) );
+        assertFalse( memento_.equals( null ) );
     }
 
     /**
@@ -173,7 +173,7 @@ public final class MementoTest
     @Test
     public void testEquals_Equal_Same()
     {
-        assertEquals( m_memento, m_memento ); // reflexive
+        assertEquals( memento_, memento_ ); // reflexive
     }
 
     /**
@@ -183,7 +183,7 @@ public final class MementoTest
     @Test
     public void testEquals_Unequal_Size()
     {
-        final Memento memento1 = m_memento;
+        final Memento memento1 = memento_;
         final Memento memento2 = new Memento( createAttributeMap( 3, 1 ) );
         assertFalse( memento1.equals( memento2 ) );
     }
@@ -195,7 +195,7 @@ public final class MementoTest
     @Test
     public void testEquals_Unequal_Values()
     {
-        final Memento memento1 = m_memento;
+        final Memento memento1 = memento_;
         final Memento memento2 = new Memento( createAttributeMap( 4, 2 ) );
         assertFalse( memento1.equals( memento2 ) );
     }
@@ -207,7 +207,7 @@ public final class MementoTest
     @Test
     public void testGetAttributes()
     {
-        final Map<String, Object> attributeMap = m_memento.getAttributes();
+        final Map<String, Object> attributeMap = memento_.getAttributes();
         assertEquals( createFixtureAttributeMap(), attributeMap );
     }
 
@@ -230,7 +230,7 @@ public final class MementoTest
     @Test
     public void testGetAttributes_ReturnValue_Immutable()
     {
-        assertImmutableMap( m_memento.getAttributes() );
+        assertImmutableMap( memento_.getAttributes() );
     }
 
     /**
@@ -240,7 +240,7 @@ public final class MementoTest
     @Test
     public void testHashCode_Equal()
     {
-        final Memento memento1 = m_memento;
+        final Memento memento1 = memento_;
         final Memento memento2 = new Memento( createFixtureAttributeMap() );
         assertNotSame( memento1, memento2 );
         assertEquals( memento1.hashCode(), memento2.hashCode() );

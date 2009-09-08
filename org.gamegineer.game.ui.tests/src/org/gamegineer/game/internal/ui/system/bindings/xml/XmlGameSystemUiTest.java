@@ -48,7 +48,7 @@ public final class XmlGameSystemUiTest
     // ======================================================================
 
     /** The game system user interface builder for use in the fixture. */
-    private NonValidatingGameSystemUiBuilder m_builder;
+    private NonValidatingGameSystemUiBuilder builder_;
 
 
     // ======================================================================
@@ -104,7 +104,7 @@ public final class XmlGameSystemUiTest
     public void setUp()
         throws Exception
     {
-        m_builder = new NonValidatingGameSystemUiBuilder( GameSystemUis.createGameSystemUi( GameSystems.createUniqueGameSystem() ) );
+        builder_ = new NonValidatingGameSystemUiBuilder( GameSystemUis.createGameSystemUi( GameSystems.createUniqueGameSystem() ) );
 
         super.setUp();
     }
@@ -119,7 +119,7 @@ public final class XmlGameSystemUiTest
     {
         super.tearDown();
 
-        m_builder = null;
+        builder_ = null;
     }
 
     /**
@@ -134,7 +134,7 @@ public final class XmlGameSystemUiTest
     public void testToGameSystemUi_Success()
         throws Exception
     {
-        final IGameSystemUi expectedGameSystemUi = m_builder.toGameSystemUi();
+        final IGameSystemUi expectedGameSystemUi = builder_.toGameSystemUi();
         final XmlGameSystemUi xmlGameSystemUi = (XmlGameSystemUi)getUnmarshaller().unmarshal( createGameSystemUiReader( expectedGameSystemUi ) );
 
         final IGameSystemUi actualGameSystemUi = xmlGameSystemUi.toGameSystemUi();
@@ -153,9 +153,9 @@ public final class XmlGameSystemUiTest
     public void testUnmarshal_Fail_NoId()
         throws Exception
     {
-        m_builder.setId( null );
+        builder_.setId( null );
 
-        getUnmarshaller().unmarshal( createGameSystemUiReader( m_builder.toGameSystemUi() ) );
+        getUnmarshaller().unmarshal( createGameSystemUiReader( builder_.toGameSystemUi() ) );
     }
 
     /**
@@ -169,9 +169,9 @@ public final class XmlGameSystemUiTest
     public void testUnmarshal_Fail_NoName()
         throws Exception
     {
-        m_builder.setName( null );
+        builder_.setName( null );
 
-        getUnmarshaller().unmarshal( createGameSystemUiReader( m_builder.toGameSystemUi() ) );
+        getUnmarshaller().unmarshal( createGameSystemUiReader( builder_.toGameSystemUi() ) );
     }
 
     /**
@@ -186,9 +186,9 @@ public final class XmlGameSystemUiTest
     public void testUnmarshal_Fail_NoRoleContainer()
         throws Exception
     {
-        m_builder.clearRoles();
+        builder_.clearRoles();
 
-        getUnmarshaller().unmarshal( createGameSystemUiReader( m_builder.toGameSystemUi() ) );
+        getUnmarshaller().unmarshal( createGameSystemUiReader( builder_.toGameSystemUi() ) );
     }
 
     /**
@@ -202,9 +202,9 @@ public final class XmlGameSystemUiTest
     public void testUnmarshal_Fail_NoRoles()
         throws Exception
     {
-        m_builder.clearRoles().addRole( null );
+        builder_.clearRoles().addRole( null );
 
-        getUnmarshaller().unmarshal( createGameSystemUiReader( m_builder.toGameSystemUi() ) );
+        getUnmarshaller().unmarshal( createGameSystemUiReader( builder_.toGameSystemUi() ) );
     }
 
     /**
@@ -218,7 +218,7 @@ public final class XmlGameSystemUiTest
     public void testUnmarshal_Success_Complete()
         throws Exception
     {
-        final IGameSystemUi expectedGameSystemUi = m_builder.toGameSystemUi();
+        final IGameSystemUi expectedGameSystemUi = builder_.toGameSystemUi();
 
         final XmlGameSystemUi xmlGameSystemUi = (XmlGameSystemUi)getUnmarshaller().unmarshal( createGameSystemUiReader( expectedGameSystemUi ) );
         final IGameSystemUi actualGameSystemUi = xmlGameSystemUi.toGameSystemUi();

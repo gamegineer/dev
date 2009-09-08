@@ -64,17 +64,17 @@ public final class XmlGameSystemUi
 
     /** The game system identifier. */
     @XmlAttribute( name = NAME_ID, required = true )
-    private final String m_id;
+    private final String id_;
 
     /** The game system name. */
     @Localizable
     @XmlAttribute( name = NAME_NAME, required = true )
-    private final String m_name;
+    private final String name_;
 
     /** The role list. */
     @XmlElement( name = XmlRoleUi.NAME_ROLE, required = true, type = XmlRoleUi.class )
     @XmlElementWrapper( name = NAME_ROLES, required = true )
-    private final List<XmlRoleUi> m_roleUis;
+    private final List<XmlRoleUi> roleUis_;
 
     // FIXME: @XmlElementWrapper is not behaving properly.  Even though
     // required is true, the schema still says that the wrapper element is
@@ -92,9 +92,9 @@ public final class XmlGameSystemUi
      */
     private XmlGameSystemUi()
     {
-        m_id = null;
-        m_name = null;
-        m_roleUis = new ArrayList<XmlRoleUi>();
+        id_ = null;
+        name_ = null;
+        roleUis_ = new ArrayList<XmlRoleUi>();
     }
 
 
@@ -120,9 +120,9 @@ public final class XmlGameSystemUi
         try
         {
             final GameSystemUiBuilder builder = new GameSystemUiBuilder();
-            builder.setId( m_id );
-            builder.setName( m_name );
-            for( final XmlRoleUi roleUi : m_roleUis )
+            builder.setId( id_ );
+            builder.setName( name_ );
+            for( final XmlRoleUi roleUi : roleUis_ )
             {
                 builder.addRole( roleUi.toRoleUi() );
             }

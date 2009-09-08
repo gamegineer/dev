@@ -40,7 +40,7 @@ public final class CommandHistoryExtensionTest
     // ======================================================================
 
     /** The command history extension under test in the fixture. */
-    private CommandHistoryExtension m_extension;
+    private CommandHistoryExtension extension_;
 
 
     // ======================================================================
@@ -71,7 +71,7 @@ public final class CommandHistoryExtensionTest
     public void setUp()
         throws Exception
     {
-        m_extension = new CommandHistoryExtension( createDummy( ICommandHistory.class ) );
+        extension_ = new CommandHistoryExtension( createDummy( ICommandHistory.class ) );
     }
 
     /**
@@ -84,7 +84,7 @@ public final class CommandHistoryExtensionTest
     public void tearDown()
         throws Exception
     {
-        m_extension = null;
+        extension_ = null;
     }
 
     /**
@@ -94,7 +94,7 @@ public final class CommandHistoryExtensionTest
     @Test( expected = IllegalStateException.class )
     public void testCanRedo_ExtensionNotStarted()
     {
-        m_extension.canRedo( createDummy( IEngineContext.class ) );
+        extension_.canRedo( createDummy( IEngineContext.class ) );
     }
 
     /**
@@ -104,7 +104,7 @@ public final class CommandHistoryExtensionTest
     @Test( expected = IllegalStateException.class )
     public void testCanUndo_ExtensionNotStarted()
     {
-        m_extension.canUndo( createDummy( IEngineContext.class ) );
+        extension_.canUndo( createDummy( IEngineContext.class ) );
     }
 
     /**
@@ -124,7 +124,7 @@ public final class CommandHistoryExtensionTest
     @Test( expected = IllegalStateException.class )
     public void testGetCommands_ExtensionNotStarted()
     {
-        m_extension.getCommands( createDummy( IEngineContext.class ) );
+        extension_.getCommands( createDummy( IEngineContext.class ) );
     }
 
     /**
@@ -138,7 +138,7 @@ public final class CommandHistoryExtensionTest
     public void testRedo_ExtensionNotStarted()
         throws Exception
     {
-        m_extension.redo( createDummy( IEngineContext.class ) );
+        extension_.redo( createDummy( IEngineContext.class ) );
     }
 
     /**
@@ -152,6 +152,6 @@ public final class CommandHistoryExtensionTest
     public void testUndo_ExtensionNotStarted()
         throws Exception
     {
-        m_extension.undo( createDummy( IEngineContext.class ) );
+        extension_.undo( createDummy( IEngineContext.class ) );
     }
 }

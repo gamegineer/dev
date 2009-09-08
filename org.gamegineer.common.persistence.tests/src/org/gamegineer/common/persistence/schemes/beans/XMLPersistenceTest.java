@@ -1,6 +1,6 @@
 /*
  * XMLPersistenceTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -49,10 +49,10 @@ public final class XMLPersistenceTest
      * The persistence delegate adapter factory for the non-persistable class
      * used in the fixture.
      */
-    private IAdapterFactory m_adapterFactory;
+    private IAdapterFactory adapterFactory_;
 
     /** The platform adapter manager. */
-    private IAdapterManager m_adapterManager;
+    private IAdapterManager adapterManager_;
 
 
     // ======================================================================
@@ -82,9 +82,9 @@ public final class XMLPersistenceTest
     public void setUp()
         throws Exception
     {
-        m_adapterManager = Services.getDefault().getAdapterManager();
-        m_adapterFactory = new MockNonPersistableClassPersistenceDelegate.AdapterFactory();
-        m_adapterManager.registerAdapters( m_adapterFactory, MockNonPersistableClass.class );
+        adapterManager_ = Services.getDefault().getAdapterManager();
+        adapterFactory_ = new MockNonPersistableClassPersistenceDelegate.AdapterFactory();
+        adapterManager_.registerAdapters( adapterFactory_, MockNonPersistableClass.class );
     }
 
     /**
@@ -97,9 +97,9 @@ public final class XMLPersistenceTest
     public void tearDown()
         throws Exception
     {
-        m_adapterManager.unregisterAdapters( m_adapterFactory );
-        m_adapterFactory = null;
-        m_adapterManager = null;
+        adapterManager_.unregisterAdapters( adapterFactory_ );
+        adapterFactory_ = null;
+        adapterManager_ = null;
     }
 
     /**

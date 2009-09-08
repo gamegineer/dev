@@ -45,13 +45,13 @@ public final class GameSystem
     // ======================================================================
 
     /** The game system identifier. */
-    private final String m_id;
+    private final String id_;
 
     /** The role list. */
-    private final List<IRole> m_roles;
+    private final List<IRole> roles_;
 
     /** The stage list. */
-    private final List<IStage> m_stages;
+    private final List<IStage> stages_;
 
 
     // ======================================================================
@@ -80,9 +80,9 @@ public final class GameSystem
         assert roles != null;
         assert stages != null;
 
-        m_id = id;
-        m_roles = new ArrayList<IRole>( roles );
-        m_stages = new ArrayList<IStage>( stages );
+        id_ = id;
+        roles_ = new ArrayList<IRole>( roles );
+        stages_ = new ArrayList<IStage>( stages );
     }
 
 
@@ -132,7 +132,7 @@ public final class GameSystem
      */
     public String getId()
     {
-        return m_id;
+        return id_;
     }
 
     /*
@@ -140,7 +140,7 @@ public final class GameSystem
      */
     public List<IRole> getRoles()
     {
-        return new ArrayList<IRole>( m_roles );
+        return new ArrayList<IRole>( roles_ );
     }
 
     /*
@@ -148,6 +148,6 @@ public final class GameSystem
      */
     public List<IStage> getStages()
     {
-        return new ArrayList<IStage>( m_stages );
+        return new ArrayList<IStage>( stages_ );
     }
 }

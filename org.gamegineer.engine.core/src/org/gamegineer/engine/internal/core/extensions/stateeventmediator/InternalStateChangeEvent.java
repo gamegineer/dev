@@ -33,7 +33,8 @@ import org.gamegineer.engine.core.extensions.stateeventmediator.StateChangeEvent
 
 /**
  * Implementation of
- * {@link org.gamegineer.engine.core.extensions.stateeventmediator.StateChangeEvent}.
+ * {@link org.gamegineer.engine.core.extensions.stateeventmediator.StateChangeEvent}
+ * .
  * 
  * <p>
  * This class is immutable.
@@ -50,8 +51,10 @@ final class InternalStateChangeEvent
     /** Serializable class version number. */
     private static final long serialVersionUID = -6050043500609095775L;
 
-    /** The state change event implementation to which all behavior is delegated. */
-    private final IStateChangeEvent m_delegate;
+    /**
+     * The state change event implementation to which all behavior is delegated.
+     */
+    private final IStateChangeEvent delegate_;
 
 
     // ======================================================================
@@ -74,7 +77,7 @@ final class InternalStateChangeEvent
     {
         super( delegate.getEngineContext() );
 
-        m_delegate = delegate;
+        delegate_ = delegate;
     }
 
 
@@ -89,8 +92,8 @@ final class InternalStateChangeEvent
      *        The context representing the engine that fired the event; must not
      *        be {@code null}.
      * @param attributeChanges
-     *        The collection of state attribute changes; must not be
-     *        {@code null}.
+     *        The collection of state attribute changes; must not be {@code
+     *        null}.
      * 
      * @return A new instance of the {@code InternalStateChangeEvent} class.
      * 
@@ -117,7 +120,7 @@ final class InternalStateChangeEvent
     public boolean containsAttributeChange(
         final AttributeName name )
     {
-        return m_delegate.containsAttributeChange( name );
+        return delegate_.containsAttributeChange( name );
     }
 
     /*
@@ -126,7 +129,7 @@ final class InternalStateChangeEvent
     public IAttributeChange getAttributeChange(
         final AttributeName name )
     {
-        return m_delegate.getAttributeChange( name );
+        return delegate_.getAttributeChange( name );
     }
 
     /*
@@ -134,7 +137,7 @@ final class InternalStateChangeEvent
      */
     public Collection<IAttributeChange> getAttributeChanges()
     {
-        return m_delegate.getAttributeChanges();
+        return delegate_.getAttributeChanges();
     }
 
     /*
@@ -142,6 +145,6 @@ final class InternalStateChangeEvent
      */
     public IEngineContext getEngineContext()
     {
-        return m_delegate.getEngineContext();
+        return delegate_.getEngineContext();
     }
 }

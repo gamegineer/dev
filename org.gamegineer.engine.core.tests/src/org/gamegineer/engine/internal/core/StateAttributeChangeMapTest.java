@@ -1,6 +1,6 @@
 /*
  * StateAttributeChangeMapTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -69,7 +69,7 @@ public final class StateAttributeChangeMapTest
     private static final String ATTR_VALUE_OLD_2 = "value2"; //$NON-NLS-1$
 
     /** The state under test in the fixture. */
-    private State m_state;
+    private State state_;
 
 
     // ======================================================================
@@ -100,13 +100,13 @@ public final class StateAttributeChangeMapTest
     public void setUp()
         throws Exception
     {
-        m_state = new State();
-        m_state.beginTransaction();
-        m_state.addAttribute( ATTR_NAME_1, ATTR_VALUE_OLD_1 );
-        m_state.addAttribute( ATTR_NAME_2, ATTR_VALUE_OLD_2 );
-        m_state.commitTransaction();
+        state_ = new State();
+        state_.beginTransaction();
+        state_.addAttribute( ATTR_NAME_1, ATTR_VALUE_OLD_1 );
+        state_.addAttribute( ATTR_NAME_2, ATTR_VALUE_OLD_2 );
+        state_.commitTransaction();
 
-        m_state.beginTransaction();
+        state_.beginTransaction();
     }
 
     /**
@@ -119,11 +119,11 @@ public final class StateAttributeChangeMapTest
     public void tearDown()
         throws Exception
     {
-        if( m_state.isTransactionActive() )
+        if( state_.isTransactionActive() )
         {
-            m_state.commitTransaction();
+            state_.commitTransaction();
         }
-        m_state = null;
+        state_ = null;
     }
 
     /**
@@ -132,8 +132,8 @@ public final class StateAttributeChangeMapTest
     @Test
     public void testAdd()
     {
-        m_state.addAttribute( ATTR_NAME_3, ATTR_VALUE_NEW_3 );
-        final Map<AttributeName, IAttributeChange> attributeChangeMap = m_state.getAttributeChanges();
+        state_.addAttribute( ATTR_NAME_3, ATTR_VALUE_NEW_3 );
+        final Map<AttributeName, IAttributeChange> attributeChangeMap = state_.getAttributeChanges();
         assertTrue( attributeChangeMap.containsKey( ATTR_NAME_3 ) );
         final IAttributeChange change = attributeChangeMap.get( ATTR_NAME_3 );
         assertFalse( change.hasOldValue() );
@@ -147,9 +147,9 @@ public final class StateAttributeChangeMapTest
     @Test
     public void testAdd_Remove()
     {
-        m_state.addAttribute( ATTR_NAME_3, ATTR_VALUE_NEW_3 );
-        m_state.removeAttribute( ATTR_NAME_3 );
-        assertFalse( m_state.getAttributeChanges().containsKey( ATTR_NAME_3 ) );
+        state_.addAttribute( ATTR_NAME_3, ATTR_VALUE_NEW_3 );
+        state_.removeAttribute( ATTR_NAME_3 );
+        assertFalse( state_.getAttributeChanges().containsKey( ATTR_NAME_3 ) );
     }
 
     /**
@@ -159,9 +159,9 @@ public final class StateAttributeChangeMapTest
     @Test
     public void testChange_Existing_Multiple_NewValue()
     {
-        m_state.setAttribute( ATTR_NAME_1, ATTR_VALUE_NEW_1 );
-        m_state.setAttribute( ATTR_NAME_2, ATTR_VALUE_NEW_2 );
-        final Map<AttributeName, IAttributeChange> attributeChangeMap = m_state.getAttributeChanges();
+        state_.setAttribute( ATTR_NAME_1, ATTR_VALUE_NEW_1 );
+        state_.setAttribute( ATTR_NAME_2, ATTR_VALUE_NEW_2 );
+        final Map<AttributeName, IAttributeChange> attributeChangeMap = state_.getAttributeChanges();
         assertTrue( attributeChangeMap.containsKey( ATTR_NAME_1 ) );
         final IAttributeChange change1 = attributeChangeMap.get( ATTR_NAME_1 );
         assertEquals( ATTR_VALUE_OLD_1, change1.getOldValue() );
@@ -179,8 +179,8 @@ public final class StateAttributeChangeMapTest
     @Test
     public void testChange_Existing_Single_NewValue()
     {
-        m_state.setAttribute( ATTR_NAME_2, ATTR_VALUE_NEW_2 );
-        final Map<AttributeName, IAttributeChange> attributeChangeMap = m_state.getAttributeChanges();
+        state_.setAttribute( ATTR_NAME_2, ATTR_VALUE_NEW_2 );
+        final Map<AttributeName, IAttributeChange> attributeChangeMap = state_.getAttributeChanges();
         assertTrue( attributeChangeMap.containsKey( ATTR_NAME_2 ) );
         final IAttributeChange change = attributeChangeMap.get( ATTR_NAME_2 );
         assertEquals( ATTR_VALUE_OLD_2, change.getOldValue() );
@@ -194,8 +194,8 @@ public final class StateAttributeChangeMapTest
     @Test
     public void testChange_Existing_Single_NewValue_NonNullToNull()
     {
-        m_state.setAttribute( ATTR_NAME_2, null );
-        final Map<AttributeName, IAttributeChange> attributeChangeMap = m_state.getAttributeChanges();
+        state_.setAttribute( ATTR_NAME_2, null );
+        final Map<AttributeName, IAttributeChange> attributeChangeMap = state_.getAttributeChanges();
         assertTrue( attributeChangeMap.containsKey( ATTR_NAME_2 ) );
         final IAttributeChange change = attributeChangeMap.get( ATTR_NAME_2 );
         assertEquals( ATTR_VALUE_OLD_2, change.getOldValue() );
@@ -209,8 +209,8 @@ public final class StateAttributeChangeMapTest
     @Test
     public void testChange_Existing_Single_NewValue_NullToNonNull()
     {
-        m_state.setAttribute( ATTR_NAME_1, ATTR_VALUE_NEW_1 );
-        final Map<AttributeName, IAttributeChange> attributeChangeMap = m_state.getAttributeChanges();
+        state_.setAttribute( ATTR_NAME_1, ATTR_VALUE_NEW_1 );
+        final Map<AttributeName, IAttributeChange> attributeChangeMap = state_.getAttributeChanges();
         assertTrue( attributeChangeMap.containsKey( ATTR_NAME_1 ) );
         final IAttributeChange change = attributeChangeMap.get( ATTR_NAME_1 );
         assertNull( change.getOldValue() );
@@ -225,8 +225,8 @@ public final class StateAttributeChangeMapTest
     public void testChange_Existing_Single_NewValue_NullToNull()
     {
         assertNull( ATTR_VALUE_OLD_1 );
-        m_state.setAttribute( ATTR_NAME_1, ATTR_VALUE_OLD_1 );
-        assertFalse( m_state.getAttributeChanges().containsKey( ATTR_NAME_1 ) );
+        state_.setAttribute( ATTR_NAME_1, ATTR_VALUE_OLD_1 );
+        assertFalse( state_.getAttributeChanges().containsKey( ATTR_NAME_1 ) );
     }
 
     /**
@@ -236,8 +236,8 @@ public final class StateAttributeChangeMapTest
     @Test
     public void testChange_Existing_Single_OldValue()
     {
-        m_state.setAttribute( ATTR_NAME_2, ATTR_VALUE_OLD_2 );
-        assertFalse( m_state.getAttributeChanges().containsKey( ATTR_NAME_2 ) );
+        state_.setAttribute( ATTR_NAME_2, ATTR_VALUE_OLD_2 );
+        assertFalse( state_.getAttributeChanges().containsKey( ATTR_NAME_2 ) );
     }
 
     /**
@@ -247,9 +247,9 @@ public final class StateAttributeChangeMapTest
     @Test
     public void testRemove_Existing_Add_NewValue()
     {
-        m_state.removeAttribute( ATTR_NAME_1 );
-        m_state.addAttribute( ATTR_NAME_1, ATTR_VALUE_NEW_1 );
-        final Map<AttributeName, IAttributeChange> attributeChangeMap = m_state.getAttributeChanges();
+        state_.removeAttribute( ATTR_NAME_1 );
+        state_.addAttribute( ATTR_NAME_1, ATTR_VALUE_NEW_1 );
+        final Map<AttributeName, IAttributeChange> attributeChangeMap = state_.getAttributeChanges();
         assertTrue( attributeChangeMap.containsKey( ATTR_NAME_1 ) );
         final IAttributeChange change = attributeChangeMap.get( ATTR_NAME_1 );
         assertEquals( ATTR_VALUE_OLD_1, change.getOldValue() );
@@ -263,9 +263,9 @@ public final class StateAttributeChangeMapTest
     @Test
     public void testRemove_Existing_Add_OldValue()
     {
-        m_state.removeAttribute( ATTR_NAME_1 );
-        m_state.addAttribute( ATTR_NAME_1, ATTR_VALUE_OLD_1 );
-        assertFalse( m_state.getAttributeChanges().containsKey( ATTR_NAME_1 ) );
+        state_.removeAttribute( ATTR_NAME_1 );
+        state_.addAttribute( ATTR_NAME_1, ATTR_VALUE_OLD_1 );
+        assertFalse( state_.getAttributeChanges().containsKey( ATTR_NAME_1 ) );
     }
 
     /**
@@ -275,9 +275,9 @@ public final class StateAttributeChangeMapTest
     @Test
     public void testRemove_Existing_Multiple()
     {
-        m_state.removeAttribute( ATTR_NAME_1 );
-        m_state.removeAttribute( ATTR_NAME_2 );
-        final Map<AttributeName, IAttributeChange> attributeChangeMap = m_state.getAttributeChanges();
+        state_.removeAttribute( ATTR_NAME_1 );
+        state_.removeAttribute( ATTR_NAME_2 );
+        final Map<AttributeName, IAttributeChange> attributeChangeMap = state_.getAttributeChanges();
         assertTrue( attributeChangeMap.containsKey( ATTR_NAME_1 ) );
         final IAttributeChange change1 = attributeChangeMap.get( ATTR_NAME_1 );
         assertEquals( ATTR_VALUE_OLD_1, change1.getOldValue() );
@@ -295,8 +295,8 @@ public final class StateAttributeChangeMapTest
     @Test
     public void testRemove_Existing_Single()
     {
-        m_state.removeAttribute( ATTR_NAME_2 );
-        final Map<AttributeName, IAttributeChange> attributeChangeMap = m_state.getAttributeChanges();
+        state_.removeAttribute( ATTR_NAME_2 );
+        final Map<AttributeName, IAttributeChange> attributeChangeMap = state_.getAttributeChanges();
         assertTrue( attributeChangeMap.containsKey( ATTR_NAME_2 ) );
         final IAttributeChange change = attributeChangeMap.get( ATTR_NAME_2 );
         assertEquals( ATTR_VALUE_OLD_2, change.getOldValue() );

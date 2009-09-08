@@ -41,7 +41,7 @@ public final class CommandContextBuilderTest
     // ======================================================================
 
     /** The command context builder under test in the fixture. */
-    private CommandContextBuilder m_builder;
+    private CommandContextBuilder builder_;
 
 
     // ======================================================================
@@ -87,7 +87,7 @@ public final class CommandContextBuilderTest
     public void setUp()
         throws Exception
     {
-        m_builder = new CommandContextBuilder();
+        builder_ = new CommandContextBuilder();
     }
 
     /**
@@ -100,7 +100,7 @@ public final class CommandContextBuilderTest
     public void tearDown()
         throws Exception
     {
-        m_builder = null;
+        builder_ = null;
     }
 
     /**
@@ -114,10 +114,10 @@ public final class CommandContextBuilderTest
 
         for( final Map.Entry<String, Object> entry : expectedAttributes.entrySet() )
         {
-            m_builder.addAttribute( entry.getKey(), entry.getValue() );
+            builder_.addAttribute( entry.getKey(), entry.getValue() );
         }
 
-        final ICommandContext context = m_builder.toCommandContext();
+        final ICommandContext context = builder_.toCommandContext();
         for( final Map.Entry<String, Object> entry : expectedAttributes.entrySet() )
         {
             assertEquals( entry.getValue(), context.getAttribute( entry.getKey() ) );
@@ -133,9 +133,9 @@ public final class CommandContextBuilderTest
     {
         final String name = "name"; //$NON-NLS-1$
         final Object value = new Object();
-        m_builder.addAttribute( name, value );
+        builder_.addAttribute( name, value );
 
-        m_builder.addAttribute( name, value );
+        builder_.addAttribute( name, value );
     }
 
     /**
@@ -145,7 +145,7 @@ public final class CommandContextBuilderTest
     @Test( expected = NullPointerException.class )
     public void testAddAttribute_Name_Null()
     {
-        m_builder.addAttribute( null, new Object() );
+        builder_.addAttribute( null, new Object() );
     }
 
     /**
@@ -155,7 +155,7 @@ public final class CommandContextBuilderTest
     @Test( expected = NullPointerException.class )
     public void testAddAttribute_Value_Null()
     {
-        m_builder.addAttribute( "name", null ); //$NON-NLS-1$
+        builder_.addAttribute( "name", null ); //$NON-NLS-1$
     }
 
     /**
@@ -165,6 +165,6 @@ public final class CommandContextBuilderTest
     @Test
     public void testAddAttribute_ReturnValue_SameBuilder()
     {
-        assertSame( m_builder, m_builder.addAttribute( "name", new Object() ) ); //$NON-NLS-1$
+        assertSame( builder_, builder_.addAttribute( "name", new Object() ) ); //$NON-NLS-1$
     }
 }

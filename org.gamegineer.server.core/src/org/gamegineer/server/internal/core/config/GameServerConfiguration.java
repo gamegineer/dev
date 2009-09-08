@@ -43,10 +43,10 @@ public final class GameServerConfiguration
     // ======================================================================
 
     /** The game system source. */
-    private final IGameSystemSource m_gameSystemSource;
+    private final IGameSystemSource gameSystemSource_;
 
     /** The server name. */
-    private final String m_name;
+    private final String name_;
 
 
     // ======================================================================
@@ -70,8 +70,8 @@ public final class GameServerConfiguration
         assert name != null;
         assert gameSystemSource != null;
 
-        m_name = name;
-        m_gameSystemSource = gameSystemSource;
+        name_ = name;
+        gameSystemSource_ = gameSystemSource;
     }
 
 
@@ -115,7 +115,7 @@ public final class GameServerConfiguration
      */
     public IGameSystemSource getGameSystemSource()
     {
-        return m_gameSystemSource;
+        return gameSystemSource_;
     }
 
     /*
@@ -123,6 +123,6 @@ public final class GameServerConfiguration
      */
     public String getName()
     {
-        return m_name;
+        return name_;
     }
 }

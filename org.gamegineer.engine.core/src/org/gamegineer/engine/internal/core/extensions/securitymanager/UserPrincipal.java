@@ -41,7 +41,7 @@ public final class UserPrincipal
     // ======================================================================
 
     /** The user name. */
-    private final String m_name;
+    private final String name_;
 
 
     // ======================================================================
@@ -63,7 +63,7 @@ public final class UserPrincipal
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        m_name = name;
+        name_ = name;
     }
 
 
@@ -89,7 +89,7 @@ public final class UserPrincipal
         }
 
         final UserPrincipal other = (UserPrincipal)obj;
-        return m_name.equals( other.m_name );
+        return name_.equals( other.name_ );
     }
 
     /*
@@ -97,7 +97,7 @@ public final class UserPrincipal
      */
     public String getName()
     {
-        return m_name;
+        return name_;
     }
 
     /*
@@ -107,7 +107,7 @@ public final class UserPrincipal
     public int hashCode()
     {
         int result = 17;
-        result = result * 31 + m_name.hashCode();
+        result = result * 31 + name_.hashCode();
         return result;
     }
 }

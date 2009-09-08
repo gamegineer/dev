@@ -54,18 +54,18 @@ public final class LocalGameServerConnection
     // ======================================================================
 
     /** The local game server. */
-    @GuardedBy( "m_lock" )
-    private IGameServer m_gameServer;
+    @GuardedBy( "lock_" )
+    private IGameServer gameServer_;
 
     /** The instance lock. */
-    private final Object m_lock;
+    private final Object lock_;
 
     /** The connection state. */
-    @GuardedBy( "m_lock" )
-    private State m_state;
+    @GuardedBy( "lock_" )
+    private State state_;
 
     /** The user principal associated with the connection. */
-    private final Principal m_userPrincipal;
+    private final Principal userPrincipal_;
 
 
     // ======================================================================
@@ -94,10 +94,10 @@ public final class LocalGameServerConnection
         assertArgumentNotNull( gameServer, "gameServer" ); //$NON-NLS-1$
         assertArgumentNotNull( userPrincipal, "userPrincipal" ); //$NON-NLS-1$
 
-        m_lock = new Object();
-        m_state = State.PRISTINE;
-        m_gameServer = createGameServerProxy( gameServer );
-        m_userPrincipal = userPrincipal;
+        lock_ = new Object();
+        state_ = State.PRISTINE;
+        gameServer_ = createGameServerProxy( gameServer );
+        userPrincipal_ = userPrincipal;
     }
 
 
@@ -110,17 +110,17 @@ public final class LocalGameServerConnection
      */
     public void close()
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
             ThreadPrincipals.clearUserPrincipal();
-            m_state = State.CLOSED;
-            m_gameServer = null;
+            state_ = State.CLOSED;
+            gameServer_ = null;
         }
     }
 
     /**
-     * Creates a proxy for the specified game server that throws a
-     * {@code RemoteException} if any game server method is invoked while this
+     * Creates a proxy for the specified game server that throws a {@code
+     * RemoteException} if any game server method is invoked while this
      * connection is not open.
      * 
      * @param gameServer
@@ -149,9 +149,9 @@ public final class LocalGameServerConnection
                 final Object[] args )
                 throws Throwable
             {
-                synchronized( m_lock )
+                synchronized( lock_ )
                 {
-                    if( m_state != State.OPEN )
+                    if( state_ != State.OPEN )
                     {
                         throw new RemoteException( Messages.LocalGameServerConnection_createGameServerProxy_connectionNotOpen );
                     }
@@ -175,11 +175,11 @@ public final class LocalGameServerConnection
      */
     public IGameServer getGameServer()
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            assertStateLegal( m_state == State.OPEN, Messages.LocalGameServerConnection_getGameServer_connectionNotOpen );
+            assertStateLegal( state_ == State.OPEN, Messages.LocalGameServerConnection_getGameServer_connectionNotOpen );
 
-            return m_gameServer;
+            return gameServer_;
         }
     }
 
@@ -196,7 +196,7 @@ public final class LocalGameServerConnection
      */
     public Principal getUserPrincipal()
     {
-        return m_userPrincipal;
+        return userPrincipal_;
     }
 
     /*
@@ -205,15 +205,15 @@ public final class LocalGameServerConnection
     public void open()
         throws IOException
     {
-        synchronized( m_lock )
+        synchronized( lock_ )
         {
-            if( m_state == State.CLOSED )
+            if( state_ == State.CLOSED )
             {
                 throw new IOException( Messages.LocalGameServerConnection_open_connectionClosed );
             }
 
-            ThreadPrincipals.setUserPrincipal( m_userPrincipal );
-            m_state = State.OPEN;
+            ThreadPrincipals.setUserPrincipal( userPrincipal_ );
+            state_ = State.OPEN;
         }
     }
 

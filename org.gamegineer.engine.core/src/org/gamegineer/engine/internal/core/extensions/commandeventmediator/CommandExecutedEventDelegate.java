@@ -48,10 +48,10 @@ final class CommandExecutedEventDelegate
     // ======================================================================
 
     /** The exception thrown by the command during a failed execution. */
-    private final Exception m_exception;
+    private final Exception exception_;
 
     /** The result returned by the command after a successful execution. */
-    private final Object m_result;
+    private final Object result_;
 
 
     // ======================================================================
@@ -84,8 +84,8 @@ final class CommandExecutedEventDelegate
     {
         super( context, command );
 
-        m_result = result;
-        m_exception = exception;
+        result_ = result;
+        exception_ = exception;
     }
 
 
@@ -102,8 +102,8 @@ final class CommandExecutedEventDelegate
      * @param command
      *        The command associated with the event; must not be {@code null}.
      * @param exception
-     *        The exception thrown during command execution; must not be
-     *        {@code null}.
+     *        The exception thrown during command execution; must not be {@code
+     *        null}.
      * 
      * @return A new instance of the {@code CommandExecutedEventDelegate} class
      *         for a failed command execution.
@@ -151,9 +151,9 @@ final class CommandExecutedEventDelegate
      */
     public Exception getException()
     {
-        assertStateLegal( m_exception != null, Messages.CommandExecutedEventDelegate_getException_noException );
+        assertStateLegal( exception_ != null, Messages.CommandExecutedEventDelegate_getException_noException );
 
-        return m_exception;
+        return exception_;
     }
 
     /*
@@ -161,9 +161,9 @@ final class CommandExecutedEventDelegate
      */
     public Object getResult()
     {
-        assertStateLegal( m_exception == null, Messages.CommandExecutedEventDelegate_getResult_noResult );
+        assertStateLegal( exception_ == null, Messages.CommandExecutedEventDelegate_getResult_noResult );
 
-        return m_result;
+        return result_;
     }
 
     /*
@@ -171,6 +171,6 @@ final class CommandExecutedEventDelegate
      */
     public boolean hasException()
     {
-        return m_exception != null;
+        return exception_ != null;
     }
 }

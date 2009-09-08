@@ -1,6 +1,6 @@
 /*
  * FrameworkLogHandler.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -57,7 +57,7 @@ public class FrameworkLogHandler
     // ======================================================================
 
     /** The hard-coded formatter used by the handler. */
-    private final Formatter m_formatter;
+    private final Formatter formatter_;
 
 
     // ======================================================================
@@ -69,7 +69,7 @@ public class FrameworkLogHandler
      */
     public FrameworkLogHandler()
     {
-        m_formatter = new FrameworkLogFormatter();
+        formatter_ = new FrameworkLogFormatter();
 
         setFilter( null );
         setLevel( Level.INFO );
@@ -146,7 +146,7 @@ public class FrameworkLogHandler
         final String message;
         try
         {
-            message = m_formatter.format( record );
+            message = formatter_.format( record );
         }
         catch( final Exception e )
         {

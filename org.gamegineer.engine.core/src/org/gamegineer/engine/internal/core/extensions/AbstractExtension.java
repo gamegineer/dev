@@ -56,10 +56,10 @@ public abstract class AbstractExtension
      * from a thread that currently has acquired the engine writer lock.
      * </p>
      */
-    private final AtomicBoolean m_isStarted;
+    private final AtomicBoolean isStarted_;
 
     /** The type of this extension. */
-    private final Class<?> m_type;
+    private final Class<?> type_;
 
 
     // ======================================================================
@@ -81,8 +81,8 @@ public abstract class AbstractExtension
     {
         assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
 
-        m_isStarted = new AtomicBoolean( false );
-        m_type = type;
+        isStarted_ = new AtomicBoolean( false );
+        type_ = type;
     }
 
 
@@ -98,7 +98,7 @@ public abstract class AbstractExtension
      */
     protected final void assertExtensionStarted()
     {
-        assertStateLegal( m_isStarted.get(), Messages.AbstractExtension_extension_notStarted );
+        assertStateLegal( isStarted_.get(), Messages.AbstractExtension_extension_notStarted );
     }
 
     /**
@@ -132,7 +132,7 @@ public abstract class AbstractExtension
      */
     public final Class<?> getExtensionType()
     {
-        return m_type;
+        return type_;
     }
 
     /*
@@ -144,7 +144,7 @@ public abstract class AbstractExtension
         throws EngineException
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
-        assertStateLegal( m_isStarted.compareAndSet( false, true ), Messages.AbstractExtension_extension_alreadyStarted );
+        assertStateLegal( isStarted_.compareAndSet( false, true ), Messages.AbstractExtension_extension_alreadyStarted );
     }
 
     /*
@@ -156,6 +156,6 @@ public abstract class AbstractExtension
         throws EngineException
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
-        assertStateLegal( m_isStarted.compareAndSet( true, false ), Messages.AbstractExtension_extension_notStarted );
+        assertStateLegal( isStarted_.compareAndSet( true, false ), Messages.AbstractExtension_extension_notStarted );
     }
 }

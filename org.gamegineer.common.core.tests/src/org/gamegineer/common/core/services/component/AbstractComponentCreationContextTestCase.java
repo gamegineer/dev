@@ -44,7 +44,7 @@ public abstract class AbstractComponentCreationContextTestCase
     // ======================================================================
 
     /** The component creation context under test in the fixture. */
-    private IComponentCreationContext m_context;
+    private IComponentCreationContext context_;
 
 
     // ======================================================================
@@ -52,8 +52,8 @@ public abstract class AbstractComponentCreationContextTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractComponentCreationContextTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractComponentCreationContextTestCase} class.
      */
     protected AbstractComponentCreationContextTestCase()
     {
@@ -101,8 +101,8 @@ public abstract class AbstractComponentCreationContextTestCase
         attributeMap.put( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
         attributeMap.put( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
         attributeMap.put( "name4", "value4" ); //$NON-NLS-1$ //$NON-NLS-2$
-        m_context = createComponentCreationContext( attributeMap );
-        assertNotNull( m_context );
+        context_ = createComponentCreationContext( attributeMap );
+        assertNotNull( context_ );
     }
 
     /**
@@ -115,7 +115,7 @@ public abstract class AbstractComponentCreationContextTestCase
     public void tearDown()
         throws Exception
     {
-        m_context = null;
+        context_ = null;
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class AbstractComponentCreationContextTestCase
     @Test
     public void testContainsAttribute_Attribute_Absent()
     {
-        assertFalse( m_context.containsAttribute( "unknown_name" ) ); //$NON-NLS-1$
+        assertFalse( context_.containsAttribute( "unknown_name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -135,7 +135,7 @@ public abstract class AbstractComponentCreationContextTestCase
     @Test
     public void testContainsAttribute_Attribute_Present()
     {
-        assertTrue( m_context.containsAttribute( "name1" ) ); //$NON-NLS-1$
+        assertTrue( context_.containsAttribute( "name1" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -145,7 +145,7 @@ public abstract class AbstractComponentCreationContextTestCase
     @Test( expected = NullPointerException.class )
     public void testContainsAttribute_Name_Null()
     {
-        m_context.containsAttribute( null );
+        context_.containsAttribute( null );
     }
 
     /**
@@ -155,7 +155,7 @@ public abstract class AbstractComponentCreationContextTestCase
     @Test
     public void testGetAttribute_Attribute_Absent()
     {
-        assertNull( m_context.getAttribute( "unknown_name" ) ); //$NON-NLS-1$
+        assertNull( context_.getAttribute( "unknown_name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -165,7 +165,7 @@ public abstract class AbstractComponentCreationContextTestCase
     @Test
     public void testGetAttribute_Attribute_Present()
     {
-        assertEquals( "value1", m_context.getAttribute( "name1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals( "value1", context_.getAttribute( "name1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -175,6 +175,6 @@ public abstract class AbstractComponentCreationContextTestCase
     @Test( expected = NullPointerException.class )
     public void testGetAttribute_Name_Null()
     {
-        m_context.getAttribute( null );
+        context_.getAttribute( null );
     }
 }

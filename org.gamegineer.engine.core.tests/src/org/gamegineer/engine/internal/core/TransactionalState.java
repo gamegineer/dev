@@ -1,6 +1,6 @@
 /*
  * TransactionalState.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -37,7 +37,7 @@ final class TransactionalState
     // ======================================================================
 
     /** The state being decorated. */
-    private final State m_state;
+    private final State state_;
 
 
     // ======================================================================
@@ -56,7 +56,7 @@ final class TransactionalState
     {
         assert state != null;
 
-        m_state = state;
+        state_ = state;
     }
 
 
@@ -73,15 +73,15 @@ final class TransactionalState
     {
         try
         {
-            m_state.beginTransaction();
-            m_state.addAttribute( name, value );
-            m_state.commitTransaction();
+            state_.beginTransaction();
+            state_.addAttribute( name, value );
+            state_.commitTransaction();
         }
         finally
         {
-            if( m_state.isTransactionActive() )
+            if( state_.isTransactionActive() )
             {
-                m_state.rollbackTransaction();
+                state_.rollbackTransaction();
             }
         }
     }
@@ -92,7 +92,7 @@ final class TransactionalState
     public boolean containsAttribute(
         final AttributeName name )
     {
-        return m_state.containsAttribute( name );
+        return state_.containsAttribute( name );
     }
 
     /*
@@ -101,7 +101,7 @@ final class TransactionalState
     public Object getAttribute(
         final AttributeName name )
     {
-        return m_state.getAttribute( name );
+        return state_.getAttribute( name );
     }
 
     /*
@@ -109,7 +109,7 @@ final class TransactionalState
      */
     public Set<AttributeName> getAttributeNames()
     {
-        return m_state.getAttributeNames();
+        return state_.getAttributeNames();
     }
 
     /*
@@ -120,15 +120,15 @@ final class TransactionalState
     {
         try
         {
-            m_state.beginTransaction();
-            m_state.removeAttribute( name );
-            m_state.commitTransaction();
+            state_.beginTransaction();
+            state_.removeAttribute( name );
+            state_.commitTransaction();
         }
         finally
         {
-            if( m_state.isTransactionActive() )
+            if( state_.isTransactionActive() )
             {
-                m_state.rollbackTransaction();
+                state_.rollbackTransaction();
             }
         }
     }
@@ -142,15 +142,15 @@ final class TransactionalState
     {
         try
         {
-            m_state.beginTransaction();
-            m_state.setAttribute( name, value );
-            m_state.commitTransaction();
+            state_.beginTransaction();
+            state_.setAttribute( name, value );
+            state_.commitTransaction();
         }
         finally
         {
-            if( m_state.isTransactionActive() )
+            if( state_.isTransactionActive() )
             {
-                m_state.rollbackTransaction();
+                state_.rollbackTransaction();
             }
         }
     }

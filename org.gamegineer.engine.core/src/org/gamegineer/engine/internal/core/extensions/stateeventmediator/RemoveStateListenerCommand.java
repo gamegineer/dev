@@ -48,7 +48,7 @@ public final class RemoveStateListenerCommand
     // ======================================================================
 
     /** The state listener to remove. */
-    private final IStateListener m_listener;
+    private final IStateListener listener_;
 
 
     // ======================================================================
@@ -71,7 +71,7 @@ public final class RemoveStateListenerCommand
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
 
-        m_listener = listener;
+        listener_ = listener;
     }
 
 
@@ -94,7 +94,7 @@ public final class RemoveStateListenerCommand
             throw new EngineException( Messages.Common_stateEventMediatorExtension_unavailable );
         }
 
-        mediator.removeStateListener( context, m_listener );
+        mediator.removeStateListener( context, listener_ );
 
         return null;
     }
@@ -104,6 +104,6 @@ public final class RemoveStateListenerCommand
      */
     public IInvertibleCommand<Void> getInverseCommand()
     {
-        return new AddStateListenerCommand( m_listener );
+        return new AddStateListenerCommand( listener_ );
     }
 }

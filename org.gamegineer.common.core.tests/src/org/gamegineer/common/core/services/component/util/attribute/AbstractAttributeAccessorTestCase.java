@@ -1,6 +1,6 @@
 /*
  * AbstractAttributeAccessorTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -43,7 +43,7 @@ public abstract class AbstractAttributeAccessorTestCase
     // ======================================================================
 
     /** The attribute accessor under test in the fixture. */
-    private IAttributeAccessor m_accessor;
+    private IAttributeAccessor accessor_;
 
 
     // ======================================================================
@@ -51,8 +51,8 @@ public abstract class AbstractAttributeAccessorTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractAttributeAccessorTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractAttributeAccessorTestCase} class.
      */
     protected AbstractAttributeAccessorTestCase()
     {
@@ -97,8 +97,8 @@ public abstract class AbstractAttributeAccessorTestCase
         attributeMap.put( "name2", "value2" ); //$NON-NLS-1$ //$NON-NLS-2$
         attributeMap.put( "name3", "value3" ); //$NON-NLS-1$ //$NON-NLS-2$
         attributeMap.put( "name4", "value4" ); //$NON-NLS-1$ //$NON-NLS-2$
-        m_accessor = createAttributeAccessor( attributeMap );
-        assertNotNull( m_accessor );
+        accessor_ = createAttributeAccessor( attributeMap );
+        assertNotNull( accessor_ );
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class AbstractAttributeAccessorTestCase
     public void tearDown()
         throws Exception
     {
-        m_accessor = null;
+        accessor_ = null;
     }
 
     /**
@@ -121,7 +121,7 @@ public abstract class AbstractAttributeAccessorTestCase
     @Test
     public void testContainsAttribute_Attribute_Absent()
     {
-        assertFalse( m_accessor.containsAttribute( "unknown_name" ) ); //$NON-NLS-1$
+        assertFalse( accessor_.containsAttribute( "unknown_name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -131,7 +131,7 @@ public abstract class AbstractAttributeAccessorTestCase
     @Test
     public void testContainsAttribute_Attribute_Present()
     {
-        assertTrue( m_accessor.containsAttribute( "name1" ) ); //$NON-NLS-1$
+        assertTrue( accessor_.containsAttribute( "name1" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -141,7 +141,7 @@ public abstract class AbstractAttributeAccessorTestCase
     @Test( expected = NullPointerException.class )
     public void testContainsAttribute_Name_Null()
     {
-        m_accessor.containsAttribute( null );
+        accessor_.containsAttribute( null );
     }
 
     /**
@@ -151,7 +151,7 @@ public abstract class AbstractAttributeAccessorTestCase
     @Test
     public void testGetAttribute_Attribute_Absent()
     {
-        assertNull( m_accessor.getAttribute( "unknown_name" ) ); //$NON-NLS-1$ 
+        assertNull( accessor_.getAttribute( "unknown_name" ) ); //$NON-NLS-1$ 
     }
 
     /**
@@ -161,7 +161,7 @@ public abstract class AbstractAttributeAccessorTestCase
     @Test
     public void testGetAttribute_Attribute_Present()
     {
-        m_accessor.getAttribute( "name1" ); //$NON-NLS-1$
+        accessor_.getAttribute( "name1" ); //$NON-NLS-1$
     }
 
     /**
@@ -171,6 +171,6 @@ public abstract class AbstractAttributeAccessorTestCase
     @Test( expected = NullPointerException.class )
     public void testGetAttribute_Name_Null()
     {
-        m_accessor.getAttribute( null );
+        accessor_.getAttribute( null );
     }
 }

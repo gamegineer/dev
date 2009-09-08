@@ -44,7 +44,7 @@ public final class CommandListenersAttributeTest
     // ======================================================================
 
     /** The attribute under test in the fixture. */
-    private IAttribute<List<ICommandListener>> m_attribute;
+    private IAttribute<List<ICommandListener>> attribute_;
 
 
     // ======================================================================
@@ -75,7 +75,7 @@ public final class CommandListenersAttributeTest
     public void setUp()
         throws Exception
     {
-        m_attribute = CommandEventMediatorExtensionFacade.COMMAND_LISTENERS_ATTRIBUTE();
+        attribute_ = CommandEventMediatorExtensionFacade.COMMAND_LISTENERS_ATTRIBUTE();
     }
 
     /**
@@ -88,7 +88,7 @@ public final class CommandListenersAttributeTest
     public void tearDown()
         throws Exception
     {
-        m_attribute = null;
+        attribute_ = null;
     }
 
     /**
@@ -100,9 +100,9 @@ public final class CommandListenersAttributeTest
     {
         final IState state = new FakeState();
 
-        m_attribute.add( state, new ArrayList<ICommandListener>() );
+        attribute_.add( state, new ArrayList<ICommandListener>() );
 
-        assertImmutableCollection( m_attribute.getValue( state ) );
+        assertImmutableCollection( attribute_.getValue( state ) );
     }
 
     /**
@@ -113,10 +113,10 @@ public final class CommandListenersAttributeTest
     public void testSetValue_Value_Immutable()
     {
         final IState state = new FakeState();
-        m_attribute.add( state, new ArrayList<ICommandListener>() );
+        attribute_.add( state, new ArrayList<ICommandListener>() );
 
-        m_attribute.setValue( state, new ArrayList<ICommandListener>() );
+        attribute_.setValue( state, new ArrayList<ICommandListener>() );
 
-        assertImmutableCollection( m_attribute.getValue( state ) );
+        assertImmutableCollection( attribute_.getValue( state ) );
     }
 }

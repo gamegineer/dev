@@ -49,16 +49,16 @@ public final class GameConfigurationBuilder
     // ======================================================================
 
     /** The game identifier. */
-    private String m_id;
+    private String id_;
 
     /** The game name. */
-    private String m_name;
+    private String name_;
 
     /** The player configuration list. */
-    private final List<IPlayerConfiguration> m_playerConfigs;
+    private final List<IPlayerConfiguration> playerConfigs_;
 
     /** The game system. */
-    private IGameSystem m_system;
+    private IGameSystem system_;
 
 
     // ======================================================================
@@ -71,10 +71,10 @@ public final class GameConfigurationBuilder
      */
     public GameConfigurationBuilder()
     {
-        m_id = null;
-        m_name = null;
-        m_playerConfigs = new ArrayList<IPlayerConfiguration>();
-        m_system = null;
+        id_ = null;
+        name_ = null;
+        playerConfigs_ = new ArrayList<IPlayerConfiguration>();
+        system_ = null;
     }
 
 
@@ -100,7 +100,7 @@ public final class GameConfigurationBuilder
     {
         assertArgumentNotNull( playerConfig, "playerConfig" ); //$NON-NLS-1$
 
-        m_playerConfigs.add( playerConfig );
+        playerConfigs_.add( playerConfig );
 
         return this;
     }
@@ -123,7 +123,7 @@ public final class GameConfigurationBuilder
     {
         assertArgumentNotNull( playerConfigs, "playerConfigs" ); //$NON-NLS-1$
 
-        m_playerConfigs.addAll( playerConfigs );
+        playerConfigs_.addAll( playerConfigs );
 
         return this;
     }
@@ -131,13 +131,13 @@ public final class GameConfigurationBuilder
     /**
      * Gets an immutable view of the player configuration list.
      * 
-     * @return An immutable view of the player configuration list; never
-     *         {@code null}.
+     * @return An immutable view of the player configuration list; never {@code
+     *         null}.
      */
     /* @NonNull */
     List<IPlayerConfiguration> getPlayers()
     {
-        return Collections.unmodifiableList( m_playerConfigs );
+        return Collections.unmodifiableList( playerConfigs_ );
     }
 
     /**
@@ -148,7 +148,7 @@ public final class GameConfigurationBuilder
     /* @Nullable */
     IGameSystem getSystem()
     {
-        return m_system;
+        return system_;
     }
 
     /**
@@ -169,7 +169,7 @@ public final class GameConfigurationBuilder
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
-        m_id = id;
+        id_ = id;
 
         return this;
     }
@@ -192,7 +192,7 @@ public final class GameConfigurationBuilder
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        m_name = name;
+        name_ = name;
 
         return this;
     }
@@ -215,7 +215,7 @@ public final class GameConfigurationBuilder
     {
         assertArgumentNotNull( system, "system" ); //$NON-NLS-1$
 
-        m_system = system;
+        system_ = system;
 
         return this;
     }
@@ -233,13 +233,13 @@ public final class GameConfigurationBuilder
     /* @NonNull */
     public IGameConfiguration toGameConfiguration()
     {
-        assertStateLegal( m_id != null, Messages.GameConfigurationBuilder_id_notSet );
-        assertStateLegal( m_name != null, Messages.GameConfigurationBuilder_name_notSet );
-        assertStateLegal( m_system != null, Messages.GameConfigurationBuilder_system_notSet );
+        assertStateLegal( id_ != null, Messages.GameConfigurationBuilder_id_notSet );
+        assertStateLegal( name_ != null, Messages.GameConfigurationBuilder_name_notSet );
+        assertStateLegal( system_ != null, Messages.GameConfigurationBuilder_system_notSet );
 
         try
         {
-            return GameConfiguration.createGameConfiguration( m_id, m_name, m_system, m_playerConfigs );
+            return GameConfiguration.createGameConfiguration( id_, name_, system_, playerConfigs_ );
         }
         catch( final IllegalArgumentException e )
         {

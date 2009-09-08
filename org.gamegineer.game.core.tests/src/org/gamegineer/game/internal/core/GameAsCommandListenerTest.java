@@ -1,6 +1,6 @@
 /*
  * GameAsCommandListenerTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,7 +41,7 @@ public final class GameAsCommandListenerTest
     // ======================================================================
 
     /** The game under test in the fixture. */
-    private Game m_game;
+    private Game game_;
 
 
     // ======================================================================
@@ -69,7 +69,7 @@ public final class GameAsCommandListenerTest
     protected ICommandListener createCommandListener()
         throws Exception
     {
-        return m_game;
+        return game_;
     }
 
     /*
@@ -80,7 +80,7 @@ public final class GameAsCommandListenerTest
     public void setUp()
         throws Exception
     {
-        m_game = Game.createGame( Configurations.createMinimalGameConfiguration() );
+        game_ = Game.createGame( Configurations.createMinimalGameConfiguration() );
 
         super.setUp();
     }
@@ -95,7 +95,7 @@ public final class GameAsCommandListenerTest
     {
         super.tearDown();
 
-        m_game.shutdown();
-        m_game = null;
+        game_.shutdown();
+        game_ = null;
     }
 }

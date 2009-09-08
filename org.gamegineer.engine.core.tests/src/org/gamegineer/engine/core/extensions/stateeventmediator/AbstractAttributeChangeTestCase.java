@@ -1,6 +1,6 @@
 /*
  * AbstractAttributeChangeTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -50,7 +50,7 @@ public abstract class AbstractAttributeChangeTestCase
     private static final Object ATTR_VALUE_OLD = "value_old"; //$NON-NLS-1$
 
     /** The attribute change under test in the fixture. */
-    private IAttributeChange m_change;
+    private IAttributeChange change_;
 
 
     // ======================================================================
@@ -88,8 +88,8 @@ public abstract class AbstractAttributeChangeTestCase
      *        The new attribute value; may be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If both {@code hasOldValue} and {@code hasNewValue} are
-     *         {@code false}.
+     *         If both {@code hasOldValue} and {@code hasNewValue} are {@code
+     *         false}.
      * @throws java.lang.NullPointerException
      *         If {@code name} is {@code null}.
      * 
@@ -116,8 +116,8 @@ public abstract class AbstractAttributeChangeTestCase
     public void setUp()
         throws Exception
     {
-        m_change = createAttributeChange( ATTR_NAME, true, ATTR_VALUE_OLD, true, ATTR_VALUE_NEW );
-        assertNotNull( m_change );
+        change_ = createAttributeChange( ATTR_NAME, true, ATTR_VALUE_OLD, true, ATTR_VALUE_NEW );
+        assertNotNull( change_ );
     }
 
     /**
@@ -130,7 +130,7 @@ public abstract class AbstractAttributeChangeTestCase
     public void tearDown()
         throws Exception
     {
-        m_change = null;
+        change_ = null;
     }
 
     /**
@@ -139,7 +139,7 @@ public abstract class AbstractAttributeChangeTestCase
     @Test
     public void testGetName_ReturnValue_NonNull()
     {
-        assertEquals( ATTR_NAME, m_change.getName() );
+        assertEquals( ATTR_NAME, change_.getName() );
     }
 
     /**
@@ -171,7 +171,7 @@ public abstract class AbstractAttributeChangeTestCase
     @Test
     public void testGetNewValue_NewValue_Present_OldValue_Present()
     {
-        assertEquals( ATTR_VALUE_NEW, m_change.getNewValue() );
+        assertEquals( ATTR_VALUE_NEW, change_.getNewValue() );
     }
 
     /**
@@ -203,6 +203,6 @@ public abstract class AbstractAttributeChangeTestCase
     @Test
     public void testGetOldValue_NewValue_Present_OldValue_Present()
     {
-        assertEquals( ATTR_VALUE_OLD, m_change.getOldValue() );
+        assertEquals( ATTR_VALUE_OLD, change_.getOldValue() );
     }
 }

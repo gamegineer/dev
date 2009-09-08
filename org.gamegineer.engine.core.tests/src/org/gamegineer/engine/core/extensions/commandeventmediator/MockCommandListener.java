@@ -1,6 +1,6 @@
 /*
  * MockCommandListener.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,8 @@ import org.gamegineer.engine.core.EngineException;
 
 /**
  * Mock implementation of
- * {@link org.gamegineer.engine.core.extensions.commandeventmediator.ICommandListener}.
+ * {@link org.gamegineer.engine.core.extensions.commandeventmediator.ICommandListener}
+ * .
  * 
  * <p>
  * This class is intended to be extended by clients.
@@ -44,16 +45,16 @@ public class MockCommandListener
     // ======================================================================
 
     /** The most recent command executed event received from the engine. */
-    private CommandExecutedEvent m_commandExecutedEvent;
+    private CommandExecutedEvent commandExecutedEvent_;
 
     /** The count of command executed events received from the engine. */
-    private int m_commandExecutedEventCount;
+    private int commandExecutedEventCount_;
 
     /** The most recent command executing event received from the engine. */
-    private CommandExecutingEvent m_commandExecutingEvent;
+    private CommandExecutingEvent commandExecutingEvent_;
 
     /** The count of command executing events received from the engine. */
-    private int m_commandExecutingEventCount;
+    private int commandExecutingEventCount_;
 
 
     // ======================================================================
@@ -65,10 +66,10 @@ public class MockCommandListener
      */
     public MockCommandListener()
     {
-        m_commandExecutedEvent = null;
-        m_commandExecutedEventCount = 0;
-        m_commandExecutingEvent = null;
-        m_commandExecutingEventCount = 0;
+        commandExecutedEvent_ = null;
+        commandExecutedEventCount_ = 0;
+        commandExecutingEvent_ = null;
+        commandExecutingEventCount_ = 0;
     }
 
 
@@ -81,10 +82,10 @@ public class MockCommandListener
      */
     public void clearEvents()
     {
-        m_commandExecutedEvent = null;
-        m_commandExecutedEventCount = 0;
-        m_commandExecutingEvent = null;
-        m_commandExecutingEventCount = 0;
+        commandExecutedEvent_ = null;
+        commandExecutedEventCount_ = 0;
+        commandExecutingEvent_ = null;
+        commandExecutingEventCount_ = 0;
     }
 
     /*
@@ -95,8 +96,8 @@ public class MockCommandListener
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        m_commandExecutedEvent = event;
-        ++m_commandExecutedEventCount;
+        commandExecutedEvent_ = event;
+        ++commandExecutedEventCount_;
     }
 
     /*
@@ -109,8 +110,8 @@ public class MockCommandListener
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        m_commandExecutingEvent = event;
-        ++m_commandExecutingEventCount;
+        commandExecutingEvent_ = event;
+        ++commandExecutingEventCount_;
     }
 
     /**
@@ -122,7 +123,7 @@ public class MockCommandListener
     /* @Nullable */
     public CommandExecutedEvent getCommandExecutedEvent()
     {
-        return m_commandExecutedEvent;
+        return commandExecutedEvent_;
     }
 
     /**
@@ -132,7 +133,7 @@ public class MockCommandListener
      */
     public int getCommandExecutedEventCount()
     {
-        return m_commandExecutedEventCount;
+        return commandExecutedEventCount_;
     }
 
     /**
@@ -144,7 +145,7 @@ public class MockCommandListener
     /* @Nullable */
     public CommandExecutingEvent getCommandExecutingEvent()
     {
-        return m_commandExecutingEvent;
+        return commandExecutingEvent_;
     }
 
     /**
@@ -154,6 +155,6 @@ public class MockCommandListener
      */
     public int getCommandExecutingEventCount()
     {
-        return m_commandExecutingEventCount;
+        return commandExecutingEventCount_;
     }
 }

@@ -44,13 +44,13 @@ public final class GameSystemUi
     // ======================================================================
 
     /** The game system identifier. */
-    private final String m_id;
+    private final String id_;
 
     /** The game system name. */
-    private final String m_name;
+    private final String name_;
 
     /** The role user interface list. */
-    private final List<IRoleUi> m_roleUis;
+    private final List<IRoleUi> roleUis_;
 
 
     // ======================================================================
@@ -79,9 +79,9 @@ public final class GameSystemUi
         assert name != null;
         assert roleUis != null;
 
-        m_id = id;
-        m_name = name;
-        m_roleUis = new ArrayList<IRoleUi>( roleUis );
+        id_ = id;
+        name_ = name;
+        roleUis_ = new ArrayList<IRoleUi>( roleUis );
     }
 
 
@@ -132,7 +132,7 @@ public final class GameSystemUi
      */
     public String getId()
     {
-        return m_id;
+        return id_;
     }
 
     /*
@@ -140,11 +140,11 @@ public final class GameSystemUi
      */
     public String getName()
     {
-        return m_name;
+        return name_;
     }
 
     public List<IRoleUi> getRoles()
     {
-        return new ArrayList<IRoleUi>( m_roleUis );
+        return new ArrayList<IRoleUi>( roleUis_ );
     }
 }

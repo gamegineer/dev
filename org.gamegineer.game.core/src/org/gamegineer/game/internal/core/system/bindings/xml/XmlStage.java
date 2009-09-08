@@ -80,20 +80,20 @@ public final class XmlStage
      * </p>
      */
     @XmlAttribute( name = NAME_CARDINALITY, required = false )
-    private final Integer m_cardinality;
+    private final Integer cardinality_;
 
     /** The stage identifier. */
     @XmlAttribute( name = NAME_ID, required = true )
-    private final String m_id;
+    private final String id_;
 
     /** The list of child stages. */
     @XmlElement( name = NAME_STAGE, required = true, type = XmlStage.class )
     @XmlElementWrapper( name = NAME_STAGES, required = false )
-    private final List<XmlStage> m_stages;
+    private final List<XmlStage> stages_;
 
     /** The name of the class that implements the stage strategy. */
     @XmlAttribute( name = NAME_STRATEGY, required = true )
-    private final String m_strategyClassName;
+    private final String strategyClassName_;
 
 
     // ======================================================================
@@ -105,10 +105,10 @@ public final class XmlStage
      */
     private XmlStage()
     {
-        m_cardinality = Integer.valueOf( 0 );
-        m_id = null;
-        m_stages = new ArrayList<XmlStage>();
-        m_strategyClassName = null;
+        cardinality_ = Integer.valueOf( 0 );
+        id_ = null;
+        stages_ = new ArrayList<XmlStage>();
+        strategyClassName_ = null;
     }
 
 
@@ -143,7 +143,7 @@ public final class XmlStage
             return strategy;
         }
 
-        throw new GameSystemException( Messages.XmlStage_createStrategy_unknownClass( m_strategyClassName ) );
+        throw new GameSystemException( Messages.XmlStage_createStrategy_unknownClass( strategyClassName_ ) );
     }
 
     /**
@@ -162,7 +162,7 @@ public final class XmlStage
     {
         try
         {
-            return (IStageStrategy)Class.forName( m_strategyClassName ).newInstance();
+            return (IStageStrategy)Class.forName( strategyClassName_ ).newInstance();
         }
         catch( final ClassNotFoundException e )
         {
@@ -170,15 +170,15 @@ public final class XmlStage
         }
         catch( final InstantiationException e )
         {
-            throw new GameSystemException( Messages.XmlStage_createStrategy_instantiationError( m_strategyClassName ), e );
+            throw new GameSystemException( Messages.XmlStage_createStrategy_instantiationError( strategyClassName_ ), e );
         }
         catch( final IllegalAccessException e )
         {
-            throw new GameSystemException( Messages.XmlStage_createStrategy_accessError( m_strategyClassName ), e );
+            throw new GameSystemException( Messages.XmlStage_createStrategy_accessError( strategyClassName_ ), e );
         }
         catch( final ClassCastException e )
         {
-            throw new GameSystemException( Messages.XmlStage_createStrategy_notStrategy( m_strategyClassName ), e );
+            throw new GameSystemException( Messages.XmlStage_createStrategy_notStrategy( strategyClassName_ ), e );
         }
     }
 
@@ -196,9 +196,9 @@ public final class XmlStage
     private IStageStrategy createStrategyFromComponentService()
         throws GameSystemException
     {
-        final IComponentSpecification specification = new ClassNameComponentSpecification( m_strategyClassName );
+        final IComponentSpecification specification = new ClassNameComponentSpecification( strategyClassName_ );
         final ComponentCreationContextBuilder builder = new ComponentCreationContextBuilder();
-        ClassNameAttribute.INSTANCE.setValue( builder, m_strategyClassName );
+        ClassNameAttribute.INSTANCE.setValue( builder, strategyClassName_ );
 
         try
         {
@@ -210,11 +210,11 @@ public final class XmlStage
         }
         catch( final ComponentException e )
         {
-            throw new GameSystemException( Messages.XmlStage_createStrategy_instantiationError( m_strategyClassName ), e );
+            throw new GameSystemException( Messages.XmlStage_createStrategy_instantiationError( strategyClassName_ ), e );
         }
         catch( final ClassCastException e )
         {
-            throw new GameSystemException( Messages.XmlStage_createStrategy_notStrategy( m_strategyClassName ), e );
+            throw new GameSystemException( Messages.XmlStage_createStrategy_notStrategy( strategyClassName_ ), e );
         }
     }
 
@@ -242,10 +242,10 @@ public final class XmlStage
         try
         {
             final StageBuilder builder = new StageBuilder();
-            builder.setId( m_id );
+            builder.setId( id_ );
             builder.setStrategy( strategy );
-            builder.setCardinality( m_cardinality );
-            for( final XmlStage stage : m_stages )
+            builder.setCardinality( cardinality_ );
+            for( final XmlStage stage : stages_ )
             {
                 builder.addStage( stage.toStage() );
             }

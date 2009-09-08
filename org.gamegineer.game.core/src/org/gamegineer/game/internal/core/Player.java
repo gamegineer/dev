@@ -42,10 +42,10 @@ public final class Player
     // ======================================================================
 
     /** The player role identifier. */
-    private final String m_roleId;
+    private final String roleId_;
 
     /** The player user identifier. */
-    private final String m_userId;
+    private final String userId_;
 
 
     // ======================================================================
@@ -72,8 +72,8 @@ public final class Player
         assertArgumentNotNull( role, "role" ); //$NON-NLS-1$
         assertArgumentNotNull( userId, "userId" ); //$NON-NLS-1$
 
-        m_roleId = role.getId();
-        m_userId = userId;
+        roleId_ = role.getId();
+        userId_ = userId;
     }
 
 
@@ -86,7 +86,7 @@ public final class Player
      */
     public String getRoleId()
     {
-        return m_roleId;
+        return roleId_;
     }
 
     /*
@@ -94,6 +94,6 @@ public final class Player
      */
     public String getUserId()
     {
-        return m_userId;
+        return userId_;
     }
 }

@@ -52,10 +52,10 @@ public final class NullDisplay
     // ======================================================================
 
     /** The input stream reader. */
-    private final Reader m_reader;
+    private final Reader reader_;
 
     /** The output stream writer. */
-    private final PrintWriter m_writer;
+    private final PrintWriter writer_;
 
 
     // ======================================================================
@@ -67,8 +67,8 @@ public final class NullDisplay
      */
     public NullDisplay()
     {
-        m_reader = new NullReader();
-        m_writer = new PrintWriter( new NullWriter() );
+        reader_ = new NullReader();
+        writer_ = new PrintWriter( new NullWriter() );
     }
 
 
@@ -101,7 +101,7 @@ public final class NullDisplay
      */
     public Reader getReader()
     {
-        return m_reader;
+        return reader_;
     }
 
     /*
@@ -109,7 +109,7 @@ public final class NullDisplay
      */
     public PrintWriter getWriter()
     {
-        return m_writer;
+        return writer_;
     }
 
     /*

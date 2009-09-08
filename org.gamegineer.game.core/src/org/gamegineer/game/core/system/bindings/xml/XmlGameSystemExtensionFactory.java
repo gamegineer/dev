@@ -53,7 +53,8 @@ import org.osgi.framework.Bundle;
  * </p>
  * 
  * <p>
- * {@code class="org.gamegineer.game.core.system.xml.XmlGameSystemExtensionFactory:/dir/gameSystem.xml"}
+ * {@code class="org.gamegineer.game.core.system.xml.XmlGameSystemExtensionFactory:/dir/gameSystem.xml"
+ * }
  * </p>
  * 
  * <p>
@@ -80,7 +81,7 @@ public final class XmlGameSystemExtensionFactory
     private static final String ATTR_PATH = "path"; //$NON-NLS-1$
 
     /** The bundle URL of the game system file. */
-    private URL m_gameSystemUrl;
+    private URL gameSystemUrl_;
 
 
     // ======================================================================
@@ -93,7 +94,7 @@ public final class XmlGameSystemExtensionFactory
      */
     public XmlGameSystemExtensionFactory()
     {
-        m_gameSystemUrl = null;
+        gameSystemUrl_ = null;
     }
 
 
@@ -107,14 +108,14 @@ public final class XmlGameSystemExtensionFactory
     public IGameSystem create()
         throws CoreException
     {
-        if( m_gameSystemUrl == null )
+        if( gameSystemUrl_ == null )
         {
             throw new CoreException( new Status( Status.ERROR, Activator.SYMBOLIC_NAME, Messages.XmlGameSystemExtensionFactory_create_urlNotSet ) );
         }
 
         try
         {
-            return XmlGameSystemFactory.createGameSystem( new InputStreamReader( m_gameSystemUrl.openStream() ) );
+            return XmlGameSystemFactory.createGameSystem( new InputStreamReader( gameSystemUrl_.openStream() ) );
         }
         catch( final IOException e )
         {
@@ -179,8 +180,8 @@ public final class XmlGameSystemExtensionFactory
             throw new CoreException( new Status( Status.ERROR, Activator.SYMBOLIC_NAME, Messages.XmlGameSystemExtensionFactory_setInitializationData_bundleNotFound( config.getNamespaceIdentifier() ) ) );
         }
 
-        m_gameSystemUrl = FileLocator.find( bundles[ 0 ], new Path( path ), null );
-        if( m_gameSystemUrl == null )
+        gameSystemUrl_ = FileLocator.find( bundles[ 0 ], new Path( path ), null );
+        if( gameSystemUrl_ == null )
         {
             throw new CoreException( new Status( Status.ERROR, Activator.SYMBOLIC_NAME, Messages.XmlGameSystemExtensionFactory_setInitializationData_fileNotFound( bundles[ 0 ], path ) ) );
         }

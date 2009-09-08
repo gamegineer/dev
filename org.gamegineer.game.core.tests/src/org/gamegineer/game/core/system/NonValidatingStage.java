@@ -48,16 +48,16 @@ public final class NonValidatingStage
     // ======================================================================
 
     /** The stage cardinality. */
-    private final Integer m_cardinality;
+    private final Integer cardinality_;
 
     /** The stage identifier. */
-    private final String m_id;
+    private final String id_;
 
     /** The child stage list. */
-    private final List<IStage> m_stages;
+    private final List<IStage> stages_;
 
     /** The stage strategy. */
-    private final IStageStrategy m_strategy;
+    private final IStageStrategy strategy_;
 
 
     // ======================================================================
@@ -86,10 +86,10 @@ public final class NonValidatingStage
         /* @Nullable */
         final List<IStage> stages )
     {
-        m_id = id;
-        m_strategy = strategy;
-        m_cardinality = cardinality;
-        m_stages = (stages != null) ? new ArrayList<IStage>( stages ) : null;
+        id_ = id;
+        strategy_ = strategy;
+        cardinality_ = cardinality;
+        stages_ = (stages != null) ? new ArrayList<IStage>( stages ) : null;
     }
 
 
@@ -106,9 +106,9 @@ public final class NonValidatingStage
     @SuppressWarnings( "boxing" )
     public int getCardinality()
     {
-        assertStateLegal( m_cardinality != null, "m_cardinality is null" ); //$NON-NLS-1$
+        assertStateLegal( cardinality_ != null, "cardinality_ is null" ); //$NON-NLS-1$
 
-        return m_cardinality;
+        return cardinality_;
     }
 
     /**
@@ -119,7 +119,7 @@ public final class NonValidatingStage
     /* @Nullable */
     public String getId()
     {
-        return m_id;
+        return id_;
     }
 
     /**
@@ -131,7 +131,7 @@ public final class NonValidatingStage
     /* @Nullable */
     public List<IStage> getStages()
     {
-        return (m_stages != null) ? new ArrayList<IStage>( m_stages ) : null;
+        return (stages_ != null) ? new ArrayList<IStage>( stages_ ) : null;
     }
 
     /**
@@ -143,7 +143,7 @@ public final class NonValidatingStage
     /* @Nullable */
     public IStageStrategy getStrategy()
     {
-        return m_strategy;
+        return strategy_;
     }
 
     /**
@@ -154,6 +154,6 @@ public final class NonValidatingStage
      */
     public boolean hasCardinality()
     {
-        return m_cardinality != null;
+        return cardinality_ != null;
     }
 }

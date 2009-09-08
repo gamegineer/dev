@@ -1,6 +1,6 @@
 /*
  * MockExtension.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,10 +36,10 @@ public class MockExtension
     // ======================================================================
 
     /** Indicates the extension has been started. */
-    private boolean m_isStarted;
+    private boolean isStarted_;
 
     /** The extension type. */
-    private final Class<?> m_type;
+    private final Class<?> type_;
 
 
     // ======================================================================
@@ -58,8 +58,8 @@ public class MockExtension
     {
         assert type != null;
 
-        m_isStarted = false;
-        m_type = type;
+        isStarted_ = false;
+        type_ = type;
     }
 
 
@@ -72,18 +72,18 @@ public class MockExtension
      */
     public Class<?> getExtensionType()
     {
-        return m_type;
+        return type_;
     }
 
     /**
      * Indicates the extension has been started.
      * 
-     * @return {@code true} if the extension has been started; otherwise
-     *         {@code false} if the extension is stopped.
+     * @return {@code true} if the extension has been started; otherwise {@code
+     *         false} if the extension is stopped.
      */
     public boolean isStarted()
     {
-        return m_isStarted;
+        return isStarted_;
     }
 
     /*
@@ -96,7 +96,7 @@ public class MockExtension
     {
         assert context != null;
 
-        m_isStarted = true;
+        isStarted_ = true;
     }
 
     /*
@@ -109,6 +109,6 @@ public class MockExtension
     {
         assert context != null;
 
-        m_isStarted = false;
+        isStarted_ = false;
     }
 }

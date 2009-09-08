@@ -42,7 +42,7 @@ public abstract class AbstractStateletTestCase
     // ======================================================================
 
     /** The statelet under test in the fixture. */
-    private IStatelet m_statelet;
+    private IStatelet statelet_;
 
 
     // ======================================================================
@@ -84,8 +84,8 @@ public abstract class AbstractStateletTestCase
     public void setUp()
         throws Exception
     {
-        m_statelet = createStatelet();
-        assertNotNull( m_statelet );
+        statelet_ = createStatelet();
+        assertNotNull( statelet_ );
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class AbstractStateletTestCase
     public void tearDown()
         throws Exception
     {
-        m_statelet = null;
+        statelet_ = null;
     }
 
     /**
@@ -111,9 +111,9 @@ public abstract class AbstractStateletTestCase
         final String name = "name"; //$NON-NLS-1$
         final Object value = new Object();
 
-        m_statelet.addAttribute( name, value );
+        statelet_.addAttribute( name, value );
 
-        assertSame( value, m_statelet.getAttribute( name ) );
+        assertSame( value, statelet_.getAttribute( name ) );
     }
 
     /**
@@ -125,9 +125,9 @@ public abstract class AbstractStateletTestCase
     {
         final String name = "name"; //$NON-NLS-1$
         final Object value = new Object();
-        m_statelet.addAttribute( name, value );
+        statelet_.addAttribute( name, value );
 
-        m_statelet.addAttribute( name, value );
+        statelet_.addAttribute( name, value );
     }
 
     /**
@@ -137,7 +137,7 @@ public abstract class AbstractStateletTestCase
     @Test( expected = NullPointerException.class )
     public void testAddAttribute_Name_Null()
     {
-        m_statelet.addAttribute( null, new Object() );
+        statelet_.addAttribute( null, new Object() );
     }
 
     /**
@@ -146,7 +146,7 @@ public abstract class AbstractStateletTestCase
     @Test
     public void testAddAttribute_Value_Null()
     {
-        m_statelet.addAttribute( "name", null ); //$NON-NLS-1$
+        statelet_.addAttribute( "name", null ); //$NON-NLS-1$
     }
 
     /**
@@ -156,7 +156,7 @@ public abstract class AbstractStateletTestCase
     @Test
     public void testContainsAttribute_Attribute_Absent()
     {
-        assertFalse( m_statelet.containsAttribute( "name" ) ); //$NON-NLS-1$
+        assertFalse( statelet_.containsAttribute( "name" ) ); //$NON-NLS-1$
     }
 
     /**
@@ -168,9 +168,9 @@ public abstract class AbstractStateletTestCase
     {
         final String name = "name"; //$NON-NLS-1$
 
-        m_statelet.addAttribute( name, new Object() );
+        statelet_.addAttribute( name, new Object() );
 
-        assertTrue( m_statelet.containsAttribute( name ) );
+        assertTrue( statelet_.containsAttribute( name ) );
     }
 
     /**
@@ -180,7 +180,7 @@ public abstract class AbstractStateletTestCase
     @Test( expected = NullPointerException.class )
     public void testContainsAttribute_Name_Null()
     {
-        m_statelet.containsAttribute( null );
+        statelet_.containsAttribute( null );
     }
 
     /**
@@ -190,7 +190,7 @@ public abstract class AbstractStateletTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testGetAttribute_Attribute_Absent()
     {
-        m_statelet.getAttribute( "name" ); //$NON-NLS-1$
+        statelet_.getAttribute( "name" ); //$NON-NLS-1$
     }
 
     /**
@@ -203,9 +203,9 @@ public abstract class AbstractStateletTestCase
         final String name = "name"; //$NON-NLS-1$
         final Object value = new Object();
 
-        m_statelet.addAttribute( name, value );
+        statelet_.addAttribute( name, value );
 
-        assertSame( value, m_statelet.getAttribute( name ) );
+        assertSame( value, statelet_.getAttribute( name ) );
     }
 
     /**
@@ -215,7 +215,7 @@ public abstract class AbstractStateletTestCase
     @Test( expected = NullPointerException.class )
     public void testGetAttribute_Name_Null()
     {
-        m_statelet.getAttribute( null );
+        statelet_.getAttribute( null );
     }
 
     /**
@@ -227,10 +227,10 @@ public abstract class AbstractStateletTestCase
     {
         final String name1 = "name1"; //$NON-NLS-1$
         final String name2 = "name2"; //$NON-NLS-1$
-        m_statelet.addAttribute( name1, new Object() );
-        m_statelet.addAttribute( name2, new Object() );
+        statelet_.addAttribute( name1, new Object() );
+        statelet_.addAttribute( name2, new Object() );
 
-        final Set<String> names = m_statelet.getAttributeNames();
+        final Set<String> names = statelet_.getAttributeNames();
 
         assertTrue( names.size() == 2 );
         assertTrue( names.contains( name1 ) );
@@ -244,7 +244,7 @@ public abstract class AbstractStateletTestCase
     @Test
     public void testGetAttributeNames_Empty()
     {
-        final Set<String> names = m_statelet.getAttributeNames();
+        final Set<String> names = statelet_.getAttributeNames();
 
         assertNotNull( names );
         assertTrue( names.size() == 0 );
@@ -256,9 +256,9 @@ public abstract class AbstractStateletTestCase
     @Test
     public void testGetAttributeNames_ReturnValue_Immutable()
     {
-        m_statelet.addAttribute( "name", new Object() ); //$NON-NLS-1$
+        statelet_.addAttribute( "name", new Object() ); //$NON-NLS-1$
 
-        assertImmutableCollection( m_statelet.getAttributeNames() );
+        assertImmutableCollection( statelet_.getAttributeNames() );
     }
 
     /**
@@ -268,7 +268,7 @@ public abstract class AbstractStateletTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveAttribute_Attribute_Absent()
     {
-        m_statelet.removeAttribute( "name" ); //$NON-NLS-1$
+        statelet_.removeAttribute( "name" ); //$NON-NLS-1$
     }
 
     /**
@@ -279,12 +279,12 @@ public abstract class AbstractStateletTestCase
     public void testRemoveAttribute_Attribute_Present()
     {
         final String name = "name"; //$NON-NLS-1$
-        m_statelet.addAttribute( name, new Object() );
-        assertTrue( m_statelet.containsAttribute( name ) );
+        statelet_.addAttribute( name, new Object() );
+        assertTrue( statelet_.containsAttribute( name ) );
 
-        m_statelet.removeAttribute( name );
+        statelet_.removeAttribute( name );
 
-        assertFalse( m_statelet.containsAttribute( name ) );
+        assertFalse( statelet_.containsAttribute( name ) );
     }
 
     /**
@@ -294,7 +294,7 @@ public abstract class AbstractStateletTestCase
     @Test( expected = NullPointerException.class )
     public void testRemoveAttribute_Name_Null()
     {
-        m_statelet.removeAttribute( null );
+        statelet_.removeAttribute( null );
     }
 
     /**
@@ -304,7 +304,7 @@ public abstract class AbstractStateletTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testSetAttribute_Attribute_Absent()
     {
-        m_statelet.setAttribute( "name", new Object() ); //$NON-NLS-1$
+        statelet_.setAttribute( "name", new Object() ); //$NON-NLS-1$
     }
 
     /**
@@ -317,11 +317,11 @@ public abstract class AbstractStateletTestCase
         final String name = "name"; //$NON-NLS-1$
         final Object value1 = new Object();
         final Object value2 = new Object();
-        m_statelet.addAttribute( name, value1 );
+        statelet_.addAttribute( name, value1 );
 
-        m_statelet.setAttribute( name, value2 );
+        statelet_.setAttribute( name, value2 );
 
-        assertSame( value2, m_statelet.getAttribute( name ) );
+        assertSame( value2, statelet_.getAttribute( name ) );
     }
 
     /**
@@ -331,7 +331,7 @@ public abstract class AbstractStateletTestCase
     @Test( expected = NullPointerException.class )
     public void testSetAttribute_Name_Null()
     {
-        m_statelet.setAttribute( null, new Object() );
+        statelet_.setAttribute( null, new Object() );
     }
 
     /**
@@ -341,8 +341,8 @@ public abstract class AbstractStateletTestCase
     public void testSetAttribute_Value_Null()
     {
         final String name = "name"; //$NON-NLS-1$
-        m_statelet.addAttribute( name, new Object() );
+        statelet_.addAttribute( name, new Object() );
 
-        m_statelet.setAttribute( name, null );
+        statelet_.setAttribute( name, null );
     }
 }

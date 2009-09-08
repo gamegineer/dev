@@ -45,10 +45,10 @@ public final class RoundStageStrategyTest
     // ======================================================================
 
     /** An engine context for use in the test. */
-    private IEngineContext m_engineContext;
+    private IEngineContext engineContext_;
 
     /** The round stage strategy under test in the fixture. */
-    private RoundStageStrategy m_strategy;
+    private RoundStageStrategy strategy_;
 
 
     // ======================================================================
@@ -78,8 +78,8 @@ public final class RoundStageStrategyTest
     public void setUp()
         throws Exception
     {
-        m_engineContext = new FakeEngineContext();
-        m_strategy = new RoundStageStrategy();
+        engineContext_ = new FakeEngineContext();
+        strategy_ = new RoundStageStrategy();
     }
 
     /**
@@ -92,8 +92,8 @@ public final class RoundStageStrategyTest
     public void tearDown()
         throws Exception
     {
-        m_strategy = null;
-        m_engineContext = null;
+        strategy_ = null;
+        engineContext_ = null;
     }
 
     /**
@@ -108,9 +108,9 @@ public final class RoundStageStrategyTest
     public void testActivate_CurrentRoundIdentifierAdded()
         throws Exception
     {
-        m_strategy.activate( createDummy( IStage.class ), m_engineContext );
+        strategy_.activate( createDummy( IStage.class ), engineContext_ );
 
-        assertEquals( 1, GameAttributes.CURRENT_ROUND_ID.getValue( m_engineContext.getState() ).intValue() );
+        assertEquals( 1, GameAttributes.CURRENT_ROUND_ID.getValue( engineContext_.getState() ).intValue() );
     }
 
     /**
@@ -126,13 +126,13 @@ public final class RoundStageStrategyTest
         throws Exception
     {
         final IStage stage = createDummy( IStage.class );
-        m_strategy.activate( stage, m_engineContext );
-        final int originalCurrentRoundId = GameAttributes.CURRENT_ROUND_ID.getValue( m_engineContext.getState() );
-        m_strategy.deactivate( stage, m_engineContext );
+        strategy_.activate( stage, engineContext_ );
+        final int originalCurrentRoundId = GameAttributes.CURRENT_ROUND_ID.getValue( engineContext_.getState() );
+        strategy_.deactivate( stage, engineContext_ );
 
-        m_strategy.activate( stage, m_engineContext );
+        strategy_.activate( stage, engineContext_ );
 
-        assertEquals( originalCurrentRoundId + 1, GameAttributes.CURRENT_ROUND_ID.getValue( m_engineContext.getState() ).intValue() );
+        assertEquals( originalCurrentRoundId + 1, GameAttributes.CURRENT_ROUND_ID.getValue( engineContext_.getState() ).intValue() );
     }
 
     /**
@@ -147,9 +147,9 @@ public final class RoundStageStrategyTest
     public void testActivate_RoundCompleteIndicatorAdded()
         throws Exception
     {
-        m_strategy.activate( createDummy( IStage.class ), m_engineContext );
+        strategy_.activate( createDummy( IStage.class ), engineContext_ );
 
-        assertFalse( GameAttributes.ROUND_COMPLETE.getValue( m_engineContext.getState() ) );
+        assertFalse( GameAttributes.ROUND_COMPLETE.getValue( engineContext_.getState() ) );
     }
 
     /**
@@ -164,11 +164,11 @@ public final class RoundStageStrategyTest
         throws Exception
     {
         final IStage stage = createDummy( IStage.class );
-        m_strategy.activate( stage, m_engineContext );
+        strategy_.activate( stage, engineContext_ );
 
-        m_strategy.deactivate( stage, m_engineContext );
+        strategy_.deactivate( stage, engineContext_ );
 
-        assertTrue( GameAttributes.CURRENT_ROUND_ID.isPresent( m_engineContext.getState() ) );
+        assertTrue( GameAttributes.CURRENT_ROUND_ID.isPresent( engineContext_.getState() ) );
     }
 
     /**
@@ -183,11 +183,11 @@ public final class RoundStageStrategyTest
         throws Exception
     {
         final IStage stage = createDummy( IStage.class );
-        m_strategy.activate( stage, m_engineContext );
+        strategy_.activate( stage, engineContext_ );
 
-        m_strategy.deactivate( stage, m_engineContext );
+        strategy_.deactivate( stage, engineContext_ );
 
-        assertFalse( GameAttributes.ROUND_COMPLETE.isPresent( m_engineContext.getState() ) );
+        assertFalse( GameAttributes.ROUND_COMPLETE.isPresent( engineContext_.getState() ) );
     }
 
     /**
@@ -203,10 +203,10 @@ public final class RoundStageStrategyTest
         throws Exception
     {
         final IStage stage = createDummy( IStage.class );
-        m_strategy.activate( stage, m_engineContext );
-        GameAttributes.ROUND_COMPLETE.setValue( m_engineContext.getState(), true );
+        strategy_.activate( stage, engineContext_ );
+        GameAttributes.ROUND_COMPLETE.setValue( engineContext_.getState(), true );
 
-        final boolean isComplete = m_strategy.isComplete( stage, m_engineContext );
+        final boolean isComplete = strategy_.isComplete( stage, engineContext_ );
 
         assertTrue( isComplete );
     }
@@ -223,9 +223,9 @@ public final class RoundStageStrategyTest
         throws Exception
     {
         final IStage stage = createDummy( IStage.class );
-        m_strategy.activate( stage, m_engineContext );
+        strategy_.activate( stage, engineContext_ );
 
-        final boolean isComplete = m_strategy.isComplete( stage, m_engineContext );
+        final boolean isComplete = strategy_.isComplete( stage, engineContext_ );
 
         assertFalse( isComplete );
     }

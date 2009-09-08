@@ -1,6 +1,6 @@
 /*
  * CommandletParserTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -42,7 +42,7 @@ public final class CommandletParserTest
     // ======================================================================
 
     /** The commandlet parser under test in the fixture. */
-    private CommandletParser m_parser;
+    private CommandletParser parser_;
 
 
     // ======================================================================
@@ -72,7 +72,7 @@ public final class CommandletParserTest
     public void setUp()
         throws Exception
     {
-        m_parser = new CommandletParser();
+        parser_ = new CommandletParser();
     }
 
     /**
@@ -85,12 +85,12 @@ public final class CommandletParserTest
     public void tearDown()
         throws Exception
     {
-        m_parser = null;
+        parser_ = null;
     }
 
     /**
-     * Ensures the {@code parse} method returns a non-{@code null} executor
-     * when passed a line that contains an ambiguous commandlet name.
+     * Ensures the {@code parse} method returns a non-{@code null} executor when
+     * passed a line that contains an ambiguous commandlet name.
      */
     @Test
     public void testParse_Line_Ambiguous()
@@ -103,7 +103,7 @@ public final class CommandletParserTest
 
         try
         {
-            assertNotNull( m_parser.parse( "hello" ) ); //$NON-NLS-1$
+            assertNotNull( parser_.parse( "hello" ) ); //$NON-NLS-1$
         }
         finally
         {
@@ -112,23 +112,23 @@ public final class CommandletParserTest
     }
 
     /**
-     * Ensures the {@code parse} method returns a non-{@code null} executor
-     * when passed an empty line.
+     * Ensures the {@code parse} method returns a non-{@code null} executor when
+     * passed an empty line.
      */
     @Test
     public void testParse_Line_Empty()
     {
-        assertNotNull( m_parser.parse( "" ) ); //$NON-NLS-1$
+        assertNotNull( parser_.parse( "" ) ); //$NON-NLS-1$
     }
 
     /**
-     * Ensures the {@code parse} method returns a non-{@code null} executor
-     * when passed a malformed line.
+     * Ensures the {@code parse} method returns a non-{@code null} executor when
+     * passed a malformed line.
      */
     @Test
     public void testParse_Line_Malformed()
     {
-        assertNotNull( m_parser.parse( "     " ) ); //$NON-NLS-1$
+        assertNotNull( parser_.parse( "     " ) ); //$NON-NLS-1$
     }
 
     /**
@@ -138,16 +138,16 @@ public final class CommandletParserTest
     @Test( expected = NullPointerException.class )
     public void testParse_Line_Null()
     {
-        m_parser.parse( null );
+        parser_.parse( null );
     }
 
     /**
-     * Ensures the {@code parse} method returns a non-{@code null} executor
-     * when passed a line that contains an unknown commandlet.
+     * Ensures the {@code parse} method returns a non-{@code null} executor when
+     * passed a line that contains an unknown commandlet.
      */
     @Test
     public void testParse_Line_Unknown()
     {
-        assertNotNull( m_parser.parse( "__unknown__ arg1 arg2" ) ); //$NON-NLS-1$
+        assertNotNull( parser_.parse( "__unknown__ arg1 arg2" ) ); //$NON-NLS-1$
     }
 }

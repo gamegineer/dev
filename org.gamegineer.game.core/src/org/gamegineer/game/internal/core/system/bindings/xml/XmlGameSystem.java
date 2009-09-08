@@ -64,17 +64,17 @@ public final class XmlGameSystem
 
     /** The game system identifier. */
     @XmlAttribute( name = NAME_ID, required = true )
-    private final String m_id;
+    private final String id_;
 
     /** The role list. */
     @XmlElement( name = XmlRole.NAME_ROLE, required = true, type = XmlRole.class )
     @XmlElementWrapper( name = NAME_ROLES, required = true )
-    private final List<XmlRole> m_roles;
+    private final List<XmlRole> roles_;
 
     /** The stage list. */
     @XmlElement( name = XmlStage.NAME_STAGE, required = true, type = XmlStage.class )
     @XmlElementWrapper( name = NAME_STAGES, required = true )
-    private final List<XmlStage> m_stages;
+    private final List<XmlStage> stages_;
 
     // FIXME: @XmlElementWrapper is not behaving properly.  Even though
     // required is true, the schema still says that the wrapper element is
@@ -92,9 +92,9 @@ public final class XmlGameSystem
      */
     private XmlGameSystem()
     {
-        m_id = null;
-        m_roles = new ArrayList<XmlRole>();
-        m_stages = new ArrayList<XmlStage>();
+        id_ = null;
+        roles_ = new ArrayList<XmlRole>();
+        stages_ = new ArrayList<XmlStage>();
     }
 
 
@@ -119,12 +119,12 @@ public final class XmlGameSystem
         try
         {
             final GameSystemBuilder builder = new GameSystemBuilder();
-            builder.setId( m_id );
-            for( final XmlRole role : m_roles )
+            builder.setId( id_ );
+            for( final XmlRole role : roles_ )
             {
                 builder.addRole( role.toRole() );
             }
-            for( final XmlStage stage : m_stages )
+            for( final XmlStage stage : stages_ )
             {
                 builder.addStage( stage.toStage() );
             }

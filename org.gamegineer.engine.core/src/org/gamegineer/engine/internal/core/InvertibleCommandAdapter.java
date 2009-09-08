@@ -1,6 +1,6 @@
 /*
  * InvertibleCommandAdapter.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -70,24 +70,24 @@ public final class InvertibleCommandAdapter<T>
      * The collection of attributes added by the command; {@code null} if no
      * attributes were added.
      */
-    private Set<AttributeName> m_addedAttributeSet;
+    private Set<AttributeName> addedAttributeSet_;
 
     /**
      * The collection of attributes changed by the command; {@code null} if no
      * attributes were changed. The attribute value at the time it was changed
      * is recorded.
      */
-    private Map<AttributeName, Object> m_changedAttributeMap;
+    private Map<AttributeName, Object> changedAttributeMap_;
 
     /** The non-invertible command. */
-    private final ICommand<T> m_command;
+    private final ICommand<T> command_;
 
     /**
      * The collection of attributes removed by the command; {@code null} if no
      * attributes were removed. The attribute value at the time it was removed
      * is recorded.
      */
-    private Map<AttributeName, Object> m_removedAttributeMap;
+    private Map<AttributeName, Object> removedAttributeMap_;
 
 
     // ======================================================================
@@ -109,10 +109,10 @@ public final class InvertibleCommandAdapter<T>
     {
         assertArgumentNotNull( command, "command" ); //$NON-NLS-1$
 
-        m_command = command;
-        m_addedAttributeSet = null;
-        m_changedAttributeMap = null;
-        m_removedAttributeMap = null;
+        command_ = command;
+        addedAttributeSet_ = null;
+        changedAttributeMap_ = null;
+        removedAttributeMap_ = null;
     }
 
 
@@ -129,7 +129,7 @@ public final class InvertibleCommandAdapter<T>
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        final T result = m_command.execute( context );
+        final T result = command_.execute( context );
         storeAttributeChanges( context );
         return result;
     }
@@ -166,7 +166,7 @@ public final class InvertibleCommandAdapter<T>
      */
     public String getType()
     {
-        return m_command.getType();
+        return command_.getType();
     }
 
     /**
@@ -182,23 +182,23 @@ public final class InvertibleCommandAdapter<T>
         assert context != null;
 
         final IState state = context.getState();
-        if( m_addedAttributeSet != null )
+        if( addedAttributeSet_ != null )
         {
-            for( final AttributeName name : m_addedAttributeSet )
+            for( final AttributeName name : addedAttributeSet_ )
             {
                 state.removeAttribute( name );
             }
         }
-        if( m_changedAttributeMap != null )
+        if( changedAttributeMap_ != null )
         {
-            for( final Map.Entry<AttributeName, Object> entry : m_changedAttributeMap.entrySet() )
+            for( final Map.Entry<AttributeName, Object> entry : changedAttributeMap_.entrySet() )
             {
                 state.setAttribute( entry.getKey(), entry.getValue() );
             }
         }
-        if( m_removedAttributeMap != null )
+        if( removedAttributeMap_ != null )
         {
-            for( final Map.Entry<AttributeName, Object> entry : m_removedAttributeMap.entrySet() )
+            for( final Map.Entry<AttributeName, Object> entry : removedAttributeMap_.entrySet() )
             {
                 state.addAttribute( entry.getKey(), entry.getValue() );
             }
@@ -243,8 +243,8 @@ public final class InvertibleCommandAdapter<T>
             }
         }
 
-        m_addedAttributeSet = addedAttributes.isEmpty() ? null : addedAttributes;
-        m_changedAttributeMap = changedAttributes.isEmpty() ? null : changedAttributes;
-        m_removedAttributeMap = removedAttributes.isEmpty() ? null : removedAttributes;
+        addedAttributeSet_ = addedAttributes.isEmpty() ? null : addedAttributes;
+        changedAttributeMap_ = changedAttributes.isEmpty() ? null : changedAttributes;
+        removedAttributeMap_ = removedAttributes.isEmpty() ? null : removedAttributes;
     }
 }

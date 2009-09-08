@@ -61,7 +61,7 @@ final class Game
     // ======================================================================
 
     /** The game engine. */
-    private final IEngine m_engine;
+    private final IEngine engine_;
 
 
     // ======================================================================
@@ -80,7 +80,7 @@ final class Game
     {
         assert engine != null;
 
-        m_engine = engine;
+        engine_ = engine;
     }
 
 
@@ -175,7 +175,7 @@ final class Game
         final ICommand<T> command )
         throws EngineException
     {
-        return m_engine.executeCommand( command );
+        return engine_.executeCommand( command );
     }
 
     /*
@@ -185,7 +185,7 @@ final class Game
     {
         try
         {
-            return m_engine.executeCommand( GameCommands.createGetGameIdCommand() );
+            return engine_.executeCommand( GameCommands.createGetGameIdCommand() );
         }
         catch( final EngineException e )
         {
@@ -200,7 +200,7 @@ final class Game
     {
         try
         {
-            return m_engine.executeCommand( GameCommands.createGetGameNameCommand() );
+            return engine_.executeCommand( GameCommands.createGetGameNameCommand() );
         }
         catch( final EngineException e )
         {
@@ -215,7 +215,7 @@ final class Game
     {
         try
         {
-            return m_engine.executeCommand( GameCommands.createGetGameSystemIdCommand() );
+            return engine_.executeCommand( GameCommands.createGetGameSystemIdCommand() );
         }
         catch( final EngineException e )
         {
@@ -231,7 +231,7 @@ final class Game
     {
         try
         {
-            return m_engine.executeCommand( GameCommands.createIsGameCompleteCommand() );
+            return engine_.executeCommand( GameCommands.createIsGameCompleteCommand() );
         }
         catch( final EngineException e )
         {
@@ -244,7 +244,7 @@ final class Game
      */
     public boolean isShutdown()
     {
-        return m_engine.isShutdown();
+        return engine_.isShutdown();
     }
 
     /*
@@ -253,7 +253,7 @@ final class Game
     public void shutdown()
         throws InterruptedException
     {
-        m_engine.shutdown();
+        engine_.shutdown();
     }
 
     /*
@@ -295,6 +295,6 @@ final class Game
     public <T> Future<T> submitCommand(
         final ICommand<T> command )
     {
-        return m_engine.submitCommand( command );
+        return engine_.submitCommand( command );
     }
 }

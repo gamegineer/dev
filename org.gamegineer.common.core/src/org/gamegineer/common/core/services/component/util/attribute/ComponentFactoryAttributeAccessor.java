@@ -1,6 +1,6 @@
 /*
  * ComponentFactoryAttributeAccessor.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,7 +48,7 @@ public final class ComponentFactoryAttributeAccessor
     // ======================================================================
 
     /** The component factory. */
-    private final IComponentFactory m_factory;
+    private final IComponentFactory factory_;
 
 
     // ======================================================================
@@ -56,8 +56,8 @@ public final class ComponentFactoryAttributeAccessor
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code ComponentFactoryAttributeAccessor} class.
+     * Initializes a new instance of the {@code
+     * ComponentFactoryAttributeAccessor} class.
      * 
      * @param factory
      *        The component factory; must not be {@code null}.
@@ -71,7 +71,7 @@ public final class ComponentFactoryAttributeAccessor
     {
         assertArgumentNotNull( factory, "factory" ); //$NON-NLS-1$
 
-        m_factory = factory;
+        factory_ = factory;
     }
 
 
@@ -85,7 +85,7 @@ public final class ComponentFactoryAttributeAccessor
     public boolean containsAttribute(
         final String name )
     {
-        return m_factory.containsAttribute( name );
+        return factory_.containsAttribute( name );
     }
 
     /*
@@ -94,6 +94,6 @@ public final class ComponentFactoryAttributeAccessor
     public Object getAttribute(
         final String name )
     {
-        return m_factory.getAttribute( name );
+        return factory_.getAttribute( name );
     }
 }

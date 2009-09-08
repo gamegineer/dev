@@ -47,7 +47,7 @@ public final class StateEventMediatorExtensionTest
     // ======================================================================
 
     /** The state event mediator extension under test in the fixture. */
-    private StateEventMediatorExtension m_extension;
+    private StateEventMediatorExtension extension_;
 
 
     // ======================================================================
@@ -78,7 +78,7 @@ public final class StateEventMediatorExtensionTest
     public void setUp()
         throws Exception
     {
-        m_extension = new StateEventMediatorExtension();
+        extension_ = new StateEventMediatorExtension();
     }
 
     /**
@@ -91,7 +91,7 @@ public final class StateEventMediatorExtensionTest
     public void tearDown()
         throws Exception
     {
-        m_extension = null;
+        extension_ = null;
     }
 
     /**
@@ -101,7 +101,7 @@ public final class StateEventMediatorExtensionTest
     @Test( expected = IllegalStateException.class )
     public void testAddStateListener_ExtensionNotStarted()
     {
-        m_extension.addStateListener( createDummy( IEngineContext.class ), createDummy( IStateListener.class ) );
+        extension_.addStateListener( createDummy( IEngineContext.class ), createDummy( IStateListener.class ) );
     }
 
     /**
@@ -207,6 +207,6 @@ public final class StateEventMediatorExtensionTest
     public void testRemoveStateListener_ExtensionNotStarted()
         throws Exception
     {
-        m_extension.removeStateListener( createDummy( IEngineContext.class ), createDummy( IStateListener.class ) );
+        extension_.removeStateListener( createDummy( IEngineContext.class ), createDummy( IStateListener.class ) );
     }
 }

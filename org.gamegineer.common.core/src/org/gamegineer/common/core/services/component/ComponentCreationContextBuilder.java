@@ -1,6 +1,6 @@
 /*
  * ComponentCreationContextBuilder.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,7 +31,8 @@ import org.gamegineer.common.internal.core.services.component.ComponentCreationC
 
 /**
  * A factory for building instances of
- * {@link org.gamegineer.common.core.services.component.IComponentCreationContext}.
+ * {@link org.gamegineer.common.core.services.component.IComponentCreationContext}
+ * .
  * 
  * <p>
  * Each component creation context built by an instance of this class is
@@ -53,7 +54,7 @@ public final class ComponentCreationContextBuilder
     private static final IComponentCreationContext EMPTY_CONTEXT = new ComponentCreationContext( Collections.<String, Object>emptyMap() );
 
     /** The map of initialization attributes. */
-    private final Map<String, Object> m_attributeMap;
+    private final Map<String, Object> attributeMap_;
 
 
     // ======================================================================
@@ -88,7 +89,7 @@ public final class ComponentCreationContextBuilder
         assertArgumentNotNull( attributeMap, "attributeMap" ); //$NON-NLS-1$
         assertArgumentLegal( !attributeMap.containsValue( null ), "attributeMap", Messages.ComponentCreationContextBuilder_attributeMap_containsNullValue ); //$NON-NLS-1$
 
-        m_attributeMap = new HashMap<String, Object>( attributeMap );
+        attributeMap_ = new HashMap<String, Object>( attributeMap );
     }
 
 
@@ -114,7 +115,7 @@ public final class ComponentCreationContextBuilder
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return m_attributeMap.containsKey( name );
+        return attributeMap_.containsKey( name );
     }
 
     /**
@@ -180,7 +181,7 @@ public final class ComponentCreationContextBuilder
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return m_attributeMap.get( name );
+        return attributeMap_.get( name );
     }
 
     /*
@@ -193,7 +194,7 @@ public final class ComponentCreationContextBuilder
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
         assertArgumentNotNull( value, "value" ); //$NON-NLS-1$
 
-        m_attributeMap.put( name, value );
+        attributeMap_.put( name, value );
     }
 
     /**
@@ -205,6 +206,6 @@ public final class ComponentCreationContextBuilder
     /* @NonNull */
     public IComponentCreationContext toComponentCreationContext()
     {
-        return createComponentCreationContext( m_attributeMap );
+        return createComponentCreationContext( attributeMap_ );
     }
 }

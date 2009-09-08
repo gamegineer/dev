@@ -55,7 +55,7 @@ public abstract class Attribute<T>
     // ======================================================================
 
     /** The attribute name. */
-    private final String m_name;
+    private final String name_;
 
 
     // ======================================================================
@@ -77,7 +77,7 @@ public abstract class Attribute<T>
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        m_name = name;
+        name_ = name;
     }
 
 
@@ -95,7 +95,7 @@ public abstract class Attribute<T>
         assertArgumentNotNull( statelet, "statelet" ); //$NON-NLS-1$
         assertArgumentLegal( isLegalValue( value ), "value" ); //$NON-NLS-1$
 
-        statelet.addAttribute( m_name, value );
+        statelet.addAttribute( name_, value );
     }
 
     /*
@@ -151,7 +151,7 @@ public abstract class Attribute<T>
      */
     public String getName()
     {
-        return m_name;
+        return name_;
     }
 
     /*
@@ -163,7 +163,7 @@ public abstract class Attribute<T>
     {
         assertArgumentNotNull( statelet, "statelet" ); //$NON-NLS-1$
 
-        return (T)statelet.getAttribute( m_name );
+        return (T)statelet.getAttribute( name_ );
     }
 
     /**
@@ -194,7 +194,7 @@ public abstract class Attribute<T>
     {
         assertArgumentNotNull( statelet, "statelet" ); //$NON-NLS-1$
 
-        return statelet.containsAttribute( m_name );
+        return statelet.containsAttribute( name_ );
     }
 
     /*
@@ -205,7 +205,7 @@ public abstract class Attribute<T>
     {
         assertArgumentNotNull( statelet, "statelet" ); //$NON-NLS-1$
 
-        statelet.removeAttribute( m_name );
+        statelet.removeAttribute( name_ );
     }
 
     /*
@@ -218,6 +218,6 @@ public abstract class Attribute<T>
         assertArgumentNotNull( statelet, "statelet" ); //$NON-NLS-1$
         assertArgumentLegal( isLegalValue( value ), "value" ); //$NON-NLS-1$
 
-        statelet.setAttribute( m_name, value );
+        statelet.setAttribute( name_, value );
     }
 }

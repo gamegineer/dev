@@ -40,10 +40,10 @@ public abstract class AbstractPlayerTestCase
     // ======================================================================
 
     /** The player under test in the fixture. */
-    private IPlayer m_player;
+    private IPlayer player_;
 
     /** The player configuration for the player under test. */
-    private IPlayerConfiguration m_playerConfig;
+    private IPlayerConfiguration playerConfig_;
 
 
     // ======================================================================
@@ -92,9 +92,9 @@ public abstract class AbstractPlayerTestCase
     public void setUp()
         throws Exception
     {
-        m_playerConfig = Configurations.createUniquePlayerConfiguration();
-        m_player = createPlayer( m_playerConfig );
-        assertNotNull( m_player );
+        playerConfig_ = Configurations.createUniquePlayerConfiguration();
+        player_ = createPlayer( playerConfig_ );
+        assertNotNull( player_ );
     }
 
     /**
@@ -107,8 +107,8 @@ public abstract class AbstractPlayerTestCase
     public void tearDown()
         throws Exception
     {
-        m_player = null;
-        m_playerConfig = null;
+        player_ = null;
+        playerConfig_ = null;
     }
 
     /**
@@ -118,7 +118,7 @@ public abstract class AbstractPlayerTestCase
     @Test
     public void testGetRoleId()
     {
-        assertEquals( m_playerConfig.getRoleId(), m_player.getRoleId() );
+        assertEquals( playerConfig_.getRoleId(), player_.getRoleId() );
     }
 
     /**
@@ -128,6 +128,6 @@ public abstract class AbstractPlayerTestCase
     @Test
     public void testGetUserId()
     {
-        assertEquals( m_playerConfig.getUserId(), m_player.getUserId() );
+        assertEquals( playerConfig_.getUserId(), player_.getUserId() );
     }
 }

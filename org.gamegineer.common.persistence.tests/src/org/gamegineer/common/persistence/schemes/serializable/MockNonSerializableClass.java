@@ -1,6 +1,6 @@
 /*
  * MockNonSerializableClass.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,9 +26,9 @@ package org.gamegineer.common.persistence.schemes.serializable;
  * streams.
  * 
  * <p>
- * This class is non-serializable because a) it does not implement
- * {@code Serializable}, b) it is immutable, and c) it does not define a
- * default constructor.
+ * This class is non-serializable because a) it does not implement {@code
+ * Serializable}, b) it is immutable, and c) it does not define a default
+ * constructor.
  * </p>
  * 
  * <p>
@@ -42,10 +42,10 @@ public final class MockNonSerializableClass
     // ======================================================================
 
     /** The integer field. */
-    private final int m_intField;
+    private final int intField_;
 
     /** The string field. */
-    private final String m_stringField;
+    private final String stringField_;
 
 
     // ======================================================================
@@ -65,8 +65,8 @@ public final class MockNonSerializableClass
         /* @Nullable */
         final String stringField )
     {
-        m_intField = intField;
-        m_stringField = stringField;
+        intField_ = intField;
+        stringField_ = stringField;
     }
 
 
@@ -92,7 +92,7 @@ public final class MockNonSerializableClass
         }
 
         final MockNonSerializableClass other = (MockNonSerializableClass)obj;
-        return (m_intField == other.m_intField) && m_stringField.equals( other.m_stringField );
+        return (intField_ == other.intField_) && stringField_.equals( other.stringField_ );
     }
 
     /**
@@ -102,7 +102,7 @@ public final class MockNonSerializableClass
      */
     public int getIntField()
     {
-        return m_intField;
+        return intField_;
     }
 
     /**
@@ -113,7 +113,7 @@ public final class MockNonSerializableClass
     /* @Nullable */
     public String getStringField()
     {
-        return m_stringField;
+        return stringField_;
     }
 
     /*
@@ -123,8 +123,8 @@ public final class MockNonSerializableClass
     public int hashCode()
     {
         int result = 17;
-        result = result * 31 + m_intField;
-        result = result * 31 + m_stringField.hashCode();
+        result = result * 31 + intField_;
+        result = result * 31 + stringField_.hashCode();
         return result;
     }
 }

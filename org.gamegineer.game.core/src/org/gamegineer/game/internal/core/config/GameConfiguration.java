@@ -45,16 +45,16 @@ public final class GameConfiguration
     // ======================================================================
 
     /** The game identifier. */
-    private final String m_id;
+    private final String id_;
 
     /** The game name. */
-    private final String m_name;
+    private final String name_;
 
     /** The list of player configurations. */
-    private final List<IPlayerConfiguration> m_playerConfigs;
+    private final List<IPlayerConfiguration> playerConfigs_;
 
     /** The game system. */
-    private final IGameSystem m_system;
+    private final IGameSystem system_;
 
 
     // ======================================================================
@@ -88,10 +88,10 @@ public final class GameConfiguration
         assert system != null;
         assert playerConfigs != null;
 
-        m_id = id;
-        m_name = name;
-        m_system = system;
-        m_playerConfigs = new ArrayList<IPlayerConfiguration>( playerConfigs );
+        id_ = id;
+        name_ = name;
+        system_ = system;
+        playerConfigs_ = new ArrayList<IPlayerConfiguration>( playerConfigs );
     }
 
 
@@ -116,8 +116,8 @@ public final class GameConfiguration
      * @throws java.lang.IllegalArgumentException
      *         If any argument will result in an illegal game configuration.
      * @throws java.lang.NullPointerException
-     *         If {@code id}, {@code name}, {@code system}, or
-     *         {@code playerConfigs} is {@code null}.
+     *         If {@code id}, {@code name}, {@code system}, or {@code
+     *         playerConfigs} is {@code null}.
      */
     /* @NonNull */
     public static GameConfiguration createGameConfiguration(
@@ -152,7 +152,7 @@ public final class GameConfiguration
      */
     public String getId()
     {
-        return m_id;
+        return id_;
     }
 
     /*
@@ -160,7 +160,7 @@ public final class GameConfiguration
      */
     public String getName()
     {
-        return m_name;
+        return name_;
     }
 
     /*
@@ -168,7 +168,7 @@ public final class GameConfiguration
      */
     public List<IPlayerConfiguration> getPlayers()
     {
-        return new ArrayList<IPlayerConfiguration>( m_playerConfigs );
+        return new ArrayList<IPlayerConfiguration>( playerConfigs_ );
     }
 
     /*
@@ -176,6 +176,6 @@ public final class GameConfiguration
      */
     public IGameSystem getSystem()
     {
-        return m_system;
+        return system_;
     }
 }

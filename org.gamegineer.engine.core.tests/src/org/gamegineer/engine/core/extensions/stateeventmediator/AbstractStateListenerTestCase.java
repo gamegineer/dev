@@ -1,6 +1,6 @@
 /*
  * AbstractStateListenerTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,7 +38,7 @@ public abstract class AbstractStateListenerTestCase
     // ======================================================================
 
     /** The state listener under test in the fixture. */
-    private IStateListener m_listener;
+    private IStateListener listener_;
 
 
     // ======================================================================
@@ -81,8 +81,8 @@ public abstract class AbstractStateListenerTestCase
     public void setUp()
         throws Exception
     {
-        m_listener = createStateListener();
-        assertNotNull( m_listener );
+        listener_ = createStateListener();
+        assertNotNull( listener_ );
     }
 
     /**
@@ -95,7 +95,7 @@ public abstract class AbstractStateListenerTestCase
     public void tearDown()
         throws Exception
     {
-        m_listener = null;
+        listener_ = null;
     }
 
     /**
@@ -105,7 +105,7 @@ public abstract class AbstractStateListenerTestCase
     @Test( expected = NullPointerException.class )
     public void testStateChanged_Event_Null()
     {
-        m_listener.stateChanged( null );
+        listener_.stateChanged( null );
     }
 
     /**
@@ -119,6 +119,6 @@ public abstract class AbstractStateListenerTestCase
     public void testStateChanging_Event_Null()
         throws Exception
     {
-        m_listener.stateChanging( null );
+        listener_.stateChanging( null );
     }
 }

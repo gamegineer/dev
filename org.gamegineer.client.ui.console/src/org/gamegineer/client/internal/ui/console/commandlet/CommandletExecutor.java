@@ -47,10 +47,10 @@ public final class CommandletExecutor
     // ======================================================================
 
     /** The commandlet to execute. */
-    private final ICommandlet m_commandlet;
+    private final ICommandlet commandlet_;
 
     /** The commandlet argument list. */
-    private final List<String> m_commandletArgs;
+    private final List<String> commandletArgs_;
 
 
     // ======================================================================
@@ -74,8 +74,8 @@ public final class CommandletExecutor
         assert commandlet != null;
         assert commandletArgs != null;
 
-        m_commandlet = commandlet;
-        m_commandletArgs = Collections.unmodifiableList( new ArrayList<String>( commandletArgs ) );
+        commandlet_ = commandlet;
+        commandletArgs_ = Collections.unmodifiableList( new ArrayList<String>( commandletArgs ) );
     }
 
 
@@ -112,7 +112,7 @@ public final class CommandletExecutor
         assertArgumentNotNull( statelet, "statelet" ); //$NON-NLS-1$
         assertArgumentNotNull( gameClient, "gameClient" ); //$NON-NLS-1$
 
-        m_commandlet.execute( new CommandletContext( this, console, statelet, gameClient ) );
+        commandlet_.execute( new CommandletContext( this, console, statelet, gameClient ) );
     }
 
     /**
@@ -123,7 +123,7 @@ public final class CommandletExecutor
     /* @NonNull */
     ICommandlet getCommandlet()
     {
-        return m_commandlet;
+        return commandlet_;
     }
 
     /**
@@ -136,6 +136,6 @@ public final class CommandletExecutor
     /* @NonNull */
     List<String> getCommandletArguments()
     {
-        return m_commandletArgs;
+        return commandletArgs_;
     }
 }

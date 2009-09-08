@@ -39,7 +39,7 @@ public final class ImmutableEngineContextTest
     // ======================================================================
 
     /** The immutable engine context under test in the fixture. */
-    private ImmutableEngineContext m_context;
+    private ImmutableEngineContext context_;
 
 
     // ======================================================================
@@ -70,7 +70,7 @@ public final class ImmutableEngineContextTest
     public void setUp()
         throws Exception
     {
-        m_context = new ImmutableEngineContext( new FakeEngineContext() );
+        context_ = new ImmutableEngineContext( new FakeEngineContext() );
     }
 
     /**
@@ -83,7 +83,7 @@ public final class ImmutableEngineContextTest
     public void tearDown()
         throws Exception
     {
-        m_context = null;
+        context_ = null;
     }
 
     /**
@@ -103,6 +103,6 @@ public final class ImmutableEngineContextTest
     @Test( expected = UnsupportedOperationException.class )
     public void testGetState_ReturnValue_Immutable()
     {
-        m_context.getState().addAttribute( new AttributeName( Scope.APPLICATION, "name" ), "value" ); //$NON-NLS-1$ //$NON-NLS-2$
+        context_.getState().addAttribute( new AttributeName( Scope.APPLICATION, "name" ), "value" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

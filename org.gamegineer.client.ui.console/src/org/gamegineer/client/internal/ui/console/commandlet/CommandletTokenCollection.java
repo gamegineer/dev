@@ -1,6 +1,6 @@
 /*
  * CommandletTokenCollection.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,10 +41,10 @@ final class CommandletTokenCollection
     // ======================================================================
 
     /** The commandlet argument list. */
-    private final List<String> m_args;
+    private final List<String> args_;
 
     /** The commandlet name. */
-    private final String m_name;
+    private final String name_;
 
 
     // ======================================================================
@@ -70,8 +70,8 @@ final class CommandletTokenCollection
         assert !name.isEmpty();
         assert args != null;
 
-        m_name = name;
-        m_args = Collections.unmodifiableList( new ArrayList<String>( args ) );
+        name_ = name;
+        args_ = Collections.unmodifiableList( new ArrayList<String>( args ) );
     }
 
 
@@ -82,13 +82,13 @@ final class CommandletTokenCollection
     /**
      * Gets an immutable view of the commandlet argument list.
      * 
-     * @return An immutable view of the commandlet argument list; never
-     *         {@code null}.
+     * @return An immutable view of the commandlet argument list; never {@code
+     *         null}.
      */
     /* @NonNull */
     List<String> getArguments()
     {
-        return m_args;
+        return args_;
     }
 
     /**
@@ -99,6 +99,6 @@ final class CommandletTokenCollection
     /* @NonNull */
     String getName()
     {
-        return m_name;
+        return name_;
     }
 }

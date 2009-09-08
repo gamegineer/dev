@@ -65,7 +65,7 @@ public final class EngineTest
     // ======================================================================
 
     /** The engine under test in the fixture. */
-    private Engine m_engine;
+    private Engine engine_;
 
 
     // ======================================================================
@@ -95,7 +95,7 @@ public final class EngineTest
         /* @NonNull */
         final ICommandListener listener )
     {
-        CommandEventMediatorFacade.addCommandListener( m_engine, listener );
+        CommandEventMediatorFacade.addCommandListener( engine_, listener );
     }
 
     /**
@@ -108,7 +108,7 @@ public final class EngineTest
         /* @NonNull */
         final IStateListener listener )
     {
-        StateEventMediatorFacade.addStateListener( m_engine, listener );
+        StateEventMediatorFacade.addStateListener( engine_, listener );
     }
 
     /**
@@ -121,7 +121,7 @@ public final class EngineTest
         /* @NonNull */
         final ICommandListener listener )
     {
-        CommandEventMediatorFacade.removeCommandListener( m_engine, listener );
+        CommandEventMediatorFacade.removeCommandListener( engine_, listener );
     }
 
     /**
@@ -134,7 +134,7 @@ public final class EngineTest
         /* @NonNull */
         final IStateListener listener )
     {
-        StateEventMediatorFacade.removeStateListener( m_engine, listener );
+        StateEventMediatorFacade.removeStateListener( engine_, listener );
     }
 
     /**
@@ -147,7 +147,7 @@ public final class EngineTest
     public void setUp()
         throws Exception
     {
-        m_engine = Engine.createEngine();
+        engine_ = Engine.createEngine();
     }
 
     /**
@@ -160,7 +160,7 @@ public final class EngineTest
     public void tearDown()
         throws Exception
     {
-        m_engine = null;
+        engine_ = null;
     }
 
     /**
@@ -198,12 +198,12 @@ public final class EngineTest
             {
                 super.commandExecuting( event );
 
-                m_engine.executeCommand( new MockCommand<Void>() );
+                engine_.executeCommand( new MockCommand<Void>() );
             }
         };
         addCommandListener( listener );
 
-        m_engine.executeCommand( new MockCommand<Void>() );
+        engine_.executeCommand( new MockCommand<Void>() );
     }
 
     /**
@@ -228,7 +228,7 @@ public final class EngineTest
         };
         try
         {
-            m_engine.executeCommand( command );
+            engine_.executeCommand( command );
             fail( "Expected an exception to be thrown." ); //$NON-NLS-1$
         }
         catch( final EngineException e )
@@ -273,16 +273,16 @@ public final class EngineTest
         final MockStateListener stateListener = new MockStateListener();
         addStateListener( stateListener );
 
-        final int originalCommandHistorySize = CommandHistoryFacade.getCommandHistory( m_engine ).size();
+        final int originalCommandHistorySize = CommandHistoryFacade.getCommandHistory( engine_ ).size();
         commandListener.clearEvents();
         stateListener.clearEvents();
-        m_engine.executeCommand( new TestCommand() );
+        engine_.executeCommand( new TestCommand() );
 
         assertEquals( 0, commandListener.getCommandExecutingEventCount() );
         assertEquals( 0, commandListener.getCommandExecutedEventCount() );
         assertEquals( 0, stateListener.getStateChangingEventCount() );
         assertEquals( 0, stateListener.getStateChangedEventCount() );
-        assertEquals( originalCommandHistorySize, CommandHistoryFacade.getCommandHistory( m_engine ).size() ); // executes a command behind the scenes
+        assertEquals( originalCommandHistorySize, CommandHistoryFacade.getCommandHistory( engine_ ).size() ); // executes a command behind the scenes
     }
 
     /**
@@ -314,7 +314,7 @@ public final class EngineTest
             }
         };
 
-        final Principal actualPrincipal = m_engine.executeCommand( command );
+        final Principal actualPrincipal = engine_.executeCommand( command );
 
         assertEquals( expectedPrincipal, actualPrincipal );
     }
@@ -334,7 +334,7 @@ public final class EngineTest
         final String ATTR_VALUE_1 = "value1"; //$NON-NLS-1$
         final AttributeName ATTR_NAME_2 = new AttributeName( Scope.APPLICATION, "name2" ); //$NON-NLS-1$
         final String ATTR_VALUE_2 = "value2"; //$NON-NLS-1$
-        final Engine engine = m_engine;
+        final Engine engine = engine_;
         final Reference<Exception> commandExecutedExceptionRef = new Reference<Exception>();
         final Reference<Exception> commandExecutingExceptionRef = new Reference<Exception>();
         final Reference<Exception> stateChangedExceptionRef = new Reference<Exception>();
@@ -416,7 +416,7 @@ public final class EngineTest
         commandExecutedExceptionRef.set( null );
         stateChangingExceptionRef.set( null );
         stateChangedExceptionRef.set( null );
-        m_engine.executeCommand( MockCommands.createAddAttributeCommand( ATTR_NAME_1, ATTR_VALUE_1 ) );
+        engine_.executeCommand( MockCommands.createAddAttributeCommand( ATTR_NAME_1, ATTR_VALUE_1 ) );
 
         assertNotNull( commandExecutingExceptionRef.get() );
         assertNotNull( commandExecutedExceptionRef.get() );
@@ -454,7 +454,7 @@ public final class EngineTest
         };
         try
         {
-            m_engine.executeCommand( command );
+            engine_.executeCommand( command );
             fail( "Expected an exception to be thrown." ); //$NON-NLS-1$
         }
         catch( final EngineException e )
@@ -499,7 +499,7 @@ public final class EngineTest
                 return null;
             }
         };
-        m_engine.executeCommand( initializeCommand );
+        engine_.executeCommand( initializeCommand );
 
         final MockCommandListener commandListener = new MockCommandListener();
         addCommandListener( commandListener );
@@ -519,7 +519,7 @@ public final class EngineTest
                 return EXPECTED_VALUE;
             }
         };
-        m_engine.executeCommand( modifyCommand );
+        engine_.executeCommand( modifyCommand );
 
         assertNotNull( commandListener.getCommandExecutingEvent() );
         assertNotNull( commandListener.getCommandExecutedEvent() );
@@ -565,7 +565,7 @@ public final class EngineTest
         final MockStateListener stateListener = new MockStateListener();
         addStateListener( stateListener );
 
-        m_engine.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        engine_.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
 
         assertNotNull( commandListener1.getCommandExecutingEvent() );
         assertNotNull( commandListener1.getCommandExecutedEvent() );
@@ -611,7 +611,7 @@ public final class EngineTest
         stateListener.clearEvents();
         try
         {
-            m_engine.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            engine_.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         catch( final EngineException e )
         {
@@ -656,7 +656,7 @@ public final class EngineTest
         final MockStateListener stateListener = new MockStateListener();
         addStateListener( stateListener );
 
-        m_engine.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        engine_.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
 
         assertNotNull( commandListener1.getCommandExecutingEvent() );
         assertNotNull( commandListener1.getCommandExecutedEvent() );
@@ -699,7 +699,7 @@ public final class EngineTest
         };
         addStateListener( stateListener2 );
 
-        m_engine.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        engine_.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
 
         assertNotNull( commandListener.getCommandExecutingEvent() );
         assertNotNull( commandListener.getCommandExecutedEvent() );
@@ -744,7 +744,7 @@ public final class EngineTest
         stateListener.clearEvents();
         try
         {
-            m_engine.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+            engine_.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         }
         catch( final EngineException e )
         {
@@ -789,7 +789,7 @@ public final class EngineTest
         };
         addStateListener( stateListener2 );
 
-        m_engine.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        engine_.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
 
         assertNotNull( commandListener.getCommandExecutingEvent() );
         assertNotNull( commandListener.getCommandExecutedEvent() );
@@ -816,7 +816,7 @@ public final class EngineTest
         final MockStateListener listener = new MockStateListener();
         addStateListener( listener );
 
-        m_engine.executeCommand( new MockCommand<Void>() );
+        engine_.executeCommand( new MockCommand<Void>() );
 
         assertNull( listener.getStateChangingEvent() );
         assertNull( listener.getStateChangedEvent() );
@@ -829,7 +829,7 @@ public final class EngineTest
     @Test
     public void testGetExtensionRegistry_ReturnValue_NonNull()
     {
-        assertNotNull( m_engine.getExtensionRegistry() );
+        assertNotNull( engine_.getExtensionRegistry() );
     }
 
     /**
@@ -838,7 +838,7 @@ public final class EngineTest
     @Test
     public void testGetState_ReturnValue_NonNull()
     {
-        assertNotNull( m_engine.getState() );
+        assertNotNull( engine_.getState() );
     }
 
     /**
@@ -857,11 +857,11 @@ public final class EngineTest
         final MockStateListener stateListener = new MockStateListener();
         addStateListener( stateListener );
 
-        m_engine.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
-        CommandHistoryFacade.undo( m_engine );
+        engine_.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        CommandHistoryFacade.undo( engine_ );
         commandListener.clearEvents();
         stateListener.clearEvents();
-        CommandHistoryFacade.redo( m_engine );
+        CommandHistoryFacade.redo( engine_ );
 
         assertNull( commandListener.getCommandExecutingEvent() );
         assertNull( commandListener.getCommandExecutedEvent() );
@@ -882,14 +882,14 @@ public final class EngineTest
     {
         final MockCommandListener listener = new MockCommandListener();
         addCommandListener( listener );
-        m_engine.executeCommand( new MockCommand<Void>() );
+        engine_.executeCommand( new MockCommand<Void>() );
 
         assertNotNull( listener.getCommandExecutingEvent() );
         assertNotNull( listener.getCommandExecutedEvent() );
 
         removeCommandListener( listener );
         listener.clearEvents();
-        m_engine.executeCommand( new MockCommand<Void>() );
+        engine_.executeCommand( new MockCommand<Void>() );
 
         assertNull( listener.getCommandExecutingEvent() );
         assertNull( listener.getCommandExecutedEvent() );
@@ -908,14 +908,14 @@ public final class EngineTest
     {
         final MockStateListener listener = new MockStateListener();
         addStateListener( listener );
-        m_engine.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name1" ), "value1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        engine_.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name1" ), "value1" ) ); //$NON-NLS-1$ //$NON-NLS-2$
 
         assertNotNull( listener.getStateChangingEvent() );
         assertNotNull( listener.getStateChangedEvent() );
 
         removeStateListener( listener );
         listener.clearEvents();
-        m_engine.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name2" ), "value2" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        engine_.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name2" ), "value2" ) ); //$NON-NLS-1$ //$NON-NLS-2$
 
         assertNull( listener.getStateChangingEvent() );
         assertNull( listener.getStateChangedEvent() );
@@ -937,10 +937,10 @@ public final class EngineTest
         final MockStateListener stateListener = new MockStateListener();
         addStateListener( stateListener );
 
-        m_engine.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        engine_.executeCommand( MockCommands.createAddAttributeCommand( new AttributeName( Scope.APPLICATION, "name" ), "value" ) ); //$NON-NLS-1$ //$NON-NLS-2$
         commandListener.clearEvents();
         stateListener.clearEvents();
-        CommandHistoryFacade.undo( m_engine );
+        CommandHistoryFacade.undo( engine_ );
 
         assertNull( commandListener.getCommandExecutingEvent() );
         assertNull( commandListener.getCommandExecutedEvent() );

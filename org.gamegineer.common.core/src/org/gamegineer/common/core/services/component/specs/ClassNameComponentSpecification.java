@@ -1,6 +1,6 @@
 /*
  * ClassNameComponentSpecification.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -52,7 +52,7 @@ public final class ClassNameComponentSpecification
     // ======================================================================
 
     /** The name of the component class. */
-    private final String m_name;
+    private final String name_;
 
 
     // ======================================================================
@@ -75,7 +75,7 @@ public final class ClassNameComponentSpecification
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        m_name = name;
+        name_ = name;
     }
 
 
@@ -96,7 +96,7 @@ public final class ClassNameComponentSpecification
         {
             for( final String name : supportedClassNames )
             {
-                if( m_name.equals( name ) )
+                if( name_.equals( name ) )
                 {
                     return true;
                 }

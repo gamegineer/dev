@@ -33,8 +33,8 @@ import java.util.List;
  * Each game system user interface built by an instance of this class is
  * immutable and thus guaranteed to be thread-safe. This class does not validate
  * its attributes and thus allows the construction of malformed game system user
- * interfaces that may violate the contract of {@code IGameSystemUi}. It is
- * only intended to be used during testing.
+ * interfaces that may violate the contract of {@code IGameSystemUi}. It is only
+ * intended to be used during testing.
  * </p>
  * 
  * <p>
@@ -48,13 +48,13 @@ public final class NonValidatingGameSystemUiBuilder
     // ======================================================================
 
     /** The game system identifier. */
-    private String m_id;
+    private String id_;
 
     /** The game system name. */
-    private String m_name;
+    private String name_;
 
     /** The role user interface list. */
-    private List<IRoleUi> m_roleUis;
+    private List<IRoleUi> roleUis_;
 
 
     // ======================================================================
@@ -62,21 +62,21 @@ public final class NonValidatingGameSystemUiBuilder
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code NonValidatingGameSystemUiBuilder} class with an uninitialized game
-     * system user interface.
+     * Initializes a new instance of the {@code
+     * NonValidatingGameSystemUiBuilder} class with an uninitialized game system
+     * user interface.
      */
     public NonValidatingGameSystemUiBuilder()
     {
-        m_id = null;
-        m_name = null;
-        m_roleUis = null;
+        id_ = null;
+        name_ = null;
+        roleUis_ = null;
     }
 
     /**
-     * Initializes a new instance of the
-     * {@code NonValidatingGameSystemUiBuilder} class using the specified game
-     * system user interface.
+     * Initializes a new instance of the {@code
+     * NonValidatingGameSystemUiBuilder} class using the specified game system
+     * user interface.
      * 
      * @param gameSystemUi
      *        The game system user interface used to initialize this builder;
@@ -91,9 +91,9 @@ public final class NonValidatingGameSystemUiBuilder
     {
         assertArgumentNotNull( gameSystemUi, "gameSystemUi" ); //$NON-NLS-1$
 
-        m_id = gameSystemUi.getId();
-        m_name = gameSystemUi.getName();
-        m_roleUis = gameSystemUi.getRoles();
+        id_ = gameSystemUi.getId();
+        name_ = gameSystemUi.getName();
+        roleUis_ = gameSystemUi.getRoles();
     }
 
 
@@ -114,12 +114,12 @@ public final class NonValidatingGameSystemUiBuilder
         /* @Nullable */
         final IRoleUi roleUi )
     {
-        if( m_roleUis == null )
+        if( roleUis_ == null )
         {
-            m_roleUis = new ArrayList<IRoleUi>();
+            roleUis_ = new ArrayList<IRoleUi>();
         }
 
-        m_roleUis.add( roleUi );
+        roleUis_.add( roleUi );
 
         return this;
     }
@@ -132,7 +132,7 @@ public final class NonValidatingGameSystemUiBuilder
     /* @NonNull */
     public NonValidatingGameSystemUiBuilder clearRoles()
     {
-        m_roleUis = null;
+        roleUis_ = null;
 
         return this;
     }
@@ -150,7 +150,7 @@ public final class NonValidatingGameSystemUiBuilder
         /* @Nullable */
         final String id )
     {
-        m_id = id;
+        id_ = id;
 
         return this;
     }
@@ -168,7 +168,7 @@ public final class NonValidatingGameSystemUiBuilder
         /* @Nullable */
         final String name )
     {
-        m_name = name;
+        name_ = name;
 
         return this;
     }
@@ -182,6 +182,6 @@ public final class NonValidatingGameSystemUiBuilder
     /* @NonNull */
     public IGameSystemUi toGameSystemUi()
     {
-        return new NonValidatingGameSystemUi( m_id, m_name, m_roleUis );
+        return new NonValidatingGameSystemUi( id_, name_, roleUis_ );
     }
 }

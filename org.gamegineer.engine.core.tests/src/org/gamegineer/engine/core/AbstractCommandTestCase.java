@@ -1,6 +1,6 @@
 /*
  * AbstractCommandTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -42,7 +42,7 @@ public abstract class AbstractCommandTestCase<C extends ICommand<T>, T>
     // ======================================================================
 
     /** The command under test in the fixture. */
-    private C m_command;
+    private C command_;
 
 
     // ======================================================================
@@ -82,8 +82,8 @@ public abstract class AbstractCommandTestCase<C extends ICommand<T>, T>
     /* @NonNull */
     protected final C getCommand()
     {
-        assertNotNull( m_command );
-        return m_command;
+        assertNotNull( command_ );
+        return command_;
     }
 
     /**
@@ -96,8 +96,8 @@ public abstract class AbstractCommandTestCase<C extends ICommand<T>, T>
     public void setUp()
         throws Exception
     {
-        m_command = createCommand();
-        assertNotNull( m_command );
+        command_ = createCommand();
+        assertNotNull( command_ );
     }
 
     /**
@@ -110,7 +110,7 @@ public abstract class AbstractCommandTestCase<C extends ICommand<T>, T>
     public void tearDown()
         throws Exception
     {
-        m_command = null;
+        command_ = null;
     }
 
     /**
@@ -124,6 +124,6 @@ public abstract class AbstractCommandTestCase<C extends ICommand<T>, T>
     public void testExecute_Context_Null()
         throws Exception
     {
-        m_command.execute( null );
+        command_.execute( null );
     }
 }

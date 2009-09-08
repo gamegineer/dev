@@ -49,7 +49,7 @@ public class FakeStringBundle
     // ======================================================================
 
     /** The string bundle entries. */
-    private final Map<String, String> m_entries;
+    private final Map<String, String> entries_;
 
 
     // ======================================================================
@@ -81,7 +81,7 @@ public class FakeStringBundle
     {
         assertArgumentNotNull( entries, "entries" ); //$NON-NLS-1$
 
-        m_entries = Collections.unmodifiableMap( new HashMap<String, String>( entries ) );
+        entries_ = Collections.unmodifiableMap( new HashMap<String, String>( entries ) );
     }
 
 
@@ -97,7 +97,7 @@ public class FakeStringBundle
     {
         assertArgumentNotNull( key, "key" ); //$NON-NLS-1$
 
-        return m_entries.containsKey( key );
+        return entries_.containsKey( key );
     }
 
     /*
@@ -105,7 +105,7 @@ public class FakeStringBundle
      */
     public Set<String> getKeys()
     {
-        return m_entries.keySet();
+        return entries_.keySet();
     }
 
     /*
@@ -116,6 +116,6 @@ public class FakeStringBundle
     {
         assertArgumentNotNull( key, "key" ); //$NON-NLS-1$
 
-        return m_entries.get( key );
+        return entries_.get( key );
     }
 }

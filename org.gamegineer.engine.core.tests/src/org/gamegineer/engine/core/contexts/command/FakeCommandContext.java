@@ -42,7 +42,7 @@ public class FakeCommandContext
     // ======================================================================
 
     /** The collection of attributes. */
-    private final Map<String, Object> m_attributes;
+    private final Map<String, Object> attributes_;
 
 
     // ======================================================================
@@ -75,7 +75,7 @@ public class FakeCommandContext
     {
         assertArgumentNotNull( attributes, "attributes" ); //$NON-NLS-1$
 
-        m_attributes = new HashMap<String, Object>( attributes );
+        attributes_ = new HashMap<String, Object>( attributes );
     }
 
 
@@ -91,7 +91,7 @@ public class FakeCommandContext
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return m_attributes.containsKey( name );
+        return attributes_.containsKey( name );
     }
 
     /*
@@ -102,6 +102,6 @@ public class FakeCommandContext
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        return m_attributes.get( name );
+        return attributes_.get( name );
     }
 }

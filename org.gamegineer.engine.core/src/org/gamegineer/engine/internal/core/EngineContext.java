@@ -44,13 +44,13 @@ final class EngineContext
     // ======================================================================
 
     /** The command context. */
-    private final ICommandContext m_commandContext;
+    private final ICommandContext commandContext_;
 
     /** The engine associated with this context. */
-    private final Engine m_engine;
+    private final Engine engine_;
 
     /** The extension context. */
-    private final IExtensionContext m_extensionContext;
+    private final IExtensionContext extensionContext_;
 
 
     // ======================================================================
@@ -74,9 +74,9 @@ final class EngineContext
         assert engine != null;
         assert commandContext != null;
 
-        m_engine = engine;
-        m_commandContext = commandContext;
-        m_extensionContext = new ExtensionContext();
+        engine_ = engine;
+        commandContext_ = commandContext;
+        extensionContext_ = new ExtensionContext();
     }
 
 
@@ -92,7 +92,7 @@ final class EngineContext
     /* @NonNull */
     Engine getEngine()
     {
-        return m_engine;
+        return engine_;
     }
 
     /*
@@ -105,11 +105,11 @@ final class EngineContext
 
         if( type == ICommandContext.class )
         {
-            return type.cast( m_commandContext );
+            return type.cast( commandContext_ );
         }
         else if( type == IExtensionContext.class )
         {
-            return type.cast( m_extensionContext );
+            return type.cast( extensionContext_ );
         }
 
         return null;
@@ -123,7 +123,7 @@ final class EngineContext
     {
         assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
 
-        return type.cast( m_engine.getExtensionRegistry().getExtension( this, type ) );
+        return type.cast( engine_.getExtensionRegistry().getExtension( this, type ) );
     }
 
     /*
@@ -131,6 +131,6 @@ final class EngineContext
      */
     public IState getState()
     {
-        return m_engine.getState();
+        return engine_.getState();
     }
 }
