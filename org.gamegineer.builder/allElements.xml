@@ -26,70 +26,6 @@
             <property name="type" value="feature" />
             <property name="id" value="org.gamegineer.common.feature.base.tests" />
         </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.engine.feature.base" />
-        </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.engine.feature.base.tests" />
-        </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.game.feature.base" />
-        </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.game.feature.client" />
-        </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.game.feature.base.tests" />
-        </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.game.feature.client.tests" />
-        </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.server.feature.base" />
-        </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.server.feature.base.tests" />
-        </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.client.feature.base" />
-        </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.client.feature.base.tests" />
-        </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.client.feature.console" />
-        </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.client.feature.console.tests" />
-        </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.tictactoe.feature.base" />
-        </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.tictactoe.feature.client" />
-        </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.tictactoe.feature.base.tests" />
-        </ant>
-        <ant antfile="${genericTargets}" target="${target}">
-            <property name="type" value="feature" />
-            <property name="id" value="org.gamegineer.tictactoe.feature.client.tests" />
-        </ant>
     </target>
 
     <!-- ===================================================================== -->
@@ -107,54 +43,6 @@
         <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
     </target>
     <target name="assemble.org.gamegineer.common.feature.base.tests">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.engine.feature.base">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.engine.feature.base.tests">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.game.feature.base">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.game.feature.client">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.game.feature.base.tests">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.game.feature.client.tests">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.server.feature.base">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.server.feature.base.tests">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.client.feature.base">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.client.feature.base.tests">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.client.feature.console">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.client.feature.console.tests">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.tictactoe.feature.base">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.tictactoe.feature.client">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.tictactoe.feature.base.tests">
-        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
-    </target>
-    <target name="assemble.org.gamegineer.tictactoe.feature.client.tests">
         <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
     </target>
 
