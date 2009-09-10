@@ -1,4 +1,0 @@
-# Debugging options for the org.gamegineer.tictactoe.ui bundle.
-
-# Turn on debugging for the entire bundle.
-org.gamegineer.tictactoe.ui/debug=false

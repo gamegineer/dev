@@ -1,4 +1,0 @@
-# Debugging options for the org.gamegineer.engine.core bundle.
-
-# Turn on debugging for the entire bundle.
-org.gamegineer.engine.core/debug=false

@@ -1,7 +1,0 @@
-# Debugging options for the org.gamegineer.server.core bundle.
-
-# Turn on debugging for the entire bundle.
-org.gamegineer.server.core/debug=false
-
-# Reports configuration activity.
-org.gamegineer.server.core/debug/config=false

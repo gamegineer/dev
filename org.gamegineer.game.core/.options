@@ -1,7 +1,0 @@
-# Debugging options for the org.gamegineer.game.core bundle.
-
-# Turn on debugging for the entire bundle.
-org.gamegineer.game.core/debug=false
-
-# Reports game system activity.
-org.gamegineer.game.core/debug/system=false
