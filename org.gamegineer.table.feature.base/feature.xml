@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+        id="org.gamegineer.table.feature.base"
+        label="%featureName"
+        version="0.2.0"
+        provider-name="%providerName">
+
+    <description>
+        %description
+    </description>
+
+    <copyright>
+        %copyright
+    </copyright>
+
+    <license url="%licenseUrl">
+        %license
+    </license>
+
+    <plugin
+            id="org.gamegineer.table.core"
+            download-size="0"
+            install-size="0"
+            version="0.0.0"
+            unpack="false" />
+
+</feature>
