@@ -26,6 +26,14 @@
             <property name="type" value="feature" />
             <property name="id" value="org.gamegineer.common.feature.base.tests" />
         </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.table.feature.base" />
+        </ant>
+        <ant antfile="${genericTargets}" target="${target}">
+            <property name="type" value="feature" />
+            <property name="id" value="org.gamegineer.table.feature.base.tests" />
+        </ant>
     </target>
 
     <!-- ===================================================================== -->
@@ -43,6 +51,12 @@
         <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
     </target>
     <target name="assemble.org.gamegineer.common.feature.base.tests">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.table.feature.base">
+        <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
+    </target>
+    <target name="assemble.org.gamegineer.table.feature.base.tests">
         <ant antfile="${assembleScriptName}" dir="${buildDirectory}" />
     </target>
 
