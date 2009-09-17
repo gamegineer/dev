@@ -25,7 +25,7 @@
  * 
  * <p>
  * This package is only intended for use by members of the
- * {@code org.gamegineer.ui} project.
+ * {@code org.gamegineer.table} project.
  * </p>
  */
 package org.gamegineer.table.internal.ui;
