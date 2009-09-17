@@ -1,0 +1,4 @@
+# Debugging options for the org.gamegineer.table.ui bundle.
+
+# Turn on debugging for the entire bundle.
+org.gamegineer.table.ui/debug=false
