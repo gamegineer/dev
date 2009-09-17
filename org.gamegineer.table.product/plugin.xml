@@ -16,7 +16,7 @@
             id="product"
             point="org.eclipse.core.runtime.products">
         <product
-                application="org.gamegineer.client.product.console.application"
+                application="org.gamegineer.table.product.application"
                 description="%product.description"
                 name="%product.name">
         </product>

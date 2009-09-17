@@ -58,6 +58,7 @@ public final class Application
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
         System.out.println( "[gamegineer]: start" ); //$NON-NLS-1$
+
         return EXIT_OK;
     }
 
