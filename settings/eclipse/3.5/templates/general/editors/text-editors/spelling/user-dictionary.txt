@@ -64,3 +64,4 @@ dec
 jan
 remoting
 statelet
+cancelled
