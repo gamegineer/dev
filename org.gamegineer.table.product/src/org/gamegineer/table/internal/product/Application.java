@@ -22,15 +22,38 @@
 package org.gamegineer.table.internal.product;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.gamegineer.table.ui.ITableAdvisor;
+import org.gamegineer.table.ui.TableAdvisor;
+import org.gamegineer.table.ui.TableResult;
+import org.gamegineer.table.ui.TableUI;
+import org.osgi.framework.Version;
 
 /**
- * The entry point of the Gamegineer application.
+ * The entry point of the Gamegineer table application.
  */
 public final class Application
     implements IApplication
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The task associated with the running table. */
+    private final AtomicReference<Future<TableResult>> task_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -40,13 +63,54 @@ public final class Application
      */
     public Application()
     {
-        super();
+        task_ = new AtomicReference<Future<TableResult>>();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates a table advisor based on the specified application context.
+     * 
+     * @param context
+     *        The application context; must not be {@code null}.
+     * 
+     * @return A table advisor; never {@code null}.
+     */
+    /* @NonNull */
+    private static ITableAdvisor createTableAdvisor(
+        /* @NonNull */
+        final IApplicationContext context )
+    {
+        assert context != null;
+
+        final String[] argsArray = (String[])context.getArguments().get( IApplicationContext.APPLICATION_ARGS );
+        final List<String> args;
+        if( (argsArray != null) && (argsArray.length != 0) )
+        {
+            args = Arrays.asList( argsArray );
+        }
+        else
+        {
+            args = Collections.emptyList();
+        }
+
+        final String versionString = (String)context.getBrandingBundle().getHeaders().get( org.osgi.framework.Constants.BUNDLE_VERSION );
+        Version version;
+        try
+        {
+            version = Version.parseVersion( versionString );
+        }
+        catch( final IllegalArgumentException e )
+        {
+            Loggers.DEFAULT.log( Level.WARNING, Messages.Application_createTableAdvisor_parseVersionError( versionString ), e );
+            version = Version.emptyVersion;
+        }
+
+        return new TableAdvisor( args, version );
+    }
 
     /*
      * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
@@ -57,9 +121,38 @@ public final class Application
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        System.out.println( "[gamegineer]: start" ); //$NON-NLS-1$
+        final ITableAdvisor advisor = createTableAdvisor( context );
+        Loggers.DEFAULT.log( Level.INFO, Messages.Application_start_starting( advisor.getApplicationVersion() ) );
 
-        return EXIT_OK;
+        final ExecutorService executor = Executors.newSingleThreadExecutor();
+        try
+        {
+            final Future<TableResult> task = executor.submit( TableUI.createTableRunner( advisor ) );
+            task_.set( task );
+
+            TableResult result;
+            try
+            {
+                result = task.get();
+            }
+            catch( final CancellationException e )
+            {
+                Loggers.DEFAULT.log( Level.WARNING, Messages.Application_start_cancelled, e );
+                result = TableResult.OK;
+            }
+
+            Loggers.DEFAULT.log( Level.INFO, Messages.Application_start_stopped( result ) );
+            return toApplicationExitObject( result );
+        }
+        finally
+        {
+            task_.set( null );
+            executor.shutdown();
+            if( !executor.awaitTermination( 10, TimeUnit.SECONDS ) )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.Application_start_stopFailed );
+            }
+        }
     }
 
     /*
@@ -67,6 +160,36 @@ public final class Application
      */
     public void stop()
     {
-        System.out.println( "[gamegineer]: stop" ); //$NON-NLS-1$
+        final Future<?> task = task_.get();
+        if( task != null )
+        {
+            Loggers.DEFAULT.log( Level.INFO, Messages.Application_stop_stopping );
+            if( !task.cancel( true ) )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.Application_stop_cancelFailed );
+            }
+        }
+    }
+
+    /**
+     * Converts the specified table result to an appropriate Equinox application
+     * exit object.
+     * 
+     * @param result
+     *        The table result; must not be {@code null}.
+     * 
+     * @return The Equinox application exit object corresponding to the
+     *         specified table result; never {@code null}.
+     */
+    /* @NonNull */
+    private static Object toApplicationExitObject(
+        /* @NonNull */
+        final TableResult result )
+    {
+        assert result != null;
+
+        @SuppressWarnings( "boxing" )
+        final Integer exitCode = result.getExitCode();
+        return exitCode;
     }
 }
