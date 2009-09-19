@@ -122,7 +122,7 @@ public final class Application
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
         final ITableAdvisor advisor = createTableAdvisor( context );
-        Loggers.DEFAULT.log( Level.INFO, Messages.Application_start_starting( advisor.getApplicationVersion() ) );
+        Loggers.DEFAULT.info( Messages.Application_start_starting( advisor.getApplicationVersion() ) );
 
         final ExecutorService executor = Executors.newSingleThreadExecutor();
         try
@@ -141,7 +141,7 @@ public final class Application
                 result = TableResult.OK;
             }
 
-            Loggers.DEFAULT.log( Level.INFO, Messages.Application_start_stopped( result ) );
+            Loggers.DEFAULT.info( Messages.Application_start_stopped( result ) );
             return toApplicationExitObject( result );
         }
         finally
@@ -150,7 +150,7 @@ public final class Application
             executor.shutdown();
             if( !executor.awaitTermination( 10, TimeUnit.SECONDS ) )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.Application_start_stopFailed );
+                Loggers.DEFAULT.severe( Messages.Application_start_stopFailed );
             }
         }
     }
@@ -163,10 +163,10 @@ public final class Application
         final Future<?> task = task_.get();
         if( task != null )
         {
-            Loggers.DEFAULT.log( Level.INFO, Messages.Application_stop_stopping );
+            Loggers.DEFAULT.info( Messages.Application_stop_stopping );
             if( !task.cancel( true ) )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.Application_stop_cancelFailed );
+                Loggers.DEFAULT.severe( Messages.Application_stop_cancelFailed );
             }
         }
     }
