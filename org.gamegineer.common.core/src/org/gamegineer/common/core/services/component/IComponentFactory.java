@@ -1,6 +1,6 @@
 /*
  * IComponentFactory.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -52,9 +52,7 @@ package org.gamegineer.common.core.services.component;
  * pattern.
  * </p>
  * 
- * <p>
- * This interface is intended to be implemented but not extended by clients.
- * </p>
+ * @noextend This interface is not intended to be extended by clients.
  */
 public interface IComponentFactory
 {
@@ -92,8 +90,7 @@ public interface IComponentFactory
      *         one of the attributes is of the wrong type.
      * @throws java.lang.NullPointerException
      *         If {@code context} is {@code null}.
-     * @throws
-     *         org.gamegineer.common.core.services.component.ComponentCreationException
+     * @throws org.gamegineer.common.core.services.component.ComponentCreationException
      *         If an error occurred during component creation.
      */
     /* @NonNull */

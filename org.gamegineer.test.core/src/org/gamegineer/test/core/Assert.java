@@ -1,6 +1,6 @@
 /*
  * Assert.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,10 +25,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 import java.util.Collection;
 import java.util.Map;
+import net.jcip.annotations.ThreadSafe;
 
 /**
  * A collection of custom assertion methods.
  */
+@ThreadSafe
 public final class Assert
 {
     // ======================================================================

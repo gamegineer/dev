@@ -24,6 +24,7 @@ package org.gamegineer.common.internal.core.services.logging;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Map;
+import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.runtime.Platform;
 import org.gamegineer.common.core.services.component.AbstractComponentFactory;
 import org.gamegineer.common.core.services.component.ComponentCreationContextBuilder;
@@ -45,6 +46,7 @@ import org.gamegineer.common.internal.core.services.logging.attributes.LoggingPr
  * @param <T>
  *        The type of the logging component.
  */
+@ThreadSafe
 public abstract class AbstractLoggingComponentFactory<T>
     extends AbstractComponentFactory
 {

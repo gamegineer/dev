@@ -1,6 +1,6 @@
 /*
  * IComponentService.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,9 +32,9 @@ import java.util.Collection;
  * Trader pattern.
  * </p>
  * 
- * <p>
- * This interface is not intended to be implemented or extended by clients.
- * </p>
+ * @noextend This interface is not intended to be extended by clients.
+ * 
+ * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface IComponentService
 {
@@ -66,11 +66,9 @@ public interface IComponentService
      *         one of the attributes is of the wrong type.
      * @throws java.lang.NullPointerException
      *         If {@code specification} or {@code context} is {@code null}.
-     * @throws
-     *         org.gamegineer.common.core.services.component.ComponentCreationException
+     * @throws org.gamegineer.common.core.services.component.ComponentCreationException
      *         If an error occurred during component creation.
-     * @throws
-     *         org.gamegineer.common.core.services.component.UnsupportedComponentSpecificationException
+     * @throws org.gamegineer.common.core.services.component.UnsupportedComponentSpecificationException
      *         If a component factory that matches the component specification
      *         could not be found.
      */
@@ -102,8 +100,8 @@ public interface IComponentService
      *        must not be {@code null}.
      * 
      * @return An immutable collection of component factories that satisfy the
-     *         specified specification; never {@code null}. This collection is
-     *         a snapshot of the factories available at the time of the call.
+     *         specified specification; never {@code null}. This collection is a
+     *         snapshot of the factories available at the time of the call.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code specification} is {@code null}.

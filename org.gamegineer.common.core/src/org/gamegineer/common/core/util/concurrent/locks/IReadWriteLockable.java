@@ -1,6 +1,6 @@
 /*
  * IReadWriteLockable.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,9 +27,7 @@ import java.util.concurrent.locks.ReadWriteLock;
  * Indicates an object supports a synchronization lock for read operations and a
  * separate synchronization lock for write operations.
  * 
- * <p>
- * This interface is intended to be implemented but not extended by clients.
- * </p>
+ * @noextend This interface is not intended to be extended by clients.
  */
 public interface IReadWriteLockable
 {

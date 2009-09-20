@@ -33,14 +33,6 @@ import org.gamegineer.common.persistence.memento.IMemento;
 /**
  * A basic implementation of
  * {@link org.gamegineer.common.persistence.memento.IMemento}.
- * 
- * <p>
- * This class is immutable.
- * </p>
- * 
- * <p>
- * This class is not intended to be extended by clients.
- * </p>
  */
 @Immutable
 public final class Memento

@@ -1,6 +1,6 @@
 /*
  * SimpleFormatterFactory.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,12 +22,14 @@
 package org.gamegineer.common.internal.core.util.logging;
 
 import java.util.logging.SimpleFormatter;
+import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.internal.core.services.logging.AbstractLoggingComponentFactory;
 
 /**
  * A component factory for creating instances of
  * {@link java.util.logging.SimpleFormatter}.
  */
+@ThreadSafe
 final class SimpleFormatterFactory
     extends AbstractLoggingComponentFactory<SimpleFormatter>
 {

@@ -23,6 +23,7 @@ package org.gamegineer.common.internal.persistence;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
@@ -34,6 +35,7 @@ import org.osgi.util.tracker.ServiceTracker;
  * The {@code close} method should be called before the bundle is stopped.
  * </p>
  */
+@ThreadSafe
 public final class Services
 {
     // ======================================================================

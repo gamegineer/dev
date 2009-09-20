@@ -32,10 +32,6 @@ import org.gamegineer.table.internal.ui.TableFrame;
 
 /**
  * Provides access to the table user interface.
- * 
- * <p>
- * This class is thread-safe.
- * </p>
  */
 @ThreadSafe
 public final class TableUI

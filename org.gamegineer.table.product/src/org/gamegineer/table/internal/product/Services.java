@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.product;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import net.jcip.annotations.ThreadSafe;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -31,6 +32,7 @@ import org.osgi.framework.BundleContext;
  * The {@code close} method should be called before the bundle is stopped.
  * </p>
  */
+@ThreadSafe
 public final class Services
 {
     // ======================================================================

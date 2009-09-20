@@ -1,6 +1,6 @@
 /*
  * LoggingPropertiesAttribute.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,11 +22,13 @@
 package org.gamegineer.common.internal.core.services.logging.attributes;
 
 import java.util.Map;
+import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.services.component.util.attribute.AbstractAttribute;
 
 /**
  * An attribute used to specify a collection of optional logging properties.
  */
+@Immutable
 public final class LoggingPropertiesAttribute
     extends AbstractAttribute<Map<String, String>>
 {

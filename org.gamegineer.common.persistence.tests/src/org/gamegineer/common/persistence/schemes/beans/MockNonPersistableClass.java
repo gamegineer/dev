@@ -21,6 +21,8 @@
 
 package org.gamegineer.common.persistence.schemes.beans;
 
+import net.jcip.annotations.Immutable;
+
 /**
  * A mock non-persistable class used for testing the JavaBeans persistence
  * coders.
@@ -30,11 +32,8 @@ package org.gamegineer.common.persistence.schemes.beans;
  * constructor with setter methods for its fields, and b) does not apply the
  * {@code ConstructorProperties} annotation to its non-default constructor.
  * </p>
- * 
- * <p>
- * This class is not intended to be extended by clients.
- * </p>
  */
+@Immutable
 public final class MockNonPersistableClass
 {
     // ======================================================================

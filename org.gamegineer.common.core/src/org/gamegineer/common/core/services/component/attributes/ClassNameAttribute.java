@@ -1,6 +1,6 @@
 /*
  * ClassNameAttribute.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,14 @@
 
 package org.gamegineer.common.core.services.component.attributes;
 
+import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.services.component.util.attribute.AbstractAttribute;
 
 /**
  * An attribute used to specify the name of a class for which a client requests
  * an instance to be created.
  */
+@Immutable
 public final class ClassNameAttribute
     extends AbstractAttribute<String>
 {

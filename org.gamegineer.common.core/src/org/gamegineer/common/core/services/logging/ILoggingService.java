@@ -1,6 +1,6 @@
 /*
  * ILoggingService.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -62,9 +62,9 @@ import org.osgi.framework.Bundle;
  * filters.
  * </p>
  * 
- * <p>
- * This interface is not intended to be implemented or extended by clients.
- * </p>
+ * @noextend This interface is not intended to be extended by clients.
+ * 
+ * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface ILoggingService
 {

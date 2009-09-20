@@ -1,6 +1,6 @@
 /*
  * IAttributeAccessor.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,9 +31,7 @@ package org.gamegineer.common.core.services.component.util.attribute;
  * collection.
  * </p>
  * 
- * <p>
- * This interface is intended to be implemented but not extended by clients.
- * </p>
+ * @noextend This interface is not intended to be extended by clients.
  */
 public interface IAttributeAccessor
 {

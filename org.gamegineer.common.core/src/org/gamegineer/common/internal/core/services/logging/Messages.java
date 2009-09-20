@@ -1,6 +1,6 @@
 /*
  * Messages.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,13 @@
 
 package org.gamegineer.common.internal.core.services.logging;
 
+import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
 /**
  * A utility class to manage localized messages for the package.
  */
+@ThreadSafe
 final class Messages
     extends NLS
 {
@@ -97,8 +99,8 @@ final class Messages
      * Gets the formatted message indicating logging component creation failed.
      * 
      * @param instanceName
-     *        The instance name of the logging component; must not be
-     *        {@code null}.
+     *        The instance name of the logging component; must not be {@code
+     *        null}.
      * @param className
      *        The class name of the logging component; must not be {@code null}.
      * 

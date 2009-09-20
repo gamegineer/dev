@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.product;
 
+import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.ui.TableResult;
 import org.osgi.framework.Version;
@@ -28,6 +29,7 @@ import org.osgi.framework.Version;
 /**
  * A utility class to manage localized messages for the package.
  */
+@ThreadSafe
 final class Messages
     extends NLS
 {

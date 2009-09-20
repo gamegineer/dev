@@ -21,12 +21,14 @@
 
 package org.gamegineer.common.internal.persistence;
 
+import net.jcip.annotations.ThreadSafe;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 /**
  * The bundle activator for the org.gamegineer.common.persistence bundle.
  */
+@ThreadSafe
 public final class Activator
     implements BundleActivator
 {

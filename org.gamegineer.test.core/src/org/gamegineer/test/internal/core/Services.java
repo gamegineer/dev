@@ -21,6 +21,7 @@
 
 package org.gamegineer.test.internal.core;
 
+import net.jcip.annotations.ThreadSafe;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.packageadmin.PackageAdmin;
 import org.osgi.util.tracker.ServiceTracker;
@@ -32,6 +33,7 @@ import org.osgi.util.tracker.ServiceTracker;
  * The {@code close} method should be called before the bundle is stopped.
  * </p>
  */
+@ThreadSafe
 public final class Services
 {
     // ======================================================================

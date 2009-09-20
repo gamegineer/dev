@@ -1,6 +1,6 @@
 /*
  * ComponentCreationException.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,14 +21,13 @@
 
 package org.gamegineer.common.core.services.component;
 
+import net.jcip.annotations.NotThreadSafe;
+
 /**
  * A checked exception that indicates an error occurred during the creation of a
  * component by its associated factory.
- * 
- * <p>
- * This class is not intended to be extended by clients.
- * </p>
  */
+@NotThreadSafe
 public final class ComponentCreationException
     extends ComponentException
 {

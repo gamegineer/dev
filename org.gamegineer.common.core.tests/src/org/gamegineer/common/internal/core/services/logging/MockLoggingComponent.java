@@ -1,6 +1,6 @@
 /*
  * MockLoggingComponent.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,14 @@
 
 package org.gamegineer.common.internal.core.services.logging;
 
+import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.services.component.IComponentFactory;
 
 /**
  * A mock logging component that can be used for testing of a logging component
  * factory.
  */
+@Immutable
 final class MockLoggingComponent
 {
     // ======================================================================

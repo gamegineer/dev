@@ -26,6 +26,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.internal.persistence.memento.Memento;
 
 /**
@@ -37,15 +38,8 @@ import org.gamegineer.common.internal.persistence.memento.Memento;
  * persistence delegate for both the JavaBeans persistence framework and the
  * Java object serialization framework.
  * </p>
- * 
- * <p>
- * This class is not thread-safe.
- * </p>
- * 
- * <p>
- * This class is not intended to be extended by clients.
- * </p>
  */
+@NotThreadSafe
 public final class MementoBuilder
 {
     // ======================================================================

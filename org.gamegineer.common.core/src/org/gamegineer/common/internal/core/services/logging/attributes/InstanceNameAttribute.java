@@ -1,6 +1,6 @@
 /*
  * InstanceNameAttribute.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,14 @@
 
 package org.gamegineer.common.internal.core.services.logging.attributes;
 
+import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.services.component.util.attribute.AbstractAttribute;
 
 /**
  * An attribute used to specify the name of an instance of a logging service
  * entity such as a handler, formatter, or a filter.
  */
+@Immutable
 public final class InstanceNameAttribute
     extends AbstractAttribute<String>
 {

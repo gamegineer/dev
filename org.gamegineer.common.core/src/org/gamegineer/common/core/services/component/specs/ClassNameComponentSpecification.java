@@ -38,10 +38,6 @@ import org.gamegineer.common.core.services.component.util.attribute.ComponentFac
  * {@link org.gamegineer.common.core.services.component.attributes.SupportedClassNamesAttribute}
  * attribute.
  * </p>
- * 
- * <p>
- * This class is immutable.
- * </p>
  */
 @Immutable
 public final class ClassNameComponentSpecification

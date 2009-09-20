@@ -32,6 +32,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
+import net.jcip.annotations.ThreadSafe;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.gamegineer.table.ui.ITableAdvisor;
@@ -43,6 +44,7 @@ import org.osgi.framework.Version;
 /**
  * The entry point of the Gamegineer table application.
  */
+@ThreadSafe
 public final class Application
     implements IApplication
 {

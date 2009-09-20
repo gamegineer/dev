@@ -26,6 +26,8 @@ import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import net.jcip.annotations.NotThreadSafe;
+import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.framework.log.FrameworkLogEntry;
 import org.gamegineer.common.internal.core.Services;
 
@@ -49,6 +51,7 @@ import org.gamegineer.common.internal.core.Services;
  * set on this class will be remembered but not used.
  * </p>
  */
+@NotThreadSafe
 public class FrameworkLogHandler
     extends Handler
 {
@@ -166,6 +169,7 @@ public class FrameworkLogHandler
     /**
      * A log record formatter for the Equinox framework log.
      */
+    @ThreadSafe
     private static final class FrameworkLogFormatter
         extends Formatter
     {

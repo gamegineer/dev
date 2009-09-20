@@ -28,9 +28,7 @@ import org.osgi.framework.Version;
  * An advisor responsible for configuring the table based on application
  * settings.
  * 
- * <p>
- * This interface is intended to be implemented but not extended by clients.
- * </p>
+ * @noextend This interface is not intended to be extended by clients.
  */
 public interface ITableAdvisor
 {

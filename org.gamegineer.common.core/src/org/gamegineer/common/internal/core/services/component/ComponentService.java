@@ -44,10 +44,6 @@ import org.gamegineer.common.internal.core.Services;
 /**
  * Implementation of
  * {@link org.gamegineer.common.core.services.component.IComponentService}.
- * 
- * <p>
- * This class is thread-safe.
- * </p>
  */
 @ThreadSafe
 public final class ComponentService

@@ -30,14 +30,6 @@ import org.gamegineer.common.core.services.component.IComponentFactory;
  * {@link org.gamegineer.common.core.services.component.util.attribute.IAttributeAccessor}
  * for classes that implement
  * {@link org.gamegineer.common.core.services.component.IComponentFactory}.
- * 
- * <p>
- * This class is immutable.
- * </p>
- * 
- * <p>
- * This class is not intended to be extended by clients.
- * </p>
  */
 @Immutable
 public final class ComponentFactoryAttributeAccessor

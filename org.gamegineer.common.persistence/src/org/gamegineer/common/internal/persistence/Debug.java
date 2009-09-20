@@ -1,6 +1,6 @@
 /*
  * Debug.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,13 @@
 
 package org.gamegineer.common.internal.persistence;
 
+import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.service.debug.DebugOptions;
 
 /**
  * Debugging utilities for the bundle.
  */
+@ThreadSafe
 public final class Debug
     extends org.gamegineer.common.core.runtime.Debug
 {

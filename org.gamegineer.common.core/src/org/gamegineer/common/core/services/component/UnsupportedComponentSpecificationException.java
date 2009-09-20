@@ -1,6 +1,6 @@
 /*
  * UnsupportedComponentSpecificationException.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,14 +21,13 @@
 
 package org.gamegineer.common.core.services.component;
 
+import net.jcip.annotations.NotThreadSafe;
+
 /**
  * A checked exception that indicates a factory could not be located within the
  * component service to satisfy a particular component specification.
- * 
- * <p>
- * This class is not intended to be extended by clients.
- * </p>
  */
+@NotThreadSafe
 public final class UnsupportedComponentSpecificationException
     extends ComponentException
 {
@@ -45,9 +44,9 @@ public final class UnsupportedComponentSpecificationException
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code UnsupportedComponentSpecificationException} class with no detail
-     * message and no cause.
+     * Initializes a new instance of the {@code
+     * UnsupportedComponentSpecificationException} class with no detail message
+     * and no cause.
      */
     public UnsupportedComponentSpecificationException()
     {
@@ -55,9 +54,9 @@ public final class UnsupportedComponentSpecificationException
     }
 
     /**
-     * Initializes a new instance of the
-     * {@code UnsupportedComponentSpecificationException} class with the
-     * specified detail message and no cause.
+     * Initializes a new instance of the {@code
+     * UnsupportedComponentSpecificationException} class with the specified
+     * detail message and no cause.
      * 
      * @param message
      *        The detail message; may be {@code null}.
@@ -70,9 +69,9 @@ public final class UnsupportedComponentSpecificationException
     }
 
     /**
-     * Initializes a new instance of the
-     * {@code UnsupportedComponentSpecificationException} class with no detail
-     * message and the specified cause.
+     * Initializes a new instance of the {@code
+     * UnsupportedComponentSpecificationException} class with no detail message
+     * and the specified cause.
      * 
      * @param cause
      *        The cause; may be {@code null}.
@@ -85,9 +84,9 @@ public final class UnsupportedComponentSpecificationException
     }
 
     /**
-     * Initializes a new instance of the
-     * {@code UnsupportedComponentSpecificationException} class with the
-     * specified detail message and cause.
+     * Initializes a new instance of the {@code
+     * UnsupportedComponentSpecificationException} class with the specified
+     * detail message and cause.
      * 
      * @param message
      *        The detail message; may be {@code null}.

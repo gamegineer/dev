@@ -31,10 +31,6 @@ import org.gamegineer.common.internal.core.Debug;
 
 /**
  * The configuration for a logger.
- * 
- * <p>
- * This class is immutable.
- * </p>
  */
 @Immutable
 final class LoggerConfiguration

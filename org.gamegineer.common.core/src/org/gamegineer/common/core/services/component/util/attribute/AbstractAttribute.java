@@ -22,6 +22,7 @@
 package org.gamegineer.common.core.services.component.util.attribute;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import net.jcip.annotations.Immutable;
 
 /**
  * Superclass for all classes that implement
@@ -31,6 +32,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
  * @param <T>
  *        The type of the attribute.
  */
+@Immutable
 public abstract class AbstractAttribute<T>
     implements IAttribute<T>
 {

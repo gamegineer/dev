@@ -21,12 +21,14 @@
 
 package org.gamegineer.table.internal.product;
 
+import net.jcip.annotations.ThreadSafe;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 /**
  * The bundle activator for the org.gamegineer.table.product bundle.
  */
+@ThreadSafe
 public final class Activator
     implements BundleActivator
 {

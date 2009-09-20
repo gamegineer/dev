@@ -1,6 +1,6 @@
 /*
  * Loggers.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,12 +22,14 @@
 package org.gamegineer.common.internal.core;
 
 import java.util.logging.Logger;
+import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.services.logging.ILoggingService;
 import org.osgi.framework.Bundle;
 
 /**
  * Manages the loggers used by the bundle.
  */
+@ThreadSafe
 public final class Loggers
     extends org.gamegineer.common.core.runtime.Loggers
 {

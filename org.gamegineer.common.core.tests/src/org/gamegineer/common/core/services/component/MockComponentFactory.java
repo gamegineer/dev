@@ -1,6 +1,6 @@
 /*
  * MockComponentFactory.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,19 +22,13 @@
 package org.gamegineer.common.core.services.component;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import net.jcip.annotations.NotThreadSafe;
 
 /**
  * Mock implementation of
  * {@link org.gamegineer.common.core.services.component.IComponentFactory}.
- * 
- * <p>
- * This class is thread compatible.
- * </p>
- * 
- * <p>
- * This class is intended to be extended by clients.
- * </p>
  */
+@NotThreadSafe
 public class MockComponentFactory
     extends AbstractComponentFactory
 {

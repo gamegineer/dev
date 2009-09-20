@@ -1,6 +1,6 @@
 /*
  * StandardOutputHandler.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,10 +26,12 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.internal.core.Debug;
 
 /**
- * A logging handler that publishes records to standard output ({@code System.out}).
+ * A logging handler that publishes records to standard output ({@code
+ * System.out}).
  * 
  * <p>
  * This handler only supports configuration through the Gamegineer logging
@@ -41,12 +43,13 @@ import org.gamegineer.common.internal.core.Debug;
  * <li>{@code encoding} specifies the name of the character set encoding to use
  * (defaults to the default platform encoding).</li>
  * <li>{@code filter} specifies the filter to use (defaults to no filter).</li>
- * <li>{@code formatter} specifies the formatter to use (defaults to
- * {@code java.util.logging.SimpleFormatter}).</li>
+ * <li>{@code formatter} specifies the formatter to use (defaults to {@code
+ * java.util.logging.SimpleFormatter}).</li>
  * <li>{@code level} specifies the default level for the handler (defaults to
  * {@code Level.INFO}).</li>
  * </ul>
  */
+@NotThreadSafe
 public class StandardOutputHandler
     extends StreamHandler
 {

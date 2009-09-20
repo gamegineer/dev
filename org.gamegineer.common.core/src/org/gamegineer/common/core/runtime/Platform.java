@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.core.runtime;
 
+import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.common.core.services.component.IComponentService;
 import org.gamegineer.common.internal.core.Services;
@@ -29,6 +30,7 @@ import org.gamegineer.common.internal.core.Services;
  * A collection of useful methods for clients running on the Gamegineer
  * platform.
  */
+@ThreadSafe
 public final class Platform
 {
     // ======================================================================

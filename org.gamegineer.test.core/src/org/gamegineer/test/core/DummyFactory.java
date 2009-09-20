@@ -1,6 +1,6 @@
 /*
  * DummyFactory.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,10 +24,13 @@ package org.gamegineer.test.core;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import net.jcip.annotations.Immutable;
+import net.jcip.annotations.ThreadSafe;
 
 /**
  * A factory for creating test dummies.
  */
+@ThreadSafe
 public final class DummyFactory
 {
     // ======================================================================
@@ -99,6 +102,7 @@ public final class DummyFactory
     /**
      * The invocation handler for all dummy proxies.
      */
+    @Immutable
     private static final class DummyInvocationHandler
         implements InvocationHandler
     {

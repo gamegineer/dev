@@ -1,6 +1,6 @@
 /*
  * StandardOutputHandlerFactory.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,14 @@
 
 package org.gamegineer.common.internal.core.util.logging;
 
+import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.logging.StandardOutputHandler;
 
 /**
  * A component factory for creating instances of
  * {@link org.gamegineer.common.core.util.logging.StandardOutputHandler}.
  */
+@ThreadSafe
 final class StandardOutputHandlerFactory
     extends AbstractHandlerFactory<StandardOutputHandler>
 {

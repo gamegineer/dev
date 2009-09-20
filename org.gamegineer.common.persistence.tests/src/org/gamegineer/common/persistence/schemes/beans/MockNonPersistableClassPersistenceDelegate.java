@@ -1,6 +1,6 @@
 /*
  * MockNonPersistableClassPersistenceDelegate.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,11 +24,13 @@ package org.gamegineer.common.persistence.schemes.beans;
 import java.beans.Encoder;
 import java.beans.Expression;
 import java.beans.PersistenceDelegate;
+import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.runtime.IAdapterFactory;
 
 /**
  * A persistence delegate for the {@code MockNonPersistableClass} class.
  */
+@NotThreadSafe
 public final class MockNonPersistableClassPersistenceDelegate
     extends PersistenceDelegate
 {
@@ -37,8 +39,8 @@ public final class MockNonPersistableClassPersistenceDelegate
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code MockNonPersistableClassPersistenceDelegate} class.
+     * Initializes a new instance of the {@code
+     * MockNonPersistableClassPersistenceDelegate} class.
      */
     public MockNonPersistableClassPersistenceDelegate()
     {
@@ -72,8 +74,8 @@ public final class MockNonPersistableClassPersistenceDelegate
     // ======================================================================
 
     /**
-     * A {@code PersistenceDelegate} adapter factory for instances of
-     * {@code MockNonPersistableClass}.
+     * A {@code PersistenceDelegate} adapter factory for instances of {@code
+     * MockNonPersistableClass}.
      */
     public static final class AdapterFactory
         implements IAdapterFactory

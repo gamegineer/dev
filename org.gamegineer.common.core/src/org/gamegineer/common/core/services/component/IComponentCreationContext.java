@@ -1,6 +1,6 @@
 /*
  * IComponentCreationContext.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,10 +35,6 @@ package org.gamegineer.common.core.services.component;
  * <p>
  * The only thread-safety guarantee a component creation context implementation
  * must make is that each method will execute atomically.
- * </p>
- * 
- * <p>
- * This interface is intended to be implemented and extended by clients.
  * </p>
  */
 public interface IComponentCreationContext

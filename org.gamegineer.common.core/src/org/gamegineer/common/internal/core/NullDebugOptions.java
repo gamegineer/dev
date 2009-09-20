@@ -30,10 +30,6 @@ import org.eclipse.osgi.service.debug.DebugTrace;
 /**
  * A null object implementation of the
  * {@link org.eclipse.osgi.service.debug.DebugOptions} interface.
- * 
- * <p>
- * This class is immutable.
- * </p>
  */
 @Immutable
 final class NullDebugOptions

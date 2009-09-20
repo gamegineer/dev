@@ -26,6 +26,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.services.component.util.attribute.IAttributeMutator;
 import org.gamegineer.common.internal.core.services.component.ComponentCreationContext;
 
@@ -38,11 +39,8 @@ import org.gamegineer.common.internal.core.services.component.ComponentCreationC
  * Each component creation context built by an instance of this class is
  * immutable and thus guaranteed to be thread-safe.
  * </p>
- * 
- * <p>
- * This class is not thread-safe.
- * </p>
  */
+@NotThreadSafe
 public final class ComponentCreationContextBuilder
     implements IAttributeMutator
 {

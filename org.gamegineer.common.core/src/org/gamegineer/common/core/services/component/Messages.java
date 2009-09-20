@@ -21,11 +21,13 @@
 
 package org.gamegineer.common.core.services.component;
 
+import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
 /**
  * A utility class to manage localized messages for the package.
  */
+@ThreadSafe
 final class Messages
     extends NLS
 {

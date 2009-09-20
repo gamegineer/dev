@@ -30,14 +30,6 @@ import org.osgi.framework.Version;
 
 /**
  * Implementation of {@link org.gamegineer.table.ui.ITableAdvisor}.
- * 
- * <p>
- * This class is immutable.
- * </p>
- * 
- * <p>
- * This class is not intended to be extended by clients.
- * </p>
  */
 @Immutable
 public final class TableAdvisor

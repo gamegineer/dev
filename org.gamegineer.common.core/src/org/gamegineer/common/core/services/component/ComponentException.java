@@ -25,9 +25,7 @@ package org.gamegineer.common.core.services.component;
  * A checked exception that indicates an error occurred within the component
  * service or one of its participants.
  * 
- * <p>
- * This class is not intended to be extended by clients.
- * </p>
+ * @noextend This class is not intended to be extended by clients.
  */
 public abstract class ComponentException
     extends Exception

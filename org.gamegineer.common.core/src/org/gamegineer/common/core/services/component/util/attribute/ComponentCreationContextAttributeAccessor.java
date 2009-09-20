@@ -31,14 +31,6 @@ import org.gamegineer.common.core.services.component.IComponentCreationContext;
  * for classes that implement
  * {@link org.gamegineer.common.core.services.component.IComponentCreationContext}
  * .
- * 
- * <p>
- * This class is immutable.
- * </p>
- * 
- * <p>
- * This class is not intended to be extended by clients.
- * </p>
  */
 @Immutable
 public final class ComponentCreationContextAttributeAccessor

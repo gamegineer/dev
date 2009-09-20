@@ -29,6 +29,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.ui.ITableAdvisor;
 import org.gamegineer.table.ui.TableResult;
 
@@ -37,11 +38,8 @@ import org.gamegineer.table.ui.TableResult;
 
 /**
  * The top-level frame that encapsulates the table user interface.
- * 
- * <p>
- * This class is not thread-safe.
- * </p>
  */
+@NotThreadSafe
 public final class TableFrame
     extends JFrame
 {

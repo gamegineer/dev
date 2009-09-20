@@ -1,6 +1,6 @@
 /*
  * Assert.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,6 +20,8 @@
  */
 
 package org.gamegineer.common.core.runtime;
+
+import net.jcip.annotations.ThreadSafe;
 
 /**
  * A collection of methods useful for asserting conditions at runtime.
@@ -65,11 +67,8 @@ package org.gamegineer.common.core.runtime;
  * general runtime conditions related to the implementation details of a class
  * or method.
  * </p>
- * 
- * <p>
- * This class is not intended to be extended by clients.
- * </p>
  */
+@ThreadSafe
 public final class Assert
 {
     // ======================================================================

@@ -1,6 +1,6 @@
 /*
  * AbstractHandlerFactory.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,6 +27,7 @@ import java.util.logging.Filter;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.internal.core.Debug;
 import org.gamegineer.common.internal.core.services.logging.AbstractLoggingComponentFactory;
 
@@ -36,6 +37,7 @@ import org.gamegineer.common.internal.core.services.logging.AbstractLoggingCompo
  * @param <T>
  *        The type of the handler.
  */
+@ThreadSafe
 abstract class AbstractHandlerFactory<T extends Handler>
     extends AbstractLoggingComponentFactory<T>
 {

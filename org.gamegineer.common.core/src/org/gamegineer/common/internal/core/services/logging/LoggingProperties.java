@@ -33,10 +33,6 @@ import net.jcip.annotations.Immutable;
 
 /**
  * A collection of properties used to configure the logging service.
- * 
- * <p>
- * This class is immutable.
- * </p>
  */
 @Immutable
 final class LoggingProperties

@@ -1,6 +1,6 @@
 /*
  * MockNonSerializableClassPersistenceDelegate.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,14 @@
 
 package org.gamegineer.common.persistence.schemes.serializable;
 
+import net.jcip.annotations.Immutable;
+import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IAdapterFactory;
 
 /**
  * A persistence delegate for the {@code MockNonSerializableClass} class.
  */
+@Immutable
 public final class MockNonSerializableClassPersistenceDelegate
     implements IPersistenceDelegate
 {
@@ -34,8 +37,8 @@ public final class MockNonSerializableClassPersistenceDelegate
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code MockNonSerializableClassPersistenceDelegate} class.
+     * Initializes a new instance of the {@code
+     * MockNonSerializableClassPersistenceDelegate} class.
      */
     public MockNonSerializableClassPersistenceDelegate()
     {
@@ -76,9 +79,10 @@ public final class MockNonSerializableClassPersistenceDelegate
     // ======================================================================
 
     /**
-     * An {@code IPersistenceDelegate} adapter factory for instances of
-     * {@code MockNonSerializableClass}.
+     * An {@code IPersistenceDelegate} adapter factory for instances of {@code
+     * MockNonSerializableClass}.
      */
+    @ThreadSafe
     public static final class AdapterFactory
         implements IAdapterFactory
     {

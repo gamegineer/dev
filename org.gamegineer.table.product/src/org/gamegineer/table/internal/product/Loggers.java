@@ -22,12 +22,14 @@
 package org.gamegineer.table.internal.product;
 
 import java.util.logging.Logger;
+import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.services.logging.ILoggingService;
 import org.osgi.framework.Bundle;
 
 /**
  * Manages the loggers used by the bundle.
  */
+@ThreadSafe
 public final class Loggers
     extends org.gamegineer.common.core.runtime.Loggers
 {

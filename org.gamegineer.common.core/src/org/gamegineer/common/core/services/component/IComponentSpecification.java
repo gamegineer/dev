@@ -1,6 +1,6 @@
 /*
  * IComponentSpecification.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,10 +40,6 @@ package org.gamegineer.common.core.services.component;
  * <p>
  * This interface represents the Specification participant in the Product Trader
  * pattern.
- * </p>
- * 
- * <p>
- * This interface is intended to be implemented and extended by clients.
  * </p>
  */
 public interface IComponentSpecification

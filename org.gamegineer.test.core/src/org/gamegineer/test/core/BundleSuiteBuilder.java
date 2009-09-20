@@ -38,6 +38,7 @@ import javax.xml.xpath.XPathFactory;
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.test.internal.core.Services;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
@@ -56,6 +57,7 @@ import org.xml.sax.InputSource;
  * form (such as when run from an installed product).
  * </p>
  */
+@ThreadSafe
 public final class BundleSuiteBuilder
 {
     // ======================================================================

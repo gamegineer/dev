@@ -22,14 +22,12 @@
 package org.gamegineer.common.persistence.schemes.serializable;
 
 import java.io.Serializable;
+import net.jcip.annotations.Immutable;
 
 /**
  * A serializable proxy for the {@code MockNonSerializableClass} class.
- * 
- * <p>
- * This class is not intended to be extended by clients.
- * </p>
  */
+@Immutable
 public final class MockNonSerializableClassProxy
     implements Serializable
 {

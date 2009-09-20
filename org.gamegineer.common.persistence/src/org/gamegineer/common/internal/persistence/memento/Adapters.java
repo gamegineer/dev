@@ -22,6 +22,7 @@
 package org.gamegineer.common.internal.persistence.memento;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.core.runtime.IAdapterManager;
 
@@ -32,6 +33,7 @@ import org.eclipse.core.runtime.IAdapterManager;
  * The {@code unregister} method should be called before the bundle is stopped.
  * </p>
  */
+@ThreadSafe
 public final class Adapters
 {
     // ======================================================================

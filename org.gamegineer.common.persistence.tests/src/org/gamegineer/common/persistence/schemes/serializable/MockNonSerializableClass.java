@@ -21,6 +21,8 @@
 
 package org.gamegineer.common.persistence.schemes.serializable;
 
+import net.jcip.annotations.Immutable;
+
 /**
  * A mock non-serializable class used for testing the object serialization
  * streams.
@@ -30,11 +32,8 @@ package org.gamegineer.common.persistence.schemes.serializable;
  * Serializable}, b) it is immutable, and c) it does not define a default
  * constructor.
  * </p>
- * 
- * <p>
- * This class is not intended to be extended by clients.
- * </p>
  */
+@Immutable
 public final class MockNonSerializableClass
 {
     // ======================================================================

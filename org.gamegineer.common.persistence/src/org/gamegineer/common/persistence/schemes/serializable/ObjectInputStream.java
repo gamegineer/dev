@@ -23,6 +23,7 @@ package org.gamegineer.common.persistence.schemes.serializable;
 
 import java.io.IOException;
 import java.io.InputStream;
+import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.gamegineer.common.internal.persistence.Services;
 
@@ -35,11 +36,8 @@ import org.gamegineer.common.internal.persistence.Services;
  * associated persistence delegate and give it an opportunity to substitute the
  * deserialized object with a compatible object.
  * </p>
- * 
- * <p>
- * This class is not intended to be extended by clients.
- * </p>
  */
+@NotThreadSafe
 public final class ObjectInputStream
     extends java.io.ObjectInputStream
 {

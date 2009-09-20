@@ -21,6 +21,8 @@
 
 package org.gamegineer.common.core.util.ref;
 
+import net.jcip.annotations.NotThreadSafe;
+
 /**
  * A reference object.
  * 
@@ -29,13 +31,10 @@ package org.gamegineer.common.core.util.ref;
  * "out" and "in-out" parameters.
  * </p>
  * 
- * <p>
- * This class is not thread-safe.
- * </p>
- * 
  * @param <T>
  *        The type of the referent.
  */
+@NotThreadSafe
 public class Reference<T>
 {
     // ======================================================================

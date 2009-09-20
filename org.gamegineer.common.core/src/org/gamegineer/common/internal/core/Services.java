@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.osgi.framework.log.FrameworkLog;
 import org.eclipse.osgi.service.debug.DebugOptions;
@@ -46,6 +47,7 @@ import org.osgi.util.tracker.ServiceTracker;
  * The {@code close} method should be called before the bundle is stopped.
  * </p>
  */
+@ThreadSafe
 public final class Services
 {
     // ======================================================================

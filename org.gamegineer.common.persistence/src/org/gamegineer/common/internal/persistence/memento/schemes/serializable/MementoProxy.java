@@ -25,11 +25,13 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import net.jcip.annotations.Immutable;
 import org.gamegineer.common.internal.persistence.memento.Memento;
 
 /**
  * A serializable proxy for the {@code Memento} class.
  */
+@Immutable
 public final class MementoProxy
     implements Serializable
 {

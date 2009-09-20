@@ -31,14 +31,6 @@ import org.gamegineer.common.core.services.component.util.attribute.IAttributeMu
 /**
  * Superclass for implementations of
  * {@link org.gamegineer.common.core.services.component.IComponentFactory}.
- * 
- * <p>
- * This class is thread-safe.
- * </p>
- * 
- * <p>
- * This class is intended to be extended by clients.
- * </p>
  */
 @ThreadSafe
 public abstract class AbstractComponentFactory

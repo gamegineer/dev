@@ -1,6 +1,6 @@
 /*
  * MockFormatter.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,12 +23,14 @@ package org.gamegineer.common.internal.core.util.logging;
 
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
+import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.services.component.IComponentFactory;
 import org.gamegineer.common.internal.core.services.logging.AbstractLoggingComponentFactory;
 
 /**
  * Mock implementation of {@link java.util.logging.Formatter}.
  */
+@ThreadSafe
 public final class MockFormatter
     extends Formatter
 {

@@ -26,6 +26,7 @@ import java.beans.PersistenceDelegate;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.gamegineer.common.internal.persistence.Services;
 
@@ -44,11 +45,8 @@ import org.gamegineer.common.internal.persistence.Services;
  * To contribute a persistence delegate for a specific class, register it with
  * the platform's {@code IAdapterManager}.
  * </p>
- * 
- * <p>
- * This class is not intended to be extended by clients.
- * </p>
  */
+@NotThreadSafe
 public final class XMLEncoder
     extends java.beans.XMLEncoder
 {

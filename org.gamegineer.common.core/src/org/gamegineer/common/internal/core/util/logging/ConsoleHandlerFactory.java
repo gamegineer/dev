@@ -1,6 +1,6 @@
 /*
  * ConsoleHandlerFactory.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,11 +22,13 @@
 package org.gamegineer.common.internal.core.util.logging;
 
 import java.util.logging.ConsoleHandler;
+import net.jcip.annotations.ThreadSafe;
 
 /**
  * A component factory for creating instances of
  * {@link java.util.logging.ConsoleHandler}.
  */
+@ThreadSafe
 final class ConsoleHandlerFactory
     extends AbstractHandlerFactory<ConsoleHandler>
 {

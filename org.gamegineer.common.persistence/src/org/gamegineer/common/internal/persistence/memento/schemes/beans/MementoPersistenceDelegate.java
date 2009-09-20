@@ -1,6 +1,6 @@
 /*
  * MementoPersistenceDelegate.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,10 +30,6 @@ import org.gamegineer.common.internal.persistence.memento.Memento;
 
 /**
  * A persistence delegate for the {@code Memento} class.
- * 
- * <p>
- * This class is immutable.
- * </p>
  */
 @Immutable
 public final class MementoPersistenceDelegate
@@ -86,8 +82,8 @@ public final class MementoPersistenceDelegate
     // ======================================================================
 
     /**
-     * A {@code PersistenceDelegate} adapter factory for instances of
-     * {@code MockNonPersistableClass}.
+     * A {@code PersistenceDelegate} adapter factory for instances of {@code
+     * MockNonPersistableClass}.
      */
     public static final class AdapterFactory
         implements IAdapterFactory

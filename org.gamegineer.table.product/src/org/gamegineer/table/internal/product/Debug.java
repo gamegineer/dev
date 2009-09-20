@@ -21,11 +21,13 @@
 
 package org.gamegineer.table.internal.product;
 
+import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.service.debug.DebugOptions;
 
 /**
  * Debugging utilities for the bundle.
  */
+@ThreadSafe
 public final class Debug
     extends org.gamegineer.common.core.runtime.Debug
 {
