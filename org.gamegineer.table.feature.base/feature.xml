@@ -17,6 +17,10 @@
         %license
     </license>
 
+    <requires>
+        <import feature="org.gamegineer.common.feature.base" version="0.2.0" />
+    </requires>
+
     <plugin
             id="org.gamegineer.table.core"
             download-size="0"
