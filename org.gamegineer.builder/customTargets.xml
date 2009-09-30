@@ -177,6 +177,7 @@
         <antcall target="gatherLogs" />
         <antcall target="javadoc" />
         <antcall target="test" />
+        <antcall target="packageProduct" />
     </target>
 
     <!-- ===================================================================== -->
@@ -233,6 +234,45 @@
                 <length file="${buildDirectory}/${buildLabel}/test-workspace/${archivePrefix}/results/allTestResults.txt" when="greater" length="0" /> 
             </condition>
         </fail>
+    </target>
+
+    <!-- ===================================================================== -->
+    <!-- Steps to do to package the build results.                             -->
+    <!-- ===================================================================== -->
+    <target name="packageProduct">
+        <mkdir dir="${buildDirectory}/${buildLabel}/product" />
+
+        <!--
+        Copy target platform.  Do not include test-related bundles.  The Equinox
+        launcher must be at the root.
+        -->
+        <copy todir="${buildDirectory}/${buildLabel}/product/${archivePrefix}">
+            <fileset dir="${baseLocation}">
+                <exclude name="plugins/org.hamcrest.core_*.jar" />
+                <exclude name="plugins/org.junit_*/**" />
+                <exclude name="plugins/org.junit4_*/**" />
+                <exclude name="plugins/org.eclipse.equinox.launcher_*.jar" />
+            </fileset>
+        </copy>
+        <copy flatten="true" todir="${buildDirectory}/${buildLabel}/product/${archivePrefix}">
+            <fileset dir="${baseLocation}">
+                <include name="plugins/org.eclipse.equinox.launcher_*.jar" /> 
+            </fileset>
+        </copy>
+
+        <!-- Copy product configuration. -->
+        <copy todir="${buildDirectory}/${buildLabel}/product/${archivePrefix}">
+            <fileset dir="${buildDirectory}/product" />
+        </copy>
+
+        <!-- Copy all Gamegineer features.  Do not include test-related features. -->
+        <unzip dest="${buildDirectory}/${buildLabel}/product" overwrite="true">
+            <fileset dir="${buildDirectory}/${buildLabel}">
+                <include name="*.zip" />
+                <exclude name="*.test.*.zip" />
+                <exclude name="*.tests-*.zip" />
+            </fileset>
+        </unzip>
     </target>
 
     <!-- ===================================================================== -->

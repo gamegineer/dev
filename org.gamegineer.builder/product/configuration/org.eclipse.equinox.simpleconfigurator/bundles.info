@@ -1,0 +1,10 @@
+#version=1
+net.jcip.annotations,1.0.0,plugins/net.jcip.annotations_1.0.0/,4,false
+org.eclipse.equinox.app,1.2.0.v20090520-1800,plugins/org.eclipse.equinox.app_1.2.0.v20090520-1800.jar,4,true
+org.eclipse.equinox.common,3.5.0.v20090520-1800,plugins/org.eclipse.equinox.common_3.5.0.v20090520-1800.jar,2,true
+org.eclipse.equinox.registry,3.4.100.v20090520-1800,plugins/org.eclipse.equinox.registry_3.4.100.v20090520-1800.jar,4,false
+org.gamegineer.common.core,0.2.0,plugins/org.gamegineer.common.core_0.2.0.jar,4,false
+org.gamegineer.common.persistence,0.2.0,plugins/org.gamegineer.common.persistence_0.2.0.jar,4,false
+org.gamegineer.table.core,0.2.0,plugins/org.gamegineer.table.core_0.2.0.jar,4,false
+org.gamegineer.table.product,0.2.0,plugins/org.gamegineer.table.product_0.2.0.jar,4,false
+org.gamegineer.table.ui,0.2.0,plugins/org.gamegineer.table.ui_0.2.0.jar,4,false
