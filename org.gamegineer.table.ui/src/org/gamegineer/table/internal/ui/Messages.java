@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui;
 import java.awt.event.KeyEvent;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
+import org.osgi.framework.Version;
 
 /**
  * A utility class to manage localized messages for the package.
@@ -116,6 +117,23 @@ final class Messages
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the formatted message for the About box message.
+     * 
+     * @param version
+     *        The application version; must not be {@code null}.
+     * 
+     * @return The formatted message for the About box message; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    static String TableFrame_about_message(
+        /* @NonNull */
+        final Version version )
+    {
+        return bind( TableFrame_about_message, version.toString() );
+    }
 
     /**
      * Converts the specified virtual key name to its corresponding virtual key

@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -29,6 +30,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.ui.ITableAdvisor;
 
 /**
  * The top-level frame that encapsulates the table user interface.
@@ -44,6 +46,9 @@ public final class TableFrame
     /** Serializable class version number. */
     private static final long serialVersionUID = 1087139002992381995L;
 
+    /** The table advisor. */
+    private final ITableAdvisor advisor_;
+
 
     // ======================================================================
     // Constructors
@@ -51,9 +56,21 @@ public final class TableFrame
 
     /**
      * Initializes a new instance of the {@code TableFrame} class.
+     * 
+     * @param advisor
+     *        The table advisor; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code advisor} is {@code null}.
      */
-    public TableFrame()
+    public TableFrame(
+        /* @NonNull */
+        final ITableAdvisor advisor )
     {
+        assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
+
+        advisor_ = advisor;
+
         initializeComponent();
     }
 
@@ -89,11 +106,12 @@ public final class TableFrame
         aboutMenuItem.setMnemonic( Messages.toMnemonic( Messages.TableFrame_menu_help_about_mnemonic ) );
         aboutMenuItem.addActionListener( new ActionListener()
         {
+            @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
                 final ActionEvent e )
             {
-                JOptionPane.showMessageDialog( TableFrame.this, Messages.TableFrame_about_message, Messages.TableFrame_about_title, JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE );
+                JOptionPane.showMessageDialog( TableFrame.this, Messages.TableFrame_about_message( advisor_.getApplicationVersion() ), Messages.TableFrame_about_title, JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE );
             }
         } );
         helpMenu.add( aboutMenuItem );

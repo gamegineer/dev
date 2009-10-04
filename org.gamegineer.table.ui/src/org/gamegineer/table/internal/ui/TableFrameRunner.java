@@ -51,7 +51,6 @@ public final class TableFrameRunner
     // ======================================================================
 
     /** The table advisor. */
-    @SuppressWarnings( "unused" )
     private final ITableAdvisor advisor_;
 
     /**
@@ -222,7 +221,7 @@ public final class TableFrameRunner
                         frameClosedLatch_.countDown();
                     }
                 };
-                frame_ = new TableFrame();
+                frame_ = new TableFrame( advisor_ );
                 frame_.addWindowListener( frameClosedListener );
                 frame_.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
                 frame_.setVisible( true );
