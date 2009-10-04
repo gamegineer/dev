@@ -22,13 +22,12 @@
 package org.gamegineer.table.ui;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
-import org.gamegineer.table.internal.ui.TableFrame;
+import org.gamegineer.table.internal.ui.TableFrameRunner;
 
 /**
  * Provides access to the table user interface.
@@ -112,13 +111,12 @@ public final class TableUI
      *         If {@code advisor} is {@code null}.
      */
     /* @NonNull */
-    public static Callable<TableResult> createTableRunner(
+    public static ITableRunner createTableRunner(
         /* @NonNull */
         final ITableAdvisor advisor )
     {
         assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
 
-        final TableFrame frame = new TableFrame( advisor );
-        return frame.createRunner();
+        return new TableFrameRunner( advisor );
     }
 }

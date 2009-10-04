@@ -43,6 +43,11 @@ final class Messages
     /** The frame title. */
     public static String TableFrame_title;
 
+    // --- TableFrameRunner -------------------------------------------------
+
+    /** The runner is already running or has already finished. */
+    public static String TableFrameRunner_state_notPristine;
+
 
     // ======================================================================
     // Constructors

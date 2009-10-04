@@ -1,5 +1,5 @@
 /*
- * TableFrameTest.java
+ * ITableRunner.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,43 +16,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 18, 2009 at 10:11:04 PM.
+ * Created on Oct 3, 2009 at 7:58:21 PM.
  */
 
-package org.gamegineer.table.internal.ui;
+package org.gamegineer.table.ui;
 
-import org.junit.Test;
+import java.util.concurrent.Callable;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.internal.ui.TableFrame}
- * class.
+ * An object capable of running a table user interface.
+ * 
+ * <p>
+ * Table runners are only intended to be run once.
+ * </p>
+ * 
+ * <p>
+ * A table runner may be cancelled by interrupting the thread on which it is
+ * running. Implementations must handle thread interruption gracefully and
+ * attempt to shut themselves down and return as quickly as possible.
+ * </p>
+ * 
+ * @noextend This interface is not intended to be extended by clients.
  */
-public final class TableFrameTest
+public interface ITableRunner
+    extends Callable<TableResult>
 {
-    // ======================================================================
-    // Constructors
-    // ======================================================================
-
-    /**
-     * Initializes a new instance of the {@code TableFrameTest} class.
-     */
-    public TableFrameTest()
-    {
-        super();
-    }
-
-
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * table advisor.
+     * @throws java.lang.IllegalStateException
+     *         If the runner has already been run.
+     * 
+     * @see java.util.concurrent.Callable#call()
      */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Advisor_Null()
-    {
-        new TableFrame( null );
-    }
+    public TableResult call()
+        throws Exception;
 }

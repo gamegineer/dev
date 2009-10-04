@@ -1,5 +1,5 @@
 /*
- * TableFrame.java
+ * TableFrameRunnerTest.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,39 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 18, 2009 at 10:09:51 PM.
+ * Created on Oct 2, 2009 at 11:10:41 PM.
  */
 
 package org.gamegineer.table.internal.ui;
 
-import javax.swing.JFrame;
-import net.jcip.annotations.NotThreadSafe;
+import org.junit.Test;
 
 /**
- * The top-level frame that encapsulates the table user interface.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.ui.TableFrameRunner} class.
  */
-@NotThreadSafe
-public final class TableFrame
-    extends JFrame
+public final class TableFrameRunnerTest
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** Serializable class version number. */
-    private static final long serialVersionUID = 1087139002992381995L;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableFrame} class.
+     * Initializes a new instance of the {@code TableFrameRunnerTest} class.
      */
-    public TableFrame()
+    public TableFrameRunnerTest()
     {
-        initializeComponent();
+        super();
     }
 
 
@@ -57,11 +47,12 @@ public final class TableFrame
     // ======================================================================
 
     /**
-     * Initializes the component.
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * table advisor.
      */
-    private void initializeComponent()
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_Advisor_Null()
     {
-        setTitle( Messages.TableFrame_title );
-        setSize( 300, 300 );
+        new TableFrameRunner( null );
     }
 }
