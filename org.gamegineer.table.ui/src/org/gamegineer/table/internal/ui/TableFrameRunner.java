@@ -29,6 +29,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import net.jcip.annotations.ThreadSafe;
@@ -68,6 +70,9 @@ public final class TableFrameRunner
      */
     private final AtomicBoolean isPristine_;
 
+    /** The table result. */
+    private final AtomicReference<TableResult> result_;
+
 
     // ======================================================================
     // Constructors
@@ -92,6 +97,7 @@ public final class TableFrameRunner
         frame_ = null;
         frameClosedLatch_ = new CountDownLatch( 1 );
         isPristine_ = new AtomicBoolean( true );
+        result_ = new AtomicReference<TableResult>( TableResult.OK );
     }
 
 
@@ -111,11 +117,11 @@ public final class TableFrameRunner
 
         waitUntilFrameClosed();
 
-        return TableResult.OK;
+        return result_.get();
     }
 
     /**
-     * Closes the running {@code TableFrame} instance.
+     * Closes the running {@code TableFrame} instance if it is still running.
      */
     private void closeFrame()
     {
@@ -126,17 +132,43 @@ public final class TableFrameRunner
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    if( frame_ != null )
-                    {
-                        frame_.dispose();
-                        frame_ = null;
-                    }
+                    closeFrameWorker();
                 }
             } );
         }
         else
         {
             frameClosedLatch_.countDown();
+        }
+    }
+
+    /**
+     * Closes the running {@code TableFrame} instance if it is still running.
+     * 
+     * <p>
+     * This method must only be called from the Swing event dispatch thread.
+     * </p>
+     */
+    private void closeFrameWorker()
+    {
+        assert SwingUtilities.isEventDispatchThread();
+
+        if( frame_ != null )
+        {
+            try
+            {
+                frame_.dispose();
+            }
+            catch( final Exception e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.TableFrameRunner_closeFrameWorker_error, e );
+                result_.set( TableResult.FAIL );
+                frameClosedLatch_.countDown();
+            }
+            finally
+            {
+                frame_ = null;
+            }
         }
     }
 
@@ -153,29 +185,54 @@ public final class TableFrameRunner
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    if( frame_ == null )
-                    {
-                        final WindowListener frameClosedListener = new WindowAdapter()
-                        {
-                            @Override
-                            public void windowClosed(
-                                @SuppressWarnings( "unused" )
-                                final WindowEvent e )
-                            {
-                                if( Debug.DEFAULT )
-                                {
-                                    Debug.trace( "TableFrame frame window closed." ); //$NON-NLS-1$
-                                }
-                                frameClosedLatch_.countDown();
-                            }
-                        };
-                        frame_ = new TableFrame();
-                        frame_.addWindowListener( frameClosedListener );
-                        frame_.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
-                        frame_.setVisible( true );
-                    }
+                    createAndShowFrameWorker();
                 }
             } );
+        }
+    }
+
+    /**
+     * Creates and shows a new {@code TableFrame} instance if one is not already
+     * running.
+     * 
+     * <p>
+     * This method must only be called from the Swing event dispatch thread.
+     * </p>
+     */
+    private void createAndShowFrameWorker()
+    {
+        assert SwingUtilities.isEventDispatchThread();
+
+        if( frame_ == null )
+        {
+            try
+            {
+                final WindowListener frameClosedListener = new WindowAdapter()
+                {
+                    @Override
+                    @SuppressWarnings( "synthetic-access" )
+                    public void windowClosed(
+                        @SuppressWarnings( "unused" )
+                        final WindowEvent e )
+                    {
+                        if( Debug.DEFAULT )
+                        {
+                            Debug.trace( "TableFrame frame window closed." ); //$NON-NLS-1$
+                        }
+                        frameClosedLatch_.countDown();
+                    }
+                };
+                frame_ = new TableFrame();
+                frame_.addWindowListener( frameClosedListener );
+                frame_.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
+                frame_.setVisible( true );
+            }
+            catch( final Exception e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.TableFrameRunner_createAndShowFrameWorker_error, e );
+                result_.set( TableResult.FAIL );
+                frameClosedLatch_.countDown();
+            }
         }
     }
 

@@ -82,6 +82,12 @@ final class Messages
 
     // --- TableFrameRunner -------------------------------------------------
 
+    /** The frame window could not be closed. */
+    public static String TableFrameRunner_closeFrameWorker_error;
+
+    /** The frame window could not be created. */
+    public static String TableFrameRunner_createAndShowFrameWorker_error;
+
     /** The runner is already running or has already finished. */
     public static String TableFrameRunner_state_notPristine;
 
