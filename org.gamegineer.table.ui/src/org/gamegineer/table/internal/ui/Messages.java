@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui;
 
+import java.awt.event.KeyEvent;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -38,7 +39,43 @@ final class Messages
     /** The name of the associated resource bundle. */
     private static final String BUNDLE_NAME = "org.gamegineer.table.internal.ui.Messages"; //$NON-NLS-1$
 
+    // --- Messages ---------------------------------------------------------
+
+    /** The virtual key name is unknown. */
+    public static String Messages_toMnemonic_unknownVirtualKeyName;
+
+
     // --- TableFrame -------------------------------------------------------
+
+    /** The About box message. */
+    public static String TableFrame_about_message;
+
+    /** The About box title. */
+    public static String TableFrame_about_title;
+
+    /** The File menu mnemonic. */
+    public static String TableFrame_menu_file_mnemonic;
+
+    /** The File menu text. */
+    public static String TableFrame_menu_file_text;
+
+    /** The File-Exit menu item mnemonic. */
+    public static String TableFrame_menu_file_exit_mnemonic;
+
+    /** The File-Exit menu item text. */
+    public static String TableFrame_menu_file_exit_text;
+
+    /** The Help menu mnemonic. */
+    public static String TableFrame_menu_help_mnemonic;
+
+    /** The Help menu text. */
+    public static String TableFrame_menu_help_text;
+
+    /** The Help-About menu item mnemonic. */
+    public static String TableFrame_menu_help_about_mnemonic;
+
+    /** The Help-About menu item text. */
+    public static String TableFrame_menu_help_about_text;
 
     /** The frame title. */
     public static String TableFrame_title;
@@ -67,5 +104,44 @@ final class Messages
     private Messages()
     {
         super();
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Converts the specified virtual key name to its corresponding virtual key
+     * code.
+     * 
+     * @param virtualKeyName
+     *        The name of a virtual key code constant from the {@code
+     *        java.awt.event.KeyEvent} class, not including the {@code VK_}
+     *        prefix.
+     * 
+     * @return The virtual key code associated with the specified virtual key
+     *         name.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If the virtual key name is unknown.
+     */
+    static int toMnemonic(
+        /* @NonNull */
+        final String virtualKeyName )
+    {
+        final String fieldName = "VK_" + virtualKeyName; //$NON-NLS-1$
+        try
+        {
+            return KeyEvent.class.getField( fieldName ).getInt( null );
+        }
+        catch( final NoSuchFieldException e )
+        {
+            throw new IllegalArgumentException( bind( Messages_toMnemonic_unknownVirtualKeyName, fieldName ), e );
+        }
+        catch( final IllegalAccessException e )
+        {
+            throw new IllegalArgumentException( bind( Messages_toMnemonic_unknownVirtualKeyName, fieldName ), e );
+        }
     }
 }

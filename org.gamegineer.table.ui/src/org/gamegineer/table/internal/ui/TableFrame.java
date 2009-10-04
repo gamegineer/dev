@@ -21,7 +21,13 @@
 
 package org.gamegineer.table.internal.ui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
@@ -61,7 +67,41 @@ public final class TableFrame
      */
     private void initializeComponent()
     {
+        final JMenuBar menuBar = new JMenuBar();
+        final JMenu fileMenu = new JMenu( Messages.TableFrame_menu_file_text );
+        fileMenu.setMnemonic( Messages.toMnemonic( Messages.TableFrame_menu_file_mnemonic ) );
+        final JMenuItem exitMenuItem = new JMenuItem( Messages.TableFrame_menu_file_exit_text );
+        exitMenuItem.setMnemonic( Messages.toMnemonic( Messages.TableFrame_menu_file_exit_mnemonic ) );
+        exitMenuItem.addActionListener( new ActionListener()
+        {
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                dispose();
+            }
+        } );
+        fileMenu.add( exitMenuItem );
+        menuBar.add( fileMenu );
+        final JMenu helpMenu = new JMenu( Messages.TableFrame_menu_help_text );
+        helpMenu.setMnemonic( Messages.toMnemonic( Messages.TableFrame_menu_help_mnemonic ) );
+        final JMenuItem aboutMenuItem = new JMenuItem( Messages.TableFrame_menu_help_about_text );
+        aboutMenuItem.setMnemonic( Messages.toMnemonic( Messages.TableFrame_menu_help_about_mnemonic ) );
+        aboutMenuItem.addActionListener( new ActionListener()
+        {
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                JOptionPane.showMessageDialog( TableFrame.this, Messages.TableFrame_about_message, Messages.TableFrame_about_title, JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE );
+            }
+        } );
+        helpMenu.add( aboutMenuItem );
+        menuBar.add( helpMenu );
+        setJMenuBar( menuBar );
+
         setTitle( Messages.TableFrame_title );
+        setLocationByPlatform( true );
         setSize( 300, 300 );
     }
 }
