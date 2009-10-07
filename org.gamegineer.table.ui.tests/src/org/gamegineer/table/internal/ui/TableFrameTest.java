@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -51,7 +50,6 @@ public final class TableFrameTest
      * Ensures the constructor throws an exception when passed a {@code null}
      * table advisor.
      */
-    @Ignore( "Ignored until headless exception issue is resolved." )
     @Test( expected = NullPointerException.class )
     public void testConstructor_Advisor_Null()
     {

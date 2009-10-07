@@ -22,6 +22,7 @@
 package org.gamegineer.table.ui;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -111,7 +112,7 @@ public abstract class AbstractTableRunnerTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( expected = IllegalStateException.class, timeout = 1000 )
+    @Test( expected = IllegalStateException.class, timeout = 2000 )
     public void testCall_NotPristine()
         throws Exception
     {
@@ -160,6 +161,7 @@ public abstract class AbstractTableRunnerTestCase
         finally
         {
             executor.shutdownNow();
+            assertTrue( executor.awaitTermination( 1, TimeUnit.SECONDS ) );
         }
     }
 }

@@ -23,12 +23,10 @@ package org.gamegineer.table.internal.ui;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
-import java.awt.GraphicsEnvironment;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import javax.swing.SwingUtilities;
@@ -55,22 +53,19 @@ public final class TableFrameRunner
 
     /**
      * The running frame window or {@code null} if no frame window is running.
-     * This instance must only be manipulated from the Swing event-dispatching
+     * This reference must only be manipulated from the Swing event-dispatching
      * thread.
      */
     private TableFrame frame_;
 
-    /** The latch used to signal that the frame window has closed. */
-    private final CountDownLatch frameClosedLatch_;
-
-    /**
-     * Indicates the state of this runner is pristine. That is, it has never
-     * been run.
-     */
-    private final AtomicBoolean isPristine_;
-
     /** The table result. */
     private final AtomicReference<TableResult> result_;
+
+    /** The runner state. */
+    private final AtomicReference<State> state_;
+
+    /** The latch used to signal that the runner has stopped. */
+    private final CountDownLatch stopLatch_;
 
 
     // ======================================================================
@@ -94,9 +89,9 @@ public final class TableFrameRunner
 
         advisor_ = advisor;
         frame_ = null;
-        frameClosedLatch_ = new CountDownLatch( 1 );
-        isPristine_ = new AtomicBoolean( true );
         result_ = new AtomicReference<TableResult>( TableResult.OK );
+        state_ = new AtomicReference<State>( State.PRISTINE );
+        stopLatch_ = new CountDownLatch( 1 );
     }
 
 
@@ -110,154 +105,234 @@ public final class TableFrameRunner
     public TableResult call()
         throws Exception
     {
-        assertStateLegal( isPristine_.compareAndSet( true, false ), Messages.TableFrameRunner_state_notPristine );
+        assertStateLegal( state_.compareAndSet( State.PRISTINE, State.STARTING ), Messages.TableFrameRunner_state_notPristine );
 
-        createAndShowFrame();
-
-        waitUntilFrameClosed();
-
-        return result_.get();
-    }
-
-    /**
-     * Closes the running {@code TableFrame} instance if it is still running.
-     */
-    private void closeFrame()
-    {
-        if( !GraphicsEnvironment.isHeadless() )
-        {
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    closeFrameWorker();
-                }
-            } );
-        }
-        else
-        {
-            frameClosedLatch_.countDown();
-        }
-    }
-
-    /**
-     * Closes the running {@code TableFrame} instance if it is still running.
-     * 
-     * <p>
-     * This method must only be called from the Swing event dispatch thread.
-     * </p>
-     */
-    private void closeFrameWorker()
-    {
-        assert SwingUtilities.isEventDispatchThread();
-
-        if( frame_ != null )
-        {
-            try
-            {
-                frame_.dispose();
-            }
-            catch( final Exception e )
-            {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.TableFrameRunner_closeFrameWorker_error, e );
-                result_.set( TableResult.FAIL );
-                frameClosedLatch_.countDown();
-            }
-            finally
-            {
-                frame_ = null;
-            }
-        }
-    }
-
-    /**
-     * Creates and shows a new {@code TableFrame} instance if one is not already
-     * running.
-     */
-    private void createAndShowFrame()
-    {
-        if( !GraphicsEnvironment.isHeadless() )
-        {
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    createAndShowFrameWorker();
-                }
-            } );
-        }
-    }
-
-    /**
-     * Creates and shows a new {@code TableFrame} instance if one is not already
-     * running.
-     * 
-     * <p>
-     * This method must only be called from the Swing event dispatch thread.
-     * </p>
-     */
-    private void createAndShowFrameWorker()
-    {
-        assert SwingUtilities.isEventDispatchThread();
-
-        if( frame_ == null )
-        {
-            try
-            {
-                final WindowListener frameClosedListener = new WindowAdapter()
-                {
-                    @Override
-                    @SuppressWarnings( "synthetic-access" )
-                    public void windowClosed(
-                        @SuppressWarnings( "unused" )
-                        final WindowEvent e )
-                    {
-                        if( Debug.DEFAULT )
-                        {
-                            Debug.trace( "TableFrame frame window closed." ); //$NON-NLS-1$
-                        }
-                        frameClosedLatch_.countDown();
-                    }
-                };
-                frame_ = new TableFrame( advisor_ );
-                frame_.addWindowListener( frameClosedListener );
-                frame_.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
-                frame_.setVisible( true );
-            }
-            catch( final Exception e )
-            {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.TableFrameRunner_createAndShowFrameWorker_error, e );
-                result_.set( TableResult.FAIL );
-                frameClosedLatch_.countDown();
-            }
-        }
-    }
-
-    /**
-     * Waits until the running {@code TableFrame} instance is closed.
-     * 
-     * @throws java.lang.InterruptedException
-     *         If the current thread was interrupted while waiting and the
-     *         running {@code TableFrame} instance could not be closed.
-     */
-    private void waitUntilFrameClosed()
-        throws InterruptedException
-    {
         try
         {
-            frameClosedLatch_.await();
+            openFrameAsync();
+
+            stopLatch_.await();
         }
         catch( final InterruptedException e )
         {
             if( Debug.DEFAULT )
             {
-                Debug.trace( "TableFrame runner cancelled; closing frame window." ); //$NON-NLS-1$
+                Debug.trace( "TableFrame runner cancelled." ); //$NON-NLS-1$
             }
-            closeFrame();
-
-            frameClosedLatch_.await();
         }
+        finally
+        {
+            state_.set( State.STOPPED );
+
+            closeFrameAsync();
+        }
+
+        return result_.get();
+    }
+
+    /**
+     * Closes the running {@code TableFrame} instance.
+     * 
+     * <p>
+     * This method must only be called from the Swing event dispatch thread.
+     * </p>
+     */
+    private void closeFrame()
+    {
+        assert SwingUtilities.isEventDispatchThread();
+
+        if( frame_ != null )
+        {
+            frame_.dispose();
+            frame_ = null;
+        }
+    }
+
+    /**
+     * Asynchronously closes the running {@code TableFrame} instance on the
+     * Swing event dispatch thread.
+     */
+    private void closeFrameAsync()
+    {
+        safeSwingInvokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                closeFrame();
+            }
+        } );
+    }
+
+    /**
+     * Opens a new {@code TableFrame} instance.
+     * 
+     * <p>
+     * This method must only be called from the Swing event dispatch thread.
+     * </p>
+     */
+    private void openFrame()
+    {
+        assert SwingUtilities.isEventDispatchThread();
+        assert frame_ == null;
+
+        try
+        {
+            final WindowListener windowListener = new WindowAdapter()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void windowClosed(
+                    @SuppressWarnings( "unused" )
+                    final WindowEvent e )
+                {
+                    if( Debug.DEFAULT )
+                    {
+                        Debug.trace( "TableFrame frame window closed by user." ); //$NON-NLS-1$
+                    }
+                    stop( TableResult.OK );
+                }
+            };
+            frame_ = new TableFrame( advisor_ );
+            frame_.addWindowListener( windowListener );
+            frame_.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
+            frame_.setVisible( true );
+
+            start();
+        }
+        catch( final Exception e )
+        {
+            Loggers.DEFAULT.log( Level.SEVERE, Messages.TableFrameRunner_openFrame_error, e );
+            stop( TableResult.FAIL );
+        }
+    }
+
+    /**
+     * Asynchronously opens a new {@code TableFrame} instance on the Swing event
+     * dispatch thread.
+     */
+    private void openFrameAsync()
+    {
+        safeSwingInvokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                openFrame();
+            }
+        } );
+    }
+
+    /**
+     * Safely invokes the specified task asynchronously on the Swing event
+     * dispatch thread.
+     * 
+     * <p>
+     * This method is required only because
+     * {@link SwingUtilities#invokeLater(Runnable)} is not well-behaved if the
+     * thread is interrupted while it is executing. When interrupted, it simply
+     * swallows the {@code InterruptedException} and does not reset the thread
+     * interrupted status. This can lead to a situation where this task does not
+     * know that it's been cancelled in the event the interruption just happens
+     * to occur while {@code invokeLater} is executing.
+     * </p>
+     * 
+     * <p>
+     * Therefore, to work around this use case, we execute {@code invokeLater}
+     * on a thread other than the task's thread so it will never see the
+     * interruption caused by the executor service in the event of task
+     * cancellation.
+     * </p>
+     * 
+     * @param runnable
+     *        The task to execute on the Swing event dispatch thread; must not
+     *        be {@code null}.
+     */
+    private static void safeSwingInvokeLater(
+        /* @NonNull */
+        final Runnable runnable )
+    {
+        assert runnable != null;
+
+        final Runnable runnableProxy = new Runnable()
+        {
+            public void run()
+            {
+                SwingUtilities.invokeLater( runnable );
+            }
+        };
+        new Thread( runnableProxy, "TableFrameRunner-SafeSwingInvokeLater" ).start(); //$NON-NLS-1$
+    }
+
+    /**
+     * Moves this runner to the {@code STARTED} state.
+     * 
+     * <p>
+     * This method must only be called from the Swing event dispatch thread.
+     * </p>
+     */
+    private void start()
+    {
+        assert SwingUtilities.isEventDispatchThread();
+
+        // It's possible the runner has already been cancelled by the time we
+        // get here.  Therefore, we need to detect such a case and close the
+        // frame window that was just opened.
+        if( !state_.compareAndSet( State.STARTING, State.STARTED ) )
+        {
+            closeFrame();
+        }
+    }
+
+    /**
+     * Moves this runner to the {@code STOPPING} state.
+     * 
+     * <p>
+     * This method must only be called from the Swing event dispatch thread.
+     * </p>
+     * 
+     * @param result
+     *        The table result; must not be {@code null}.
+     */
+    private void stop(
+        /* @NonNull */
+        final TableResult result )
+    {
+        assert SwingUtilities.isEventDispatchThread();
+        assert result != null;
+
+        result_.set( result );
+        state_.set( State.STOPPING );
+        stopLatch_.countDown();
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * The state of the runner.
+     */
+    private enum State
+    {
+        // ==================================================================
+        // Enum Constants
+        // ==================================================================
+
+        /** The runner has never been started. */
+        PRISTINE,
+
+        /** The runner is starting. */
+        STARTING,
+
+        /** The runner has started. */
+        STARTED,
+
+        /** The runner is stopping. */
+        STOPPING,
+
+        /** The runner has stopped. */
+        STOPPED
     }
 }

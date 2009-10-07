@@ -24,8 +24,6 @@ package org.gamegineer.table.internal.ui;
 import org.gamegineer.table.ui.AbstractTableRunnerTestCase;
 import org.gamegineer.table.ui.ITableRunner;
 import org.gamegineer.table.ui.TableAdvisor;
-import org.junit.After;
-import org.junit.Before;
 
 /**
  * A fixture for testing the
@@ -36,17 +34,6 @@ import org.junit.Before;
 public final class TableFrameRunnerAsTableRunnerTest
     extends AbstractTableRunnerTestCase
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The name of the java.awt.headless system property. */
-    private static final String PROPERTY_HEADLESS = "java.awt.headless"; //$NON-NLS-1$
-
-    /** The original value of the java.awt.headless system property. */
-    private String headless_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -69,39 +56,5 @@ public final class TableFrameRunnerAsTableRunnerTest
     protected ITableRunner createTableRunner()
     {
         return new TableFrameRunner( new TableAdvisor() );
-    }
-
-    /*
-     * @see org.gamegineer.table.ui.AbstractTableRunnerTestCase#setUp()
-     */
-    @Before
-    @Override
-    public void setUp()
-        throws Exception
-    {
-        headless_ = System.getProperty( PROPERTY_HEADLESS );
-        System.setProperty( PROPERTY_HEADLESS, Boolean.TRUE.toString() );
-
-        super.setUp();
-    }
-
-    /*
-     * @see org.gamegineer.table.ui.AbstractTableRunnerTestCase#tearDown()
-     */
-    @After
-    @Override
-    public void tearDown()
-        throws Exception
-    {
-        super.tearDown();
-
-        if( headless_ != null )
-        {
-            System.setProperty( PROPERTY_HEADLESS, headless_ );
-        }
-        else
-        {
-            System.clearProperty( PROPERTY_HEADLESS );
-        }
     }
 }
