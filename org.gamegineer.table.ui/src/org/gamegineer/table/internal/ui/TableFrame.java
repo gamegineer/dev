@@ -33,7 +33,7 @@ import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.ui.ITableAdvisor;
 
 /**
- * The top-level frame that encapsulates the table user interface.
+ * The top-level object in the table application.
  */
 @NotThreadSafe
 public final class TableFrame
@@ -48,6 +48,12 @@ public final class TableFrame
 
     /** The table advisor. */
     private final ITableAdvisor advisor_;
+
+    /** The document. */
+    private final TableDocument document_;
+
+    /** The view. */
+    private final TableView view_;
 
 
     // ======================================================================
@@ -70,6 +76,8 @@ public final class TableFrame
         assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
 
         advisor_ = advisor;
+        document_ = new TableDocument();
+        view_ = new TableView( document_ );
 
         initializeComponent();
     }
@@ -117,6 +125,8 @@ public final class TableFrame
         helpMenu.add( aboutMenuItem );
         menuBar.add( helpMenu );
         setJMenuBar( menuBar );
+
+        setContentPane( view_ );
 
         setTitle( Messages.TableFrame_title );
         setLocationByPlatform( true );
