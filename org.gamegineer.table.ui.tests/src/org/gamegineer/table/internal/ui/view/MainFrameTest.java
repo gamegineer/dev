@@ -1,5 +1,5 @@
 /*
- * TableFrameRunnerTest.java
+ * MainFrameTest.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,27 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 2, 2009 at 11:10:41 PM.
+ * Created on Oct 3, 2009 at 11:25:41 PM.
  */
 
-package org.gamegineer.table.internal.ui;
+package org.gamegineer.table.internal.ui.view;
 
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.TableFrameRunner} class.
+ * {@link org.gamegineer.table.internal.ui.view.MainFrame} class.
  */
-public final class TableFrameRunnerTest
+public final class MainFrameTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableFrameRunnerTest} class.
+     * Initializes a new instance of the {@code MainFrameTest} class.
      */
-    public TableFrameRunnerTest()
+    public MainFrameTest()
     {
         super();
     }
@@ -53,6 +53,6 @@ public final class TableFrameRunnerTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_Advisor_Null()
     {
-        new TableFrameRunner( null );
+        new MainFrame( null );
     }
 }

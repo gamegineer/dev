@@ -1,5 +1,5 @@
 /*
- * TableFrameRunnerAsTableRunnerTest.java
+ * TableRunnerAsTableRunnerTest.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -27,11 +27,11 @@ import org.gamegineer.table.ui.TableAdvisor;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.TableFrameRunner} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.ui.ITableRunner} interface.
+ * {@link org.gamegineer.table.internal.ui.TableRunner} class to ensure it does
+ * not violate the contract of the {@link org.gamegineer.table.ui.ITableRunner}
+ * interface.
  */
-public final class TableFrameRunnerAsTableRunnerTest
+public final class TableRunnerAsTableRunnerTest
     extends AbstractTableRunnerTestCase
 {
     // ======================================================================
@@ -39,10 +39,10 @@ public final class TableFrameRunnerAsTableRunnerTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * TableFrameRunnerAsTableRunnerTest} class.
+     * Initializes a new instance of the {@code TableRunnerAsTableRunnerTest}
+     * class.
      */
-    public TableFrameRunnerAsTableRunnerTest()
+    public TableRunnerAsTableRunnerTest()
     {
         super();
     }
@@ -55,6 +55,6 @@ public final class TableFrameRunnerAsTableRunnerTest
     @Override
     protected ITableRunner createTableRunner()
     {
-        return new TableFrameRunner( new TableAdvisor() );
+        return new TableRunner( new TableAdvisor() );
     }
 }

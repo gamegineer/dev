@@ -1,5 +1,5 @@
 /*
- * TableFrame.java
+ * MainFrame.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -19,24 +19,22 @@
  * Created on Sep 18, 2009 at 10:09:51 PM.
  */
 
-package org.gamegineer.table.internal.ui;
+package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.internal.ui.model.MainModel;
 import org.gamegineer.table.ui.ITableAdvisor;
 
 /**
- * The top-level object in the table application.
+ * The top-level frame.
  */
 @NotThreadSafe
-public final class TableFrame
+public final class MainFrame
     extends JFrame
 {
     // ======================================================================
@@ -46,14 +44,14 @@ public final class TableFrame
     /** Serializable class version number. */
     private static final long serialVersionUID = 1087139002992381995L;
 
-    /** The table advisor. */
-    private final ITableAdvisor advisor_;
+    /** The model. */
+    private final MainModel model_;
 
-    /** The document. */
-    private final TableDocument document_;
+    /** The main view. */
+    private final MainView mainView_;
 
-    /** The view. */
-    private final TableView view_;
+    /** The menu bar view. */
+    private final MenuBarView menuBarView_;
 
 
     // ======================================================================
@@ -61,7 +59,7 @@ public final class TableFrame
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableFrame} class.
+     * Initializes a new instance of the {@code MainFrame} class.
      * 
      * @param advisor
      *        The table advisor; must not be {@code null}.
@@ -69,17 +67,19 @@ public final class TableFrame
      * @throws java.lang.NullPointerException
      *         If {@code advisor} is {@code null}.
      */
-    public TableFrame(
+    public MainFrame(
         /* @NonNull */
         final ITableAdvisor advisor )
     {
         assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
 
-        advisor_ = advisor;
-        document_ = new TableDocument();
-        view_ = new TableView( document_ );
+        model_ = new MainModel( advisor );
+        mainView_ = new MainView( model_ );
+        menuBarView_ = new MenuBarView( model_ );
 
         initializeComponent();
+
+        registerActionListeners();
     }
 
 
@@ -88,16 +88,25 @@ public final class TableFrame
     // ======================================================================
 
     /**
-     * Initializes the component.
+     * Initializes this component.
      */
     private void initializeComponent()
     {
-        final JMenuBar menuBar = new JMenuBar();
-        final JMenu fileMenu = new JMenu( Messages.TableFrame_menu_file_text );
-        fileMenu.setMnemonic( Messages.toMnemonic( Messages.TableFrame_menu_file_mnemonic ) );
-        final JMenuItem exitMenuItem = new JMenuItem( Messages.TableFrame_menu_file_exit_text );
-        exitMenuItem.setMnemonic( Messages.toMnemonic( Messages.TableFrame_menu_file_exit_mnemonic ) );
-        exitMenuItem.addActionListener( new ActionListener()
+        setJMenuBar( menuBarView_.getMenuBar() );
+
+        setContentPane( mainView_ );
+
+        setTitle( Messages.MainFrame_title );
+        setLocationByPlatform( true );
+        setSize( 300, 300 );
+    }
+
+    /**
+     * Registers the action listeners for this component.
+     */
+    private void registerActionListeners()
+    {
+        Actions.getExitAction().addActionListener( new ActionListener()
         {
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -106,30 +115,16 @@ public final class TableFrame
                 dispose();
             }
         } );
-        fileMenu.add( exitMenuItem );
-        menuBar.add( fileMenu );
-        final JMenu helpMenu = new JMenu( Messages.TableFrame_menu_help_text );
-        helpMenu.setMnemonic( Messages.toMnemonic( Messages.TableFrame_menu_help_mnemonic ) );
-        final JMenuItem aboutMenuItem = new JMenuItem( Messages.TableFrame_menu_help_about_text );
-        aboutMenuItem.setMnemonic( Messages.toMnemonic( Messages.TableFrame_menu_help_about_mnemonic ) );
-        aboutMenuItem.addActionListener( new ActionListener()
+
+        Actions.getOpenAboutDialogAction().addActionListener( new ActionListener()
         {
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
                 final ActionEvent e )
             {
-                JOptionPane.showMessageDialog( TableFrame.this, Messages.TableFrame_about_message( advisor_.getApplicationVersion() ), Messages.TableFrame_about_title, JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE );
+                JOptionPane.showMessageDialog( MainFrame.this, Messages.AboutDialog_message( model_.getVersion() ), Messages.AboutDialog_title, JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE );
             }
         } );
-        helpMenu.add( aboutMenuItem );
-        menuBar.add( helpMenu );
-        setJMenuBar( menuBar );
-
-        setContentPane( view_ );
-
-        setTitle( Messages.TableFrame_title );
-        setLocationByPlatform( true );
-        setSize( 300, 300 );
     }
 }

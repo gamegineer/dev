@@ -1,5 +1,5 @@
 /*
- * TableFrameRunner.java
+ * TableRunner.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -32,16 +32,18 @@ import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.ui.view.MainFrame;
 import org.gamegineer.table.ui.ITableAdvisor;
 import org.gamegineer.table.ui.ITableRunner;
 import org.gamegineer.table.ui.TableResult;
 
 /**
- * Implementation of {@link org.gamegineer.table.ui.ITableRunner} for the
- * {@code TableFrame} table user interface class.
+ * Implementation of {@link org.gamegineer.table.ui.ITableRunner} that executes
+ * the {@link org.gamegineer.table.internal.ui.view.MainFrame} table user
+ * interface.
  */
 @ThreadSafe
-public final class TableFrameRunner
+public final class TableRunner
     implements ITableRunner
 {
     // ======================================================================
@@ -56,7 +58,7 @@ public final class TableFrameRunner
      * This reference must only be manipulated from the Swing event-dispatching
      * thread.
      */
-    private TableFrame frame_;
+    private MainFrame frame_;
 
     /** The table result. */
     private final AtomicReference<TableResult> result_;
@@ -73,7 +75,7 @@ public final class TableFrameRunner
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableFrameRunner} class.
+     * Initializes a new instance of the {@code TableRunner} class.
      * 
      * @param advisor
      *        The table advisor; must not be {@code null}.
@@ -81,7 +83,7 @@ public final class TableFrameRunner
      * @throws java.lang.NullPointerException
      *         If {@code advisor} is {@code null}.
      */
-    public TableFrameRunner(
+    public TableRunner(
         /* @NonNull */
         final ITableAdvisor advisor )
     {
@@ -105,7 +107,7 @@ public final class TableFrameRunner
     public TableResult call()
         throws Exception
     {
-        assertStateLegal( state_.compareAndSet( State.PRISTINE, State.STARTING ), Messages.TableFrameRunner_state_notPristine );
+        assertStateLegal( state_.compareAndSet( State.PRISTINE, State.STARTING ), Messages.TableRunner_state_notPristine );
 
         try
         {
@@ -117,7 +119,7 @@ public final class TableFrameRunner
         {
             if( Debug.DEFAULT )
             {
-                Debug.trace( "TableFrame runner cancelled." ); //$NON-NLS-1$
+                Debug.trace( "Table runner cancelled." ); //$NON-NLS-1$
             }
         }
         finally
@@ -131,7 +133,7 @@ public final class TableFrameRunner
     }
 
     /**
-     * Closes the running {@code TableFrame} instance.
+     * Closes the running frame.
      * 
      * <p>
      * This method must only be called from the Swing event dispatch thread.
@@ -149,8 +151,8 @@ public final class TableFrameRunner
     }
 
     /**
-     * Asynchronously closes the running {@code TableFrame} instance on the
-     * Swing event dispatch thread.
+     * Asynchronously closes the running frame on the Swing event dispatch
+     * thread.
      */
     private void closeFrameAsync()
     {
@@ -165,7 +167,7 @@ public final class TableFrameRunner
     }
 
     /**
-     * Opens a new {@code TableFrame} instance.
+     * Opens a new frame.
      * 
      * <p>
      * This method must only be called from the Swing event dispatch thread.
@@ -188,12 +190,12 @@ public final class TableFrameRunner
                 {
                     if( Debug.DEFAULT )
                     {
-                        Debug.trace( "TableFrame frame window closed by user." ); //$NON-NLS-1$
+                        Debug.trace( "Frame window closed by user." ); //$NON-NLS-1$
                     }
                     stop( TableResult.OK );
                 }
             };
-            frame_ = new TableFrame( advisor_ );
+            frame_ = new MainFrame( advisor_ );
             frame_.addWindowListener( windowListener );
             frame_.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
             frame_.setVisible( true );
@@ -202,14 +204,13 @@ public final class TableFrameRunner
         }
         catch( final Exception e )
         {
-            Loggers.DEFAULT.log( Level.SEVERE, Messages.TableFrameRunner_openFrame_error, e );
+            Loggers.DEFAULT.log( Level.SEVERE, Messages.TableRunner_openFrame_error, e );
             stop( TableResult.FAIL );
         }
     }
 
     /**
-     * Asynchronously opens a new {@code TableFrame} instance on the Swing event
-     * dispatch thread.
+     * Asynchronously opens a new frame on the Swing event dispatch thread.
      */
     private void openFrameAsync()
     {
@@ -261,7 +262,7 @@ public final class TableFrameRunner
                 SwingUtilities.invokeLater( runnable );
             }
         };
-        new Thread( runnableProxy, "TableFrameRunner-SafeSwingInvokeLater" ).start(); //$NON-NLS-1$
+        new Thread( runnableProxy, "TableRunner-SafeSwingInvokeLater" ).start(); //$NON-NLS-1$
     }
 
     /**

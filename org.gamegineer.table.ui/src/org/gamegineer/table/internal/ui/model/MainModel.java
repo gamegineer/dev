@@ -1,5 +1,5 @@
 /*
- * TableDocument.java
+ * MainModel.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -19,23 +19,29 @@
  * Created on Oct 6, 2009 at 11:17:00 PM.
  */
 
-package org.gamegineer.table.internal.ui;
+package org.gamegineer.table.internal.ui.model;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.ui.ITableAdvisor;
+import org.osgi.framework.Version;
 
 /**
- * A document in the table application.
+ * The top-level model.
  */
 @ThreadSafe
-final class TableDocument
+public final class MainModel
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table associated with this document. */
+    /** The table advisor. */
+    private final ITableAdvisor advisor_;
+
+    /** The table. */
     private final ITable table_;
 
 
@@ -44,10 +50,21 @@ final class TableDocument
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableDocument} class.
+     * Initializes a new instance of the {@code MainModel} class.
+     * 
+     * @param advisor
+     *        The table advisor; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code advisor} is {@code null}.
      */
-    TableDocument()
+    public MainModel(
+        /* @NonNull */
+        final ITableAdvisor advisor )
     {
+        assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
+
+        advisor_ = advisor;
         table_ = TableFactory.createTable();
     }
 
@@ -57,13 +74,24 @@ final class TableDocument
     // ======================================================================
 
     /**
-     * Gets the table associated with this document.
+     * Gets the table.
      * 
-     * @return The table associated with this document; never {@code null}.
+     * @return The table; never {@code null}.
      */
     /* @NonNull */
-    ITable getTable()
+    public ITable getTable()
     {
         return table_;
+    }
+
+    /**
+     * Gets the model version.
+     * 
+     * @return The model version.
+     */
+    /* @NonNull */
+    public Version getVersion()
+    {
+        return advisor_.getApplicationVersion();
     }
 }

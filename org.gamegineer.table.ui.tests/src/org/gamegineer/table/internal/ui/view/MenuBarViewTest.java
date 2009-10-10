@@ -1,5 +1,5 @@
 /*
- * TableFrameTest.java
+ * MenuBarViewTest.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,27 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 3, 2009 at 11:25:41 PM.
+ * Created on Oct 8, 2009 at 11:54:43 PM.
  */
 
-package org.gamegineer.table.internal.ui;
+package org.gamegineer.table.internal.ui.view;
 
+import static org.junit.Assert.assertNotNull;
+import org.gamegineer.table.internal.ui.model.MainModel;
+import org.gamegineer.table.ui.TableAdvisor;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.internal.ui.TableFrame}
- * class.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.ui.view.MenuBarView} class.
  */
-public final class TableFrameTest
+public final class MenuBarViewTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableFrameTest} class.
+     * Initializes a new instance of the {@code MenuBarViewTest} class.
      */
-    public TableFrameTest()
+    public MenuBarViewTest()
     {
         super();
     }
@@ -48,11 +51,22 @@ public final class TableFrameTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * table advisor.
+     * model.
      */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Advisor_Null()
+    @Test( expected = AssertionError.class )
+    public void testConstructor_Model_Null()
     {
-        new TableFrame( null );
+        new MenuBarView( null );
+    }
+
+    /**
+     * Ensures the {@code getMenuBar} method does not return {@code null}.
+     */
+    @Test
+    public void testGetMenuBar_ReturnValue_NonNull()
+    {
+        final MenuBarView view = new MenuBarView( new MainModel( new TableAdvisor() ) );
+
+        assertNotNull( view.getMenuBar() );
     }
 }

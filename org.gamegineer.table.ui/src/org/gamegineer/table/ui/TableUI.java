@@ -27,7 +27,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
-import org.gamegineer.table.internal.ui.TableFrameRunner;
+import org.gamegineer.table.internal.ui.TableRunner;
 
 /**
  * Provides access to the table user interface.
@@ -117,6 +117,6 @@ public final class TableUI
     {
         assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
 
-        return new TableFrameRunner( advisor );
+        return new TableRunner( advisor );
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Messages.java
+ * ActionsTest.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,54 +16,53 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 19, 2009 at 12:12:47 AM.
+ * Created on Oct 9, 2009 at 11:21:01 PM.
  */
 
-package org.gamegineer.table.internal.ui;
+package org.gamegineer.table.internal.ui.view;
 
-import net.jcip.annotations.ThreadSafe;
-import org.eclipse.osgi.util.NLS;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
 /**
- * A utility class to manage localized messages for the package.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.ui.view.Actions} class.
  */
-@ThreadSafe
-final class Messages
-    extends NLS
+public final class ActionsTest
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The name of the associated resource bundle. */
-    private static final String BUNDLE_NAME = "org.gamegineer.table.internal.ui.Messages"; //$NON-NLS-1$
-
-    // --- TableRunner ------------------------------------------------------
-
-    /** The frame window could not be opened. */
-    public static String TableRunner_openFrame_error;
-
-    /** The runner is already running or has already finished. */
-    public static String TableRunner_state_notPristine;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes the {@code Messages} class.
+     * Initializes a new instance of the {@code ActionsTest} class.
      */
-    static
+    public ActionsTest()
     {
-        NLS.initializeMessages( BUNDLE_NAME, Messages.class );
+        super();
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Ensures the {@code getExitAction} method does not return {@code null}.
+     */
+    @Test
+    public void testGetExitAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getExitAction() );
     }
 
     /**
-     * Initializes a new instance of the {@code Messages} class.
+     * Ensures the {@code getOpenAboutDialogAction} method does not return
+     * {@code null}.
      */
-    private Messages()
+    @Test
+    public void testGetOpenAboutDialogAction_ReturnValue_NonNull()
     {
-        super();
+        assertNotNull( Actions.getOpenAboutDialogAction() );
     }
 }

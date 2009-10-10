@@ -16,10 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 17, 2009 at 11:26:11 PM.
+ * Created on Sep 16, 2009 at 10:40:16 PM.
  */
 
 /**
- * Provides interfaces and classes that define the table user interface.
+ * Provides classes that represent the various views in the table user
+ * interface.
+ * 
+ * <p>
+ * This package is only intended for use by members of the
+ * {@code org.gamegineer.table} project.
+ * </p>
  */
-package org.gamegineer.table.ui;
+package org.gamegineer.table.internal.ui.view;

@@ -19,14 +19,15 @@
  * Created on Oct 6, 2009 at 11:16:52 PM.
  */
 
-package org.gamegineer.table.internal.ui;
+package org.gamegineer.table.internal.ui.view;
 
 import java.awt.Color;
 import javax.swing.JPanel;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.internal.ui.model.MainModel;
 
 /**
- * A view in the table application.
+ * The table view.
  */
 @NotThreadSafe
 final class TableView
@@ -39,8 +40,9 @@ final class TableView
     /** Serializable class version number. */
     private static final long serialVersionUID = 3574703230407179091L;
 
-    /** The document associated with this view. */
-    private final TableDocument document_;
+    /** The model associated with this view. */
+    @SuppressWarnings( "unused" )
+    private final MainModel model_;
 
 
     // ======================================================================
@@ -50,16 +52,16 @@ final class TableView
     /**
      * Initializes a new instance of the {@code TableView} class.
      * 
-     * @param document
-     *        The document associated with this view; must not be {@code null}.
+     * @param model
+     *        The model associated with this view; must not be {@code null}.
      */
     TableView(
         /* @NonNull */
-        final TableDocument document )
+        final MainModel model )
     {
-        assert document != null;
+        assert model != null;
 
-        document_ = document;
+        model_ = model;
 
         initializeComponent();
     }
@@ -70,18 +72,7 @@ final class TableView
     // ======================================================================
 
     /**
-     * Gets the document associated with this view.
-     * 
-     * @return The document associated with this view; never {@code null}.
-     */
-    /* @NonNull */
-    TableDocument getDocument()
-    {
-        return document_;
-    }
-
-    /**
-     * Initializes the component.
+     * Initializes this component.
      */
     private void initializeComponent()
     {

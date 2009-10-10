@@ -1,5 +1,5 @@
 /*
- * TableDocumentTest.java
+ * TableViewTest.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,28 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 6, 2009 at 11:57:40 PM.
+ * Created on Oct 7, 2009 at 12:00:24 AM.
  */
 
-package org.gamegineer.table.internal.ui;
+package org.gamegineer.table.internal.ui.view;
 
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.TableDocument} class.
+ * {@link org.gamegineer.table.internal.ui.view.TableView} class.
  */
-public final class TableDocumentTest
+public final class TableViewTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableDocumentTest} class.
+     * Initializes a new instance of the {@code TableViewTest} class.
      */
-    public TableDocumentTest()
+    public TableViewTest()
     {
         super();
     }
@@ -48,13 +47,12 @@ public final class TableDocumentTest
     // ======================================================================
 
     /**
-     * Ensures the {@code getTable} method does not return {@code null}.
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * model.
      */
-    @Test
-    public void testGetTable_ReturnValue_NonNull()
+    @Test( expected = AssertionError.class )
+    public void testConstructor_Model_Null()
     {
-        final TableDocument document = new TableDocument();
-
-        assertNotNull( document.getTable() );
+        new TableView( null );
     }
 }
