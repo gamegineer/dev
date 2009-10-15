@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.core;
 
+import java.util.Collection;
+
 /**
  * A virtual game table.
  * 
@@ -33,4 +35,46 @@ public interface ITable
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Adds the specified card to this table.
+     * 
+     * <p>
+     * This method does nothing if the specified card is already on the table.
+     * </p>
+     * 
+     * @param card
+     *        The card; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code card} is {@code null}.
+     */
+    public void addCard(
+        /* @NonNull */
+        ICard card );
+
+    /**
+     * Gets the collection of cards on this table.
+     * 
+     * @return The collection of cards on this table; never {@code null}.
+     */
+    /* @NonNull */
+    public Collection<ICard> getCards();
+
+    /**
+     * Removes the specified card from this table.
+     * 
+     * <p>
+     * This method does nothing if the specified card is not on the table.
+     * </p>
+     * 
+     * @param card
+     *        The card; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code card} is {@code null}.
+     */
+    public void removeCard(
+        /* @NonNull */
+        ICard card );
 }

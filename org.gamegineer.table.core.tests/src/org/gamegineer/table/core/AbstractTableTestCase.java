@@ -21,7 +21,11 @@
 
 package org.gamegineer.table.core;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import java.util.Collection;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,6 +60,17 @@ public abstract class AbstractTableTestCase
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates a card suitable for testing.
+     * 
+     * @return A new card; never {@code null}.
+     */
+    /* @NonNull */
+    private static ICard createCard()
+    {
+        return CardFactory.createCard( CardDesign.EMPTY, CardDesign.EMPTY );
+    }
 
     /**
      * Creates the table to be tested.
@@ -97,11 +112,108 @@ public abstract class AbstractTableTestCase
     }
 
     /**
-     * Dummy test.
+     * Ensures the {@code addCard} method adds a card that is absent from the
+     * table.
      */
     @Test
-    public void testDummy()
+    public void testAddCard_Card_Absent()
     {
-        // Do nothing
+        final ICard card = createCard();
+
+        table_.addCard( card );
+
+        assertTrue( table_.getCards().contains( card ) );
+    }
+
+    /**
+     * Ensures the {@code addCard} method throws an exception when passed a
+     * {@code null} card.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testAddCard_Card_Null()
+    {
+        table_.addCard( null );
+    }
+
+    /**
+     * Ensures the {@code addCard} method does not add a card that is present on
+     * the table.
+     */
+    @Test
+    public void testAddCard_Card_Present()
+    {
+        final ICard card = createCard();
+        table_.addCard( card );
+
+        table_.addCard( card );
+
+        final Collection<ICard> cards = table_.getCards();
+        assertTrue( cards.contains( card ) );
+        assertEquals( 1, cards.size() );
+    }
+
+    /**
+     * Ensures the {@code getCards} method returns a copy of the card
+     * collection.
+     */
+    @Test
+    public void testGetCards_ReturnValue_Copy()
+    {
+        final Collection<ICard> cards = table_.getCards();
+        final int expectedCardsSize = cards.size();
+
+        table_.addCard( createCard() );
+
+        assertEquals( expectedCardsSize, cards.size() );
+    }
+
+    /**
+     * Ensures the {@code getCards} method does not return {@code null}.
+     */
+    @Test
+    public void testGetCards_ReturnValue_NonNull()
+    {
+        assertNotNull( table_.getCards() );
+    }
+
+    /**
+     * Ensures the {@code removeCard} method does not remove a card that is
+     * absent from the table.
+     */
+    @Test
+    public void testRemoveCard_Card_Absent()
+    {
+        final ICard card = createCard();
+
+        table_.removeCard( card );
+
+        assertEquals( 0, table_.getCards().size() );
+    }
+
+    /**
+     * Ensures the {@code removeCard} method throws an exception when passed a
+     * {@code null} card.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testRemoveCard_Card_Null()
+    {
+        table_.removeCard( null );
+    }
+
+    /**
+     * Ensures the {@code removeCard} method removes a card that is present on
+     * the table.
+     */
+    @Test
+    public void testRemoveCard_Card_Present()
+    {
+        final ICard card = createCard();
+        table_.addCard( card );
+
+        table_.removeCard( card );
+
+        final Collection<ICard> cards = table_.getCards();
+        assertFalse( cards.contains( card ) );
+        assertEquals( 0, cards.size() );
     }
 }

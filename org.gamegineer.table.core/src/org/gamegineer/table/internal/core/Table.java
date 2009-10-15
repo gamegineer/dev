@@ -21,7 +21,12 @@
 
 package org.gamegineer.table.internal.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.ArrayList;
+import java.util.Collection;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ITable;
 
 /**
@@ -32,6 +37,18 @@ public final class Table
     implements ITable
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The collection of cards on this table. */
+    @GuardedBy( "lock_ " )
+    private final Collection<ICard> cards_;
+
+    /** The instance lock. */
+    private final Object lock_;
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
@@ -40,6 +57,54 @@ public final class Table
      */
     public Table()
     {
-        super();
+        lock_ = new Object();
+        cards_ = new ArrayList<ICard>();
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.core.ITable#addCard(org.gamegineer.table.core.ICard)
+     */
+    public void addCard(
+        final ICard card )
+    {
+        assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            if( !cards_.contains( card ) )
+            {
+                cards_.add( card );
+            }
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITable#getCards()
+     */
+    public Collection<ICard> getCards()
+    {
+        synchronized( lock_ )
+        {
+            return new ArrayList<ICard>( cards_ );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITable#removeCard(org.gamegineer.table.core.ICard)
+     */
+    public void removeCard(
+        final ICard card )
+    {
+        assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            cards_.remove( card );
+        }
     }
 }
