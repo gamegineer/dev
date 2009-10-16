@@ -1,5 +1,5 @@
 /*
- * MainView.java
+ * CardView.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,21 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 8, 2009 at 11:00:49 PM.
+ * Created on Oct 15, 2009 at 10:41:19 PM.
  */
 
 package org.gamegineer.table.internal.ui.view;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import javax.swing.JPanel;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.internal.ui.model.MainModel;
+import org.gamegineer.table.core.ICard;
 
 /**
- * The top-level view.
+ * A view of a card.
  */
 @NotThreadSafe
-final class MainView
+final class CardView
     extends JPanel
 {
     // ======================================================================
@@ -38,14 +38,11 @@ final class MainView
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = 8895515474498086806L;
+    private static final long serialVersionUID = 3436102069399598192L;
 
-    /** The model associated with this view. */
+    /** The card associated with this view. */
     @SuppressWarnings( "unused" )
-    private final MainModel model_;
-
-    /** The table view. */
-    private final TableView tableView_;
+    private final ICard card_;
 
 
     // ======================================================================
@@ -53,19 +50,18 @@ final class MainView
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MainView} class.
+     * Initializes a new instance of the {@code CardView} class.
      * 
-     * @param model
-     *        The model associated with this view; must not be {@code null}.
+     * @param card
+     *        The card associated with this view; must not be {@code null}.
      */
-    MainView(
+    CardView(
         /* @NonNull */
-        final MainModel model )
+        final ICard card )
     {
-        assert model != null;
+        assert card != null;
 
-        model_ = model;
-        tableView_ = new TableView( model.getTable() );
+        card_ = card;
 
         initializeComponent();
     }
@@ -80,8 +76,8 @@ final class MainView
      */
     private void initializeComponent()
     {
-        setLayout( new BorderLayout() );
         setOpaque( true );
-        add( tableView_, BorderLayout.CENTER );
+        setBackground( Color.WHITE );
+        setSize( 71, 96 );
     }
 }

@@ -1,5 +1,5 @@
 /*
- * ActionsTest.java
+ * CardViewTest.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,28 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 9, 2009 at 11:21:01 PM.
+ * Created on Oct 15, 2009 at 10:44:54 PM.
  */
 
 package org.gamegineer.table.internal.ui.view;
 
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.view.Actions} class.
+ * {@link org.gamegineer.table.internal.ui.view.CardView} class.
  */
-public final class ActionsTest
+public final class CardViewTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ActionsTest} class.
+     * Initializes a new instance of the {@code CardViewTest} class.
      */
-    public ActionsTest()
+    public CardViewTest()
     {
         super();
     }
@@ -48,30 +47,12 @@ public final class ActionsTest
     // ======================================================================
 
     /**
-     * Ensures the {@code getAddCardAction} method does not return {@code null}.
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * card.
      */
-    @Test
-    public void testGetAddCardAction_ReturnValue_NonNull()
+    @Test( expected = AssertionError.class )
+    public void testConstructor_Card_Null()
     {
-        assertNotNull( Actions.getAddCardAction() );
-    }
-
-    /**
-     * Ensures the {@code getExitAction} method does not return {@code null}.
-     */
-    @Test
-    public void testGetExitAction_ReturnValue_NonNull()
-    {
-        assertNotNull( Actions.getExitAction() );
-    }
-
-    /**
-     * Ensures the {@code getOpenAboutDialogAction} method does not return
-     * {@code null}.
-     */
-    @Test
-    public void testGetOpenAboutDialogAction_ReturnValue_NonNull()
-    {
-        assertNotNull( Actions.getOpenAboutDialogAction() );
+        new CardView( null );
     }
 }

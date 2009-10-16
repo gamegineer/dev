@@ -107,8 +107,23 @@ final class MenuBarView
     {
         final JMenuBar menuBar = new JMenuBar();
         menuBar.add( createFileMenu() );
+        menuBar.add( createTableMenu() );
         menuBar.add( createHelpMenu() );
         return menuBar;
+    }
+
+    /**
+     * Creates the table menu.
+     * 
+     * @return The table menu; never {@code null}.
+     */
+    /* @NonNull */
+    private JMenu createTableMenu()
+    {
+        final JMenu menu = new JMenu( Messages.MenuBarView_table_text );
+        menu.setMnemonic( Messages.toMnemonic( Messages.MenuBarView_table_mnemonic ) );
+        menu.add( Actions.getAddCardAction() );
+        return menu;
     }
 
     /**

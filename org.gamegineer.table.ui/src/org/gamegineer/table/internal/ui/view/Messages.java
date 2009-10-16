@@ -48,6 +48,14 @@ final class Messages
     /** The About dialog title. */
     public static String AboutDialog_title;
 
+    // --- AddCardAction -------------------------------------------------------
+
+    /** The add card action mnemonic. */
+    public static String AddCardAction_mnemonic;
+
+    /** The add card action text. */
+    public static String AddCardAction_text;
+
     // --- ExitAction -------------------------------------------------------
 
     /** The exit action mnemonic. */
@@ -74,6 +82,12 @@ final class Messages
 
     /** The Help menu text. */
     public static String MenuBarView_help_text;
+
+    /** The Table menu mnemonic. */
+    public static String MenuBarView_table_mnemonic;
+
+    /** The Table menu text. */
+    public static String MenuBarView_table_text;
 
     // --- Messages ---------------------------------------------------------
 

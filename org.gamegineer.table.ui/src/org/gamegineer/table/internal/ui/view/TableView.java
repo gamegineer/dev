@@ -22,12 +22,17 @@
 package org.gamegineer.table.internal.ui.view;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.internal.ui.model.MainModel;
+import org.gamegineer.table.core.CardDesign;
+import org.gamegineer.table.core.CardFactory;
+import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ITable;
 
 /**
- * The table view.
+ * A view of the table.
  */
 @NotThreadSafe
 final class TableView
@@ -40,9 +45,8 @@ final class TableView
     /** Serializable class version number. */
     private static final long serialVersionUID = 3574703230407179091L;
 
-    /** The model associated with this view. */
-    @SuppressWarnings( "unused" )
-    private final MainModel model_;
+    /** The table associated with this view. */
+    private final ITable table_;
 
 
     // ======================================================================
@@ -52,18 +56,20 @@ final class TableView
     /**
      * Initializes a new instance of the {@code TableView} class.
      * 
-     * @param model
-     *        The model associated with this view; must not be {@code null}.
+     * @param table
+     *        The table associated with this view; must not be {@code null}.
      */
     TableView(
         /* @NonNull */
-        final MainModel model )
+        final ITable table )
     {
-        assert model != null;
+        assert table != null;
 
-        model_ = model;
+        table_ = table;
 
         initializeComponent();
+
+        registerActionListeners();
     }
 
 
@@ -72,10 +78,45 @@ final class TableView
     // ======================================================================
 
     /**
+     * Adds a new card to the table.
+     */
+    private void addCard()
+    {
+        final ICard card = CardFactory.createCard( CardDesign.EMPTY, CardDesign.EMPTY );
+        table_.addCard( card );
+
+        // TODO: Eventually move this to the appropriate table listener method.
+        final CardView view = new CardView( card );
+        final int offset = table_.getCards().size() - 1;
+        view.setLocation( offset * view.getWidth(), offset * view.getHeight() );
+        add( view );
+        repaint( view.getBounds() );
+    }
+
+    /**
      * Initializes this component.
      */
     private void initializeComponent()
     {
+        setLayout( null );
+        setOpaque( true );
         setBackground( new Color( 0, 128, 0 ) );
+    }
+
+    /**
+     * Registers the action listeners for this component.
+     */
+    private void registerActionListeners()
+    {
+        Actions.getAddCardAction().addActionListener( new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                addCard();
+            }
+        } );
     }
 }

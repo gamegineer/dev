@@ -34,6 +34,9 @@ final class Actions
     // Fields
     // ======================================================================
 
+    /** The action used to add a card to the table. */
+    private static final BasicAction addCardAction_;
+
     /** The action used to exit the application. */
     private static final BasicAction exitAction_;
 
@@ -50,6 +53,7 @@ final class Actions
      */
     static
     {
+        addCardAction_ = createAddCardAction();
         exitAction_ = createExitAction();
         openAboutDialogAction_ = createOpenAboutDialogAction();
     }
@@ -68,6 +72,26 @@ final class Actions
     // ======================================================================
 
     /**
+     * Creates the add card action.
+     * 
+     * @return The add card action; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static BasicAction createAddCardAction()
+    {
+        return new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, Messages.toMnemonic( Messages.AddCardAction_mnemonic ) );
+                putValue( NAME, Messages.AddCardAction_text );
+            }
+        };
+    }
+
+    /**
      * Creates the exit action.
      * 
      * @return The exit action; never {@code null}.
@@ -78,7 +102,7 @@ final class Actions
     {
         return new BasicAction()
         {
-            private static final long serialVersionUID = 6316141299713487260L;
+            private static final long serialVersionUID = 1L;
 
             {
                 putValue( MNEMONIC_KEY, Messages.toMnemonic( Messages.ExitAction_mnemonic ) );
@@ -98,13 +122,24 @@ final class Actions
     {
         return new BasicAction()
         {
-            private static final long serialVersionUID = 5964488434872973833L;
+            private static final long serialVersionUID = 1L;
 
             {
                 putValue( MNEMONIC_KEY, Messages.toMnemonic( Messages.OpenAboutDialogAction_mnemonic ) );
                 putValue( NAME, Messages.OpenAboutDialogAction_text );
             }
         };
+    }
+
+    /**
+     * Gets the add card action.
+     * 
+     * @return The add card action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getAddCardAction()
+    {
+        return addCardAction_;
     }
 
     /**

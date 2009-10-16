@@ -48,10 +48,10 @@ public final class TableViewTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * model.
+     * table.
      */
     @Test( expected = AssertionError.class )
-    public void testConstructor_Model_Null()
+    public void testConstructor_Table_Null()
     {
         new TableView( null );
     }
