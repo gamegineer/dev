@@ -54,6 +54,21 @@ public interface ITable
         ICard card );
 
     /**
+     * Adds the specified table listener to this table.
+     * 
+     * @param listener
+     *        The table listener; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code listener} is already a registered table listener.
+     * @throws java.lang.NullPointerException
+     *         If {@code listener} is {@code null}.
+     */
+    public void addTableListener(
+        /* @NonNull */
+        ITableListener listener );
+
+    /**
      * Gets the collection of cards on this table.
      * 
      * @return The collection of cards on this table; never {@code null}.
@@ -77,4 +92,19 @@ public interface ITable
     public void removeCard(
         /* @NonNull */
         ICard card );
+
+    /**
+     * Removes the specified table listener from this table.
+     * 
+     * @param listener
+     *        The table listener; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code listener} is not a registered table listener.
+     * @throws java.lang.NullPointerException
+     *         If {@code listener} is {@code null}.
+     */
+    public void removeTableListener(
+        /* @NonNull */
+        ITableListener listener );
 }

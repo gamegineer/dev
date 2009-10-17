@@ -21,13 +21,18 @@
 
 package org.gamegineer.table.internal.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.CardChangeEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.ITableListener;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ITable}.
@@ -44,6 +49,9 @@ public final class Table
     @GuardedBy( "lock_ " )
     private final Collection<ICard> cards_;
 
+    /** The collection of table listeners. */
+    private final CopyOnWriteArrayList<ITableListener> listeners_;
+
     /** The instance lock. */
     private final Object lock_;
 
@@ -59,6 +67,7 @@ public final class Table
     {
         lock_ = new Object();
         cards_ = new ArrayList<ICard>();
+        listeners_ = new CopyOnWriteArrayList<ITableListener>();
     }
 
 
@@ -79,6 +88,70 @@ public final class Table
             if( !cards_.contains( card ) )
             {
                 cards_.add( card );
+            }
+        }
+
+        fireCardAdded( card );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITable#addTableListener(org.gamegineer.table.core.ITableListener)
+     */
+    public void addTableListener(
+        final ITableListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener" ); //$NON-NLS-1$
+    }
+
+    /**
+     * Fires a card added event.
+     * 
+     * @param card
+     *        The added card; must not be {@code null}.
+     */
+    private void fireCardAdded(
+        /* @NonNull */
+        final ICard card )
+    {
+        assert card != null;
+
+        final CardChangeEvent event = InternalCardChangeEvent.createCardChangeEvent( this, card );
+        for( final ITableListener listener : listeners_ )
+        {
+            try
+            {
+                listener.cardAdded( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.Table_cardAdded_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a card removed event.
+     * 
+     * @param card
+     *        The removed card; must not be {@code null}.
+     */
+    private void fireCardRemoved(
+        /* @NonNull */
+        final ICard card )
+    {
+        assert card != null;
+
+        final CardChangeEvent event = InternalCardChangeEvent.createCardChangeEvent( this, card );
+        for( final ITableListener listener : listeners_ )
+        {
+            try
+            {
+                listener.cardRemoved( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.Table_cardRemoved_unexpectedException, e );
             }
         }
     }
@@ -106,5 +179,17 @@ public final class Table
         {
             cards_.remove( card );
         }
+
+        fireCardRemoved( card );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITable#removeTableListener(org.gamegineer.table.core.ITableListener)
+     */
+    public void removeTableListener(
+        final ITableListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener" ); //$NON-NLS-1$
     }
 }

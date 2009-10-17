@@ -116,13 +116,55 @@ public abstract class AbstractTableTestCase
      * table.
      */
     @Test
-    public void testAddCard_Card_Absent()
+    public void testAddCard_Card_Absent_AddsCard()
     {
         final ICard card = createCard();
 
         table_.addCard( card );
 
         assertTrue( table_.getCards().contains( card ) );
+    }
+
+    /**
+     * Ensures the {@code addCard} method catches any exception thrown by the
+     * {@code cardAdded} method of a table listener.
+     */
+    @Test
+    public void testAddCard_Card_Absent_CatchesListenerException()
+    {
+        final MockTableListener listener1 = new MockTableListener()
+        {
+            @Override
+            public void cardAdded(
+                final CardChangeEvent event )
+            {
+                super.cardAdded( event );
+
+                throw new RuntimeException();
+            }
+        };
+        final MockTableListener listener2 = new MockTableListener();
+        table_.addTableListener( listener1 );
+        table_.addTableListener( listener2 );
+
+        table_.addCard( createCard() );
+
+        assertEquals( 1, listener2.getCardAddedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code addCard} method fires a card added event when the card
+     * is absent from the table.
+     */
+    @Test
+    public void testAddCard_Card_Absent_FiresCardAddedEvent()
+    {
+        final MockTableListener listener = new MockTableListener();
+        table_.addTableListener( listener );
+
+        table_.addCard( createCard() );
+
+        assertEquals( 1, listener.getCardAddedEventCount() );
     }
 
     /**
@@ -150,6 +192,29 @@ public abstract class AbstractTableTestCase
         final Collection<ICard> cards = table_.getCards();
         assertTrue( cards.contains( card ) );
         assertEquals( 1, cards.size() );
+    }
+
+    /**
+     * Ensures the {@code addTableListener} method throws an exception when
+     * passed a {@code null} listener.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testAddTableListener_Listener_Null()
+    {
+        table_.addTableListener( null );
+    }
+
+    /**
+     * Ensures the {@code addTableListener} method throws an exception when
+     * passed a listener that is present in the table listener collection.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddTableListener_Listener_Present()
+    {
+        final ITableListener listener = new MockTableListener();
+        table_.addTableListener( listener );
+
+        table_.addTableListener( listener );
     }
 
     /**
@@ -201,11 +266,57 @@ public abstract class AbstractTableTestCase
     }
 
     /**
+     * Ensures the {@code removeCard} method catches any exception thrown by the
+     * {@code cardRemoved} method of a table listener.
+     */
+    @Test
+    public void testRemoveCard_Card_Present_CatchesListenerException()
+    {
+        final MockTableListener listener1 = new MockTableListener()
+        {
+            @Override
+            public void cardRemoved(
+                final CardChangeEvent event )
+            {
+                super.cardRemoved( event );
+
+                throw new RuntimeException();
+            }
+        };
+        final MockTableListener listener2 = new MockTableListener();
+        table_.addTableListener( listener1 );
+        table_.addTableListener( listener2 );
+        final ICard card = createCard();
+        table_.addCard( card );
+
+        table_.removeCard( card );
+
+        assertEquals( 1, listener2.getCardRemovedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code removeCard} method fires a card removed event when the
+     * card is present on the table.
+     */
+    @Test
+    public void testRemoveCard_Card_Present_FiresCardRemovedEvent()
+    {
+        final MockTableListener listener = new MockTableListener();
+        table_.addTableListener( listener );
+        final ICard card = createCard();
+        table_.addCard( card );
+
+        table_.removeCard( card );
+
+        assertEquals( 1, listener.getCardRemovedEventCount() );
+    }
+
+    /**
      * Ensures the {@code removeCard} method removes a card that is present on
      * the table.
      */
     @Test
-    public void testRemoveCard_Card_Present()
+    public void testRemoveCard_Card_Present_RemovesCard()
     {
         final ICard card = createCard();
         table_.addCard( card );
@@ -215,5 +326,42 @@ public abstract class AbstractTableTestCase
         final Collection<ICard> cards = table_.getCards();
         assertFalse( cards.contains( card ) );
         assertEquals( 0, cards.size() );
+    }
+
+    /**
+     * Ensures the {@code removeTableListener} method throws an exception when
+     * passed a listener that is absent from the table listener collection.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testRemoveTableListener_Listener_Absent()
+    {
+        table_.removeTableListener( new MockTableListener() );
+    }
+
+    /**
+     * Ensures the {@code removeTableListener} method throws an exception when
+     * passed a {@code null} listener.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testRemoveTableListener_Listener_Null()
+    {
+        table_.removeTableListener( null );
+    }
+
+    /**
+     * Ensures the {@code removeTableListener} removes a listener that is
+     * present in the table listener collection.
+     */
+    @Test
+    public void testRemoveTableListener_Listener_Present()
+    {
+        final MockTableListener listener = new MockTableListener();
+        table_.addTableListener( listener );
+        table_.addCard( createCard() );
+
+        table_.removeTableListener( listener );
+
+        table_.addCard( createCard() );
+        assertEquals( 1, listener.getCardAddedEventCount() );
     }
 }
