@@ -74,4 +74,14 @@ public final class ActionsTest
     {
         assertNotNull( Actions.getOpenAboutDialogAction() );
     }
+
+    /**
+     * Ensures the {@code getRemoveCardAction} method does not return {@code
+     * null}.
+     */
+    @Test
+    public void testGetRemoveCardAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getRemoveCardAction() );
+    }
 }

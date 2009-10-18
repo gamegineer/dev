@@ -43,6 +43,9 @@ final class Actions
     /** The action used to open the about dialog. */
     private static final BasicAction openAboutDialogAction_;
 
+    /** The action used to remove a card from the table. */
+    private static final BasicAction removeCardAction_;
+
 
     // ======================================================================
     // Constructors
@@ -56,6 +59,7 @@ final class Actions
         addCardAction_ = createAddCardAction();
         exitAction_ = createExitAction();
         openAboutDialogAction_ = createOpenAboutDialogAction();
+        removeCardAction_ = createRemoveCardAction();
     }
 
     /**
@@ -132,6 +136,26 @@ final class Actions
     }
 
     /**
+     * Creates the remove card action.
+     * 
+     * @return The remove card action; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static BasicAction createRemoveCardAction()
+    {
+        return new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, Messages.toMnemonic( Messages.RemoveCardAction_mnemonic ) );
+                putValue( NAME, Messages.RemoveCardAction_text );
+            }
+        };
+    }
+
+    /**
      * Gets the add card action.
      * 
      * @return The add card action; never {@code null}.
@@ -162,5 +186,16 @@ final class Actions
     static BasicAction getOpenAboutDialogAction()
     {
         return openAboutDialogAction_;
+    }
+
+    /**
+     * Gets the remove card action.
+     * 
+     * @return The remove card action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getRemoveCardAction()
+    {
+        return removeCardAction_;
     }
 }

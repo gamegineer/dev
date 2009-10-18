@@ -123,6 +123,7 @@ final class MenuBarView
         final JMenu menu = new JMenu( Messages.MenuBarView_table_text );
         menu.setMnemonic( Messages.toMnemonic( Messages.MenuBarView_table_mnemonic ) );
         menu.add( Actions.getAddCardAction() );
+        menu.add( Actions.getRemoveCardAction() );
         return menu;
     }
 

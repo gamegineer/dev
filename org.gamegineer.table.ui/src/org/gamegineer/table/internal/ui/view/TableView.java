@@ -25,6 +25,8 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
@@ -50,6 +52,9 @@ final class TableView
     /** Serializable class version number. */
     private static final long serialVersionUID = 3574703230407179091L;
 
+    /** The collection of card views. */
+    private final Map<ICard, CardView> cardViews_;
+
     /** The table associated with this view. */
     private final ITable table_;
 
@@ -70,6 +75,7 @@ final class TableView
     {
         assert table != null;
 
+        cardViews_ = new IdentityHashMap<ICard, CardView>();
         table_ = table;
 
         initializeComponent();
@@ -160,6 +166,7 @@ final class TableView
         assert card != null;
 
         final CardView view = new CardView( card );
+        cardViews_.put( card, view );
         final int offset = table_.getCards().size() - 1;
         view.setLocation( offset * view.getWidth(), offset * view.getHeight() );
         add( view );
@@ -178,7 +185,12 @@ final class TableView
     {
         assert card != null;
 
-        // TODO: Remove associated card view.
+        final CardView view = cardViews_.remove( card );
+        if( view != null )
+        {
+            remove( view );
+            repaint( view.getBounds() );
+        }
     }
 
     /**
@@ -196,6 +208,28 @@ final class TableView
                 addCard();
             }
         } );
+        Actions.getRemoveCardAction().addActionListener( new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                removeCard();
+            }
+        } );
+    }
+
+    /**
+     * Removes the most recently added card from the table.
+     */
+    private void removeCard()
+    {
+        final ICard[] cards = table_.getCards().toArray( new ICard[ 0 ] );
+        if( cards.length > 0 )
+        {
+            table_.removeCard( cards[ cards.length - 1 ] );
+        }
     }
 
     /*

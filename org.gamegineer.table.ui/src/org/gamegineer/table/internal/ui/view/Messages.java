@@ -102,6 +102,14 @@ final class Messages
     /** The open about dialog action text. */
     public static String OpenAboutDialogAction_text;
 
+    // --- RemoveCardAction -------------------------------------------------
+
+    /** The remove card action mnemonic. */
+    public static String RemoveCardAction_mnemonic;
+
+    /** The remove card action text. */
+    public static String RemoveCardAction_text;
+
 
     // ======================================================================
     // Constructors
