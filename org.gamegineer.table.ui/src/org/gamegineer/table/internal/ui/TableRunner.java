@@ -145,7 +145,10 @@ public final class TableRunner
 
         if( frame_ != null )
         {
-            frame_.dispose();
+            if( frame_.isDisplayable() )
+            {
+                frame_.dispose();
+            }
             frame_ = null;
         }
     }
