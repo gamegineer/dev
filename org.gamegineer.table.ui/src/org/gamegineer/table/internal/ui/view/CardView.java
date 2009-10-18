@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.ui.view;
 
 import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.ICard;
@@ -78,6 +79,7 @@ final class CardView
     {
         setOpaque( true );
         setBackground( Color.WHITE );
+        setBorder( BorderFactory.createLineBorder( Color.BLACK ) );
         setSize( 71, 96 );
     }
 }

@@ -21,15 +21,19 @@
 
 package org.gamegineer.table.internal.ui.view;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.core.CardChangeEvent;
 import org.gamegineer.table.core.CardDesign;
 import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.ITableListener;
 
 /**
  * A view of the table.
@@ -37,6 +41,7 @@ import org.gamegineer.table.core.ITable;
 @NotThreadSafe
 final class TableView
     extends JPanel
+    implements ITableListener
 {
     // ======================================================================
     // Fields
@@ -82,15 +87,54 @@ final class TableView
      */
     private void addCard()
     {
-        final ICard card = CardFactory.createCard( CardDesign.EMPTY, CardDesign.EMPTY );
-        table_.addCard( card );
+        table_.addCard( CardFactory.createCard( CardDesign.EMPTY, CardDesign.EMPTY ) );
+    }
 
-        // TODO: Eventually move this to the appropriate table listener method.
-        final CardView view = new CardView( card );
-        final int offset = table_.getCards().size() - 1;
-        view.setLocation( offset * view.getWidth(), offset * view.getHeight() );
-        add( view );
-        repaint( view.getBounds() );
+    /*
+     * @see javax.swing.JComponent#addNotify()
+     */
+    @Override
+    public void addNotify()
+    {
+        super.addNotify();
+
+        table_.addTableListener( this );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITableListener#cardAdded(org.gamegineer.table.core.CardChangeEvent)
+     */
+    public void cardAdded(
+        final CardChangeEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                onCardAdded( event.getCard() );
+            }
+        } );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITableListener#cardRemoved(org.gamegineer.table.core.CardChangeEvent)
+     */
+    public void cardRemoved(
+        final CardChangeEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                onCardRemoved( event.getCard() );
+            }
+        } );
     }
 
     /**
@@ -101,6 +145,40 @@ final class TableView
         setLayout( null );
         setOpaque( true );
         setBackground( new Color( 0, 128, 0 ) );
+    }
+
+    /**
+     * Invoked when a new card is added to the table.
+     * 
+     * @param card
+     *        The added card; must not be {@code null}.
+     */
+    private void onCardAdded(
+        /* @NonNull */
+        final ICard card )
+    {
+        assert card != null;
+
+        final CardView view = new CardView( card );
+        final int offset = table_.getCards().size() - 1;
+        view.setLocation( offset * view.getWidth(), offset * view.getHeight() );
+        add( view );
+        repaint( view.getBounds() );
+    }
+
+    /**
+     * Invoked when a card is removed from the table.
+     * 
+     * @param card
+     *        The removed card; must not be {@code null}.
+     */
+    private void onCardRemoved(
+        /* @NonNull */
+        final ICard card )
+    {
+        assert card != null;
+
+        // TODO: Remove associated card view.
     }
 
     /**
@@ -118,5 +196,16 @@ final class TableView
                 addCard();
             }
         } );
+    }
+
+    /*
+     * @see javax.swing.JComponent#removeNotify()
+     */
+    @Override
+    public void removeNotify()
+    {
+        table_.removeTableListener( this );
+
+        super.removeNotify();
     }
 }
