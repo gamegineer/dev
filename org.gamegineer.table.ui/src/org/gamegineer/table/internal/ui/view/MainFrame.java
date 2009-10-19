@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.internal.ui.action.ActionListenerManager;
 import org.gamegineer.table.internal.ui.model.MainModel;
 import org.gamegineer.table.ui.ITableAdvisor;
 
@@ -43,6 +44,9 @@ public final class MainFrame
 
     /** Serializable class version number. */
     private static final long serialVersionUID = 1087139002992381995L;
+
+    /** The action listener manager. */
+    private final ActionListenerManager actionListenerManager_;
 
     /** The model. */
     private final MainModel model_;
@@ -73,19 +77,55 @@ public final class MainFrame
     {
         assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
 
+        actionListenerManager_ = new ActionListenerManager();
         model_ = new MainModel( advisor );
         mainView_ = new MainView( model_ );
         menuBarView_ = new MenuBarView( model_ );
 
         initializeComponent();
-
-        registerActionListeners();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see java.awt.Frame#addNotify()
+     */
+    @Override
+    public void addNotify()
+    {
+        super.addNotify();
+
+        bindActionListeners();
+    }
+
+    /**
+     * Binds the action listeners for this component.
+     */
+    private void bindActionListeners()
+    {
+        actionListenerManager_.bind( Actions.getExitAction(), new ActionListener()
+        {
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                dispose();
+            }
+        } );
+        actionListenerManager_.bind( Actions.getOpenAboutDialogAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                JOptionPane.showMessageDialog( MainFrame.this, Messages.AboutDialog_message( model_.getVersion() ), Messages.AboutDialog_title, JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE );
+            }
+        } );
+    }
 
     /**
      * Initializes this component.
@@ -101,30 +141,14 @@ public final class MainFrame
         setSize( 300, 300 );
     }
 
-    /**
-     * Registers the action listeners for this component.
+    /*
+     * @see java.awt.Frame#removeNotify()
      */
-    private void registerActionListeners()
+    @Override
+    public void removeNotify()
     {
-        Actions.getExitAction().addActionListener( new ActionListener()
-        {
-            public void actionPerformed(
-                @SuppressWarnings( "unused" )
-                final ActionEvent e )
-            {
-                dispose();
-            }
-        } );
+        actionListenerManager_.unbindAll();
 
-        Actions.getOpenAboutDialogAction().addActionListener( new ActionListener()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void actionPerformed(
-                @SuppressWarnings( "unused" )
-                final ActionEvent e )
-            {
-                JOptionPane.showMessageDialog( MainFrame.this, Messages.AboutDialog_message( model_.getVersion() ), Messages.AboutDialog_title, JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE );
-            }
-        } );
+        super.removeNotify();
     }
 }

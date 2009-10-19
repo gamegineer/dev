@@ -36,6 +36,7 @@ import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
+import org.gamegineer.table.internal.ui.action.ActionListenerManager;
 
 /**
  * A view of the table.
@@ -51,6 +52,9 @@ final class TableView
 
     /** Serializable class version number. */
     private static final long serialVersionUID = 3574703230407179091L;
+
+    /** The action listener manager. */
+    private final ActionListenerManager actionListenerManager_;
 
     /** The collection of card views. */
     private final Map<ICard, CardView> cardViews_;
@@ -75,12 +79,11 @@ final class TableView
     {
         assert table != null;
 
+        actionListenerManager_ = new ActionListenerManager();
         cardViews_ = new IdentityHashMap<ICard, CardView>();
         table_ = table;
 
         initializeComponent();
-
-        registerActionListeners();
     }
 
 
@@ -104,7 +107,35 @@ final class TableView
     {
         super.addNotify();
 
+        bindActionListeners();
         table_.addTableListener( this );
+    }
+
+    /**
+     * Binds the action listeners for this component.
+     */
+    private void bindActionListeners()
+    {
+        actionListenerManager_.bind( Actions.getAddCardAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                addCard();
+            }
+        } );
+        actionListenerManager_.bind( Actions.getRemoveCardAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                removeCard();
+            }
+        } );
     }
 
     /*
@@ -194,33 +225,6 @@ final class TableView
     }
 
     /**
-     * Registers the action listeners for this component.
-     */
-    private void registerActionListeners()
-    {
-        Actions.getAddCardAction().addActionListener( new ActionListener()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void actionPerformed(
-                @SuppressWarnings( "unused" )
-                final ActionEvent e )
-            {
-                addCard();
-            }
-        } );
-        Actions.getRemoveCardAction().addActionListener( new ActionListener()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void actionPerformed(
-                @SuppressWarnings( "unused" )
-                final ActionEvent e )
-            {
-                removeCard();
-            }
-        } );
-    }
-
-    /**
      * Removes the most recently added card from the table.
      */
     private void removeCard()
@@ -239,6 +243,7 @@ final class TableView
     public void removeNotify()
     {
         table_.removeTableListener( this );
+        actionListenerManager_.unbindAll();
 
         super.removeNotify();
     }
