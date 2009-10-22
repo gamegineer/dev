@@ -1,5 +1,5 @@
 /*
- * ActionListenerManagerTest.java
+ * ActionMediatorTest.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -31,16 +31,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.action.ActionListenerManager} class.
+ * {@link org.gamegineer.table.internal.ui.action.ActionMediator} class.
  */
-public final class ActionListenerManagerTest
+public final class ActionMediatorTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The action listener manager under test in the fixture. */
-    private ActionListenerManager manager_;
+    /** The action mediator under test in the fixture. */
+    private ActionMediator mediator_;
 
 
     // ======================================================================
@@ -48,10 +48,9 @@ public final class ActionListenerManagerTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ActionListenerManagerTest}
-     * class.
+     * Initializes a new instance of the {@code ActionMediatorTest} class.
      */
-    public ActionListenerManagerTest()
+    public ActionMediatorTest()
     {
         super();
     }
@@ -82,7 +81,7 @@ public final class ActionListenerManagerTest
     public void setUp()
         throws Exception
     {
-        manager_ = new ActionListenerManager();
+        mediator_ = new ActionMediator();
     }
 
     /**
@@ -95,7 +94,7 @@ public final class ActionListenerManagerTest
     public void tearDown()
         throws Exception
     {
-        manager_ = null;
+        mediator_ = null;
     }
 
     /**
@@ -105,7 +104,7 @@ public final class ActionListenerManagerTest
     @Test( expected = NullPointerException.class )
     public void testBind_Action_Null()
     {
-        manager_.bind( null, createDummy( ActionListener.class ) );
+        mediator_.bind( null, createDummy( ActionListener.class ) );
     }
 
     /**
@@ -118,9 +117,9 @@ public final class ActionListenerManagerTest
     {
         final BasicAction action = new BasicAction();
         final MockActionListener listener = new MockActionListener();
-        manager_.bind( action, listener );
+        mediator_.bind( action, listener );
 
-        manager_.bind( action, listener );
+        mediator_.bind( action, listener );
     }
 
     /**
@@ -130,7 +129,7 @@ public final class ActionListenerManagerTest
     @Test( expected = NullPointerException.class )
     public void testBind_Listener_Null()
     {
-        manager_.bind( new BasicAction(), null );
+        mediator_.bind( new BasicAction(), null );
     }
 
     /**
@@ -143,7 +142,7 @@ public final class ActionListenerManagerTest
         final BasicAction action = new BasicAction();
         final MockActionListener listener = new MockActionListener();
 
-        manager_.bind( action, listener );
+        mediator_.bind( action, listener );
 
         action.actionPerformed( createActionEvent() );
         assertEquals( 1, listener.getActionPerformedEventCount() );
@@ -156,7 +155,7 @@ public final class ActionListenerManagerTest
     @Test( expected = NullPointerException.class )
     public void testUnbind_Action_Null()
     {
-        manager_.unbind( null, createDummy( ActionListener.class ) );
+        mediator_.unbind( null, createDummy( ActionListener.class ) );
     }
 
     /**
@@ -169,9 +168,9 @@ public final class ActionListenerManagerTest
     {
         final BasicAction action = new BasicAction();
         final MockActionListener listener = new MockActionListener();
-        manager_.bind( action, listener );
+        mediator_.bind( action, listener );
 
-        manager_.unbind( action, listener );
+        mediator_.unbind( action, listener );
 
         action.actionPerformed( createActionEvent() );
         assertEquals( 0, listener.getActionPerformedEventCount() );
@@ -184,7 +183,7 @@ public final class ActionListenerManagerTest
     @Test( expected = NullPointerException.class )
     public void testUnbind_Listener_Null()
     {
-        manager_.unbind( new BasicAction(), null );
+        mediator_.unbind( new BasicAction(), null );
     }
 
     /**
@@ -197,7 +196,7 @@ public final class ActionListenerManagerTest
         final BasicAction action = new BasicAction();
         final ActionListener listener = new MockActionListener();
 
-        manager_.unbind( action, listener );
+        mediator_.unbind( action, listener );
     }
 
     /**
@@ -209,12 +208,12 @@ public final class ActionListenerManagerTest
     {
         final BasicAction action1 = new BasicAction();
         final MockActionListener listener1 = new MockActionListener();
-        manager_.bind( action1, listener1 );
+        mediator_.bind( action1, listener1 );
         final BasicAction action2 = new BasicAction();
         final MockActionListener listener2 = new MockActionListener();
-        manager_.bind( action2, listener2 );
+        mediator_.bind( action2, listener2 );
 
-        manager_.unbindAll();
+        mediator_.unbindAll();
 
         action1.actionPerformed( createActionEvent() );
         assertEquals( 0, listener1.getActionPerformedEventCount() );
@@ -223,8 +222,8 @@ public final class ActionListenerManagerTest
     }
 
     /**
-     * Ensures the {@code unbindAll(BasicAction)} method unbinds all listeners
-     * from the action.
+     * Ensures the {@code unbindAll(BasicAction)} method unbinds all action
+     * listeners from the action.
      */
     @Test
     public void testUnbindAllForAction()
@@ -232,10 +231,10 @@ public final class ActionListenerManagerTest
         final BasicAction action = new BasicAction();
         final MockActionListener listener1 = new MockActionListener();
         final MockActionListener listener2 = new MockActionListener();
-        manager_.bind( action, listener1 );
-        manager_.bind( action, listener2 );
+        mediator_.bind( action, listener1 );
+        mediator_.bind( action, listener2 );
 
-        manager_.unbindAll( action );
+        mediator_.unbindAll( action );
 
         action.actionPerformed( createActionEvent() );
         assertEquals( 0, listener1.getActionPerformedEventCount() );
@@ -249,6 +248,6 @@ public final class ActionListenerManagerTest
     @Test( expected = NullPointerException.class )
     public void testUnbindAllForAction_Action_Null()
     {
-        manager_.unbindAll( null );
+        mediator_.unbindAll( null );
     }
 }

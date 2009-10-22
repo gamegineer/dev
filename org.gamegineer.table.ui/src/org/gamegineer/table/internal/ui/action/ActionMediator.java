@@ -1,5 +1,5 @@
 /*
- * ActionListenerManager.java
+ * ActionMediator.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -31,23 +31,23 @@ import java.util.Map;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
- * A manager of action listeners.
+ * A mediator between a client and its associated actions.
  * 
  * <p>
- * This class acts as a mediator between actions and their bound action
- * listeners. Clients are expected to use this class to manage their action
- * listeners so they can be properly unbound when the client goes out of scope.
+ * Clients are expected to use this class to manage their action attachments,
+ * such as action listeners, so they can be properly unbound when the client
+ * goes out of scope.
  * </p>
  */
 @NotThreadSafe
-public final class ActionListenerManager
+public final class ActionMediator
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The collection of action listener collections. */
-    private final Map<BasicAction, Collection<ActionListener>> listenerCollections_;
+    /** The collection of bound action listener collections. */
+    private final Map<BasicAction, Collection<ActionListener>> actionListenerCollections_;
 
 
     // ======================================================================
@@ -55,11 +55,11 @@ public final class ActionListenerManager
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ActionListenerManager} class.
+     * Initializes a new instance of the {@code ActionMediator} class.
      */
-    public ActionListenerManager()
+    public ActionMediator()
     {
-        listenerCollections_ = new IdentityHashMap<BasicAction, Collection<ActionListener>>();
+        actionListenerCollections_ = new IdentityHashMap<BasicAction, Collection<ActionListener>>();
     }
 
 
@@ -112,11 +112,11 @@ public final class ActionListenerManager
     {
         assert action != null;
 
-        Collection<ActionListener> listeners = listenerCollections_.get( action );
+        Collection<ActionListener> listeners = actionListenerCollections_.get( action );
         if( listeners == null )
         {
             listeners = new ArrayList<ActionListener>();
-            listenerCollections_.put( action, listeners );
+            actionListenerCollections_.put( action, listeners );
         }
 
         return listeners;
@@ -173,12 +173,12 @@ public final class ActionListenerManager
      */
     public void unbindAll()
     {
-        for( final BasicAction action : listenerCollections_.keySet() )
+        for( final BasicAction action : actionListenerCollections_.keySet() )
         {
             removeActionListeners( action );
         }
 
-        listenerCollections_.clear();
+        actionListenerCollections_.clear();
     }
 
     /**
@@ -198,6 +198,6 @@ public final class ActionListenerManager
 
         removeActionListeners( action );
 
-        listenerCollections_.remove( action );
+        actionListenerCollections_.remove( action );
     }
 }
