@@ -27,7 +27,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.internal.ui.action.ActionListenerManager;
+import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.model.MainModel;
 import org.gamegineer.table.ui.ITableAdvisor;
 
@@ -45,8 +45,8 @@ public final class MainFrame
     /** Serializable class version number. */
     private static final long serialVersionUID = 1087139002992381995L;
 
-    /** The action listener manager. */
-    private final ActionListenerManager actionListenerManager_;
+    /** The action mediator. */
+    private final ActionMediator actionMediator_;
 
     /** The model. */
     private final MainModel model_;
@@ -77,7 +77,7 @@ public final class MainFrame
     {
         assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
 
-        actionListenerManager_ = new ActionListenerManager();
+        actionMediator_ = new ActionMediator();
         model_ = new MainModel( advisor );
         mainView_ = new MainView( model_ );
         menuBarView_ = new MenuBarView( model_ );
@@ -98,15 +98,15 @@ public final class MainFrame
     {
         super.addNotify();
 
-        bindActionListeners();
+        bindActions();
     }
 
     /**
-     * Binds the action listeners for this component.
+     * Binds the action attachments for this component.
      */
-    private void bindActionListeners()
+    private void bindActions()
     {
-        actionListenerManager_.bind( Actions.getExitAction(), new ActionListener()
+        actionMediator_.bind( Actions.getExitAction(), new ActionListener()
         {
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -115,7 +115,7 @@ public final class MainFrame
                 dispose();
             }
         } );
-        actionListenerManager_.bind( Actions.getOpenAboutDialogAction(), new ActionListener()
+        actionMediator_.bind( Actions.getOpenAboutDialogAction(), new ActionListener()
         {
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
@@ -147,7 +147,7 @@ public final class MainFrame
     @Override
     public void removeNotify()
     {
-        actionListenerManager_.unbindAll();
+        actionMediator_.unbindAll();
 
         super.removeNotify();
     }

@@ -37,7 +37,7 @@ import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
-import org.gamegineer.table.internal.ui.action.ActionListenerManager;
+import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.action.IActionEnabledPredicate;
 
 /**
@@ -55,8 +55,8 @@ final class TableView
     /** Serializable class version number. */
     private static final long serialVersionUID = 3574703230407179091L;
 
-    /** The action listener manager. */
-    private final ActionListenerManager actionListenerManager_;
+    /** The action mediator. */
+    private final ActionMediator actionMediator_;
 
     /** The collection of card views. */
     private final Map<ICard, CardView> cardViews_;
@@ -81,7 +81,7 @@ final class TableView
     {
         assert table != null;
 
-        actionListenerManager_ = new ActionListenerManager();
+        actionMediator_ = new ActionMediator();
         cardViews_ = new IdentityHashMap<ICard, CardView>();
         table_ = table;
 
@@ -109,16 +109,16 @@ final class TableView
     {
         super.addNotify();
 
-        bindActionListeners();
+        bindActions();
         table_.addTableListener( this );
     }
 
     /**
-     * Binds the action listeners for this component.
+     * Binds the action attachments for this component.
      */
-    private void bindActionListeners()
+    private void bindActions()
     {
-        actionListenerManager_.bind( Actions.getAddCardAction(), new ActionListener()
+        actionMediator_.bind( Actions.getAddCardAction(), new ActionListener()
         {
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
@@ -128,7 +128,7 @@ final class TableView
                 addCard();
             }
         } );
-        actionListenerManager_.bind( Actions.getRemoveCardAction(), new ActionListener()
+        actionMediator_.bind( Actions.getRemoveCardAction(), new ActionListener()
         {
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
@@ -139,7 +139,7 @@ final class TableView
             }
         } );
 
-        // TODO: Will eventually be replaced by ActionListenerManager.
+        // TODO: Will eventually be replaced by ActionMediator.
         Actions.getRemoveCardAction().addActionEnabledPredicate( new IActionEnabledPredicate()
         {
             @SuppressWarnings( "synthetic-access" )
@@ -264,7 +264,7 @@ final class TableView
     public void removeNotify()
     {
         table_.removeTableListener( this );
-        actionListenerManager_.unbindAll();
+        actionMediator_.unbindAll();
 
         super.removeNotify();
     }
@@ -274,7 +274,7 @@ final class TableView
      */
     private void updateActions()
     {
-        // TODO: Will eventually be replaced by ActionListenerManager.
+        // TODO: Will eventually be replaced by ActionMediator.
 
         Actions.getRemoveCardAction().updateEnabled();
     }
