@@ -168,37 +168,9 @@ final class TableView
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                onCardAdded( event.getCard() );
+                cardAdded( event.getCard() );
             }
         } );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITableListener#cardRemoved(org.gamegineer.table.core.CardChangeEvent)
-     */
-    public void cardRemoved(
-        final CardChangeEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                onCardRemoved( event.getCard() );
-            }
-        } );
-    }
-
-    /**
-     * Initializes this component.
-     */
-    private void initializeComponent()
-    {
-        setLayout( null );
-        setOpaque( true );
-        setBackground( new Color( 0, 128, 0 ) );
     }
 
     /**
@@ -207,7 +179,7 @@ final class TableView
      * @param card
      *        The added card; must not be {@code null}.
      */
-    private void onCardAdded(
+    private void cardAdded(
         /* @NonNull */
         final ICard card )
     {
@@ -223,13 +195,31 @@ final class TableView
         updateActions();
     }
 
+    /*
+     * @see org.gamegineer.table.core.ITableListener#cardRemoved(org.gamegineer.table.core.CardChangeEvent)
+     */
+    public void cardRemoved(
+        final CardChangeEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                cardRemoved( event.getCard() );
+            }
+        } );
+    }
+
     /**
      * Invoked when a card is removed from the table.
      * 
      * @param card
      *        The removed card; must not be {@code null}.
      */
-    private void onCardRemoved(
+    private void cardRemoved(
         /* @NonNull */
         final ICard card )
     {
@@ -243,6 +233,16 @@ final class TableView
         }
 
         updateActions();
+    }
+
+    /**
+     * Initializes this component.
+     */
+    private void initializeComponent()
+    {
+        setLayout( null );
+        setOpaque( true );
+        setBackground( new Color( 0, 128, 0 ) );
     }
 
     /**
