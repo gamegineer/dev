@@ -1,5 +1,5 @@
 /*
- * MockActionListener.java
+ * MockActionEnabledPredicate.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 18, 2009 at 10:31:15 PM.
+ * Created on Oct 21, 2009 at 11:04:44 PM.
  */
 
 package org.gamegineer.table.internal.ui.action;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.swing.Action;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * Mock implementation of {@link java.awt.event.ActionListener}.
+ * Mock implementation of
+ * {@link org.gamegineer.table.internal.ui.action.IActionEnabledPredicate}.
  */
 @ThreadSafe
-final class MockActionListener
-    implements ActionListener
+final class MockActionEnabledPredicate
+    implements IActionEnabledPredicate
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The count of action performed events received. */
-    private final AtomicInteger actionPerformedEventCount_;
+    /** The count of calls made to the {@code isActionEnabled} method. */
+    private final AtomicInteger isActionEnabledCallCount_;
 
 
     // ======================================================================
@@ -46,11 +47,12 @@ final class MockActionListener
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MockActionListener} class.
+     * Initializes a new instance of the {@code MockActionEnabledPredicate}
+     * class.
      */
-    MockActionListener()
+    MockActionEnabledPredicate()
     {
-        actionPerformedEventCount_ = new AtomicInteger( 0 );
+        isActionEnabledCallCount_ = new AtomicInteger( 0 );
     }
 
 
@@ -58,23 +60,26 @@ final class MockActionListener
     // Methods
     // ======================================================================
 
-    /*
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+    /**
+     * Gets the count of calls made to the {@code isActionEnabled} method.
+     * 
+     * @return The count of calls made to the {@code isActionEnabled} method.
      */
-    public void actionPerformed(
-        @SuppressWarnings( "unused" )
-        final ActionEvent e )
+    int getIsActionEnabledCallCount()
     {
-        actionPerformedEventCount_.incrementAndGet();
+        return isActionEnabledCallCount_.get();
     }
 
-    /**
-     * Gets the count of action performed events received.
-     * 
-     * @return The count of action performed events received.
+    /*
+     * @see org.gamegineer.table.internal.ui.action.IActionEnabledPredicate#isActionEnabled(javax.swing.Action)
      */
-    int getActionPerformedEventCount()
+    public boolean isActionEnabled(
+        final Action action )
     {
-        return actionPerformedEventCount_.get();
+        assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
+
+        isActionEnabledCallCount_.incrementAndGet();
+
+        return false;
     }
 }

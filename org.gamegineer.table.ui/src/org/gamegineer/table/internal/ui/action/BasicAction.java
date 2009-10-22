@@ -21,18 +21,19 @@
 
 package org.gamegineer.table.internal.ui.action;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.AbstractAction;
-import javax.swing.event.EventListenerList;
-import net.jcip.annotations.NotThreadSafe;
+import net.jcip.annotations.ThreadSafe;
 
 /**
  * An extension to the Swing action framework that allows delegation of action
  * handling to any number of components.
  */
-@NotThreadSafe
+@ThreadSafe
 public class BasicAction
     extends AbstractAction
 {
@@ -44,7 +45,10 @@ public class BasicAction
     private static final long serialVersionUID = 4533526026382678240L;
 
     /** The collection of action listeners. */
-    private final EventListenerList listeners_;
+    private final CopyOnWriteArrayList<ActionListener> listeners_;
+
+    /** The collection of action enabled predicates. */
+    private final CopyOnWriteArrayList<IActionEnabledPredicate> predicates_;
 
 
     // ======================================================================
@@ -56,7 +60,8 @@ public class BasicAction
      */
     public BasicAction()
     {
-        listeners_ = new EventListenerList();
+        listeners_ = new CopyOnWriteArrayList<ActionListener>();
+        predicates_ = new CopyOnWriteArrayList<IActionEnabledPredicate>();
     }
 
 
@@ -70,10 +75,29 @@ public class BasicAction
     public final void actionPerformed(
         final ActionEvent e )
     {
-        for( final ActionListener listener : listeners_.getListeners( ActionListener.class ) )
+        for( final ActionListener listener : listeners_ )
         {
             listener.actionPerformed( e );
         }
+    }
+
+    /**
+     * Adds the specified enabled predicate to this action.
+     * 
+     * @param predicate
+     *        The predicate; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code predicate} is already a registered enabled predicate.
+     * @throws java.lang.NullPointerException
+     *         If {@code predicate} is {@code null}.
+     */
+    public void addActionEnabledPredicate(
+        /* @NonNull */
+        final IActionEnabledPredicate predicate )
+    {
+        assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
+        assertArgumentLegal( predicates_.addIfAbsent( predicate ), "predicate" ); //$NON-NLS-1$
     }
 
     /**
@@ -82,6 +106,8 @@ public class BasicAction
      * @param listener
      *        The listener; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code listener} is already a registered action listener.
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
@@ -90,8 +116,26 @@ public class BasicAction
         final ActionListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener" ); //$NON-NLS-1$
+    }
 
-        listeners_.add( ActionListener.class, listener );
+    /**
+     * Removes the specified enabled predicate from this action.
+     * 
+     * @param predicate
+     *        The predicate; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code predicate} is not a registered enabled predicate.
+     * @throws java.lang.NullPointerException
+     *         If {@code predicate} is {@code null}.
+     */
+    public void removeActionEnabledPredicate(
+        /* @NonNull */
+        final IActionEnabledPredicate predicate )
+    {
+        assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
+        assertArgumentLegal( predicates_.remove( predicate ), "predicate" ); //$NON-NLS-1$
     }
 
     /**
@@ -100,6 +144,8 @@ public class BasicAction
      * @param listener
      *        The listener; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code listener} is not a registered action listener.
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
@@ -108,7 +154,45 @@ public class BasicAction
         final ActionListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener" ); //$NON-NLS-1$
+    }
 
-        listeners_.remove( ActionListener.class, listener );
+    /**
+     * Indicates this action should be enabled.
+     * 
+     * <p>
+     * This method evaluates all registered action enabled predicates. If any
+     * predicate returns {@code false}, indicating this action should be
+     * disabled, this method will return {@code false}. Only if all predicates
+     * return {@code true} will this method return {@code true}, indicating this
+     * action should be enabled.
+     * </p>
+     * 
+     * <p>
+     * This method does not change the state of this action.
+     * </p>
+     * 
+     * @return {@code true} if this action should be enabled; {@code false} if
+     *         this action should be disabled.
+     */
+    public boolean shouldBeEnabled()
+    {
+        for( final IActionEnabledPredicate predicate : predicates_ )
+        {
+            if( !predicate.isActionEnabled( this ) )
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Updates the enabled state of this action.
+     */
+    public void updateEnabled()
+    {
+        setEnabled( shouldBeEnabled() );
     }
 }

@@ -27,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
@@ -37,6 +38,7 @@ import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.internal.ui.action.ActionListenerManager;
+import org.gamegineer.table.internal.ui.action.IActionEnabledPredicate;
 
 /**
  * A view of the table.
@@ -136,6 +138,21 @@ final class TableView
                 removeCard();
             }
         } );
+
+        // TODO: Will eventually be replaced by ActionListenerManager.
+        Actions.getRemoveCardAction().addActionEnabledPredicate( new IActionEnabledPredicate()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public boolean isActionEnabled(
+                final Action action )
+            {
+                assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
+
+                return !table_.getCards().isEmpty();
+            }
+        } );
+
+        updateActions();
     }
 
     /*
@@ -202,6 +219,8 @@ final class TableView
         view.setLocation( offset * view.getWidth(), offset * view.getHeight() );
         add( view );
         repaint( view.getBounds() );
+
+        updateActions();
     }
 
     /**
@@ -222,6 +241,8 @@ final class TableView
             remove( view );
             repaint( view.getBounds() );
         }
+
+        updateActions();
     }
 
     /**
@@ -246,5 +267,15 @@ final class TableView
         actionListenerManager_.unbindAll();
 
         super.removeNotify();
+    }
+
+    /**
+     * Updates the state of all actions bound to this view.
+     */
+    private void updateActions()
+    {
+        // TODO: Will eventually be replaced by ActionListenerManager.
+
+        Actions.getRemoveCardAction().updateEnabled();
     }
 }
