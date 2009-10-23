@@ -139,8 +139,7 @@ final class TableView
             }
         } );
 
-        // TODO: Will eventually be replaced by ActionMediator.
-        Actions.getRemoveCardAction().addActionEnabledPredicate( new IActionEnabledPredicate()
+        actionMediator_.bind( Actions.getRemoveCardAction(), new IActionEnabledPredicate()
         {
             @SuppressWarnings( "synthetic-access" )
             public boolean isActionEnabled(
@@ -151,8 +150,6 @@ final class TableView
                 return !table_.getCards().isEmpty();
             }
         } );
-
-        updateActions();
     }
 
     /*
@@ -192,7 +189,7 @@ final class TableView
         add( view );
         repaint( view.getBounds() );
 
-        updateActions();
+        actionMediator_.updateAll();
     }
 
     /*
@@ -232,7 +229,7 @@ final class TableView
             repaint( view.getBounds() );
         }
 
-        updateActions();
+        actionMediator_.updateAll();
     }
 
     /**
@@ -267,15 +264,5 @@ final class TableView
         actionMediator_.unbindAll();
 
         super.removeNotify();
-    }
-
-    /**
-     * Updates the state of all actions bound to this view.
-     */
-    private void updateActions()
-    {
-        // TODO: Will eventually be replaced by ActionMediator.
-
-        Actions.getRemoveCardAction().updateEnabled();
     }
 }

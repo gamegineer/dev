@@ -23,9 +23,8 @@ package org.gamegineer.table.internal.ui.action;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import net.jcip.annotations.NotThreadSafe;
@@ -46,8 +45,11 @@ public final class ActionMediator
     // Fields
     // ======================================================================
 
-    /** The collection of bound action listener collections. */
-    private final Map<BasicAction, Collection<ActionListener>> actionListenerCollections_;
+    /** The collection of bound action enabled predicates. */
+    private final Map<BasicAction, IActionEnabledPredicate> actionEnabledPredicates_;
+
+    /** The collection of bound action listeners. */
+    private final Map<BasicAction, ActionListener> actionListeners_;
 
 
     // ======================================================================
@@ -59,13 +61,44 @@ public final class ActionMediator
      */
     public ActionMediator()
     {
-        actionListenerCollections_ = new IdentityHashMap<BasicAction, Collection<ActionListener>>();
+        actionEnabledPredicates_ = new IdentityHashMap<BasicAction, IActionEnabledPredicate>();
+        actionListeners_ = new IdentityHashMap<BasicAction, ActionListener>();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Binds the specified action enabled predicate to the specified action.
+     * 
+     * @param action
+     *        The action; must not be {@code null}.
+     * @param predicate
+     *        The action enabled predicate; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If an action enabled predicate is already bound to {@code action}
+     *         .
+     * @throws java.lang.NullPointerException
+     *         If {@code action} or {@code predicate} is {@code null}.
+     */
+    public void bind(
+        /* @NonNull */
+        final BasicAction action,
+        /* @NonNull */
+        final IActionEnabledPredicate predicate )
+    {
+        assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
+        assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
+        assertStateLegal( !actionEnabledPredicates_.containsKey( action ), Messages.ActionMediator_bindActionEnabledPredicate_alreadyBound );
+
+        actionEnabledPredicates_.put( action, predicate );
+
+        action.addActionEnabledPredicate( predicate );
+        action.updateEnabled();
+    }
 
     /**
      * Binds the specified action listener to the specified action.
@@ -75,8 +108,8 @@ public final class ActionMediator
      * @param listener
      *        The action listener; must not be {@code null}.
      * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is already bound to {@code action}.
+     * @throws java.lang.IllegalStateException
+     *         If an action listener is already bound to {@code action}.
      * @throws java.lang.NullPointerException
      *         If {@code action} or {@code listener} is {@code null}.
      */
@@ -88,116 +121,111 @@ public final class ActionMediator
     {
         assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertStateLegal( !actionListeners_.containsKey( action ), Messages.ActionMediator_bindActionListener_alreadyBound );
 
-        final Collection<ActionListener> listeners = getActionListeners( action );
-        assertArgumentLegal( !listeners.contains( listener ), "listener" ); //$NON-NLS-1$
-        listeners.add( listener );
+        actionListeners_.put( action, listener );
 
         action.addActionListener( listener );
     }
 
     /**
-     * Gets the collection of bound action listeners for the specified action.
+     * Indicates the specified action has at least one bound attachment.
      * 
      * @param action
      *        The action; must not be {@code null}.
      * 
-     * @return The collection of bound action listeners for the specified
-     *         action; never {@code null}.
+     * @return {@code true} if the specified action has at least one bound
+     *         attachment; otherwise {@code false}.
      */
-    /* @NonNull */
-    private Collection<ActionListener> getActionListeners(
+    private boolean hasAttachments(
         /* @NonNull */
         final BasicAction action )
     {
         assert action != null;
 
-        Collection<ActionListener> listeners = actionListenerCollections_.get( action );
-        if( listeners == null )
-        {
-            listeners = new ArrayList<ActionListener>();
-            actionListenerCollections_.put( action, listeners );
-        }
-
-        return listeners;
+        return actionListeners_.containsKey( action ) || actionEnabledPredicates_.containsKey( action );
     }
 
     /**
-     * Removes all action listeners for the specified action.
+     * Unbinds all attachments from the specified action.
      * 
      * @param action
      *        The action; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code action} has no bound attachments.
+     * @throws java.lang.NullPointerException
+     *         If {@code action} is {@code null}.
      */
-    private void removeActionListeners(
+    public void unbind(
         /* @NonNull */
         final BasicAction action )
     {
-        assert action != null;
+        assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
+        assertArgumentLegal( hasAttachments( action ), "action" ); //$NON-NLS-1$
 
-        for( final ActionListener listener : getActionListeners( action ) )
+        final IActionEnabledPredicate predicate = actionEnabledPredicates_.remove( action );
+        if( predicate != null )
+        {
+            action.removeActionEnabledPredicate( predicate );
+            action.updateEnabled();
+        }
+
+        final ActionListener listener = actionListeners_.remove( action );
+        if( listener != null )
         {
             action.removeActionListener( listener );
         }
     }
 
     /**
-     * Unbinds the specified action listener from the specified action.
-     * 
-     * @param action
-     *        The action; must not be {@code null}.
-     * @param listener
-     *        The action listener; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is not bound to {@code action}.
-     * @throws java.lang.NullPointerException
-     *         If {@code action} or {@code listener} is {@code null}.
-     */
-    public void unbind(
-        /* @NonNull */
-        final BasicAction action,
-        /* @NonNull */
-        final ActionListener listener )
-    {
-        assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-
-        final Collection<ActionListener> listeners = getActionListeners( action );
-        assertArgumentLegal( listeners.remove( listener ), "listener" ); //$NON-NLS-1$
-
-        action.removeActionListener( listener );
-    }
-
-    /**
-     * Unbinds all action listeners from all actions.
+     * Unbinds all attachments from all actions.
      */
     public void unbindAll()
     {
-        for( final BasicAction action : actionListenerCollections_.keySet() )
+        for( final Map.Entry<BasicAction, IActionEnabledPredicate> entry : actionEnabledPredicates_.entrySet() )
         {
-            removeActionListeners( action );
+            entry.getKey().removeActionEnabledPredicate( entry.getValue() );
+            entry.getKey().updateEnabled();
         }
+        actionEnabledPredicates_.clear();
 
-        actionListenerCollections_.clear();
+        for( final Map.Entry<BasicAction, ActionListener> entry : actionListeners_.entrySet() )
+        {
+            entry.getKey().removeActionListener( entry.getValue() );
+        }
+        actionListeners_.clear();
     }
 
     /**
-     * Unbinds all action listeners from the specified action.
+     * Updates the state of the specified action.
      * 
      * @param action
      *        The action; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code action} has no bound predicates.
      * @throws java.lang.NullPointerException
      *         If {@code action} is {@code null}.
      */
-    public void unbindAll(
+    public void update(
         /* @NonNull */
         final BasicAction action )
     {
         assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
+        assertArgumentLegal( actionEnabledPredicates_.containsKey( action ), "action" ); //$NON-NLS-1$
 
-        removeActionListeners( action );
+        action.updateEnabled();
+    }
 
-        actionListenerCollections_.remove( action );
+    /**
+     * Updates the state of all actions.
+     */
+    public void updateAll()
+    {
+        for( final BasicAction action : actionEnabledPredicates_.keySet() )
+        {
+            action.updateEnabled();
+        }
     }
 }

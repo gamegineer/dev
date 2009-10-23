@@ -98,22 +98,89 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code bind} method throws an exception when passed a {@code
-     * null} action.
+     * Ensures the {@code bind(BasicAction, IActionEnabledPredicate)} method
+     * throws an exception when passed a {@code null} action.
      */
     @Test( expected = NullPointerException.class )
-    public void testBind_Action_Null()
+    public void testBindActionEnabledPredicate_Action_Null()
+    {
+        mediator_.bind( null, createDummy( IActionEnabledPredicate.class ) );
+    }
+
+    /**
+     * Ensures the {@code bind(BasicAction, IActionEnabledPredicate)} method
+     * throws an exception when a predicate is already bound to the action.
+     * 
+     */
+    @Test( expected = IllegalStateException.class )
+    public void testBindActionEnabledPredicate_Predicate_Bound()
+    {
+        final BasicAction action = new BasicAction();
+        final MockActionEnabledPredicate predicate = new MockActionEnabledPredicate();
+        mediator_.bind( action, predicate );
+
+        mediator_.bind( action, predicate );
+    }
+
+    /**
+     * Ensures the {@code bind(BasicAction, IActionEnabledPredicate)} method
+     * throws an exception when passed a {@code null} predicate.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testBindActionEnabledPredicate_Predicate_Null()
+    {
+        mediator_.bind( new BasicAction(), (IActionEnabledPredicate)null );
+    }
+
+    /**
+     * Ensures the {@code bind(BasicAction, IActionEnabledPredicate)} method
+     * binds a predicate when no predicate is already bound to the action.
+     */
+    @Test
+    public void testBindActionEnabledPredicate_Predicate_Unbound()
+    {
+        final BasicAction action = new BasicAction();
+        final MockActionEnabledPredicate predicate = new MockActionEnabledPredicate();
+
+        mediator_.bind( action, predicate );
+
+        final int expectedIsActionEnabledCallCount = predicate.getIsActionEnabledCallCount() + 1;
+        action.updateEnabled();
+        assertEquals( expectedIsActionEnabledCallCount, predicate.getIsActionEnabledCallCount() );
+    }
+
+    /**
+     * Ensures the {@code bind(BasicAction, IActionEnabledPredicate)} method
+     * updates the action after binding the predicate.
+     */
+    @Test
+    public void testBindActionEnabledPredicate_UpdatesAction()
+    {
+        final BasicAction action = new BasicAction();
+        final MockActionEnabledPredicate predicate = new MockActionEnabledPredicate();
+
+        mediator_.bind( action, predicate );
+
+        assertEquals( 1, predicate.getIsActionEnabledCallCount() );
+    }
+
+    /**
+     * Ensures the {@code bind(BasicAction, ActionListener)} method throws an
+     * exception when passed a {@code null} action.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testBindActionListener_Action_Null()
     {
         mediator_.bind( null, createDummy( ActionListener.class ) );
     }
 
     /**
-     * Ensures the {@code bind} method throws an exception when passed a
-     * listener that is already bound to the action.
+     * Ensures the {@code bind(BasicAction, ActionListener)} method throws an
+     * exception when a listener is already bound to the action.
      * 
      */
-    @Test( expected = IllegalArgumentException.class )
-    public void testBind_Listener_Bound()
+    @Test( expected = IllegalStateException.class )
+    public void testBindActionListener_Listener_Bound()
     {
         final BasicAction action = new BasicAction();
         final MockActionListener listener = new MockActionListener();
@@ -123,21 +190,21 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code bind} method throws an exception when passed a {@code
-     * null} listener.
+     * Ensures the {@code bind(BasicAction, ActionListener)} method throws an
+     * exception when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
-    public void testBind_Listener_Null()
+    public void testBindActionListener_Listener_Null()
     {
-        mediator_.bind( new BasicAction(), null );
+        mediator_.bind( new BasicAction(), (ActionListener)null );
     }
 
     /**
-     * Ensures the {@code bind} method binds a listener this is not bound to the
-     * action.
+     * Ensures the {@code bind(BasicAction, ActionListener)} method binds a
+     * listener when no listener is already bound to the action.
      */
     @Test
-    public void testBind_Listener_Unbound()
+    public void testBindActionListener_Listener_Unbound()
     {
         final BasicAction action = new BasicAction();
         final MockActionListener listener = new MockActionListener();
@@ -149,62 +216,107 @@ public final class ActionMediatorTest
     }
 
     /**
+     * Ensures the {@code unbind} method throws an exception when passed an
+     * action that has no bound attachments.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testUpdate_Action_NoBoundAttachments()
+    {
+        mediator_.unbind( new BasicAction() );
+    }
+
+    /**
      * Ensures the {@code unbind} method throws an exception when passed a
      * {@code null} action.
      */
     @Test( expected = NullPointerException.class )
     public void testUnbind_Action_Null()
     {
-        mediator_.unbind( null, createDummy( ActionListener.class ) );
+        mediator_.unbind( null );
     }
 
     /**
-     * Ensures the {@code unbind} method unbinds a listener that is bound to the
-     * action.
-     * 
+     * Ensures the {@code unbind} method unbinds all action enabled predicates
+     * from the action.
      */
     @Test
-    public void testUnbind_Listener_Bound()
+    public void testUnbind_UnbindsActionEnabledPredicates()
+    {
+        final BasicAction action = new BasicAction();
+        final MockActionEnabledPredicate predicate = new MockActionEnabledPredicate();
+        mediator_.bind( action, predicate );
+        final int expectedIsActionEnabledCallCount = predicate.getIsActionEnabledCallCount();
+
+        mediator_.unbind( action );
+
+        action.updateEnabled();
+        assertEquals( expectedIsActionEnabledCallCount, predicate.getIsActionEnabledCallCount() );
+    }
+
+    /**
+     * Ensures the {@code unbind} method unbinds all action listeners from the
+     * action.
+     */
+    @Test
+    public void testUnbind_UnbindsActionListeners()
     {
         final BasicAction action = new BasicAction();
         final MockActionListener listener = new MockActionListener();
         mediator_.bind( action, listener );
 
-        mediator_.unbind( action, listener );
+        mediator_.unbind( action );
 
         action.actionPerformed( createActionEvent() );
         assertEquals( 0, listener.getActionPerformedEventCount() );
     }
 
     /**
-     * Ensures the {@code unbind} method throws an exception when passed a
-     * {@code null} listener.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testUnbind_Listener_Null()
-    {
-        mediator_.unbind( new BasicAction(), null );
-    }
-
-    /**
-     * Ensures the {@code unbind} method throws an exception when passed a
-     * listener that is not bound to the action.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testUnbind_Listener_Unbound()
-    {
-        final BasicAction action = new BasicAction();
-        final ActionListener listener = new MockActionListener();
-
-        mediator_.unbind( action, listener );
-    }
-
-    /**
-     * Ensures the {@code unbindAll()} method unbinds all listeners from all
-     * actions.
+     * Ensures the {@code unbind} method updates the action after unbinding a
+     * bound predicate.
      */
     @Test
-    public void testUnbindAll()
+    public void testUnbind_UpdatesAction()
+    {
+        final BasicAction action = new BasicAction();
+        mediator_.bind( action, new MockActionEnabledPredicate() );
+        final MockActionEnabledPredicate unmanagedPredicate = new MockActionEnabledPredicate();
+        action.addActionEnabledPredicate( unmanagedPredicate );
+
+        mediator_.unbind( action );
+
+        assertEquals( 1, unmanagedPredicate.getIsActionEnabledCallCount() );
+    }
+
+    /**
+     * Ensures the {@code unbindAll} method unbinds all action enabled
+     * predicates from all actions.
+     */
+    @Test
+    public void testUnbindAll_UnbindsActionEnabledPredicates()
+    {
+        final BasicAction action1 = new BasicAction();
+        final MockActionEnabledPredicate predicate1 = new MockActionEnabledPredicate();
+        mediator_.bind( action1, predicate1 );
+        final int expectedIsActionEnabledCallCount1 = predicate1.getIsActionEnabledCallCount();
+        final BasicAction action2 = new BasicAction();
+        final MockActionEnabledPredicate predicate2 = new MockActionEnabledPredicate();
+        mediator_.bind( action2, predicate2 );
+        final int expectedIsActionEnabledCallCount2 = predicate2.getIsActionEnabledCallCount();
+
+        mediator_.unbindAll();
+
+        action1.updateEnabled();
+        assertEquals( expectedIsActionEnabledCallCount1, predicate1.getIsActionEnabledCallCount() );
+        action2.updateEnabled();
+        assertEquals( expectedIsActionEnabledCallCount2, predicate2.getIsActionEnabledCallCount() );
+    }
+
+    /**
+     * Ensures the {@code unbindAll} method unbinds all action listeners from
+     * all actions.
+     */
+    @Test
+    public void testUnbindAll_UnbindsActionListeners()
     {
         final BasicAction action1 = new BasicAction();
         final MockActionListener listener1 = new MockActionListener();
@@ -222,32 +334,83 @@ public final class ActionMediatorTest
     }
 
     /**
-     * Ensures the {@code unbindAll(BasicAction)} method unbinds all action
-     * listeners from the action.
+     * Ensures the {@code unbindAll} method updates all actions after unbinding
+     * a bound predicate.
      */
     @Test
-    public void testUnbindAllForAction()
+    public void testUnbindAll_UpdatesAction()
     {
-        final BasicAction action = new BasicAction();
-        final MockActionListener listener1 = new MockActionListener();
-        final MockActionListener listener2 = new MockActionListener();
-        mediator_.bind( action, listener1 );
-        mediator_.bind( action, listener2 );
+        final BasicAction action1 = new BasicAction();
+        mediator_.bind( action1, new MockActionEnabledPredicate() );
+        final MockActionEnabledPredicate unmanagedPredicate1 = new MockActionEnabledPredicate();
+        action1.addActionEnabledPredicate( unmanagedPredicate1 );
+        final BasicAction action2 = new BasicAction();
+        mediator_.bind( action2, new MockActionEnabledPredicate() );
+        final MockActionEnabledPredicate unmanagedPredicate2 = new MockActionEnabledPredicate();
+        action2.addActionEnabledPredicate( unmanagedPredicate2 );
 
-        mediator_.unbindAll( action );
+        mediator_.unbindAll();
 
-        action.actionPerformed( createActionEvent() );
-        assertEquals( 0, listener1.getActionPerformedEventCount() );
-        assertEquals( 0, listener2.getActionPerformedEventCount() );
+        assertEquals( 1, unmanagedPredicate1.getIsActionEnabledCallCount() );
+        assertEquals( 1, unmanagedPredicate2.getIsActionEnabledCallCount() );
     }
 
     /**
-     * Ensures the {@code unbindAll(BasicAction)} method throws an exception
-     * when passed a {@code null} action.
+     * Ensures the {@code update} method throws an exception when passed an
+     * action that has no bound predicates.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testUpdate_Action_NoBoundPredicates()
+    {
+        mediator_.update( new BasicAction() );
+    }
+
+    /**
+     * Ensures the {@code update} method throws an exception when passed a
+     * {@code null} action.
      */
     @Test( expected = NullPointerException.class )
-    public void testUnbindAllForAction_Action_Null()
+    public void testUpdate_Action_Null()
     {
-        mediator_.unbindAll( null );
+        mediator_.update( null );
+    }
+
+    /**
+     * Ensures the {@code update} method invokes the action enabled predicate of
+     * the action.
+     */
+    @Test
+    public void testUpdate_InvokesActionEnabledPredicate()
+    {
+        final BasicAction action = new BasicAction();
+        final MockActionEnabledPredicate predicate = new MockActionEnabledPredicate();
+        mediator_.bind( action, predicate );
+        final int expectedIsActionEnabledCallCount = predicate.getIsActionEnabledCallCount() + 1;
+
+        mediator_.update( action );
+
+        assertEquals( expectedIsActionEnabledCallCount, predicate.getIsActionEnabledCallCount() );
+    }
+
+    /**
+     * Ensures the {@code updateAll} method invokes the action enabled predicate
+     * of all actions.
+     */
+    @Test
+    public void testUpdateAll_InvokesActionEnabledPredicate()
+    {
+        final BasicAction action1 = new BasicAction();
+        final MockActionEnabledPredicate predicate1 = new MockActionEnabledPredicate();
+        mediator_.bind( action1, predicate1 );
+        final int expectedIsActionEnabledCallCount1 = predicate1.getIsActionEnabledCallCount() + 1;
+        final BasicAction action2 = new BasicAction();
+        final MockActionEnabledPredicate predicate2 = new MockActionEnabledPredicate();
+        mediator_.bind( action2, predicate2 );
+        final int expectedIsActionEnabledCallCount2 = predicate2.getIsActionEnabledCallCount() + 1;
+
+        mediator_.updateAll();
+
+        assertEquals( expectedIsActionEnabledCallCount1, predicate1.getIsActionEnabledCallCount() );
+        assertEquals( expectedIsActionEnabledCallCount2, predicate2.getIsActionEnabledCallCount() );
     }
 }
