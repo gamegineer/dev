@@ -160,22 +160,10 @@ public class BasicAction
     /**
      * Indicates this action should be enabled.
      * 
-     * <p>
-     * This method evaluates all registered action enabled predicates. If any
-     * predicate returns {@code false}, indicating this action should be
-     * disabled, this method will return {@code false}. Only if all predicates
-     * return {@code true} will this method return {@code true}, indicating this
-     * action should be enabled.
-     * </p>
-     * 
-     * <p>
-     * This method does not change the state of this action.
-     * </p>
-     * 
      * @return {@code true} if this action should be enabled; {@code false} if
      *         this action should be disabled.
      */
-    public boolean shouldBeEnabled()
+    private boolean shouldEnable()
     {
         for( final IActionEnabledPredicate predicate : predicates_ )
         {
@@ -189,10 +177,10 @@ public class BasicAction
     }
 
     /**
-     * Updates the enabled state of this action.
+     * Updates the state of this action.
      */
-    public void updateEnabled()
+    public void update()
     {
-        setEnabled( shouldBeEnabled() );
+        setEnabled( shouldEnable() );
     }
 }

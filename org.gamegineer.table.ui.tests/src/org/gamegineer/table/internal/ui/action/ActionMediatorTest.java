@@ -145,7 +145,7 @@ public final class ActionMediatorTest
         mediator_.bind( action, predicate );
 
         final int expectedIsActionEnabledCallCount = predicate.getIsActionEnabledCallCount() + 1;
-        action.updateEnabled();
+        action.update();
         assertEquals( expectedIsActionEnabledCallCount, predicate.getIsActionEnabledCallCount() );
     }
 
@@ -249,7 +249,7 @@ public final class ActionMediatorTest
 
         mediator_.unbind( action );
 
-        action.updateEnabled();
+        action.update();
         assertEquals( expectedIsActionEnabledCallCount, predicate.getIsActionEnabledCallCount() );
     }
 
@@ -305,9 +305,9 @@ public final class ActionMediatorTest
 
         mediator_.unbindAll();
 
-        action1.updateEnabled();
+        action1.update();
         assertEquals( expectedIsActionEnabledCallCount1, predicate1.getIsActionEnabledCallCount() );
-        action2.updateEnabled();
+        action2.update();
         assertEquals( expectedIsActionEnabledCallCount2, predicate2.getIsActionEnabledCallCount() );
     }
 

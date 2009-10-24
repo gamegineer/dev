@@ -106,7 +106,7 @@ public final class BasicActionTest
 
         action_.addActionEnabledPredicate( predicate );
 
-        action_.shouldBeEnabled();
+        action_.update();
         assertEquals( 1, predicate.getIsActionEnabledCallCount() );
     }
 
@@ -205,7 +205,7 @@ public final class BasicActionTest
 
         action_.removeActionEnabledPredicate( predicate );
 
-        action_.shouldBeEnabled();
+        action_.update();
         assertEquals( 0, predicate.getIsActionEnabledCallCount() );
     }
 

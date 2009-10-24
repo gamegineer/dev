@@ -97,7 +97,7 @@ public final class ActionMediator
         actionEnabledPredicates_.put( action, predicate );
 
         action.addActionEnabledPredicate( predicate );
-        action.updateEnabled();
+        action.update();
     }
 
     /**
@@ -168,7 +168,7 @@ public final class ActionMediator
         if( predicate != null )
         {
             action.removeActionEnabledPredicate( predicate );
-            action.updateEnabled();
+            action.update();
         }
 
         final ActionListener listener = actionListeners_.remove( action );
@@ -186,7 +186,7 @@ public final class ActionMediator
         for( final Map.Entry<BasicAction, IActionEnabledPredicate> entry : actionEnabledPredicates_.entrySet() )
         {
             entry.getKey().removeActionEnabledPredicate( entry.getValue() );
-            entry.getKey().updateEnabled();
+            entry.getKey().update();
         }
         actionEnabledPredicates_.clear();
 
@@ -215,7 +215,7 @@ public final class ActionMediator
         assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
         assertArgumentLegal( actionEnabledPredicates_.containsKey( action ), "action" ); //$NON-NLS-1$
 
-        action.updateEnabled();
+        action.update();
     }
 
     /**
@@ -225,7 +225,7 @@ public final class ActionMediator
     {
         for( final BasicAction action : actionEnabledPredicates_.keySet() )
         {
-            action.updateEnabled();
+            action.update();
         }
     }
 }
