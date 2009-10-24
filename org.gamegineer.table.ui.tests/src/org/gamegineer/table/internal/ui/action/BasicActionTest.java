@@ -23,6 +23,8 @@ package org.gamegineer.table.internal.ui.action;
 
 import static org.junit.Assert.assertEquals;
 import java.awt.event.ActionEvent;
+import javax.swing.Action;
+import org.gamegineer.common.core.util.MockPredicate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -96,44 +98,6 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code addActionEnabledPredicate} method adds a predicate
-     * this is absent.
-     */
-    @Test
-    public void testAddActionEnabledPredicate_Predicate_Absent()
-    {
-        final MockActionEnabledPredicate predicate = new MockActionEnabledPredicate();
-
-        action_.addActionEnabledPredicate( predicate );
-
-        action_.update();
-        assertEquals( 1, predicate.getIsActionEnabledCallCount() );
-    }
-
-    /**
-     * Ensures the {@code addActionEnabledPredicate} method throws an exception
-     * when passed a {@code null} predicate.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAddActionEnabledPredicate_Predicate_Null()
-    {
-        action_.addActionEnabledPredicate( null );
-    }
-
-    /**
-     * Ensures the {@code addActionEnabledPredicate} method throws an exception
-     * when passed a predicate that is present.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testAddActionEnabledPredicate_Predicate_Present()
-    {
-        final MockActionEnabledPredicate predicate = new MockActionEnabledPredicate();
-        action_.addActionEnabledPredicate( predicate );
-
-        action_.addActionEnabledPredicate( predicate );
-    }
-
-    /**
      * Ensures the {@code addActionListener} method adds a listener that is
      * absent.
      */
@@ -172,41 +136,41 @@ public final class BasicActionTest
     }
 
     /**
-     * Ensures the {@code removeActionEnabledPredicate} method throws an
-     * exception when passed a predicate that is absent.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testRemoveActionEnabledPredicate_Predicate_Absent()
-    {
-        final MockActionEnabledPredicate predicate = new MockActionEnabledPredicate();
-
-        action_.removeActionEnabledPredicate( predicate );
-    }
-
-    /**
-     * Ensures the {@code removeActionEnabledPredicate} method throws an
-     * exception when passed a {@code null} predicate.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRemoveActionEnabledPredicate_Predicate_Null()
-    {
-        action_.removeActionEnabledPredicate( null );
-    }
-
-    /**
-     * Ensures the {@code removeActionEnabledPredicate} method removes a
-     * predicate that is present.
+     * Ensures the {@code addShouldEnablePredicate} method adds a predicate this
+     * is absent.
      */
     @Test
-    public void testRemoveActionEnabledPredicate_Predicate_Present()
+    public void testAddShouldEnablePredicate_Predicate_Absent()
     {
-        final MockActionEnabledPredicate predicate = new MockActionEnabledPredicate();
-        action_.addActionEnabledPredicate( predicate );
+        final MockPredicate<Action> predicate = new MockPredicate<Action>();
 
-        action_.removeActionEnabledPredicate( predicate );
+        action_.addShouldEnablePredicate( predicate );
 
         action_.update();
-        assertEquals( 0, predicate.getIsActionEnabledCallCount() );
+        assertEquals( 1, predicate.getEvaluateCallCount() );
+    }
+
+    /**
+     * Ensures the {@code addShouldEnablePredicate} method throws an exception
+     * when passed a {@code null} predicate.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testAddShouldEnablePredicate_Predicate_Null()
+    {
+        action_.addShouldEnablePredicate( null );
+    }
+
+    /**
+     * Ensures the {@code addShouldEnablePredicate} method throws an exception
+     * when passed a predicate that is present.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddShouldEnablePredicate_Predicate_Present()
+    {
+        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        action_.addShouldEnablePredicate( predicate );
+
+        action_.addShouldEnablePredicate( predicate );
     }
 
     /**
@@ -245,5 +209,43 @@ public final class BasicActionTest
 
         action_.actionPerformed( createActionEvent() );
         assertEquals( 0, listener.getActionPerformedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code removeShouldEnablePredicate} method throws an
+     * exception when passed a predicate that is absent.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testRemoveShouldEnablePredicate_Predicate_Absent()
+    {
+        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+
+        action_.removeShouldEnablePredicate( predicate );
+    }
+
+    /**
+     * Ensures the {@code removeShouldEnablePredicate} method throws an
+     * exception when passed a {@code null} predicate.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testRemoveShouldEnablePredicate_Predicate_Null()
+    {
+        action_.removeShouldEnablePredicate( null );
+    }
+
+    /**
+     * Ensures the {@code removeShouldEnablePredicate} method removes a
+     * predicate that is present.
+     */
+    @Test
+    public void testRemoveShouldEnablePredicate_Predicate_Present()
+    {
+        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        action_.addShouldEnablePredicate( predicate );
+
+        action_.removeShouldEnablePredicate( predicate );
+
+        action_.update();
+        assertEquals( 0, predicate.getEvaluateCallCount() );
     }
 }

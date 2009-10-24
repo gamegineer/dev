@@ -27,11 +27,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.IPredicate;
 
 /**
  * An extension to the Swing action framework that allows delegation of action
- * handling to any number of components.
+ * behavior and state to any number of observers.
  */
 @ThreadSafe
 public class BasicAction
@@ -45,10 +47,10 @@ public class BasicAction
     private static final long serialVersionUID = 4533526026382678240L;
 
     /** The collection of action listeners. */
-    private final CopyOnWriteArrayList<ActionListener> listeners_;
+    private final CopyOnWriteArrayList<ActionListener> actionListeners_;
 
-    /** The collection of action enabled predicates. */
-    private final CopyOnWriteArrayList<IActionEnabledPredicate> predicates_;
+    /** The collection of should enable predicates. */
+    private final CopyOnWriteArrayList<IPredicate<Action>> shouldEnablePredicates_;
 
 
     // ======================================================================
@@ -60,8 +62,8 @@ public class BasicAction
      */
     public BasicAction()
     {
-        listeners_ = new CopyOnWriteArrayList<ActionListener>();
-        predicates_ = new CopyOnWriteArrayList<IActionEnabledPredicate>();
+        actionListeners_ = new CopyOnWriteArrayList<ActionListener>();
+        shouldEnablePredicates_ = new CopyOnWriteArrayList<IPredicate<Action>>();
     }
 
 
@@ -75,29 +77,10 @@ public class BasicAction
     public final void actionPerformed(
         final ActionEvent e )
     {
-        for( final ActionListener listener : listeners_ )
+        for( final ActionListener listener : actionListeners_ )
         {
             listener.actionPerformed( e );
         }
-    }
-
-    /**
-     * Adds the specified enabled predicate to this action.
-     * 
-     * @param predicate
-     *        The predicate; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code predicate} is already a registered enabled predicate.
-     * @throws java.lang.NullPointerException
-     *         If {@code predicate} is {@code null}.
-     */
-    public void addActionEnabledPredicate(
-        /* @NonNull */
-        final IActionEnabledPredicate predicate )
-    {
-        assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
-        assertArgumentLegal( predicates_.addIfAbsent( predicate ), "predicate" ); //$NON-NLS-1$
     }
 
     /**
@@ -107,7 +90,7 @@ public class BasicAction
      *        The listener; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is already a registered action listener.
+     *         If {@code listener} is already registered.
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
@@ -116,26 +99,26 @@ public class BasicAction
         final ActionListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( actionListeners_.addIfAbsent( listener ), "listener" ); //$NON-NLS-1$
     }
 
     /**
-     * Removes the specified enabled predicate from this action.
+     * Adds the specified should enable predicate to this action.
      * 
      * @param predicate
      *        The predicate; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code predicate} is not a registered enabled predicate.
+     *         If {@code predicate} is already registered.
      * @throws java.lang.NullPointerException
      *         If {@code predicate} is {@code null}.
      */
-    public void removeActionEnabledPredicate(
+    public void addShouldEnablePredicate(
         /* @NonNull */
-        final IActionEnabledPredicate predicate )
+        final IPredicate<Action> predicate )
     {
         assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
-        assertArgumentLegal( predicates_.remove( predicate ), "predicate" ); //$NON-NLS-1$
+        assertArgumentLegal( shouldEnablePredicates_.addIfAbsent( predicate ), "predicate" ); //$NON-NLS-1$
     }
 
     /**
@@ -145,7 +128,7 @@ public class BasicAction
      *        The listener; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is not a registered action listener.
+     *         If {@code listener} is not registered.
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
@@ -154,7 +137,26 @@ public class BasicAction
         final ActionListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( actionListeners_.remove( listener ), "listener" ); //$NON-NLS-1$
+    }
+
+    /**
+     * Removes the specified should enable predicate from this action.
+     * 
+     * @param predicate
+     *        The predicate; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code predicate} is not registered.
+     * @throws java.lang.NullPointerException
+     *         If {@code predicate} is {@code null}.
+     */
+    public void removeShouldEnablePredicate(
+        /* @NonNull */
+        final IPredicate<Action> predicate )
+    {
+        assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
+        assertArgumentLegal( shouldEnablePredicates_.remove( predicate ), "predicate" ); //$NON-NLS-1$
     }
 
     /**
@@ -165,9 +167,9 @@ public class BasicAction
      */
     private boolean shouldEnable()
     {
-        for( final IActionEnabledPredicate predicate : predicates_ )
+        for( final IPredicate<Action> predicate : shouldEnablePredicates_ )
         {
-            if( !predicate.isActionEnabled( this ) )
+            if( !predicate.evaluate( this ) )
             {
                 return false;
             }

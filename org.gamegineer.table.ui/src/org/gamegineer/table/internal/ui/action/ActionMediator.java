@@ -27,7 +27,9 @@ import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.awt.event.ActionListener;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import javax.swing.Action;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.core.util.IPredicate;
 
 /**
  * A mediator between a client and its associated actions.
@@ -45,11 +47,11 @@ public final class ActionMediator
     // Fields
     // ======================================================================
 
-    /** The collection of bound action enabled predicates. */
-    private final Map<BasicAction, IActionEnabledPredicate> actionEnabledPredicates_;
-
     /** The collection of bound action listeners. */
     private final Map<BasicAction, ActionListener> actionListeners_;
+
+    /** The collection of bound should enable action predicates. */
+    private final Map<BasicAction, IPredicate<Action>> shouldEnablePredicates_;
 
 
     // ======================================================================
@@ -61,44 +63,14 @@ public final class ActionMediator
      */
     public ActionMediator()
     {
-        actionEnabledPredicates_ = new IdentityHashMap<BasicAction, IActionEnabledPredicate>();
         actionListeners_ = new IdentityHashMap<BasicAction, ActionListener>();
+        shouldEnablePredicates_ = new IdentityHashMap<BasicAction, IPredicate<Action>>();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Binds the specified action enabled predicate to the specified action.
-     * 
-     * @param action
-     *        The action; must not be {@code null}.
-     * @param predicate
-     *        The action enabled predicate; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If an action enabled predicate is already bound to {@code action}
-     *         .
-     * @throws java.lang.NullPointerException
-     *         If {@code action} or {@code predicate} is {@code null}.
-     */
-    public void bind(
-        /* @NonNull */
-        final BasicAction action,
-        /* @NonNull */
-        final IActionEnabledPredicate predicate )
-    {
-        assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
-        assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
-        assertStateLegal( !actionEnabledPredicates_.containsKey( action ), Messages.ActionMediator_bindActionEnabledPredicate_alreadyBound );
-
-        actionEnabledPredicates_.put( action, predicate );
-
-        action.addActionEnabledPredicate( predicate );
-        action.update();
-    }
 
     /**
      * Binds the specified action listener to the specified action.
@@ -129,6 +101,37 @@ public final class ActionMediator
     }
 
     /**
+     * Binds the specified should enable action predicate to the specified
+     * action.
+     * 
+     * @param action
+     *        The action; must not be {@code null}.
+     * @param predicate
+     *        The should enable action predicate; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If a should enable action predicate is already bound to the
+     *         action.
+     * @throws java.lang.NullPointerException
+     *         If {@code action} or {@code predicate} is {@code null}.
+     */
+    public void bind(
+        /* @NonNull */
+        final BasicAction action,
+        /* @NonNull */
+        final IPredicate<Action> predicate )
+    {
+        assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
+        assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
+        assertStateLegal( !shouldEnablePredicates_.containsKey( action ), Messages.ActionMediator_bindShouldEnablePredicate_alreadyBound );
+
+        shouldEnablePredicates_.put( action, predicate );
+
+        action.addShouldEnablePredicate( predicate );
+        action.update();
+    }
+
+    /**
      * Indicates the specified action has at least one bound attachment.
      * 
      * @param action
@@ -143,7 +146,25 @@ public final class ActionMediator
     {
         assert action != null;
 
-        return actionListeners_.containsKey( action ) || actionEnabledPredicates_.containsKey( action );
+        return actionListeners_.containsKey( action ) || hasPredicates( action );
+    }
+
+    /**
+     * Indicates the specified action has at least one bound predicate.
+     * 
+     * @param action
+     *        The action; must not be {@code null}.
+     * 
+     * @return {@code true} if the specified action has at least one bound
+     *         predicate; otherwise {@code false}.
+     */
+    private boolean hasPredicates(
+        /* @NonNull */
+        final BasicAction action )
+    {
+        assert action != null;
+
+        return shouldEnablePredicates_.containsKey( action );
     }
 
     /**
@@ -164,10 +185,10 @@ public final class ActionMediator
         assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
         assertArgumentLegal( hasAttachments( action ), "action" ); //$NON-NLS-1$
 
-        final IActionEnabledPredicate predicate = actionEnabledPredicates_.remove( action );
+        final IPredicate<Action> predicate = shouldEnablePredicates_.remove( action );
         if( predicate != null )
         {
-            action.removeActionEnabledPredicate( predicate );
+            action.removeShouldEnablePredicate( predicate );
             action.update();
         }
 
@@ -183,12 +204,12 @@ public final class ActionMediator
      */
     public void unbindAll()
     {
-        for( final Map.Entry<BasicAction, IActionEnabledPredicate> entry : actionEnabledPredicates_.entrySet() )
+        for( final Map.Entry<BasicAction, IPredicate<Action>> entry : shouldEnablePredicates_.entrySet() )
         {
-            entry.getKey().removeActionEnabledPredicate( entry.getValue() );
+            entry.getKey().removeShouldEnablePredicate( entry.getValue() );
             entry.getKey().update();
         }
-        actionEnabledPredicates_.clear();
+        shouldEnablePredicates_.clear();
 
         for( final Map.Entry<BasicAction, ActionListener> entry : actionListeners_.entrySet() )
         {
@@ -213,7 +234,7 @@ public final class ActionMediator
         final BasicAction action )
     {
         assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
-        assertArgumentLegal( actionEnabledPredicates_.containsKey( action ), "action" ); //$NON-NLS-1$
+        assertArgumentLegal( hasPredicates( action ), "action" ); //$NON-NLS-1$
 
         action.update();
     }
@@ -223,7 +244,7 @@ public final class ActionMediator
      */
     public void updateAll()
     {
-        for( final BasicAction action : actionEnabledPredicates_.keySet() )
+        for( final BasicAction action : shouldEnablePredicates_.keySet() )
         {
             action.update();
         }

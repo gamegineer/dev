@@ -31,6 +31,7 @@ import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.table.core.CardChangeEvent;
 import org.gamegineer.table.core.CardDesign;
 import org.gamegineer.table.core.CardFactory;
@@ -38,7 +39,6 @@ import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
-import org.gamegineer.table.internal.ui.action.IActionEnabledPredicate;
 
 /**
  * A view of the table.
@@ -139,14 +139,13 @@ final class TableView
             }
         } );
 
-        actionMediator_.bind( Actions.getRemoveCardAction(), new IActionEnabledPredicate()
+        actionMediator_.bind( Actions.getRemoveCardAction(), new IPredicate<Action>()
         {
             @SuppressWarnings( "synthetic-access" )
-            public boolean isActionEnabled(
-                final Action action )
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Action obj )
             {
-                assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
-
                 return !table_.getCards().isEmpty();
             }
         } );

@@ -40,11 +40,11 @@ final class Messages
 
     // --- ActionMediator ---------------------------------------------------
 
-    /** An action enabled predicate is already bound. */
-    public static String ActionMediator_bindActionEnabledPredicate_alreadyBound;
-
     /** An action listener is already bound. */
     public static String ActionMediator_bindActionListener_alreadyBound;
+
+    /** A should enable predicate is already bound. */
+    public static String ActionMediator_bindShouldEnablePredicate_alreadyBound;
 
 
     // ======================================================================
