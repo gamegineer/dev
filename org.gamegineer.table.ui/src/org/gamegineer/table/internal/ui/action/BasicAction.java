@@ -90,7 +90,7 @@ public class BasicAction
      *        The listener; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is already registered.
+     *         If {@code listener} is already a registered action listener.
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
@@ -109,7 +109,8 @@ public class BasicAction
      *        The predicate; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code predicate} is already registered.
+     *         If {@code predicate} is already a registered should enable
+     *         predicate.
      * @throws java.lang.NullPointerException
      *         If {@code predicate} is {@code null}.
      */
@@ -128,7 +129,7 @@ public class BasicAction
      *        The listener; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is not registered.
+     *         If {@code listener} is not a registered action listener.
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
@@ -147,7 +148,7 @@ public class BasicAction
      *        The predicate; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code predicate} is not registered.
+     *         If {@code predicate} is not a registered should enable predicate.
      * @throws java.lang.NullPointerException
      *         If {@code predicate} is {@code null}.
      */

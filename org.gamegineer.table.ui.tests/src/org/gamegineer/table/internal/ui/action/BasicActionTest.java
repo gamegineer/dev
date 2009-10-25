@@ -99,7 +99,7 @@ public final class BasicActionTest
 
     /**
      * Ensures the {@code addActionListener} method adds a listener that is
-     * absent.
+     * absent from the action listener collection.
      */
     @Test
     public void testAddActionListener_Listener_Absent()
@@ -124,7 +124,7 @@ public final class BasicActionTest
 
     /**
      * Ensures the {@code addActionListener} method throws an exception when
-     * passed a listener that is present.
+     * passed a listener that is present in the action listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddActionListener_Listener_Present()
@@ -137,7 +137,7 @@ public final class BasicActionTest
 
     /**
      * Ensures the {@code addShouldEnablePredicate} method adds a predicate this
-     * is absent.
+     * is absent from the should enable predicate collection.
      */
     @Test
     public void testAddShouldEnablePredicate_Predicate_Absent()
@@ -162,7 +162,8 @@ public final class BasicActionTest
 
     /**
      * Ensures the {@code addShouldEnablePredicate} method throws an exception
-     * when passed a predicate that is present.
+     * when passed a predicate that is present in the should enable predicate
+     * collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddShouldEnablePredicate_Predicate_Present()
@@ -175,7 +176,7 @@ public final class BasicActionTest
 
     /**
      * Ensures the {@code removeActionListener} method throws an exception when
-     * passed a listener that is absent.
+     * passed a listener that is absent from the action listener collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveActionListener_Listener_Absent()
@@ -197,7 +198,7 @@ public final class BasicActionTest
 
     /**
      * Ensures the {@code removeActionListener} method removes a listener that
-     * is present.
+     * is present in the action listener collection.
      */
     @Test
     public void testRemoveActionListener_Listener_Present()
@@ -213,7 +214,8 @@ public final class BasicActionTest
 
     /**
      * Ensures the {@code removeShouldEnablePredicate} method throws an
-     * exception when passed a predicate that is absent.
+     * exception when passed a predicate that is absent from the should enable
+     * predicate collection.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveShouldEnablePredicate_Predicate_Absent()
@@ -235,7 +237,7 @@ public final class BasicActionTest
 
     /**
      * Ensures the {@code removeShouldEnablePredicate} method removes a
-     * predicate that is present.
+     * predicate that is present in the should enable predicate collection.
      */
     @Test
     public void testRemoveShouldEnablePredicate_Predicate_Present()
