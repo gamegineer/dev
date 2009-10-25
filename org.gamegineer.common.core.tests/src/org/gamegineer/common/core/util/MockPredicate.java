@@ -76,7 +76,7 @@ public class MockPredicate<T>
      * 
      * @return The count of calls made to the {@code evaluate} method.
      */
-    public int getEvaluateCallCount()
+    public final int getEvaluateCallCount()
     {
         return evaluateCallCount_.get();
     }
