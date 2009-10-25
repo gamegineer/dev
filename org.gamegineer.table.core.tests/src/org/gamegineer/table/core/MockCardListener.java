@@ -1,5 +1,5 @@
 /*
- * MockTableListener.java
+ * MockCardListener.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 16, 2009 at 11:36:20 PM.
+ * Created on Oct 24, 2009 at 9:21:00 PM.
  */
 
 package org.gamegineer.table.core;
@@ -26,21 +26,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * Mock implementation of {@link org.gamegineer.table.core.ITableListener}.
+ * Mock implementation of {@link org.gamegineer.table.core.ICardListener}.
  */
 @ThreadSafe
-public class MockTableListener
-    implements ITableListener
+public class MockCardListener
+    implements ICardListener
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The count of card added events received. */
-    private final AtomicInteger cardAddedEventCount_;
-
-    /** The count of card removed events received. */
-    private final AtomicInteger cardRemovedEventCount_;
+    /** The count of card flipped events received. */
+    private final AtomicInteger cardFlippedEventCount_;
 
 
     // ======================================================================
@@ -48,12 +45,11 @@ public class MockTableListener
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MockTableListener} class.
+     * Initializes a new instance of the {@code MockCardListener} class.
      */
-    public MockTableListener()
+    public MockCardListener()
     {
-        cardAddedEventCount_ = new AtomicInteger( 0 );
-        cardRemovedEventCount_ = new AtomicInteger( 0 );
+        cardFlippedEventCount_ = new AtomicInteger( 0 );
     }
 
 
@@ -62,44 +58,23 @@ public class MockTableListener
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.ITableListener#cardAdded(org.gamegineer.table.core.CardChangeEvent)
+     * @see org.gamegineer.table.core.ICardListener#cardFlipped(org.gamegineer.table.core.CardEvent)
      */
-    public void cardAdded(
-        final CardChangeEvent event )
+    public void cardFlipped(
+        final CardEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        cardAddedEventCount_.incrementAndGet();
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITableListener#cardRemoved(org.gamegineer.table.core.CardChangeEvent)
-     */
-    public void cardRemoved(
-        final CardChangeEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        cardRemovedEventCount_.incrementAndGet();
+        cardFlippedEventCount_.incrementAndGet();
     }
 
     /**
-     * Gets the count of card added events received.
+     * Gets the count of card flipped events received.
      * 
-     * @return The count of card added events received.
+     * @return The count of card flipped events received.
      */
-    public final int getCardAddedEventCount()
+    public final int getCardFlippedEventCount()
     {
-        return cardAddedEventCount_.get();
-    }
-
-    /**
-     * Gets the count of card removed events received.
-     * 
-     * @return The count of card removed events received.
-     */
-    public final int getCardRemovedEventCount()
-    {
-        return cardRemovedEventCount_.get();
+        return cardFlippedEventCount_.get();
     }
 }

@@ -38,6 +38,11 @@ final class Messages
     /** The name of the associated resource bundle. */
     private static final String BUNDLE_NAME = "org.gamegineer.table.internal.core.Messages"; //$NON-NLS-1$
 
+    // --- Card -------------------------------------------------------------
+
+    /** An unexpected exception was thrown from ICardListener.cardFlipped(). */
+    public static String Card_cardFlipped_unexpectedException;
+
     // --- Table ------------------------------------------------------------
 
     /** An unexpected exception was thrown from ITableListener.cardAdded(). */

@@ -21,12 +21,17 @@
 
 package org.gamegineer.table.internal.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.CardDesign;
+import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ICardListener;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ICard}.
@@ -44,6 +49,9 @@ public final class Card
 
     /** The design on the face of the card. */
     private final CardDesign faceDesign_;
+
+    /** The collection of card listeners. */
+    private final CopyOnWriteArrayList<ICardListener> listeners_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -80,6 +88,7 @@ public final class Card
         lock_ = new Object();
         backDesign_ = backDesign;
         faceDesign_ = faceDesign;
+        listeners_ = new CopyOnWriteArrayList<ICardListener>();
         orientation_ = CardOrientation.FACE_UP;
     }
 
@@ -87,6 +96,35 @@ public final class Card
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.core.ICard#addCardListener(org.gamegineer.table.core.ICardListener)
+     */
+    public void addCardListener(
+        final ICardListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener" ); //$NON-NLS-1$
+    }
+
+    /**
+     * Fires a card flipped event.
+     */
+    private void fireCardFlipped()
+    {
+        final CardEvent event = InternalCardEvent.createCardEvent( this );
+        for( final ICardListener listener : listeners_ )
+        {
+            try
+            {
+                listener.cardFlipped( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.Card_cardFlipped_unexpectedException, e );
+            }
+        }
+    }
 
     /*
      * @see org.gamegineer.table.core.ICard#flip()
@@ -97,6 +135,8 @@ public final class Card
         {
             orientation_ = orientation_.inverse();
         }
+
+        fireCardFlipped();
     }
 
     /*
@@ -124,6 +164,16 @@ public final class Card
         {
             return orientation_;
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICard#removeCardListener(org.gamegineer.table.core.ICardListener)
+     */
+    public void removeCardListener(
+        final ICardListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener" ); //$NON-NLS-1$
     }
 
     /*

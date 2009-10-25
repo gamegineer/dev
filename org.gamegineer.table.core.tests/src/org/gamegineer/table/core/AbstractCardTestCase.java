@@ -98,6 +98,29 @@ public abstract class AbstractCardTestCase
     }
 
     /**
+     * Ensures the {@code addCardListener} method throws an exception when
+     * passed a {@code null} listener.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testAddCardListener_Listener_Null()
+    {
+        card_.addCardListener( null );
+    }
+
+    /**
+     * Ensures the {@code addCardListener} method throws an exception when
+     * passed a listener that is present in the card listener collection.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddCardListener_Listener_Present()
+    {
+        final ICardListener listener = new MockCardListener();
+        card_.addCardListener( listener );
+
+        card_.addCardListener( listener );
+    }
+
+    /**
      * Ensures the {@code flip} method correctly changes the card orientation
      * when the card back is initially up.
      */
@@ -113,6 +136,33 @@ public abstract class AbstractCardTestCase
     }
 
     /**
+     * Ensures the {@code flip} method catches any exception thrown by the
+     * {@code cardFlipped} method of a card listener.
+     */
+    @Test
+    public void testFlip_CatchesListenerException()
+    {
+        final MockCardListener listener1 = new MockCardListener()
+        {
+            @Override
+            public void cardFlipped(
+                final CardEvent event )
+            {
+                super.cardFlipped( event );
+
+                throw new RuntimeException();
+            }
+        };
+        final MockCardListener listener2 = new MockCardListener();
+        card_.addCardListener( listener1 );
+        card_.addCardListener( listener2 );
+
+        card_.flip();
+
+        assertEquals( 1, listener2.getCardFlippedEventCount() );
+    }
+
+    /**
      * Ensures the {@code flip} method correctly changes the card orientation
      * when the card face is initially up.
      */
@@ -125,6 +175,20 @@ public abstract class AbstractCardTestCase
         card_.flip();
 
         assertEquals( CardOrientation.BACK_UP, card_.getOrientation() );
+    }
+
+    /**
+     * Ensures the {@code flip} method fires a card flipped event.
+     */
+    @Test
+    public void testFlip_FiresCardFlippedEvent()
+    {
+        final MockCardListener listener = new MockCardListener();
+        card_.addCardListener( listener );
+
+        card_.flip();
+
+        assertEquals( 1, listener.getCardFlippedEventCount() );
     }
 
     /**
@@ -152,6 +216,43 @@ public abstract class AbstractCardTestCase
     public void testGetOrientation_ReturnValue_NonNull()
     {
         assertNotNull( card_.getOrientation() );
+    }
+
+    /**
+     * Ensures the {@code removeCardListener} method throws an exception when
+     * passed a listener that is absent from the card listener collection.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testRemoveCardListener_Listener_Absent()
+    {
+        card_.removeCardListener( new MockCardListener() );
+    }
+
+    /**
+     * Ensures the {@code removeCardListener} method throws an exception when
+     * passed a {@code null} listener.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testRemoveCardListener_Listener_Null()
+    {
+        card_.removeCardListener( null );
+    }
+
+    /**
+     * Ensures the {@code removeCardListener} removes a listener that is present
+     * in the card listener collection.
+     */
+    @Test
+    public void testRemoveCardListener_Listener_Present()
+    {
+        final MockCardListener listener = new MockCardListener();
+        card_.addCardListener( listener );
+        card_.flip();
+
+        card_.removeCardListener( listener );
+
+        card_.flip();
+        assertEquals( 1, listener.getCardFlippedEventCount() );
     }
 
     /**
