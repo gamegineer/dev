@@ -66,6 +66,16 @@ public final class ActionsTest
     }
 
     /**
+     * Ensures the {@code getFlipCardAction} method does not return {@code null}
+     * .
+     */
+    @Test
+    public void testGetFlipCardAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getFlipCardAction() );
+    }
+
+    /**
      * Ensures the {@code getOpenAboutDialogAction} method does not return
      * {@code null}.
      */

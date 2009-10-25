@@ -48,7 +48,7 @@ final class Messages
     /** The About dialog title. */
     public static String AboutDialog_title;
 
-    // --- AddCardAction -------------------------------------------------------
+    // --- AddCardAction ----------------------------------------------------
 
     /** The add card action mnemonic. */
     public static String AddCardAction_mnemonic;
@@ -63,6 +63,14 @@ final class Messages
 
     /** The exit action text. */
     public static String ExitAction_text;
+
+    // --- FlipCardAction ---------------------------------------------------
+
+    /** The flip card action mnemonic. */
+    public static String FlipCardAction_mnemonic;
+
+    /** The flip card action text. */
+    public static String FlipCardAction_text;
 
     // --- MainFrame --------------------------------------------------------
 

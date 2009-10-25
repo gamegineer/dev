@@ -124,6 +124,8 @@ final class MenuBarView
         menu.setMnemonic( Messages.toMnemonic( Messages.MenuBarView_table_mnemonic ) );
         menu.add( Actions.getAddCardAction() );
         menu.add( Actions.getRemoveCardAction() );
+        menu.addSeparator();
+        menu.add( Actions.getFlipCardAction() );
         return menu;
     }
 

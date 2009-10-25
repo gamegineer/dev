@@ -40,6 +40,9 @@ final class Actions
     /** The action used to exit the application. */
     private static final BasicAction exitAction_;
 
+    /** The action used to flip a card on the table. */
+    private static final BasicAction flipCardAction_;
+
     /** The action used to open the about dialog. */
     private static final BasicAction openAboutDialogAction_;
 
@@ -58,6 +61,7 @@ final class Actions
     {
         addCardAction_ = createAddCardAction();
         exitAction_ = createExitAction();
+        flipCardAction_ = createFlipCardAction();
         openAboutDialogAction_ = createOpenAboutDialogAction();
         removeCardAction_ = createRemoveCardAction();
     }
@@ -111,6 +115,26 @@ final class Actions
             {
                 putValue( MNEMONIC_KEY, Messages.toMnemonic( Messages.ExitAction_mnemonic ) );
                 putValue( NAME, Messages.ExitAction_text );
+            }
+        };
+    }
+
+    /**
+     * Creates the flip card action.
+     * 
+     * @return The flip card action; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static BasicAction createFlipCardAction()
+    {
+        return new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, Messages.toMnemonic( Messages.FlipCardAction_mnemonic ) );
+                putValue( NAME, Messages.FlipCardAction_text );
             }
         };
     }
@@ -175,6 +199,17 @@ final class Actions
     static BasicAction getExitAction()
     {
         return exitAction_;
+    }
+
+    /**
+     * Gets the flip card action.
+     * 
+     * @return The flip card action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getFlipCardAction()
+    {
+        return flipCardAction_;
     }
 
     /**

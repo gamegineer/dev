@@ -21,11 +21,16 @@
 
 package org.gamegineer.table.internal.ui.view;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.core.CardEvent;
+import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ICardListener;
 
 /**
  * A view of a card.
@@ -33,6 +38,7 @@ import org.gamegineer.table.core.ICard;
 @NotThreadSafe
 final class CardView
     extends JPanel
+    implements ICardListener
 {
     // ======================================================================
     // Fields
@@ -42,7 +48,6 @@ final class CardView
     private static final long serialVersionUID = 3436102069399598192L;
 
     /** The card associated with this view. */
-    @SuppressWarnings( "unused" )
     private final ICard card_;
 
 
@@ -72,14 +77,63 @@ final class CardView
     // Methods
     // ======================================================================
 
+    /*
+     * @see javax.swing.JComponent#addNotify()
+     */
+    @Override
+    public void addNotify()
+    {
+        super.addNotify();
+
+        card_.addCardListener( this );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardListener#cardFlipped(org.gamegineer.table.core.CardEvent)
+     */
+    public void cardFlipped(
+        final CardEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                updateComponent();
+            }
+        } );
+    }
+
     /**
      * Initializes this component.
      */
     private void initializeComponent()
     {
         setOpaque( true );
-        setBackground( Color.WHITE );
         setBorder( BorderFactory.createLineBorder( Color.BLACK ) );
         setSize( 71, 96 );
+
+        updateComponent();
+    }
+
+    /*
+     * @see javax.swing.JComponent#removeNotify()
+     */
+    @Override
+    public void removeNotify()
+    {
+        card_.removeCardListener( this );
+
+        super.removeNotify();
+    }
+
+    /**
+     * Updates this component.
+     */
+    private void updateComponent()
+    {
+        setBackground( (card_.getOrientation() == CardOrientation.FACE_UP) ? Color.RED : Color.BLUE );
     }
 }

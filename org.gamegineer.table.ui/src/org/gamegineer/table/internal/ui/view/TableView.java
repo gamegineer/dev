@@ -128,6 +128,16 @@ final class TableView
                 addCard();
             }
         } );
+        actionMediator_.bind( Actions.getFlipCardAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                flipCard();
+            }
+        } );
         actionMediator_.bind( Actions.getRemoveCardAction(), new ActionListener()
         {
             @SuppressWarnings( "synthetic-access" )
@@ -139,6 +149,16 @@ final class TableView
             }
         } );
 
+        actionMediator_.bind( Actions.getFlipCardAction(), new IPredicate<Action>()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Action obj )
+            {
+                return !table_.getCards().isEmpty();
+            }
+        } );
         actionMediator_.bind( Actions.getRemoveCardAction(), new IPredicate<Action>()
         {
             @SuppressWarnings( "synthetic-access" )
@@ -229,6 +249,18 @@ final class TableView
         }
 
         actionMediator_.updateAll();
+    }
+
+    /**
+     * Flips the most recently added card on the table.
+     */
+    private void flipCard()
+    {
+        final ICard[] cards = table_.getCards().toArray( new ICard[ 0 ] );
+        if( cards.length > 0 )
+        {
+            cards[ cards.length - 1 ].flip();
+        }
     }
 
     /**
