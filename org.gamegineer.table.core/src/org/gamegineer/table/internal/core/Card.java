@@ -23,6 +23,9 @@ package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
@@ -44,6 +47,9 @@ public final class Card
     // Fields
     // ======================================================================
 
+    /** The size of a card in table coordinates. */
+    private static final Dimension SIZE = new Dimension( 71, 96 );
+
     /** The design on the back of the card. */
     private final CardDesign backDesign_;
 
@@ -52,6 +58,10 @@ public final class Card
 
     /** The collection of card listeners. */
     private final CopyOnWriteArrayList<ICardListener> listeners_;
+
+    /** The card location in table coordinates. */
+    @GuardedBy( "lock_" )
+    private final Point location_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -89,6 +99,7 @@ public final class Card
         backDesign_ = backDesign;
         faceDesign_ = faceDesign;
         listeners_ = new CopyOnWriteArrayList<ICardListener>();
+        location_ = new Point( 0, 0 );
         orientation_ = CardOrientation.FACE_UP;
     }
 
@@ -148,11 +159,33 @@ public final class Card
     }
 
     /*
+     * @see org.gamegineer.table.core.ICard#getBounds()
+     */
+    public Rectangle getBounds()
+    {
+        synchronized( lock_ )
+        {
+            return new Rectangle( location_, SIZE );
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.ICard#getFaceDesign()
      */
     public CardDesign getFaceDesign()
     {
         return faceDesign_;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICard#getLocation()
+     */
+    public Point getLocation()
+    {
+        synchronized( lock_ )
+        {
+            return new Point( location_ );
+        }
     }
 
     /*
@@ -167,6 +200,14 @@ public final class Card
     }
 
     /*
+     * @see org.gamegineer.table.core.ICard#getSize()
+     */
+    public Dimension getSize()
+    {
+        return new Dimension( SIZE );
+    }
+
+    /*
      * @see org.gamegineer.table.core.ICard#removeCardListener(org.gamegineer.table.core.ICardListener)
      */
     public void removeCardListener(
@@ -174,6 +215,20 @@ public final class Card
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener" ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICard#setLocation(java.awt.Point)
+     */
+    public void setLocation(
+        final Point location )
+    {
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            location_.setLocation( location );
+        }
     }
 
     /*

@@ -23,6 +23,9 @@ package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -201,6 +204,47 @@ public abstract class AbstractCardTestCase
     }
 
     /**
+     * Ensures the {@code getBounds} method returns a copy of the bounds.
+     */
+    @Test
+    public void testGetBounds_ReturnValue_Copy()
+    {
+        final Rectangle bounds = card_.getBounds();
+        final Rectangle expectedBounds = new Rectangle( bounds );
+
+        bounds.setBounds( 1010, 2020, 101, 202 );
+
+        assertEquals( expectedBounds, card_.getBounds() );
+
+    }
+
+    /**
+     * Ensures the {@code getBounds} method does not return {@code null}.
+     */
+    @Test
+    public void testGetBounds_ReturnValue_NonNull()
+    {
+        assertNotNull( card_.getBounds() );
+    }
+
+    /**
+     * Ensures the {@code getBounds} method returns the correct value after a
+     * translation.
+     */
+    @Test
+    public void testGetBounds_Translate()
+    {
+        final Point expectedLocation = new Point( 1010, 2020 );
+        final Rectangle expectedBounds = card_.getBounds();
+        expectedBounds.setLocation( expectedLocation );
+        card_.setLocation( expectedLocation );
+
+        final Rectangle actualBounds = card_.getBounds();
+
+        assertEquals( expectedBounds, actualBounds );
+    }
+
+    /**
      * Ensures the {@code getFaceDesign} method does not return {@code null}.
      */
     @Test
@@ -210,12 +254,89 @@ public abstract class AbstractCardTestCase
     }
 
     /**
+     * Ensures the {@code getLocation} method returns a copy of the location.
+     */
+    @Test
+    public void testGetLocation_ReturnValue_Copy()
+    {
+        final Point location = card_.getLocation();
+        final Point expectedLocation = new Point( location );
+
+        location.setLocation( 1010, 2020 );
+
+        assertEquals( expectedLocation, card_.getLocation() );
+    }
+
+    /**
+     * Ensures the {@code getLocation} method does not return {@code null}.
+     */
+    @Test
+    public void testGetLocation_ReturnValue_NonNull()
+    {
+        assertNotNull( card_.getLocation() );
+    }
+
+    /**
+     * Ensures the {@code getLocation} method returns the correct value after a
+     * translation.
+     */
+    @Test
+    public void testGetLocation_Translate()
+    {
+        final Point expectedLocation = new Point( 1010, 2020 );
+        card_.setLocation( expectedLocation );
+
+        final Point actualLocation = card_.getLocation();
+
+        assertEquals( expectedLocation, actualLocation );
+    }
+
+    /**
      * Ensures the {@code getOrientation} method does not return {@code null}.
      */
     @Test
     public void testGetOrientation_ReturnValue_NonNull()
     {
         assertNotNull( card_.getOrientation() );
+    }
+
+    /**
+     * Ensures the {@code getSize} method returns a copy of the size.
+     */
+    @Test
+    public void testGetSize_ReturnValue_Copy()
+    {
+        final Dimension size = card_.getSize();
+        final Dimension expectedSize = new Dimension( size );
+
+        size.setSize( 101, 202 );
+
+        assertEquals( expectedSize, card_.getSize() );
+    }
+
+    /**
+     * Ensures the {@code getSize} method does not return {@code null}.
+     */
+    @Test
+    public void testGetSize_ReturnValue_NonNull()
+    {
+        assertNotNull( card_.getSize() );
+    }
+
+    /**
+     * Ensures the {@code getSize} method returns the correct value after a
+     * translation.
+     */
+    @Test
+    public void testGetSize_Translate()
+    {
+        final Point expectedLocation = new Point( 1010, 2020 );
+        final Dimension expectedSize = card_.getSize();
+        card_.setLocation( expectedLocation );
+
+        final Dimension actualSize = card_.getSize();
+
+        assertEquals( expectedSize, actualSize );
     }
 
     /**
@@ -253,6 +374,31 @@ public abstract class AbstractCardTestCase
 
         card_.flip();
         assertEquals( 1, listener.getCardFlippedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code setLocation} method makes a copy of the location.
+     */
+    @Test
+    public void testSetLocation_Location_Copy()
+    {
+        final Point expectedLocation = new Point( 1010, 2020 );
+        final Point location = new Point( expectedLocation );
+
+        card_.setLocation( location );
+        location.setLocation( 1, 2 );
+
+        assertEquals( expectedLocation, card_.getLocation() );
+    }
+
+    /**
+     * Ensures the {@code setLocation} method throws an exception when passed a
+     * {@code null} location.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetLocation_Location_Null()
+    {
+        card_.setLocation( null );
     }
 
     /**

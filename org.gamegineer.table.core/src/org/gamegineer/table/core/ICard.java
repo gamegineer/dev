@@ -21,6 +21,10 @@
 
 package org.gamegineer.table.core;
 
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
+
 /**
  * A card.
  * 
@@ -63,6 +67,15 @@ public interface ICard
     public CardDesign getBackDesign();
 
     /**
+     * Gets the bounds of this card in table coordinates.
+     * 
+     * @return The bounds of this card in table coordinates; never {@code null}
+     *         .
+     */
+    /* @NonNull */
+    public Rectangle getBounds();
+
+    /**
      * Gets the design on the face of this card.
      * 
      * @return The design on the face of this card; never {@code null}.
@@ -71,12 +84,29 @@ public interface ICard
     public CardDesign getFaceDesign();
 
     /**
+     * Gets the location of this card in table coordinates.
+     * 
+     * @return The location of this card in table coordinates; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    public Point getLocation();
+
+    /**
      * Gets the orientation of this card.
      * 
      * @return The orientation of this card; never {@code null}.
      */
     /* @NonNull */
     public CardOrientation getOrientation();
+
+    /**
+     * Gets the size of this card in table coordinates.
+     * 
+     * @return The size of this card in table coordinates; never {@code null}.
+     */
+    /* @NonNull */
+    public Dimension getSize();
 
     /**
      * Removes the specified card listener from this card.
@@ -92,6 +122,20 @@ public interface ICard
     public void removeCardListener(
         /* @NonNull */
         ICardListener listener );
+
+    /**
+     * Sets the location of this card in table coordinates.
+     * 
+     * @param location
+     *        The location of this card in table coordinates; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code location} is {@code null}.
+     */
+    public void setLocation(
+        /* @NonNull */
+        Point location );
 
     /**
      * Sets the orientation of this card.
