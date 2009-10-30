@@ -39,6 +39,9 @@ public class MockCardListener
     /** The count of card flipped events received. */
     private final AtomicInteger cardFlippedEventCount_;
 
+    /** The count of card location changed events received. */
+    private final AtomicInteger cardLocationChangedEventCount_;
+
 
     // ======================================================================
     // Constructors
@@ -50,6 +53,7 @@ public class MockCardListener
     public MockCardListener()
     {
         cardFlippedEventCount_ = new AtomicInteger( 0 );
+        cardLocationChangedEventCount_ = new AtomicInteger( 0 );
     }
 
 
@@ -68,6 +72,17 @@ public class MockCardListener
         cardFlippedEventCount_.incrementAndGet();
     }
 
+    /*
+     * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
+     */
+    public void cardLocationChanged(
+        final CardEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        cardLocationChangedEventCount_.incrementAndGet();
+    }
+
     /**
      * Gets the count of card flipped events received.
      * 
@@ -76,5 +91,15 @@ public class MockCardListener
     public final int getCardFlippedEventCount()
     {
         return cardFlippedEventCount_.get();
+    }
+
+    /**
+     * Gets the count of card location changed events received.
+     * 
+     * @return The count of card location changed events received.
+     */
+    public final int getCardLocationChangedEventCount()
+    {
+        return cardLocationChangedEventCount_.get();
     }
 }

@@ -106,6 +106,17 @@ final class CardView
         } );
     }
 
+    /*
+     * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
+     */
+    public void cardLocationChanged(
+        final CardEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // TODO: Set component location equal to card location.
+    }
+
     /**
      * Initializes this component.
      */

@@ -377,6 +377,48 @@ public abstract class AbstractCardTestCase
     }
 
     /**
+     * Ensures the {@code setLocation} method catches any exception thrown by
+     * the {@code cardLocationChanged} method of a card listener.
+     */
+    @Test
+    public void testSetCardLocation_CatchesListenerException()
+    {
+        final MockCardListener listener1 = new MockCardListener()
+        {
+            @Override
+            public void cardLocationChanged(
+                final CardEvent event )
+            {
+                super.cardLocationChanged( event );
+
+                throw new RuntimeException();
+            }
+        };
+        final MockCardListener listener2 = new MockCardListener();
+        card_.addCardListener( listener1 );
+        card_.addCardListener( listener2 );
+
+        card_.setLocation( new Point( 1010, 2020 ) );
+
+        assertEquals( 1, listener2.getCardLocationChangedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code setLocation} method fires a card location changed
+     * event.
+     */
+    @Test
+    public void testSetLocation_FiresCardLocationChangedEvent()
+    {
+        final MockCardListener listener = new MockCardListener();
+        card_.addCardListener( listener );
+
+        card_.setLocation( new Point( 1010, 2020 ) );
+
+        assertEquals( 1, listener.getCardLocationChangedEventCount() );
+    }
+
+    /**
      * Ensures the {@code setLocation} method makes a copy of the location.
      */
     @Test

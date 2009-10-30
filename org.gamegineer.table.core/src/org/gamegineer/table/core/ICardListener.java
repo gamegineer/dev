@@ -48,4 +48,17 @@ public interface ICardListener
     public void cardFlipped(
         /* @NonNull */
         CardEvent event );
+
+    /**
+     * Invoked after the card location has changed.
+     * 
+     * @param event
+     *        The event describing the card; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void cardLocationChanged(
+        /* @NonNull */
+        CardEvent event );
 }

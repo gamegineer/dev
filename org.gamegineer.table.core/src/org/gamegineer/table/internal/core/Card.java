@@ -137,6 +137,25 @@ public final class Card
         }
     }
 
+    /**
+     * Fires a card location changed event.
+     */
+    private void fireCardLocationChanged()
+    {
+        final CardEvent event = InternalCardEvent.createCardEvent( this );
+        for( final ICardListener listener : listeners_ )
+        {
+            try
+            {
+                listener.cardLocationChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.Card_cardLocationChanged_unexpectedException, e );
+            }
+        }
+    }
+
     /*
      * @see org.gamegineer.table.core.ICard#flip()
      */
@@ -229,6 +248,8 @@ public final class Card
         {
             location_.setLocation( location );
         }
+
+        fireCardLocationChanged();
     }
 
     /*
@@ -251,6 +272,6 @@ public final class Card
     @Override
     public String toString()
     {
-        return String.format( "Card[backDesign_='%1$s', faceDesign_='%2$s', orientation_='%3$s'", backDesign_, faceDesign_, getOrientation() ); //$NON-NLS-1$
+        return String.format( "Card[backDesign_='%1$s', faceDesign_='%2$s', location_='%3$s', orientation_='%4$s'", backDesign_, faceDesign_, getLocation(), getOrientation() ); //$NON-NLS-1$
     }
 }

@@ -43,6 +43,12 @@ final class Messages
     /** An unexpected exception was thrown from ICardListener.cardFlipped(). */
     public static String Card_cardFlipped_unexpectedException;
 
+    /**
+     * An unexpected exception was thrown from
+     * ICardListener.cardLocationChanged().
+     */
+    public static String Card_cardLocationChanged_unexpectedException;
+
     // --- Table ------------------------------------------------------------
 
     /** An unexpected exception was thrown from ITableListener.cardAdded(). */
