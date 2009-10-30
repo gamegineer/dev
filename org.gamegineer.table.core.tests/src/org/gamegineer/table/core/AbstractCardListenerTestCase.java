@@ -98,16 +98,6 @@ public abstract class AbstractCardListenerTestCase
     }
 
     /**
-     * Ensures the {@code cardFlipped} method throws an exception when passed a
-     * {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCardFlipped_Event_Null()
-    {
-        listener_.cardFlipped( null );
-    }
-
-    /**
      * Ensures the {@code cardLocationChanged} method throws an exception when
      * passed a {@code null} event.
      */
@@ -115,5 +105,15 @@ public abstract class AbstractCardListenerTestCase
     public void testCardLocationChanged_Event_Null()
     {
         listener_.cardLocationChanged( null );
+    }
+
+    /**
+     * Ensures the {@code cardOrientationChanged} method throws an exception
+     * when passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCardOrientationChanged_Event_Null()
+    {
+        listener_.cardOrientationChanged( null );
     }
 }

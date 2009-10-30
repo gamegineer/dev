@@ -119,25 +119,6 @@ public final class Card
     }
 
     /**
-     * Fires a card flipped event.
-     */
-    private void fireCardFlipped()
-    {
-        final CardEvent event = InternalCardEvent.createCardEvent( this );
-        for( final ICardListener listener : listeners_ )
-        {
-            try
-            {
-                listener.cardFlipped( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.Card_cardFlipped_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
      * Fires a card location changed event.
      */
     private void fireCardLocationChanged()
@@ -156,6 +137,25 @@ public final class Card
         }
     }
 
+    /**
+     * Fires a card orientation changed event.
+     */
+    private void fireCardOrientationChanged()
+    {
+        final CardEvent event = InternalCardEvent.createCardEvent( this );
+        for( final ICardListener listener : listeners_ )
+        {
+            try
+            {
+                listener.cardOrientationChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.Card_cardOrientationChanged_unexpectedException, e );
+            }
+        }
+    }
+
     /*
      * @see org.gamegineer.table.core.ICard#flip()
      */
@@ -166,7 +166,7 @@ public final class Card
             orientation_ = orientation_.inverse();
         }
 
-        fireCardFlipped();
+        fireCardOrientationChanged();
     }
 
     /*
@@ -264,6 +264,8 @@ public final class Card
         {
             orientation_ = orientation;
         }
+
+        fireCardOrientationChanged();
     }
 
     /*

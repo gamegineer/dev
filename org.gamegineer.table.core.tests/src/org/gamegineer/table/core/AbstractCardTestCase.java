@@ -139,33 +139,6 @@ public abstract class AbstractCardTestCase
     }
 
     /**
-     * Ensures the {@code flip} method catches any exception thrown by the
-     * {@code cardFlipped} method of a card listener.
-     */
-    @Test
-    public void testFlip_CatchesListenerException()
-    {
-        final MockCardListener listener1 = new MockCardListener()
-        {
-            @Override
-            public void cardFlipped(
-                final CardEvent event )
-            {
-                super.cardFlipped( event );
-
-                throw new RuntimeException();
-            }
-        };
-        final MockCardListener listener2 = new MockCardListener();
-        card_.addCardListener( listener1 );
-        card_.addCardListener( listener2 );
-
-        card_.flip();
-
-        assertEquals( 1, listener2.getCardFlippedEventCount() );
-    }
-
-    /**
      * Ensures the {@code flip} method correctly changes the card orientation
      * when the card face is initially up.
      */
@@ -181,17 +154,17 @@ public abstract class AbstractCardTestCase
     }
 
     /**
-     * Ensures the {@code flip} method fires a card flipped event.
+     * Ensures the {@code flip} method fires a card orientation changed event.
      */
     @Test
-    public void testFlip_FiresCardFlippedEvent()
+    public void testFlip_FiresCardOrientationChangedEvent()
     {
         final MockCardListener listener = new MockCardListener();
         card_.addCardListener( listener );
 
         card_.flip();
 
-        assertEquals( 1, listener.getCardFlippedEventCount() );
+        assertEquals( 1, listener.getCardOrientationChangedEventCount() );
     }
 
     /**
@@ -373,7 +346,7 @@ public abstract class AbstractCardTestCase
         card_.removeCardListener( listener );
 
         card_.flip();
-        assertEquals( 1, listener.getCardFlippedEventCount() );
+        assertEquals( 1, listener.getCardOrientationChangedEventCount() );
     }
 
     /**
@@ -441,6 +414,48 @@ public abstract class AbstractCardTestCase
     public void testSetLocation_Location_Null()
     {
         card_.setLocation( null );
+    }
+
+    /**
+     * Ensures the {@code setOrientation} method catches any exception thrown by
+     * the {@code cardOrientationChanged} method of a card listener.
+     */
+    @Test
+    public void testSetOrientation_CatchesListenerException()
+    {
+        final MockCardListener listener1 = new MockCardListener()
+        {
+            @Override
+            public void cardOrientationChanged(
+                final CardEvent event )
+            {
+                super.cardOrientationChanged( event );
+
+                throw new RuntimeException();
+            }
+        };
+        final MockCardListener listener2 = new MockCardListener();
+        card_.addCardListener( listener1 );
+        card_.addCardListener( listener2 );
+
+        card_.setOrientation( card_.getOrientation().inverse() );
+
+        assertEquals( 1, listener2.getCardOrientationChangedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code setOrientation} method fires a card orientation
+     * changed event.
+     */
+    @Test
+    public void testSetOrientation_FiresCardOrientationChangedEvent()
+    {
+        final MockCardListener listener = new MockCardListener();
+        card_.addCardListener( listener );
+
+        card_.setOrientation( card_.getOrientation().inverse() );
+
+        assertEquals( 1, listener.getCardOrientationChangedEventCount() );
     }
 
     /**

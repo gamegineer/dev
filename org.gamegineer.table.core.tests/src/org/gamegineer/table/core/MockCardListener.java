@@ -36,11 +36,11 @@ public class MockCardListener
     // Fields
     // ======================================================================
 
-    /** The count of card flipped events received. */
-    private final AtomicInteger cardFlippedEventCount_;
-
     /** The count of card location changed events received. */
     private final AtomicInteger cardLocationChangedEventCount_;
+
+    /** The count of card orientation changed events received. */
+    private final AtomicInteger cardOrientationChangedEventCount_;
 
 
     // ======================================================================
@@ -52,25 +52,14 @@ public class MockCardListener
      */
     public MockCardListener()
     {
-        cardFlippedEventCount_ = new AtomicInteger( 0 );
         cardLocationChangedEventCount_ = new AtomicInteger( 0 );
+        cardOrientationChangedEventCount_ = new AtomicInteger( 0 );
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.core.ICardListener#cardFlipped(org.gamegineer.table.core.CardEvent)
-     */
-    public void cardFlipped(
-        final CardEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        cardFlippedEventCount_.incrementAndGet();
-    }
 
     /*
      * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
@@ -83,14 +72,15 @@ public class MockCardListener
         cardLocationChangedEventCount_.incrementAndGet();
     }
 
-    /**
-     * Gets the count of card flipped events received.
-     * 
-     * @return The count of card flipped events received.
+    /*
+     * @see org.gamegineer.table.core.ICardListener#cardOrientationChanged(org.gamegineer.table.core.CardEvent)
      */
-    public final int getCardFlippedEventCount()
+    public void cardOrientationChanged(
+        final CardEvent event )
     {
-        return cardFlippedEventCount_.get();
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        cardOrientationChangedEventCount_.incrementAndGet();
     }
 
     /**
@@ -101,5 +91,15 @@ public class MockCardListener
     public final int getCardLocationChangedEventCount()
     {
         return cardLocationChangedEventCount_.get();
+    }
+
+    /**
+     * Gets the count of card orientation changed events received.
+     * 
+     * @return The count of card orientation changed events received.
+     */
+    public final int getCardOrientationChangedEventCount()
+    {
+        return cardOrientationChangedEventCount_.get();
     }
 }

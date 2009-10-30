@@ -89,9 +89,20 @@ final class CardView
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardListener#cardFlipped(org.gamegineer.table.core.CardEvent)
+     * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
      */
-    public void cardFlipped(
+    public void cardLocationChanged(
+        final CardEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // TODO: Set component location equal to card location.
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardListener#cardOrientationChanged(org.gamegineer.table.core.CardEvent)
+     */
+    public void cardOrientationChanged(
         final CardEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
@@ -104,17 +115,6 @@ final class CardView
                 updateComponent();
             }
         } );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
-     */
-    public void cardLocationChanged(
-        final CardEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // TODO: Set component location equal to card location.
     }
 
     /**

@@ -37,19 +37,6 @@ public interface ICardListener
     // ======================================================================
 
     /**
-     * Invoked after the card has been flipped.
-     * 
-     * @param event
-     *        The event describing the card; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
-     */
-    public void cardFlipped(
-        /* @NonNull */
-        CardEvent event );
-
-    /**
      * Invoked after the card location has changed.
      * 
      * @param event
@@ -59,6 +46,19 @@ public interface ICardListener
      *         If {@code event} is {@code null}.
      */
     public void cardLocationChanged(
+        /* @NonNull */
+        CardEvent event );
+
+    /**
+     * Invoked after the card orientation has changed.
+     * 
+     * @param event
+     *        The event describing the card; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void cardOrientationChanged(
         /* @NonNull */
         CardEvent event );
 }
