@@ -96,7 +96,14 @@ final class CardView
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        // TODO: Set component location equal to card location.
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                updateComponent();
+            }
+        } );
     }
 
     /*
@@ -124,7 +131,7 @@ final class CardView
     {
         setOpaque( true );
         setBorder( BorderFactory.createLineBorder( Color.BLACK ) );
-        setSize( 71, 96 );
+        setSize( card_.getSize() );
 
         updateComponent();
     }
@@ -146,5 +153,6 @@ final class CardView
     private void updateComponent()
     {
         setBackground( (card_.getOrientation() == CardOrientation.FACE_UP) ? Color.RED : Color.BLUE );
+        setLocation( card_.getLocation() );
     }
 }

@@ -203,8 +203,6 @@ final class TableView
 
         final CardView view = new CardView( card );
         cardViews_.put( card, view );
-        final int offset = table_.getCards().size() - 1;
-        view.setLocation( offset * view.getWidth(), offset * view.getHeight() );
         add( view );
         repaint( view.getBounds() );
 
