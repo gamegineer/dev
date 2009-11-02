@@ -23,13 +23,18 @@ package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.table.core.CardChangeEvent;
@@ -61,6 +66,9 @@ final class TableView
     /** The collection of card views. */
     private final Map<ICard, CardView> cardViews_;
 
+    /** The mouse input listener for this view. */
+    private final MouseInputListener mouseInputListener_;
+
     /** The table associated with this view. */
     private final ITable table_;
 
@@ -83,6 +91,7 @@ final class TableView
 
         actionMediator_ = new ActionMediator();
         cardViews_ = new IdentityHashMap<ICard, CardView>();
+        mouseInputListener_ = new MouseInputHandler();
         table_ = table;
 
         initializeComponent();
@@ -111,6 +120,8 @@ final class TableView
 
         bindActions();
         table_.addTableListener( this );
+        addMouseListener( mouseInputListener_ );
+        addMouseMotionListener( mouseInputListener_ );
     }
 
     /**
@@ -289,9 +300,102 @@ final class TableView
     @Override
     public void removeNotify()
     {
+        removeMouseMotionListener( mouseInputListener_ );
+        removeMouseListener( mouseInputListener_ );
         table_.removeTableListener( this );
         actionMediator_.unbindAll();
 
         super.removeNotify();
+    }
+
+
+    // ======================================================================
+    // Nested Classes
+    // ======================================================================
+
+    /**
+     * The mouse input handler for the table view.
+     */
+    private final class MouseInputHandler
+        extends MouseInputAdapter
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The card being dragged or {@code null} if no card is being dragged. */
+        private ICard draggedCard_;
+
+        /** The offset between the mouse pointer and the dragged card location. */
+        private final Dimension draggedCardLocationOffset_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code MouseInputListener} class.
+         */
+        MouseInputHandler()
+        {
+            draggedCard_ = null;
+            draggedCardLocationOffset_ = new Dimension( 0, 0 );
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
+         */
+        @Override
+        public void mouseDragged(
+            final MouseEvent e )
+        {
+            if( draggedCard_ != null )
+            {
+                final Point location = e.getPoint();
+                location.translate( draggedCardLocationOffset_.width, draggedCardLocationOffset_.height );
+                draggedCard_.setLocation( location );
+            }
+        }
+
+        /*
+         * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void mousePressed(
+            final MouseEvent e )
+        {
+            assert draggedCard_ == null;
+
+            final Point mouseLocation = e.getPoint();
+            for( final ICard card : cardViews_.keySet() )
+            {
+                if( card.getBounds().contains( mouseLocation ) )
+                {
+                    final Point cardLocation = card.getLocation();
+                    draggedCard_ = card;
+                    draggedCardLocationOffset_.setSize( cardLocation.x - mouseLocation.x, cardLocation.y - mouseLocation.y );
+                    break;
+                }
+            }
+        }
+
+        /*
+         * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
+         */
+        @Override
+        public void mouseReleased(
+            @SuppressWarnings( "unused" )
+            final MouseEvent e )
+        {
+            draggedCard_ = null;
+            draggedCardLocationOffset_.setSize( 0, 0 );
+        }
     }
 }
