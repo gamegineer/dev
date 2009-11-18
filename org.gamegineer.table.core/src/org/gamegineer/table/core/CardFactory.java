@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.core.Card;
 
@@ -58,19 +57,19 @@ public final class CardFactory
      * 
      * @return A new card; never {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code backDesign} and {@code faceDesign} do not have the same
+     *         size.
      * @throws java.lang.NullPointerException
      *         If {@code backDesign} or {@code faceDesign} is {@code null}.
      */
     /* @NonNull */
     public static ICard createCard(
         /* @NonNull */
-        final CardDesign backDesign,
+        final ICardDesign backDesign,
         /* @NonNull */
-        final CardDesign faceDesign )
+        final ICardDesign faceDesign )
     {
-        assertArgumentNotNull( backDesign, "backDesign" ); //$NON-NLS-1$
-        assertArgumentNotNull( faceDesign, "faceDesign" ); //$NON-NLS-1$
-
         return new Card( backDesign, faceDesign );
     }
 }

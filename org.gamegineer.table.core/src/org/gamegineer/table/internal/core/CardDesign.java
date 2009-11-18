@@ -56,9 +56,9 @@ public final class CardDesign
      * @param id
      *        The card design identifier; must not be {@code null}.
      * @param width
-     *        The card design width in table coordinates; must be nonnegative.
+     *        The card design width in table coordinates; must not be negative.
      * @param height
-     *        The card design height in table coordinates; must be nonnegative.
+     *        The card design height in table coordinates; must not be negative.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code width} or {@code height} is negative.

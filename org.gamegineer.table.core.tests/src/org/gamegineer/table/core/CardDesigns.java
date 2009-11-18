@@ -96,7 +96,7 @@ public final class CardDesigns
      */
     /* @NonNull */
     @SuppressWarnings( "boxing" )
-    private static CardDesignId getUniqueCardDesignId()
+    public static CardDesignId getUniqueCardDesignId()
     {
         return CardDesignId.fromString( String.format( "card-design-%1$d", nextCardDesignId_.incrementAndGet() ) ); //$NON-NLS-1$
     }

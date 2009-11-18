@@ -54,7 +54,7 @@ public final class CardFactoryTest
     @Test( expected = NullPointerException.class )
     public void testCreateCard_BackDesign_Null()
     {
-        CardFactory.createCard( null, CardDesign.EMPTY );
+        CardFactory.createCard( null, CardDesigns.createUniqueCardDesign() );
     }
 
     /**
@@ -64,7 +64,20 @@ public final class CardFactoryTest
     @Test( expected = NullPointerException.class )
     public void testCreateCard_FaceDesign_Null()
     {
-        CardFactory.createCard( CardDesign.EMPTY, null );
+        CardFactory.createCard( CardDesigns.createUniqueCardDesign(), null );
+    }
+
+    /**
+     * Ensures the {@code createCard} method throws an exception when passed a
+     * face design that has a size different from the back design.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testCreateCard_FaceDesign_SizeNotEqual()
+    {
+        final ICardDesign backDesign = CardDesigns.createUniqueCardDesign();
+        final ICardDesign faceDesign = new FakeCardDesign( CardDesigns.getUniqueCardDesignId(), 2 * backDesign.getSize().width, 2 * backDesign.getSize().height );
+
+        CardFactory.createCard( backDesign, faceDesign );
     }
 
     /**
@@ -73,6 +86,6 @@ public final class CardFactoryTest
     @Test
     public void testCreateCard_ReturnValue_NonNull()
     {
-        assertNotNull( CardFactory.createCard( CardDesign.EMPTY, CardDesign.EMPTY ) );
+        assertNotNull( CardFactory.createCard( CardDesigns.createUniqueCardDesign(), CardDesigns.createUniqueCardDesign() ) );
     }
 }

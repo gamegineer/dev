@@ -99,7 +99,7 @@ public class BasicAction
         final ActionListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( actionListeners_.addIfAbsent( listener ), "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( actionListeners_.addIfAbsent( listener ), "listener", Messages.BasicAction_addActionListener_listener_registered ); //$NON-NLS-1$
     }
 
     /**
@@ -119,7 +119,7 @@ public class BasicAction
         final IPredicate<Action> predicate )
     {
         assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
-        assertArgumentLegal( shouldEnablePredicates_.addIfAbsent( predicate ), "predicate" ); //$NON-NLS-1$
+        assertArgumentLegal( shouldEnablePredicates_.addIfAbsent( predicate ), "predicate", Messages.BasicAction_addShouldEnablePredicate_predicate_registered ); //$NON-NLS-1$
     }
 
     /**
@@ -138,7 +138,7 @@ public class BasicAction
         final ActionListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( actionListeners_.remove( listener ), "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( actionListeners_.remove( listener ), "listener", Messages.BasicAction_removeActionListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /**
@@ -157,7 +157,7 @@ public class BasicAction
         final IPredicate<Action> predicate )
     {
         assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
-        assertArgumentLegal( shouldEnablePredicates_.remove( predicate ), "predicate" ); //$NON-NLS-1$
+        assertArgumentLegal( shouldEnablePredicates_.remove( predicate ), "predicate", Messages.BasicAction_removeShouldEnablePredicate_predicate_notRegistered ); //$NON-NLS-1$
     }
 
     /**

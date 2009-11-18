@@ -46,6 +46,25 @@ final class Messages
     /** A should enable predicate is already bound. */
     public static String ActionMediator_bindShouldEnablePredicate_alreadyBound;
 
+    /** The action has no attachments. */
+    public static String ActionMediator_unbind_noAttachments;
+
+    /** The action has no predicates. */
+    public static String ActionMediator_update_noPredicates;
+
+    // --- BasicAction ------------------------------------------------------
+
+    /** The action listener is already registered. */
+    public static String BasicAction_addActionListener_listener_registered;
+
+    /** The should enable predicate is already registered. */
+    public static String BasicAction_addShouldEnablePredicate_predicate_registered;
+
+    /** The action listener is not registered. */
+    public static String BasicAction_removeActionListener_listener_notRegistered;
+
+    /** The should enable predicate is not registered. */
+    public static String BasicAction_removeShouldEnablePredicate_predicate_notRegistered;
 
     // ======================================================================
     // Constructors

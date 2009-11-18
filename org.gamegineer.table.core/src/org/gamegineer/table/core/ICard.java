@@ -64,7 +64,7 @@ public interface ICard
      * @return The design on the back of this card; never {@code null}.
      */
     /* @NonNull */
-    public CardDesign getBackDesign();
+    public ICardDesign getBackDesign();
 
     /**
      * Gets the bounds of this card in table coordinates.
@@ -81,7 +81,7 @@ public interface ICard
      * @return The design on the face of this card; never {@code null}.
      */
     /* @NonNull */
-    public CardDesign getFaceDesign();
+    public ICardDesign getFaceDesign();
 
     /**
      * Gets the location of this card in table coordinates.

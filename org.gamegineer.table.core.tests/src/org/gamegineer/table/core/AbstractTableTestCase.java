@@ -69,7 +69,7 @@ public abstract class AbstractTableTestCase
     /* @NonNull */
     private static ICard createCard()
     {
-        return CardFactory.createCard( CardDesign.EMPTY, CardDesign.EMPTY );
+        return CardFactory.createCard( CardDesigns.createUniqueCardDesign(), CardDesigns.createUniqueCardDesign() );
     }
 
     /**

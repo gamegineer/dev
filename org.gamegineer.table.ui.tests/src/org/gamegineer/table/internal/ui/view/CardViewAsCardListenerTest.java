@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.ui.view;
 
 import org.gamegineer.table.core.AbstractCardListenerTestCase;
-import org.gamegineer.table.core.CardDesign;
+import org.gamegineer.table.core.CardDesigns;
 import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.ICardListener;
 
@@ -59,6 +59,6 @@ public final class CardViewAsCardListenerTest
     @Override
     protected ICardListener createCardListener()
     {
-        return new CardView( CardFactory.createCard( CardDesign.EMPTY, CardDesign.EMPTY ) );
+        return new CardView( CardFactory.createCard( CardDesigns.createUniqueCardDesign(), CardDesigns.createUniqueCardDesign() ) );
     }
 }

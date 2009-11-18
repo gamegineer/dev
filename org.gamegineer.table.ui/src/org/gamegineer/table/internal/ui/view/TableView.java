@@ -38,9 +38,10 @@ import javax.swing.event.MouseInputListener;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.table.core.CardChangeEvent;
-import org.gamegineer.table.core.CardDesign;
+import org.gamegineer.table.core.CardDesignId;
 import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ICardDesign;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
@@ -107,7 +108,20 @@ final class TableView
      */
     private void addCard()
     {
-        table_.addCard( CardFactory.createCard( CardDesign.EMPTY, CardDesign.EMPTY ) );
+        // TODO: Provide a mechanism for manually creating card designs.
+        final ICardDesign EMPTY_CARD_DESIGN = new ICardDesign()
+        {
+            public CardDesignId getId()
+            {
+                return CardDesignId.fromString( "empty" ); //$NON-NLS-1$
+            }
+
+            public Dimension getSize()
+            {
+                return new Dimension( 71, 96 );
+            }
+        };
+        table_.addCard( CardFactory.createCard( EMPTY_CARD_DESIGN, EMPTY_CARD_DESIGN ) );
     }
 
     /*

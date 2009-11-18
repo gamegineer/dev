@@ -183,7 +183,7 @@ public final class ActionMediator
         final BasicAction action )
     {
         assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
-        assertArgumentLegal( hasAttachments( action ), "action" ); //$NON-NLS-1$
+        assertArgumentLegal( hasAttachments( action ), "action", Messages.ActionMediator_unbind_noAttachments ); //$NON-NLS-1$
 
         final IPredicate<Action> predicate = shouldEnablePredicates_.remove( action );
         if( predicate != null )
@@ -234,7 +234,7 @@ public final class ActionMediator
         final BasicAction action )
     {
         assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
-        assertArgumentLegal( hasPredicates( action ), "action" ); //$NON-NLS-1$
+        assertArgumentLegal( hasPredicates( action ), "action", Messages.ActionMediator_update_noPredicates ); //$NON-NLS-1$
 
         action.update();
     }

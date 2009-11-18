@@ -40,6 +40,9 @@ final class Messages
 
     // --- Card -------------------------------------------------------------
 
+    /** The card listener is already registered. */
+    public static String Card_addCardListener_listener_registered;
+
     /**
      * An unexpected exception was thrown from
      * ICardListener.cardLocationChanged().
@@ -52,6 +55,12 @@ final class Messages
      */
     public static String Card_cardOrientationChanged_unexpectedException;
 
+    /** The face design size is not equal to the back design size. */
+    public static String Card_ctor_faceDesign_sizeNotEqual;
+
+    /** The card listener is not registered. */
+    public static String Card_removeCardListener_listener_notRegistered;
+
     // --- CardDesign -------------------------------------------------------
 
     /** The card design height must not be negative. */
@@ -62,11 +71,17 @@ final class Messages
 
     // --- Table ------------------------------------------------------------
 
+    /** The table listener is already registered. */
+    public static String Table_addTableListener_listener_registered;
+
     /** An unexpected exception was thrown from ITableListener.cardAdded(). */
     public static String Table_cardAdded_unexpectedException;
 
     /** An unexpected exception was thrown from ITableListener.cardRemoved(). */
     public static String Table_cardRemoved_unexpectedException;
+
+    /** The table listener is not registered. */
+    public static String Table_removeTableListener_listener_notRegistered;
 
 
     // ======================================================================

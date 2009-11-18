@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import net.jcip.annotations.Immutable;
@@ -39,13 +40,17 @@ public class FakeCardDesign
     /** The card design identifier. */
     private final CardDesignId id_;
 
+    /** The card design size in table coordinates. */
+    private final Dimension size_;
+
 
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code FakeCardDesign} class.
+     * Initializes a new instance of the {@code FakeCardDesign} class with a
+     * default size.
      * 
      * @param id
      *        The card design identifier; must not be {@code null}.
@@ -57,11 +62,38 @@ public class FakeCardDesign
         /* @NonNull */
         final CardDesignId id )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-
-        id_ = id;
+        this( id, 100, 100 );
     }
 
+    /**
+     * Initializes a new instance of the {@code FakeCardDesign} class with the
+     * specified size.
+     * 
+     * @param id
+     *        The card design identifier; must not be {@code null}.
+     * @param width
+     *        The card design width in table coordinates; must not be negative.
+     * @param height
+     *        The card design height in table coordinates; must not be negative.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code width} or {@code height} is negative.
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
+     */
+    public FakeCardDesign(
+        /* @NonNull */
+        final CardDesignId id,
+        final int width,
+        final int height )
+    {
+        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
+        assertArgumentLegal( width >= 0, "width" ); //$NON-NLS-1$
+        assertArgumentLegal( height >= 0, "height" ); //$NON-NLS-1$
+
+        id_ = id;
+        size_ = new Dimension( width, height );
+    }
 
     // ======================================================================
     // Methods
@@ -80,6 +112,6 @@ public class FakeCardDesign
      */
     public Dimension getSize()
     {
-        return new Dimension( 100, 100 );
+        return new Dimension( size_ );
     }
 }

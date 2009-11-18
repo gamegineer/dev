@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.AbstractCardTestCase;
-import org.gamegineer.table.core.CardDesign;
+import org.gamegineer.table.core.CardDesigns;
 import org.gamegineer.table.core.ICard;
 
 /**
@@ -56,6 +56,6 @@ public final class CardAsCardTest
     @Override
     protected ICard createCard()
     {
-        return new Card( CardDesign.EMPTY, CardDesign.EMPTY );
+        return new Card( CardDesigns.createUniqueCardDesign(), CardDesigns.createUniqueCardDesign() );
     }
 }

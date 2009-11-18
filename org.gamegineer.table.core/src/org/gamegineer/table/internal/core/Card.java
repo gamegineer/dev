@@ -30,10 +30,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.CardDesign;
 import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ICardDesign;
 import org.gamegineer.table.core.ICardListener;
 
 /**
@@ -47,14 +47,11 @@ public final class Card
     // Fields
     // ======================================================================
 
-    /** The size of a card in table coordinates. */
-    private static final Dimension SIZE = new Dimension( 71, 96 );
-
     /** The design on the back of the card. */
-    private final CardDesign backDesign_;
+    private final ICardDesign backDesign_;
 
     /** The design on the face of the card. */
-    private final CardDesign faceDesign_;
+    private final ICardDesign faceDesign_;
 
     /** The collection of card listeners. */
     private final CopyOnWriteArrayList<ICardListener> listeners_;
@@ -83,17 +80,21 @@ public final class Card
      * @param faceDesign
      *        The design on the face of the card; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code backDesign} and {@code faceDesign} do not have the same
+     *         size.
      * @throws java.lang.NullPointerException
      *         If {@code backDesign} or {@code faceDesign} is {@code null}.
      */
     public Card(
         /* @NonNull */
-        final CardDesign backDesign,
+        final ICardDesign backDesign,
         /* @NonNull */
-        final CardDesign faceDesign )
+        final ICardDesign faceDesign )
     {
         assertArgumentNotNull( backDesign, "backDesign" ); //$NON-NLS-1$
         assertArgumentNotNull( faceDesign, "faceDesign" ); //$NON-NLS-1$
+        assertArgumentLegal( faceDesign.getSize().equals( backDesign.getSize() ), "faceDesign", Messages.Card_ctor_faceDesign_sizeNotEqual ); //$NON-NLS-1$
 
         lock_ = new Object();
         backDesign_ = backDesign;
@@ -115,7 +116,7 @@ public final class Card
         final ICardListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.Card_addCardListener_listener_registered ); //$NON-NLS-1$
     }
 
     /**
@@ -172,7 +173,7 @@ public final class Card
     /*
      * @see org.gamegineer.table.core.ICard#getBackDesign()
      */
-    public CardDesign getBackDesign()
+    public ICardDesign getBackDesign()
     {
         return backDesign_;
     }
@@ -184,14 +185,14 @@ public final class Card
     {
         synchronized( lock_ )
         {
-            return new Rectangle( location_, SIZE );
+            return new Rectangle( location_, backDesign_.getSize() );
         }
     }
 
     /*
      * @see org.gamegineer.table.core.ICard#getFaceDesign()
      */
-    public CardDesign getFaceDesign()
+    public ICardDesign getFaceDesign()
     {
         return faceDesign_;
     }
@@ -223,7 +224,7 @@ public final class Card
      */
     public Dimension getSize()
     {
-        return new Dimension( SIZE );
+        return backDesign_.getSize();
     }
 
     /*
@@ -233,7 +234,7 @@ public final class Card
         final ICardListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.Card_removeCardListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /*

@@ -21,7 +21,9 @@
 
 package org.gamegineer.table.internal.core;
 
-import org.gamegineer.table.core.CardDesign;
+import org.gamegineer.table.core.CardDesigns;
+import org.gamegineer.table.core.FakeCardDesign;
+import org.gamegineer.table.core.ICardDesign;
 import org.junit.Test;
 
 /**
@@ -54,7 +56,7 @@ public final class CardTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_BackDesign_Null()
     {
-        new Card( null, CardDesign.EMPTY );
+        new Card( null, CardDesigns.createUniqueCardDesign() );
     }
 
     /**
@@ -64,6 +66,19 @@ public final class CardTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_FaceDesign_Null()
     {
-        new Card( CardDesign.EMPTY, null );
+        new Card( CardDesigns.createUniqueCardDesign(), null );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed a face design
+     * that has a size different from the back design.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testConstructor_FaceDesign_SizeNotEqual()
+    {
+        final ICardDesign backDesign = CardDesigns.createUniqueCardDesign();
+        final ICardDesign faceDesign = new FakeCardDesign( CardDesigns.getUniqueCardDesignId(), 2 * backDesign.getSize().width, 2 * backDesign.getSize().height );
+
+        new Card( backDesign, faceDesign );
     }
 }
