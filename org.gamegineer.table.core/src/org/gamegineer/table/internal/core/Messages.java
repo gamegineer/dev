@@ -52,6 +52,14 @@ final class Messages
      */
     public static String Card_cardOrientationChanged_unexpectedException;
 
+    // --- CardDesign -------------------------------------------------------
+
+    /** The card design height must not be negative. */
+    public static String CardDesign_ctor_height_negative;
+
+    /** The card design width must not be negative. */
+    public static String CardDesign_ctor_width_negative;
+
     // --- Table ------------------------------------------------------------
 
     /** An unexpected exception was thrown from ITableListener.cardAdded(). */
