@@ -29,6 +29,7 @@ import org.gamegineer.table.core.ICardDesign;
  * A service for the management and discovery of card designs.
  * 
  * @noextend This interface is not intended to be extended by clients.
+ * 
  * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface ICardDesignRegistry
