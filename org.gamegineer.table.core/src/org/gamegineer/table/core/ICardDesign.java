@@ -24,7 +24,7 @@ package org.gamegineer.table.core;
 import java.awt.Dimension;
 
 /**
- * The design of a card surface.
+ * A card design.
  * 
  * @noextend This interface is not intended to be extended by clients.
  * 
@@ -37,18 +37,17 @@ public interface ICardDesign
     // ======================================================================
 
     /**
-     * Gets the identifier of this card design.
+     * Gets the card design identifier.
      * 
-     * @return The identifier of this card design; never {@code null}.
+     * @return The card design identifier; never {@code null}.
      */
     /* @NonNull */
     public CardDesignId getId();
 
     /**
-     * Gets the size of this card design in table coordinates.
+     * Gets the card design size in table coordinates.
      * 
-     * @return The size of this card design in table coordinates; never {@code
-     *         null}.
+     * @return The card design size in table coordinates; never {@code null}.
      */
     /* @NonNull */
     public Dimension getSize();
