@@ -1,5 +1,5 @@
 /*
- * FakeCardDesign.java
+ * CardDesignFactory.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,58 +16,69 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 15, 2009 at 12:29:50 AM.
+ * Created on Nov 20, 2009 at 10:12:24 PM.
  */
 
 package org.gamegineer.table.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
-import net.jcip.annotations.Immutable;
+import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.core.CardDesign;
 
 /**
- * Fake implementation of {@link org.gamegineer.table.core.ICardDesign}.
+ * A factory for creating card designs.
  */
-@Immutable
-public class FakeCardDesign
-    implements ICardDesign
+@ThreadSafe
+public final class CardDesignFactory
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The card design identifier. */
-    private final CardDesignId id_;
-
-    /** The card design size in table coordinates. */
-    private final Dimension size_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code FakeCardDesign} class with a
-     * default size.
+     * Initializes a new instance of the {@code CardDesignFactory} class.
+     */
+    private CardDesignFactory()
+    {
+        super();
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Creates a new card design.
      * 
      * @param id
      *        The card design identifier; must not be {@code null}.
+     * @param size
+     *        The card design size in table coordinates; no component may be
+     *        negative.
      * 
+     * @return A new card design; never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If any component of {@code size} is negative.
      * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
+     *         If {@code id} or {@code size} is {@code null}.
      */
-    public FakeCardDesign(
+    /* @NonNull */
+    public static ICardDesign createCardDesign(
         /* @NonNull */
-        final CardDesignId id )
+        final CardDesignId id,
+        /* @NonNull */
+        final Dimension size )
     {
-        this( id, 100, 100 );
+        assertArgumentNotNull( size, "size" ); //$NON-NLS-1$
+
+        return createCardDesign( id, size.width, size.height );
     }
 
     /**
-     * Initializes a new instance of the {@code FakeCardDesign} class with the
-     * specified size.
+     * Creates a new card design.
      * 
      * @param id
      *        The card design identifier; must not be {@code null}.
@@ -76,42 +87,20 @@ public class FakeCardDesign
      * @param height
      *        The card design height in table coordinates; must not be negative.
      * 
+     * @return A new card design; never {@code null}.
+     * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code width} or {@code height} is negative.
      * @throws java.lang.NullPointerException
      *         If {@code id} is {@code null}.
      */
-    public FakeCardDesign(
+    /* @NonNull */
+    public static ICardDesign createCardDesign(
         /* @NonNull */
         final CardDesignId id,
         final int width,
         final int height )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-        assertArgumentLegal( width >= 0, "width" ); //$NON-NLS-1$
-        assertArgumentLegal( height >= 0, "height" ); //$NON-NLS-1$
-
-        id_ = id;
-        size_ = new Dimension( width, height );
-    }
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.core.ICardDesign#getId()
-     */
-    public CardDesignId getId()
-    {
-        return id_;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ICardDesign#getSize()
-     */
-    public Dimension getSize()
-    {
-        return new Dimension( size_ );
+        return new CardDesign( id, width, height );
     }
 }

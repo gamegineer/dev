@@ -58,35 +58,57 @@ public final class CardDesigns
     // ======================================================================
 
     /**
-     * Creates a new card design with the specified identifier.
+     * Clones the specified card design.
      * 
-     * @param id
-     *        The card design identifier; must not be {@code null}.
+     * @param cardDesign
+     *        The card design to clone; must not be {@code null}.
      * 
      * @return A new card design; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
+     *         If {@code cardDesign} is {@code null}.
      */
     /* @NonNull */
-    public static ICardDesign createCardDesign(
+    public static ICardDesign cloneCardDesign(
         /* @NonNull */
-        final CardDesignId id )
+        final ICardDesign cardDesign )
     {
-        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
+        assertArgumentNotNull( cardDesign, "cardDesign" ); //$NON-NLS-1$
 
-        return new FakeCardDesign( id );
+        return CardDesignFactory.createCardDesign( cardDesign.getId(), cardDesign.getSize() );
     }
 
     /**
-     * Creates a new card design with a unique identifier.
+     * Creates a new card design with a unique identifier and a default size.
      * 
      * @return A new card design; never {@code null}.
      */
     /* @NonNull */
     public static ICardDesign createUniqueCardDesign()
     {
-        return createCardDesign( getUniqueCardDesignId() );
+        return createUniqueCardDesign( 100, 100 );
+    }
+
+    /**
+     * Creates a new card design with a unique identifier and the specified
+     * size.
+     * 
+     * @param width
+     *        The card design width in table coordinates; must not be negative.
+     * @param height
+     *        The card design height in table coordinates; must not be negative.
+     * 
+     * @return A new card design; never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code width} or {@code height} is negative.
+     */
+    /* @NonNull */
+    public static ICardDesign createUniqueCardDesign(
+        final int width,
+        final int height )
+    {
+        return CardDesignFactory.createCardDesign( getUniqueCardDesignId(), width, height );
     }
 
     /**
@@ -96,7 +118,7 @@ public final class CardDesigns
      */
     /* @NonNull */
     @SuppressWarnings( "boxing" )
-    public static CardDesignId getUniqueCardDesignId()
+    private static CardDesignId getUniqueCardDesignId()
     {
         return CardDesignId.fromString( String.format( "card-design-%1$d", nextCardDesignId_.incrementAndGet() ) ); //$NON-NLS-1$
     }

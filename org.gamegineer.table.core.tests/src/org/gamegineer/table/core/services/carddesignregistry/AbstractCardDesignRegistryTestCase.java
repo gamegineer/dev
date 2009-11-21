@@ -190,7 +190,7 @@ public abstract class AbstractCardDesignRegistryTestCase
         final int originalCardDesignsSize = cardDesignRegistry_.getCardDesigns().size();
         cardDesignRegistry_.registerCardDesign( cardDesign );
 
-        cardDesignRegistry_.registerCardDesign( CardDesigns.createCardDesign( cardDesign.getId() ) );
+        cardDesignRegistry_.registerCardDesign( CardDesigns.cloneCardDesign( cardDesign ) );
 
         assertTrue( cardDesignRegistry_.getCardDesigns().contains( cardDesign ) );
         assertEquals( originalCardDesignsSize + 1, cardDesignRegistry_.getCardDesigns().size() );
@@ -250,7 +250,7 @@ public abstract class AbstractCardDesignRegistryTestCase
         cardDesignRegistry_.registerCardDesign( cardDesign );
         assertEquals( originalCardDesignsSize + 1, cardDesignRegistry_.getCardDesigns().size() );
 
-        cardDesignRegistry_.unregisterCardDesign( CardDesigns.createCardDesign( cardDesign.getId() ) );
+        cardDesignRegistry_.unregisterCardDesign( CardDesigns.cloneCardDesign( cardDesign ) );
 
         assertEquals( originalCardDesignsSize + 1, cardDesignRegistry_.getCardDesigns().size() );
     }

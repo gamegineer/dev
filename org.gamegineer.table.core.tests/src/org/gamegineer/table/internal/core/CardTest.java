@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.CardDesigns;
-import org.gamegineer.table.core.FakeCardDesign;
 import org.gamegineer.table.core.ICardDesign;
 import org.junit.Test;
 
@@ -76,8 +75,10 @@ public final class CardTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_FaceDesign_SizeNotEqual()
     {
-        final ICardDesign backDesign = CardDesigns.createUniqueCardDesign();
-        final ICardDesign faceDesign = new FakeCardDesign( CardDesigns.getUniqueCardDesignId(), 2 * backDesign.getSize().width, 2 * backDesign.getSize().height );
+        final int width = 10;
+        final int height = 20;
+        final ICardDesign backDesign = CardDesigns.createUniqueCardDesign( width, height );
+        final ICardDesign faceDesign = CardDesigns.createUniqueCardDesign( 2 * width, 2 * height );
 
         new Card( backDesign, faceDesign );
     }

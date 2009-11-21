@@ -74,8 +74,10 @@ public final class CardFactoryTest
     @Test( expected = IllegalArgumentException.class )
     public void testCreateCard_FaceDesign_SizeNotEqual()
     {
-        final ICardDesign backDesign = CardDesigns.createUniqueCardDesign();
-        final ICardDesign faceDesign = new FakeCardDesign( CardDesigns.getUniqueCardDesignId(), 2 * backDesign.getSize().width, 2 * backDesign.getSize().height );
+        final int width = 10;
+        final int height = 20;
+        final ICardDesign backDesign = CardDesigns.createUniqueCardDesign( width, height );
+        final ICardDesign faceDesign = CardDesigns.createUniqueCardDesign( 2 * width, 2 * height );
 
         CardFactory.createCard( backDesign, faceDesign );
     }
