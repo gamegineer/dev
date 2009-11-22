@@ -36,6 +36,9 @@ public final class Activator
     // Fields
     // ======================================================================
 
+    /** The card design user interfaces extension point identifier. */
+    public static final String EXTENSION_CARD_DESIGN_UIS = "cardDesignUIs"; //$NON-NLS-1$
+
     /** The symbolic name of the bundle. */
     public static final String SYMBOLIC_NAME = "org.gamegineer.table.ui"; //$NON-NLS-1$
 
