@@ -32,11 +32,11 @@ import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.gamegineer.common.core.runtime.Platform;
+import org.gamegineer.table.core.CardDesignFactory;
 import org.gamegineer.table.core.CardDesignId;
 import org.gamegineer.table.core.ICardDesign;
 import org.gamegineer.table.core.services.carddesignregistry.ICardDesignRegistry;
 import org.gamegineer.table.internal.core.Activator;
-import org.gamegineer.table.internal.core.CardDesign;
 import org.gamegineer.table.internal.core.Loggers;
 
 /**
@@ -136,18 +136,18 @@ public final class CardDesignRegistry
     private static Collection<ICardDesign> getForeignCardDesigns()
     {
         final Collection<ICardDesign> cardDesigns = new ArrayList<ICardDesign>();
-        for( final IConfigurationElement element : Platform.getExtensionRegistry().getConfigurationElementsFor( Activator.SYMBOLIC_NAME, Activator.EXTENSION_CARD_DESIGNS ) )
+        for( final IConfigurationElement configurationElement : Platform.getExtensionRegistry().getConfigurationElementsFor( Activator.SYMBOLIC_NAME, Activator.EXTENSION_CARD_DESIGNS ) )
         {
             try
             {
-                final CardDesignId id = CardDesignId.fromString( element.getAttribute( ATTR_ID ) );
-                final int width = Integer.parseInt( element.getAttribute( ATTR_WIDTH ) );
-                final int height = Integer.parseInt( element.getAttribute( ATTR_HEIGHT ) );
-                cardDesigns.add( new CardDesign( id, width, height ) );
+                final CardDesignId id = CardDesignId.fromString( configurationElement.getAttribute( ATTR_ID ) );
+                final int width = Integer.parseInt( configurationElement.getAttribute( ATTR_WIDTH ) );
+                final int height = Integer.parseInt( configurationElement.getAttribute( ATTR_HEIGHT ) );
+                cardDesigns.add( CardDesignFactory.createCardDesign( id, width, height ) );
             }
             catch( final NumberFormatException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardDesignRegistry_getForeignCardDesigns_parseError( element.getAttribute( ATTR_ID ) ), e );
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardDesignRegistry_getForeignCardDesigns_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
             }
         }
         return cardDesigns;
