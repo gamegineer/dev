@@ -22,23 +22,29 @@
 package org.gamegineer.table.internal.ui.services.carddesignuiregistry;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import javax.swing.ImageIcon;
+import java.util.logging.Level;
+import javax.swing.Icon;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.Path;
 import org.gamegineer.common.core.runtime.Platform;
 import org.gamegineer.table.core.CardDesignId;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.Loggers;
+import org.gamegineer.table.internal.ui.Services;
+import org.gamegineer.table.internal.ui.util.swing.IconProxy;
 import org.gamegineer.table.ui.CardDesignUIFactory;
 import org.gamegineer.table.ui.ICardDesignUI;
 import org.gamegineer.table.ui.services.carddesignuiregistry.ICardDesignUIRegistry;
+import org.osgi.framework.Bundle;
 
 /**
  * Implementation of
@@ -85,6 +91,59 @@ public final class CardDesignUIRegistry
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates a new card design user interface from the specified configuration
+     * element.
+     * 
+     * @param configurationElement
+     *        The configuration element; must not be {@code null}.
+     * 
+     * @return A new card design user interface; never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If the configuration element represents an illegal card design
+     *         user interface.
+     */
+    /* @NonNull */
+    private static ICardDesignUI createCardDesignUI(
+        /* @NonNull */
+        final IConfigurationElement configurationElement )
+    {
+        assert configurationElement != null;
+
+        final String idString = configurationElement.getAttribute( ATTR_ID );
+        if( idString == null )
+        {
+            throw new IllegalArgumentException( Messages.CardDesignUIRegistry_createCardDesignUI_missingId );
+        }
+        final CardDesignId id = CardDesignId.fromString( idString );
+
+        final String name = configurationElement.getAttribute( ATTR_NAME );
+        if( name == null )
+        {
+            throw new IllegalArgumentException( Messages.CardDesignUIRegistry_createCardDesignUI_missingName );
+        }
+
+        final String iconPath = configurationElement.getAttribute( ATTR_ICON );
+        if( iconPath == null )
+        {
+            throw new IllegalArgumentException( Messages.CardDesignUIRegistry_createCardDesignUI_missingIconPath );
+        }
+        final Bundle[] bundles = Services.getDefault().getPackageAdministrationService().getBundles( configurationElement.getNamespaceIdentifier(), null );
+        if( (bundles == null) || (bundles.length == 0) )
+        {
+            throw new IllegalArgumentException( Messages.CardDesignUIRegistry_createCardDesignUI_iconBundleNotFound( configurationElement.getNamespaceIdentifier() ) );
+        }
+        final URL iconUrl = FileLocator.find( bundles[ 0 ], new Path( iconPath ), null );
+        if( iconUrl == null )
+        {
+            throw new IllegalArgumentException( Messages.CardDesignUIRegistry_createCardDesignUI_iconFileNotFound( bundles[ 0 ], iconPath ) );
+        }
+        final Icon icon = new IconProxy( iconUrl );
+
+        return CardDesignUIFactory.createCardDesignUI( id, name, icon );
+    }
 
     /*
      * @see org.gamegineer.table.ui.services.carddesignuiregistry.ICardDesignUIRegistry#getCardDesignUI(org.gamegineer.table.core.CardDesignId)
@@ -142,11 +201,14 @@ public final class CardDesignUIRegistry
         final Collection<ICardDesignUI> cardDesignUIs = new ArrayList<ICardDesignUI>();
         for( final IConfigurationElement configurationElement : Platform.getExtensionRegistry().getConfigurationElementsFor( Activator.SYMBOLIC_NAME, Activator.EXTENSION_CARD_DESIGN_UIS ) )
         {
-            // TODO: add proxy so we don't have to load image immediately
-            final CardDesignId id = CardDesignId.fromString( configurationElement.getAttribute( ATTR_ID ) );
-            final String name = configurationElement.getAttribute( ATTR_NAME );
-            final String iconPath = configurationElement.getAttribute( ATTR_ICON );
-            cardDesignUIs.add( CardDesignUIFactory.createCardDesignUI( id, name, new ImageIcon( new BufferedImage( 100, 100, BufferedImage.TYPE_BYTE_GRAY ) ) ) );
+            try
+            {
+                cardDesignUIs.add( createCardDesignUI( configurationElement ) );
+            }
+            catch( final IllegalArgumentException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardDesignUIRegistry_getForeignCardDesignUIs_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
+            }
         }
         return cardDesignUIs;
     }

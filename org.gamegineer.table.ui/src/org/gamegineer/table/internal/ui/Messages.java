@@ -38,6 +38,11 @@ final class Messages
     /** The name of the associated resource bundle. */
     private static final String BUNDLE_NAME = "org.gamegineer.table.internal.ui.Messages"; //$NON-NLS-1$
 
+    // --- Services ---------------------------------------------------------
+
+    /** The package administration service tracker is not set. */
+    public static String Services_packageAdminServiceTracker_notSet;
+
     // --- TableRunner ------------------------------------------------------
 
     /** The frame window could not be opened. */

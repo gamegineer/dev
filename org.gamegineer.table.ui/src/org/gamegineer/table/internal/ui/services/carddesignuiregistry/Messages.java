@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui.services.carddesignuiregistry;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.core.CardDesignId;
+import org.osgi.framework.Bundle;
 
 /**
  * A utility class to manage localized messages for the package.
@@ -41,8 +42,29 @@ final class Messages
 
     // --- CardDesignUIRegistry ---------------------------------------------
 
+    /** The bundle hosting the card design icon was not found. */
+    public static String CardDesignUIRegistry_createCardDesignUI_iconBundleNotFound;
+
+    /** The card design icon file was not found. */
+    public static String CardDesignUIRegistry_createCardDesignUI_iconFileNotFound;
+
+    /** The card design icon path is missing. */
+    public static String CardDesignUIRegistry_createCardDesignUI_missingIconPath;
+
+    /** The card design identifier is missing. */
+    public static String CardDesignUIRegistry_createCardDesignUI_missingId;
+
+    /** The card design name is missing. */
+    public static String CardDesignUIRegistry_createCardDesignUI_missingName;
+
     /** A duplicate card design identifier was detected. */
     public static String CardDesignUIRegistry_getCardDesignUIMap_duplicateId;
+
+    /**
+     * An error occurred while parsing the card design user interface
+     * definition.
+     */
+    public static String CardDesignUIRegistry_getForeignCardDesignUIs_parseError;
 
 
     // ======================================================================
@@ -73,6 +95,48 @@ final class Messages
     // --- CardDesignUIRegistry ---------------------------------------------
 
     /**
+     * Gets the formatted message indicating the bundle hosting the card design
+     * icon file was not found.
+     * 
+     * @param name
+     *        The bundle name; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the bundle hosting the card
+     *         design icon file was not found; never {@code null}.
+     */
+    /* @NonNull */
+    static String CardDesignUIRegistry_createCardDesignUI_iconBundleNotFound(
+        /* @NonNull */
+        final String name )
+    {
+        return bind( CardDesignUIRegistry_createCardDesignUI_iconBundleNotFound, name );
+    }
+
+    /**
+     * Gets the formatted message indicating the card design icon file was not
+     * found.
+     * 
+     * @param bundle
+     *        The bundle hosting the card design icon file; must not be {@code
+     *        null}.
+     * @param path
+     *        The bundle path of the card design icon file; must not be {@code
+     *        null}.
+     * 
+     * @return The formatted message indicating the card design icon file was
+     *         not found; never {@code null}.
+     */
+    /* @NonNull */
+    static String CardDesignUIRegistry_createCardDesignUI_iconFileNotFound(
+        /* @NonNull */
+        final Bundle bundle,
+        /* @NonNull */
+        final String path )
+    {
+        return bind( CardDesignUIRegistry_createCardDesignUI_iconFileNotFound, bundle.getSymbolicName(), path );
+    }
+
+    /**
      * Gets the formatted message indicating a duplicate card design identifier
      * was detected.
      * 
@@ -88,5 +152,23 @@ final class Messages
         final CardDesignId cardDesignId )
     {
         return bind( CardDesignUIRegistry_getCardDesignUIMap_duplicateId, cardDesignId );
+    }
+
+    /**
+     * Gets the formatted message indicating an error occurred while parsing the
+     * card design user interface definition.
+     * 
+     * @param cardDesignId
+     *        The card design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while parsing
+     *         the card design user interface definition; never {@code null}.
+     */
+    /* @NonNull */
+    static String CardDesignUIRegistry_getForeignCardDesignUIs_parseError(
+        /* @NonNull */
+        final String cardDesignId )
+    {
+        return bind( CardDesignUIRegistry_getForeignCardDesignUIs_parseError, cardDesignId );
     }
 }

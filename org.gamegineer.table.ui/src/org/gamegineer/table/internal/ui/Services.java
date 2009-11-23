@@ -22,8 +22,11 @@
 package org.gamegineer.table.internal.ui;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import net.jcip.annotations.ThreadSafe;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.packageadmin.PackageAdmin;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * Manages the OSGi services used by the bundle.
@@ -41,6 +44,9 @@ public final class Services
 
     /** The singleton instance. */
     private static final Services instance_ = new Services();
+
+    /** The package administration service tracker. */
+    private ServiceTracker packageAdminServiceTracker_;
 
 
     // ======================================================================
@@ -68,6 +74,11 @@ public final class Services
         // Unregister package-specific adapters
 
         // Close bundle-specific services
+        if( packageAdminServiceTracker_ != null )
+        {
+            packageAdminServiceTracker_.close();
+            packageAdminServiceTracker_ = null;
+        }
 
         // Unregister package-specific services
 
@@ -84,6 +95,23 @@ public final class Services
     public static Services getDefault()
     {
         return instance_;
+    }
+
+    /**
+     * Gets the package administration service managed by this object.
+     * 
+     * @return The package administration service managed by this object; never
+     *         {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If this object is not open.
+     */
+    /* @NonNull */
+    public PackageAdmin getPackageAdministrationService()
+    {
+        assertStateLegal( packageAdminServiceTracker_ != null, Messages.Services_packageAdminServiceTracker_notSet );
+
+        return (PackageAdmin)packageAdminServiceTracker_.getService();
     }
 
     /**
@@ -106,6 +134,8 @@ public final class Services
         // Register package-specific services
 
         // Open bundle-specific services
+        packageAdminServiceTracker_ = new ServiceTracker( context, PackageAdmin.class.getName(), null );
+        packageAdminServiceTracker_.open();
 
         // Register package-specific adapters
     }
