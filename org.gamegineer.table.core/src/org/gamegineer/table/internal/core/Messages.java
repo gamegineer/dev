@@ -69,6 +69,11 @@ final class Messages
     /** The card design width must not be negative. */
     public static String CardDesign_ctor_width_negative;
 
+    // --- Services ---------------------------------------------------------
+
+    /** The card design registry service tracker is not set. */
+    public static String Services_cardDesignRegistryServiceTracker_notSet;
+
     // --- Table ------------------------------------------------------------
 
     /** The table listener is already registered. */

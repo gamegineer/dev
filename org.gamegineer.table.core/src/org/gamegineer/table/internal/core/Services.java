@@ -22,8 +22,13 @@
 package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.services.carddesignregistry.ICardDesignRegistry;
+import org.gamegineer.table.internal.core.services.carddesignregistry.CardDesignRegistry;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * Manages the OSGi services used by the bundle.
@@ -41,6 +46,12 @@ public final class Services
 
     /** The singleton instance. */
     private static final Services instance_ = new Services();
+
+    /** The card design registry service registration token. */
+    private ServiceRegistration cardDesignRegistryServiceRegistration_;
+
+    /** The card design registry service tracker. */
+    private ServiceTracker cardDesignRegistryServiceTracker_;
 
 
     // ======================================================================
@@ -68,10 +79,37 @@ public final class Services
         // Unregister package-specific adapters
 
         // Close bundle-specific services
+        if( cardDesignRegistryServiceTracker_ != null )
+        {
+            cardDesignRegistryServiceTracker_.close();
+            cardDesignRegistryServiceTracker_ = null;
+        }
 
         // Unregister package-specific services
 
         // Unregister bundle-specific services
+        if( cardDesignRegistryServiceRegistration_ != null )
+        {
+            cardDesignRegistryServiceRegistration_.unregister();
+            cardDesignRegistryServiceRegistration_ = null;
+        }
+    }
+
+    /**
+     * Gets the card design registry service managed by this object.
+     * 
+     * @return The card design registry service managed by this object; never
+     *         {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If this object is not open.
+     */
+    /* @NonNull */
+    public ICardDesignRegistry getCardDesignRegistry()
+    {
+        assertStateLegal( cardDesignRegistryServiceTracker_ != null, Messages.Services_cardDesignRegistryServiceTracker_notSet );
+
+        return (ICardDesignRegistry)cardDesignRegistryServiceTracker_.getService();
     }
 
     /**
@@ -102,10 +140,13 @@ public final class Services
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
         // Register bundle-specific services
+        cardDesignRegistryServiceRegistration_ = context.registerService( ICardDesignRegistry.class.getName(), new CardDesignRegistry(), null );
 
         // Register package-specific services
 
         // Open bundle-specific services
+        cardDesignRegistryServiceTracker_ = new ServiceTracker( context, cardDesignRegistryServiceRegistration_.getReference(), null );
+        cardDesignRegistryServiceTracker_.open();
 
         // Register package-specific adapters
     }

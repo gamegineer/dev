@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 /**
@@ -45,6 +46,17 @@ public final class ServicesTest
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Ensures the {@code getCardDesignRegistry} method does not return {@code
+     * null}, which validates the card design registry service was registered
+     * with OSGi correctly.
+     */
+    @Test
+    public void testGetCardDesignRegistry_ReturnValue_NonNull()
+    {
+        assertNotNull( Services.getDefault().getCardDesignRegistry() );
+    }
 
     /**
      * Ensures the {@code open} method throws an exception when passed a {@code
