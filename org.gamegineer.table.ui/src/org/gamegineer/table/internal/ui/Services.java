@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.services.carddesignregistry.ICardDesignRegistry;
 import org.gamegineer.table.internal.ui.services.carddesignuiregistry.CardDesignUIRegistry;
 import org.gamegineer.table.ui.services.carddesignuiregistry.ICardDesignUIRegistry;
 import org.osgi.framework.BundleContext;
@@ -47,6 +48,9 @@ public final class Services
 
     /** The singleton instance. */
     private static final Services instance_ = new Services();
+
+    /** The card design registry service tracker. */
+    private ServiceTracker cardDesignRegistryServiceTracker_;
 
     /** The card design user interface registry service registration token. */
     private ServiceRegistration cardDesignUIRegistryServiceRegistration_;
@@ -93,6 +97,11 @@ public final class Services
             cardDesignUIRegistryServiceTracker_.close();
             cardDesignUIRegistryServiceTracker_ = null;
         }
+        if( cardDesignRegistryServiceTracker_ != null )
+        {
+            cardDesignRegistryServiceTracker_.close();
+            cardDesignRegistryServiceTracker_ = null;
+        }
 
         // Unregister package-specific services
 
@@ -102,6 +111,23 @@ public final class Services
             cardDesignUIRegistryServiceRegistration_.unregister();
             cardDesignUIRegistryServiceRegistration_ = null;
         }
+    }
+
+    /**
+     * Gets the card design registry service managed by this object.
+     * 
+     * @return The card design registry service managed by this object; never
+     *         {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If this object is not open.
+     */
+    /* @NonNull */
+    public ICardDesignRegistry getCardDesignRegistry()
+    {
+        assertStateLegal( cardDesignRegistryServiceTracker_ != null, Messages.Services_cardDesignRegistryServiceTracker_notSet );
+
+        return (ICardDesignRegistry)cardDesignRegistryServiceTracker_.getService();
     }
 
     /**
@@ -172,6 +198,8 @@ public final class Services
         // Register package-specific services
 
         // Open bundle-specific services
+        cardDesignRegistryServiceTracker_ = new ServiceTracker( context, ICardDesignRegistry.class.getName(), null );
+        cardDesignRegistryServiceTracker_.open();
         cardDesignUIRegistryServiceTracker_ = new ServiceTracker( context, cardDesignUIRegistryServiceRegistration_.getReference(), null );
         cardDesignUIRegistryServiceTracker_.open();
         packageAdminServiceTracker_ = new ServiceTracker( context, PackageAdmin.class.getName(), null );
