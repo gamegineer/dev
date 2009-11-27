@@ -24,7 +24,10 @@ package org.gamegineer.table.internal.ui.view;
 import org.gamegineer.table.core.AbstractCardListenerTestCase;
 import org.gamegineer.table.core.CardDesigns;
 import org.gamegineer.table.core.CardFactory;
+import org.gamegineer.table.core.ICardDesign;
 import org.gamegineer.table.core.ICardListener;
+import org.gamegineer.table.ui.CardDesignUIs;
+import org.gamegineer.table.ui.ICardDesignUI;
 
 /**
  * A fixture for testing the
@@ -59,6 +62,10 @@ public final class CardViewAsCardListenerTest
     @Override
     protected ICardListener createCardListener()
     {
-        return new CardView( CardFactory.createCard( CardDesigns.createUniqueCardDesign(), CardDesigns.createUniqueCardDesign() ) );
+        final ICardDesign backDesign = CardDesigns.createUniqueCardDesign();
+        final ICardDesignUI backDesignUI = CardDesignUIs.createCardDesignUI( backDesign );
+        final ICardDesign faceDesign = CardDesigns.createUniqueCardDesign();
+        final ICardDesignUI faceDesignUI = CardDesignUIs.createCardDesignUI( faceDesign );
+        return new CardView( CardFactory.createCard( backDesign, faceDesign ), backDesignUI, faceDesignUI );
     }
 }

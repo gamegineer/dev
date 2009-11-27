@@ -22,8 +22,7 @@
 package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.awt.Color;
-import javax.swing.BorderFactory;
+import java.awt.Graphics;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
@@ -31,6 +30,7 @@ import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardListener;
+import org.gamegineer.table.ui.ICardDesignUI;
 
 /**
  * A view of a card.
@@ -47,8 +47,14 @@ final class CardView
     /** Serializable class version number. */
     private static final long serialVersionUID = 3436102069399598192L;
 
+    /** The card design user interface for the card back. */
+    private final ICardDesignUI backDesignUI_;
+
     /** The card associated with this view. */
     private final ICard card_;
+
+    /** The card design user interface for the card face. */
+    private final ICardDesignUI faceDesignUI_;
 
 
     // ======================================================================
@@ -60,14 +66,28 @@ final class CardView
      * 
      * @param card
      *        The card associated with this view; must not be {@code null}.
+     * @param backDesignUI
+     *        The card design user interface for the card back; must not be
+     *        {@code null}.
+     * @param faceDesignUI
+     *        The card design user interface for the card face; must not be
+     *        {@code null}.
      */
     CardView(
         /* @NonNull */
-        final ICard card )
+        final ICard card,
+        /* @NonNull */
+        final ICardDesignUI backDesignUI,
+        /* @NonNull */
+        final ICardDesignUI faceDesignUI )
     {
         assert card != null;
+        assert backDesignUI != null;
+        assert faceDesignUI != null;
 
         card_ = card;
+        backDesignUI_ = backDesignUI;
+        faceDesignUI_ = faceDesignUI;
 
         initializeComponent();
     }
@@ -116,12 +136,22 @@ final class CardView
 
         SwingUtilities.invokeLater( new Runnable()
         {
-            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                updateComponent();
+                repaint();
             }
         } );
+    }
+
+    /**
+     * Gets the active card design user interface.
+     * 
+     * @return The active card design user interface; never {@code null}.
+     */
+    /* @NonNull */
+    private ICardDesignUI getActiveCardDesignUI()
+    {
+        return (card_.getOrientation() == CardOrientation.BACK_UP) ? backDesignUI_ : faceDesignUI_;
     }
 
     /**
@@ -129,11 +159,20 @@ final class CardView
      */
     private void initializeComponent()
     {
-        setOpaque( true );
-        setBorder( BorderFactory.createLineBorder( Color.BLACK ) );
+        setOpaque( false );
         setSize( card_.getSize() );
 
         updateComponent();
+    }
+
+    /*
+     * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+     */
+    @Override
+    protected void paintComponent(
+        final Graphics g )
+    {
+        getActiveCardDesignUI().getIcon().paintIcon( this, g, 0, 0 );
     }
 
     /*
@@ -152,7 +191,6 @@ final class CardView
      */
     private void updateComponent()
     {
-        setBackground( (card_.getOrientation() == CardOrientation.FACE_UP) ? Color.RED : Color.BLUE );
         setLocation( card_.getLocation() );
     }
 }

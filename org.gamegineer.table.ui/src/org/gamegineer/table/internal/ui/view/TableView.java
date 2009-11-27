@@ -38,14 +38,15 @@ import javax.swing.event.MouseInputListener;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.table.core.CardChangeEvent;
-import org.gamegineer.table.core.CardDesignFactory;
 import org.gamegineer.table.core.CardDesignId;
 import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardDesign;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
+import org.gamegineer.table.internal.ui.Services;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
+import org.gamegineer.table.ui.ICardDesignUI;
 
 /**
  * A view of the table.
@@ -109,8 +110,9 @@ final class TableView
      */
     private void addCard()
     {
-        final ICardDesign emptyCardDesign = CardDesignFactory.createCardDesign( CardDesignId.fromString( "empty" ), 71, 96 ); //$NON-NLS-1$
-        table_.addCard( CardFactory.createCard( emptyCardDesign, emptyCardDesign ) );
+        final ICardDesign backDesign = Services.getDefault().getCardDesignRegistry().getCardDesign( CardDesignId.fromString( "org.gamegineer.cards.back.thatch" ) ); //$NON-NLS-1$ );
+        final ICardDesign faceDesign = Services.getDefault().getCardDesignRegistry().getCardDesign( CardDesignId.fromString( "org.gamegineer.cards.spades.ace" ) ); //$NON-NLS-1$
+        table_.addCard( CardFactory.createCard( backDesign, faceDesign ) );
     }
 
     /*
@@ -215,7 +217,9 @@ final class TableView
     {
         assert card != null;
 
-        final CardView view = new CardView( card );
+        final ICardDesignUI backDesignUI = Services.getDefault().getCardDesignUIRegistry().getCardDesignUI( card.getBackDesign().getId() );
+        final ICardDesignUI faceDesignUI = Services.getDefault().getCardDesignUIRegistry().getCardDesignUI( card.getFaceDesign().getId() );
+        final CardView view = new CardView( card, backDesignUI, faceDesignUI );
         cardViews_.put( card, view );
         add( view );
         repaint( view.getBounds() );

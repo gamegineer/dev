@@ -74,6 +74,27 @@ public final class CardDesignUIs
     }
 
     /**
+     * Creates a new card design user interface for the specified card design.
+     * 
+     * @param cardDesign
+     *        The card design; must not be {@code null}.
+     * 
+     * @return A new card design user interface; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code cardDesign} is {@code null}.
+     */
+    /* @NonNull */
+    public static ICardDesignUI createCardDesignUI(
+        /* @NonNull */
+        final ICardDesign cardDesign )
+    {
+        assertArgumentNotNull( cardDesign, "cardDesign" ); //$NON-NLS-1$
+
+        return CardDesignUIFactory.createCardDesignUI( cardDesign.getId(), cardDesign.getId().toString(), createDummy( Icon.class ) );
+    }
+
+    /**
      * Creates a new card design user interface with a unique identifier.
      * 
      * @return A new card design user interface; never {@code null}.
@@ -81,7 +102,6 @@ public final class CardDesignUIs
     /* @NonNull */
     public static ICardDesignUI createUniqueCardDesignUI()
     {
-        final ICardDesign cardDesign = CardDesigns.createUniqueCardDesign();
-        return CardDesignUIFactory.createCardDesignUI( cardDesign.getId(), cardDesign.getId().toString(), createDummy( Icon.class ) );
+        return createCardDesignUI( CardDesigns.createUniqueCardDesign() );
     }
 }

@@ -7,4 +7,16 @@
             name="Card Design User Interfaces"
             schema="schema/cardDesignUIs.exsd" />
 
+    <extension
+            point="org.gamegineer.table.ui.cardDesignUIs">
+        <cardDesignUI
+                icon="icons/cards/back-thatch.png"
+                id="org.gamegineer.cards.back.thatch"
+                name="%card.back.thatch.name" />
+        <cardDesignUI
+                icon="icons/cards/spades-ace.png"
+                id="org.gamegineer.cards.spades.ace"
+                name="%card.spades.ace.name" />
+    </extension>
+
 </plugin>

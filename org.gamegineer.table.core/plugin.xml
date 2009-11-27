@@ -7,4 +7,16 @@
             name="Card Designs"
             schema="schema/cardDesigns.exsd" />
 
+    <extension
+            point="org.gamegineer.table.core.cardDesigns">
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.back.thatch"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.spades.ace"
+                width="71" />
+    </extension>
+
 </plugin>
