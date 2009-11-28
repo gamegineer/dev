@@ -15,7 +15,215 @@
                 width="71" />
         <cardDesign
                 height="96"
+                id="org.gamegineer.cards.joker"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.clubs.ace"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.clubs.two"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.clubs.three"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.clubs.four"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.clubs.five"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.clubs.six"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.clubs.seven"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.clubs.eight"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.clubs.nine"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.clubs.ten"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.clubs.jack"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.clubs.queen"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.clubs.king"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.diamonds.ace"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.diamonds.two"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.diamonds.three"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.diamonds.four"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.diamonds.five"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.diamonds.six"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.diamonds.seven"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.diamonds.eight"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.diamonds.nine"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.diamonds.ten"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.diamonds.jack"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.diamonds.queen"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.diamonds.king"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.hearts.ace"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.hearts.two"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.hearts.three"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.hearts.four"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.hearts.five"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.hearts.six"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.hearts.seven"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.hearts.eight"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.hearts.nine"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.hearts.ten"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.hearts.jack"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.hearts.queen"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.hearts.king"
+                width="71" />
+        <cardDesign
+                height="96"
                 id="org.gamegineer.cards.spades.ace"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.spades.two"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.spades.three"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.spades.four"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.spades.five"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.spades.six"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.spades.seven"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.spades.eight"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.spades.nine"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.spades.ten"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.spades.jack"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.spades.queen"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.spades.king"
                 width="71" />
     </extension>
 
