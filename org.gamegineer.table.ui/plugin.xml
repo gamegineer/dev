@@ -14,10 +14,6 @@
                 id="org.gamegineer.cards.back.thatch"
                 name="%card.back.thatch.name" />
         <cardDesignUI
-                icon="icons/cards/joker.png"
-                id="org.gamegineer.cards.joker"
-                name="%card.joker.name" />
-        <cardDesignUI
                 icon="icons/cards/clubs-ace.png"
                 id="org.gamegineer.cards.clubs.ace"
                 name="%card.clubs.ace.name" />
@@ -225,6 +221,10 @@
                 icon="icons/cards/spades-king.png"
                 id="org.gamegineer.cards.spades.king"
                 name="%card.spades.king.name" />
+        <cardDesignUI
+                icon="icons/cards/special-joker.png"
+                id="org.gamegineer.cards.special.joker"
+                name="%card.special.joker.name" />
     </extension>
 
 </plugin>

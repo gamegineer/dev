@@ -107,11 +107,19 @@ final class TableView
 
     /**
      * Adds a new card to the table.
+     * 
+     * @param faceDesignId
+     *        The identifier of the design on the card face; must not be {@code
+     *        null}.
      */
-    private void addCard()
+    private void addCard(
+        /* @NonNull */
+        final CardDesignId faceDesignId )
     {
+        assert faceDesignId != null;
+
         final ICardDesign backDesign = Services.getDefault().getCardDesignRegistry().getCardDesign( CardDesignId.fromString( "org.gamegineer.cards.back.thatch" ) ); //$NON-NLS-1$ );
-        final ICardDesign faceDesign = Services.getDefault().getCardDesignRegistry().getCardDesign( CardDesignId.fromString( "org.gamegineer.cards.spades.ace" ) ); //$NON-NLS-1$
+        final ICardDesign faceDesign = Services.getDefault().getCardDesignRegistry().getCardDesign( faceDesignId );
         table_.addCard( CardFactory.createCard( backDesign, faceDesign ) );
     }
 
@@ -134,16 +142,68 @@ final class TableView
      */
     private void bindActions()
     {
-        actionMediator_.bind( Actions.getAddCardAction(), new ActionListener()
+        final ActionListener addCardActionListener = new ActionListener()
         {
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final ActionEvent e )
             {
-                addCard();
+                addCard( CardDesignId.fromString( e.getActionCommand() ) );
             }
-        } );
+        };
+        actionMediator_.bind( Actions.getAddAceOfClubsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddAceOfDiamondsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddAceOfHeartsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddAceOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddEightOfClubsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddEightOfDiamondsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddEightOfHeartsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddEightOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddFiveOfClubsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddFiveOfDiamondsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddFiveOfHeartsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddFiveOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddFourOfClubsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddFourOfDiamondsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddFourOfHeartsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddFourOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddJackOfClubsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddJackOfDiamondsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddJackOfHeartsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddJackOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddJokerCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddKingOfClubsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddKingOfDiamondsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddKingOfHeartsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddKingOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddNineOfClubsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddNineOfDiamondsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddNineOfHeartsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddNineOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddQueenOfClubsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddQueenOfDiamondsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddQueenOfHeartsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddQueenOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddSevenOfClubsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddSevenOfDiamondsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddSevenOfHeartsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddSevenOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddSixOfClubsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddSixOfDiamondsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddSixOfHeartsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddSixOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddTenOfClubsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddTenOfDiamondsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddTenOfHeartsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddTenOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddThreeOfClubsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddThreeOfDiamondsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddThreeOfHeartsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddThreeOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddTwoOfClubsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddTwoOfDiamondsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddTwoOfHeartsCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddTwoOfSpadesCardAction(), addCardActionListener );
         actionMediator_.bind( Actions.getFlipCardAction(), new ActionListener()
         {
             @SuppressWarnings( "synthetic-access" )

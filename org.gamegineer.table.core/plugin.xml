@@ -15,10 +15,6 @@
                 width="71" />
         <cardDesign
                 height="96"
-                id="org.gamegineer.cards.joker"
-                width="71" />
-        <cardDesign
-                height="96"
                 id="org.gamegineer.cards.clubs.ace"
                 width="71" />
         <cardDesign
@@ -224,6 +220,10 @@
         <cardDesign
                 height="96"
                 id="org.gamegineer.cards.spades.king"
+                width="71" />
+        <cardDesign
+                height="96"
+                id="org.gamegineer.cards.special.joker"
                 width="71" />
     </extension>
 
