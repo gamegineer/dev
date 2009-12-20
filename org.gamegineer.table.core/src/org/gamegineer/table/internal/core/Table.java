@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -154,6 +155,28 @@ public final class Table
                 Loggers.DEFAULT.log( Level.SEVERE, Messages.Table_cardRemoved_unexpectedException, e );
             }
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITable#getCard(java.awt.Point)
+     */
+    public ICard getCard(
+        final Point location )
+    {
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            for( final ICard card : cards_ )
+            {
+                if( card.getBounds().contains( location ) )
+                {
+                    return card;
+                }
+            }
+        }
+
+        return null;
     }
 
     /*

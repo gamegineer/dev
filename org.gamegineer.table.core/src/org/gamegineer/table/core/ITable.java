@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core;
 
+import java.awt.Point;
 import java.util.Collection;
 
 /**
@@ -67,6 +68,29 @@ public interface ITable
     public void addTableListener(
         /* @NonNull */
         ITableListener listener );
+
+    /**
+     * Gets the card at the specified location.
+     * 
+     * <p>
+     * Note that the returned card may have been moved by the time this method
+     * returns to the caller. Therefore, callers should not cache the results of
+     * this method for an extended period of time.
+     * </p>
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * 
+     * @return The card at the specified location or {@code null} if no card is
+     *         at that location.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code location} is {@code null}.
+     */
+    /* @Nullable */
+    public ICard getCard(
+        /* @NonNull */
+        Point location );
 
     /**
      * Gets the collection of cards on this table.

@@ -24,7 +24,10 @@ package org.gamegineer.table.core;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import java.awt.Point;
 import java.util.Collection;
 import org.junit.After;
 import org.junit.Before;
@@ -215,6 +218,43 @@ public abstract class AbstractTableTestCase
         table_.addTableListener( listener );
 
         table_.addTableListener( listener );
+    }
+
+    /**
+     * Ensures the {@code getCard} method returns {@code null} when a card is
+     * absent at the specified location.
+     */
+    @Test
+    public void testGetCard_Location_CardAbsent()
+    {
+        assertNull( table_.getCard( new Point( 0, 0 ) ) );
+    }
+
+    /**
+     * Ensures the {@code getCard} method returns the appropriate card when a
+     * card is present at the specified location.
+     */
+    @Test
+    public void testGetCard_Location_CardPresent()
+    {
+        final ICard expectedCard = createCard();
+        final Point location = new Point( 7, 42 );
+        expectedCard.setLocation( location );
+        table_.addCard( expectedCard );
+
+        final ICard actualCard = table_.getCard( location );
+
+        assertSame( expectedCard, actualCard );
+    }
+
+    /**
+     * Ensures the {@code getCard} method throws an exception when passed a
+     * {@code null} location.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetCard_Location_Null()
+    {
+        table_.getCard( null );
     }
 
     /**
