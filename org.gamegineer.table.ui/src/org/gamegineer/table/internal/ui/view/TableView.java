@@ -28,10 +28,13 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import javax.swing.Action;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
@@ -69,6 +72,12 @@ final class TableView
     /** The collection of card views. */
     private final Map<ICard, CardView> cardViews_;
 
+    /** The current mouse input handler. */
+    private AbstractMouseInputHandler mouseInputHandler_;
+
+    /** The collection of mouse input handler singletons. */
+    private final Map<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler> mouseInputHandlers_;
+
     /** The mouse input listener for this view. */
     private final MouseInputListener mouseInputListener_;
 
@@ -94,7 +103,9 @@ final class TableView
 
         actionMediator_ = new ActionMediator();
         cardViews_ = new IdentityHashMap<ICard, CardView>();
-        mouseInputListener_ = new MouseInputHandler();
+        mouseInputHandlers_ = createMouseInputHandlers();
+        mouseInputHandler_ = mouseInputHandlers_.get( DefaultMouseInputHandler.class );
+        mouseInputListener_ = createMouseInputListener();
         table_ = table;
 
         initializeComponent();
@@ -328,6 +339,57 @@ final class TableView
     }
 
     /**
+     * Creates the collection of mouse input handler singletons for the view.
+     * 
+     * @return The collection of mouse input handler singletons for the view;
+     *         never {@code null}.
+     */
+    /* @NonNull */
+    private Map<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler> createMouseInputHandlers()
+    {
+        final Map<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler> mouseInputHandlers = new HashMap<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler>();
+        mouseInputHandlers.put( DefaultMouseInputHandler.class, new DefaultMouseInputHandler() );
+        mouseInputHandlers.put( DraggingMouseInputHandler.class, new DraggingMouseInputHandler() );
+        return mouseInputHandlers;
+    }
+
+    /**
+     * Create the mouse input listener for the view.
+     * 
+     * @return The mouse input listener for the view; never {@code null}.
+     */
+    /* @NonNull */
+    private MouseInputListener createMouseInputListener()
+    {
+        return new MouseInputAdapter()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void mouseDragged(
+                final MouseEvent e )
+            {
+                mouseInputHandler_.mouseDragged( e );
+            }
+
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void mousePressed(
+                final MouseEvent e )
+            {
+                mouseInputHandler_.mousePressed( e );
+            }
+
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void mouseReleased(
+                final MouseEvent e )
+            {
+                mouseInputHandler_.mouseReleased( e );
+            }
+        };
+    }
+
+    /**
      * Flips the most recently added card on the table.
      */
     private void flipCard()
@@ -375,22 +437,182 @@ final class TableView
         super.removeNotify();
     }
 
+    /**
+     * Sets the current mouse input handler
+     * 
+     * @param handlerClass
+     *        The class of the mouse input handler to activate; must not be
+     *        {@code null}.
+     * @param e
+     *        The mouse event that triggered activation of the mouse input
+     *        handler; must not be {@code null}.
+     */
+    private void setMouseInputHandler(
+        /* @NonNUll */
+        final Class<? extends AbstractMouseInputHandler> handlerClass,
+        /* @NonNull */
+        final MouseEvent e )
+    {
+        assert handlerClass != null;
+        assert e != null;
+
+        mouseInputHandler_.deactivate();
+        mouseInputHandler_ = mouseInputHandlers_.get( handlerClass );
+        assert mouseInputHandler_ != null;
+        mouseInputHandler_.activate( e );
+    }
+
+    /**
+     * Shows a context-sensitive popup menu at the specified location.
+     * 
+     * @param location
+     *        The popup menu location; must not be {@code null}.
+     */
+    private void showPopupMenu(
+        /* @NonNull */
+        final Point location )
+    {
+        assert location != null;
+
+        final ICard card = table_.getCard( location );
+        if( card != null )
+        {
+            final JPopupMenu menu = new JPopupMenu();
+            menu.add( new JMenuItem( "Test" ) ); //$NON-NLS-1$
+            menu.show( this, location.x, location.y );
+        }
+    }
+
 
     // ======================================================================
     // Nested Classes
     // ======================================================================
 
     /**
-     * The mouse input handler for the table view.
+     * Superclass for all mouse input handlers.
+     * 
+     * <p>
+     * Instances of this class represent the State participant of the State
+     * pattern.
+     * </p>
      */
-    private final class MouseInputHandler
+    private abstract class AbstractMouseInputHandler
         extends MouseInputAdapter
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code AbstractMouseInputHandler}
+         * class.
+         */
+        protected AbstractMouseInputHandler()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Activates this handler.
+         * 
+         * @param e
+         *        The mouse event that triggered activation of this handler;
+         *        must not be {@code null}.
+         */
+        void activate(
+            /* @NonNull */
+            final MouseEvent e )
+        {
+            assert e != null;
+
+            // default implementation does nothing
+        }
+
+        /**
+         * Deactivates this handler.
+         */
+        void deactivate()
+        {
+            // default implementation does nothing
+        }
+    }
+
+    /**
+     * The default mouse input handler.
+     */
+    private final class DefaultMouseInputHandler
+        extends AbstractMouseInputHandler
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code DefaultMouseInputHandler}
+         * class.
+         */
+        DefaultMouseInputHandler()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void mousePressed(
+            final MouseEvent e )
+        {
+            if( e.isPopupTrigger() )
+            {
+                showPopupMenu( e.getPoint() );
+            }
+            else if( e.getButton() == MouseEvent.BUTTON1 )
+            {
+                if( table_.getCard( e.getPoint() ) != null )
+                {
+                    setMouseInputHandler( DraggingMouseInputHandler.class, e );
+                }
+            }
+        }
+
+        /*
+         * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void mouseReleased(
+            final MouseEvent e )
+        {
+            if( e.isPopupTrigger() )
+            {
+                showPopupMenu( e.getPoint() );
+            }
+        }
+    }
+
+    /**
+     * The mouse input handler that is active when a card is being dragged.
+     */
+    private final class DraggingMouseInputHandler
+        extends AbstractMouseInputHandler
     {
         // ==================================================================
         // Fields
         // ==================================================================
 
-        /** The card being dragged or {@code null} if no card is being dragged. */
+        /** The card being dragged. */
         private ICard draggedCard_;
 
         /** The offset between the mouse pointer and the dragged card location. */
@@ -402,11 +624,11 @@ final class TableView
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code MouseInputListener} class.
+         * Initializes a new instance of the {@code DraggingMouseInputHandler}
+         * class.
          */
-        MouseInputHandler()
+        DraggingMouseInputHandler()
         {
-            draggedCard_ = null;
             draggedCardLocationOffset_ = new Dimension( 0, 0 );
         }
 
@@ -416,53 +638,62 @@ final class TableView
         // ==================================================================
 
         /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        void activate(
+            final MouseEvent e )
+        {
+            assert e != null;
+
+            final Point mouseLocation = e.getPoint();
+            draggedCard_ = table_.getCard( mouseLocation );
+            if( draggedCard_ != null )
+            {
+                final Point cardLocation = draggedCard_.getLocation();
+                draggedCardLocationOffset_.setSize( cardLocation.x - mouseLocation.x, cardLocation.y - mouseLocation.y );
+            }
+            else
+            {
+                setMouseInputHandler( DefaultMouseInputHandler.class, e );
+            }
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#deactivate()
+         */
+        @Override
+        void deactivate()
+        {
+            draggedCard_ = null;
+            draggedCardLocationOffset_.setSize( 0, 0 );
+        }
+
+        /*
          * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
          */
         @Override
         public void mouseDragged(
             final MouseEvent e )
         {
-            if( draggedCard_ != null )
-            {
-                final Point location = e.getPoint();
-                location.translate( draggedCardLocationOffset_.width, draggedCardLocationOffset_.height );
-                draggedCard_.setLocation( location );
-            }
-        }
-
-        /*
-         * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void mousePressed(
-            final MouseEvent e )
-        {
-            assert draggedCard_ == null;
-
-            final Point mouseLocation = e.getPoint();
-            for( final ICard card : cardViews_.keySet() )
-            {
-                if( card.getBounds().contains( mouseLocation ) )
-                {
-                    final Point cardLocation = card.getLocation();
-                    draggedCard_ = card;
-                    draggedCardLocationOffset_.setSize( cardLocation.x - mouseLocation.x, cardLocation.y - mouseLocation.y );
-                    break;
-                }
-            }
+            final Point location = e.getPoint();
+            location.translate( draggedCardLocationOffset_.width, draggedCardLocationOffset_.height );
+            draggedCard_.setLocation( location );
         }
 
         /*
          * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
          */
         @Override
+        @SuppressWarnings( "synthetic-access" )
         public void mouseReleased(
-            @SuppressWarnings( "unused" )
             final MouseEvent e )
         {
-            draggedCard_ = null;
-            draggedCardLocationOffset_.setSize( 0, 0 );
+            if( e.getButton() == MouseEvent.BUTTON1 )
+            {
+                setMouseInputHandler( DefaultMouseInputHandler.class, e );
+            }
         }
     }
 }
