@@ -21,10 +21,15 @@
 
 package org.gamegineer.table.internal.ui.view;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import java.awt.Rectangle;
+import javax.swing.DebugGraphics;
 import org.gamegineer.table.core.CardDesigns;
 import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardDesign;
+import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.ui.CardDesignUIs;
 import org.gamegineer.table.ui.ICardDesignUI;
 import org.junit.After;
@@ -49,6 +54,9 @@ public final class CardViewTest
 
     /** A card for use in the test fixture. */
     private ICard card_;
+
+    /** The card view under test in the fixture. */
+    private CardView cardView_;
 
     /**
      * The card design user interface for the card face for use in the test
@@ -89,6 +97,7 @@ public final class CardViewTest
         final ICardDesign faceDesign = CardDesigns.createUniqueCardDesign();
         faceDesignUI_ = CardDesignUIs.createCardDesignUI( faceDesign );
         card_ = CardFactory.createCard( backDesign, faceDesign );
+        cardView_ = new CardView( card_, backDesignUI_, faceDesignUI_ );
     }
 
     /**
@@ -104,6 +113,7 @@ public final class CardViewTest
         backDesignUI_ = null;
         faceDesignUI_ = null;
         card_ = null;
+        cardView_ = null;
     }
 
     /**
@@ -134,5 +144,82 @@ public final class CardViewTest
     public void testConstructor_FaceDesignUI_Null()
     {
         new CardView( card_, backDesignUI_, null );
+    }
+
+    /**
+     * Ensures the {@code getBounds} method returns a copy of the bounds.
+     */
+    @Test
+    public void testGetBounds_ReturnValue_Copy()
+    {
+        final Rectangle bounds = cardView_.getBounds();
+        final Rectangle expectedBounds = new Rectangle( bounds );
+
+        bounds.setBounds( 1010, 2020, 101, 202 );
+
+        assertEquals( expectedBounds, cardView_.getBounds() );
+
+    }
+
+    /**
+     * Ensures the {@code getBounds} method does not return {@code null}.
+     */
+    @Test
+    public void testGetBounds_ReturnValue_NonNull()
+    {
+        assertNotNull( cardView_.getBounds() );
+    }
+
+    /**
+     * Ensures the {@code initialize} method throws an exception when the card
+     * view is already initialized.
+     */
+    @Test( expected = AssertionError.class )
+    public void testInitialize_Initialized()
+    {
+        final TableView tableView = new TableView( TableFactory.createTable() );
+        cardView_.initialize( tableView );
+
+        cardView_.initialize( tableView );
+    }
+
+    /**
+     * Ensures the {@code initialize} method throws an exception when passed a
+     * {@code null} table view.
+     */
+    @Test( expected = AssertionError.class )
+    public void testInitialize_TableView_Null()
+    {
+        cardView_.initialize( null );
+    }
+
+    /**
+     * Ensures the {@code initialize} method throws an exception when passed a
+     * {@code null} graphics context.
+     */
+    @Test( expected = AssertionError.class )
+    public void testPaint_Graphics_Null()
+    {
+        cardView_.paint( null );
+    }
+
+    /**
+     * Ensures the {@code paint} method throws an exception when the card view
+     * is uninitialized.
+     */
+    @Test( expected = AssertionError.class )
+    public void testPaint_Uninitialized()
+    {
+        cardView_.paint( new DebugGraphics() );
+    }
+
+    /**
+     * Ensures the {@code uninitialize} method throws an exception when the card
+     * view is uninitialized.
+     */
+    @Test( expected = AssertionError.class )
+    public void testUninitialize_Uninitialized()
+    {
+        cardView_.uninitialize();
     }
 }

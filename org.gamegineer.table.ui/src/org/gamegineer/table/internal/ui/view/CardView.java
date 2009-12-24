@@ -23,7 +23,8 @@ package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Graphics;
-import javax.swing.JPanel;
+import java.awt.Point;
+import java.awt.Rectangle;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardEvent;
@@ -37,15 +38,11 @@ import org.gamegineer.table.ui.ICardDesignUI;
  */
 @NotThreadSafe
 final class CardView
-    extends JPanel
     implements ICardListener
 {
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /** Serializable class version number. */
-    private static final long serialVersionUID = 3436102069399598192L;
 
     /** The card design user interface for the card back. */
     private final ICardDesignUI backDesignUI_;
@@ -53,8 +50,14 @@ final class CardView
     /** The card associated with this view. */
     private final ICard card_;
 
+    /** The current bounds of the card in table coordinates. */
+    private Rectangle cardBounds_;
+
     /** The card design user interface for the card face. */
     private final ICardDesignUI faceDesignUI_;
+
+    /** The table view that owns this view. */
+    private TableView tableView_;
 
 
     // ======================================================================
@@ -88,25 +91,13 @@ final class CardView
         card_ = card;
         backDesignUI_ = backDesignUI;
         faceDesignUI_ = faceDesignUI;
-
-        initializeComponent();
+        cardBounds_ = card_.getBounds();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see javax.swing.JComponent#addNotify()
-     */
-    @Override
-    public void addNotify()
-    {
-        super.addNotify();
-
-        card_.addCardListener( this );
-    }
 
     /*
      * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
@@ -121,9 +112,23 @@ final class CardView
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                updateComponent();
+                cardLocationChanged();
             }
         } );
+    }
+
+    /**
+     * Invoked after the card location has changed.
+     */
+    private void cardLocationChanged()
+    {
+        // TODO: Instead of storing card bounds, we should modify the
+        // cardLocationChanged event to include the old and new location
+        // information.
+
+        final Rectangle newCardBounds = card_.getBounds();
+        tableView_.repaint( newCardBounds.union( cardBounds_ ) );
+        cardBounds_ = newCardBounds;
     }
 
     /*
@@ -136,11 +141,20 @@ final class CardView
 
         SwingUtilities.invokeLater( new Runnable()
         {
+            @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                repaint();
+                cardOrientationChanged();
             }
         } );
+    }
+
+    /**
+     * Invoked after the card orientation has changed.
+     */
+    private void cardOrientationChanged()
+    {
+        tableView_.repaint( card_.getBounds() );
     }
 
     /**
@@ -155,42 +169,70 @@ final class CardView
     }
 
     /**
-     * Initializes this component.
+     * Gets the bounds of this view in table coordinates.
+     * 
+     * @return The bounds of this view in table coordinates; never {@code null}.
      */
-    private void initializeComponent()
+    /* @NonNull */
+    Rectangle getBounds()
     {
-        setOpaque( false );
-        setSize( card_.getSize() );
-
-        updateComponent();
-    }
-
-    /*
-     * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
-     */
-    @Override
-    protected void paintComponent(
-        final Graphics g )
-    {
-        getActiveCardDesignUI().getIcon().paintIcon( this, g, 0, 0 );
-    }
-
-    /*
-     * @see javax.swing.JComponent#removeNotify()
-     */
-    @Override
-    public void removeNotify()
-    {
-        card_.removeCardListener( this );
-
-        super.removeNotify();
+        return card_.getBounds();
     }
 
     /**
-     * Updates this component.
+     * Initializes this view.
+     * 
+     * <p>
+     * This method must only be called when the view is uninitialized.
+     * </p>
+     * 
+     * @param tableView
+     *        The table view that owns this view; must not be {@code null}.
      */
-    private void updateComponent()
+    void initialize(
+        /* @NonNull */
+        final TableView tableView )
     {
-        setLocation( card_.getLocation() );
+        assert tableView != null;
+        assert tableView_ == null;
+
+        tableView_ = tableView;
+        card_.addCardListener( this );
+    }
+
+    /**
+     * Paints this view.
+     * 
+     * <p>
+     * This method must only be called after the view is initialized.
+     * </p>
+     * 
+     * @param g
+     *        The graphics context in which to paint; must not be {@code null}.
+     */
+    void paint(
+        /* @NonNull */
+        final Graphics g )
+    {
+        assert g != null;
+        assert tableView_ != null;
+
+        final Point location = card_.getLocation();
+        getActiveCardDesignUI().getIcon().paintIcon( tableView_, g, location.x, location.y );
+    }
+
+    /**
+     * Uninitializes this view.
+     * 
+     * <p>
+     * This method must only be called after the view is initialized.
+     * </p>
+     */
+    void uninitialize()
+    {
+        assert tableView_ != null;
+
+        card_.removeCardListener( this );
+        tableView_ = null;
     }
 }

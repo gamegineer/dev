@@ -24,7 +24,9 @@ package org.gamegineer.table.internal.ui.view;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -248,7 +250,7 @@ final class TableView
         final ICardDesignUI faceDesignUI = Services.getDefault().getCardDesignUIRegistry().getCardDesignUI( card.getFaceDesign().getId() );
         final CardView view = new CardView( card, backDesignUI, faceDesignUI );
         cardViews_.put( card, view );
-        add( view );
+        view.initialize( this );
         repaint( view.getBounds() );
 
         actionMediator_.updateAll();
@@ -287,8 +289,8 @@ final class TableView
         final CardView view = cardViews_.remove( card );
         if( view != null )
         {
-            remove( view );
             repaint( view.getBounds() );
+            view.uninitialize();
         }
 
         actionMediator_.updateAll();
@@ -353,6 +355,30 @@ final class TableView
         setLayout( null );
         setOpaque( true );
         setBackground( new Color( 0, 128, 0 ) );
+    }
+
+    /*
+     * @see javax.swing.JComponent#paintChildren(java.awt.Graphics)
+     */
+    @Override
+    protected void paintChildren(
+        final Graphics g )
+    {
+        super.paintChildren( g );
+
+        final Rectangle clipBounds = g.getClipBounds();
+
+        for( final ICard card : table_.getCards() )
+        {
+            final CardView view = cardViews_.get( card );
+            if( view != null )
+            {
+                if( clipBounds.intersects( view.getBounds() ) )
+                {
+                    view.paint( g );
+                }
+            }
+        }
     }
 
     /*
