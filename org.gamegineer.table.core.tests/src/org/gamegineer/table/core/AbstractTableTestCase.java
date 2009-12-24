@@ -231,14 +231,34 @@ public abstract class AbstractTableTestCase
     }
 
     /**
-     * Ensures the {@code getCard} method returns the appropriate card when a
-     * card is present at the specified location.
+     * Ensures the {@code getCard} method returns the most recently added card
+     * when multiple cards are present at the specified location.
      */
     @Test
-    public void testGetCard_Location_CardPresent()
+    public void testGetCard_Location_MultipleCardsPresent()
     {
-        final ICard expectedCard = createCard();
         final Point location = new Point( 7, 42 );
+        final ICard initialCard = createCard();
+        initialCard.setLocation( location );
+        table_.addCard( initialCard );
+        final ICard expectedCard = createCard();
+        expectedCard.setLocation( location );
+        table_.addCard( expectedCard );
+
+        final ICard actualCard = table_.getCard( location );
+
+        assertSame( expectedCard, actualCard );
+    }
+
+    /**
+     * Ensures the {@code getCard} method returns the appropriate card when a
+     * single card is present at the specified location.
+     */
+    @Test
+    public void testGetCard_Location_SingleCardPresent()
+    {
+        final Point location = new Point( 7, 42 );
+        final ICard expectedCard = createCard();
         expectedCard.setLocation( location );
         table_.addCard( expectedCard );
 

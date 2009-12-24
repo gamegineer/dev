@@ -25,7 +25,8 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
@@ -48,7 +49,7 @@ public final class Table
 
     /** The collection of cards on this table. */
     @GuardedBy( "lock_ " )
-    private final Collection<ICard> cards_;
+    private final List<ICard> cards_;
 
     /** The collection of table listeners. */
     private final CopyOnWriteArrayList<ITableListener> listeners_;
@@ -167,8 +168,9 @@ public final class Table
 
         synchronized( lock_ )
         {
-            for( final ICard card : cards_ )
+            for( final ListIterator<ICard> iterator = cards_.listIterator( cards_.size() ); iterator.hasPrevious(); )
             {
+                final ICard card = iterator.previous();
                 if( card.getBounds().contains( location ) )
                 {
                     return card;
@@ -182,7 +184,7 @@ public final class Table
     /*
      * @see org.gamegineer.table.core.ITable#getCards()
      */
-    public Collection<ICard> getCards()
+    public List<ICard> getCards()
     {
         synchronized( lock_ )
         {

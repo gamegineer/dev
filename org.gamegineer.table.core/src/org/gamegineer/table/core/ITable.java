@@ -22,7 +22,7 @@
 package org.gamegineer.table.core;
 
 import java.awt.Point;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * A virtual game table.
@@ -73,6 +73,11 @@ public interface ITable
      * Gets the card at the specified location.
      * 
      * <p>
+     * If two or more cards occupy the specified location, the card most
+     * recently added to the table will be returned.
+     * </p>
+     * 
+     * <p>
      * Note that the returned card may have been moved by the time this method
      * returns to the caller. Therefore, callers should not cache the results of
      * this method for an extended period of time.
@@ -95,10 +100,12 @@ public interface ITable
     /**
      * Gets the collection of cards on this table.
      * 
-     * @return The collection of cards on this table; never {@code null}.
+     * @return The collection of cards on this table; never {@code null}. The
+     *         cards are returned in the order they were added to the table from
+     *         oldest to newest.
      */
     /* @NonNull */
-    public Collection<ICard> getCards();
+    public List<ICard> getCards();
 
     /**
      * Removes the specified card from this table.
