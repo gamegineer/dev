@@ -71,6 +71,9 @@ final class TableView
     /** The collection of card views. */
     private final Map<ICard, CardView> cardViews_;
 
+    /** The focused card or {@code null} if no card has the focus. */
+    private ICard focusedCard_;
+
     /** The current mouse input handler. */
     private AbstractMouseInputHandler mouseInputHandler_;
 
@@ -102,6 +105,7 @@ final class TableView
 
         actionMediator_ = new ActionMediator();
         cardViews_ = new IdentityHashMap<ICard, CardView>();
+        focusedCard_ = null;
         mouseInputHandlers_ = createMouseInputHandlers();
         mouseInputHandler_ = mouseInputHandlers_.get( DefaultMouseInputHandler.class );
         mouseInputListener_ = createMouseInputListener();
@@ -331,6 +335,14 @@ final class TableView
 
             @Override
             @SuppressWarnings( "synthetic-access" )
+            public void mouseMoved(
+                final MouseEvent e )
+            {
+                mouseInputHandler_.mouseMoved( e );
+            }
+
+            @Override
+            @SuppressWarnings( "synthetic-access" )
             public void mousePressed(
                 final MouseEvent e )
             {
@@ -522,6 +534,39 @@ final class TableView
         // ==================================================================
         // Methods
         // ==================================================================
+
+        /*
+         * @see java.awt.event.MouseAdapter#mouseMoved(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void mouseMoved(
+            final MouseEvent e )
+        {
+            final ICard card = table_.getCard( e.getPoint() );
+            if( card != focusedCard_ )
+            {
+                if( focusedCard_ != null )
+                {
+                    final CardView cardView = cardViews_.get( focusedCard_ );
+                    if( cardView != null )
+                    {
+                        cardView.setFocused( false );
+                    }
+                }
+
+                focusedCard_ = card;
+
+                if( card != null )
+                {
+                    final CardView cardView = cardViews_.get( card );
+                    if( cardView != null )
+                    {
+                        cardView.setFocused( true );
+                    }
+                }
+            }
+        }
 
         /*
          * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)

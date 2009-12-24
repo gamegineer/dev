@@ -214,6 +214,16 @@ public final class CardViewTest
     }
 
     /**
+     * Ensures the {@code setFocused} method throws an exception when the card
+     * view is uninitialized.
+     */
+    @Test( expected = AssertionError.class )
+    public void testSetFocused_Uninitialized()
+    {
+        cardView_.setFocused( true );
+    }
+
+    /**
      * Ensures the {@code uninitialize} method throws an exception when the card
      * view is uninitialized.
      */

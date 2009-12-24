@@ -22,8 +22,8 @@
 package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.Rectangle;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
@@ -47,14 +47,17 @@ final class CardView
     /** The card design user interface for the card back. */
     private final ICardDesignUI backDesignUI_;
 
+    /** The current bounds of this view in table coordinates. */
+    private Rectangle bounds_;
+
     /** The card associated with this view. */
     private final ICard card_;
 
-    /** The current bounds of the card in table coordinates. */
-    private Rectangle cardBounds_;
-
     /** The card design user interface for the card face. */
     private final ICardDesignUI faceDesignUI_;
+
+    /** Indicates the card associated with this view has the focus. */
+    private boolean isFocused_;
 
     /** The table view that owns this view. */
     private TableView tableView_;
@@ -88,10 +91,12 @@ final class CardView
         assert backDesignUI != null;
         assert faceDesignUI != null;
 
+        bounds_ = null;
         card_ = card;
         backDesignUI_ = backDesignUI;
         faceDesignUI_ = faceDesignUI;
-        cardBounds_ = card_.getBounds();
+        isFocused_ = false;
+        tableView_ = null;
     }
 
 
@@ -126,9 +131,9 @@ final class CardView
         // cardLocationChanged event to include the old and new location
         // information.
 
-        final Rectangle newCardBounds = card_.getBounds();
-        tableView_.repaint( newCardBounds.union( cardBounds_ ) );
-        cardBounds_ = newCardBounds;
+        final Rectangle newBounds = getBounds();
+        tableView_.repaint( newBounds.union( bounds_ ) );
+        bounds_ = newBounds;
     }
 
     /*
@@ -154,7 +159,7 @@ final class CardView
      */
     private void cardOrientationChanged()
     {
-        tableView_.repaint( card_.getBounds() );
+        tableView_.repaint( getBounds() );
     }
 
     /**
@@ -176,7 +181,9 @@ final class CardView
     /* @NonNull */
     Rectangle getBounds()
     {
-        return card_.getBounds();
+        final Rectangle bounds = card_.getBounds();
+        bounds.grow( 2, 2 );
+        return bounds;
     }
 
     /**
@@ -197,6 +204,7 @@ final class CardView
         assert tableView_ == null;
 
         tableView_ = tableView;
+        bounds_ = getBounds();
         card_.addCardListener( this );
     }
 
@@ -217,8 +225,38 @@ final class CardView
         assert g != null;
         assert tableView_ != null;
 
-        final Point location = card_.getLocation();
-        getActiveCardDesignUI().getIcon().paintIcon( tableView_, g, location.x, location.y );
+        final Rectangle cardBounds = card_.getBounds();
+        getActiveCardDesignUI().getIcon().paintIcon( tableView_, g, cardBounds.x, cardBounds.y );
+
+        if( isFocused_ )
+        {
+            final Rectangle viewBounds = getBounds();
+            final Color oldColor = g.getColor();
+            g.setColor( Color.GREEN );
+            g.drawRect( viewBounds.x, viewBounds.y, viewBounds.width - 1, viewBounds.height - 1 );
+            g.setColor( oldColor );
+        }
+    }
+
+    /**
+     * Sets a flag that indicates the card associated with this view has the
+     * focus.
+     * 
+     * <p>
+     * This method must only be called after the view is initialized.
+     * </p>
+     * 
+     * @param isFocused
+     *        {@code true} if the card associated with this view has the focus;
+     *        otherwise {@code false}.
+     */
+    void setFocused(
+        final boolean isFocused )
+    {
+        assert tableView_ != null;
+
+        isFocused_ = isFocused;
+        tableView_.repaint( getBounds() );
     }
 
     /**
