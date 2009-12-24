@@ -535,7 +535,7 @@ final class TableView
             {
                 showPopupMenu( e.getPoint() );
             }
-            else if( e.getButton() == MouseEvent.BUTTON1 )
+            else if( SwingUtilities.isLeftMouseButton( e ) )
             {
                 if( table_.getCard( e.getPoint() ) != null )
                 {
@@ -647,7 +647,7 @@ final class TableView
         public void mouseReleased(
             final MouseEvent e )
         {
-            if( e.getButton() == MouseEvent.BUTTON1 )
+            if( SwingUtilities.isLeftMouseButton( e ) )
             {
                 setMouseInputHandler( DefaultMouseInputHandler.class, e );
             }
