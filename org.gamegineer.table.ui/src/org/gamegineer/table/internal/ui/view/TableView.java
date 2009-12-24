@@ -31,15 +31,12 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
-import javax.swing.Action;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.table.core.CardChangeEvent;
 import org.gamegineer.table.core.CardDesignId;
 import org.gamegineer.table.core.CardFactory;
@@ -215,47 +212,6 @@ final class TableView
         actionMediator_.bind( Actions.getAddTwoOfDiamondsCardAction(), addCardActionListener );
         actionMediator_.bind( Actions.getAddTwoOfHeartsCardAction(), addCardActionListener );
         actionMediator_.bind( Actions.getAddTwoOfSpadesCardAction(), addCardActionListener );
-        actionMediator_.bind( Actions.getFlipCardAction(), new ActionListener()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void actionPerformed(
-                @SuppressWarnings( "unused" )
-                final ActionEvent e )
-            {
-                flipCard();
-            }
-        } );
-        actionMediator_.bind( Actions.getRemoveCardAction(), new ActionListener()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void actionPerformed(
-                @SuppressWarnings( "unused" )
-                final ActionEvent e )
-            {
-                removeCard();
-            }
-        } );
-
-        actionMediator_.bind( Actions.getFlipCardAction(), new IPredicate<Action>()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public boolean evaluate(
-                @SuppressWarnings( "unused" )
-                final Action obj )
-            {
-                return !table_.getCards().isEmpty();
-            }
-        } );
-        actionMediator_.bind( Actions.getRemoveCardAction(), new IPredicate<Action>()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public boolean evaluate(
-                @SuppressWarnings( "unused" )
-                final Action obj )
-            {
-                return !table_.getCards().isEmpty();
-            }
-        } );
     }
 
     /*
@@ -390,18 +346,6 @@ final class TableView
     }
 
     /**
-     * Flips the most recently added card on the table.
-     */
-    private void flipCard()
-    {
-        final ICard[] cards = table_.getCards().toArray( new ICard[ 0 ] );
-        if( cards.length > 0 )
-        {
-            cards[ cards.length - 1 ].flip();
-        }
-    }
-
-    /**
      * Initializes this component.
      */
     private void initializeComponent()
@@ -409,18 +353,6 @@ final class TableView
         setLayout( null );
         setOpaque( true );
         setBackground( new Color( 0, 128, 0 ) );
-    }
-
-    /**
-     * Removes the most recently added card from the table.
-     */
-    private void removeCard()
-    {
-        final ICard[] cards = table_.getCards().toArray( new ICard[ 0 ] );
-        if( cards.length > 0 )
-        {
-            table_.removeCard( cards[ cards.length - 1 ] );
-        }
     }
 
     /*
@@ -477,8 +409,7 @@ final class TableView
         final ICard card = table_.getCard( location );
         if( card != null )
         {
-            final JPopupMenu menu = new JPopupMenu();
-            menu.add( new JMenuItem( "Test" ) ); //$NON-NLS-1$
+            final JPopupMenu menu = new CardPopupMenu( table_, card );
             menu.show( this, location.x, location.y );
         }
     }
