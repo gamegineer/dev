@@ -354,7 +354,7 @@ public abstract class AbstractCardTestCase
      * the {@code cardLocationChanged} method of a card listener.
      */
     @Test
-    public void testSetCardLocation_CatchesListenerException()
+    public void testSetLocation_CatchesListenerException()
     {
         final MockCardListener listener1 = new MockCardListener()
         {
