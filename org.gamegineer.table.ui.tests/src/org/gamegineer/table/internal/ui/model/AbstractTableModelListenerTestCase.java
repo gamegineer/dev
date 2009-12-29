@@ -1,5 +1,5 @@
 /*
- * MainModelTest.java
+ * AbstractTableModelListenerTestCase.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 6, 2009 at 11:57:40 PM.
+ * Created on Dec 28, 2009 at 9:12:03 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
-import org.gamegineer.table.ui.TableAdvisor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.MainModel} class.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.internal.ui.model.ITableModelListener} interface.
  */
-public final class MainModelTest
+public abstract class AbstractTableModelListenerTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The main model under test in the fixture. */
-    private MainModel model_;
+    /** The table model listener under test in the fixture. */
+    private ITableModelListener listener_;
 
 
     // ======================================================================
@@ -46,9 +45,10 @@ public final class MainModelTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MainModelTest} class.
+     * Initializes a new instance of the {@code
+     * AbstractTableModelListenerTestCase} class.
      */
-    public MainModelTest()
+    protected AbstractTableModelListenerTestCase()
     {
         super();
     }
@@ -57,6 +57,18 @@ public final class MainModelTest
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates the table model listener to be tested.
+     * 
+     * @return The table model listener to be tested; never {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    /* @NonNull */
+    protected abstract ITableModelListener createTableModelListener()
+        throws Exception;
 
     /**
      * Sets up the test fixture.
@@ -68,7 +80,8 @@ public final class MainModelTest
     public void setUp()
         throws Exception
     {
-        model_ = new MainModel( new TableAdvisor() );
+        listener_ = createTableModelListener();
+        assertNotNull( listener_ );
     }
 
     /**
@@ -81,34 +94,16 @@ public final class MainModelTest
     public void tearDown()
         throws Exception
     {
-        model_ = null;
+        listener_ = null;
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * table advisor.
+     * Ensures the {@code cardFocusChanged} method throws an exception when
+     * passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_Advisor_Null()
+    public void testCardFocusChanged_Event_Null()
     {
-        new MainModel( null );
-    }
-
-    /**
-     * Ensures the {@code getTableModel} method does not return {@code null}.
-     */
-    @Test
-    public void testGetTableModel_ReturnValue_NonNull()
-    {
-        assertNotNull( model_.getTableModel() );
-    }
-
-    /**
-     * Ensures the {@code getVersion} method does not return {@code null}.
-     */
-    @Test
-    public void testGetVersion_ReturnValue_NonNull()
-    {
-        assertNotNull( model_.getVersion() );
+        listener_.cardFocusChanged( null );
     }
 }

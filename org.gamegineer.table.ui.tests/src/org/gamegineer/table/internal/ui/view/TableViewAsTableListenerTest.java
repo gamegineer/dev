@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui.view;
 import org.gamegineer.table.core.AbstractTableListenerTestCase;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.internal.ui.model.TableModel;
 
 /**
  * A fixture for testing the
@@ -58,6 +59,6 @@ public final class TableViewAsTableListenerTest
     @Override
     protected ITableListener createTableListener()
     {
-        return new TableView( TableFactory.createTable() );
+        return new TableView( new TableModel( TableFactory.createTable() ) );
     }
 }

@@ -1,5 +1,5 @@
 /*
- * TableViewTest.java
+ * TableViewAsTableModelListenerTest.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,27 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 7, 2009 at 12:00:24 AM.
+ * Created on Dec 28, 2009 at 9:59:19 PM.
  */
 
 package org.gamegineer.table.internal.ui.view;
 
-import org.junit.Test;
+import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.internal.ui.model.AbstractTableModelListenerTestCase;
+import org.gamegineer.table.internal.ui.model.ITableModelListener;
+import org.gamegineer.table.internal.ui.model.TableModel;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.view.TableView} class.
+ * {@link org.gamegineer.table.internal.ui.view.TableView} class to ensure it
+ * does not violate the contract of the
+ * {@link org.gamegineer.table.internal.ui.model.ITableModelListener} interface.
  */
-public final class TableViewTest
+public final class TableViewAsTableModelListenerTest
+    extends AbstractTableModelListenerTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableViewTest} class.
+     * Initializes a new instance of the {@code
+     * TableViewAsTableModelListenerTest} class.
      */
-    public TableViewTest()
+    public TableViewAsTableModelListenerTest()
     {
         super();
     }
@@ -46,13 +53,12 @@ public final class TableViewTest
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * model.
+    /*
+     * @see org.gamegineer.table.internal.ui.model.AbstractTableModelListenerTestCase#createTableModelListener()
      */
-    @Test( expected = AssertionError.class )
-    public void testConstructor_Model_Null()
+    @Override
+    protected ITableModelListener createTableModelListener()
     {
-        new TableView( null );
+        return new TableView( new TableModel( TableFactory.createTable() ) );
     }
 }

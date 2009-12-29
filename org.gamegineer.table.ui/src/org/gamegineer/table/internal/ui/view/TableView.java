@@ -44,10 +44,12 @@ import org.gamegineer.table.core.CardDesignId;
 import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardDesign;
-import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.internal.ui.Services;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
+import org.gamegineer.table.internal.ui.model.ITableModelListener;
+import org.gamegineer.table.internal.ui.model.TableModel;
+import org.gamegineer.table.internal.ui.model.TableModelEvent;
 import org.gamegineer.table.ui.ICardDesignUI;
 
 /**
@@ -56,7 +58,7 @@ import org.gamegineer.table.ui.ICardDesignUI;
 @NotThreadSafe
 final class TableView
     extends JPanel
-    implements ITableListener
+    implements ITableListener, ITableModelListener
 {
     // ======================================================================
     // Fields
@@ -71,8 +73,8 @@ final class TableView
     /** The collection of card views. */
     private final Map<ICard, CardView> cardViews_;
 
-    /** The focused card or {@code null} if no card has the focus. */
-    private ICard focusedCard_;
+    /** The model associated with this view. */
+    private final TableModel model_;
 
     /** The current mouse input handler. */
     private AbstractMouseInputHandler mouseInputHandler_;
@@ -83,9 +85,6 @@ final class TableView
     /** The mouse input listener for this view. */
     private final MouseInputListener mouseInputListener_;
 
-    /** The table associated with this view. */
-    private final ITable table_;
-
 
     // ======================================================================
     // Constructors
@@ -94,22 +93,21 @@ final class TableView
     /**
      * Initializes a new instance of the {@code TableView} class.
      * 
-     * @param table
-     *        The table associated with this view; must not be {@code null}.
+     * @param model
+     *        The model associated with this view; must not be {@code null}.
      */
     TableView(
         /* @NonNull */
-        final ITable table )
+        final TableModel model )
     {
-        assert table != null;
+        assert model != null;
 
         actionMediator_ = new ActionMediator();
         cardViews_ = new IdentityHashMap<ICard, CardView>();
-        focusedCard_ = null;
+        model_ = model;
         mouseInputHandlers_ = createMouseInputHandlers();
         mouseInputHandler_ = mouseInputHandlers_.get( DefaultMouseInputHandler.class );
         mouseInputListener_ = createMouseInputListener();
-        table_ = table;
 
         initializeComponent();
     }
@@ -134,7 +132,8 @@ final class TableView
 
         final ICardDesign backDesign = Services.getDefault().getCardDesignRegistry().getCardDesign( CardDesignId.fromString( "org.gamegineer.cards.back.thatch" ) ); //$NON-NLS-1$ );
         final ICardDesign faceDesign = Services.getDefault().getCardDesignRegistry().getCardDesign( faceDesignId );
-        table_.addCard( CardFactory.createCard( backDesign, faceDesign ) );
+        final ICard card = CardFactory.createCard( backDesign, faceDesign );
+        model_.getTable().addCard( card );
     }
 
     /*
@@ -146,7 +145,8 @@ final class TableView
         super.addNotify();
 
         bindActions();
-        table_.addTableListener( this );
+        model_.addTableModelListener( this );
+        model_.getTable().addTableListener( this );
         addMouseListener( mouseInputListener_ );
         addMouseMotionListener( mouseInputListener_ );
     }
@@ -252,12 +252,38 @@ final class TableView
 
         final ICardDesignUI backDesignUI = Services.getDefault().getCardDesignUIRegistry().getCardDesignUI( card.getBackDesign().getId() );
         final ICardDesignUI faceDesignUI = Services.getDefault().getCardDesignUIRegistry().getCardDesignUI( card.getFaceDesign().getId() );
-        final CardView view = new CardView( card, backDesignUI, faceDesignUI );
+        final CardView view = new CardView( model_.getCardModel( card ), backDesignUI, faceDesignUI );
         cardViews_.put( card, view );
         view.initialize( this );
         repaint( view.getBounds() );
 
         actionMediator_.updateAll();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#cardFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    public void cardFocusChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                cardFocusChanged();
+            }
+        } );
+    }
+
+    /**
+     * Invoked when the card focus has changed.
+     */
+    private void cardFocusChanged()
+    {
+        // do nothing 
     }
 
     /*
@@ -380,7 +406,7 @@ final class TableView
 
         final Rectangle clipBounds = g.getClipBounds();
 
-        for( final ICard card : table_.getCards() )
+        for( final ICard card : model_.getTable().getCards() )
         {
             final CardView view = cardViews_.get( card );
             if( view != null )
@@ -401,7 +427,8 @@ final class TableView
     {
         removeMouseMotionListener( mouseInputListener_ );
         removeMouseListener( mouseInputListener_ );
-        table_.removeTableListener( this );
+        model_.getTable().removeTableListener( this );
+        model_.removeTableModelListener( this );
         actionMediator_.unbindAll();
 
         super.removeNotify();
@@ -444,10 +471,10 @@ final class TableView
     {
         assert location != null;
 
-        final ICard card = table_.getCard( location );
+        final ICard card = model_.getTable().getCard( location );
         if( card != null )
         {
-            final JPopupMenu menu = new CardPopupMenu( table_, card );
+            final JPopupMenu menu = new CardPopupMenu( model_.getTable(), card );
             menu.show( this, location.x, location.y );
         }
     }
@@ -543,29 +570,7 @@ final class TableView
         public void mouseMoved(
             final MouseEvent e )
         {
-            final ICard card = table_.getCard( e.getPoint() );
-            if( card != focusedCard_ )
-            {
-                if( focusedCard_ != null )
-                {
-                    final CardView cardView = cardViews_.get( focusedCard_ );
-                    if( cardView != null )
-                    {
-                        cardView.setFocused( false );
-                    }
-                }
-
-                focusedCard_ = card;
-
-                if( card != null )
-                {
-                    final CardView cardView = cardViews_.get( card );
-                    if( cardView != null )
-                    {
-                        cardView.setFocused( true );
-                    }
-                }
-            }
+            model_.setFocus( model_.getTable().getCard( e.getPoint() ) );
         }
 
         /*
@@ -582,7 +587,7 @@ final class TableView
             }
             else if( SwingUtilities.isLeftMouseButton( e ) )
             {
-                if( table_.getCard( e.getPoint() ) != null )
+                if( model_.getTable().getCard( e.getPoint() ) != null )
                 {
                     setMouseInputHandler( DraggingMouseInputHandler.class, e );
                 }
@@ -650,7 +655,7 @@ final class TableView
             assert e != null;
 
             final Point mouseLocation = e.getPoint();
-            draggedCard_ = table_.getCard( mouseLocation );
+            draggedCard_ = model_.getTable().getCard( mouseLocation );
             if( draggedCard_ != null )
             {
                 final Point cardLocation = draggedCard_.getLocation();

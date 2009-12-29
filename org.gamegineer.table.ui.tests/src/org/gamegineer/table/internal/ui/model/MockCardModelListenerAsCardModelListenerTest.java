@@ -1,5 +1,5 @@
 /*
- * TableViewTest.java
+ * MockCardModelListenerAsCardModelListenerTest.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,27 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 7, 2009 at 12:00:24 AM.
+ * Created on Dec 25, 2009 at 11:22:20 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
-
-import org.junit.Test;
+package org.gamegineer.table.internal.ui.model;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.view.TableView} class.
+ * {@link org.gamegineer.table.internal.ui.model.MockCardModelListener} class to
+ * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.ui.model.ICardModelListener} interface.
  */
-public final class TableViewTest
+public final class MockCardModelListenerAsCardModelListenerTest
+    extends AbstractCardModelListenerTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableViewTest} class.
+     * Initializes a new instance of the {@code
+     * MockCardModelListenerAsCardModelListenerTest} class.
      */
-    public TableViewTest()
+    public MockCardModelListenerAsCardModelListenerTest()
     {
         super();
     }
@@ -46,13 +48,12 @@ public final class TableViewTest
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * model.
+    /*
+     * @see org.gamegineer.table.internal.ui.model.AbstractCardModelListenerTestCase#createCardModelListener()
      */
-    @Test( expected = AssertionError.class )
-    public void testConstructor_Model_Null()
+    @Override
+    protected ICardModelListener createCardModelListener()
     {
-        new TableView( null );
+        return new MockCardModelListener();
     }
 }

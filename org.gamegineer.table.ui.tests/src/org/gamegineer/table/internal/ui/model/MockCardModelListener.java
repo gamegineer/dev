@@ -1,5 +1,5 @@
 /*
- * MainModel.java
+ * MockCardModelListener.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,32 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 6, 2009 at 11:17:00 PM.
+ * Created on Dec 25, 2009 at 11:21:55 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.concurrent.atomic.AtomicInteger;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.TableFactory;
-import org.gamegineer.table.ui.ITableAdvisor;
-import org.osgi.framework.Version;
 
 /**
- * The top-level model.
+ * Mock implementation of
+ * {@link org.gamegineer.table.internal.ui.model.ICardModelListener}.
  */
 @ThreadSafe
-public final class MainModel
+public class MockCardModelListener
+    implements ICardModelListener
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table advisor. */
-    private final ITableAdvisor advisor_;
-
-    /** The table model. */
-    private final TableModel tableModel_;
+    /** The count of card focus changed events received. */
+    private final AtomicInteger cardFocusChangedEventCount_;
 
 
     // ======================================================================
@@ -49,22 +46,11 @@ public final class MainModel
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MainModel} class.
-     * 
-     * @param advisor
-     *        The table advisor; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code advisor} is {@code null}.
+     * Initializes a new instance of the {@code MockCardModelListener} class.
      */
-    public MainModel(
-        /* @NonNull */
-        final ITableAdvisor advisor )
+    public MockCardModelListener()
     {
-        assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
-
-        advisor_ = advisor;
-        tableModel_ = new TableModel( TableFactory.createTable() );
+        cardFocusChangedEventCount_ = new AtomicInteger( 0 );
     }
 
 
@@ -72,25 +58,24 @@ public final class MainModel
     // Methods
     // ======================================================================
 
-    /**
-     * Gets the table model.
-     * 
-     * @return The table model; never {@code null}.
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardFocusChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
      */
-    /* @NonNull */
-    public TableModel getTableModel()
+    public void cardFocusChanged(
+        final CardModelEvent event )
     {
-        return tableModel_;
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        cardFocusChangedEventCount_.incrementAndGet();
     }
 
     /**
-     * Gets the model version.
+     * Gets the count of card focus changed events received.
      * 
-     * @return The model version.
+     * @return The count of card focus changed events received.
      */
-    /* @NonNull */
-    public Version getVersion()
+    public final int getCardFocusChangedEventCount()
     {
-        return advisor_.getApplicationVersion();
+        return cardFocusChangedEventCount_.get();
     }
 }

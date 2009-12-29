@@ -1,5 +1,5 @@
 /*
- * MainModelTest.java
+ * TableModelEventTest.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 6, 2009 at 11:57:40 PM.
+ * Created on Dec 28, 2009 at 9:02:07 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
-import org.gamegineer.table.ui.TableAdvisor;
+import static org.junit.Assert.assertSame;
+import org.gamegineer.table.core.TableFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.MainModel} class.
+ * {@link org.gamegineer.table.internal.ui.model.TableModelEvent} class.
  */
-public final class MainModelTest
+public class TableModelEventTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The main model under test in the fixture. */
-    private MainModel model_;
+    /** The table model event under test in the fixture. */
+    private TableModelEvent event_;
 
 
     // ======================================================================
@@ -46,9 +47,9 @@ public final class MainModelTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MainModelTest} class.
+     * Initializes a new instance of the {@code TableModelEventTest} class.
      */
-    public MainModelTest()
+    public TableModelEventTest()
     {
         super();
     }
@@ -68,7 +69,7 @@ public final class MainModelTest
     public void setUp()
         throws Exception
     {
-        model_ = new MainModel( new TableAdvisor() );
+        event_ = new TableModelEvent( new TableModel( TableFactory.createTable() ) );
     }
 
     /**
@@ -81,17 +82,17 @@ public final class MainModelTest
     public void tearDown()
         throws Exception
     {
-        model_ = null;
+        event_ = null;
     }
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * table advisor.
+     * source.
      */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Advisor_Null()
+    @Test( expected = IllegalArgumentException.class )
+    public void testConstructor_Source_Null()
     {
-        new MainModel( null );
+        new TableModelEvent( null );
     }
 
     /**
@@ -100,15 +101,16 @@ public final class MainModelTest
     @Test
     public void testGetTableModel_ReturnValue_NonNull()
     {
-        assertNotNull( model_.getTableModel() );
+        assertNotNull( event_.getTableModel() );
     }
 
     /**
-     * Ensures the {@code getVersion} method does not return {@code null}.
+     * Ensures the {@code getSource} method returns the same instance as the
+     * {@code getTableModel} method.
      */
     @Test
-    public void testGetVersion_ReturnValue_NonNull()
+    public void testGetSource_ReturnValue_SameTableModel()
     {
-        assertNotNull( model_.getVersion() );
+        assertSame( event_.getTableModel(), event_.getSource() );
     }
 }

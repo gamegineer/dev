@@ -1,5 +1,5 @@
 /*
- * MainView.java
+ * CardModelEvent.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,36 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 8, 2009 at 11:00:49 PM.
+ * Created on Dec 25, 2009 at 9:46:35 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
+package org.gamegineer.table.internal.ui.model;
 
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.internal.ui.model.MainModel;
+import java.util.EventObject;
+import net.jcip.annotations.ThreadSafe;
 
 /**
- * The top-level view.
+ * An event fired by a card model.
  */
-@NotThreadSafe
-final class MainView
-    extends JPanel
+@ThreadSafe
+public final class CardModelEvent
+    extends EventObject
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = 8895515474498086806L;
-
-    /** The model associated with this view. */
-    @SuppressWarnings( "unused" )
-    private final MainModel model_;
-
-    /** The table view. */
-    private final TableView tableView_;
+    private static final long serialVersionUID = 1754225832033072604L;
 
 
     // ======================================================================
@@ -53,21 +44,20 @@ final class MainView
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MainView} class.
+     * Initializes a new instance of the {@code CardModelEvent} class.
      * 
-     * @param model
-     *        The model associated with this view; must not be {@code null}.
+     * @param source
+     *        The card model that fired the event; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code source} is {@code null}.
      */
-    MainView(
+    public CardModelEvent(
         /* @NonNull */
-        final MainModel model )
+        @SuppressWarnings( "hiding" )
+        final CardModel source )
     {
-        assert model != null;
-
-        model_ = model;
-        tableView_ = new TableView( model.getTableModel() );
-
-        initializeComponent();
+        super( source );
     }
 
 
@@ -76,12 +66,13 @@ final class MainView
     // ======================================================================
 
     /**
-     * Initializes this component.
+     * Gets the card model that fired the event.
+     * 
+     * @return The card model that fired the event; never {@code null}.
      */
-    private void initializeComponent()
+    /* @NonNull */
+    public CardModel getCardModel()
     {
-        setLayout( new BorderLayout() );
-        setOpaque( true );
-        add( tableView_, BorderLayout.CENTER );
+        return (CardModel)getSource();
     }
 }

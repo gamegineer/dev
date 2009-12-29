@@ -30,6 +30,8 @@ import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardDesign;
 import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.internal.ui.model.CardModel;
+import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.ui.CardDesignUIs;
 import org.gamegineer.table.ui.ICardDesignUI;
 import org.junit.After;
@@ -52,8 +54,8 @@ public final class CardViewTest
      */
     private ICardDesignUI backDesignUI_;
 
-    /** A card for use in the test fixture. */
-    private ICard card_;
+    /** A card model for use in the test fixture. */
+    private CardModel cardModel_;
 
     /** The card view under test in the fixture. */
     private CardView cardView_;
@@ -96,8 +98,9 @@ public final class CardViewTest
         backDesignUI_ = CardDesignUIs.createCardDesignUI( backDesign );
         final ICardDesign faceDesign = CardDesigns.createUniqueCardDesign();
         faceDesignUI_ = CardDesignUIs.createCardDesignUI( faceDesign );
-        card_ = CardFactory.createCard( backDesign, faceDesign );
-        cardView_ = new CardView( card_, backDesignUI_, faceDesignUI_ );
+        final ICard card = CardFactory.createCard( backDesign, faceDesign );
+        cardModel_ = new CardModel( card );
+        cardView_ = new CardView( cardModel_, backDesignUI_, faceDesignUI_ );
     }
 
     /**
@@ -112,7 +115,7 @@ public final class CardViewTest
     {
         backDesignUI_ = null;
         faceDesignUI_ = null;
-        card_ = null;
+        cardModel_ = null;
         cardView_ = null;
     }
 
@@ -123,17 +126,7 @@ public final class CardViewTest
     @Test( expected = AssertionError.class )
     public void testConstructor_BackDesignUI_Null()
     {
-        new CardView( card_, null, faceDesignUI_ );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * card.
-     */
-    @Test( expected = AssertionError.class )
-    public void testConstructor_Card_Null()
-    {
-        new CardView( null, backDesignUI_, faceDesignUI_ );
+        new CardView( cardModel_, null, faceDesignUI_ );
     }
 
     /**
@@ -143,7 +136,17 @@ public final class CardViewTest
     @Test( expected = AssertionError.class )
     public void testConstructor_FaceDesignUI_Null()
     {
-        new CardView( card_, backDesignUI_, null );
+        new CardView( cardModel_, backDesignUI_, null );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * model.
+     */
+    @Test( expected = AssertionError.class )
+    public void testConstructor_Model_Null()
+    {
+        new CardView( null, backDesignUI_, faceDesignUI_ );
     }
 
     /**
@@ -177,7 +180,7 @@ public final class CardViewTest
     @Test( expected = AssertionError.class )
     public void testInitialize_Initialized()
     {
-        final TableView tableView = new TableView( TableFactory.createTable() );
+        final TableView tableView = new TableView( new TableModel( TableFactory.createTable() ) );
         cardView_.initialize( tableView );
 
         cardView_.initialize( tableView );
@@ -211,16 +214,6 @@ public final class CardViewTest
     public void testPaint_Uninitialized()
     {
         cardView_.paint( new DebugGraphics() );
-    }
-
-    /**
-     * Ensures the {@code setFocused} method throws an exception when the card
-     * view is uninitialized.
-     */
-    @Test( expected = AssertionError.class )
-    public void testSetFocused_Uninitialized()
-    {
-        cardView_.setFocused( true );
     }
 
     /**

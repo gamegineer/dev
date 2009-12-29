@@ -1,5 +1,5 @@
 /*
- * CardViewAsCardListenerTest.java
+ * CardViewAsCardModelListenerTest.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,18 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 24, 2009 at 10:45:09 PM.
+ * Created on Dec 26, 2009 at 10:24:03 PM.
  */
 
 package org.gamegineer.table.internal.ui.view;
 
-import org.gamegineer.table.core.AbstractCardListenerTestCase;
 import org.gamegineer.table.core.CardDesigns;
 import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardDesign;
-import org.gamegineer.table.core.ICardListener;
+import org.gamegineer.table.internal.ui.model.AbstractCardModelListenerTestCase;
 import org.gamegineer.table.internal.ui.model.CardModel;
+import org.gamegineer.table.internal.ui.model.ICardModelListener;
 import org.gamegineer.table.ui.CardDesignUIs;
 import org.gamegineer.table.ui.ICardDesignUI;
 
@@ -35,20 +35,20 @@ import org.gamegineer.table.ui.ICardDesignUI;
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.ui.view.CardView} class to ensure it
  * does not violate the contract of the
- * {@link org.gamegineer.table.core.ICardListener} interface.
+ * {@link org.gamegineer.table.internal.ui.model.ICardModelListener} interface.
  */
-public final class CardViewAsCardListenerTest
-    extends AbstractCardListenerTestCase
+public final class CardViewAsCardModelListenerTest
+    extends AbstractCardModelListenerTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardViewAsCardListenerTest}
+     * Initializes a new instance of the {@code CardViewAsCardModelListenerTest}
      * class.
      */
-    public CardViewAsCardListenerTest()
+    public CardViewAsCardModelListenerTest()
     {
         super();
     }
@@ -59,10 +59,10 @@ public final class CardViewAsCardListenerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractCardListenerTestCase#createCardListener()
+     * @see org.gamegineer.table.internal.ui.model.AbstractCardModelListenerTestCase#createCardModelListener()
      */
     @Override
-    protected ICardListener createCardListener()
+    protected ICardModelListener createCardModelListener()
     {
         final ICardDesign backDesign = CardDesigns.createUniqueCardDesign();
         final ICardDesignUI backDesignUI = CardDesignUIs.createCardDesignUI( backDesign );

@@ -1,5 +1,5 @@
 /*
- * TableViewTest.java
+ * ICardModelListener.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,43 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 7, 2009 at 12:00:24 AM.
+ * Created on Dec 25, 2009 at 9:31:37 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
+package org.gamegineer.table.internal.ui.model;
 
-import org.junit.Test;
+import java.util.EventListener;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.view.TableView} class.
+ * The listener interface for use by clients to be notified of changes to the
+ * card model state.
  */
-public final class TableViewTest
+public interface ICardModelListener
+    extends EventListener
 {
-    // ======================================================================
-    // Constructors
-    // ======================================================================
-
-    /**
-     * Initializes a new instance of the {@code TableViewTest} class.
-     */
-    public TableViewTest()
-    {
-        super();
-    }
-
-
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * model.
+     * Invoked after the card focus state has changed.
+     * 
+     * @param event
+     *        The event describing the card; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
      */
-    @Test( expected = AssertionError.class )
-    public void testConstructor_Model_Null()
-    {
-        new TableView( null );
-    }
+    public void cardFocusChanged(
+        /* @NonNull */
+        CardModelEvent event );
 }

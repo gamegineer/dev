@@ -29,8 +29,10 @@ import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
-import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardListener;
+import org.gamegineer.table.internal.ui.model.CardModel;
+import org.gamegineer.table.internal.ui.model.CardModelEvent;
+import org.gamegineer.table.internal.ui.model.ICardModelListener;
 import org.gamegineer.table.ui.ICardDesignUI;
 
 /**
@@ -38,7 +40,7 @@ import org.gamegineer.table.ui.ICardDesignUI;
  */
 @NotThreadSafe
 final class CardView
-    implements ICardListener
+    implements ICardListener, ICardModelListener
 {
     // ======================================================================
     // Fields
@@ -50,14 +52,11 @@ final class CardView
     /** The current bounds of this view in table coordinates. */
     private Rectangle bounds_;
 
-    /** The card associated with this view. */
-    private final ICard card_;
-
     /** The card design user interface for the card face. */
     private final ICardDesignUI faceDesignUI_;
 
-    /** Indicates the card associated with this view has the focus. */
-    private boolean isFocused_;
+    /** The model associated with this view. */
+    private final CardModel model_;
 
     /** The table view that owns this view. */
     private TableView tableView_;
@@ -70,8 +69,8 @@ final class CardView
     /**
      * Initializes a new instance of the {@code CardView} class.
      * 
-     * @param card
-     *        The card associated with this view; must not be {@code null}.
+     * @param model
+     *        The model associated with this view; must not be {@code null}.
      * @param backDesignUI
      *        The card design user interface for the card back; must not be
      *        {@code null}.
@@ -81,21 +80,20 @@ final class CardView
      */
     CardView(
         /* @NonNull */
-        final ICard card,
+        final CardModel model,
         /* @NonNull */
         final ICardDesignUI backDesignUI,
         /* @NonNull */
         final ICardDesignUI faceDesignUI )
     {
-        assert card != null;
+        assert model != null;
         assert backDesignUI != null;
         assert faceDesignUI != null;
 
         bounds_ = null;
-        card_ = card;
+        model_ = model;
         backDesignUI_ = backDesignUI;
         faceDesignUI_ = faceDesignUI;
-        isFocused_ = false;
         tableView_ = null;
     }
 
@@ -103,6 +101,32 @@ final class CardView
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardFocusChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
+     */
+    public void cardFocusChanged(
+        final CardModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                cardFocusChanged();
+            }
+        } );
+    }
+
+    /**
+     * Invoked after the card focus state has changed.
+     */
+    private void cardFocusChanged()
+    {
+        tableView_.repaint( getBounds() );
+    }
 
     /*
      * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
@@ -170,7 +194,7 @@ final class CardView
     /* @NonNull */
     private ICardDesignUI getActiveCardDesignUI()
     {
-        return (card_.getOrientation() == CardOrientation.BACK_UP) ? backDesignUI_ : faceDesignUI_;
+        return (model_.getCard().getOrientation() == CardOrientation.BACK_UP) ? backDesignUI_ : faceDesignUI_;
     }
 
     /**
@@ -181,7 +205,7 @@ final class CardView
     /* @NonNull */
     Rectangle getBounds()
     {
-        final Rectangle bounds = card_.getBounds();
+        final Rectangle bounds = model_.getCard().getBounds();
         bounds.grow( 2, 2 );
         return bounds;
     }
@@ -205,7 +229,8 @@ final class CardView
 
         tableView_ = tableView;
         bounds_ = getBounds();
-        card_.addCardListener( this );
+        model_.addCardModelListener( this );
+        model_.getCard().addCardListener( this );
     }
 
     /**
@@ -225,10 +250,10 @@ final class CardView
         assert g != null;
         assert tableView_ != null;
 
-        final Rectangle cardBounds = card_.getBounds();
+        final Rectangle cardBounds = model_.getCard().getBounds();
         getActiveCardDesignUI().getIcon().paintIcon( tableView_, g, cardBounds.x, cardBounds.y );
 
-        if( isFocused_ )
+        if( model_.isFocused() )
         {
             final Rectangle viewBounds = getBounds();
             final Color oldColor = g.getColor();
@@ -236,27 +261,6 @@ final class CardView
             g.drawRect( viewBounds.x, viewBounds.y, viewBounds.width - 1, viewBounds.height - 1 );
             g.setColor( oldColor );
         }
-    }
-
-    /**
-     * Sets a flag that indicates the card associated with this view has the
-     * focus.
-     * 
-     * <p>
-     * This method must only be called after the view is initialized.
-     * </p>
-     * 
-     * @param isFocused
-     *        {@code true} if the card associated with this view has the focus;
-     *        otherwise {@code false}.
-     */
-    void setFocused(
-        final boolean isFocused )
-    {
-        assert tableView_ != null;
-
-        isFocused_ = isFocused;
-        tableView_.repaint( getBounds() );
     }
 
     /**
@@ -270,7 +274,8 @@ final class CardView
     {
         assert tableView_ != null;
 
-        card_.removeCardListener( this );
+        model_.getCard().removeCardListener( this );
+        model_.removeCardModelListener( this );
         tableView_ = null;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * TableViewTest.java
+ * TableModelAsTableListenerTest.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,27 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 7, 2009 at 12:00:24 AM.
+ * Created on Dec 28, 2009 at 8:25:14 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
+package org.gamegineer.table.internal.ui.model;
 
-import org.junit.Test;
+import org.gamegineer.table.core.AbstractTableListenerTestCase;
+import org.gamegineer.table.core.ITableListener;
+import org.gamegineer.table.core.TableFactory;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.view.TableView} class.
+ * {@link org.gamegineer.table.internal.ui.model.TableModel} class to ensure it
+ * does not violate the contract of the
+ * {@link org.gamegineer.table.core.ITableListener} interface.
  */
-public final class TableViewTest
+public final class TableModelAsTableListenerTest
+    extends AbstractTableListenerTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableViewTest} class.
+     * Initializes a new instance of the {@code TableModelAsTableListenerTest}
+     * class.
      */
-    public TableViewTest()
+    public TableModelAsTableListenerTest()
     {
         super();
     }
@@ -46,13 +52,12 @@ public final class TableViewTest
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * model.
+    /*
+     * @see org.gamegineer.table.core.AbstractTableListenerTestCase#createTableListener()
      */
-    @Test( expected = AssertionError.class )
-    public void testConstructor_Model_Null()
+    @Override
+    protected ITableListener createTableListener()
     {
-        new TableView( null );
+        return new TableModel( TableFactory.createTable() );
     }
 }

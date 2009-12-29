@@ -1,5 +1,5 @@
 /*
- * MainView.java
+ * TableModelEvent.java
  * Copyright 2008-2009 Gamegineer.org
  * All rights reserved.
  *
@@ -16,36 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 8, 2009 at 11:00:49 PM.
+ * Created on Dec 28, 2009 at 9:01:48 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
+package org.gamegineer.table.internal.ui.model;
 
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.internal.ui.model.MainModel;
+import java.util.EventObject;
+import net.jcip.annotations.ThreadSafe;
 
 /**
- * The top-level view.
+ * An event fired by a table model.
  */
-@NotThreadSafe
-final class MainView
-    extends JPanel
+@ThreadSafe
+public final class TableModelEvent
+    extends EventObject
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = 8895515474498086806L;
-
-    /** The model associated with this view. */
-    @SuppressWarnings( "unused" )
-    private final MainModel model_;
-
-    /** The table view. */
-    private final TableView tableView_;
+    private static final long serialVersionUID = -7540911812153989528L;
 
 
     // ======================================================================
@@ -53,21 +44,20 @@ final class MainView
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MainView} class.
+     * Initializes a new instance of the {@code TableModelEvent} class.
      * 
-     * @param model
-     *        The model associated with this view; must not be {@code null}.
+     * @param source
+     *        The table model that fired the event; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code source} is {@code null}.
      */
-    MainView(
+    public TableModelEvent(
         /* @NonNull */
-        final MainModel model )
+        @SuppressWarnings( "hiding" )
+        final TableModel source )
     {
-        assert model != null;
-
-        model_ = model;
-        tableView_ = new TableView( model.getTableModel() );
-
-        initializeComponent();
+        super( source );
     }
 
 
@@ -76,12 +66,13 @@ final class MainView
     // ======================================================================
 
     /**
-     * Initializes this component.
+     * Gets the table model that fired the event.
+     * 
+     * @return The table model that fired the event; never {@code null}.
      */
-    private void initializeComponent()
+    /* @NonNull */
+    public TableModel getTableModel()
     {
-        setLayout( new BorderLayout() );
-        setOpaque( true );
-        add( tableView_, BorderLayout.CENTER );
+        return (TableModel)getSource();
     }
 }
