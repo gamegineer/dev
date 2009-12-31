@@ -146,9 +146,17 @@ public final class TableModel
     public void cardRemoved(
         final CardChangeEvent event )
     {
+        final ICard card = event.getCard();
+        final boolean clearFocusedCard;
         synchronized( lock_ )
         {
-            cardModels_.remove( event.getCard() );
+            cardModels_.remove( card );
+            clearFocusedCard = (focusedCard_ == card);
+        }
+
+        if( clearFocusedCard )
+        {
+            setFocus( null );
         }
     }
 
@@ -201,6 +209,20 @@ public final class TableModel
 
         assertArgumentLegal( cardModel != null, "card", Messages.TableModel_getCardModel_card_absent ); //$NON-NLS-1$
         return cardModel;
+    }
+
+    /**
+     * Gets the focused card.
+     * 
+     * @return The focused card or {@code null} if no card has the focus.
+     */
+    /* @Nullable */
+    public ICard getFocusedCard()
+    {
+        synchronized( lock_ )
+        {
+            return focusedCard_;
+        }
     }
 
     /**
@@ -264,6 +286,7 @@ public final class TableModel
         /* @Nullable */
         final ICard card )
     {
+        final boolean cardFocusChanged;
         final CardModel oldFocusedCardModel;
         final CardModel newFocusedCardModel;
 
@@ -271,18 +294,20 @@ public final class TableModel
         {
             if( card != focusedCard_ )
             {
+                cardFocusChanged = true;
                 oldFocusedCardModel = (focusedCard_ != null) ? cardModels_.get( focusedCard_ ) : null;
                 newFocusedCardModel = (card != null) ? cardModels_.get( card ) : null;
                 focusedCard_ = card;
             }
             else
             {
+                cardFocusChanged = false;
                 oldFocusedCardModel = null;
                 newFocusedCardModel = null;
             }
         }
 
-        if( oldFocusedCardModel != newFocusedCardModel )
+        if( cardFocusChanged )
         {
             if( oldFocusedCardModel != null )
             {

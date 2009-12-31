@@ -33,12 +33,14 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.table.core.CardChangeEvent;
 import org.gamegineer.table.core.CardDesignId;
 import org.gamegineer.table.core.CardFactory;
@@ -218,6 +220,39 @@ final class TableView
         actionMediator_.bind( Actions.getAddTwoOfDiamondsCardAction(), addCardActionListener );
         actionMediator_.bind( Actions.getAddTwoOfHeartsCardAction(), addCardActionListener );
         actionMediator_.bind( Actions.getAddTwoOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getFlipCardAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                flipFocusedCard();
+            }
+        } );
+        actionMediator_.bind( Actions.getRemoveCardAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                removeFocusedCard();
+            }
+        } );
+
+        final IPredicate<Action> hasFocusedCardPredicate = new IPredicate<Action>()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Action obj )
+            {
+                return model_.getFocusedCard() != null;
+            }
+        };
+        actionMediator_.bind( Actions.getFlipCardAction(), hasFocusedCardPredicate );
+        actionMediator_.bind( Actions.getRemoveCardAction(), hasFocusedCardPredicate );
     }
 
     /*
@@ -256,8 +291,6 @@ final class TableView
         cardViews_.put( card, view );
         view.initialize( this );
         repaint( view.getBounds() );
-
-        actionMediator_.updateAll();
     }
 
     /*
@@ -283,7 +316,7 @@ final class TableView
      */
     private void cardFocusChanged()
     {
-        // do nothing 
+        actionMediator_.updateAll();
     }
 
     /*
@@ -322,8 +355,6 @@ final class TableView
             repaint( view.getBounds() );
             view.uninitialize();
         }
-
-        actionMediator_.updateAll();
     }
 
     /**
@@ -386,6 +417,18 @@ final class TableView
     }
 
     /**
+     * Flips the focused card on the table.
+     */
+    private void flipFocusedCard()
+    {
+        final ICard card = model_.getFocusedCard();
+        if( card != null )
+        {
+            card.flip();
+        }
+    }
+
+    /**
      * Initializes this component.
      */
     private void initializeComponent()
@@ -416,6 +459,18 @@ final class TableView
                     view.paint( g );
                 }
             }
+        }
+    }
+
+    /**
+     * Removes the focused card from the table.
+     */
+    private void removeFocusedCard()
+    {
+        final ICard card = model_.getFocusedCard();
+        if( card != null )
+        {
+            model_.getTable().removeCard( card );
         }
     }
 
@@ -471,10 +526,18 @@ final class TableView
     {
         assert location != null;
 
-        final ICard card = model_.getTable().getCard( location );
-        if( card != null )
+        final JPopupMenu menu;
+        if( model_.getTable().getCard( location ) != null )
         {
-            final JPopupMenu menu = new CardPopupMenu( model_.getTable(), card );
+            menu = new CardPopupMenu();
+        }
+        else
+        {
+            menu = null;
+        }
+
+        if( menu != null )
+        {
             menu.show( this, location.x, location.y );
         }
     }
