@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.view;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.KeyStroke;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.ui.model.MainModel;
 
@@ -78,7 +79,7 @@ final class MenuBarView
     private JMenu createAddCardMenu()
     {
         final JMenu menu = new JMenu( Messages.MenuBarView_addCard_text );
-        menu.setMnemonic( Messages.toMnemonic( Messages.MenuBarView_addCard_mnemonic ) );
+        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_addCard_mnemonic ).getKeyCode() );
         menu.add( createAddClubsCardMenu() );
         menu.add( createAddDiamondsCardMenu() );
         menu.add( createAddHeartsCardMenu() );
@@ -96,7 +97,7 @@ final class MenuBarView
     private JMenu createAddClubsCardMenu()
     {
         final JMenu menu = new JMenu( Messages.MenuBarView_addClubsCard_text );
-        menu.setMnemonic( Messages.toMnemonic( Messages.MenuBarView_addClubsCard_mnemonic ) );
+        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_addClubsCard_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddAceOfClubsCardAction() );
         menu.add( Actions.getAddTwoOfClubsCardAction() );
         menu.add( Actions.getAddThreeOfClubsCardAction() );
@@ -122,7 +123,7 @@ final class MenuBarView
     private JMenu createAddDiamondsCardMenu()
     {
         final JMenu menu = new JMenu( Messages.MenuBarView_addDiamondsCard_text );
-        menu.setMnemonic( Messages.toMnemonic( Messages.MenuBarView_addDiamondsCard_mnemonic ) );
+        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_addDiamondsCard_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddAceOfDiamondsCardAction() );
         menu.add( Actions.getAddTwoOfDiamondsCardAction() );
         menu.add( Actions.getAddThreeOfDiamondsCardAction() );
@@ -148,7 +149,7 @@ final class MenuBarView
     private JMenu createAddHeartsCardMenu()
     {
         final JMenu menu = new JMenu( Messages.MenuBarView_addHeartsCard_text );
-        menu.setMnemonic( Messages.toMnemonic( Messages.MenuBarView_addHeartsCard_mnemonic ) );
+        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_addHeartsCard_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddAceOfHeartsCardAction() );
         menu.add( Actions.getAddTwoOfHeartsCardAction() );
         menu.add( Actions.getAddThreeOfHeartsCardAction() );
@@ -174,7 +175,7 @@ final class MenuBarView
     private JMenu createAddSpadesCardMenu()
     {
         final JMenu menu = new JMenu( Messages.MenuBarView_addSpadesCard_text );
-        menu.setMnemonic( Messages.toMnemonic( Messages.MenuBarView_addSpadesCard_mnemonic ) );
+        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_addSpadesCard_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddAceOfSpadesCardAction() );
         menu.add( Actions.getAddTwoOfSpadesCardAction() );
         menu.add( Actions.getAddThreeOfSpadesCardAction() );
@@ -200,7 +201,7 @@ final class MenuBarView
     private JMenu createAddSpecialCardMenu()
     {
         final JMenu menu = new JMenu( Messages.MenuBarView_addSpecialCard_text );
-        menu.setMnemonic( Messages.toMnemonic( Messages.MenuBarView_addSpecialCard_mnemonic ) );
+        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_addSpecialCard_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddJokerCardAction() );
         return menu;
     }
@@ -214,7 +215,7 @@ final class MenuBarView
     private JMenu createFileMenu()
     {
         final JMenu menu = new JMenu( Messages.MenuBarView_file_text );
-        menu.setMnemonic( Messages.toMnemonic( Messages.MenuBarView_file_mnemonic ) );
+        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_file_mnemonic ).getKeyCode() );
         menu.add( Actions.getExitAction() );
         return menu;
     }
@@ -228,7 +229,7 @@ final class MenuBarView
     private JMenu createHelpMenu()
     {
         final JMenu menu = new JMenu( Messages.MenuBarView_help_text );
-        menu.setMnemonic( Messages.toMnemonic( Messages.MenuBarView_help_mnemonic ) );
+        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_help_mnemonic ).getKeyCode() );
         menu.add( Actions.getOpenAboutDialogAction() );
         return menu;
     }
@@ -257,7 +258,7 @@ final class MenuBarView
     private JMenu createTableMenu()
     {
         final JMenu menu = new JMenu( Messages.MenuBarView_table_text );
-        menu.setMnemonic( Messages.toMnemonic( Messages.MenuBarView_table_mnemonic ) );
+        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_table_mnemonic ).getKeyCode() );
         menu.add( createAddCardMenu() );
         menu.addSeparator();
         menu.add( Actions.getRemoveCardAction() );

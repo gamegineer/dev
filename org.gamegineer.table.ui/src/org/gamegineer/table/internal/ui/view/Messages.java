@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.view;
 
-import java.awt.event.KeyEvent;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.Version;
@@ -552,11 +551,6 @@ final class Messages
     /** The Table menu text. */
     public static String MenuBarView_table_text;
 
-    // --- Messages ---------------------------------------------------------
-
-    /** The virtual key name is unknown. */
-    public static String Messages_toMnemonic_unknownVirtualKeyName;
-
     // --- OpenAboutDialogAction --------------------------------------------
 
     /** The open about dialog action mnemonic. */
@@ -619,41 +613,5 @@ final class Messages
         final Version version )
     {
         return bind( AboutDialog_message, version.toString() );
-    }
-
-    // --- Messages ---------------------------------------------------------
-
-    /**
-     * Converts the specified virtual key name to its corresponding virtual key
-     * code.
-     * 
-     * @param virtualKeyName
-     *        The name of a virtual key code constant from the {@code
-     *        java.awt.event.KeyEvent} class, not including the {@code VK_}
-     *        prefix.
-     * 
-     * @return The virtual key code associated with the specified virtual key
-     *         name.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If the virtual key name is unknown.
-     */
-    static int toMnemonic(
-        /* @NonNull */
-        final String virtualKeyName )
-    {
-        final String fieldName = "VK_" + virtualKeyName; //$NON-NLS-1$
-        try
-        {
-            return KeyEvent.class.getField( fieldName ).getInt( null );
-        }
-        catch( final NoSuchFieldException e )
-        {
-            throw new IllegalArgumentException( bind( Messages_toMnemonic_unknownVirtualKeyName, fieldName ), e );
-        }
-        catch( final IllegalAccessException e )
-        {
-            throw new IllegalArgumentException( bind( Messages_toMnemonic_unknownVirtualKeyName, fieldName ), e );
-        }
     }
 }
