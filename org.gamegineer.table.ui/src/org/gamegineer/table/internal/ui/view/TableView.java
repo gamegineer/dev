@@ -29,6 +29,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
@@ -75,6 +78,9 @@ final class TableView
     /** The collection of card views. */
     private final Map<ICard, CardView> cardViews_;
 
+    /** The key listener for this view. */
+    private final KeyListener keyListener_;
+
     /** The model associated with this view. */
     private final TableModel model_;
 
@@ -106,6 +112,7 @@ final class TableView
 
         actionMediator_ = new ActionMediator();
         cardViews_ = new IdentityHashMap<ICard, CardView>();
+        keyListener_ = createKeyListener();
         model_ = model;
         mouseInputHandlers_ = createMouseInputHandlers();
         mouseInputHandler_ = mouseInputHandlers_.get( DefaultMouseInputHandler.class );
@@ -149,6 +156,7 @@ final class TableView
         bindActions();
         model_.addTableModelListener( this );
         model_.getTable().addTableListener( this );
+        addKeyListener( keyListener_ );
         addMouseListener( mouseInputListener_ );
         addMouseMotionListener( mouseInputListener_ );
     }
@@ -358,6 +366,29 @@ final class TableView
     }
 
     /**
+     * Creates the key listener for the view.
+     * 
+     * @return The key listener for the view; never {@code null}.
+     */
+    /* @NonNull */
+    private KeyListener createKeyListener()
+    {
+        return new KeyAdapter()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void keyReleased(
+                final KeyEvent e )
+            {
+                if( e.getKeyCode() == KeyEvent.VK_CONTEXT_MENU )
+                {
+                    showPopupMenu( new Point( 0, 0 ) );
+                }
+            }
+        };
+    }
+
+    /**
      * Creates the collection of mouse input handler singletons for the view.
      * 
      * @return The collection of mouse input handler singletons for the view;
@@ -439,6 +470,15 @@ final class TableView
     }
 
     /*
+     * @see java.awt.Component#isFocusable()
+     */
+    @Override
+    public boolean isFocusable()
+    {
+        return true;
+    }
+
+    /*
      * @see javax.swing.JComponent#paintChildren(java.awt.Graphics)
      */
     @Override
@@ -482,6 +522,7 @@ final class TableView
     {
         removeMouseMotionListener( mouseInputListener_ );
         removeMouseListener( mouseInputListener_ );
+        removeKeyListener( keyListener_ );
         model_.getTable().removeTableListener( this );
         model_.removeTableModelListener( this );
         actionMediator_.unbindAll();
@@ -527,7 +568,7 @@ final class TableView
         assert location != null;
 
         final JPopupMenu menu;
-        if( model_.getTable().getCard( location ) != null )
+        if( model_.getFocusedCard() != null )
         {
             menu = new CardPopupMenu();
         }
