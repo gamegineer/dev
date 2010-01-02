@@ -1,6 +1,6 @@
 /*
  * Messages.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -482,6 +482,9 @@ final class Messages
 
     // --- FlipCardAction ---------------------------------------------------
 
+    /** The flip card action accelerator. */
+    public static String FlipCardAction_accelerator;
+
     /** The flip card action mnemonic. */
     public static String FlipCardAction_mnemonic;
 
@@ -563,6 +566,9 @@ final class Messages
     public static String OpenAboutDialogAction_text;
 
     // --- RemoveCardAction -------------------------------------------------
+
+    /** The remove card action accelerator. */
+    public static String RemoveCardAction_accelerator;
 
     /** The remove card action mnemonic. */
     public static String RemoveCardAction_mnemonic;

@@ -1,6 +1,6 @@
 /*
  * Actions.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.view;
 
+import javax.swing.KeyStroke;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.ui.action.BasicAction;
 
@@ -1434,6 +1435,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.FlipCardAction_accelerator ) );
                 putValue( MNEMONIC_KEY, Messages.toMnemonic( Messages.FlipCardAction_mnemonic ) );
                 putValue( NAME, Messages.FlipCardAction_text );
             }
@@ -1474,6 +1476,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.RemoveCardAction_accelerator ) );
                 putValue( MNEMONIC_KEY, Messages.toMnemonic( Messages.RemoveCardAction_mnemonic ) );
                 putValue( NAME, Messages.RemoveCardAction_text );
             }
