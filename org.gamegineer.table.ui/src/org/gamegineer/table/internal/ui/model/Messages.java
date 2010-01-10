@@ -1,6 +1,6 @@
 /*
  * Messages.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,9 +48,15 @@ final class Messages
 
     /**
      * An unexpected exception was thrown from
-     * ICardModelListener.cardFocusChanged().
+     * ICardModelListener.cardFocusGained().
      */
-    public static String CardModel_cardFocusChanged_unexpectedException;
+    public static String CardModel_cardFocusGained_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * ICardModelListener.cardFocusLost().
+     */
+    public static String CardModel_cardFocusLost_unexpectedException;
 
     /** The card model listener is not registered. */
     public static String CardModel_removeCardModelListener_listener_notRegistered;

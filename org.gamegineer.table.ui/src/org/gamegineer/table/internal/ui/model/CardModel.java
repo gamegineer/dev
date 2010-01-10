@@ -1,6 +1,6 @@
 /*
  * CardModel.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -114,20 +114,39 @@ public final class CardModel
     }
 
     /**
-     * Fires a card focus changed event.
+     * Fires a card focus gained event.
      */
-    private void fireCardFocusChanged()
+    private void fireCardFocusGained()
     {
         final ICardModelListener listener = getCardModelListener();
         if( listener != null )
         {
             try
             {
-                listener.cardFocusChanged( new CardModelEvent( this ) );
+                listener.cardFocusGained( new CardModelEvent( this ) );
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardModel_cardFocusChanged_unexpectedException, e );
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardModel_cardFocusGained_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a card focus lost event.
+     */
+    private void fireCardFocusLost()
+    {
+        final ICardModelListener listener = getCardModelListener();
+        if( listener != null )
+        {
+            try
+            {
+                listener.cardFocusLost( new CardModelEvent( this ) );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardModel_cardFocusLost_unexpectedException, e );
             }
         }
     }
@@ -211,6 +230,13 @@ public final class CardModel
             isFocused_ = isFocused;
         }
 
-        fireCardFocusChanged();
+        if( isFocused )
+        {
+            fireCardFocusGained();
+        }
+        else
+        {
+            fireCardFocusLost();
+        }
     }
 }

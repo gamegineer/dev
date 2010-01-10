@@ -1,6 +1,6 @@
 /*
  * CardView.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -102,10 +102,18 @@ final class CardView
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardFocusChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
+    /**
+     * Invoked after the card has gained or lost the logical focus.
      */
-    public void cardFocusChanged(
+    private void cardFocusChanged()
+    {
+        tableView_.repaint( getBounds() );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardFocusGained(org.gamegineer.table.internal.ui.model.CardModelEvent)
+     */
+    public void cardFocusGained(
         final CardModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
@@ -120,12 +128,22 @@ final class CardView
         } );
     }
 
-    /**
-     * Invoked after the card focus state has changed.
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardFocusLost(org.gamegineer.table.internal.ui.model.CardModelEvent)
      */
-    private void cardFocusChanged()
+    public void cardFocusLost(
+        final CardModelEvent event )
     {
-        tableView_.repaint( getBounds() );
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                cardFocusChanged();
+            }
+        } );
     }
 
     /*

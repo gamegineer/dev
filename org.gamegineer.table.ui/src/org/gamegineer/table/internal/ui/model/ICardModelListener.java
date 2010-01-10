@@ -1,6 +1,6 @@
 /*
  * ICardModelListener.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@ public interface ICardModelListener
     // ======================================================================
 
     /**
-     * Invoked after the card focus state has changed.
+     * Invoked after the card has gained the logical focus.
      * 
      * @param event
      *        The event describing the card; must not be {@code null}.
@@ -43,7 +43,20 @@ public interface ICardModelListener
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void cardFocusChanged(
+    public void cardFocusGained(
+        /* @NonNull */
+        CardModelEvent event );
+
+    /**
+     * Invoked after the card has lost the logical focus.
+     * 
+     * @param event
+     *        The event describing the card; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void cardFocusLost(
         /* @NonNull */
         CardModelEvent event );
 }

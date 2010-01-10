@@ -1,6 +1,6 @@
 /*
  * MockCardModelListener.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -37,8 +37,11 @@ public class MockCardModelListener
     // Fields
     // ======================================================================
 
-    /** The count of card focus changed events received. */
-    private final AtomicInteger cardFocusChangedEventCount_;
+    /** The count of card focus gained events received. */
+    private final AtomicInteger cardFocusGainedEventCount_;
+
+    /** The count of card focus lost events received. */
+    private final AtomicInteger cardFocusLostEventCount_;
 
 
     // ======================================================================
@@ -50,7 +53,8 @@ public class MockCardModelListener
      */
     public MockCardModelListener()
     {
-        cardFocusChangedEventCount_ = new AtomicInteger( 0 );
+        cardFocusGainedEventCount_ = new AtomicInteger( 0 );
+        cardFocusLostEventCount_ = new AtomicInteger( 0 );
     }
 
 
@@ -59,23 +63,44 @@ public class MockCardModelListener
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardFocusChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardFocusGained(org.gamegineer.table.internal.ui.model.CardModelEvent)
      */
-    public void cardFocusChanged(
+    public void cardFocusGained(
         final CardModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        cardFocusChangedEventCount_.incrementAndGet();
+        cardFocusGainedEventCount_.incrementAndGet();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardFocusLost(org.gamegineer.table.internal.ui.model.CardModelEvent)
+     */
+    public void cardFocusLost(
+        final CardModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        cardFocusLostEventCount_.incrementAndGet();
     }
 
     /**
-     * Gets the count of card focus changed events received.
+     * Gets the count of card focus gained events received.
      * 
-     * @return The count of card focus changed events received.
+     * @return The count of card focus gained events received.
      */
-    public final int getCardFocusChangedEventCount()
+    public final int getCardFocusGainedEventCount()
     {
-        return cardFocusChangedEventCount_.get();
+        return cardFocusGainedEventCount_.get();
+    }
+
+    /**
+     * Gets the count of card focus lost events received.
+     * 
+     * @return The count of card focus lost events received.
+     */
+    public final int getCardFocusLostEventCount()
+    {
+        return cardFocusLostEventCount_.get();
     }
 }

@@ -1,6 +1,6 @@
 /*
  * CardModelTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -176,23 +176,24 @@ public final class CardModelTest
         model_.removeCardModelListener( listener );
 
         model_.setFocused( false );
-        assertEquals( 1, listener.getCardFocusChangedEventCount() );
+        assertEquals( 1, listener.getCardFocusGainedEventCount() );
+        assertEquals( 0, listener.getCardFocusLostEventCount() );
     }
 
     /**
      * Ensures the {@code setFocused} method catches any exception thrown by the
-     * {@code cardFocusChanged} method of a card model listener.
+     * {@code cardFocusGained} method of a card model listener.
      */
     @Test
-    public void testSetFocused_CatchesListenerException()
+    public void testSetFocused_GainedFocus_CatchesListenerException()
     {
         final MockCardModelListener listener = new MockCardModelListener()
         {
             @Override
-            public void cardFocusChanged(
+            public void cardFocusGained(
                 final CardModelEvent event )
             {
-                super.cardFocusChanged( event );
+                super.cardFocusGained( event );
 
                 throw new RuntimeException();
             }
@@ -203,16 +204,53 @@ public final class CardModelTest
     }
 
     /**
-     * Ensures the {@code setFocused} method fires a card focus changed event.
+     * Ensures the {@code setFocused} method fires a card focus gained event.
      */
     @Test
-    public void testSetFocused_FiresCardFocusChangedEvent()
+    public void testSetFocused_GainedFocus_FiresCardFocusGainedEvent()
     {
         final MockCardModelListener listener = new MockCardModelListener();
         model_.addCardModelListener( listener );
 
         model_.setFocused( true );
 
-        assertEquals( 1, listener.getCardFocusChangedEventCount() );
+        assertEquals( 1, listener.getCardFocusGainedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code setFocused} method catches any exception thrown by the
+     * {@code cardFocusLost} method of a card model listener.
+     */
+    @Test
+    public void testSetFocused_LostFocus_CatchesListenerException()
+    {
+        final MockCardModelListener listener = new MockCardModelListener()
+        {
+            @Override
+            public void cardFocusLost(
+                final CardModelEvent event )
+            {
+                super.cardFocusLost( event );
+
+                throw new RuntimeException();
+            }
+        };
+        model_.addCardModelListener( listener );
+
+        model_.setFocused( false );
+    }
+
+    /**
+     * Ensures the {@code setFocused} method fires a card focus lost event.
+     */
+    @Test
+    public void testSetFocused_LostFocus_FiresCardFocusLostEvent()
+    {
+        final MockCardModelListener listener = new MockCardModelListener();
+        model_.addCardModelListener( listener );
+
+        model_.setFocused( false );
+
+        assertEquals( 1, listener.getCardFocusLostEventCount() );
     }
 }

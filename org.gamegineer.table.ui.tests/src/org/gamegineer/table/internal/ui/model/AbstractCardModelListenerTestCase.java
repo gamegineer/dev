@@ -1,6 +1,6 @@
 /*
  * AbstractCardModelListenerTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -98,12 +98,22 @@ public abstract class AbstractCardModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code cardFocusChanged} method throws an exception when
+     * Ensures the {@code cardFocusGained} method throws an exception when
      * passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
-    public void testCardFocusChanged_Event_Null()
+    public void testCardFocusGained_Event_Null()
     {
-        listener_.cardFocusChanged( null );
+        listener_.cardFocusGained( null );
+    }
+
+    /**
+     * Ensures the {@code cardFocusLost} method throws an exception when passed
+     * a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCardFocusLost_Event_Null()
+    {
+        listener_.cardFocusLost( null );
     }
 }
