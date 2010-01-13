@@ -1,6 +1,6 @@
 /*
  * MockTableListener.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -62,10 +62,10 @@ public class MockTableListener
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.ITableListener#cardAdded(org.gamegineer.table.core.CardChangeEvent)
+     * @see org.gamegineer.table.core.ITableListener#cardAdded(org.gamegineer.table.core.TableContentChangedEvent)
      */
     public void cardAdded(
-        final CardChangeEvent event )
+        final TableContentChangedEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
@@ -73,10 +73,10 @@ public class MockTableListener
     }
 
     /*
-     * @see org.gamegineer.table.core.ITableListener#cardRemoved(org.gamegineer.table.core.CardChangeEvent)
+     * @see org.gamegineer.table.core.ITableListener#cardRemoved(org.gamegineer.table.core.TableContentChangedEvent)
      */
     public void cardRemoved(
-        final CardChangeEvent event )
+        final TableContentChangedEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 

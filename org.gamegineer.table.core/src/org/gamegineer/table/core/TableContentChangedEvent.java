@@ -1,6 +1,6 @@
 /*
- * CardChangeEvent.java
- * Copyright 2008-2009 Gamegineer.org
+ * TableContentChangedEvent.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,15 +24,15 @@ package org.gamegineer.table.core;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * Superclass for all event objects used to notify listeners that a card has
- * been added, modified, or removed.
+ * Superclass for all event objects used to notify listeners that the content of
+ * a table has changed.
  * 
  * @noextend This class is not intended to be subclassed by clients.
  */
 @ThreadSafe
-public abstract class CardChangeEvent
+public abstract class TableContentChangedEvent
     extends TableEvent
-    implements ICardChangeEvent
+    implements ITableContentChangedEvent
 {
     // ======================================================================
     // Fields
@@ -47,7 +47,7 @@ public abstract class CardChangeEvent
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardChangeEvent} class.
+     * Initializes a new instance of the {@code TableContentChangedEvent} class.
      * 
      * @param source
      *        The table that fired the event; must not be {@code null}.
@@ -55,7 +55,7 @@ public abstract class CardChangeEvent
      * @throws java.lang.IllegalArgumentException
      *         If {@code source} is {@code null}.
      */
-    protected CardChangeEvent(
+    protected TableContentChangedEvent(
         /* @NonNull */
         @SuppressWarnings( "hiding" )
         final ITable source )

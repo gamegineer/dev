@@ -1,6 +1,6 @@
 /*
  * Table.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,10 +31,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.CardChangeEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
+import org.gamegineer.table.core.TableContentChangedEvent;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ITable}.
@@ -118,7 +118,7 @@ public final class Table
     {
         assert card != null;
 
-        final CardChangeEvent event = InternalCardChangeEvent.createCardChangeEvent( this, card );
+        final TableContentChangedEvent event = InternalTableContentChangedEvent.createTableContentChangedEvent( this, card );
         for( final ITableListener listener : listeners_ )
         {
             try
@@ -144,7 +144,7 @@ public final class Table
     {
         assert card != null;
 
-        final CardChangeEvent event = InternalCardChangeEvent.createCardChangeEvent( this, card );
+        final TableContentChangedEvent event = InternalTableContentChangedEvent.createTableContentChangedEvent( this, card );
         for( final ITableListener listener : listeners_ )
         {
             try

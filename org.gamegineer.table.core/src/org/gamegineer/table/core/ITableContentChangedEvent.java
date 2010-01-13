@@ -1,6 +1,6 @@
 /*
- * AbstractAbstractCardChangeEventTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * ITableContentChangedEvent.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,31 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 16, 2009 at 10:50:37 PM.
+ * Created on Oct 16, 2009 at 9:55:39 PM.
  */
 
 package org.gamegineer.table.core;
 
 /**
- * A fixture for testing the basic aspects of classes that extend the
- * {@link org.gamegineer.table.core.CardChangeEvent} class.
+ * The interface that defines the behavior for all event objects used to notify
+ * listeners that the content of a table has changed.
  * 
- * @param <T>
- *        The type of the card change event.
+ * @noextend This interface is not intended to be extended by clients.
+ * 
+ * @noimplement This interface is not intended to be implemented by clients.
  */
-public abstract class AbstractAbstractCardChangeEventTestCase<T extends CardChangeEvent>
-    extends AbstractAbstractTableEventTestCase<T>
+public interface ITableContentChangedEvent
+    extends ITableEvent
 {
     // ======================================================================
-    // Constructors
+    // Methods
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractAbstractCardChangeEventTestCase} class.
+     * Gets the card associated with the event.
+     * 
+     * @return The card associated with the event; never {@code null}.
      */
-    protected AbstractAbstractCardChangeEventTestCase()
-    {
-        super();
-    }
+    /* @NonNull */
+    public ICard getCard();
 }

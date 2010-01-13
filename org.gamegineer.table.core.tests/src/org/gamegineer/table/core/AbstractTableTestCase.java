@@ -1,6 +1,6 @@
 /*
  * AbstractTableTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -139,7 +139,7 @@ public abstract class AbstractTableTestCase
         {
             @Override
             public void cardAdded(
-                final CardChangeEvent event )
+                final TableContentChangedEvent event )
             {
                 super.cardAdded( event );
 
@@ -336,7 +336,7 @@ public abstract class AbstractTableTestCase
         {
             @Override
             public void cardRemoved(
-                final CardChangeEvent event )
+                final TableContentChangedEvent event )
             {
                 super.cardRemoved( event );
 

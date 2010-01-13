@@ -1,6 +1,6 @@
 /*
- * InternalCardChangeEventTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * InternalTableContentChangedEventTest.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,19 +29,20 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.InternalCardChangeEvent} class.
+ * {@link org.gamegineer.table.internal.core.InternalTableContentChangedEvent}
+ * class.
  */
-public final class InternalCardChangeEventTest
+public final class InternalTableContentChangedEventTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code InternalCardChangeEventTest}
-     * class.
+     * Initializes a new instance of the {@code
+     * InternalTableContentChangedEventTest} class.
      */
-    public InternalCardChangeEventTest()
+    public InternalTableContentChangedEventTest()
     {
         super();
     }
@@ -52,32 +53,32 @@ public final class InternalCardChangeEventTest
     // ======================================================================
 
     /**
-     * Ensures the {@code createCardChangeEvent} method throws an exception when
-     * passed a {@code null} card.
+     * Ensures the {@code createTableContentChangedEvent} method throws an
+     * exception when passed a {@code null} card.
      */
     @Test( expected = AssertionError.class )
-    public void testCreateCardChangeEvent_Card_Null()
+    public void testCreateTableContentChangedEvent_Card_Null()
     {
-        InternalCardChangeEvent.createCardChangeEvent( createDummy( ITable.class ), null );
+        InternalTableContentChangedEvent.createTableContentChangedEvent( createDummy( ITable.class ), null );
     }
 
     /**
-     * Ensures the {@code createCardChangeEvent} method does not return {@code
-     * null}.
+     * Ensures the {@code createTableContentChangedEvent} method does not return
+     * {@code null}.
      */
     @Test
-    public void testCreateCardChangeEvent_ReturnValue_NonNull()
+    public void testCreateTableContentChangedEvent_ReturnValue_NonNull()
     {
-        assertNotNull( InternalCardChangeEvent.createCardChangeEvent( createDummy( ITable.class ), createDummy( ICard.class ) ) );
+        assertNotNull( InternalTableContentChangedEvent.createTableContentChangedEvent( createDummy( ITable.class ), createDummy( ICard.class ) ) );
     }
 
     /**
-     * Ensures the {@code createCardChangeEvent} method throws an exception when
-     * passed a {@code null} table.
+     * Ensures the {@code createTableContentChangedEvent} method throws an
+     * exception when passed a {@code null} table.
      */
     @Test( expected = AssertionError.class )
-    public void testCreateCardChangeEvent_Table_Null()
+    public void testCreateTableContentChangedEvent_Table_Null()
     {
-        InternalCardChangeEvent.createCardChangeEvent( null, createDummy( ICard.class ) );
+        InternalTableContentChangedEvent.createTableContentChangedEvent( null, createDummy( ICard.class ) );
     }
 }

@@ -1,6 +1,6 @@
 /*
- * InternalCardChangeEventAsAbstractCardChangeEventTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * InternalTableContentChangedEventAsTableContentChangedEventTest.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,24 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 16, 2009 at 11:23:41 PM.
+ * Created on Oct 16, 2009 at 11:21:33 PM.
  */
 
 package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.test.core.DummyFactory.createDummy;
-import org.gamegineer.table.core.AbstractAbstractCardChangeEventTestCase;
+import org.gamegineer.table.core.AbstractTableContentChangedEventTestCase;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ITable;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.InternalCardChangeEvent} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.CardChangeEvent} class.
+ * {@link org.gamegineer.table.internal.core.InternalTableContentChangedEvent}
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.ITableContentChangedEvent} interface.
  */
-public final class InternalCardChangeEventAsAbstractCardChangeEventTest
-    extends AbstractAbstractCardChangeEventTestCase<InternalCardChangeEvent>
+public final class InternalTableContentChangedEventAsTableContentChangedEventTest
+    extends AbstractTableContentChangedEventTestCase<InternalTableContentChangedEvent>
 {
     // ======================================================================
     // Constructors
@@ -41,9 +41,9 @@ public final class InternalCardChangeEventAsAbstractCardChangeEventTest
 
     /**
      * Initializes a new instance of the {@code
-     * InternalCardChangeEventAsAbstractCardChangeEventTest} class.
+     * InternalTableContentChangedEventAsTableContentChangedEventTest} class.
      */
-    public InternalCardChangeEventAsAbstractCardChangeEventTest()
+    public InternalTableContentChangedEventAsTableContentChangedEventTest()
     {
         super();
     }
@@ -54,11 +54,11 @@ public final class InternalCardChangeEventAsAbstractCardChangeEventTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractAbstractTableEventTestCase#createTableEvent()
+     * @see org.gamegineer.table.core.AbstractTableEventTestCase#createTableEvent()
      */
     @Override
-    protected InternalCardChangeEvent createTableEvent()
+    protected InternalTableContentChangedEvent createTableEvent()
     {
-        return InternalCardChangeEvent.createCardChangeEvent( createDummy( ITable.class ), createDummy( ICard.class ) );
+        return InternalTableContentChangedEvent.createTableContentChangedEvent( createDummy( ITable.class ), createDummy( ICard.class ) );
     }
 }

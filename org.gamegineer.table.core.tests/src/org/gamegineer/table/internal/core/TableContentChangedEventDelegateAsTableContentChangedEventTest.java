@@ -1,6 +1,6 @@
 /*
- * CardChangeEventDelegateAsCardChangeEventTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * TableContentChangedEventDelegateAsTableContentChangedEventTest.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,18 +22,18 @@
 package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.test.core.DummyFactory.createDummy;
-import org.gamegineer.table.core.AbstractCardChangeEventTestCase;
+import org.gamegineer.table.core.AbstractTableContentChangedEventTestCase;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ITable;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.CardChangeEventDelegate} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.ICardChangeEvent} interface.
+ * {@link org.gamegineer.table.internal.core.TableContentChangedEventDelegate}
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.ITableContentChangedEvent} interface.
  */
-public final class CardChangeEventDelegateAsCardChangeEventTest
-    extends AbstractCardChangeEventTestCase<CardChangeEventDelegate>
+public final class TableContentChangedEventDelegateAsTableContentChangedEventTest
+    extends AbstractTableContentChangedEventTestCase<TableContentChangedEventDelegate>
 {
     // ======================================================================
     // Constructors
@@ -41,9 +41,9 @@ public final class CardChangeEventDelegateAsCardChangeEventTest
 
     /**
      * Initializes a new instance of the {@code
-     * CardChangeEventDelegateAsCardChangeEventTest} class.
+     * TableContentChangedEventDelegateAsTableContentChangedEventTest} class.
      */
-    public CardChangeEventDelegateAsCardChangeEventTest()
+    public TableContentChangedEventDelegateAsTableContentChangedEventTest()
     {
         super();
     }
@@ -57,8 +57,8 @@ public final class CardChangeEventDelegateAsCardChangeEventTest
      * @see org.gamegineer.table.core.AbstractTableEventTestCase#createTableEvent()
      */
     @Override
-    protected CardChangeEventDelegate createTableEvent()
+    protected TableContentChangedEventDelegate createTableEvent()
     {
-        return new CardChangeEventDelegate( createDummy( ITable.class ), createDummy( ICard.class ) );
+        return new TableContentChangedEventDelegate( createDummy( ITable.class ), createDummy( ICard.class ) );
     }
 }

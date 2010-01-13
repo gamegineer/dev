@@ -1,6 +1,6 @@
 /*
- * AbstractCardChangeEventTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * TableContentChangedEventDelegateTest.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,33 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 16, 2009 at 10:28:26 PM.
+ * Created on Oct 16, 2009 at 11:04:38 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.internal.core;
 
-import static org.junit.Assert.assertNotNull;
+import static org.gamegineer.test.core.DummyFactory.createDummy;
+import org.gamegineer.table.core.ITable;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.core.ICardChangeEvent} interface.
- * 
- * @param <T>
- *        The type of the card change event.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.core.TableContentChangedEventDelegate}
+ * class.
  */
-public abstract class AbstractCardChangeEventTestCase<T extends ICardChangeEvent>
-    extends AbstractTableEventTestCase<T>
+public final class TableContentChangedEventDelegateTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractCardChangeEventTestCase}
-     * class.
+     * Initializes a new instance of the {@code
+     * TableContentChangedEventDelegateTest} class.
      */
-    protected AbstractCardChangeEventTestCase()
+    public TableContentChangedEventDelegateTest()
     {
         super();
     }
@@ -53,11 +51,12 @@ public abstract class AbstractCardChangeEventTestCase<T extends ICardChangeEvent
     // ======================================================================
 
     /**
-     * Ensures the {@code getCard} method does not return {@code null}.
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * card.
      */
-    @Test
-    public void testGetCard_ReturnValue_NonNull()
+    @Test( expected = AssertionError.class )
+    public void testConstructor_Card_Null()
     {
-        assertNotNull( getTableEvent().getCard() );
+        new TableContentChangedEventDelegate( createDummy( ITable.class ), null );
     }
 }

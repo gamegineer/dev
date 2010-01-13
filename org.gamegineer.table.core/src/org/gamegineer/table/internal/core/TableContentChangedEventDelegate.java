@@ -1,6 +1,6 @@
 /*
- * CardChangeEventDelegate.java
- * Copyright 2008-2009 Gamegineer.org
+ * TableContentChangedEventDelegate.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,18 +23,19 @@ package org.gamegineer.table.internal.core;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ICardChangeEvent;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.ITableContentChangedEvent;
 
 /**
- * An implementation of {@link org.gamegineer.table.core.ICardChangeEvent} to
- * which implementations of {@link org.gamegineer.table.core.CardChangeEvent}
+ * An implementation of
+ * {@link org.gamegineer.table.core.ITableContentChangedEvent} to which
+ * implementations of {@link org.gamegineer.table.core.TableContentChangedEvent}
  * can delegate their behavior.
  */
 @Immutable
-final class CardChangeEventDelegate
+final class TableContentChangedEventDelegate
     extends TableEventDelegate
-    implements ICardChangeEvent
+    implements ITableContentChangedEvent
 {
     // ======================================================================
     // Fields
@@ -49,14 +50,15 @@ final class CardChangeEventDelegate
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardChangeEventDelegate} class.
+     * Initializes a new instance of the {@code
+     * TableContentChangedEventDelegate} class.
      * 
      * @param table
      *        The table that fired the event; must not be {@code null}.
      * @param card
      *        The card associated with the event; must not be {@code null}.
      */
-    CardChangeEventDelegate(
+    TableContentChangedEventDelegate(
         /* @NonNull */
         final ITable table,
         /* @NonNull */
@@ -75,7 +77,7 @@ final class CardChangeEventDelegate
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.ICardChangeEvent#getCard()
+     * @see org.gamegineer.table.core.ITableContentChangedEvent#getCard()
      */
     public ICard getCard()
     {

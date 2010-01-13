@@ -1,6 +1,6 @@
 /*
- * InternalCardChangeEvent.java
- * Copyright 2008-2009 Gamegineer.org
+ * InternalTableContentChangedEvent.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,17 +22,17 @@
 package org.gamegineer.table.internal.core;
 
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.CardChangeEvent;
 import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ICardChangeEvent;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.ITableContentChangedEvent;
+import org.gamegineer.table.core.TableContentChangedEvent;
 
 /**
- * Implementation of {@link org.gamegineer.table.core.CardChangeEvent}.
+ * Implementation of {@link org.gamegineer.table.core.TableContentChangedEvent}.
  */
 @ThreadSafe
-final class InternalCardChangeEvent
-    extends CardChangeEvent
+final class InternalTableContentChangedEvent
+    extends TableContentChangedEvent
 {
     // ======================================================================
     // Fields
@@ -41,8 +41,11 @@ final class InternalCardChangeEvent
     /** Serializable class version number. */
     private static final long serialVersionUID = 685439950163321404L;
 
-    /** The card change event implementation to which all behavior is delegated. */
-    private final ICardChangeEvent delegate_;
+    /**
+     * The table content changed event implementation to which all behavior is
+     * delegated.
+     */
+    private final ITableContentChangedEvent delegate_;
 
 
     // ======================================================================
@@ -50,18 +53,19 @@ final class InternalCardChangeEvent
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code InternalCardChangeEvent} class.
+     * Initializes a new instance of the {@code
+     * InternalTableContentChangedEvent} class.
      * 
      * @param delegate
-     *        The card change event implementation to which all behavior is
-     *        delegated; must not be {@code null}.
+     *        The table content changed event implementation to which all
+     *        behavior is delegated; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code delegate} is {@code null}.
      */
-    private InternalCardChangeEvent(
+    private InternalTableContentChangedEvent(
         /* @NonNull */
-        final ICardChangeEvent delegate )
+        final ITableContentChangedEvent delegate )
     {
         super( delegate.getTable() );
 
@@ -74,17 +78,18 @@ final class InternalCardChangeEvent
     // ======================================================================
 
     /**
-     * Creates a new instance of the {@code InternalCardChangeEvent} class.
+     * Creates a new instance of the {@code InternalTableContentChangedEvent}
+     * class.
      * 
      * @param table
      *        The table that fired the event; must not be {@code null}.
      * @param card
      *        The card associated with the event; must not be {@code null}.
      * 
-     * @return A new instance of the {@code InternalCardChangeEvent} class;
-     *         never {@code null}.
+     * @return A new instance of the {@code InternalTableContentChangedEvent}
+     *         class; never {@code null}.
      */
-    static InternalCardChangeEvent createCardChangeEvent(
+    static InternalTableContentChangedEvent createTableContentChangedEvent(
         /* @NonNull */
         final ITable table,
         /* @NonNull */
@@ -93,11 +98,11 @@ final class InternalCardChangeEvent
         assert table != null;
         assert card != null;
 
-        return new InternalCardChangeEvent( new CardChangeEventDelegate( table, card ) );
+        return new InternalTableContentChangedEvent( new TableContentChangedEventDelegate( table, card ) );
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardChangeEvent#getCard()
+     * @see org.gamegineer.table.core.ITableContentChangedEvent#getCard()
      */
     public ICard getCard()
     {

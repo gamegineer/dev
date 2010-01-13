@@ -1,6 +1,6 @@
 /*
- * InternalCardChangeEventAsCardChangeEventTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * AbstractTableContentChangedEventTestCase.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,24 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 16, 2009 at 11:21:33 PM.
+ * Created on Oct 16, 2009 at 10:28:26 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.core;
 
-import static org.gamegineer.test.core.DummyFactory.createDummy;
-import org.gamegineer.table.core.AbstractCardChangeEventTestCase;
-import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ITable;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.InternalCardChangeEvent} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.ICardChangeEvent} interface.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.core.ITableContentChangedEvent} interface.
+ * 
+ * @param <T>
+ *        The type of the table content changed event.
  */
-public final class InternalCardChangeEventAsCardChangeEventTest
-    extends AbstractCardChangeEventTestCase<InternalCardChangeEvent>
+public abstract class AbstractTableContentChangedEventTestCase<T extends ITableContentChangedEvent>
+    extends AbstractTableEventTestCase<T>
 {
     // ======================================================================
     // Constructors
@@ -41,9 +40,9 @@ public final class InternalCardChangeEventAsCardChangeEventTest
 
     /**
      * Initializes a new instance of the {@code
-     * InternalCardChangeEventAsCardChangeEventTest} class.
+     * AbstractTableContentChangedEventTestCase} class.
      */
-    public InternalCardChangeEventAsCardChangeEventTest()
+    protected AbstractTableContentChangedEventTestCase()
     {
         super();
     }
@@ -53,12 +52,12 @@ public final class InternalCardChangeEventAsCardChangeEventTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.core.AbstractTableEventTestCase#createTableEvent()
+    /**
+     * Ensures the {@code getCard} method does not return {@code null}.
      */
-    @Override
-    protected InternalCardChangeEvent createTableEvent()
+    @Test
+    public void testGetCard_ReturnValue_NonNull()
     {
-        return InternalCardChangeEvent.createCardChangeEvent( createDummy( ITable.class ), createDummy( ICard.class ) );
+        assertNotNull( getTableEvent().getCard() );
     }
 }

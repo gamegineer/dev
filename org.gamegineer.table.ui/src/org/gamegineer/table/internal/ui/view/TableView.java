@@ -1,6 +1,6 @@
 /*
  * TableView.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,12 +44,12 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
-import org.gamegineer.table.core.CardChangeEvent;
 import org.gamegineer.table.core.CardDesignId;
 import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardDesign;
 import org.gamegineer.table.core.ITableListener;
+import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.internal.ui.Services;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
@@ -264,10 +264,10 @@ final class TableView
     }
 
     /*
-     * @see org.gamegineer.table.core.ITableListener#cardAdded(org.gamegineer.table.core.CardChangeEvent)
+     * @see org.gamegineer.table.core.ITableListener#cardAdded(org.gamegineer.table.core.TableContentChangedEvent)
      */
     public void cardAdded(
-        final CardChangeEvent event )
+        final TableContentChangedEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
@@ -328,10 +328,10 @@ final class TableView
     }
 
     /*
-     * @see org.gamegineer.table.core.ITableListener#cardRemoved(org.gamegineer.table.core.CardChangeEvent)
+     * @see org.gamegineer.table.core.ITableListener#cardRemoved(org.gamegineer.table.core.TableContentChangedEvent)
      */
     public void cardRemoved(
-        final CardChangeEvent event )
+        final TableContentChangedEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 

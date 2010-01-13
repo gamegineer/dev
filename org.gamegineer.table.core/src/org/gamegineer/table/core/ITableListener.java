@@ -1,6 +1,6 @@
 /*
  * ITableListener.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -47,7 +47,7 @@ public interface ITableListener
      */
     public void cardAdded(
         /* @NonNull */
-        CardChangeEvent event );
+        TableContentChangedEvent event );
 
     /**
      * Invoked after a card has been removed from the table.
@@ -60,5 +60,5 @@ public interface ITableListener
      */
     public void cardRemoved(
         /* @NonNull */
-        CardChangeEvent event );
+        TableContentChangedEvent event );
 }

@@ -1,6 +1,6 @@
 /*
  * TableModel.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,10 +29,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.CardChangeEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
+import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.internal.ui.Loggers;
 
 /**
@@ -127,11 +127,11 @@ public final class TableModel
     }
 
     /*
-     * @see org.gamegineer.table.core.ITableListener#cardAdded(org.gamegineer.table.core.CardChangeEvent)
+     * @see org.gamegineer.table.core.ITableListener#cardAdded(org.gamegineer.table.core.TableContentChangedEvent)
      */
     @Override
     public void cardAdded(
-        final CardChangeEvent event )
+        final TableContentChangedEvent event )
     {
         synchronized( lock_ )
         {
@@ -140,11 +140,11 @@ public final class TableModel
     }
 
     /*
-     * @see org.gamegineer.table.core.ITableListener#cardRemoved(org.gamegineer.table.core.CardChangeEvent)
+     * @see org.gamegineer.table.core.ITableListener#cardRemoved(org.gamegineer.table.core.TableContentChangedEvent)
      */
     @Override
     public void cardRemoved(
-        final CardChangeEvent event )
+        final TableContentChangedEvent event )
     {
         final ICard card = event.getCard();
         final boolean clearFocusedCard;
