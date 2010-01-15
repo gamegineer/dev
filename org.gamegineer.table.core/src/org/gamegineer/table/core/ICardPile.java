@@ -21,27 +21,12 @@
 
 package org.gamegineer.table.core;
 
-// TODO: we're going to add this type in stages.
-//
-// first we'll work out the interface details and get everything working with card piles by themselves
-//
-// then we need to decide how we're going to introduce them into the card table.  i suggest we first
-// modify the table to only handle instances of ICardPile like we did with the previous card table
-// implementations (C++ and C#).  if we try to move into table components/containers at this time, we
-// may waste a lot of time for something that's not needed until we move on to the "grand plan"
-//
-// then again, it may be time well spent to work out the details of table components and containers now.
-//
-// however, i'm of the opinion that implementing the simple case first and then moving on to the more
-// complex case will be more helpful in the long run.
-//
-// the only issue with having card piles be the sole child of the table is that we can no longer move
-// cards around by themselves.  again, that may be fine or it may not be.  but given that we WILL
-// eventually allow it, maybe it's something we shouldn't worry about at this point.
-
 /**
- * TODO
+ * A card pile.
  * 
+ * @noextend This interface is not intended to be extended by clients.
+ * 
+ * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface ICardPile
 {
@@ -49,41 +34,70 @@ public interface ICardPile
     // Methods
     // ======================================================================
 
-    // TODO: milestone 1 says we will only support stacked piles for now.
-    //
-    // which means we only need to be able to add/remove cards from the top of the pile?
-
-    // METHODS:
-    //      - add card (to top of pile)
-    //      - remove card (from top of pile)
-    //      - get card (at top of pile)
-
+    /**
+     * Adds the specified card to the top of this card pile.
+     * 
+     * @param card
+     *        The card; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code card} is {@code null}.
+     */
     public void addCard(
         /* @NonNull */
         ICard card );
 
+    /**
+     * Adds the specified card pile listener to this card pile.
+     * 
+     * @param listener
+     *        The card pile listener; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code listener} is already a registered card pile listener.
+     * @throws java.lang.NullPointerException
+     *         If {@code listener} is {@code null}.
+     */
     public void addCardPileListener(
         /* @NonNull */
         ICardPileListener listener );
 
-    // TODO: see discussion below in removeCard() about whether this method should
-    // return null or fail if the card pile is empty.
+    /**
+     * Gets the card at the top of this card pile.
+     * 
+     * @return The card at the top of this card pile or {@code null} if this
+     *         card pile is empty.
+     */
     /* @Nullable */
-    public ICard getCard(); // XXX: getTopCard ?
+    public ICard getCard();
 
-    // TODO: do we need a method to get a card count? or at least an isEmpty method?
-    // --> will add an isEmpty method for now because it will be used by the view to
-    // determine which commands are available for the card pile
+    /**
+     * Indicates this card pile is empty.
+     * 
+     * @return {@code true} if this card pile is empty; otherwise {@code false}.
+     */
     public boolean isEmpty();
 
-    // TODO: should this method return null if the card pile is empty or should it fail?
-    // i think simply returning null is better because it is thread-safe.  if we force the
-    // caller to check isEmpty before calling removeCard, we introduce a TOCTOU condition.
-    //
-    // in both C++ and C# versions of Card Table, we threw an exception if the pile was empty!
+    /**
+     * Removes the card at the top of this card pile.
+     * 
+     * @return The card that was removed or {@code null} if this card pile is
+     *         empty.
+     */
     /* @Nullable */
     public ICard removeCard();
 
+    /**
+     * Removes the specified card pile listener from this card pile.
+     * 
+     * @param listener
+     *        The card pile listener; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code listener} is not a registered card pile listener.
+     * @throws java.lang.NullPointerException
+     *         If {@code listener} is {@code null}.
+     */
     public void removeCardPileListener(
         /* @NonNull */
         ICardPileListener listener );

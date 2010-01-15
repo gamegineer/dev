@@ -1,6 +1,6 @@
 /*
  * Messages.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -68,6 +68,20 @@ final class Messages
 
     /** The card design width must not be negative. */
     public static String CardDesign_ctor_width_negative;
+
+    // --- CardPile ---------------------------------------------------------
+
+    /** The card pile listener is already registered. */
+    public static String CardPile_addCardPileListener_listener_registered;
+
+    /** An unexpected exception was thrown from ICardPileListener.cardAdded(). */
+    public static String CardPile_cardAdded_unexpectedException;
+
+    /** An unexpected exception was thrown from ICardPileListener.cardRemoved(). */
+    public static String CardPile_cardRemoved_unexpectedException;
+
+    /** The card pile listener is not registered. */
+    public static String CardPile_removeCardPileListener_listener_notRegistered;
 
     // --- Services ---------------------------------------------------------
 
