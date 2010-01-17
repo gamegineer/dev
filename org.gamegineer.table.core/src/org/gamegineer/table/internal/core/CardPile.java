@@ -85,7 +85,10 @@ public final class CardPile
 
         synchronized( lock_ )
         {
-            cards_.add( card );
+            if( !cards_.contains( card ) )
+            {
+                cards_.add( card );
+            }
         }
 
         fireCardAdded( card );
@@ -154,34 +157,13 @@ public final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#getCard()
+     * @see org.gamegineer.table.core.ICardPile#getCards()
      */
-    public ICard getCard()
-    {
-        final ICard card;
-        synchronized( lock_ )
-        {
-            if( cards_.isEmpty() )
-            {
-                card = null;
-            }
-            else
-            {
-                card = cards_.get( cards_.size() - 1 );
-            }
-        }
-
-        return card;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ICardPile#isEmpty()
-     */
-    public boolean isEmpty()
+    public List<ICard> getCards()
     {
         synchronized( lock_ )
         {
-            return cards_.isEmpty();
+            return new ArrayList<ICard>( cards_ );
         }
     }
 

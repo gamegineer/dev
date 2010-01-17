@@ -22,11 +22,10 @@
 package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -123,7 +122,8 @@ public abstract class AbstractCardPileTestCase
 
         cardPile_.addCard( card );
 
-        assertSame( card, cardPile_.getCard() );
+        final List<ICard> cards = cardPile_.getCards();
+        assertSame( card, cards.get( cards.size() - 1 ) );
     }
 
     /**
@@ -185,7 +185,14 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testAddCard_Card_Present()
     {
-        // TODO
+        final ICard card = createCard();
+        cardPile_.addCard( card );
+
+        cardPile_.addCard( card );
+
+        final List<ICard> cards = cardPile_.getCards();
+        assertSame( card, cards.get( cards.size() - 1 ) );
+        assertEquals( 1, cards.size() );
     }
 
     /**
@@ -212,48 +219,27 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code getCard} method returns {@code null} when the card
-     * pile is empty.
+     * Ensures the {@code getCards} method returns a copy of the card
+     * collection.
      */
     @Test
-    public void testGetCard_Empty()
+    public void testGetCards_ReturnValue_Copy()
     {
-        assertNull( cardPile_.getCard() );
-    }
+        final List<ICard> cards = cardPile_.getCards();
+        final int expectedCardsSize = cards.size();
 
-    /**
-     * Ensures the {@code getCard} method returns the card at the top of the
-     * card pile when the card pile is not empty.
-     */
-    @Test
-    public void testGetCard_NotEmpty()
-    {
-        final ICard card = createCard();
-        cardPile_.addCard( card );
-
-        assertSame( card, cardPile_.getCard() );
-    }
-
-    /**
-     * Ensures the {@code isEmpty} method returns {@code true} if the card pile
-     * is empty.
-     */
-    @Test
-    public void testIsEmpty_Empty()
-    {
-        assertTrue( cardPile_.isEmpty() );
-    }
-
-    /**
-     * Ensures the {@code isEmpty} method returns {@code false} if the card pile
-     * is not empty.
-     */
-    @Test
-    public void testIsEmpty_NotEmpty()
-    {
         cardPile_.addCard( createCard() );
 
-        assertFalse( cardPile_.isEmpty() );
+        assertEquals( expectedCardsSize, cards.size() );
+    }
+
+    /**
+     * Ensures the {@code getCards} method does not return {@code null}.
+     */
+    @Test
+    public void testGetCards_ReturnValue_NonNull()
+    {
+        assertNotNull( cardPile_.getCards() );
     }
 
     /**
@@ -326,7 +312,7 @@ public abstract class AbstractCardPileTestCase
         final ICard actualCard = cardPile_.removeCard();
 
         assertSame( expectedCard, actualCard );
-        assertTrue( cardPile_.isEmpty() );
+        assertEquals( 0, cardPile_.getCards().size() );
     }
 
     /**

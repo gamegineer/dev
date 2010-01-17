@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.awt.Point;
-import java.util.Collection;
+import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -192,7 +192,7 @@ public abstract class AbstractTableTestCase
 
         table_.addCard( card );
 
-        final Collection<ICard> cards = table_.getCards();
+        final List<ICard> cards = table_.getCards();
         assertTrue( cards.contains( card ) );
         assertEquals( 1, cards.size() );
     }
@@ -284,7 +284,7 @@ public abstract class AbstractTableTestCase
     @Test
     public void testGetCards_ReturnValue_Copy()
     {
-        final Collection<ICard> cards = table_.getCards();
+        final List<ICard> cards = table_.getCards();
         final int expectedCardsSize = cards.size();
 
         table_.addCard( createCard() );
@@ -383,7 +383,7 @@ public abstract class AbstractTableTestCase
 
         table_.removeCard( card );
 
-        final Collection<ICard> cards = table_.getCards();
+        final List<ICard> cards = table_.getCards();
         assertFalse( cards.contains( card ) );
         assertEquals( 0, cards.size() );
     }

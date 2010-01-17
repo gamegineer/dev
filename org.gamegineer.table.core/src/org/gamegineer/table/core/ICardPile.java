@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.core;
 
+import java.util.List;
+
 /**
  * A card pile.
  * 
@@ -36,6 +38,11 @@ public interface ICardPile
 
     /**
      * Adds the specified card to the top of this card pile.
+     * 
+     * <p>
+     * This method does nothing if the specified card is already in the card
+     * pile.
+     * </p>
      * 
      * @param card
      *        The card; must not be {@code null}.
@@ -63,20 +70,14 @@ public interface ICardPile
         ICardPileListener listener );
 
     /**
-     * Gets the card at the top of this card pile.
+     * Gets the collection of cards in this card pile.
      * 
-     * @return The card at the top of this card pile or {@code null} if this
-     *         card pile is empty.
+     * @return The collection of cards in this card pile; never {@code null}.
+     *         The cards are returned in order from the card at the bottom of
+     *         the card pile to the card at the top of the card pile.
      */
-    /* @Nullable */
-    public ICard getCard();
-
-    /**
-     * Indicates this card pile is empty.
-     * 
-     * @return {@code true} if this card pile is empty; otherwise {@code false}.
-     */
-    public boolean isEmpty();
+    /* @NonNull */
+    public List<ICard> getCards();
 
     /**
      * Removes the card at the top of this card pile.
