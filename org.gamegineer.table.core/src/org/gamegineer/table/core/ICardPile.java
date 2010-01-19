@@ -21,6 +21,9 @@
 
 package org.gamegineer.table.core;
 
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.List;
 
 /**
@@ -70,6 +73,15 @@ public interface ICardPile
         ICardPileListener listener );
 
     /**
+     * Gets the bounds of this card pile in table coordinates.
+     * 
+     * @return The bounds of this card pile in table coordinates; never {@code
+     *         null} .
+     */
+    /* @NonNull */
+    public Rectangle getBounds();
+
+    /**
      * Gets the collection of cards in this card pile.
      * 
      * @return The collection of cards in this card pile; never {@code null}.
@@ -78,6 +90,32 @@ public interface ICardPile
      */
     /* @NonNull */
     public List<ICard> getCards();
+
+    /**
+     * Gets the design of the card pile base.
+     * 
+     * @return The design of the card pile base; never {@code null}.
+     */
+    /* @NonNull */
+    public ICardPileDesign getDesign();
+
+    /**
+     * Gets the location of this card pile in table coordinates.
+     * 
+     * @return The location of this card pile in table coordinates; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public Point getLocation();
+
+    /**
+     * Gets the size of this card pile in table coordinates.
+     * 
+     * @return The size of this card pile in table coordinates; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    public Dimension getSize();
 
     /**
      * Removes the card at the top of this card pile.
@@ -102,4 +140,18 @@ public interface ICardPile
     public void removeCardPileListener(
         /* @NonNull */
         ICardPileListener listener );
+
+    /**
+     * Sets the location of this card pile in table coordinates.
+     * 
+     * @param location
+     *        The location of this card pile in table coordinates; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code location} is {@code null}.
+     */
+    public void setLocation(
+        /* @NonNull */
+        Point location );
 }

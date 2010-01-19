@@ -48,11 +48,21 @@ public final class CardPileFactoryTest
     // ======================================================================
 
     /**
+     * Ensures the {@code createCardPile} method throws an exception when passed
+     * a {@code null} design.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateCardPile_Design_Null()
+    {
+        CardPileFactory.createCardPile( null );
+    }
+
+    /**
      * Ensures the {@code createCardPile} method does not return {@code null}.
      */
     @Test
     public void testCreateCardPile_ReturnValue_NonNull()
     {
-        assertNotNull( CardPileFactory.createCardPile() );
+        assertNotNull( CardPileFactory.createCardPile( CardPileDesigns.createUniqueCardPileDesign() ) );
     }
 }

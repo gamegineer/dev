@@ -49,6 +49,21 @@ public interface ICardPileListener
         /* @NonNull */
         CardPileContentChangedEvent event );
 
+    // TODO: transform to cardPileBoundsChanged
+
+    /**
+     * Invoked after the card pile location has changed.
+     * 
+     * @param event
+     *        The event describing the card pile; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void cardPileLocationChanged(
+        /* @NonNull */
+        CardPileEvent event );
+
     /**
      * Invoked after a card has been removed from the card pile.
      * 

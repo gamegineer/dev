@@ -1,5 +1,5 @@
 /*
- * CardPileFactory.java
+ * InternalCardPileEventAsAbstractCardPileEventTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,28 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 14, 2010 at 11:33:34 PM.
+ * Created on Jan 18, 2010 at 11:32:42 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.internal.core;
 
-import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.CardPile;
+import static org.gamegineer.test.core.DummyFactory.createDummy;
+import org.gamegineer.table.core.AbstractAbstractCardPileEventTestCase;
+import org.gamegineer.table.core.ICardPile;
 
 /**
- * A factory for creating card piles.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.core.InternalCardPileEvent} class to
+ * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.CardPileEvent} class.
  */
-@ThreadSafe
-public final class CardPileFactory
+public final class InternalCardPileEventAsAbstractCardPileEventTest
+    extends AbstractAbstractCardPileEventTestCase<InternalCardPileEvent>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileFactory} class.
+     * Initializes a new instance of the {@code
+     * InternalCardPileEventAsAbstractCardPileEventTest} class.
      */
-    private CardPileFactory()
+    public InternalCardPileEventAsAbstractCardPileEventTest()
     {
         super();
     }
@@ -47,22 +52,12 @@ public final class CardPileFactory
     // Methods
     // ======================================================================
 
-    /**
-     * Creates a new card pile.
-     * 
-     * @param design
-     *        The design of the card pile base; must not be {@code null}.
-     * 
-     * @return A new card pile; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code design} is {@code null}.
+    /*
+     * @see org.gamegineer.table.core.AbstractAbstractCardPileEventTestCase#createCardPileEvent()
      */
-    /* @NonNull */
-    public static ICardPile createCardPile(
-        /* @NonNull */
-        final ICardPileDesign design )
+    @Override
+    protected InternalCardPileEvent createCardPileEvent()
     {
-        return new CardPile( design );
+        return InternalCardPileEvent.createCardPileEvent( createDummy( ICardPile.class ) );
     }
 }

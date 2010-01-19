@@ -1,5 +1,5 @@
 /*
- * CardPileFactory.java
+ * InternalCardPileEventTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,28 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 14, 2010 at 11:33:34 PM.
+ * Created on Jan 18, 2010 at 11:32:15 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.internal.core;
 
-import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.CardPile;
+import static org.gamegineer.test.core.DummyFactory.createDummy;
+import static org.junit.Assert.assertNotNull;
+import org.gamegineer.table.core.ICardPile;
+import org.junit.Test;
 
 /**
- * A factory for creating card piles.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.core.InternalCardPileEvent} class.
  */
-@ThreadSafe
-public final class CardPileFactory
+public final class InternalCardPileEventTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileFactory} class.
+     * Initializes a new instance of the {@code InternalCardPileEventTest}
+     * class.
      */
-    private CardPileFactory()
+    public InternalCardPileEventTest()
     {
         super();
     }
@@ -48,21 +51,22 @@ public final class CardPileFactory
     // ======================================================================
 
     /**
-     * Creates a new card pile.
-     * 
-     * @param design
-     *        The design of the card pile base; must not be {@code null}.
-     * 
-     * @return A new card pile; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code design} is {@code null}.
+     * Ensures the {@code createCardPileEvent} method throws an exception when
+     * passed a {@code null} card pile.
      */
-    /* @NonNull */
-    public static ICardPile createCardPile(
-        /* @NonNull */
-        final ICardPileDesign design )
+    @Test( expected = AssertionError.class )
+    public void testCreateCardPileEvent_CardPile_Null()
     {
-        return new CardPile( design );
+        InternalCardPileEvent.createCardPileEvent( null );
+    }
+
+    /**
+     * Ensures the {@code createCardPileEvent} method does not return {@code
+     * null}.
+     */
+    @Test
+    public void testCreateCardPileEvent_ReturnValue_NonNull()
+    {
+        assertNotNull( InternalCardPileEvent.createCardPileEvent( createDummy( ICardPile.class ) ) );
     }
 }

@@ -23,6 +23,9 @@ package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -30,8 +33,10 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.CardPileContentChangedEvent;
+import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.ICardPileDesign;
 import org.gamegineer.table.core.ICardPileListener;
 
 /**
@@ -49,8 +54,15 @@ public final class CardPile
     @GuardedBy( "lock_ " )
     private final List<ICard> cards_;
 
+    /** The design of the card pile base. */
+    private final ICardPileDesign design_;
+
     /** The collection of card pile listeners. */
     private final CopyOnWriteArrayList<ICardPileListener> listeners_;
+
+    /** The card pile location in table coordinates. */
+    @GuardedBy( "lock_" )
+    private final Point location_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -62,12 +74,24 @@ public final class CardPile
 
     /**
      * Initializes a new instance of the {@code CardPile} class.
+     * 
+     * @param design
+     *        The design of the card pile base; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code design} is {@code null}.
      */
-    public CardPile()
+    public CardPile(
+        /* @NonNull */
+        final ICardPileDesign design )
     {
+        assertArgumentNotNull( design, "design" ); //$NON-NLS-1$
+
         lock_ = new Object();
         cards_ = new ArrayList<ICard>();
+        design_ = design;
         listeners_ = new CopyOnWriteArrayList<ICardPileListener>();
+        location_ = new Point( 0, 0 );
     }
 
 
@@ -131,6 +155,25 @@ public final class CardPile
     }
 
     /**
+     * Fires a card pile location changed event.
+     */
+    private void fireCardPileLocationChanged()
+    {
+        final CardPileEvent event = InternalCardPileEvent.createCardPileEvent( this );
+        for( final ICardPileListener listener : listeners_ )
+        {
+            try
+            {
+                listener.cardPileLocationChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardPile_cardPileLocationChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
      * Fires a card removed event.
      * 
      * @param card
@@ -157,6 +200,17 @@ public final class CardPile
     }
 
     /*
+     * @see org.gamegineer.table.core.ICardPile#getBounds()
+     */
+    public Rectangle getBounds()
+    {
+        synchronized( lock_ )
+        {
+            return new Rectangle( location_, design_.getSize() );
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.ICardPile#getCards()
      */
     public List<ICard> getCards()
@@ -165,6 +219,33 @@ public final class CardPile
         {
             return new ArrayList<ICard>( cards_ );
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPile#getDesign()
+     */
+    public ICardPileDesign getDesign()
+    {
+        return design_;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPile#getLocation()
+     */
+    public Point getLocation()
+    {
+        synchronized( lock_ )
+        {
+            return new Point( location_ );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPile#getSize()
+     */
+    public Dimension getSize()
+    {
+        return design_.getSize();
     }
 
     /*
@@ -201,5 +282,31 @@ public final class CardPile
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.CardPile_removeCardPileListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPile#setLocation(java.awt.Point)
+     */
+    public void setLocation(
+        final Point location )
+    {
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            location_.setLocation( location );
+        }
+
+        fireCardPileLocationChanged();
+    }
+
+    /*
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    @SuppressWarnings( "boxing" )
+    public String toString()
+    {
+        return String.format( "CardPile[cards_.size='%1$d', design_='%2$s', location_='%3$s'", cards_.size(), design_, getLocation() ); //$NON-NLS-1$
     }
 }

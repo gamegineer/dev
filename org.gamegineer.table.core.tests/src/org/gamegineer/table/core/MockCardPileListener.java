@@ -39,6 +39,9 @@ public class MockCardPileListener
     /** The count of card added events received. */
     private final AtomicInteger cardAddedEventCount_;
 
+    /** The count of card pile location changed events received. */
+    private final AtomicInteger cardPileLocationChangedEventCount_;
+
     /** The count of card removed events received. */
     private final AtomicInteger cardRemovedEventCount_;
 
@@ -53,6 +56,7 @@ public class MockCardPileListener
     public MockCardPileListener()
     {
         cardAddedEventCount_ = new AtomicInteger( 0 );
+        cardPileLocationChangedEventCount_ = new AtomicInteger( 0 );
         cardRemovedEventCount_ = new AtomicInteger( 0 );
     }
 
@@ -70,6 +74,17 @@ public class MockCardPileListener
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
         cardAddedEventCount_.incrementAndGet();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPileListener#cardPileLocationChanged(org.gamegineer.table.core.CardPileEvent)
+     */
+    public void cardPileLocationChanged(
+        final CardPileEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        cardPileLocationChangedEventCount_.incrementAndGet();
     }
 
     /*
@@ -91,6 +106,16 @@ public class MockCardPileListener
     public final int getCardAddedEventCount()
     {
         return cardAddedEventCount_.get();
+    }
+
+    /**
+     * Gets the count of card pile location changed events received.
+     * 
+     * @return The count of card pile location changed events received.
+     */
+    public final int getCardPileLocationChangedEventCount()
+    {
+        return cardPileLocationChangedEventCount_.get();
     }
 
     /**

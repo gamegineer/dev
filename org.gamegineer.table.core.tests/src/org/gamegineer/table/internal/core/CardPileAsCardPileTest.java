@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.AbstractCardPileTestCase;
+import org.gamegineer.table.core.CardPileDesigns;
 import org.gamegineer.table.core.ICardPile;
 
 /**
@@ -55,6 +56,6 @@ public final class CardPileAsCardPileTest
     @Override
     protected ICardPile createCardPile()
     {
-        return new CardPile();
+        return new CardPile( CardPileDesigns.createUniqueCardPileDesign() );
     }
 }
