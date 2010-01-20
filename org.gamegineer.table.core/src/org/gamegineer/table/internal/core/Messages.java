@@ -79,9 +79,9 @@ final class Messages
 
     /**
      * An unexpected exception was thrown from
-     * ICardPileListener.cardPileLocationChanged().
+     * ICardPileListener.cardPileBoundsChanged().
      */
-    public static String CardPile_cardPileLocationChanged_unexpectedException;
+    public static String CardPile_cardPileBoundsChanged_unexpectedException;
 
     /** An unexpected exception was thrown from ICardPileListener.cardRemoved(). */
     public static String CardPile_cardRemoved_unexpectedException;

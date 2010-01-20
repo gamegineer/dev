@@ -485,7 +485,7 @@ public abstract class AbstractCardPileTestCase
 
     /**
      * Ensures the {@code setLocation} method catches any exception thrown by
-     * the {@code cardPileLocationChanged} method of a card pile listener.
+     * the {@code cardPileBoundsChanged} method of a card pile listener.
      */
     @Test
     public void testSetLocation_CatchesListenerException()
@@ -493,10 +493,10 @@ public abstract class AbstractCardPileTestCase
         final MockCardPileListener listener1 = new MockCardPileListener()
         {
             @Override
-            public void cardPileLocationChanged(
+            public void cardPileBoundsChanged(
                 final CardPileEvent event )
             {
-                super.cardPileLocationChanged( event );
+                super.cardPileBoundsChanged( event );
 
                 throw new RuntimeException();
             }
@@ -507,22 +507,22 @@ public abstract class AbstractCardPileTestCase
 
         cardPile_.setLocation( new Point( 1010, 2020 ) );
 
-        assertEquals( 1, listener2.getCardPileLocationChangedEventCount() );
+        assertEquals( 1, listener2.getCardPileBoundsChangedEventCount() );
     }
 
     /**
-     * Ensures the {@code setLocation} method fires a card pile location changed
+     * Ensures the {@code setLocation} method fires a card pile bounds changed
      * event.
      */
     @Test
-    public void testSetLocation_FiresCardPileLocationChangedEvent()
+    public void testSetLocation_FiresCardPileBoundsChangedEvent()
     {
         final MockCardPileListener listener = new MockCardPileListener();
         cardPile_.addCardPileListener( listener );
 
         cardPile_.setLocation( new Point( 1010, 2020 ) );
 
-        assertEquals( 1, listener.getCardPileLocationChangedEventCount() );
+        assertEquals( 1, listener.getCardPileBoundsChangedEventCount() );
     }
 
     /**

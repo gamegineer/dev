@@ -108,13 +108,13 @@ public abstract class AbstractCardPileListenerTestCase
     }
 
     /**
-     * Ensures the {@code cardPileLocationChanged} method throws an exception
-     * when passed a {@code null} event.
+     * Ensures the {@code cardPileBoundsChanged} method throws an exception when
+     * passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
-    public void testCardPileLocationChanged_Event_Null()
+    public void testCardPileBoundsChanged_Event_Null()
     {
-        listener_.cardPileLocationChanged( null );
+        listener_.cardPileBoundsChanged( null );
     }
 
     /**

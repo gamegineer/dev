@@ -155,20 +155,20 @@ public final class CardPile
     }
 
     /**
-     * Fires a card pile location changed event.
+     * Fires a card pile bounds changed event.
      */
-    private void fireCardPileLocationChanged()
+    private void fireCardPileBoundsChanged()
     {
         final CardPileEvent event = InternalCardPileEvent.createCardPileEvent( this );
         for( final ICardPileListener listener : listeners_ )
         {
             try
             {
-                listener.cardPileLocationChanged( event );
+                listener.cardPileBoundsChanged( event );
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardPile_cardPileLocationChanged_unexpectedException, e );
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardPile_cardPileBoundsChanged_unexpectedException, e );
             }
         }
     }
@@ -297,7 +297,7 @@ public final class CardPile
             location_.setLocation( location );
         }
 
-        fireCardPileLocationChanged();
+        fireCardPileBoundsChanged();
     }
 
     /*
