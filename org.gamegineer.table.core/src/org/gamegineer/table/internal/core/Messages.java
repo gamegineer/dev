@@ -102,6 +102,9 @@ final class Messages
     /** The card design registry service tracker is not set. */
     public static String Services_cardDesignRegistryServiceTracker_notSet;
 
+    /** The card pile design registry service tracker is not set. */
+    public static String Services_cardPileDesignRegistryServiceTracker_notSet;
+
     // --- Table ------------------------------------------------------------
 
     /** The table listener is already registered. */

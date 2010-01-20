@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,6 +38,9 @@ public final class Activator
 
     /** The card designs extension point identifier. */
     public static final String EXTENSION_CARD_DESIGNS = "cardDesigns"; //$NON-NLS-1$
+
+    /** The card pile designs extension point identifier. */
+    public static final String EXTENSION_CARD_PILE_DESIGNS = "cardPileDesigns"; //$NON-NLS-1$
 
     /** The symbolic name of the bundle. */
     public static final String SYMBOLIC_NAME = "org.gamegineer.table.core"; //$NON-NLS-1$

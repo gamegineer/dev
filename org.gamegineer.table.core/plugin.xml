@@ -6,6 +6,10 @@
             id="cardDesigns"
             name="Card Designs"
             schema="schema/cardDesigns.exsd" />
+    <extension-point
+            id="cardPileDesigns"
+            name="Card Pile Designs"
+            schema="schema/cardPileDesigns.exsd" />
 
     <extension
             point="org.gamegineer.table.core.cardDesigns">
