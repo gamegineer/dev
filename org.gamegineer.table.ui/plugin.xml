@@ -6,6 +6,10 @@
             id="cardDesignUIs"
             name="Card Design User Interfaces"
             schema="schema/cardDesignUIs.exsd" />
+    <extension-point
+            id="cardPileDesignUIs"
+            name="Card Pile Design User Interfaces"
+            schema="schema/cardPileDesignUIs.exsd" />
 
     <extension
             point="org.gamegineer.table.ui.cardDesignUIs">

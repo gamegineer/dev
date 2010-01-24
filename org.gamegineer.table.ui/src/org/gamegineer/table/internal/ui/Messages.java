@@ -1,6 +1,6 @@
 /*
  * Messages.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,6 +45,9 @@ final class Messages
 
     /** The card design user interface registry service tracker is not set. */
     public static String Services_cardDesignUIRegistryServiceTracker_notSet;
+
+    /** The card pile design user interface registry service tracker is not set. */
+    public static String Services_cardPileDesignUIRegistryServiceTracker_notSet;
 
     /** The package administration service tracker is not set. */
     public static String Services_packageAdminServiceTracker_notSet;

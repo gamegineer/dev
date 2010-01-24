@@ -1,6 +1,6 @@
 /*
  * ServicesTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,6 +56,17 @@ public final class ServicesTest
     public void testGetCardDesignUIRegistry_ReturnValue_NonNull()
     {
         assertNotNull( Services.getDefault().getCardDesignUIRegistry() );
+    }
+
+    /**
+     * Ensures the {@code getCardPileDesignUIRegistry} method does not return
+     * {@code null}, which validates the card pile design user interface
+     * registry service was registered with OSGi correctly.
+     */
+    @Test
+    public void testGetCardPileDesignUIRegistry_ReturnValue_NonNull()
+    {
+        assertNotNull( Services.getDefault().getCardPileDesignUIRegistry() );
     }
 
     /**

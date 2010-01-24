@@ -1,6 +1,6 @@
 /*
  * Services.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,9 @@ import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.services.carddesignregistry.ICardDesignRegistry;
 import org.gamegineer.table.internal.ui.services.carddesignuiregistry.CardDesignUIRegistry;
+import org.gamegineer.table.internal.ui.services.cardpiledesignuiregistry.CardPileDesignUIRegistry;
 import org.gamegineer.table.ui.services.carddesignuiregistry.ICardDesignUIRegistry;
+import org.gamegineer.table.ui.services.cardpiledesignuiregistry.ICardPileDesignUIRegistry;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.packageadmin.PackageAdmin;
@@ -57,6 +59,12 @@ public final class Services
 
     /** The card design user interface registry service tracker. */
     private ServiceTracker cardDesignUIRegistryServiceTracker_;
+
+    /** The card pile design user interface registry service registration token. */
+    private ServiceRegistration cardPileDesignUIRegistryServiceRegistration_;
+
+    /** The card pile design user interface registry service tracker. */
+    private ServiceTracker cardPileDesignUIRegistryServiceTracker_;
 
     /** The package administration service tracker. */
     private ServiceTracker packageAdminServiceTracker_;
@@ -92,6 +100,11 @@ public final class Services
             packageAdminServiceTracker_.close();
             packageAdminServiceTracker_ = null;
         }
+        if( cardPileDesignUIRegistryServiceTracker_ != null )
+        {
+            cardPileDesignUIRegistryServiceTracker_.close();
+            cardPileDesignUIRegistryServiceTracker_ = null;
+        }
         if( cardDesignUIRegistryServiceTracker_ != null )
         {
             cardDesignUIRegistryServiceTracker_.close();
@@ -106,6 +119,11 @@ public final class Services
         // Unregister package-specific services
 
         // Unregister bundle-specific services
+        if( cardPileDesignUIRegistryServiceRegistration_ != null )
+        {
+            cardPileDesignUIRegistryServiceRegistration_.unregister();
+            cardPileDesignUIRegistryServiceRegistration_ = null;
+        }
         if( cardDesignUIRegistryServiceRegistration_ != null )
         {
             cardDesignUIRegistryServiceRegistration_.unregister();
@@ -146,6 +164,24 @@ public final class Services
         assertStateLegal( cardDesignUIRegistryServiceTracker_ != null, Messages.Services_cardDesignUIRegistryServiceTracker_notSet );
 
         return (ICardDesignUIRegistry)cardDesignUIRegistryServiceTracker_.getService();
+    }
+
+    /**
+     * Gets the card pile design user interface registry service managed by this
+     * object.
+     * 
+     * @return The card pile design user interface registry service managed by
+     *         this object; never {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If this object is not open.
+     */
+    /* @NonNull */
+    public ICardPileDesignUIRegistry getCardPileDesignUIRegistry()
+    {
+        assertStateLegal( cardPileDesignUIRegistryServiceTracker_ != null, Messages.Services_cardPileDesignUIRegistryServiceTracker_notSet );
+
+        return (ICardPileDesignUIRegistry)cardPileDesignUIRegistryServiceTracker_.getService();
     }
 
     /**
@@ -194,6 +230,7 @@ public final class Services
 
         // Register bundle-specific services
         cardDesignUIRegistryServiceRegistration_ = context.registerService( ICardDesignUIRegistry.class.getName(), new CardDesignUIRegistry(), null );
+        cardPileDesignUIRegistryServiceRegistration_ = context.registerService( ICardPileDesignUIRegistry.class.getName(), new CardPileDesignUIRegistry(), null );
 
         // Register package-specific services
 
@@ -202,6 +239,8 @@ public final class Services
         cardDesignRegistryServiceTracker_.open();
         cardDesignUIRegistryServiceTracker_ = new ServiceTracker( context, cardDesignUIRegistryServiceRegistration_.getReference(), null );
         cardDesignUIRegistryServiceTracker_.open();
+        cardPileDesignUIRegistryServiceTracker_ = new ServiceTracker( context, cardPileDesignUIRegistryServiceRegistration_.getReference(), null );
+        cardPileDesignUIRegistryServiceTracker_.open();
         packageAdminServiceTracker_ = new ServiceTracker( context, PackageAdmin.class.getName(), null );
         packageAdminServiceTracker_.open();
 
