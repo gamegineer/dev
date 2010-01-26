@@ -50,6 +50,34 @@ public interface ITableListener
         TableContentChangedEvent event );
 
     /**
+     * Invoked after a card pile has been added to the table.
+     * 
+     * @param event
+     *        The event describing the added card pile; must not be {@code null}
+     *        .
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void cardPileAdded(
+        /* @NonNull */
+        TableContentChangedEvent event );
+
+    /**
+     * Invoked after a card pile has been removed from the table.
+     * 
+     * @param event
+     *        The event describing the removed card pile; must not be {@code
+     *        null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void cardPileRemoved(
+        /* @NonNull */
+        TableContentChangedEvent event );
+
+    /**
      * Invoked after a card has been removed from the table.
      * 
      * @param event

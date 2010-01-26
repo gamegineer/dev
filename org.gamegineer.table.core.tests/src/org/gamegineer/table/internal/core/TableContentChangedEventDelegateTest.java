@@ -22,6 +22,8 @@
 package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.test.core.DummyFactory.createDummy;
+import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.junit.Test;
 
@@ -57,6 +59,16 @@ public final class TableContentChangedEventDelegateTest
     @Test( expected = AssertionError.class )
     public void testConstructor_Card_Null()
     {
-        new TableContentChangedEventDelegate( createDummy( ITable.class ), null );
+        new TableContentChangedEventDelegate( createDummy( ITable.class ), (ICard)null );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * card pile.
+     */
+    @Test( expected = AssertionError.class )
+    public void testConstructor_CardPile_Null()
+    {
+        new TableContentChangedEventDelegate( createDummy( ITable.class ), (ICardPile)null );
     }
 }

@@ -22,7 +22,12 @@
 package org.gamegineer.table.internal.core;
 
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.core.CardDesignId;
+import org.gamegineer.table.core.CardPileDesignId;
 import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ICardDesign;
+import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.ICardPileDesign;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableContentChangedEvent;
 
@@ -43,6 +48,9 @@ final class TableContentChangedEventDelegate
 
     /** The card associated with the event. */
     private final ICard card_;
+
+    /** The card pile associated with the event. */
+    private final ICardPile cardPile_;
 
 
     // ======================================================================
@@ -69,6 +77,36 @@ final class TableContentChangedEventDelegate
         assert card != null;
 
         card_ = card;
+
+        // XXX: TEMPORARY
+        final ICardPileDesign cardPileDesign = new CardPileDesign( CardPileDesignId.fromString( "dummy" ), 0, 0 ); //$NON-NLS-1$ 
+        cardPile_ = new CardPile( cardPileDesign );
+    }
+
+    /**
+     * Initializes a new instance of the {@code
+     * TableContentChangedEventDelegate} class.
+     * 
+     * @param table
+     *        The table that fired the event; must not be {@code null}.
+     * @param cardPile
+     *        The card pile associated with the event; must not be {@code null}.
+     */
+    TableContentChangedEventDelegate(
+        /* @NonNull */
+        final ITable table,
+        /* @NonNull */
+        final ICardPile cardPile )
+    {
+        super( table );
+
+        assert cardPile != null;
+
+        cardPile_ = cardPile;
+
+        // XXX: TEMPORARY
+        final ICardDesign cardDesign = new CardDesign( CardDesignId.fromString( "dummy" ), 0, 0 ); //$NON-NLS-1$
+        card_ = new Card( cardDesign, cardDesign );
     }
 
 
@@ -82,5 +120,13 @@ final class TableContentChangedEventDelegate
     public ICard getCard()
     {
         return card_;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITableContentChangedEvent#getCardPile()
+     */
+    public ICardPile getCardPile()
+    {
+        return cardPile_;
     }
 }

@@ -328,6 +328,28 @@ final class TableView
     }
 
     /*
+     * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
+     */
+    public void cardPileAdded(
+        final TableContentChangedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // TODO: IMPLEMENT
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
+     */
+    public void cardPileRemoved(
+        final TableContentChangedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // TODO: IMPLEMENT
+    }
+
+    /*
      * @see org.gamegineer.table.core.ITableListener#cardRemoved(org.gamegineer.table.core.TableContentChangedEvent)
      */
     public void cardRemoved(

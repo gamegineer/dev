@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.core;
 import static org.gamegineer.test.core.DummyFactory.createDummy;
 import static org.junit.Assert.assertNotNull;
 import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.junit.Test;
 
@@ -53,32 +54,62 @@ public final class InternalTableContentChangedEventTest
     // ======================================================================
 
     /**
-     * Ensures the {@code createTableContentChangedEvent} method throws an
-     * exception when passed a {@code null} card.
+     * Ensures the {@code createTableContentChangedEvent(ITable, ICard)} method
+     * throws an exception when passed a {@code null} card.
      */
     @Test( expected = AssertionError.class )
-    public void testCreateTableContentChangedEvent_Card_Null()
+    public void testCreateTableContentChangedEventFromCard_Card_Null()
     {
-        InternalTableContentChangedEvent.createTableContentChangedEvent( createDummy( ITable.class ), null );
+        InternalTableContentChangedEvent.createTableContentChangedEvent( createDummy( ITable.class ), (ICard)null );
     }
 
     /**
-     * Ensures the {@code createTableContentChangedEvent} method does not return
-     * {@code null}.
+     * Ensures the {@code createTableContentChangedEvent(ITable, ICard)} method
+     * does not return {@code null}.
      */
     @Test
-    public void testCreateTableContentChangedEvent_ReturnValue_NonNull()
+    public void testCreateTableContentChangedEventFromCard_ReturnValue_NonNull()
     {
         assertNotNull( InternalTableContentChangedEvent.createTableContentChangedEvent( createDummy( ITable.class ), createDummy( ICard.class ) ) );
     }
 
     /**
-     * Ensures the {@code createTableContentChangedEvent} method throws an
-     * exception when passed a {@code null} table.
+     * Ensures the {@code createTableContentChangedEvent(ITable, ICard)} method
+     * throws an exception when passed a {@code null} table.
      */
     @Test( expected = AssertionError.class )
-    public void testCreateTableContentChangedEvent_Table_Null()
+    public void testCreateTableContentChangedEventFromCard_Table_Null()
     {
         InternalTableContentChangedEvent.createTableContentChangedEvent( null, createDummy( ICard.class ) );
+    }
+
+    /**
+     * Ensures the {@code createTableContentChangedEvent(ITable, ICardPile)}
+     * method throws an exception when passed a {@code null} card pile.
+     */
+    @Test( expected = AssertionError.class )
+    public void testCreateTableContentChangedEventFromCardPile_CardPile_Null()
+    {
+        InternalTableContentChangedEvent.createTableContentChangedEvent( createDummy( ITable.class ), (ICardPile)null );
+    }
+
+    /**
+     * Ensures the {@code createTableContentChangedEvent(ITable, ICardPile)}
+     * method does not return {@code null}.
+     */
+    @Test
+    public void testCreateTableContentChangedEventFromCardPile_ReturnValue_NonNull()
+    {
+        assertNotNull( InternalTableContentChangedEvent.createTableContentChangedEvent( createDummy( ITable.class ), createDummy( ICardPile.class ) ) );
+    }
+
+    /**
+     * Ensures the {@code createTableContentChangedEvent(ITable, ICardPile)}
+     * method throws an exception when passed a {@code null} table.
+     */
+    @Test( expected = AssertionError.class )
+    public void testCreateTableContentChangedEventFromCardPile_Table_Null()
+    {
+        InternalTableContentChangedEvent.createTableContentChangedEvent( null, createDummy( ICardPile.class ) );
     }
 }

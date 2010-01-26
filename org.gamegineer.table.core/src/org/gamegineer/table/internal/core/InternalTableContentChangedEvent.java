@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.core;
 
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableContentChangedEvent;
 import org.gamegineer.table.core.TableContentChangedEvent;
@@ -101,12 +102,44 @@ final class InternalTableContentChangedEvent
         return new InternalTableContentChangedEvent( new TableContentChangedEventDelegate( table, card ) );
     }
 
+    /**
+     * Creates a new instance of the {@code InternalTableContentChangedEvent}
+     * class.
+     * 
+     * @param table
+     *        The table that fired the event; must not be {@code null}.
+     * @param cardPile
+     *        The card pile associated with the event; must not be {@code null}.
+     * 
+     * @return A new instance of the {@code InternalTableContentChangedEvent}
+     *         class; never {@code null}.
+     */
+    static InternalTableContentChangedEvent createTableContentChangedEvent(
+        /* @NonNull */
+        final ITable table,
+        /* @NonNull */
+        final ICardPile cardPile )
+    {
+        assert table != null;
+        assert cardPile != null;
+
+        return new InternalTableContentChangedEvent( new TableContentChangedEventDelegate( table, cardPile ) );
+    }
+
     /*
      * @see org.gamegineer.table.core.ITableContentChangedEvent#getCard()
      */
     public ICard getCard()
     {
         return delegate_.getCard();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITableContentChangedEvent#getCardPile()
+     */
+    public ICardPile getCardPile()
+    {
+        return delegate_.getCardPile();
     }
 
     /*

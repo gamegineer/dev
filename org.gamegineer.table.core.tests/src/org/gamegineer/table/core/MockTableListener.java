@@ -39,6 +39,12 @@ public class MockTableListener
     /** The count of card added events received. */
     private final AtomicInteger cardAddedEventCount_;
 
+    /** The count of card pile added events received. */
+    private final AtomicInteger cardPileAddedEventCount_;
+
+    /** The count of card pile removed events received. */
+    private final AtomicInteger cardPileRemovedEventCount_;
+
     /** The count of card removed events received. */
     private final AtomicInteger cardRemovedEventCount_;
 
@@ -53,6 +59,8 @@ public class MockTableListener
     public MockTableListener()
     {
         cardAddedEventCount_ = new AtomicInteger( 0 );
+        cardPileAddedEventCount_ = new AtomicInteger( 0 );
+        cardPileRemovedEventCount_ = new AtomicInteger( 0 );
         cardRemovedEventCount_ = new AtomicInteger( 0 );
     }
 
@@ -70,6 +78,28 @@ public class MockTableListener
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
         cardAddedEventCount_.incrementAndGet();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
+     */
+    public void cardPileAdded(
+        final TableContentChangedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        cardPileAddedEventCount_.incrementAndGet();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
+     */
+    public void cardPileRemoved(
+        final TableContentChangedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        cardPileRemovedEventCount_.incrementAndGet();
     }
 
     /*
@@ -91,6 +121,26 @@ public class MockTableListener
     public final int getCardAddedEventCount()
     {
         return cardAddedEventCount_.get();
+    }
+
+    /**
+     * Gets the count of card pile added events received.
+     * 
+     * @return The count of card pile added events received.
+     */
+    public final int getCardPileAddedEventCount()
+    {
+        return cardPileAddedEventCount_.get();
+    }
+
+    /**
+     * Gets the count of card pile removed events received.
+     * 
+     * @return The count of card pile removed events received.
+     */
+    public final int getCardPileRemovedEventCount()
+    {
+        return cardPileRemovedEventCount_.get();
     }
 
     /**

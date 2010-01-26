@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.test.core.DummyFactory.createDummy;
 import org.gamegineer.table.core.AbstractTableContentChangedEventTestCase;
-import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 
 /**
@@ -59,6 +59,6 @@ public final class InternalTableContentChangedEventAsTableContentChangedEventTes
     @Override
     protected InternalTableContentChangedEvent createTableEvent()
     {
-        return InternalTableContentChangedEvent.createTableContentChangedEvent( createDummy( ITable.class ), createDummy( ICard.class ) );
+        return InternalTableContentChangedEvent.createTableContentChangedEvent( createDummy( ITable.class ), createDummy( ICardPile.class ) );
     }
 }

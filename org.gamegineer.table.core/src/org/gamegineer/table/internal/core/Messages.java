@@ -113,6 +113,14 @@ final class Messages
     /** An unexpected exception was thrown from ITableListener.cardAdded(). */
     public static String Table_cardAdded_unexpectedException;
 
+    /** An unexpected exception was thrown from ITableListener.cardPileAdded(). */
+    public static String Table_cardPileAdded_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from ITableListener.cardPileRemoved().
+     */
+    public static String Table_cardPileRemoved_unexpectedException;
+
     /** An unexpected exception was thrown from ITableListener.cardRemoved(). */
     public static String Table_cardRemoved_unexpectedException;
 

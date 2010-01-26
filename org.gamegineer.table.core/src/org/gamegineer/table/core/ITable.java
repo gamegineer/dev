@@ -1,6 +1,6 @@
 /*
  * ITable.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -55,6 +55,24 @@ public interface ITable
         ICard card );
 
     /**
+     * Adds the specified card pile to this table.
+     * 
+     * <p>
+     * This method does nothing if the specified card pile is already on the
+     * table.
+     * </p>
+     * 
+     * @param cardPile
+     *        The card pile; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code cardPile} is {@code null}.
+     */
+    public void addCardPile(
+        /* @NonNull */
+        ICardPile cardPile );
+
+    /**
      * Adds the specified table listener to this table.
      * 
      * @param listener
@@ -98,6 +116,44 @@ public interface ITable
         Point location );
 
     /**
+     * Gets the card pile at the specified location.
+     * 
+     * <p>
+     * If two or more card piles occupy the specified location, the card pile
+     * most recently added to the table will be returned.
+     * </p>
+     * 
+     * <p>
+     * Note that the returned card pile may have been moved by the time this
+     * method returns to the caller. Therefore, callers should not cache the
+     * results of this method for an extended period of time.
+     * </p>
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * 
+     * @return The card pile at the specified location or {@code null} if no
+     *         card pile is at that location.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code location} is {@code null}.
+     */
+    /* @Nullable */
+    public ICardPile getCardPile(
+        /* @NonNull */
+        Point location );
+
+    /**
+     * Gets the collection of card piles on this table.
+     * 
+     * @return The collection of card piles on this table; never {@code null}.
+     *         The card piles are returned in the order they were added to the
+     *         table from oldest to newest.
+     */
+    /* @NonNull */
+    public List<ICardPile> getCardPiles();
+
+    /**
      * Gets the collection of cards on this table.
      * 
      * @return The collection of cards on this table; never {@code null}. The
@@ -123,6 +179,23 @@ public interface ITable
     public void removeCard(
         /* @NonNull */
         ICard card );
+
+    /**
+     * Removes the specified card pile from this table.
+     * 
+     * <p>
+     * This method does nothing if the specified card pile is not on the table.
+     * </p>
+     * 
+     * @param cardPile
+     *        The card pile; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code cardPile} is {@code null}.
+     */
+    public void removeCardPile(
+        /* @NonNull */
+        ICardPile cardPile );
 
     /**
      * Removes the specified table listener from this table.

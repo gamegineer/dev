@@ -60,4 +60,13 @@ public abstract class AbstractTableContentChangedEventTestCase<T extends ITableC
     {
         assertNotNull( getTableEvent().getCard() );
     }
+
+    /**
+     * Ensures the {@code getCardPile} method does not return {@code null}.
+     */
+    @Test
+    public void testGetCardPile_ReturnValue_NonNull()
+    {
+        assertNotNull( getTableEvent().getCardPile() );
+    }
 }

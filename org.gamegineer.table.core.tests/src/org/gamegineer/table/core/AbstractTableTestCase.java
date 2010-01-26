@@ -76,6 +76,17 @@ public abstract class AbstractTableTestCase
     }
 
     /**
+     * Creates a card pile suitable for testing.
+     * 
+     * @return A new card pile; never {@code null}.
+     */
+    /* @NonNull */
+    private static ICardPile createCardPile()
+    {
+        return CardPileFactory.createCardPile( CardPileDesigns.createUniqueCardPileDesign() );
+    }
+
+    /**
      * Creates the table to be tested.
      * 
      * @return The table to be tested; never {@code null}.
@@ -198,6 +209,89 @@ public abstract class AbstractTableTestCase
     }
 
     /**
+     * Ensures the {@code addCardPile} method adds a card pile that is absent
+     * from the table.
+     */
+    @Test
+    public void testAddCardPile_CardPile_Absent_AddsCardPile()
+    {
+        final ICardPile cardPile = createCardPile();
+
+        table_.addCardPile( cardPile );
+
+        assertTrue( table_.getCardPiles().contains( cardPile ) );
+    }
+
+    /**
+     * Ensures the {@code addCardPile} method catches any exception thrown by
+     * the {@code cardPileAdded} method of a table listener.
+     */
+    @Test
+    public void testAddCardPile_CardPile_Absent_CatchesListenerException()
+    {
+        final MockTableListener listener1 = new MockTableListener()
+        {
+            @Override
+            public void cardPileAdded(
+                final TableContentChangedEvent event )
+            {
+                super.cardPileAdded( event );
+
+                throw new RuntimeException();
+            }
+        };
+        final MockTableListener listener2 = new MockTableListener();
+        table_.addTableListener( listener1 );
+        table_.addTableListener( listener2 );
+
+        table_.addCardPile( createCardPile() );
+
+        assertEquals( 1, listener2.getCardPileAddedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code addCardPile} method fires a card pile added event when
+     * the card pile is absent from the table.
+     */
+    @Test
+    public void testAddCardPile_CardPile_Absent_FiresCardPileAddedEvent()
+    {
+        final MockTableListener listener = new MockTableListener();
+        table_.addTableListener( listener );
+
+        table_.addCardPile( createCardPile() );
+
+        assertEquals( 1, listener.getCardPileAddedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code addCardPile} method throws an exception when passed a
+     * {@code null} card pile.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testAddCardPile_CardPile_Null()
+    {
+        table_.addCardPile( null );
+    }
+
+    /**
+     * Ensures the {@code addCardPile} method does not add a card pile that is
+     * present on the table.
+     */
+    @Test
+    public void testAddCardPile_CardPile_Present()
+    {
+        final ICardPile cardPile = createCardPile();
+        table_.addCardPile( cardPile );
+
+        table_.addCardPile( cardPile );
+
+        final List<ICardPile> cardPiles = table_.getCardPiles();
+        assertTrue( cardPiles.contains( cardPile ) );
+        assertEquals( 1, cardPiles.size() );
+    }
+
+    /**
      * Ensures the {@code addTableListener} method throws an exception when
      * passed a {@code null} listener.
      */
@@ -275,6 +369,87 @@ public abstract class AbstractTableTestCase
     public void testGetCard_Location_Null()
     {
         table_.getCard( null );
+    }
+
+    /**
+     * Ensures the {@code getCardPile} method returns {@code null} when a card
+     * pile is absent at the specified location.
+     */
+    @Test
+    public void testGetCardPile_Location_CardPileAbsent()
+    {
+        assertNull( table_.getCardPile( new Point( 0, 0 ) ) );
+    }
+
+    /**
+     * Ensures the {@code getCardPile} method returns the most recently added
+     * card pile when multiple card piles are present at the specified location.
+     */
+    @Test
+    public void testGetCardPile_Location_MultipleCardPilesPresent()
+    {
+        final Point location = new Point( 7, 42 );
+        final ICardPile initialCardPile = createCardPile();
+        initialCardPile.setLocation( location );
+        table_.addCardPile( initialCardPile );
+        final ICardPile expectedCardPile = createCardPile();
+        expectedCardPile.setLocation( location );
+        table_.addCardPile( expectedCardPile );
+
+        final ICardPile actualCardPile = table_.getCardPile( location );
+
+        assertSame( expectedCardPile, actualCardPile );
+    }
+
+    /**
+     * Ensures the {@code getCardPile} method returns the appropriate card pile
+     * when a single card pile is present at the specified location.
+     */
+    @Test
+    public void testGetCardPile_Location_SingleCardPilePresent()
+    {
+        final Point location = new Point( 7, 42 );
+        final ICardPile expectedCardPile = createCardPile();
+        expectedCardPile.setLocation( location );
+        table_.addCardPile( expectedCardPile );
+
+        final ICardPile actualCardPile = table_.getCardPile( location );
+
+        assertSame( expectedCardPile, actualCardPile );
+    }
+
+    /**
+     * Ensures the {@code getCardPile} method throws an exception when passed a
+     * {@code null} location.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetCardPile_Location_Null()
+    {
+        table_.getCardPile( null );
+    }
+
+    /**
+     * Ensures the {@code getCardPiles} method returns a copy of the card pile
+     * collection.
+     */
+    @Test
+    public void testGetCardPiles_ReturnValue_Copy()
+    {
+        final List<ICardPile> cardPiles = table_.getCardPiles();
+        final int expectedCardPilesSize = cardPiles.size();
+
+        table_.addCardPile( createCardPile() );
+
+        assertEquals( expectedCardPilesSize, cardPiles.size() );
+    }
+
+    /**
+     * Ensures the {@code getCardPiles} method does not return {@code null}.
+     */
+    @Test
+    public void testGetCardPiles_ReturnValue_NonNull()
+    {
+        assertNotNull( table_.getCardPiles() );
     }
 
     /**
@@ -386,6 +561,93 @@ public abstract class AbstractTableTestCase
         final List<ICard> cards = table_.getCards();
         assertFalse( cards.contains( card ) );
         assertEquals( 0, cards.size() );
+    }
+
+    /**
+     * Ensures the {@code removeCardPile} method does not remove a card pile
+     * that is absent from the table.
+     */
+    @Test
+    public void testRemoveCardPile_CardPile_Absent()
+    {
+        final ICardPile cardPile = createCardPile();
+
+        table_.removeCardPile( cardPile );
+
+        assertEquals( 0, table_.getCardPiles().size() );
+    }
+
+    /**
+     * Ensures the {@code removeCardPile} method throws an exception when passed
+     * a {@code null} card pile.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testRemoveCardPile_CardPile_Null()
+    {
+        table_.removeCardPile( null );
+    }
+
+    /**
+     * Ensures the {@code removeCardPile} method catches any exception thrown by
+     * the {@code cardPileRemoved} method of a table listener.
+     */
+    @Test
+    public void testRemoveCardPile_CardPile_Present_CatchesListenerException()
+    {
+        final MockTableListener listener1 = new MockTableListener()
+        {
+            @Override
+            public void cardPileRemoved(
+                final TableContentChangedEvent event )
+            {
+                super.cardPileRemoved( event );
+
+                throw new RuntimeException();
+            }
+        };
+        final MockTableListener listener2 = new MockTableListener();
+        table_.addTableListener( listener1 );
+        table_.addTableListener( listener2 );
+        final ICardPile cardPile = createCardPile();
+        table_.addCardPile( cardPile );
+
+        table_.removeCardPile( cardPile );
+
+        assertEquals( 1, listener2.getCardPileRemovedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code removeCardPile} method fires a card pile removed event
+     * when the card pile is present on the table.
+     */
+    @Test
+    public void testRemoveCardPile_CardPile_Present_FiresCardPileRemovedEvent()
+    {
+        final MockTableListener listener = new MockTableListener();
+        table_.addTableListener( listener );
+        final ICardPile cardPile = createCardPile();
+        table_.addCardPile( cardPile );
+
+        table_.removeCardPile( cardPile );
+
+        assertEquals( 1, listener.getCardPileRemovedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code removeCardPile} method removes a card pile that is
+     * present on the table.
+     */
+    @Test
+    public void testRemoveCardPile_CardPile_Present_RemovesCardPile()
+    {
+        final ICardPile cardPile = createCardPile();
+        table_.addCardPile( cardPile );
+
+        table_.removeCardPile( cardPile );
+
+        final List<ICardPile> cardPiles = table_.getCardPiles();
+        assertFalse( cardPiles.contains( cardPile ) );
+        assertEquals( 0, cardPiles.size() );
     }
 
     /**

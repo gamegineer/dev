@@ -1,6 +1,6 @@
 /*
  * AbstractTableListenerTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -105,6 +105,26 @@ public abstract class AbstractTableListenerTestCase
     public void testCardAdded_Event_Null()
     {
         listener_.cardAdded( null );
+    }
+
+    /**
+     * Ensures the {@code cardPileAdded} method throws an exception when passed
+     * a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCardPileAdded_Event_Null()
+    {
+        listener_.cardPileAdded( null );
+    }
+
+    /**
+     * Ensures the {@code cardPileRemoved} method throws an exception when
+     * passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCardPileRemoved_Event_Null()
+    {
+        listener_.cardPileRemoved( null );
     }
 
     /**

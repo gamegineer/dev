@@ -129,10 +129,11 @@ public final class TableModel
     /*
      * @see org.gamegineer.table.core.ITableListener#cardAdded(org.gamegineer.table.core.TableContentChangedEvent)
      */
-    @Override
     public void cardAdded(
         final TableContentChangedEvent event )
     {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
         synchronized( lock_ )
         {
             cardModels_.put( event.getCard(), new CardModel( event.getCard() ) );
@@ -140,12 +141,35 @@ public final class TableModel
     }
 
     /*
+     * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
+     */
+    public void cardPileAdded(
+        final TableContentChangedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // TODO: IMPLEMENT
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
+     */
+    public void cardPileRemoved(
+        final TableContentChangedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // TODO: IMPLEMENT
+    }
+
+    /*
      * @see org.gamegineer.table.core.ITableListener#cardRemoved(org.gamegineer.table.core.TableContentChangedEvent)
      */
-    @Override
     public void cardRemoved(
         final TableContentChangedEvent event )
     {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
         final ICard card = event.getCard();
         final boolean clearFocusedCard;
         synchronized( lock_ )
