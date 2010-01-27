@@ -61,6 +61,29 @@ final class Messages
     /** The card model listener is not registered. */
     public static String CardModel_removeCardModelListener_listener_notRegistered;
 
+    // --- CardPileModel ----------------------------------------------------
+
+    /** The card pile model listener is already registered. */
+    public static String CardPileModel_addCardPileModelListener_listener_registered;
+
+    /** A card pile model listener is already registered. */
+    public static String CardPileModel_addCardPileModelListener_tooManyListeners;
+
+    /**
+     * An unexpected exception was thrown from
+     * ICardPileModelListener.cardPileFocusGained().
+     */
+    public static String CardPileModel_cardPileFocusGained_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * ICardPileModelListener.cardPileFocusLost().
+     */
+    public static String CardPileModel_cardPileFocusLost_unexpectedException;
+
+    /** The card pile model listener is not registered. */
+    public static String CardPileModel_removeCardPileModelListener_listener_notRegistered;
+
     // --- TableModel -------------------------------------------------------
 
     /** The table model listener is already registered. */
