@@ -230,5 +230,12 @@
                 id="org.gamegineer.cards.special.joker"
                 name="%card.special.joker.name" />
     </extension>
+    <extension
+            point="org.gamegineer.table.ui.cardPileDesignUIs">
+        <cardPileDesignUI
+                icon="icons/cardPiles/default.png"
+                id="org.gamegineer.cardPiles.default"
+                name="%cardPile.default.name" />
+    </extension>
 
 </plugin>

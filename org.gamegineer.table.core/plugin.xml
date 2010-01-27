@@ -230,5 +230,12 @@
                 id="org.gamegineer.cards.special.joker"
                 width="71" />
     </extension>
+    <extension
+            point="org.gamegineer.table.core.cardPileDesigns">
+        <cardPileDesign
+                height="96"
+                id="org.gamegineer.cardPiles.default"
+                width="71" />
+    </extension>
 
 </plugin>
