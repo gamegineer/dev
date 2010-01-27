@@ -1,6 +1,6 @@
 /*
  * CardViewTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -197,7 +197,7 @@ public final class CardViewTest
     }
 
     /**
-     * Ensures the {@code initialize} method throws an exception when passed a
+     * Ensures the {@code paint} method throws an exception when passed a
      * {@code null} graphics context.
      */
     @Test( expected = AssertionError.class )
