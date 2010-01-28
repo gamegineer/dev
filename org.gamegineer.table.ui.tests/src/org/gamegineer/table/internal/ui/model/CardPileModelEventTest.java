@@ -21,10 +21,10 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import static org.gamegineer.test.core.DummyFactory.createDummy;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.CardPileDesigns;
+import org.gamegineer.table.core.CardPileFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,7 +70,7 @@ public final class CardPileModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new CardPileModelEvent( new CardPileModel( createDummy( ICardPile.class ) ) );
+        event_ = new CardPileModelEvent( new CardPileModel( CardPileFactory.createCardPile( CardPileDesigns.createUniqueCardPileDesign() ) ) );
     }
 
     /**

@@ -21,10 +21,12 @@
 
 package org.gamegineer.table.internal.ui.model;
 
+import static org.gamegineer.test.core.DummyFactory.createDummy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.gamegineer.table.core.CardPileDesigns;
 import org.gamegineer.table.core.CardPileFactory;
+import org.gamegineer.table.core.ICard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -131,6 +133,26 @@ public final class CardPileModelTest
     public void testConstructor_CardPile_Null()
     {
         new CardPileModel( null );
+    }
+
+    /**
+     * Ensures the {@code getCardModel} throws an exception when passed a card
+     * that is absent from the card pile.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testGetCardModel_Card_Absent()
+    {
+        model_.getCardModel( createDummy( ICard.class ) );
+    }
+
+    /**
+     * Ensures the {@code getCardModel} throws an exception when passed a
+     * {@code null} card.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetCardModel_Card_Null()
+    {
+        model_.getCardModel( null );
     }
 
     /**

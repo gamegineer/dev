@@ -81,6 +81,9 @@ final class Messages
      */
     public static String CardPileModel_cardPileFocusLost_unexpectedException;
 
+    /** The card is not present in the card pile. */
+    public static String CardPileModel_getCardModel_card_absent;
+
     /** The card pile model listener is not registered. */
     public static String CardPileModel_removeCardPileModelListener_listener_notRegistered;
 

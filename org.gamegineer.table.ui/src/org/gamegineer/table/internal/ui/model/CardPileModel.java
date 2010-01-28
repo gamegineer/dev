@@ -24,10 +24,16 @@ package org.gamegineer.table.internal.ui.model;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.CardPileContentChangedEvent;
+import org.gamegineer.table.core.CardPileEvent;
+import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.ICardPileListener;
 import org.gamegineer.table.internal.ui.Loggers;
 
 /**
@@ -35,10 +41,15 @@ import org.gamegineer.table.internal.ui.Loggers;
  */
 @ThreadSafe
 public final class CardPileModel
+    implements ICardPileListener
 {
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The collection of card models. */
+    @GuardedBy( "lock_" )
+    private final Map<ICard, CardModel> cardModels_;
 
     /** The card pile associated with this model. */
     private final ICardPile cardPile_;
@@ -76,9 +87,12 @@ public final class CardPileModel
         assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
 
         lock_ = new Object();
+        cardModels_ = new IdentityHashMap<ICard, CardModel>();
         cardPile_ = cardPile;
         isFocused_ = false;
         listener_ = null;
+
+        cardPile_.addCardPileListener( this );
     }
 
 
@@ -112,6 +126,43 @@ public final class CardPileModel
             assertStateLegal( listener_ == null, Messages.CardPileModel_addCardPileModelListener_tooManyListeners );
 
             listener_ = listener;
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPileListener#cardAdded(org.gamegineer.table.core.CardPileContentChangedEvent)
+     */
+    public void cardAdded(
+        final CardPileContentChangedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            cardModels_.put( event.getCard(), new CardModel( event.getCard() ) );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPileListener#cardPileBoundsChanged(org.gamegineer.table.core.CardPileEvent)
+     */
+    public void cardPileBoundsChanged(
+        final CardPileEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPileListener#cardRemoved(org.gamegineer.table.core.CardPileContentChangedEvent)
+     */
+    public void cardRemoved(
+        final CardPileContentChangedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            cardModels_.remove( event.getCard() );
         }
     }
 
@@ -151,6 +202,38 @@ public final class CardPileModel
                 Loggers.DEFAULT.log( Level.SEVERE, Messages.CardPileModel_cardPileFocusLost_unexpectedException, e );
             }
         }
+    }
+
+    /**
+     * Gets the card model associated with the specified card.
+     * 
+     * @param card
+     *        The card; must not be {@code null}.
+     * 
+     * @return The card model associated with the specified card; never {@code
+     *         null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code card} does not exist in the card pile associated with
+     *         this model.
+     * @throws java.lang.NullPointerException
+     *         If {@code card} is {@code null}.
+     */
+    /* @NonNull */
+    public CardModel getCardModel(
+        /* @NonNull */
+        final ICard card )
+    {
+        assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
+
+        final CardModel cardModel;
+        synchronized( lock_ )
+        {
+            cardModel = cardModels_.get( card );
+        }
+
+        assertArgumentLegal( cardModel != null, "card", Messages.CardPileModel_getCardModel_card_absent ); //$NON-NLS-1$
+        return cardModel;
     }
 
     /**
