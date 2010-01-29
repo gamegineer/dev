@@ -48,6 +48,7 @@ import org.gamegineer.table.core.CardDesignId;
 import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardDesign;
+import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.internal.ui.Services;
@@ -56,6 +57,7 @@ import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
 import org.gamegineer.table.ui.ICardDesignUI;
+import org.gamegineer.table.ui.ICardPileDesignUI;
 
 /**
  * A view of the table.
@@ -74,6 +76,9 @@ final class TableView
 
     /** The action mediator. */
     private final ActionMediator actionMediator_;
+
+    /** The collection of card pile views. */
+    private final Map<ICardPile, CardPileView> cardPileViews_;
 
     /** The collection of card views. */
     private final Map<ICard, CardView> cardViews_;
@@ -111,6 +116,7 @@ final class TableView
         assert model != null;
 
         actionMediator_ = new ActionMediator();
+        cardPileViews_ = new IdentityHashMap<ICardPile, CardPileView>();
         cardViews_ = new IdentityHashMap<ICard, CardView>();
         keyListener_ = createKeyListener();
         model_ = model;
@@ -335,7 +341,33 @@ final class TableView
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        // TODO: IMPLEMENT
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                cardPileAdded( event.getCardPile() );
+            }
+        } );
+    }
+
+    /**
+     * Invoked when a new card pile is added to the table.
+     * 
+     * @param cardPile
+     *        The added card pile; must not be {@code null}.
+     */
+    private void cardPileAdded(
+        /* @NonNull */
+        final ICardPile cardPile )
+    {
+        assert cardPile != null;
+
+        final ICardPileDesignUI cardPileDesignUI = Services.getDefault().getCardPileDesignUIRegistry().getCardPileDesignUI( cardPile.getDesign().getId() );
+        final CardPileView view = new CardPileView( model_.getCardPileModel( cardPile ), cardPileDesignUI );
+        cardPileViews_.put( cardPile, view );
+        view.initialize( this );
+        repaint( view.getBounds() );
     }
 
     /*
@@ -346,7 +378,22 @@ final class TableView
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        // TODO: IMPLEMENT
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                cardPileFocusChanged();
+            }
+        } );
+    }
+
+    /**
+     * Invoked when the card pile focus has changed.
+     */
+    private void cardPileFocusChanged()
+    {
+        actionMediator_.updateAll();
     }
 
     /*
@@ -357,7 +404,34 @@ final class TableView
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        // TODO: IMPLEMENT
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                cardPileRemoved( event.getCardPile() );
+            }
+        } );
+    }
+
+    /**
+     * Invoked when a card pile is removed from the table.
+     * 
+     * @param cardPile
+     *        The removed card pile; must not be {@code null}.
+     */
+    private void cardPileRemoved(
+        /* @NonNull */
+        final ICardPile cardPile )
+    {
+        assert cardPile != null;
+
+        final CardPileView view = cardPileViews_.remove( cardPile );
+        if( view != null )
+        {
+            repaint( view.getBounds() );
+            view.uninitialize();
+        }
     }
 
     /*
