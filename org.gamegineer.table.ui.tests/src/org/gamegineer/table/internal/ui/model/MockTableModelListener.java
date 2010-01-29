@@ -1,6 +1,6 @@
 /*
  * MockTableModelListener.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,6 +40,9 @@ public class MockTableModelListener
     /** The count of card focus changed events received. */
     private final AtomicInteger cardFocusChangedEventCount_;
 
+    /** The count of card pile focus changed events received. */
+    private final AtomicInteger cardPileFocusChangedEventCount_;
+
 
     // ======================================================================
     // Constructors
@@ -51,6 +54,7 @@ public class MockTableModelListener
     public MockTableModelListener()
     {
         cardFocusChangedEventCount_ = new AtomicInteger( 0 );
+        cardPileFocusChangedEventCount_ = new AtomicInteger( 0 );
     }
 
 
@@ -69,6 +73,17 @@ public class MockTableModelListener
         cardFocusChangedEventCount_.incrementAndGet();
     }
 
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#cardPileFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    public void cardPileFocusChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        cardPileFocusChangedEventCount_.incrementAndGet();
+    }
+
     /**
      * Gets the count of card focus changed events received.
      * 
@@ -77,5 +92,15 @@ public class MockTableModelListener
     public final int getCardFocusChangedEventCount()
     {
         return cardFocusChangedEventCount_.get();
+    }
+
+    /**
+     * Gets the count of card pile focus changed events received.
+     * 
+     * @return The count of card pile focus changed events received.
+     */
+    public final int getCardPileFocusChangedEventCount()
+    {
+        return cardPileFocusChangedEventCount_.get();
     }
 }

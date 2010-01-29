@@ -101,8 +101,17 @@ final class Messages
      */
     public static String TableModel_cardFocusChanged_unexpectedException;
 
+    /**
+     * An unexpected exception was thrown from
+     * ITableModelListener.cardPileFocusChanged().
+     */
+    public static String TableModel_cardPileFocusChanged_unexpectedException;
+
     /** The card is not present in the table. */
     public static String TableModel_getCardModel_card_absent;
+
+    /** The card pile is not present in the table. */
+    public static String TableModel_getCardPileModel_cardPile_absent;
 
     /** The table model listener is not registered. */
     public static String TableModel_removeTableModelListener_listener_notRegistered;

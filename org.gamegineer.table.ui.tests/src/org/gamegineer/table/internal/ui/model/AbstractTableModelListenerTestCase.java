@@ -1,6 +1,6 @@
 /*
  * AbstractTableModelListenerTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -105,5 +105,15 @@ public abstract class AbstractTableModelListenerTestCase
     public void testCardFocusChanged_Event_Null()
     {
         listener_.cardFocusChanged( null );
+    }
+
+    /**
+     * Ensures the {@code cardPileFocusChanged} method throws an exception when
+     * passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCardPileFocusChanged_Event_Null()
+    {
+        listener_.cardPileFocusChanged( null );
     }
 }

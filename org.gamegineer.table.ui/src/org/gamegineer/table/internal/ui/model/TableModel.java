@@ -30,6 +30,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
@@ -50,9 +51,17 @@ public final class TableModel
     @GuardedBy( "lock_" )
     private final Map<ICard, CardModel> cardModels_;
 
+    /** The collection of card pile models. */
+    @GuardedBy( "lock_" )
+    private final Map<ICardPile, CardPileModel> cardPileModels_;
+
     /** The focused card or {@code null} if no card has the focus. */
     @GuardedBy( "lock_" )
     private ICard focusedCard_;
+
+    /** The focused card pile or {@code null} if no card pile has the focus. */
+    @GuardedBy( "lock_" )
+    private ICardPile focusedCardPile_;
 
     /** The table model listener. */
     @GuardedBy( "lock_" )
@@ -86,7 +95,9 @@ public final class TableModel
 
         lock_ = new Object();
         cardModels_ = new IdentityHashMap<ICard, CardModel>();
+        cardPileModels_ = new IdentityHashMap<ICardPile, CardPileModel>();
         focusedCard_ = null;
+        focusedCardPile_ = null;
         listener_ = null;
         table_ = table;
 
@@ -148,7 +159,10 @@ public final class TableModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        // TODO: IMPLEMENT
+        synchronized( lock_ )
+        {
+            cardPileModels_.put( event.getCardPile(), new CardPileModel( event.getCardPile() ) );
+        }
     }
 
     /*
@@ -159,7 +173,18 @@ public final class TableModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        // TODO: IMPLEMENT
+        final ICardPile cardPile = event.getCardPile();
+        final boolean clearFocusedCardPile;
+        synchronized( lock_ )
+        {
+            cardPileModels_.remove( cardPile );
+            clearFocusedCardPile = (focusedCardPile_ == cardPile);
+        }
+
+        if( clearFocusedCardPile )
+        {
+            setFocus( (ICardPile)null );
+        }
     }
 
     /*
@@ -180,7 +205,7 @@ public final class TableModel
 
         if( clearFocusedCard )
         {
-            setFocus( null );
+            setFocus( (ICard)null );
         }
     }
 
@@ -199,6 +224,25 @@ public final class TableModel
             catch( final RuntimeException e )
             {
                 Loggers.DEFAULT.log( Level.SEVERE, Messages.TableModel_cardFocusChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a card pile focus changed event.
+     */
+    private void fireCardPileFocusChanged()
+    {
+        final ITableModelListener listener = getTableModelListener();
+        if( listener != null )
+        {
+            try
+            {
+                listener.cardPileFocusChanged( new TableModelEvent( this ) );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.TableModel_cardPileFocusChanged_unexpectedException, e );
             }
         }
     }
@@ -236,6 +280,38 @@ public final class TableModel
     }
 
     /**
+     * Gets the card pile model associated with the specified card pile.
+     * 
+     * @param cardPile
+     *        The card pile; must not be {@code null}.
+     * 
+     * @return The card pile model associated with the specified card pile;
+     *         never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code cardPile} does not exist in the table associated with
+     *         this model.
+     * @throws java.lang.NullPointerException
+     *         If {@code cardPile} is {@code null}.
+     */
+    /* @NonNull */
+    public CardPileModel getCardPileModel(
+        /* @NonNull */
+        final ICardPile cardPile )
+    {
+        assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
+
+        final CardPileModel cardPileModel;
+        synchronized( lock_ )
+        {
+            cardPileModel = cardPileModels_.get( cardPile );
+        }
+
+        assertArgumentLegal( cardPileModel != null, "cardPile", Messages.TableModel_getCardPileModel_cardPile_absent ); //$NON-NLS-1$
+        return cardPileModel;
+    }
+
+    /**
      * Gets the focused card.
      * 
      * @return The focused card or {@code null} if no card has the focus.
@@ -246,6 +322,21 @@ public final class TableModel
         synchronized( lock_ )
         {
             return focusedCard_;
+        }
+    }
+
+    /**
+     * Gets the focused card pile.
+     * 
+     * @return The focused card pile or {@code null} if no card pile has the
+     *         focus.
+     */
+    /* @Nullable */
+    public ICardPile getFocusedCardPile()
+    {
+        synchronized( lock_ )
+        {
+            return focusedCardPile_;
         }
     }
 
@@ -343,6 +434,53 @@ public final class TableModel
             }
 
             fireCardFocusChanged();
+        }
+    }
+
+    /**
+     * Sets the focus to the specified card pile.
+     * 
+     * @param cardPile
+     *        The card pile to receive the focus or {@code null} if no card pile
+     *        should have the focus.
+     */
+    public void setFocus(
+        /* @Nullable */
+        final ICardPile cardPile )
+    {
+        final boolean cardPileFocusChanged;
+        final CardPileModel oldFocusedCardPileModel;
+        final CardPileModel newFocusedCardPileModel;
+
+        synchronized( lock_ )
+        {
+            if( cardPile != focusedCardPile_ )
+            {
+                cardPileFocusChanged = true;
+                oldFocusedCardPileModel = (focusedCardPile_ != null) ? cardPileModels_.get( focusedCardPile_ ) : null;
+                newFocusedCardPileModel = (cardPile != null) ? cardPileModels_.get( cardPile ) : null;
+                focusedCardPile_ = cardPile;
+            }
+            else
+            {
+                cardPileFocusChanged = false;
+                oldFocusedCardPileModel = null;
+                newFocusedCardPileModel = null;
+            }
+        }
+
+        if( cardPileFocusChanged )
+        {
+            if( oldFocusedCardPileModel != null )
+            {
+                oldFocusedCardPileModel.setFocused( false );
+            }
+            if( newFocusedCardPileModel != null )
+            {
+                newFocusedCardPileModel.setFocused( true );
+            }
+
+            fireCardPileFocusChanged();
         }
     }
 }

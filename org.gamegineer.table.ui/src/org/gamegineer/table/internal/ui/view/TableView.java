@@ -339,6 +339,17 @@ final class TableView
     }
 
     /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#cardPileFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    public void cardPileFocusChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // TODO: IMPLEMENT
+    }
+
+    /*
      * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
      */
     public void cardPileRemoved(

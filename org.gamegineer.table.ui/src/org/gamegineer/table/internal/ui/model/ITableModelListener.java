@@ -1,6 +1,6 @@
 /*
  * ITableModelListener.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,6 +41,19 @@ public interface ITableModelListener
      *         If {@code event} is {@code null}.
      */
     public void cardFocusChanged(
+        /* @NonNull */
+        TableModelEvent event );
+
+    /**
+     * Invoked after the focused card pile on the table has changed.
+     * 
+     * @param event
+     *        The event describing the focus change; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void cardPileFocusChanged(
         /* @NonNull */
         TableModelEvent event );
 }
