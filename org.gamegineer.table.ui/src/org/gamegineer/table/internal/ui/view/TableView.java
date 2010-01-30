@@ -752,13 +752,10 @@ final class TableView
         }
         else
         {
-            menu = null;
+            menu = new TablePopupMenu();
         }
 
-        if( menu != null )
-        {
-            menu.show( this, location.x, location.y );
-        }
+        menu.show( this, location.x, location.y );
     }
 
 
