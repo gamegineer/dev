@@ -394,6 +394,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.AddCardPileAction_accelerator ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddCardPileAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddCardPileAction_text );
             }

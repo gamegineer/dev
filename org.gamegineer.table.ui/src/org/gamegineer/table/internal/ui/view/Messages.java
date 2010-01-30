@@ -81,6 +81,9 @@ final class Messages
 
     // --- AddCardPileAction ------------------------------------------------
 
+    /** The add card pile action accelerator. */
+    public static String AddCardPileAction_accelerator;
+
     /** The add card pile action mnemonic. */
     public static String AddCardPileAction_mnemonic;
 
