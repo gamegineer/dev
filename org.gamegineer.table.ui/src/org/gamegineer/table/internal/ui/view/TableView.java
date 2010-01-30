@@ -549,7 +549,8 @@ final class TableView
     {
         final Map<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler> mouseInputHandlers = new HashMap<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler>();
         mouseInputHandlers.put( DefaultMouseInputHandler.class, new DefaultMouseInputHandler() );
-        mouseInputHandlers.put( DraggingMouseInputHandler.class, new DraggingMouseInputHandler() );
+        mouseInputHandlers.put( DraggingCardMouseInputHandler.class, new DraggingCardMouseInputHandler() );
+        mouseInputHandlers.put( DraggingCardPileMouseInputHandler.class, new DraggingCardPileMouseInputHandler() );
         return mouseInputHandlers;
     }
 
@@ -869,7 +870,11 @@ final class TableView
             {
                 if( model_.getTable().getCard( e.getPoint() ) != null )
                 {
-                    setMouseInputHandler( DraggingMouseInputHandler.class, e );
+                    setMouseInputHandler( DraggingCardMouseInputHandler.class, e );
+                }
+                else if( model_.getTable().getCardPile( e.getPoint() ) != null )
+                {
+                    setMouseInputHandler( DraggingCardPileMouseInputHandler.class, e );
                 }
             }
         }
@@ -892,7 +897,7 @@ final class TableView
     /**
      * The mouse input handler that is active when a card is being dragged.
      */
-    private final class DraggingMouseInputHandler
+    private final class DraggingCardMouseInputHandler
         extends AbstractMouseInputHandler
     {
         // ==================================================================
@@ -911,10 +916,10 @@ final class TableView
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code DraggingMouseInputHandler}
-         * class.
+         * Initializes a new instance of the {@code
+         * DraggingCardMouseInputHandler} class.
          */
-        DraggingMouseInputHandler()
+        DraggingCardMouseInputHandler()
         {
             draggedCardLocationOffset_ = new Dimension( 0, 0 );
         }
@@ -967,6 +972,104 @@ final class TableView
             final Point location = e.getPoint();
             location.translate( draggedCardLocationOffset_.width, draggedCardLocationOffset_.height );
             draggedCard_.setLocation( location );
+        }
+
+        /*
+         * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void mouseReleased(
+            final MouseEvent e )
+        {
+            if( SwingUtilities.isLeftMouseButton( e ) )
+            {
+                setMouseInputHandler( DefaultMouseInputHandler.class, e );
+            }
+        }
+    }
+
+    /**
+     * The mouse input handler that is active when a card pile is being dragged.
+     */
+    private final class DraggingCardPileMouseInputHandler
+        extends AbstractMouseInputHandler
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The card pile being dragged. */
+        private ICardPile draggedCardPile_;
+
+        /**
+         * The offset between the mouse pointer and the dragged card pile
+         * location.
+         */
+        private final Dimension draggedCardPileLocationOffset_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code
+         * DraggingCardPileMouseInputHandler} class.
+         */
+        DraggingCardPileMouseInputHandler()
+        {
+            draggedCardPileLocationOffset_ = new Dimension( 0, 0 );
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        void activate(
+            final MouseEvent e )
+        {
+            assert e != null;
+
+            final Point mouseLocation = e.getPoint();
+            draggedCardPile_ = model_.getTable().getCardPile( mouseLocation );
+            if( draggedCardPile_ != null )
+            {
+                final Point cardPileLocation = draggedCardPile_.getLocation();
+                draggedCardPileLocationOffset_.setSize( cardPileLocation.x - mouseLocation.x, cardPileLocation.y - mouseLocation.y );
+            }
+            else
+            {
+                setMouseInputHandler( DefaultMouseInputHandler.class, e );
+            }
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#deactivate()
+         */
+        @Override
+        void deactivate()
+        {
+            draggedCardPile_ = null;
+            draggedCardPileLocationOffset_.setSize( 0, 0 );
+        }
+
+        /*
+         * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
+         */
+        @Override
+        public void mouseDragged(
+            final MouseEvent e )
+        {
+            final Point location = e.getPoint();
+            location.translate( draggedCardPileLocationOffset_.width, draggedCardPileLocationOffset_.height );
+            draggedCardPile_.setLocation( location );
         }
 
         /*
