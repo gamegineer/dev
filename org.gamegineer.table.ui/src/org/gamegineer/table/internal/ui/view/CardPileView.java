@@ -281,6 +281,7 @@ final class CardPileView
         tableView_ = tableView;
         bounds_ = getBounds();
         model_.addCardPileModelListener( this );
+        model_.getCardPile().addCardPileListener( this );
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * MenuBarView.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -263,6 +263,9 @@ final class MenuBarView
         menu.addSeparator();
         menu.add( Actions.getRemoveCardAction() );
         menu.add( Actions.getFlipCardAction() );
+        menu.addSeparator();
+        menu.add( Actions.getAddCardPileAction() );
+        menu.add( Actions.getRemoveCardPileAction() );
         return menu;
     }
 

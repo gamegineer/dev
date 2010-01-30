@@ -46,9 +46,12 @@ import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.table.core.CardDesignId;
 import org.gamegineer.table.core.CardFactory;
+import org.gamegineer.table.core.CardPileDesignId;
+import org.gamegineer.table.core.CardPileFactory;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardDesign;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.ICardPileDesign;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.internal.ui.Services;
@@ -151,6 +154,16 @@ final class TableView
         model_.getTable().addCard( card );
     }
 
+    /**
+     * Adds a new card pile to the table.
+     */
+    private void addCardPile()
+    {
+        final ICardPileDesign cardPileDesign = Services.getDefault().getCardPileDesignRegistry().getCardPileDesign( CardPileDesignId.fromString( "org.gamegineer.cardPiles.default" ) ); //$NON-NLS-1$
+        final ICardPile cardPile = CardPileFactory.createCardPile( cardPileDesign );
+        model_.getTable().addCardPile( cardPile );
+    }
+
     /*
      * @see javax.swing.JComponent#addNotify()
      */
@@ -185,6 +198,16 @@ final class TableView
         actionMediator_.bind( Actions.getAddAceOfDiamondsCardAction(), addCardActionListener );
         actionMediator_.bind( Actions.getAddAceOfHeartsCardAction(), addCardActionListener );
         actionMediator_.bind( Actions.getAddAceOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddCardPileAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                addCardPile();
+            }
+        } );
         actionMediator_.bind( Actions.getAddEightOfClubsCardAction(), addCardActionListener );
         actionMediator_.bind( Actions.getAddEightOfDiamondsCardAction(), addCardActionListener );
         actionMediator_.bind( Actions.getAddEightOfHeartsCardAction(), addCardActionListener );
@@ -254,6 +277,16 @@ final class TableView
                 removeFocusedCard();
             }
         } );
+        actionMediator_.bind( Actions.getRemoveCardPileAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                removeFocusedCardPile();
+            }
+        } );
 
         final IPredicate<Action> hasFocusedCardPredicate = new IPredicate<Action>()
         {
@@ -267,6 +300,16 @@ final class TableView
         };
         actionMediator_.bind( Actions.getFlipCardAction(), hasFocusedCardPredicate );
         actionMediator_.bind( Actions.getRemoveCardAction(), hasFocusedCardPredicate );
+        actionMediator_.bind( Actions.getRemoveCardPileAction(), new IPredicate<Action>()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Action obj )
+            {
+                return model_.getFocusedCardPile() != null;
+            }
+        } );
     }
 
     /*
@@ -607,6 +650,18 @@ final class TableView
                 }
             }
         }
+
+        for( final ICardPile cardPile : model_.getTable().getCardPiles() )
+        {
+            final CardPileView view = cardPileViews_.get( cardPile );
+            if( view != null )
+            {
+                if( clipBounds.intersects( view.getBounds() ) )
+                {
+                    view.paint( g );
+                }
+            }
+        }
     }
 
     /**
@@ -618,6 +673,18 @@ final class TableView
         if( card != null )
         {
             model_.getTable().removeCard( card );
+        }
+    }
+
+    /**
+     * Removes the focused card pile from the table.
+     */
+    private void removeFocusedCardPile()
+    {
+        final ICardPile cardPile = model_.getFocusedCardPile();
+        if( cardPile != null )
+        {
+            model_.getTable().removeCardPile( cardPile );
         }
     }
 
@@ -678,6 +745,10 @@ final class TableView
         if( model_.getFocusedCard() != null )
         {
             menu = new CardPopupMenu();
+        }
+        else if( model_.getFocusedCardPile() != null )
+        {
+            menu = new CardPilePopupMenu();
         }
         else
         {
@@ -782,6 +853,7 @@ final class TableView
             final MouseEvent e )
         {
             model_.setFocus( model_.getTable().getCard( e.getPoint() ) );
+            model_.setFocus( model_.getTable().getCardPile( e.getPoint() ) );
         }
 
         /*

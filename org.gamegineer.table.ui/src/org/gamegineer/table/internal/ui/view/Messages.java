@@ -79,6 +79,14 @@ final class Messages
     /** The add Ace of Spades card action text. */
     public static String AddAceOfSpadesCardAction_text;
 
+    // --- AddCardPileAction ------------------------------------------------
+
+    /** The add card pile action mnemonic. */
+    public static String AddCardPileAction_mnemonic;
+
+    /** The add card pile action text. */
+    public static String AddCardPileAction_text;
+
     // --- AddEightOfClubsCardAction ----------------------------------------
 
     /** The add Eight of Clubs card action mnemonic. */
@@ -561,14 +569,22 @@ final class Messages
 
     // --- RemoveCardAction -------------------------------------------------
 
-    /** The remove card action accelerator. */
-    public static String RemoveCardAction_accelerator;
-
     /** The remove card action mnemonic. */
     public static String RemoveCardAction_mnemonic;
 
     /** The remove card action text. */
     public static String RemoveCardAction_text;
+
+    // --- RemoveCardPileAction ---------------------------------------------
+
+    /** The remove card pile action accelerator. */
+    public static String RemoveCardPileAction_accelerator;
+
+    /** The remove card pile action mnemonic. */
+    public static String RemoveCardPileAction_mnemonic;
+
+    /** The remove card pile action text. */
+    public static String RemoveCardPileAction_text;
 
 
     // ======================================================================

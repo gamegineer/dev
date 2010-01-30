@@ -47,6 +47,9 @@ final class Actions
     /** The action used to add an Ace of Spades card to the table. */
     private static final BasicAction addAceOfSpadesCardAction_;
 
+    /** The action used to add a card pile to the table. */
+    private static final BasicAction addCardPileAction_;
+
     /** The action used to add an Eight of Clubs card to the table. */
     private static final BasicAction addEightOfClubsCardAction_;
 
@@ -206,6 +209,9 @@ final class Actions
     /** The action used to remove a card from the table. */
     private static final BasicAction removeCardAction_;
 
+    /** The action used to remove a card pile from the table. */
+    private static final BasicAction removeCardPileAction_;
+
 
     // ======================================================================
     // Constructors
@@ -220,6 +226,7 @@ final class Actions
         addAceOfDiamondsCardAction_ = createAddAceOfDiamondsCardAction();
         addAceOfHeartsCardAction_ = createAddAceOfHeartsCardAction();
         addAceOfSpadesCardAction_ = createAddAceOfSpadesCardAction();
+        addCardPileAction_ = createAddCardPileAction();
         addEightOfClubsCardAction_ = createAddEightOfClubsCardAction();
         addEightOfDiamondsCardAction_ = createAddEightOfDiamondsCardAction();
         addEightOfHeartsCardAction_ = createAddEightOfHeartsCardAction();
@@ -273,6 +280,7 @@ final class Actions
         flipCardAction_ = createFlipCardAction();
         openAboutDialogAction_ = createOpenAboutDialogAction();
         removeCardAction_ = createRemoveCardAction();
+        removeCardPileAction_ = createRemoveCardPileAction();
     }
 
     /**
@@ -368,6 +376,26 @@ final class Actions
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.spades.ace" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddAceOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddAceOfSpadesCardAction_text );
+            }
+        };
+    }
+
+    /**
+     * Creates the add card pile action.
+     * 
+     * @return The add card pile action; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static BasicAction createAddCardPileAction()
+    {
+        return new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddCardPileAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.AddCardPileAction_text );
             }
         };
     }
@@ -1476,9 +1504,29 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.RemoveCardAction_accelerator ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.RemoveCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.RemoveCardAction_text );
+            }
+        };
+    }
+
+    /**
+     * Creates the remove card pile action.
+     * 
+     * @return The remove card pile action; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static BasicAction createRemoveCardPileAction()
+    {
+        return new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.RemoveCardPileAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.RemoveCardPileAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.RemoveCardPileAction_text );
             }
         };
     }
@@ -1525,6 +1573,17 @@ final class Actions
     static BasicAction getAddAceOfSpadesCardAction()
     {
         return addAceOfSpadesCardAction_;
+    }
+
+    /**
+     * Gets the add card pile action.
+     * 
+     * @return The add card pile action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getAddCardPileAction()
+    {
+        return addCardPileAction_;
     }
 
     /**
@@ -2108,5 +2167,16 @@ final class Actions
     static BasicAction getRemoveCardAction()
     {
         return removeCardAction_;
+    }
+
+    /**
+     * Gets the remove card pile action.
+     * 
+     * @return The remove card pile action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getRemoveCardPileAction()
+    {
+        return removeCardPileAction_;
     }
 }

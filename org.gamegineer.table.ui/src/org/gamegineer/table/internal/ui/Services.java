@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.services.carddesignregistry.ICardDesignRegistry;
+import org.gamegineer.table.core.services.cardpiledesignregistry.ICardPileDesignRegistry;
 import org.gamegineer.table.internal.ui.services.carddesignuiregistry.CardDesignUIRegistry;
 import org.gamegineer.table.internal.ui.services.cardpiledesignuiregistry.CardPileDesignUIRegistry;
 import org.gamegineer.table.ui.services.carddesignuiregistry.ICardDesignUIRegistry;
@@ -59,6 +60,9 @@ public final class Services
 
     /** The card design user interface registry service tracker. */
     private ServiceTracker cardDesignUIRegistryServiceTracker_;
+
+    /** The card pile design registry service tracker. */
+    private ServiceTracker cardPileDesignRegistryServiceTracker_;
 
     /** The card pile design user interface registry service registration token. */
     private ServiceRegistration cardPileDesignUIRegistryServiceRegistration_;
@@ -104,6 +108,11 @@ public final class Services
         {
             cardPileDesignUIRegistryServiceTracker_.close();
             cardPileDesignUIRegistryServiceTracker_ = null;
+        }
+        if( cardPileDesignRegistryServiceTracker_ != null )
+        {
+            cardPileDesignRegistryServiceTracker_.close();
+            cardPileDesignRegistryServiceTracker_ = null;
         }
         if( cardDesignUIRegistryServiceTracker_ != null )
         {
@@ -164,6 +173,23 @@ public final class Services
         assertStateLegal( cardDesignUIRegistryServiceTracker_ != null, Messages.Services_cardDesignUIRegistryServiceTracker_notSet );
 
         return (ICardDesignUIRegistry)cardDesignUIRegistryServiceTracker_.getService();
+    }
+
+    /**
+     * Gets the card pile design registry service managed by this object.
+     * 
+     * @return The card pile design registry service managed by this object;
+     *         never {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If this object is not open.
+     */
+    /* @NonNull */
+    public ICardPileDesignRegistry getCardPileDesignRegistry()
+    {
+        assertStateLegal( cardPileDesignRegistryServiceTracker_ != null, Messages.Services_cardPileDesignRegistryServiceTracker_notSet );
+
+        return (ICardPileDesignRegistry)cardPileDesignRegistryServiceTracker_.getService();
     }
 
     /**
@@ -239,6 +265,8 @@ public final class Services
         cardDesignRegistryServiceTracker_.open();
         cardDesignUIRegistryServiceTracker_ = new ServiceTracker( context, cardDesignUIRegistryServiceRegistration_.getReference(), null );
         cardDesignUIRegistryServiceTracker_.open();
+        cardPileDesignRegistryServiceTracker_ = new ServiceTracker( context, ICardPileDesignRegistry.class.getName(), null );
+        cardPileDesignRegistryServiceTracker_.open();
         cardPileDesignUIRegistryServiceTracker_ = new ServiceTracker( context, cardPileDesignUIRegistryServiceRegistration_.getReference(), null );
         cardPileDesignUIRegistryServiceTracker_.open();
         packageAdminServiceTracker_ = new ServiceTracker( context, PackageAdmin.class.getName(), null );

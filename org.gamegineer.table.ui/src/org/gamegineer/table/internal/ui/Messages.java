@@ -46,6 +46,9 @@ final class Messages
     /** The card design user interface registry service tracker is not set. */
     public static String Services_cardDesignUIRegistryServiceTracker_notSet;
 
+    /** The card pile design registry service tracker is not set. */
+    public static String Services_cardPileDesignRegistryServiceTracker_notSet;
+
     /** The card pile design user interface registry service tracker is not set. */
     public static String Services_cardPileDesignUIRegistryServiceTracker_notSet;
 
