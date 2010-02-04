@@ -61,14 +61,6 @@ final class Messages
     /** The card listener is not registered. */
     public static String Card_removeCardListener_listener_notRegistered;
 
-    // --- CardDesign -------------------------------------------------------
-
-    /** The card design height must not be negative. */
-    public static String CardDesign_ctor_height_negative;
-
-    /** The card design width must not be negative. */
-    public static String CardDesign_ctor_width_negative;
-
     // --- CardPile ---------------------------------------------------------
 
     /** The card pile listener is already registered. */
@@ -97,13 +89,21 @@ final class Messages
     /** The card pile design width must not be negative. */
     public static String CardPileDesign_ctor_width_negative;
 
-    // --- Services ---------------------------------------------------------
+    // --- CardSurfaceDesign ------------------------------------------------
 
-    /** The card design registry service tracker is not set. */
-    public static String Services_cardDesignRegistryServiceTracker_notSet;
+    /** The card surface design height must not be negative. */
+    public static String CardSurfaceDesign_ctor_height_negative;
+
+    /** The card surface design width must not be negative. */
+    public static String CardSurfaceDesign_ctor_width_negative;
+
+    // --- Services ---------------------------------------------------------
 
     /** The card pile design registry service tracker is not set. */
     public static String Services_cardPileDesignRegistryServiceTracker_notSet;
+
+    /** The card surface design registry service tracker is not set. */
+    public static String Services_cardSurfaceDesignRegistryServiceTracker_notSet;
 
     // --- Table ------------------------------------------------------------
 

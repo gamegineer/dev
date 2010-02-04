@@ -1,6 +1,6 @@
 /*
  * CardTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.internal.core;
 
-import org.gamegineer.table.core.CardDesigns;
-import org.gamegineer.table.core.ICardDesign;
+import org.gamegineer.table.core.CardSurfaceDesigns;
+import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.junit.Test;
 
 /**
@@ -55,7 +55,7 @@ public final class CardTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_BackDesign_Null()
     {
-        new Card( null, CardDesigns.createUniqueCardDesign() );
+        new Card( null, CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
     }
 
     /**
@@ -65,7 +65,7 @@ public final class CardTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_FaceDesign_Null()
     {
-        new Card( CardDesigns.createUniqueCardDesign(), null );
+        new Card( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), null );
     }
 
     /**
@@ -77,8 +77,8 @@ public final class CardTest
     {
         final int width = 10;
         final int height = 20;
-        final ICardDesign backDesign = CardDesigns.createUniqueCardDesign( width, height );
-        final ICardDesign faceDesign = CardDesigns.createUniqueCardDesign( 2 * width, 2 * height );
+        final ICardSurfaceDesign backDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign( width, height );
+        final ICardSurfaceDesign faceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign( 2 * width, 2 * height );
 
         new Card( backDesign, faceDesign );
     }

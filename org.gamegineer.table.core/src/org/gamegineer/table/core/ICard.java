@@ -1,6 +1,6 @@
 /*
  * ICard.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -64,7 +64,7 @@ public interface ICard
      * @return The design on the back of this card; never {@code null}.
      */
     /* @NonNull */
-    public ICardDesign getBackDesign();
+    public ICardSurfaceDesign getBackDesign();
 
     /**
      * Gets the bounds of this card in table coordinates.
@@ -81,7 +81,7 @@ public interface ICard
      * @return The design on the face of this card; never {@code null}.
      */
     /* @NonNull */
-    public ICardDesign getFaceDesign();
+    public ICardSurfaceDesign getFaceDesign();
 
     /**
      * Gets the location of this card in table coordinates.

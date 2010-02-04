@@ -1,6 +1,6 @@
 /*
  * CardFactory.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -66,9 +66,9 @@ public final class CardFactory
     /* @NonNull */
     public static ICard createCard(
         /* @NonNull */
-        final ICardDesign backDesign,
+        final ICardSurfaceDesign backDesign,
         /* @NonNull */
-        final ICardDesign faceDesign )
+        final ICardSurfaceDesign faceDesign )
     {
         return new Card( backDesign, faceDesign );
     }

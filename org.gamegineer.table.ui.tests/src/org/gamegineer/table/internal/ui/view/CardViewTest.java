@@ -25,15 +25,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Rectangle;
 import javax.swing.DebugGraphics;
-import org.gamegineer.table.core.CardDesigns;
 import org.gamegineer.table.core.CardFactory;
+import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ICardDesign;
+import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.CardModel;
 import org.gamegineer.table.internal.ui.model.TableModel;
-import org.gamegineer.table.ui.CardDesignUIs;
-import org.gamegineer.table.ui.ICardDesignUI;
+import org.gamegineer.table.ui.CardSurfaceDesignUIs;
+import org.gamegineer.table.ui.ICardSurfaceDesignUI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,10 +49,10 @@ public final class CardViewTest
     // ======================================================================
 
     /**
-     * The card design user interface for the card back for use in the test
-     * fixture.
+     * The card surface design user interface for the card back for use in the
+     * test fixture.
      */
-    private ICardDesignUI backDesignUI_;
+    private ICardSurfaceDesignUI backDesignUI_;
 
     /** A card model for use in the test fixture. */
     private CardModel cardModel_;
@@ -61,10 +61,10 @@ public final class CardViewTest
     private CardView cardView_;
 
     /**
-     * The card design user interface for the card face for use in the test
-     * fixture.
+     * The card surface design user interface for the card face for use in the
+     * test fixture.
      */
-    private ICardDesignUI faceDesignUI_;
+    private ICardSurfaceDesignUI faceDesignUI_;
 
 
     // ======================================================================
@@ -94,10 +94,10 @@ public final class CardViewTest
     public void setUp()
         throws Exception
     {
-        final ICardDesign backDesign = CardDesigns.createUniqueCardDesign();
-        backDesignUI_ = CardDesignUIs.createCardDesignUI( backDesign );
-        final ICardDesign faceDesign = CardDesigns.createUniqueCardDesign();
-        faceDesignUI_ = CardDesignUIs.createCardDesignUI( faceDesign );
+        final ICardSurfaceDesign backDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
+        backDesignUI_ = CardSurfaceDesignUIs.createCardSurfaceDesignUI( backDesign );
+        final ICardSurfaceDesign faceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
+        faceDesignUI_ = CardSurfaceDesignUIs.createCardSurfaceDesignUI( faceDesign );
         final ICard card = CardFactory.createCard( backDesign, faceDesign );
         cardModel_ = new CardModel( card );
         cardView_ = new CardView( cardModel_, backDesignUI_, faceDesignUI_ );
@@ -121,7 +121,7 @@ public final class CardViewTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * card design user interface for the card back.
+     * card surface design user interface for the card back.
      */
     @Test( expected = AssertionError.class )
     public void testConstructor_BackDesignUI_Null()
@@ -131,7 +131,7 @@ public final class CardViewTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * card design user interface for the card face.
+     * card surface design user interface for the card face.
      */
     @Test( expected = AssertionError.class )
     public void testConstructor_FaceDesignUI_Null()

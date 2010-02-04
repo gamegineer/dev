@@ -26,10 +26,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import org.gamegineer.table.core.CardDesigns;
 import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.CardPileDesigns;
 import org.gamegineer.table.core.CardPileFactory;
+import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.TableFactory;
@@ -76,7 +76,7 @@ public final class TableModelTest
     /* @NonNull */
     private static ICard createCard()
     {
-        return CardFactory.createCard( CardDesigns.createUniqueCardDesign(), CardDesigns.createUniqueCardDesign() );
+        return CardFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
     }
 
     /**

@@ -33,7 +33,7 @@ import org.gamegineer.table.core.ICardListener;
 import org.gamegineer.table.internal.ui.model.CardModel;
 import org.gamegineer.table.internal.ui.model.CardModelEvent;
 import org.gamegineer.table.internal.ui.model.ICardModelListener;
-import org.gamegineer.table.ui.ICardDesignUI;
+import org.gamegineer.table.ui.ICardSurfaceDesignUI;
 
 /**
  * A view of a card.
@@ -46,14 +46,14 @@ final class CardView
     // Fields
     // ======================================================================
 
-    /** The card design user interface for the card back. */
-    private final ICardDesignUI backDesignUI_;
+    /** The card surface design user interface for the card back. */
+    private final ICardSurfaceDesignUI backDesignUI_;
 
     /** The current bounds of this view in table coordinates. */
     private Rectangle bounds_;
 
-    /** The card design user interface for the card face. */
-    private final ICardDesignUI faceDesignUI_;
+    /** The card surface design user interface for the card face. */
+    private final ICardSurfaceDesignUI faceDesignUI_;
 
     /** The model associated with this view. */
     private final CardModel model_;
@@ -72,19 +72,19 @@ final class CardView
      * @param model
      *        The model associated with this view; must not be {@code null}.
      * @param backDesignUI
-     *        The card design user interface for the card back; must not be
-     *        {@code null}.
+     *        The card surface design user interface for the card back; must not
+     *        be {@code null}.
      * @param faceDesignUI
-     *        The card design user interface for the card face; must not be
-     *        {@code null}.
+     *        The card surface design user interface for the card face; must not
+     *        be {@code null}.
      */
     CardView(
         /* @NonNull */
         final CardModel model,
         /* @NonNull */
-        final ICardDesignUI backDesignUI,
+        final ICardSurfaceDesignUI backDesignUI,
         /* @NonNull */
-        final ICardDesignUI faceDesignUI )
+        final ICardSurfaceDesignUI faceDesignUI )
     {
         assert model != null;
         assert backDesignUI != null;
@@ -201,12 +201,13 @@ final class CardView
     }
 
     /**
-     * Gets the active card design user interface.
+     * Gets the active card surface design user interface.
      * 
-     * @return The active card design user interface; never {@code null}.
+     * @return The active card surface design user interface; never {@code null}
+     *         .
      */
     /* @NonNull */
-    private ICardDesignUI getActiveCardDesignUI()
+    private ICardSurfaceDesignUI getActiveCardSurfaceDesignUI()
     {
         return (model_.getCard().getOrientation() == CardOrientation.BACK_UP) ? backDesignUI_ : faceDesignUI_;
     }
@@ -265,7 +266,7 @@ final class CardView
         assert tableView_ != null;
 
         final Rectangle cardBounds = model_.getCard().getBounds();
-        getActiveCardDesignUI().getIcon().paintIcon( tableView_, g, cardBounds.x, cardBounds.y );
+        getActiveCardSurfaceDesignUI().getIcon().paintIcon( tableView_, g, cardBounds.x, cardBounds.y );
 
         if( model_.isFocused() )
         {

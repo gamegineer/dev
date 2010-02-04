@@ -1,6 +1,6 @@
 /*
  * CardViewAsCardListenerTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,14 +22,14 @@
 package org.gamegineer.table.internal.ui.view;
 
 import org.gamegineer.table.core.AbstractCardListenerTestCase;
-import org.gamegineer.table.core.CardDesigns;
 import org.gamegineer.table.core.CardFactory;
+import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ICardDesign;
 import org.gamegineer.table.core.ICardListener;
+import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.internal.ui.model.CardModel;
-import org.gamegineer.table.ui.CardDesignUIs;
-import org.gamegineer.table.ui.ICardDesignUI;
+import org.gamegineer.table.ui.CardSurfaceDesignUIs;
+import org.gamegineer.table.ui.ICardSurfaceDesignUI;
 
 /**
  * A fixture for testing the
@@ -64,10 +64,10 @@ public final class CardViewAsCardListenerTest
     @Override
     protected ICardListener createCardListener()
     {
-        final ICardDesign backDesign = CardDesigns.createUniqueCardDesign();
-        final ICardDesignUI backDesignUI = CardDesignUIs.createCardDesignUI( backDesign );
-        final ICardDesign faceDesign = CardDesigns.createUniqueCardDesign();
-        final ICardDesignUI faceDesignUI = CardDesignUIs.createCardDesignUI( faceDesign );
+        final ICardSurfaceDesign backDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
+        final ICardSurfaceDesignUI backDesignUI = CardSurfaceDesignUIs.createCardSurfaceDesignUI( backDesign );
+        final ICardSurfaceDesign faceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
+        final ICardSurfaceDesignUI faceDesignUI = CardSurfaceDesignUIs.createCardSurfaceDesignUI( faceDesign );
         final ICard card = CardFactory.createCard( backDesign, faceDesign );
         return new CardView( new CardModel( card ), backDesignUI, faceDesignUI );
     }

@@ -1,6 +1,6 @@
 /*
  * Card.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,8 +33,8 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ICardDesign;
 import org.gamegineer.table.core.ICardListener;
+import org.gamegineer.table.core.ICardSurfaceDesign;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ICard}.
@@ -48,10 +48,10 @@ public final class Card
     // ======================================================================
 
     /** The design on the back of the card. */
-    private final ICardDesign backDesign_;
+    private final ICardSurfaceDesign backDesign_;
 
     /** The design on the face of the card. */
-    private final ICardDesign faceDesign_;
+    private final ICardSurfaceDesign faceDesign_;
 
     /** The collection of card listeners. */
     private final CopyOnWriteArrayList<ICardListener> listeners_;
@@ -88,9 +88,9 @@ public final class Card
      */
     public Card(
         /* @NonNull */
-        final ICardDesign backDesign,
+        final ICardSurfaceDesign backDesign,
         /* @NonNull */
-        final ICardDesign faceDesign )
+        final ICardSurfaceDesign faceDesign )
     {
         assertArgumentNotNull( backDesign, "backDesign" ); //$NON-NLS-1$
         assertArgumentNotNull( faceDesign, "faceDesign" ); //$NON-NLS-1$
@@ -173,7 +173,7 @@ public final class Card
     /*
      * @see org.gamegineer.table.core.ICard#getBackDesign()
      */
-    public ICardDesign getBackDesign()
+    public ICardSurfaceDesign getBackDesign()
     {
         return backDesign_;
     }
@@ -192,7 +192,7 @@ public final class Card
     /*
      * @see org.gamegineer.table.core.ICard#getFaceDesign()
      */
-    public ICardDesign getFaceDesign()
+    public ICardSurfaceDesign getFaceDesign()
     {
         return faceDesign_;
     }

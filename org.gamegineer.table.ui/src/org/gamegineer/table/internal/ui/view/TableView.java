@@ -44,14 +44,14 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
-import org.gamegineer.table.core.CardDesignId;
 import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.CardPileDesignId;
 import org.gamegineer.table.core.CardPileFactory;
+import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ICardDesign;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardPileDesign;
+import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.internal.ui.Services;
@@ -59,8 +59,8 @@ import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
-import org.gamegineer.table.ui.ICardDesignUI;
 import org.gamegineer.table.ui.ICardPileDesignUI;
+import org.gamegineer.table.ui.ICardSurfaceDesignUI;
 
 /**
  * A view of the table.
@@ -144,12 +144,12 @@ final class TableView
      */
     private void addCard(
         /* @NonNull */
-        final CardDesignId faceDesignId )
+        final CardSurfaceDesignId faceDesignId )
     {
         assert faceDesignId != null;
 
-        final ICardDesign backDesign = Services.getDefault().getCardDesignRegistry().getCardDesign( CardDesignId.fromString( "org.gamegineer.cards.back.thatch" ) ); //$NON-NLS-1$ );
-        final ICardDesign faceDesign = Services.getDefault().getCardDesignRegistry().getCardDesign( faceDesignId );
+        final ICardSurfaceDesign backDesign = Services.getDefault().getCardSurfaceDesignRegistry().getCardSurfaceDesign( CardSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.back.thatch" ) ); //$NON-NLS-1$ );
+        final ICardSurfaceDesign faceDesign = Services.getDefault().getCardSurfaceDesignRegistry().getCardSurfaceDesign( faceDesignId );
         final ICard card = CardFactory.createCard( backDesign, faceDesign );
         model_.getTable().addCard( card );
     }
@@ -191,7 +191,7 @@ final class TableView
             public void actionPerformed(
                 final ActionEvent e )
             {
-                addCard( CardDesignId.fromString( e.getActionCommand() ) );
+                addCard( CardSurfaceDesignId.fromString( e.getActionCommand() ) );
             }
         };
         actionMediator_.bind( Actions.getAddAceOfClubsCardAction(), addCardActionListener );
@@ -342,8 +342,8 @@ final class TableView
     {
         assert card != null;
 
-        final ICardDesignUI backDesignUI = Services.getDefault().getCardDesignUIRegistry().getCardDesignUI( card.getBackDesign().getId() );
-        final ICardDesignUI faceDesignUI = Services.getDefault().getCardDesignUIRegistry().getCardDesignUI( card.getFaceDesign().getId() );
+        final ICardSurfaceDesignUI backDesignUI = Services.getDefault().getCardSurfaceDesignUIRegistry().getCardSurfaceDesignUI( card.getBackDesign().getId() );
+        final ICardSurfaceDesignUI faceDesignUI = Services.getDefault().getCardSurfaceDesignUIRegistry().getCardSurfaceDesignUI( card.getFaceDesign().getId() );
         final CardView view = new CardView( model_.getCardModel( card ), backDesignUI, faceDesignUI );
         cardViews_.put( card, view );
         view.initialize( this );

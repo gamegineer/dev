@@ -23,8 +23,8 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import org.gamegineer.table.core.CardDesigns;
 import org.gamegineer.table.core.CardFactory;
+import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,7 +70,7 @@ public final class CardModelTest
     public void setUp()
         throws Exception
     {
-        model_ = new CardModel( CardFactory.createCard( CardDesigns.createUniqueCardDesign(), CardDesigns.createUniqueCardDesign() ) );
+        model_ = new CardModel( CardFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() ) );
     }
 
     /**

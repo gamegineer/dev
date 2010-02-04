@@ -1,6 +1,6 @@
 /*
  * CardAsCardTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.AbstractCardTestCase;
-import org.gamegineer.table.core.CardDesigns;
+import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
 
 /**
@@ -56,6 +56,6 @@ public final class CardAsCardTest
     @Override
     protected ICard createCard()
     {
-        return new Card( CardDesigns.createUniqueCardDesign(), CardDesigns.createUniqueCardDesign() );
+        return new Card( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
     }
 }

@@ -22,12 +22,12 @@
 package org.gamegineer.table.internal.core;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.CardDesignId;
 import org.gamegineer.table.core.CardPileDesignId;
+import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ICardDesign;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardPileDesign;
+import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableContentChangedEvent;
 
@@ -105,8 +105,8 @@ final class TableContentChangedEventDelegate
         cardPile_ = cardPile;
 
         // XXX: TEMPORARY
-        final ICardDesign cardDesign = new CardDesign( CardDesignId.fromString( "dummy" ), 0, 0 ); //$NON-NLS-1$
-        card_ = new Card( cardDesign, cardDesign );
+        final ICardSurfaceDesign cardSurfaceDesign = new CardSurfaceDesign( CardSurfaceDesignId.fromString( "dummy" ), 0, 0 ); //$NON-NLS-1$
+        card_ = new Card( cardSurfaceDesign, cardSurfaceDesign );
     }
 
 

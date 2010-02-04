@@ -37,8 +37,8 @@ import org.gamegineer.table.internal.ui.Services;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
 import org.gamegineer.table.internal.ui.model.CardPileModelEvent;
 import org.gamegineer.table.internal.ui.model.ICardPileModelListener;
-import org.gamegineer.table.ui.ICardDesignUI;
 import org.gamegineer.table.ui.ICardPileDesignUI;
+import org.gamegineer.table.ui.ICardSurfaceDesignUI;
 
 /**
  * A view of a card pile.
@@ -130,8 +130,8 @@ final class CardPileView
     {
         assert card != null;
 
-        final ICardDesignUI backDesignUI = Services.getDefault().getCardDesignUIRegistry().getCardDesignUI( card.getBackDesign().getId() );
-        final ICardDesignUI faceDesignUI = Services.getDefault().getCardDesignUIRegistry().getCardDesignUI( card.getFaceDesign().getId() );
+        final ICardSurfaceDesignUI backDesignUI = Services.getDefault().getCardSurfaceDesignUIRegistry().getCardSurfaceDesignUI( card.getBackDesign().getId() );
+        final ICardSurfaceDesignUI faceDesignUI = Services.getDefault().getCardSurfaceDesignUIRegistry().getCardSurfaceDesignUI( card.getFaceDesign().getId() );
         final CardView view = new CardView( model_.getCardModel( card ), backDesignUI, faceDesignUI );
         cardViews_.put( card, view );
         view.initialize( tableView_ ); // TODO: Change to accept CardPileView?

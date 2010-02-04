@@ -3,239 +3,239 @@
 <plugin>
 
     <extension-point
-            id="cardDesignUIs"
-            name="Card Design User Interfaces"
-            schema="schema/cardDesignUIs.exsd" />
-    <extension-point
             id="cardPileDesignUIs"
             name="Card Pile Design User Interfaces"
             schema="schema/cardPileDesignUIs.exsd" />
+    <extension-point
+            id="cardSurfaceDesignUIs"
+            name="Card Surface Design User Interfaces"
+            schema="schema/cardSurfaceDesignUIs.exsd" />
 
-    <extension
-            point="org.gamegineer.table.ui.cardDesignUIs">
-        <cardDesignUI
-                icon="icons/cards/back-thatch.png"
-                id="org.gamegineer.cards.back.thatch"
-                name="%card.back.thatch.name" />
-        <cardDesignUI
-                icon="icons/cards/clubs-ace.png"
-                id="org.gamegineer.cards.clubs.ace"
-                name="%card.clubs.ace.name" />
-        <cardDesignUI
-                icon="icons/cards/clubs-two.png"
-                id="org.gamegineer.cards.clubs.two"
-                name="%card.clubs.two.name" />
-        <cardDesignUI
-                icon="icons/cards/clubs-three.png"
-                id="org.gamegineer.cards.clubs.three"
-                name="%card.clubs.three.name" />
-        <cardDesignUI
-                icon="icons/cards/clubs-four.png"
-                id="org.gamegineer.cards.clubs.four"
-                name="%card.clubs.four.name" />
-        <cardDesignUI
-                icon="icons/cards/clubs-five.png"
-                id="org.gamegineer.cards.clubs.five"
-                name="%card.clubs.five.name" />
-        <cardDesignUI
-                icon="icons/cards/clubs-six.png"
-                id="org.gamegineer.cards.clubs.six"
-                name="%card.clubs.six.name" />
-        <cardDesignUI
-                icon="icons/cards/clubs-seven.png"
-                id="org.gamegineer.cards.clubs.seven"
-                name="%card.clubs.seven.name" />
-        <cardDesignUI
-                icon="icons/cards/clubs-eight.png"
-                id="org.gamegineer.cards.clubs.eight"
-                name="%card.clubs.eight.name" />
-        <cardDesignUI
-                icon="icons/cards/clubs-nine.png"
-                id="org.gamegineer.cards.clubs.nine"
-                name="%card.clubs.nine.name" />
-        <cardDesignUI
-                icon="icons/cards/clubs-ten.png"
-                id="org.gamegineer.cards.clubs.ten"
-                name="%card.clubs.ten.name" />
-        <cardDesignUI
-                icon="icons/cards/clubs-jack.png"
-                id="org.gamegineer.cards.clubs.jack"
-                name="%card.clubs.jack.name" />
-        <cardDesignUI
-                icon="icons/cards/clubs-queen.png"
-                id="org.gamegineer.cards.clubs.queen"
-                name="%card.clubs.queen.name" />
-        <cardDesignUI
-                icon="icons/cards/clubs-king.png"
-                id="org.gamegineer.cards.clubs.king"
-                name="%card.clubs.king.name" />
-        <cardDesignUI
-                icon="icons/cards/diamonds-ace.png"
-                id="org.gamegineer.cards.diamonds.ace"
-                name="%card.diamonds.ace.name" />
-        <cardDesignUI
-                icon="icons/cards/diamonds-two.png"
-                id="org.gamegineer.cards.diamonds.two"
-                name="%card.diamonds.two.name" />
-        <cardDesignUI
-                icon="icons/cards/diamonds-three.png"
-                id="org.gamegineer.cards.diamonds.three"
-                name="%card.diamonds.three.name" />
-        <cardDesignUI
-                icon="icons/cards/diamonds-four.png"
-                id="org.gamegineer.cards.diamonds.four"
-                name="%card.diamonds.four.name" />
-        <cardDesignUI
-                icon="icons/cards/diamonds-five.png"
-                id="org.gamegineer.cards.diamonds.five"
-                name="%card.diamonds.five.name" />
-        <cardDesignUI
-                icon="icons/cards/diamonds-six.png"
-                id="org.gamegineer.cards.diamonds.six"
-                name="%card.diamonds.six.name" />
-        <cardDesignUI
-                icon="icons/cards/diamonds-seven.png"
-                id="org.gamegineer.cards.diamonds.seven"
-                name="%card.diamonds.seven.name" />
-        <cardDesignUI
-                icon="icons/cards/diamonds-eight.png"
-                id="org.gamegineer.cards.diamonds.eight"
-                name="%card.diamonds.eight.name" />
-        <cardDesignUI
-                icon="icons/cards/diamonds-nine.png"
-                id="org.gamegineer.cards.diamonds.nine"
-                name="%card.diamonds.nine.name" />
-        <cardDesignUI
-                icon="icons/cards/diamonds-ten.png"
-                id="org.gamegineer.cards.diamonds.ten"
-                name="%card.diamonds.ten.name" />
-        <cardDesignUI
-                icon="icons/cards/diamonds-jack.png"
-                id="org.gamegineer.cards.diamonds.jack"
-                name="%card.diamonds.jack.name" />
-        <cardDesignUI
-                icon="icons/cards/diamonds-queen.png"
-                id="org.gamegineer.cards.diamonds.queen"
-                name="%card.diamonds.queen.name" />
-        <cardDesignUI
-                icon="icons/cards/diamonds-king.png"
-                id="org.gamegineer.cards.diamonds.king"
-                name="%card.diamonds.king.name" />
-        <cardDesignUI
-                icon="icons/cards/hearts-ace.png"
-                id="org.gamegineer.cards.hearts.ace"
-                name="%card.hearts.ace.name" />
-        <cardDesignUI
-                icon="icons/cards/hearts-two.png"
-                id="org.gamegineer.cards.hearts.two"
-                name="%card.hearts.two.name" />
-        <cardDesignUI
-                icon="icons/cards/hearts-three.png"
-                id="org.gamegineer.cards.hearts.three"
-                name="%card.hearts.three.name" />
-        <cardDesignUI
-                icon="icons/cards/hearts-four.png"
-                id="org.gamegineer.cards.hearts.four"
-                name="%card.hearts.four.name" />
-        <cardDesignUI
-                icon="icons/cards/hearts-five.png"
-                id="org.gamegineer.cards.hearts.five"
-                name="%card.hearts.five.name" />
-        <cardDesignUI
-                icon="icons/cards/hearts-six.png"
-                id="org.gamegineer.cards.hearts.six"
-                name="%card.hearts.six.name" />
-        <cardDesignUI
-                icon="icons/cards/hearts-seven.png"
-                id="org.gamegineer.cards.hearts.seven"
-                name="%card.hearts.seven.name" />
-        <cardDesignUI
-                icon="icons/cards/hearts-eight.png"
-                id="org.gamegineer.cards.hearts.eight"
-                name="%card.hearts.eight.name" />
-        <cardDesignUI
-                icon="icons/cards/hearts-nine.png"
-                id="org.gamegineer.cards.hearts.nine"
-                name="%card.hearts.nine.name" />
-        <cardDesignUI
-                icon="icons/cards/hearts-ten.png"
-                id="org.gamegineer.cards.hearts.ten"
-                name="%card.hearts.ten.name" />
-        <cardDesignUI
-                icon="icons/cards/hearts-jack.png"
-                id="org.gamegineer.cards.hearts.jack"
-                name="%card.hearts.jack.name" />
-        <cardDesignUI
-                icon="icons/cards/hearts-queen.png"
-                id="org.gamegineer.cards.hearts.queen"
-                name="%card.hearts.queen.name" />
-        <cardDesignUI
-                icon="icons/cards/hearts-king.png"
-                id="org.gamegineer.cards.hearts.king"
-                name="%card.hearts.king.name" />
-        <cardDesignUI
-                icon="icons/cards/spades-ace.png"
-                id="org.gamegineer.cards.spades.ace"
-                name="%card.spades.ace.name" />
-        <cardDesignUI
-                icon="icons/cards/spades-two.png"
-                id="org.gamegineer.cards.spades.two"
-                name="%card.spades.two.name" />
-        <cardDesignUI
-                icon="icons/cards/spades-three.png"
-                id="org.gamegineer.cards.spades.three"
-                name="%card.spades.three.name" />
-        <cardDesignUI
-                icon="icons/cards/spades-four.png"
-                id="org.gamegineer.cards.spades.four"
-                name="%card.spades.four.name" />
-        <cardDesignUI
-                icon="icons/cards/spades-five.png"
-                id="org.gamegineer.cards.spades.five"
-                name="%card.spades.five.name" />
-        <cardDesignUI
-                icon="icons/cards/spades-six.png"
-                id="org.gamegineer.cards.spades.six"
-                name="%card.spades.six.name" />
-        <cardDesignUI
-                icon="icons/cards/spades-seven.png"
-                id="org.gamegineer.cards.spades.seven"
-                name="%card.spades.seven.name" />
-        <cardDesignUI
-                icon="icons/cards/spades-eight.png"
-                id="org.gamegineer.cards.spades.eight"
-                name="%card.spades.eight.name" />
-        <cardDesignUI
-                icon="icons/cards/spades-nine.png"
-                id="org.gamegineer.cards.spades.nine"
-                name="%card.spades.nine.name" />
-        <cardDesignUI
-                icon="icons/cards/spades-ten.png"
-                id="org.gamegineer.cards.spades.ten"
-                name="%card.spades.ten.name" />
-        <cardDesignUI
-                icon="icons/cards/spades-jack.png"
-                id="org.gamegineer.cards.spades.jack"
-                name="%card.spades.jack.name" />
-        <cardDesignUI
-                icon="icons/cards/spades-queen.png"
-                id="org.gamegineer.cards.spades.queen"
-                name="%card.spades.queen.name" />
-        <cardDesignUI
-                icon="icons/cards/spades-king.png"
-                id="org.gamegineer.cards.spades.king"
-                name="%card.spades.king.name" />
-        <cardDesignUI
-                icon="icons/cards/special-joker.png"
-                id="org.gamegineer.cards.special.joker"
-                name="%card.special.joker.name" />
-    </extension>
     <extension
             point="org.gamegineer.table.ui.cardPileDesignUIs">
         <cardPileDesignUI
                 icon="icons/cardPiles/default.png"
                 id="org.gamegineer.cardPiles.default"
                 name="%cardPile.default.name" />
+    </extension>
+    <extension
+            point="org.gamegineer.table.ui.cardSurfaceDesignUIs">
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/back-thatch.png"
+                id="org.gamegineer.cardSurfaces.back.thatch"
+                name="%cardSurface.back.thatch.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/clubs-ace.png"
+                id="org.gamegineer.cardSurfaces.clubs.ace"
+                name="%cardSurface.clubs.ace.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/clubs-two.png"
+                id="org.gamegineer.cardSurfaces.clubs.two"
+                name="%cardSurface.clubs.two.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/clubs-three.png"
+                id="org.gamegineer.cardSurfaces.clubs.three"
+                name="%cardSurface.clubs.three.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/clubs-four.png"
+                id="org.gamegineer.cardSurfaces.clubs.four"
+                name="%cardSurface.clubs.four.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/clubs-five.png"
+                id="org.gamegineer.cardSurfaces.clubs.five"
+                name="%cardSurface.clubs.five.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/clubs-six.png"
+                id="org.gamegineer.cardSurfaces.clubs.six"
+                name="%cardSurface.clubs.six.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/clubs-seven.png"
+                id="org.gamegineer.cardSurfaces.clubs.seven"
+                name="%cardSurface.clubs.seven.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/clubs-eight.png"
+                id="org.gamegineer.cardSurfaces.clubs.eight"
+                name="%cardSurface.clubs.eight.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/clubs-nine.png"
+                id="org.gamegineer.cardSurfaces.clubs.nine"
+                name="%cardSurface.clubs.nine.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/clubs-ten.png"
+                id="org.gamegineer.cardSurfaces.clubs.ten"
+                name="%cardSurface.clubs.ten.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/clubs-jack.png"
+                id="org.gamegineer.cardSurfaces.clubs.jack"
+                name="%cardSurface.clubs.jack.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/clubs-queen.png"
+                id="org.gamegineer.cardSurfaces.clubs.queen"
+                name="%cardSurface.clubs.queen.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/clubs-king.png"
+                id="org.gamegineer.cardSurfaces.clubs.king"
+                name="%cardSurface.clubs.king.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/diamonds-ace.png"
+                id="org.gamegineer.cardSurfaces.diamonds.ace"
+                name="%cardSurface.diamonds.ace.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/diamonds-two.png"
+                id="org.gamegineer.cardSurfaces.diamonds.two"
+                name="%cardSurface.diamonds.two.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/diamonds-three.png"
+                id="org.gamegineer.cardSurfaces.diamonds.three"
+                name="%cardSurface.diamonds.three.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/diamonds-four.png"
+                id="org.gamegineer.cardSurfaces.diamonds.four"
+                name="%cardSurface.diamonds.four.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/diamonds-five.png"
+                id="org.gamegineer.cardSurfaces.diamonds.five"
+                name="%cardSurface.diamonds.five.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/diamonds-six.png"
+                id="org.gamegineer.cardSurfaces.diamonds.six"
+                name="%cardSurface.diamonds.six.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/diamonds-seven.png"
+                id="org.gamegineer.cardSurfaces.diamonds.seven"
+                name="%cardSurface.diamonds.seven.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/diamonds-eight.png"
+                id="org.gamegineer.cardSurfaces.diamonds.eight"
+                name="%cardSurface.diamonds.eight.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/diamonds-nine.png"
+                id="org.gamegineer.cardSurfaces.diamonds.nine"
+                name="%cardSurface.diamonds.nine.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/diamonds-ten.png"
+                id="org.gamegineer.cardSurfaces.diamonds.ten"
+                name="%cardSurface.diamonds.ten.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/diamonds-jack.png"
+                id="org.gamegineer.cardSurfaces.diamonds.jack"
+                name="%cardSurface.diamonds.jack.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/diamonds-queen.png"
+                id="org.gamegineer.cardSurfaces.diamonds.queen"
+                name="%cardSurface.diamonds.queen.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/diamonds-king.png"
+                id="org.gamegineer.cardSurfaces.diamonds.king"
+                name="%cardSurface.diamonds.king.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/hearts-ace.png"
+                id="org.gamegineer.cardSurfaces.hearts.ace"
+                name="%cardSurface.hearts.ace.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/hearts-two.png"
+                id="org.gamegineer.cardSurfaces.hearts.two"
+                name="%cardSurface.hearts.two.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/hearts-three.png"
+                id="org.gamegineer.cardSurfaces.hearts.three"
+                name="%cardSurface.hearts.three.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/hearts-four.png"
+                id="org.gamegineer.cardSurfaces.hearts.four"
+                name="%cardSurface.hearts.four.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/hearts-five.png"
+                id="org.gamegineer.cardSurfaces.hearts.five"
+                name="%cardSurface.hearts.five.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/hearts-six.png"
+                id="org.gamegineer.cardSurfaces.hearts.six"
+                name="%cardSurface.hearts.six.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/hearts-seven.png"
+                id="org.gamegineer.cardSurfaces.hearts.seven"
+                name="%cardSurface.hearts.seven.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/hearts-eight.png"
+                id="org.gamegineer.cardSurfaces.hearts.eight"
+                name="%cardSurface.hearts.eight.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/hearts-nine.png"
+                id="org.gamegineer.cardSurfaces.hearts.nine"
+                name="%cardSurface.hearts.nine.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/hearts-ten.png"
+                id="org.gamegineer.cardSurfaces.hearts.ten"
+                name="%cardSurface.hearts.ten.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/hearts-jack.png"
+                id="org.gamegineer.cardSurfaces.hearts.jack"
+                name="%cardSurface.hearts.jack.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/hearts-queen.png"
+                id="org.gamegineer.cardSurfaces.hearts.queen"
+                name="%cardSurface.hearts.queen.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/hearts-king.png"
+                id="org.gamegineer.cardSurfaces.hearts.king"
+                name="%cardSurface.hearts.king.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/spades-ace.png"
+                id="org.gamegineer.cardSurfaces.spades.ace"
+                name="%cardSurface.spades.ace.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/spades-two.png"
+                id="org.gamegineer.cardSurfaces.spades.two"
+                name="%cardSurface.spades.two.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/spades-three.png"
+                id="org.gamegineer.cardSurfaces.spades.three"
+                name="%cardSurface.spades.three.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/spades-four.png"
+                id="org.gamegineer.cardSurfaces.spades.four"
+                name="%cardSurface.spades.four.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/spades-five.png"
+                id="org.gamegineer.cardSurfaces.spades.five"
+                name="%cardSurface.spades.five.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/spades-six.png"
+                id="org.gamegineer.cardSurfaces.spades.six"
+                name="%cardSurface.spades.six.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/spades-seven.png"
+                id="org.gamegineer.cardSurfaces.spades.seven"
+                name="%cardSurface.spades.seven.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/spades-eight.png"
+                id="org.gamegineer.cardSurfaces.spades.eight"
+                name="%cardSurface.spades.eight.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/spades-nine.png"
+                id="org.gamegineer.cardSurfaces.spades.nine"
+                name="%cardSurface.spades.nine.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/spades-ten.png"
+                id="org.gamegineer.cardSurfaces.spades.ten"
+                name="%cardSurface.spades.ten.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/spades-jack.png"
+                id="org.gamegineer.cardSurfaces.spades.jack"
+                name="%cardSurface.spades.jack.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/spades-queen.png"
+                id="org.gamegineer.cardSurfaces.spades.queen"
+                name="%cardSurface.spades.queen.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/spades-king.png"
+                id="org.gamegineer.cardSurfaces.spades.king"
+                name="%cardSurface.spades.king.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/special-joker.png"
+                id="org.gamegineer.cardSurfaces.special.joker"
+                name="%cardSurface.special.joker.name" />
     </extension>
 
 </plugin>

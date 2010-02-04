@@ -310,7 +310,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.clubs.ace" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.ace" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddAceOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddAceOfClubsCardAction_text );
             }
@@ -331,7 +331,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.diamonds.ace" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.ace" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddAceOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddAceOfDiamondsCardAction_text );
             }
@@ -352,7 +352,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.hearts.ace" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.ace" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddAceOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddAceOfHeartsCardAction_text );
             }
@@ -373,7 +373,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.spades.ace" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.ace" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddAceOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddAceOfSpadesCardAction_text );
             }
@@ -415,7 +415,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.clubs.eight" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.eight" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddEightOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddEightOfClubsCardAction_text );
             }
@@ -436,7 +436,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.diamonds.eight" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.eight" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddEightOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddEightOfDiamondsCardAction_text );
             }
@@ -457,7 +457,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.hearts.eight" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.eight" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddEightOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddEightOfHeartsCardAction_text );
             }
@@ -478,7 +478,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.spades.eight" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.eight" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddEightOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddEightOfSpadesCardAction_text );
             }
@@ -499,7 +499,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.clubs.five" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.five" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFiveOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFiveOfClubsCardAction_text );
             }
@@ -520,7 +520,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.diamonds.five" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.five" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFiveOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFiveOfDiamondsCardAction_text );
             }
@@ -541,7 +541,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.hearts.five" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.five" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFiveOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFiveOfHeartsCardAction_text );
             }
@@ -562,7 +562,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.spades.five" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.five" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFiveOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFiveOfSpadesCardAction_text );
             }
@@ -583,7 +583,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.clubs.four" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.four" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFourOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFourOfClubsCardAction_text );
             }
@@ -604,7 +604,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.diamonds.four" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.four" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFourOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFourOfDiamondsCardAction_text );
             }
@@ -625,7 +625,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.hearts.four" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.four" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFourOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFourOfHeartsCardAction_text );
             }
@@ -646,7 +646,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.spades.four" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.four" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFourOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFourOfSpadesCardAction_text );
             }
@@ -667,7 +667,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.clubs.jack" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.jack" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddJackOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddJackOfClubsCardAction_text );
             }
@@ -688,7 +688,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.diamonds.jack" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.jack" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddJackOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddJackOfDiamondsCardAction_text );
             }
@@ -709,7 +709,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.hearts.jack" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.jack" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddJackOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddJackOfHeartsCardAction_text );
             }
@@ -730,7 +730,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.spades.jack" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.jack" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddJackOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddJackOfSpadesCardAction_text );
             }
@@ -751,7 +751,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.special.joker" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.special.joker" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddJokerCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddJokerCardAction_text );
             }
@@ -772,7 +772,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.clubs.king" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.king" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddKingOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddKingOfClubsCardAction_text );
             }
@@ -793,7 +793,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.diamonds.king" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.king" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddKingOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddKingOfDiamondsCardAction_text );
             }
@@ -814,7 +814,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.hearts.king" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.king" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddKingOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddKingOfHeartsCardAction_text );
             }
@@ -835,7 +835,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.spades.king" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.king" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddKingOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddKingOfSpadesCardAction_text );
             }
@@ -856,7 +856,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.clubs.nine" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.nine" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddNineOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddNineOfClubsCardAction_text );
             }
@@ -877,7 +877,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.diamonds.nine" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.nine" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddNineOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddNineOfDiamondsCardAction_text );
             }
@@ -898,7 +898,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.hearts.nine" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.nine" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddNineOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddNineOfHeartsCardAction_text );
             }
@@ -919,7 +919,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.spades.nine" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.nine" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddNineOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddNineOfSpadesCardAction_text );
             }
@@ -940,7 +940,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.clubs.queen" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.queen" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddQueenOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddQueenOfClubsCardAction_text );
             }
@@ -961,7 +961,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.diamonds.queen" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.queen" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddQueenOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddQueenOfDiamondsCardAction_text );
             }
@@ -982,7 +982,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.hearts.queen" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.queen" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddQueenOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddQueenOfHeartsCardAction_text );
             }
@@ -1003,7 +1003,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.spades.queen" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.queen" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddQueenOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddQueenOfSpadesCardAction_text );
             }
@@ -1024,7 +1024,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.clubs.seven" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.seven" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSevenOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSevenOfClubsCardAction_text );
             }
@@ -1045,7 +1045,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.diamonds.seven" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.seven" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSevenOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSevenOfDiamondsCardAction_text );
             }
@@ -1066,7 +1066,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.hearts.seven" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.seven" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSevenOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSevenOfHeartsCardAction_text );
             }
@@ -1087,7 +1087,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.spades.seven" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.seven" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSevenOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSevenOfSpadesCardAction_text );
             }
@@ -1108,7 +1108,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.clubs.six" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.six" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSixOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSixOfClubsCardAction_text );
             }
@@ -1129,7 +1129,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.diamonds.six" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.six" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSixOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSixOfDiamondsCardAction_text );
             }
@@ -1150,7 +1150,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.hearts.six" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.six" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSixOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSixOfHeartsCardAction_text );
             }
@@ -1171,7 +1171,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.spades.six" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.six" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSixOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSixOfSpadesCardAction_text );
             }
@@ -1192,7 +1192,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.clubs.ten" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.ten" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTenOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTenOfClubsCardAction_text );
             }
@@ -1213,7 +1213,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.diamonds.ten" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.ten" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTenOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTenOfDiamondsCardAction_text );
             }
@@ -1234,7 +1234,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.hearts.ten" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.ten" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTenOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTenOfHeartsCardAction_text );
             }
@@ -1255,7 +1255,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.spades.ten" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.ten" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTenOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTenOfSpadesCardAction_text );
             }
@@ -1276,7 +1276,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.clubs.three" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.three" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddThreeOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddThreeOfClubsCardAction_text );
             }
@@ -1297,7 +1297,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.diamonds.three" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.three" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddThreeOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddThreeOfDiamondsCardAction_text );
             }
@@ -1318,7 +1318,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.hearts.three" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.three" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddThreeOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddThreeOfHeartsCardAction_text );
             }
@@ -1339,7 +1339,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.spades.three" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.three" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddThreeOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddThreeOfSpadesCardAction_text );
             }
@@ -1360,7 +1360,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.clubs.two" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.two" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTwoOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTwoOfClubsCardAction_text );
             }
@@ -1381,7 +1381,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.diamonds.two" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.two" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTwoOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTwoOfDiamondsCardAction_text );
             }
@@ -1402,7 +1402,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.hearts.two" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.two" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTwoOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTwoOfHeartsCardAction_text );
             }
@@ -1423,7 +1423,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cards.spades.two" ); //$NON-NLS-1$
+                putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.two" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTwoOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTwoOfSpadesCardAction_text );
             }

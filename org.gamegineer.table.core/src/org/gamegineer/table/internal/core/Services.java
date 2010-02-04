@@ -24,10 +24,10 @@ package org.gamegineer.table.internal.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.services.carddesignregistry.ICardDesignRegistry;
 import org.gamegineer.table.core.services.cardpiledesignregistry.ICardPileDesignRegistry;
-import org.gamegineer.table.internal.core.services.carddesignregistry.CardDesignRegistry;
+import org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry;
 import org.gamegineer.table.internal.core.services.cardpiledesignregistry.CardPileDesignRegistry;
+import org.gamegineer.table.internal.core.services.cardsurfacedesignregistry.CardSurfaceDesignRegistry;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
@@ -49,17 +49,17 @@ public final class Services
     /** The singleton instance. */
     private static final Services instance_ = new Services();
 
-    /** The card design registry service registration token. */
-    private ServiceRegistration cardDesignRegistryServiceRegistration_;
-
-    /** The card design registry service tracker. */
-    private ServiceTracker cardDesignRegistryServiceTracker_;
-
     /** The card pile design registry service registration token. */
     private ServiceRegistration cardPileDesignRegistryServiceRegistration_;
 
     /** The card pile design registry service tracker. */
     private ServiceTracker cardPileDesignRegistryServiceTracker_;
+
+    /** The card surface design registry service registration token. */
+    private ServiceRegistration cardSurfaceDesignRegistryServiceRegistration_;
+
+    /** The card surface design registry service tracker. */
+    private ServiceTracker cardSurfaceDesignRegistryServiceTracker_;
 
 
     // ======================================================================
@@ -87,47 +87,30 @@ public final class Services
         // Unregister package-specific adapters
 
         // Close bundle-specific services
+        if( cardSurfaceDesignRegistryServiceTracker_ != null )
+        {
+            cardSurfaceDesignRegistryServiceTracker_.close();
+            cardSurfaceDesignRegistryServiceTracker_ = null;
+        }
         if( cardPileDesignRegistryServiceTracker_ != null )
         {
             cardPileDesignRegistryServiceTracker_.close();
             cardPileDesignRegistryServiceTracker_ = null;
         }
-        if( cardDesignRegistryServiceTracker_ != null )
-        {
-            cardDesignRegistryServiceTracker_.close();
-            cardDesignRegistryServiceTracker_ = null;
-        }
 
         // Unregister package-specific services
 
         // Unregister bundle-specific services
+        if( cardSurfaceDesignRegistryServiceRegistration_ != null )
+        {
+            cardSurfaceDesignRegistryServiceRegistration_.unregister();
+            cardSurfaceDesignRegistryServiceRegistration_ = null;
+        }
         if( cardPileDesignRegistryServiceRegistration_ != null )
         {
             cardPileDesignRegistryServiceRegistration_.unregister();
             cardPileDesignRegistryServiceRegistration_ = null;
         }
-        if( cardDesignRegistryServiceRegistration_ != null )
-        {
-            cardDesignRegistryServiceRegistration_.unregister();
-            cardDesignRegistryServiceRegistration_ = null;
-        }
-    }
-
-    /**
-     * Gets the card design registry service managed by this object.
-     * 
-     * @return The card design registry service managed by this object; never
-     *         {@code null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If this object is not open.
-     */
-    /* @NonNull */
-    public ICardDesignRegistry getCardDesignRegistry()
-    {
-        assertStateLegal( cardDesignRegistryServiceTracker_ != null, Messages.Services_cardDesignRegistryServiceTracker_notSet );
-
-        return (ICardDesignRegistry)cardDesignRegistryServiceTracker_.getService();
     }
 
     /**
@@ -145,6 +128,23 @@ public final class Services
         assertStateLegal( cardPileDesignRegistryServiceTracker_ != null, Messages.Services_cardPileDesignRegistryServiceTracker_notSet );
 
         return (ICardPileDesignRegistry)cardPileDesignRegistryServiceTracker_.getService();
+    }
+
+    /**
+     * Gets the card surface design registry service managed by this object.
+     * 
+     * @return The card surface design registry service managed by this object;
+     *         never {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If this object is not open.
+     */
+    /* @NonNull */
+    public ICardSurfaceDesignRegistry getCardSurfaceDesignRegistry()
+    {
+        assertStateLegal( cardSurfaceDesignRegistryServiceTracker_ != null, Messages.Services_cardSurfaceDesignRegistryServiceTracker_notSet );
+
+        return (ICardSurfaceDesignRegistry)cardSurfaceDesignRegistryServiceTracker_.getService();
     }
 
     /**
@@ -175,16 +175,16 @@ public final class Services
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
         // Register bundle-specific services
-        cardDesignRegistryServiceRegistration_ = context.registerService( ICardDesignRegistry.class.getName(), new CardDesignRegistry(), null );
         cardPileDesignRegistryServiceRegistration_ = context.registerService( ICardPileDesignRegistry.class.getName(), new CardPileDesignRegistry(), null );
+        cardSurfaceDesignRegistryServiceRegistration_ = context.registerService( ICardSurfaceDesignRegistry.class.getName(), new CardSurfaceDesignRegistry(), null );
 
         // Register package-specific services
 
         // Open bundle-specific services
-        cardDesignRegistryServiceTracker_ = new ServiceTracker( context, cardDesignRegistryServiceRegistration_.getReference(), null );
-        cardDesignRegistryServiceTracker_.open();
         cardPileDesignRegistryServiceTracker_ = new ServiceTracker( context, cardPileDesignRegistryServiceRegistration_.getReference(), null );
         cardPileDesignRegistryServiceTracker_.open();
+        cardSurfaceDesignRegistryServiceTracker_ = new ServiceTracker( context, cardSurfaceDesignRegistryServiceRegistration_.getReference(), null );
+        cardSurfaceDesignRegistryServiceTracker_.open();
 
         // Register package-specific adapters
     }

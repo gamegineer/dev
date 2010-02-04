@@ -72,7 +72,7 @@ public abstract class AbstractCardPileTestCase
     /* @NonNull */
     private static ICard createCard()
     {
-        return CardFactory.createCard( CardDesigns.createUniqueCardDesign(), CardDesigns.createUniqueCardDesign() );
+        return CardFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
     }
 
     /**

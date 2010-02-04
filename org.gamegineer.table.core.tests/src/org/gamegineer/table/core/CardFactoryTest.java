@@ -1,6 +1,6 @@
 /*
  * CardFactoryTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -54,7 +54,7 @@ public final class CardFactoryTest
     @Test( expected = NullPointerException.class )
     public void testCreateCard_BackDesign_Null()
     {
-        CardFactory.createCard( null, CardDesigns.createUniqueCardDesign() );
+        CardFactory.createCard( null, CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
     }
 
     /**
@@ -64,7 +64,7 @@ public final class CardFactoryTest
     @Test( expected = NullPointerException.class )
     public void testCreateCard_FaceDesign_Null()
     {
-        CardFactory.createCard( CardDesigns.createUniqueCardDesign(), null );
+        CardFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), null );
     }
 
     /**
@@ -76,8 +76,8 @@ public final class CardFactoryTest
     {
         final int width = 10;
         final int height = 20;
-        final ICardDesign backDesign = CardDesigns.createUniqueCardDesign( width, height );
-        final ICardDesign faceDesign = CardDesigns.createUniqueCardDesign( 2 * width, 2 * height );
+        final ICardSurfaceDesign backDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign( width, height );
+        final ICardSurfaceDesign faceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign( 2 * width, 2 * height );
 
         CardFactory.createCard( backDesign, faceDesign );
     }
@@ -88,6 +88,6 @@ public final class CardFactoryTest
     @Test
     public void testCreateCard_ReturnValue_NonNull()
     {
-        assertNotNull( CardFactory.createCard( CardDesigns.createUniqueCardDesign(), CardDesigns.createUniqueCardDesign() ) );
+        assertNotNull( CardFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() ) );
     }
 }

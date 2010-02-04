@@ -40,17 +40,20 @@ final class Messages
 
     // --- Services ---------------------------------------------------------
 
-    /** The card design registry service tracker is not set. */
-    public static String Services_cardDesignRegistryServiceTracker_notSet;
-
-    /** The card design user interface registry service tracker is not set. */
-    public static String Services_cardDesignUIRegistryServiceTracker_notSet;
-
     /** The card pile design registry service tracker is not set. */
     public static String Services_cardPileDesignRegistryServiceTracker_notSet;
 
     /** The card pile design user interface registry service tracker is not set. */
     public static String Services_cardPileDesignUIRegistryServiceTracker_notSet;
+
+    /** The card surface design registry service tracker is not set. */
+    public static String Services_cardSurfaceDesignRegistryServiceTracker_notSet;
+
+    /**
+     * The card surface design user interface registry service tracker is not
+     * set.
+     */
+    public static String Services_cardSurfaceDesignUIRegistryServiceTracker_notSet;
 
     /** The package administration service tracker is not set. */
     public static String Services_packageAdminServiceTracker_notSet;
