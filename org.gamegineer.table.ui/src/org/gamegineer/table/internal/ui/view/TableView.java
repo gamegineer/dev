@@ -45,12 +45,12 @@ import javax.swing.event.MouseInputListener;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.table.core.CardFactory;
-import org.gamegineer.table.core.CardPileDesignId;
+import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.CardPileFactory;
 import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.ICardPileDesign;
+import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
@@ -59,7 +59,7 @@ import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
-import org.gamegineer.table.ui.ICardPileDesignUI;
+import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.gamegineer.table.ui.ICardSurfaceDesignUI;
 
 /**
@@ -159,8 +159,8 @@ final class TableView
      */
     private void addCardPile()
     {
-        final ICardPileDesign cardPileDesign = Services.getDefault().getCardPileDesignRegistry().getCardPileDesign( CardPileDesignId.fromString( "org.gamegineer.cardPiles.default" ) ); //$NON-NLS-1$
-        final ICardPile cardPile = CardPileFactory.createCardPile( cardPileDesign );
+        final ICardPileBaseDesign cardPileBaseDesign = Services.getDefault().getCardPileDesignRegistry().getCardPileBaseDesign( CardPileBaseDesignId.fromString( "org.gamegineer.cardPileBases.default" ) ); //$NON-NLS-1$
+        final ICardPile cardPile = CardPileFactory.createCardPile( cardPileBaseDesign );
         model_.getTable().addCardPile( cardPile );
     }
 
@@ -406,8 +406,8 @@ final class TableView
     {
         assert cardPile != null;
 
-        final ICardPileDesignUI cardPileDesignUI = Services.getDefault().getCardPileDesignUIRegistry().getCardPileDesignUI( cardPile.getDesign().getId() );
-        final CardPileView view = new CardPileView( model_.getCardPileModel( cardPile ), cardPileDesignUI );
+        final ICardPileBaseDesignUI cardPileBaseDesignUI = Services.getDefault().getCardPileDesignUIRegistry().getCardPileBaseDesignUI( cardPile.getBaseDesign().getId() );
+        final CardPileView view = new CardPileView( model_.getCardPileModel( cardPile ), cardPileBaseDesignUI );
         cardPileViews_.put( cardPile, view );
         view.initialize( this );
         repaint( view.getBounds() );

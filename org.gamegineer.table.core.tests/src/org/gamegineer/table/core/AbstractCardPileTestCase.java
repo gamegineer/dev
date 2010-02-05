@@ -222,6 +222,15 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
+     * Ensures the {@code getBaseDesign} method does not return {@code null}.
+     */
+    @Test
+    public void testGetBaseDesign_ReturnValue_NonNull()
+    {
+        assertNotNull( cardPile_.getBaseDesign() );
+    }
+
+    /**
      * Ensures the {@code getBounds} method returns a copy of the bounds.
      */
     @Test
@@ -284,15 +293,6 @@ public abstract class AbstractCardPileTestCase
     public void testGetCards_ReturnValue_NonNull()
     {
         assertNotNull( cardPile_.getCards() );
-    }
-
-    /**
-     * Ensures the {@code getDesign} method does not return {@code null}.
-     */
-    @Test
-    public void testGetDesign_ReturnValue_NonNull()
-    {
-        assertNotNull( cardPile_.getDesign() );
     }
 
     /**

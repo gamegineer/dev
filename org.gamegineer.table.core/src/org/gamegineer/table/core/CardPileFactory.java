@@ -50,19 +50,19 @@ public final class CardPileFactory
     /**
      * Creates a new card pile.
      * 
-     * @param design
+     * @param baseDesign
      *        The design of the card pile base; must not be {@code null}.
      * 
      * @return A new card pile; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code design} is {@code null}.
+     *         If {@code baseDesign} is {@code null}.
      */
     /* @NonNull */
     public static ICardPile createCardPile(
         /* @NonNull */
-        final ICardPileDesign design )
+        final ICardPileBaseDesign baseDesign )
     {
-        return new CardPile( design );
+        return new CardPile( baseDesign );
     }
 }

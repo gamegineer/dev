@@ -3,20 +3,20 @@
 <plugin>
 
     <extension-point
-            id="cardPileDesignUIs"
-            name="Card Pile Design User Interfaces"
-            schema="schema/cardPileDesignUIs.exsd" />
+            id="cardPileBaseDesignUIs"
+            name="Card Pile Base Design User Interfaces"
+            schema="schema/cardPileBaseDesignUIs.exsd" />
     <extension-point
             id="cardSurfaceDesignUIs"
             name="Card Surface Design User Interfaces"
             schema="schema/cardSurfaceDesignUIs.exsd" />
 
     <extension
-            point="org.gamegineer.table.ui.cardPileDesignUIs">
-        <cardPileDesignUI
-                icon="icons/cardPiles/default.png"
-                id="org.gamegineer.cardPiles.default"
-                name="%cardPile.default.name" />
+            point="org.gamegineer.table.ui.cardPileBaseDesignUIs">
+        <cardPileBaseDesignUI
+                icon="icons/cardPileBases/default.png"
+                id="org.gamegineer.cardPileBases.default"
+                name="%cardPileBase.default.name" />
     </extension>
     <extension
             point="org.gamegineer.table.ui.cardSurfaceDesignUIs">

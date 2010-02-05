@@ -37,7 +37,7 @@ import org.gamegineer.table.internal.ui.Services;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
 import org.gamegineer.table.internal.ui.model.CardPileModelEvent;
 import org.gamegineer.table.internal.ui.model.ICardPileModelListener;
-import org.gamegineer.table.ui.ICardPileDesignUI;
+import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.gamegineer.table.ui.ICardSurfaceDesignUI;
 
 /**
@@ -51,11 +51,11 @@ final class CardPileView
     // Fields
     // ======================================================================
 
+    /** The card pile base design user interface. */
+    private final ICardPileBaseDesignUI baseDesignUI_;
+
     /** The current bounds of this view in table coordinates. */
     private Rectangle bounds_;
-
-    /** The card pile design user interface. */
-    private final ICardPileDesignUI cardPileDesignUI_;
 
     /** The collection of card views. */
     private final Map<ICard, CardView> cardViews_;
@@ -76,22 +76,23 @@ final class CardPileView
      * 
      * @param model
      *        The model associated with this view; must not be {@code null}.
-     * @param cardPileDesignUI
-     *        The card pile design user interface; must not be {@code null}.
+     * @param baseDesignUI
+     *        The card pile base design user interface; must not be {@code null}
+     *        .
      */
     CardPileView(
         /* @NonNull */
         final CardPileModel model,
         /* @NonNull */
-        final ICardPileDesignUI cardPileDesignUI )
+        final ICardPileBaseDesignUI baseDesignUI )
     {
         assert model != null;
-        assert cardPileDesignUI != null;
+        assert baseDesignUI != null;
 
+        baseDesignUI_ = baseDesignUI;
         bounds_ = null;
         cardViews_ = new IdentityHashMap<ICard, CardView>();
         model_ = model;
-        cardPileDesignUI_ = cardPileDesignUI;
         tableView_ = null;
     }
 
@@ -302,7 +303,7 @@ final class CardPileView
         assert tableView_ != null;
 
         final Rectangle cardPileBounds = model_.getCardPile().getBounds();
-        cardPileDesignUI_.getIcon().paintIcon( tableView_, g, cardPileBounds.x, cardPileBounds.y );
+        baseDesignUI_.getIcon().paintIcon( tableView_, g, cardPileBounds.x, cardPileBounds.y );
 
         if( model_.isFocused() )
         {

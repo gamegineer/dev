@@ -3,19 +3,19 @@
 <plugin>
 
     <extension-point
-            id="cardPileDesigns"
-            name="Card Pile Designs"
-            schema="schema/cardPileDesigns.exsd" />
+            id="cardPileBaseDesigns"
+            name="Card Pile BaseDesigns"
+            schema="schema/cardPileBaseDesigns.exsd" />
     <extension-point
             id="cardSurfaceDesigns"
             name="Card Surface Designs"
             schema="schema/cardSurfaceDesigns.exsd" />
 
     <extension
-            point="org.gamegineer.table.core.cardPileDesigns">
-        <cardPileDesign
+            point="org.gamegineer.table.core.cardPileBaseDesigns">
+        <cardPileBaseDesign
                 height="96"
-                id="org.gamegineer.cardPiles.default"
+                id="org.gamegineer.cardPileBases.default"
                 width="71" />
     </extension>
     <extension

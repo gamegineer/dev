@@ -73,6 +73,14 @@ public interface ICardPile
         ICardPileListener listener );
 
     /**
+     * Gets the design of the card pile base.
+     * 
+     * @return The design of the card pile base; never {@code null}.
+     */
+    /* @NonNull */
+    public ICardPileBaseDesign getBaseDesign();
+
+    /**
      * Gets the bounds of this card pile in table coordinates.
      * 
      * @return The bounds of this card pile in table coordinates; never {@code
@@ -90,14 +98,6 @@ public interface ICardPile
      */
     /* @NonNull */
     public List<ICard> getCards();
-
-    /**
-     * Gets the design of the card pile base.
-     * 
-     * @return The design of the card pile base; never {@code null}.
-     */
-    /* @NonNull */
-    public ICardPileDesign getDesign();
 
     /**
      * Gets the location of this card pile in table coordinates.

@@ -36,7 +36,7 @@ import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.ICardPileDesign;
+import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.core.ICardPileListener;
 
 /**
@@ -50,12 +50,12 @@ public final class CardPile
     // Fields
     // ======================================================================
 
+    /** The design of the card pile base. */
+    private final ICardPileBaseDesign baseDesign_;
+
     /** The collection of cards in this card pile ordered from bottom to top. */
     @GuardedBy( "lock_ " )
     private final List<ICard> cards_;
-
-    /** The design of the card pile base. */
-    private final ICardPileDesign design_;
 
     /** The collection of card pile listeners. */
     private final CopyOnWriteArrayList<ICardPileListener> listeners_;
@@ -75,21 +75,21 @@ public final class CardPile
     /**
      * Initializes a new instance of the {@code CardPile} class.
      * 
-     * @param design
+     * @param baseDesign
      *        The design of the card pile base; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code design} is {@code null}.
+     *         If {@code baseDesign} is {@code null}.
      */
     public CardPile(
         /* @NonNull */
-        final ICardPileDesign design )
+        final ICardPileBaseDesign baseDesign )
     {
-        assertArgumentNotNull( design, "design" ); //$NON-NLS-1$
+        assertArgumentNotNull( baseDesign, "baseDesign" ); //$NON-NLS-1$
 
         lock_ = new Object();
+        baseDesign_ = baseDesign;
         cards_ = new ArrayList<ICard>();
-        design_ = design;
         listeners_ = new CopyOnWriteArrayList<ICardPileListener>();
         location_ = new Point( 0, 0 );
     }
@@ -200,13 +200,21 @@ public final class CardPile
     }
 
     /*
+     * @see org.gamegineer.table.core.ICardPile#getBaseDesign()
+     */
+    public ICardPileBaseDesign getBaseDesign()
+    {
+        return baseDesign_;
+    }
+
+    /*
      * @see org.gamegineer.table.core.ICardPile#getBounds()
      */
     public Rectangle getBounds()
     {
         synchronized( lock_ )
         {
-            return new Rectangle( location_, design_.getSize() );
+            return new Rectangle( location_, baseDesign_.getSize() );
         }
     }
 
@@ -219,14 +227,6 @@ public final class CardPile
         {
             return new ArrayList<ICard>( cards_ );
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ICardPile#getDesign()
-     */
-    public ICardPileDesign getDesign()
-    {
-        return design_;
     }
 
     /*
@@ -245,7 +245,7 @@ public final class CardPile
      */
     public Dimension getSize()
     {
-        return design_.getSize();
+        return baseDesign_.getSize();
     }
 
     /*
@@ -307,6 +307,6 @@ public final class CardPile
     @SuppressWarnings( "boxing" )
     public String toString()
     {
-        return String.format( "CardPile[cards_.size='%1$d', design_='%2$s', location_='%3$s'", cards_.size(), design_, getLocation() ); //$NON-NLS-1$
+        return String.format( "CardPile[baseDesign_='%1$s', cards_.size='%2$d', location_='%3$s'", baseDesign_, cards_.size(), getLocation() ); //$NON-NLS-1$
     }
 }

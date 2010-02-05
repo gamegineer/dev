@@ -83,7 +83,7 @@ public abstract class AbstractTableTestCase
     /* @NonNull */
     private static ICardPile createCardPile()
     {
-        return CardPileFactory.createCardPile( CardPileDesigns.createUniqueCardPileDesign() );
+        return CardPileFactory.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
     }
 
     /**

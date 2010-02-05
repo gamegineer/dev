@@ -25,15 +25,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Rectangle;
 import javax.swing.DebugGraphics;
-import org.gamegineer.table.core.CardPileDesigns;
+import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.core.CardPileFactory;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.ICardPileDesign;
+import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
 import org.gamegineer.table.internal.ui.model.TableModel;
-import org.gamegineer.table.ui.CardPileDesignUIs;
-import org.gamegineer.table.ui.ICardPileDesignUI;
+import org.gamegineer.table.ui.CardPileBaseDesignUIs;
+import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,8 +48,8 @@ public final class CardPileViewTest
     // Fields
     // ======================================================================
 
-    /** The card pile design user interface. */
-    private ICardPileDesignUI cardPileDesignUI_;
+    /** The card pile base design user interface. */
+    private ICardPileBaseDesignUI cardPileBaseDesignUI_;
 
     /** A card pile model for use in the test fixture. */
     private CardPileModel cardPileModel_;
@@ -85,11 +85,11 @@ public final class CardPileViewTest
     public void setUp()
         throws Exception
     {
-        final ICardPileDesign cardPileDesign = CardPileDesigns.createUniqueCardPileDesign();
-        cardPileDesignUI_ = CardPileDesignUIs.createCardPileDesignUI( cardPileDesign );
-        final ICardPile cardPile = CardPileFactory.createCardPile( cardPileDesign );
+        final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
+        cardPileBaseDesignUI_ = CardPileBaseDesignUIs.createCardPileBaseDesignUI( cardPileBaseDesign );
+        final ICardPile cardPile = CardPileFactory.createCardPile( cardPileBaseDesign );
         cardPileModel_ = new CardPileModel( cardPile );
-        cardPileView_ = new CardPileView( cardPileModel_, cardPileDesignUI_ );
+        cardPileView_ = new CardPileView( cardPileModel_, cardPileBaseDesignUI_ );
     }
 
     /**
@@ -102,17 +102,17 @@ public final class CardPileViewTest
     public void tearDown()
         throws Exception
     {
-        cardPileDesignUI_ = null;
+        cardPileBaseDesignUI_ = null;
         cardPileModel_ = null;
         cardPileView_ = null;
     }
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * card pile design user interface.
+     * card pile base design user interface.
      */
     @Test( expected = AssertionError.class )
-    public void testConstructor_CardPileDesignUI_Null()
+    public void testConstructor_BaseDesignUI_Null()
     {
         new CardPileView( cardPileModel_, null );
     }
@@ -124,7 +124,7 @@ public final class CardPileViewTest
     @Test( expected = AssertionError.class )
     public void testConstructor_Model_Null()
     {
-        new CardPileView( null, cardPileDesignUI_ );
+        new CardPileView( null, cardPileBaseDesignUI_ );
     }
 
     /**

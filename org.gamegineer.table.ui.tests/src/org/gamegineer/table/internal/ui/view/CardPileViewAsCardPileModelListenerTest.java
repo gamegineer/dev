@@ -21,15 +21,15 @@
 
 package org.gamegineer.table.internal.ui.view;
 
-import org.gamegineer.table.core.CardPileDesigns;
+import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.core.CardPileFactory;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.ICardPileDesign;
+import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.internal.ui.model.AbstractCardPileModelListenerTestCase;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
 import org.gamegineer.table.internal.ui.model.ICardPileModelListener;
-import org.gamegineer.table.ui.CardPileDesignUIs;
-import org.gamegineer.table.ui.ICardPileDesignUI;
+import org.gamegineer.table.ui.CardPileBaseDesignUIs;
+import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 
 /**
  * A fixture for testing the
@@ -65,9 +65,9 @@ public final class CardPileViewAsCardPileModelListenerTest
     @Override
     protected ICardPileModelListener createCardPileModelListener()
     {
-        final ICardPileDesign cardPileDesign = CardPileDesigns.createUniqueCardPileDesign();
-        final ICardPileDesignUI cardPileDesignUI = CardPileDesignUIs.createCardPileDesignUI( cardPileDesign );
-        final ICardPile cardPile = CardPileFactory.createCardPile( cardPileDesign );
-        return new CardPileView( new CardPileModel( cardPile ), cardPileDesignUI );
+        final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
+        final ICardPileBaseDesignUI cardPileBaseDesignUI = CardPileBaseDesignUIs.createCardPileBaseDesignUI( cardPileBaseDesign );
+        final ICardPile cardPile = CardPileFactory.createCardPile( cardPileBaseDesign );
+        return new CardPileView( new CardPileModel( cardPile ), cardPileBaseDesignUI );
     }
 }

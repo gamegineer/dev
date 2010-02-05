@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.gamegineer.table.core" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="org.gamegineer.table.core" id="cardPileBaseDesigns" name="Card Pile Base Designs"/>
+      </appinfo>
+      <documentation>
+         This extension point is used to register card pile base design extensions.  Game tables use this extension point to discover the available card pile base designs installed on the platform.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="cardPileBaseDesign" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the fully-qualified identifier of the target extension point
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  an optional identifier of the extension instance
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  an optional name of the extension instance
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="cardPileBaseDesign">
+      <annotation>
+         <documentation>
+            an element that will be used to create a card pile base design
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the unique identifier of the card pile base design
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="height" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the height of the card pile base design in table coordinates
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="width" type="string" use="required">
+            <annotation>
+               <documentation>
+                  the width of the card pile base design in table coordinates
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         0.2.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         The following is an example of a card pile base design extension definition:
+
+&lt;pre&gt;
+    &lt;extension point=&quot;org.gamegineer.table.core.cardPileBaseDesigns&quot;&gt;
+        &lt;cardPileDesign
+                id=&quot;org.gamegineer.cardPileBases.default&quot;
+                height=&quot;96&quot;
+                width=&quot;71&quot; /&gt;
+    &lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         The platform does not supply any card pile base designs.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         Copyright 2008-2010 Gamegineer contributors and others.  All rights reserved.
+      </documentation>
+   </annotation>
+
+</schema>

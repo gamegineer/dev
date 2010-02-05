@@ -36,8 +36,8 @@ public final class Activator
     // Fields
     // ======================================================================
 
-    /** The card pile design user interfaces extension point identifier. */
-    public static final String EXTENSION_CARD_PILE_DESIGN_UIS = "cardPileDesignUIs"; //$NON-NLS-1$
+    /** The card pile base design user interfaces extension point identifier. */
+    public static final String EXTENSION_CARD_PILE_BASE_DESIGN_UIS = "cardPileBaseDesignUIs"; //$NON-NLS-1$
 
     /** The card surface design user interfaces extension point identifier. */
     public static final String EXTENSION_CARD_SURFACE_DESIGN_UIS = "cardSurfaceDesignUIs"; //$NON-NLS-1$

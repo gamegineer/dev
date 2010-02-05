@@ -18,5 +18,5 @@ Import-Package: net.jcip.annotations;version="1.0.0",
  org.osgi.service.packageadmin;version="1.2.0",
  org.osgi.util.tracker;version="1.4.2"
 Export-Package: org.gamegineer.table.ui,
- org.gamegineer.table.ui.services.cardpiledesignuiregistry,
+ org.gamegineer.table.ui.services.cardpilebasedesignuiregistry,
  org.gamegineer.table.ui.services.cardsurfacedesignuiregistry

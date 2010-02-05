@@ -24,9 +24,9 @@ package org.gamegineer.table.internal.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.services.cardpiledesignregistry.ICardPileDesignRegistry;
+import org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry;
 import org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry;
-import org.gamegineer.table.internal.core.services.cardpiledesignregistry.CardPileDesignRegistry;
+import org.gamegineer.table.internal.core.services.cardpilebasedesignregistry.CardPileBaseDesignRegistry;
 import org.gamegineer.table.internal.core.services.cardsurfacedesignregistry.CardSurfaceDesignRegistry;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -49,11 +49,11 @@ public final class Services
     /** The singleton instance. */
     private static final Services instance_ = new Services();
 
-    /** The card pile design registry service registration token. */
-    private ServiceRegistration cardPileDesignRegistryServiceRegistration_;
+    /** The card pile base design registry service registration token. */
+    private ServiceRegistration cardPileBaseDesignRegistryServiceRegistration_;
 
-    /** The card pile design registry service tracker. */
-    private ServiceTracker cardPileDesignRegistryServiceTracker_;
+    /** The card pile base design registry service tracker. */
+    private ServiceTracker cardPileBaseDesignRegistryServiceTracker_;
 
     /** The card surface design registry service registration token. */
     private ServiceRegistration cardSurfaceDesignRegistryServiceRegistration_;
@@ -92,10 +92,10 @@ public final class Services
             cardSurfaceDesignRegistryServiceTracker_.close();
             cardSurfaceDesignRegistryServiceTracker_ = null;
         }
-        if( cardPileDesignRegistryServiceTracker_ != null )
+        if( cardPileBaseDesignRegistryServiceTracker_ != null )
         {
-            cardPileDesignRegistryServiceTracker_.close();
-            cardPileDesignRegistryServiceTracker_ = null;
+            cardPileBaseDesignRegistryServiceTracker_.close();
+            cardPileBaseDesignRegistryServiceTracker_ = null;
         }
 
         // Unregister package-specific services
@@ -106,28 +106,28 @@ public final class Services
             cardSurfaceDesignRegistryServiceRegistration_.unregister();
             cardSurfaceDesignRegistryServiceRegistration_ = null;
         }
-        if( cardPileDesignRegistryServiceRegistration_ != null )
+        if( cardPileBaseDesignRegistryServiceRegistration_ != null )
         {
-            cardPileDesignRegistryServiceRegistration_.unregister();
-            cardPileDesignRegistryServiceRegistration_ = null;
+            cardPileBaseDesignRegistryServiceRegistration_.unregister();
+            cardPileBaseDesignRegistryServiceRegistration_ = null;
         }
     }
 
     /**
-     * Gets the card pile design registry service managed by this object.
+     * Gets the card pile base design registry service managed by this object.
      * 
-     * @return The card pile design registry service managed by this object;
-     *         never {@code null}.
+     * @return The card pile base design registry service managed by this
+     *         object; never {@code null}.
      * 
      * @throws java.lang.IllegalStateException
      *         If this object is not open.
      */
     /* @NonNull */
-    public ICardPileDesignRegistry getCardPileDesignRegistry()
+    public ICardPileBaseDesignRegistry getCardPileBaseDesignRegistry()
     {
-        assertStateLegal( cardPileDesignRegistryServiceTracker_ != null, Messages.Services_cardPileDesignRegistryServiceTracker_notSet );
+        assertStateLegal( cardPileBaseDesignRegistryServiceTracker_ != null, Messages.Services_cardPileBaseDesignRegistryServiceTracker_notSet );
 
-        return (ICardPileDesignRegistry)cardPileDesignRegistryServiceTracker_.getService();
+        return (ICardPileBaseDesignRegistry)cardPileBaseDesignRegistryServiceTracker_.getService();
     }
 
     /**
@@ -175,14 +175,14 @@ public final class Services
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
         // Register bundle-specific services
-        cardPileDesignRegistryServiceRegistration_ = context.registerService( ICardPileDesignRegistry.class.getName(), new CardPileDesignRegistry(), null );
+        cardPileBaseDesignRegistryServiceRegistration_ = context.registerService( ICardPileBaseDesignRegistry.class.getName(), new CardPileBaseDesignRegistry(), null );
         cardSurfaceDesignRegistryServiceRegistration_ = context.registerService( ICardSurfaceDesignRegistry.class.getName(), new CardSurfaceDesignRegistry(), null );
 
         // Register package-specific services
 
         // Open bundle-specific services
-        cardPileDesignRegistryServiceTracker_ = new ServiceTracker( context, cardPileDesignRegistryServiceRegistration_.getReference(), null );
-        cardPileDesignRegistryServiceTracker_.open();
+        cardPileBaseDesignRegistryServiceTracker_ = new ServiceTracker( context, cardPileBaseDesignRegistryServiceRegistration_.getReference(), null );
+        cardPileBaseDesignRegistryServiceTracker_.open();
         cardSurfaceDesignRegistryServiceTracker_ = new ServiceTracker( context, cardSurfaceDesignRegistryServiceRegistration_.getReference(), null );
         cardSurfaceDesignRegistryServiceTracker_.open();
 

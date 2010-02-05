@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.ui.model;
 import static org.gamegineer.test.core.DummyFactory.createDummy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import org.gamegineer.table.core.CardPileDesigns;
+import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.core.CardPileFactory;
 import org.gamegineer.table.core.ICard;
 import org.junit.After;
@@ -72,7 +72,7 @@ public final class CardPileModelTest
     public void setUp()
         throws Exception
     {
-        model_ = new CardPileModel( CardPileFactory.createCardPile( CardPileDesigns.createUniqueCardPileDesign() ) );
+        model_ = new CardPileModel( CardPileFactory.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() ) );
     }
 
     /**

@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.ui.model;
 
 import org.gamegineer.table.core.AbstractCardPileListenerTestCase;
-import org.gamegineer.table.core.CardPileDesigns;
+import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.core.CardPileFactory;
 import org.gamegineer.table.core.ICardPileListener;
 
@@ -59,6 +59,6 @@ public final class CardPileModelAsCardPileListenerTest
     @Override
     protected ICardPileListener createCardPileListener()
     {
-        return new CardPileModel( CardPileFactory.createCardPile( CardPileDesigns.createUniqueCardPileDesign() ) );
+        return new CardPileModel( CardPileFactory.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() ) );
     }
 }

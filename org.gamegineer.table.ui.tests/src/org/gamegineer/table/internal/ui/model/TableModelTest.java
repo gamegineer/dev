@@ -27,7 +27,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.gamegineer.table.core.CardFactory;
-import org.gamegineer.table.core.CardPileDesigns;
+import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.core.CardPileFactory;
 import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
@@ -87,7 +87,7 @@ public final class TableModelTest
     /* @NonNull */
     private static ICardPile createCardPile()
     {
-        return CardPileFactory.createCardPile( CardPileDesigns.createUniqueCardPileDesign() );
+        return CardPileFactory.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
     }
 
     /**

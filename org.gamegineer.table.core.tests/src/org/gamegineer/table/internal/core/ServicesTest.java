@@ -48,14 +48,14 @@ public final class ServicesTest
     // ======================================================================
 
     /**
-     * Ensures the {@code getCardPileDesignRegistry} method does not return
-     * {@code null}, which validates the card pile design registry service was
-     * registered with OSGi correctly.
+     * Ensures the {@code getCardPileBaseDesignRegistry} method does not return
+     * {@code null}, which validates the card pile base design registry service
+     * was registered with OSGi correctly.
      */
     @Test
-    public void testGetCardPileDesignRegistry_ReturnValue_NonNull()
+    public void testGetCardPileBaseDesignRegistry_ReturnValue_NonNull()
     {
-        assertNotNull( Services.getDefault().getCardPileDesignRegistry() );
+        assertNotNull( Services.getDefault().getCardPileBaseDesignRegistry() );
     }
 
     /**

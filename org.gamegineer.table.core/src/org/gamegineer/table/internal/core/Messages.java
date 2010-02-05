@@ -81,13 +81,13 @@ final class Messages
     /** The card pile listener is not registered. */
     public static String CardPile_removeCardPileListener_listener_notRegistered;
 
-    // --- CardPileDesign ---------------------------------------------------
+    // --- CardPileBaseDesign -----------------------------------------------
 
-    /** The card pile design height must not be negative. */
-    public static String CardPileDesign_ctor_height_negative;
+    /** The card pile base design height must not be negative. */
+    public static String CardPileBaseDesign_ctor_height_negative;
 
-    /** The card pile design width must not be negative. */
-    public static String CardPileDesign_ctor_width_negative;
+    /** The card pile base design width must not be negative. */
+    public static String CardPileBaseDesign_ctor_width_negative;
 
     // --- CardSurfaceDesign ------------------------------------------------
 
@@ -99,8 +99,8 @@ final class Messages
 
     // --- Services ---------------------------------------------------------
 
-    /** The card pile design registry service tracker is not set. */
-    public static String Services_cardPileDesignRegistryServiceTracker_notSet;
+    /** The card pile base design registry service tracker is not set. */
+    public static String Services_cardPileBaseDesignRegistryServiceTracker_notSet;
 
     /** The card surface design registry service tracker is not set. */
     public static String Services_cardSurfaceDesignRegistryServiceTracker_notSet;
