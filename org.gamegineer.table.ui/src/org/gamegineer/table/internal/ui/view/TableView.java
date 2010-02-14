@@ -35,6 +35,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.swing.Action;
 import javax.swing.JPanel;
@@ -136,7 +137,7 @@ final class TableView
     // ======================================================================
 
     /**
-     * Adds a new card to the table.
+     * Adds a new card to the focused card pile.
      * 
      * @param faceDesignId
      *        The identifier of the design on the card face; must not be {@code
@@ -148,10 +149,14 @@ final class TableView
     {
         assert faceDesignId != null;
 
-        final ICardSurfaceDesign backDesign = Services.getDefault().getCardSurfaceDesignRegistry().getCardSurfaceDesign( CardSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.back.thatch" ) ); //$NON-NLS-1$ );
-        final ICardSurfaceDesign faceDesign = Services.getDefault().getCardSurfaceDesignRegistry().getCardSurfaceDesign( faceDesignId );
-        final ICard card = CardFactory.createCard( backDesign, faceDesign );
-        model_.getTable().addCard( card );
+        final ICardPile cardPile = model_.getFocusedCardPile();
+        if( cardPile != null )
+        {
+            final ICardSurfaceDesign backDesign = Services.getDefault().getCardSurfaceDesignRegistry().getCardSurfaceDesign( CardSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.back.thatch" ) ); //$NON-NLS-1$ );
+            final ICardSurfaceDesign faceDesign = Services.getDefault().getCardSurfaceDesignRegistry().getCardSurfaceDesign( faceDesignId );
+            final ICard card = CardFactory.createCard( backDesign, faceDesign );
+            cardPile.addCard( card );
+        }
     }
 
     /**
@@ -264,7 +269,7 @@ final class TableView
                 @SuppressWarnings( "unused" )
                 final ActionEvent e )
             {
-                flipFocusedCard();
+                flipTopCard();
             }
         } );
         actionMediator_.bind( Actions.getRemoveCardAction(), new ActionListener()
@@ -274,7 +279,7 @@ final class TableView
                 @SuppressWarnings( "unused" )
                 final ActionEvent e )
             {
-                removeFocusedCard();
+                removeTopCard();
             }
         } );
         actionMediator_.bind( Actions.getRemoveCardPileAction(), new ActionListener()
@@ -288,20 +293,25 @@ final class TableView
             }
         } );
 
-        final IPredicate<Action> hasFocusedCardPredicate = new IPredicate<Action>()
+        final IPredicate<Action> hasCardPredicate = new IPredicate<Action>()
         {
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
-                return model_.getFocusedCard() != null;
+                final ICardPile cardPile = model_.getFocusedCardPile();
+                if( cardPile != null )
+                {
+                    return !cardPile.getCards().isEmpty();
+                }
+
+                return false;
             }
         };
-        actionMediator_.bind( Actions.getFlipCardAction(), hasFocusedCardPredicate );
-        actionMediator_.bind( Actions.getRemoveCardAction(), hasFocusedCardPredicate );
-        actionMediator_.bind( Actions.getRemoveCardPileAction(), new IPredicate<Action>()
+        final IPredicate<Action> hasFocusedCardPilePredicate = new IPredicate<Action>()
         {
+
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
                 @SuppressWarnings( "unused" )
@@ -309,7 +319,63 @@ final class TableView
             {
                 return model_.getFocusedCardPile() != null;
             }
-        } );
+        };
+        actionMediator_.bind( Actions.getAddAceOfClubsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddAceOfDiamondsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddAceOfHeartsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddAceOfSpadesCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddEightOfClubsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddEightOfDiamondsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddEightOfHeartsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddEightOfSpadesCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddFiveOfClubsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddFiveOfDiamondsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddFiveOfHeartsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddFiveOfSpadesCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddFourOfClubsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddFourOfDiamondsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddFourOfHeartsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddFourOfSpadesCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddJackOfClubsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddJackOfDiamondsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddJackOfHeartsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddJackOfSpadesCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddJokerCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddKingOfClubsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddKingOfDiamondsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddKingOfHeartsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddKingOfSpadesCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddNineOfClubsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddNineOfDiamondsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddNineOfHeartsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddNineOfSpadesCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddQueenOfClubsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddQueenOfDiamondsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddQueenOfHeartsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddQueenOfSpadesCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddSevenOfClubsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddSevenOfDiamondsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddSevenOfHeartsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddSevenOfSpadesCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddSixOfClubsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddSixOfDiamondsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddSixOfHeartsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddSixOfSpadesCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddTenOfClubsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddTenOfDiamondsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddTenOfHeartsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddTenOfSpadesCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddThreeOfClubsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddThreeOfDiamondsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddThreeOfHeartsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddThreeOfSpadesCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddTwoOfClubsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddTwoOfDiamondsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddTwoOfHeartsCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddTwoOfSpadesCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getFlipCardAction(), hasCardPredicate );
+        actionMediator_.bind( Actions.getRemoveCardAction(), hasCardPredicate );
+        actionMediator_.bind( Actions.getRemoveCardPileAction(), hasFocusedCardPilePredicate );
     }
 
     /*
@@ -373,7 +439,7 @@ final class TableView
      */
     private void cardFocusChanged()
     {
-        actionMediator_.updateAll();
+        updateActions();
     }
 
     /*
@@ -436,7 +502,7 @@ final class TableView
      */
     private void cardPileFocusChanged()
     {
-        actionMediator_.updateAll();
+        updateActions();
     }
 
     /*
@@ -599,14 +665,18 @@ final class TableView
     }
 
     /**
-     * Flips the focused card on the table.
+     * Flips the card at the top of the focused card pile.
      */
-    private void flipFocusedCard()
+    private void flipTopCard()
     {
-        final ICard card = model_.getFocusedCard();
-        if( card != null )
+        final ICardPile cardPile = model_.getFocusedCardPile();
+        if( cardPile != null )
         {
-            card.flip();
+            final List<ICard> cards = cardPile.getCards();
+            if( !cards.isEmpty() )
+            {
+                cards.get( cards.size() - 1 ).flip();
+            }
         }
     }
 
@@ -666,18 +736,6 @@ final class TableView
     }
 
     /**
-     * Removes the focused card from the table.
-     */
-    private void removeFocusedCard()
-    {
-        final ICard card = model_.getFocusedCard();
-        if( card != null )
-        {
-            model_.getTable().removeCard( card );
-        }
-    }
-
-    /**
      * Removes the focused card pile from the table.
      */
     private void removeFocusedCardPile()
@@ -686,6 +744,18 @@ final class TableView
         if( cardPile != null )
         {
             model_.getTable().removeCardPile( cardPile );
+        }
+    }
+
+    /**
+     * Removes the card at the top of the focused card pile.
+     */
+    private void removeTopCard()
+    {
+        final ICardPile cardPile = model_.getFocusedCardPile();
+        if( cardPile != null )
+        {
+            cardPile.removeCard();
         }
     }
 
@@ -757,6 +827,14 @@ final class TableView
         }
 
         menu.show( this, location.x, location.y );
+    }
+
+    /**
+     * Updates the actions bound to this component.
+     */
+    void updateActions()
+    {
+        actionMediator_.updateAll();
     }
 
 

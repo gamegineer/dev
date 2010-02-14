@@ -26,6 +26,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
@@ -137,6 +138,7 @@ final class CardPileView
         cardViews_.put( card, view );
         view.initialize( tableView_ ); // TODO: Change to accept CardPileView?
         tableView_.repaint( view.getBounds() );
+        tableView_.updateActions();
     }
 
     /*
@@ -245,6 +247,7 @@ final class CardPileView
         if( view != null )
         {
             tableView_.repaint( view.getBounds() );
+            tableView_.updateActions();
             view.uninitialize();
         }
     }
@@ -302,8 +305,20 @@ final class CardPileView
         assert g != null;
         assert tableView_ != null;
 
-        final Rectangle cardPileBounds = model_.getCardPile().getBounds();
-        baseDesignUI_.getIcon().paintIcon( tableView_, g, cardPileBounds.x, cardPileBounds.y );
+        final List<ICard> cards = model_.getCardPile().getCards();
+        if( cards.isEmpty() )
+        {
+            final Rectangle cardPileBounds = model_.getCardPile().getBounds();
+            baseDesignUI_.getIcon().paintIcon( tableView_, g, cardPileBounds.x, cardPileBounds.y );
+        }
+        else
+        {
+            final CardView cardView = cardViews_.get( cards.get( cards.size() - 1 ) );
+            if( cardView != null )
+            {
+                cardView.paint( g );
+            }
+        }
 
         if( model_.isFocused() )
         {

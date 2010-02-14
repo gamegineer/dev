@@ -157,6 +157,23 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
+     * Ensures the {@code addCard} method changes the location of the card to
+     * reflect the card pile location when the card is absent from the card
+     * pile.
+     */
+    @Test
+    public void testAddCard_Card_Absent_ChangesCardLocation()
+    {
+        final ICard card = createCard();
+        final MockCardListener listener = new MockCardListener();
+        card.addCardListener( listener );
+
+        cardPile_.addCard( card );
+
+        assertEquals( 1, listener.getCardLocationChangedEventCount() );
+    }
+
+    /**
      * Ensures the {@code addCard} method fires a card added event when the card
      * is absent from the card pile.
      */
@@ -186,7 +203,7 @@ public abstract class AbstractCardPileTestCase
      * the card pile.
      */
     @Test
-    public void testAddCard_Card_Present()
+    public void testAddCard_Card_Present_DoesNotAddCard()
     {
         final ICard card = createCard();
         cardPile_.addCard( card );
@@ -196,6 +213,23 @@ public abstract class AbstractCardPileTestCase
         final List<ICard> cards = cardPile_.getCards();
         assertSame( card, cards.get( cards.size() - 1 ) );
         assertEquals( 1, cards.size() );
+    }
+
+    /**
+     * Ensures the {@code addCard} method does not fire a card added event when
+     * the card is present in the card pile.
+     */
+    @Test
+    public void testAddCard_Card_Present_DoesNotFireCardAddedEvent()
+    {
+        final ICard card = createCard();
+        cardPile_.addCard( card );
+        final MockCardPileListener listener = new MockCardPileListener();
+        cardPile_.addCardPileListener( listener );
+
+        cardPile_.addCard( card );
+
+        assertEquals( 0, listener.getCardAddedEventCount() );
     }
 
     /**
@@ -373,11 +407,26 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
+     * Ensures the {@code removeCard} method does not fire a card removed event
+     * when the card pile is empty.
+     */
+    @Test
+    public void testRemoveCard_Empty_DoesNotFireCardAddedEvent()
+    {
+        final MockCardPileListener listener = new MockCardPileListener();
+        cardPile_.addCardPileListener( listener );
+
+        cardPile_.removeCard();
+
+        assertEquals( 0, listener.getCardRemovedEventCount() );
+    }
+
+    /**
      * Ensures the {@code removeCard} method returns {@code null} when the card
      * pile is empty.
      */
     @Test
-    public void testRemoveCard_Empty()
+    public void testRemoveCard_Empty_DoesNotRemoveCard()
     {
         final ICard card = cardPile_.removeCard();
 
@@ -508,6 +557,23 @@ public abstract class AbstractCardPileTestCase
         cardPile_.setLocation( new Point( 1010, 2020 ) );
 
         assertEquals( 1, listener2.getCardPileBoundsChangedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code setLocation} method changes the location of all child
+     * cards to reflect the new card pile location.
+     */
+    @Test
+    public void testSetLocation_ChangesChildCardLocation()
+    {
+        final ICard card = createCard();
+        cardPile_.addCard( card );
+        final MockCardListener listener = new MockCardListener();
+        card.addCardListener( listener );
+
+        cardPile_.setLocation( new Point( 1010, 2020 ) );
+
+        assertEquals( 1, listener.getCardLocationChangedEventCount() );
     }
 
     /**

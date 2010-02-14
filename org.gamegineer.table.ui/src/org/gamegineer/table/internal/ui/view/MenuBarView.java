@@ -259,13 +259,12 @@ final class MenuBarView
     {
         final JMenu menu = new JMenu( Messages.MenuBarView_table_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_table_mnemonic ).getKeyCode() );
-        menu.add( createAddCardMenu() );
-        menu.addSeparator();
-        menu.add( Actions.getRemoveCardAction() );
-        menu.add( Actions.getFlipCardAction() );
-        menu.addSeparator();
         menu.add( Actions.getAddCardPileAction() );
         menu.add( Actions.getRemoveCardPileAction() );
+        menu.addSeparator();
+        menu.add( createAddCardMenu() );
+        menu.add( Actions.getRemoveCardAction() );
+        menu.add( Actions.getFlipCardAction() );
         return menu;
     }
 

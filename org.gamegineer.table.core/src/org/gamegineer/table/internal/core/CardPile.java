@@ -107,15 +107,25 @@ public final class CardPile
     {
         assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
 
+        final boolean cardAdded;
         synchronized( lock_ )
         {
-            if( !cards_.contains( card ) )
+            if( cards_.contains( card ) )
             {
+                cardAdded = false;
+            }
+            else
+            {
+                cardAdded = true;
                 cards_.add( card );
+                card.setLocation( getLocation() );
             }
         }
 
-        fireCardAdded( card );
+        if( cardAdded )
+        {
+            fireCardAdded( card );
+        }
     }
 
     /*
@@ -295,6 +305,10 @@ public final class CardPile
         synchronized( lock_ )
         {
             location_.setLocation( location );
+            for( final ICard card : cards_ )
+            {
+                card.setLocation( location );
+            }
         }
 
         fireCardPileBoundsChanged();

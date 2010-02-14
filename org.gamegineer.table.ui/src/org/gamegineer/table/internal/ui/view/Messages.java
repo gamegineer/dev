@@ -482,6 +482,44 @@ final class Messages
     /** The add Two of Spades card action text. */
     public static String AddTwoOfSpadesCardAction_text;
 
+    // --- CardPilePopupMenu ------------------------------------------------
+
+    /** The Add Card menu mnemonic. */
+    public static String CardPilePopupMenu_addCard_mnemonic;
+
+    /** The Add Card menu text. */
+    public static String CardPilePopupMenu_addCard_text;
+
+    /** The Add Clubs Card menu mnemonic. */
+    public static String CardPilePopupMenu_addClubsCard_mnemonic;
+
+    /** The Add Clubs Card menu text. */
+    public static String CardPilePopupMenu_addClubsCard_text;
+
+    /** The Add Diamonds Card menu mnemonic. */
+    public static String CardPilePopupMenu_addDiamondsCard_mnemonic;
+
+    /** The Add Diamonds Card menu text. */
+    public static String CardPilePopupMenu_addDiamondsCard_text;
+
+    /** The Add Hearts Card menu mnemonic. */
+    public static String CardPilePopupMenu_addHeartsCard_mnemonic;
+
+    /** The Add Hearts Card menu text. */
+    public static String CardPilePopupMenu_addHeartsCard_text;
+
+    /** The Add Spades Card menu mnemonic. */
+    public static String CardPilePopupMenu_addSpadesCard_mnemonic;
+
+    /** The Add Spades Card menu text. */
+    public static String CardPilePopupMenu_addSpadesCard_text;
+
+    /** The Add Special Card menu mnemonic. */
+    public static String CardPilePopupMenu_addSpecialCard_mnemonic;
+
+    /** The Add Special Card menu text. */
+    public static String CardPilePopupMenu_addSpecialCard_text;
+
     // --- ExitAction -------------------------------------------------------
 
     /** The exit action mnemonic. */
