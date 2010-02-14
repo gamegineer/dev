@@ -61,7 +61,6 @@ import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
-import org.gamegineer.table.ui.ICardSurfaceDesignUI;
 
 /**
  * A view of the table.
@@ -83,9 +82,6 @@ final class TableView
 
     /** The collection of card pile views. */
     private final Map<ICardPile, CardPileView> cardPileViews_;
-
-    /** The collection of card views. */
-    private final Map<ICard, CardView> cardViews_;
 
     /** The key listener for this view. */
     private final KeyListener keyListener_;
@@ -121,7 +117,6 @@ final class TableView
 
         actionMediator_ = new ActionMediator();
         cardPileViews_ = new IdentityHashMap<ICardPile, CardPileView>();
-        cardViews_ = new IdentityHashMap<ICard, CardView>();
         keyListener_ = createKeyListener();
         model_ = model;
         mouseInputHandlers_ = createMouseInputHandlers();
@@ -379,70 +374,6 @@ final class TableView
     }
 
     /*
-     * @see org.gamegineer.table.core.ITableListener#cardAdded(org.gamegineer.table.core.TableContentChangedEvent)
-     */
-    public void cardAdded(
-        final TableContentChangedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                cardAdded( event.getCard() );
-            }
-        } );
-    }
-
-    /**
-     * Invoked when a new card is added to the table.
-     * 
-     * @param card
-     *        The added card; must not be {@code null}.
-     */
-    private void cardAdded(
-        /* @NonNull */
-        final ICard card )
-    {
-        assert card != null;
-
-        final ICardSurfaceDesignUI backDesignUI = Services.getDefault().getCardSurfaceDesignUIRegistry().getCardSurfaceDesignUI( card.getBackDesign().getId() );
-        final ICardSurfaceDesignUI faceDesignUI = Services.getDefault().getCardSurfaceDesignUIRegistry().getCardSurfaceDesignUI( card.getFaceDesign().getId() );
-        final CardView view = new CardView( model_.getCardModel( card ), backDesignUI, faceDesignUI );
-        cardViews_.put( card, view );
-        view.initialize( this );
-        repaint( view.getBounds() );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#cardFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    public void cardFocusChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                cardFocusChanged();
-            }
-        } );
-    }
-
-    /**
-     * Invoked when the card focus has changed.
-     */
-    private void cardFocusChanged()
-    {
-        updateActions();
-    }
-
-    /*
      * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
      */
     public void cardPileAdded(
@@ -543,44 +474,6 @@ final class TableView
         }
     }
 
-    /*
-     * @see org.gamegineer.table.core.ITableListener#cardRemoved(org.gamegineer.table.core.TableContentChangedEvent)
-     */
-    public void cardRemoved(
-        final TableContentChangedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                cardRemoved( event.getCard() );
-            }
-        } );
-    }
-
-    /**
-     * Invoked when a card is removed from the table.
-     * 
-     * @param card
-     *        The removed card; must not be {@code null}.
-     */
-    private void cardRemoved(
-        /* @NonNull */
-        final ICard card )
-    {
-        assert card != null;
-
-        final CardView view = cardViews_.remove( card );
-        if( view != null )
-        {
-            repaint( view.getBounds() );
-            view.uninitialize();
-        }
-    }
-
     /**
      * Creates the key listener for the view.
      * 
@@ -615,7 +508,6 @@ final class TableView
     {
         final Map<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler> mouseInputHandlers = new HashMap<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler>();
         mouseInputHandlers.put( DefaultMouseInputHandler.class, new DefaultMouseInputHandler() );
-        mouseInputHandlers.put( DraggingCardMouseInputHandler.class, new DraggingCardMouseInputHandler() );
         mouseInputHandlers.put( DraggingCardPileMouseInputHandler.class, new DraggingCardPileMouseInputHandler() );
         return mouseInputHandlers;
     }
@@ -710,18 +602,6 @@ final class TableView
 
         final Rectangle clipBounds = g.getClipBounds();
 
-        for( final ICard card : model_.getTable().getCards() )
-        {
-            final CardView view = cardViews_.get( card );
-            if( view != null )
-            {
-                if( clipBounds.intersects( view.getBounds() ) )
-                {
-                    view.paint( g );
-                }
-            }
-        }
-
         for( final ICardPile cardPile : model_.getTable().getCardPiles() )
         {
             final CardPileView view = cardPileViews_.get( cardPile );
@@ -813,11 +693,7 @@ final class TableView
         assert location != null;
 
         final JPopupMenu menu;
-        if( model_.getFocusedCard() != null )
-        {
-            menu = new CardPopupMenu();
-        }
-        else if( model_.getFocusedCardPile() != null )
+        if( model_.getFocusedCardPile() != null )
         {
             menu = new CardPilePopupMenu();
         }
@@ -928,7 +804,6 @@ final class TableView
         public void mouseMoved(
             final MouseEvent e )
         {
-            model_.setFocus( model_.getTable().getCard( e.getPoint() ) );
             model_.setFocus( model_.getTable().getCardPile( e.getPoint() ) );
         }
 
@@ -946,11 +821,7 @@ final class TableView
             }
             else if( SwingUtilities.isLeftMouseButton( e ) )
             {
-                if( model_.getTable().getCard( e.getPoint() ) != null )
-                {
-                    setMouseInputHandler( DraggingCardMouseInputHandler.class, e );
-                }
-                else if( model_.getTable().getCardPile( e.getPoint() ) != null )
+                if( model_.getTable().getCardPile( e.getPoint() ) != null )
                 {
                     setMouseInputHandler( DraggingCardPileMouseInputHandler.class, e );
                 }
@@ -968,101 +839,6 @@ final class TableView
             if( e.isPopupTrigger() )
             {
                 showPopupMenu( e.getPoint() );
-            }
-        }
-    }
-
-    /**
-     * The mouse input handler that is active when a card is being dragged.
-     */
-    private final class DraggingCardMouseInputHandler
-        extends AbstractMouseInputHandler
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** The card being dragged. */
-        private ICard draggedCard_;
-
-        /** The offset between the mouse pointer and the dragged card location. */
-        private final Dimension draggedCardLocationOffset_;
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code
-         * DraggingCardMouseInputHandler} class.
-         */
-        DraggingCardMouseInputHandler()
-        {
-            draggedCardLocationOffset_ = new Dimension( 0, 0 );
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        void activate(
-            final MouseEvent e )
-        {
-            assert e != null;
-
-            final Point mouseLocation = e.getPoint();
-            draggedCard_ = model_.getTable().getCard( mouseLocation );
-            if( draggedCard_ != null )
-            {
-                final Point cardLocation = draggedCard_.getLocation();
-                draggedCardLocationOffset_.setSize( cardLocation.x - mouseLocation.x, cardLocation.y - mouseLocation.y );
-            }
-            else
-            {
-                setMouseInputHandler( DefaultMouseInputHandler.class, e );
-            }
-        }
-
-        /*
-         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#deactivate()
-         */
-        @Override
-        void deactivate()
-        {
-            draggedCard_ = null;
-            draggedCardLocationOffset_.setSize( 0, 0 );
-        }
-
-        /*
-         * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
-         */
-        @Override
-        public void mouseDragged(
-            final MouseEvent e )
-        {
-            final Point location = e.getPoint();
-            location.translate( draggedCardLocationOffset_.width, draggedCardLocationOffset_.height );
-            draggedCard_.setLocation( location );
-        }
-
-        /*
-         * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void mouseReleased(
-            final MouseEvent e )
-        {
-            if( SwingUtilities.isLeftMouseButton( e ) )
-            {
-                setMouseInputHandler( DefaultMouseInputHandler.class, e );
             }
         }
     }

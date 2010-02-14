@@ -110,9 +110,6 @@ final class Messages
     /** The table listener is already registered. */
     public static String Table_addTableListener_listener_registered;
 
-    /** An unexpected exception was thrown from ITableListener.cardAdded(). */
-    public static String Table_cardAdded_unexpectedException;
-
     /** An unexpected exception was thrown from ITableListener.cardPileAdded(). */
     public static String Table_cardPileAdded_unexpectedException;
 
@@ -120,9 +117,6 @@ final class Messages
      * An unexpected exception was thrown from ITableListener.cardPileRemoved().
      */
     public static String Table_cardPileRemoved_unexpectedException;
-
-    /** An unexpected exception was thrown from ITableListener.cardRemoved(). */
-    public static String Table_cardRemoved_unexpectedException;
 
     /** The table listener is not registered. */
     public static String Table_removeTableListener_listener_notRegistered;

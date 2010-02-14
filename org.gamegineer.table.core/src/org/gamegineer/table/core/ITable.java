@@ -38,23 +38,6 @@ public interface ITable
     // ======================================================================
 
     /**
-     * Adds the specified card to this table.
-     * 
-     * <p>
-     * This method does nothing if the specified card is already on the table.
-     * </p>
-     * 
-     * @param card
-     *        The card; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code card} is {@code null}.
-     */
-    public void addCard(
-        /* @NonNull */
-        ICard card );
-
-    /**
      * Adds the specified card pile to this table.
      * 
      * <p>
@@ -86,34 +69,6 @@ public interface ITable
     public void addTableListener(
         /* @NonNull */
         ITableListener listener );
-
-    /**
-     * Gets the card at the specified location.
-     * 
-     * <p>
-     * If two or more cards occupy the specified location, the card most
-     * recently added to the table will be returned.
-     * </p>
-     * 
-     * <p>
-     * Note that the returned card may have been moved by the time this method
-     * returns to the caller. Therefore, callers should not cache the results of
-     * this method for an extended period of time.
-     * </p>
-     * 
-     * @param location
-     *        The location in table coordinates; must not be {@code null}.
-     * 
-     * @return The card at the specified location or {@code null} if no card is
-     *         at that location.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code location} is {@code null}.
-     */
-    /* @Nullable */
-    public ICard getCard(
-        /* @NonNull */
-        Point location );
 
     /**
      * Gets the card pile at the specified location.
@@ -152,33 +107,6 @@ public interface ITable
      */
     /* @NonNull */
     public List<ICardPile> getCardPiles();
-
-    /**
-     * Gets the collection of cards on this table.
-     * 
-     * @return The collection of cards on this table; never {@code null}. The
-     *         cards are returned in the order they were added to the table from
-     *         oldest to newest.
-     */
-    /* @NonNull */
-    public List<ICard> getCards();
-
-    /**
-     * Removes the specified card from this table.
-     * 
-     * <p>
-     * This method does nothing if the specified card is not on the table.
-     * </p>
-     * 
-     * @param card
-     *        The card; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code card} is {@code null}.
-     */
-    public void removeCard(
-        /* @NonNull */
-        ICard card );
 
     /**
      * Removes the specified card pile from this table.

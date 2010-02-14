@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
@@ -47,17 +46,9 @@ public final class TableModel
     // Fields
     // ======================================================================
 
-    /** The collection of card models. */
-    @GuardedBy( "lock_" )
-    private final Map<ICard, CardModel> cardModels_;
-
     /** The collection of card pile models. */
     @GuardedBy( "lock_" )
     private final Map<ICardPile, CardPileModel> cardPileModels_;
-
-    /** The focused card or {@code null} if no card has the focus. */
-    @GuardedBy( "lock_" )
-    private ICard focusedCard_;
 
     /** The focused card pile or {@code null} if no card pile has the focus. */
     @GuardedBy( "lock_" )
@@ -94,9 +85,7 @@ public final class TableModel
         assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
 
         lock_ = new Object();
-        cardModels_ = new IdentityHashMap<ICard, CardModel>();
         cardPileModels_ = new IdentityHashMap<ICardPile, CardPileModel>();
-        focusedCard_ = null;
         focusedCardPile_ = null;
         listener_ = null;
         table_ = table;
@@ -138,20 +127,6 @@ public final class TableModel
     }
 
     /*
-     * @see org.gamegineer.table.core.ITableListener#cardAdded(org.gamegineer.table.core.TableContentChangedEvent)
-     */
-    public void cardAdded(
-        final TableContentChangedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            cardModels_.put( event.getCard(), new CardModel( event.getCard() ) );
-        }
-    }
-
-    /*
      * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
      */
     public void cardPileAdded(
@@ -187,47 +162,6 @@ public final class TableModel
         }
     }
 
-    /*
-     * @see org.gamegineer.table.core.ITableListener#cardRemoved(org.gamegineer.table.core.TableContentChangedEvent)
-     */
-    public void cardRemoved(
-        final TableContentChangedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        final ICard card = event.getCard();
-        final boolean clearFocusedCard;
-        synchronized( lock_ )
-        {
-            cardModels_.remove( card );
-            clearFocusedCard = (focusedCard_ == card);
-        }
-
-        if( clearFocusedCard )
-        {
-            setFocus( (ICard)null );
-        }
-    }
-
-    /**
-     * Fires a card focus changed event.
-     */
-    private void fireCardFocusChanged()
-    {
-        final ITableModelListener listener = getTableModelListener();
-        if( listener != null )
-        {
-            try
-            {
-                listener.cardFocusChanged( new TableModelEvent( this ) );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.TableModel_cardFocusChanged_unexpectedException, e );
-            }
-        }
-    }
-
     /**
      * Fires a card pile focus changed event.
      */
@@ -245,38 +179,6 @@ public final class TableModel
                 Loggers.DEFAULT.log( Level.SEVERE, Messages.TableModel_cardPileFocusChanged_unexpectedException, e );
             }
         }
-    }
-
-    /**
-     * Gets the card model associated with the specified card.
-     * 
-     * @param card
-     *        The card; must not be {@code null}.
-     * 
-     * @return The card model associated with the specified card; never {@code
-     *         null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code card} does not exist in the table associated with this
-     *         model.
-     * @throws java.lang.NullPointerException
-     *         If {@code card} is {@code null}.
-     */
-    /* @NonNull */
-    public CardModel getCardModel(
-        /* @NonNull */
-        final ICard card )
-    {
-        assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
-
-        final CardModel cardModel;
-        synchronized( lock_ )
-        {
-            cardModel = cardModels_.get( card );
-        }
-
-        assertArgumentLegal( cardModel != null, "card", Messages.TableModel_getCardModel_card_absent ); //$NON-NLS-1$
-        return cardModel;
     }
 
     /**
@@ -309,20 +211,6 @@ public final class TableModel
 
         assertArgumentLegal( cardPileModel != null, "cardPile", Messages.TableModel_getCardPileModel_cardPile_absent ); //$NON-NLS-1$
         return cardPileModel;
-    }
-
-    /**
-     * Gets the focused card.
-     * 
-     * @return The focused card or {@code null} if no card has the focus.
-     */
-    /* @Nullable */
-    public ICard getFocusedCard()
-    {
-        synchronized( lock_ )
-        {
-            return focusedCard_;
-        }
     }
 
     /**
@@ -387,53 +275,6 @@ public final class TableModel
             assertArgumentLegal( listener_ == listener, "listener", Messages.TableModel_removeTableModelListener_listener_notRegistered ); //$NON-NLS-1$
 
             listener_ = null;
-        }
-    }
-
-    /**
-     * Sets the focus to the specified card.
-     * 
-     * @param card
-     *        The card to receive the focus or {@code null} if no card should
-     *        have the focus.
-     */
-    public void setFocus(
-        /* @Nullable */
-        final ICard card )
-    {
-        final boolean cardFocusChanged;
-        final CardModel oldFocusedCardModel;
-        final CardModel newFocusedCardModel;
-
-        synchronized( lock_ )
-        {
-            if( card != focusedCard_ )
-            {
-                cardFocusChanged = true;
-                oldFocusedCardModel = (focusedCard_ != null) ? cardModels_.get( focusedCard_ ) : null;
-                newFocusedCardModel = (card != null) ? cardModels_.get( card ) : null;
-                focusedCard_ = card;
-            }
-            else
-            {
-                cardFocusChanged = false;
-                oldFocusedCardModel = null;
-                newFocusedCardModel = null;
-            }
-        }
-
-        if( cardFocusChanged )
-        {
-            if( oldFocusedCardModel != null )
-            {
-                oldFocusedCardModel.setFocused( false );
-            }
-            if( newFocusedCardModel != null )
-            {
-                newFocusedCardModel.setFocused( true );
-            }
-
-            fireCardFocusChanged();
         }
     }
 

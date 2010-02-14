@@ -37,9 +37,6 @@ public class MockTableModelListener
     // Fields
     // ======================================================================
 
-    /** The count of card focus changed events received. */
-    private final AtomicInteger cardFocusChangedEventCount_;
-
     /** The count of card pile focus changed events received. */
     private final AtomicInteger cardPileFocusChangedEventCount_;
 
@@ -53,7 +50,6 @@ public class MockTableModelListener
      */
     public MockTableModelListener()
     {
-        cardFocusChangedEventCount_ = new AtomicInteger( 0 );
         cardPileFocusChangedEventCount_ = new AtomicInteger( 0 );
     }
 
@@ -61,17 +57,6 @@ public class MockTableModelListener
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardFocusChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
-     */
-    public void cardFocusChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        cardFocusChangedEventCount_.incrementAndGet();
-    }
 
     /*
      * @see org.gamegineer.table.internal.ui.model.ITableModelListener#cardPileFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
@@ -82,16 +67,6 @@ public class MockTableModelListener
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
         cardPileFocusChangedEventCount_.incrementAndGet();
-    }
-
-    /**
-     * Gets the count of card focus changed events received.
-     * 
-     * @return The count of card focus changed events received.
-     */
-    public final int getCardFocusChangedEventCount()
-    {
-        return cardFocusChangedEventCount_.get();
     }
 
     /**

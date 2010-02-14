@@ -26,11 +26,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.core.CardPileFactory;
-import org.gamegineer.table.core.CardSurfaceDesigns;
-import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.TableFactory;
 import org.junit.After;
@@ -67,17 +64,6 @@ public final class TableModelTest
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates a card suitable for testing.
-     * 
-     * @return A new card; never {@code null}.
-     */
-    /* @NonNull */
-    private static ICard createCard()
-    {
-        return CardFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
-    }
 
     /**
      * Creates a card pile suitable for testing.
@@ -163,26 +149,6 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code getCardModel} throws an exception when passed a card
-     * that is absent from the table.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testGetCardModel_Card_Absent()
-    {
-        model_.getCardModel( createDummy( ICard.class ) );
-    }
-
-    /**
-     * Ensures the {@code getCardModel} throws an exception when passed a
-     * {@code null} card.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetCardModel_Card_Null()
-    {
-        model_.getCardModel( null );
-    }
-
-    /**
      * Ensures the {@code getCardPileModel} throws an exception when passed a
      * card pile that is absent from the table.
      */
@@ -239,95 +205,23 @@ public final class TableModelTest
     @Test
     public void testRemoveTableModelListener_Listener_Present()
     {
-        final ICard card = createCard();
-        model_.getTable().addCard( card );
+        final ICardPile cardPile = createCardPile();
+        model_.getTable().addCardPile( cardPile );
         final MockTableModelListener listener = new MockTableModelListener();
         model_.addTableModelListener( listener );
-        model_.setFocus( card );
+        model_.setFocus( cardPile );
 
         model_.removeTableModelListener( listener );
 
-        model_.setFocus( (ICard)null );
-        assertEquals( 1, listener.getCardFocusChangedEventCount() );
+        model_.setFocus( null );
+        assertEquals( 1, listener.getCardPileFocusChangedEventCount() );
     }
 
     /**
-     * Ensures the {@code setFocus(ICard)} method correctly changes the focus.
+     * Ensures the {@code setFocus} method correctly changes the focus.
      */
     @Test
-    public void testSetFocusForCard()
-    {
-        final ICard card1 = createCard();
-        model_.getTable().addCard( card1 );
-        final ICard card2 = createCard();
-        model_.getTable().addCard( card2 );
-
-        model_.setFocus( card1 );
-        assertTrue( model_.getCardModel( card1 ).isFocused() );
-        assertFalse( model_.getCardModel( card2 ).isFocused() );
-        model_.setFocus( card2 );
-        assertFalse( model_.getCardModel( card1 ).isFocused() );
-        assertTrue( model_.getCardModel( card2 ).isFocused() );
-    }
-
-    /**
-     * Ensures the {@code setFocus(ICard)} method does not throw an exception
-     * when passed a {@code null} card.
-     */
-    @Test
-    public void testSetFocusForCard_Card_Null()
-    {
-        model_.setFocus( (ICard)null );
-    }
-
-    /**
-     * Ensures the {@code setFocus(ICard)} method catches any exception thrown
-     * by the {@code cardFocusChanged} method of a table model listener.
-     */
-    @Test
-    public void testSetFocusForCard_CatchesListenerException()
-    {
-        final ICard card = createCard();
-        model_.getTable().addCard( card );
-        final MockTableModelListener listener = new MockTableModelListener()
-        {
-            @Override
-            public void cardFocusChanged(
-                final TableModelEvent event )
-            {
-                super.cardFocusChanged( event );
-
-                throw new RuntimeException();
-            }
-        };
-        model_.addTableModelListener( listener );
-
-        model_.setFocus( card );
-    }
-
-    /**
-     * Ensures the {@code setFocus(ICard)} method fires a card focus changed
-     * event.
-     */
-    @Test
-    public void testSetFocusForCard_FiresCardFocusChangedEvent()
-    {
-        final ICard card = createCard();
-        model_.getTable().addCard( card );
-        final MockTableModelListener listener = new MockTableModelListener();
-        model_.addTableModelListener( listener );
-
-        model_.setFocus( card );
-
-        assertEquals( 1, listener.getCardFocusChangedEventCount() );
-    }
-
-    /**
-     * Ensures the {@code setFocus(ICardPile)} method correctly changes the
-     * focus.
-     */
-    @Test
-    public void testSetFocusForCardPile()
+    public void testSetFocus()
     {
         final ICardPile cardPile1 = createCardPile();
         model_.getTable().addCardPile( cardPile1 );
@@ -343,22 +237,21 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code setFocus(ICardPile)} method does not throw an
-     * exception when passed a {@code null} card pile.
+     * Ensures the {@code setFocus} method does not throw an exception when
+     * passed a {@code null} card pile.
      */
     @Test
-    public void testSetFocusForCardPile_CardPile_Null()
+    public void testSetFocus_CardPile_Null()
     {
-        model_.setFocus( (ICardPile)null );
+        model_.setFocus( null );
     }
 
     /**
-     * Ensures the {@code setFocus(ICardPile)} method catches any exception
-     * thrown by the {@code cardPileFocusChanged} method of a table model
-     * listener.
+     * Ensures the {@code setFocus} method catches any exception thrown by the
+     * {@code cardPileFocusChanged} method of a table model listener.
      */
     @Test
-    public void testSetFocusForCardPile_CatchesListenerException()
+    public void testSetFocus_CatchesListenerException()
     {
         final ICardPile cardPile = createCardPile();
         model_.getTable().addCardPile( cardPile );
@@ -379,11 +272,11 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code setFocus(ICardPile)} method fires a card pile focus
-     * changed event.
+     * Ensures the {@code setFocus} method fires a card pile focus changed
+     * event.
      */
     @Test
-    public void testSetFocusForCardPile_FiresCardPileFocusChangedEvent()
+    public void testSetFocus_FiresCardPileFocusChangedEvent()
     {
         final ICardPile cardPile = createCardPile();
         model_.getTable().addCardPile( cardPile );

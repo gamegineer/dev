@@ -22,12 +22,7 @@
 package org.gamegineer.table.internal.core;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.CardPileBaseDesignId;
-import org.gamegineer.table.core.CardSurfaceDesignId;
-import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.ICardPileBaseDesign;
-import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableContentChangedEvent;
 
@@ -46,9 +41,6 @@ final class TableContentChangedEventDelegate
     // Fields
     // ======================================================================
 
-    /** The card associated with the event. */
-    private final ICard card_;
-
     /** The card pile associated with the event. */
     private final ICardPile cardPile_;
 
@@ -56,32 +48,6 @@ final class TableContentChangedEventDelegate
     // ======================================================================
     // Constructors
     // ======================================================================
-
-    /**
-     * Initializes a new instance of the {@code
-     * TableContentChangedEventDelegate} class.
-     * 
-     * @param table
-     *        The table that fired the event; must not be {@code null}.
-     * @param card
-     *        The card associated with the event; must not be {@code null}.
-     */
-    TableContentChangedEventDelegate(
-        /* @NonNull */
-        final ITable table,
-        /* @NonNull */
-        final ICard card )
-    {
-        super( table );
-
-        assert card != null;
-
-        card_ = card;
-
-        // XXX: TEMPORARY
-        final ICardPileBaseDesign cardPileBaseDesign = new CardPileBaseDesign( CardPileBaseDesignId.fromString( "dummy" ), 0, 0 ); //$NON-NLS-1$ 
-        cardPile_ = new CardPile( cardPileBaseDesign );
-    }
 
     /**
      * Initializes a new instance of the {@code
@@ -103,24 +69,12 @@ final class TableContentChangedEventDelegate
         assert cardPile != null;
 
         cardPile_ = cardPile;
-
-        // XXX: TEMPORARY
-        final ICardSurfaceDesign cardSurfaceDesign = new CardSurfaceDesign( CardSurfaceDesignId.fromString( "dummy" ), 0, 0 ); //$NON-NLS-1$
-        card_ = new Card( cardSurfaceDesign, cardSurfaceDesign );
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.core.ITableContentChangedEvent#getCard()
-     */
-    public ICard getCard()
-    {
-        return card_;
-    }
 
     /*
      * @see org.gamegineer.table.core.ITableContentChangedEvent#getCardPile()

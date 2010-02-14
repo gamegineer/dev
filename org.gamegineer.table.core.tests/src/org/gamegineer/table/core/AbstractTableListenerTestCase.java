@@ -98,16 +98,6 @@ public abstract class AbstractTableListenerTestCase
     }
 
     /**
-     * Ensures the {@code cardAdded} method throws an exception when passed a
-     * {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCardAdded_Event_Null()
-    {
-        listener_.cardAdded( null );
-    }
-
-    /**
      * Ensures the {@code cardPileAdded} method throws an exception when passed
      * a {@code null} event.
      */
@@ -125,15 +115,5 @@ public abstract class AbstractTableListenerTestCase
     public void testCardPileRemoved_Event_Null()
     {
         listener_.cardPileRemoved( null );
-    }
-
-    /**
-     * Ensures the {@code cardRemoved} method throws an exception when passed a
-     * {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCardRemoved_Event_Null()
-    {
-        listener_.cardRemoved( null );
     }
 }

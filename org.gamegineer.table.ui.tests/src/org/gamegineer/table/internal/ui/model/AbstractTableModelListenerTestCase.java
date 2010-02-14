@@ -98,16 +98,6 @@ public abstract class AbstractTableModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code cardFocusChanged} method throws an exception when
-     * passed a {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCardFocusChanged_Event_Null()
-    {
-        listener_.cardFocusChanged( null );
-    }
-
-    /**
      * Ensures the {@code cardPileFocusChanged} method throws an exception when
      * passed a {@code null} event.
      */

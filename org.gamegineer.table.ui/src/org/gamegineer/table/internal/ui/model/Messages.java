@@ -97,18 +97,9 @@ final class Messages
 
     /**
      * An unexpected exception was thrown from
-     * ITableModelListener.cardFocusChanged().
-     */
-    public static String TableModel_cardFocusChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
      * ITableModelListener.cardPileFocusChanged().
      */
     public static String TableModel_cardPileFocusChanged_unexpectedException;
-
-    /** The card is not present in the table. */
-    public static String TableModel_getCardModel_card_absent;
 
     /** The card pile is not present in the table. */
     public static String TableModel_getCardPileModel_cardPile_absent;

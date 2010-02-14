@@ -31,7 +31,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
@@ -52,10 +51,6 @@ public final class Table
     @GuardedBy( "lock_ " )
     private final List<ICardPile> cardPiles_;
 
-    /** The collection of cards on this table. */
-    @GuardedBy( "lock_ " )
-    private final List<ICard> cards_;
-
     /** The collection of table listeners. */
     private final CopyOnWriteArrayList<ITableListener> listeners_;
 
@@ -74,7 +69,6 @@ public final class Table
     {
         lock_ = new Object();
         cardPiles_ = new ArrayList<ICardPile>();
-        cards_ = new ArrayList<ICard>();
         listeners_ = new CopyOnWriteArrayList<ITableListener>();
     }
 
@@ -82,25 +76,6 @@ public final class Table
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.core.ITable#addCard(org.gamegineer.table.core.ICard)
-     */
-    public void addCard(
-        final ICard card )
-    {
-        assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            if( !cards_.contains( card ) )
-            {
-                cards_.add( card );
-            }
-        }
-
-        fireCardAdded( card );
-    }
 
     /*
      * @see org.gamegineer.table.core.ITable#addCardPile(org.gamegineer.table.core.ICardPile)
@@ -132,32 +107,6 @@ public final class Table
     }
 
     /**
-     * Fires a card added event.
-     * 
-     * @param card
-     *        The added card; must not be {@code null}.
-     */
-    private void fireCardAdded(
-        /* @NonNull */
-        final ICard card )
-    {
-        assert card != null;
-
-        final TableContentChangedEvent event = InternalTableContentChangedEvent.createTableContentChangedEvent( this, card );
-        for( final ITableListener listener : listeners_ )
-        {
-            try
-            {
-                listener.cardAdded( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.Table_cardAdded_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
      * Fires a card pile added event.
      * 
      * @param cardPile
@@ -179,32 +128,6 @@ public final class Table
             catch( final RuntimeException e )
             {
                 Loggers.DEFAULT.log( Level.SEVERE, Messages.Table_cardPileAdded_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a card removed event.
-     * 
-     * @param card
-     *        The removed card; must not be {@code null}.
-     */
-    private void fireCardRemoved(
-        /* @NonNull */
-        final ICard card )
-    {
-        assert card != null;
-
-        final TableContentChangedEvent event = InternalTableContentChangedEvent.createTableContentChangedEvent( this, card );
-        for( final ITableListener listener : listeners_ )
-        {
-            try
-            {
-                listener.cardRemoved( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.Table_cardRemoved_unexpectedException, e );
             }
         }
     }
@@ -233,29 +156,6 @@ public final class Table
                 Loggers.DEFAULT.log( Level.SEVERE, Messages.Table_cardPileRemoved_unexpectedException, e );
             }
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITable#getCard(java.awt.Point)
-     */
-    public ICard getCard(
-        final Point location )
-    {
-        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            for( final ListIterator<ICard> iterator = cards_.listIterator( cards_.size() ); iterator.hasPrevious(); )
-            {
-                final ICard card = iterator.previous();
-                if( card.getBounds().contains( location ) )
-                {
-                    return card;
-                }
-            }
-        }
-
-        return null;
     }
 
     /*
@@ -290,33 +190,6 @@ public final class Table
         {
             return new ArrayList<ICardPile>( cardPiles_ );
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITable#getCards()
-     */
-    public List<ICard> getCards()
-    {
-        synchronized( lock_ )
-        {
-            return new ArrayList<ICard>( cards_ );
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITable#removeCard(org.gamegineer.table.core.ICard)
-     */
-    public void removeCard(
-        final ICard card )
-    {
-        assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            cards_.remove( card );
-        }
-
-        fireCardRemoved( card );
     }
 
     /*

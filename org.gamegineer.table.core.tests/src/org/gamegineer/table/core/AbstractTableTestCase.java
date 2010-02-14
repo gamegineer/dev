@@ -65,17 +65,6 @@ public abstract class AbstractTableTestCase
     // ======================================================================
 
     /**
-     * Creates a card suitable for testing.
-     * 
-     * @return A new card; never {@code null}.
-     */
-    /* @NonNull */
-    private static ICard createCard()
-    {
-        return CardFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
-    }
-
-    /**
      * Creates a card pile suitable for testing.
      * 
      * @return A new card pile; never {@code null}.
@@ -123,89 +112,6 @@ public abstract class AbstractTableTestCase
         throws Exception
     {
         table_ = null;
-    }
-
-    /**
-     * Ensures the {@code addCard} method adds a card that is absent from the
-     * table.
-     */
-    @Test
-    public void testAddCard_Card_Absent_AddsCard()
-    {
-        final ICard card = createCard();
-
-        table_.addCard( card );
-
-        assertTrue( table_.getCards().contains( card ) );
-    }
-
-    /**
-     * Ensures the {@code addCard} method catches any exception thrown by the
-     * {@code cardAdded} method of a table listener.
-     */
-    @Test
-    public void testAddCard_Card_Absent_CatchesListenerException()
-    {
-        final MockTableListener listener1 = new MockTableListener()
-        {
-            @Override
-            public void cardAdded(
-                final TableContentChangedEvent event )
-            {
-                super.cardAdded( event );
-
-                throw new RuntimeException();
-            }
-        };
-        final MockTableListener listener2 = new MockTableListener();
-        table_.addTableListener( listener1 );
-        table_.addTableListener( listener2 );
-
-        table_.addCard( createCard() );
-
-        assertEquals( 1, listener2.getCardAddedEventCount() );
-    }
-
-    /**
-     * Ensures the {@code addCard} method fires a card added event when the card
-     * is absent from the table.
-     */
-    @Test
-    public void testAddCard_Card_Absent_FiresCardAddedEvent()
-    {
-        final MockTableListener listener = new MockTableListener();
-        table_.addTableListener( listener );
-
-        table_.addCard( createCard() );
-
-        assertEquals( 1, listener.getCardAddedEventCount() );
-    }
-
-    /**
-     * Ensures the {@code addCard} method throws an exception when passed a
-     * {@code null} card.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAddCard_Card_Null()
-    {
-        table_.addCard( null );
-    }
-
-    /**
-     * Ensures the {@code addCard} method does not add a card that is present on
-     * the table.
-     */
-    @Test
-    public void testAddCard_Card_Present()
-    {
-        final ICard card = createCard();
-        table_.addCard( card );
-
-        table_.addCard( card );
-
-        final List<ICard> cards = table_.getCards();
-        assertTrue( cards.contains( card ) );
-        assertEquals( 1, cards.size() );
     }
 
     /**
@@ -315,63 +221,6 @@ public abstract class AbstractTableTestCase
     }
 
     /**
-     * Ensures the {@code getCard} method returns {@code null} when a card is
-     * absent at the specified location.
-     */
-    @Test
-    public void testGetCard_Location_CardAbsent()
-    {
-        assertNull( table_.getCard( new Point( 0, 0 ) ) );
-    }
-
-    /**
-     * Ensures the {@code getCard} method returns the most recently added card
-     * when multiple cards are present at the specified location.
-     */
-    @Test
-    public void testGetCard_Location_MultipleCardsPresent()
-    {
-        final Point location = new Point( 7, 42 );
-        final ICard initialCard = createCard();
-        initialCard.setLocation( location );
-        table_.addCard( initialCard );
-        final ICard expectedCard = createCard();
-        expectedCard.setLocation( location );
-        table_.addCard( expectedCard );
-
-        final ICard actualCard = table_.getCard( location );
-
-        assertSame( expectedCard, actualCard );
-    }
-
-    /**
-     * Ensures the {@code getCard} method returns the appropriate card when a
-     * single card is present at the specified location.
-     */
-    @Test
-    public void testGetCard_Location_SingleCardPresent()
-    {
-        final Point location = new Point( 7, 42 );
-        final ICard expectedCard = createCard();
-        expectedCard.setLocation( location );
-        table_.addCard( expectedCard );
-
-        final ICard actualCard = table_.getCard( location );
-
-        assertSame( expectedCard, actualCard );
-    }
-
-    /**
-     * Ensures the {@code getCard} method throws an exception when passed a
-     * {@code null} location.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGetCard_Location_Null()
-    {
-        table_.getCard( null );
-    }
-
-    /**
      * Ensures the {@code getCardPile} method returns {@code null} when a card
      * pile is absent at the specified location.
      */
@@ -450,117 +299,6 @@ public abstract class AbstractTableTestCase
     public void testGetCardPiles_ReturnValue_NonNull()
     {
         assertNotNull( table_.getCardPiles() );
-    }
-
-    /**
-     * Ensures the {@code getCards} method returns a copy of the card
-     * collection.
-     */
-    @Test
-    public void testGetCards_ReturnValue_Copy()
-    {
-        final List<ICard> cards = table_.getCards();
-        final int expectedCardsSize = cards.size();
-
-        table_.addCard( createCard() );
-
-        assertEquals( expectedCardsSize, cards.size() );
-    }
-
-    /**
-     * Ensures the {@code getCards} method does not return {@code null}.
-     */
-    @Test
-    public void testGetCards_ReturnValue_NonNull()
-    {
-        assertNotNull( table_.getCards() );
-    }
-
-    /**
-     * Ensures the {@code removeCard} method does not remove a card that is
-     * absent from the table.
-     */
-    @Test
-    public void testRemoveCard_Card_Absent()
-    {
-        final ICard card = createCard();
-
-        table_.removeCard( card );
-
-        assertEquals( 0, table_.getCards().size() );
-    }
-
-    /**
-     * Ensures the {@code removeCard} method throws an exception when passed a
-     * {@code null} card.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRemoveCard_Card_Null()
-    {
-        table_.removeCard( null );
-    }
-
-    /**
-     * Ensures the {@code removeCard} method catches any exception thrown by the
-     * {@code cardRemoved} method of a table listener.
-     */
-    @Test
-    public void testRemoveCard_Card_Present_CatchesListenerException()
-    {
-        final MockTableListener listener1 = new MockTableListener()
-        {
-            @Override
-            public void cardRemoved(
-                final TableContentChangedEvent event )
-            {
-                super.cardRemoved( event );
-
-                throw new RuntimeException();
-            }
-        };
-        final MockTableListener listener2 = new MockTableListener();
-        table_.addTableListener( listener1 );
-        table_.addTableListener( listener2 );
-        final ICard card = createCard();
-        table_.addCard( card );
-
-        table_.removeCard( card );
-
-        assertEquals( 1, listener2.getCardRemovedEventCount() );
-    }
-
-    /**
-     * Ensures the {@code removeCard} method fires a card removed event when the
-     * card is present on the table.
-     */
-    @Test
-    public void testRemoveCard_Card_Present_FiresCardRemovedEvent()
-    {
-        final MockTableListener listener = new MockTableListener();
-        table_.addTableListener( listener );
-        final ICard card = createCard();
-        table_.addCard( card );
-
-        table_.removeCard( card );
-
-        assertEquals( 1, listener.getCardRemovedEventCount() );
-    }
-
-    /**
-     * Ensures the {@code removeCard} method removes a card that is present on
-     * the table.
-     */
-    @Test
-    public void testRemoveCard_Card_Present_RemovesCard()
-    {
-        final ICard card = createCard();
-        table_.addCard( card );
-
-        table_.removeCard( card );
-
-        final List<ICard> cards = table_.getCards();
-        assertFalse( cards.contains( card ) );
-        assertEquals( 0, cards.size() );
     }
 
     /**
@@ -679,11 +417,11 @@ public abstract class AbstractTableTestCase
     {
         final MockTableListener listener = new MockTableListener();
         table_.addTableListener( listener );
-        table_.addCard( createCard() );
+        table_.addCardPile( createCardPile() );
 
         table_.removeTableListener( listener );
 
-        table_.addCard( createCard() );
-        assertEquals( 1, listener.getCardAddedEventCount() );
+        table_.addCardPile( createCardPile() );
+        assertEquals( 1, listener.getCardPileAddedEventCount() );
     }
 }

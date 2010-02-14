@@ -32,19 +32,6 @@ public interface ITableModelListener
     // ======================================================================
 
     /**
-     * Invoked after the focused card on the table has changed.
-     * 
-     * @param event
-     *        The event describing the focus change; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
-     */
-    public void cardFocusChanged(
-        /* @NonNull */
-        TableModelEvent event );
-
-    /**
      * Invoked after the focused card pile on the table has changed.
      * 
      * @param event

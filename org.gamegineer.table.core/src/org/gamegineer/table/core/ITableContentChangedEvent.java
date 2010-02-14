@@ -37,14 +37,6 @@ public interface ITableContentChangedEvent
     // ======================================================================
 
     /**
-     * Gets the card associated with the event.
-     * 
-     * @return The card associated with the event; never {@code null}.
-     */
-    /* @NonNull */
-    public ICard getCard();
-
-    /**
      * Gets the card pile associated with the event.
      * 
      * @return The card pile associated with the event; never {@code null}.
