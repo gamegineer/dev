@@ -411,7 +411,7 @@ public abstract class AbstractCardPileTestCase
      * when the card pile is empty.
      */
     @Test
-    public void testRemoveCard_Empty_DoesNotFireCardAddedEvent()
+    public void testRemoveCard_Empty_DoesNotFireCardRemovedEvent()
     {
         final MockCardPileListener listener = new MockCardPileListener();
         cardPile_.addCardPileListener( listener );
