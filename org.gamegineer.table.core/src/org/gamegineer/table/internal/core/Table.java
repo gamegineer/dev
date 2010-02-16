@@ -85,15 +85,24 @@ public final class Table
     {
         assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
 
+        final boolean cardPileAdded;
         synchronized( lock_ )
         {
-            if( !cardPiles_.contains( cardPile ) )
+            if( cardPiles_.contains( cardPile ) )
             {
+                cardPileAdded = false;
+            }
+            else
+            {
+                cardPileAdded = true;
                 cardPiles_.add( cardPile );
             }
         }
 
-        fireCardPileAdded( cardPile );
+        if( cardPileAdded )
+        {
+            fireCardPileAdded( cardPile );
+        }
     }
 
     /*
@@ -200,12 +209,16 @@ public final class Table
     {
         assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
 
+        final boolean cardPileRemoved;
         synchronized( lock_ )
         {
-            cardPiles_.remove( cardPile );
+            cardPileRemoved = cardPiles_.remove( cardPile );
         }
 
-        fireCardPileRemoved( cardPile );
+        if( cardPileRemoved )
+        {
+            fireCardPileRemoved( cardPile );
+        }
     }
 
     /*

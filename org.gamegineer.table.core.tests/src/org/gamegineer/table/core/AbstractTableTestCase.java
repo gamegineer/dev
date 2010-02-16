@@ -185,7 +185,7 @@ public abstract class AbstractTableTestCase
      * present on the table.
      */
     @Test
-    public void testAddCardPile_CardPile_Present()
+    public void testAddCardPile_CardPile_Present_DoesNotAddCard()
     {
         final ICardPile cardPile = createCardPile();
         table_.addCardPile( cardPile );
@@ -195,6 +195,23 @@ public abstract class AbstractTableTestCase
         final List<ICardPile> cardPiles = table_.getCardPiles();
         assertTrue( cardPiles.contains( cardPile ) );
         assertEquals( 1, cardPiles.size() );
+    }
+
+    /**
+     * Ensures the {@code addCardPile} method does not fire a card pile added
+     * event when the card pile is present on the table.
+     */
+    @Test
+    public void testAddCardPile_CardPile_Present_DoesNotFireCardPileAddedEvent()
+    {
+        final ICardPile cardPile = createCardPile();
+        table_.addCardPile( cardPile );
+        final MockTableListener listener = new MockTableListener();
+        table_.addTableListener( listener );
+
+        table_.addCardPile( cardPile );
+
+        assertEquals( 0, listener.getCardPileAddedEventCount() );
     }
 
     /**
@@ -302,11 +319,26 @@ public abstract class AbstractTableTestCase
     }
 
     /**
+     * Ensures the {@code removeCardPile} method does not fire a card pile
+     * removed event for a card pile that is absent from the table.
+     */
+    @Test
+    public void testRemoveCardPile_Empty_DoesNotFireCardPileRemovedEvent()
+    {
+        final MockTableListener listener = new MockTableListener();
+        table_.addTableListener( listener );
+
+        table_.removeCardPile( createCardPile() );
+
+        assertEquals( 0, listener.getCardPileRemovedEventCount() );
+    }
+
+    /**
      * Ensures the {@code removeCardPile} method does not remove a card pile
      * that is absent from the table.
      */
     @Test
-    public void testRemoveCardPile_CardPile_Absent()
+    public void testRemoveCardPile_CardPile_Absent_DoesNotRemoveCardPile()
     {
         final ICardPile cardPile = createCardPile();
 
