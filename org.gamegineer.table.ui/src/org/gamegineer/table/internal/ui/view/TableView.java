@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -43,6 +44,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.table.core.CardFactory;
@@ -491,7 +494,7 @@ final class TableView
             {
                 if( e.getKeyCode() == KeyEvent.VK_CONTEXT_MENU )
                 {
-                    showPopupMenu( new Point( 0, 0 ) );
+                    setMouseInputHandler( PopupMenuMouseInputHandler.class, null );
                 }
             }
         };
@@ -509,6 +512,7 @@ final class TableView
         final Map<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler> mouseInputHandlers = new HashMap<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler>();
         mouseInputHandlers.put( DefaultMouseInputHandler.class, new DefaultMouseInputHandler() );
         mouseInputHandlers.put( DraggingCardPileMouseInputHandler.class, new DraggingCardPileMouseInputHandler() );
+        mouseInputHandlers.put( PopupMenuMouseInputHandler.class, new PopupMenuMouseInputHandler() );
         return mouseInputHandlers;
     }
 
@@ -663,46 +667,21 @@ final class TableView
      *        {@code null}.
      * @param e
      *        The mouse event that triggered activation of the mouse input
-     *        handler; must not be {@code null}.
+     *        handler; may be {@code null} if no mouse event triggered the
+     *        activation.
      */
     private void setMouseInputHandler(
         /* @NonNUll */
         final Class<? extends AbstractMouseInputHandler> handlerClass,
-        /* @NonNull */
+        /* @Nullable */
         final MouseEvent e )
     {
         assert handlerClass != null;
-        assert e != null;
 
         mouseInputHandler_.deactivate();
         mouseInputHandler_ = mouseInputHandlers_.get( handlerClass );
         assert mouseInputHandler_ != null;
         mouseInputHandler_.activate( e );
-    }
-
-    /**
-     * Shows a context-sensitive popup menu at the specified location.
-     * 
-     * @param location
-     *        The popup menu location; must not be {@code null}.
-     */
-    private void showPopupMenu(
-        /* @NonNull */
-        final Point location )
-    {
-        assert location != null;
-
-        final JPopupMenu menu;
-        if( model_.getFocusedCardPile() != null )
-        {
-            menu = new CardPilePopupMenu();
-        }
-        else
-        {
-            menu = new TablePopupMenu();
-        }
-
-        menu.show( this, location.x, location.y );
     }
 
     /**
@@ -751,15 +730,13 @@ final class TableView
          * Activates this handler.
          * 
          * @param e
-         *        The mouse event that triggered activation of this handler;
-         *        must not be {@code null}.
+         *        The mouse event that triggered activation of this handler; may
+         *        be {@code null} if no mouse event triggered the activation.
          */
         void activate(
             /* @NonNull */
             final MouseEvent e )
         {
-            assert e != null;
-
             // default implementation does nothing
         }
 
@@ -769,6 +746,32 @@ final class TableView
         void deactivate()
         {
             // default implementation does nothing
+        }
+
+        /**
+         * Gets the mouse location in table coordinates associated with the
+         * specified mouse event or the current mouse location if no mouse event
+         * is available.
+         * 
+         * @param e
+         *        The mouse event; may be {@code null} if no mouse event is
+         *        available.
+         * 
+         * @return The mouse location in table coordinates; never {@code null}.
+         */
+        /* @NonNull */
+        protected final Point getMouseLocation(
+            /* @Nullable */
+            final MouseEvent e )
+        {
+            if( e != null )
+            {
+                return e.getPoint();
+            }
+
+            final Point location = MouseInfo.getPointerInfo().getLocation();
+            SwingUtilities.convertPointFromScreen( location, TableView.this );
+            return location;
         }
     }
 
@@ -817,7 +820,7 @@ final class TableView
         {
             if( e.isPopupTrigger() )
             {
-                showPopupMenu( e.getPoint() );
+                setMouseInputHandler( PopupMenuMouseInputHandler.class, e );
             }
             else if( SwingUtilities.isLeftMouseButton( e ) )
             {
@@ -838,7 +841,7 @@ final class TableView
         {
             if( e.isPopupTrigger() )
             {
-                showPopupMenu( e.getPoint() );
+                setMouseInputHandler( PopupMenuMouseInputHandler.class, e );
             }
         }
     }
@@ -889,9 +892,7 @@ final class TableView
         void activate(
             final MouseEvent e )
         {
-            assert e != null;
-
-            final Point mouseLocation = e.getPoint();
+            final Point mouseLocation = getMouseLocation( e );
             draggedCardPile_ = model_.getTable().getCardPile( mouseLocation );
             if( draggedCardPile_ != null )
             {
@@ -900,7 +901,7 @@ final class TableView
             }
             else
             {
-                setMouseInputHandler( DefaultMouseInputHandler.class, e );
+                setMouseInputHandler( DefaultMouseInputHandler.class, null );
             }
         }
 
@@ -936,8 +937,104 @@ final class TableView
         {
             if( SwingUtilities.isLeftMouseButton( e ) )
             {
-                setMouseInputHandler( DefaultMouseInputHandler.class, e );
+                setMouseInputHandler( DefaultMouseInputHandler.class, null );
             }
+        }
+    }
+
+    /**
+     * The mouse input handler that is active when a popup menu is visible.
+     */
+    private final class PopupMenuMouseInputHandler
+        extends AbstractMouseInputHandler
+        implements PopupMenuListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code PopupMenuMouseInputHandler}
+         * class.
+         */
+        PopupMenuMouseInputHandler()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
+         */
+        @Override
+        void activate(
+            final MouseEvent e )
+        {
+            final Point location = getMouseLocation( e );
+            final JPopupMenu menu = getPopupMenu( location );
+            menu.addPopupMenuListener( this );
+            menu.show( TableView.this, location.x, location.y );
+        }
+
+        /**
+         * Gets the popup menu associated with the specified location.
+         * 
+         * @param location
+         *        The location; must not be {@code null}.
+         * 
+         * @return The popup menu associated with the specified location; never
+         *         {@code null}.
+         */
+        /* @NonNull */
+        @SuppressWarnings( "synthetic-access" )
+        private JPopupMenu getPopupMenu(
+            /* @NonNull */
+            final Point location )
+        {
+            assert location != null;
+
+            if( model_.getFocusedCardPile() != null )
+            {
+                return new CardPilePopupMenu();
+            }
+
+            return new TablePopupMenu();
+        }
+
+        /*
+         * @see javax.swing.event.PopupMenuListener#popupMenuCanceled(javax.swing.event.PopupMenuEvent)
+         */
+        @SuppressWarnings( "synthetic-access" )
+        public void popupMenuCanceled(
+            @SuppressWarnings( "unused" )
+            final PopupMenuEvent e )
+        {
+            setMouseInputHandler( DefaultMouseInputHandler.class, null );
+        }
+
+        /*
+         * @see javax.swing.event.PopupMenuListener#popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent)
+         */
+        @SuppressWarnings( "synthetic-access" )
+        public void popupMenuWillBecomeInvisible(
+            @SuppressWarnings( "unused" )
+            final PopupMenuEvent e )
+        {
+            setMouseInputHandler( DefaultMouseInputHandler.class, null );
+        }
+
+        /*
+         * @see javax.swing.event.PopupMenuListener#popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent)
+         */
+        public void popupMenuWillBecomeVisible(
+            @SuppressWarnings( "unused" )
+            final PopupMenuEvent e )
+        {
+            // do nothing
         }
     }
 }
