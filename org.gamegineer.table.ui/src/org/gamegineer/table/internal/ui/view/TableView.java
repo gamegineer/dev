@@ -536,14 +536,6 @@ final class TableView
 
             @Override
             @SuppressWarnings( "synthetic-access" )
-            public void mouseMoved(
-                final MouseEvent e )
-            {
-                mouseInputHandler_.mouseMoved( e );
-            }
-
-            @Override
-            @SuppressWarnings( "synthetic-access" )
             public void mousePressed(
                 final MouseEvent e )
             {
@@ -800,17 +792,6 @@ final class TableView
         // ==================================================================
 
         /*
-         * @see java.awt.event.MouseAdapter#mouseMoved(java.awt.event.MouseEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void mouseMoved(
-            final MouseEvent e )
-        {
-            model_.setFocus( model_.getTable().getCardPile( e.getPoint() ) );
-        }
-
-        /*
          * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
          */
         @Override
@@ -818,13 +799,16 @@ final class TableView
         public void mousePressed(
             final MouseEvent e )
         {
+            final ICardPile cardPile = model_.getTable().getCardPile( e.getPoint() );
+            model_.setFocus( cardPile );
+
             if( e.isPopupTrigger() )
             {
                 setMouseInputHandler( PopupMenuMouseInputHandler.class, e );
             }
             else if( SwingUtilities.isLeftMouseButton( e ) )
             {
-                if( model_.getTable().getCardPile( e.getPoint() ) != null )
+                if( cardPile != null )
                 {
                     setMouseInputHandler( DraggingCardPileMouseInputHandler.class, e );
                 }
