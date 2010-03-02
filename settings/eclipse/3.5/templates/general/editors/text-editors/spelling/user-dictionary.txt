@@ -75,3 +75,4 @@ url
 popup
 uninitializes
 uninitialize
+mobile
