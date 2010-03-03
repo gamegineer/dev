@@ -1505,6 +1505,7 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.RemoveCardAction_accelerator ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.RemoveCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.RemoveCardAction_text );
             }

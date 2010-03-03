@@ -610,6 +610,9 @@ final class Messages
 
     // --- RemoveCardAction -------------------------------------------------
 
+    /** The remove card action accelerator. */
+    public static String RemoveCardAction_accelerator;
+
     /** The remove card action mnemonic. */
     public static String RemoveCardAction_mnemonic;
 
