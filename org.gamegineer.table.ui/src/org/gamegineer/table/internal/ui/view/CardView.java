@@ -107,7 +107,10 @@ final class CardView
      */
     private void cardFocusChanged()
     {
-        tableView_.repaint( getBounds() );
+        if( isInitialized() )
+        {
+            tableView_.repaint( getBounds() );
+        }
     }
 
     /*
@@ -169,9 +172,12 @@ final class CardView
      */
     private void cardLocationChanged()
     {
-        final Rectangle newBounds = getBounds();
-        tableView_.repaint( newBounds.union( bounds_ ) );
-        bounds_ = newBounds;
+        if( isInitialized() )
+        {
+            final Rectangle newBounds = getBounds();
+            tableView_.repaint( newBounds.union( bounds_ ) );
+            bounds_ = newBounds;
+        }
     }
 
     /*
@@ -197,7 +203,10 @@ final class CardView
      */
     private void cardOrientationChanged()
     {
-        tableView_.repaint( getBounds() );
+        if( isInitialized() )
+        {
+            tableView_.repaint( getBounds() );
+        }
     }
 
     /**
@@ -240,12 +249,23 @@ final class CardView
         final TableView tableView )
     {
         assert tableView != null;
-        assert tableView_ == null;
+        assert !isInitialized();
 
         tableView_ = tableView;
         bounds_ = getBounds();
         model_.addCardModelListener( this );
         model_.getCard().addCardListener( this );
+    }
+
+    /**
+     * Indicates this view has been initialized.
+     * 
+     * @return {@code true} if this view has been initialized; otherwise {@code
+     *         false}.
+     */
+    private boolean isInitialized()
+    {
+        return tableView_ != null;
     }
 
     /**
@@ -263,7 +283,7 @@ final class CardView
         final Graphics g )
     {
         assert g != null;
-        assert tableView_ != null;
+        assert isInitialized();
 
         final Rectangle cardBounds = model_.getCard().getBounds();
         getActiveCardSurfaceDesignUI().getIcon().paintIcon( tableView_, g, cardBounds.x, cardBounds.y );
@@ -287,7 +307,7 @@ final class CardView
      */
     void uninitialize()
     {
-        assert tableView_ != null;
+        assert isInitialized();
 
         model_.getCard().removeCardListener( this );
         model_.removeCardModelListener( this );

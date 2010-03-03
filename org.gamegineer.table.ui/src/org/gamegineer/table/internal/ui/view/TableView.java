@@ -512,6 +512,7 @@ final class TableView
     {
         final Map<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler> mouseInputHandlers = new HashMap<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler>();
         mouseInputHandlers.put( DefaultMouseInputHandler.class, new DefaultMouseInputHandler() );
+        mouseInputHandlers.put( DraggingCardMouseInputHandler.class, new DraggingCardMouseInputHandler() );
         mouseInputHandlers.put( DraggingCardPileMouseInputHandler.class, new DraggingCardPileMouseInputHandler() );
         mouseInputHandlers.put( PopupMenuMouseInputHandler.class, new PopupMenuMouseInputHandler() );
         return mouseInputHandlers;
@@ -809,11 +810,15 @@ final class TableView
             }
             else if( SwingUtilities.isLeftMouseButton( e ) )
             {
-                if( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK )
+                if( cardPile != null )
                 {
-                    if( cardPile != null )
+                    if( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK )
                     {
                         setMouseInputHandler( DraggingCardPileMouseInputHandler.class, e );
+                    }
+                    else
+                    {
+                        setMouseInputHandler( DraggingCardMouseInputHandler.class, e );
                     }
                 }
             }
@@ -830,6 +835,127 @@ final class TableView
             if( e.isPopupTrigger() )
             {
                 setMouseInputHandler( PopupMenuMouseInputHandler.class, e );
+            }
+        }
+    }
+
+    /**
+     * The mouse input handler that is active when a card is being dragged.
+     */
+    private final class DraggingCardMouseInputHandler
+        extends AbstractMouseInputHandler
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The card pile that temporarily holds the card being dragged. */
+        private ICardPile mobileCardPile_;
+
+        /**
+         * The offset between the mouse pointer and the mobile card pile
+         * location.
+         */
+        private final Dimension mobileCardPileLocationOffset_;
+
+        /** The card pile that is the source of the card being dragged. */
+        private ICardPile sourceCardPile_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code
+         * DraggingCardMouseInputHandler} class.
+         */
+        DraggingCardMouseInputHandler()
+        {
+            mobileCardPileLocationOffset_ = new Dimension( 0, 0 );
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        void activate(
+            final MouseEvent e )
+        {
+            final Point mouseLocation = getMouseLocation( e );
+            sourceCardPile_ = model_.getTable().getCardPile( mouseLocation );
+            if( sourceCardPile_ != null )
+            {
+                final ICard draggedCard = sourceCardPile_.removeCard();
+                if( draggedCard != null )
+                {
+                    final Point sourceCardPileLocation = sourceCardPile_.getLocation();
+                    mobileCardPileLocationOffset_.setSize( sourceCardPileLocation.x - mouseLocation.x, sourceCardPileLocation.y - mouseLocation.y );
+                    mobileCardPile_ = CardPileFactory.createCardPile( sourceCardPile_.getBaseDesign() );
+                    mobileCardPile_.setLocation( sourceCardPileLocation );
+                    model_.getTable().addCardPile( mobileCardPile_ );
+                    mobileCardPile_.addCard( draggedCard );
+                    model_.setFocus( mobileCardPile_ );
+                }
+                else
+                {
+                    setMouseInputHandler( DefaultMouseInputHandler.class, null );
+                }
+            }
+            else
+            {
+                setMouseInputHandler( DefaultMouseInputHandler.class, null );
+            }
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#deactivate()
+         */
+        @Override
+        void deactivate()
+        {
+            mobileCardPile_ = null;
+            mobileCardPileLocationOffset_.setSize( 0, 0 );
+            sourceCardPile_ = null;
+        }
+
+        /*
+         * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
+         */
+        @Override
+        public void mouseDragged(
+            final MouseEvent e )
+        {
+            final Point location = e.getPoint();
+            location.translate( mobileCardPileLocationOffset_.width, mobileCardPileLocationOffset_.height );
+            mobileCardPile_.setLocation( location );
+        }
+
+        /*
+         * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void mouseReleased(
+            final MouseEvent e )
+        {
+            if( SwingUtilities.isLeftMouseButton( e ) )
+            {
+                model_.getTable().removeCardPile( mobileCardPile_ );
+
+                final Point mouseLocation = getMouseLocation( e );
+                final ICardPile cardPile = model_.getTable().getCardPile( mouseLocation );
+                final ICardPile targetCardPile = (cardPile != null) ? cardPile : sourceCardPile_;
+                targetCardPile.addCard( mobileCardPile_.removeCard() );
+                model_.setFocus( targetCardPile );
+
+                setMouseInputHandler( DefaultMouseInputHandler.class, null );
             }
         }
     }

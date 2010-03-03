@@ -132,13 +132,15 @@ final class CardPileView
     {
         assert card != null;
 
-        final ICardSurfaceDesignUI backDesignUI = Services.getDefault().getCardSurfaceDesignUIRegistry().getCardSurfaceDesignUI( card.getBackDesign().getId() );
-        final ICardSurfaceDesignUI faceDesignUI = Services.getDefault().getCardSurfaceDesignUIRegistry().getCardSurfaceDesignUI( card.getFaceDesign().getId() );
-        final CardView view = new CardView( model_.getCardModel( card ), backDesignUI, faceDesignUI );
-        cardViews_.put( card, view );
-        view.initialize( tableView_ ); // TODO: Change to accept CardPileView?
-        tableView_.repaint( view.getBounds() );
-        tableView_.updateActions();
+        if( isInitialized() )
+        {
+            if( !cardViews_.containsKey( card ) )
+            {
+                final CardView view = createCardView( card );
+                tableView_.repaint( view.getBounds() );
+                tableView_.updateActions();
+            }
+        }
     }
 
     /*
@@ -164,9 +166,12 @@ final class CardPileView
      */
     private void cardPileBoundsChanged()
     {
-        final Rectangle newBounds = getBounds();
-        tableView_.repaint( newBounds.union( bounds_ ) );
-        bounds_ = newBounds;
+        if( isInitialized() )
+        {
+            final Rectangle newBounds = getBounds();
+            tableView_.repaint( newBounds.union( bounds_ ) );
+            bounds_ = newBounds;
+        }
     }
 
     /**
@@ -174,7 +179,10 @@ final class CardPileView
      */
     private void cardPileFocusChanged()
     {
-        tableView_.repaint( getBounds() );
+        if( isInitialized() )
+        {
+            tableView_.repaint( getBounds() );
+        }
     }
 
     /*
@@ -243,13 +251,44 @@ final class CardPileView
     {
         assert card != null;
 
-        final CardView view = cardViews_.remove( card );
-        if( view != null )
+        if( isInitialized() )
         {
-            tableView_.repaint( view.getBounds() );
-            tableView_.updateActions();
-            view.uninitialize();
+            final CardView view = cardViews_.remove( card );
+            if( view != null )
+            {
+                tableView_.repaint( view.getBounds() );
+                tableView_.updateActions();
+                view.uninitialize();
+            }
         }
+    }
+
+    /**
+     * Creates a card view for the specified card.
+     * 
+     * <p>
+     * This method must only be called after the view is initialized.
+     * </p>
+     * 
+     * @param card
+     *        The card; must not be {@code null}.
+     * 
+     * @return The card view; never {@code null}.
+     */
+    /* @NonNull */
+    private CardView createCardView(
+        /* @NonNull */
+        final ICard card )
+    {
+        assert card != null;
+        assert isInitialized();
+
+        final ICardSurfaceDesignUI backDesignUI = Services.getDefault().getCardSurfaceDesignUIRegistry().getCardSurfaceDesignUI( card.getBackDesign().getId() );
+        final ICardSurfaceDesignUI faceDesignUI = Services.getDefault().getCardSurfaceDesignUIRegistry().getCardSurfaceDesignUI( card.getFaceDesign().getId() );
+        final CardView view = new CardView( model_.getCardModel( card ), backDesignUI, faceDesignUI );
+        cardViews_.put( card, view );
+        view.initialize( tableView_ ); // TODO: Change to accept CardPileView?
+        return view;
     }
 
     /**
@@ -280,12 +319,28 @@ final class CardPileView
         final TableView tableView )
     {
         assert tableView != null;
-        assert tableView_ == null;
+        assert !isInitialized();
 
         tableView_ = tableView;
         bounds_ = getBounds();
         model_.addCardPileModelListener( this );
         model_.getCardPile().addCardPileListener( this );
+
+        for( final ICard card : model_.getCardPile().getCards() )
+        {
+            createCardView( card );
+        }
+    }
+
+    /**
+     * Indicates this view has been initialized.
+     * 
+     * @return {@code true} if this view has been initialized; otherwise {@code
+     *         false}.
+     */
+    private boolean isInitialized()
+    {
+        return tableView_ != null;
     }
 
     /**
@@ -303,7 +358,7 @@ final class CardPileView
         final Graphics g )
     {
         assert g != null;
-        assert tableView_ != null;
+        assert isInitialized();
 
         final List<ICard> cards = model_.getCardPile().getCards();
         if( cards.isEmpty() )
@@ -339,7 +394,13 @@ final class CardPileView
      */
     void uninitialize()
     {
-        assert tableView_ != null;
+        assert isInitialized();
+
+        for( final CardView view : cardViews_.values() )
+        {
+            view.uninitialize();
+        }
+        cardViews_.clear();
 
         model_.getCardPile().removeCardPileListener( this );
         model_.removeCardPileModelListener( this );
