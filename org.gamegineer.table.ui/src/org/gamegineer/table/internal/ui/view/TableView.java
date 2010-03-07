@@ -207,6 +207,84 @@ final class TableView
     }
 
     /**
+     * Adds a standard 52-card deck to the focused card pile.
+     */
+    private void addStandard52CardDeck()
+    {
+        final String[] faceDesignIds = new String[] {
+            "org.gamegineer.cardSurfaces.clubs.ace", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.clubs.two", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.clubs.three", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.clubs.four", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.clubs.five", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.clubs.six", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.clubs.seven", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.clubs.eight", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.clubs.nine", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.clubs.ten", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.clubs.jack", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.clubs.queen", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.clubs.king", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.diamonds.ace", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.diamonds.two", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.diamonds.three", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.diamonds.four", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.diamonds.five", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.diamonds.six", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.diamonds.seven", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.diamonds.eight", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.diamonds.nine", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.diamonds.ten", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.diamonds.jack", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.diamonds.queen", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.diamonds.king", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.hearts.ace", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.hearts.two", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.hearts.three", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.hearts.four", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.hearts.five", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.hearts.six", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.hearts.seven", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.hearts.eight", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.hearts.nine", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.hearts.ten", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.hearts.jack", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.hearts.queen", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.hearts.king", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.spades.ace", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.spades.two", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.spades.three", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.spades.four", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.spades.five", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.spades.six", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.spades.seven", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.spades.eight", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.spades.nine", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.spades.ten", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.spades.jack", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.spades.queen", //$NON-NLS-1$
+            "org.gamegineer.cardSurfaces.spades.king", //$NON-NLS-1$
+        };
+
+        for( final String faceDesignId : faceDesignIds )
+        {
+            addCard( CardSurfaceDesignId.fromString( faceDesignId ) );
+        }
+    }
+
+    /**
+     * Adds a standard 54-card deck to the focused card pile.
+     */
+    private void addStandard54CardDeck()
+    {
+        addStandard52CardDeck();
+
+        final CardSurfaceDesignId jokerFaceDesignId = CardSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.special.joker" ); //$NON-NLS-1$
+        addCard( jokerFaceDesignId );
+        addCard( jokerFaceDesignId );
+    }
+
+    /**
      * Binds the action attachments for this component.
      */
     private void bindActions()
@@ -271,6 +349,26 @@ final class TableView
         actionMediator_.bind( Actions.getAddSixOfDiamondsCardAction(), addCardActionListener );
         actionMediator_.bind( Actions.getAddSixOfHeartsCardAction(), addCardActionListener );
         actionMediator_.bind( Actions.getAddSixOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bind( Actions.getAddStandard52CardDeckAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                addStandard52CardDeck();
+            }
+        } );
+        actionMediator_.bind( Actions.getAddStandard54CardDeckAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                addStandard54CardDeck();
+            }
+        } );
         actionMediator_.bind( Actions.getAddTenOfClubsCardAction(), addCardActionListener );
         actionMediator_.bind( Actions.getAddTenOfDiamondsCardAction(), addCardActionListener );
         actionMediator_.bind( Actions.getAddTenOfHeartsCardAction(), addCardActionListener );
@@ -382,6 +480,8 @@ final class TableView
         actionMediator_.bind( Actions.getAddSixOfDiamondsCardAction(), hasFocusedCardPilePredicate );
         actionMediator_.bind( Actions.getAddSixOfHeartsCardAction(), hasFocusedCardPilePredicate );
         actionMediator_.bind( Actions.getAddSixOfSpadesCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddStandard52CardDeckAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getAddStandard54CardDeckAction(), hasFocusedCardPilePredicate );
         actionMediator_.bind( Actions.getAddTenOfClubsCardAction(), hasFocusedCardPilePredicate );
         actionMediator_.bind( Actions.getAddTenOfDiamondsCardAction(), hasFocusedCardPilePredicate );
         actionMediator_.bind( Actions.getAddTenOfHeartsCardAction(), hasFocusedCardPilePredicate );

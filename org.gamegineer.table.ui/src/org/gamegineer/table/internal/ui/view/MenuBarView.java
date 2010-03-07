@@ -115,6 +115,21 @@ final class MenuBarView
     }
 
     /**
+     * Creates the add deck menu.
+     * 
+     * @return The add deck menu; never {@code null}.
+     */
+    /* @NonNull */
+    private JMenu createAddDeckMenu()
+    {
+        final JMenu menu = new JMenu( Messages.MenuBarView_addDeck_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_addDeck_mnemonic ).getKeyCode() );
+        menu.add( Actions.getAddStandard52CardDeckAction() );
+        menu.add( Actions.getAddStandard54CardDeckAction() );
+        return menu;
+    }
+
+    /**
      * Creates the add Diamonds card menu.
      * 
      * @return The add Diamonds card menu; never {@code null}.
@@ -263,6 +278,7 @@ final class MenuBarView
         menu.add( Actions.getRemoveCardPileAction() );
         menu.addSeparator();
         menu.add( createAddCardMenu() );
+        menu.add( createAddDeckMenu() );
         menu.add( Actions.getRemoveCardAction() );
         menu.add( Actions.getFlipCardAction() );
         return menu;

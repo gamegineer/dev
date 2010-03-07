@@ -386,6 +386,22 @@ final class Messages
     /** The add Six of Spades card action text. */
     public static String AddSixOfSpadesCardAction_text;
 
+    // --- AddStandard52CardDeckAction --------------------------------------
+
+    /** The add standard 52-card deck action mnemonic. */
+    public static String AddStandard52CardDeckAction_mnemonic;
+
+    /** The add standard 52-card deck action text. */
+    public static String AddStandard52CardDeckAction_text;
+
+    // --- AddStandard54CardDeckAction --------------------------------------
+
+    /** The add standard 54-card deck action mnemonic. */
+    public static String AddStandard54CardDeckAction_mnemonic;
+
+    /** The add standard 54-card deck action text. */
+    public static String AddStandard54CardDeckAction_text;
+
     // --- AddTenOfClubsCardAction ------------------------------------------
 
     /** The add Ten of Clubs card action mnemonic. */
@@ -496,6 +512,12 @@ final class Messages
     /** The Add Clubs Card menu text. */
     public static String CardPilePopupMenu_addClubsCard_text;
 
+    /** The Add Deck menu mnemonic. */
+    public static String CardPilePopupMenu_addDeck_mnemonic;
+
+    /** The Add Deck menu text. */
+    public static String CardPilePopupMenu_addDeck_text;
+
     /** The Add Diamonds Card menu mnemonic. */
     public static String CardPilePopupMenu_addDiamondsCard_mnemonic;
 
@@ -557,6 +579,12 @@ final class Messages
 
     /** The Add Clubs Card menu text. */
     public static String MenuBarView_addClubsCard_text;
+
+    /** The Add Deck menu mnemonic. */
+    public static String MenuBarView_addDeck_mnemonic;
+
+    /** The Add Deck menu text. */
+    public static String MenuBarView_addDeck_text;
 
     /** The Add Diamonds Card menu mnemonic. */
     public static String MenuBarView_addDiamondsCard_mnemonic;

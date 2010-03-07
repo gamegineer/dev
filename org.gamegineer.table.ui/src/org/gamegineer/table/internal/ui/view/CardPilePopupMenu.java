@@ -103,6 +103,21 @@ final class CardPilePopupMenu
     }
 
     /**
+     * Creates the add deck menu.
+     * 
+     * @return The add deck menu; never {@code null}.
+     */
+    /* @NonNull */
+    private JMenu createAddDeckMenu()
+    {
+        final JMenu menu = new JMenu( Messages.CardPilePopupMenu_addDeck_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.CardPilePopupMenu_addDeck_mnemonic ).getKeyCode() );
+        menu.add( Actions.getAddStandard52CardDeckAction() );
+        menu.add( Actions.getAddStandard54CardDeckAction() );
+        return menu;
+    }
+
+    /**
      * Creates the add Diamonds card menu.
      * 
      * @return The add Diamonds card menu; never {@code null}.
@@ -200,6 +215,7 @@ final class CardPilePopupMenu
     private void initializeComponent()
     {
         add( createAddCardMenu() );
+        add( createAddDeckMenu() );
         add( Actions.getRemoveCardAction() );
         add( Actions.getFlipCardAction() );
         addSeparator();

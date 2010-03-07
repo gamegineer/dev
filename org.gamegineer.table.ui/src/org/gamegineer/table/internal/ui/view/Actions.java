@@ -161,6 +161,12 @@ final class Actions
     /** The action used to add a Six of Spades card to the table. */
     private static final BasicAction addSixOfSpadesCardAction_;
 
+    /** The action used to add a standard 52-card deck to a card pile. */
+    private static final BasicAction addStandard52CardDeckAction_;
+
+    /** The action used to add a standard 54-card deck to a card pile. */
+    private static final BasicAction addStandard54CardDeckAction_;
+
     /** The action used to add a Ten of Clubs card to the table. */
     private static final BasicAction addTenOfClubsCardAction_;
 
@@ -264,6 +270,8 @@ final class Actions
         addSixOfDiamondsCardAction_ = createAddSixOfDiamondsCardAction();
         addSixOfHeartsCardAction_ = createAddSixOfHeartsCardAction();
         addSixOfSpadesCardAction_ = createAddSixOfSpadesCardAction();
+        addStandard52CardDeckAction_ = createAddStandard52CardDeckAction();
+        addStandard54CardDeckAction_ = createAddStandard54CardDeckAction();
         addTenOfClubsCardAction_ = createAddTenOfClubsCardAction();
         addTenOfDiamondsCardAction_ = createAddTenOfDiamondsCardAction();
         addTenOfHeartsCardAction_ = createAddTenOfHeartsCardAction();
@@ -1179,6 +1187,46 @@ final class Actions
     }
 
     /**
+     * Creates the add standard 52-card deck action.
+     * 
+     * @return The add standard 52-card deck action; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static BasicAction createAddStandard52CardDeckAction()
+    {
+        return new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddStandard52CardDeckAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.AddStandard52CardDeckAction_text );
+            }
+        };
+    }
+
+    /**
+     * Creates the add standard 54-card deck action.
+     * 
+     * @return The add standard 54-card deck action; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static BasicAction createAddStandard54CardDeckAction()
+    {
+        return new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddStandard54CardDeckAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.AddStandard54CardDeckAction_text );
+            }
+        };
+    }
+
+    /**
      * Creates the add Ten of Clubs card action.
      * 
      * @return The add Ten of Clubs card action; never {@code null}.
@@ -1993,6 +2041,28 @@ final class Actions
     static BasicAction getAddSixOfSpadesCardAction()
     {
         return addSixOfSpadesCardAction_;
+    }
+
+    /**
+     * Gets the add standard 52-card deck action.
+     * 
+     * @return The add standard 52-card deck action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getAddStandard52CardDeckAction()
+    {
+        return addStandard52CardDeckAction_;
+    }
+
+    /**
+     * Gets the add standard 54-card deck action.
+     * 
+     * @return The add standard 54-card deck action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getAddStandard54CardDeckAction()
+    {
+        return addStandard54CardDeckAction_;
     }
 
     /**

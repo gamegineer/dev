@@ -468,6 +468,26 @@ public final class ActionsTest
     }
 
     /**
+     * Ensures the {@code getAddStandard52CardDeckAction} method does not return
+     * {@code null}.
+     */
+    @Test
+    public void testGetAddStandard52CardDeckAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getAddStandard52CardDeckAction() );
+    }
+
+    /**
+     * Ensures the {@code getAddStandard54CardDeckAction} method does not return
+     * {@code null}.
+     */
+    @Test
+    public void testGetAddStandard54CardDeckAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getAddStandard54CardDeckAction() );
+    }
+
+    /**
      * Ensures the {@code getAddTenOfClubsCardAction} method does not return
      * {@code null}.
      */
