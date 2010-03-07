@@ -165,6 +165,28 @@ final class TableView
     {
         final ICardPileBaseDesign cardPileBaseDesign = Services.getDefault().getCardPileDesignRegistry().getCardPileBaseDesign( CardPileBaseDesignId.fromString( "org.gamegineer.cardPileBases.default" ) ); //$NON-NLS-1$
         final ICardPile cardPile = CardPileFactory.createCardPile( cardPileBaseDesign );
+
+        final Point location = getMouseLocation();
+        final Dimension tableSize = getSize();
+        final Dimension cardPileSize = cardPile.getSize();
+        if( location.x < 0 )
+        {
+            location.x = 0;
+        }
+        else if( location.x + cardPileSize.width > tableSize.width )
+        {
+            location.x = tableSize.width - cardPileSize.width;
+        }
+        if( location.y < 0 )
+        {
+            location.y = 0;
+        }
+        else if( location.y + cardPileSize.height > tableSize.height )
+        {
+            location.y = tableSize.height - cardPileSize.height;
+        }
+        cardPile.setLocation( location );
+
         model_.getTable().addCardPile( cardPile );
     }
 
@@ -571,6 +593,19 @@ final class TableView
     }
 
     /**
+     * Gets the mouse location in table coordinates.
+     * 
+     * @return The mouse location in table coordinates; never {@code null}.
+     */
+    /* @NonNull */
+    private Point getMouseLocation()
+    {
+        final Point location = MouseInfo.getPointerInfo().getLocation();
+        SwingUtilities.convertPointFromScreen( location, this );
+        return location;
+    }
+
+    /**
      * Initializes this component.
      */
     private void initializeComponent()
@@ -754,6 +789,7 @@ final class TableView
          * @return The mouse location in table coordinates; never {@code null}.
          */
         /* @NonNull */
+        @SuppressWarnings( "synthetic-access" )
         protected final Point getMouseLocation(
             /* @Nullable */
             final MouseEvent e )
@@ -763,9 +799,7 @@ final class TableView
                 return e.getPoint();
             }
 
-            final Point location = MouseInfo.getPointerInfo().getLocation();
-            SwingUtilities.convertPointFromScreen( location, TableView.this );
-            return location;
+            return TableView.this.getMouseLocation();
         }
     }
 
