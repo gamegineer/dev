@@ -1029,10 +1029,10 @@ final class TableView
                 final ICard draggedCard = sourceCardPile_.removeCard();
                 if( draggedCard != null )
                 {
-                    final Point sourceCardPileLocation = sourceCardPile_.getLocation();
-                    mobileCardPileLocationOffset_.setSize( sourceCardPileLocation.x - mouseLocation.x, sourceCardPileLocation.y - mouseLocation.y );
+                    final Point draggedCardLocation = draggedCard.getLocation();
+                    mobileCardPileLocationOffset_.setSize( draggedCardLocation.x - mouseLocation.x, draggedCardLocation.y - mouseLocation.y );
                     mobileCardPile_ = CardPileFactory.createCardPile( sourceCardPile_.getBaseDesign() );
-                    mobileCardPile_.setLocation( sourceCardPileLocation );
+                    mobileCardPile_.setLocation( draggedCardLocation );
                     model_.getTable().addCardPile( mobileCardPile_ );
                     mobileCardPile_.addCard( draggedCard );
                     model_.setFocus( mobileCardPile_ );

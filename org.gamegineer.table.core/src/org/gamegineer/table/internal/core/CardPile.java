@@ -50,6 +50,12 @@ public final class CardPile
     // Fields
     // ======================================================================
 
+    /** The number of cards per stack level. */
+    private static final int CARDS_PER_STACK_LEVEL = 10;
+
+    /** The offset of each stack level in table coordinates. */
+    private static final Point STACK_LEVEL_OFFSET = new Point( 2, 1 );
+
     /** The design of the card pile base. */
     private final ICardPileBaseDesign baseDesign_;
 
@@ -108,23 +114,35 @@ public final class CardPile
         assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
 
         final boolean cardAdded;
+        final boolean cardPileBoundsChanged;
         synchronized( lock_ )
         {
             if( cards_.contains( card ) )
             {
                 cardAdded = false;
+                cardPileBoundsChanged = false;
             }
             else
             {
                 cardAdded = true;
+                final Rectangle oldBounds = getBounds();
+                final Point cardLocation = getCardOffset( cards_.size() );
+                cardLocation.translate( location_.x, location_.y );
+                card.setLocation( cardLocation );
                 cards_.add( card );
-                card.setLocation( getLocation() );
+                final Rectangle newBounds = getBounds();
+                cardPileBoundsChanged = !newBounds.equals( oldBounds );
             }
         }
 
         if( cardAdded )
         {
             fireCardAdded( card );
+        }
+
+        if( cardPileBoundsChanged )
+        {
+            fireCardPileBoundsChanged();
         }
     }
 
@@ -224,8 +242,42 @@ public final class CardPile
     {
         synchronized( lock_ )
         {
-            return new Rectangle( location_, baseDesign_.getSize() );
+            final Dimension size;
+            if( cards_.isEmpty() )
+            {
+                size = baseDesign_.getSize();
+            }
+            else
+            {
+                final ICard topCard = cards_.get( cards_.size() - 1 );
+                final Point topCardLocation = topCard.getLocation();
+                size = topCard.getSize();
+                size.width += (topCardLocation.x - location_.x);
+                size.height += (topCardLocation.y - location_.y);
+            }
+
+            return new Rectangle( location_, size );
         }
+    }
+
+    /**
+     * Gets the offset from the card pile base origin in table coordinates of
+     * the card at the specified index.
+     * 
+     * @param index
+     *        The card index; must be non-negative.
+     * 
+     * @return The offset from the card pile base origin in table coordinates of
+     *         the card at the specified index; never {@code null}.
+     */
+    /* @NonNull */
+    private static Point getCardOffset(
+        final int index )
+    {
+        assert index >= 0;
+
+        final int stackLevel = index / CARDS_PER_STACK_LEVEL;
+        return new Point( STACK_LEVEL_OFFSET.x * stackLevel, STACK_LEVEL_OFFSET.y * stackLevel );
     }
 
     /*
@@ -264,21 +316,31 @@ public final class CardPile
     public ICard removeCard()
     {
         final ICard card;
+        final boolean cardPileBoundsChanged;
         synchronized( lock_ )
         {
             if( cards_.isEmpty() )
             {
                 card = null;
+                cardPileBoundsChanged = false;
             }
             else
             {
+                final Rectangle oldBounds = getBounds();
                 card = cards_.remove( cards_.size() - 1 );
+                final Rectangle newBounds = getBounds();
+                cardPileBoundsChanged = !newBounds.equals( oldBounds );
             }
         }
 
         if( card != null )
         {
             fireCardRemoved( card );
+        }
+
+        if( cardPileBoundsChanged )
+        {
+            fireCardPileBoundsChanged();
         }
 
         return card;

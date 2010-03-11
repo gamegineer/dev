@@ -368,10 +368,13 @@ final class CardPileView
         }
         else
         {
-            final CardView cardView = cardViews_.get( cards.get( cards.size() - 1 ) );
-            if( cardView != null )
+            for( final ICard card : cards )
             {
-                cardView.paint( g );
+                final CardView cardView = cardViews_.get( card );
+                if( cardView != null )
+                {
+                    cardView.paint( g );
+                }
             }
         }
 

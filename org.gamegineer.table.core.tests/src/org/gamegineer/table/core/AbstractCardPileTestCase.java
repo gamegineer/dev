@@ -174,6 +174,24 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
+     * Ensures the {@code addCard} method changes the card pile bounds when the
+     * card is absent from the card pile.
+     */
+    @Test( timeout = 1000 )
+    public void testAddCard_Card_Absent_ChangesCardPileBounds()
+    {
+        final MockCardPileListener listener = new MockCardPileListener();
+        cardPile_.addCardPileListener( listener );
+        do
+        {
+            cardPile_.addCard( createCard() );
+
+        } while( listener.getCardPileBoundsChangedEventCount() == 0 );
+
+        assertEquals( 1, listener.getCardPileBoundsChangedEventCount() );
+    }
+
+    /**
      * Ensures the {@code addCard} method fires a card added event when the card
      * is absent from the card pile.
      */
@@ -460,6 +478,26 @@ public abstract class AbstractCardPileTestCase
         cardPile_.removeCard();
 
         assertEquals( 1, listener2.getCardRemovedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code removeCard} method changes the card pile bounds when
+     * the card pile is not empty.
+     */
+    @Test( timeout = 1000 )
+    public void testRemoveCard_NotEmpty_ChangesCardPileBounds()
+    {
+        final MockCardPileListener listener = new MockCardPileListener();
+        cardPile_.addCardPileListener( listener );
+        do
+        {
+            cardPile_.addCard( createCard() );
+
+        } while( listener.getCardPileBoundsChangedEventCount() == 0 );
+
+        cardPile_.removeCard();
+
+        assertEquals( 2, listener.getCardPileBoundsChangedEventCount() );
     }
 
     /**
