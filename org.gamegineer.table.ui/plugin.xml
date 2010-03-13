@@ -21,9 +21,13 @@
     <extension
             point="org.gamegineer.table.ui.cardSurfaceDesignUIs">
         <cardSurfaceDesignUI
-                icon="icons/cardSurfaces/back-thatch.png"
-                id="org.gamegineer.cardSurfaces.back.thatch"
-                name="%cardSurface.back.thatch.name" />
+                icon="icons/cardSurfaces/back-blue.png"
+                id="org.gamegineer.cardSurfaces.back.blue"
+                name="%cardSurface.back.blue.name" />
+        <cardSurfaceDesignUI
+                icon="icons/cardSurfaces/back-red.png"
+                id="org.gamegineer.cardSurfaces.back.red"
+                name="%cardSurface.back.red.name" />
         <cardSurfaceDesignUI
                 icon="icons/cardSurfaces/clubs-ace.png"
                 id="org.gamegineer.cardSurfaces.clubs.ace"

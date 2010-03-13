@@ -22,7 +22,11 @@
             point="org.gamegineer.table.core.cardSurfaceDesigns">
         <cardSurfaceDesign
                 height="96"
-                id="org.gamegineer.cardSurfaces.back.thatch"
+                id="org.gamegineer.cardSurfaces.back.blue"
+                width="71" />
+        <cardSurfaceDesign
+                height="96"
+                id="org.gamegineer.cardSurfaces.back.red"
                 width="71" />
         <cardSurfaceDesign
                 height="96"

@@ -151,7 +151,7 @@ final class TableView
         final ICardPile cardPile = model_.getFocusedCardPile();
         if( cardPile != null )
         {
-            final ICardSurfaceDesign backDesign = Services.getDefault().getCardSurfaceDesignRegistry().getCardSurfaceDesign( CardSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.back.thatch" ) ); //$NON-NLS-1$ );
+            final ICardSurfaceDesign backDesign = Services.getDefault().getCardSurfaceDesignRegistry().getCardSurfaceDesign( CardSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.back.red" ) ); //$NON-NLS-1$ );
             final ICardSurfaceDesign faceDesign = Services.getDefault().getCardSurfaceDesignRegistry().getCardSurfaceDesign( faceDesignId );
             final ICard card = CardFactory.createCard( backDesign, faceDesign );
             cardPile.addCard( card );
