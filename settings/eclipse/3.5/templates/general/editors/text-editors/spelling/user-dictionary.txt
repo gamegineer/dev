@@ -76,3 +76,4 @@ popup
 uninitializes
 uninitialize
 mobile
+tabletop
