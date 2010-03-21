@@ -1,6 +1,6 @@
 Gamegineer
 Version 0.2.0
-18 March 2010
+21 March 2010
 
 Copyright 2008-2010 Gamegineer contributors and others. 
 All rights reserved. 
@@ -29,6 +29,8 @@ A copy of the GNU General Public License is contained in the file LICENSE.txt, s
 USAGE
 
 (Until a proper help system is implemented in the application, this file will serve as basic documentation for using Gamegineer.)
+
+Gamegineer requires a Java 6 or later runtime to be installed.  To start Gamegineer, run the gamegineer.bat file, sibling to this file.  (Users of non-Windows operating systems should simply copy and execute the contents of this batch file.)
 
 All commands are available from the main menu at the top of the screen.  Context-sensitive commands are available from a popup menu that is activated using the appropriate keyboard and/or mouse trigger of your operating system (e.g. right-clicking the mouse on Windows).
 
