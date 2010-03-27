@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui.model;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import java.awt.Dimension;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -61,6 +62,10 @@ public final class TableModel
     /** The instance lock. */
     private final Object lock_;
 
+    /** The offset of the table origin relative to the view origin. */
+    @GuardedBy( "lock_" )
+    private final Dimension originOffset_;
+
     /** The table associated with this model. */
     private final ITable table_;
 
@@ -88,6 +93,7 @@ public final class TableModel
         cardPileModels_ = new IdentityHashMap<ICardPile, CardPileModel>();
         focusedCardPile_ = null;
         listener_ = null;
+        originOffset_ = new Dimension( 0, 0 );
         table_ = table;
 
         table_.addTableListener( this );
@@ -182,6 +188,25 @@ public final class TableModel
     }
 
     /**
+     * Fires an origin offset changed event.
+     */
+    private void fireOriginOffsetChanged()
+    {
+        final ITableModelListener listener = getTableModelListener();
+        if( listener != null )
+        {
+            try
+            {
+                listener.originOffsetChanged( new TableModelEvent( this ) );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.TableModel_originOffsetChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
      * Gets the card pile model associated with the specified card pile.
      * 
      * @param cardPile
@@ -225,6 +250,22 @@ public final class TableModel
         synchronized( lock_ )
         {
             return focusedCardPile_;
+        }
+    }
+
+    /**
+     * Gets the offset of the table origin relative to the view origin in table
+     * coordinates.
+     * 
+     * @return The offset of the table origin relative to the view origin in
+     *         table coordinates; never {@code null}.
+     */
+    /* @NonNull */
+    public Dimension getOriginOffset()
+    {
+        synchronized( lock_ )
+        {
+            return new Dimension( originOffset_ );
         }
     }
 
@@ -323,5 +364,30 @@ public final class TableModel
 
             fireCardPileFocusChanged();
         }
+    }
+
+    /**
+     * Sets the offset of the table origin relative to the view origin in table
+     * coordinates.
+     * 
+     * @param originOffset
+     *        The offset of the table origin relative to the view origin in
+     *        table coordinates; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code originOffset} is {@code null}.
+     */
+    public void setOriginOffset(
+        /* @NonNull */
+        final Dimension originOffset )
+    {
+        assertArgumentNotNull( originOffset, "originOffset" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            originOffset_.setSize( originOffset );
+        }
+
+        fireOriginOffsetChanged();
     }
 }

@@ -167,6 +167,7 @@ final class TableView
         final ICardPile cardPile = CardPileFactory.createCardPile( cardPileBaseDesign );
 
         final Point location = getMouseLocation();
+        convertPointFromTable( location );
         final Dimension tableSize = getSize();
         final Dimension cardPileSize = cardPile.getSize();
         if( location.x < 0 )
@@ -185,6 +186,7 @@ final class TableView
         {
             location.y = tableSize.height - cardPileSize.height;
         }
+        convertPointToTable( location );
         cardPile.setLocation( location );
 
         model_.getTable().addCardPile( cardPile );
@@ -533,7 +535,7 @@ final class TableView
         final CardPileView view = new CardPileView( model_.getCardPileModel( cardPile ), cardPileBaseDesignUI );
         cardPileViews_.put( cardPile, view );
         view.initialize( this );
-        repaint( view.getBounds() );
+        repaintTable( view.getBounds() );
     }
 
     /*
@@ -595,9 +597,60 @@ final class TableView
         final CardPileView view = cardPileViews_.remove( cardPile );
         if( view != null )
         {
-            repaint( view.getBounds() );
+            repaintTable( view.getBounds() );
             view.uninitialize();
         }
+    }
+
+    /**
+     * Converts the specified point from the table coordinate system to the view
+     * coordinate system.
+     * 
+     * @param point
+     *        The point; must not be {@code null}.
+     */
+    private void convertPointFromTable(
+        /* @NonNull */
+        final Point point )
+    {
+        assert point != null;
+
+        final Dimension originOffset = model_.getOriginOffset();
+        point.translate( originOffset.width, originOffset.height );
+    }
+
+    /**
+     * Converts the specified point from the view coordinate system to the table
+     * coordinate system.
+     * 
+     * @param point
+     *        The point; must not be {@code null}.
+     */
+    private void convertPointToTable(
+        /* @NonNull */
+        final Point point )
+    {
+        assert point != null;
+
+        final Dimension originOffset = model_.getOriginOffset();
+        point.translate( -originOffset.width, -originOffset.height );
+    }
+
+    /**
+     * Converts the specified rectangle from the table coordinate system to the
+     * view coordinate system.
+     * 
+     * @param rect
+     *        The rectangle; must not be {@code null}.
+     */
+    private void convertRectangleFromTable(
+        /* @NonNull */
+        final Rectangle rect )
+    {
+        assert rect != null;
+
+        final Dimension originOffset = model_.getOriginOffset();
+        rect.translate( originOffset.width, originOffset.height );
     }
 
     /**
@@ -636,6 +689,7 @@ final class TableView
         mouseInputHandlers.put( DefaultMouseInputHandler.class, new DefaultMouseInputHandler() );
         mouseInputHandlers.put( DraggingCardMouseInputHandler.class, new DraggingCardMouseInputHandler() );
         mouseInputHandlers.put( DraggingCardPileMouseInputHandler.class, new DraggingCardPileMouseInputHandler() );
+        mouseInputHandlers.put( DraggingTableMouseInputHandler.class, new DraggingTableMouseInputHandler() );
         mouseInputHandlers.put( PopupMenuMouseInputHandler.class, new PopupMenuMouseInputHandler() );
         return mouseInputHandlers;
     }
@@ -702,6 +756,7 @@ final class TableView
     {
         final Point location = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen( location, this );
+        convertPointToTable( location );
         return location;
     }
 
@@ -725,6 +780,32 @@ final class TableView
     }
 
     /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#originOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    public void originOffsetChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                originOffsetChanged();
+            }
+        } );
+    }
+
+    /**
+     * Invoked when the table origin offset has changed.
+     */
+    private void originOffsetChanged()
+    {
+        repaint();
+    }
+
+    /*
      * @see javax.swing.JComponent#paintChildren(java.awt.Graphics)
      */
     @Override
@@ -732,6 +813,9 @@ final class TableView
         final Graphics g )
     {
         super.paintChildren( g );
+
+        final Dimension originOffset = model_.getOriginOffset();
+        g.translate( originOffset.width, originOffset.height );
 
         final Rectangle clipBounds = g.getClipBounds();
 
@@ -786,6 +870,22 @@ final class TableView
         actionMediator_.unbindAll();
 
         super.removeNotify();
+    }
+
+    /**
+     * Repaints the specified region of the table.
+     * 
+     * @param region
+     *        The region of the table to repaint in table coordinates.
+     */
+    void repaintTable(
+        /* @NonNull */
+        final Rectangle region )
+    {
+        assert region != null;
+
+        convertRectangleFromTable( region );
+        repaint( region );
     }
 
     /**
@@ -896,7 +996,9 @@ final class TableView
         {
             if( e != null )
             {
-                return e.getPoint();
+                final Point location = e.getPoint();
+                convertPointToTable( location );
+                return location;
             }
 
             return TableView.this.getMouseLocation();
@@ -935,7 +1037,7 @@ final class TableView
         public void mousePressed(
             final MouseEvent e )
         {
-            final ICardPile cardPile = model_.getTable().getCardPile( e.getPoint() );
+            final ICardPile cardPile = model_.getTable().getCardPile( getMouseLocation( e ) );
             model_.setFocus( cardPile );
 
             if( e.isPopupTrigger() )
@@ -954,6 +1056,10 @@ final class TableView
                     {
                         setMouseInputHandler( DraggingCardMouseInputHandler.class, e );
                     }
+                }
+                else
+                {
+                    setMouseInputHandler( DraggingTableMouseInputHandler.class, e );
                 }
             }
         }
@@ -1066,7 +1172,7 @@ final class TableView
         public void mouseDragged(
             final MouseEvent e )
         {
-            final Point location = e.getPoint();
+            final Point location = getMouseLocation( e );
             location.translate( mobileCardPileLocationOffset_.width, mobileCardPileLocationOffset_.height );
             mobileCardPile_.setLocation( location );
         }
@@ -1170,9 +1276,101 @@ final class TableView
         public void mouseDragged(
             final MouseEvent e )
         {
-            final Point location = e.getPoint();
+            final Point location = getMouseLocation( e );
             location.translate( draggedCardPileLocationOffset_.width, draggedCardPileLocationOffset_.height );
             draggedCardPile_.setLocation( location );
+        }
+
+        /*
+         * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void mouseReleased(
+            final MouseEvent e )
+        {
+            if( SwingUtilities.isLeftMouseButton( e ) )
+            {
+                setMouseInputHandler( DefaultMouseInputHandler.class, null );
+            }
+        }
+    }
+
+    /**
+     * The mouse input handler that is active when the table is being dragged.
+     */
+    private final class DraggingTableMouseInputHandler
+        extends AbstractMouseInputHandler
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /**
+         * The mouse location when this handler was activated in view
+         * coordinates.
+         */
+        private final Point originalLocation_;
+
+        /** The original origin offset. */
+        private final Dimension originalOriginOffset_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code
+         * DraggingTableMouseInputHandler} class.
+         */
+        DraggingTableMouseInputHandler()
+        {
+            originalLocation_ = new Point( 0, 0 );
+            originalOriginOffset_ = new Dimension( 0, 0 );
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        void activate(
+            final MouseEvent e )
+        {
+            final Point location = getMouseLocation( e );
+            convertPointFromTable( location );
+            originalLocation_.setLocation( location );
+            originalOriginOffset_.setSize( model_.getOriginOffset() );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#deactivate()
+         */
+        @Override
+        void deactivate()
+        {
+            originalLocation_.setLocation( 0, 0 );
+            originalOriginOffset_.setSize( 0, 0 );
+        }
+
+        /*
+         * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void mouseDragged(
+            final MouseEvent e )
+        {
+            final Point location = getMouseLocation( e );
+            convertPointFromTable( location );
+            final Dimension originOffset = new Dimension( originalOriginOffset_.width + (location.x - originalLocation_.x), originalOriginOffset_.height + (location.y - originalLocation_.y) );
+            model_.setOriginOffset( originOffset );
         }
 
         /*
@@ -1219,12 +1417,14 @@ final class TableView
          * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
          */
         @Override
+        @SuppressWarnings( "synthetic-access" )
         void activate(
             final MouseEvent e )
         {
             final Point location = getMouseLocation( e );
             final JPopupMenu menu = getPopupMenu( location );
             menu.addPopupMenuListener( this );
+            convertPointFromTable( location );
             menu.show( TableView.this, location.x, location.y );
         }
 

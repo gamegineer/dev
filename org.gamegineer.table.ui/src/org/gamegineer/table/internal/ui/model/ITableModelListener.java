@@ -43,4 +43,17 @@ public interface ITableModelListener
     public void cardPileFocusChanged(
         /* @NonNull */
         TableModelEvent event );
+
+    /**
+     * Invoked after the table origin offset has changed.
+     * 
+     * @param event
+     *        The event describing the origin offset change.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void originOffsetChanged(
+        /* @NonNull */
+        TableModelEvent event );
 }

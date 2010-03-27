@@ -40,6 +40,9 @@ public class MockTableModelListener
     /** The count of card pile focus changed events received. */
     private final AtomicInteger cardPileFocusChangedEventCount_;
 
+    /** The count of origin offset changed events received. */
+    private final AtomicInteger originOffsetChangedEventCount_;
+
 
     // ======================================================================
     // Constructors
@@ -51,6 +54,7 @@ public class MockTableModelListener
     public MockTableModelListener()
     {
         cardPileFocusChangedEventCount_ = new AtomicInteger( 0 );
+        originOffsetChangedEventCount_ = new AtomicInteger( 0 );
     }
 
 
@@ -77,5 +81,26 @@ public class MockTableModelListener
     public final int getCardPileFocusChangedEventCount()
     {
         return cardPileFocusChangedEventCount_.get();
+    }
+
+    /**
+     * Gets the count of origin offset changed events received.
+     * 
+     * @return The count of origin offset changed events received.
+     */
+    public final int getOriginOffsetChangedEventCount()
+    {
+        return originOffsetChangedEventCount_.get();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#originOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    public void originOffsetChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        originOffsetChangedEventCount_.incrementAndGet();
     }
 }

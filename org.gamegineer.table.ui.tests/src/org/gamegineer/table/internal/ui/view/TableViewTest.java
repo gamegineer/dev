@@ -1,6 +1,6 @@
 /*
  * TableViewTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.internal.ui.view;
 
+import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.internal.ui.model.TableModel;
 import org.junit.Test;
 
 /**
@@ -54,5 +56,17 @@ public final class TableViewTest
     public void testConstructor_Model_Null()
     {
         new TableView( null );
+    }
+
+    /**
+     * Ensures the {@code repaintTable} method throws an exception when passed a
+     * {@code null} region.
+     */
+    @Test( expected = AssertionError.class )
+    public void testRepaintTable_Region_Null()
+    {
+        final TableView tableView = new TableView( new TableModel( TableFactory.createTable() ) );
+
+        tableView.repaintTable( null );
     }
 }

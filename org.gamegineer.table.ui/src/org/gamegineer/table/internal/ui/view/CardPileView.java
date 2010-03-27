@@ -137,7 +137,7 @@ final class CardPileView
             if( !cardViews_.containsKey( card ) )
             {
                 final CardView view = createCardView( card );
-                tableView_.repaint( view.getBounds() );
+                tableView_.repaintTable( view.getBounds() );
                 tableView_.updateActions();
             }
         }
@@ -169,7 +169,7 @@ final class CardPileView
         if( isInitialized() )
         {
             final Rectangle newBounds = getBounds();
-            tableView_.repaint( newBounds.union( bounds_ ) );
+            tableView_.repaintTable( newBounds.union( bounds_ ) );
             bounds_ = newBounds;
         }
     }
@@ -181,7 +181,7 @@ final class CardPileView
     {
         if( isInitialized() )
         {
-            tableView_.repaint( getBounds() );
+            tableView_.repaintTable( getBounds() );
         }
     }
 
@@ -256,7 +256,7 @@ final class CardPileView
             final CardView view = cardViews_.remove( card );
             if( view != null )
             {
-                tableView_.repaint( view.getBounds() );
+                tableView_.repaintTable( view.getBounds() );
                 tableView_.updateActions();
                 view.uninitialize();
             }

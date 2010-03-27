@@ -104,6 +104,12 @@ final class Messages
     /** The card pile is not present in the table. */
     public static String TableModel_getCardPileModel_cardPile_absent;
 
+    /**
+     * An unexpected exception was thrown from
+     * ITableModelListener.originOffsetChanged().
+     */
+    public static String TableModel_originOffsetChanged_unexpectedException;
+
     /** The table model listener is not registered. */
     public static String TableModel_removeTableModelListener_listener_notRegistered;
 

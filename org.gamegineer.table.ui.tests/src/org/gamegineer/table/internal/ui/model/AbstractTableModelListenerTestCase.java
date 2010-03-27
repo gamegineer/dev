@@ -106,4 +106,14 @@ public abstract class AbstractTableModelListenerTestCase
     {
         listener_.cardPileFocusChanged( null );
     }
+
+    /**
+     * Ensures the {@code originOffsetChanged} method throws an exception when
+     * passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testOriginOffsetChanged_Event_Null()
+    {
+        listener_.originOffsetChanged( null );
+    }
 }

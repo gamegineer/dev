@@ -109,7 +109,7 @@ final class CardView
     {
         if( isInitialized() )
         {
-            tableView_.repaint( getBounds() );
+            tableView_.repaintTable( getBounds() );
         }
     }
 
@@ -175,7 +175,7 @@ final class CardView
         if( isInitialized() )
         {
             final Rectangle newBounds = getBounds();
-            tableView_.repaint( newBounds.union( bounds_ ) );
+            tableView_.repaintTable( newBounds.union( bounds_ ) );
             bounds_ = newBounds;
         }
     }
@@ -205,7 +205,7 @@ final class CardView
     {
         if( isInitialized() )
         {
-            tableView_.repaint( getBounds() );
+            tableView_.repaintTable( getBounds() );
         }
     }
 

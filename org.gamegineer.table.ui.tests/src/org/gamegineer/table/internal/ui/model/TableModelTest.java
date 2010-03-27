@@ -26,6 +26,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import java.awt.Dimension;
 import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.core.CardPileFactory;
 import org.gamegineer.table.core.ICardPile;
@@ -169,6 +170,31 @@ public final class TableModelTest
     }
 
     /**
+     * Ensures the {@code getOriginOffset} method returns a copy of the origin
+     * offset.
+     */
+    @Test
+    public void testGetOriginOffset_ReturnValue_Copy()
+    {
+        final Dimension originOffset = model_.getOriginOffset();
+        final Dimension expectedOriginOffset = new Dimension( originOffset );
+        originOffset.setSize( expectedOriginOffset.width + 100, expectedOriginOffset.height + 200 );
+
+        final Dimension actualOriginOffset = model_.getOriginOffset();
+
+        assertEquals( expectedOriginOffset, actualOriginOffset );
+    }
+
+    /**
+     * Ensures the {@code getOriginOffset} method does not return {@code null}.
+     */
+    @Test
+    public void testGetOriginOffset_ReturnValue_NonNull()
+    {
+        assertNotNull( model_.getOriginOffset() );
+    }
+
+    /**
      * Ensures the {@code getTable} method does not return {@code null}.
      */
     @Test
@@ -286,5 +312,53 @@ public final class TableModelTest
         model_.setFocus( cardPile );
 
         assertEquals( 1, listener.getCardPileFocusChangedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code setOriginOffset} method catches any exception thrown
+     * by the {@code originOffsetChanged} method of a table model listener.
+     */
+    @Test
+    public void testSetOriginOffset_CatchesListenerException()
+    {
+        final MockTableModelListener listener = new MockTableModelListener()
+        {
+            @Override
+            public void originOffsetChanged(
+                final TableModelEvent event )
+            {
+                super.originOffsetChanged( event );
+
+                throw new RuntimeException();
+            }
+        };
+        model_.addTableModelListener( listener );
+
+        model_.setOriginOffset( new Dimension( 100, 200 ) );
+    }
+
+    /**
+     * Ensures the {@code setOriginOffset} method fires an origin offset changed
+     * event.
+     */
+    @Test
+    public void testSetOriginOffset_FiresOriginOffsetChangedEvent()
+    {
+        final MockTableModelListener listener = new MockTableModelListener();
+        model_.addTableModelListener( listener );
+
+        model_.setOriginOffset( new Dimension( 100, 200 ) );
+
+        assertEquals( 1, listener.getOriginOffsetChangedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code setOriginOffset} method throws an exception when
+     * passed a {@code null} origin offset.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetOriginOffset_OriginOffset_Null()
+    {
+        model_.setOriginOffset( null );
     }
 }
