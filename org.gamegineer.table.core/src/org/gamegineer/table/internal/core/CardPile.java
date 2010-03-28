@@ -367,9 +367,12 @@ public final class CardPile
         synchronized( lock_ )
         {
             location_.setLocation( location );
-            for( final ICard card : cards_ )
+
+            for( int index = 0, size = cards_.size(); index < size; ++index )
             {
-                card.setLocation( location );
+                final Point cardLocation = getCardOffset( index );
+                cardLocation.translate( location.x, location.y );
+                cards_.get( index ).setLocation( cardLocation );
             }
         }
 
