@@ -655,4 +655,14 @@ public final class ActionsTest
     {
         assertNotNull( Actions.getRemoveCardPileAction() );
     }
+
+    /**
+     * Ensures the {@code getResetTableOriginAction} method does not return
+     * {@code null}.
+     */
+    @Test
+    public void testGetResetTableOriginAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getResetTableOriginAction() );
+    }
 }

@@ -628,6 +628,12 @@ final class Messages
     /** The Table menu text. */
     public static String MenuBarView_table_text;
 
+    /** The View menu mnemonic. */
+    public static String MenuBarView_view_mnemonic;
+
+    /** The View menu text. */
+    public static String MenuBarView_view_text;
+
     // --- OpenAboutDialogAction --------------------------------------------
 
     /** The open about dialog action mnemonic. */
@@ -657,6 +663,14 @@ final class Messages
 
     /** The remove card pile action text. */
     public static String RemoveCardPileAction_text;
+
+    // --- ResetTableOriginAction -------------------------------------------
+
+    /** The reset table origin action mnemonic. */
+    public static String ResetTableOriginAction_mnemonic;
+
+    /** The reset table origin action text. */
+    public static String ResetTableOriginAction_text;
 
 
     // ======================================================================

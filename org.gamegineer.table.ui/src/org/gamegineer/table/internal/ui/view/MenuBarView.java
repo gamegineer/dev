@@ -259,6 +259,7 @@ final class MenuBarView
     {
         final JMenuBar menuBar = new JMenuBar();
         menuBar.add( createFileMenu() );
+        menuBar.add( createViewMenu() );
         menuBar.add( createTableMenu() );
         menuBar.add( createHelpMenu() );
         return menuBar;
@@ -281,6 +282,19 @@ final class MenuBarView
         menu.add( createAddDeckMenu() );
         menu.add( Actions.getRemoveCardAction() );
         menu.add( Actions.getFlipCardAction() );
+        return menu;
+    }
+
+    /**
+     * Creates the view menu.
+     * 
+     * @return The view menu; never {@code null}.
+     */
+    private JMenu createViewMenu()
+    {
+        final JMenu menu = new JMenu( Messages.MenuBarView_view_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_view_mnemonic ).getKeyCode() );
+        menu.add( Actions.getResetTableOriginAction() );
         return menu;
     }
 

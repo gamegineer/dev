@@ -413,6 +413,16 @@ final class TableView
                 removeFocusedCardPile();
             }
         } );
+        actionMediator_.bind( Actions.getResetTableOriginAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                resetTableOrigin();
+            }
+        } );
 
         final IPredicate<Action> hasCardPredicate = new IPredicate<Action>()
         {
@@ -886,6 +896,14 @@ final class TableView
 
         convertRectangleFromTable( region );
         repaint( region );
+    }
+
+    /**
+     * Resets the table origin to the view origin.
+     */
+    private void resetTableOrigin()
+    {
+        model_.setOriginOffset( new Dimension( 0, 0 ) );
     }
 
     /**

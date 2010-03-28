@@ -218,6 +218,9 @@ final class Actions
     /** The action used to remove a card pile from the table. */
     private static final BasicAction removeCardPileAction_;
 
+    /** The action used to reset the table origin to the view origin. */
+    private static final BasicAction resetTableOriginAction_;
+
 
     // ======================================================================
     // Constructors
@@ -289,6 +292,7 @@ final class Actions
         openAboutDialogAction_ = createOpenAboutDialogAction();
         removeCardAction_ = createRemoveCardAction();
         removeCardPileAction_ = createRemoveCardPileAction();
+        resetTableOriginAction_ = createResetTableOriginAction();
     }
 
     /**
@@ -1582,6 +1586,26 @@ final class Actions
     }
 
     /**
+     * Creates the reset table origin action.
+     * 
+     * @return The reset table origin action; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static BasicAction createResetTableOriginAction()
+    {
+        return new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.ResetTableOriginAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.ResetTableOriginAction_text );
+            }
+        };
+    }
+
+    /**
      * Gets the add Ace of Clubs card action.
      * 
      * @return The add Ace of Clubs card action; never {@code null}.
@@ -2250,5 +2274,16 @@ final class Actions
     static BasicAction getRemoveCardPileAction()
     {
         return removeCardPileAction_;
+    }
+
+    /**
+     * Gets the reset table origin action.
+     * 
+     * @return The reset table origin action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getResetTableOriginAction()
+    {
+        return resetTableOriginAction_;
     }
 }
