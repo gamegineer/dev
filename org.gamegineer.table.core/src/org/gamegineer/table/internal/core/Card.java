@@ -275,6 +275,9 @@ public final class Card
     @Override
     public String toString()
     {
-        return String.format( "Card[backDesign_='%1$s', faceDesign_='%2$s', location_='%3$s', orientation_='%4$s'", backDesign_, faceDesign_, getLocation(), getOrientation() ); //$NON-NLS-1$
+        synchronized( lock_ )
+        {
+            return String.format( "Card[backDesign_='%1$s', faceDesign_='%2$s', location_='%3$s', orientation_='%4$s'", backDesign_, faceDesign_, location_, orientation_ ); //$NON-NLS-1$
+        }
     }
 }
