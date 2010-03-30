@@ -77,3 +77,4 @@ uninitializes
 uninitialize
 mobile
 tabletop
+enum
