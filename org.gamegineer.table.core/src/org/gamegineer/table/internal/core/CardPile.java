@@ -126,8 +126,9 @@ public final class CardPile
             {
                 cardAdded = true;
                 final Rectangle oldBounds = getBounds();
-                final Point cardLocation = getCardOffset( cards_.size() );
-                cardLocation.translate( location_.x, location_.y );
+                final Point cardLocation = new Point( location_ );
+                final Dimension cardOffset = getCardOffset( cards_.size() );
+                cardLocation.translate( cardOffset.width, cardOffset.height );
                 card.setLocation( cardLocation );
                 cards_.add( card );
                 final Rectangle newBounds = getBounds();
@@ -271,13 +272,13 @@ public final class CardPile
      *         the card at the specified index; never {@code null}.
      */
     /* @NonNull */
-    private static Point getCardOffset(
+    private static Dimension getCardOffset(
         final int index )
     {
         assert index >= 0;
 
         final int stackLevel = index / CARDS_PER_STACK_LEVEL;
-        return new Point( STACK_LEVEL_OFFSET.x * stackLevel, STACK_LEVEL_OFFSET.y * stackLevel );
+        return new Dimension( STACK_LEVEL_OFFSET.x * stackLevel, STACK_LEVEL_OFFSET.y * stackLevel );
     }
 
     /*
@@ -370,8 +371,9 @@ public final class CardPile
 
             for( int index = 0, size = cards_.size(); index < size; ++index )
             {
-                final Point cardLocation = getCardOffset( index );
-                cardLocation.translate( location.x, location.y );
+                final Point cardLocation = new Point( location );
+                final Dimension cardOffset = getCardOffset( index );
+                cardLocation.translate( cardOffset.width, cardOffset.height );
                 cards_.get( index ).setLocation( cardLocation );
             }
         }
