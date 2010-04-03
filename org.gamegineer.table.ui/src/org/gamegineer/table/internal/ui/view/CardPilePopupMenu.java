@@ -21,8 +21,10 @@
 
 package org.gamegineer.table.internal.ui.view;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 import net.jcip.annotations.NotThreadSafe;
 
@@ -217,14 +219,14 @@ final class CardPilePopupMenu
     /* @NonNull */
     private JMenu createLayoutMenu()
     {
-        // TODO: place a check mark next to selected layout
         final JMenu menu = new JMenu( Messages.CardPilePopupMenu_layout_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( Messages.CardPilePopupMenu_layout_mnemonic ).getKeyCode() );
-        menu.add( Actions.getSetStackedCardPileLayoutAction() );
-        menu.add( Actions.getSetAccordianUpCardPileLayoutAction() );
-        menu.add( Actions.getSetAccordianDownCardPileLayoutAction() );
-        menu.add( Actions.getSetAccordianLeftCardPileLayoutAction() );
-        menu.add( Actions.getSetAccordianRightCardPileLayoutAction() );
+        final ButtonGroup layoutButtonGroup = new ButtonGroup();
+        layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetStackedCardPileLayoutAction() ) ) );
+        layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetAccordianUpCardPileLayoutAction() ) ) );
+        layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetAccordianDownCardPileLayoutAction() ) ) );
+        layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetAccordianLeftCardPileLayoutAction() ) ) );
+        layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetAccordianRightCardPileLayoutAction() ) ) );
         return menu;
     }
 

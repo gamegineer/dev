@@ -529,6 +529,28 @@ final class TableView
         actionMediator_.bindShouldEnablePredicate( Actions.getSetAccordianRightCardPileLayoutAction(), hasFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getSetAccordianUpCardPileLayoutAction(), hasFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getSetStackedCardPileLayoutAction(), hasFocusedCardPilePredicate );
+
+        final IPredicate<Action> isCardPileLayoutSelectedPredicate = new IPredicate<Action>()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public boolean evaluate(
+                final Action obj )
+            {
+                final ICardPile cardPile = model_.getFocusedCardPile();
+                if( cardPile == null )
+                {
+                    return false;
+                }
+
+                return cardPile.getLayout() == CardPileLayout.valueOf( (String)obj.getValue( Action.ACTION_COMMAND_KEY ) );
+            }
+
+        };
+        actionMediator_.bindShouldSelectPredicate( Actions.getSetAccordianDownCardPileLayoutAction(), isCardPileLayoutSelectedPredicate );
+        actionMediator_.bindShouldSelectPredicate( Actions.getSetAccordianLeftCardPileLayoutAction(), isCardPileLayoutSelectedPredicate );
+        actionMediator_.bindShouldSelectPredicate( Actions.getSetAccordianRightCardPileLayoutAction(), isCardPileLayoutSelectedPredicate );
+        actionMediator_.bindShouldSelectPredicate( Actions.getSetAccordianUpCardPileLayoutAction(), isCardPileLayoutSelectedPredicate );
+        actionMediator_.bindShouldSelectPredicate( Actions.getSetStackedCardPileLayoutAction(), isCardPileLayoutSelectedPredicate );
     }
 
     /*
