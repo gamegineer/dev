@@ -250,6 +250,25 @@ final class MenuBarView
     }
 
     /**
+     * Creates the layout menu.
+     * 
+     * @return The layout menu; never {@code null}.
+     */
+    /* @NonNull */
+    private JMenu createLayoutMenu()
+    {
+        // TODO: place a check mark next to selected layout
+        final JMenu menu = new JMenu( Messages.MenuBarView_layout_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_layout_mnemonic ).getKeyCode() );
+        menu.add( Actions.getSetStackedCardPileLayoutAction() );
+        menu.add( Actions.getSetAccordianUpCardPileLayoutAction() );
+        menu.add( Actions.getSetAccordianDownCardPileLayoutAction() );
+        menu.add( Actions.getSetAccordianLeftCardPileLayoutAction() );
+        menu.add( Actions.getSetAccordianRightCardPileLayoutAction() );
+        return menu;
+    }
+
+    /**
      * Creates the menu bar.
      * 
      * @return The menu bar; never {@code null}.
@@ -277,6 +296,8 @@ final class MenuBarView
         menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_table_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddCardPileAction() );
         menu.add( Actions.getRemoveCardPileAction() );
+        menu.addSeparator();
+        menu.add( createLayoutMenu() );
         menu.addSeparator();
         menu.add( createAddCardMenu() );
         menu.add( createAddDeckMenu() );

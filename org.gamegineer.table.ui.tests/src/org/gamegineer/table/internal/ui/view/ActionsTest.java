@@ -665,4 +665,54 @@ public final class ActionsTest
     {
         assertNotNull( Actions.getResetTableOriginAction() );
     }
+
+    /**
+     * Ensures the {@code getSetAccordianDownCardPileLayoutAction} method does
+     * not return {@code null}.
+     */
+    @Test
+    public void testGetSetAccordianDownCardPileLayoutAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getSetAccordianDownCardPileLayoutAction() );
+    }
+
+    /**
+     * Ensures the {@code getSetAccordianLeftCardPileLayoutAction} method does
+     * not return {@code null}.
+     */
+    @Test
+    public void testGetSetAccordianLeftCardPileLayoutAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getSetAccordianLeftCardPileLayoutAction() );
+    }
+
+    /**
+     * Ensures the {@code getSetAccordianRightCardPileLayoutAction} method does
+     * not return {@code null}.
+     */
+    @Test
+    public void testGetSetAccordianRightCardPileLayoutAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getSetAccordianRightCardPileLayoutAction() );
+    }
+
+    /**
+     * Ensures the {@code getSetAccordianUpCardPileLayoutAction} method does not
+     * return {@code null}.
+     */
+    @Test
+    public void testGetSetAccordianUpCardPileLayoutAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getSetAccordianUpCardPileLayoutAction() );
+    }
+
+    /**
+     * Ensures the {@code getSetStackedCardPileLayoutAction} method does not
+     * return {@code null}.
+     */
+    @Test
+    public void testGetSetStackedCardPileLayoutAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getSetStackedCardPileLayoutAction() );
+    }
 }

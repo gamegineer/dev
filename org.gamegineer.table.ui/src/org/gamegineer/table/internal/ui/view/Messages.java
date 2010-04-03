@@ -542,6 +542,12 @@ final class Messages
     /** The Add Special Card menu text. */
     public static String CardPilePopupMenu_addSpecialCard_text;
 
+    /** The Layout menu mnemonic. */
+    public static String CardPilePopupMenu_layout_mnemonic;
+
+    /** The Layout menu text. */
+    public static String CardPilePopupMenu_layout_text;
+
     // --- ExitAction -------------------------------------------------------
 
     /** The exit action mnemonic. */
@@ -622,6 +628,12 @@ final class Messages
     /** The Help menu text. */
     public static String MenuBarView_help_text;
 
+    /** The Layout menu mnemonic. */
+    public static String MenuBarView_layout_mnemonic;
+
+    /** The Layout menu text. */
+    public static String MenuBarView_layout_text;
+
     /** The Table menu mnemonic. */
     public static String MenuBarView_table_mnemonic;
 
@@ -671,6 +683,46 @@ final class Messages
 
     /** The reset table origin action text. */
     public static String ResetTableOriginAction_text;
+
+    // --- SetAccordianDownCardPileLayoutAction -----------------------------
+
+    /** The set accordian down card pile layout action mnemonic. */
+    public static String SetAccordianDownCardPileLayoutAction_mnemonic;
+
+    /** The set accordian down card pile layout action text. */
+    public static String SetAccordianDownCardPileLayoutAction_text;
+
+    // --- SetAccordianLeftCardPileLayoutAction -----------------------------
+
+    /** The set accordian left card pile layout action mnemonic. */
+    public static String SetAccordianLeftCardPileLayoutAction_mnemonic;
+
+    /** The set accordian left card pile layout action text. */
+    public static String SetAccordianLeftCardPileLayoutAction_text;
+
+    // --- SetAccordianRightCardPileLayoutAction ----------------------------
+
+    /** The set accordian right card pile layout action mnemonic. */
+    public static String SetAccordianRightCardPileLayoutAction_mnemonic;
+
+    /** The set accordian right card pile layout action text. */
+    public static String SetAccordianRightCardPileLayoutAction_text;
+
+    // --- SetAccordianUpCardPileLayoutAction -------------------------------
+
+    /** The set accordian up card pile layout action mnemonic. */
+    public static String SetAccordianUpCardPileLayoutAction_mnemonic;
+
+    /** The set accordian up card pile layout action text. */
+    public static String SetAccordianUpCardPileLayoutAction_text;
+
+    // --- SetStackedCardPileLayoutAction -----------------------------------
+
+    /** The set stacked card pile layout action mnemonic. */
+    public static String SetStackedCardPileLayoutAction_mnemonic;
+
+    /** The set stacked card pile layout action text. */
+    public static String SetStackedCardPileLayoutAction_text;
 
 
     // ======================================================================

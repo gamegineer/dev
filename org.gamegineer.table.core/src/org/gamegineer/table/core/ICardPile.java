@@ -100,6 +100,14 @@ public interface ICardPile
     public List<ICard> getCards();
 
     /**
+     * Gets the layout of cards within this card pile.
+     * 
+     * @return The layout of cards within this card pile; never {@code null}.
+     */
+    /* @NonNull */
+    public CardPileLayout getLayout();
+
+    /**
      * Gets the location of this card pile in table coordinates.
      * 
      * @return The location of this card pile in table coordinates; never
@@ -140,6 +148,20 @@ public interface ICardPile
     public void removeCardPileListener(
         /* @NonNull */
         ICardPileListener listener );
+
+    /**
+     * Sets the layout of cards within this card pile.
+     * 
+     * @param layout
+     *        The layout of cards within this card pile; must not be {@code
+     *        null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code layout} is {@code null}.
+     */
+    public void setLayout(
+        /* @NonNull */
+        CardPileLayout layout );
 
     /**
      * Sets the location of this card pile in table coordinates.

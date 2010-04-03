@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.view;
 
 import javax.swing.KeyStroke;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.core.CardPileLayout;
 import org.gamegineer.table.internal.ui.action.BasicAction;
 
 /**
@@ -35,130 +36,130 @@ final class Actions
     // Fields
     // ======================================================================
 
-    /** The action used to add an Ace of Clubs card to the table. */
+    /** The action used to add an Ace of Clubs card to a card pile. */
     private static final BasicAction addAceOfClubsCardAction_;
 
-    /** The action used to add an Ace of Diamonds card to the table. */
+    /** The action used to add an Ace of Diamonds card to a card pile. */
     private static final BasicAction addAceOfDiamondsCardAction_;
 
-    /** The action used to add an Ace of Hearts card to the table. */
+    /** The action used to add an Ace of Hearts card to a card pile. */
     private static final BasicAction addAceOfHeartsCardAction_;
 
-    /** The action used to add an Ace of Spades card to the table. */
+    /** The action used to add an Ace of Spades card to a card pile. */
     private static final BasicAction addAceOfSpadesCardAction_;
 
     /** The action used to add a card pile to the table. */
     private static final BasicAction addCardPileAction_;
 
-    /** The action used to add an Eight of Clubs card to the table. */
+    /** The action used to add an Eight of Clubs card to a card pile. */
     private static final BasicAction addEightOfClubsCardAction_;
 
-    /** The action used to add an Eight of Diamonds card to the table. */
+    /** The action used to add an Eight of Diamonds card to a card pile. */
     private static final BasicAction addEightOfDiamondsCardAction_;
 
-    /** The action used to add an Eight of Hearts card to the table. */
+    /** The action used to add an Eight of Hearts card to a card pile. */
     private static final BasicAction addEightOfHeartsCardAction_;
 
-    /** The action used to add an Eight of Spades card to the table. */
+    /** The action used to add an Eight of Spades card to a card pile. */
     private static final BasicAction addEightOfSpadesCardAction_;
 
-    /** The action used to add a Five of Clubs card to the table. */
+    /** The action used to add a Five of Clubs card to a card pile. */
     private static final BasicAction addFiveOfClubsCardAction_;
 
-    /** The action used to add a Five of Diamonds card to the table. */
+    /** The action used to add a Five of Diamonds card to a card pile. */
     private static final BasicAction addFiveOfDiamondsCardAction_;
 
-    /** The action used to add a Five of Hearts card to the table. */
+    /** The action used to add a Five of Hearts card to a card pile. */
     private static final BasicAction addFiveOfHeartsCardAction_;
 
-    /** The action used to add a Five of Spades card to the table. */
+    /** The action used to add a Five of Spades card to a card pile. */
     private static final BasicAction addFiveOfSpadesCardAction_;
 
-    /** The action used to add a Four of Clubs card to the table. */
+    /** The action used to add a Four of Clubs card to a card pile. */
     private static final BasicAction addFourOfClubsCardAction_;
 
-    /** The action used to add a Four of Diamonds card to the table. */
+    /** The action used to add a Four of Diamonds card to a card pile. */
     private static final BasicAction addFourOfDiamondsCardAction_;
 
-    /** The action used to add a Four of Hearts card to the table. */
+    /** The action used to add a Four of Hearts card to a card pile. */
     private static final BasicAction addFourOfHeartsCardAction_;
 
-    /** The action used to add a Four of Spades card to the table. */
+    /** The action used to add a Four of Spades card to a card pile. */
     private static final BasicAction addFourOfSpadesCardAction_;
 
-    /** The action used to add a Jack of Clubs card to the table. */
+    /** The action used to add a Jack of Clubs card to a card pile. */
     private static final BasicAction addJackOfClubsCardAction_;
 
-    /** The action used to add a Jack of Diamonds card to the table. */
+    /** The action used to add a Jack of Diamonds card to a card pile. */
     private static final BasicAction addJackOfDiamondsCardAction_;
 
-    /** The action used to add a Jack of Hearts card to the table. */
+    /** The action used to add a Jack of Hearts card to a card pile. */
     private static final BasicAction addJackOfHeartsCardAction_;
 
-    /** The action used to add a Jack of Spades card to the table. */
+    /** The action used to add a Jack of Spades card to a card pile. */
     private static final BasicAction addJackOfSpadesCardAction_;
 
-    /** The action used to add a Joker card to the table. */
+    /** The action used to add a Joker card to a card pile. */
     private static final BasicAction addJokerCardAction_;
 
-    /** The action used to add a King of Clubs card to the table. */
+    /** The action used to add a King of Clubs card to a card pile. */
     private static final BasicAction addKingOfClubsCardAction_;
 
-    /** The action used to add a King of Diamonds card to the table. */
+    /** The action used to add a King of Diamonds card to a card pile. */
     private static final BasicAction addKingOfDiamondsCardAction_;
 
-    /** The action used to add a King of Hearts card to the table. */
+    /** The action used to add a King of Hearts card to a card pile. */
     private static final BasicAction addKingOfHeartsCardAction_;
 
-    /** The action used to add a King of Spades card to the table. */
+    /** The action used to add a King of Spades card to a card pile. */
     private static final BasicAction addKingOfSpadesCardAction_;
 
-    /** The action used to add a Nine of Clubs card to the table. */
+    /** The action used to add a Nine of Clubs card to a card pile. */
     private static final BasicAction addNineOfClubsCardAction_;
 
-    /** The action used to add a Nine of Diamonds card to the table. */
+    /** The action used to add a Nine of Diamonds card to a card pile. */
     private static final BasicAction addNineOfDiamondsCardAction_;
 
-    /** The action used to add a Nine of Hearts card to the table. */
+    /** The action used to add a Nine of Hearts card to a card pile. */
     private static final BasicAction addNineOfHeartsCardAction_;
 
-    /** The action used to add a Nine of Spades card to the table. */
+    /** The action used to add a Nine of Spades card to a card pile. */
     private static final BasicAction addNineOfSpadesCardAction_;
 
-    /** The action used to add a Queen of Clubs card to the table. */
+    /** The action used to add a Queen of Clubs card to a card pile. */
     private static final BasicAction addQueenOfClubsCardAction_;
 
-    /** The action used to add a Queen of Diamonds card to the table. */
+    /** The action used to add a Queen of Diamonds card to a card pile. */
     private static final BasicAction addQueenOfDiamondsCardAction_;
 
-    /** The action used to add a Queen of Hearts card to the table. */
+    /** The action used to add a Queen of Hearts card to a card pile. */
     private static final BasicAction addQueenOfHeartsCardAction_;
 
-    /** The action used to add a Queen of Spades card to the table. */
+    /** The action used to add a Queen of Spades card to a card pile. */
     private static final BasicAction addQueenOfSpadesCardAction_;
 
-    /** The action used to add a Seven of Clubs card to the table. */
+    /** The action used to add a Seven of Clubs card to a card pile. */
     private static final BasicAction addSevenOfClubsCardAction_;
 
-    /** The action used to add a Seven of Diamonds card to the table. */
+    /** The action used to add a Seven of Diamonds card to a card pile. */
     private static final BasicAction addSevenOfDiamondsCardAction_;
 
-    /** The action used to add a Seven of Hearts card to the table. */
+    /** The action used to add a Seven of Hearts card to a card pile. */
     private static final BasicAction addSevenOfHeartsCardAction_;
 
-    /** The action used to add a Seven of Spades card to the table. */
+    /** The action used to add a Seven of Spades card to a card pile. */
     private static final BasicAction addSevenOfSpadesCardAction_;
 
-    /** The action used to add a Six of Clubs card to the table. */
+    /** The action used to add a Six of Clubs card to a card pile. */
     private static final BasicAction addSixOfClubsCardAction_;
 
-    /** The action used to add a Six of Diamonds card to the table. */
+    /** The action used to add a Six of Diamonds card to a card pile. */
     private static final BasicAction addSixOfDiamondsCardAction_;
 
-    /** The action used to add a Six of Hearts card to the table. */
+    /** The action used to add a Six of Hearts card to a card pile. */
     private static final BasicAction addSixOfHeartsCardAction_;
 
-    /** The action used to add a Six of Spades card to the table. */
+    /** The action used to add a Six of Spades card to a card pile. */
     private static final BasicAction addSixOfSpadesCardAction_;
 
     /** The action used to add a standard 52-card deck to a card pile. */
@@ -167,52 +168,52 @@ final class Actions
     /** The action used to add a standard 54-card deck to a card pile. */
     private static final BasicAction addStandard54CardDeckAction_;
 
-    /** The action used to add a Ten of Clubs card to the table. */
+    /** The action used to add a Ten of Clubs card to a card pile. */
     private static final BasicAction addTenOfClubsCardAction_;
 
-    /** The action used to add a Ten of Diamonds card to the table. */
+    /** The action used to add a Ten of Diamonds card to a card pile. */
     private static final BasicAction addTenOfDiamondsCardAction_;
 
-    /** The action used to add a Ten of Hearts card to the table. */
+    /** The action used to add a Ten of Hearts card to a card pile. */
     private static final BasicAction addTenOfHeartsCardAction_;
 
-    /** The action used to add a Ten of Spades card to the table. */
+    /** The action used to add a Ten of Spades card to a card pile. */
     private static final BasicAction addTenOfSpadesCardAction_;
 
-    /** The action used to add a Three of Clubs card to the table. */
+    /** The action used to add a Three of Clubs card to a card pile. */
     private static final BasicAction addThreeOfClubsCardAction_;
 
-    /** The action used to add a Three of Diamonds card to the table. */
+    /** The action used to add a Three of Diamonds card to a card pile. */
     private static final BasicAction addThreeOfDiamondsCardAction_;
 
-    /** The action used to add a Three of Hearts card to the table. */
+    /** The action used to add a Three of Hearts card to a card pile. */
     private static final BasicAction addThreeOfHeartsCardAction_;
 
-    /** The action used to add a Three of Spades card to the table. */
+    /** The action used to add a Three of Spades card to a card pile. */
     private static final BasicAction addThreeOfSpadesCardAction_;
 
-    /** The action used to add a Two of Clubs card to the table. */
+    /** The action used to add a Two of Clubs card to a card pile. */
     private static final BasicAction addTwoOfClubsCardAction_;
 
-    /** The action used to add a Two of Diamonds card to the table. */
+    /** The action used to add a Two of Diamonds card to a card pile. */
     private static final BasicAction addTwoOfDiamondsCardAction_;
 
-    /** The action used to add a Two of Hearts card to the table. */
+    /** The action used to add a Two of Hearts card to a card pile. */
     private static final BasicAction addTwoOfHeartsCardAction_;
 
-    /** The action used to add a Two of Spades card to the table. */
+    /** The action used to add a Two of Spades card to a card pile. */
     private static final BasicAction addTwoOfSpadesCardAction_;
 
     /** The action used to exit the application. */
     private static final BasicAction exitAction_;
 
-    /** The action used to flip a card on the table. */
+    /** The action used to flip a card in a card pile. */
     private static final BasicAction flipCardAction_;
 
     /** The action used to open the about dialog. */
     private static final BasicAction openAboutDialogAction_;
 
-    /** The action used to remove a card from the table. */
+    /** The action used to remove a card from a card pile. */
     private static final BasicAction removeCardAction_;
 
     /** The action used to remove a card pile from the table. */
@@ -220,6 +221,21 @@ final class Actions
 
     /** The action used to reset the table origin to the view origin. */
     private static final BasicAction resetTableOriginAction_;
+
+    /** The action used to set the accordian down layout on a card pile. */
+    private static final BasicAction setAccordianDownCardPileLayoutAction_;
+
+    /** The action used to set the accordian left layout on a card pile. */
+    private static final BasicAction setAccordianLeftCardPileLayoutAction_;
+
+    /** The action used to set the accordian right layout on a card pile. */
+    private static final BasicAction setAccordianRightCardPileLayoutAction_;
+
+    /** The action used to set the accordian up layout on a card pile. */
+    private static final BasicAction setAccordianUpCardPileLayoutAction_;
+
+    /** The action used to set the stacked layout on a card pile. */
+    private static final BasicAction setStackedCardPileLayoutAction_;
 
 
     // ======================================================================
@@ -293,6 +309,11 @@ final class Actions
         removeCardAction_ = createRemoveCardAction();
         removeCardPileAction_ = createRemoveCardPileAction();
         resetTableOriginAction_ = createResetTableOriginAction();
+        setAccordianDownCardPileLayoutAction_ = createSetAccordianDownCardPileLayoutAction();
+        setAccordianLeftCardPileLayoutAction_ = createSetAccordianLeftCardPileLayoutAction();
+        setAccordianRightCardPileLayoutAction_ = createSetAccordianRightCardPileLayoutAction();
+        setAccordianUpCardPileLayoutAction_ = createSetAccordianUpCardPileLayoutAction();
+        setStackedCardPileLayoutAction_ = createSetStackedCardPileLayoutAction();
     }
 
     /**
@@ -1606,6 +1627,114 @@ final class Actions
     }
 
     /**
+     * Creates the set accordian down card pile layout action.
+     * 
+     * @return The set accordian down card pile layout action; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static BasicAction createSetAccordianDownCardPileLayoutAction()
+    {
+        return new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( ACTION_COMMAND_KEY, CardPileLayout.ACCORDIAN_DOWN.name() );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SetAccordianDownCardPileLayoutAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.SetAccordianDownCardPileLayoutAction_text );
+            }
+        };
+    }
+
+    /**
+     * Creates the set accordian left card pile layout action.
+     * 
+     * @return The set accordian left card pile layout action; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static BasicAction createSetAccordianLeftCardPileLayoutAction()
+    {
+        return new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( ACTION_COMMAND_KEY, CardPileLayout.ACCORDIAN_LEFT.name() );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SetAccordianLeftCardPileLayoutAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.SetAccordianLeftCardPileLayoutAction_text );
+            }
+        };
+    }
+
+    /**
+     * Creates the set accordian right card pile layout action.
+     * 
+     * @return The set accordian right card pile layout action; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static BasicAction createSetAccordianRightCardPileLayoutAction()
+    {
+        return new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( ACTION_COMMAND_KEY, CardPileLayout.ACCORDIAN_RIGHT.name() );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SetAccordianRightCardPileLayoutAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.SetAccordianRightCardPileLayoutAction_text );
+            }
+        };
+    }
+
+    /**
+     * Creates the set accordian up card pile layout action.
+     * 
+     * @return The set accordian up card pile layout action; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static BasicAction createSetAccordianUpCardPileLayoutAction()
+    {
+        return new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( ACTION_COMMAND_KEY, CardPileLayout.ACCORDIAN_UP.name() );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SetAccordianUpCardPileLayoutAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.SetAccordianUpCardPileLayoutAction_text );
+            }
+        };
+    }
+
+    /**
+     * Creates the set stacked card pile layout action.
+     * 
+     * @return The set stacked card pile layout action; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static BasicAction createSetStackedCardPileLayoutAction()
+    {
+        return new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( ACTION_COMMAND_KEY, CardPileLayout.STACKED.name() );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SetStackedCardPileLayoutAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.SetStackedCardPileLayoutAction_text );
+            }
+        };
+    }
+
+    /**
      * Gets the add Ace of Clubs card action.
      * 
      * @return The add Ace of Clubs card action; never {@code null}.
@@ -2285,5 +2414,63 @@ final class Actions
     static BasicAction getResetTableOriginAction()
     {
         return resetTableOriginAction_;
+    }
+
+    /**
+     * Gets the set accordian down card pile layout action.
+     * 
+     * @return The set accordian down card pile layout action; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    static BasicAction getSetAccordianDownCardPileLayoutAction()
+    {
+        return setAccordianDownCardPileLayoutAction_;
+    }
+
+    /**
+     * Gets the set accordian left card pile layout action.
+     * 
+     * @return The set accordian left card pile layout action; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    static BasicAction getSetAccordianLeftCardPileLayoutAction()
+    {
+        return setAccordianLeftCardPileLayoutAction_;
+    }
+
+    /**
+     * Gets the set accordian right card pile layout action.
+     * 
+     * @return The set accordian right card pile layout action; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    static BasicAction getSetAccordianRightCardPileLayoutAction()
+    {
+        return setAccordianRightCardPileLayoutAction_;
+    }
+
+    /**
+     * Gets the set accordian up card pile layout action.
+     * 
+     * @return The set accordian up card pile layout action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getSetAccordianUpCardPileLayoutAction()
+    {
+        return setAccordianUpCardPileLayoutAction_;
+    }
+
+    /**
+     * Gets the set stacked card pile layout action.
+     * 
+     * @return The set stacked card pile layout action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getSetStackedCardPileLayoutAction()
+    {
+        return setStackedCardPileLayoutAction_;
     }
 }

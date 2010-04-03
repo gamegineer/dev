@@ -52,6 +52,7 @@ import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.CardPileFactory;
+import org.gamegineer.table.core.CardPileLayout;
 import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
@@ -300,6 +301,15 @@ final class TableView
                 addCard( CardSurfaceDesignId.fromString( e.getActionCommand() ) );
             }
         };
+        final ActionListener setCardPileLayoutActionListener = new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                final ActionEvent e )
+            {
+                setCardPileLayout( CardPileLayout.valueOf( e.getActionCommand() ) );
+            }
+        };
         actionMediator_.bind( Actions.getAddAceOfClubsCardAction(), addCardActionListener );
         actionMediator_.bind( Actions.getAddAceOfDiamondsCardAction(), addCardActionListener );
         actionMediator_.bind( Actions.getAddAceOfHeartsCardAction(), addCardActionListener );
@@ -423,6 +433,11 @@ final class TableView
                 resetTableOrigin();
             }
         } );
+        actionMediator_.bind( Actions.getSetAccordianDownCardPileLayoutAction(), setCardPileLayoutActionListener );
+        actionMediator_.bind( Actions.getSetAccordianLeftCardPileLayoutAction(), setCardPileLayoutActionListener );
+        actionMediator_.bind( Actions.getSetAccordianRightCardPileLayoutAction(), setCardPileLayoutActionListener );
+        actionMediator_.bind( Actions.getSetAccordianUpCardPileLayoutAction(), setCardPileLayoutActionListener );
+        actionMediator_.bind( Actions.getSetStackedCardPileLayoutAction(), setCardPileLayoutActionListener );
 
         final IPredicate<Action> hasCardPredicate = new IPredicate<Action>()
         {
@@ -509,6 +524,11 @@ final class TableView
         actionMediator_.bind( Actions.getFlipCardAction(), hasCardPredicate );
         actionMediator_.bind( Actions.getRemoveCardAction(), hasCardPredicate );
         actionMediator_.bind( Actions.getRemoveCardPileAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getSetAccordianDownCardPileLayoutAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getSetAccordianLeftCardPileLayoutAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getSetAccordianRightCardPileLayoutAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getSetAccordianUpCardPileLayoutAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bind( Actions.getSetStackedCardPileLayoutAction(), hasFocusedCardPilePredicate );
     }
 
     /*
@@ -904,6 +924,25 @@ final class TableView
     private void resetTableOrigin()
     {
         model_.setOriginOffset( new Dimension( 0, 0 ) );
+    }
+
+    /**
+     * Sets the layout of the focused card pile to the specified value.
+     * 
+     * @param cardPileLayout
+     *        The card pile layout; must not be {@code null}.
+     */
+    private void setCardPileLayout(
+        /* @NonNull */
+        final CardPileLayout cardPileLayout )
+    {
+        assert cardPileLayout != null;
+
+        final ICardPile cardPile = model_.getFocusedCardPile();
+        if( cardPile != null )
+        {
+            cardPile.setLayout( cardPileLayout );
+        }
     }
 
     /**

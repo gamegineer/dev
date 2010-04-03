@@ -78,6 +78,9 @@ final class Messages
     /** An unexpected exception was thrown from ICardPileListener.cardRemoved(). */
     public static String CardPile_cardRemoved_unexpectedException;
 
+    /** An unknown layout is active. */
+    public static String CardPile_getCardOffsetAt_unknownLayout;
+
     /** The card pile listener is not registered. */
     public static String CardPile_removeCardPileListener_listener_notRegistered;
 

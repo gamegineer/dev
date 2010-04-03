@@ -348,6 +348,15 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
+     * Ensures the {@code getLayout} method does not return {@code null}.
+     */
+    @Test
+    public void testGetLayout_ReturnValue_NonNull()
+    {
+        assertNotNull( cardPile_.getLayout() );
+    }
+
+    /**
      * Ensures the {@code getLocation} method returns a copy of the location.
      */
     @Test
@@ -568,6 +577,34 @@ public abstract class AbstractCardPileTestCase
 
         cardPile_.addCard( createCard() );
         assertEquals( 1, listener.getCardAddedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code setLayout} method fires a card pile bounds changed
+     * event when the new layout causes a change in the card pile bounds.
+     */
+    @Test
+    public void testSetOrientation_FiresCardOrientationChangedEvent()
+    {
+        cardPile_.setLayout( CardPileLayout.STACKED );
+        cardPile_.addCard( createCard() );
+        cardPile_.addCard( createCard() );
+        final MockCardPileListener listener = new MockCardPileListener();
+        cardPile_.addCardPileListener( listener );
+
+        cardPile_.setLayout( CardPileLayout.ACCORDIAN_DOWN );
+
+        assertEquals( 1, listener.getCardPileBoundsChangedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code setLayout} method throws an exception when passed a
+     * {@code null} layout.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetLayout_Layout_Null()
+    {
+        cardPile_.setLayout( null );
     }
 
     /**

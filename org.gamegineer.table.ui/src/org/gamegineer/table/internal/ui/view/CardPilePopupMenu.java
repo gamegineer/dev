@@ -210,6 +210,25 @@ final class CardPilePopupMenu
     }
 
     /**
+     * Creates the layout menu.
+     * 
+     * @return The layout menu; never {@code null}.
+     */
+    /* @NonNull */
+    private JMenu createLayoutMenu()
+    {
+        // TODO: place a check mark next to selected layout
+        final JMenu menu = new JMenu( Messages.CardPilePopupMenu_layout_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.CardPilePopupMenu_layout_mnemonic ).getKeyCode() );
+        menu.add( Actions.getSetStackedCardPileLayoutAction() );
+        menu.add( Actions.getSetAccordianUpCardPileLayoutAction() );
+        menu.add( Actions.getSetAccordianDownCardPileLayoutAction() );
+        menu.add( Actions.getSetAccordianLeftCardPileLayoutAction() );
+        menu.add( Actions.getSetAccordianRightCardPileLayoutAction() );
+        return menu;
+    }
+
+    /**
      * Initializes this component.
      */
     private void initializeComponent()
@@ -218,6 +237,8 @@ final class CardPilePopupMenu
         add( createAddDeckMenu() );
         add( Actions.getRemoveCardAction() );
         add( Actions.getFlipCardAction() );
+        addSeparator();
+        add( createLayoutMenu() );
         addSeparator();
         add( Actions.getRemoveCardPileAction() );
     }
