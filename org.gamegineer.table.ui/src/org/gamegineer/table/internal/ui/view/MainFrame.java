@@ -1,6 +1,6 @@
 /*
  * MainFrame.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -106,7 +106,7 @@ public final class MainFrame
      */
     private void bindActions()
     {
-        actionMediator_.bind( Actions.getExitAction(), new ActionListener()
+        actionMediator_.bindActionListener( Actions.getExitAction(), new ActionListener()
         {
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -115,7 +115,7 @@ public final class MainFrame
                 dispose();
             }
         } );
-        actionMediator_.bind( Actions.getOpenAboutDialogAction(), new ActionListener()
+        actionMediator_.bindActionListener( Actions.getOpenAboutDialogAction(), new ActionListener()
         {
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(

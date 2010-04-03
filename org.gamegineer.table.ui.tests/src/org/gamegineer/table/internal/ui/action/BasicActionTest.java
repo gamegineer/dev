@@ -1,6 +1,6 @@
 /*
  * BasicActionTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -175,6 +175,45 @@ public final class BasicActionTest
     }
 
     /**
+     * Ensures the {@code addShouldSelectPredicate} method adds a predicate this
+     * is absent from the should select predicate collection.
+     */
+    @Test
+    public void testAddShouldSelectPredicate_Predicate_Absent()
+    {
+        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+
+        action_.addShouldSelectPredicate( predicate );
+
+        action_.update();
+        assertEquals( 1, predicate.getEvaluateCallCount() );
+    }
+
+    /**
+     * Ensures the {@code addShouldSelectPredicate} method throws an exception
+     * when passed a {@code null} predicate.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testAddShouldSelectPredicate_Predicate_Null()
+    {
+        action_.addShouldSelectPredicate( null );
+    }
+
+    /**
+     * Ensures the {@code addShouldSelectPredicate} method throws an exception
+     * when passed a predicate that is present in the should select predicate
+     * collection.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddShouldSelectPredicate_Predicate_Present()
+    {
+        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        action_.addShouldSelectPredicate( predicate );
+
+        action_.addShouldSelectPredicate( predicate );
+    }
+
+    /**
      * Ensures the {@code removeActionListener} method throws an exception when
      * passed a listener that is absent from the action listener collection.
      */
@@ -246,6 +285,45 @@ public final class BasicActionTest
         action_.addShouldEnablePredicate( predicate );
 
         action_.removeShouldEnablePredicate( predicate );
+
+        action_.update();
+        assertEquals( 0, predicate.getEvaluateCallCount() );
+    }
+
+    /**
+     * Ensures the {@code removeShouldSelectPredicate} method throws an
+     * exception when passed a predicate that is absent from the should select
+     * predicate collection.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testRemoveShouldSelectPredicate_Predicate_Absent()
+    {
+        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+
+        action_.removeShouldSelectPredicate( predicate );
+    }
+
+    /**
+     * Ensures the {@code removeShouldSelectPredicate} method throws an
+     * exception when passed a {@code null} predicate.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testRemoveShouldSelectPredicate_Predicate_Null()
+    {
+        action_.removeShouldSelectPredicate( null );
+    }
+
+    /**
+     * Ensures the {@code removeShouldSelectPredicate} method removes a
+     * predicate that is present in the should select predicate collection.
+     */
+    @Test
+    public void testRemoveShouldSelectPredicate_Predicate_Present()
+    {
+        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        action_.addShouldSelectPredicate( predicate );
+
+        action_.removeShouldSelectPredicate( predicate );
 
         action_.update();
         assertEquals( 0, predicate.getEvaluateCallCount() );

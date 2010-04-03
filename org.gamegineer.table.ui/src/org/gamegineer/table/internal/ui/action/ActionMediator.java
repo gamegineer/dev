@@ -1,6 +1,6 @@
 /*
  * ActionMediator.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,10 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Set;
 import javax.swing.Action;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
@@ -53,6 +55,9 @@ public final class ActionMediator
     /** The collection of bound should enable action predicates. */
     private final Map<BasicAction, IPredicate<Action>> shouldEnablePredicates_;
 
+    /** The collection of bound should select action predicates. */
+    private final Map<BasicAction, IPredicate<Action>> shouldSelectPredicates_;
+
 
     // ======================================================================
     // Constructors
@@ -65,6 +70,7 @@ public final class ActionMediator
     {
         actionListeners_ = new IdentityHashMap<BasicAction, ActionListener>();
         shouldEnablePredicates_ = new IdentityHashMap<BasicAction, IPredicate<Action>>();
+        shouldSelectPredicates_ = new IdentityHashMap<BasicAction, IPredicate<Action>>();
     }
 
 
@@ -85,7 +91,7 @@ public final class ActionMediator
      * @throws java.lang.NullPointerException
      *         If {@code action} or {@code listener} is {@code null}.
      */
-    public void bind(
+    public void bindActionListener(
         /* @NonNull */
         final BasicAction action,
         /* @NonNull */
@@ -115,7 +121,7 @@ public final class ActionMediator
      * @throws java.lang.NullPointerException
      *         If {@code action} or {@code predicate} is {@code null}.
      */
-    public void bind(
+    public void bindShouldEnablePredicate(
         /* @NonNull */
         final BasicAction action,
         /* @NonNull */
@@ -128,6 +134,37 @@ public final class ActionMediator
         shouldEnablePredicates_.put( action, predicate );
 
         action.addShouldEnablePredicate( predicate );
+        action.update();
+    }
+
+    /**
+     * Binds the specified should select action predicate to the specified
+     * action.
+     * 
+     * @param action
+     *        The action; must not be {@code null}.
+     * @param predicate
+     *        The should select action predicate; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If a should select action predicate is already bound to the
+     *         action.
+     * @throws java.lang.NullPointerException
+     *         If {@code action} or {@code predicate} is {@code null}.
+     */
+    public void bindShouldSelectPredicate(
+        /* @NonNull */
+        final BasicAction action,
+        /* @NonNull */
+        final IPredicate<Action> predicate )
+    {
+        assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
+        assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
+        assertStateLegal( !shouldSelectPredicates_.containsKey( action ), Messages.ActionMediator_bindShouldSelectPredicate_alreadyBound );
+
+        shouldSelectPredicates_.put( action, predicate );
+
+        action.addShouldSelectPredicate( predicate );
         action.update();
     }
 
@@ -164,7 +201,7 @@ public final class ActionMediator
     {
         assert action != null;
 
-        return shouldEnablePredicates_.containsKey( action );
+        return shouldEnablePredicates_.containsKey( action ) || shouldSelectPredicates_.containsKey( action );
     }
 
     /**
@@ -185,10 +222,17 @@ public final class ActionMediator
         assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
         assertArgumentLegal( hasAttachments( action ), "action", Messages.ActionMediator_unbind_noAttachments ); //$NON-NLS-1$
 
-        final IPredicate<Action> predicate = shouldEnablePredicates_.remove( action );
-        if( predicate != null )
+        final IPredicate<Action> shouldEnablePredicate = shouldEnablePredicates_.remove( action );
+        if( shouldEnablePredicate != null )
         {
-            action.removeShouldEnablePredicate( predicate );
+            action.removeShouldEnablePredicate( shouldEnablePredicate );
+            action.update();
+        }
+
+        final IPredicate<Action> shouldSelectPredicate = shouldSelectPredicates_.remove( action );
+        if( shouldSelectPredicate != null )
+        {
+            action.removeShouldSelectPredicate( shouldSelectPredicate );
             action.update();
         }
 
@@ -210,6 +254,13 @@ public final class ActionMediator
             entry.getKey().update();
         }
         shouldEnablePredicates_.clear();
+
+        for( final Map.Entry<BasicAction, IPredicate<Action>> entry : shouldSelectPredicates_.entrySet() )
+        {
+            entry.getKey().removeShouldSelectPredicate( entry.getValue() );
+            entry.getKey().update();
+        }
+        shouldSelectPredicates_.clear();
 
         for( final Map.Entry<BasicAction, ActionListener> entry : actionListeners_.entrySet() )
         {
@@ -244,7 +295,11 @@ public final class ActionMediator
      */
     public void updateAll()
     {
-        for( final BasicAction action : shouldEnablePredicates_.keySet() )
+        final Set<BasicAction> actions = new HashSet<BasicAction>();
+        actions.addAll( shouldEnablePredicates_.keySet() );
+        actions.addAll( shouldSelectPredicates_.keySet() );
+
+        for( final BasicAction action : actions )
         {
             action.update();
         }

@@ -1,6 +1,6 @@
 /*
  * BasicAction.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -52,6 +52,9 @@ public class BasicAction
     /** The collection of should enable predicates. */
     private final CopyOnWriteArrayList<IPredicate<Action>> shouldEnablePredicates_;
 
+    /** The collection of should select predicates. */
+    private final CopyOnWriteArrayList<IPredicate<Action>> shouldSelectPredicates_;
+
 
     // ======================================================================
     // Constructors
@@ -64,6 +67,7 @@ public class BasicAction
     {
         actionListeners_ = new CopyOnWriteArrayList<ActionListener>();
         shouldEnablePredicates_ = new CopyOnWriteArrayList<IPredicate<Action>>();
+        shouldSelectPredicates_ = new CopyOnWriteArrayList<IPredicate<Action>>();
     }
 
 
@@ -123,6 +127,26 @@ public class BasicAction
     }
 
     /**
+     * Adds the specified should select predicate to this action.
+     * 
+     * @param predicate
+     *        The predicate; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code predicate} is already a registered should select
+     *         predicate.
+     * @throws java.lang.NullPointerException
+     *         If {@code predicate} is {@code null}.
+     */
+    public void addShouldSelectPredicate(
+        /* @NonNull */
+        final IPredicate<Action> predicate )
+    {
+        assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
+        assertArgumentLegal( shouldSelectPredicates_.addIfAbsent( predicate ), "predicate", Messages.BasicAction_addShouldSelectPredicate_predicate_registered ); //$NON-NLS-1$
+    }
+
+    /**
      * Removes the specified listener from this action.
      * 
      * @param listener
@@ -161,6 +185,25 @@ public class BasicAction
     }
 
     /**
+     * Removes the specified should select predicate from this action.
+     * 
+     * @param predicate
+     *        The predicate; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code predicate} is not a registered should select predicate.
+     * @throws java.lang.NullPointerException
+     *         If {@code predicate} is {@code null}.
+     */
+    public void removeShouldSelectPredicate(
+        /* @NonNull */
+        final IPredicate<Action> predicate )
+    {
+        assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
+        assertArgumentLegal( shouldSelectPredicates_.remove( predicate ), "predicate", Messages.BasicAction_removeShouldSelectPredicate_predicate_notRegistered ); //$NON-NLS-1$
+    }
+
+    /**
      * Indicates this action should be enabled.
      * 
      * @return {@code true} if this action should be enabled; {@code false} if
@@ -180,10 +223,31 @@ public class BasicAction
     }
 
     /**
+     * Indicates this action should be selected.
+     * 
+     * @return {@code true} if this action should be selected; {@code false} if
+     *         this action should not be selected.
+     */
+    private boolean shouldSelect()
+    {
+        for( final IPredicate<Action> predicate : shouldSelectPredicates_ )
+        {
+            if( !predicate.evaluate( this ) )
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Updates the state of this action.
      */
+    @SuppressWarnings( "boxing" )
     public void update()
     {
         setEnabled( shouldEnable() );
+        putValue( SELECTED_KEY, shouldSelect() );
     }
 }

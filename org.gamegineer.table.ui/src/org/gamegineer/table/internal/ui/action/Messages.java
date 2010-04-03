@@ -1,6 +1,6 @@
 /*
  * Messages.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,6 +46,9 @@ final class Messages
     /** A should enable predicate is already bound. */
     public static String ActionMediator_bindShouldEnablePredicate_alreadyBound;
 
+    /** A should select predicate is already bound. */
+    public static String ActionMediator_bindShouldSelectPredicate_alreadyBound;
+
     /** The action has no attachments. */
     public static String ActionMediator_unbind_noAttachments;
 
@@ -60,11 +63,17 @@ final class Messages
     /** The should enable predicate is already registered. */
     public static String BasicAction_addShouldEnablePredicate_predicate_registered;
 
+    /** The should select predicate is already registered. */
+    public static String BasicAction_addShouldSelectPredicate_predicate_registered;
+
     /** The action listener is not registered. */
     public static String BasicAction_removeActionListener_listener_notRegistered;
 
     /** The should enable predicate is not registered. */
     public static String BasicAction_removeShouldEnablePredicate_predicate_notRegistered;
+
+    /** The should select predicate is not registered. */
+    public static String BasicAction_removeShouldSelectPredicate_predicate_notRegistered;
 
     // ======================================================================
     // Constructors
