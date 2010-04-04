@@ -26,12 +26,20 @@ import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.PrintWriter;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import net.jcip.annotations.ThreadSafe;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.gamegineer.table.internal.ui.view.MainFrame;
 import org.gamegineer.table.ui.ITableAdvisor;
 import org.gamegineer.table.ui.ITableRunner;
@@ -108,6 +116,13 @@ public final class TableRunner
         throws Exception
     {
         assertStateLegal( state_.compareAndSet( State.PRISTINE, State.STARTING ), Messages.TableRunner_state_notPristine );
+
+        final TableResult processCommandLineResult = processCommandLineArguments();
+        if( processCommandLineResult != null )
+        {
+            state_.set( State.STOPPED );
+            return processCommandLineResult;
+        }
 
         try
         {
@@ -225,6 +240,39 @@ public final class TableRunner
                 openFrame();
             }
         } );
+    }
+
+    /**
+     * Processes the application command line arguments.
+     * 
+     * @return A non-{@code null} value that represents the result if the runner
+     *         should exit immediately; otherwise {@code null} to indicate the
+     *         runner should continue running.
+     */
+    /* @Nullable */
+    private TableResult processCommandLineArguments()
+    {
+        try
+        {
+            final List<String> args = advisor_.getApplicationArguments();
+            final CommandLineParser commandLineParser = new GnuParser();
+            final Options options = CommandLineOptions.getOptions();
+            final CommandLine commandLine = commandLineParser.parse( options, args.toArray( new String[ args.size() ] ) );
+
+            if( commandLine.hasOption( CommandLineOptions.OPTION_HELP ) )
+            {
+                final HelpFormatter helpFormatter = new HelpFormatter();
+                helpFormatter.printHelp( new PrintWriter( System.out, true ), HelpFormatter.DEFAULT_WIDTH, Messages.TableRunner_cli_usage, null, options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null );
+                return TableResult.OK;
+            }
+        }
+        catch( final ParseException e )
+        {
+            System.err.println( e.getLocalizedMessage() );
+            return TableResult.FAIL;
+        }
+
+        return null;
     }
 
     /**

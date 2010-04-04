@@ -38,6 +38,11 @@ final class Messages
     /** The name of the associated resource bundle. */
     private static final String BUNDLE_NAME = "org.gamegineer.table.internal.ui.Messages"; //$NON-NLS-1$
 
+    // --- CommandLineOptions -----------------------------------------------
+
+    /** The description for the "help" option. */
+    public static String CommandLineOptions_help_description;
+
     // --- Services ---------------------------------------------------------
 
     /** The card pile design registry service tracker is not set. */
@@ -59,6 +64,9 @@ final class Messages
     public static String Services_packageAdminServiceTracker_notSet;
 
     // --- TableRunner ------------------------------------------------------
+
+    /** The command line usage message. */
+    public static String TableRunner_cli_usage;
 
     /** The frame window could not be opened. */
     public static String TableRunner_openFrame_error;
