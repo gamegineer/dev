@@ -63,6 +63,10 @@ public final class CardPile
     /** The design of the card pile base. */
     private final ICardPileBaseDesign baseDesign_;
 
+    /** The location of the card pile base in table coordinates. */
+    @GuardedBy( "lock_" )
+    private final Point baseLocation_;
+
     /** The collection of cards in this card pile ordered from bottom to top. */
     @GuardedBy( "lock_ " )
     private final List<ICard> cards_;
@@ -73,10 +77,6 @@ public final class CardPile
 
     /** The collection of card pile listeners. */
     private final CopyOnWriteArrayList<ICardPileListener> listeners_;
-
-    /** The card pile location in table coordinates. */
-    @GuardedBy( "lock_" )
-    private final Point location_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -103,10 +103,10 @@ public final class CardPile
 
         lock_ = new Object();
         baseDesign_ = baseDesign;
+        baseLocation_ = new Point( 0, 0 );
         cards_ = new ArrayList<ICard>();
         layout_ = CardPileLayout.STACKED;
         listeners_ = new CopyOnWriteArrayList<ICardPileListener>();
-        location_ = new Point( 0, 0 );
     }
 
 
@@ -135,18 +135,12 @@ public final class CardPile
             {
                 final Rectangle oldBounds = getBounds();
 
-                // Calculate new card location and add it to collection
-                final Point cardLocation = getBaseLocation();
+                final Point cardLocation = new Point( baseLocation_ );
                 final Dimension cardOffset = getCardOffsetAt( cards_.size() );
                 cardLocation.translate( cardOffset.width, cardOffset.height );
                 card.setLocation( cardLocation );
                 cards_.add( card );
                 cardAdded = true;
-
-                // Recalculate card pile location
-                final Rectangle topCardBounds = cards_.get( cards_.size() - 1 ).getBounds();
-                final Rectangle bottomCardBounds = cards_.get( 0 ).getBounds();
-                location_.setLocation( topCardBounds.union( bottomCardBounds ).getLocation() );
 
                 final Rectangle newBounds = getBounds();
                 cardPileBoundsChanged = !newBounds.equals( oldBounds );
@@ -253,24 +247,6 @@ public final class CardPile
         return baseDesign_;
     }
 
-    /**
-     * Gets the location of the card pile base in table coordinates.
-     * 
-     * <p>
-     * This method must be called while {@code lock_} is held.
-     * </p>
-     * 
-     * @return The location of the card pile base in table coordinates; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    private Point getBaseLocation()
-    {
-        assert Thread.holdsLock( lock_ );
-
-        return cards_.isEmpty() ? new Point( location_ ) : cards_.get( 0 ).getLocation();
-    }
-
     /*
      * @see org.gamegineer.table.core.ICardPile#getBounds()
      */
@@ -280,7 +256,7 @@ public final class CardPile
         {
             if( cards_.isEmpty() )
             {
-                return new Rectangle( location_, baseDesign_.getSize() );
+                return new Rectangle( baseLocation_, baseDesign_.getSize() );
             }
 
             final Rectangle topCardBounds = cards_.get( cards_.size() - 1 ).getBounds();
@@ -290,7 +266,7 @@ public final class CardPile
     }
 
     /**
-     * Gets the offset from the card pile base origin in table coordinates of
+     * Gets the offset from the card pile base location in table coordinates of
      * the card at the specified index.
      * 
      * <p>
@@ -300,8 +276,8 @@ public final class CardPile
      * @param index
      *        The card index; must be non-negative.
      * 
-     * @return The offset from the card pile base origin in table coordinates of
-     *         the card at the specified index; never {@code null}.
+     * @return The offset from the card pile base location in table coordinates
+     *         of the card at the specified index; never {@code null}.
      * 
      * @throws java.lang.IllegalStateException
      *         If an unknown layout is active.
@@ -362,10 +338,7 @@ public final class CardPile
      */
     public Point getLocation()
     {
-        synchronized( lock_ )
-        {
-            return new Point( location_ );
-        }
+        return getBounds().getLocation();
     }
 
     /*
@@ -373,7 +346,7 @@ public final class CardPile
      */
     public Dimension getSize()
     {
-        return baseDesign_.getSize();
+        return getBounds().getSize();
     }
 
     /*
@@ -394,20 +367,7 @@ public final class CardPile
             {
                 final Rectangle oldBounds = getBounds();
 
-                // Remove card from collection
                 card = cards_.remove( cards_.size() - 1 );
-
-                // Recalculate card pile location
-                if( cards_.isEmpty() )
-                {
-                    location_.setLocation( card.getLocation() );
-                }
-                else
-                {
-                    final Rectangle topCardBounds = cards_.get( cards_.size() - 1 ).getBounds();
-                    final Rectangle bottomCardBounds = cards_.get( 0 ).getBounds();
-                    location_.setLocation( topCardBounds.union( bottomCardBounds ).getLocation() );
-                }
 
                 final Rectangle newBounds = getBounds();
                 cardPileBoundsChanged = !newBounds.equals( oldBounds );
@@ -458,21 +418,14 @@ public final class CardPile
             {
                 final Rectangle oldBounds = getBounds();
 
-                // Recalculate card locations
-                final Point baseLocation = getBaseLocation();
                 final Point cardLocation = new Point();
                 for( int index = 0, size = cards_.size(); index < size; ++index )
                 {
-                    cardLocation.setLocation( baseLocation );
+                    cardLocation.setLocation( baseLocation_ );
                     final Dimension cardOffset = getCardOffsetAt( index );
                     cardLocation.translate( cardOffset.width, cardOffset.height );
                     cards_.get( index ).setLocation( cardLocation );
                 }
-
-                // Recalculate card pile location
-                final Rectangle topCardBounds = cards_.get( cards_.size() - 1 ).getBounds();
-                final Rectangle bottomCardBounds = cards_.get( 0 ).getBounds();
-                location_.setLocation( topCardBounds.union( bottomCardBounds ).getLocation() );
 
                 final Rectangle newBounds = getBounds();
                 cardPileBoundsChanged = !newBounds.equals( oldBounds );
@@ -495,8 +448,9 @@ public final class CardPile
 
         synchronized( lock_ )
         {
-            final Dimension offset = new Dimension( location.x - location_.x, location.y - location_.y );
-            location_.setLocation( location );
+            final Point oldLocation = getLocation();
+            final Dimension offset = new Dimension( location.x - oldLocation.x, location.y - oldLocation.y );
+            baseLocation_.translate( offset.width, offset.height );
             for( final ICard card : cards_ )
             {
                 final Point cardLocation = card.getLocation();
@@ -517,7 +471,7 @@ public final class CardPile
     {
         synchronized( lock_ )
         {
-            return String.format( "CardPile[baseDesign_='%1$s', cards_.size='%2$d', location_='%3$s', layout_='%4$s'", baseDesign_, cards_.size(), location_, layout_ ); //$NON-NLS-1$
+            return String.format( "CardPile[baseDesign_='%1$s', baseLocation_='%2$s', layout_='%3$s', cards_.size='%4$d'", baseDesign_, baseLocation_, layout_, cards_.size() ); //$NON-NLS-1$
         }
     }
 }
