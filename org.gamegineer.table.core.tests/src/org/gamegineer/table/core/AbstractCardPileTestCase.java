@@ -580,11 +580,11 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code setLayout} method fires a card pile bounds changed
-     * event when the new layout causes a change in the card pile bounds.
+     * Ensures the {@code setLayout} method changes the card pile bounds when
+     * appropriate.
      */
     @Test
-    public void testSetOrientation_FiresCardOrientationChangedEvent()
+    public void testSetLayout_ChangesCardPileBounds()
     {
         cardPile_.setLayout( CardPileLayout.STACKED );
         cardPile_.addCard( createCard() );
