@@ -1,6 +1,6 @@
 /*
  * TableFactory.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,8 @@
 package org.gamegineer.table.core;
 
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.persistence.memento.IMemento;
+import org.gamegineer.common.persistence.memento.MalformedMementoException;
 import org.gamegineer.table.internal.core.Table;
 
 /**
@@ -56,5 +58,29 @@ public final class TableFactory
     public static ITable createTable()
     {
         return new Table();
+    }
+
+    /**
+     * Creates a new table whose state is initialized using the specified
+     * memento.
+     * 
+     * @param memento
+     *        The memento representing the initial table state; must not be
+     *        {@code null}.
+     * 
+     * @return A new table; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code memento} is {@code null}.
+     * @throws org.gamegineer.common.persistence.memento.MalformedMementoException
+     *         If {@code memento} is malformed.
+     */
+    /* @NonNull */
+    public static ITable createTable(
+        /* @NonNull */
+        final IMemento memento )
+        throws MalformedMementoException
+    {
+        return Table.fromMemento( memento );
     }
 }

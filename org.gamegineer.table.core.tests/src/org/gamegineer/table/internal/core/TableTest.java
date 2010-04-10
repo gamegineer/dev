@@ -1,5 +1,5 @@
 /*
- * CardPileTest.java
+ * TableTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 18, 2010 at 11:45:31 PM.
+ * Created on Apr 9, 2010 at 11:31:57 PM.
  */
 
 package org.gamegineer.table.internal.core;
@@ -24,19 +24,19 @@ package org.gamegineer.table.internal.core;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.internal.core.CardPile}
+ * A fixture for testing the {@link org.gamegineer.table.internal.core.Table}
  * class.
  */
-public final class CardPileTest
+public final class TableTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileTest} class.
+     * Initializes a new instance of the {@code TableTest} class.
      */
-    public CardPileTest()
+    public TableTest()
     {
         super();
     }
@@ -45,16 +45,6 @@ public final class CardPileTest
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * base design.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_BaseDesign_Null()
-    {
-        new CardPile( null );
-    }
 
     /**
      * Ensures the {@code fromMemento} method throws an exception when passed a
@@ -67,6 +57,6 @@ public final class CardPileTest
     public void testFromMemento_Memento_Null()
         throws Exception
     {
-        CardPile.fromMemento( null );
+        Table.fromMemento( null );
     }
 }

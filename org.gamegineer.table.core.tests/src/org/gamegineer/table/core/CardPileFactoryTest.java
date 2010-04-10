@@ -22,6 +22,7 @@
 package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertNotNull;
+import org.gamegineer.common.persistence.memento.IMemento;
 import org.junit.Test;
 
 /**
@@ -48,21 +49,36 @@ public final class CardPileFactoryTest
     // ======================================================================
 
     /**
-     * Ensures the {@code createCardPile} method throws an exception when passed
-     * a {@code null} card pile base design.
+     * Ensures the {@code createCardPile(CardPileBaseDesign)} method throws an
+     * exception when passed a {@code null} card pile base design.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateCardPile_BaseDesign_Null()
+    public void testCreateCardPileFromBaseDesign_BaseDesign_Null()
     {
-        CardPileFactory.createCardPile( null );
+        CardPileFactory.createCardPile( (ICardPileBaseDesign)null );
     }
 
     /**
-     * Ensures the {@code createCardPile} method does not return {@code null}.
+     * Ensures the {@code createCardPile(CardPileBaseDesign)} method does not
+     * return {@code null}.
      */
     @Test
-    public void testCreateCardPile_ReturnValue_NonNull()
+    public void testCreateCardPileFromBaseDesign_ReturnValue_NonNull()
     {
         assertNotNull( CardPileFactory.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() ) );
+    }
+
+    /**
+     * Ensures the {@code createCardPile(IMemento)} method throws an exception
+     * when passed a {@code null} memento.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateCardPileFromMemento_Memento_Null()
+        throws Exception
+    {
+        CardPileFactory.createCardPile( (IMemento)null );
     }
 }

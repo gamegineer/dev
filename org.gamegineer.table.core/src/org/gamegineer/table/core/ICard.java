@@ -24,6 +24,7 @@ package org.gamegineer.table.core;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import org.gamegineer.common.persistence.memento.IMemento;
 
 /**
  * A card.
@@ -91,6 +92,15 @@ public interface ICard
      */
     /* @NonNull */
     public Point getLocation();
+
+    /**
+     * Gets a memento that represents the state of this card.
+     * 
+     * @return A memento that represents the state of this card; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    public IMemento getMemento();
 
     /**
      * Gets the orientation of this card.

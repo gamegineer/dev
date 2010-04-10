@@ -22,6 +22,8 @@
 package org.gamegineer.table.core;
 
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.persistence.memento.IMemento;
+import org.gamegineer.common.persistence.memento.MalformedMementoException;
 import org.gamegineer.table.internal.core.Card;
 
 /**
@@ -71,5 +73,29 @@ public final class CardFactory
         final ICardSurfaceDesign faceDesign )
     {
         return new Card( backDesign, faceDesign );
+    }
+
+    /**
+     * Creates a new card whose state is initialized using the specified
+     * memento.
+     * 
+     * @param memento
+     *        The memento representing the initial card state; must not be
+     *        {@code null}.
+     * 
+     * @return A new card; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code memento} is {@code null}.
+     * @throws org.gamegineer.common.persistence.memento.MalformedMementoException
+     *         If {@code memento} is malformed.
+     */
+    /* @NonNull */
+    public static ICard createCard(
+        /* @NonNull */
+        final IMemento memento )
+        throws MalformedMementoException
+    {
+        return Card.fromMemento( memento );
     }
 }

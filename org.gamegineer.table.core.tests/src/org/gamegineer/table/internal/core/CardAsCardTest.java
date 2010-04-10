@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
+import org.gamegineer.common.persistence.memento.IMemento;
 import org.gamegineer.table.core.AbstractCardTestCase;
 import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
@@ -57,5 +58,16 @@ public final class CardAsCardTest
     protected ICard createCard()
     {
         return new Card( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractCardTestCase#createCard(org.gamegineer.common.persistence.memento.IMemento)
+     */
+    @Override
+    protected ICard createCard(
+        final IMemento memento )
+        throws Exception
+    {
+        return Card.fromMemento( memento );
     }
 }

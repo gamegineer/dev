@@ -23,6 +23,7 @@ package org.gamegineer.table.core;
 
 import java.awt.Point;
 import java.util.List;
+import org.gamegineer.common.persistence.memento.IMemento;
 
 /**
  * A virtual game table.
@@ -107,6 +108,15 @@ public interface ITable
      */
     /* @NonNull */
     public List<ICardPile> getCardPiles();
+
+    /**
+     * Gets a memento that represents the state of this table.
+     * 
+     * @return A memento that represents the state of this table; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    public IMemento getMemento();
 
     /**
      * Removes the specified card pile from this table.

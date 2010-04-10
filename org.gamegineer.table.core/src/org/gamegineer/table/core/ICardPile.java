@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
+import org.gamegineer.common.persistence.memento.IMemento;
 
 /**
  * A card pile.
@@ -115,6 +116,15 @@ public interface ICardPile
      */
     /* @NonNull */
     public Point getLocation();
+
+    /**
+     * Gets a memento that represents the state of this card pile.
+     * 
+     * @return A memento that represents the state of this card pile; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public IMemento getMemento();
 
     /**
      * Gets the size of this card pile in table coordinates.

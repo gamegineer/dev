@@ -22,6 +22,8 @@
 package org.gamegineer.table.core;
 
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.persistence.memento.IMemento;
+import org.gamegineer.common.persistence.memento.MalformedMementoException;
 import org.gamegineer.table.internal.core.CardPile;
 
 /**
@@ -64,5 +66,29 @@ public final class CardPileFactory
         final ICardPileBaseDesign baseDesign )
     {
         return new CardPile( baseDesign );
+    }
+
+    /**
+     * Creates a new card pile whose state is initialized using the specified
+     * memento.
+     * 
+     * @param memento
+     *        The memento representing the initial card pile state; must not be
+     *        {@code null}.
+     * 
+     * @return A new card pile; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code memento} is {@code null}.
+     * @throws org.gamegineer.common.persistence.memento.MalformedMementoException
+     *         If {@code memento} is malformed.
+     */
+    /* @NonNull */
+    public static ICardPile createCardPile(
+        /* @NonNull */
+        final IMemento memento )
+        throws MalformedMementoException
+    {
+        return CardPile.fromMemento( memento );
     }
 }

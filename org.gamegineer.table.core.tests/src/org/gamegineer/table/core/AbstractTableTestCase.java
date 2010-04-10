@@ -29,6 +29,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.awt.Point;
 import java.util.List;
+import org.gamegineer.common.persistence.memento.IMemento;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,6 +66,17 @@ public abstract class AbstractTableTestCase
     // ======================================================================
 
     /**
+     * Creates a card suitable for testing.
+     * 
+     * @return A new card; never {@code null}.
+     */
+    /* @NonNull */
+    private static ICard createCard()
+    {
+        return CardFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
+    }
+
+    /**
      * Creates a card pile suitable for testing.
      * 
      * @return A new card pile; never {@code null}.
@@ -85,6 +97,25 @@ public abstract class AbstractTableTestCase
      */
     /* @NonNull */
     protected abstract ITable createTable()
+        throws Exception;
+
+    /**
+     * Creates a new table from the specified memento.
+     * 
+     * @param memento
+     *        The memento; must not be {@code null}.
+     * 
+     * @return A new table; never {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     * @throws java.lang.NullPointerException
+     *         If {@code memento} is {@code null}.
+     */
+    /* @NonNull */
+    protected abstract ITable createTable(
+        /* @NonNull */
+        IMemento memento )
         throws Exception;
 
     /**
@@ -316,6 +347,36 @@ public abstract class AbstractTableTestCase
     public void testGetCardPiles_ReturnValue_NonNull()
     {
         assertNotNull( table_.getCardPiles() );
+    }
+
+    /**
+     * Ensures the {@code getMemento} method returns a well-formed memento.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testGetMemento()
+        throws Exception
+    {
+        final ICardPile cardPile = createCardPile();
+        cardPile.addCard( createCard() );
+        table_.addCardPile( cardPile );
+        final IMemento expectedMemento = table_.getMemento();
+
+        final ITable actualTable = createTable( expectedMemento );
+        final IMemento actualMemento = actualTable.getMemento();
+
+        assertEquals( expectedMemento, actualMemento );
+    }
+
+    /**
+     * Ensures the {@code getMemento} method does not return {@code null}.
+     */
+    @Test
+    public void testGetMemento_ReturnValue_NonNull()
+    {
+        assertNotNull( table_.getMemento() );
     }
 
     /**

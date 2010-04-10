@@ -82,4 +82,18 @@ public final class CardTest
 
         new Card( backDesign, faceDesign );
     }
+
+    /**
+     * Ensures the {@code fromMemento} method throws an exception when passed a
+     * {@code null} memento.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testFromMemento_Memento_Null()
+        throws Exception
+    {
+        Card.fromMemento( null );
+    }
 }

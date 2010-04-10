@@ -48,31 +48,32 @@ public final class CardFactoryTest
     // ======================================================================
 
     /**
-     * Ensures the {@code createCard} method throws an exception when passed a
-     * {@code null} back design.
+     * Ensures the {@code createCard(ICardSurfaceDesign, ICardSurfaceDesign)}
+     * method throws an exception when passed a {@code null} back design.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateCard_BackDesign_Null()
+    public void testCreateCardFromBackDesignAndFaceDesign_BackDesign_Null()
     {
         CardFactory.createCard( null, CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
     }
 
     /**
-     * Ensures the {@code createCard} method throws an exception when passed a
-     * {@code null} face design.
+     * Ensures the {@code createCard(ICardSurfaceDesign, ICardSurfaceDesign)}
+     * method throws an exception when passed a {@code null} face design.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateCard_FaceDesign_Null()
+    public void testCreateCardFromBackDesignAndFaceDesign_FaceDesign_Null()
     {
         CardFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), null );
     }
 
     /**
-     * Ensures the {@code createCard} method throws an exception when passed a
-     * face design that has a size different from the back design.
+     * Ensures the {@code createCard(ICardSurfaceDesign, ICardSurfaceDesign)}
+     * method throws an exception when passed a face design that has a size
+     * different from the back design.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testCreateCard_FaceDesign_SizeNotEqual()
+    public void testCreateCardFromBackDesignAndFaceDesign_FaceDesign_SizeNotEqual()
     {
         final int width = 10;
         final int height = 20;
@@ -83,11 +84,26 @@ public final class CardFactoryTest
     }
 
     /**
-     * Ensures the {@code createCard} method does not return {@code null}.
+     * Ensures the {@code createCard(ICardSurfaceDesign, ICardSurfaceDesign)}
+     * method does not return {@code null}.
      */
     @Test
-    public void testCreateCard_ReturnValue_NonNull()
+    public void testCreateCardFromBackDesignAndFaceDesign_ReturnValue_NonNull()
     {
         assertNotNull( CardFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() ) );
+    }
+
+    /**
+     * Ensures the {@code createCard(IMemento)} method throws an exception when
+     * passed a {@code null} memento.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateCardFromMemento_Memento_Null()
+        throws Exception
+    {
+        CardFactory.createCard( null );
     }
 }

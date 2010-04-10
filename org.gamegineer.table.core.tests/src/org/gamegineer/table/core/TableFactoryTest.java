@@ -1,6 +1,6 @@
 /*
  * TableFactoryTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,11 +48,25 @@ public final class TableFactoryTest
     // ======================================================================
 
     /**
-     * Ensures the {@code createTable} method does not return {@code null}.
+     * Ensures the {@code createTable()} method does not return {@code null}.
      */
     @Test
     public void testCreateTable_ReturnValue_NonNull()
     {
         assertNotNull( TableFactory.createTable() );
+    }
+
+    /**
+     * Ensures the {@code createTable(IMemento)} method throws an exception when
+     * passed a {@code null} memento.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateTableFromMemento_Memento_Null()
+        throws Exception
+    {
+        TableFactory.createTable( null );
     }
 }

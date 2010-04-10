@@ -30,6 +30,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.persistence.memento.IMemento;
+import org.gamegineer.common.persistence.memento.MalformedMementoException;
+import org.gamegineer.common.persistence.memento.MementoBuilder;
 import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ICard;
@@ -46,6 +49,24 @@ public final class Card
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /**
+     * The name of the memento attribute that stores the design on the back of
+     * the card.
+     */
+    private static final String BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME = "backDesign"; //$NON-NLS-1$
+
+    /**
+     * The name of the memento attribute that stores the design on the face of
+     * the card.
+     */
+    private static final String FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME = "faceDesign"; //$NON-NLS-1$
+
+    /** The name of the memento attribute that stores the card location. */
+    private static final String LOCATION_MEMENTO_ATTRIBUTE_NAME = "location"; //$NON-NLS-1$
+
+    /** The name of the memento attribute that stores the card orientation. */
+    private static final String ORIENTATION_MEMENTO_ATTRIBUTE_NAME = "orientation"; //$NON-NLS-1$
 
     /** The design on the back of the card. */
     private final ICardSurfaceDesign backDesign_;
@@ -170,6 +191,56 @@ public final class Card
         fireCardOrientationChanged();
     }
 
+    /**
+     * Creates a new instance of the {@code Card} class from the specified
+     * memento.
+     * 
+     * @param memento
+     *        The memento representing the initial card state; must not be
+     *        {@code null}.
+     * 
+     * @return A new instance of the {@code Card} class; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code memento} is {@code null}.
+     * @throws org.gamegineer.common.persistence.memento.MalformedMementoException
+     *         If {@code memento} is malformed.
+     */
+    /* @NonNull */
+    public static Card fromMemento(
+        /* @NonNull */
+        final IMemento memento )
+        throws MalformedMementoException
+    {
+        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
+
+        final ICardSurfaceDesign backDesign = MementoUtils.getRequiredAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
+        final ICardSurfaceDesign faceDesign = MementoUtils.getRequiredAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
+        final Card card;
+        try
+        {
+            card = new Card( backDesign, faceDesign );
+        }
+        catch( final IllegalArgumentException e )
+        {
+            throw new MalformedMementoException( FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, e );
+        }
+
+        final Point location = MementoUtils.getOptionalAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
+        if( location != null )
+        {
+            card.setLocation( location );
+        }
+
+        final CardOrientation orientation = MementoUtils.getOptionalAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, CardOrientation.class );
+        if( orientation != null )
+        {
+            card.setOrientation( orientation );
+        }
+
+        return card;
+    }
+
     /*
      * @see org.gamegineer.table.core.ICard#getBackDesign()
      */
@@ -206,6 +277,24 @@ public final class Card
         {
             return new Point( location_ );
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICard#getMemento()
+     */
+    public IMemento getMemento()
+    {
+        final MementoBuilder mementoBuilder = new MementoBuilder();
+
+        synchronized( lock_ )
+        {
+            mementoBuilder.addAttribute( BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, backDesign_ );
+            mementoBuilder.addAttribute( FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, faceDesign_ );
+            mementoBuilder.addAttribute( LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( location_ ) );
+            mementoBuilder.addAttribute( ORIENTATION_MEMENTO_ATTRIBUTE_NAME, orientation_ );
+        }
+
+        return mementoBuilder.toMemento();
     }
 
     /*

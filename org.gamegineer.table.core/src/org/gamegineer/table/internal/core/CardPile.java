@@ -27,11 +27,16 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.persistence.memento.IMemento;
+import org.gamegineer.common.persistence.memento.MalformedMementoException;
+import org.gamegineer.common.persistence.memento.MementoBuilder;
+import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.CardPileLayout;
@@ -54,8 +59,31 @@ public final class CardPile
     /** The offset of each accordian level in table coordinates. */
     private static final Dimension ACCORDIAN_LEVEL_OFFSET = new Dimension( 16, 18 );
 
+    /**
+     * The name of the memento attribute that stores the design of the card pile
+     * base.
+     */
+    private static final String BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME = "baseDesign"; //$NON-NLS-1$
+
+    /**
+     * The name of the memento attribute that stores the location of the card
+     * pile base.
+     */
+    private static final String BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME = "baseLocation"; //$NON-NLS-1$
+
+    /**
+     * The name of the memento attribute that stores the collection of cards in
+     * the card pile.
+     */
+    private static final String CARDS_MEMENTO_ATTRIBUTE_NAME = "cards"; //$NON-NLS-1$
+
     /** The number of cards per stack level. */
     private static final int CARDS_PER_STACK_LEVEL = 10;
+
+    /**
+     * The name of the memento attribute that stores the card pile layout.
+     */
+    private static final String LAYOUT_MEMENTO_ATTRIBUTE_NAME = "layout"; //$NON-NLS-1$
 
     /** The offset of each stack level in table coordinates. */
     private static final Dimension STACK_LEVEL_OFFSET = new Dimension( 2, 1 );
@@ -239,6 +267,57 @@ public final class CardPile
         }
     }
 
+    /**
+     * Creates a new instance of the {@code CardPile} class from the specified
+     * memento.
+     * 
+     * @param memento
+     *        The memento representing the initial card pile state; must not be
+     *        {@code null}.
+     * 
+     * @return A new instance of the {@code CardPile} class; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code memento} is {@code null}.
+     * @throws org.gamegineer.common.persistence.memento.MalformedMementoException
+     *         If {@code memento} is malformed.
+     */
+    /* @NonNull */
+    public static CardPile fromMemento(
+        /* @NonNull */
+        final IMemento memento )
+        throws MalformedMementoException
+    {
+        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
+
+        final ICardPileBaseDesign baseDesign = MementoUtils.getRequiredAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardPileBaseDesign.class );
+        final CardPile cardPile = new CardPile( baseDesign );
+
+        final Point location = MementoUtils.getOptionalAttribute( memento, BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
+        if( location != null )
+        {
+            cardPile.setLocation( location );
+        }
+
+        final CardPileLayout layout = MementoUtils.getOptionalAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, CardPileLayout.class );
+        if( layout != null )
+        {
+            cardPile.setLayout( layout );
+        }
+
+        @SuppressWarnings( "unchecked" )
+        final List<IMemento> cardMementos = MementoUtils.getOptionalAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
+        if( cardMementos != null )
+        {
+            for( final IMemento cardMemento : cardMementos )
+            {
+                cardPile.addCard( CardFactory.createCard( cardMemento ) );
+            }
+        }
+
+        return cardPile;
+    }
+
     /*
      * @see org.gamegineer.table.core.ICardPile#getBaseDesign()
      */
@@ -339,6 +418,30 @@ public final class CardPile
     public Point getLocation()
     {
         return getBounds().getLocation();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPile#getMemento()
+     */
+    public IMemento getMemento()
+    {
+        final MementoBuilder mementoBuilder = new MementoBuilder();
+
+        synchronized( lock_ )
+        {
+            mementoBuilder.addAttribute( BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, baseDesign_ );
+            mementoBuilder.addAttribute( BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( baseLocation_ ) );
+            mementoBuilder.addAttribute( LAYOUT_MEMENTO_ATTRIBUTE_NAME, layout_ );
+
+            final List<IMemento> cardMementos = new ArrayList<IMemento>( cards_.size() );
+            for( final ICard card : cards_ )
+            {
+                cardMementos.add( card.getMemento() );
+            }
+            mementoBuilder.addAttribute( CARDS_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardMementos ) );
+        }
+
+        return mementoBuilder.toMemento();
     }
 
     /*

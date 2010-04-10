@@ -1,6 +1,6 @@
 /*
  * AbstractCardTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import org.gamegineer.common.persistence.memento.IMemento;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -71,6 +72,25 @@ public abstract class AbstractCardTestCase
      */
     /* @NonNull */
     protected abstract ICard createCard()
+        throws Exception;
+
+    /**
+     * Creates a new card from the specified memento.
+     * 
+     * @param memento
+     *        The memento; must not be {@code null}.
+     * 
+     * @return A new card; never {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     * @throws java.lang.NullPointerException
+     *         If {@code memento} is {@code null}.
+     */
+    /* @NonNull */
+    protected abstract ICard createCard(
+        /* @NonNull */
+        IMemento memento )
         throws Exception;
 
     /**
@@ -262,6 +282,33 @@ public abstract class AbstractCardTestCase
         final Point actualLocation = card_.getLocation();
 
         assertEquals( expectedLocation, actualLocation );
+    }
+
+    /**
+     * Ensures the {@code getMemento} method returns a well-formed memento.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testGetMemento()
+        throws Exception
+    {
+        final IMemento expectedMemento = card_.getMemento();
+
+        final ICard actualCard = createCard( expectedMemento );
+        final IMemento actualMemento = actualCard.getMemento();
+
+        assertEquals( expectedMemento, actualMemento );
+    }
+
+    /**
+     * Ensures the {@code getMemento} method does not return {@code null}.
+     */
+    @Test
+    public void testGetMemento_ReturnValue_NonNull()
+    {
+        assertNotNull( card_.getMemento() );
     }
 
     /**

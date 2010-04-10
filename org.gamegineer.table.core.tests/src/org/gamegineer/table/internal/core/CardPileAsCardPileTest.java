@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
+import org.gamegineer.common.persistence.memento.IMemento;
 import org.gamegineer.table.core.AbstractCardPileTestCase;
 import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.core.ICardPile;
@@ -57,5 +58,16 @@ public final class CardPileAsCardPileTest
     protected ICardPile createCardPile()
     {
         return new CardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractCardPileTestCase#createCardPile(org.gamegineer.common.persistence.memento.IMemento)
+     */
+    @Override
+    protected ICardPile createCardPile(
+        final IMemento memento )
+        throws Exception
+    {
+        return CardPile.fromMemento( memento );
     }
 }
