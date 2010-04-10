@@ -1,6 +1,6 @@
 /*
  * AbstractMementoTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.persistence.memento;
 
-import static org.gamegineer.test.core.Assert.assertImmutableCollection;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -181,6 +180,7 @@ public abstract class AbstractMementoTestCase
     public void testGetAttributeNames()
     {
         final Set<String> names = memento_.getAttributeNames();
+
         assertEquals( 4, names.size() );
         assertTrue( names.contains( "name1" ) ); //$NON-NLS-1$
         assertTrue( names.contains( "name2" ) ); //$NON-NLS-1$
@@ -196,18 +196,25 @@ public abstract class AbstractMementoTestCase
     public void testGetAttributeNames_Empty()
     {
         final IMemento memento = createMemento( Collections.<String, Object>emptyMap() );
+
         final Set<String> names = memento.getAttributeNames();
+
         assertNotNull( names );
         assertTrue( names.size() == 0 );
     }
 
     /**
-     * Ensures the {@code getAttributeNames} method returns an immutable
-     * collection.
+     * Ensures the {@code getAttributeNames} method returns a copy of the
+     * attribute name collection.
      */
     @Test
-    public void testGetAttributeNames_ReturnValue_Immutable()
+    public void testGetAttributeNames_ReturnValue_Copy()
     {
-        assertImmutableCollection( memento_.getAttributeNames() );
+        final Set<String> attributeNames = memento_.getAttributeNames();
+        final int expectedAttributeNamesSize = attributeNames.size();
+
+        attributeNames.add( "new-name" ); //$NON-NLS-1$
+
+        assertEquals( expectedAttributeNamesSize, memento_.getAttributeNames().size() );
     }
 }

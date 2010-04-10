@@ -1,6 +1,6 @@
 /*
  * IMemento.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -65,8 +65,6 @@ public interface IMemento
      * 
      * @return The attribute value; may be {@code null}.
      * 
-     * @throws java.lang.ClassCastException
-     *         If the attribute value cannot be converted to the requested type.
      * @throws java.lang.IllegalArgumentException
      *         If an attribute with the specified name does not exist in this
      *         memento.
@@ -79,17 +77,10 @@ public interface IMemento
         String name );
 
     /**
-     * Gets an immutable set view of the attribute names contained in this
-     * memento.
+     * Gets a set view of the attribute names contained in this memento.
      * 
-     * <p>
-     * The set is backed by the memento, so changes to the memento are reflected
-     * in the set. If the memento is modified while an iteration over the set is
-     * in progress, the results of the iteration are undefined.
-     * </p>
-     * 
-     * @return An immutable set view of the attribute names contained in this
-     *         memento; never {@code null}.
+     * @return A set view of the attribute names contained in this memento;
+     *         never {@code null}.
      */
     /* @NonNull */
     public Set<String> getAttributeNames();

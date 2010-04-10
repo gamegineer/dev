@@ -1,6 +1,6 @@
 /*
  * MementoTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -131,6 +131,21 @@ public final class MementoTest
         throws Exception
     {
         memento_ = null;
+    }
+
+    /**
+     * Ensures the constructor makes a copy of the attribute collection.
+     */
+    @Test
+    public void testConstructor_Attributes_Copy()
+    {
+        final Map<String, Object> expectedAttributes = createFixtureAttributes();
+        final Map<String, Object> attributes = new HashMap<String, Object>( expectedAttributes );
+
+        final Memento memento = new Memento( attributes );
+        attributes.put( "new-name", new Object() ); //$NON-NLS-1$
+
+        assertEquals( expectedAttributes, memento.getAttributes() );
     }
 
     /**

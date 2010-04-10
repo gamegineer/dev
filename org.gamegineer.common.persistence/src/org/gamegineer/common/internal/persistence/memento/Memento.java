@@ -1,6 +1,6 @@
 /*
  * Memento.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import net.jcip.annotations.Immutable;
@@ -129,7 +130,7 @@ public final class Memento
      */
     public Set<String> getAttributeNames()
     {
-        return attributes_.keySet();
+        return new HashSet<String>( attributes_.keySet() );
     }
 
     /**
