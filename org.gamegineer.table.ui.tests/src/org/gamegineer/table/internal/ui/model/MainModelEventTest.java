@@ -1,5 +1,5 @@
 /*
- * TableModelEventTest.java
+ * MainModelEventTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,30 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Dec 28, 2009 at 9:02:07 PM.
+ * Created on Apr 13, 2010 at 10:06:26 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
+import static org.gamegineer.test.core.DummyFactory.createDummy;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.ui.ITableAdvisor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.TableModelEvent} class.
+ * {@link org.gamegineer.table.internal.ui.model.MainModelEvent} class.
  */
-public final class TableModelEventTest
+public final class MainModelEventTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table model event under test in the fixture. */
-    private TableModelEvent event_;
+    /** The main model event under test in the fixture. */
+    private MainModelEvent event_;
 
 
     // ======================================================================
@@ -47,9 +48,9 @@ public final class TableModelEventTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableModelEventTest} class.
+     * Initializes a new instance of the {@code MainModelEventTest} class.
      */
-    public TableModelEventTest()
+    public MainModelEventTest()
     {
         super();
     }
@@ -69,7 +70,7 @@ public final class TableModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new TableModelEvent( new TableModel( TableFactory.createTable() ) );
+        event_ = new MainModelEvent( new MainModel( createDummy( ITableAdvisor.class ) ) );
     }
 
     /**
@@ -92,25 +93,25 @@ public final class TableModelEventTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Source_Null()
     {
-        new TableModelEvent( null );
+        new MainModelEvent( null );
+    }
+
+    /**
+     * Ensures the {@code getMainModel} method does not return {@code null}.
+     */
+    @Test
+    public void testGetMainModel_ReturnValue_NonNull()
+    {
+        assertNotNull( event_.getMainModel() );
     }
 
     /**
      * Ensures the {@code getSource} method returns the same instance as the
-     * {@code getTableModel} method.
+     * {@code getMainModel} method.
      */
     @Test
-    public void testGetSource_ReturnValue_SameTableModel()
+    public void testGetSource_ReturnValue_SameMainModel()
     {
-        assertSame( event_.getTableModel(), event_.getSource() );
-    }
-
-    /**
-     * Ensures the {@code getTableModel} method does not return {@code null}.
-     */
-    @Test
-    public void testGetTableModel_ReturnValue_NonNull()
-    {
-        assertNotNull( event_.getTableModel() );
+        assertSame( event_.getMainModel(), event_.getSource() );
     }
 }

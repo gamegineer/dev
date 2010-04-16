@@ -1,5 +1,5 @@
 /*
- * TableModelEventTest.java
+ * MainModelContentChangedEventTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,30 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Dec 28, 2009 at 9:02:07 PM.
+ * Created on Apr 14, 2010 at 10:49:29 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
+import static org.gamegineer.test.core.DummyFactory.createDummy;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
 import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.ui.ITableAdvisor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.TableModelEvent} class.
+ * {@link org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent}
+ * class.
  */
-public final class TableModelEventTest
+public final class MainModelContentChangedEventTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table model event under test in the fixture. */
-    private TableModelEvent event_;
+    /** The main model content changed event under test in the fixture. */
+    private MainModelContentChangedEvent event_;
 
 
     // ======================================================================
@@ -47,9 +49,10 @@ public final class TableModelEventTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableModelEventTest} class.
+     * Initializes a new instance of the {@code
+     * MainModelContentChangedEventTest} class.
      */
-    public TableModelEventTest()
+    public MainModelContentChangedEventTest()
     {
         super();
     }
@@ -69,7 +72,7 @@ public final class TableModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new TableModelEvent( new TableModel( TableFactory.createTable() ) );
+        event_ = new MainModelContentChangedEvent( new MainModel( createDummy( ITableAdvisor.class ) ), new TableModel( TableFactory.createTable() ) );
     }
 
     /**
@@ -87,22 +90,12 @@ public final class TableModelEventTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * source.
+     * table model.
      */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_Source_Null()
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_TableModel_Null()
     {
-        new TableModelEvent( null );
-    }
-
-    /**
-     * Ensures the {@code getSource} method returns the same instance as the
-     * {@code getTableModel} method.
-     */
-    @Test
-    public void testGetSource_ReturnValue_SameTableModel()
-    {
-        assertSame( event_.getTableModel(), event_.getSource() );
+        new MainModelContentChangedEvent( new MainModel( createDummy( ITableAdvisor.class ) ), null );
     }
 
     /**

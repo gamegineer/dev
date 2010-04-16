@@ -213,6 +213,9 @@ final class Actions
     /** The action used to open the about dialog. */
     private static final BasicAction openAboutDialogAction_;
 
+    /** The action used to open a new table. */
+    private static final BasicAction openNewTableAction_;
+
     /** The action used to remove a card from a card pile. */
     private static final BasicAction removeCardAction_;
 
@@ -306,6 +309,7 @@ final class Actions
         exitAction_ = createExitAction();
         flipCardAction_ = createFlipCardAction();
         openAboutDialogAction_ = createOpenAboutDialogAction();
+        openNewTableAction_ = createOpenNewTableAction();
         removeCardAction_ = createRemoveCardAction();
         removeCardPileAction_ = createRemoveCardPileAction();
         resetTableOriginAction_ = createResetTableOriginAction();
@@ -1565,6 +1569,27 @@ final class Actions
     }
 
     /**
+     * Creates the open new table action.
+     * 
+     * @return The open new table action; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static BasicAction createOpenNewTableAction()
+    {
+        return new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.OpenNewTableAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.OpenNewTableAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.OpenNewTableAction_text );
+            }
+        };
+    }
+
+    /**
      * Creates the remove card action.
      * 
      * @return The remove card action; never {@code null}.
@@ -2381,6 +2406,17 @@ final class Actions
     static BasicAction getOpenAboutDialogAction()
     {
         return openAboutDialogAction_;
+    }
+
+    /**
+     * Gets the open new table action.
+     * 
+     * @return The open new table action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getOpenNewTableAction()
+    {
+        return openNewTableAction_;
     }
 
     /**

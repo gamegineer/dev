@@ -1,6 +1,6 @@
 /*
  * MainView.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,10 +21,15 @@
 
 package org.gamegineer.table.internal.ui.view;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.internal.ui.model.IMainModelListener;
 import org.gamegineer.table.internal.ui.model.MainModel;
+import org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent;
+import org.gamegineer.table.internal.ui.model.TableModel;
 
 /**
  * The top-level view.
@@ -32,6 +37,7 @@ import org.gamegineer.table.internal.ui.model.MainModel;
 @NotThreadSafe
 final class MainView
     extends JPanel
+    implements IMainModelListener
 {
     // ======================================================================
     // Fields
@@ -41,11 +47,10 @@ final class MainView
     private static final long serialVersionUID = 8895515474498086806L;
 
     /** The model associated with this view. */
-    @SuppressWarnings( "unused" )
     private final MainModel model_;
 
     /** The table view. */
-    private final TableView tableView_;
+    private TableView tableView_;
 
 
     // ======================================================================
@@ -65,7 +70,6 @@ final class MainView
         assert model != null;
 
         model_ = model;
-        tableView_ = new TableView( model.getTableModel() );
 
         initializeComponent();
     }
@@ -75,6 +79,18 @@ final class MainView
     // Methods
     // ======================================================================
 
+    /*
+     * @see javax.swing.JComponent#addNotify()
+     */
+    @Override
+    public void addNotify()
+    {
+        super.addNotify();
+
+        model_.addMainModelListener( this );
+        model_.openTable();
+    }
+
     /**
      * Initializes this component.
      */
@@ -82,6 +98,88 @@ final class MainView
     {
         setLayout( new BorderLayout() );
         setOpaque( true );
+    }
+
+    /*
+     * @see javax.swing.JComponent#removeNotify()
+     */
+    @Override
+    public void removeNotify()
+    {
+        model_.removeMainModelListener( this );
+
+        super.removeNotify();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#tableClosed(org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent)
+     */
+    public void tableClosed(
+        final MainModelContentChangedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                tableClosed( event.getTableModel() );
+            }
+        } );
+    }
+
+    /**
+     * Invoked when a table has been closed.
+     * 
+     * @param tableModel
+     *        The table model that was closed; must not be {@code null}.
+     */
+    private void tableClosed(
+        /* @NonNull */
+        final TableModel tableModel )
+    {
+        assert tableModel != null;
+        assert tableView_ != null;
+
+        remove( tableView_ );
+        tableView_ = null;
+        validate();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#tableOpened(org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent)
+     */
+    public void tableOpened(
+        final MainModelContentChangedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                tableOpened( event.getTableModel() );
+            }
+        } );
+    }
+
+    /**
+     * Invoked when a new table has been opened.
+     * 
+     * @param tableModel
+     *        The table model that was opened; must not be {@code null}.
+     */
+    private void tableOpened(
+        /* @NonNull */
+        final TableModel tableModel )
+    {
+        assert tableModel != null;
+        assert tableView_ == null;
+
+        tableView_ = new TableView( tableModel );
         add( tableView_, BorderLayout.CENTER );
+        validate();
     }
 }

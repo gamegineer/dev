@@ -654,6 +654,17 @@ final class Messages
     /** The open about dialog action text. */
     public static String OpenAboutDialogAction_text;
 
+    // --- OpenNewTableAction -----------------------------------------------
+
+    /** The open new table action accelerator. */
+    public static String OpenNewTableAction_accelerator;
+
+    /** The open new table action mnemonic. */
+    public static String OpenNewTableAction_mnemonic;
+
+    /** The open new table action text. */
+    public static String OpenNewTableAction_text;
+
     // --- RemoveCardAction -------------------------------------------------
 
     /** The remove card action accelerator. */

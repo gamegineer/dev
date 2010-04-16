@@ -1,6 +1,6 @@
 /*
  * MainModel.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,14 @@
 
 package org.gamegineer.table.internal.ui.model;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import java.util.logging.Level;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.TableFactory;
+import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.ui.ITableAdvisor;
 import org.osgi.framework.Version;
 
@@ -40,8 +45,16 @@ public final class MainModel
     /** The table advisor. */
     private final ITableAdvisor advisor_;
 
+    /** The main model listener. */
+    @GuardedBy( "lock_" )
+    private IMainModelListener listener_;
+
+    /** The instance lock. */
+    private final Object lock_;
+
     /** The table model. */
-    private final TableModel tableModel_;
+    @GuardedBy( "lock_" )
+    private TableModel tableModel_;
 
 
     // ======================================================================
@@ -63,8 +76,10 @@ public final class MainModel
     {
         assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
 
+        lock_ = new Object();
         advisor_ = advisor;
-        tableModel_ = new TableModel( TableFactory.createTable() );
+        listener_ = null;
+        tableModel_ = null;
     }
 
 
@@ -73,14 +88,111 @@ public final class MainModel
     // ======================================================================
 
     /**
+     * Adds the specified main model listener to this main model.
+     * 
+     * @param listener
+     *        The main model listener; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code listener} is already a registered main model listener.
+     * @throws java.lang.IllegalStateException
+     *         If a main model listener is already registered.
+     * @throws java.lang.NullPointerException
+     *         If {@code listener} is {@code null}.
+     */
+    public void addMainModelListener(
+        /* @NonNull */
+        final IMainModelListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            assertArgumentLegal( listener_ != listener, "listener", Messages.MainModel_addMainModelListener_listener_registered ); //$NON-NLS-1$
+            assertStateLegal( listener_ == null, Messages.MainModel_addMainModelListener_tooManyListeners );
+
+            listener_ = listener;
+        }
+    }
+
+    /**
+     * Fires a table closed event.
+     * 
+     * @param tableModel
+     *        The table model that was closed; must not be {@code null}.
+     */
+    private void fireTableClosed(
+        /* @NonNull */
+        final TableModel tableModel )
+    {
+        assert tableModel != null;
+
+        final IMainModelListener listener = getMainModelListener();
+        if( listener != null )
+        {
+            try
+            {
+                listener.tableClosed( new MainModelContentChangedEvent( this, tableModel ) );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.MainModel_tableClosed_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a table opened event.
+     * 
+     * @param tableModel
+     *        The table model that was opened; must not be {@code null}.
+     */
+    private void fireTableOpened(
+        /* @NonNull */
+        final TableModel tableModel )
+    {
+        assert tableModel != null;
+
+        final IMainModelListener listener = getMainModelListener();
+        if( listener != null )
+        {
+            try
+            {
+                listener.tableOpened( new MainModelContentChangedEvent( this, tableModel ) );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.MainModel_tableOpened_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Gets the main model listener.
+     * 
+     * @return The main model listener; may be {@code null}.
+     */
+    /* @Nullable */
+    private IMainModelListener getMainModelListener()
+    {
+        synchronized( lock_ )
+        {
+            return listener_;
+        }
+    }
+
+    /**
      * Gets the table model.
      * 
-     * @return The table model; never {@code null}.
+     * @return The table model or {@code null} if no table model is open.
      */
-    /* @NonNull */
+    /* @Nullable */
     public TableModel getTableModel()
     {
-        return tableModel_;
+        synchronized( lock_ )
+        {
+            return tableModel_;
+        }
     }
 
     /**
@@ -92,5 +204,50 @@ public final class MainModel
     public Version getVersion()
     {
         return advisor_.getApplicationVersion();
+    }
+
+    /**
+     * Opens a new empty table.
+     */
+    public void openTable()
+    {
+        final TableModel closedTableModel, openedTableModel;
+        synchronized( lock_ )
+        {
+            closedTableModel = tableModel_;
+            openedTableModel = tableModel_ = new TableModel( TableFactory.createTable() );
+        }
+
+        if( closedTableModel != null )
+        {
+            fireTableClosed( closedTableModel );
+        }
+
+        fireTableOpened( openedTableModel );
+    }
+
+    /**
+     * Removes the specified main model listener from this main model.
+     * 
+     * @param listener
+     *        The main model listener; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code listener} is not a registered main model listener.
+     * @throws java.lang.NullPointerException
+     *         If {@code listener} is {@code null}.
+     */
+    public void removeMainModelListener(
+        /* @NonNull */
+        final IMainModelListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            assertArgumentLegal( listener_ == listener, "listener", Messages.MainModel_removeMainModelListener_listener_notRegistered ); //$NON-NLS-1$
+
+            listener_ = null;
+        }
     }
 }

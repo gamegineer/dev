@@ -1,5 +1,5 @@
 /*
- * TableModelEventTest.java
+ * AbstractMainModelListenerTestCase.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,30 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Dec 28, 2009 at 9:02:07 PM.
+ * Created on Apr 13, 2010 at 10:01:54 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import org.gamegineer.table.core.TableFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.TableModelEvent} class.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.internal.ui.model.IMainModelListener} interface.
  */
-public final class TableModelEventTest
+public abstract class AbstractMainModelListenerTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table model event under test in the fixture. */
-    private TableModelEvent event_;
+    /** The main model listener under test in the fixture. */
+    private IMainModelListener listener_;
 
 
     // ======================================================================
@@ -47,9 +45,10 @@ public final class TableModelEventTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableModelEventTest} class.
+     * Initializes a new instance of the {@code
+     * AbstractMainModelListenerTestCase} class.
      */
-    public TableModelEventTest()
+    protected AbstractMainModelListenerTestCase()
     {
         super();
     }
@@ -58,6 +57,18 @@ public final class TableModelEventTest
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates the main model listener to be tested.
+     * 
+     * @return The main model listener to be tested; never {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    /* @NonNull */
+    protected abstract IMainModelListener createMainModelListener()
+        throws Exception;
 
     /**
      * Sets up the test fixture.
@@ -69,7 +80,8 @@ public final class TableModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new TableModelEvent( new TableModel( TableFactory.createTable() ) );
+        listener_ = createMainModelListener();
+        assertNotNull( listener_ );
     }
 
     /**
@@ -82,35 +94,26 @@ public final class TableModelEventTest
     public void tearDown()
         throws Exception
     {
-        event_ = null;
+        listener_ = null;
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * source.
+     * Ensures the {@code tableClosed} method throws an exception when passed a
+     * {@code null} event.
      */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_Source_Null()
+    @Test( expected = NullPointerException.class )
+    public void testTableClosed_Event_Null()
     {
-        new TableModelEvent( null );
+        listener_.tableClosed( null );
     }
 
     /**
-     * Ensures the {@code getSource} method returns the same instance as the
-     * {@code getTableModel} method.
+     * Ensures the {@code tableOpened} method throws an exception when passed a
+     * {@code null} event.
      */
-    @Test
-    public void testGetSource_ReturnValue_SameTableModel()
+    @Test( expected = NullPointerException.class )
+    public void testTableOpened_Event_Null()
     {
-        assertSame( event_.getTableModel(), event_.getSource() );
-    }
-
-    /**
-     * Ensures the {@code getTableModel} method does not return {@code null}.
-     */
-    @Test
-    public void testGetTableModel_ReturnValue_NonNull()
-    {
-        assertNotNull( event_.getTableModel() );
+        listener_.tableOpened( null );
     }
 }

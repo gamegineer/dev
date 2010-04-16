@@ -125,6 +125,16 @@ public final class MainFrame
                 JOptionPane.showMessageDialog( MainFrame.this, Messages.AboutDialog_message( model_.getVersion() ), Messages.AboutDialog_title, JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE );
             }
         } );
+        actionMediator_.bindActionListener( Actions.getOpenNewTableAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                model_.openTable();
+            }
+        } );
     }
 
     /**

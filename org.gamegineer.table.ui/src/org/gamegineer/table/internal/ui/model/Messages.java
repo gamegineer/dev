@@ -87,6 +87,27 @@ final class Messages
     /** The card pile model listener is not registered. */
     public static String CardPileModel_removeCardPileModelListener_listener_notRegistered;
 
+    // --- MainModel --------------------------------------------------------
+
+    /** The main model listener is already registered. */
+    public static String MainModel_addMainModelListener_listener_registered;
+
+    /** A main model listener is already registered. */
+    public static String MainModel_addMainModelListener_tooManyListeners;
+
+    /** The main model listener is not registered. */
+    public static String MainModel_removeMainModelListener_listener_notRegistered;
+
+    /**
+     * An unexpected exception was thrown from IMainModelListener.tableClosed().
+     */
+    public static String MainModel_tableClosed_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from IMainModelListener.tableOpened().
+     */
+    public static String MainModel_tableOpened_unexpectedException;
+
     // --- TableModel -------------------------------------------------------
 
     /** The table model listener is already registered. */
