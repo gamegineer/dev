@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.SwingUtilities;
@@ -31,8 +30,6 @@ import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ICardListener;
 import org.gamegineer.table.internal.ui.model.CardModel;
-import org.gamegineer.table.internal.ui.model.CardModelEvent;
-import org.gamegineer.table.internal.ui.model.ICardModelListener;
 import org.gamegineer.table.ui.ICardSurfaceDesignUI;
 
 /**
@@ -40,7 +37,7 @@ import org.gamegineer.table.ui.ICardSurfaceDesignUI;
  */
 @NotThreadSafe
 final class CardView
-    implements ICardListener, ICardModelListener
+    implements ICardListener
 {
     // ======================================================================
     // Fields
@@ -101,53 +98,6 @@ final class CardView
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Invoked after the card has gained or lost the logical focus.
-     */
-    private void cardFocusChanged()
-    {
-        if( isInitialized() )
-        {
-            tableView_.repaintTable( getBounds() );
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardFocusGained(org.gamegineer.table.internal.ui.model.CardModelEvent)
-     */
-    public void cardFocusGained(
-        final CardModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                cardFocusChanged();
-            }
-        } );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardFocusLost(org.gamegineer.table.internal.ui.model.CardModelEvent)
-     */
-    public void cardFocusLost(
-        final CardModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                cardFocusChanged();
-            }
-        } );
-    }
 
     /*
      * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
@@ -253,7 +203,6 @@ final class CardView
 
         tableView_ = tableView;
         bounds_ = getBounds();
-        model_.addCardModelListener( this );
         model_.getCard().addCardListener( this );
     }
 
@@ -287,15 +236,6 @@ final class CardView
 
         final Rectangle cardBounds = model_.getCard().getBounds();
         getActiveCardSurfaceDesignUI().getIcon().paintIcon( tableView_, g, cardBounds.x, cardBounds.y );
-
-        if( model_.isFocused() )
-        {
-            final Rectangle viewBounds = getBounds();
-            final Color oldColor = g.getColor();
-            g.setColor( Color.GREEN );
-            g.drawRect( viewBounds.x, viewBounds.y, viewBounds.width - 1, viewBounds.height - 1 );
-            g.setColor( oldColor );
-        }
     }
 
     /**
@@ -310,7 +250,6 @@ final class CardView
         assert isInitialized();
 
         model_.getCard().removeCardListener( this );
-        model_.removeCardModelListener( this );
         tableView_ = null;
     }
 }

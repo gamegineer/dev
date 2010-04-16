@@ -21,19 +21,14 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
-import java.util.logging.Level;
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.Immutable;
 import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.internal.ui.Loggers;
 
 /**
  * The card model.
  */
-@ThreadSafe
+@Immutable
 public final class CardModel
 {
     // ======================================================================
@@ -42,17 +37,6 @@ public final class CardModel
 
     /** The card associated with this model. */
     private final ICard card_;
-
-    /** Indicates the associated card has the focus. */
-    @GuardedBy( "lock_" )
-    private boolean isFocused_;
-
-    /** The card model listener. */
-    @GuardedBy( "lock_" )
-    private ICardModelListener listener_;
-
-    /** The instance lock. */
-    private final Object lock_;
 
 
     // ======================================================================
@@ -74,82 +58,13 @@ public final class CardModel
     {
         assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
 
-        lock_ = new Object();
         card_ = card;
-        isFocused_ = false;
-        listener_ = null;
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Adds the specified card model listener to this card model.
-     * 
-     * @param listener
-     *        The card model listener; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is already a registered card model listener.
-     * @throws java.lang.IllegalStateException
-     *         If a card model listener is already registered.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
-     */
-    public void addCardModelListener(
-        /* @NonNull */
-        final ICardModelListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            assertArgumentLegal( listener_ != listener, "listener", Messages.CardModel_addCardModelListener_listener_registered ); //$NON-NLS-1$
-            assertStateLegal( listener_ == null, Messages.CardModel_addCardModelListener_tooManyListeners );
-
-            listener_ = listener;
-        }
-    }
-
-    /**
-     * Fires a card focus gained event.
-     */
-    private void fireCardFocusGained()
-    {
-        final ICardModelListener listener = getCardModelListener();
-        if( listener != null )
-        {
-            try
-            {
-                listener.cardFocusGained( new CardModelEvent( this ) );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardModel_cardFocusGained_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a card focus lost event.
-     */
-    private void fireCardFocusLost()
-    {
-        final ICardModelListener listener = getCardModelListener();
-        if( listener != null )
-        {
-            try
-            {
-                listener.cardFocusLost( new CardModelEvent( this ) );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardModel_cardFocusLost_unexpectedException, e );
-            }
-        }
-    }
 
     /**
      * Gets the card associated with this model.
@@ -160,83 +75,5 @@ public final class CardModel
     public ICard getCard()
     {
         return card_;
-    }
-
-    /**
-     * Gets the card model listener.
-     * 
-     * @return The card model listener; may be {@code null}.
-     */
-    /* @Nullable */
-    private ICardModelListener getCardModelListener()
-    {
-        synchronized( lock_ )
-        {
-            return listener_;
-        }
-    }
-
-    /**
-     * Indicates the associated card has the focus.
-     * 
-     * @return {@code true} if the associated card has the focus; otherwise
-     *         {@code false}.
-     */
-    public boolean isFocused()
-    {
-        synchronized( lock_ )
-        {
-            return isFocused_;
-        }
-    }
-
-    /**
-     * Removes the specified card model listener from this card model.
-     * 
-     * @param listener
-     *        The card model listener; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is not a registered card model listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
-     */
-    public void removeCardModelListener(
-        /* @NonNull */
-        final ICardModelListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            assertArgumentLegal( listener_ == listener, "listener", Messages.CardModel_removeCardModelListener_listener_notRegistered ); //$NON-NLS-1$
-
-            listener_ = null;
-        }
-    }
-
-    /**
-     * Sets or removes the focus from the associated card.
-     * 
-     * @param isFocused
-     *        {@code true} if the associated card has the focus; otherwise
-     *        {@code false}.
-     */
-    public void setFocused(
-        final boolean isFocused )
-    {
-        synchronized( lock_ )
-        {
-            isFocused_ = isFocused;
-        }
-
-        if( isFocused )
-        {
-            fireCardFocusGained();
-        }
-        else
-        {
-            fireCardFocusLost();
-        }
     }
 }

@@ -38,29 +38,6 @@ final class Messages
     /** The name of the associated resource bundle. */
     private static final String BUNDLE_NAME = "org.gamegineer.table.internal.ui.model.Messages"; //$NON-NLS-1$
 
-    // --- CardModel --------------------------------------------------------
-
-    /** The card model listener is already registered. */
-    public static String CardModel_addCardModelListener_listener_registered;
-
-    /** A card model listener is already registered. */
-    public static String CardModel_addCardModelListener_tooManyListeners;
-
-    /**
-     * An unexpected exception was thrown from
-     * ICardModelListener.cardFocusGained().
-     */
-    public static String CardModel_cardFocusGained_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * ICardModelListener.cardFocusLost().
-     */
-    public static String CardModel_cardFocusLost_unexpectedException;
-
-    /** The card model listener is not registered. */
-    public static String CardModel_removeCardModelListener_listener_notRegistered;
-
     // --- CardPileModel ----------------------------------------------------
 
     /** The card pile model listener is already registered. */
