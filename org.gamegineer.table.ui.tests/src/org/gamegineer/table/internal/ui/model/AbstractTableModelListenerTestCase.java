@@ -108,12 +108,22 @@ public abstract class AbstractTableModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code originOffsetChanged} method throws an exception when
-     * passed a {@code null} event.
+     * Ensures the {@code tableModelStateChanged} method throws an exception
+     * when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
-    public void testOriginOffsetChanged_Event_Null()
+    public void testTableModelStateChanged_Event_Null()
     {
-        listener_.originOffsetChanged( null );
+        listener_.tableModelStateChanged( null );
+    }
+
+    /**
+     * Ensures the {@code tableOriginOffsetChanged} method throws an exception
+     * when passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testTableOriginOffsetChanged_Event_Null()
+    {
+        listener_.tableOriginOffsetChanged( null );
     }
 }

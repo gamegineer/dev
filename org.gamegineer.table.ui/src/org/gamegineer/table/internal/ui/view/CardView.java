@@ -30,6 +30,8 @@ import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ICardListener;
 import org.gamegineer.table.internal.ui.model.CardModel;
+import org.gamegineer.table.internal.ui.model.CardModelEvent;
+import org.gamegineer.table.internal.ui.model.ICardModelListener;
 import org.gamegineer.table.ui.ICardSurfaceDesignUI;
 
 /**
@@ -37,7 +39,7 @@ import org.gamegineer.table.ui.ICardSurfaceDesignUI;
  */
 @NotThreadSafe
 final class CardView
-    implements ICardListener
+    implements ICardListener, ICardModelListener
 {
     // ======================================================================
     // Fields
@@ -131,6 +133,17 @@ final class CardView
     }
 
     /*
+     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardModelStateChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
+     */
+    public void cardModelStateChanged(
+        final CardModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing
+    }
+
+    /*
      * @see org.gamegineer.table.core.ICardListener#cardOrientationChanged(org.gamegineer.table.core.CardEvent)
      */
     public void cardOrientationChanged(
@@ -203,6 +216,7 @@ final class CardView
 
         tableView_ = tableView;
         bounds_ = getBounds();
+        model_.addCardModelListener( this );
         model_.getCard().addCardListener( this );
     }
 
@@ -250,6 +264,7 @@ final class CardView
         assert isInitialized();
 
         model_.getCard().removeCardListener( this );
+        model_.removeCardModelListener( this );
         tableView_ = null;
     }
 }

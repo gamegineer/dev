@@ -105,19 +105,6 @@ public final class TableModelTest
 
     /**
      * Ensures the {@code addTableModelListener} method throws an exception when
-     * passed a listener that is absent from the table model listener collection
-     * but another listener is present.
-     */
-    @Test( expected = IllegalStateException.class )
-    public void testAddTableModelListener_Listener_Absent_OtherListenerPresent()
-    {
-        model_.addTableModelListener( new MockTableModelListener() );
-
-        model_.addTableModelListener( new MockTableModelListener() );
-    }
-
-    /**
-     * Ensures the {@code addTableModelListener} method throws an exception when
      * passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
@@ -137,6 +124,48 @@ public final class TableModelTest
         model_.addTableModelListener( listener );
 
         model_.addTableModelListener( listener );
+    }
+
+    /**
+     * Ensures the card pile focus changed event catches any exception thrown by
+     * the {@code cardPileFocusChanged} method of a table model listener.
+     */
+    @Test
+    public void testCardPileFocusChanged_CatchesListenerException()
+    {
+        final ICardPile cardPile = createCardPile();
+        model_.getTable().addCardPile( cardPile );
+        final MockTableModelListener listener = new MockTableModelListener()
+        {
+            @Override
+            public void cardPileFocusChanged(
+                final TableModelEvent event )
+            {
+                super.cardPileFocusChanged( event );
+
+                throw new RuntimeException();
+            }
+        };
+        model_.addTableModelListener( listener );
+
+        model_.setFocus( cardPile );
+    }
+
+    /**
+     * Ensures a change to a card pile model owned by the table model fires a
+     * table model state changed event.
+     */
+    @Test
+    public void testCardPileModel_StateChanged_FiresTableModelStateChangedEvent()
+    {
+        final ICardPile cardPile = createCardPile();
+        model_.getTable().addCardPile( cardPile );
+        final MockTableModelListener listener = new MockTableModelListener();
+        model_.addTableModelListener( listener );
+
+        model_.getCardPileModel( cardPile ).setFocused( true );
+
+        assertEquals( 2, listener.getTableModelStateChangedEventCount() );
     }
 
     /**
@@ -273,31 +302,6 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code setFocus} method catches any exception thrown by the
-     * {@code cardPileFocusChanged} method of a table model listener.
-     */
-    @Test
-    public void testSetFocus_CatchesListenerException()
-    {
-        final ICardPile cardPile = createCardPile();
-        model_.getTable().addCardPile( cardPile );
-        final MockTableModelListener listener = new MockTableModelListener()
-        {
-            @Override
-            public void cardPileFocusChanged(
-                final TableModelEvent event )
-            {
-                super.cardPileFocusChanged( event );
-
-                throw new RuntimeException();
-            }
-        };
-        model_.addTableModelListener( listener );
-
-        model_.setFocus( cardPile );
-    }
-
-    /**
      * Ensures the {@code setFocus} method fires a card pile focus changed
      * event.
      */
@@ -315,41 +319,50 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code setOriginOffset} method catches any exception thrown
-     * by the {@code originOffsetChanged} method of a table model listener.
-     */
-    @Test
-    public void testSetOriginOffset_CatchesListenerException()
-    {
-        final MockTableModelListener listener = new MockTableModelListener()
-        {
-            @Override
-            public void originOffsetChanged(
-                final TableModelEvent event )
-            {
-                super.originOffsetChanged( event );
-
-                throw new RuntimeException();
-            }
-        };
-        model_.addTableModelListener( listener );
-
-        model_.setOriginOffset( new Dimension( 100, 200 ) );
-    }
-
-    /**
-     * Ensures the {@code setOriginOffset} method fires an origin offset changed
+     * Ensures the {@code setFocus} method fires a table model state changed
      * event.
      */
     @Test
-    public void testSetOriginOffset_FiresOriginOffsetChangedEvent()
+    public void testSetFocus_FiresTableModelStateChangedEvent()
+    {
+        final ICardPile cardPile = createCardPile();
+        model_.getTable().addCardPile( cardPile );
+        final MockTableModelListener listener = new MockTableModelListener();
+        model_.addTableModelListener( listener );
+
+        model_.setFocus( cardPile );
+
+        assertEquals( 3, listener.getTableModelStateChangedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code setOriginOffset} method fires a table model state
+     * changed event.
+     */
+    @Test
+    public void testSetOriginOffset_FiresTableModelStateChangedEvent()
     {
         final MockTableModelListener listener = new MockTableModelListener();
         model_.addTableModelListener( listener );
 
         model_.setOriginOffset( new Dimension( 100, 200 ) );
 
-        assertEquals( 1, listener.getOriginOffsetChangedEventCount() );
+        assertEquals( 1, listener.getTableModelStateChangedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code setOriginOffset} method fires a table origin offset
+     * changed event.
+     */
+    @Test
+    public void testSetOriginOffset_FiresTableOriginOffsetChangedEvent()
+    {
+        final MockTableModelListener listener = new MockTableModelListener();
+        model_.addTableModelListener( listener );
+
+        model_.setOriginOffset( new Dimension( 100, 200 ) );
+
+        assertEquals( 1, listener.getTableOriginOffsetChangedEventCount() );
     }
 
     /**
@@ -360,5 +373,44 @@ public final class TableModelTest
     public void testSetOriginOffset_OriginOffset_Null()
     {
         model_.setOriginOffset( null );
+    }
+
+    /**
+     * Ensures a change to the underlying table state fires a table model state
+     * changed event.
+     */
+    @Test
+    public void testTable_StateChanged_FiresTableModelStateChangedEvent()
+    {
+        final MockTableModelListener listener = new MockTableModelListener();
+        model_.addTableModelListener( listener );
+
+        model_.getTable().addCardPile( createCardPile() );
+
+        assertEquals( 1, listener.getTableModelStateChangedEventCount() );
+    }
+
+    /**
+     * Ensures the table origin offset changed event catches any exception
+     * thrown by the {@code tableOriginOffsetChanged} method of a table model
+     * listener.
+     */
+    @Test
+    public void testTableOriginOffsetChanged_CatchesListenerException()
+    {
+        final MockTableModelListener listener = new MockTableModelListener()
+        {
+            @Override
+            public void tableOriginOffsetChanged(
+                final TableModelEvent event )
+            {
+                super.tableOriginOffsetChanged( event );
+
+                throw new RuntimeException();
+            }
+        };
+        model_.addTableModelListener( listener );
+
+        model_.setOriginOffset( new Dimension( 100, 200 ) );
     }
 }

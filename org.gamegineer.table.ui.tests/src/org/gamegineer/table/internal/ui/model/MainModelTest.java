@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import java.awt.Dimension;
 import org.gamegineer.table.ui.TableAdvisor;
 import org.junit.After;
 import org.junit.Before;
@@ -87,19 +88,6 @@ public final class MainModelTest
 
     /**
      * Ensures the {@code addMainModelListener} method throws an exception when
-     * passed a listener that is absent from the main model listener collection
-     * but another listener is present.
-     */
-    @Test( expected = IllegalStateException.class )
-    public void testAddMainModelListener_Listener_Absent_OtherListenerPresent()
-    {
-        model_.addMainModelListener( new MockMainModelListener() );
-
-        model_.addMainModelListener( new MockMainModelListener() );
-    }
-
-    /**
-     * Ensures the {@code addMainModelListener} method throws an exception when
      * passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
@@ -141,27 +129,81 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code openTable} method catches any exception thrown by the
-     * {@code tableClosed} method of a main model listener.
+     * Ensures the main model dirty flag changed event catches any exception
+     * thrown by the {@code mainModelDirtyFlagChanged} method of a main model
+     * listener.
      */
     @Test
-    public void testOpenTable_TableClosed_CatchesListenerException()
+    public void testMainModelDirtyFlagChanged_CatchesListenerException()
     {
         final MockMainModelListener listener = new MockMainModelListener()
         {
             @Override
-            public void tableClosed(
-                final MainModelContentChangedEvent event )
+            public void mainModelDirtyFlagChanged(
+                final MainModelEvent event )
             {
-                super.tableClosed( event );
+                super.mainModelDirtyFlagChanged( event );
 
                 throw new RuntimeException();
             }
         };
+        model_.addMainModelListener( listener );
+
+        model_.setDirty();
+    }
+
+    /**
+     * Ensures the main model state changed event catches any exception thrown
+     * by the {@code mainModelStateChanged} method of a main model listener.
+     */
+    @Test
+    public void testMainModelStateChanged_CatchesListenerException()
+    {
+        final MockMainModelListener listener = new MockMainModelListener()
+        {
+            @Override
+            public void mainModelStateChanged(
+                final MainModelEvent event )
+            {
+                super.mainModelStateChanged( event );
+
+                throw new RuntimeException();
+            }
+        };
+        model_.addMainModelListener( listener );
+
+        model_.openTable();
+    }
+
+    /**
+     * Ensures the {@code openTable} method fires a main model dirty flag
+     * changed event.
+     */
+    @Test
+    public void testOpenTable_FiresMainModelDirtyFlagChangedEvent()
+    {
+        final MockMainModelListener listener = new MockMainModelListener();
         model_.openTable();
         model_.addMainModelListener( listener );
 
         model_.openTable();
+
+        assertEquals( 1, listener.getMainModelDirtyFlagChangedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code openTable} method fires a main model state changed
+     * event.
+     */
+    @Test
+    public void testOpenTable_FiresMainModelStateChangedEvent()
+    {
+        final MockMainModelListener listener = new MockMainModelListener();
+        model_.addMainModelListener( listener );
+
+        model_.openTable();
+
+        assertEquals( 1, listener.getMainModelStateChangedEventCount() );
     }
 
     /**
@@ -177,29 +219,6 @@ public final class MainModelTest
         model_.openTable();
 
         assertEquals( 1, listener.getTableClosedEventCount() );
-    }
-
-    /**
-     * Ensures the {@code openTable} method catches any exception thrown by the
-     * {@code tableOpened} method of a main model listener.
-     */
-    @Test
-    public void testOpenTable_TableOpened_CatchesListenerException()
-    {
-        final MockMainModelListener listener = new MockMainModelListener()
-        {
-            @Override
-            public void tableOpened(
-                final MainModelContentChangedEvent event )
-            {
-                super.tableOpened( event );
-
-                throw new RuntimeException();
-            }
-        };
-        model_.addMainModelListener( listener );
-
-        model_.openTable();
     }
 
     /**
@@ -252,5 +271,144 @@ public final class MainModelTest
 
         model_.openTable();
         assertEquals( 1, listener.getTableOpenedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code setClean} method fires a main model dirty flag changed
+     * event.
+     */
+    @Test
+    public void testSetClean_FiresMainModelDirtyFlagChangedEvent()
+    {
+        final MockMainModelListener listener = new MockMainModelListener();
+        model_.addMainModelListener( listener );
+
+        model_.setClean();
+
+        assertEquals( 1, listener.getMainModelDirtyFlagChangedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code setClean} method fires a main model state changed
+     * event.
+     */
+    @Test
+    public void testSetClean_FiresMainModelStateChangedEvent()
+    {
+        final MockMainModelListener listener = new MockMainModelListener();
+        model_.addMainModelListener( listener );
+
+        model_.setClean();
+
+        assertEquals( 1, listener.getMainModelStateChangedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code setDirty} method fires a main model dirty flag changed
+     * event.
+     */
+    @Test
+    public void testSetDirty_FiresMainModelDirtyFlagChangedEvent()
+    {
+        final MockMainModelListener listener = new MockMainModelListener();
+        model_.addMainModelListener( listener );
+
+        model_.setDirty();
+
+        assertEquals( 1, listener.getMainModelDirtyFlagChangedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code setDirty} method fires a main model state changed
+     * event.
+     */
+    @Test
+    public void testSetDirty_FiresMainModelStateChangedEvent()
+    {
+        final MockMainModelListener listener = new MockMainModelListener();
+        model_.addMainModelListener( listener );
+
+        model_.setDirty();
+
+        assertEquals( 1, listener.getMainModelStateChangedEventCount() );
+    }
+
+    /**
+     * Ensures the table closed event catches any exception thrown by the
+     * {@code tableClosed} method of a main model listener.
+     */
+    @Test
+    public void testTableClosed_CatchesListenerException()
+    {
+        final MockMainModelListener listener = new MockMainModelListener()
+        {
+            @Override
+            public void tableClosed(
+                final MainModelContentChangedEvent event )
+            {
+                super.tableClosed( event );
+
+                throw new RuntimeException();
+            }
+        };
+        model_.openTable();
+        model_.addMainModelListener( listener );
+
+        model_.openTable();
+    }
+
+    /**
+     * Ensures a change to a table model owned by the main model fires a main
+     * model dirty flag changed event.
+     */
+    @Test
+    public void testTableModel_StateChanged_FiresMainModelDirtyFlagChangedEvent()
+    {
+        model_.openTable();
+        final MockMainModelListener listener = new MockMainModelListener();
+        model_.addMainModelListener( listener );
+
+        model_.getTableModel().setOriginOffset( new Dimension( 100, 200 ) );
+
+        assertEquals( 2, listener.getMainModelDirtyFlagChangedEventCount() );
+    }
+
+    /**
+     * Ensures a change to a table model owned by the main model fires a main
+     * model state changed event.
+     */
+    @Test
+    public void testTableModel_StateChanged_FiresMainModelStateChangedEvent()
+    {
+        model_.openTable();
+        final MockMainModelListener listener = new MockMainModelListener();
+        model_.addMainModelListener( listener );
+
+        model_.getTableModel().setOriginOffset( new Dimension( 100, 200 ) );
+
+        assertEquals( 2, listener.getMainModelStateChangedEventCount() );
+    }
+
+    /**
+     * Ensures the table opened event catches any exception thrown by the
+     * {@code tableOpened} method of a main model listener.
+     */
+    @Test
+    public void testTableOpened_CatchesListenerException()
+    {
+        final MockMainModelListener listener = new MockMainModelListener()
+        {
+            @Override
+            public void tableOpened(
+                final MainModelContentChangedEvent event )
+            {
+                super.tableOpened( event );
+
+                throw new RuntimeException();
+            }
+        };
+        model_.addMainModelListener( listener );
+
+        model_.openTable();
     }
 }

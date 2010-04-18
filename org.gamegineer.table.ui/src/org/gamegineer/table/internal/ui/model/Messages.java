@@ -38,13 +38,24 @@ final class Messages
     /** The name of the associated resource bundle. */
     private static final String BUNDLE_NAME = "org.gamegineer.table.internal.ui.model.Messages"; //$NON-NLS-1$
 
+    // --- CardModel --------------------------------------------------------
+
+    /** The card model listener is already registered. */
+    public static String CardModel_addCardModelListener_listener_registered;
+
+    /**
+     * An unexpected exception was thrown from
+     * ICardModelListener.cardModelStateChanged().
+     */
+    public static String CardModel_cardModelStateChanged_unexpectedException;
+
+    /** The card model listener is not registered. */
+    public static String CardModel_removeCardModelListener_listener_notRegistered;
+
     // --- CardPileModel ----------------------------------------------------
 
     /** The card pile model listener is already registered. */
     public static String CardPileModel_addCardPileModelListener_listener_registered;
-
-    /** A card pile model listener is already registered. */
-    public static String CardPileModel_addCardPileModelListener_tooManyListeners;
 
     /**
      * An unexpected exception was thrown from
@@ -58,6 +69,12 @@ final class Messages
      */
     public static String CardPileModel_cardPileFocusLost_unexpectedException;
 
+    /**
+     * An unexpected exception was thrown from
+     * ICardPileModelListener.cardPileModelStateChanged().
+     */
+    public static String CardPileModel_cardPileModelStateChanged_unexpectedException;
+
     /** The card is not present in the card pile. */
     public static String CardPileModel_getCardModel_card_absent;
 
@@ -69,8 +86,17 @@ final class Messages
     /** The main model listener is already registered. */
     public static String MainModel_addMainModelListener_listener_registered;
 
-    /** A main model listener is already registered. */
-    public static String MainModel_addMainModelListener_tooManyListeners;
+    /**
+     * An unexpected exception was thrown from
+     * IMainModelListener.mainModelDirtyFlagChanged().
+     */
+    public static String MainModel_mainModelDirtyFlagChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IMainModelListener.mainModelStateChanged().
+     */
+    public static String MainModel_mainModelStateChanged_unexpectedException;
 
     /** The main model listener is not registered. */
     public static String MainModel_removeMainModelListener_listener_notRegistered;
@@ -90,9 +116,6 @@ final class Messages
     /** The table model listener is already registered. */
     public static String TableModel_addTableModelListener_listener_registered;
 
-    /** A table model listener is already registered. */
-    public static String TableModel_addTableModelListener_tooManyListeners;
-
     /**
      * An unexpected exception was thrown from
      * ITableModelListener.cardPileFocusChanged().
@@ -102,14 +125,20 @@ final class Messages
     /** The card pile is not present in the table. */
     public static String TableModel_getCardPileModel_cardPile_absent;
 
-    /**
-     * An unexpected exception was thrown from
-     * ITableModelListener.originOffsetChanged().
-     */
-    public static String TableModel_originOffsetChanged_unexpectedException;
-
     /** The table model listener is not registered. */
     public static String TableModel_removeTableModelListener_listener_notRegistered;
+
+    /**
+     * An unexpected exception was thrown from
+     * ITableModelListener.tableModelStateChanged().
+     */
+    public static String TableModel_tableModelStateChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * ITableModelListener.tableOriginOffsetChanged().
+     */
+    public static String TableModel_tableOriginOffsetChanged_unexpectedException;
 
 
     // ======================================================================

@@ -43,6 +43,9 @@ public class MockCardPileModelListener
     /** The count of card pile focus lost events received. */
     private final AtomicInteger cardPileFocusLostEventCount_;
 
+    /** The count of card pile model state changed events received. */
+    private final AtomicInteger cardPileModelStateChangedEventCount_;
+
 
     // ======================================================================
     // Constructors
@@ -56,6 +59,7 @@ public class MockCardPileModelListener
     {
         cardPileFocusGainedEventCount_ = new AtomicInteger( 0 );
         cardPileFocusLostEventCount_ = new AtomicInteger( 0 );
+        cardPileModelStateChangedEventCount_ = new AtomicInteger( 0 );
     }
 
 
@@ -85,6 +89,17 @@ public class MockCardPileModelListener
         cardPileFocusLostEventCount_.incrementAndGet();
     }
 
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileModelStateChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+     */
+    public void cardPileModelStateChanged(
+        final CardPileModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        cardPileModelStateChangedEventCount_.incrementAndGet();
+    }
+
     /**
      * Gets the count of card pile focus gained events received.
      * 
@@ -103,5 +118,15 @@ public class MockCardPileModelListener
     public final int getCardPileFocusLostEventCount()
     {
         return cardPileFocusLostEventCount_.get();
+    }
+
+    /**
+     * Gets the count of card pile model state changed events received.
+     * 
+     * @return The count of card pile model state changed events received.
+     */
+    public final int getCardPileModelStateChangedEventCount()
+    {
+        return cardPileModelStateChangedEventCount_.get();
     }
 }

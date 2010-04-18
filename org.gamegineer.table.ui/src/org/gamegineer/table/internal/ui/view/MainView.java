@@ -29,6 +29,7 @@ import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.ui.model.IMainModelListener;
 import org.gamegineer.table.internal.ui.model.MainModel;
 import org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent;
+import org.gamegineer.table.internal.ui.model.MainModelEvent;
 import org.gamegineer.table.internal.ui.model.TableModel;
 
 /**
@@ -98,6 +99,28 @@ final class MainView
     {
         setLayout( new BorderLayout() );
         setOpaque( true );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
+     */
+    public void mainModelDirtyFlagChanged(
+        final MainModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelStateChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
+     */
+    public void mainModelStateChanged(
+        final MainModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing
     }
 
     /*

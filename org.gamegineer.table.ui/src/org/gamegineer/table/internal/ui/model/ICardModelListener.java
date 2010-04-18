@@ -1,5 +1,5 @@
 /*
- * ITableModelListener.java
+ * ICardModelListener.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,58 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Dec 28, 2009 at 9:00:54 PM.
+ * Created on Dec 25, 2009 at 9:31:37 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
+import java.util.EventListener;
+
 /**
  * The listener interface for use by clients to be notified of changes to the
- * table model state.
+ * card model state.
  */
-public interface ITableModelListener
+public interface ICardModelListener
+    extends EventListener
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Invoked after the focused card pile on the table has changed.
+     * Invoked after the card model state has changed.
      * 
      * @param event
-     *        The event describing the focus change; must not be {@code null}.
+     *        The event describing the card model; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void cardPileFocusChanged(
+    public void cardModelStateChanged(
         /* @NonNull */
-        TableModelEvent event );
-
-    /**
-     * Invoked after the table model state has changed.
-     * 
-     * @param event
-     *        The event describing the table model; must not be {@code null} .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
-     */
-    public void tableModelStateChanged(
-        /* @NonNull */
-        TableModelEvent event );
-
-    /**
-     * Invoked after the table origin offset has changed.
-     * 
-     * @param event
-     *        The event describing the origin offset change; must not be {@code
-     *        null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
-     */
-    public void tableOriginOffsetChanged(
-        /* @NonNull */
-        TableModelEvent event );
+        CardModelEvent event );
 }

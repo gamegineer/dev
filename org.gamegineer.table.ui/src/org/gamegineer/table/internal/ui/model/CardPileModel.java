@@ -23,9 +23,9 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -41,7 +41,7 @@ import org.gamegineer.table.internal.ui.Loggers;
  */
 @ThreadSafe
 public final class CardPileModel
-    implements ICardPileListener
+    implements ICardModelListener, ICardPileListener
 {
     // ======================================================================
     // Fields
@@ -58,9 +58,8 @@ public final class CardPileModel
     @GuardedBy( "lock_" )
     private boolean isFocused_;
 
-    /** The card pile model listener. */
-    @GuardedBy( "lock_" )
-    private ICardPileModelListener listener_;
+    /** The collection of card pile model listeners. */
+    private final CopyOnWriteArrayList<ICardPileModelListener> listeners_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -90,7 +89,7 @@ public final class CardPileModel
         cardModels_ = new IdentityHashMap<ICard, CardModel>();
         cardPile_ = cardPile;
         isFocused_ = false;
-        listener_ = null;
+        listeners_ = new CopyOnWriteArrayList<ICardPileModelListener>();
 
         cardPile_.addCardPileListener( this );
     }
@@ -109,8 +108,6 @@ public final class CardPileModel
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered card pile model
      *         listener.
-     * @throws java.lang.IllegalStateException
-     *         If a card pile model listener is already registered.
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
@@ -119,14 +116,7 @@ public final class CardPileModel
         final ICardPileModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            assertArgumentLegal( listener_ != listener, "listener", Messages.CardPileModel_addCardPileModelListener_listener_registered ); //$NON-NLS-1$
-            assertStateLegal( listener_ == null, Messages.CardPileModel_addCardPileModelListener_tooManyListeners );
-
-            listener_ = listener;
-        }
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.CardPileModel_addCardPileModelListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -139,8 +129,24 @@ public final class CardPileModel
 
         synchronized( lock_ )
         {
-            cardModels_.put( event.getCard(), new CardModel( event.getCard() ) );
+            final ICard card = event.getCard();
+            final CardModel cardModel = new CardModel( card );
+            cardModels_.put( card, cardModel );
+            cardModel.addCardModelListener( this );
         }
+
+        fireCardPileModelStateChanged();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardModelStateChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
+     */
+    public void cardModelStateChanged(
+        final CardModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        fireCardPileModelStateChanged();
     }
 
     /*
@@ -150,6 +156,8 @@ public final class CardPileModel
         final CardPileEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        fireCardPileModelStateChanged();
     }
 
     /*
@@ -162,8 +170,14 @@ public final class CardPileModel
 
         synchronized( lock_ )
         {
-            cardModels_.remove( event.getCard() );
+            final CardModel cardModel = cardModels_.remove( event.getCard() );
+            if( cardModel != null )
+            {
+                cardModel.removeCardModelListener( this );
+            }
         }
+
+        fireCardPileModelStateChanged();
     }
 
     /**
@@ -171,12 +185,12 @@ public final class CardPileModel
      */
     private void fireCardPileFocusGained()
     {
-        final ICardPileModelListener listener = getCardPileModelListener();
-        if( listener != null )
+        final CardPileModelEvent event = new CardPileModelEvent( this );
+        for( final ICardPileModelListener listener : listeners_ )
         {
             try
             {
-                listener.cardPileFocusGained( new CardPileModelEvent( this ) );
+                listener.cardPileFocusGained( event );
             }
             catch( final RuntimeException e )
             {
@@ -190,16 +204,35 @@ public final class CardPileModel
      */
     private void fireCardPileFocusLost()
     {
-        final ICardPileModelListener listener = getCardPileModelListener();
-        if( listener != null )
+        final CardPileModelEvent event = new CardPileModelEvent( this );
+        for( final ICardPileModelListener listener : listeners_ )
         {
             try
             {
-                listener.cardPileFocusLost( new CardPileModelEvent( this ) );
+                listener.cardPileFocusLost( event );
             }
             catch( final RuntimeException e )
             {
                 Loggers.DEFAULT.log( Level.SEVERE, Messages.CardPileModel_cardPileFocusLost_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a card pile model state changed event.
+     */
+    private void fireCardPileModelStateChanged()
+    {
+        final CardPileModelEvent event = new CardPileModelEvent( this );
+        for( final ICardPileModelListener listener : listeners_ )
+        {
+            try
+            {
+                listener.cardPileModelStateChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardPileModel_cardPileModelStateChanged_unexpectedException, e );
             }
         }
     }
@@ -248,20 +281,6 @@ public final class CardPileModel
     }
 
     /**
-     * Gets the card pile model listener.
-     * 
-     * @return The card pile model listener; may be {@code null}.
-     */
-    /* @Nullable */
-    private ICardPileModelListener getCardPileModelListener()
-    {
-        synchronized( lock_ )
-        {
-            return listener_;
-        }
-    }
-
-    /**
      * Indicates the associated card pile has the focus.
      * 
      * @return {@code true} if the associated card pile has the focus; otherwise
@@ -291,13 +310,7 @@ public final class CardPileModel
         final ICardPileModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            assertArgumentLegal( listener_ == listener, "listener", Messages.CardPileModel_removeCardPileModelListener_listener_notRegistered ); //$NON-NLS-1$
-
-            listener_ = null;
-        }
+        assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.CardPileModel_removeCardPileModelListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /**
@@ -323,5 +336,7 @@ public final class CardPileModel
         {
             fireCardPileFocusLost();
         }
+
+        fireCardPileModelStateChanged();
     }
 }

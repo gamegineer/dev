@@ -37,6 +37,12 @@ public class MockMainModelListener
     // Fields
     // ======================================================================
 
+    /** The count of main model dirty flag changed events received. */
+    private final AtomicInteger mainModelDirtyFlagChangedEventCount_;
+
+    /** The count of main model state changed events received. */
+    private final AtomicInteger mainModelStateChangedEventCount_;
+
     /** The count of table closed events received. */
     private final AtomicInteger tableClosedEventCount_;
 
@@ -53,6 +59,8 @@ public class MockMainModelListener
      */
     public MockMainModelListener()
     {
+        mainModelDirtyFlagChangedEventCount_ = new AtomicInteger( 0 );
+        mainModelStateChangedEventCount_ = new AtomicInteger( 0 );
         tableClosedEventCount_ = new AtomicInteger( 0 );
         tableOpenedEventCount_ = new AtomicInteger( 0 );
     }
@@ -61,6 +69,26 @@ public class MockMainModelListener
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the count of main model dirty flag changed events received.
+     * 
+     * @return The count of main model dirty flag changed events received.
+     */
+    public final int getMainModelDirtyFlagChangedEventCount()
+    {
+        return mainModelDirtyFlagChangedEventCount_.get();
+    }
+
+    /**
+     * Gets the count of main model state changed events received.
+     * 
+     * @return The count of main model state changed events received.
+     */
+    public final int getMainModelStateChangedEventCount()
+    {
+        return mainModelStateChangedEventCount_.get();
+    }
 
     /**
      * Gets the count of table closed events received.
@@ -80,6 +108,28 @@ public class MockMainModelListener
     public final int getTableOpenedEventCount()
     {
         return tableOpenedEventCount_.get();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
+     */
+    public void mainModelDirtyFlagChanged(
+        final MainModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        mainModelDirtyFlagChangedEventCount_.incrementAndGet();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelStateChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
+     */
+    public void mainModelStateChanged(
+        final MainModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        mainModelStateChangedEventCount_.incrementAndGet();
     }
 
     /*

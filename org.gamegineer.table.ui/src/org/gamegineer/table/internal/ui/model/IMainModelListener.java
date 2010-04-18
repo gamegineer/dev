@@ -32,6 +32,32 @@ public interface IMainModelListener
     // ======================================================================
 
     /**
+     * Invoked after the main model dirty flag has changed.
+     * 
+     * @param event
+     *        The event describing the main model; must not be {@code null} .
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void mainModelDirtyFlagChanged(
+        /* @NonNull */
+        MainModelEvent event );
+
+    /**
+     * Invoked after the main model state has changed.
+     * 
+     * @param event
+     *        The event describing the main model; must not be {@code null} .
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void mainModelStateChanged(
+        /* @NonNull */
+        MainModelEvent event );
+
+    /**
      * Invoked after a table has been closed.
      * 
      * @param event

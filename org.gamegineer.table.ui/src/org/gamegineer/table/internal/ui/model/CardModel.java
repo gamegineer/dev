@@ -21,15 +21,22 @@
 
 package org.gamegineer.table.internal.ui.model;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import net.jcip.annotations.Immutable;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ICardListener;
+import org.gamegineer.table.internal.ui.Loggers;
 
 /**
  * The card model.
  */
-@Immutable
+@ThreadSafe
 public final class CardModel
+    implements ICardListener
 {
     // ======================================================================
     // Fields
@@ -37,6 +44,9 @@ public final class CardModel
 
     /** The card associated with this model. */
     private final ICard card_;
+
+    /** The collection of card model listeners. */
+    private final CopyOnWriteArrayList<ICardModelListener> listeners_;
 
 
     // ======================================================================
@@ -59,12 +69,75 @@ public final class CardModel
         assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
 
         card_ = card;
+        listeners_ = new CopyOnWriteArrayList<ICardModelListener>();
+
+        card_.addCardListener( this );
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Adds the specified card model listener to this card model.
+     * 
+     * @param listener
+     *        The card model listener; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code listener} is already a registered card model listener.
+     * @throws java.lang.NullPointerException
+     *         If {@code listener} is {@code null}.
+     */
+    public void addCardModelListener(
+        /* @NonNull */
+        final ICardModelListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.CardModel_addCardModelListener_listener_registered ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
+     */
+    public void cardLocationChanged(
+        final CardEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        fireCardModelStateChanged();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardListener#cardOrientationChanged(org.gamegineer.table.core.CardEvent)
+     */
+    public void cardOrientationChanged(
+        final CardEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        fireCardModelStateChanged();
+    }
+
+    /**
+     * Fires a card model state changed event.
+     */
+    private void fireCardModelStateChanged()
+    {
+        final CardModelEvent event = new CardModelEvent( this );
+        for( final ICardModelListener listener : listeners_ )
+        {
+            try
+            {
+                listener.cardModelStateChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardModel_cardModelStateChanged_unexpectedException, e );
+            }
+        }
+    }
 
     /**
      * Gets the card associated with this model.
@@ -75,5 +148,24 @@ public final class CardModel
     public ICard getCard()
     {
         return card_;
+    }
+
+    /**
+     * Removes the specified card model listener from this card model.
+     * 
+     * @param listener
+     *        The card model listener; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code listener} is not a registered card model listener.
+     * @throws java.lang.NullPointerException
+     *         If {@code listener} is {@code null}.
+     */
+    public void removeCardModelListener(
+        /* @NonNull */
+        final ICardModelListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.CardModel_removeCardModelListener_listener_notRegistered ); //$NON-NLS-1$
     }
 }

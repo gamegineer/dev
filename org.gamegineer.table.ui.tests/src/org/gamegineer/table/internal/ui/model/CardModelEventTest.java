@@ -1,5 +1,5 @@
 /*
- * AbstractCardPileModelListenerTestCase.java
+ * CardModelEventTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 26, 2010 at 10:48:36 PM.
+ * Created on Dec 25, 2009 at 10:25:12 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import org.gamegineer.table.core.CardFactory;
+import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.ui.model.ICardPileModelListener}
- * interface.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.ui.model.CardModelEvent} class.
  */
-public abstract class AbstractCardPileModelListenerTestCase
+public final class CardModelEventTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The card pile model listener under test in the fixture. */
-    private ICardPileModelListener listener_;
+    /** The card model event under test in the fixture. */
+    private CardModelEvent event_;
 
 
     // ======================================================================
@@ -46,10 +48,9 @@ public abstract class AbstractCardPileModelListenerTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractCardPileModelListenerTestCase} class.
+     * Initializes a new instance of the {@code CardModelEventTest} class.
      */
-    protected AbstractCardPileModelListenerTestCase()
+    public CardModelEventTest()
     {
         super();
     }
@@ -58,18 +59,6 @@ public abstract class AbstractCardPileModelListenerTestCase
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates the card pile model listener to be tested.
-     * 
-     * @return The card pile model listener to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    /* @NonNull */
-    protected abstract ICardPileModelListener createCardPileModelListener()
-        throws Exception;
 
     /**
      * Sets up the test fixture.
@@ -81,8 +70,7 @@ public abstract class AbstractCardPileModelListenerTestCase
     public void setUp()
         throws Exception
     {
-        listener_ = createCardPileModelListener();
-        assertNotNull( listener_ );
+        event_ = new CardModelEvent( new CardModel( CardFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() ) ) );
     }
 
     /**
@@ -95,36 +83,35 @@ public abstract class AbstractCardPileModelListenerTestCase
     public void tearDown()
         throws Exception
     {
-        listener_ = null;
+        event_ = null;
     }
 
     /**
-     * Ensures the {@code cardPileFocusGained} method throws an exception when
-     * passed a {@code null} event.
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * source.
      */
-    @Test( expected = NullPointerException.class )
-    public void testCardPileFocusGained_Event_Null()
+    @Test( expected = IllegalArgumentException.class )
+    public void testConstructor_Source_Null()
     {
-        listener_.cardPileFocusGained( null );
+        new CardModelEvent( null );
     }
 
     /**
-     * Ensures the {@code cardPileFocusLost} method throws an exception when
-     * passed a {@code null} event.
+     * Ensures the {@code getCardModel} method does not return {@code null}.
      */
-    @Test( expected = NullPointerException.class )
-    public void testCardPileFocusLost_Event_Null()
+    @Test
+    public void testGetCardModel_ReturnValue_NonNull()
     {
-        listener_.cardPileFocusLost( null );
+        assertNotNull( event_.getCardModel() );
     }
 
     /**
-     * Ensures the {@code cardPileModelStateChanged} method throws an exception
-     * when passed a {@code null} event.
+     * Ensures the {@code getSource} method returns the same instance as the
+     * {@code getCardModel} method.
      */
-    @Test( expected = NullPointerException.class )
-    public void testCardPileModelStateChanged_Event_Null()
+    @Test
+    public void testGetSource_ReturnValue_SameCardModel()
     {
-        listener_.cardPileModelStateChanged( null );
+        assertSame( event_.getCardModel(), event_.getSource() );
     }
 }

@@ -1,5 +1,5 @@
 /*
- * AbstractMainModelListenerTestCase.java
+ * AbstractCardModelListenerTestCase.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 13, 2010 at 10:01:54 PM.
+ * Created on Dec 25, 2009 at 11:00:07 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
@@ -28,16 +28,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.ui.model.IMainModelListener} interface.
+ * {@link org.gamegineer.table.internal.ui.model.ICardModelListener} interface.
  */
-public abstract class AbstractMainModelListenerTestCase
+public abstract class AbstractCardModelListenerTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The main model listener under test in the fixture. */
-    private IMainModelListener listener_;
+    /** The card model listener under test in the fixture. */
+    private ICardModelListener listener_;
 
 
     // ======================================================================
@@ -46,9 +46,9 @@ public abstract class AbstractMainModelListenerTestCase
 
     /**
      * Initializes a new instance of the {@code
-     * AbstractMainModelListenerTestCase} class.
+     * AbstractCardModelListenerTestCase} class.
      */
-    protected AbstractMainModelListenerTestCase()
+    protected AbstractCardModelListenerTestCase()
     {
         super();
     }
@@ -59,15 +59,15 @@ public abstract class AbstractMainModelListenerTestCase
     // ======================================================================
 
     /**
-     * Creates the main model listener to be tested.
+     * Creates the card model listener to be tested.
      * 
-     * @return The main model listener to be tested; never {@code null}.
+     * @return The card model listener to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract IMainModelListener createMainModelListener()
+    protected abstract ICardModelListener createCardModelListener()
         throws Exception;
 
     /**
@@ -80,7 +80,7 @@ public abstract class AbstractMainModelListenerTestCase
     public void setUp()
         throws Exception
     {
-        listener_ = createMainModelListener();
+        listener_ = createCardModelListener();
         assertNotNull( listener_ );
     }
 
@@ -98,42 +98,12 @@ public abstract class AbstractMainModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code mainModelDirtyFlagChanged} method throws an exception
-     * when passed a {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testMainModelDirtyFlagChanged_Event_Null()
-    {
-        listener_.mainModelDirtyFlagChanged( null );
-    }
-
-    /**
-     * Ensures the {@code mainModelStateChanged} method throws an exception when
+     * Ensures the {@code cardModelStateChanged} method throws an exception when
      * passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
-    public void testMainModelStateChanged_Event_Null()
+    public void testCardModelStateChanged_Event_Null()
     {
-        listener_.mainModelStateChanged( null );
-    }
-
-    /**
-     * Ensures the {@code tableClosed} method throws an exception when passed a
-     * {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testTableClosed_Event_Null()
-    {
-        listener_.tableClosed( null );
-    }
-
-    /**
-     * Ensures the {@code tableOpened} method throws an exception when passed a
-     * {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testTableOpened_Event_Null()
-    {
-        listener_.tableOpened( null );
+        listener_.cardModelStateChanged( null );
     }
 }

@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -37,6 +37,7 @@ import org.osgi.framework.Version;
  */
 @ThreadSafe
 public final class MainModel
+    implements ITableModelListener
 {
     // ======================================================================
     // Fields
@@ -45,9 +46,12 @@ public final class MainModel
     /** The table advisor. */
     private final ITableAdvisor advisor_;
 
-    /** The main model listener. */
+    /** Indicates the main model is dirty. */
     @GuardedBy( "lock_" )
-    private IMainModelListener listener_;
+    private boolean isDirty_;
+
+    /** The collection of main model listeners. */
+    private final CopyOnWriteArrayList<IMainModelListener> listeners_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -78,7 +82,8 @@ public final class MainModel
 
         lock_ = new Object();
         advisor_ = advisor;
-        listener_ = null;
+        isDirty_ = false;
+        listeners_ = new CopyOnWriteArrayList<IMainModelListener>();
         tableModel_ = null;
     }
 
@@ -95,8 +100,6 @@ public final class MainModel
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered main model listener.
-     * @throws java.lang.IllegalStateException
-     *         If a main model listener is already registered.
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
@@ -105,13 +108,55 @@ public final class MainModel
         final IMainModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.MainModel_addMainModelListener_listener_registered ); //$NON-NLS-1$
+    }
 
-        synchronized( lock_ )
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#cardPileFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    public void cardPileFocusChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        setDirty();
+    }
+
+    /**
+     * Fires a main model dirty flag changed event.
+     */
+    private void fireMainModelDirtyFlagChanged()
+    {
+        final MainModelEvent event = new MainModelEvent( this );
+        for( final IMainModelListener listener : listeners_ )
         {
-            assertArgumentLegal( listener_ != listener, "listener", Messages.MainModel_addMainModelListener_listener_registered ); //$NON-NLS-1$
-            assertStateLegal( listener_ == null, Messages.MainModel_addMainModelListener_tooManyListeners );
+            try
+            {
+                listener.mainModelDirtyFlagChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.MainModel_mainModelDirtyFlagChanged_unexpectedException, e );
+            }
+        }
+    }
 
-            listener_ = listener;
+    /**
+     * Fires a main model state changed event.
+     */
+    private void fireMainModelStateChanged()
+    {
+        final MainModelEvent event = new MainModelEvent( this );
+        for( final IMainModelListener listener : listeners_ )
+        {
+            try
+            {
+                listener.mainModelStateChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.MainModel_mainModelStateChanged_unexpectedException, e );
+            }
         }
     }
 
@@ -127,12 +172,12 @@ public final class MainModel
     {
         assert tableModel != null;
 
-        final IMainModelListener listener = getMainModelListener();
-        if( listener != null )
+        final MainModelContentChangedEvent event = new MainModelContentChangedEvent( this, tableModel );
+        for( final IMainModelListener listener : listeners_ )
         {
             try
             {
-                listener.tableClosed( new MainModelContentChangedEvent( this, tableModel ) );
+                listener.tableClosed( event );
             }
             catch( final RuntimeException e )
             {
@@ -153,31 +198,17 @@ public final class MainModel
     {
         assert tableModel != null;
 
-        final IMainModelListener listener = getMainModelListener();
-        if( listener != null )
+        final MainModelContentChangedEvent event = new MainModelContentChangedEvent( this, tableModel );
+        for( final IMainModelListener listener : listeners_ )
         {
             try
             {
-                listener.tableOpened( new MainModelContentChangedEvent( this, tableModel ) );
+                listener.tableOpened( event );
             }
             catch( final RuntimeException e )
             {
                 Loggers.DEFAULT.log( Level.SEVERE, Messages.MainModel_tableOpened_unexpectedException, e );
             }
-        }
-    }
-
-    /**
-     * Gets the main model listener.
-     * 
-     * @return The main model listener; may be {@code null}.
-     */
-    /* @Nullable */
-    private IMainModelListener getMainModelListener()
-    {
-        synchronized( lock_ )
-        {
-            return listener_;
         }
     }
 
@@ -207,6 +238,19 @@ public final class MainModel
     }
 
     /**
+     * Gets a value indicating if the main model is dirty.
+     * 
+     * @return {@code true} if the main model is dirty; otherwise {@code false}.
+     */
+    public boolean isDirty()
+    {
+        synchronized( lock_ )
+        {
+            return isDirty_;
+        }
+    }
+
+    /**
      * Opens a new empty table.
      */
     public void openTable()
@@ -215,7 +259,13 @@ public final class MainModel
         synchronized( lock_ )
         {
             closedTableModel = tableModel_;
+            if( closedTableModel != null )
+            {
+                closedTableModel.removeTableModelListener( this );
+            }
+
             openedTableModel = tableModel_ = new TableModel( TableFactory.createTable() );
+            openedTableModel.addTableModelListener( this );
         }
 
         if( closedTableModel != null )
@@ -224,6 +274,8 @@ public final class MainModel
         }
 
         fireTableOpened( openedTableModel );
+
+        setDirty();
     }
 
     /**
@@ -242,12 +294,56 @@ public final class MainModel
         final IMainModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.MainModel_removeMainModelListener_listener_notRegistered ); //$NON-NLS-1$
+    }
 
+    /**
+     * Marks the main model as clean.
+     */
+    public void setClean()
+    {
         synchronized( lock_ )
         {
-            assertArgumentLegal( listener_ == listener, "listener", Messages.MainModel_removeMainModelListener_listener_notRegistered ); //$NON-NLS-1$
-
-            listener_ = null;
+            isDirty_ = false;
         }
+
+        fireMainModelDirtyFlagChanged();
+        fireMainModelStateChanged();
+    }
+
+    /**
+     * Marks the main model as dirty.
+     */
+    public void setDirty()
+    {
+        synchronized( lock_ )
+        {
+            isDirty_ = true;
+        }
+
+        fireMainModelDirtyFlagChanged();
+        fireMainModelStateChanged();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelStateChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    public void tableModelStateChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        setDirty();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    public void tableOriginOffsetChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        setDirty();
     }
 }

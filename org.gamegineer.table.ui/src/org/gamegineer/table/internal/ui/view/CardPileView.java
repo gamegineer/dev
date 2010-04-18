@@ -222,6 +222,17 @@ final class CardPileView
     }
 
     /*
+     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileModelStateChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+     */
+    public void cardPileModelStateChanged(
+        final CardPileModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing
+    }
+
+    /*
      * @see org.gamegineer.table.core.ICardPileListener#cardRemoved(org.gamegineer.table.core.CardPileContentChangedEvent)
      */
     public void cardRemoved(

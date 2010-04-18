@@ -24,11 +24,15 @@ package org.gamegineer.table.internal.ui.model;
 import static org.gamegineer.test.core.DummyFactory.createDummy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import java.awt.Point;
+import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.core.CardPileFactory;
+import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -63,6 +67,17 @@ public final class CardPileModelTest
     // ======================================================================
 
     /**
+     * Creates a card suitable for testing.
+     * 
+     * @return A new card; never {@code null}.
+     */
+    /* @NonNull */
+    private static ICard createCard()
+    {
+        return CardFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -90,19 +105,6 @@ public final class CardPileModelTest
 
     /**
      * Ensures the {@code addCardPileModelListener} method throws an exception
-     * when passed a listener that is absent from the card pile model listener
-     * collection but another listener is present.
-     */
-    @Test( expected = IllegalStateException.class )
-    public void testAddCardPileModelListener_Listener_Absent_OtherListenerPresent()
-    {
-        model_.addCardPileModelListener( new MockCardPileModelListener() );
-
-        model_.addCardPileModelListener( new MockCardPileModelListener() );
-    }
-
-    /**
-     * Ensures the {@code addCardPileModelListener} method throws an exception
      * when passed a {@code null} listener.
      */
     @Test( expected = NullPointerException.class )
@@ -123,6 +125,109 @@ public final class CardPileModelTest
         model_.addCardPileModelListener( listener );
 
         model_.addCardPileModelListener( listener );
+    }
+
+    /**
+     * Ensures a change to a card model owned by the card pile model fires a
+     * card pile model state changed event.
+     */
+    @Ignore( "currently no mutating methods on CardModel" )
+    @Test
+    public void testCardModel_StateChanged_FiresCardPileModelStateChangedEvent()
+    {
+        final ICard card = createCard();
+        model_.getCardPile().addCard( card );
+        final MockCardPileModelListener listener = new MockCardPileModelListener();
+        model_.addCardPileModelListener( listener );
+
+        // NB: change card model state here when applicable
+
+        assertEquals( 1, listener.getCardPileModelStateChangedEventCount() );
+    }
+
+    /**
+     * Ensures a change to the underlying card pile state fires a card pile
+     * model state changed event.
+     */
+    @Test
+    public void testCardPile_StateChanged_FiresCardPileModelStateChangedEvent()
+    {
+        final MockCardPileModelListener listener = new MockCardPileModelListener();
+        model_.addCardPileModelListener( listener );
+
+        model_.getCardPile().setLocation( new Point( 101, 102 ) );
+
+        assertEquals( 1, listener.getCardPileModelStateChangedEventCount() );
+    }
+
+    /**
+     * Ensures the card pile focus gained event catches any exception thrown by
+     * the {@code cardPileFocusGained} method of a card pile model listener.
+     */
+    @Test
+    public void testCardPileFocusGained_CatchesListenerException()
+    {
+        final MockCardPileModelListener listener = new MockCardPileModelListener()
+        {
+            @Override
+            public void cardPileFocusGained(
+                final CardPileModelEvent event )
+            {
+                super.cardPileFocusGained( event );
+
+                throw new RuntimeException();
+            }
+        };
+        model_.addCardPileModelListener( listener );
+
+        model_.setFocused( true );
+    }
+
+    /**
+     * Ensures the card pile focus lost event catches any exception thrown by
+     * the {@code cardPileFocusLost} method of a card pile model listener.
+     */
+    @Test
+    public void testCardPileFocusLost_CatchesListenerException()
+    {
+        final MockCardPileModelListener listener = new MockCardPileModelListener()
+        {
+            @Override
+            public void cardPileFocusLost(
+                final CardPileModelEvent event )
+            {
+                super.cardPileFocusLost( event );
+
+                throw new RuntimeException();
+            }
+        };
+        model_.addCardPileModelListener( listener );
+
+        model_.setFocused( false );
+    }
+
+    /**
+     * Ensures the card pile model state changed event catches any exception
+     * thrown by the {@code cardPileModelStateChanged} method of a card pile
+     * model listener.
+     */
+    @Test
+    public void testCardPileModelStateChanged_CatchesListenerException()
+    {
+        final MockCardPileModelListener listener = new MockCardPileModelListener()
+        {
+            @Override
+            public void cardPileModelStateChanged(
+                final CardPileModelEvent event )
+            {
+                super.cardPileModelStateChanged( event );
+
+                throw new RuntimeException();
+            }
+        };
+        model_.addCardPileModelListener( listener );
+
+        model_.getCardPile().setLocation( new Point( 101, 102 ) );
     }
 
     /**
@@ -204,26 +309,18 @@ public final class CardPileModelTest
     }
 
     /**
-     * Ensures the {@code setFocused} method catches any exception thrown by the
-     * {@code cardPileFocusGained} method of a card pile model listener.
+     * Ensures the {@code setFocused} method fires a card pile model state
+     * changed event.
      */
     @Test
-    public void testSetFocused_GainedFocus_CatchesListenerException()
+    public void testSetFocused_FiresCardPileModelStateChangedEvent()
     {
-        final MockCardPileModelListener listener = new MockCardPileModelListener()
-        {
-            @Override
-            public void cardPileFocusGained(
-                final CardPileModelEvent event )
-            {
-                super.cardPileFocusGained( event );
-
-                throw new RuntimeException();
-            }
-        };
+        final MockCardPileModelListener listener = new MockCardPileModelListener();
         model_.addCardPileModelListener( listener );
 
         model_.setFocused( true );
+
+        assertEquals( 1, listener.getCardPileModelStateChangedEventCount() );
     }
 
     /**
@@ -239,29 +336,6 @@ public final class CardPileModelTest
         model_.setFocused( true );
 
         assertEquals( 1, listener.getCardPileFocusGainedEventCount() );
-    }
-
-    /**
-     * Ensures the {@code setFocused} method catches any exception thrown by the
-     * {@code cardPileFocusLost} method of a card pile model listener.
-     */
-    @Test
-    public void testSetFocused_LostFocus_CatchesListenerException()
-    {
-        final MockCardPileModelListener listener = new MockCardPileModelListener()
-        {
-            @Override
-            public void cardPileFocusLost(
-                final CardPileModelEvent event )
-            {
-                super.cardPileFocusLost( event );
-
-                throw new RuntimeException();
-            }
-        };
-        model_.addCardPileModelListener( listener );
-
-        model_.setFocused( false );
     }
 
     /**

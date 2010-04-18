@@ -832,32 +832,6 @@ final class TableView
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#originOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    public void originOffsetChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                originOffsetChanged();
-            }
-        } );
-    }
-
-    /**
-     * Invoked when the table origin offset has changed.
-     */
-    private void originOffsetChanged()
-    {
-        repaint();
-    }
-
-    /*
      * @see javax.swing.JComponent#paintChildren(java.awt.Graphics)
      */
     @Override
@@ -990,6 +964,43 @@ final class TableView
         mouseInputHandler_ = mouseInputHandlers_.get( handlerClass );
         assert mouseInputHandler_ != null;
         mouseInputHandler_.activate( e );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelStateChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    public void tableModelStateChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    public void tableOriginOffsetChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                tableOriginOffsetChanged();
+            }
+        } );
+    }
+
+    /**
+     * Invoked when the table origin offset has changed.
+     */
+    private void tableOriginOffsetChanged()
+    {
+        repaint();
     }
 
     /**

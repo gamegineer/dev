@@ -40,8 +40,11 @@ public class MockTableModelListener
     /** The count of card pile focus changed events received. */
     private final AtomicInteger cardPileFocusChangedEventCount_;
 
-    /** The count of origin offset changed events received. */
-    private final AtomicInteger originOffsetChangedEventCount_;
+    /** The count of table model state changed events received. */
+    private final AtomicInteger tableModelStateChangedEventCount_;
+
+    /** The count of table origin offset changed events received. */
+    private final AtomicInteger tableOriginOffsetChangedEventCount_;
 
 
     // ======================================================================
@@ -54,7 +57,8 @@ public class MockTableModelListener
     public MockTableModelListener()
     {
         cardPileFocusChangedEventCount_ = new AtomicInteger( 0 );
-        originOffsetChangedEventCount_ = new AtomicInteger( 0 );
+        tableModelStateChangedEventCount_ = new AtomicInteger( 0 );
+        tableOriginOffsetChangedEventCount_ = new AtomicInteger( 0 );
     }
 
 
@@ -84,23 +88,44 @@ public class MockTableModelListener
     }
 
     /**
-     * Gets the count of origin offset changed events received.
+     * Gets the count of table model state changed events received.
      * 
-     * @return The count of origin offset changed events received.
+     * @return The count of table model state changed events received.
      */
-    public final int getOriginOffsetChangedEventCount()
+    public final int getTableModelStateChangedEventCount()
     {
-        return originOffsetChangedEventCount_.get();
+        return tableModelStateChangedEventCount_.get();
+    }
+
+    /**
+     * Gets the count of table origin offset changed events received.
+     * 
+     * @return The count of table origin offset changed events received.
+     */
+    public final int getTableOriginOffsetChangedEventCount()
+    {
+        return tableOriginOffsetChangedEventCount_.get();
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#originOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelStateChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
-    public void originOffsetChanged(
+    public void tableModelStateChanged(
         final TableModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        originOffsetChangedEventCount_.incrementAndGet();
+        tableModelStateChangedEventCount_.incrementAndGet();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    public void tableOriginOffsetChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        tableOriginOffsetChangedEventCount_.incrementAndGet();
     }
 }

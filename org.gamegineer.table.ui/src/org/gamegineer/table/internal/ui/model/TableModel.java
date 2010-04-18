@@ -23,10 +23,10 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.awt.Dimension;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -41,7 +41,7 @@ import org.gamegineer.table.internal.ui.Loggers;
  */
 @ThreadSafe
 public final class TableModel
-    implements ITableListener
+    implements ICardPileModelListener, ITableListener
 {
     // ======================================================================
     // Fields
@@ -55,9 +55,8 @@ public final class TableModel
     @GuardedBy( "lock_" )
     private ICardPile focusedCardPile_;
 
-    /** The table model listener. */
-    @GuardedBy( "lock_" )
-    private ITableModelListener listener_;
+    /** The collection of table model listeners. */
+    private final CopyOnWriteArrayList<ITableModelListener> listeners_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -92,7 +91,7 @@ public final class TableModel
         lock_ = new Object();
         cardPileModels_ = new IdentityHashMap<ICardPile, CardPileModel>();
         focusedCardPile_ = null;
-        listener_ = null;
+        listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
         originOffset_ = new Dimension( 0, 0 );
         table_ = table;
 
@@ -112,8 +111,6 @@ public final class TableModel
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code listener} is already a registered table model listener.
-     * @throws java.lang.IllegalStateException
-     *         If a table model listener is already registered.
      * @throws java.lang.NullPointerException
      *         If {@code listener} is {@code null}.
      */
@@ -122,14 +119,7 @@ public final class TableModel
         final ITableModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            assertArgumentLegal( listener_ != listener, "listener", Messages.TableModel_addTableModelListener_listener_registered ); //$NON-NLS-1$
-            assertStateLegal( listener_ == null, Messages.TableModel_addTableModelListener_tooManyListeners );
-
-            listener_ = listener;
-        }
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.TableModel_addTableModelListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -142,8 +132,46 @@ public final class TableModel
 
         synchronized( lock_ )
         {
-            cardPileModels_.put( event.getCardPile(), new CardPileModel( event.getCardPile() ) );
+            final ICardPile cardPile = event.getCardPile();
+            final CardPileModel cardPileModel = new CardPileModel( cardPile );
+            cardPileModels_.put( cardPile, cardPileModel );
+            cardPileModel.addCardPileModelListener( this );
         }
+
+        fireTableModelStateChanged();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileFocusGained(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+     */
+    public void cardPileFocusGained(
+        final CardPileModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        fireTableModelStateChanged();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileFocusLost(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+     */
+    public void cardPileFocusLost(
+        final CardPileModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        fireTableModelStateChanged();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileModelStateChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+     */
+    public void cardPileModelStateChanged(
+        final CardPileModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        fireTableModelStateChanged();
     }
 
     /*
@@ -158,7 +186,12 @@ public final class TableModel
         final boolean clearFocusedCardPile;
         synchronized( lock_ )
         {
-            cardPileModels_.remove( cardPile );
+            final CardPileModel cardPileModel = cardPileModels_.remove( cardPile );
+            if( cardPileModel != null )
+            {
+                cardPileModel.removeCardPileModelListener( this );
+            }
+
             clearFocusedCardPile = (focusedCardPile_ == cardPile);
         }
 
@@ -166,6 +199,8 @@ public final class TableModel
         {
             setFocus( (ICardPile)null );
         }
+
+        fireTableModelStateChanged();
     }
 
     /**
@@ -173,12 +208,12 @@ public final class TableModel
      */
     private void fireCardPileFocusChanged()
     {
-        final ITableModelListener listener = getTableModelListener();
-        if( listener != null )
+        final TableModelEvent event = new TableModelEvent( this );
+        for( final ITableModelListener listener : listeners_ )
         {
             try
             {
-                listener.cardPileFocusChanged( new TableModelEvent( this ) );
+                listener.cardPileFocusChanged( event );
             }
             catch( final RuntimeException e )
             {
@@ -188,20 +223,39 @@ public final class TableModel
     }
 
     /**
-     * Fires an origin offset changed event.
+     * Fires a table model state changed event.
      */
-    private void fireOriginOffsetChanged()
+    private void fireTableModelStateChanged()
     {
-        final ITableModelListener listener = getTableModelListener();
-        if( listener != null )
+        final TableModelEvent event = new TableModelEvent( this );
+        for( final ITableModelListener listener : listeners_ )
         {
             try
             {
-                listener.originOffsetChanged( new TableModelEvent( this ) );
+                listener.tableModelStateChanged( event );
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.TableModel_originOffsetChanged_unexpectedException, e );
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.TableModel_tableModelStateChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a table origin offset changed event.
+     */
+    private void fireTableOriginOffsetChanged()
+    {
+        final TableModelEvent event = new TableModelEvent( this );
+        for( final ITableModelListener listener : listeners_ )
+        {
+            try
+            {
+                listener.tableOriginOffsetChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.TableModel_tableOriginOffsetChanged_unexpectedException, e );
             }
         }
     }
@@ -281,20 +335,6 @@ public final class TableModel
     }
 
     /**
-     * Gets the table model listener.
-     * 
-     * @return The table model listener; may be {@code null}.
-     */
-    /* @Nullable */
-    private ITableModelListener getTableModelListener()
-    {
-        synchronized( lock_ )
-        {
-            return listener_;
-        }
-    }
-
-    /**
      * Removes the specified table model listener from this table model.
      * 
      * @param listener
@@ -310,13 +350,7 @@ public final class TableModel
         final ITableModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            assertArgumentLegal( listener_ == listener, "listener", Messages.TableModel_removeTableModelListener_listener_notRegistered ); //$NON-NLS-1$
-
-            listener_ = null;
-        }
+        assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.TableModel_removeTableModelListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /**
@@ -363,6 +397,7 @@ public final class TableModel
             }
 
             fireCardPileFocusChanged();
+            fireTableModelStateChanged();
         }
     }
 
@@ -388,6 +423,7 @@ public final class TableModel
             originOffset_.setSize( originOffset );
         }
 
-        fireOriginOffsetChanged();
+        fireTableOriginOffsetChanged();
+        fireTableModelStateChanged();
     }
 }
