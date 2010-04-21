@@ -26,8 +26,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * A factory for creating various types of card pile base designs types suitable
- * for testing.
+ * A factory for creating various types of card pile base designs suitable for
+ * testing.
  */
 @ThreadSafe
 public final class CardPileBaseDesigns

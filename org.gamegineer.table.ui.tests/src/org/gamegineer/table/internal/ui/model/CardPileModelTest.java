@@ -25,10 +25,8 @@ import static org.gamegineer.test.core.DummyFactory.createDummy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Point;
-import org.gamegineer.table.core.CardFactory;
-import org.gamegineer.table.core.CardPileBaseDesigns;
-import org.gamegineer.table.core.CardPileFactory;
-import org.gamegineer.table.core.CardSurfaceDesigns;
+import org.gamegineer.table.core.CardPiles;
+import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.ICard;
 import org.junit.After;
 import org.junit.Before;
@@ -67,17 +65,6 @@ public final class CardPileModelTest
     // ======================================================================
 
     /**
-     * Creates a card suitable for testing.
-     * 
-     * @return A new card; never {@code null}.
-     */
-    /* @NonNull */
-    private static ICard createCard()
-    {
-        return CardFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
-    }
-
-    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -87,7 +74,7 @@ public final class CardPileModelTest
     public void setUp()
         throws Exception
     {
-        model_ = new CardPileModel( CardPileFactory.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() ) );
+        model_ = new CardPileModel( CardPiles.createUniqueCardPile() );
     }
 
     /**
@@ -135,7 +122,7 @@ public final class CardPileModelTest
     @Test
     public void testCardModel_StateChanged_FiresCardPileModelStateChangedEvent()
     {
-        final ICard card = createCard();
+        final ICard card = Cards.createUniqueCard();
         model_.getCardPile().addCard( card );
         final MockCardPileModelListener listener = new MockCardPileModelListener();
         model_.addCardPileModelListener( listener );

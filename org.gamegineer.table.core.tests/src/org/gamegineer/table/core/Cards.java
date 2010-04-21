@@ -1,5 +1,5 @@
 /*
- * CardPileModelAsCardPileListenerTest.java
+ * Cards.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,33 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 27, 2010 at 11:02:19 PM.
+ * Created on Apr 20, 2010 at 9:56:59 PM.
  */
 
-package org.gamegineer.table.internal.ui.model;
+package org.gamegineer.table.core;
 
-import org.gamegineer.table.core.AbstractCardPileListenerTestCase;
-import org.gamegineer.table.core.CardPiles;
-import org.gamegineer.table.core.ICardPileListener;
+import net.jcip.annotations.ThreadSafe;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.CardPileModel} class to ensure
- * it does not violate the contract of the
- * {@link org.gamegineer.table.core.ICardPileListener} interface.
+ * A factory for creating various types of cards suitable for testing.
  */
-public final class CardPileModelAsCardPileListenerTest
-    extends AbstractCardPileListenerTestCase
+@ThreadSafe
+public final class Cards
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * CardPileModelAsCardPileListenerTest} class.
+     * Initializes a new instance of the {@code Cards} class.
      */
-    public CardPileModelAsCardPileListenerTest()
+    private Cards()
     {
         super();
     }
@@ -52,12 +46,14 @@ public final class CardPileModelAsCardPileListenerTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.core.AbstractCardPileListenerTestCase#createCardPileListener()
+    /**
+     * Creates a new card with unique back and face designs.
+     * 
+     * @return A new card; never {@code null}.
      */
-    @Override
-    protected ICardPileListener createCardPileListener()
+    /* @NonNull */
+    public static ICard createUniqueCard()
     {
-        return new CardPileModel( CardPiles.createUniqueCardPile() );
+        return CardFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
     }
 }

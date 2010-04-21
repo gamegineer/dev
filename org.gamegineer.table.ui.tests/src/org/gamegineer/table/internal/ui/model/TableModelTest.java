@@ -27,8 +27,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.awt.Dimension;
-import org.gamegineer.table.core.CardPileBaseDesigns;
-import org.gamegineer.table.core.CardPileFactory;
+import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.TableFactory;
 import org.junit.After;
@@ -65,17 +64,6 @@ public final class TableModelTest
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates a card pile suitable for testing.
-     * 
-     * @return A new card pile; never {@code null}.
-     */
-    /* @NonNull */
-    private static ICardPile createCardPile()
-    {
-        return CardPileFactory.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
-    }
 
     /**
      * Sets up the test fixture.
@@ -133,7 +121,7 @@ public final class TableModelTest
     @Test
     public void testCardPileFocusChanged_CatchesListenerException()
     {
-        final ICardPile cardPile = createCardPile();
+        final ICardPile cardPile = CardPiles.createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
         final MockTableModelListener listener = new MockTableModelListener()
         {
@@ -158,7 +146,7 @@ public final class TableModelTest
     @Test
     public void testCardPileModel_StateChanged_FiresTableModelStateChangedEvent()
     {
-        final ICardPile cardPile = createCardPile();
+        final ICardPile cardPile = CardPiles.createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
         final MockTableModelListener listener = new MockTableModelListener();
         model_.addTableModelListener( listener );
@@ -260,7 +248,7 @@ public final class TableModelTest
     @Test
     public void testRemoveTableModelListener_Listener_Present()
     {
-        final ICardPile cardPile = createCardPile();
+        final ICardPile cardPile = CardPiles.createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
         final MockTableModelListener listener = new MockTableModelListener();
         model_.addTableModelListener( listener );
@@ -278,9 +266,9 @@ public final class TableModelTest
     @Test
     public void testSetFocus()
     {
-        final ICardPile cardPile1 = createCardPile();
+        final ICardPile cardPile1 = CardPiles.createUniqueCardPile();
         model_.getTable().addCardPile( cardPile1 );
-        final ICardPile cardPile2 = createCardPile();
+        final ICardPile cardPile2 = CardPiles.createUniqueCardPile();
         model_.getTable().addCardPile( cardPile2 );
 
         model_.setFocus( cardPile1 );
@@ -308,7 +296,7 @@ public final class TableModelTest
     @Test
     public void testSetFocus_FiresCardPileFocusChangedEvent()
     {
-        final ICardPile cardPile = createCardPile();
+        final ICardPile cardPile = CardPiles.createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
         final MockTableModelListener listener = new MockTableModelListener();
         model_.addTableModelListener( listener );
@@ -325,7 +313,7 @@ public final class TableModelTest
     @Test
     public void testSetFocus_FiresTableModelStateChangedEvent()
     {
-        final ICardPile cardPile = createCardPile();
+        final ICardPile cardPile = CardPiles.createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
         final MockTableModelListener listener = new MockTableModelListener();
         model_.addTableModelListener( listener );
@@ -385,7 +373,7 @@ public final class TableModelTest
         final MockTableModelListener listener = new MockTableModelListener();
         model_.addTableModelListener( listener );
 
-        model_.getTable().addCardPile( createCardPile() );
+        model_.getTable().addCardPile( CardPiles.createUniqueCardPile() );
 
         assertEquals( 1, listener.getTableModelStateChangedEventCount() );
     }

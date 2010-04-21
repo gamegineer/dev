@@ -66,17 +66,6 @@ public abstract class AbstractCardPileTestCase
     // ======================================================================
 
     /**
-     * Creates a card suitable for testing.
-     * 
-     * @return A new card; never {@code null}.
-     */
-    /* @NonNull */
-    private static ICard createCard()
-    {
-        return CardFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
-    }
-
-    /**
      * Creates the card pile to be tested.
      * 
      * @return The card pile to be tested; never {@code null}.
@@ -141,7 +130,7 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testAddCard_Card_Absent_AddsCard()
     {
-        final ICard card = createCard();
+        final ICard card = Cards.createUniqueCard();
 
         cardPile_.addCard( card );
 
@@ -171,7 +160,7 @@ public abstract class AbstractCardPileTestCase
         cardPile_.addCardPileListener( listener1 );
         cardPile_.addCardPileListener( listener2 );
 
-        cardPile_.addCard( createCard() );
+        cardPile_.addCard( Cards.createUniqueCard() );
 
         assertEquals( 1, listener2.getCardAddedEventCount() );
     }
@@ -184,7 +173,7 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testAddCard_Card_Absent_ChangesCardLocation()
     {
-        final ICard card = createCard();
+        final ICard card = Cards.createUniqueCard();
         final MockCardListener listener = new MockCardListener();
         card.addCardListener( listener );
 
@@ -204,7 +193,7 @@ public abstract class AbstractCardPileTestCase
         cardPile_.addCardPileListener( listener );
         do
         {
-            cardPile_.addCard( createCard() );
+            cardPile_.addCard( Cards.createUniqueCard() );
 
         } while( listener.getCardPileBoundsChangedEventCount() == 0 );
 
@@ -221,7 +210,7 @@ public abstract class AbstractCardPileTestCase
         final MockCardPileListener listener = new MockCardPileListener();
         cardPile_.addCardPileListener( listener );
 
-        cardPile_.addCard( createCard() );
+        cardPile_.addCard( Cards.createUniqueCard() );
 
         assertEquals( 1, listener.getCardAddedEventCount() );
     }
@@ -243,7 +232,7 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testAddCard_Card_Present_DoesNotAddCard()
     {
-        final ICard card = createCard();
+        final ICard card = Cards.createUniqueCard();
         cardPile_.addCard( card );
 
         cardPile_.addCard( card );
@@ -260,7 +249,7 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testAddCard_Card_Present_DoesNotFireCardAddedEvent()
     {
-        final ICard card = createCard();
+        final ICard card = Cards.createUniqueCard();
         cardPile_.addCard( card );
         final MockCardPileListener listener = new MockCardPileListener();
         cardPile_.addCardPileListener( listener );
@@ -353,7 +342,7 @@ public abstract class AbstractCardPileTestCase
         final List<ICard> cards = cardPile_.getCards();
         final int expectedCardsSize = cards.size();
 
-        cardPile_.addCard( createCard() );
+        cardPile_.addCard( Cards.createUniqueCard() );
 
         assertEquals( expectedCardsSize, cards.size() );
     }
@@ -424,7 +413,7 @@ public abstract class AbstractCardPileTestCase
     public void testGetMemento()
         throws Exception
     {
-        cardPile_.addCard( createCard() );
+        cardPile_.addCard( Cards.createUniqueCard() );
         final IMemento expectedMemento = cardPile_.getMemento();
 
         final ICardPile actualCardPile = createCardPile( expectedMemento );
@@ -530,7 +519,7 @@ public abstract class AbstractCardPileTestCase
         final MockCardPileListener listener2 = new MockCardPileListener();
         cardPile_.addCardPileListener( listener1 );
         cardPile_.addCardPileListener( listener2 );
-        cardPile_.addCard( createCard() );
+        cardPile_.addCard( Cards.createUniqueCard() );
 
         cardPile_.removeCard();
 
@@ -548,7 +537,7 @@ public abstract class AbstractCardPileTestCase
         cardPile_.addCardPileListener( listener );
         do
         {
-            cardPile_.addCard( createCard() );
+            cardPile_.addCard( Cards.createUniqueCard() );
 
         } while( listener.getCardPileBoundsChangedEventCount() == 0 );
 
@@ -566,7 +555,7 @@ public abstract class AbstractCardPileTestCase
     {
         final MockCardPileListener listener = new MockCardPileListener();
         cardPile_.addCardPileListener( listener );
-        cardPile_.addCard( createCard() );
+        cardPile_.addCard( Cards.createUniqueCard() );
 
         cardPile_.removeCard();
 
@@ -580,7 +569,7 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testRemoveCard_NotEmpty_RemovesCard()
     {
-        final ICard expectedCard = createCard();
+        final ICard expectedCard = Cards.createUniqueCard();
         cardPile_.addCard( expectedCard );
 
         final ICard actualCard = cardPile_.removeCard();
@@ -619,11 +608,11 @@ public abstract class AbstractCardPileTestCase
     {
         final MockCardPileListener listener = new MockCardPileListener();
         cardPile_.addCardPileListener( listener );
-        cardPile_.addCard( createCard() );
+        cardPile_.addCard( Cards.createUniqueCard() );
 
         cardPile_.removeCardPileListener( listener );
 
-        cardPile_.addCard( createCard() );
+        cardPile_.addCard( Cards.createUniqueCard() );
         assertEquals( 1, listener.getCardAddedEventCount() );
     }
 
@@ -635,8 +624,8 @@ public abstract class AbstractCardPileTestCase
     public void testSetLayout_ChangesCardPileBounds()
     {
         cardPile_.setLayout( CardPileLayout.STACKED );
-        cardPile_.addCard( createCard() );
-        cardPile_.addCard( createCard() );
+        cardPile_.addCard( Cards.createUniqueCard() );
+        cardPile_.addCard( Cards.createUniqueCard() );
         final MockCardPileListener listener = new MockCardPileListener();
         cardPile_.addCardPileListener( listener );
 
@@ -689,7 +678,7 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testSetLocation_ChangesChildCardLocation()
     {
-        final ICard card = createCard();
+        final ICard card = Cards.createUniqueCard();
         cardPile_.addCard( card );
         final MockCardListener listener = new MockCardListener();
         card.addCardListener( listener );

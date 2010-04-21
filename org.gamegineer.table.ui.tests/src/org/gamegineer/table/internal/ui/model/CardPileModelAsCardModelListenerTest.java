@@ -21,8 +21,7 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import org.gamegineer.table.core.CardPileBaseDesigns;
-import org.gamegineer.table.core.CardPileFactory;
+import org.gamegineer.table.core.CardPiles;
 
 /**
  * A fixture for testing the
@@ -57,6 +56,6 @@ public final class CardPileModelAsCardModelListenerTest
     @Override
     protected ICardModelListener createCardModelListener()
     {
-        return new CardPileModel( CardPileFactory.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() ) );
+        return new CardPileModel( CardPiles.createUniqueCardPile() );
     }
 }
