@@ -598,22 +598,7 @@ final class TableView
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                cardPileFocusChanged();
-            }
-        } );
-    }
-
-    /**
-     * Invoked when the card pile focus has changed.
-     */
-    private void cardPileFocusChanged()
-    {
-        updateActions();
+        // do nothing
     }
 
     /*
@@ -1001,14 +986,6 @@ final class TableView
     private void tableOriginOffsetChanged()
     {
         repaint();
-    }
-
-    /**
-     * Updates the actions bound to this component.
-     */
-    void updateActions()
-    {
-        actionMediator_.updateAll();
     }
 
 

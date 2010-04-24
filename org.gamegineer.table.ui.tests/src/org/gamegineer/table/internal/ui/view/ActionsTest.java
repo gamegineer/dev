@@ -677,6 +677,26 @@ public final class ActionsTest
     }
 
     /**
+     * Ensures the {@code getSaveTableAction} method does not return {@code
+     * null}.
+     */
+    @Test
+    public void testGetSaveTableAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getSaveTableAction() );
+    }
+
+    /**
+     * Ensures the {@code getSaveTableAsAction} method does not return {@code
+     * null}.
+     */
+    @Test
+    public void testGetSaveTableAsAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getSaveTableAsAction() );
+    }
+
+    /**
      * Ensures the {@code getSetAccordianDownCardPileLayoutAction} method does
      * not return {@code null}.
      */

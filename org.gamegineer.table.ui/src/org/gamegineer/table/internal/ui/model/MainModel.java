@@ -46,6 +46,10 @@ public final class MainModel
     /** The table advisor. */
     private final ITableAdvisor advisor_;
 
+    /** The name of the file to which the model was last saved. */
+    @GuardedBy( "lock_" )
+    private String fileName_;
+
     /** Indicates the main model is dirty. */
     @GuardedBy( "lock_" )
     private boolean isDirty_;
@@ -82,6 +86,7 @@ public final class MainModel
 
         lock_ = new Object();
         advisor_ = advisor;
+        fileName_ = null;
         isDirty_ = false;
         listeners_ = new CopyOnWriteArrayList<IMainModelListener>();
         tableModel_ = null;
@@ -213,6 +218,21 @@ public final class MainModel
     }
 
     /**
+     * Gets the name of the file to which this model was last saved.
+     * 
+     * @return The name of the file to which this model was last saved or
+     *         {@code null} if this model has not yet been saved.
+     */
+    /* @Nullable */
+    public String getFileName()
+    {
+        synchronized( lock_ )
+        {
+            return fileName_;
+        }
+    }
+
+    /**
      * Gets the table model.
      * 
      * @return The table model or {@code null} if no table model is open.
@@ -275,7 +295,7 @@ public final class MainModel
 
         fireTableOpened( openedTableModel );
 
-        setDirty();
+        setClean();
     }
 
     /**
@@ -295,6 +315,35 @@ public final class MainModel
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.MainModel_removeMainModelListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+    /**
+     * Saves the current table to the specified file.
+     * 
+     * @param fileName
+     *        The name of the file to which the file will be saved; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code fileName} is {@code null}.
+     * @throws org.gamegineer.table.internal.ui.model.ModelException
+     *         If an error occurs while saving the file.
+     */
+    public void saveTable(
+        /* @NonNull */
+        final String fileName )
+        throws ModelException
+    {
+        assertArgumentNotNull( fileName, "fileName" ); //$NON-NLS-1$
+
+        // TODO: Serialize table to file.
+
+        synchronized( lock_ )
+        {
+            fileName_ = fileName;
+        }
+
+        setClean();
     }
 
     /**

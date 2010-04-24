@@ -235,6 +235,9 @@ final class MenuBarView
         menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_file_mnemonic ).getKeyCode() );
         menu.add( Actions.getOpenNewTableAction() );
         menu.addSeparator();
+        menu.add( Actions.getSaveTableAction() );
+        menu.add( Actions.getSaveTableAsAction() );
+        menu.addSeparator();
         menu.add( Actions.getExitAction() );
         return menu;
     }

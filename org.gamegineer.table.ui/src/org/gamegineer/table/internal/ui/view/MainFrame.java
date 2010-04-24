@@ -24,11 +24,21 @@ package org.gamegineer.table.internal.ui.view;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import javax.swing.Action;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.core.util.IPredicate;
+import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
+import org.gamegineer.table.internal.ui.model.IMainModelListener;
 import org.gamegineer.table.internal.ui.model.MainModel;
+import org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent;
+import org.gamegineer.table.internal.ui.model.MainModelEvent;
+import org.gamegineer.table.internal.ui.model.ModelException;
 import org.gamegineer.table.ui.ITableAdvisor;
 
 /**
@@ -37,6 +47,7 @@ import org.gamegineer.table.ui.ITableAdvisor;
 @NotThreadSafe
 public final class MainFrame
     extends JFrame
+    implements IMainModelListener
 {
     // ======================================================================
     // Fields
@@ -99,6 +110,7 @@ public final class MainFrame
         super.addNotify();
 
         bindActions();
+        model_.addMainModelListener( this );
     }
 
     /**
@@ -132,7 +144,38 @@ public final class MainFrame
                 @SuppressWarnings( "unused" )
                 final ActionEvent e )
             {
-                model_.openTable();
+                openNewTable();
+            }
+        } );
+        actionMediator_.bindActionListener( Actions.getSaveTableAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                saveTable( false );
+            }
+        } );
+        actionMediator_.bindActionListener( Actions.getSaveTableAsAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                saveTable( true );
+            }
+        } );
+
+        actionMediator_.bindShouldEnablePredicate( Actions.getSaveTableAction(), new IPredicate<Action>()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Action obj )
+            {
+                return model_.isDirty();
             }
         } );
     }
@@ -152,13 +195,105 @@ public final class MainFrame
     }
 
     /*
+     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
+     */
+    public void mainModelDirtyFlagChanged(
+        final MainModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelStateChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
+     */
+    public void mainModelStateChanged(
+        final MainModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        Actions.updateAll();
+    }
+
+    /**
+     * Opens a new empty table.
+     */
+    private void openNewTable()
+    {
+        model_.openTable();
+    }
+
+    /*
      * @see java.awt.Frame#removeNotify()
      */
     @Override
     public void removeNotify()
     {
+        model_.removeMainModelListener( this );
         actionMediator_.unbindAll();
 
         super.removeNotify();
+    }
+
+    /**
+     * Saves the table state to a file.
+     * 
+     * @param forcePromptForFileName
+     *        Indicates the user should be forced to choose a file name
+     *        regardless of whether or not the table state is already associated
+     *        with an existing file.
+     */
+    private void saveTable(
+        final boolean forcePromptForFileName )
+    {
+        final String fileName;
+        if( forcePromptForFileName || (model_.getFileName() == null) )
+        {
+            final JFileChooser fileChooser = new JFileChooser();
+            fileChooser.addChoosableFileFilter( new FileNameExtensionFilter( Messages.MainFrame_fileFilter_table, "ser" ) ); //$NON-NLS-1$
+            if( fileChooser.showSaveDialog( this ) == JFileChooser.CANCEL_OPTION )
+            {
+                return;
+            }
+
+            fileName = fileChooser.getSelectedFile().getAbsolutePath();
+        }
+        else
+        {
+            fileName = model_.getFileName();
+        }
+
+        try
+        {
+            model_.saveTable( fileName );
+        }
+        catch( final ModelException e )
+        {
+            Loggers.DEFAULT.log( Level.SEVERE, Messages.MainFrame_saveTable_error, e );
+            JOptionPane.showMessageDialog( this, Messages.MainFrame_saveTable_error, Messages.MainFrame_title, JOptionPane.ERROR_MESSAGE );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#tableClosed(org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent)
+     */
+    public void tableClosed(
+        final MainModelContentChangedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#tableOpened(org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent)
+     */
+    public void tableOpened(
+        final MainModelContentChangedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing
     }
 }

@@ -569,6 +569,12 @@ final class Messages
 
     // --- MainFrame --------------------------------------------------------
 
+    /** The table file filter. */
+    public static String MainFrame_fileFilter_table;
+
+    /** An error occurred while saving the table. */
+    public static String MainFrame_saveTable_error;
+
     /** The frame title. */
     public static String MainFrame_title;
 
@@ -694,6 +700,25 @@ final class Messages
 
     /** The reset table origin action text. */
     public static String ResetTableOriginAction_text;
+
+    // --- SaveTableAction --------------------------------------------------
+
+    /** The save table action accelerator. */
+    public static String SaveTableAction_accelerator;
+
+    /** The save table action mnemonic. */
+    public static String SaveTableAction_mnemonic;
+
+    /** The save table action text. */
+    public static String SaveTableAction_text;
+
+    // --- SaveTableAsAction ------------------------------------------------
+
+    /** The save table as action mnemonic. */
+    public static String SaveTableAsAction_mnemonic;
+
+    /** The save table as action text. */
+    public static String SaveTableAsAction_text;
 
     // --- SetAccordianDownCardPileLayoutAction -----------------------------
 

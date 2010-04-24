@@ -25,10 +25,8 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.awt.event.ActionListener;
-import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Map;
-import java.util.Set;
 import javax.swing.Action;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
@@ -267,41 +265,5 @@ public final class ActionMediator
             entry.getKey().removeActionListener( entry.getValue() );
         }
         actionListeners_.clear();
-    }
-
-    /**
-     * Updates the state of the specified action.
-     * 
-     * @param action
-     *        The action; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code action} has no bound predicates.
-     * @throws java.lang.NullPointerException
-     *         If {@code action} is {@code null}.
-     */
-    public void update(
-        /* @NonNull */
-        final BasicAction action )
-    {
-        assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
-        assertArgumentLegal( hasPredicates( action ), "action", Messages.ActionMediator_update_noPredicates ); //$NON-NLS-1$
-
-        action.update();
-    }
-
-    /**
-     * Updates the state of all actions.
-     */
-    public void updateAll()
-    {
-        final Set<BasicAction> actions = new HashSet<BasicAction>();
-        actions.addAll( shouldEnablePredicates_.keySet() );
-        actions.addAll( shouldSelectPredicates_.keySet() );
-
-        for( final BasicAction action : actions )
-        {
-            action.update();
-        }
     }
 }

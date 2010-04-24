@@ -274,6 +274,20 @@ public final class MainModelTest
     }
 
     /**
+     * Ensures the {@code saveTable} method throws an exception when passed a
+     * {@code null} file name.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSaveTable_FileName_Null()
+        throws Exception
+    {
+        model_.saveTable( null );
+    }
+
+    /**
      * Ensures the {@code setClean} method fires a main model dirty flag changed
      * event.
      */

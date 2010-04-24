@@ -21,304 +21,424 @@
 
 package org.gamegineer.table.internal.ui.view;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.KeyStroke;
-import net.jcip.annotations.NotThreadSafe;
+import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.CardPileLayout;
 import org.gamegineer.table.internal.ui.action.BasicAction;
 
 /**
  * The collection of actions available to all views.
  */
-@NotThreadSafe
+@ThreadSafe
 final class Actions
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The action used to add an Ace of Clubs card to a card pile. */
-    private static final BasicAction addAceOfClubsCardAction_;
-
-    /** The action used to add an Ace of Diamonds card to a card pile. */
-    private static final BasicAction addAceOfDiamondsCardAction_;
-
-    /** The action used to add an Ace of Hearts card to a card pile. */
-    private static final BasicAction addAceOfHeartsCardAction_;
-
-    /** The action used to add an Ace of Spades card to a card pile. */
-    private static final BasicAction addAceOfSpadesCardAction_;
-
-    /** The action used to add a card pile to the table. */
-    private static final BasicAction addCardPileAction_;
-
-    /** The action used to add an Eight of Clubs card to a card pile. */
-    private static final BasicAction addEightOfClubsCardAction_;
-
-    /** The action used to add an Eight of Diamonds card to a card pile. */
-    private static final BasicAction addEightOfDiamondsCardAction_;
-
-    /** The action used to add an Eight of Hearts card to a card pile. */
-    private static final BasicAction addEightOfHeartsCardAction_;
-
-    /** The action used to add an Eight of Spades card to a card pile. */
-    private static final BasicAction addEightOfSpadesCardAction_;
-
-    /** The action used to add a Five of Clubs card to a card pile. */
-    private static final BasicAction addFiveOfClubsCardAction_;
-
-    /** The action used to add a Five of Diamonds card to a card pile. */
-    private static final BasicAction addFiveOfDiamondsCardAction_;
-
-    /** The action used to add a Five of Hearts card to a card pile. */
-    private static final BasicAction addFiveOfHeartsCardAction_;
-
-    /** The action used to add a Five of Spades card to a card pile. */
-    private static final BasicAction addFiveOfSpadesCardAction_;
-
-    /** The action used to add a Four of Clubs card to a card pile. */
-    private static final BasicAction addFourOfClubsCardAction_;
-
-    /** The action used to add a Four of Diamonds card to a card pile. */
-    private static final BasicAction addFourOfDiamondsCardAction_;
-
-    /** The action used to add a Four of Hearts card to a card pile. */
-    private static final BasicAction addFourOfHeartsCardAction_;
-
-    /** The action used to add a Four of Spades card to a card pile. */
-    private static final BasicAction addFourOfSpadesCardAction_;
-
-    /** The action used to add a Jack of Clubs card to a card pile. */
-    private static final BasicAction addJackOfClubsCardAction_;
-
-    /** The action used to add a Jack of Diamonds card to a card pile. */
-    private static final BasicAction addJackOfDiamondsCardAction_;
-
-    /** The action used to add a Jack of Hearts card to a card pile. */
-    private static final BasicAction addJackOfHeartsCardAction_;
-
-    /** The action used to add a Jack of Spades card to a card pile. */
-    private static final BasicAction addJackOfSpadesCardAction_;
-
-    /** The action used to add a Joker card to a card pile. */
-    private static final BasicAction addJokerCardAction_;
-
-    /** The action used to add a King of Clubs card to a card pile. */
-    private static final BasicAction addKingOfClubsCardAction_;
-
-    /** The action used to add a King of Diamonds card to a card pile. */
-    private static final BasicAction addKingOfDiamondsCardAction_;
-
-    /** The action used to add a King of Hearts card to a card pile. */
-    private static final BasicAction addKingOfHeartsCardAction_;
-
-    /** The action used to add a King of Spades card to a card pile. */
-    private static final BasicAction addKingOfSpadesCardAction_;
-
-    /** The action used to add a Nine of Clubs card to a card pile. */
-    private static final BasicAction addNineOfClubsCardAction_;
-
-    /** The action used to add a Nine of Diamonds card to a card pile. */
-    private static final BasicAction addNineOfDiamondsCardAction_;
-
-    /** The action used to add a Nine of Hearts card to a card pile. */
-    private static final BasicAction addNineOfHeartsCardAction_;
-
-    /** The action used to add a Nine of Spades card to a card pile. */
-    private static final BasicAction addNineOfSpadesCardAction_;
-
-    /** The action used to add a Queen of Clubs card to a card pile. */
-    private static final BasicAction addQueenOfClubsCardAction_;
-
-    /** The action used to add a Queen of Diamonds card to a card pile. */
-    private static final BasicAction addQueenOfDiamondsCardAction_;
-
-    /** The action used to add a Queen of Hearts card to a card pile. */
-    private static final BasicAction addQueenOfHeartsCardAction_;
-
-    /** The action used to add a Queen of Spades card to a card pile. */
-    private static final BasicAction addQueenOfSpadesCardAction_;
-
-    /** The action used to add a Seven of Clubs card to a card pile. */
-    private static final BasicAction addSevenOfClubsCardAction_;
-
-    /** The action used to add a Seven of Diamonds card to a card pile. */
-    private static final BasicAction addSevenOfDiamondsCardAction_;
-
-    /** The action used to add a Seven of Hearts card to a card pile. */
-    private static final BasicAction addSevenOfHeartsCardAction_;
-
-    /** The action used to add a Seven of Spades card to a card pile. */
-    private static final BasicAction addSevenOfSpadesCardAction_;
-
-    /** The action used to add a Six of Clubs card to a card pile. */
-    private static final BasicAction addSixOfClubsCardAction_;
-
-    /** The action used to add a Six of Diamonds card to a card pile. */
-    private static final BasicAction addSixOfDiamondsCardAction_;
-
-    /** The action used to add a Six of Hearts card to a card pile. */
-    private static final BasicAction addSixOfHeartsCardAction_;
-
-    /** The action used to add a Six of Spades card to a card pile. */
-    private static final BasicAction addSixOfSpadesCardAction_;
-
-    /** The action used to add a standard 52-card deck to a card pile. */
-    private static final BasicAction addStandard52CardDeckAction_;
-
-    /** The action used to add a standard 54-card deck to a card pile. */
-    private static final BasicAction addStandard54CardDeckAction_;
-
-    /** The action used to add a Ten of Clubs card to a card pile. */
-    private static final BasicAction addTenOfClubsCardAction_;
-
-    /** The action used to add a Ten of Diamonds card to a card pile. */
-    private static final BasicAction addTenOfDiamondsCardAction_;
-
-    /** The action used to add a Ten of Hearts card to a card pile. */
-    private static final BasicAction addTenOfHeartsCardAction_;
-
-    /** The action used to add a Ten of Spades card to a card pile. */
-    private static final BasicAction addTenOfSpadesCardAction_;
-
-    /** The action used to add a Three of Clubs card to a card pile. */
-    private static final BasicAction addThreeOfClubsCardAction_;
-
-    /** The action used to add a Three of Diamonds card to a card pile. */
-    private static final BasicAction addThreeOfDiamondsCardAction_;
-
-    /** The action used to add a Three of Hearts card to a card pile. */
-    private static final BasicAction addThreeOfHeartsCardAction_;
-
-    /** The action used to add a Three of Spades card to a card pile. */
-    private static final BasicAction addThreeOfSpadesCardAction_;
-
-    /** The action used to add a Two of Clubs card to a card pile. */
-    private static final BasicAction addTwoOfClubsCardAction_;
-
-    /** The action used to add a Two of Diamonds card to a card pile. */
-    private static final BasicAction addTwoOfDiamondsCardAction_;
-
-    /** The action used to add a Two of Hearts card to a card pile. */
-    private static final BasicAction addTwoOfHeartsCardAction_;
-
-    /** The action used to add a Two of Spades card to a card pile. */
-    private static final BasicAction addTwoOfSpadesCardAction_;
-
-    /** The action used to exit the application. */
-    private static final BasicAction exitAction_;
-
-    /** The action used to flip a card in a card pile. */
-    private static final BasicAction flipCardAction_;
-
-    /** The action used to open the about dialog. */
-    private static final BasicAction openAboutDialogAction_;
-
-    /** The action used to open a new table. */
-    private static final BasicAction openNewTableAction_;
-
-    /** The action used to remove a card from a card pile. */
-    private static final BasicAction removeCardAction_;
-
-    /** The action used to remove a card pile from the table. */
-    private static final BasicAction removeCardPileAction_;
-
-    /** The action used to reset the table origin to the view origin. */
-    private static final BasicAction resetTableOriginAction_;
-
-    /** The action used to set the accordian down layout on a card pile. */
-    private static final BasicAction setAccordianDownCardPileLayoutAction_;
-
-    /** The action used to set the accordian left layout on a card pile. */
-    private static final BasicAction setAccordianLeftCardPileLayoutAction_;
-
-    /** The action used to set the accordian right layout on a card pile. */
-    private static final BasicAction setAccordianRightCardPileLayoutAction_;
-
-    /** The action used to set the accordian up layout on a card pile. */
-    private static final BasicAction setAccordianUpCardPileLayoutAction_;
-
-    /** The action used to set the stacked layout on a card pile. */
-    private static final BasicAction setStackedCardPileLayoutAction_;
+    /**
+     * The identifier of the action used to add an Ace of Clubs card to a card
+     * pile.
+     */
+    private static final String ADD_ACE_OF_CLUBS_CARD_ACTION_ID = "addAceOfClubsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add an Ace of Diamonds card to a
+     * card pile.
+     */
+    private static final String ADD_ACE_OF_DIAMONDS_CARD_ACTION_ID = "addAceOfDiamondsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add an Ace of Hearts card to a card
+     * pile.
+     */
+    private static final String ADD_ACE_OF_HEARTS_CARD_ACTION_ID = "addAceOfHeartsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add an Ace of Spades card to a card
+     * pile.
+     */
+    private static final String ADD_ACE_OF_SPADES_CARD_ACTION_ID = "addAceOfSpadesCardAction"; //$NON-NLS-1$
+
+    /** The identifier of the action used to add a card pile to the table. */
+    private static final String ADD_CARD_PILE_ACTION_ID = "addCardPileAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add an Eight of Clubs card to a card
+     * pile.
+     */
+    private static final String ADD_EIGHT_OF_CLUBS_CARD_ACTION_ID = "addEightOfClubsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add an Eight of Diamonds card to a
+     * card pile.
+     */
+    private static final String ADD_EIGHT_OF_DIAMONDS_CARD_ACTION_ID = "addEightOfDiamondsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add an Eight of Hearts card to a
+     * card pile.
+     */
+    private static final String ADD_EIGHT_OF_HEARTS_CARD_ACTION_ID = "addEightOfHeartsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add an Eight of Spades card to a
+     * card pile.
+     */
+    private static final String ADD_EIGHT_OF_SPADES_CARD_ACTION_ID = "addEightOfSpadesCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Five of Clubs card to a card
+     * pile.
+     */
+    private static final String ADD_FIVE_OF_CLUBS_CARD_ACTION_ID = "addFiveOfClubsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Five of Diamonds card to a
+     * card pile.
+     */
+    private static final String ADD_FIVE_OF_DIAMONDS_CARD_ACTION_ID = "addFiveOfDiamondsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Five of Hearts card to a card
+     * pile.
+     */
+    private static final String ADD_FIVE_OF_HEARTS_CARD_ACTION_ID = "addFiveOfHeartsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Five of Spades card to a card
+     * pile.
+     */
+    private static final String ADD_FIVE_OF_SPADES_CARD_ACTION_ID = "addFiveOfSpadesCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Four of Clubs card to a card
+     * pile.
+     */
+    private static final String ADD_FOUR_OF_CLUBS_CARD_ACTION_ID = "addFourOfClubsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Four of Diamonds card to a
+     * card pile.
+     */
+    private static final String ADD_FOUR_OF_DIAMONDS_CARD_ACTION_ID = "addFourOfDiamondsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Four of Hearts card to a card
+     * pile.
+     */
+    private static final String ADD_FOUR_OF_HEARTS_CARD_ACTION_ID = "addFourOfHeartsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Four of Spades card to a card
+     * pile.
+     */
+    private static final String ADD_FOUR_OF_SPADES_CARD_ACTION_ID = "addFourOfSpadesCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Jack of Clubs card to a card
+     * pile.
+     */
+    private static final String ADD_JACK_OF_CLUBS_CARD_ACTION_ID = "addJackOfClubsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Jack of Diamonds card to a
+     * card pile.
+     */
+    private static final String ADD_JACK_OF_DIAMONDS_CARD_ACTION_ID = "addJackOfDiamondsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Jack of Hearts card to a card
+     * pile.
+     */
+    private static final String ADD_JACK_OF_HEARTS_CARD_ACTION_ID = "addJackOfHeartsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Jack of Spades card to a card
+     * pile.
+     */
+    private static final String ADD_JACK_OF_SPADES_CARD_ACTION_ID = "addJackOfSpadesCardAction"; //$NON-NLS-1$
+
+    /** The identifier of the action used to add a Joker card to a card pile. */
+    private static final String ADD_JOKER_CARD_ACTION_ID = "addJokerCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a King of Clubs card to a card
+     * pile.
+     */
+    private static final String ADD_KING_OF_CLUBS_CARD_ACTION_ID = "addKingOfClubsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a King of Diamonds card to a
+     * card pile.
+     */
+    private static final String ADD_KING_OF_DIAMONDS_CARD_ACTION_ID = "addKingOfDiamondsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a King of Hearts card to a card
+     * pile.
+     */
+    private static final String ADD_KING_OF_HEARTS_CARD_ACTION_ID = "addKingOfHeartsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a King of Spades card to a card
+     * pile.
+     */
+    private static final String ADD_KING_OF_SPADES_CARD_ACTION_ID = "addKingOfSpadesCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Nine of Clubs card to a card
+     * pile.
+     */
+    private static final String ADD_NINE_OF_CLUBS_CARD_ACTION_ID = "addNineOfClubsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Nine of Diamonds card to a
+     * card pile.
+     */
+    private static final String ADD_NINE_OF_DIAMONDS_CARD_ACTION_ID = "addNineOfDiamondsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Nine of Hearts card to a card
+     * pile.
+     */
+    private static final String ADD_NINE_OF_HEARTS_CARD_ACTION_ID = "addNineOfHeartsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Nine of Spades card to a card
+     * pile.
+     */
+    private static final String ADD_NINE_OF_SPADES_CARD_ACTION_ID = "addNineOfSpadesCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Queen of Clubs card to a card
+     * pile.
+     */
+    private static final String ADD_QUEEN_OF_CLUBS_CARD_ACTION_ID = "addQueenOfClubsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Queen of Diamonds card to a
+     * card pile.
+     */
+    private static final String ADD_QUEEN_OF_DIAMONDS_CARD_ACTION_ID = "addQueenOfDiamondsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Queen of Hearts card to a card
+     * pile.
+     */
+    private static final String ADD_QUEEN_OF_HEARTS_CARD_ACTION_ID = "addQueenOfHeartsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Queen of Spades card to a card
+     * pile.
+     */
+    private static final String ADD_QUEEN_OF_SPADES_CARD_ACTION_ID = "addQueenOfSpadesCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Seven of Clubs card to a card
+     * pile.
+     */
+    private static final String ADD_SEVEN_OF_CLUBS_CARD_ACTION_ID = "addSevenOfClubsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Seven of Diamonds card to a
+     * card pile.
+     */
+    private static final String ADD_SEVEN_OF_DIAMONDS_CARD_ACTION_ID = "addSevenOfDiamondsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Seven of Hearts card to a card
+     * pile.
+     */
+    private static final String ADD_SEVEN_OF_HEARTS_CARD_ACTION_ID = "addSevenOfHeartsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Seven of Spades card to a card
+     * pile.
+     */
+    private static final String ADD_SEVEN_OF_SPADES_CARD_ACTION_ID = "addSevenOfSpadesCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Six of Clubs card to a card
+     * pile.
+     */
+    private static final String ADD_SIX_OF_CLUBS_CARD_ACTION_ID = "addSixOfClubsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Six of Diamonds card to a card
+     * pile.
+     */
+    private static final String ADD_SIX_OF_DIAMONDS_CARD_ACTION_ID = "addSixOfDiamondsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Six of Hearts card to a card
+     * pile.
+     */
+    private static final String ADD_SIX_OF_HEARTS_CARD_ACTION_ID = "addSixOfHeartsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Six of Spades card to a card
+     * pile.
+     */
+    private static final String ADD_SIX_OF_SPADES_CARD_ACTION_ID = "addSixOfSpadesCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a standard 52-card deck to a
+     * card pile.
+     */
+    private static final String ADD_STANDARD_52_CARD_DECK_ACTION_ID = "addStandard52CardDeckAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a standard 54-card deck to a
+     * card pile.
+     */
+    private static final String ADD_STANDARD_54_CARD_DECK_ACTION_ID = "addStandard54CardDeckAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Ten of Clubs card to a card
+     * pile.
+     */
+    private static final String ADD_TEN_OF_CLUBS_CARD_ACTION_ID = "addTenOfClubsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Ten of Diamonds card to a card
+     * pile.
+     */
+    private static final String ADD_TEN_OF_DIAMONDS_CARD_ACTION_ID = "addTenOfDiamondsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Ten of Hearts card to a card
+     * pile.
+     */
+    private static final String ADD_TEN_OF_HEARTS_CARD_ACTION_ID = "addTenOfHeartsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Ten of Spades card to a card
+     * pile.
+     */
+    private static final String ADD_TEN_OF_SPADES_CARD_ACTION_ID = "addTenOfSpadesCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Three of Clubs card to a card
+     * pile.
+     */
+    private static final String ADD_THREE_OF_CLUBS_CARD_ACTION_ID = "addThreeOfClubsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Three of Diamonds card to a
+     * card pile.
+     */
+    private static final String ADD_THREE_OF_DIAMONDS_CARD_ACTION_ID = "addThreeOfDiamondsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Three of Hearts card to a card
+     * pile.
+     */
+    private static final String ADD_THREE_OF_HEARTS_CARD_ACTION_ID = "addThreeOfHeartsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Three of Spades card to a card
+     * pile.
+     */
+    private static final String ADD_THREE_OF_SPADES_CARD_ACTION_ID = "addThreeOfSpadesCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Two of Clubs card to a card
+     * pile.
+     */
+    private static final String ADD_TWO_OF_CLUBS_CARD_ACTION_ID = "addTwoOfClubsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Two of Diamonds card to a card
+     * pile.
+     */
+    private static final String ADD_TWO_OF_DIAMONDS_CARD_ACTION_ID = "addTwoOfDiamondsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Two of Hearts card to a card
+     * pile.
+     */
+    private static final String ADD_TWO_OF_HEARTS_CARD_ACTION_ID = "addTwoOfHeartsCardAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to add a Two of Spades card to a card
+     * pile.
+     */
+    private static final String ADD_TWO_OF_SPADES_CARD_ACTION_ID = "addTwoOfSpadesCardAction"; //$NON-NLS-1$
+
+    /** The identifier of the action used to exit the application. */
+    private static final String EXIT_ACTION_ID = "exitAction"; //$NON-NLS-1$
+
+    /** The identifier of the action used to flip a card in a card pile. */
+    private static final String FLIP_CARD_ACTION_ID = "flipCardAction"; //$NON-NLS-1$
+
+    /** The identifier of the action used to open the about dialog. */
+    private static final String OPEN_ABOUT_DIALOG_ACTION_ID = "openAboutDialogAction"; //$NON-NLS-1$
+
+    /** The identifier of the action used to open a new table. */
+    private static final String OPEN_NEW_TABLE_ACTION_ID = "openNewTableAction"; //$NON-NLS-1$
+
+    /** The identifier of the action used to remove a card from a card pile. */
+    private static final String REMOVE_CARD_ACTION_ID = "removeCardAction"; //$NON-NLS-1$
+
+    /** The identifier of the action used to remove a card pile from the table. */
+    private static final String REMOVE_CARD_PILE_ACTION_ID = "removeCardPileAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to reset the table origin to the view
+     * origin.
+     */
+    private static final String RESET_TABLE_ORIGIN_ACTION_ID = "resetTableOriginAction"; //$NON-NLS-1$
+
+    /** The identifier of the action used to save a table. */
+    private static final String SAVE_TABLE_ACTION_ID = "saveTableAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to save a table to a different
+     * location.
+     */
+    private static final String SAVE_TABLE_AS_ACTION_ID = "saveTableAsAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to set the accordian down layout on a
+     * card pile.
+     */
+    private static final String SET_ACCORDIAN_DOWN_CARD_PILE_LAYOUT_ACTION_ID = "setAccordianDownCardPileLayoutAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to set the accordian left layout on a
+     * card pile.
+     */
+    private static final String SET_ACCORDIAN_LEFT_CARD_PILE_LAYOUT_ACTION_ID = "setAccordianLeftCardPileLayoutAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to set the accordian right layout on a
+     * card pile.
+     */
+    private static final String SET_ACCORDIAN_RIGHT_CARD_PILE_LAYOUT_ACTION_ID = "setAccordianRightCardPileLayoutAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to set the accordian up layout on a
+     * card pile.
+     */
+    private static final String SET_ACCORDIAN_UP_CARD_PILE_LAYOUT_ACTION_ID = "setAccordianUpCardPileLayoutAction"; //$NON-NLS-1$
+
+    /**
+     * The identifier of the action used to set the stacked layout on a card
+     * pile.
+     */
+    private static final String SET_STACKED_CARD_PILE_LAYOUT_ACTION_ID = "setStackedCardPileLayoutAction"; //$NON-NLS-1$
+
+    /** The collection of actions. */
+    private static final Map<String, BasicAction> actions_ = createActions();
 
 
     // ======================================================================
     // Constructors
     // ======================================================================
-
-    /**
-     * Initializes the {@code Actions} class.
-     */
-    static
-    {
-        addAceOfClubsCardAction_ = createAddAceOfClubsCardAction();
-        addAceOfDiamondsCardAction_ = createAddAceOfDiamondsCardAction();
-        addAceOfHeartsCardAction_ = createAddAceOfHeartsCardAction();
-        addAceOfSpadesCardAction_ = createAddAceOfSpadesCardAction();
-        addCardPileAction_ = createAddCardPileAction();
-        addEightOfClubsCardAction_ = createAddEightOfClubsCardAction();
-        addEightOfDiamondsCardAction_ = createAddEightOfDiamondsCardAction();
-        addEightOfHeartsCardAction_ = createAddEightOfHeartsCardAction();
-        addEightOfSpadesCardAction_ = createAddEightOfSpadesCardAction();
-        addFiveOfClubsCardAction_ = createAddFiveOfClubsCardAction();
-        addFiveOfDiamondsCardAction_ = createAddFiveOfDiamondsCardAction();
-        addFiveOfHeartsCardAction_ = createAddFiveOfHeartsCardAction();
-        addFiveOfSpadesCardAction_ = createAddFiveOfSpadesCardAction();
-        addFourOfClubsCardAction_ = createAddFourOfClubsCardAction();
-        addFourOfDiamondsCardAction_ = createAddFourOfDiamondsCardAction();
-        addFourOfHeartsCardAction_ = createAddFourOfHeartsCardAction();
-        addFourOfSpadesCardAction_ = createAddFourOfSpadesCardAction();
-        addJackOfClubsCardAction_ = createAddJackOfClubsCardAction();
-        addJackOfDiamondsCardAction_ = createAddJackOfDiamondsCardAction();
-        addJackOfHeartsCardAction_ = createAddJackOfHeartsCardAction();
-        addJackOfSpadesCardAction_ = createAddJackOfSpadesCardAction();
-        addJokerCardAction_ = createAddJokerCardAction();
-        addKingOfClubsCardAction_ = createAddKingOfClubsCardAction();
-        addKingOfDiamondsCardAction_ = createAddKingOfDiamondsCardAction();
-        addKingOfHeartsCardAction_ = createAddKingOfHeartsCardAction();
-        addKingOfSpadesCardAction_ = createAddKingOfSpadesCardAction();
-        addNineOfClubsCardAction_ = createAddNineOfClubsCardAction();
-        addNineOfDiamondsCardAction_ = createAddNineOfDiamondsCardAction();
-        addNineOfHeartsCardAction_ = createAddNineOfHeartsCardAction();
-        addNineOfSpadesCardAction_ = createAddNineOfSpadesCardAction();
-        addQueenOfClubsCardAction_ = createAddQueenOfClubsCardAction();
-        addQueenOfDiamondsCardAction_ = createAddQueenOfDiamondsCardAction();
-        addQueenOfHeartsCardAction_ = createAddQueenOfHeartsCardAction();
-        addQueenOfSpadesCardAction_ = createAddQueenOfSpadesCardAction();
-        addSevenOfClubsCardAction_ = createAddSevenOfClubsCardAction();
-        addSevenOfDiamondsCardAction_ = createAddSevenOfDiamondsCardAction();
-        addSevenOfHeartsCardAction_ = createAddSevenOfHeartsCardAction();
-        addSevenOfSpadesCardAction_ = createAddSevenOfSpadesCardAction();
-        addSixOfClubsCardAction_ = createAddSixOfClubsCardAction();
-        addSixOfDiamondsCardAction_ = createAddSixOfDiamondsCardAction();
-        addSixOfHeartsCardAction_ = createAddSixOfHeartsCardAction();
-        addSixOfSpadesCardAction_ = createAddSixOfSpadesCardAction();
-        addStandard52CardDeckAction_ = createAddStandard52CardDeckAction();
-        addStandard54CardDeckAction_ = createAddStandard54CardDeckAction();
-        addTenOfClubsCardAction_ = createAddTenOfClubsCardAction();
-        addTenOfDiamondsCardAction_ = createAddTenOfDiamondsCardAction();
-        addTenOfHeartsCardAction_ = createAddTenOfHeartsCardAction();
-        addTenOfSpadesCardAction_ = createAddTenOfSpadesCardAction();
-        addThreeOfClubsCardAction_ = createAddThreeOfClubsCardAction();
-        addThreeOfDiamondsCardAction_ = createAddThreeOfDiamondsCardAction();
-        addThreeOfHeartsCardAction_ = createAddThreeOfHeartsCardAction();
-        addThreeOfSpadesCardAction_ = createAddThreeOfSpadesCardAction();
-        addTwoOfClubsCardAction_ = createAddTwoOfClubsCardAction();
-        addTwoOfDiamondsCardAction_ = createAddTwoOfDiamondsCardAction();
-        addTwoOfHeartsCardAction_ = createAddTwoOfHeartsCardAction();
-        addTwoOfSpadesCardAction_ = createAddTwoOfSpadesCardAction();
-        exitAction_ = createExitAction();
-        flipCardAction_ = createFlipCardAction();
-        openAboutDialogAction_ = createOpenAboutDialogAction();
-        openNewTableAction_ = createOpenNewTableAction();
-        removeCardAction_ = createRemoveCardAction();
-        removeCardPileAction_ = createRemoveCardPileAction();
-        resetTableOriginAction_ = createResetTableOriginAction();
-        setAccordianDownCardPileLayoutAction_ = createSetAccordianDownCardPileLayoutAction();
-        setAccordianLeftCardPileLayoutAction_ = createSetAccordianLeftCardPileLayoutAction();
-        setAccordianRightCardPileLayoutAction_ = createSetAccordianRightCardPileLayoutAction();
-        setAccordianUpCardPileLayoutAction_ = createSetAccordianUpCardPileLayoutAction();
-        setStackedCardPileLayoutAction_ = createSetStackedCardPileLayoutAction();
-    }
 
     /**
      * Initializes a new instance of the {@code Actions} class.
@@ -334,15 +454,17 @@ final class Actions
     // ======================================================================
 
     /**
-     * Creates the add Ace of Clubs card action.
+     * Creates the collection of actions.
      * 
-     * @return The add Ace of Clubs card action; never {@code null}.
+     * @return The collection of actions; never {@code null}.
      */
     /* @NonNull */
     @SuppressWarnings( "boxing" )
-    private static BasicAction createAddAceOfClubsCardAction()
+    private static Map<String, BasicAction> createActions()
     {
-        return new BasicAction()
+        final Map<String, BasicAction> actions = new HashMap<String, BasicAction>();
+
+        actions.put( ADD_ACE_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -351,19 +473,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddAceOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddAceOfClubsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Ace of Diamonds card action.
-     * 
-     * @return The add Ace of Diamonds card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddAceOfDiamondsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_ACE_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -372,19 +483,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddAceOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddAceOfDiamondsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Ace of Hearts card action.
-     * 
-     * @return The add Ace of Hearts card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddAceOfHeartsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_ACE_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -393,19 +493,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddAceOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddAceOfHeartsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Ace of Spades card action.
-     * 
-     * @return The add Ace of Spades card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddAceOfSpadesCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_ACE_OF_SPADES_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -414,19 +503,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddAceOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddAceOfSpadesCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add card pile action.
-     * 
-     * @return The add card pile action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddCardPileAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_CARD_PILE_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -435,19 +513,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddCardPileAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddCardPileAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Eight of Clubs card action.
-     * 
-     * @return The add Eight of Clubs card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddEightOfClubsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_EIGHT_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -456,19 +523,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddEightOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddEightOfClubsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Eight of Diamonds card action.
-     * 
-     * @return The add Eight of Diamonds card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddEightOfDiamondsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_EIGHT_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -477,19 +533,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddEightOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddEightOfDiamondsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Eight of Hearts card action.
-     * 
-     * @return The add Eight of Hearts card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddEightOfHeartsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_EIGHT_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -498,19 +543,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddEightOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddEightOfHeartsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Eight of Spades card action.
-     * 
-     * @return The add Eight of Spades card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddEightOfSpadesCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_EIGHT_OF_SPADES_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -519,19 +553,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddEightOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddEightOfSpadesCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Five of Clubs card action.
-     * 
-     * @return The add Five of Clubs card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddFiveOfClubsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_FIVE_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -540,19 +563,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFiveOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFiveOfClubsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Five of Diamonds card action.
-     * 
-     * @return The add Five of Diamonds card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddFiveOfDiamondsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_FIVE_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -561,19 +573,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFiveOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFiveOfDiamondsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Five of Hearts card action.
-     * 
-     * @return The add Five of Hearts card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddFiveOfHeartsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_FIVE_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -582,19 +583,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFiveOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFiveOfHeartsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Five of Spades card action.
-     * 
-     * @return The add Five of Spades card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddFiveOfSpadesCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_FIVE_OF_SPADES_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -603,19 +593,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFiveOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFiveOfSpadesCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Four of Clubs card action.
-     * 
-     * @return The add Four of Clubs card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddFourOfClubsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_FOUR_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -624,19 +603,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFourOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFourOfClubsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Four of Diamonds card action.
-     * 
-     * @return The add Four of Diamonds card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddFourOfDiamondsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_FOUR_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -645,19 +613,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFourOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFourOfDiamondsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Four of Hearts card action.
-     * 
-     * @return The add Four of Hearts card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddFourOfHeartsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_FOUR_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -666,19 +623,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFourOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFourOfHeartsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Four of Spades card action.
-     * 
-     * @return The add Four of Spades card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddFourOfSpadesCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_FOUR_OF_SPADES_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -687,19 +633,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFourOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddFourOfSpadesCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Jack of Clubs card action.
-     * 
-     * @return The add Jack of Clubs card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddJackOfClubsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_JACK_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -708,19 +643,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddJackOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddJackOfClubsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Jack of Diamonds card action.
-     * 
-     * @return The add Jack of Diamonds card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddJackOfDiamondsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_JACK_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -729,19 +653,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddJackOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddJackOfDiamondsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Jack of Hearts card action.
-     * 
-     * @return The add Jack of Hearts card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddJackOfHeartsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_JACK_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -750,19 +663,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddJackOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddJackOfHeartsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Jack of Spades card action.
-     * 
-     * @return The add Jack of Spades card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddJackOfSpadesCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_JACK_OF_SPADES_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -771,19 +673,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddJackOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddJackOfSpadesCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Joker card action.
-     * 
-     * @return The add Joker card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddJokerCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_JOKER_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -792,19 +683,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddJokerCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddJokerCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add King of Clubs card action.
-     * 
-     * @return The add King of Clubs card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddKingOfClubsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_KING_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -813,19 +693,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddKingOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddKingOfClubsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add King of Diamonds card action.
-     * 
-     * @return The add King of Diamonds card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddKingOfDiamondsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_KING_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -834,19 +703,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddKingOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddKingOfDiamondsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add King of Hearts card action.
-     * 
-     * @return The add King of Hearts card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddKingOfHeartsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_KING_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -855,19 +713,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddKingOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddKingOfHeartsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add King of Spades card action.
-     * 
-     * @return The add King of Spades card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddKingOfSpadesCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_KING_OF_SPADES_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -876,19 +723,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddKingOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddKingOfSpadesCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Nine of Clubs card action.
-     * 
-     * @return The add Nine of Clubs card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddNineOfClubsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_NINE_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -897,19 +733,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddNineOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddNineOfClubsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Nine of Diamonds card action.
-     * 
-     * @return The add Nine of Diamonds card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddNineOfDiamondsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_NINE_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -918,19 +743,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddNineOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddNineOfDiamondsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Nine of Hearts card action.
-     * 
-     * @return The add Nine of Hearts card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddNineOfHeartsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_NINE_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -939,19 +753,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddNineOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddNineOfHeartsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Nine of Spades card action.
-     * 
-     * @return The add Nine of Spades card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddNineOfSpadesCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_NINE_OF_SPADES_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -960,19 +763,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddNineOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddNineOfSpadesCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Queen of Clubs card action.
-     * 
-     * @return The add Queen of Clubs card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddQueenOfClubsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_QUEEN_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -981,19 +773,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddQueenOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddQueenOfClubsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Queen of Diamonds card action.
-     * 
-     * @return The add Queen of Diamonds card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddQueenOfDiamondsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_QUEEN_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1002,19 +783,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddQueenOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddQueenOfDiamondsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Queen of Hearts card action.
-     * 
-     * @return The add Queen of Hearts card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddQueenOfHeartsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_QUEEN_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1023,19 +793,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddQueenOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddQueenOfHeartsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Queen of Spades card action.
-     * 
-     * @return The add Queen of Spades card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddQueenOfSpadesCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_QUEEN_OF_SPADES_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1044,19 +803,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddQueenOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddQueenOfSpadesCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Seven of Clubs card action.
-     * 
-     * @return The add Seven of Clubs card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddSevenOfClubsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_SEVEN_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1065,19 +813,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSevenOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSevenOfClubsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Seven of Diamonds card action.
-     * 
-     * @return The add Seven of Diamonds card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddSevenOfDiamondsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_SEVEN_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1086,19 +823,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSevenOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSevenOfDiamondsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Seven of Hearts card action.
-     * 
-     * @return The add Seven of Hearts card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddSevenOfHeartsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_SEVEN_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1107,19 +833,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSevenOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSevenOfHeartsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Seven of Spades card action.
-     * 
-     * @return The add Seven of Spades card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddSevenOfSpadesCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_SEVEN_OF_SPADES_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1128,19 +843,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSevenOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSevenOfSpadesCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Six of Clubs card action.
-     * 
-     * @return The add Six of Clubs card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddSixOfClubsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_SIX_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1149,19 +853,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSixOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSixOfClubsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Six of Diamonds card action.
-     * 
-     * @return The add Six of Diamonds card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddSixOfDiamondsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_SIX_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1170,19 +863,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSixOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSixOfDiamondsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Six of Hearts card action.
-     * 
-     * @return The add Six of Hearts card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddSixOfHeartsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_SIX_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1191,19 +873,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSixOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSixOfHeartsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Six of Spades card action.
-     * 
-     * @return The add Six of Spades card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddSixOfSpadesCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_SIX_OF_SPADES_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1212,19 +883,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSixOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddSixOfSpadesCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add standard 52-card deck action.
-     * 
-     * @return The add standard 52-card deck action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddStandard52CardDeckAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_STANDARD_52_CARD_DECK_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1232,19 +892,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddStandard52CardDeckAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddStandard52CardDeckAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add standard 54-card deck action.
-     * 
-     * @return The add standard 54-card deck action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddStandard54CardDeckAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_STANDARD_54_CARD_DECK_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1252,19 +901,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddStandard54CardDeckAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddStandard54CardDeckAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Ten of Clubs card action.
-     * 
-     * @return The add Ten of Clubs card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddTenOfClubsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_TEN_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1273,19 +911,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTenOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTenOfClubsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Ten of Diamonds card action.
-     * 
-     * @return The add Ten of Diamonds card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddTenOfDiamondsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_TEN_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1294,19 +921,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTenOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTenOfDiamondsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Ten of Hearts card action.
-     * 
-     * @return The add Ten of Hearts card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddTenOfHeartsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_TEN_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1315,19 +931,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTenOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTenOfHeartsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Ten of Spades card action.
-     * 
-     * @return The add Ten of Spades card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddTenOfSpadesCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_TEN_OF_SPADES_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1336,19 +941,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTenOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTenOfSpadesCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Three of Clubs card action.
-     * 
-     * @return The add Three of Clubs card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddThreeOfClubsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_THREE_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1357,19 +951,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddThreeOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddThreeOfClubsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Three of Diamonds card action.
-     * 
-     * @return The add Three of Diamonds card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddThreeOfDiamondsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_THREE_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1378,19 +961,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddThreeOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddThreeOfDiamondsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Three of Hearts card action.
-     * 
-     * @return The add Three of Hearts card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddThreeOfHeartsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_THREE_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1399,19 +971,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddThreeOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddThreeOfHeartsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Three of Spades card action.
-     * 
-     * @return The add Three of Spades card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddThreeOfSpadesCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_THREE_OF_SPADES_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1420,19 +981,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddThreeOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddThreeOfSpadesCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Two of Clubs card action.
-     * 
-     * @return The add Two of Clubs card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddTwoOfClubsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_TWO_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1441,19 +991,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTwoOfClubsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTwoOfClubsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Two of Diamonds card action.
-     * 
-     * @return The add Two of Diamonds card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddTwoOfDiamondsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_TWO_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1462,19 +1001,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTwoOfDiamondsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTwoOfDiamondsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Two of Hearts card action.
-     * 
-     * @return The add Two of Hearts card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddTwoOfHeartsCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_TWO_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1483,19 +1011,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTwoOfHeartsCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTwoOfHeartsCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the add Two of Spades card action.
-     * 
-     * @return The add Two of Spades card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createAddTwoOfSpadesCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( ADD_TWO_OF_SPADES_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1504,19 +1021,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTwoOfSpadesCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.AddTwoOfSpadesCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the exit action.
-     * 
-     * @return The exit action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createExitAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( EXIT_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1524,19 +1030,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.ExitAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.ExitAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the flip card action.
-     * 
-     * @return The flip card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createFlipCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( FLIP_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1545,19 +1040,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.FlipCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.FlipCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the open about dialog action.
-     * 
-     * @return The open about dialog action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createOpenAboutDialogAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( OPEN_ABOUT_DIALOG_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1565,19 +1049,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.OpenAboutDialogAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.OpenAboutDialogAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the open new table action.
-     * 
-     * @return The open new table action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createOpenNewTableAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( OPEN_NEW_TABLE_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1586,19 +1059,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.OpenNewTableAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.OpenNewTableAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the remove card action.
-     * 
-     * @return The remove card action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createRemoveCardAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( REMOVE_CARD_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1607,19 +1069,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.RemoveCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.RemoveCardAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the remove card pile action.
-     * 
-     * @return The remove card pile action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createRemoveCardPileAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( REMOVE_CARD_PILE_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1628,19 +1079,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.RemoveCardPileAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.RemoveCardPileAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the reset table origin action.
-     * 
-     * @return The reset table origin action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createResetTableOriginAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( RESET_TABLE_ORIGIN_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1648,20 +1088,27 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.ResetTableOriginAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.ResetTableOriginAction_text );
             }
-        };
-    }
+        } );
+        actions.put( SAVE_TABLE_ACTION_ID, new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
 
-    /**
-     * Creates the set accordian down card pile layout action.
-     * 
-     * @return The set accordian down card pile layout action; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createSetAccordianDownCardPileLayoutAction()
-    {
-        return new BasicAction()
+            {
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.SaveTableAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SaveTableAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.SaveTableAction_text );
+            }
+        } );
+        actions.put( SAVE_TABLE_AS_ACTION_ID, new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SaveTableAsAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.SaveTableAsAction_text );
+            }
+        } );
+        actions.put( SET_ACCORDIAN_DOWN_CARD_PILE_LAYOUT_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1670,20 +1117,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SetAccordianDownCardPileLayoutAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.SetAccordianDownCardPileLayoutAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the set accordian left card pile layout action.
-     * 
-     * @return The set accordian left card pile layout action; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createSetAccordianLeftCardPileLayoutAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( SET_ACCORDIAN_LEFT_CARD_PILE_LAYOUT_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1692,20 +1127,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SetAccordianLeftCardPileLayoutAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.SetAccordianLeftCardPileLayoutAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the set accordian right card pile layout action.
-     * 
-     * @return The set accordian right card pile layout action; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createSetAccordianRightCardPileLayoutAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( SET_ACCORDIAN_RIGHT_CARD_PILE_LAYOUT_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1714,19 +1137,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SetAccordianRightCardPileLayoutAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.SetAccordianRightCardPileLayoutAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the set accordian up card pile layout action.
-     * 
-     * @return The set accordian up card pile layout action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createSetAccordianUpCardPileLayoutAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( SET_ACCORDIAN_UP_CARD_PILE_LAYOUT_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1735,19 +1147,8 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SetAccordianUpCardPileLayoutAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.SetAccordianUpCardPileLayoutAction_text );
             }
-        };
-    }
-
-    /**
-     * Creates the set stacked card pile layout action.
-     * 
-     * @return The set stacked card pile layout action; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    private static BasicAction createSetStackedCardPileLayoutAction()
-    {
-        return new BasicAction()
+        } );
+        actions.put( SET_STACKED_CARD_PILE_LAYOUT_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
 
@@ -1756,7 +1157,9 @@ final class Actions
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SetStackedCardPileLayoutAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.SetStackedCardPileLayoutAction_text );
             }
-        };
+        } );
+
+        return Collections.unmodifiableMap( actions );
     }
 
     /**
@@ -1767,7 +1170,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddAceOfClubsCardAction()
     {
-        return addAceOfClubsCardAction_;
+        return actions_.get( ADD_ACE_OF_CLUBS_CARD_ACTION_ID );
     }
 
     /**
@@ -1778,7 +1181,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddAceOfDiamondsCardAction()
     {
-        return addAceOfDiamondsCardAction_;
+        return actions_.get( ADD_ACE_OF_DIAMONDS_CARD_ACTION_ID );
     }
 
     /**
@@ -1789,7 +1192,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddAceOfHeartsCardAction()
     {
-        return addAceOfHeartsCardAction_;
+        return actions_.get( ADD_ACE_OF_HEARTS_CARD_ACTION_ID );
     }
 
     /**
@@ -1800,7 +1203,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddAceOfSpadesCardAction()
     {
-        return addAceOfSpadesCardAction_;
+        return actions_.get( ADD_ACE_OF_SPADES_CARD_ACTION_ID );
     }
 
     /**
@@ -1811,7 +1214,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddCardPileAction()
     {
-        return addCardPileAction_;
+        return actions_.get( ADD_CARD_PILE_ACTION_ID );
     }
 
     /**
@@ -1822,7 +1225,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddEightOfClubsCardAction()
     {
-        return addEightOfClubsCardAction_;
+        return actions_.get( ADD_EIGHT_OF_CLUBS_CARD_ACTION_ID );
     }
 
     /**
@@ -1833,7 +1236,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddEightOfDiamondsCardAction()
     {
-        return addEightOfDiamondsCardAction_;
+        return actions_.get( ADD_EIGHT_OF_DIAMONDS_CARD_ACTION_ID );
     }
 
     /**
@@ -1844,7 +1247,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddEightOfHeartsCardAction()
     {
-        return addEightOfHeartsCardAction_;
+        return actions_.get( ADD_EIGHT_OF_HEARTS_CARD_ACTION_ID );
     }
 
     /**
@@ -1855,7 +1258,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddEightOfSpadesCardAction()
     {
-        return addEightOfSpadesCardAction_;
+        return actions_.get( ADD_EIGHT_OF_SPADES_CARD_ACTION_ID );
     }
 
     /**
@@ -1866,7 +1269,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddFiveOfClubsCardAction()
     {
-        return addFiveOfClubsCardAction_;
+        return actions_.get( ADD_FIVE_OF_CLUBS_CARD_ACTION_ID );
     }
 
     /**
@@ -1877,7 +1280,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddFiveOfDiamondsCardAction()
     {
-        return addFiveOfDiamondsCardAction_;
+        return actions_.get( ADD_FIVE_OF_DIAMONDS_CARD_ACTION_ID );
     }
 
     /**
@@ -1888,7 +1291,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddFiveOfHeartsCardAction()
     {
-        return addFiveOfHeartsCardAction_;
+        return actions_.get( ADD_FIVE_OF_HEARTS_CARD_ACTION_ID );
     }
 
     /**
@@ -1899,7 +1302,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddFiveOfSpadesCardAction()
     {
-        return addFiveOfSpadesCardAction_;
+        return actions_.get( ADD_FIVE_OF_SPADES_CARD_ACTION_ID );
     }
 
     /**
@@ -1910,7 +1313,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddFourOfClubsCardAction()
     {
-        return addFourOfClubsCardAction_;
+        return actions_.get( ADD_FOUR_OF_CLUBS_CARD_ACTION_ID );
     }
 
     /**
@@ -1921,7 +1324,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddFourOfDiamondsCardAction()
     {
-        return addFourOfDiamondsCardAction_;
+        return actions_.get( ADD_FOUR_OF_DIAMONDS_CARD_ACTION_ID );
     }
 
     /**
@@ -1932,7 +1335,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddFourOfHeartsCardAction()
     {
-        return addFourOfHeartsCardAction_;
+        return actions_.get( ADD_FOUR_OF_HEARTS_CARD_ACTION_ID );
     }
 
     /**
@@ -1943,7 +1346,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddFourOfSpadesCardAction()
     {
-        return addFourOfSpadesCardAction_;
+        return actions_.get( ADD_FOUR_OF_SPADES_CARD_ACTION_ID );
     }
 
     /**
@@ -1954,7 +1357,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddJackOfClubsCardAction()
     {
-        return addJackOfClubsCardAction_;
+        return actions_.get( ADD_JACK_OF_CLUBS_CARD_ACTION_ID );
     }
 
     /**
@@ -1965,7 +1368,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddJackOfDiamondsCardAction()
     {
-        return addJackOfDiamondsCardAction_;
+        return actions_.get( ADD_JACK_OF_DIAMONDS_CARD_ACTION_ID );
     }
 
     /**
@@ -1976,7 +1379,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddJackOfHeartsCardAction()
     {
-        return addJackOfHeartsCardAction_;
+        return actions_.get( ADD_JACK_OF_HEARTS_CARD_ACTION_ID );
     }
 
     /**
@@ -1987,7 +1390,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddJackOfSpadesCardAction()
     {
-        return addJackOfSpadesCardAction_;
+        return actions_.get( ADD_JACK_OF_SPADES_CARD_ACTION_ID );
     }
 
     /**
@@ -1998,7 +1401,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddJokerCardAction()
     {
-        return addJokerCardAction_;
+        return actions_.get( ADD_JOKER_CARD_ACTION_ID );
     }
 
     /**
@@ -2009,7 +1412,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddKingOfClubsCardAction()
     {
-        return addKingOfClubsCardAction_;
+        return actions_.get( ADD_KING_OF_CLUBS_CARD_ACTION_ID );
     }
 
     /**
@@ -2020,7 +1423,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddKingOfDiamondsCardAction()
     {
-        return addKingOfDiamondsCardAction_;
+        return actions_.get( ADD_KING_OF_DIAMONDS_CARD_ACTION_ID );
     }
 
     /**
@@ -2031,7 +1434,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddKingOfHeartsCardAction()
     {
-        return addKingOfHeartsCardAction_;
+        return actions_.get( ADD_KING_OF_HEARTS_CARD_ACTION_ID );
     }
 
     /**
@@ -2042,7 +1445,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddKingOfSpadesCardAction()
     {
-        return addKingOfSpadesCardAction_;
+        return actions_.get( ADD_KING_OF_SPADES_CARD_ACTION_ID );
     }
 
     /**
@@ -2053,7 +1456,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddNineOfClubsCardAction()
     {
-        return addNineOfClubsCardAction_;
+        return actions_.get( ADD_NINE_OF_CLUBS_CARD_ACTION_ID );
     }
 
     /**
@@ -2064,7 +1467,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddNineOfDiamondsCardAction()
     {
-        return addNineOfDiamondsCardAction_;
+        return actions_.get( ADD_NINE_OF_DIAMONDS_CARD_ACTION_ID );
     }
 
     /**
@@ -2075,7 +1478,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddNineOfHeartsCardAction()
     {
-        return addNineOfHeartsCardAction_;
+        return actions_.get( ADD_NINE_OF_HEARTS_CARD_ACTION_ID );
     }
 
     /**
@@ -2086,7 +1489,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddNineOfSpadesCardAction()
     {
-        return addNineOfSpadesCardAction_;
+        return actions_.get( ADD_NINE_OF_SPADES_CARD_ACTION_ID );
     }
 
     /**
@@ -2097,7 +1500,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddQueenOfClubsCardAction()
     {
-        return addQueenOfClubsCardAction_;
+        return actions_.get( ADD_QUEEN_OF_CLUBS_CARD_ACTION_ID );
     }
 
     /**
@@ -2108,7 +1511,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddQueenOfDiamondsCardAction()
     {
-        return addQueenOfDiamondsCardAction_;
+        return actions_.get( ADD_QUEEN_OF_DIAMONDS_CARD_ACTION_ID );
     }
 
     /**
@@ -2119,7 +1522,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddQueenOfHeartsCardAction()
     {
-        return addQueenOfHeartsCardAction_;
+        return actions_.get( ADD_QUEEN_OF_HEARTS_CARD_ACTION_ID );
     }
 
     /**
@@ -2130,7 +1533,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddQueenOfSpadesCardAction()
     {
-        return addQueenOfSpadesCardAction_;
+        return actions_.get( ADD_QUEEN_OF_SPADES_CARD_ACTION_ID );
     }
 
     /**
@@ -2141,7 +1544,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddSevenOfClubsCardAction()
     {
-        return addSevenOfClubsCardAction_;
+        return actions_.get( ADD_SEVEN_OF_CLUBS_CARD_ACTION_ID );
     }
 
     /**
@@ -2152,7 +1555,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddSevenOfDiamondsCardAction()
     {
-        return addSevenOfDiamondsCardAction_;
+        return actions_.get( ADD_SEVEN_OF_DIAMONDS_CARD_ACTION_ID );
     }
 
     /**
@@ -2163,7 +1566,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddSevenOfHeartsCardAction()
     {
-        return addSevenOfHeartsCardAction_;
+        return actions_.get( ADD_SEVEN_OF_HEARTS_CARD_ACTION_ID );
     }
 
     /**
@@ -2174,7 +1577,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddSevenOfSpadesCardAction()
     {
-        return addSevenOfSpadesCardAction_;
+        return actions_.get( ADD_SEVEN_OF_SPADES_CARD_ACTION_ID );
     }
 
     /**
@@ -2185,7 +1588,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddSixOfClubsCardAction()
     {
-        return addSixOfClubsCardAction_;
+        return actions_.get( ADD_SIX_OF_CLUBS_CARD_ACTION_ID );
     }
 
     /**
@@ -2196,7 +1599,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddSixOfDiamondsCardAction()
     {
-        return addSixOfDiamondsCardAction_;
+        return actions_.get( ADD_SIX_OF_DIAMONDS_CARD_ACTION_ID );
     }
 
     /**
@@ -2207,7 +1610,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddSixOfHeartsCardAction()
     {
-        return addSixOfHeartsCardAction_;
+        return actions_.get( ADD_SIX_OF_HEARTS_CARD_ACTION_ID );
     }
 
     /**
@@ -2218,7 +1621,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddSixOfSpadesCardAction()
     {
-        return addSixOfSpadesCardAction_;
+        return actions_.get( ADD_SIX_OF_SPADES_CARD_ACTION_ID );
     }
 
     /**
@@ -2229,7 +1632,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddStandard52CardDeckAction()
     {
-        return addStandard52CardDeckAction_;
+        return actions_.get( ADD_STANDARD_52_CARD_DECK_ACTION_ID );
     }
 
     /**
@@ -2240,7 +1643,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddStandard54CardDeckAction()
     {
-        return addStandard54CardDeckAction_;
+        return actions_.get( ADD_STANDARD_54_CARD_DECK_ACTION_ID );
     }
 
     /**
@@ -2251,7 +1654,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddTenOfClubsCardAction()
     {
-        return addTenOfClubsCardAction_;
+        return actions_.get( ADD_TEN_OF_CLUBS_CARD_ACTION_ID );
     }
 
     /**
@@ -2262,7 +1665,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddTenOfDiamondsCardAction()
     {
-        return addTenOfDiamondsCardAction_;
+        return actions_.get( ADD_TEN_OF_DIAMONDS_CARD_ACTION_ID );
     }
 
     /**
@@ -2273,7 +1676,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddTenOfHeartsCardAction()
     {
-        return addTenOfHeartsCardAction_;
+        return actions_.get( ADD_TEN_OF_HEARTS_CARD_ACTION_ID );
     }
 
     /**
@@ -2284,7 +1687,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddTenOfSpadesCardAction()
     {
-        return addTenOfSpadesCardAction_;
+        return actions_.get( ADD_TEN_OF_SPADES_CARD_ACTION_ID );
     }
 
     /**
@@ -2295,7 +1698,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddThreeOfClubsCardAction()
     {
-        return addThreeOfClubsCardAction_;
+        return actions_.get( ADD_THREE_OF_CLUBS_CARD_ACTION_ID );
     }
 
     /**
@@ -2306,7 +1709,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddThreeOfDiamondsCardAction()
     {
-        return addThreeOfDiamondsCardAction_;
+        return actions_.get( ADD_THREE_OF_DIAMONDS_CARD_ACTION_ID );
     }
 
     /**
@@ -2317,7 +1720,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddThreeOfHeartsCardAction()
     {
-        return addThreeOfHeartsCardAction_;
+        return actions_.get( ADD_THREE_OF_HEARTS_CARD_ACTION_ID );
     }
 
     /**
@@ -2328,7 +1731,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddThreeOfSpadesCardAction()
     {
-        return addThreeOfSpadesCardAction_;
+        return actions_.get( ADD_THREE_OF_SPADES_CARD_ACTION_ID );
     }
 
     /**
@@ -2339,7 +1742,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddTwoOfClubsCardAction()
     {
-        return addTwoOfClubsCardAction_;
+        return actions_.get( ADD_TWO_OF_CLUBS_CARD_ACTION_ID );
     }
 
     /**
@@ -2350,7 +1753,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddTwoOfDiamondsCardAction()
     {
-        return addTwoOfDiamondsCardAction_;
+        return actions_.get( ADD_TWO_OF_DIAMONDS_CARD_ACTION_ID );
     }
 
     /**
@@ -2361,7 +1764,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddTwoOfHeartsCardAction()
     {
-        return addTwoOfHeartsCardAction_;
+        return actions_.get( ADD_TWO_OF_HEARTS_CARD_ACTION_ID );
     }
 
     /**
@@ -2372,7 +1775,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getAddTwoOfSpadesCardAction()
     {
-        return addTwoOfSpadesCardAction_;
+        return actions_.get( ADD_TWO_OF_SPADES_CARD_ACTION_ID );
     }
 
     /**
@@ -2383,7 +1786,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getExitAction()
     {
-        return exitAction_;
+        return actions_.get( EXIT_ACTION_ID );
     }
 
     /**
@@ -2394,7 +1797,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getFlipCardAction()
     {
-        return flipCardAction_;
+        return actions_.get( FLIP_CARD_ACTION_ID );
     }
 
     /**
@@ -2405,7 +1808,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getOpenAboutDialogAction()
     {
-        return openAboutDialogAction_;
+        return actions_.get( OPEN_ABOUT_DIALOG_ACTION_ID );
     }
 
     /**
@@ -2416,7 +1819,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getOpenNewTableAction()
     {
-        return openNewTableAction_;
+        return actions_.get( OPEN_NEW_TABLE_ACTION_ID );
     }
 
     /**
@@ -2427,7 +1830,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getRemoveCardAction()
     {
-        return removeCardAction_;
+        return actions_.get( REMOVE_CARD_ACTION_ID );
     }
 
     /**
@@ -2438,7 +1841,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getRemoveCardPileAction()
     {
-        return removeCardPileAction_;
+        return actions_.get( REMOVE_CARD_PILE_ACTION_ID );
     }
 
     /**
@@ -2449,7 +1852,29 @@ final class Actions
     /* @NonNull */
     static BasicAction getResetTableOriginAction()
     {
-        return resetTableOriginAction_;
+        return actions_.get( RESET_TABLE_ORIGIN_ACTION_ID );
+    }
+
+    /**
+     * Gets the save table action.
+     * 
+     * @return The save table action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getSaveTableAction()
+    {
+        return actions_.get( SAVE_TABLE_ACTION_ID );
+    }
+
+    /**
+     * Gets the save table as action.
+     * 
+     * @return The save table as action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getSaveTableAsAction()
+    {
+        return actions_.get( SAVE_TABLE_AS_ACTION_ID );
     }
 
     /**
@@ -2461,7 +1886,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getSetAccordianDownCardPileLayoutAction()
     {
-        return setAccordianDownCardPileLayoutAction_;
+        return actions_.get( SET_ACCORDIAN_DOWN_CARD_PILE_LAYOUT_ACTION_ID );
     }
 
     /**
@@ -2473,7 +1898,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getSetAccordianLeftCardPileLayoutAction()
     {
-        return setAccordianLeftCardPileLayoutAction_;
+        return actions_.get( SET_ACCORDIAN_LEFT_CARD_PILE_LAYOUT_ACTION_ID );
     }
 
     /**
@@ -2485,7 +1910,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getSetAccordianRightCardPileLayoutAction()
     {
-        return setAccordianRightCardPileLayoutAction_;
+        return actions_.get( SET_ACCORDIAN_RIGHT_CARD_PILE_LAYOUT_ACTION_ID );
     }
 
     /**
@@ -2496,7 +1921,7 @@ final class Actions
     /* @NonNull */
     static BasicAction getSetAccordianUpCardPileLayoutAction()
     {
-        return setAccordianUpCardPileLayoutAction_;
+        return actions_.get( SET_ACCORDIAN_UP_CARD_PILE_LAYOUT_ACTION_ID );
     }
 
     /**
@@ -2507,6 +1932,17 @@ final class Actions
     /* @NonNull */
     static BasicAction getSetStackedCardPileLayoutAction()
     {
-        return setStackedCardPileLayoutAction_;
+        return actions_.get( SET_STACKED_CARD_PILE_LAYOUT_ACTION_ID );
+    }
+
+    /**
+     * Updates the state of all actions.
+     */
+    static void updateAll()
+    {
+        for( final BasicAction action : actions_.values() )
+        {
+            action.update();
+        }
     }
 }

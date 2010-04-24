@@ -138,7 +138,6 @@ final class CardPileView
             {
                 final CardView view = createCardView( card );
                 tableView_.repaintTable( view.getBounds() );
-                tableView_.updateActions();
             }
         }
     }
@@ -268,7 +267,6 @@ final class CardPileView
             if( view != null )
             {
                 tableView_.repaintTable( view.getBounds() );
-                tableView_.updateActions();
                 view.uninitialize();
             }
         }
