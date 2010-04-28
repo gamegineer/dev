@@ -23,10 +23,16 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.persistence.memento.IMemento;
+import org.gamegineer.common.persistence.schemes.serializable.ObjectOutputStream;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.ui.ITableAdvisor;
@@ -47,12 +53,10 @@ public final class MainModel
     private final ITableAdvisor advisor_;
 
     /** The name of the file to which the model was last saved. */
-    @GuardedBy( "lock_" )
-    private String fileName_;
+    private final AtomicReference<String> fileName_;
 
     /** Indicates the main model is dirty. */
-    @GuardedBy( "lock_" )
-    private boolean isDirty_;
+    private final AtomicBoolean isDirty_;
 
     /** The collection of main model listeners. */
     private final CopyOnWriteArrayList<IMainModelListener> listeners_;
@@ -86,8 +90,8 @@ public final class MainModel
 
         lock_ = new Object();
         advisor_ = advisor;
-        fileName_ = null;
-        isDirty_ = false;
+        fileName_ = new AtomicReference<String>( null );
+        isDirty_ = new AtomicBoolean( false );
         listeners_ = new CopyOnWriteArrayList<IMainModelListener>();
         tableModel_ = null;
     }
@@ -226,10 +230,7 @@ public final class MainModel
     /* @Nullable */
     public String getFileName()
     {
-        synchronized( lock_ )
-        {
-            return fileName_;
-        }
+        return fileName_.get();
     }
 
     /**
@@ -264,10 +265,7 @@ public final class MainModel
      */
     public boolean isDirty()
     {
-        synchronized( lock_ )
-        {
-            return isDirty_;
-        }
+        return isDirty_.get();
     }
 
     /**
@@ -321,7 +319,7 @@ public final class MainModel
      * Saves the current table to the specified file.
      * 
      * @param fileName
-     *        The name of the file to which the file will be saved; must not be
+     *        The name of the file to which the table will be saved; must not be
      *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
@@ -336,13 +334,30 @@ public final class MainModel
     {
         assertArgumentNotNull( fileName, "fileName" ); //$NON-NLS-1$
 
-        // TODO: Serialize table to file.
-
+        final IMemento memento;
         synchronized( lock_ )
         {
-            fileName_ = fileName;
+            memento = tableModel_.getTable().getMemento();
         }
 
+        try
+        {
+            final ObjectOutputStream outputStream = new ObjectOutputStream( new FileOutputStream( fileName ) );
+            try
+            {
+                outputStream.writeObject( memento );
+            }
+            finally
+            {
+                outputStream.close();
+            }
+        }
+        catch( final IOException e )
+        {
+            throw new ModelException( Messages.MainModel_saveTable_error( fileName ), e );
+        }
+
+        fileName_.set( fileName );
         setClean();
     }
 
@@ -351,11 +366,7 @@ public final class MainModel
      */
     public void setClean()
     {
-        synchronized( lock_ )
-        {
-            isDirty_ = false;
-        }
-
+        isDirty_.set( false );
         fireMainModelDirtyFlagChanged();
         fireMainModelStateChanged();
     }
@@ -365,11 +376,7 @@ public final class MainModel
      */
     public void setDirty()
     {
-        synchronized( lock_ )
-        {
-            isDirty_ = true;
-        }
-
+        isDirty_.set( true );
         fireMainModelDirtyFlagChanged();
         fireMainModelStateChanged();
     }

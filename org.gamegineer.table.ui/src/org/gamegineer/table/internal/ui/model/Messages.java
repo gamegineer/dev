@@ -101,6 +101,9 @@ final class Messages
     /** The main model listener is not registered. */
     public static String MainModel_removeMainModelListener_listener_notRegistered;
 
+    /** An error occurred while saving the table. */
+    public static String MainModel_saveTable_error;
+
     /**
      * An unexpected exception was thrown from IMainModelListener.tableClosed().
      */
@@ -159,5 +162,31 @@ final class Messages
     private Messages()
     {
         super();
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    // --- MainModel --------------------------------------------------------
+
+    /**
+     * Gets the formatted message indicating an error occurred while saving the
+     * table.
+     * 
+     * @param fileName
+     *        The name of the file to which the table is saved; must not be
+     *        {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while saving
+     *         the table; never {@code null}.
+     */
+    /* @NonNull */
+    static String MainModel_saveTable_error(
+        /* @NonNull */
+        final String fileName )
+    {
+        return bind( MainModel_saveTable_error, fileName );
     }
 }
