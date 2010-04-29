@@ -1,6 +1,6 @@
 /*
  * Services.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -72,7 +72,7 @@ public final class Services
     void close()
     {
         // Unregister package-specific adapters
-        org.gamegineer.common.internal.persistence.memento.Adapters.getDefault().register( getAdapterManager() );
+        org.gamegineer.common.internal.persistence.memento.Adapters.getDefault().unregister( getAdapterManager() );
 
         // Close bundle-specific services
         if( adapterManagerServiceTracker_ != null )
