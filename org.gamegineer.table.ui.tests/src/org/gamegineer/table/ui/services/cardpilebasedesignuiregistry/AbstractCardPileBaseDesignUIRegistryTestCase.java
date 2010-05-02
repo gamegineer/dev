@@ -282,8 +282,9 @@ public abstract class AbstractCardPileBaseDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterCardPileBaseDesignUI} properly ignores a
-     * card pile base design user interface that was not previously registered.
+     * Ensures the {@code unregisterCardPileBaseDesignUI} method properly
+     * ignores a card pile base design user interface that was not previously
+     * registered.
      */
     @Test
     public void testUnregisterCardPileBaseDesignUI_CardPileBaseDesignUI_Unregistered()

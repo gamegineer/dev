@@ -274,8 +274,8 @@ public abstract class AbstractCardPileBaseDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterCardPileBaseDesign} properly ignores a card
-     * pile base design that was not previously registered.
+     * Ensures the {@code unregisterCardPileBaseDesign} method properly ignores
+     * a card pile base design that was not previously registered.
      */
     @Test
     public void testUnregisterCardPileBaseDesign_CardPileBaseDesign_Unregistered()

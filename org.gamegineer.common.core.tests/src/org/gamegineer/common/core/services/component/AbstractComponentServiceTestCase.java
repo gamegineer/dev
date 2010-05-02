@@ -1,6 +1,6 @@
 /*
  * AbstractComponentServiceTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -324,8 +324,8 @@ public abstract class AbstractComponentServiceTestCase
     }
 
     /**
-     * Ensures the {@code unregisterComponentFactory} properly ignores a factory
-     * that was not previously registered.
+     * Ensures the {@code unregisterComponentFactory} method properly ignores a
+     * factory that was not previously registered.
      */
     @Test
     public void testUnregisterComponentFactory_Factory_Unregistered()

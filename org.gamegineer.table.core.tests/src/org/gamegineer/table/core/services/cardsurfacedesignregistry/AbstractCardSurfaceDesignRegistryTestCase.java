@@ -274,8 +274,8 @@ public abstract class AbstractCardSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterCardSurfaceDesign} properly ignores a card
-     * surface design that was not previously registered.
+     * Ensures the {@code unregisterCardSurfaceDesign} method properly ignores a
+     * card surface design that was not previously registered.
      */
     @Test
     public void testUnregisterCardSurfaceDesign_CardSurfaceDesign_Unregistered()
