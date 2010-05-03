@@ -79,3 +79,4 @@ mobile
 tabletop
 enum
 accordian
+delegator
