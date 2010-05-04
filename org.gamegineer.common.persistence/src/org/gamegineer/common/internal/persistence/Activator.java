@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,6 +35,9 @@ public final class Activator
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The Serializable persistence delegate extension point identifier. */
+    public static final String EXTENSION_SERIALIZABLE_PERSISTENCE_DELEGATES = "serializablePersistenceDelegates"; //$NON-NLS-1$
 
     /** The symbolic name of the bundle. */
     public static final String SYMBOLIC_NAME = "org.gamegineer.common.persistence"; //$NON-NLS-1$

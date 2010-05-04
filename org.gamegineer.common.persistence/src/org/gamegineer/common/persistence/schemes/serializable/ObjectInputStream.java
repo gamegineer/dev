@@ -1,6 +1,6 @@
 /*
  * ObjectInputStream.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,10 @@ package org.gamegineer.common.persistence.schemes.serializable;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectStreamClass;
 import net.jcip.annotations.NotThreadSafe;
-import org.eclipse.core.runtime.IAdapterManager;
 import org.gamegineer.common.internal.persistence.Services;
+import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 
 /**
  * A stream used for deserializing objects previously serialized using an
@@ -45,8 +46,8 @@ public final class ObjectInputStream
     // Fields
     // ======================================================================
 
-    /** The platform adapter manager. */
-    private final IAdapterManager adapterManager_;
+    /** The persistence delegate registry. */
+    private final IPersistenceDelegateRegistry persistenceDelegateRegistry_;
 
 
     // ======================================================================
@@ -73,7 +74,7 @@ public final class ObjectInputStream
     {
         super( in );
 
-        adapterManager_ = Services.getDefault().getAdapterManager();
+        persistenceDelegateRegistry_ = Services.getDefault().getSerializablePersistenceDelegateRegistry();
 
         enableResolveObject( true );
     }
@@ -84,6 +85,27 @@ public final class ObjectInputStream
     // ======================================================================
 
     /*
+     * @see java.io.ObjectInputStream#resolveClass(java.io.ObjectStreamClass)
+     */
+    @Override
+    protected Class<?> resolveClass(
+        final ObjectStreamClass desc )
+        throws IOException, ClassNotFoundException
+    {
+        final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( desc.getName() );
+        if( delegate != null )
+        {
+            final Class<?> serializedClass = delegate.resolveClass( this, desc );
+            if( serializedClass != null )
+            {
+                return serializedClass;
+            }
+        }
+
+        return super.resolveClass( desc );
+    }
+
+    /*
      * @see java.io.ObjectInputStream#resolveObject(java.lang.Object)
      */
     @Override
@@ -91,7 +113,7 @@ public final class ObjectInputStream
         final Object obj )
         throws IOException
     {
-        final IPersistenceDelegate delegate = (IPersistenceDelegate)adapterManager_.getAdapter( obj, IPersistenceDelegate.class );
+        final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( obj.getClass().getName() );
         if( delegate != null )
         {
             return delegate.resolveObject( obj );

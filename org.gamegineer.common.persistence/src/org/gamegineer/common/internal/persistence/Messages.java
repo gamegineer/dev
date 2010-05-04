@@ -1,6 +1,6 @@
 /*
  * Messages.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -42,6 +42,12 @@ final class Messages
 
     /** The adapter manager service tracker is not set. */
     public static String Services_adapterManagerServiceTracker_notSet;
+
+    /**
+     * The Serializable persistence delegate registry service tracker is not
+     * set.
+     */
+    public static String Services_serializablePersistenceDelegateRegistryServiceTracker_notSet;
 
 
     // ======================================================================

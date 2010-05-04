@@ -1,6 +1,6 @@
 /*
  * MementoPersistenceDelegate.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,26 +21,21 @@
 
 package org.gamegineer.common.internal.persistence.memento.schemes.serializable;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.io.IOException;
+import java.io.ObjectStreamClass;
 import net.jcip.annotations.Immutable;
-import org.eclipse.core.runtime.IAdapterFactory;
 import org.gamegineer.common.internal.persistence.memento.Memento;
-import org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate;
+import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegate;
+import org.gamegineer.common.persistence.schemes.serializable.ObjectInputStream;
 
 /**
  * A persistence delegate for the {@code Memento} class.
  */
 @Immutable
 public final class MementoPersistenceDelegate
-    implements IPersistenceDelegate
+    extends AbstractPersistenceDelegate
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The flyweight instance of this class. */
-    public static final IPersistenceDelegate INSTANCE = new MementoPersistenceDelegate();
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -49,7 +44,7 @@ public final class MementoPersistenceDelegate
      * Initializes a new instance of the {@code MementoPersistenceDelegate}
      * class.
      */
-    private MementoPersistenceDelegate()
+    public MementoPersistenceDelegate()
     {
         super();
     }
@@ -60,85 +55,37 @@ public final class MementoPersistenceDelegate
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate#replaceObject(java.lang.Object)
+     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
      */
+    @Override
     public Object replaceObject(
         final Object obj )
     {
         if( !(obj instanceof Memento) )
         {
-            return obj;
+            return super.replaceObject( obj );
         }
 
         return new MementoProxy( (Memento)obj );
     }
 
     /*
-     * @see org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate#resolveObject(java.lang.Object)
+     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegate#resolveClass(org.gamegineer.common.persistence.schemes.serializable.ObjectInputStream, java.io.ObjectStreamClass)
      */
-    public Object resolveObject(
-        final Object obj )
+    @Override
+    public Class<?> resolveClass(
+        final ObjectInputStream stream,
+        final ObjectStreamClass desc )
+        throws IOException
     {
-        return obj;
-    }
+        assertArgumentNotNull( stream, "stream" ); //$NON-NLS-1$
+        assertArgumentNotNull( desc, "desc" ); //$NON-NLS-1$
 
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * An {@code IPersistenceDelegate} adapter factory for instances of {@code
-     * Memento}.
-     */
-    public static final class AdapterFactory
-        implements IAdapterFactory
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code AdapterFactory} class.
-         */
-        public AdapterFactory()
+        if( desc.getClass().getName().equals( MementoProxy.class.getName() ) )
         {
-            super();
+            return MementoProxy.class;
         }
 
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.eclipse.core.runtime.IAdapterFactory#getAdapter(java.lang.Object, java.lang.Class)
-         */
-        public Object getAdapter(
-            final Object adaptableObject,
-            @SuppressWarnings( "unchecked" )
-            final Class adapterType )
-        {
-            if( adapterType != IPersistenceDelegate.class )
-            {
-                return null;
-            }
-            if( !(adaptableObject instanceof Memento) )
-            {
-                return null;
-            }
-
-            return MementoPersistenceDelegate.INSTANCE;
-        }
-
-        /*
-         * @see org.eclipse.core.runtime.IAdapterFactory#getAdapterList()
-         */
-        public Class<?>[] getAdapterList()
-        {
-            return new Class<?>[] {
-                IPersistenceDelegate.class
-            };
-        }
+        return super.resolveClass( stream, desc );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * ObjectStreamTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,9 +26,8 @@ import static org.junit.Assert.assertNull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
-import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.core.runtime.IAdapterManager;
 import org.gamegineer.common.internal.persistence.Services;
+import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,13 +46,13 @@ public final class ObjectStreamTest
     // ======================================================================
 
     /**
-     * The persistence delegate adapter factory for the non-serializable class
-     * used in the fixture.
+     * The persistence delegate for the non-serializable class used in the
+     * fixture.
      */
-    private IAdapterFactory adapterFactory_;
+    private IPersistenceDelegate persistenceDelegate_;
 
-    /** The platform adapter manager. */
-    private IAdapterManager adapterManager_;
+    /** The persistence delegate registry. */
+    private IPersistenceDelegateRegistry persistenceDelegateRegistry_;
 
 
     // ======================================================================
@@ -83,9 +82,9 @@ public final class ObjectStreamTest
     public void setUp()
         throws Exception
     {
-        adapterManager_ = Services.getDefault().getAdapterManager();
-        adapterFactory_ = new MockNonSerializableClassPersistenceDelegate.AdapterFactory();
-        adapterManager_.registerAdapters( adapterFactory_, MockNonSerializableClass.class );
+        persistenceDelegateRegistry_ = Services.getDefault().getSerializablePersistenceDelegateRegistry();
+        persistenceDelegate_ = new MockNonSerializableClassPersistenceDelegate();
+        persistenceDelegateRegistry_.registerPersistenceDelegate( MockNonSerializableClass.class.getName(), persistenceDelegate_ );
     }
 
     /**
@@ -98,9 +97,9 @@ public final class ObjectStreamTest
     public void tearDown()
         throws Exception
     {
-        adapterManager_.unregisterAdapters( adapterFactory_ );
-        adapterFactory_ = null;
-        adapterManager_ = null;
+        persistenceDelegateRegistry_.unregisterPersistenceDelegate( MockNonSerializableClass.class.getName(), persistenceDelegate_ );
+        persistenceDelegate_ = null;
+        persistenceDelegateRegistry_ = null;
     }
 
     /**

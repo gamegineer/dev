@@ -25,7 +25,10 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IAdapterManager;
+import org.gamegineer.common.internal.persistence.schemes.serializable.services.persistencedelegateregistry.PersistenceDelegateRegistry;
+import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
@@ -47,6 +50,15 @@ public final class Services
 
     /** The adapter manager service tracker. */
     private ServiceTracker adapterManagerServiceTracker_;
+
+    /**
+     * The Serializable persistence delegate registry service registration
+     * token.
+     */
+    private ServiceRegistration serializablePersistenceDelegateRegistryServiceRegistration_;
+
+    /** The Serializable persistence delegate registry service tracker. */
+    private ServiceTracker serializablePersistenceDelegateRegistryServiceTracker_;
 
 
     // ======================================================================
@@ -75,6 +87,11 @@ public final class Services
         org.gamegineer.common.internal.persistence.memento.Adapters.getDefault().unregister( getAdapterManager() );
 
         // Close bundle-specific services
+        if( serializablePersistenceDelegateRegistryServiceTracker_ != null )
+        {
+            serializablePersistenceDelegateRegistryServiceTracker_.close();
+            serializablePersistenceDelegateRegistryServiceTracker_ = null;
+        }
         if( adapterManagerServiceTracker_ != null )
         {
             adapterManagerServiceTracker_.close();
@@ -84,6 +101,11 @@ public final class Services
         // Unregister package-specific services
 
         // Unregister bundle-specific services
+        if( serializablePersistenceDelegateRegistryServiceRegistration_ != null )
+        {
+            serializablePersistenceDelegateRegistryServiceRegistration_.unregister();
+            serializablePersistenceDelegateRegistryServiceRegistration_ = null;
+        }
     }
 
     /**
@@ -101,6 +123,24 @@ public final class Services
         assertStateLegal( adapterManagerServiceTracker_ != null, Messages.Services_adapterManagerServiceTracker_notSet );
 
         return (IAdapterManager)adapterManagerServiceTracker_.getService();
+    }
+
+    /**
+     * Gets the Serializable persistence delegate registry service managed by
+     * this object.
+     * 
+     * @return The Serializable persistence delegate registry service managed by
+     *         this object; never {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If this object is not open.
+     */
+    /* @NonNull */
+    public IPersistenceDelegateRegistry getSerializablePersistenceDelegateRegistry()
+    {
+        assertStateLegal( serializablePersistenceDelegateRegistryServiceTracker_ != null, Messages.Services_serializablePersistenceDelegateRegistryServiceTracker_notSet );
+
+        return (IPersistenceDelegateRegistry)serializablePersistenceDelegateRegistryServiceTracker_.getService();
     }
 
     /**
@@ -131,12 +171,15 @@ public final class Services
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
         // Register bundle-specific services
+        serializablePersistenceDelegateRegistryServiceRegistration_ = context.registerService( IPersistenceDelegateRegistry.class.getName(), new PersistenceDelegateRegistry(), null );
 
         // Register package-specific services
 
         // Open bundle-specific services
         adapterManagerServiceTracker_ = new ServiceTracker( context, IAdapterManager.class.getName(), null );
         adapterManagerServiceTracker_.open();
+        serializablePersistenceDelegateRegistryServiceTracker_ = new ServiceTracker( context, serializablePersistenceDelegateRegistryServiceRegistration_.getReference(), null );
+        serializablePersistenceDelegateRegistryServiceTracker_.open();
 
         // Register package-specific adapters
         org.gamegineer.common.internal.persistence.memento.Adapters.getDefault().register( getAdapterManager() );

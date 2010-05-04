@@ -1,6 +1,6 @@
 /*
  * AbstractPersistenceDelegateTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,8 @@ package org.gamegineer.common.persistence.schemes.serializable;
 import static org.junit.Assert.assertTrue;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.ObjectStreamClass;
+import org.gamegineer.common.internal.persistence.Services;
 import org.junit.Test;
 
 /**
@@ -38,8 +40,8 @@ public abstract class AbstractPersistenceDelegateTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractPersistenceDelegateTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractPersistenceDelegateTestCase} class.
      */
     protected AbstractPersistenceDelegateTestCase()
     {
@@ -63,8 +65,8 @@ public abstract class AbstractPersistenceDelegateTestCase
      * Indicates the specified objects are equal.
      * 
      * <p>
-     * The default implementation compares the two objects using the
-     * {@code equals} method.
+     * The default implementation compares the two objects using the {@code
+     * equals} method.
      * </p>
      * 
      * @param originalObj
@@ -72,8 +74,8 @@ public abstract class AbstractPersistenceDelegateTestCase
      * @param deserializedObj
      *        The deserialized object; may be {@code null}.
      * 
-     * @return {@code true} if the two objects are equal; otherwise
-     *         {@code false}.
+     * @return {@code true} if the two objects are equal; otherwise {@code
+     *         false}.
      * 
      * @throws java.lang.ClassCastException
      *         If {@code deserializedObj} is not of the subject type.
@@ -87,6 +89,81 @@ public abstract class AbstractPersistenceDelegateTestCase
         final Object deserializedObj )
     {
         return originalObj.equals( deserializedObj );
+    }
+
+    /**
+     * Ensures the {@code annotateClass} method throws an exception when passed
+     * a {@code null} class.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testAnnotateClass_Class_Null()
+        throws Exception
+    {
+        final Object obj = createSubject();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ObjectOutputStream oos = new ObjectOutputStream( baos );
+        final IPersistenceDelegate persistenceDelegate = Services.getDefault().getSerializablePersistenceDelegateRegistry().getPersistenceDelegate( obj.getClass().getName() );
+
+        persistenceDelegate.annotateClass( oos, null );
+    }
+
+    /**
+     * Ensures the {@code annotateClass} method throws an exception when passed
+     * a {@code null} object stream.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testAnnotateClass_Stream_Null()
+        throws Exception
+    {
+        final Object obj = createSubject();
+        final IPersistenceDelegate persistenceDelegate = Services.getDefault().getSerializablePersistenceDelegateRegistry().getPersistenceDelegate( obj.getClass().getName() );
+
+        persistenceDelegate.annotateClass( null, String.class );
+    }
+
+    /**
+     * Ensures the {@code resolveClass} method throws an exception when passed a
+     * {@code null} object stream class descriptor.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testResolveClass_Desc_Null()
+        throws Exception
+    {
+        final Object obj = createSubject();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ObjectOutputStream oos = new ObjectOutputStream( baos );
+        oos.writeObject( obj );
+        oos.close();
+        final ObjectInputStream ois = new ObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
+        final IPersistenceDelegate persistenceDelegate = Services.getDefault().getSerializablePersistenceDelegateRegistry().getPersistenceDelegate( obj.getClass().getName() );
+
+        persistenceDelegate.resolveClass( ois, null );
+    }
+
+    /**
+     * Ensures the {@code resolveClass} method throws an exception when passed a
+     * {@code null} object stream.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testResolveClass_Stream_Null()
+        throws Exception
+    {
+        final Object obj = createSubject();
+        final IPersistenceDelegate persistenceDelegate = Services.getDefault().getSerializablePersistenceDelegateRegistry().getPersistenceDelegate( obj.getClass().getName() );
+
+        persistenceDelegate.resolveClass( null, ObjectStreamClass.lookup( String.class ) );
     }
 
     /**

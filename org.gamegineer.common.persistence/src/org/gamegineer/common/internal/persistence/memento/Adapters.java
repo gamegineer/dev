@@ -1,6 +1,6 @@
 /*
  * Adapters.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -49,12 +49,6 @@ public final class Adapters
      */
     private IAdapterFactory beansAdapterFactory_;
 
-    /**
-     * The adapter factory for the Java object serialization framework
-     * persistence delegate.
-     */
-    private IAdapterFactory serializableAdapterFactory_;
-
 
     // ======================================================================
     // Constructors
@@ -102,8 +96,6 @@ public final class Adapters
 
         beansAdapterFactory_ = new org.gamegineer.common.internal.persistence.memento.schemes.beans.MementoPersistenceDelegate.AdapterFactory();
         manager.registerAdapters( beansAdapterFactory_, Memento.class );
-        serializableAdapterFactory_ = new org.gamegineer.common.internal.persistence.memento.schemes.serializable.MementoPersistenceDelegate.AdapterFactory();
-        manager.registerAdapters( serializableAdapterFactory_, Memento.class );
     }
 
     /**
@@ -121,8 +113,6 @@ public final class Adapters
     {
         assertArgumentNotNull( manager, "manager" ); //$NON-NLS-1$
 
-        manager.unregisterAdapters( serializableAdapterFactory_ );
-        serializableAdapterFactory_ = null;
         manager.unregisterAdapters( beansAdapterFactory_ );
         beansAdapterFactory_ = null;
     }

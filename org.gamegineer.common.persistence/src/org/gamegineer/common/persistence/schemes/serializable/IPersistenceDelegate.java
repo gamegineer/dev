@@ -1,6 +1,6 @@
 /*
  * IPersistenceDelegate.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,9 @@
 
 package org.gamegineer.common.persistence.schemes.serializable;
 
+import java.io.IOException;
+import java.io.ObjectStreamClass;
+
 /**
  * Represents an object that takes responsibility for persisting objects of a
  * specific class within the Java object serialization framework.
@@ -35,7 +38,7 @@ package org.gamegineer.common.persistence.schemes.serializable;
  * 
  * <p>
  * To contribute a persistence delegate for a specific class, register it with
- * the platform's {@code IAdapterManager}.
+ * the platform's {@code IPersistenceDelegateRegistry}.
  * </p>
  * 
  * @noextend This interface is not intended to be extended by clients.
@@ -45,6 +48,27 @@ public interface IPersistenceDelegate
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Allows the persistence delegate to annotate the specified class with
+     * whatever data it deems necessary.
+     * 
+     * @param stream
+     *        The object output stream; must not be {@code null}.
+     * @param cl
+     *        The class to be annotated; must not be {@code null}.
+     * 
+     * @throws java.io.IOException
+     *         If an I/O error occurs.
+     * @throws java.lang.NullPointerException
+     *         If {@code stream} or {@code cl} is {@code null}.
+     */
+    public void annotateClass(
+        /* @NonNull */
+        ObjectOutputStream stream,
+        /* @NonNull */
+        Class<?> cl )
+        throws IOException;
 
     /**
      * Allows the persistence delegate to replace the specified object being
@@ -61,6 +85,33 @@ public interface IPersistenceDelegate
     public Object replaceObject(
         /* @Nullable */
         Object obj );
+
+    /**
+     * Allows the persistence delegate to resolve the class associated with the
+     * specified object stream class description.
+     * 
+     * @param stream
+     *        The object input stream; must not be {@code null}.
+     * @param desc
+     *        An object stream class description; must not be {@code null}.
+     * 
+     * @return The class associated with the specified object stream class
+     *         descriptor or {@code null} if the persistence delegate cannot
+     *         resolve the class, in which case the caller is responsible for
+     *         resolving the class.
+     * 
+     * @throws java.io.IOException
+     *         If an I/O error occurs.
+     * @throws java.lang.NullPointerException
+     *         If {@code stream} or {@code desc} is {@code null}.
+     */
+    /* @Nullable */
+    public Class<?> resolveClass(
+        /* @NonNull */
+        ObjectInputStream stream,
+        /* @NonNull */
+        ObjectStreamClass desc )
+        throws IOException;
 
     /**
      * Allows the persistence delegate to resolve the specified serializable

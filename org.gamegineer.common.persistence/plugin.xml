@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+    <extension-point
+            id="serializablePersistenceDelegates"
+            name="Serializable Persistence Delegates"
+            schema="schema/serializablePersistenceDelegates.exsd" />
+
+    <extension
+            point="org.gamegineer.common.persistence.serializablePersistenceDelegates">
+        <serializablePersistenceDelegate
+                class="org.gamegineer.common.internal.persistence.memento.schemes.serializable.MementoPersistenceDelegate">
+            <delegator class="org.gamegineer.common.internal.persistence.memento.Memento" />
+        </serializablePersistenceDelegate>
+    </extension>
+
+</plugin>

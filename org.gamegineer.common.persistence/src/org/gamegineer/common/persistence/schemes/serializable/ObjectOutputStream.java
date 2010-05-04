@@ -1,6 +1,6 @@
 /*
  * ObjectOutputStream.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@ package org.gamegineer.common.persistence.schemes.serializable;
 import java.io.IOException;
 import java.io.OutputStream;
 import net.jcip.annotations.NotThreadSafe;
-import org.eclipse.core.runtime.IAdapterManager;
 import org.gamegineer.common.internal.persistence.Services;
+import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 
 /**
  * A stream used for serializing objects.
@@ -44,8 +44,8 @@ public final class ObjectOutputStream
     // Fields
     // ======================================================================
 
-    /** The platform adapter manager. */
-    private final IAdapterManager adapterManager_;
+    /** The persistence delegate registry. */
+    private final IPersistenceDelegateRegistry persistenceDelegateRegistry_;
 
 
     // ======================================================================
@@ -70,7 +70,7 @@ public final class ObjectOutputStream
     {
         super( out );
 
-        adapterManager_ = Services.getDefault().getAdapterManager();
+        persistenceDelegateRegistry_ = Services.getDefault().getSerializablePersistenceDelegateRegistry();
 
         enableReplaceObject( true );
     }
@@ -81,6 +81,25 @@ public final class ObjectOutputStream
     // ======================================================================
 
     /*
+     * @see java.io.ObjectOutputStream#annotateClass(java.lang.Class)
+     */
+    @Override
+    protected void annotateClass(
+        final Class<?> cl )
+        throws IOException
+    {
+        final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( cl.getName() );
+        if( delegate != null )
+        {
+            delegate.annotateClass( this, cl );
+        }
+        else
+        {
+            super.annotateClass( cl );
+        }
+    }
+
+    /*
      * @see java.io.ObjectOutputStream#replaceObject(java.lang.Object)
      */
     @Override
@@ -88,7 +107,7 @@ public final class ObjectOutputStream
         final Object obj )
         throws IOException
     {
-        final IPersistenceDelegate delegate = (IPersistenceDelegate)adapterManager_.getAdapter( obj, IPersistenceDelegate.class );
+        final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( obj.getClass().getName() );
         if( delegate != null )
         {
             return delegate.replaceObject( obj );

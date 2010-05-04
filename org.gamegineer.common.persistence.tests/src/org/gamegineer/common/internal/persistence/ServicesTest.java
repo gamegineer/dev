@@ -1,6 +1,6 @@
 /*
  * ServicesTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.internal.persistence;
 
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 /**
@@ -47,8 +48,19 @@ public final class ServicesTest
     // ======================================================================
 
     /**
-     * Ensures the {@code open} method throws an exception when passed a
-     * {@code null} bundle context.
+     * Ensures the {@code getSerializablePersistenceDelegateRegistry} method
+     * does not return {@code null}, which validates the Serializable
+     * persistence delegate registry service was registered with OSGi correctly.
+     */
+    @Test
+    public void testGetSerializablePersistenceDelegateRegistry_ReturnValue_NonNull()
+    {
+        assertNotNull( Services.getDefault().getSerializablePersistenceDelegateRegistry() );
+    }
+
+    /**
+     * Ensures the {@code open} method throws an exception when passed a {@code
+     * null} bundle context.
      */
     @Test( expected = NullPointerException.class )
     public void testOpen_Context_Null()
