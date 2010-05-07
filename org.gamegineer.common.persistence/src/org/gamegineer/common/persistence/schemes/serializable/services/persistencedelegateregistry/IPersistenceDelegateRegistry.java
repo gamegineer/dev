@@ -43,7 +43,7 @@ public interface IPersistenceDelegateRegistry
      * been registered with this service.
      * 
      * @return A collection of all class names for which a persistence delegate
-     *         has been registered with this server; never {@code null}. This
+     *         has been registered with this service; never {@code null}. This
      *         collection is a snapshot of the persistence delegates registered
      *         at the time of the call.
      */
