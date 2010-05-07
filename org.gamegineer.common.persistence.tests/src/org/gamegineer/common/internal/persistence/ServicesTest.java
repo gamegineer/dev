@@ -48,6 +48,17 @@ public final class ServicesTest
     // ======================================================================
 
     /**
+     * Ensures the {@code getBeansPersistenceDelegateRegistry} method does not
+     * return {@code null}, which validates the JavaBeans persistence delegate
+     * registry service was registered with OSGi correctly.
+     */
+    @Test
+    public void testGetBeansPersistenceDelegateRegistry_ReturnValue_NonNull()
+    {
+        assertNotNull( Services.getDefault().getBeansPersistenceDelegateRegistry() );
+    }
+
+    /**
      * Ensures the {@code getSerializablePersistenceDelegateRegistry} method
      * does not return {@code null}, which validates the Serializable
      * persistence delegate registry service was registered with OSGi correctly.

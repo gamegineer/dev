@@ -1,6 +1,6 @@
 /*
  * XMLEncoder.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,11 +24,9 @@ package org.gamegineer.common.persistence.schemes.beans;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.beans.PersistenceDelegate;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
 import net.jcip.annotations.NotThreadSafe;
-import org.eclipse.core.runtime.IAdapterManager;
 import org.gamegineer.common.internal.persistence.Services;
+import org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 
 /**
  * An encoder used for persisting objects using an XML representation.
@@ -43,7 +41,7 @@ import org.gamegineer.common.internal.persistence.Services;
  * 
  * <p>
  * To contribute a persistence delegate for a specific class, register it with
- * the platform's {@code IAdapterManager}.
+ * the platform's {@code IPersistenceDelegateRegistry}.
  * </p>
  */
 @NotThreadSafe
@@ -54,14 +52,8 @@ public final class XMLEncoder
     // Fields
     // ======================================================================
 
-    /** The platform adapter manager. */
-    private final IAdapterManager adapterManager_;
-
-    /**
-     * The collection of persistence delegates registered through the adapter
-     * manager.
-     */
-    private final Map<Class<?>, PersistenceDelegate> delegates_;
+    /** The persistence delegate registry. */
+    private final IPersistenceDelegateRegistry persistenceDelegateRegistry_;
 
 
     // ======================================================================
@@ -85,8 +77,7 @@ public final class XMLEncoder
 
         assertArgumentNotNull( out, "out" ); //$NON-NLS-1$
 
-        adapterManager_ = Services.getDefault().getAdapterManager();
-        delegates_ = new HashMap<Class<?>, PersistenceDelegate>();
+        persistenceDelegateRegistry_ = Services.getDefault().getBeansPersistenceDelegateRegistry();
     }
 
 
@@ -101,13 +92,50 @@ public final class XMLEncoder
     public PersistenceDelegate getPersistenceDelegate(
         final Class<?> type )
     {
-        final PersistenceDelegate delegate = delegates_.get( type );
-        if( delegate != null )
+        if( type != null )
         {
-            return delegate;
+            final PersistenceDelegate persistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( type.getName() );
+            if( persistenceDelegate != null )
+            {
+                return persistenceDelegate;
+            }
         }
 
         return super.getPersistenceDelegate( type );
+    }
+
+    /**
+     * Sets the context class loader to use the class loader for the specified
+     * object if it has a registered framework persistence delegate.
+     * 
+     * @param o
+     *        An object; may be {@code null}.
+     * 
+     * @return The previous context class loader or {@code null} if the context
+     *         class loader was not changed. The caller is expected to restore
+     *         this context class loader when the relevant operation is
+     *         complete.
+     */
+    /* @Nullable */
+    private ClassLoader setContextClassLoader(
+        /* @Nullable */
+        final Object o )
+    {
+        if( o == null )
+        {
+            return null;
+        }
+
+        final PersistenceDelegate persistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( o.getClass().getName() );
+        if( persistenceDelegate == null )
+        {
+            return null;
+        }
+
+        final Thread thread = Thread.currentThread();
+        final ClassLoader oldContextClassLoader = thread.getContextClassLoader();
+        thread.setContextClassLoader( persistenceDelegate.getClass().getClassLoader() );
+        return oldContextClassLoader;
     }
 
     /*
@@ -117,24 +145,17 @@ public final class XMLEncoder
     public void writeObject(
         final Object o )
     {
-        // We must cache any persistence delegate registered through the adapter
-        // manager here because of the impedance mismatch between Encoder and
-        // IAdapterManager.  The adapter manager only accepts objects while Encoder
-        // requests persistence delegates explicitly by class.  Therefore, we request
-        // the adapter manager's persistence delegate here using the object so it can
-        // be queried by class in getPersistenceDelegate().
-        //
-        // Note also that we store null values in the map.  A null value is used as a
-        // flag to stop us from querying the adapter manager for a persistence
-        // delegate when it has already indicated none have been registered for the
-        // object's class.
-
-        if( (o != null) && !delegates_.containsKey( o.getClass() ) )
+        final ClassLoader oldContextClassLoader = setContextClassLoader( o );
+        try
         {
-            final PersistenceDelegate delegate = (PersistenceDelegate)adapterManager_.getAdapter( o, PersistenceDelegate.class );
-            delegates_.put( o.getClass(), delegate );
+            super.writeObject( o );
         }
-
-        super.writeObject( o );
+        finally
+        {
+            if( oldContextClassLoader != null )
+            {
+                Thread.currentThread().setContextClassLoader( oldContextClassLoader );
+            }
+        }
     }
 }

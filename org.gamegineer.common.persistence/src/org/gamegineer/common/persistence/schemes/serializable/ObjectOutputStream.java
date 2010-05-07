@@ -35,6 +35,11 @@ import org.gamegineer.common.persistence.schemes.serializable.services.persisten
  * associated persistence delegate and give it an opportunity to substitute the
  * object with a compatible serializable object.
  * </p>
+ * 
+ * <p>
+ * To contribute a persistence delegate for a specific class, register it with
+ * the platform's {@code IPersistenceDelegateRegistry}.
+ * </p>
  */
 @NotThreadSafe
 public final class ObjectOutputStream

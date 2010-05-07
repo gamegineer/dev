@@ -1,6 +1,6 @@
 /*
  * AbstractPersistenceDelegateTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,8 +39,8 @@ public abstract class AbstractPersistenceDelegateTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractPersistenceDelegateTestCase} class.
+     * Initializes a new instance of the {@code
+     * AbstractPersistenceDelegateTestCase} class.
      */
     protected AbstractPersistenceDelegateTestCase()
     {
@@ -64,8 +64,8 @@ public abstract class AbstractPersistenceDelegateTestCase
      * Indicates the specified objects are equal.
      * 
      * <p>
-     * The default implementation compares the two objects using the
-     * {@code equals} method.
+     * The default implementation compares the two objects using the {@code
+     * equals} method.
      * </p>
      * 
      * @param originalObj
@@ -73,8 +73,8 @@ public abstract class AbstractPersistenceDelegateTestCase
      * @param deserializedObj
      *        The deserialized object; may be {@code null}.
      * 
-     * @return {@code true} if the two objects are equal; otherwise
-     *         {@code false}.
+     * @return {@code true} if the two objects are equal; otherwise {@code
+     *         false}.
      * 
      * @throws java.lang.ClassCastException
      *         If {@code deserializedObj} is not of the subject type.

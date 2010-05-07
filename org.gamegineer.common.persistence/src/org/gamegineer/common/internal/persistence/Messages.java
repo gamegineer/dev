@@ -40,8 +40,8 @@ final class Messages
 
     // --- Services ---------------------------------------------------------
 
-    /** The adapter manager service tracker is not set. */
-    public static String Services_adapterManagerServiceTracker_notSet;
+    /** The JavaBeans persistence delegate registry service tracker is not set. */
+    public static String Services_beansPersistenceDelegateRegistryServiceTracker_notSet;
 
     /**
      * The Serializable persistence delegate registry service tracker is not

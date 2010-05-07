@@ -24,9 +24,6 @@ package org.gamegineer.common.internal.persistence;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import net.jcip.annotations.ThreadSafe;
-import org.eclipse.core.runtime.IAdapterManager;
-import org.gamegineer.common.internal.persistence.schemes.serializable.services.persistencedelegateregistry.PersistenceDelegateRegistry;
-import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
@@ -48,8 +45,11 @@ public final class Services
     /** The singleton instance. */
     private static final Services instance_ = new Services();
 
-    /** The adapter manager service tracker. */
-    private ServiceTracker adapterManagerServiceTracker_;
+    /** The JavaBeans persistence delegate registry service registration token. */
+    private ServiceRegistration beansPersistenceDelegateRegistryServiceRegistration_;
+
+    /** The JavaBeans persistence delegate registry service tracker. */
+    private ServiceTracker beansPersistenceDelegateRegistryServiceTracker_;
 
     /**
      * The Serializable persistence delegate registry service registration
@@ -84,7 +84,6 @@ public final class Services
     void close()
     {
         // Unregister package-specific adapters
-        org.gamegineer.common.internal.persistence.memento.Adapters.getDefault().unregister( getAdapterManager() );
 
         // Close bundle-specific services
         if( serializablePersistenceDelegateRegistryServiceTracker_ != null )
@@ -92,10 +91,10 @@ public final class Services
             serializablePersistenceDelegateRegistryServiceTracker_.close();
             serializablePersistenceDelegateRegistryServiceTracker_ = null;
         }
-        if( adapterManagerServiceTracker_ != null )
+        if( beansPersistenceDelegateRegistryServiceTracker_ != null )
         {
-            adapterManagerServiceTracker_.close();
-            adapterManagerServiceTracker_ = null;
+            beansPersistenceDelegateRegistryServiceTracker_.close();
+            beansPersistenceDelegateRegistryServiceTracker_ = null;
         }
 
         // Unregister package-specific services
@@ -106,23 +105,29 @@ public final class Services
             serializablePersistenceDelegateRegistryServiceRegistration_.unregister();
             serializablePersistenceDelegateRegistryServiceRegistration_ = null;
         }
+        if( beansPersistenceDelegateRegistryServiceRegistration_ != null )
+        {
+            beansPersistenceDelegateRegistryServiceRegistration_.unregister();
+            beansPersistenceDelegateRegistryServiceRegistration_ = null;
+        }
     }
 
     /**
-     * Gets the adapter manager service managed by this object.
+     * Gets the JavaBeans persistence delegate registry service managed by this
+     * object.
      * 
-     * @return The adapter manager service managed by this object; never {@code
-     *         null}.
+     * @return The JavaBeans persistence delegate registry service managed by
+     *         this object; never {@code null}.
      * 
      * @throws java.lang.IllegalStateException
      *         If this object is not open.
      */
     /* @NonNull */
-    public IAdapterManager getAdapterManager()
+    public org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry getBeansPersistenceDelegateRegistry()
     {
-        assertStateLegal( adapterManagerServiceTracker_ != null, Messages.Services_adapterManagerServiceTracker_notSet );
+        assertStateLegal( beansPersistenceDelegateRegistryServiceTracker_ != null, Messages.Services_beansPersistenceDelegateRegistryServiceTracker_notSet );
 
-        return (IAdapterManager)adapterManagerServiceTracker_.getService();
+        return (org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry)beansPersistenceDelegateRegistryServiceTracker_.getService();
     }
 
     /**
@@ -136,11 +141,11 @@ public final class Services
      *         If this object is not open.
      */
     /* @NonNull */
-    public IPersistenceDelegateRegistry getSerializablePersistenceDelegateRegistry()
+    public org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry getSerializablePersistenceDelegateRegistry()
     {
         assertStateLegal( serializablePersistenceDelegateRegistryServiceTracker_ != null, Messages.Services_serializablePersistenceDelegateRegistryServiceTracker_notSet );
 
-        return (IPersistenceDelegateRegistry)serializablePersistenceDelegateRegistryServiceTracker_.getService();
+        return (org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry)serializablePersistenceDelegateRegistryServiceTracker_.getService();
     }
 
     /**
@@ -171,17 +176,17 @@ public final class Services
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
         // Register bundle-specific services
-        serializablePersistenceDelegateRegistryServiceRegistration_ = context.registerService( IPersistenceDelegateRegistry.class.getName(), new PersistenceDelegateRegistry(), null );
+        beansPersistenceDelegateRegistryServiceRegistration_ = context.registerService( org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry.class.getName(), new org.gamegineer.common.internal.persistence.schemes.beans.services.persistencedelegateregistry.PersistenceDelegateRegistry(), null );
+        serializablePersistenceDelegateRegistryServiceRegistration_ = context.registerService( org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry.class.getName(), new org.gamegineer.common.internal.persistence.schemes.serializable.services.persistencedelegateregistry.PersistenceDelegateRegistry(), null );
 
         // Register package-specific services
 
         // Open bundle-specific services
-        adapterManagerServiceTracker_ = new ServiceTracker( context, IAdapterManager.class.getName(), null );
-        adapterManagerServiceTracker_.open();
+        beansPersistenceDelegateRegistryServiceTracker_ = new ServiceTracker( context, beansPersistenceDelegateRegistryServiceRegistration_.getReference(), null );
+        beansPersistenceDelegateRegistryServiceTracker_.open();
         serializablePersistenceDelegateRegistryServiceTracker_ = new ServiceTracker( context, serializablePersistenceDelegateRegistryServiceRegistration_.getReference(), null );
         serializablePersistenceDelegateRegistryServiceTracker_.open();
 
         // Register package-specific adapters
-        org.gamegineer.common.internal.persistence.memento.Adapters.getDefault().register( getAdapterManager() );
     }
 }

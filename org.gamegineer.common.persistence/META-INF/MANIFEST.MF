@@ -17,5 +17,6 @@ Import-Package: net.jcip.annotations;version="1.0.0",
  org.osgi.util.tracker;version="1.4.2"
 Export-Package: org.gamegineer.common.persistence.memento,
  org.gamegineer.common.persistence.schemes.beans,
+ org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry,
  org.gamegineer.common.persistence.schemes.serializable,
  org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry

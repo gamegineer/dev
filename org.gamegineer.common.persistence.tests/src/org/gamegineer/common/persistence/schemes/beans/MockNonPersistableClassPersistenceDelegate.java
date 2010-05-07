@@ -1,6 +1,6 @@
 /*
  * MockNonPersistableClassPersistenceDelegate.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,6 @@ import java.beans.Encoder;
 import java.beans.Expression;
 import java.beans.PersistenceDelegate;
 import net.jcip.annotations.NotThreadSafe;
-import org.eclipse.core.runtime.IAdapterFactory;
 
 /**
  * A persistence delegate for the {@code MockNonPersistableClass} class.
@@ -66,65 +65,5 @@ public final class MockNonPersistableClassPersistenceDelegate
         return new Expression( oldInstance, MockNonPersistableClass.class, "new", new Object[] { //$NON-NLS-1$
                 obj.getIntField(), obj.getStringField()
             } );
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * A {@code PersistenceDelegate} adapter factory for instances of {@code
-     * MockNonPersistableClass}.
-     */
-    public static final class AdapterFactory
-        implements IAdapterFactory
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code AdapterFactory} class.
-         */
-        public AdapterFactory()
-        {
-            super();
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.eclipse.core.runtime.IAdapterFactory#getAdapter(java.lang.Object, java.lang.Class)
-         */
-        public Object getAdapter(
-            final Object adaptableObject,
-            @SuppressWarnings( "unchecked" )
-            final Class adapterType )
-        {
-            if( adapterType != PersistenceDelegate.class )
-            {
-                return null;
-            }
-            if( !(adaptableObject instanceof MockNonPersistableClass) )
-            {
-                return null;
-            }
-
-            return new MockNonPersistableClassPersistenceDelegate();
-        }
-
-        /*
-         * @see org.eclipse.core.runtime.IAdapterFactory#getAdapterList()
-         */
-        public Class<?>[] getAdapterList()
-        {
-            return new Class<?>[] {
-                PersistenceDelegate.class
-            };
-        }
     }
 }

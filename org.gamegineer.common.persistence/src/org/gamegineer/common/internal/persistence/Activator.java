@@ -36,6 +36,9 @@ public final class Activator
     // Fields
     // ======================================================================
 
+    /** The JavaBeans persistence delegate extension point identifier. */
+    public static final String EXTENSION_BEANS_PERSISTENCE_DELEGATES = "beansPersistenceDelegates"; //$NON-NLS-1$
+
     /** The Serializable persistence delegate extension point identifier. */
     public static final String EXTENSION_SERIALIZABLE_PERSISTENCE_DELEGATES = "serializablePersistenceDelegates"; //$NON-NLS-1$
 

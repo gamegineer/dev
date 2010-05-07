@@ -1,6 +1,6 @@
 /*
  * MementoPersistenceDelegate.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,6 @@ import java.beans.Encoder;
 import java.beans.Expression;
 import java.beans.PersistenceDelegate;
 import net.jcip.annotations.Immutable;
-import org.eclipse.core.runtime.IAdapterFactory;
 import org.gamegineer.common.internal.persistence.memento.Memento;
 
 /**
@@ -36,14 +35,6 @@ public final class MementoPersistenceDelegate
     extends PersistenceDelegate
 {
     // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The flyweight instance of this class. */
-    public static final PersistenceDelegate INSTANCE = new MementoPersistenceDelegate();
-
-
-    // ======================================================================
     // Constructors
     // ======================================================================
 
@@ -51,7 +42,7 @@ public final class MementoPersistenceDelegate
      * Initializes a new instance of the {@code MementoPersistenceDelegate}
      * class.
      */
-    private MementoPersistenceDelegate()
+    public MementoPersistenceDelegate()
     {
         super();
     }
@@ -74,65 +65,5 @@ public final class MementoPersistenceDelegate
         return new Expression( oldInstance, Memento.class, "new", new Object[] { //$NON-NLS-1$
                 obj.getAttributes()
             } );
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * A {@code PersistenceDelegate} adapter factory for instances of {@code
-     * MockNonPersistableClass}.
-     */
-    public static final class AdapterFactory
-        implements IAdapterFactory
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code AdapterFactory} class.
-         */
-        public AdapterFactory()
-        {
-            super();
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.eclipse.core.runtime.IAdapterFactory#getAdapter(java.lang.Object, java.lang.Class)
-         */
-        public Object getAdapter(
-            final Object adaptableObject,
-            @SuppressWarnings( "unchecked" )
-            final Class adapterType )
-        {
-            if( adapterType != PersistenceDelegate.class )
-            {
-                return null;
-            }
-            if( !(adaptableObject instanceof Memento) )
-            {
-                return null;
-            }
-
-            return MementoPersistenceDelegate.INSTANCE;
-        }
-
-        /*
-         * @see org.eclipse.core.runtime.IAdapterFactory#getAdapterList()
-         */
-        public Class<?>[] getAdapterList()
-        {
-            return new Class<?>[] {
-                PersistenceDelegate.class
-            };
-        }
     }
 }

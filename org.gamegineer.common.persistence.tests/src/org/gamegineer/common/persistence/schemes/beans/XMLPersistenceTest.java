@@ -1,6 +1,6 @@
 /*
  * XMLPersistenceTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,13 +23,13 @@ package org.gamegineer.common.persistence.schemes.beans;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import java.beans.PersistenceDelegate;
 import java.beans.XMLDecoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
-import org.eclipse.core.runtime.IAdapterFactory;
-import org.eclipse.core.runtime.IAdapterManager;
 import org.gamegineer.common.internal.persistence.Services;
+import org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,13 +46,13 @@ public final class XMLPersistenceTest
     // ======================================================================
 
     /**
-     * The persistence delegate adapter factory for the non-persistable class
-     * used in the fixture.
+     * The persistence delegate for the non-serializable class used in the
+     * fixture.
      */
-    private IAdapterFactory adapterFactory_;
+    private PersistenceDelegate persistenceDelegate_;
 
-    /** The platform adapter manager. */
-    private IAdapterManager adapterManager_;
+    /** The persistence delegate registry. */
+    private IPersistenceDelegateRegistry persistenceDelegateRegistry_;
 
 
     // ======================================================================
@@ -82,9 +82,9 @@ public final class XMLPersistenceTest
     public void setUp()
         throws Exception
     {
-        adapterManager_ = Services.getDefault().getAdapterManager();
-        adapterFactory_ = new MockNonPersistableClassPersistenceDelegate.AdapterFactory();
-        adapterManager_.registerAdapters( adapterFactory_, MockNonPersistableClass.class );
+        persistenceDelegateRegistry_ = Services.getDefault().getBeansPersistenceDelegateRegistry();
+        persistenceDelegate_ = new MockNonPersistableClassPersistenceDelegate();
+        persistenceDelegateRegistry_.registerPersistenceDelegate( MockNonPersistableClass.class.getName(), persistenceDelegate_ );
     }
 
     /**
@@ -97,9 +97,9 @@ public final class XMLPersistenceTest
     public void tearDown()
         throws Exception
     {
-        adapterManager_.unregisterAdapters( adapterFactory_ );
-        adapterFactory_ = null;
-        adapterManager_ = null;
+        persistenceDelegateRegistry_.unregisterPersistenceDelegate( MockNonPersistableClass.class.getName(), persistenceDelegate_ );
+        persistenceDelegate_ = null;
+        persistenceDelegateRegistry_ = null;
     }
 
     /**
