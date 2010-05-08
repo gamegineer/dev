@@ -22,7 +22,6 @@
 package org.gamegineer.common.persistence.schemes.beans;
 
 import static org.junit.Assert.assertTrue;
-import java.beans.XMLDecoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import org.junit.Test;

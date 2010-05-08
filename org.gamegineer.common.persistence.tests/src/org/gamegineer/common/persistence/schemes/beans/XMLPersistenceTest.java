@@ -24,7 +24,6 @@ package org.gamegineer.common.persistence.schemes.beans;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import java.beans.PersistenceDelegate;
-import java.beans.XMLDecoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
@@ -36,7 +35,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the interaction between the
- * {@link java.beans.XMLDecoder} and
+ * {@link org.gamegineer.common.persistence.schemes.beans.XMLDecoder} and
  * {@link org.gamegineer.common.persistence.schemes.beans.XMLEncoder} classes.
  */
 public final class XMLPersistenceTest

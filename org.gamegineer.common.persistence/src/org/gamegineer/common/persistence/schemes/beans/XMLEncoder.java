@@ -78,12 +78,37 @@ public final class XMLEncoder
         assertArgumentNotNull( out, "out" ); //$NON-NLS-1$
 
         persistenceDelegateRegistry_ = Services.getDefault().getBeansPersistenceDelegateRegistry();
+
+        setPersistenceDelegate( ClassLoaderContext.class, new ClassLoaderContextPersistenceDelegate() );
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the class loader context for the specified object.
+     * 
+     * @param o
+     *        An object; may be {@code null}.
+     * 
+     * @return The class loader context for the specified object or {@code null}
+     *         if no class loader context is available.
+     */
+    /* @Nullable */
+    private ClassLoaderContext getClassLoaderContext(
+        /* @Nullable */
+        final Object o )
+    {
+        final PersistenceDelegate servicePersistenceDelegate = getServicePersistenceDelegate( o );
+        if( servicePersistenceDelegate == null )
+        {
+            return null;
+        }
+
+        return new ClassLoaderContext( o.getClass().getName() );
+    }
 
     /*
      * @see java.beans.Encoder#getPersistenceDelegate(java.lang.Class)
@@ -92,32 +117,52 @@ public final class XMLEncoder
     public PersistenceDelegate getPersistenceDelegate(
         final Class<?> type )
     {
-        if( type != null )
+        final PersistenceDelegate servicePersistenceDelegate = getServicePersistenceDelegate( type );
+        if( servicePersistenceDelegate != null )
         {
-            final PersistenceDelegate persistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( type.getName() );
-            if( persistenceDelegate != null )
-            {
-                return persistenceDelegate;
-            }
+            return servicePersistenceDelegate;
         }
 
         return super.getPersistenceDelegate( type );
     }
 
     /**
-     * Sets the context class loader to use the class loader for the specified
-     * object if it has a registered framework persistence delegate.
+     * Gets the persistence delegate for the specified class that is registered
+     * with the persistence delegate registry service.
+     * 
+     * @param type
+     *        A class; may be {@code null}.
+     * 
+     * @return The persistence delegate fort he specified class that is
+     *         registered with the persistence delegate registry service or
+     *         {@code null} if no persistence delegate has been registered.
+     */
+    /* @Nullable */
+    private PersistenceDelegate getServicePersistenceDelegate(
+        /* @Nullable */
+        final Class<?> type )
+    {
+        if( type == null )
+        {
+            return null;
+        }
+
+        return persistenceDelegateRegistry_.getPersistenceDelegate( type.getName() );
+    }
+
+    /**
+     * Gets the persistence delegate for the specified object that is registered
+     * with the persistence delegate registry service.
      * 
      * @param o
      *        An object; may be {@code null}.
      * 
-     * @return The previous context class loader or {@code null} if the context
-     *         class loader was not changed. The caller is expected to restore
-     *         this context class loader when the relevant operation is
-     *         complete.
+     * @return The persistence delegate fort he specified object that is
+     *         registered with the persistence delegate registry service or
+     *         {@code null} if no persistence delegate has been registered.
      */
     /* @Nullable */
-    private ClassLoader setContextClassLoader(
+    private PersistenceDelegate getServicePersistenceDelegate(
         /* @Nullable */
         final Object o )
     {
@@ -126,16 +171,7 @@ public final class XMLEncoder
             return null;
         }
 
-        final PersistenceDelegate persistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( o.getClass().getName() );
-        if( persistenceDelegate == null )
-        {
-            return null;
-        }
-
-        final Thread thread = Thread.currentThread();
-        final ClassLoader oldContextClassLoader = thread.getContextClassLoader();
-        thread.setContextClassLoader( persistenceDelegate.getClass().getClassLoader() );
-        return oldContextClassLoader;
+        return getServicePersistenceDelegate( o.getClass() );
     }
 
     /*
@@ -145,16 +181,21 @@ public final class XMLEncoder
     public void writeObject(
         final Object o )
     {
-        final ClassLoader oldContextClassLoader = setContextClassLoader( o );
+        final ClassLoaderContext classLoaderContext = getClassLoaderContext( o );
         try
         {
+            if( classLoaderContext != null )
+            {
+                super.writeObject( classLoaderContext );
+            }
+
             super.writeObject( o );
         }
         finally
         {
-            if( oldContextClassLoader != null )
+            if( classLoaderContext != null )
             {
-                Thread.currentThread().setContextClassLoader( oldContextClassLoader );
+                classLoaderContext.close();
             }
         }
     }
