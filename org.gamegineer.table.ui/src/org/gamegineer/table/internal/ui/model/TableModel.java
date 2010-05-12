@@ -96,6 +96,11 @@ public final class TableModel
         table_ = table;
 
         table_.addTableListener( this );
+
+        for( final ICardPile cardPile : table.getCardPiles() )
+        {
+            createCardPileModel( cardPile );
+        }
     }
 
 
@@ -132,10 +137,7 @@ public final class TableModel
 
         synchronized( lock_ )
         {
-            final ICardPile cardPile = event.getCardPile();
-            final CardPileModel cardPileModel = new CardPileModel( cardPile );
-            cardPileModels_.put( cardPile, cardPileModel );
-            cardPileModel.addCardPileModelListener( this );
+            createCardPileModel( event.getCardPile() );
         }
 
         fireTableModelStateChanged();
@@ -201,6 +203,27 @@ public final class TableModel
         }
 
         fireTableModelStateChanged();
+    }
+
+    /**
+     * Creates a card pile model for the specified card pile.
+     * 
+     * @param cardPile
+     *        The card pile; must not be {@code null}.
+     * 
+     * @return The card pile model; never {@code null}.
+     */
+    /* @NonNull */
+    private CardPileModel createCardPileModel(
+        /* @NonNull */
+        final ICardPile cardPile )
+    {
+        assert cardPile != null;
+
+        final CardPileModel cardPileModel = new CardPileModel( cardPile );
+        cardPileModels_.put( cardPile, cardPileModel );
+        cardPileModel.addCardPileModelListener( this );
+        return cardPileModel;
     }
 
     /**

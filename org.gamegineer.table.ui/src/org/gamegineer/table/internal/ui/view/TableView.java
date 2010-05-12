@@ -207,6 +207,11 @@ final class TableView
         addKeyListener( keyListener_ );
         addMouseListener( mouseInputListener_ );
         addMouseMotionListener( mouseInputListener_ );
+
+        for( final ICardPile cardPile : model_.getTable().getCardPiles() )
+        {
+            createCardPileView( cardPile );
+        }
     }
 
     /**
@@ -583,10 +588,7 @@ final class TableView
     {
         assert cardPile != null;
 
-        final ICardPileBaseDesignUI cardPileBaseDesignUI = Services.getDefault().getCardPileDesignUIRegistry().getCardPileBaseDesignUI( cardPile.getBaseDesign().getId() );
-        final CardPileView view = new CardPileView( model_.getCardPileModel( cardPile ), cardPileBaseDesignUI );
-        cardPileViews_.put( cardPile, view );
-        view.initialize( this );
+        final CardPileView view = createCardPileView( cardPile );
         repaintTable( view.getBounds() );
     }
 
@@ -688,6 +690,28 @@ final class TableView
 
         final Dimension originOffset = model_.getOriginOffset();
         rect.translate( originOffset.width, originOffset.height );
+    }
+
+    /**
+     * Creates a card pile view for the specified card pile.
+     * 
+     * @param cardPile
+     *        The card pile; must not be {@code null}.
+     * 
+     * @return The card pile view; never {@code null}.
+     */
+    /* @NonNull */
+    private CardPileView createCardPileView(
+        /* @NonNull */
+        final ICardPile cardPile )
+    {
+        assert cardPile != null;
+
+        final ICardPileBaseDesignUI cardPileBaseDesignUI = Services.getDefault().getCardPileDesignUIRegistry().getCardPileBaseDesignUI( cardPile.getBaseDesign().getId() );
+        final CardPileView view = new CardPileView( model_.getCardPileModel( cardPile ), cardPileBaseDesignUI );
+        cardPileViews_.put( cardPile, view );
+        view.initialize( this );
+        return view;
     }
 
     /**
@@ -873,6 +897,12 @@ final class TableView
     @Override
     public void removeNotify()
     {
+        for( final CardPileView view : cardPileViews_.values() )
+        {
+            view.uninitialize();
+        }
+        cardPileViews_.clear();
+
         removeMouseMotionListener( mouseInputListener_ );
         removeMouseListener( mouseInputListener_ );
         removeKeyListener( keyListener_ );

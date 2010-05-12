@@ -98,6 +98,9 @@ final class Messages
      */
     public static String MainModel_mainModelStateChanged_unexpectedException;
 
+    /** An error occurred while opening the table. */
+    public static String MainModel_openTable_error;
+
     /** The main model listener is not registered. */
     public static String MainModel_removeMainModelListener_listener_notRegistered;
 
@@ -170,6 +173,25 @@ final class Messages
     // ======================================================================
 
     // --- MainModel --------------------------------------------------------
+
+    /**
+     * Gets the formatted message indicating an error occurred while opening the
+     * table.
+     * 
+     * @param fileName
+     *        The name of the file from which the table is opened; must not be
+     *        {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while opening
+     *         the table; never {@code null}.
+     */
+    /* @NonNull */
+    static String MainModel_openTable_error(
+        /* @NonNull */
+        final String fileName )
+    {
+        return bind( MainModel_openTable_error, fileName );
+    }
 
     /**
      * Gets the formatted message indicating an error occurred while saving the

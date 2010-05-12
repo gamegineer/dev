@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -32,7 +33,10 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.persistence.memento.IMemento;
+import org.gamegineer.common.persistence.memento.MalformedMementoException;
+import org.gamegineer.common.persistence.schemes.serializable.ObjectInputStream;
 import org.gamegineer.common.persistence.schemes.serializable.ObjectOutputStream;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.ui.ITableAdvisor;
@@ -293,6 +297,76 @@ public final class MainModel
 
         fireTableOpened( openedTableModel );
 
+        setClean();
+    }
+
+    /**
+     * Opens an existing table from the specified file.
+     * 
+     * @param fileName
+     *        The name of the file from which the table will be opened; must not
+     *        be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code fileName} is {@code null}.
+     * @throws org.gamegineer.table.internal.ui.model.ModelException
+     *         If an error occurs while opening the file.
+     */
+    public void openTable(
+        /* @NonNull */
+        final String fileName )
+        throws ModelException
+    {
+        assertArgumentNotNull( fileName, "fileName" ); //$NON-NLS-1$
+
+        final ITable table;
+        try
+        {
+            final ObjectInputStream inputStream = new ObjectInputStream( new FileInputStream( fileName ) );
+            try
+            {
+                final IMemento memento = (IMemento)inputStream.readObject();
+                table = TableFactory.createTable( memento );
+            }
+            finally
+            {
+                inputStream.close();
+            }
+        }
+        catch( final ClassNotFoundException e )
+        {
+            throw new ModelException( Messages.MainModel_openTable_error( fileName ), e );
+        }
+        catch( final IOException e )
+        {
+            throw new ModelException( Messages.MainModel_openTable_error( fileName ), e );
+        }
+        catch( final MalformedMementoException e )
+        {
+            throw new ModelException( Messages.MainModel_openTable_error( fileName ), e );
+        }
+
+        final TableModel closedTableModel, openedTableModel;
+        synchronized( lock_ )
+        {
+            closedTableModel = tableModel_;
+            if( closedTableModel != null )
+            {
+                closedTableModel.removeTableModelListener( this );
+            }
+
+            openedTableModel = tableModel_ = new TableModel( table );
+            openedTableModel.addTableModelListener( this );
+        }
+
+        if( closedTableModel != null )
+        {
+            fireTableClosed( closedTableModel );
+        }
+
+        fireTableOpened( openedTableModel );
+
+        fileName_.set( fileName );
         setClean();
     }
 

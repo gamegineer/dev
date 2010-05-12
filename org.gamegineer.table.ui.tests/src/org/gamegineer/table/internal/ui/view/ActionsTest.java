@@ -647,6 +647,16 @@ public final class ActionsTest
     }
 
     /**
+     * Ensures the {@code getOpenTableAction} method does not return {@code
+     * null}.
+     */
+    @Test
+    public void testGetOpenTableAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getOpenTableAction() );
+    }
+
+    /**
      * Ensures the {@code getRemoveCardAction} method does not return {@code
      * null}.
      */

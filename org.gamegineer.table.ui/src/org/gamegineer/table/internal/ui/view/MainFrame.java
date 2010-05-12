@@ -147,6 +147,16 @@ public final class MainFrame
                 openNewTable();
             }
         } );
+        actionMediator_.bindActionListener( Actions.getOpenTableAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                openTable();
+            }
+        } );
         actionMediator_.bindActionListener( Actions.getSaveTableAction(), new ActionListener()
         {
             @SuppressWarnings( "synthetic-access" )
@@ -222,6 +232,29 @@ public final class MainFrame
     private void openNewTable()
     {
         model_.openTable();
+    }
+
+    /**
+     * Opens an existing table.
+     */
+    private void openTable()
+    {
+        final JFileChooser fileChooser = new JFileChooser();
+        fileChooser.addChoosableFileFilter( new FileNameExtensionFilter( Messages.MainFrame_fileFilter_table, "ser" ) ); //$NON-NLS-1$
+        if( fileChooser.showOpenDialog( this ) == JFileChooser.CANCEL_OPTION )
+        {
+            return;
+        }
+
+        try
+        {
+            model_.openTable( fileChooser.getSelectedFile().getAbsolutePath() );
+        }
+        catch( final ModelException e )
+        {
+            Loggers.DEFAULT.log( Level.SEVERE, Messages.MainFrame_openTable_error, e );
+            JOptionPane.showMessageDialog( this, Messages.MainFrame_openTable_error, Messages.MainFrame_title, JOptionPane.ERROR_MESSAGE );
+        }
     }
 
     /*

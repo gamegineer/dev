@@ -24,6 +24,8 @@ package org.gamegineer.table.internal.ui.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
 import org.gamegineer.table.ui.TableAdvisor;
 import org.junit.After;
 import org.junit.Before;
@@ -59,6 +61,26 @@ public final class MainModelTest
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates a temporary file name.
+     * 
+     * @return A temporary file name; never {@code null}.
+     */
+    /* @NonNull */
+    private static String createTemporaryFileName()
+    {
+        try
+        {
+            final File temporaryFile = File.createTempFile( MainModelTest.class.getName(), null );
+            temporaryFile.deleteOnExit();
+            return temporaryFile.getAbsolutePath();
+        }
+        catch( final IOException e )
+        {
+            throw new AssertionError( "Failed to create temporary file." ); //$NON-NLS-1$
+        }
+    }
 
     /**
      * Sets up the test fixture.
@@ -176,7 +198,7 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code openTable} method fires a main model dirty flag
+     * Ensures the {@code openTable()} method fires a main model dirty flag
      * changed event.
      */
     @Test
@@ -192,7 +214,7 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code openTable} method fires a main model state changed
+     * Ensures the {@code openTable()} method fires a main model state changed
      * event.
      */
     @Test
@@ -207,7 +229,7 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code openTable} method fires a table closed event.
+     * Ensures the {@code openTable()} method fires a table closed event.
      */
     @Test
     public void testOpenTable_TableClosed_FiresTableClosedEvent()
@@ -222,7 +244,7 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code openTable} method fires a table opened event.
+     * Ensures the {@code openTable()} method fires a table opened event.
      */
     @Test
     public void testOpenTable_TableOpened_FiresTableOpenedEvent()
@@ -231,6 +253,106 @@ public final class MainModelTest
         model_.addMainModelListener( listener );
 
         model_.openTable();
+
+        assertEquals( 1, listener.getTableOpenedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code openTable(String)} method throws an exception when
+     * passed a {@code null} file name.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testOpenTableFromFile_FileName_Null()
+        throws Exception
+    {
+        model_.openTable( null );
+    }
+
+    /**
+     * Ensures the {@code openTable(String)} method fires a main model dirty
+     * flag changed event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testOpenTableFromFile_FiresMainModelDirtyFlagChangedEvent()
+        throws Exception
+    {
+        final String fileName = createTemporaryFileName();
+        final MockMainModelListener listener = new MockMainModelListener();
+        model_.openTable();
+        model_.saveTable( fileName );
+        model_.addMainModelListener( listener );
+
+        model_.openTable( fileName );
+
+        assertEquals( 1, listener.getMainModelDirtyFlagChangedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code openTable(String)} method fires a main model state
+     * changed event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testOpenTableFromFile_FiresMainModelStateChangedEvent()
+        throws Exception
+    {
+        final String fileName = createTemporaryFileName();
+        final MockMainModelListener listener = new MockMainModelListener();
+        model_.openTable();
+        model_.saveTable( fileName );
+        model_.addMainModelListener( listener );
+
+        model_.openTable( fileName );
+
+        assertEquals( 1, listener.getMainModelStateChangedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code openTable(String)} method fires a table closed event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testOpenTableFromFile_TableClosed_FiresTableClosedEvent()
+        throws Exception
+    {
+        final String fileName = createTemporaryFileName();
+        final MockMainModelListener listener = new MockMainModelListener();
+        model_.openTable();
+        model_.saveTable( fileName );
+        model_.addMainModelListener( listener );
+
+        model_.openTable( fileName );
+
+        assertEquals( 1, listener.getTableClosedEventCount() );
+    }
+
+    /**
+     * Ensures the {@code openTable(String)} method fires a table opened event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testOpenTableFromFile_TableOpened_FiresTableOpenedEvent()
+        throws Exception
+    {
+        final String fileName = createTemporaryFileName();
+        final MockMainModelListener listener = new MockMainModelListener();
+        model_.openTable();
+        model_.saveTable( fileName );
+        model_.addMainModelListener( listener );
+
+        model_.openTable( fileName );
 
         assertEquals( 1, listener.getTableOpenedEventCount() );
     }

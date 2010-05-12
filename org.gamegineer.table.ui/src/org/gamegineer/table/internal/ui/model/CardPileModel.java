@@ -92,6 +92,11 @@ public final class CardPileModel
         listeners_ = new CopyOnWriteArrayList<ICardPileModelListener>();
 
         cardPile_.addCardPileListener( this );
+
+        for( final ICard card : cardPile.getCards() )
+        {
+            createCardModel( card );
+        }
     }
 
 
@@ -129,10 +134,7 @@ public final class CardPileModel
 
         synchronized( lock_ )
         {
-            final ICard card = event.getCard();
-            final CardModel cardModel = new CardModel( card );
-            cardModels_.put( card, cardModel );
-            cardModel.addCardModelListener( this );
+            createCardModel( event.getCard() );
         }
 
         fireCardPileModelStateChanged();
@@ -178,6 +180,27 @@ public final class CardPileModel
         }
 
         fireCardPileModelStateChanged();
+    }
+
+    /**
+     * Creates a card model for the specified card.
+     * 
+     * @param card
+     *        The card; must not be {@code null}.
+     * 
+     * @return The card model; never {@code null}.
+     */
+    /* @NonNull */
+    private CardModel createCardModel(
+        /* @NonNull */
+        final ICard card )
+    {
+        assert card != null;
+
+        final CardModel cardModel = new CardModel( card );
+        cardModels_.put( card, cardModel );
+        cardModel.addCardModelListener( this );
+        return cardModel;
     }
 
     /**

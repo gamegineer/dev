@@ -572,6 +572,9 @@ final class Messages
     /** The table file filter. */
     public static String MainFrame_fileFilter_table;
 
+    /** An error occurred while opening the table. */
+    public static String MainFrame_openTable_error;
+
     /** An error occurred while saving the table. */
     public static String MainFrame_saveTable_error;
 
@@ -670,6 +673,17 @@ final class Messages
 
     /** The open new table action text. */
     public static String OpenNewTableAction_text;
+
+    // --- OpenTableAction -----------------------------------------------
+
+    /** The open table action accelerator. */
+    public static String OpenTableAction_accelerator;
+
+    /** The open table action mnemonic. */
+    public static String OpenTableAction_mnemonic;
+
+    /** The open table action text. */
+    public static String OpenTableAction_text;
 
     // --- RemoveCardAction -------------------------------------------------
 

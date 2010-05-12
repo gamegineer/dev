@@ -381,6 +381,9 @@ final class Actions
     /** The identifier of the action used to open a new table. */
     private static final String OPEN_NEW_TABLE_ACTION_ID = "openNewTableAction"; //$NON-NLS-1$
 
+    /** The identifier of the action used to open an existing table. */
+    private static final String OPEN_TABLE_ACTION_ID = "openTableAction"; //$NON-NLS-1$
+
     /** The identifier of the action used to remove a card from a card pile. */
     private static final String REMOVE_CARD_ACTION_ID = "removeCardAction"; //$NON-NLS-1$
 
@@ -1058,6 +1061,16 @@ final class Actions
                 putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.OpenNewTableAction_accelerator ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.OpenNewTableAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.OpenNewTableAction_text );
+            }
+        } );
+        actions.put( OPEN_TABLE_ACTION_ID, new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.OpenTableAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.OpenTableAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.OpenTableAction_text );
             }
         } );
         actions.put( REMOVE_CARD_ACTION_ID, new BasicAction()
@@ -1820,6 +1833,17 @@ final class Actions
     static BasicAction getOpenNewTableAction()
     {
         return actions_.get( OPEN_NEW_TABLE_ACTION_ID );
+    }
+
+    /**
+     * Gets the open table action.
+     * 
+     * @return The open table action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getOpenTableAction()
+    {
+        return actions_.get( OPEN_TABLE_ACTION_ID );
     }
 
     /**

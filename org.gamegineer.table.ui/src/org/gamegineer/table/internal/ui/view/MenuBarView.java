@@ -234,6 +234,7 @@ final class MenuBarView
         final JMenu menu = new JMenu( Messages.MenuBarView_file_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_file_mnemonic ).getKeyCode() );
         menu.add( Actions.getOpenNewTableAction() );
+        menu.add( Actions.getOpenTableAction() );
         menu.addSeparator();
         menu.add( Actions.getSaveTableAction() );
         menu.add( Actions.getSaveTableAsAction() );
