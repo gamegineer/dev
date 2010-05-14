@@ -29,9 +29,9 @@ import org.gamegineer.common.internal.persistence.Services;
 import org.junit.Test;
 
 /**
- * A fixture for testing the classes that implement the
+ * A fixture for testing the basic aspects of classes that implement the
  * {@link org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate}
- * interface to ensure their subject class can be persisted successfully.
+ * interface.
  */
 public abstract class AbstractPersistenceDelegateTestCase
 {

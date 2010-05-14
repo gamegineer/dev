@@ -28,7 +28,9 @@ import org.gamegineer.table.internal.core.CardSurfaceDesign;
 /**
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.core.persistence.schemes.serializable.CardSurfaceDesignPersistenceDelegate}
- * class to ensure its subject class can be persisted successfully.
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate}
+ * interface.
  */
 public final class CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest
     extends AbstractPersistenceDelegateTestCase

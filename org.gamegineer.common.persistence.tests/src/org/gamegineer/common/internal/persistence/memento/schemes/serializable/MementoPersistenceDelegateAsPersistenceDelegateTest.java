@@ -1,6 +1,6 @@
 /*
  * MementoPersistenceDelegateAsPersistenceDelegateTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,7 +30,9 @@ import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenc
 /**
  * A fixture for testing the
  * {@link org.gamegineer.common.internal.persistence.memento.schemes.serializable.MementoPersistenceDelegate}
- * class to ensure its subject class can be persisted successfully.
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate}
+ * interface.
  */
 public final class MementoPersistenceDelegateAsPersistenceDelegateTest
     extends AbstractPersistenceDelegateTestCase

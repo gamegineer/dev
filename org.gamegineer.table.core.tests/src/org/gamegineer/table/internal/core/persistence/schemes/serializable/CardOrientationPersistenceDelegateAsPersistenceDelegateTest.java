@@ -27,7 +27,9 @@ import org.gamegineer.table.core.CardOrientation;
 /**
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.core.persistence.schemes.serializable.CardOrientationPersistenceDelegate}
- * class to ensure its subject class can be persisted successfully.
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate}
+ * interface.
  */
 public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
     extends AbstractPersistenceDelegateTestCase
