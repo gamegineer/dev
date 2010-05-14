@@ -26,7 +26,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import javax.swing.Action;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -39,6 +38,7 @@ import org.gamegineer.table.internal.ui.model.MainModel;
 import org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent;
 import org.gamegineer.table.internal.ui.model.MainModelEvent;
 import org.gamegineer.table.internal.ui.model.ModelException;
+import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
 import org.gamegineer.table.ui.ITableAdvisor;
 
 /**
