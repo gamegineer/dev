@@ -181,16 +181,6 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerPersistenceDelegate} method throws an
-     * exception when passed a {@code null} persistence delegate.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRegisterPersistenceDelegate_PersistenceDelegate_Null()
-    {
-        persistenceDelegateRegistry_.registerPersistenceDelegate( "className", null ); //$NON-NLS-1$
-    }
-
-    /**
      * Ensures the {@code registerPersistenceDelegate} method properly ignores a
      * persistence delegate whose class name has already been registered for a
      * different persistence delegate.
@@ -244,6 +234,16 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
+     * Ensures the {@code registerPersistenceDelegate} method throws an
+     * exception when passed a {@code null} persistence delegate.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testRegisterPersistenceDelegate_PersistenceDelegate_Null()
+    {
+        persistenceDelegateRegistry_.registerPersistenceDelegate( "className", null ); //$NON-NLS-1$
+    }
+
+    /**
      * Ensures the {@code unregisterPersistenceDelegate} method throws an
      * exception when passed a {@code null} class name.
      */
@@ -251,16 +251,6 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     public void testUnregisterPersistenceDelegate_ClassName_Null()
     {
         persistenceDelegateRegistry_.unregisterPersistenceDelegate( null, new DefaultPersistenceDelegate() );
-    }
-
-    /**
-     * Ensures the {@code unregisterPersistenceDelegate} method throws an
-     * exception when passed a {@code null} persistence delegate.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testUnregisterPersistenceDelegate_PersistenceDelegate_Null()
-    {
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( "className", null ); //$NON-NLS-1$
     }
 
     /**
@@ -315,5 +305,15 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
         persistenceDelegateRegistry_.unregisterPersistenceDelegate( className, new DefaultPersistenceDelegate() );
 
         assertEquals( originalClassNamesSize, persistenceDelegateRegistry_.getClassNames().size() );
+    }
+
+    /**
+     * Ensures the {@code unregisterPersistenceDelegate} method throws an
+     * exception when passed a {@code null} persistence delegate.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testUnregisterPersistenceDelegate_PersistenceDelegate_Null()
+    {
+        persistenceDelegateRegistry_.unregisterPersistenceDelegate( "className", null ); //$NON-NLS-1$
     }
 }
