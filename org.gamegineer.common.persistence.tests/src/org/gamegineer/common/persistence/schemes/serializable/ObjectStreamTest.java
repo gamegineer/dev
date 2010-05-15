@@ -84,7 +84,7 @@ public final class ObjectStreamTest
     {
         persistenceDelegateRegistry_ = Services.getDefault().getSerializablePersistenceDelegateRegistry();
         persistenceDelegate_ = new MockNonSerializableClassPersistenceDelegate();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( MockNonSerializableClass.class.getName(), persistenceDelegate_ );
+        persistenceDelegateRegistry_.registerPersistenceDelegate( MockNonSerializableClass.class, persistenceDelegate_ );
     }
 
     /**
@@ -97,7 +97,7 @@ public final class ObjectStreamTest
     public void tearDown()
         throws Exception
     {
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( MockNonSerializableClass.class.getName(), persistenceDelegate_ );
+        persistenceDelegateRegistry_.unregisterPersistenceDelegate( MockNonSerializableClass.class, persistenceDelegate_ );
         persistenceDelegate_ = null;
         persistenceDelegateRegistry_ = null;
     }

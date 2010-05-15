@@ -39,81 +39,96 @@ public interface IPersistenceDelegateRegistry
     // ======================================================================
 
     /**
-     * Gets a collection of all class names for which a persistence delegate has
+     * Gets the persistence delegate associated with the specified type.
+     * 
+     * @param type
+     *        The type associated with the persistence delegate; must not be
+     *        {@code null}.
+     * 
+     * @return The persistence delegate associated with the specified type or
+     *         {@code null} if no such type is registered.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code type} is {@code null}.
+     */
+    /* @Nullable */
+    public PersistenceDelegate getPersistenceDelegate(
+        /* @NonNull */
+        Class<?> type );
+
+    /**
+     * Gets the persistence delegate associated with the specified type name.
+     * 
+     * @param typeName
+     *        The name of the type associated with the persistence delegate;
+     *        must not be {@code null}.
+     * 
+     * @return The persistence delegate associated with the specified type name
+     *         or {@code null} if no such type name is registered.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code typeName} is {@code null}.
+     */
+    /* @Nullable */
+    public PersistenceDelegate getPersistenceDelegate(
+        /* @NonNull */
+        String typeName );
+
+    /**
+     * Gets a collection of all type names for which a persistence delegate has
      * been registered with this service.
      * 
-     * @return A collection of all class names for which a persistence delegate
+     * @return A collection of all type names for which a persistence delegate
      *         has been registered with this service; never {@code null}. This
      *         collection is a snapshot of the persistence delegates registered
      *         at the time of the call.
      */
     /* @NonNull */
-    public Set<String> getClassNames();
-
-    /**
-     * Gets the persistence delegate associated with the specified class name.
-     * 
-     * @param className
-     *        The name of the class associated with the persistence delegate;
-     *        must not be {@code null}.
-     * 
-     * @return The persistence delegate associated with the specified class name
-     *         or {@code null} if no such class name is registered.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code className} is {@code null}.
-     */
-    /* @Nullable */
-    public PersistenceDelegate getPersistenceDelegate(
-        /* @NonNull */
-        String className );
+    public Set<String> getTypeNames();
 
     /**
      * Registers the specified persistence delegate.
      * 
      * <p>
      * This method does nothing if a persistence delegate associated with the
-     * same class name was previously registered.
+     * same type was previously registered.
      * </p>
      * 
-     * @param className
-     *        The name of the class associated with the persistence delegate;
-     *        must not be {@code null}.
+     * @param type
+     *        The type associated with the persistence delegate; must not be
+     *        {@code null}.
      * @param persistenceDelegate
      *        The persistence delegate; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code className} or {@code persistenceDelegate} is {@code
-     *         null}.
+     *         If {@code type} or {@code persistenceDelegate} is {@code null}.
      */
     public void registerPersistenceDelegate(
         /* @NonNull */
-        String className,
+        Class<?> type,
         /* @NonNull */
         PersistenceDelegate persistenceDelegate );
 
     /**
-     * Unregisters the persistence delegate associated with the specified class
-     * name.
+     * Unregisters the persistence delegate associated with the specified type.
      * 
      * <p>
      * This method does nothing if the specified persistence delegate was not
-     * previously registered for the specified class name.
+     * previously registered for the specified type.
      * </p>
      * 
-     * @param className
-     *        The name of the class associated with the persistence delegate;
-     *        must not be {@code null}.
+     * @param type
+     *        The type associated with the persistence delegate; must not be
+     *        {@code null}.
      * @param persistenceDelegate
      *        The persistence delegate; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code className} or {@code persistenceDelegate} is {@code
-     *         null}.
+     *         If {@code type} or {@code persistenceDelegate} is {@code null}.
      */
     public void unregisterPersistenceDelegate(
         /* @NonNull */
-        String className,
+        Class<?> type,
         /* @NonNull */
         PersistenceDelegate persistenceDelegate );
 }

@@ -85,15 +85,6 @@ public final class PersistenceDelegateRegistry
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#getClassNames()
-     */
-    @Override
-    public Set<String> getClassNames()
-    {
-        return new HashSet<String>( persistenceDelegates_.keySet() );
-    }
-
     /**
      * Gets a map view of all foreign persistence delegates not directly managed
      * by this object.
@@ -125,15 +116,27 @@ public final class PersistenceDelegateRegistry
     }
 
     /*
+     * @see org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.Class)
+     */
+    @Override
+    public IPersistenceDelegate getPersistenceDelegate(
+        final Class<?> type )
+    {
+        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
+
+        return getPersistenceDelegate( type.getName() );
+    }
+
+    /*
      * @see org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.String)
      */
     @Override
     public IPersistenceDelegate getPersistenceDelegate(
-        final String className )
+        final String typeName )
     {
-        assertArgumentNotNull( className, "className" ); //$NON-NLS-1$
+        assertArgumentNotNull( typeName, "typeName" ); //$NON-NLS-1$
 
-        return getPersistenceDelegateMap().get( className );
+        return getPersistenceDelegateMap().get( typeName );
     }
 
     /**
@@ -163,30 +166,36 @@ public final class PersistenceDelegateRegistry
     }
 
     /*
-     * @see org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#registerPersistenceDelegate(java.lang.String, org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate)
+     * @see org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#getTypeNames()
      */
     @Override
-    public void registerPersistenceDelegate(
-        final String className,
-        final IPersistenceDelegate persistenceDelegate )
+    public Set<String> getTypeNames()
     {
-        assertArgumentNotNull( className, "className" ); //$NON-NLS-1$
-        assertArgumentNotNull( persistenceDelegate, "persistenceDelegate" ); //$NON-NLS-1$
-
-        persistenceDelegates_.putIfAbsent( className, persistenceDelegate );
+        return new HashSet<String>( persistenceDelegates_.keySet() );
     }
 
     /*
-     * @see org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#unregisterPersistenceDelegate(java.lang.String, org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate)
+     * @see org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#registerPersistenceDelegate(java.lang.Class, org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate)
      */
     @Override
-    public void unregisterPersistenceDelegate(
-        final String className,
+    public void registerPersistenceDelegate(
+        final Class<?> type,
         final IPersistenceDelegate persistenceDelegate )
     {
-        assertArgumentNotNull( className, "className" ); //$NON-NLS-1$
+        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
         assertArgumentNotNull( persistenceDelegate, "persistenceDelegate" ); //$NON-NLS-1$
 
-        persistenceDelegates_.remove( className, persistenceDelegate );
+        persistenceDelegates_.putIfAbsent( type.getName(), persistenceDelegate );
+    }
+
+    @Override
+    public void unregisterPersistenceDelegate(
+        final Class<?> type,
+        final IPersistenceDelegate persistenceDelegate )
+    {
+        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
+        assertArgumentNotNull( persistenceDelegate, "persistenceDelegate" ); //$NON-NLS-1$
+
+        persistenceDelegates_.remove( type.getName(), persistenceDelegate );
     }
 }

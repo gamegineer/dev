@@ -107,130 +107,103 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code getClassNames} method returns a copy of the registered
-     * class name collection.
+     * Ensures the {@code getPersistenceDelegate(Class<?>)} method returns the
+     * correct value when passed a type that is absent.
      */
     @Test
-    public void testGetClassNames_ReturnValue_Copy()
+    public void testGetPersistenceDelegateForType_Type_Absent()
     {
-        final Set<String> classNames = persistenceDelegateRegistry_.getClassNames();
-        final int expectedClassNamesSize = classNames.size();
-
-        classNames.add( "className" ); //$NON-NLS-1$
-
-        assertEquals( expectedClassNamesSize, persistenceDelegateRegistry_.getClassNames().size() );
+        assertNull( persistenceDelegateRegistry_.getPersistenceDelegate( Object.class ) );
     }
 
     /**
-     * Ensures the {@code getClassNames} method returns a snapshot of the
-     * registered class name collection.
-     */
-    @Test
-    public void testGetClassNames_ReturnValue_Snapshot()
-    {
-        final Set<String> classNames = persistenceDelegateRegistry_.getClassNames();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( "className", new FakePersistenceDelegate() ); //$NON-NLS-1$
-
-        assertTrue( classNames.size() != persistenceDelegateRegistry_.getClassNames().size() );
-    }
-
-    /**
-     * Ensures the {@code getPersistenceDelegate} method returns the correct
-     * value when passed a class name that is absent.
-     */
-    @Test
-    public void testGetPersistenceDelegate_ClassName_Absent()
-    {
-        assertNull( persistenceDelegateRegistry_.getPersistenceDelegate( "unknownClassName" ) ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code getPersistenceDelegate} method throws an exception
-     * when passed a {@code null} class name.
+     * Ensures the {@code getPersistenceDelegate(Class<?>)} method throws an
+     * exception when passed a {@code null} type.
      */
     @Test( expected = NullPointerException.class )
-    public void testGetPersistenceDelegate_ClassName_Null()
+    public void testGetPersistenceDelegateForType_Type_Null()
     {
-        persistenceDelegateRegistry_.getPersistenceDelegate( null );
+        persistenceDelegateRegistry_.getPersistenceDelegate( (Class<?>)null );
     }
 
     /**
-     * Ensures the {@code getPersistenceDelegate} method returns the correct
-     * value when passed a class name that is present.
+     * Ensures the {@code getPersistenceDelegate(Class<?>)} method returns the
+     * correct value when passed a type that is present.
      */
     @Test
-    public void testGetPersistenceDelegate_ClassName_Present()
+    public void testGetPersistenceDelegateForType_Type_Present()
     {
-        final String expectedClassName = "className"; //$NON-NLS-1$
+        final Class<?> expectedType = Object.class;
         final IPersistenceDelegate expectedPersistenceDelegate = new FakePersistenceDelegate();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( expectedClassName, expectedPersistenceDelegate );
+        persistenceDelegateRegistry_.registerPersistenceDelegate( expectedType, expectedPersistenceDelegate );
 
-        final IPersistenceDelegate actualPersistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( expectedClassName );
+        final IPersistenceDelegate actualPersistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( expectedType );
 
         assertSame( expectedPersistenceDelegate, actualPersistenceDelegate );
     }
 
     /**
-     * Ensures the {@code registerPersistenceDelegate} method throws an
-     * exception when passed a {@code null} class name.
+     * Ensures the {@code getPersistenceDelegate(String)} method returns the
+     * correct value when passed a type name that is absent.
+     */
+    @Test
+    public void testGetPersistenceDelegateForTypeName_TypeName_Absent()
+    {
+        assertNull( persistenceDelegateRegistry_.getPersistenceDelegate( "unknownTypeName" ) ); //$NON-NLS-1$
+    }
+
+    /**
+     * Ensures the {@code getPersistenceDelegate(String)} method throws an
+     * exception when passed a {@code null} type name.
      */
     @Test( expected = NullPointerException.class )
-    public void testRegisterPersistenceDelegate_ClassName_Null()
+    public void testGetPersistenceDelegateForTypeName_TypeName_Null()
     {
-        persistenceDelegateRegistry_.registerPersistenceDelegate( null, new FakePersistenceDelegate() );
+        persistenceDelegateRegistry_.getPersistenceDelegate( (String)null );
     }
 
     /**
-     * Ensures the {@code registerPersistenceDelegate} method properly ignores a
-     * persistence delegate whose class name has already been registered for a
-     * different persistence delegate.
+     * Ensures the {@code getPersistenceDelegate(String)} method returns the
+     * correct value when passed a type name that is present.
      */
     @Test
-    public void testRegisterPersistenceDelegate_ClassName_Registered_DifferentInstance()
+    public void testGetPersistenceDelegateForTypeName_TypeName_Present()
     {
-        final String className = "className"; //$NON-NLS-1$
+        final Class<?> expectedType = Object.class;
         final IPersistenceDelegate expectedPersistenceDelegate = new FakePersistenceDelegate();
-        final int originalClassNamesSize = persistenceDelegateRegistry_.getClassNames().size();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( className, expectedPersistenceDelegate );
+        persistenceDelegateRegistry_.registerPersistenceDelegate( expectedType, expectedPersistenceDelegate );
 
-        persistenceDelegateRegistry_.registerPersistenceDelegate( className, new FakePersistenceDelegate() );
+        final IPersistenceDelegate actualPersistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( expectedType.getName() );
 
-        assertSame( expectedPersistenceDelegate, persistenceDelegateRegistry_.getPersistenceDelegate( className ) );
-        assertEquals( originalClassNamesSize + 1, persistenceDelegateRegistry_.getClassNames().size() );
+        assertSame( expectedPersistenceDelegate, actualPersistenceDelegate );
     }
 
     /**
-     * Ensures the {@code registerPersistenceDelegate} method properly ignores a
-     * persistence delegate whose class name has already been registered for the
-     * same persistence delegate.
+     * Ensures the {@code getTypeNames} method returns a copy of the registered
+     * type name collection.
      */
     @Test
-    public void testRegisterPersistenceDelegate_ClassName_Registered_SameInstance()
+    public void testGetTypeNames_ReturnValue_Copy()
     {
-        final String className = "className"; //$NON-NLS-1$
-        final IPersistenceDelegate expectedPersistenceDelegate = new FakePersistenceDelegate();
-        final int originalClassNamesSize = persistenceDelegateRegistry_.getClassNames().size();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( className, expectedPersistenceDelegate );
+        final Set<String> typeNames = persistenceDelegateRegistry_.getTypeNames();
+        final int expectedTypeNamesSize = typeNames.size();
 
-        persistenceDelegateRegistry_.registerPersistenceDelegate( className, expectedPersistenceDelegate );
+        typeNames.add( Object.class.getName() );
 
-        assertSame( expectedPersistenceDelegate, persistenceDelegateRegistry_.getPersistenceDelegate( className ) );
-        assertEquals( originalClassNamesSize + 1, persistenceDelegateRegistry_.getClassNames().size() );
+        assertEquals( expectedTypeNamesSize, persistenceDelegateRegistry_.getTypeNames().size() );
     }
 
     /**
-     * Ensures the {@code registerPersistenceDelegate} method registers a
-     * persistence delegate whose class name is unregistered.
+     * Ensures the {@code getTypeNames} method returns a snapshot of the
+     * registered type name collection.
      */
     @Test
-    public void testRegisterPersistenceDelegate_ClassName_Unregistered()
+    public void testGetTypeNames_ReturnValue_Snapshot()
     {
-        final String className = "className"; //$NON-NLS-1$
-        final IPersistenceDelegate expectedPersistenceDelegate = new FakePersistenceDelegate();
+        final Set<String> typeNames = persistenceDelegateRegistry_.getTypeNames();
+        persistenceDelegateRegistry_.registerPersistenceDelegate( Object.class, new FakePersistenceDelegate() );
 
-        persistenceDelegateRegistry_.registerPersistenceDelegate( className, expectedPersistenceDelegate );
-
-        assertSame( expectedPersistenceDelegate, persistenceDelegateRegistry_.getPersistenceDelegate( className ) );
+        assertTrue( typeNames.size() != persistenceDelegateRegistry_.getTypeNames().size() );
     }
 
     /**
@@ -240,71 +213,70 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     @Test( expected = NullPointerException.class )
     public void testRegisterPersistenceDelegate_PersistenceDelegate_Null()
     {
-        persistenceDelegateRegistry_.registerPersistenceDelegate( "className", null ); //$NON-NLS-1$
+        persistenceDelegateRegistry_.registerPersistenceDelegate( Object.class, null );
     }
 
     /**
-     * Ensures the {@code unregisterPersistenceDelegate} method throws an
-     * exception when passed a {@code null} class name.
+     * Ensures the {@code registerPersistenceDelegate} method throws an
+     * exception when passed a {@code null} type.
      */
     @Test( expected = NullPointerException.class )
-    public void testUnregisterPersistenceDelegate_ClassName_Null()
+    public void testRegisterPersistenceDelegate_Type_Null()
     {
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( null, new FakePersistenceDelegate() );
+        persistenceDelegateRegistry_.registerPersistenceDelegate( null, new FakePersistenceDelegate() );
     }
 
     /**
-     * Ensures the {@code unregisterPersistenceDelegate} method ignores a class
-     * name that was previously registered but with a different persistence
-     * delegate instance.
+     * Ensures the {@code registerPersistenceDelegate} method properly ignores a
+     * persistence delegate whose type has already been registered for a
+     * different persistence delegate.
      */
     @Test
-    public void testUnregisterPersistenceDelegate_ClassName_Registered_DifferentInstance()
+    public void testRegisterPersistenceDelegate_Type_Registered_DifferentInstance()
     {
-        final String className = "className"; //$NON-NLS-1$
+        final Class<?> type = Object.class;
         final IPersistenceDelegate expectedPersistenceDelegate = new FakePersistenceDelegate();
-        final int originalClassNamesSize = persistenceDelegateRegistry_.getClassNames().size();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( className, expectedPersistenceDelegate );
-        assertEquals( originalClassNamesSize + 1, persistenceDelegateRegistry_.getClassNames().size() );
+        final int originalTypeNamesSize = persistenceDelegateRegistry_.getTypeNames().size();
+        persistenceDelegateRegistry_.registerPersistenceDelegate( type, expectedPersistenceDelegate );
 
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( className, new FakePersistenceDelegate() );
+        persistenceDelegateRegistry_.registerPersistenceDelegate( type, new FakePersistenceDelegate() );
 
-        assertSame( expectedPersistenceDelegate, persistenceDelegateRegistry_.getPersistenceDelegate( className ) );
-        assertEquals( originalClassNamesSize + 1, persistenceDelegateRegistry_.getClassNames().size() );
+        assertSame( expectedPersistenceDelegate, persistenceDelegateRegistry_.getPersistenceDelegate( type ) );
+        assertEquals( originalTypeNamesSize + 1, persistenceDelegateRegistry_.getTypeNames().size() );
     }
 
     /**
-     * Ensures the {@code unregisterPersistenceDelegate} method unregisters a
-     * persistence delegate for a previously registered class name.
+     * Ensures the {@code registerPersistenceDelegate} method properly ignores a
+     * persistence delegate whose type has already been registered for the same
+     * persistence delegate.
      */
     @Test
-    public void testUnregisterPersistenceDelegate_ClassName_Registered_SameInstance()
+    public void testRegisterPersistenceDelegate_Type_Registered_SameInstance()
     {
-        final String className = "className"; //$NON-NLS-1$
-        final IPersistenceDelegate persistenceDelegate = new FakePersistenceDelegate();
-        final int originalClassNamesSize = persistenceDelegateRegistry_.getClassNames().size();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( className, persistenceDelegate );
-        assertEquals( originalClassNamesSize + 1, persistenceDelegateRegistry_.getClassNames().size() );
+        final Class<?> type = Object.class;
+        final IPersistenceDelegate expectedPersistenceDelegate = new FakePersistenceDelegate();
+        final int originalTypeNamesSize = persistenceDelegateRegistry_.getTypeNames().size();
+        persistenceDelegateRegistry_.registerPersistenceDelegate( type, expectedPersistenceDelegate );
 
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( className, persistenceDelegate );
+        persistenceDelegateRegistry_.registerPersistenceDelegate( type, expectedPersistenceDelegate );
 
-        assertNull( persistenceDelegateRegistry_.getPersistenceDelegate( className ) );
-        assertEquals( originalClassNamesSize, persistenceDelegateRegistry_.getClassNames().size() );
+        assertSame( expectedPersistenceDelegate, persistenceDelegateRegistry_.getPersistenceDelegate( type ) );
+        assertEquals( originalTypeNamesSize + 1, persistenceDelegateRegistry_.getTypeNames().size() );
     }
 
     /**
-     * Ensures the {@code unregisterPersistenceDelegate} method properly ignores
-     * a class name that was not previously registered.
+     * Ensures the {@code registerPersistenceDelegate} method registers a
+     * persistence delegate whose type is unregistered.
      */
     @Test
-    public void testUnregisterPersistenceDelegate_ClassName_Unregistered()
+    public void testRegisterPersistenceDelegate_Type_Unregistered()
     {
-        final String className = "className"; //$NON-NLS-1$
-        final int originalClassNamesSize = persistenceDelegateRegistry_.getClassNames().size();
+        final Class<?> type = Object.class;
+        final IPersistenceDelegate expectedPersistenceDelegate = new FakePersistenceDelegate();
 
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( className, new FakePersistenceDelegate() );
+        persistenceDelegateRegistry_.registerPersistenceDelegate( type, expectedPersistenceDelegate );
 
-        assertEquals( originalClassNamesSize, persistenceDelegateRegistry_.getClassNames().size() );
+        assertSame( expectedPersistenceDelegate, persistenceDelegateRegistry_.getPersistenceDelegate( type ) );
     }
 
     /**
@@ -314,6 +286,70 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     @Test( expected = NullPointerException.class )
     public void testUnregisterPersistenceDelegate_PersistenceDelegate_Null()
     {
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( "className", null ); //$NON-NLS-1$
+        persistenceDelegateRegistry_.unregisterPersistenceDelegate( Object.class, null );
+    }
+
+    /**
+     * Ensures the {@code unregisterPersistenceDelegate} method throws an
+     * exception when passed a {@code null} type.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testUnregisterPersistenceDelegate_Type_Null()
+    {
+        persistenceDelegateRegistry_.unregisterPersistenceDelegate( null, new FakePersistenceDelegate() );
+    }
+
+    /**
+     * Ensures the {@code unregisterPersistenceDelegate} method ignores a type
+     * that was previously registered but with a different persistence delegate
+     * instance.
+     */
+    @Test
+    public void testUnregisterPersistenceDelegate_Type_Registered_DifferentInstance()
+    {
+        final Class<?> type = Object.class;
+        final IPersistenceDelegate expectedPersistenceDelegate = new FakePersistenceDelegate();
+        final int originalTypeNamesSize = persistenceDelegateRegistry_.getTypeNames().size();
+        persistenceDelegateRegistry_.registerPersistenceDelegate( type, expectedPersistenceDelegate );
+        assertEquals( originalTypeNamesSize + 1, persistenceDelegateRegistry_.getTypeNames().size() );
+
+        persistenceDelegateRegistry_.unregisterPersistenceDelegate( type, new FakePersistenceDelegate() );
+
+        assertSame( expectedPersistenceDelegate, persistenceDelegateRegistry_.getPersistenceDelegate( type ) );
+        assertEquals( originalTypeNamesSize + 1, persistenceDelegateRegistry_.getTypeNames().size() );
+    }
+
+    /**
+     * Ensures the {@code unregisterPersistenceDelegate} method unregisters a
+     * persistence delegate for a previously registered type.
+     */
+    @Test
+    public void testUnregisterPersistenceDelegate_Type_Registered_SameInstance()
+    {
+        final Class<?> type = Object.class;
+        final IPersistenceDelegate persistenceDelegate = new FakePersistenceDelegate();
+        final int originalTypeNamesSize = persistenceDelegateRegistry_.getTypeNames().size();
+        persistenceDelegateRegistry_.registerPersistenceDelegate( type, persistenceDelegate );
+        assertEquals( originalTypeNamesSize + 1, persistenceDelegateRegistry_.getTypeNames().size() );
+
+        persistenceDelegateRegistry_.unregisterPersistenceDelegate( type, persistenceDelegate );
+
+        assertNull( persistenceDelegateRegistry_.getPersistenceDelegate( type ) );
+        assertEquals( originalTypeNamesSize, persistenceDelegateRegistry_.getTypeNames().size() );
+    }
+
+    /**
+     * Ensures the {@code unregisterPersistenceDelegate} method properly ignores
+     * a type that was not previously registered.
+     */
+    @Test
+    public void testUnregisterPersistenceDelegate_Type_Unregistered()
+    {
+        final Class<?> type = Object.class;
+        final int originalTypeNamesSize = persistenceDelegateRegistry_.getTypeNames().size();
+
+        persistenceDelegateRegistry_.unregisterPersistenceDelegate( type, new FakePersistenceDelegate() );
+
+        assertEquals( originalTypeNamesSize, persistenceDelegateRegistry_.getTypeNames().size() );
     }
 }

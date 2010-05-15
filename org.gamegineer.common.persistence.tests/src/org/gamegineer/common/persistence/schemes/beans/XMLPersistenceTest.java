@@ -83,7 +83,7 @@ public final class XMLPersistenceTest
     {
         persistenceDelegateRegistry_ = Services.getDefault().getBeansPersistenceDelegateRegistry();
         persistenceDelegate_ = new MockNonPersistableClassPersistenceDelegate();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( MockNonPersistableClass.class.getName(), persistenceDelegate_ );
+        persistenceDelegateRegistry_.registerPersistenceDelegate( MockNonPersistableClass.class, persistenceDelegate_ );
     }
 
     /**
@@ -96,7 +96,7 @@ public final class XMLPersistenceTest
     public void tearDown()
         throws Exception
     {
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( MockNonPersistableClass.class.getName(), persistenceDelegate_ );
+        persistenceDelegateRegistry_.unregisterPersistenceDelegate( MockNonPersistableClass.class, persistenceDelegate_ );
         persistenceDelegate_ = null;
         persistenceDelegateRegistry_ = null;
     }
