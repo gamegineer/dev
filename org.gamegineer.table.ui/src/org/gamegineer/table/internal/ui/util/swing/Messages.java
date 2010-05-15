@@ -36,9 +36,6 @@ final class Messages
     // Fields
     // ======================================================================
 
-    /** The name of the associated resource bundle. */
-    private static final String BUNDLE_NAME = "org.gamegineer.table.internal.ui.util.swing.Messages"; //$NON-NLS-1$
-
     // --- JFileChooser -----------------------------------------------------
 
     /** The Confirm Overwrite File dialog message. */
@@ -57,7 +54,7 @@ final class Messages
      */
     static
     {
-        NLS.initializeMessages( BUNDLE_NAME, Messages.class );
+        NLS.initializeMessages( Messages.class.getName(), Messages.class );
     }
 
     /**

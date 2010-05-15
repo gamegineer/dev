@@ -35,9 +35,6 @@ final class Messages
     // Fields
     // ======================================================================
 
-    /** The name of the associated resource bundle. */
-    private static final String BUNDLE_NAME = "org.gamegineer.common.internal.persistence.schemes.beans.services.persistencedelegateregistry.Messages"; //$NON-NLS-1$
-
     // --- PersistenceDelegateRegistry --------------------------------------
 
     /** A duplicate persistence delegate class name was detected. */
@@ -56,7 +53,7 @@ final class Messages
      */
     static
     {
-        NLS.initializeMessages( BUNDLE_NAME, Messages.class );
+        NLS.initializeMessages( Messages.class.getName(), Messages.class );
     }
 
     /**

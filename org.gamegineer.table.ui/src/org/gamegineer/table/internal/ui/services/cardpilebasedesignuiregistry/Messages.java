@@ -37,9 +37,6 @@ final class Messages
     // Fields
     // ======================================================================
 
-    /** The name of the associated resource bundle. */
-    private static final String BUNDLE_NAME = "org.gamegineer.table.internal.ui.services.cardpilebasedesignuiregistry.Messages"; //$NON-NLS-1$
-
     // --- CardPileBaseDesignUIRegistry -------------------------------------
 
     /** The bundle hosting the card pile base design icon was not found. */
@@ -76,7 +73,7 @@ final class Messages
      */
     static
     {
-        NLS.initializeMessages( BUNDLE_NAME, Messages.class );
+        NLS.initializeMessages( Messages.class.getName(), Messages.class );
     }
 
     /**

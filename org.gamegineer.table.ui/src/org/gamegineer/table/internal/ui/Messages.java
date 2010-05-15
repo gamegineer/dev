@@ -35,9 +35,6 @@ final class Messages
     // Fields
     // ======================================================================
 
-    /** The name of the associated resource bundle. */
-    private static final String BUNDLE_NAME = "org.gamegineer.table.internal.ui.Messages"; //$NON-NLS-1$
-
     // --- CommandLineOptions -----------------------------------------------
 
     /** The description for the "help" option. */
@@ -84,7 +81,7 @@ final class Messages
      */
     static
     {
-        NLS.initializeMessages( BUNDLE_NAME, Messages.class );
+        NLS.initializeMessages( Messages.class.getName(), Messages.class );
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * Messages.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,9 +35,6 @@ final class Messages
     // Fields
     // ======================================================================
 
-    /** The name of the associated resource bundle. */
-    private static final String BUNDLE_NAME = "org.gamegineer.common.internal.core.services.component.Messages"; //$NON-NLS-1$
-
     // --- ComponentCreationContext -----------------------------------------
 
     /** The initial attribute collection contains a {@code null} value. */
@@ -53,7 +50,7 @@ final class Messages
      */
     static
     {
-        NLS.initializeMessages( BUNDLE_NAME, Messages.class );
+        NLS.initializeMessages( Messages.class.getName(), Messages.class );
     }
 
     /**

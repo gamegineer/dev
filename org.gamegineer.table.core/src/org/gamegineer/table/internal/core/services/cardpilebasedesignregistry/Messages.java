@@ -36,9 +36,6 @@ final class Messages
     // Fields
     // ======================================================================
 
-    /** The name of the associated resource bundle. */
-    private static final String BUNDLE_NAME = "org.gamegineer.table.internal.core.services.cardpilebasedesignregistry.Messages"; //$NON-NLS-1$
-
     // --- CardPileBaseDesignRegistry ---------------------------------------
 
     /** A duplicate card pile base design identifier was detected. */
@@ -57,7 +54,7 @@ final class Messages
      */
     static
     {
-        NLS.initializeMessages( BUNDLE_NAME, Messages.class );
+        NLS.initializeMessages( Messages.class.getName(), Messages.class );
     }
 
     /**
