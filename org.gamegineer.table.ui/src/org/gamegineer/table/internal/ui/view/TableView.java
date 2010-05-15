@@ -561,6 +561,7 @@ final class TableView
     /*
      * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
      */
+    @Override
     public void cardPileAdded(
         final TableContentChangedEvent event )
     {
@@ -595,6 +596,7 @@ final class TableView
     /*
      * @see org.gamegineer.table.internal.ui.model.ITableModelListener#cardPileFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
+    @Override
     public void cardPileFocusChanged(
         final TableModelEvent event )
     {
@@ -606,6 +608,7 @@ final class TableView
     /*
      * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
      */
+    @Override
     public void cardPileRemoved(
         final TableContentChangedEvent event )
     {
@@ -984,6 +987,7 @@ final class TableView
     /*
      * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelStateChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
+    @Override
     public void tableModelStateChanged(
         final TableModelEvent event )
     {
@@ -995,6 +999,7 @@ final class TableView
     /*
      * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
+    @Override
     public void tableOriginOffsetChanged(
         final TableModelEvent event )
     {
@@ -1553,6 +1558,7 @@ final class TableView
         /*
          * @see javax.swing.event.PopupMenuListener#popupMenuCanceled(javax.swing.event.PopupMenuEvent)
          */
+        @Override
         @SuppressWarnings( "synthetic-access" )
         public void popupMenuCanceled(
             @SuppressWarnings( "unused" )
@@ -1564,6 +1570,7 @@ final class TableView
         /*
          * @see javax.swing.event.PopupMenuListener#popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent)
          */
+        @Override
         @SuppressWarnings( "synthetic-access" )
         public void popupMenuWillBecomeInvisible(
             @SuppressWarnings( "unused" )
@@ -1575,6 +1582,7 @@ final class TableView
         /*
          * @see javax.swing.event.PopupMenuListener#popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent)
          */
+        @Override
         public void popupMenuWillBecomeVisible(
             @SuppressWarnings( "unused" )
             final PopupMenuEvent e )

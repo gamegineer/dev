@@ -1,6 +1,6 @@
 /*
  * MockFilter.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -65,6 +65,7 @@ public final class MockFilter
     /*
      * @see java.util.logging.Filter#isLoggable(java.util.logging.LogRecord)
      */
+    @Override
     public boolean isLoggable(
         final LogRecord record )
     {

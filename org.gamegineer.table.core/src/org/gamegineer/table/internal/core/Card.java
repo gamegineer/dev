@@ -133,6 +133,7 @@ public final class Card
     /*
      * @see org.gamegineer.table.core.ICard#addCardListener(org.gamegineer.table.core.ICardListener)
      */
+    @Override
     public void addCardListener(
         final ICardListener listener )
     {
@@ -181,6 +182,7 @@ public final class Card
     /*
      * @see org.gamegineer.table.core.ICard#flip()
      */
+    @Override
     public void flip()
     {
         synchronized( lock_ )
@@ -244,6 +246,7 @@ public final class Card
     /*
      * @see org.gamegineer.table.core.ICard#getBackDesign()
      */
+    @Override
     public ICardSurfaceDesign getBackDesign()
     {
         return backDesign_;
@@ -252,6 +255,7 @@ public final class Card
     /*
      * @see org.gamegineer.table.core.ICard#getBounds()
      */
+    @Override
     public Rectangle getBounds()
     {
         synchronized( lock_ )
@@ -263,6 +267,7 @@ public final class Card
     /*
      * @see org.gamegineer.table.core.ICard#getFaceDesign()
      */
+    @Override
     public ICardSurfaceDesign getFaceDesign()
     {
         return faceDesign_;
@@ -271,6 +276,7 @@ public final class Card
     /*
      * @see org.gamegineer.table.core.ICard#getLocation()
      */
+    @Override
     public Point getLocation()
     {
         synchronized( lock_ )
@@ -282,6 +288,7 @@ public final class Card
     /*
      * @see org.gamegineer.table.core.ICard#getMemento()
      */
+    @Override
     public IMemento getMemento()
     {
         final MementoBuilder mementoBuilder = new MementoBuilder();
@@ -300,6 +307,7 @@ public final class Card
     /*
      * @see org.gamegineer.table.core.ICard#getOrientation()
      */
+    @Override
     public CardOrientation getOrientation()
     {
         synchronized( lock_ )
@@ -311,6 +319,7 @@ public final class Card
     /*
      * @see org.gamegineer.table.core.ICard#getSize()
      */
+    @Override
     public Dimension getSize()
     {
         return backDesign_.getSize();
@@ -319,6 +328,7 @@ public final class Card
     /*
      * @see org.gamegineer.table.core.ICard#removeCardListener(org.gamegineer.table.core.ICardListener)
      */
+    @Override
     public void removeCardListener(
         final ICardListener listener )
     {
@@ -329,6 +339,7 @@ public final class Card
     /*
      * @see org.gamegineer.table.core.ICard#setLocation(java.awt.Point)
      */
+    @Override
     public void setLocation(
         final Point location )
     {
@@ -345,6 +356,7 @@ public final class Card
     /*
      * @see org.gamegineer.table.core.ICard#setOrientation(org.gamegineer.table.core.CardOrientation)
      */
+    @Override
     public void setOrientation(
         final CardOrientation orientation )
     {

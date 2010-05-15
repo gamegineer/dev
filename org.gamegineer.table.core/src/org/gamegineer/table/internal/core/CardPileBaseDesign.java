@@ -89,6 +89,7 @@ public final class CardPileBaseDesign
     /*
      * @see org.gamegineer.table.core.ICardPileBaseDesign#getId()
      */
+    @Override
     public CardPileBaseDesignId getId()
     {
         return id_;
@@ -97,6 +98,7 @@ public final class CardPileBaseDesign
     /*
      * @see org.gamegineer.table.core.ICardPileBaseDesign#getSize()
      */
+    @Override
     public Dimension getSize()
     {
         return new Dimension( size_ );

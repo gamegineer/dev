@@ -1,6 +1,6 @@
 /*
  * ComponentCreationContextBuilder.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -187,6 +187,7 @@ public final class ComponentCreationContextBuilder
     /*
      * @see org.gamegineer.common.core.services.component.util.attribute.IAttributeMutator#setAttribute(java.lang.String, java.lang.Object)
      */
+    @Override
     public void setAttribute(
         final String name,
         final Object value )

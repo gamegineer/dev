@@ -93,6 +93,7 @@ final class InternalCardPileEvent
     /*
      * @see org.gamegineer.table.core.ICardPileEvent#getCardPile()
      */
+    @Override
     public ICardPile getCardPile()
     {
         return delegate_.getCardPile();

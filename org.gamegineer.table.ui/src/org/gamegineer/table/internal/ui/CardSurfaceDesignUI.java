@@ -90,6 +90,7 @@ public final class CardSurfaceDesignUI
     /*
      * @see org.gamegineer.table.ui.ICardSurfaceDesignUI#getIcon()
      */
+    @Override
     public Icon getIcon()
     {
         return icon_;
@@ -98,6 +99,7 @@ public final class CardSurfaceDesignUI
     /*
      * @see org.gamegineer.table.ui.ICardSurfaceDesignUI#getId()
      */
+    @Override
     public CardSurfaceDesignId getId()
     {
         return id_;
@@ -106,6 +108,7 @@ public final class CardSurfaceDesignUI
     /*
      * @see org.gamegineer.table.ui.ICardSurfaceDesignUI#getName()
      */
+    @Override
     public String getName()
     {
         return name_;

@@ -1,6 +1,6 @@
 /*
  * AbstractAttribute.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -91,6 +91,7 @@ public abstract class AbstractAttribute<T>
     /*
      * @see org.gamegineer.common.core.services.component.util.attribute.IAttribute#getName()
      */
+    @Override
     public String getName()
     {
         return name_;
@@ -99,6 +100,7 @@ public abstract class AbstractAttribute<T>
     /*
      * @see org.gamegineer.common.core.services.component.util.attribute.IAttribute#getValue(org.gamegineer.common.core.services.component.util.attribute.IAttributeAccessor)
      */
+    @Override
     public T getValue(
         final IAttributeAccessor accessor )
     {
@@ -187,6 +189,7 @@ public abstract class AbstractAttribute<T>
     /*
      * @see org.gamegineer.common.core.services.component.util.attribute.IAttribute#isPresent(org.gamegineer.common.core.services.component.util.attribute.IAttributeAccessor)
      */
+    @Override
     public boolean isPresent(
         final IAttributeAccessor accessor )
     {
@@ -198,6 +201,7 @@ public abstract class AbstractAttribute<T>
     /*
      * @see org.gamegineer.common.core.services.component.util.attribute.IAttribute#setValue(org.gamegineer.common.core.services.component.util.attribute.IAttributeMutator, java.lang.Object)
      */
+    @Override
     public void setValue(
         final IAttributeMutator mutator,
         final T value )
@@ -251,6 +255,7 @@ public abstract class AbstractAttribute<T>
     /*
      * @see org.gamegineer.common.core.services.component.util.attribute.IAttribute#tryGetValue(org.gamegineer.common.core.services.component.util.attribute.IAttributeAccessor)
      */
+    @Override
     public T tryGetValue(
         final IAttributeAccessor accessor )
     {
@@ -260,6 +265,7 @@ public abstract class AbstractAttribute<T>
     /*
      * @see org.gamegineer.common.core.services.component.util.attribute.IAttribute#trySetValue(org.gamegineer.common.core.services.component.util.attribute.IAttributeMutator, java.lang.Object)
      */
+    @Override
     public void trySetValue(
         final IAttributeMutator mutator,
         final T value )

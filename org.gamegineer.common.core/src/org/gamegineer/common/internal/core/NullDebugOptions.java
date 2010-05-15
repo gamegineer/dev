@@ -1,6 +1,6 @@
 /*
  * NullDebugOptions.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -55,6 +55,7 @@ final class NullDebugOptions
     /*
      * @see org.eclipse.osgi.service.debug.DebugOptions#getBooleanOption(java.lang.String, boolean)
      */
+    @Override
     public boolean getBooleanOption(
         final String option,
         final boolean defaultValue )
@@ -67,6 +68,7 @@ final class NullDebugOptions
     /*
      * @see org.eclipse.osgi.service.debug.DebugOptions#getFile()
      */
+    @Override
     public File getFile()
     {
         return null;
@@ -75,6 +77,7 @@ final class NullDebugOptions
     /*
      * @see org.eclipse.osgi.service.debug.DebugOptions#getIntegerOption(java.lang.String, int)
      */
+    @Override
     public int getIntegerOption(
         final String option,
         final int defaultValue )
@@ -87,6 +90,7 @@ final class NullDebugOptions
     /*
      * @see org.eclipse.osgi.service.debug.DebugOptions#getOption(java.lang.String)
      */
+    @Override
     public String getOption(
         final String option )
     {
@@ -98,6 +102,7 @@ final class NullDebugOptions
     /*
      * @see org.eclipse.osgi.service.debug.DebugOptions#getOption(java.lang.String, java.lang.String)
      */
+    @Override
     public String getOption(
         final String option,
         final String defaultValue )
@@ -111,6 +116,7 @@ final class NullDebugOptions
     /*
      * @see org.eclipse.osgi.service.debug.DebugOptions#isDebugEnabled()
      */
+    @Override
     public boolean isDebugEnabled()
     {
         return false;
@@ -119,6 +125,7 @@ final class NullDebugOptions
     /*
      * @see org.eclipse.osgi.service.debug.DebugOptions#newDebugTrace(java.lang.String)
      */
+    @Override
     public DebugTrace newDebugTrace(
         final String bundleSymbolicName )
     {
@@ -130,6 +137,7 @@ final class NullDebugOptions
     /*
      * @see org.eclipse.osgi.service.debug.DebugOptions#newDebugTrace(java.lang.String, java.lang.Class)
      */
+    @Override
     @SuppressWarnings( "unchecked" )
     public DebugTrace newDebugTrace(
         final String bundleSymbolicName,
@@ -144,6 +152,7 @@ final class NullDebugOptions
     /*
      * @see org.eclipse.osgi.service.debug.DebugOptions#removeOption(java.lang.String)
      */
+    @Override
     public void removeOption(
         final String option )
     {
@@ -155,6 +164,7 @@ final class NullDebugOptions
     /*
      * @see org.eclipse.osgi.service.debug.DebugOptions#setDebugEnabled(boolean)
      */
+    @Override
     public void setDebugEnabled(
         @SuppressWarnings( "unused" )
         final boolean value )
@@ -165,6 +175,7 @@ final class NullDebugOptions
     /*
      * @see org.eclipse.osgi.service.debug.DebugOptions#setFile(java.io.File)
      */
+    @Override
     public void setFile(
         @SuppressWarnings( "unused" )
         final File newFile )
@@ -175,6 +186,7 @@ final class NullDebugOptions
     /*
      * @see org.eclipse.osgi.service.debug.DebugOptions#setOption(java.lang.String, java.lang.String)
      */
+    @Override
     public void setOption(
         final String option,
         @SuppressWarnings( "unused" )

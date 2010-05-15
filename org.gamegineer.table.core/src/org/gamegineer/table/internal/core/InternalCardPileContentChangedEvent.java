@@ -105,6 +105,7 @@ final class InternalCardPileContentChangedEvent
     /*
      * @see org.gamegineer.table.core.ICardPileContentChangedEvent#getCard()
      */
+    @Override
     public ICard getCard()
     {
         return delegate_.getCard();
@@ -113,6 +114,7 @@ final class InternalCardPileContentChangedEvent
     /*
      * @see org.gamegineer.table.core.ICardPileEvent#getCardPile()
      */
+    @Override
     public ICardPile getCardPile()
     {
         return delegate_.getCardPile();

@@ -1,6 +1,6 @@
 /*
  * MockPredicate.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -62,6 +62,7 @@ public class MockPredicate<T>
     /*
      * @see org.gamegineer.common.core.util.IPredicate#evaluate(java.lang.Object)
      */
+    @Override
     public boolean evaluate(
         @SuppressWarnings( "unused" )
         final T obj )

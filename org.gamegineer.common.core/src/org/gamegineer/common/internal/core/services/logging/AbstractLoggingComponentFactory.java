@@ -1,6 +1,6 @@
 /*
  * AbstractLoggingComponentFactory.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -137,6 +137,7 @@ public abstract class AbstractLoggingComponentFactory<T>
     /*
      * @see org.gamegineer.common.core.services.component.IComponentFactory#createComponent(org.gamegineer.common.core.services.component.IComponentCreationContext)
      */
+    @Override
     public final T createComponent(
         final IComponentCreationContext context )
         throws ComponentCreationException

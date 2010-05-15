@@ -64,6 +64,7 @@ public class MockTableListener
     /*
      * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
      */
+    @Override
     public void cardPileAdded(
         final TableContentChangedEvent event )
     {
@@ -75,6 +76,7 @@ public class MockTableListener
     /*
      * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
      */
+    @Override
     public void cardPileRemoved(
         final TableContentChangedEvent event )
     {

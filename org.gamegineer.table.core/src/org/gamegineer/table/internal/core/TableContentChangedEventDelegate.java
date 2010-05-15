@@ -79,6 +79,7 @@ final class TableContentChangedEventDelegate
     /*
      * @see org.gamegineer.table.core.ITableContentChangedEvent#getCardPile()
      */
+    @Override
     public ICardPile getCardPile()
     {
         return cardPile_;

@@ -127,6 +127,7 @@ public final class CardPileModel
     /*
      * @see org.gamegineer.table.core.ICardPileListener#cardAdded(org.gamegineer.table.core.CardPileContentChangedEvent)
      */
+    @Override
     public void cardAdded(
         final CardPileContentChangedEvent event )
     {
@@ -143,6 +144,7 @@ public final class CardPileModel
     /*
      * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardModelStateChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
      */
+    @Override
     public void cardModelStateChanged(
         final CardModelEvent event )
     {
@@ -154,6 +156,7 @@ public final class CardPileModel
     /*
      * @see org.gamegineer.table.core.ICardPileListener#cardPileBoundsChanged(org.gamegineer.table.core.CardPileEvent)
      */
+    @Override
     public void cardPileBoundsChanged(
         final CardPileEvent event )
     {
@@ -165,6 +168,7 @@ public final class CardPileModel
     /*
      * @see org.gamegineer.table.core.ICardPileListener#cardRemoved(org.gamegineer.table.core.CardPileContentChangedEvent)
      */
+    @Override
     public void cardRemoved(
         final CardPileContentChangedEvent event )
     {

@@ -1,6 +1,6 @@
 /*
  * LoggingService.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -148,6 +148,7 @@ public final class LoggingService
     /*
      * @see org.gamegineer.common.core.services.logging.ILoggingService#getLogger(org.osgi.framework.Bundle)
      */
+    @Override
     public Logger getLogger(
         final Bundle bundle )
     {
@@ -157,6 +158,7 @@ public final class LoggingService
     /*
      * @see org.gamegineer.common.core.services.logging.ILoggingService#getLogger(org.osgi.framework.Bundle, java.lang.String)
      */
+    @Override
     public Logger getLogger(
         final Bundle bundle,
         final String name )

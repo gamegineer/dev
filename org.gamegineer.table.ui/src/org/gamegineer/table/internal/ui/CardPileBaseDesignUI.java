@@ -90,6 +90,7 @@ public final class CardPileBaseDesignUI
     /*
      * @see org.gamegineer.table.ui.ICardPileBaseDesignUI#getIcon()
      */
+    @Override
     public Icon getIcon()
     {
         return icon_;
@@ -98,6 +99,7 @@ public final class CardPileBaseDesignUI
     /*
      * @see org.gamegineer.table.ui.ICardPileBaseDesignUI#getId()
      */
+    @Override
     public CardPileBaseDesignId getId()
     {
         return id_;
@@ -106,6 +108,7 @@ public final class CardPileBaseDesignUI
     /*
      * @see org.gamegineer.table.ui.ICardPileBaseDesignUI#getName()
      */
+    @Override
     public String getName()
     {
         return name_;

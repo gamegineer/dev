@@ -1,6 +1,6 @@
 /*
  * InternalCardEvent.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -93,6 +93,7 @@ final class InternalCardEvent
     /*
      * @see org.gamegineer.table.core.ICardEvent#getCard()
      */
+    @Override
     public ICard getCard()
     {
         return delegate_.getCard();

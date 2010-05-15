@@ -152,6 +152,7 @@ public final class CardPileBaseDesignUIRegistry
     /*
      * @see org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry#getCardPileBaseDesignUI(org.gamegineer.table.core.CardPileBaseDesignId)
      */
+    @Override
     public ICardPileBaseDesignUI getCardPileBaseDesignUI(
         final CardPileBaseDesignId id )
     {
@@ -188,6 +189,7 @@ public final class CardPileBaseDesignUIRegistry
     /*
      * @see org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry#getCardPileBaseDesignUIs()
      */
+    @Override
     public Collection<ICardPileBaseDesignUI> getCardPileBaseDesignUIs()
     {
         return new ArrayList<ICardPileBaseDesignUI>( getCardPileBaseDesignUIMap().values() );
@@ -221,6 +223,7 @@ public final class CardPileBaseDesignUIRegistry
     /*
      * @see org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry#registerCardPileBaseDesignUI(org.gamegineer.table.ui.ICardPileBaseDesignUI)
      */
+    @Override
     public void registerCardPileBaseDesignUI(
         final ICardPileBaseDesignUI cardPileBaseDesignUI )
     {
@@ -232,6 +235,7 @@ public final class CardPileBaseDesignUIRegistry
     /*
      * @see org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry#unregisterCardPileBaseDesignUI(org.gamegineer.table.ui.ICardPileBaseDesignUI)
      */
+    @Override
     public void unregisterCardPileBaseDesignUI(
         final ICardPileBaseDesignUI cardPileBaseDesignUI )
     {

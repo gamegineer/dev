@@ -104,6 +104,7 @@ final class CardView
     /*
      * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
      */
+    @Override
     public void cardLocationChanged(
         final CardEvent event )
     {
@@ -135,6 +136,7 @@ final class CardView
     /*
      * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardModelStateChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
      */
+    @Override
     public void cardModelStateChanged(
         final CardModelEvent event )
     {
@@ -146,6 +148,7 @@ final class CardView
     /*
      * @see org.gamegineer.table.core.ICardListener#cardOrientationChanged(org.gamegineer.table.core.CardEvent)
      */
+    @Override
     public void cardOrientationChanged(
         final CardEvent event )
     {

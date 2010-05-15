@@ -1,6 +1,6 @@
 /*
  * Application.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -117,6 +117,7 @@ public final class Application
     /*
      * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
      */
+    @Override
     public Object start(
         final IApplicationContext context )
         throws Exception
@@ -160,6 +161,7 @@ public final class Application
     /*
      * @see org.eclipse.equinox.app.IApplication#stop()
      */
+    @Override
     public void stop()
     {
         final Future<?> task = task_.get();

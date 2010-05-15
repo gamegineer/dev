@@ -1,6 +1,6 @@
 /*
  * AbstractComponentFactory.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -64,6 +64,7 @@ public abstract class AbstractComponentFactory
     /*
      * @see org.gamegineer.common.core.services.component.IComponentFactory#containsAttribute(java.lang.String)
      */
+    @Override
     public boolean containsAttribute(
         final String name )
     {
@@ -76,6 +77,7 @@ public abstract class AbstractComponentFactory
      * @see org.gamegineer.common.core.services.component.IComponentFactory#getAttribute(java.lang.String)
      * @see org.gamegineer.common.core.services.component.util.attribute.IAttributeAccessor#getAttribute(java.lang.String)
      */
+    @Override
     public Object getAttribute(
         final String name )
     {
@@ -87,6 +89,7 @@ public abstract class AbstractComponentFactory
     /*
      * @see org.gamegineer.common.core.services.component.util.attribute.IAttributeMutator#setAttribute(java.lang.String, java.lang.Object)
      */
+    @Override
     public void setAttribute(
         final String name,
         final Object value )

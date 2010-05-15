@@ -61,6 +61,7 @@ public class MockCardModelListener
     /*
      * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardModelStateChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
      */
+    @Override
     public void cardModelStateChanged(
         final CardModelEvent event )
     {

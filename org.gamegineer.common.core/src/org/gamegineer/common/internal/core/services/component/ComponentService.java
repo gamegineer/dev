@@ -1,6 +1,6 @@
 /*
  * ComponentService.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -80,6 +80,7 @@ public final class ComponentService
     /*
      * @see org.gamegineer.common.core.services.component.IComponentService#createComponent(org.gamegineer.common.core.services.component.IComponentSpecification, org.gamegineer.common.core.services.component.IComponentCreationContext)
      */
+    @Override
     public Object createComponent(
         final IComponentSpecification specification,
         final IComponentCreationContext context )
@@ -102,6 +103,7 @@ public final class ComponentService
     /*
      * @see org.gamegineer.common.core.services.component.IComponentService#getComponentFactories()
      */
+    @Override
     public Collection<IComponentFactory> getComponentFactories()
     {
         final List<IComponentFactory> factories = new ArrayList<IComponentFactory>( factories_ );
@@ -112,6 +114,7 @@ public final class ComponentService
     /*
      * @see org.gamegineer.common.core.services.component.IComponentService#getComponentFactories(org.gamegineer.common.core.services.component.IComponentSpecification)
      */
+    @Override
     public Collection<IComponentFactory> getComponentFactories(
         final IComponentSpecification specification )
     {
@@ -204,6 +207,7 @@ public final class ComponentService
     /*
      * @see org.gamegineer.common.core.services.component.IComponentService#registerComponentFactory(org.gamegineer.common.core.services.component.IComponentFactory)
      */
+    @Override
     public void registerComponentFactory(
         final IComponentFactory factory )
     {
@@ -215,6 +219,7 @@ public final class ComponentService
     /*
      * @see org.gamegineer.common.core.services.component.IComponentService#unregisterComponentFactory(org.gamegineer.common.core.services.component.IComponentFactory)
      */
+    @Override
     public void unregisterComponentFactory(
         final IComponentFactory factory )
     {

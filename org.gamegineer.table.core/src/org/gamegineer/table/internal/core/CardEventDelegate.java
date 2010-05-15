@@ -1,6 +1,6 @@
 /*
  * CardEventDelegate.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -69,6 +69,7 @@ final class CardEventDelegate
     /*
      * @see org.gamegineer.table.core.ICardEvent#getCard()
      */
+    @Override
     public ICard getCard()
     {
         return card_;

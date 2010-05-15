@@ -89,6 +89,7 @@ public final class CardSurfaceDesign
     /*
      * @see org.gamegineer.table.core.ICardSurfaceDesign#getId()
      */
+    @Override
     public CardSurfaceDesignId getId()
     {
         return id_;
@@ -97,6 +98,7 @@ public final class CardSurfaceDesign
     /*
      * @see org.gamegineer.table.core.ICardSurfaceDesign#getSize()
      */
+    @Override
     public Dimension getSize()
     {
         return new Dimension( size_ );

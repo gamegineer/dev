@@ -1,6 +1,6 @@
 /*
  * IconProxy.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -83,6 +83,7 @@ public final class IconProxy
     /*
      * @see javax.swing.Icon#getIconHeight()
      */
+    @Override
     public int getIconHeight()
     {
         load();
@@ -93,6 +94,7 @@ public final class IconProxy
     /*
      * @see javax.swing.Icon#getIconWidth()
      */
+    @Override
     public int getIconWidth()
     {
         load();
@@ -114,6 +116,7 @@ public final class IconProxy
     /*
      * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics, int, int)
      */
+    @Override
     public void paintIcon(
         final Component c,
         final Graphics g,

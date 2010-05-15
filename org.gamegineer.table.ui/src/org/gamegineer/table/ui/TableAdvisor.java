@@ -1,6 +1,6 @@
 /*
  * TableAdvisor.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -92,6 +92,7 @@ public final class TableAdvisor
     /*
      * @see org.gamegineer.table.ui.ITableAdvisor#getApplicationArguments()
      */
+    @Override
     public List<String> getApplicationArguments()
     {
         return appArgs_;
@@ -100,6 +101,7 @@ public final class TableAdvisor
     /*
      * @see org.gamegineer.table.ui.ITableAdvisor#getApplicationVersion()
      */
+    @Override
     public Version getApplicationVersion()
     {
         return appVersion_;

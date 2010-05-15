@@ -69,6 +69,7 @@ public class MockTableModelListener
     /*
      * @see org.gamegineer.table.internal.ui.model.ITableModelListener#cardPileFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
+    @Override
     public void cardPileFocusChanged(
         final TableModelEvent event )
     {
@@ -110,6 +111,7 @@ public class MockTableModelListener
     /*
      * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelStateChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
+    @Override
     public void tableModelStateChanged(
         final TableModelEvent event )
     {
@@ -121,6 +123,7 @@ public class MockTableModelListener
     /*
      * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
+    @Override
     public void tableOriginOffsetChanged(
         final TableModelEvent event )
     {

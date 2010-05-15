@@ -70,6 +70,7 @@ public class MockCardPileModelListener
     /*
      * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileFocusGained(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
      */
+    @Override
     public void cardPileFocusGained(
         final CardPileModelEvent event )
     {
@@ -81,6 +82,7 @@ public class MockCardPileModelListener
     /*
      * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileFocusLost(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
      */
+    @Override
     public void cardPileFocusLost(
         final CardPileModelEvent event )
     {
@@ -92,6 +94,7 @@ public class MockCardPileModelListener
     /*
      * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileModelStateChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
      */
+    @Override
     public void cardPileModelStateChanged(
         final CardPileModelEvent event )
     {

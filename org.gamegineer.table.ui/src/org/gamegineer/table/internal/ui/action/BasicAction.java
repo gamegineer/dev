@@ -78,6 +78,7 @@ public class BasicAction
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public final void actionPerformed(
         final ActionEvent e )
     {

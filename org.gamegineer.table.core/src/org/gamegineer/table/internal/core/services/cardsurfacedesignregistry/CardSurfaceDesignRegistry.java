@@ -89,6 +89,7 @@ public final class CardSurfaceDesignRegistry
     /*
      * @see org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry#getCardSurfaceDesign(org.gamegineer.table.core.CardSurfaceDesignId)
      */
+    @Override
     public ICardSurfaceDesign getCardSurfaceDesign(
         final CardSurfaceDesignId id )
     {
@@ -124,6 +125,7 @@ public final class CardSurfaceDesignRegistry
     /*
      * @see org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry#getCardSurfaceDesigns()
      */
+    @Override
     public Collection<ICardSurfaceDesign> getCardSurfaceDesigns()
     {
         return new ArrayList<ICardSurfaceDesign>( getCardSurfaceDesignMap().values() );
@@ -160,6 +162,7 @@ public final class CardSurfaceDesignRegistry
     /*
      * @see org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry#registerCardSurfaceDesign(org.gamegineer.table.core.ICardSurfaceDesign)
      */
+    @Override
     public void registerCardSurfaceDesign(
         final ICardSurfaceDesign cardSurfaceDesign )
     {
@@ -171,6 +174,7 @@ public final class CardSurfaceDesignRegistry
     /*
      * @see org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry#unregisterCardSurfaceDesign(org.gamegineer.table.core.ICardSurfaceDesign)
      */
+    @Override
     public void unregisterCardSurfaceDesign(
         final ICardSurfaceDesign cardSurfaceDesign )
     {

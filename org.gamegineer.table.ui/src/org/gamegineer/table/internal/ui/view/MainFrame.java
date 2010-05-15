@@ -207,6 +207,7 @@ public final class MainFrame
     /*
      * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
      */
+    @Override
     public void mainModelDirtyFlagChanged(
         final MainModelEvent event )
     {
@@ -218,6 +219,7 @@ public final class MainFrame
     /*
      * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelStateChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
      */
+    @Override
     public void mainModelStateChanged(
         final MainModelEvent event )
     {
@@ -311,6 +313,7 @@ public final class MainFrame
     /*
      * @see org.gamegineer.table.internal.ui.model.IMainModelListener#tableClosed(org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent)
      */
+    @Override
     public void tableClosed(
         final MainModelContentChangedEvent event )
     {
@@ -322,6 +325,7 @@ public final class MainFrame
     /*
      * @see org.gamegineer.table.internal.ui.model.IMainModelListener#tableOpened(org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent)
      */
+    @Override
     public void tableOpened(
         final MainModelContentChangedEvent event )
     {

@@ -1,6 +1,6 @@
 /*
  * MockActionListener.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -61,6 +61,7 @@ final class MockActionListener
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(
         @SuppressWarnings( "unused" )
         final ActionEvent e )

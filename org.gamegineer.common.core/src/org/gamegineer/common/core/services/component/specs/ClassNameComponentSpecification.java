@@ -1,6 +1,6 @@
 /*
  * ClassNameComponentSpecification.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -82,6 +82,7 @@ public final class ClassNameComponentSpecification
     /*
      * @see org.gamegineer.common.core.services.component.IComponentSpecification#matches(org.gamegineer.common.core.services.component.IComponentFactory)
      */
+    @Override
     public boolean matches(
         final IComponentFactory factory )
     {

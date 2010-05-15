@@ -77,6 +77,7 @@ public final class Memento
     /*
      * @see org.gamegineer.common.persistence.memento.IMemento#containsAttribute(java.lang.String)
      */
+    @Override
     public boolean containsAttribute(
         final String name )
     {
@@ -114,6 +115,7 @@ public final class Memento
     /*
      * @see org.gamegineer.common.persistence.memento.IMemento#getAttribute(java.lang.String)
      */
+    @Override
     public <T> T getAttribute(
         final String name )
     {
@@ -128,6 +130,7 @@ public final class Memento
     /*
      * @see org.gamegineer.common.persistence.memento.IMemento#getAttributeNames()
      */
+    @Override
     public Set<String> getAttributeNames()
     {
         return new HashSet<String>( attributes_.keySet() );

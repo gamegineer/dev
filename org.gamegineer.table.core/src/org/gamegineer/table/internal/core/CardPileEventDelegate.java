@@ -69,6 +69,7 @@ class CardPileEventDelegate
     /*
      * @see org.gamegineer.table.core.ICardPileEvent#getCardPile()
      */
+    @Override
     public ICardPile getCardPile()
     {
         return cardPile_;

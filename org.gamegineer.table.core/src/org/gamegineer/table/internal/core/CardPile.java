@@ -145,6 +145,7 @@ public final class CardPile
     /*
      * @see org.gamegineer.table.core.ICardPile#addCard(org.gamegineer.table.core.ICard)
      */
+    @Override
     public void addCard(
         final ICard card )
     {
@@ -189,6 +190,7 @@ public final class CardPile
     /*
      * @see org.gamegineer.table.core.ICardPile#addCardPileListener(org.gamegineer.table.core.ICardPileListener)
      */
+    @Override
     public void addCardPileListener(
         final ICardPileListener listener )
     {
@@ -321,6 +323,7 @@ public final class CardPile
     /*
      * @see org.gamegineer.table.core.ICardPile#getBaseDesign()
      */
+    @Override
     public ICardPileBaseDesign getBaseDesign()
     {
         return baseDesign_;
@@ -329,6 +332,7 @@ public final class CardPile
     /*
      * @see org.gamegineer.table.core.ICardPile#getBounds()
      */
+    @Override
     public Rectangle getBounds()
     {
         synchronized( lock_ )
@@ -393,6 +397,7 @@ public final class CardPile
     /*
      * @see org.gamegineer.table.core.ICardPile#getCards()
      */
+    @Override
     public List<ICard> getCards()
     {
         synchronized( lock_ )
@@ -404,6 +409,7 @@ public final class CardPile
     /*
      * @see org.gamegineer.table.core.ICardPile#getLayout()
      */
+    @Override
     public CardPileLayout getLayout()
     {
         synchronized( lock_ )
@@ -415,6 +421,7 @@ public final class CardPile
     /*
      * @see org.gamegineer.table.core.ICardPile#getLocation()
      */
+    @Override
     public Point getLocation()
     {
         return getBounds().getLocation();
@@ -423,6 +430,7 @@ public final class CardPile
     /*
      * @see org.gamegineer.table.core.ICardPile#getMemento()
      */
+    @Override
     public IMemento getMemento()
     {
         final MementoBuilder mementoBuilder = new MementoBuilder();
@@ -447,6 +455,7 @@ public final class CardPile
     /*
      * @see org.gamegineer.table.core.ICardPile#getSize()
      */
+    @Override
     public Dimension getSize()
     {
         return getBounds().getSize();
@@ -455,6 +464,7 @@ public final class CardPile
     /*
      * @see org.gamegineer.table.core.ICardPile#removeCard()
      */
+    @Override
     public ICard removeCard()
     {
         final ICard card;
@@ -493,6 +503,7 @@ public final class CardPile
     /*
      * @see org.gamegineer.table.core.ICardPile#removeCardPileListener(org.gamegineer.table.core.ICardPileListener)
      */
+    @Override
     public void removeCardPileListener(
         final ICardPileListener listener )
     {
@@ -503,6 +514,7 @@ public final class CardPile
     /*
      * @see org.gamegineer.table.core.ICardPile#setLayout(org.gamegineer.table.core.CardPileLayout)
      */
+    @Override
     public void setLayout(
         final CardPileLayout layout )
     {
@@ -544,6 +556,7 @@ public final class CardPile
     /*
      * @see org.gamegineer.table.core.ICardPile#setLocation(java.awt.Point)
      */
+    @Override
     public void setLocation(
         final Point location )
     {

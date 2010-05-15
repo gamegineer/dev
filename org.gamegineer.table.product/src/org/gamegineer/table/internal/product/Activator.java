@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -90,6 +90,7 @@ public final class Activator
     /*
      * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
      */
+    @Override
     public void start(
         final BundleContext context )
         throws Exception
@@ -105,6 +106,7 @@ public final class Activator
     /*
      * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
      */
+    @Override
     public void stop(
         @SuppressWarnings( "unused" )
         final BundleContext context )

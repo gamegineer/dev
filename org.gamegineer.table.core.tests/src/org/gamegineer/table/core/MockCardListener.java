@@ -1,6 +1,6 @@
 /*
  * MockCardListener.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -64,6 +64,7 @@ public class MockCardListener
     /*
      * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
      */
+    @Override
     public void cardLocationChanged(
         final CardEvent event )
     {
@@ -75,6 +76,7 @@ public class MockCardListener
     /*
      * @see org.gamegineer.table.core.ICardListener#cardOrientationChanged(org.gamegineer.table.core.CardEvent)
      */
+    @Override
     public void cardOrientationChanged(
         final CardEvent event )
     {
