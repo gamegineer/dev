@@ -191,6 +191,19 @@ public final class MainFrame
     }
 
     /**
+     * Creates a file chooser initialized appropriately for the application.
+     * 
+     * @return A file chooser; never {@code null}.
+     */
+    /* @NonNull */
+    private JFileChooser createFileChooser()
+    {
+        final JFileChooser fileChooser = new JFileChooser( model_.getFileName() );
+        fileChooser.addChoosableFileFilter( new FileNameExtensionFilter( Messages.MainFrame_fileFilter_table, "ser" ) ); //$NON-NLS-1$
+        return fileChooser;
+    }
+
+    /**
      * Initializes this component.
      */
     private void initializeComponent()
@@ -241,8 +254,7 @@ public final class MainFrame
      */
     private void openTable()
     {
-        final JFileChooser fileChooser = new JFileChooser();
-        fileChooser.addChoosableFileFilter( new FileNameExtensionFilter( Messages.MainFrame_fileFilter_table, "ser" ) ); //$NON-NLS-1$
+        final JFileChooser fileChooser = createFileChooser();
         if( fileChooser.showOpenDialog( this ) == JFileChooser.CANCEL_OPTION )
         {
             return;
@@ -285,8 +297,7 @@ public final class MainFrame
         final String fileName;
         if( forcePromptForFileName || (model_.getFileName() == null) )
         {
-            final JFileChooser fileChooser = new JFileChooser();
-            fileChooser.addChoosableFileFilter( new FileNameExtensionFilter( Messages.MainFrame_fileFilter_table, "ser" ) ); //$NON-NLS-1$
+            final JFileChooser fileChooser = createFileChooser();
             if( fileChooser.showSaveDialog( this ) == JFileChooser.CANCEL_OPTION )
             {
                 return;
