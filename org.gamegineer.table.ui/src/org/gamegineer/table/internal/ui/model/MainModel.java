@@ -28,7 +28,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -57,7 +56,8 @@ public final class MainModel
     private final ITableAdvisor advisor_;
 
     /** The name of the file to which the model was last saved. */
-    private final AtomicReference<String> fileName_;
+    @GuardedBy( "lock_" )
+    private String fileName_;
 
     /** Indicates the main model is dirty. */
     private final AtomicBoolean isDirty_;
@@ -94,7 +94,7 @@ public final class MainModel
 
         lock_ = new Object();
         advisor_ = advisor;
-        fileName_ = new AtomicReference<String>( null );
+        fileName_ = null;
         isDirty_ = new AtomicBoolean( false );
         listeners_ = new CopyOnWriteArrayList<IMainModelListener>();
         tableModel_ = null;
@@ -235,7 +235,10 @@ public final class MainModel
     /* @Nullable */
     public String getFileName()
     {
-        return fileName_.get();
+        synchronized( lock_ )
+        {
+            return fileName_;
+        }
     }
 
     /**
@@ -289,6 +292,7 @@ public final class MainModel
 
             openedTableModel = tableModel_ = new TableModel( TableFactory.createTable() );
             openedTableModel.addTableModelListener( this );
+            fileName_ = null;
         }
 
         if( closedTableModel != null )
@@ -358,6 +362,7 @@ public final class MainModel
 
             openedTableModel = tableModel_ = new TableModel( table );
             openedTableModel.addTableModelListener( this );
+            fileName_ = fileName;
         }
 
         if( closedTableModel != null )
@@ -367,7 +372,6 @@ public final class MainModel
 
         fireTableOpened( openedTableModel );
 
-        fileName_.set( fileName );
         setClean();
     }
 
@@ -432,7 +436,11 @@ public final class MainModel
             throw new ModelException( Messages.MainModel_saveTable_error( fileName ), e );
         }
 
-        fileName_.set( fileName );
+        synchronized( lock_ )
+        {
+            fileName_ = fileName;
+        }
+
         setClean();
     }
 

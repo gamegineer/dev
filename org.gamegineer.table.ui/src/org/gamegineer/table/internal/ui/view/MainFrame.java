@@ -24,10 +24,12 @@ package org.gamegineer.table.internal.ui.view;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.logging.Level;
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
@@ -212,9 +214,9 @@ public final class MainFrame
 
         setContentPane( mainView_ );
 
-        setTitle( Messages.MainFrame_title );
         setLocationByPlatform( true );
         setSize( 300, 300 );
+        updateTitle();
     }
 
     /*
@@ -267,7 +269,7 @@ public final class MainFrame
         catch( final ModelException e )
         {
             Loggers.DEFAULT.log( Level.SEVERE, Messages.MainFrame_openTable_error, e );
-            JOptionPane.showMessageDialog( this, Messages.MainFrame_openTable_error, Messages.MainFrame_title, JOptionPane.ERROR_MESSAGE );
+            JOptionPane.showMessageDialog( this, Messages.MainFrame_openTable_error, Messages.MainFrame_application_name, JOptionPane.ERROR_MESSAGE );
         }
     }
 
@@ -313,11 +315,12 @@ public final class MainFrame
         try
         {
             model_.saveTable( fileName );
+            updateTitle();
         }
         catch( final ModelException e )
         {
             Loggers.DEFAULT.log( Level.SEVERE, Messages.MainFrame_saveTable_error, e );
-            JOptionPane.showMessageDialog( this, Messages.MainFrame_saveTable_error, Messages.MainFrame_title, JOptionPane.ERROR_MESSAGE );
+            JOptionPane.showMessageDialog( this, Messages.MainFrame_saveTable_error, Messages.MainFrame_application_name, JOptionPane.ERROR_MESSAGE );
         }
     }
 
@@ -330,7 +333,14 @@ public final class MainFrame
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        // do nothing
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                updateTitle();
+            }
+        } );
     }
 
     /*
@@ -342,6 +352,33 @@ public final class MainFrame
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        // do nothing
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                updateTitle();
+            }
+        } );
+    }
+
+    /**
+     * Updates the frame title based on the state of the model.
+     */
+    private void updateTitle()
+    {
+        final String tableName;
+        final String tableFileName = model_.getFileName();
+        if( tableFileName != null )
+        {
+            final File file = new File( tableFileName );
+            tableName = file.getName();
+        }
+        else
+        {
+            tableName = Messages.MainFrame_untitledTable;
+        }
+
+        setTitle( Messages.MainFrame_title( tableName ) );
     }
 }

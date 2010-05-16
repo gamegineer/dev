@@ -566,6 +566,9 @@ final class Messages
 
     // --- MainFrame --------------------------------------------------------
 
+    /** The application name. */
+    public static String MainFrame_application_name;
+
     /** The table file filter. */
     public static String MainFrame_fileFilter_table;
 
@@ -577,6 +580,9 @@ final class Messages
 
     /** The frame title. */
     public static String MainFrame_title;
+
+    /** The name of an untitled table. */
+    public static String MainFrame_untitledTable;
 
     // --- MenuBarView ------------------------------------------------------
 
@@ -814,5 +820,23 @@ final class Messages
         final Version version )
     {
         return bind( AboutDialog_message, version.toString() );
+    }
+
+    // --- MainFrame --------------------------------------------------------
+
+    /**
+     * Gets the formatted message for the frame title.
+     * 
+     * @param tableName
+     *        The name of the active table; must not be {@code null}.
+     * 
+     * @return The formatted message for the frame title; never {@code null}.
+     */
+    /* @NonNull */
+    static String MainFrame_title(
+        /* @NonNull */
+        final String tableName )
+    {
+        return bind( MainFrame_title, tableName, MainFrame_application_name );
     }
 }
