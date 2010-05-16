@@ -171,6 +171,7 @@ final class MainView
         remove( tableView_ );
         tableView_ = null;
         validate();
+        requestFocusInWindow();
     }
 
     /*
@@ -208,5 +209,6 @@ final class MainView
         tableView_ = new TableView( tableModel );
         add( tableView_, BorderLayout.CENTER );
         validate();
+        tableView_.requestFocusInWindow();
     }
 }
