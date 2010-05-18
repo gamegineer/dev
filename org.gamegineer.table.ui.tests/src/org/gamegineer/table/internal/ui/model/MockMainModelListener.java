@@ -40,6 +40,9 @@ public class MockMainModelListener
     /** The count of main model dirty flag changed events received. */
     private final AtomicInteger mainModelDirtyFlagChangedEventCount_;
 
+    /** The count of main model file name changed events received. */
+    private final AtomicInteger mainModelFileNameChangedEventCount_;
+
     /** The count of main model state changed events received. */
     private final AtomicInteger mainModelStateChangedEventCount_;
 
@@ -60,6 +63,7 @@ public class MockMainModelListener
     public MockMainModelListener()
     {
         mainModelDirtyFlagChangedEventCount_ = new AtomicInteger( 0 );
+        mainModelFileNameChangedEventCount_ = new AtomicInteger( 0 );
         mainModelStateChangedEventCount_ = new AtomicInteger( 0 );
         tableClosedEventCount_ = new AtomicInteger( 0 );
         tableOpenedEventCount_ = new AtomicInteger( 0 );
@@ -78,6 +82,16 @@ public class MockMainModelListener
     public final int getMainModelDirtyFlagChangedEventCount()
     {
         return mainModelDirtyFlagChangedEventCount_.get();
+    }
+
+    /**
+     * Gets the count of main model file name changed events received.
+     * 
+     * @return The count of main model file name changed events received.
+     */
+    public final int getMainModelFileNameChangedEventCount()
+    {
+        return mainModelFileNameChangedEventCount_.get();
     }
 
     /**
@@ -120,6 +134,18 @@ public class MockMainModelListener
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
         mainModelDirtyFlagChangedEventCount_.incrementAndGet();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelFileNameChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
+     */
+    @Override
+    public void mainModelFileNameChanged(
+        final MainModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        mainModelFileNameChangedEventCount_.incrementAndGet();
     }
 
     /*

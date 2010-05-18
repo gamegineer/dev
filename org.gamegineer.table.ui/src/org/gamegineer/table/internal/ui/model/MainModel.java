@@ -27,7 +27,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -60,7 +59,8 @@ public final class MainModel
     private String fileName_;
 
     /** Indicates the main model is dirty. */
-    private final AtomicBoolean isDirty_;
+    @GuardedBy( "lock_" )
+    private boolean isDirty_;
 
     /** The collection of main model listeners. */
     private final CopyOnWriteArrayList<IMainModelListener> listeners_;
@@ -95,7 +95,7 @@ public final class MainModel
         lock_ = new Object();
         advisor_ = advisor;
         fileName_ = null;
-        isDirty_ = new AtomicBoolean( false );
+        isDirty_ = false;
         listeners_ = new CopyOnWriteArrayList<IMainModelListener>();
         tableModel_ = null;
     }
@@ -151,6 +151,25 @@ public final class MainModel
             catch( final RuntimeException e )
             {
                 Loggers.DEFAULT.log( Level.SEVERE, Messages.MainModel_mainModelDirtyFlagChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a main model file name changed event.
+     */
+    private void fireMainModelFileNameChanged()
+    {
+        final MainModelEvent event = new MainModelEvent( this );
+        for( final IMainModelListener listener : listeners_ )
+        {
+            try
+            {
+                listener.mainModelFileNameChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.MainModel_mainModelFileNameChanged_unexpectedException, e );
             }
         }
     }
@@ -273,7 +292,10 @@ public final class MainModel
      */
     public boolean isDirty()
     {
-        return isDirty_.get();
+        synchronized( lock_ )
+        {
+            return isDirty_;
+        }
     }
 
     /**
@@ -293,16 +315,17 @@ public final class MainModel
             openedTableModel = tableModel_ = new TableModel( TableFactory.createTable() );
             openedTableModel.addTableModelListener( this );
             fileName_ = null;
+            isDirty_ = false;
         }
 
         if( closedTableModel != null )
         {
             fireTableClosed( closedTableModel );
         }
-
         fireTableOpened( openedTableModel );
-
-        setClean();
+        fireMainModelFileNameChanged();
+        fireMainModelDirtyFlagChanged();
+        fireMainModelStateChanged();
     }
 
     /**
@@ -363,16 +386,17 @@ public final class MainModel
             openedTableModel = tableModel_ = new TableModel( table );
             openedTableModel.addTableModelListener( this );
             fileName_ = fileName;
+            isDirty_ = false;
         }
 
         if( closedTableModel != null )
         {
             fireTableClosed( closedTableModel );
         }
-
         fireTableOpened( openedTableModel );
-
-        setClean();
+        fireMainModelFileNameChanged();
+        fireMainModelDirtyFlagChanged();
+        fireMainModelStateChanged();
     }
 
     /**
@@ -439,17 +463,10 @@ public final class MainModel
         synchronized( lock_ )
         {
             fileName_ = fileName;
+            isDirty_ = false;
         }
 
-        setClean();
-    }
-
-    /**
-     * Marks the main model as clean.
-     */
-    public void setClean()
-    {
-        isDirty_.set( false );
+        fireMainModelFileNameChanged();
         fireMainModelDirtyFlagChanged();
         fireMainModelStateChanged();
     }
@@ -457,9 +474,13 @@ public final class MainModel
     /**
      * Marks the main model as dirty.
      */
-    public void setDirty()
+    private void setDirty()
     {
-        isDirty_.set( true );
+        synchronized( lock_ )
+        {
+            isDirty_ = true;
+        }
+
         fireMainModelDirtyFlagChanged();
         fireMainModelStateChanged();
     }

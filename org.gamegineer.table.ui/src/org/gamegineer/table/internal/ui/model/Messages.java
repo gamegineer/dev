@@ -91,6 +91,12 @@ final class Messages
 
     /**
      * An unexpected exception was thrown from
+     * IMainModelListener.mainModelFileNameChanged().
+     */
+    public static String MainModel_mainModelFileNameChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
      * IMainModelListener.mainModelStateChanged().
      */
     public static String MainModel_mainModelStateChanged_unexpectedException;

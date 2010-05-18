@@ -171,7 +171,32 @@ public final class MainModelTest
         };
         model_.addMainModelListener( listener );
 
-        model_.setDirty();
+        model_.openTable();
+    }
+
+
+    /**
+     * Ensures the main model file name changed event catches any exception
+     * thrown by the {@code mainModelFileNameChanged} method of a main model
+     * listener.
+     */
+    @Test
+    public void testMainModelFileNameChanged_CatchesListenerException()
+    {
+        final MockMainModelListener listener = new MockMainModelListener()
+        {
+            @Override
+            public void mainModelFileNameChanged(
+                final MainModelEvent event )
+            {
+                super.mainModelFileNameChanged( event );
+
+                throw new RuntimeException();
+            }
+        };
+        model_.addMainModelListener( listener );
+
+        model_.openTable();
     }
 
     /**
@@ -214,6 +239,22 @@ public final class MainModelTest
     }
 
     /**
+     * Ensures the {@code openTable()} method fires a main model file name
+     * changed event.
+     */
+    @Test
+    public void testOpenTable_FiresMainModelFileNameChangedEvent()
+    {
+        final MockMainModelListener listener = new MockMainModelListener();
+        model_.openTable();
+        model_.addMainModelListener( listener );
+
+        model_.openTable();
+
+        assertEquals( 1, listener.getMainModelFileNameChangedEventCount() );
+    }
+
+    /**
      * Ensures the {@code openTable()} method fires a main model state changed
      * event.
      */
@@ -232,7 +273,7 @@ public final class MainModelTest
      * Ensures the {@code openTable()} method fires a table closed event.
      */
     @Test
-    public void testOpenTable_TableClosed_FiresTableClosedEvent()
+    public void testOpenTable_FiresTableClosedEvent()
     {
         final MockMainModelListener listener = new MockMainModelListener();
         model_.openTable();
@@ -247,7 +288,7 @@ public final class MainModelTest
      * Ensures the {@code openTable()} method fires a table opened event.
      */
     @Test
-    public void testOpenTable_TableOpened_FiresTableOpenedEvent()
+    public void testOpenTable_FiresTableOpenedEvent()
     {
         final MockMainModelListener listener = new MockMainModelListener();
         model_.addMainModelListener( listener );
@@ -294,6 +335,28 @@ public final class MainModelTest
     }
 
     /**
+     * Ensures the {@code openTable(String)} method fires a main model file name
+     * changed event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testOpenTableFromFile_FiresMainModelFileNameChangedEvent()
+        throws Exception
+    {
+        final String fileName = createTemporaryFileName();
+        final MockMainModelListener listener = new MockMainModelListener();
+        model_.openTable();
+        model_.saveTable( fileName );
+        model_.addMainModelListener( listener );
+
+        model_.openTable( fileName );
+
+        assertEquals( 1, listener.getMainModelFileNameChangedEventCount() );
+    }
+
+    /**
      * Ensures the {@code openTable(String)} method fires a main model state
      * changed event.
      * 
@@ -322,7 +385,7 @@ public final class MainModelTest
      *         If an error occurs.
      */
     @Test
-    public void testOpenTableFromFile_TableClosed_FiresTableClosedEvent()
+    public void testOpenTableFromFile_FiresTableClosedEvent()
         throws Exception
     {
         final String fileName = createTemporaryFileName();
@@ -343,7 +406,7 @@ public final class MainModelTest
      *         If an error occurs.
      */
     @Test
-    public void testOpenTableFromFile_TableOpened_FiresTableOpenedEvent()
+    public void testOpenTableFromFile_FiresTableOpenedEvent()
         throws Exception
     {
         final String fileName = createTemporaryFileName();
@@ -410,61 +473,64 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code setClean} method fires a main model dirty flag changed
-     * event.
+     * Ensures the {@code saveTable} method fires a main model dirty flag
+     * changed event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
-    public void testSetClean_FiresMainModelDirtyFlagChangedEvent()
+    public void testSaveTable_FiresMainModelDirtyFlagChangedEvent()
+        throws Exception
     {
+        final String fileName = createTemporaryFileName();
         final MockMainModelListener listener = new MockMainModelListener();
+        model_.openTable();
         model_.addMainModelListener( listener );
 
-        model_.setClean();
+        model_.saveTable( fileName );
 
         assertEquals( 1, listener.getMainModelDirtyFlagChangedEventCount() );
     }
 
     /**
-     * Ensures the {@code setClean} method fires a main model state changed
+     * Ensures the {@code saveTable} method fires a main model file name changed
      * event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
-    public void testSetClean_FiresMainModelStateChangedEvent()
+    public void testSaveTable_FiresMainModelFileNameChangedEvent()
+        throws Exception
     {
+        final String fileName = createTemporaryFileName();
         final MockMainModelListener listener = new MockMainModelListener();
+        model_.openTable();
         model_.addMainModelListener( listener );
 
-        model_.setClean();
+        model_.saveTable( fileName );
 
-        assertEquals( 1, listener.getMainModelStateChangedEventCount() );
+        assertEquals( 1, listener.getMainModelFileNameChangedEventCount() );
     }
 
     /**
-     * Ensures the {@code setDirty} method fires a main model dirty flag changed
+     * Ensures the {@code saveTable} method fires a main model state changed
      * event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
-    public void testSetDirty_FiresMainModelDirtyFlagChangedEvent()
+    public void testSaveTable_FiresMainModelStateChangedEvent()
+        throws Exception
     {
+        final String fileName = createTemporaryFileName();
         final MockMainModelListener listener = new MockMainModelListener();
+        model_.openTable();
         model_.addMainModelListener( listener );
 
-        model_.setDirty();
-
-        assertEquals( 1, listener.getMainModelDirtyFlagChangedEventCount() );
-    }
-
-    /**
-     * Ensures the {@code setDirty} method fires a main model state changed
-     * event.
-     */
-    @Test
-    public void testSetDirty_FiresMainModelStateChangedEvent()
-    {
-        final MockMainModelListener listener = new MockMainModelListener();
-        model_.addMainModelListener( listener );
-
-        model_.setDirty();
+        model_.saveTable( fileName );
 
         assertEquals( 1, listener.getMainModelStateChangedEventCount() );
     }

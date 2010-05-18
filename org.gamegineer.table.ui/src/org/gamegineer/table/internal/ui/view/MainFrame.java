@@ -232,6 +232,25 @@ public final class MainFrame
     }
 
     /*
+     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelFileNameChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
+     */
+    @Override
+    public void mainModelFileNameChanged(
+        final MainModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                updateTitle();
+            }
+        } );
+    }
+
+    /*
      * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelStateChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
      */
     @Override
@@ -315,7 +334,6 @@ public final class MainFrame
         try
         {
             model_.saveTable( fileName );
-            updateTitle();
         }
         catch( final ModelException e )
         {
@@ -333,14 +351,7 @@ public final class MainFrame
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                updateTitle();
-            }
-        } );
+        // do nothing
     }
 
     /*
@@ -352,14 +363,7 @@ public final class MainFrame
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                updateTitle();
-            }
-        } );
+        // do nothing
     }
 
     /**
