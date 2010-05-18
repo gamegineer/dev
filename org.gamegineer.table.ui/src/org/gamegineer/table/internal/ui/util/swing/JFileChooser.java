@@ -158,7 +158,7 @@ public final class JFileChooser
             final File selectedFile = getSelectedFile();
             if( (selectedFile != null) && selectedFile.exists() )
             {
-                if( confirmOverwriteFile( selectedFile ) != JOptionPane.YES_OPTION )
+                if( !confirmOverwriteFile( selectedFile ) )
                 {
                     return;
                 }
@@ -174,15 +174,15 @@ public final class JFileChooser
      * @param file
      *        The file to be overwritten; must not be {@code null}.
      * 
-     * @return {@code JOptionPane.YES_OPTION} if the user wishes to overwrite
-     *         the specified file; otherwise {@code JOptionPane.NO_OPTION}.
+     * @return {@code true} if the user wishes to overwrite the specified file;
+     *         otherwise {@code false}.
      */
-    private int confirmOverwriteFile(
+    private boolean confirmOverwriteFile(
         /* @NonNull */
         final File file )
     {
         assert file != null;
 
-        return JOptionPane.showConfirmDialog( this, Messages.JFileChooser_confirmOverwriteFile_message( file ), Messages.JFileChooser_confirmOverwriteFile_title, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE );
+        return JOptionPane.showConfirmDialog( this, Messages.JFileChooser_confirmOverwriteFile_message( file ), Messages.JFileChooser_confirmOverwriteFile_title, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE ) == JOptionPane.YES_OPTION;
     }
 }
