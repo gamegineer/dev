@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui.view;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.logging.Level;
 import javax.swing.Action;
@@ -193,6 +194,39 @@ public final class MainFrame
     }
 
     /**
+     * Prompts the user to save the active table if it is dirty.
+     * 
+     * <p>
+     * If this method returns {@code false}, the caller should not proceed to
+     * discard the current table.
+     * </p>
+     * 
+     * @return {@code true} if the table is not dirty, the user chooses not to
+     *         save the dirty table, or the dirty table is saved successfully;
+     *         {@code false} if the user wishes to abort the current operation
+     *         or the dirty table was not saved successfully.
+     */
+    private boolean confirmSaveDirtyTable()
+    {
+        if( !model_.isDirty() )
+        {
+            return true;
+        }
+
+        final int result = JOptionPane.showConfirmDialog( this, Messages.MainFrame_confirmSaveDirtyTable_message( getTableName() ), Messages.MainFrame_application_name, JOptionPane.YES_NO_CANCEL_OPTION );
+        if( result == JOptionPane.YES_OPTION )
+        {
+            return saveTable( false );
+        }
+        else if( result == JOptionPane.NO_OPTION )
+        {
+            return true;
+        }
+
+        return false; // JOptionPane.CANCEL_OPTION
+    }
+
+    /**
      * Creates a file chooser initialized appropriately for the application.
      * 
      * @return A file chooser; never {@code null}.
@@ -203,6 +237,24 @@ public final class MainFrame
         final JFileChooser fileChooser = new JFileChooser( model_.getFileName() );
         fileChooser.addChoosableFileFilter( new FileNameExtensionFilter( Messages.MainFrame_fileFilter_table, "ser" ) ); //$NON-NLS-1$
         return fileChooser;
+    }
+
+    /**
+     * Gets the name of the table.
+     * 
+     * @return The name of the table; never {@code null}.
+     */
+    /* @NonNull */
+    private String getTableName()
+    {
+        final String tableFileName = model_.getFileName();
+        if( tableFileName == null )
+        {
+            return Messages.MainFrame_untitledTable;
+        }
+
+        final File file = new File( tableFileName );
+        return file.getName();
     }
 
     /**
@@ -267,7 +319,10 @@ public final class MainFrame
      */
     private void openNewTable()
     {
-        model_.openTable();
+        if( confirmSaveDirtyTable() )
+        {
+            model_.openTable();
+        }
     }
 
     /**
@@ -275,21 +330,39 @@ public final class MainFrame
      */
     private void openTable()
     {
-        final JFileChooser fileChooser = createFileChooser();
-        if( fileChooser.showOpenDialog( this ) == JFileChooser.CANCEL_OPTION )
+        if( confirmSaveDirtyTable() )
+        {
+            final JFileChooser fileChooser = createFileChooser();
+            if( fileChooser.showOpenDialog( this ) == JFileChooser.CANCEL_OPTION )
+            {
+                return;
+            }
+
+            try
+            {
+                model_.openTable( fileChooser.getSelectedFile().getAbsolutePath() );
+            }
+            catch( final ModelException e )
+            {
+                Loggers.DEFAULT.log( Level.SEVERE, Messages.MainFrame_openTable_error, e );
+                JOptionPane.showMessageDialog( this, Messages.MainFrame_openTable_error, Messages.MainFrame_application_name, JOptionPane.ERROR_MESSAGE );
+            }
+        }
+    }
+
+    /*
+     * @see javax.swing.JFrame#processWindowEvent(java.awt.event.WindowEvent)
+     */
+    @Override
+    protected void processWindowEvent(
+        final WindowEvent e )
+    {
+        if( (e.getID() == WindowEvent.WINDOW_CLOSING) && !confirmSaveDirtyTable() )
         {
             return;
         }
 
-        try
-        {
-            model_.openTable( fileChooser.getSelectedFile().getAbsolutePath() );
-        }
-        catch( final ModelException e )
-        {
-            Loggers.DEFAULT.log( Level.SEVERE, Messages.MainFrame_openTable_error, e );
-            JOptionPane.showMessageDialog( this, Messages.MainFrame_openTable_error, Messages.MainFrame_application_name, JOptionPane.ERROR_MESSAGE );
-        }
+        super.processWindowEvent( e );
     }
 
     /*
@@ -311,8 +384,10 @@ public final class MainFrame
      *        Indicates the user should be forced to choose a file name
      *        regardless of whether or not the table state is already associated
      *        with an existing file.
+     * 
+     * @return {@code true} if the table was saved; otherwise {@code false}.
      */
-    private void saveTable(
+    private boolean saveTable(
         final boolean forcePromptForFileName )
     {
         final String fileName;
@@ -321,7 +396,7 @@ public final class MainFrame
             final JFileChooser fileChooser = createFileChooser();
             if( fileChooser.showSaveDialog( this ) == JFileChooser.CANCEL_OPTION )
             {
-                return;
+                return false;
             }
 
             fileName = fileChooser.getSelectedFile().getAbsolutePath();
@@ -339,7 +414,10 @@ public final class MainFrame
         {
             Loggers.DEFAULT.log( Level.SEVERE, Messages.MainFrame_saveTable_error, e );
             JOptionPane.showMessageDialog( this, Messages.MainFrame_saveTable_error, Messages.MainFrame_application_name, JOptionPane.ERROR_MESSAGE );
+            return false;
         }
+
+        return true;
     }
 
     /*
@@ -371,18 +449,6 @@ public final class MainFrame
      */
     private void updateTitle()
     {
-        final String tableName;
-        final String tableFileName = model_.getFileName();
-        if( tableFileName != null )
-        {
-            final File file = new File( tableFileName );
-            tableName = file.getName();
-        }
-        else
-        {
-            tableName = Messages.MainFrame_untitledTable;
-        }
-
-        setTitle( Messages.MainFrame_title( tableName ) );
+        setTitle( Messages.MainFrame_title( getTableName() ) );
     }
 }

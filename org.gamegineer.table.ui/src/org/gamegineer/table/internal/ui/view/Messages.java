@@ -569,6 +569,9 @@ final class Messages
     /** The application name. */
     public static String MainFrame_application_name;
 
+    /** The Confirm Save Dirty Table dialog message. */
+    public static String MainFrame_confirmSaveDirtyTable_message;
+
     /** The table file filter. */
     public static String MainFrame_fileFilter_table;
 
@@ -823,6 +826,24 @@ final class Messages
     }
 
     // --- MainFrame --------------------------------------------------------
+
+    /**
+     * Gets the formatted message for the Confirm Save Dirty Table dialog
+     * message.
+     * 
+     * @param tableName
+     *        The name of the active table; must not be {@code null}.
+     * 
+     * @return The formatted message for the Confirm Save Dirty Table dialog
+     *         message; never {@code null}.
+     */
+    /* @NonNull */
+    static String MainFrame_confirmSaveDirtyTable_message(
+        /* @NonNull */
+        final String tableName )
+    {
+        return bind( MainFrame_confirmSaveDirtyTable_message, tableName );
+    }
 
     /**
      * Gets the formatted message for the frame title.
