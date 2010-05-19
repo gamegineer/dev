@@ -123,11 +123,15 @@ public final class MainFrame
     {
         actionMediator_.bindActionListener( Actions.getExitAction(), new ActionListener()
         {
+            @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
                 final ActionEvent e )
             {
-                dispose();
+                if( confirmSaveDirtyTable() )
+                {
+                    dispose();
+                }
             }
         } );
         actionMediator_.bindActionListener( Actions.getOpenAboutDialogAction(), new ActionListener()
