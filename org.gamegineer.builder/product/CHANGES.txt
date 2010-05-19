@@ -1,12 +1,21 @@
 Gamegineer
 Version 0.3.0
-DD MM YYYY
+19 May 2010
 
 Defects closed:
-    * None
+    * [#4] Card pile rendered incorrectly while dragging
+    * [#9] Serializable persistence delegate framework uses wrong classpath
+    * [#10] Beans persistence delegate framework uses wrong classpath
+    * [#15] Keyboard accelerators stop working after opening a new table
 
 Enhancements closed:
-    * None
+    * [#1] Support scrolling of table view
+    * [#2] Add support for alternate card pile layouts
+    * [#3] Add support for persisting table state
+    * [#11] Display file name of active table in title bar
+    * [#12] Prompt to save a dirty table before discarding it
+    * [#13] Maintain current directory across invocations of file open/save chooser
+    * [#14] Prompt to overwrite existing file from the file save chooser
 
 Tasks closed:
-    * None
+    * [#5] Upgrade to Apache Commons CLI 1.2
