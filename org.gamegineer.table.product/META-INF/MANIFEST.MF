@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.gamegineer.table.product;singleton:=true
-Bundle-Version: 0.3.0
+Bundle-Version: 0.4.0
 Bundle-Activator: org.gamegineer.table.internal.product.Activator
 Bundle-Vendor: %bundleVendor
 Bundle-Localization: plugin

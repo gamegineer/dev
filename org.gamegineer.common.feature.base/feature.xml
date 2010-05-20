@@ -2,7 +2,7 @@
 <feature
         id="org.gamegineer.common.feature.base"
         label="%featureName"
-        version="0.3.0"
+        version="0.4.0"
         provider-name="%providerName">
 
     <description>

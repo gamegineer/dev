@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-SymbolicName: org.gamegineer.table.ui;singleton:=true
-Bundle-Version: 0.3.0
+Bundle-Version: 0.4.0
 Bundle-Activator: org.gamegineer.table.internal.ui.Activator
 Bundle-Vendor: %bundleVendor
 Bundle-Localization: plugin
@@ -10,7 +10,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.equinox.registry;bundle-version="3.4.100",
  org.gamegineer.common.core,
- org.gamegineer.common.persistence;bundle-version="0.3.0",
+ org.gamegineer.common.persistence;bundle-version="0.4.0",
  org.gamegineer.table.core
 Import-Package: net.jcip.annotations;version="1.0.0",
  org.apache.commons.cli;version="1.2.0",
