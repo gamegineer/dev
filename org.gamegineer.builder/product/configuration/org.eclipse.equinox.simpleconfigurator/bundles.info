@@ -1,8 +1,8 @@
 #version=1
 net.jcip.annotations,1.0.0,plugins/net.jcip.annotations_1.0.0/,4,false
 org.apache.commons.cli,1.2.0,plugins/org.apache.commons.cli_1.2.0/,4,false
-org.eclipse.equinox.app,1.2.0.v20090520-1800,plugins/org.eclipse.equinox.app_1.2.0.v20090520-1800.jar,4,true
-org.eclipse.equinox.common,3.5.0.v20090520-1800,plugins/org.eclipse.equinox.common_3.5.0.v20090520-1800.jar,2,true
+org.eclipse.equinox.app,1.2.1.R35x_v20091203,plugins/org.eclipse.equinox.app_1.2.1.R35x_v20091203.jar,4,true
+org.eclipse.equinox.common,3.5.1.R35x_v20090807-1100,plugins/org.eclipse.equinox.common_3.5.1.R35x_v20090807-1100.jar,2,true
 org.eclipse.equinox.registry,3.4.100.v20090520-1800,plugins/org.eclipse.equinox.registry_3.4.100.v20090520-1800.jar,4,false
 org.gamegineer.common.core,0.4.0,plugins/org.gamegineer.common.core_0.4.0.jar,4,false
 org.gamegineer.common.persistence,0.4.0,plugins/org.gamegineer.common.persistence_0.4.0.jar,4,false

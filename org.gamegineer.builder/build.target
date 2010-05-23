@@ -2,7 +2,7 @@
 <?pde version="3.5"?>
 
 <target name="Gamegineer Build">
-    <locations>
-        <location path="${workspace_loc}/org.gamegineer.builder/target" type="Directory" />
-    </locations>
+<locations>
+<location path="${workspace_loc}/org.gamegineer.builder/target/build" type="Directory"/>
+</locations>
 </target>

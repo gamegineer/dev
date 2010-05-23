@@ -2,8 +2,8 @@
 <?pde version="3.5"?>
 
 <target name="Gamegineer IDE">
-    <locations>
-        <location path="${env_var:GAMEGINEER_ECLIPSE_HOME}" type="Profile" />
-        <location path="${workspace_loc}/org.gamegineer.builder/target" type="Directory" />
-    </locations>
+<locations>
+<location path="${workspace_loc}/org.gamegineer.builder/target/build" type="Directory"/>
+<location path="${workspace_loc}/org.gamegineer.builder/target/ide" type="Directory"/>
+</locations>
 </target>
