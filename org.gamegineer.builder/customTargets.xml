@@ -253,6 +253,7 @@
         -->
         <copy todir="${buildDirectory}/${buildLabel}/product/${archivePrefix}">
             <fileset dir="${baseLocation}">
+                <exclude name="plugins/easymock-*.jar" />
                 <exclude name="plugins/org.hamcrest.core_*.jar" />
                 <exclude name="plugins/org.junit_*/**" />
                 <exclude name="plugins/org.junit4_*/**" />
