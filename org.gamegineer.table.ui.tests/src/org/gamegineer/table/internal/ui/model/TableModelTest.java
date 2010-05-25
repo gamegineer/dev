@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import static org.gamegineer.test.core.DummyFactory.createDummy;
+import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -173,7 +173,7 @@ public final class TableModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testGetCardPileModel_CardPile_Absent()
     {
-        model_.getCardPileModel( createDummy( ICardPile.class ) );
+        model_.getCardPileModel( createMock( ICardPile.class ) );
     }
 
     /**

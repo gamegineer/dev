@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.ui.action;
 
-import static org.gamegineer.test.core.DummyFactory.createDummy;
+import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertEquals;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -107,7 +107,7 @@ public final class ActionMediatorTest
     @Test( expected = NullPointerException.class )
     public void testBindActionListener_Action_Null()
     {
-        mediator_.bindActionListener( null, createDummy( ActionListener.class ) );
+        mediator_.bindActionListener( null, createMock( ActionListener.class ) );
     }
 
     /**

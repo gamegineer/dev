@@ -1,6 +1,6 @@
 /*
  * TableEventDelegateAsTableEventTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.test.core.DummyFactory.createDummy;
+import static org.easymock.EasyMock.createMock;
 import org.gamegineer.table.core.AbstractTableEventTestCase;
 import org.gamegineer.table.core.ITable;
 
@@ -58,6 +58,6 @@ public final class TableEventDelegateAsTableEventTest
     @Override
     protected TableEventDelegate createTableEvent()
     {
-        return new TableEventDelegate( createDummy( ITable.class ) );
+        return new TableEventDelegate( createMock( ITable.class ) );
     }
 }

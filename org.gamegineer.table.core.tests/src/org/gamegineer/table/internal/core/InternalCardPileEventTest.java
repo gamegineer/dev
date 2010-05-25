@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.test.core.DummyFactory.createDummy;
+import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertNotNull;
 import org.gamegineer.table.core.ICardPile;
 import org.junit.Test;
@@ -67,6 +67,6 @@ public final class InternalCardPileEventTest
     @Test
     public void testCreateCardPileEvent_ReturnValue_NonNull()
     {
-        assertNotNull( InternalCardPileEvent.createCardPileEvent( createDummy( ICardPile.class ) ) );
+        assertNotNull( InternalCardPileEvent.createCardPileEvent( createMock( ICardPile.class ) ) );
     }
 }

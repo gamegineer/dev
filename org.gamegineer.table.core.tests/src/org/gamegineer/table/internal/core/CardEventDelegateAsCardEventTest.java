@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.test.core.DummyFactory.createDummy;
+import static org.easymock.EasyMock.createMock;
 import org.gamegineer.table.core.AbstractCardEventTestCase;
 import org.gamegineer.table.core.ICard;
 
@@ -58,6 +58,6 @@ public final class CardEventDelegateAsCardEventTest
     @Override
     protected CardEventDelegate createCardEvent()
     {
-        return new CardEventDelegate( createDummy( ICard.class ) );
+        return new CardEventDelegate( createMock( ICard.class ) );
     }
 }

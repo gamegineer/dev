@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import static org.gamegineer.test.core.DummyFactory.createDummy;
+import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertNotNull;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.ui.ITableAdvisor;
@@ -72,7 +72,7 @@ public final class MainModelContentChangedEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new MainModelContentChangedEvent( new MainModel( createDummy( ITableAdvisor.class ) ), new TableModel( TableFactory.createTable() ) );
+        event_ = new MainModelContentChangedEvent( new MainModel( createMock( ITableAdvisor.class ) ), new TableModel( TableFactory.createTable() ) );
     }
 
     /**
@@ -95,7 +95,7 @@ public final class MainModelContentChangedEventTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_TableModel_Null()
     {
-        new MainModelContentChangedEvent( new MainModel( createDummy( ITableAdvisor.class ) ), null );
+        new MainModelContentChangedEvent( new MainModel( createMock( ITableAdvisor.class ) ), null );
     }
 
     /**

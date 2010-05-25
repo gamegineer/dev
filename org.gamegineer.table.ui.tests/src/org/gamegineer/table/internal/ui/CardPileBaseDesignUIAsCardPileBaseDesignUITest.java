@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.ui;
 
-import static org.gamegineer.test.core.DummyFactory.createDummy;
+import static org.easymock.EasyMock.createMock;
 import javax.swing.Icon;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.ui.AbstractCardPileBaseDesignUITestCase;
@@ -60,6 +60,6 @@ public final class CardPileBaseDesignUIAsCardPileBaseDesignUITest
     @Override
     protected ICardPileBaseDesignUI createCardPileBaseDesignUI()
     {
-        return new CardPileBaseDesignUI( CardPileBaseDesignId.fromString( "id" ), "name", createDummy( Icon.class ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        return new CardPileBaseDesignUI( CardPileBaseDesignId.fromString( "id" ), "name", createMock( Icon.class ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.test.core.DummyFactory.createDummy;
+import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertNotNull;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
@@ -59,7 +59,7 @@ public final class InternalTableContentChangedEventTest
     @Test( expected = AssertionError.class )
     public void testCreateTableContentChangedEvent_CardPile_Null()
     {
-        InternalTableContentChangedEvent.createTableContentChangedEvent( createDummy( ITable.class ), null );
+        InternalTableContentChangedEvent.createTableContentChangedEvent( createMock( ITable.class ), null );
     }
 
     /**
@@ -69,7 +69,7 @@ public final class InternalTableContentChangedEventTest
     @Test
     public void testCreateTableContentChangedEvent_ReturnValue_NonNull()
     {
-        assertNotNull( InternalTableContentChangedEvent.createTableContentChangedEvent( createDummy( ITable.class ), createDummy( ICardPile.class ) ) );
+        assertNotNull( InternalTableContentChangedEvent.createTableContentChangedEvent( createMock( ITable.class ), createMock( ICardPile.class ) ) );
     }
 
     /**
@@ -79,6 +79,6 @@ public final class InternalTableContentChangedEventTest
     @Test( expected = AssertionError.class )
     public void testCreateTableContentChangedEvent_Table_Null()
     {
-        InternalTableContentChangedEvent.createTableContentChangedEvent( null, createDummy( ICardPile.class ) );
+        InternalTableContentChangedEvent.createTableContentChangedEvent( null, createMock( ICardPile.class ) );
     }
 }

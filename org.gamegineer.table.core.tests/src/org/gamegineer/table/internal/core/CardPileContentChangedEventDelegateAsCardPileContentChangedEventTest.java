@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.test.core.DummyFactory.createDummy;
+import static org.easymock.EasyMock.createMock;
 import org.gamegineer.table.core.AbstractCardPileContentChangedEventTestCase;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
@@ -60,6 +60,6 @@ public final class CardPileContentChangedEventDelegateAsCardPileContentChangedEv
     @Override
     protected CardPileContentChangedEventDelegate createCardPileEvent()
     {
-        return new CardPileContentChangedEventDelegate( createDummy( ICardPile.class ), createDummy( ICard.class ) );
+        return new CardPileContentChangedEventDelegate( createMock( ICardPile.class ), createMock( ICard.class ) );
     }
 }

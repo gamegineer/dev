@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.ui;
 
+import static org.easymock.EasyMock.createMock;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import static org.gamegineer.test.core.DummyFactory.createDummy;
 import javax.swing.Icon;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.CardPileBaseDesigns;
@@ -93,7 +93,7 @@ public final class CardPileBaseDesignUIs
     {
         assertArgumentNotNull( cardPileBaseDesign, "cardPileBaseDesign" ); //$NON-NLS-1$
 
-        return CardPileBaseDesignUIFactory.createCardPileBaseDesignUI( cardPileBaseDesign.getId(), cardPileBaseDesign.getId().toString(), createDummy( Icon.class ) );
+        return CardPileBaseDesignUIFactory.createCardPileBaseDesignUI( cardPileBaseDesign.getId(), cardPileBaseDesign.getId().toString(), createMock( Icon.class ) );
     }
 
     /**

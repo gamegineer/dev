@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.test.core.DummyFactory.createDummy;
+import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import org.gamegineer.common.persistence.memento.IMemento;
@@ -191,7 +191,7 @@ public final class MementoUtilsTest
     public void testGetOptionalAttribute_Name_Null()
         throws Exception
     {
-        MementoUtils.getOptionalAttribute( createDummy( IMemento.class ), null, Object.class );
+        MementoUtils.getOptionalAttribute( createMock( IMemento.class ), null, Object.class );
     }
 
     /**
@@ -205,7 +205,7 @@ public final class MementoUtilsTest
     public void testGetOptionalAttribute_Type_Null()
         throws Exception
     {
-        MementoUtils.getOptionalAttribute( createDummy( IMemento.class ), "name", null ); //$NON-NLS-1$
+        MementoUtils.getOptionalAttribute( createMock( IMemento.class ), "name", null ); //$NON-NLS-1$
     }
 
     /**
@@ -291,7 +291,7 @@ public final class MementoUtilsTest
     public void testGetRequiredAttribute_Name_Null()
         throws Exception
     {
-        MementoUtils.getRequiredAttribute( createDummy( IMemento.class ), null, Object.class );
+        MementoUtils.getRequiredAttribute( createMock( IMemento.class ), null, Object.class );
     }
 
     /**
@@ -305,6 +305,6 @@ public final class MementoUtilsTest
     public void testGetRequiredAttribute_Type_Null()
         throws Exception
     {
-        MementoUtils.getRequiredAttribute( createDummy( IMemento.class ), "name", null ); //$NON-NLS-1$
+        MementoUtils.getRequiredAttribute( createMock( IMemento.class ), "name", null ); //$NON-NLS-1$
     }
 }

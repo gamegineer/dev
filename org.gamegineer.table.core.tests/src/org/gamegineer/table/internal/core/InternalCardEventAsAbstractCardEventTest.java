@@ -1,6 +1,6 @@
 /*
  * InternalCardEventAsAbstractCardEventTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.test.core.DummyFactory.createDummy;
+import static org.easymock.EasyMock.createMock;
 import org.gamegineer.table.core.AbstractAbstractCardEventTestCase;
 import org.gamegineer.table.core.ICard;
 
@@ -58,6 +58,6 @@ public final class InternalCardEventAsAbstractCardEventTest
     @Override
     protected InternalCardEvent createCardEvent()
     {
-        return InternalCardEvent.createCardEvent( createDummy( ICard.class ) );
+        return InternalCardEvent.createCardEvent( createMock( ICard.class ) );
     }
 }

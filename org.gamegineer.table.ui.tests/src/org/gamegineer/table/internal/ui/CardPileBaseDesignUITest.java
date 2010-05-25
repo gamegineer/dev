@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.ui;
 
-import static org.gamegineer.test.core.DummyFactory.createDummy;
+import static org.easymock.EasyMock.createMock;
 import javax.swing.Icon;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.junit.Test;
@@ -66,7 +66,7 @@ public final class CardPileBaseDesignUITest
     @Test( expected = NullPointerException.class )
     public void testConstructor_Id_Null()
     {
-        new CardPileBaseDesignUI( null, "name", createDummy( Icon.class ) ); //$NON-NLS-1$
+        new CardPileBaseDesignUI( null, "name", createMock( Icon.class ) ); //$NON-NLS-1$
     }
 
     /**
@@ -76,6 +76,6 @@ public final class CardPileBaseDesignUITest
     @Test( expected = NullPointerException.class )
     public void testConstructor_Name_Null()
     {
-        new CardPileBaseDesignUI( CardPileBaseDesignId.fromString( "id" ), null, createDummy( Icon.class ) ); //$NON-NLS-1$
+        new CardPileBaseDesignUI( CardPileBaseDesignId.fromString( "id" ), null, createMock( Icon.class ) ); //$NON-NLS-1$
     }
 }

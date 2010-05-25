@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.test.core.DummyFactory.createDummy;
+import static org.easymock.EasyMock.createMock;
 import org.gamegineer.table.core.ITable;
 import org.junit.Test;
 
@@ -57,6 +57,6 @@ public final class TableContentChangedEventDelegateTest
     @Test( expected = AssertionError.class )
     public void testConstructor_CardPile_Null()
     {
-        new TableContentChangedEventDelegate( createDummy( ITable.class ), null );
+        new TableContentChangedEventDelegate( createMock( ITable.class ), null );
     }
 }
