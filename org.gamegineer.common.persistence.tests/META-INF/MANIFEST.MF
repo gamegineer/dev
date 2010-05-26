@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
+Bundle-ClassPath: tests.jar
+Bundle-Localization: fragment-tests
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
-Bundle-SymbolicName: org.gamegineer.common.persistence.tests
-Bundle-Version: 0.4.0
-Bundle-Vendor: %bundleVendor
-Bundle-Localization: fragment-tests
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-ClassPath: tests.jar
+Bundle-SymbolicName: org.gamegineer.common.persistence.tests
+Bundle-Vendor: %bundleVendor
+Bundle-Version: 0.4.0
 Fragment-Host: org.gamegineer.common.persistence;bundle-version="0.4.0"
 Import-Package: junit.framework;version="4.5.0",
  org.gamegineer.test.core,
