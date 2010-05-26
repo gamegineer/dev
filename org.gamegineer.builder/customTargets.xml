@@ -190,6 +190,11 @@
         <!-- Unzip Eclipse SDK into workspace. -->
         <unzip src="${env.ECLIPSE_HOME}/eclipse-SDK-${eclipseBuildId}-${baseos}.zip" dest="${buildDirectory}/${buildLabel}/test-workspace" overwrite="true" />
 
+        <!-- Copy target platform into workspace. -->
+        <copy todir="${buildDirectory}/${buildLabel}/test-workspace/eclipse" overwrite="true">
+            <fileset dir="${baseLocation}" />
+        </copy>
+
         <!-- Unzip Eclipse Test Framework into workspace. -->
         <unzip src="${env.ECLIPSE_TEST_FRAMEWORK_HOME}/eclipse-test-framework-${eclipseBuildId}.zip" dest="${buildDirectory}/${buildLabel}/test-workspace" overwrite="true" />
         <unzip src="${env.ECLIPSE_TEST_FRAMEWORK_HOME}/ETF_Patch.zip" dest="${buildDirectory}/${buildLabel}/test-workspace/eclipse/plugins" overwrite="true">
