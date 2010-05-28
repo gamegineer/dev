@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.tigris.subversion.subclipse.core.svnnature">
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/net.jcip.annotations,net.jcip.annotations"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.eclipse.test.patch,org.eclipse.test.patch"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.builder,org.gamegineer.builder"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.common.core,org.gamegineer.common.core"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.common.core.tests,org.gamegineer.common.core.tests"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.common.feature.base,org.gamegineer.common.feature.base"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.common.feature.base.tests,org.gamegineer.common.feature.base.tests"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.common.persistence,org.gamegineer.common.persistence"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.common.persistence.tests,org.gamegineer.common.persistence.tests"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.core,org.gamegineer.table.core"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.core.tests,org.gamegineer.table.core.tests"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.feature.base,org.gamegineer.table.feature.base"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.feature.base.tests,org.gamegineer.table.feature.base.tests"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.feature.ui,org.gamegineer.table.feature.ui"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.feature.ui.tests,org.gamegineer.table.feature.ui.tests"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.product,org.gamegineer.table.product"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.product.tests,org.gamegineer.table.product.tests"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.ui,org.gamegineer.table.ui"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.ui.tests,org.gamegineer.table.ui.tests"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.test.core,org.gamegineer.test.core"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.test.feature.base,org.gamegineer.test.feature.base"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/settings,settings"/>
+</provider>
+</psf>
