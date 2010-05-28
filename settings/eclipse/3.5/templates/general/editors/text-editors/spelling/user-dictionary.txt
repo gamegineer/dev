@@ -80,3 +80,4 @@ tabletop
 enum
 accordian
 delegator
+equatable
