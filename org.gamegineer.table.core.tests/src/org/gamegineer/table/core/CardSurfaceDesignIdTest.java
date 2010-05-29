@@ -22,10 +22,7 @@
 package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
@@ -52,59 +49,6 @@ public final class CardSurfaceDesignIdTest
     // ======================================================================
 
     /**
-     * Ensures the {@code equals} method correctly indicates two equal but
-     * different card surface design identifiers are equal.
-     */
-    @Test
-    public void testEquals_Equal_NotSame()
-    {
-        final String ID = "id"; //$NON-NLS-1$
-        final CardSurfaceDesignId id1 = CardSurfaceDesignId.fromString( ID );
-        final CardSurfaceDesignId id2 = CardSurfaceDesignId.fromString( ID );
-
-        assertNotSame( id1, id2 );
-        assertEquals( id1, id2 );
-        assertEquals( id2, id1 ); // symmetric
-    }
-
-    /**
-     * Ensures the {@code equals} method correctly indicates a card surface
-     * design identifier is equal to itself.
-     */
-    @Test
-    public void testEquals_Equal_Same()
-    {
-        final CardSurfaceDesignId id = CardSurfaceDesignId.fromString( "id" ); //$NON-NLS-1$
-
-        assertEquals( id, id ); // reflexive
-    }
-
-    /**
-     * Ensures the {@code equals} method correctly indicates two card surface
-     * design identifiers whose underlying identifiers differ are unequal.
-     */
-    @Test
-    public void testEquals_Unequal_Id()
-    {
-        final CardSurfaceDesignId id1 = CardSurfaceDesignId.fromString( "id1" ); //$NON-NLS-1$
-        final CardSurfaceDesignId id2 = CardSurfaceDesignId.fromString( "id2" ); //$NON-NLS-1$
-
-        assertFalse( id1.equals( id2 ) );
-    }
-
-    /**
-     * Ensures the {@code equals} method correctly handles a {@code null} card
-     * surface design identifier.
-     */
-    @Test
-    public void testEquals_Unequal_Null()
-    {
-        final CardSurfaceDesignId id = CardSurfaceDesignId.fromString( "id" ); //$NON-NLS-1$
-
-        assertFalse( id.equals( null ) );
-    }
-
-    /**
      * Ensures the {@code fromString} method throws an exception when passed a
      * {@code null} underlying identifier.
      */
@@ -112,34 +56,6 @@ public final class CardSurfaceDesignIdTest
     public void testFromString_Id_Null()
     {
         CardSurfaceDesignId.fromString( null );
-    }
-
-    /**
-     * Ensures the {@code hashCode} method returns the same hash code for equal
-     * card surface design identifiers.
-     */
-    @Test
-    public void testHashCode_Equal()
-    {
-        final String ID = "id"; //$NON-NLS-1$
-        final CardSurfaceDesignId id1 = CardSurfaceDesignId.fromString( ID );
-        final CardSurfaceDesignId id2 = CardSurfaceDesignId.fromString( ID );
-
-        assertNotSame( id1, id2 );
-        assertEquals( id1.hashCode(), id2.hashCode() );
-    }
-
-    /**
-     * Ensures the {@code hashCode} method returns a different hash code for
-     * unequal card surface design identifiers.
-     */
-    @Test
-    public void testHashCode_Unequal()
-    {
-        final CardSurfaceDesignId id1 = CardSurfaceDesignId.fromString( "id1" ); //$NON-NLS-1$
-        final CardSurfaceDesignId id2 = CardSurfaceDesignId.fromString( "id2" ); //$NON-NLS-1$
-
-        assertTrue( id1.hashCode() != id2.hashCode() );
     }
 
     /**
