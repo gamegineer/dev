@@ -8,17 +8,17 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.gamegineer.common.core;singleton:=true
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.4.0
-Export-Package: org.gamegineer.common.core.runtime,
- org.gamegineer.common.core.services.component,
- org.gamegineer.common.core.services.component.attributes,
- org.gamegineer.common.core.services.component.specs,
- org.gamegineer.common.core.services.component.util.attribute,
- org.gamegineer.common.core.services.logging,
- org.gamegineer.common.core.util,
- org.gamegineer.common.core.util.concurrent,
- org.gamegineer.common.core.util.concurrent.locks,
- org.gamegineer.common.core.util.logging,
- org.gamegineer.common.core.util.ref
+Export-Package: org.gamegineer.common.core.runtime;version="0.4.0",
+ org.gamegineer.common.core.services.component;version="0.4.0",
+ org.gamegineer.common.core.services.component.attributes;version="0.4.0",
+ org.gamegineer.common.core.services.component.specs;version="0.4.0",
+ org.gamegineer.common.core.services.component.util.attribute;version="0.4.0",
+ org.gamegineer.common.core.services.logging;version="0.4.0",
+ org.gamegineer.common.core.util;version="0.4.0",
+ org.gamegineer.common.core.util.concurrent;version="0.4.0",
+ org.gamegineer.common.core.util.concurrent.locks;version="0.4.0",
+ org.gamegineer.common.core.util.logging;version="0.4.0",
+ org.gamegineer.common.core.util.ref;version="0.4.0"
 Import-Package: net.jcip.annotations;version="1.0.0",
  org.eclipse.osgi.framework.log;version="1.0.0",
  org.eclipse.osgi.service.debug;version="1.1.0",
