@@ -1,6 +1,6 @@
 /*
  * ServicesTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -102,15 +102,5 @@ public final class ServicesTest
     public void testGetLoggingService_ReturnValue_NonNull()
     {
         assertNotNull( services_.getLoggingService() );
-    }
-
-    /**
-     * Ensures the {@code open} method throws an exception when passed a {@code
-     * null} bundle context.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testOpen_Context_Null()
-    {
-        services_.open( null );
     }
 }

@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry;
@@ -164,15 +163,12 @@ public final class Services
      * 
      * @param context
      *        The execution context of the bundle; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
      */
     void open(
         /* @NonNull */
         final BundleContext context )
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
+        assert context != null;
 
         // Register bundle-specific services
         cardPileBaseDesignRegistryServiceRegistration_ = context.registerService( ICardPileBaseDesignRegistry.class.getName(), new CardPileBaseDesignRegistry(), null );

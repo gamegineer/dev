@@ -68,14 +68,4 @@ public final class ServicesTest
     {
         assertNotNull( Services.getDefault().getCardSurfaceDesignRegistry() );
     }
-
-    /**
-     * Ensures the {@code open} method throws an exception when passed a {@code
-     * null} bundle context.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testOpen_Context_Null()
-    {
-        Services.getDefault().open( null );
-    }
 }

@@ -1,6 +1,6 @@
 /*
  * Services.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -118,18 +118,12 @@ public final class Services
      * 
      * @param context
      *        The execution context of the bundle; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
      */
     void open(
         /* @NonNull */
         final BundleContext context )
     {
-        if( context == null )
-        {
-            throw new NullPointerException( "context" ); //$NON-NLS-1$
-        }
+        assert context != null;
 
         // Register bundle-specific services
 
