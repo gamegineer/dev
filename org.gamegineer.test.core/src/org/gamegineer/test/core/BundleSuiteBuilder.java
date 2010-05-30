@@ -1,6 +1,6 @@
 /*
  * BundleSuiteBuilder.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -42,6 +42,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.test.internal.core.Services;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
+import org.osgi.service.packageadmin.PackageAdmin;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -184,7 +185,14 @@ public final class BundleSuiteBuilder
         assert hostBundle != null;
         assert fragmentName != null;
 
-        final Bundle[] fragments = Services.getDefault().getPackageAdministrationService().getFragments( hostBundle );
+        final PackageAdmin packageAdministrationService = Services.getPackageAdministrationService();
+        if( packageAdministrationService == null )
+        {
+            System.err.println( "no package administration service available" ); //$NON-NLS-1$
+            return null;
+        }
+
+        final Bundle[] fragments = packageAdministrationService.getFragments( hostBundle );
         if( fragments == null )
         {
             return null;
