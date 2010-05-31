@@ -21,11 +21,13 @@
 
 package org.gamegineer.common.internal.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.osgi.framework.log.FrameworkLog;
@@ -53,11 +55,15 @@ public final class Services
     // Fields
     // ======================================================================
 
-    /** The default debug options service to use if no service was registered. */
-    private static final DebugOptions defaultDebugOptions_ = new NullDebugOptions();
+    /** The debug options service. */
+    @GuardedBy( "lock_" )
+    private static DebugOptions debugOptionsService_ = null;
 
     /** The singleton instance. */
     private static final Services instance_ = new Services();
+
+    /** The class lock. */
+    private static Object lock_ = new Object();
 
     /** The component factory service tracker. */
     private ServiceTracker componentFactoryServiceTracker_;
@@ -67,9 +73,6 @@ public final class Services
 
     /** The component service tracker. */
     private ServiceTracker componentServiceTracker_;
-
-    /** The debug options service tracker. */
-    private ServiceTracker debugOptionsServiceTracker_;
 
     /** The extension registry service tracker. */
     private ServiceTracker extensionRegistryServiceTracker_;
@@ -91,7 +94,7 @@ public final class Services
     /**
      * Initializes a new instance of the {@code Services} class.
      */
-    private Services()
+    public Services()
     {
         super();
     }
@@ -100,6 +103,36 @@ public final class Services
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Binds the specified debug options service.
+     * 
+     * <p>
+     * This method will unbind the currently bound debug options service before
+     * binding the new debug options service.
+     * </p>
+     * 
+     * @param debugOptionsService
+     *        The debug options service to bind; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code debugOptionsService} is {@code null}.
+     */
+    public static void bindDebugOptionsService(
+        /* @NonNull */
+        final DebugOptions debugOptionsService )
+    {
+        assertArgumentNotNull( debugOptionsService, "debugOptionsService" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            if( debugOptionsService_ != null )
+            {
+                unbindDebugOptionsService( debugOptionsService_ );
+            }
+            debugOptionsService_ = debugOptionsService;
+        }
+    }
 
     /**
      * Closes the services managed by this object.
@@ -121,11 +154,6 @@ public final class Services
         {
             extensionRegistryServiceTracker_.close();
             extensionRegistryServiceTracker_ = null;
-        }
-        if( debugOptionsServiceTracker_ != null )
-        {
-            debugOptionsServiceTracker_.close();
-            debugOptionsServiceTracker_ = null;
         }
         if( componentFactoryServiceTracker_ != null )
         {
@@ -202,26 +230,18 @@ public final class Services
     }
 
     /**
-     * Gets the debug options service managed by this object.
+     * Gets the debug options service.
      * 
-     * @return The debug options service managed by this object; never {@code
-     *         null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If this object is not open.
+     * @return The debug options service or {@code null} if no debug options
+     *         service is available.
      */
-    /* @NonNull */
-    public DebugOptions getDebugOptions()
+    /* @Nullable */
+    public static DebugOptions getDebugOptionsService()
     {
-        assertStateLegal( debugOptionsServiceTracker_ != null, Messages.Services_debugOptionsServiceTracker_notSet );
-
-        final DebugOptions debugOptions = (DebugOptions)debugOptionsServiceTracker_.getService();
-        if( debugOptions == null )
+        synchronized( lock_ )
         {
-            return defaultDebugOptions_;
+            return debugOptionsService_;
         }
-
-        return debugOptions;
     }
 
     /**
@@ -310,13 +330,40 @@ public final class Services
         componentServiceTracker_.open();
         componentFactoryServiceTracker_ = new ServiceTracker( context, IComponentFactory.class.getName(), null );
         componentFactoryServiceTracker_.open();
-        debugOptionsServiceTracker_ = new ServiceTracker( context, DebugOptions.class.getName(), null );
-        debugOptionsServiceTracker_.open();
         extensionRegistryServiceTracker_ = new ServiceTracker( context, IExtensionRegistry.class.getName(), null );
         extensionRegistryServiceTracker_.open();
         frameworkLogServiceTracker_ = new ServiceTracker( context, FrameworkLog.class.getName(), null );
         frameworkLogServiceTracker_.open();
         loggingServiceTracker_ = new ServiceTracker( context, loggingServiceRegistration_.getReference(), null );
         loggingServiceTracker_.open();
+    }
+
+    /**
+     * Unbinds the specified debug options service.
+     * 
+     * <p>
+     * This method does nothing if the specified debug options service is not
+     * bound.
+     * </p>
+     * 
+     * @param debugOptionsService
+     *        The debug options service to unbind; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code debugOptionsService} is {@code null}.
+     */
+    public static void unbindDebugOptionsService(
+        /* @NonNull */
+        final DebugOptions debugOptionsService )
+    {
+        assertArgumentNotNull( debugOptionsService, "debugOptionsService" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            if( debugOptionsService_ == debugOptionsService )
+            {
+                debugOptionsService_ = null;
+            }
+        }
     }
 }

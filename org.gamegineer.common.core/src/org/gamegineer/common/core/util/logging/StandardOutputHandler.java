@@ -1,6 +1,6 @@
 /*
  * StandardOutputHandler.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -70,10 +70,7 @@ public class StandardOutputHandler
         }
         catch( final UnsupportedEncodingException e )
         {
-            if( Debug.UTILITY_LOGGING )
-            {
-                Debug.trace( "Default platform encoding is not supported.", e ); //$NON-NLS-1$
-            }
+            Debug.trace( Debug.OPTION_UTILITY_LOGGING, "Default platform encoding is not supported.", e ); //$NON-NLS-1$
         }
 
         setFilter( null );

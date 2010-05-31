@@ -182,10 +182,7 @@ public final class ComponentService
                 // NB: Cannot use the logging service to log exceptions because
                 // the logging service itself depends on the component service,
                 // and it will not yet be initialized within this method.
-                if( Debug.SERVICES_COMPONENT )
-                {
-                    Debug.trace( String.format( "An error occurred while creating the component factory with class name '%1$s'.", element.getAttribute( ATTR_CLASS ) ), e ); //$NON-NLS-1$
-                }
+                Debug.trace( Debug.OPTION_SERVICES_COMPONENT, String.format( "An error occurred while creating the component factory with class name '%1$s'.", element.getAttribute( ATTR_CLASS ) ), e ); //$NON-NLS-1$
             }
         }
         return factories;

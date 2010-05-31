@@ -1,6 +1,6 @@
 /*
  * LoggerConfiguration.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -103,10 +103,7 @@ final class LoggerConfiguration
             }
             catch( final Exception e )
             {
-                if( Debug.SERVICES_LOGGING )
-                {
-                    Debug.trace( String.format( "Failed to create logger filter '%1$s'.", value ), e ); //$NON-NLS-1$
-                }
+                Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to create logger filter '%1$s'.", value ), e ); //$NON-NLS-1$
             }
         }
 
@@ -135,10 +132,7 @@ final class LoggerConfiguration
                 }
                 catch( final Exception e )
                 {
-                    if( Debug.SERVICES_LOGGING )
-                    {
-                        Debug.trace( String.format( "Failed to create logger handler '%1$s'.", name ), e ); //$NON-NLS-1$
-                    }
+                    Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to create logger handler '%1$s'.", name ), e ); //$NON-NLS-1$
                 }
             }
         }
@@ -172,10 +166,7 @@ final class LoggerConfiguration
         }
         catch( final IllegalArgumentException e )
         {
-            if( Debug.SERVICES_LOGGING )
-            {
-                Debug.trace( "Failed to parse logger level.", e ); //$NON-NLS-1$
-            }
+            Debug.trace( Debug.OPTION_SERVICES_LOGGING, "Failed to parse logger level.", e ); //$NON-NLS-1$
         }
 
         return defaultValue;

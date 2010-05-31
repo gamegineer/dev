@@ -1,6 +1,6 @@
 /*
  * AbstractHandlerFactory.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -137,10 +137,7 @@ abstract class AbstractHandlerFactory<T extends Handler>
             }
             catch( final UnsupportedEncodingException e )
             {
-                if( Debug.UTILITY_LOGGING )
-                {
-                    Debug.trace( "Failed to parse handler encoding.", e ); //$NON-NLS-1$
-                }
+                Debug.trace( Debug.OPTION_UTILITY_LOGGING, "Failed to parse handler encoding.", e ); //$NON-NLS-1$
             }
         }
     }
@@ -177,10 +174,7 @@ abstract class AbstractHandlerFactory<T extends Handler>
             }
             catch( final Exception e )
             {
-                if( Debug.UTILITY_LOGGING )
-                {
-                    Debug.trace( String.format( "Failed to create handler filter '%1$s'.", value ), e ); //$NON-NLS-1$
-                }
+                Debug.trace( Debug.OPTION_UTILITY_LOGGING, String.format( "Failed to create handler filter '%1$s'.", value ), e ); //$NON-NLS-1$
             }
         }
     }
@@ -217,10 +211,7 @@ abstract class AbstractHandlerFactory<T extends Handler>
             }
             catch( final Exception e )
             {
-                if( Debug.UTILITY_LOGGING )
-                {
-                    Debug.trace( String.format( "Failed to create handler formatter '%1$s'.", value ), e ); //$NON-NLS-1$
-                }
+                Debug.trace( Debug.OPTION_UTILITY_LOGGING, String.format( "Failed to create handler formatter '%1$s'.", value ), e ); //$NON-NLS-1$
             }
         }
     }
@@ -257,10 +248,7 @@ abstract class AbstractHandlerFactory<T extends Handler>
             }
             catch( final IllegalArgumentException e )
             {
-                if( Debug.UTILITY_LOGGING )
-                {
-                    Debug.trace( "Failed to parse handler level.", e ); //$NON-NLS-1$
-                }
+                Debug.trace( Debug.OPTION_UTILITY_LOGGING, "Failed to parse handler level.", e ); //$NON-NLS-1$
             }
         }
     }

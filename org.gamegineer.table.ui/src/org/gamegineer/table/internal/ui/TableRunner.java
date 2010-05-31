@@ -133,10 +133,7 @@ public final class TableRunner
         }
         catch( final InterruptedException e )
         {
-            if( Debug.DEFAULT )
-            {
-                Debug.trace( "Table runner cancelled." ); //$NON-NLS-1$
-            }
+            Debug.trace( Debug.OPTION_DEFAULT, "Table runner cancelled." ); //$NON-NLS-1$
         }
         finally
         {
@@ -207,10 +204,7 @@ public final class TableRunner
                     @SuppressWarnings( "unused" )
                     final WindowEvent e )
                 {
-                    if( Debug.DEFAULT )
-                    {
-                        Debug.trace( "Frame window closed by user." ); //$NON-NLS-1$
-                    }
+                    Debug.trace( Debug.OPTION_DEFAULT, "Frame window closed by user." ); //$NON-NLS-1$
                     stop( TableResult.OK );
                 }
             };

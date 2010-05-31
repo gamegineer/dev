@@ -1,6 +1,6 @@
 /*
  * DebugTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -47,44 +47,12 @@ public final class DebugTest
     // ======================================================================
 
     /**
-     * Ensures the {@code trace(Exception)} method throws an exception if the
-     * exception is {@code null}.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testTraceException_Exception_Null()
-    {
-        final Exception exception = null;
-        Debug.trace( exception );
-    }
-
-    /**
-     * Ensures the {@code trace(String)} method does not throw an exception if
-     * the message is {@code null}.
-     */
-    @Test
-    public void testTraceMessage_Message_Null()
-    {
-        final String message = null;
-        Debug.trace( message );
-    }
-
-    /**
-     * Ensures the {@code trace(String,Exception)} method throws an exception if
-     * the exception is {@code null}.
+     * Ensures the {@code trace(String, String,Exception)} method throws an
+     * exception when passed a {@code null} exception.
      */
     @Test( expected = NullPointerException.class )
     public void testTraceMessageAndException_Exception_Null()
     {
-        Debug.trace( "message", null ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code trace(String,Exception)} method does not throw an
-     * exception if the message is {@code null}.
-     */
-    @Test
-    public void testTraceMessageAndException_Message_Null()
-    {
-        Debug.trace( null, new Exception() );
+        Debug.trace( "option", "message", null ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Debug.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.ui;
 
 import net.jcip.annotations.ThreadSafe;
-import org.eclipse.osgi.service.debug.DebugOptions;
 
 /**
  * Debugging utilities for the bundle.
@@ -35,25 +34,13 @@ public final class Debug
     // Fields
     // ======================================================================
 
-    /** The name of the top-level debug option key. */
-    private static final String OPTION_DEBUG = Activator.SYMBOLIC_NAME + "/debug"; //$NON-NLS-1$
-
-    /** Indicates the default debug option for the bundle is enabled. */
-    public static final boolean DEFAULT;
+    /** The name of the top-level debug option. */
+    public static final String OPTION_DEFAULT = Activator.SYMBOLIC_NAME + "/debug"; //$NON-NLS-1$
 
 
     // ======================================================================
     // Constructors
     // ======================================================================
-
-    /**
-     * Initializes the {@code Debug} class.
-     */
-    static
-    {
-        final DebugOptions debugOptions = getDebugOptions();
-        DEFAULT = debugOptions.getBooleanOption( OPTION_DEBUG, false );
-    }
 
     /**
      * Initializes a new instance of the {@code Debug} class.

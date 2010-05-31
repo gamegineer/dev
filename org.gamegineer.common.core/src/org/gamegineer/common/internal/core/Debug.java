@@ -1,6 +1,6 @@
 /*
  * Debug.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.common.internal.core;
 
 import net.jcip.annotations.ThreadSafe;
-import org.eclipse.osgi.service.debug.DebugOptions;
 
 /**
  * Debugging utilities for the bundle.
@@ -35,60 +34,28 @@ public final class Debug
     // Fields
     // ======================================================================
 
-    /** The name of the top-level debug option key. */
-    private static final String OPTION_DEBUG = Activator.SYMBOLIC_NAME + "/debug"; //$NON-NLS-1$
+    /** The name of the top-level debug option. */
+    public static final String OPTION_DEFAULT = Activator.SYMBOLIC_NAME + "/debug"; //$NON-NLS-1$
 
-    /** The name of the services package debug option key. */
-    private static final String OPTION_DEBUG_SERVICES = OPTION_DEBUG + "/services"; //$NON-NLS-1$
+    /** The name of the services package debug option. */
+    public static final String OPTION_SERVICES = OPTION_DEFAULT + "/services"; //$NON-NLS-1$
 
-    /** The name of the component service package debug option key. */
-    private static final String OPTION_DEBUG_SERVICES_COMPONENT = OPTION_DEBUG_SERVICES + "/component"; //$NON-NLS-1$
+    /** The name of the component service package debug option. */
+    public static final String OPTION_SERVICES_COMPONENT = OPTION_SERVICES + "/component"; //$NON-NLS-1$
 
-    /** The name of the logging service package debug option key. */
-    private static final String OPTION_DEBUG_SERVICES_LOGGING = OPTION_DEBUG_SERVICES + "/logging"; //$NON-NLS-1$
+    /** The name of the logging service package debug option. */
+    public static final String OPTION_SERVICES_LOGGING = OPTION_SERVICES + "/logging"; //$NON-NLS-1$
 
-    /** The name of the utility package debug option key. */
-    private static final String OPTION_DEBUG_UTILITY = OPTION_DEBUG + "/util"; //$NON-NLS-1$
+    /** The name of the utility package debug option. */
+    public static final String OPTION_UTILITY = OPTION_DEFAULT + "/util"; //$NON-NLS-1$
 
-    /** The name of the logging package debug option key. */
-    private static final String OPTION_DEBUG_UTILITY_LOGGING = OPTION_DEBUG_UTILITY + "/logging"; //$NON-NLS-1$
-
-    /** Indicates the default debug option for the bundle is enabled. */
-    public static final boolean DEFAULT;
-
-    /** Indicates the debug option for the services package is enabled. */
-    public static final boolean SERVICES;
-
-    /** Indicates the debug option for the component service package is enabled. */
-    public static final boolean SERVICES_COMPONENT;
-
-    /** Indicates the debug option for the logging service package is enabled. */
-    public static final boolean SERVICES_LOGGING;
-
-    /** Indicates the debug option for the utility package is enabled. */
-    public static final boolean UTILITY;
-
-    /** Indicates the debug option for the logging package is enabled. */
-    public static final boolean UTILITY_LOGGING;
+    /** The name of the logging package debug option. */
+    public static final String OPTION_UTILITY_LOGGING = OPTION_UTILITY + "/logging"; //$NON-NLS-1$
 
 
     // ======================================================================
     // Constructors
     // ======================================================================
-
-    /**
-     * Initializes the {@code Debug} class.
-     */
-    static
-    {
-        final DebugOptions debugOptions = getDebugOptions();
-        DEFAULT = debugOptions.getBooleanOption( OPTION_DEBUG, false );
-        SERVICES = DEFAULT && debugOptions.getBooleanOption( OPTION_DEBUG_SERVICES, false );
-        SERVICES_COMPONENT = DEFAULT && SERVICES && debugOptions.getBooleanOption( OPTION_DEBUG_SERVICES_COMPONENT, false );
-        SERVICES_LOGGING = DEFAULT && SERVICES && debugOptions.getBooleanOption( OPTION_DEBUG_SERVICES_LOGGING, false );
-        UTILITY = DEFAULT && debugOptions.getBooleanOption( OPTION_DEBUG_UTILITY, false );
-        UTILITY_LOGGING = DEFAULT && UTILITY && debugOptions.getBooleanOption( OPTION_DEBUG_UTILITY_LOGGING, false );
-    }
 
     /**
      * Initializes a new instance of the {@code Debug} class.

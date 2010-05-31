@@ -13,7 +13,6 @@ Export-Package: org.gamegineer.table.ui;version="0.4.0",
  org.gamegineer.table.ui.services.cardsurfacedesignuiregistry;version="0.4.0"
 Import-Package: net.jcip.annotations;version="1.0.0",
  org.apache.commons.cli;version="1.2.0",
- org.eclipse.osgi.service.debug;version="1.1.0",
  org.eclipse.osgi.util;version="1.1.0",
  org.gamegineer.common.core.runtime;version="0.4.0",
  org.gamegineer.common.core.services.logging;version="0.4.0",

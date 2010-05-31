@@ -84,6 +84,16 @@ public final class ServicesTest
     }
 
     /**
+     * Ensures the {@code bindDebugOptionsService} method throws an exception
+     * when passed a {@code null} debug options service.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testBindDebugOptionsService_DebugOptionsService_Null()
+    {
+        Services.bindDebugOptionsService( null );
+    }
+
+    /**
      * Ensures the {@code getComponentService} method does not return {@code
      * null}, which validates the component service was registered with OSGi
      * correctly.
@@ -102,5 +112,15 @@ public final class ServicesTest
     public void testGetLoggingService_ReturnValue_NonNull()
     {
         assertNotNull( services_.getLoggingService() );
+    }
+
+    /**
+     * Ensures the {@code unbindDebugOptionsService} method throws an exception
+     * when passed a {@code null} debug options service.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testUnbindDebugOptionsService_DebugOptionsService_Null()
+    {
+        Services.unbindDebugOptionsService( null );
     }
 }
