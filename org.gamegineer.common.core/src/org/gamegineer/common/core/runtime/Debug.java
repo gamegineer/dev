@@ -78,13 +78,13 @@ public abstract class Debug
             return true;
         }
 
-        final DebugOptions debugOptionsService = Services.getDebugOptionsService();
-        if( debugOptionsService == null )
+        final DebugOptions debugOptions = Services.getDebugOptions();
+        if( debugOptions == null )
         {
             return false;
         }
 
-        return debugOptionsService.getBooleanOption( option, false );
+        return debugOptions.getBooleanOption( option, false );
     }
 
     /**

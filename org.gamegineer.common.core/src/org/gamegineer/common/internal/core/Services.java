@@ -57,7 +57,7 @@ public final class Services
 
     /** The debug options service. */
     @GuardedBy( "lock_" )
-    private static DebugOptions debugOptionsService_ = null;
+    private static DebugOptions debugOptions_ = null;
 
     /** The singleton instance. */
     private static final Services instance_ = new Services();
@@ -112,25 +112,25 @@ public final class Services
      * binding the new debug options service.
      * </p>
      * 
-     * @param debugOptionsService
+     * @param debugOptions
      *        The debug options service to bind; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code debugOptionsService} is {@code null}.
+     *         If {@code debugOptions} is {@code null}.
      */
-    public static void bindDebugOptionsService(
+    public static void bindDebugOptions(
         /* @NonNull */
-        final DebugOptions debugOptionsService )
+        final DebugOptions debugOptions )
     {
-        assertArgumentNotNull( debugOptionsService, "debugOptionsService" ); //$NON-NLS-1$
+        assertArgumentNotNull( debugOptions, "debugOptions" ); //$NON-NLS-1$
 
         synchronized( lock_ )
         {
-            if( debugOptionsService_ != null )
+            if( debugOptions_ != null )
             {
-                unbindDebugOptionsService( debugOptionsService_ );
+                unbindDebugOptions( debugOptions_ );
             }
-            debugOptionsService_ = debugOptionsService;
+            debugOptions_ = debugOptions;
         }
     }
 
@@ -236,11 +236,11 @@ public final class Services
      *         service is available.
      */
     /* @Nullable */
-    public static DebugOptions getDebugOptionsService()
+    public static DebugOptions getDebugOptions()
     {
         synchronized( lock_ )
         {
-            return debugOptionsService_;
+            return debugOptions_;
         }
     }
 
@@ -346,23 +346,23 @@ public final class Services
      * bound.
      * </p>
      * 
-     * @param debugOptionsService
+     * @param debugOptions
      *        The debug options service to unbind; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code debugOptionsService} is {@code null}.
+     *         If {@code debugOptions} is {@code null}.
      */
-    public static void unbindDebugOptionsService(
+    public static void unbindDebugOptions(
         /* @NonNull */
-        final DebugOptions debugOptionsService )
+        final DebugOptions debugOptions )
     {
-        assertArgumentNotNull( debugOptionsService, "debugOptionsService" ); //$NON-NLS-1$
+        assertArgumentNotNull( debugOptions, "debugOptions" ); //$NON-NLS-1$
 
         synchronized( lock_ )
         {
-            if( debugOptionsService_ == debugOptionsService )
+            if( debugOptions_ == debugOptions )
             {
-                debugOptionsService_ = null;
+                debugOptions_ = null;
             }
         }
     }

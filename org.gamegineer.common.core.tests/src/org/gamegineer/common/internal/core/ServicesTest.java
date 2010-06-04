@@ -84,13 +84,13 @@ public final class ServicesTest
     }
 
     /**
-     * Ensures the {@code bindDebugOptionsService} method throws an exception
-     * when passed a {@code null} debug options service.
+     * Ensures the {@code bindDebugOptions} method throws an exception when
+     * passed a {@code null} debug options service.
      */
     @Test( expected = NullPointerException.class )
-    public void testBindDebugOptionsService_DebugOptionsService_Null()
+    public void testBindDebugOptions_DebugOptions_Null()
     {
-        Services.bindDebugOptionsService( null );
+        Services.bindDebugOptions( null );
     }
 
     /**
@@ -115,12 +115,12 @@ public final class ServicesTest
     }
 
     /**
-     * Ensures the {@code unbindDebugOptionsService} method throws an exception
-     * when passed a {@code null} debug options service.
+     * Ensures the {@code unbindDebugOptions} method throws an exception when
+     * passed a {@code null} debug options service.
      */
     @Test( expected = NullPointerException.class )
-    public void testUnbindDebugOptionsService_DebugOptionsService_Null()
+    public void testUnbindDebugOptions_DebugOptions_Null()
     {
-        Services.unbindDebugOptionsService( null );
+        Services.unbindDebugOptions( null );
     }
 }
