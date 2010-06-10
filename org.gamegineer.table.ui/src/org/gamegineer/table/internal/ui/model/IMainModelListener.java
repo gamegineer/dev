@@ -21,11 +21,14 @@
 
 package org.gamegineer.table.internal.ui.model;
 
+import java.util.EventListener;
+
 /**
  * The listener interface for use by clients to be notified of changes to the
  * main model state.
  */
 public interface IMainModelListener
+    extends EventListener
 {
     // ======================================================================
     // Methods

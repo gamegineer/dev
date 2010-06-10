@@ -21,11 +21,14 @@
 
 package org.gamegineer.table.internal.ui.model;
 
+import java.util.EventListener;
+
 /**
  * The listener interface for use by clients to be notified of changes to the
  * card pile model state.
  */
 public interface ICardPileModelListener
+    extends EventListener
 {
     // ======================================================================
     // Methods
