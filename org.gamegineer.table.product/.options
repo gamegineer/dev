@@ -1,4 +1,4 @@
 # Debugging options for the org.gamegineer.table.product bundle.
 
-# Turn on debugging for the entire bundle.
+# Reports default bundle activity.
 org.gamegineer.table.product/debug=false

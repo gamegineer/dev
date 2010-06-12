@@ -1,4 +1,4 @@
 # Debugging options for the org.gamegineer.common.persistence bundle.
 
-# Turn on debugging for the entire bundle.
+# Reports default bundle activity.
 org.gamegineer.common.persistence/debug=false

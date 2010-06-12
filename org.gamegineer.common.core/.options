@@ -1,6 +1,6 @@
 # Debugging options for the org.gamegineer.common.core bundle.
 
-# Turn on debugging for the entire bundle.
+# Reports default bundle activity.
 org.gamegineer.common.core/debug=false
 
 # Reports logging service package activity.
