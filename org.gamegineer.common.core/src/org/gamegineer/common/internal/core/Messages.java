@@ -37,12 +37,6 @@ final class Messages
 
     // --- Services ---------------------------------------------------------
 
-    /** The component factory service tracker is not set. */
-    public static String Services_componentFactoryServiceTracker_notSet;
-
-    /** The component service tracker is not set. */
-    public static String Services_componentServiceTracker_notSet;
-
     /** The extension registry service tracker is not set. */
     public static String Services_extensionRegistryServiceTracker_notSet;
 

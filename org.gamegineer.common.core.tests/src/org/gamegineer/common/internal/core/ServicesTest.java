@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.core;
 
-import static org.junit.Assert.assertNotNull;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -67,8 +66,7 @@ public final class ServicesTest
     public void setUp()
         throws Exception
     {
-        // TODO: change to new Services()
-        services_ = Services.getDefault();
+        services_ = new Services();
     }
 
     /**
@@ -102,17 +100,6 @@ public final class ServicesTest
     public void testBindLoggingService_LoggingService_Null()
     {
         services_.bindLoggingService( null );
-    }
-
-    /**
-     * Ensures the {@code getComponentService} method does not return {@code
-     * null}, which validates the component service was registered with OSGi
-     * correctly.
-     */
-    @Test
-    public void testGetComponentService_ReturnValue_NonNull()
-    {
-        assertNotNull( services_.getComponentService() );
     }
 
     /**

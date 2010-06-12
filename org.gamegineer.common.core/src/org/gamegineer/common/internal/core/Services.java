@@ -23,20 +23,12 @@ package org.gamegineer.common.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.osgi.service.debug.DebugOptions;
-import org.gamegineer.common.core.services.component.IComponentFactory;
-import org.gamegineer.common.core.services.component.IComponentService;
 import org.gamegineer.common.core.services.logging.ILoggingService;
-import org.gamegineer.common.internal.core.services.component.ComponentService;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
@@ -66,15 +58,6 @@ public final class Services
 
     /** The class lock. */
     private static Object lock_ = new Object();
-
-    /** The component factory service tracker. */
-    private ServiceTracker componentFactoryServiceTracker_;
-
-    /** The component service registration token. */
-    private ServiceRegistration componentServiceRegistration_;
-
-    /** The component service tracker. */
-    private ServiceTracker componentServiceTracker_;
 
     /** The extension registry service tracker. */
     private ServiceTracker extensionRegistryServiceTracker_;
@@ -168,72 +151,10 @@ public final class Services
             extensionRegistryServiceTracker_.close();
             extensionRegistryServiceTracker_ = null;
         }
-        if( componentFactoryServiceTracker_ != null )
-        {
-            componentFactoryServiceTracker_.close();
-            componentFactoryServiceTracker_ = null;
-        }
-        if( componentServiceTracker_ != null )
-        {
-            componentServiceTracker_.close();
-            componentServiceTracker_ = null;
-        }
 
         // Unregister package-specific services
 
         // Unregister bundle-specific services
-        if( componentServiceRegistration_ != null )
-        {
-            componentServiceRegistration_.unregister();
-            componentServiceRegistration_ = null;
-        }
-    }
-
-    /**
-     * Gets an immutable collection of all component factories registered with
-     * the OSGi Framework.
-     * 
-     * @return An immutable collection of all component factories registered
-     *         with the OSGi Framework; never {@code null}. This collection is a
-     *         snapshot of the component factories available at the time of the
-     *         call.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If this object is not open.
-     */
-    /* @NonNull */
-    public Collection<IComponentFactory> getComponentFactories()
-    {
-        assertStateLegal( componentFactoryServiceTracker_ != null, Messages.Services_componentFactoryServiceTracker_notSet );
-
-        final Object[] services = componentFactoryServiceTracker_.getServices();
-        if( (services == null) || (services.length == 0) )
-        {
-            return Collections.emptyList();
-        }
-
-        final List<IComponentFactory> factories = new ArrayList<IComponentFactory>( services.length );
-        for( final Object service : services )
-        {
-            factories.add( (IComponentFactory)service );
-        }
-        return Collections.unmodifiableList( factories );
-    }
-
-    /**
-     * Gets the component service managed by this object.
-     * 
-     * @return The component service managed by this object; never {@code null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If this object is not open.
-     */
-    /* @NonNull */
-    public IComponentService getComponentService()
-    {
-        assertStateLegal( componentServiceTracker_ != null, Messages.Services_componentServiceTracker_notSet );
-
-        return (IComponentService)componentServiceTracker_.getService();
     }
 
     /**
@@ -308,15 +229,10 @@ public final class Services
         assert context != null;
 
         // Register bundle-specific services
-        componentServiceRegistration_ = context.registerService( IComponentService.class.getName(), new ComponentService(), null );
 
         // Register package-specific services
 
         // Open bundle-specific services
-        componentServiceTracker_ = new ServiceTracker( context, componentServiceRegistration_.getReference(), null );
-        componentServiceTracker_.open();
-        componentFactoryServiceTracker_ = new ServiceTracker( context, IComponentFactory.class.getName(), null );
-        componentFactoryServiceTracker_.open();
         extensionRegistryServiceTracker_ = new ServiceTracker( context, IExtensionRegistry.class.getName(), null );
         extensionRegistryServiceTracker_.open();
     }

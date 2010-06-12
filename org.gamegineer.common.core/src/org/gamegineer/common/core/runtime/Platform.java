@@ -1,6 +1,6 @@
 /*
  * Platform.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,6 @@ package org.gamegineer.common.core.runtime;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.gamegineer.common.core.services.component.IComponentService;
 import org.gamegineer.common.internal.core.Services;
 
 /**
@@ -49,17 +48,6 @@ public final class Platform
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Gets the platform component service.
-     * 
-     * @return The platform component service; never {@code null}.
-     */
-    /* @NonNull */
-    public static IComponentService getComponentService()
-    {
-        return Services.getDefault().getComponentService();
-    }
 
     /**
      * Gets the platform extension registry.

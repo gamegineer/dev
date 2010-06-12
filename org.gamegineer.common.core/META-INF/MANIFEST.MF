@@ -9,10 +9,6 @@ Bundle-SymbolicName: org.gamegineer.common.core;singleton:=true
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.4.0
 Export-Package: org.gamegineer.common.core.runtime;version="0.4.0",
- org.gamegineer.common.core.services.component;version="0.4.0",
- org.gamegineer.common.core.services.component.attributes;version="0.4.0",
- org.gamegineer.common.core.services.component.specs;version="0.4.0",
- org.gamegineer.common.core.services.component.util.attribute;version="0.4.0",
  org.gamegineer.common.core.services.logging;version="0.4.0",
  org.gamegineer.common.core.util;version="0.4.0",
  org.gamegineer.common.core.util.concurrent;version="0.4.0",
