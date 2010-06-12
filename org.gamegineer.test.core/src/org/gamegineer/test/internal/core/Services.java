@@ -75,7 +75,7 @@ public final class Services
      * @throws java.lang.NullPointerException
      *         If {@code packageAdministrationService} is {@code null}.
      */
-    public static void bindPackageAdministrationService(
+    public void bindPackageAdministrationService(
         /* @NonNull */
         final PackageAdmin packageAdministrationService )
     {
@@ -124,7 +124,7 @@ public final class Services
      * @throws java.lang.NullPointerException
      *         If {@code packageAdministrationService} is {@code null}.
      */
-    public static void unbindPackageAdministrationService(
+    public void unbindPackageAdministrationService(
         /* @NonNull */
         final PackageAdmin packageAdministrationService )
     {

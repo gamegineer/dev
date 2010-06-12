@@ -111,7 +111,7 @@ public final class Services
      * @throws java.lang.NullPointerException
      *         If {@code debugOptions} is {@code null}.
      */
-    public static void bindDebugOptions(
+    public void bindDebugOptions(
         /* @NonNull */
         final DebugOptions debugOptions )
     {
@@ -141,7 +141,7 @@ public final class Services
      * @throws java.lang.NullPointerException
      *         If {@code loggingService} is {@code null}.
      */
-    public static void bindLoggingService(
+    public void bindLoggingService(
         /* @NonNull */
         final ILoggingService loggingService )
     {
@@ -335,7 +335,7 @@ public final class Services
      * @throws java.lang.NullPointerException
      *         If {@code debugOptions} is {@code null}.
      */
-    public static void unbindDebugOptions(
+    public void unbindDebugOptions(
         /* @NonNull */
         final DebugOptions debugOptions )
     {
@@ -363,7 +363,7 @@ public final class Services
      * @throws java.lang.NullPointerException
      *         If {@code loggingService} is {@code null}.
      */
-    public static void unbindLoggingService(
+    public void unbindLoggingService(
         /* @NonNull */
         final ILoggingService loggingService )
     {

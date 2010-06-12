@@ -91,7 +91,7 @@ public final class ServicesTest
     @Test( expected = NullPointerException.class )
     public void testBindDebugOptions_DebugOptions_Null()
     {
-        Services.bindDebugOptions( null );
+        services_.bindDebugOptions( null );
     }
 
     /**
@@ -101,7 +101,7 @@ public final class ServicesTest
     @Test( expected = NullPointerException.class )
     public void testBindLoggingService_LoggingService_Null()
     {
-        Services.bindLoggingService( null );
+        services_.bindLoggingService( null );
     }
 
     /**
@@ -122,7 +122,7 @@ public final class ServicesTest
     @Test( expected = NullPointerException.class )
     public void testUnbindDebugOptions_DebugOptions_Null()
     {
-        Services.unbindDebugOptions( null );
+        services_.unbindDebugOptions( null );
     }
 
     /**
@@ -132,6 +132,6 @@ public final class ServicesTest
     @Test( expected = NullPointerException.class )
     public void testUnbindLoggingService_LoggingService_Null()
     {
-        Services.unbindLoggingService( null );
+        services_.unbindLoggingService( null );
     }
 }
