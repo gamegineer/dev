@@ -36,9 +36,6 @@ public final class Activator
     // Fields
     // ======================================================================
 
-    /** The component factories extension point identifier. */
-    public static final String EXTENSION_COMPONENT_FACTORIES = "componentFactories"; //$NON-NLS-1$
-
     /** The symbolic name of the bundle. */
     public static final String SYMBOLIC_NAME = "org.gamegineer.common.core"; //$NON-NLS-1$
 
