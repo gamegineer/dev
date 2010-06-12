@@ -2,4 +2,5 @@
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="org.gamegineer.common.core.services">
    <implementation class="org.gamegineer.common.internal.core.Services"/>
    <reference bind="bindDebugOptions" cardinality="0..1" interface="org.eclipse.osgi.service.debug.DebugOptions" name="debugOptions" policy="dynamic" unbind="unbindDebugOptions"/>
+   <reference bind="bindLoggingService" cardinality="0..1" interface="org.gamegineer.common.core.services.logging.ILoggingService" name="loggingService" policy="dynamic" unbind="unbindLoggingService"/>
 </scr:component>

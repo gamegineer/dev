@@ -1,6 +1,6 @@
 /*
  * LoggerConfigurationTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,29 +21,17 @@
 
 package org.gamegineer.common.internal.core.services.logging;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.logging.Filter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import org.gamegineer.common.core.services.component.IComponentCreationContext;
-import org.gamegineer.common.core.services.component.IComponentFactory;
-import org.gamegineer.common.core.services.component.MockComponentFactory;
-import org.gamegineer.common.core.services.component.attributes.ClassNameAttribute;
-import org.gamegineer.common.core.services.component.attributes.SupportedClassNamesAttribute;
-import org.gamegineer.common.core.services.component.util.attribute.ComponentCreationContextAttributeAccessor;
-import org.gamegineer.common.core.services.component.util.attribute.IAttributeAccessor;
-import org.gamegineer.common.internal.core.Activator;
-import org.gamegineer.common.internal.core.services.logging.attributes.InstanceNameAttribute;
-import org.gamegineer.common.internal.core.services.logging.attributes.LoggingPropertiesAttribute;
+import org.gamegineer.common.core.services.logging.LoggingServiceConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,13 +49,13 @@ public final class LoggerConfigurationTest
     // ======================================================================
 
     /** The class name of the filter used in the fixture. */
-    private static final String FILTER_CLASS_NAME = MockFilter.class.getName();
+    private static final String FILTER_CLASS_NAME = FakeFilter.class.getName();
 
     /** The instance name of the filter used in the fixture. */
     private static final String FILTER_INSTANCE_NAME = "filterName"; //$NON-NLS-1$
 
     /** The class name of the handler used in the fixture. */
-    private static final String HANDLER_CLASS_NAME = MockHandler.class.getName();
+    private static final String HANDLER_CLASS_NAME = FakeHandler.class.getName();
 
     /** The instance name of the first handler used in the fixture. */
     private static final String HANDLER_INSTANCE_NAME_1 = "handlerName1"; //$NON-NLS-1$
@@ -78,8 +66,8 @@ public final class LoggerConfigurationTest
     /** The default logger configuration under test in the fixture. */
     private LoggerConfiguration config_;
 
-    /** The logging properties which contains the logger configuration. */
-    private LoggingProperties props_;
+    /** The logger properties for use in the fixture. */
+    private Map<String, String> properties_;
 
 
     // ======================================================================
@@ -109,37 +97,36 @@ public final class LoggerConfigurationTest
     public void setUp()
         throws Exception
     {
-        final Properties props = new Properties();
+        properties_ = new HashMap<String, String>();
 
         // Logger with all properties configured
-        props.put( "logger.default.filter", String.format( "%1$s.%2$s", FILTER_CLASS_NAME, FILTER_INSTANCE_NAME ) ); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put( "logger.default.handlers", String.format( "%1$s.%2$s, %1$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, HANDLER_INSTANCE_NAME_2 ) ); //$NON-NLS-1$ //$NON-NLS-2$
-        props.put( "logger.default.level", Level.SEVERE.getName() ); //$NON-NLS-1$
-        props.put( "logger.default.useParentHandlers", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties_.put( "logger.default.filter", String.format( "%1$s.%2$s", FILTER_CLASS_NAME, FILTER_INSTANCE_NAME ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties_.put( "logger.default.handlers", String.format( "%1$s.%2$s, %1$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, HANDLER_INSTANCE_NAME_2 ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties_.put( "logger.default.level", Level.SEVERE.getName() ); //$NON-NLS-1$
+        properties_.put( "logger.default.useParentHandlers", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // Logger with an illegal filter
-        props.put( "logger.illegalFilter.filter", "A_NAME_WITHOUT_A_DOT" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties_.put( "logger.illegalFilter.filter", "A_NAME_WITHOUT_A_DOT" ); //$NON-NLS-1$ //$NON-NLS-2$
 
         // Logger with an illegal handler
-        props.put( "logger.illegalHandler.handlers", String.format( "%1$s.%2$s, %3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, "A_NAME_WITHOUT_A_DOT" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        properties_.put( "logger.illegalHandler.handlers", String.format( "%1$s.%2$s, %3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, "A_NAME_WITHOUT_A_DOT" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         // Logger with no filter
-        props.put( "logger.noFilter.level", Level.INFO.getName() ); //$NON-NLS-1$
+        properties_.put( "logger.noFilter.level", Level.INFO.getName() ); //$NON-NLS-1$
 
         // Logger with no handlers
-        props.put( "logger.noHandlers.level", Level.INFO.getName() ); //$NON-NLS-1$
+        properties_.put( "logger.noHandlers.level", Level.INFO.getName() ); //$NON-NLS-1$
 
         // Filter
-        props.put( String.format( "%1$s.%2$s.%3$s", FILTER_CLASS_NAME, FILTER_INSTANCE_NAME, MockFilterFactory.PROPERTY_MOCK_BOOLEAN_PROPERTY ), Boolean.toString( false ) ); //$NON-NLS-1$
+        properties_.put( String.format( "%1$s.%2$s.%3$s", FILTER_CLASS_NAME, FILTER_INSTANCE_NAME, FakeFilter.PROPERTY_FAKE_BOOLEAN_PROPERTY ), Boolean.toString( false ) ); //$NON-NLS-1$
 
         // Handler 1
-        props.put( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, MockHandlerFactory.PROPERTY_MOCK_LEVEL_PROPERTY ), Level.SEVERE.getName() ); //$NON-NLS-1$
+        properties_.put( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_1, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL ), Level.SEVERE.getName() ); //$NON-NLS-1$
 
         // Handler 2
-        props.put( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_2, MockHandlerFactory.PROPERTY_MOCK_LEVEL_PROPERTY ), Level.WARNING.getName() ); //$NON-NLS-1$
+        properties_.put( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_2, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL ), Level.WARNING.getName() ); //$NON-NLS-1$
 
-        props_ = new LoggingProperties( props );
-        config_ = new LoggerConfiguration( props_, "logger.default" ); //$NON-NLS-1$
+        config_ = new LoggerConfiguration( "logger.default", properties_ ); //$NON-NLS-1$
     }
 
     /**
@@ -153,27 +140,25 @@ public final class LoggerConfigurationTest
         throws Exception
     {
         config_ = null;
-        props_ = null;
+        properties_ = null;
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * logging properties object.
+     * Ensures the constructor makes a copy of the logging properties
+     * collection.
      */
-    @Test( expected = AssertionError.class )
-    public void testConstructor_LoggingProperties_Null()
+    @Test
+    public void testConstructor_Properties_Copy()
     {
-        new LoggerConfiguration( null, "z" ); //$NON-NLS-1$
-    }
+        final String loggerName = "logger.default"; //$NON-NLS-1$
+        final String propertyName = String.format( "%1$s.%2$s", loggerName, LoggingServiceConstants.PROPERTY_LOGGER_LEVEL ); //$NON-NLS-1$
+        final Map<String, String> properties = new HashMap<String, String>();
+        properties.put( propertyName, Level.SEVERE.getName() );
 
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * name.
-     */
-    @Test( expected = AssertionError.class )
-    public void testConstructor_Name_Null()
-    {
-        new LoggerConfiguration( props_, null );
+        final LoggerConfiguration config = new LoggerConfiguration( loggerName, properties );
+        properties.remove( propertyName );
+
+        assertEquals( Level.SEVERE, config.getLevel( Level.OFF ) );
     }
 
     /**
@@ -183,22 +168,17 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetFilter_Configured()
     {
-        ServiceRegistration serviceRegistration = null;
+        final ServiceRegistration serviceRegistration = FakeFilter.registerComponentFactory();
         try
         {
-            serviceRegistration = Activator.getDefault().getBundleContext().registerService( IComponentFactory.class.getName(), new MockFilterFactory(), null );
+            final FakeFilter filter = (FakeFilter)config_.getFilter( null );
 
-            final MockFilter filter = (MockFilter)config_.getFilter( null );
             assertNotNull( filter );
-            assertEquals( FILTER_INSTANCE_NAME, filter.getName() );
-            assertFalse( filter.getMockBooleanProperty() );
+            assertFalse( filter.getFakeBooleanProperty() );
         }
         finally
         {
-            if( serviceRegistration != null )
-            {
-                serviceRegistration.unregister();
-            }
+            serviceRegistration.unregister();
         }
     }
 
@@ -220,7 +200,8 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetFilter_Configured_IllegalFilter()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.illegalFilter" ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( "logger.illegalFilter", properties_ ); //$NON-NLS-1$
+
         assertNull( config.getFilter( null ) );
     }
 
@@ -231,7 +212,8 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetFilter_Configured_NoFilter()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.noFilter" ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( "logger.noFilter", properties_ ); //$NON-NLS-1$
+
         assertNull( config.getFilter( null ) );
     }
 
@@ -242,7 +224,8 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetFilter_NotConfigured()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.unknown" ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( "logger.unknown", properties_ ); //$NON-NLS-1$
+
         assertNull( config.getFilter( null ) );
     }
 
@@ -253,24 +236,18 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetHandlers_Configured()
     {
-        ServiceRegistration serviceRegistration = null;
+        final ServiceRegistration serviceRegistration = FakeHandler.registerComponentFactory();
         try
         {
-            serviceRegistration = Activator.getDefault().getBundleContext().registerService( IComponentFactory.class.getName(), new MockHandlerFactory(), null );
-
             final List<Handler> handlers = config_.getHandlers();
+
             assertEquals( 2, handlers.size() );
-            assertEquals( HANDLER_INSTANCE_NAME_1, ((MockHandler)handlers.get( 0 )).getName() );
             assertEquals( Level.SEVERE, handlers.get( 0 ).getLevel() );
-            assertEquals( HANDLER_INSTANCE_NAME_2, ((MockHandler)handlers.get( 1 )).getName() );
             assertEquals( Level.WARNING, handlers.get( 1 ).getLevel() );
         }
         finally
         {
-            if( serviceRegistration != null )
-            {
-                serviceRegistration.unregister();
-            }
+            serviceRegistration.unregister();
         }
     }
 
@@ -282,9 +259,18 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetHandlers_Configured_HandlerCreationFailed()
     {
-        final List<Handler> handlers = config_.getHandlers();
-        assertNotNull( handlers );
-        assertTrue( handlers.isEmpty() );
+        final ServiceRegistration serviceRegistration = FakeHandler.registerFailingComponentFactory();
+        try
+        {
+            final List<Handler> handlers = config_.getHandlers();
+
+            assertNotNull( handlers );
+            assertTrue( handlers.isEmpty() );
+        }
+        finally
+        {
+            serviceRegistration.unregister();
+        }
     }
 
     /**
@@ -294,22 +280,19 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetHandlers_Configured_IllegalHandler()
     {
-        ServiceRegistration serviceRegistration = null;
+        final ServiceRegistration serviceRegistration = FakeHandler.registerComponentFactory();
         try
         {
-            serviceRegistration = Activator.getDefault().getBundleContext().registerService( IComponentFactory.class.getName(), new MockHandlerFactory(), null );
+            final LoggerConfiguration config = new LoggerConfiguration( "logger.illegalHandler", properties_ ); //$NON-NLS-1$
 
-            final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.illegalHandler" ); //$NON-NLS-1$
             final List<Handler> handlers = config.getHandlers();
+
             assertEquals( 1, handlers.size() );
-            assertEquals( HANDLER_INSTANCE_NAME_1, ((MockHandler)handlers.get( 0 )).getName() );
+            assertEquals( Level.SEVERE, handlers.get( 0 ).getLevel() );
         }
         finally
         {
-            if( serviceRegistration != null )
-            {
-                serviceRegistration.unregister();
-            }
+            serviceRegistration.unregister();
         }
     }
 
@@ -320,8 +303,10 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetHandlers_Configured_NoHandlers()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.noHandlers" ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( "logger.noHandlers", properties_ ); //$NON-NLS-1$
+
         final List<Handler> handlers = config.getHandlers();
+
         assertNotNull( handlers );
         assertTrue( handlers.isEmpty() );
     }
@@ -333,8 +318,10 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetHandlers_NotConfigured()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.unknown" ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( "logger.unknown", properties_ ); //$NON-NLS-1$
+
         final List<Handler> handlers = config.getHandlers();
+
         assertNotNull( handlers );
         assertTrue( handlers.isEmpty() );
     }
@@ -356,7 +343,8 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetLevel_NotConfigured()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.unknown" ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( "logger.unknown", properties_ ); //$NON-NLS-1$
+
         assertEquals( null, config.getLevel( null ) );
     }
 
@@ -379,326 +367,8 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetUseParentHandlers_NotConfigured()
     {
-        final LoggerConfiguration config = new LoggerConfiguration( props_, "logger.unknown" ); //$NON-NLS-1$
+        final LoggerConfiguration config = new LoggerConfiguration( "logger.unknown", properties_ ); //$NON-NLS-1$
+
         assertEquals( false, config.getUseParentHandlers( false ) );
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * Mock implementation of {@link java.util.logging.Filter}.
-     * 
-     * <p>
-     * This filter supports the following mock properties:
-     * </p>
-     * 
-     * <ul>
-     * <li>{@code mockBooleanProperty} specifies a {@code Boolean} value
-     * (defaults to {@code true}).</li>
-     * </ul>
-     */
-    private static final class MockFilter
-        implements Filter
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** The mock Boolean property. */
-        private boolean mockBooleanProperty_;
-
-        /** The filter name. */
-        private final String name_;
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code MockFilter} class.
-         * 
-         * @param name
-         *        The filter name; must not be {@code null}.
-         */
-        MockFilter(
-            /* @NonNull */
-            final String name )
-        {
-            assert name != null;
-
-            name_ = name;
-            mockBooleanProperty_ = true;
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /**
-         * Gets the value of the mock Boolean property.
-         * 
-         * @return The value of the mock Boolean property.
-         */
-        boolean getMockBooleanProperty()
-        {
-            return mockBooleanProperty_;
-        }
-
-        /**
-         * Gets the name of the filter.
-         * 
-         * @return The name of the filter; never {@code null}.
-         */
-        /* @NonNull */
-        String getName()
-        {
-            return name_;
-        }
-
-        /*
-         * @see java.util.logging.Filter#isLoggable(java.util.logging.LogRecord)
-         */
-        public boolean isLoggable(
-            @SuppressWarnings( "unused" )
-            final LogRecord record )
-        {
-            return true;
-        }
-
-        /**
-         * Sets the value of the mock Boolean property.
-         * 
-         * @param mockBooleanProperty
-         *        The value of the mock Boolean property.
-         */
-        void setMockBooleanProperty(
-            final boolean mockBooleanProperty )
-        {
-            mockBooleanProperty_ = mockBooleanProperty;
-        }
-    }
-
-    /**
-     * Component factory for creating instances of {@code MockFilter}.
-     */
-    private static final class MockFilterFactory
-        extends MockComponentFactory
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** The name of the mock Boolean property. */
-        static final String PROPERTY_MOCK_BOOLEAN_PROPERTY = "mockBooleanProperty"; //$NON-NLS-1$
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code MockFilterFactory} class.
-         */
-        MockFilterFactory()
-        {
-            SupportedClassNamesAttribute.INSTANCE.setValue( this, MockFilter.class.getName() );
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.common.core.services.component.IComponentFactory#createComponent(org.gamegineer.common.core.services.component.IComponentCreationContext)
-         */
-        @Override
-        public Object createComponent(
-            final IComponentCreationContext context )
-        {
-            assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
-
-            final IAttributeAccessor accessor = new ComponentCreationContextAttributeAccessor( context );
-            final String className = ClassNameAttribute.INSTANCE.getValue( accessor );
-            final String instanceName = InstanceNameAttribute.INSTANCE.getValue( accessor );
-            final Map<String, String> loggingProperties = LoggingPropertiesAttribute.INSTANCE.getValue( accessor );//(Map<String, String>)context.getAttribute( "loggingProperties" );
-
-            if( !MockFilter.class.getName().equals( className ) )
-            {
-                throw new IllegalArgumentException( "the requested class name is not supported" ); //$NON-NLS-1$
-            }
-
-            final MockFilter filter = new MockFilter( instanceName );
-
-            if( loggingProperties != null )
-            {
-                final String mockBooleanPropertyName = String.format( "%1$s.%2$s.%3$s", className, instanceName, PROPERTY_MOCK_BOOLEAN_PROPERTY ); //$NON-NLS-1$
-                if( loggingProperties.containsKey( mockBooleanPropertyName ) )
-                {
-                    filter.setMockBooleanProperty( Boolean.parseBoolean( loggingProperties.get( mockBooleanPropertyName ) ) );
-                }
-            }
-
-            return filter;
-        }
-    }
-
-    /**
-     * Mock implementation of {@link java.util.logging.Handler}.
-     * 
-     * <p>
-     * This handler supports the following mock properties:
-     * </p>
-     * 
-     * <ul>
-     * <li>{@code mockBooleanProperty} specifies a {@code Boolean} value
-     * (defaults to {@code true}).</li>
-     * </ul>
-     */
-    private static final class MockHandler
-        extends Handler
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** The handler name. */
-        private final String name_;
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code MockHandler} class.
-         * 
-         * @param name
-         *        The handler name; must not be {@code null}.
-         */
-        MockHandler(
-            /* @NonNull*/
-            final String name )
-        {
-            assert name != null;
-
-            name_ = name;
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see java.util.logging.Handler#close()
-         */
-        @Override
-        public void close()
-            throws SecurityException
-        {
-            // Do nothing
-        }
-
-        /*
-         * @see java.util.logging.Handler#flush()
-         */
-        @Override
-        public void flush()
-        {
-            // Do nothing
-        }
-
-        /**
-         * Gets the name of the handler.
-         * 
-         * @return The name of the handler; never {@code null}.
-         */
-        /* @NonNull */
-        String getName()
-        {
-            return name_;
-        }
-
-        /*
-         * @see java.util.logging.Handler#publish(java.util.logging.LogRecord)
-         */
-        @Override
-        public void publish(
-            @SuppressWarnings( "unused" )
-            final LogRecord record )
-        {
-            // Do nothing
-        }
-    }
-
-    /**
-     * Component factory for creating instances of {@code MockHandler}.
-     */
-    private static final class MockHandlerFactory
-        extends MockComponentFactory
-    {
-        // ======================================================================
-        // Fields
-        // ======================================================================
-
-        /** The name of the mock Level property. */
-        static final String PROPERTY_MOCK_LEVEL_PROPERTY = "mockLevelProperty"; //$NON-NLS-1$
-
-
-        // ======================================================================
-        // Constructors
-        // ======================================================================
-
-        /**
-         * Initializes a new instance of the {@code MockHandlerFactory} class.
-         */
-        MockHandlerFactory()
-        {
-            SupportedClassNamesAttribute.INSTANCE.setValue( this, MockHandler.class.getName() );
-        }
-
-
-        // ======================================================================
-        // Methods
-        // ======================================================================
-
-        /*
-         * @see org.gamegineer.common.core.services.component.IComponentFactory#createComponent(org.gamegineer.common.core.services.component.IComponentCreationContext)
-         */
-        @Override
-        public Object createComponent(
-            final IComponentCreationContext context )
-        {
-            assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
-
-            final IAttributeAccessor accessor = new ComponentCreationContextAttributeAccessor( context );
-            final String className = ClassNameAttribute.INSTANCE.getValue( accessor );
-            final String instanceName = InstanceNameAttribute.INSTANCE.getValue( accessor );
-            final Map<String, String> loggingProperties = LoggingPropertiesAttribute.INSTANCE.getValue( accessor );
-
-            if( !MockHandler.class.getName().equals( className ) )
-            {
-                throw new IllegalArgumentException( "the requested class name is not supported" ); //$NON-NLS-1$
-            }
-
-            final MockHandler handler = new MockHandler( instanceName );
-
-            if( loggingProperties != null )
-            {
-                final String levelName = String.format( "%1$s.%2$s.%3$s", className, instanceName, PROPERTY_MOCK_LEVEL_PROPERTY ); //$NON-NLS-1$
-                if( loggingProperties.containsKey( levelName ) )
-                {
-                    handler.setLevel( Level.parse( loggingProperties.get( levelName ) ) );
-                }
-            }
-
-            return handler;
-        }
     }
 }

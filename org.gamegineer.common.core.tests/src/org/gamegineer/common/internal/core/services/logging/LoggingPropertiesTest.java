@@ -1,6 +1,6 @@
 /*
  * LoggingPropertiesTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,12 @@
 
 package org.gamegineer.common.internal.core.services.logging;
 
-import static org.gamegineer.test.core.Assert.assertImmutableMap;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -44,11 +45,8 @@ public final class LoggingPropertiesTest
     // Fields
     // ======================================================================
 
-    /** The backing store for the logging properties. */
-    private Properties propStore_;
-
     /** The logging properties under test in the fixture. */
-    private LoggingProperties props_;
+    private Map<String, String> properties_;
 
 
     // ======================================================================
@@ -78,16 +76,16 @@ public final class LoggingPropertiesTest
     public void setUp()
         throws Exception
     {
-        propStore_ = new Properties();
-        propStore_.put( "a.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        propStore_.put( "a.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        propStore_.put( "a.b.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        propStore_.put( "a.b.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        propStore_.put( "a.b.c.d.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        propStore_.put( "a.b.c.d.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        propStore_.put( "a.b.c.d.e.f.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
-        propStore_.put( "a.b.c.d.e.f.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
-        props_ = new LoggingProperties( propStore_ );
+        properties_ = new HashMap<String, String>();
+        properties_.put( Object.class.getName() + ".a.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties_.put( "a.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties_.put( "a.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties_.put( "a.b.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties_.put( "a.b.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties_.put( "a.b.c.d.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties_.put( "a.b.c.d.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties_.put( "a.b.c.d.e.f.p1", "v1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties_.put( "a.b.c.d.e.f.p2", "v2" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -100,64 +98,7 @@ public final class LoggingPropertiesTest
     public void tearDown()
         throws Exception
     {
-        props_ = null;
-        propStore_ = null;
-    }
-
-    /**
-     * Ensures the {@code asMap} method returns a map view of all properties.
-     */
-    @Test
-    public void testAsMap()
-    {
-        final Map<String, String> propMap = props_.asMap();
-        assertEquals( propStore_.size(), propMap.size() );
-        for( final String name : propStore_.stringPropertyNames() )
-        {
-            assertEquals( propStore_.getProperty( name ), propMap.get( name ) );
-        }
-    }
-
-    /**
-     * Ensures the {@code asMap} method returns an immutable map.
-     */
-    @Test
-    public void testAsMap_ReturnValue_Immutable()
-    {
-        assertImmutableMap( props_.asMap() );
-    }
-
-    /**
-     * Ensures the {@code asMap} method does not return {@code null} when the
-     * underlying property collection is empty.
-     */
-    @Test
-    public void testAsMap_ReturnValue_NonNull()
-    {
-        final LoggingProperties props = new LoggingProperties( new Properties() );
-        final Map<String, String> propMap = props.asMap();
-        assertNotNull( propMap );
-        assertTrue( propMap.isEmpty() );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * properties object.
-     */
-    @Test( expected = AssertionError.class )
-    public void testConstructor_Properties_Null()
-    {
-        new LoggingProperties( null );
-    }
-
-    /**
-     * Ensures the {@code getAncestorLoggerNames} method throws an exception
-     * when passed a {@code null} name.
-     */
-    @Test( expected = AssertionError.class )
-    public void testGetAncestorLoggerNames_Name_Null()
-    {
-        props_.getAncestorLoggerNames( null );
+        properties_ = null;
     }
 
     /**
@@ -167,7 +108,8 @@ public final class LoggingPropertiesTest
     @Test
     public void testGetAncestorLoggerNames_ReturnValue_NonNull()
     {
-        final List<String> names = props_.getAncestorLoggerNames( "z" ); //$NON-NLS-1$
+        final List<String> names = LoggingProperties.getAncestorLoggerNames( properties_, "z" ); //$NON-NLS-1$
+
         assertNotNull( names );
         assertTrue( names.isEmpty() );
     }
@@ -179,7 +121,8 @@ public final class LoggingPropertiesTest
     @Test
     public void testGetAncestorLoggerNames_ReturnValue_Ordered()
     {
-        final List<String> names = props_.getAncestorLoggerNames( "a.b.c.d.e.f" ); //$NON-NLS-1$
+        final List<String> names = LoggingProperties.getAncestorLoggerNames( properties_, "a.b.c.d.e.f" ); //$NON-NLS-1$
+
         assertEquals( 3, names.size() );
         assertEquals( "a.b.c.d", names.get( 0 ) ); //$NON-NLS-1$
         assertEquals( "a.b", names.get( 1 ) ); //$NON-NLS-1$
@@ -187,72 +130,158 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@code getLoggerConfiguration} method throws an exception
-     * when passed a {@code null} name.
+     * Ensures the {@code getProperty(Map, String, String)} method throws an
+     * exception when passed a component name that does not contain a dot.
      */
     @Test( expected = AssertionError.class )
-    public void testGetLoggerConfiguration_Name_Null()
+    public void testGetPropertyForComponentName_ComponentName_NotDotted()
     {
-        props_.getLoggerConfiguration( null );
+        LoggingProperties.getProperty( properties_, "a", "p" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
-     * Ensures the {@code getLoggerConfiguration} method does not return {@code
-     * null} when there is not configuration for the named logger.
+     * Ensures the {@code getProperty(Map, String, String)} method returns the
+     * expected value for a property that is absent.
      */
     @Test
-    public void testGetLoggerConfiguration_ReturnValue_NonNull()
+    public void testGetPropertyForComponentName_Property_Absent()
     {
-        assertNotNull( props_.getLoggerConfiguration( "z" ) ); //$NON-NLS-1$
+        assertNull( LoggingProperties.getProperty( properties_, "a.b.c.d", "p1000" ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
-     * Ensures the {@code getProperty} method throws an exception when passed a
-     * {@code null} entity name.
-     */
-    @Test( expected = AssertionError.class )
-    public void testGetProperty_EntityName_Null()
-    {
-        props_.getProperty( null, "p1" ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code getProperty} method returns the expected value for a
-     * property that exists.
+     * Ensures the {@code getProperty(Map, String, String} method returns the
+     * expected value for a property is present.
      */
     @Test
-    public void testGetProperty_Property_Exists()
+    public void testGetPropertyForComponentName_Property_Present()
     {
-        assertEquals( "v1", props_.getProperty( "a.b.c.d", "p1" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertEquals( "v1", LoggingProperties.getProperty( properties_, "a.b.c.d", "p1" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /**
-     * Ensures the {@code getProperty} method returns the expected value for a
-     * property that does not exist.
+     * Ensures the {@code getProperty(Map, String, String)} method throws an
+     * exception when passed a property name that contains dots.
+     */
+    @Test( expected = AssertionError.class )
+    public void testGetPropertyForComponentName_PropertyName_Dotted()
+    {
+        LoggingProperties.getProperty( properties_, "a.b.c.d", "p.p" ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Ensures the {@code getProperty(Map, Class, String, String)} method throws
+     * an exception when passed an instance name that contains dots.
+     */
+    @Test( expected = AssertionError.class )
+    public void testGetPropertyForInstanceName_InstanceName_Dotted()
+    {
+        LoggingProperties.getProperty( properties_, Object.class, "a.b", "p" ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Ensures the {@code getProperty(Map, Class, String, String)} method
+     * returns the expected value for a property that is absent.
      */
     @Test
-    public void testGetProperty_Property_Nonexistent()
+    public void testGetLoggingProperty_Property_Absent()
     {
-        assertNull( props_.getProperty( "a.b.c.d", "p1000" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        final Class<?> type = Object.class;
+        final String instanceName = "b"; //$NON-NLS-1$
+        final String propertyName = "p1"; //$NON-NLS-1$
+        final Map<String, String> properties = Collections.emptyMap();
+
+        assertNull( LoggingProperties.getProperty( properties, type, instanceName, propertyName ) );
     }
 
     /**
-     * Ensures the {@code getProperty} method throws an exception when passed a
-     * property name that contains dots.
+     * Ensures the {@code getProperty(Map, Class, String, String)} method
+     * returns the expected value for a property that is present.
      */
-    @Test( expected = AssertionError.class )
-    public void testGetProperty_PropertyName_Dotted()
+    @Test
+    public void testGetLoggingProperty_Property_Present()
     {
-        props_.getProperty( "a", "p.p" ); //$NON-NLS-1$ //$NON-NLS-2$
+        final Class<?> type = Object.class;
+        final String instanceName = "b"; //$NON-NLS-1$
+        final String propertyName = "p1"; //$NON-NLS-1$
+        final String propertyValue = "value"; //$NON-NLS-1$
+        final Map<String, String> properties = Collections.singletonMap( String.format( "%1$s.%2$s.%3$s", type.getName(), instanceName, propertyName ), propertyValue ); //$NON-NLS-1$
+
+        assertEquals( propertyValue, LoggingProperties.getProperty( properties, type, instanceName, propertyName ) );
     }
 
     /**
-     * Ensures the {@code getProperty} method throws an exception when passed a
-     * {@code null} property name.
+     * Ensures the {@code getProperty(Map, Class, String, String)} method throws
+     * an exception when passed a property name that contains dots.
      */
     @Test( expected = AssertionError.class )
-    public void testGetProperty_PropertyName_Null()
+    public void testGetPropertyForInstanceName_PropertyName_Dotted()
     {
-        props_.getProperty( "a", null ); //$NON-NLS-1$
+        LoggingProperties.getProperty( properties_, Object.class, "a", "p.p" ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Ensures the {@code toMap} method returns the correct map when passed a
+     * properties collection that contains an entry whose name is not a string.
+     */
+    @Test
+    public void testToMap_Properties_ContainsNonStringName()
+    {
+        final Properties properties = new Properties();
+        properties.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( new Object(), "value2" ); //$NON-NLS-1$
+
+        final Map<String, String> map = LoggingProperties.toMap( properties );
+
+        assertEquals( 1, map.size() );
+    }
+
+    /**
+     * Ensures the {@code toMap} method returns the correct map when passed a
+     * properties collection that contains an entry whose value is not a string.
+     */
+    @Test
+    public void testToMap_Properties_ContainsNonStringValue()
+    {
+        final Properties properties = new Properties();
+        properties.put( "name1", "value1" ); //$NON-NLS-1$ //$NON-NLS-2$
+        properties.put( "name2", new Object() ); //$NON-NLS-1$
+
+        final Map<String, String> map = LoggingProperties.toMap( properties );
+
+        assertEquals( 1, map.size() );
+    }
+
+    /**
+     * Ensures the {@code toMap} method returns an empty map when passed an
+     * empty properties collection.
+     */
+    @Test
+    public void testToMap_Properties_Empty()
+    {
+        final Map<String, String> map = LoggingProperties.toMap( new Properties() );
+
+        assertNotNull( map );
+        assertTrue( map.isEmpty() );
+    }
+
+    /**
+     * Ensures the {@code toMap} method returns the correct map when passed a
+     * non-empty properties collection.
+     */
+    @Test
+    public void testToMap_Properties_NonEmpty()
+    {
+        final String name1 = "name1", name2 = "name2"; //$NON-NLS-1$ //$NON-NLS-2$
+        final String value1 = "value1", value2 = "value2"; //$NON-NLS-1$ //$NON-NLS-2$
+        final Properties properties = new Properties();
+        properties.put( name1, value1 );
+        properties.put( name2, value2 );
+
+        final Map<String, String> map = LoggingProperties.toMap( properties );
+
+        assertEquals( properties.size(), map.size() );
+        assertEquals( value1, map.get( name1 ) );
+        assertEquals( value2, map.get( name2 ) );
     }
 }

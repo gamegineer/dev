@@ -22,12 +22,16 @@
 package org.gamegineer.common.internal.core.services.logging;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Filter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.common.core.services.logging.LoggingServiceConstants;
 import org.gamegineer.common.internal.core.Debug;
+import org.osgi.service.component.ComponentException;
 
 /**
  * The configuration for a logger.
@@ -42,8 +46,8 @@ final class LoggerConfiguration
     /** The name of the logger associated with the configuration. */
     private final String name_;
 
-    /** The logging properties which contains the configuration. */
-    private final LoggingProperties props_;
+    /** The logging properties. */
+    private final Map<String, String> properties_;
 
 
     // ======================================================================
@@ -53,24 +57,23 @@ final class LoggerConfiguration
     /**
      * Initializes a new instance of the {@code LoggerConfiguration} class.
      * 
-     * @param props
-     *        The logging properties which contains the configuration; must not
-     *        be {@code null}.
      * @param name
      *        The name of the logger associated with the configuration; must not
      *        be {@code null}.
+     * @param properties
+     *        The logging properties; must not be {@code null}.
      */
     LoggerConfiguration(
         /* @NonNull */
-        final LoggingProperties props,
+        final String name,
         /* @NonNull */
-        final String name )
+        final Map<String, String> properties )
     {
-        assert props != null;
         assert name != null;
+        assert properties != null;
 
-        props_ = props;
         name_ = name;
+        properties_ = new HashMap<String, String>( properties );
     }
 
 
@@ -94,16 +97,20 @@ final class LoggerConfiguration
         /* @Nullable */
         final Filter defaultValue )
     {
-        final String value = props_.getProperty( name_, "filter" ); //$NON-NLS-1$
+        final String value = LoggingProperties.getProperty( properties_, name_, LoggingServiceConstants.PROPERTY_LOGGER_FILTER );
         if( value != null )
         {
             try
             {
-                return (Filter)AbstractLoggingComponentFactory.createNamedLoggingComponent( value, props_.asMap() );
+                return AbstractLoggingComponentFactory.createNamedLoggingComponent( Filter.class, value, properties_ );
             }
-            catch( final Exception e )
+            catch( final IllegalArgumentException e )
             {
-                Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to create logger filter '%1$s'.", value ), e ); //$NON-NLS-1$
+                Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Illegal filter name specified for logger '%1$s'.", name_ ), e ); //$NON-NLS-1$
+            }
+            catch( final ComponentException e )
+            {
+                Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to create filter '%1$s' for logger '%2$s'.", value, name_ ), e ); //$NON-NLS-1$
             }
         }
 
@@ -121,18 +128,22 @@ final class LoggerConfiguration
     List<Handler> getHandlers()
     {
         final List<Handler> handlers = new ArrayList<Handler>();
-        final String value = props_.getProperty( name_, "handlers" ); //$NON-NLS-1$
+        final String value = LoggingProperties.getProperty( properties_, name_, LoggingServiceConstants.PROPERTY_LOGGER_HANDLERS );
         if( value != null )
         {
             for( final String name : value.split( "[,\\s]+" ) ) //$NON-NLS-1$
             {
                 try
                 {
-                    handlers.add( (Handler)AbstractLoggingComponentFactory.createNamedLoggingComponent( name, props_.asMap() ) );
+                    handlers.add( AbstractLoggingComponentFactory.createNamedLoggingComponent( Handler.class, name, properties_ ) );
                 }
-                catch( final Exception e )
+                catch( final IllegalArgumentException e )
                 {
-                    Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to create logger handler '%1$s'.", name ), e ); //$NON-NLS-1$
+                    Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Illegal handler name specified for logger '%1$s'.", name_ ), e ); //$NON-NLS-1$
+                }
+                catch( final ComponentException e )
+                {
+                    Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to create handler '%1$s' for logger '%2$s'.", name, name_ ), e ); //$NON-NLS-1$
                 }
             }
         }
@@ -158,7 +169,7 @@ final class LoggerConfiguration
     {
         try
         {
-            final String value = props_.getProperty( name_, "level" ); //$NON-NLS-1$
+            final String value = LoggingProperties.getProperty( properties_, name_, LoggingServiceConstants.PROPERTY_LOGGER_LEVEL );
             if( value != null )
             {
                 return Level.parse( value );
@@ -166,21 +177,10 @@ final class LoggerConfiguration
         }
         catch( final IllegalArgumentException e )
         {
-            Debug.trace( Debug.OPTION_SERVICES_LOGGING, "Failed to parse logger level.", e ); //$NON-NLS-1$
+            Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to parse level for logger '%1$s'.", name_ ), e ); //$NON-NLS-1$
         }
 
         return defaultValue;
-    }
-
-    /**
-     * Gets the name of the logger.
-     * 
-     * @return The name of the logger; never {@code null}.
-     */
-    /* @NonNull */
-    String getName()
-    {
-        return name_;
     }
 
     /**
@@ -196,7 +196,7 @@ final class LoggerConfiguration
     boolean getUseParentHandlers(
         final boolean defaultValue )
     {
-        final String value = props_.getProperty( name_, "useParentHandlers" ); //$NON-NLS-1$
+        final String value = LoggingProperties.getProperty( properties_, name_, LoggingServiceConstants.PROPERTY_LOGGER_USE_PARENT_HANDLERS );
         if( value != null )
         {
             return Boolean.parseBoolean( value );

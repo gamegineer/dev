@@ -1,5 +1,5 @@
 /*
- * MockFilter.java
+ * LoggingServiceTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,33 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 24, 2008 at 10:01:13 PM.
+ * Created on Jun 10, 2010 at 11:02:38 PM.
  */
 
-package org.gamegineer.common.internal.core.util.logging;
+package org.gamegineer.common.internal.core.services.logging;
 
-import java.util.logging.Filter;
-import java.util.logging.LogRecord;
-import net.jcip.annotations.Immutable;
-import org.gamegineer.common.core.services.component.IComponentFactory;
-import org.gamegineer.common.internal.core.services.logging.AbstractLoggingComponentFactory;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- * Mock implementation of {@link java.util.logging.Filter}.
+ * A fixture for testing the
+ * {@link org.gamegineer.common.internal.core.services.logging.LoggingService}
+ * class.
  */
-@Immutable
-public final class MockFilter
-    implements Filter
+public final class LoggingServiceTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The component factory for this class. */
-    public static final IComponentFactory FACTORY = new AbstractLoggingComponentFactory<MockFilter>( MockFilter.class )
-    {
-        // no overrides
-    };
+    /** The logging service under test in the fixture. */
+    private LoggingService loggingService_;
 
 
     // ======================================================================
@@ -50,9 +45,9 @@ public final class MockFilter
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MockFilter} class.
+     * Initializes a new instance of the {@code LoggingServiceTest} class.
      */
-    public MockFilter()
+    public LoggingServiceTest()
     {
         super();
     }
@@ -61,14 +56,39 @@ public final class MockFilter
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see java.util.logging.Filter#isLoggable(java.util.logging.LogRecord)
+    /**
+     * Sets up the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
-    @Override
-    public boolean isLoggable(
-        final LogRecord record )
+    @Before
+    public void setUp()
+        throws Exception
     {
-        return record != null;
+        loggingService_ = new LoggingService();
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        loggingService_ = null;
+    }
+
+    /**
+     * Ensures the {@code activate} method throws an exception when passed a
+     * {@code null} bundle context.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testActivate_BundleContext_Null()
+    {
+        loggingService_.activate( null );
     }
 }

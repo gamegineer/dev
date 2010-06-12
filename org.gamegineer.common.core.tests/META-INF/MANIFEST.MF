@@ -9,5 +9,6 @@ Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.4.0
 Fragment-Host: org.gamegineer.common.core;bundle-version="0.4.0"
 Import-Package: junit.framework;version="4.5.0",
+ org.easymock;version="3.0.0",
  org.gamegineer.test.core;version="0.4.0",
  org.junit;version="4.5.0"

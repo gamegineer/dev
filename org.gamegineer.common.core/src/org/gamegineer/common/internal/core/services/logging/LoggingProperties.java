@@ -1,6 +1,6 @@
 /*
  * LoggingProperties.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@
 package org.gamegineer.common.internal.core.services.logging;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,36 +32,22 @@ import java.util.regex.Pattern;
 import net.jcip.annotations.Immutable;
 
 /**
- * A collection of properties used to configure the logging service.
+ * A collection of useful methods for manipulating properties used to configure
+ * the logging service.
  */
 @Immutable
 final class LoggingProperties
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The logging properties. */
-    private final Properties props_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
      * Initializes a new instance of the {@code LoggingProperties} class.
-     * 
-     * @param props
-     *        The logging properties; must not be {@code null}.
      */
-    LoggingProperties(
-        /* @NonNull */
-        final Properties props )
+    private LoggingProperties()
     {
-        assert props != null;
-
-        props_ = props;
+        super();
     }
 
 
@@ -70,35 +56,27 @@ final class LoggingProperties
     // ======================================================================
 
     /**
-     * Gets an immutable map view of the logging properties.
-     * 
-     * @return An immutable map view of the logging properties; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "unchecked" )
-    Map<String, String> asMap()
-    {
-        // HACK: Cast to raw type required because of the legacy nature of java.util.Properties
-        return Collections.<String, String>unmodifiableMap( (Map)props_ );
-    }
-
-    /**
      * Gets a list of names for each ancestor of the specified logger which has
-     * an associated configuration.
+     * an associated configuration in the specified logging properties.
      * 
+     * @param properties
+     *        The logging properties; must not be {@code null}.
      * @param name
      *        The logger name; must not be {@code null}.
      * 
      * @return A list of names for each ancestor of the specified logger which
-     *         has an associated configuration; never {@code null}. The names
-     *         are ordered from nearest to furthest ancestor.
+     *         has an associated configuration in the specified logging
+     *         properties; never {@code null}. The names are ordered from
+     *         nearest to furthest ancestor.
      */
     /* @NonNull */
-    List<String> getAncestorLoggerNames(
+    static List<String> getAncestorLoggerNames(
+        /* @NonNull */
+        final Map<String, String> properties,
         /* @NonNull */
         final String name )
     {
+        assert properties != null;
         assert name != null;
 
         // Build a list of all possible ancestor names from nearest to furthest ancestor
@@ -113,15 +91,15 @@ final class LoggingProperties
         }
 
         // Remove any ancestor name which doesn't have an associated configuration property
-        final Set<Object> propertyNames = props_.keySet();
+        final Set<String> propertyNames = properties.keySet();
         for( final Iterator<String> iter = ancestorNames.iterator(); iter.hasNext(); )
         {
             final String ancestorName = iter.next();
             final Pattern pattern = Pattern.compile( String.format( "^%1$s\\.[^.]+$", ancestorName ) ); //$NON-NLS-1$
             boolean exists = false;
-            for( final Object propertyName : propertyNames )
+            for( final String propertyName : propertyNames )
             {
-                if( pattern.matcher( (String)propertyName ).matches() )
+                if( pattern.matcher( propertyName ).matches() )
                 {
                     exists = true;
                     break;
@@ -138,48 +116,101 @@ final class LoggingProperties
     }
 
     /**
-     * Gets the configuration for the specified logger.
+     * Gets the value of the specified component property from the specified
+     * logging properties.
      * 
-     * @param name
-     *        The logger name; must not be {@code null}.
-     * 
-     * @return The configuration for the specified logger; never {@code null}. A
-     *         default configuration is returned if no configuration exists for
-     *         the specified logger.
-     */
-    /* @NonNull */
-    LoggerConfiguration getLoggerConfiguration(
-        /* @NonNull */
-        final String name )
-    {
-        assert name != null;
-
-        return new LoggerConfiguration( this, name );
-    }
-
-    /**
-     * Gets the value of the specified entity property.
-     * 
-     * @param entityName
-     *        The entity name; must not be {@code null}.
+     * @param properties
+     *        The logging properties; must not be {@code null}.
+     * @param componentName
+     *        The component name; must not be {@code null} and must contain at
+     *        least one dot.
      * @param propertyName
      *        The property name; must not be {@code null} and must not contain
      *        any dots.
      * 
-     * @return The value of the specified entity property or {@code null} if the
-     *         property does not exist.
+     * @return The value of the specified component property from the specified
+     *         logging properties or {@code null} if the property does not
+     *         exist.
      */
     /* @Nullable */
-    String getProperty(
+    static String getProperty(
         /* @NonNull */
-        final String entityName,
+        final Map<String, String> properties,
+        /* @NonNull */
+        final String componentName,
         /* @NonNull */
         final String propertyName )
     {
-        assert entityName != null;
+        assert properties != null;
+        assert componentName != null;
+        assert componentName.indexOf( '.' ) != -1;
         assert propertyName != null;
         assert propertyName.indexOf( '.' ) == -1;
 
-        return props_.getProperty( entityName + "." + propertyName ); //$NON-NLS-1$
+        return properties.get( String.format( "%1$s.%2$s", componentName, propertyName ) ); //$NON-NLS-1$
+    }
+
+    /**
+     * Gets the value of the specified component property from the specified
+     * logging properties.
+     * 
+     * @param properties
+     *        The logging properties; must not be {@code null}.
+     * @param type
+     *        The component type; must not be {@code null}.
+     * @param instanceName
+     *        The component instance name; must not be {@code null} and must not
+     *        contain any dots.
+     * @param propertyName
+     *        The property name; must not be {@code null} and must not contain
+     *        any dots.
+     * 
+     * @return The value of the specified component property from the specified
+     *         logging properties or {@code null} if the property does not
+     *         exist.
+     */
+    /* @Nullable */
+    static String getProperty(
+        /* @NonNull */
+        final Map<String, String> properties,
+        /* @NonNull */
+        final Class<?> type,
+        /* @NonNull */
+        final String instanceName,
+        /* @NonNull */
+        final String propertyName )
+    {
+        assert properties != null;
+        assert type != null;
+        assert instanceName != null;
+        assert instanceName.indexOf( '.' ) == -1;
+        assert propertyName != null;
+        assert propertyName.indexOf( '.' ) == -1;
+
+        return properties.get( String.format( "%1$s.%2$s.%3$s", type.getName(), instanceName, propertyName ) ); //$NON-NLS-1$
+    }
+
+    /**
+     * Converts the specified properties collection into an equivalent map.
+     * 
+     * @param properties
+     *        The properties collection; must not be {@code null}.
+     * 
+     * @return A map that is equivalent to the specified properties collection;
+     *         never {@code null}.
+     */
+    /* @NonNull */
+    static Map<String, String> toMap(
+        /* @NonNUll */
+        final Properties properties )
+    {
+        assert properties != null;
+
+        final Map<String, String> map = new HashMap<String, String>( properties.size() );
+        for( final String name : properties.stringPropertyNames() )
+        {
+            map.put( name, properties.getProperty( name ) );
+        }
+        return map;
     }
 }

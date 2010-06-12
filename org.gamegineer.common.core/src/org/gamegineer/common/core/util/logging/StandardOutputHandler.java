@@ -50,7 +50,7 @@ import org.gamegineer.common.internal.core.Debug;
  * </ul>
  */
 @NotThreadSafe
-public class StandardOutputHandler
+public final class StandardOutputHandler
     extends StreamHandler
 {
     // ======================================================================

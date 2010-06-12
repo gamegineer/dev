@@ -104,12 +104,6 @@ public final class Activator
         instance_ = this;
 
         Services.getDefault().open( context );
-
-        // NB: This seemingly meaningless log message is actually required in
-        // order to ensure the "org.gamegineer" logger is created so that all
-        // other Gamegineer bundle loggers will inherit its attributes.
-        // DO NOT REMOVE THIS STATEMENT!
-        Loggers.DEFAULT.info( "Gamegineer logging service started." ); //$NON-NLS-1$
     }
 
     /*

@@ -1,5 +1,5 @@
 /*
- * ServicesTest.java
+ * FrameworkLogHandlerFactoryTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,28 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Feb 29, 2008 at 11:50:12 PM.
+ * Created on Jun 11, 2010 at 3:39:13 PM.
  */
 
-package org.gamegineer.common.internal.core;
+package org.gamegineer.common.internal.core.services.logging;
 
-import static org.junit.Assert.assertNotNull;
+import static org.easymock.EasyMock.createMock;
+import org.eclipse.osgi.framework.log.FrameworkLog;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.common.internal.core.Services} class.
+ * {@link org.gamegineer.common.internal.core.services.logging.FrameworkLogHandlerFactory}
+ * class.
  */
-public final class ServicesTest
+public final class FrameworkLogHandlerFactoryTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The services under test in the fixture. */
-    private Services services_;
+    /** The framework log handler factory under test in the fixture. */
+    private FrameworkLogHandlerFactory factory_;
 
 
     // ======================================================================
@@ -45,9 +47,10 @@ public final class ServicesTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ServicesTest} class.
+     * Initializes a new instance of the {@code FrameworkLogHandlerFactoryTest}
+     * class.
      */
-    public ServicesTest()
+    public FrameworkLogHandlerFactoryTest()
     {
         super();
     }
@@ -67,8 +70,7 @@ public final class ServicesTest
     public void setUp()
         throws Exception
     {
-        // TODO: change to new Services()
-        services_ = Services.getDefault();
+        factory_ = new FrameworkLogHandlerFactory();
     }
 
     /**
@@ -81,57 +83,50 @@ public final class ServicesTest
     public void tearDown()
         throws Exception
     {
-        services_ = null;
+        factory_ = null;
     }
 
     /**
-     * Ensures the {@code bindDebugOptions} method throws an exception when
-     * passed a {@code null} debug options service.
+     * Ensures the {@code bindFrameworkLog} method throws an exception when
+     * passed a {@code null} framework log service.
      */
     @Test( expected = NullPointerException.class )
-    public void testBindDebugOptions_DebugOptions_Null()
+    public void testBindFrameworkLog_FrameworkLog_Null()
     {
-        Services.bindDebugOptions( null );
+        factory_.bindFrameworkLog( null );
     }
 
     /**
-     * Ensures the {@code bindLoggingService} method throws an exception when
-     * passed a {@code null} logging service.
+     * Ensures the {@code bindFrameworkLog} method throws an exception when a
+     * framework log service is already bound.
+     */
+    @Test( expected = IllegalStateException.class )
+    public void testBindFrameworkLog_ServiceAlreadyBound()
+    {
+        factory_.bindFrameworkLog( createMock( FrameworkLog.class ) );
+
+        factory_.bindFrameworkLog( createMock( FrameworkLog.class ) );
+    }
+
+    /**
+     * Ensures the {@code unbindFrameworkLog} method throws an exception when
+     * passed a {@code null} framework log service.
      */
     @Test( expected = NullPointerException.class )
-    public void testBindLoggingService_LoggingService_Null()
+    public void testUnbindFrameworkLog_FrameworkLog_Null()
     {
-        Services.bindLoggingService( null );
+        factory_.unbindFrameworkLog( null );
     }
 
     /**
-     * Ensures the {@code getComponentService} method does not return {@code
-     * null}, which validates the component service was registered with OSGi
-     * correctly.
+     * Ensures the {@code unbindFrameworkLog} method throws an exception when a
+     * different framework log service is already bound.
      */
-    @Test
-    public void testGetComponentService_ReturnValue_NonNull()
+    @Test( expected = IllegalStateException.class )
+    public void testUnbindFrameworkLog_DifferentServiceBound()
     {
-        assertNotNull( services_.getComponentService() );
-    }
+        factory_.bindFrameworkLog( createMock( FrameworkLog.class ) );
 
-    /**
-     * Ensures the {@code unbindDebugOptions} method throws an exception when
-     * passed a {@code null} debug options service.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testUnbindDebugOptions_DebugOptions_Null()
-    {
-        Services.unbindDebugOptions( null );
-    }
-
-    /**
-     * Ensures the {@code unbindLoggingService} method throws an exception when
-     * passed a {@code null} logging service.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testUnbindLoggingService_LoggingService_Null()
-    {
-        Services.unbindLoggingService( null );
+        factory_.unbindFrameworkLog( createMock( FrameworkLog.class ) );
     }
 }

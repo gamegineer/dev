@@ -30,13 +30,11 @@ import java.util.List;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.osgi.framework.log.FrameworkLog;
 import org.eclipse.osgi.service.debug.DebugOptions;
 import org.gamegineer.common.core.services.component.IComponentFactory;
 import org.gamegineer.common.core.services.component.IComponentService;
 import org.gamegineer.common.core.services.logging.ILoggingService;
 import org.gamegineer.common.internal.core.services.component.ComponentService;
-import org.gamegineer.common.internal.core.services.logging.LoggingService;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
@@ -62,6 +60,10 @@ public final class Services
     /** The singleton instance. */
     private static final Services instance_ = new Services();
 
+    /** The logging service. */
+    @GuardedBy( "lock_" )
+    private static ILoggingService loggingService_ = null;
+
     /** The class lock. */
     private static Object lock_ = new Object();
 
@@ -76,15 +78,6 @@ public final class Services
 
     /** The extension registry service tracker. */
     private ServiceTracker extensionRegistryServiceTracker_;
-
-    /** The framework log service tracker. */
-    private ServiceTracker frameworkLogServiceTracker_;
-
-    /** The logging service registration token. */
-    private ServiceRegistration loggingServiceRegistration_;
-
-    /** The logging service tracker. */
-    private ServiceTracker loggingServiceTracker_;
 
 
     // ======================================================================
@@ -135,21 +128,41 @@ public final class Services
     }
 
     /**
+     * Binds the specified logging service.
+     * 
+     * <p>
+     * This method will unbind the currently bound logging service before
+     * binding the new logging service.
+     * </p>
+     * 
+     * @param loggingService
+     *        The logging service to bind; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code loggingService} is {@code null}.
+     */
+    public static void bindLoggingService(
+        /* @NonNull */
+        final ILoggingService loggingService )
+    {
+        assertArgumentNotNull( loggingService, "loggingService" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            if( loggingService_ != null )
+            {
+                unbindLoggingService( loggingService_ );
+            }
+            loggingService_ = loggingService;
+        }
+    }
+
+    /**
      * Closes the services managed by this object.
      */
     void close()
     {
         // Close bundle-specific services
-        if( loggingServiceTracker_ != null )
-        {
-            loggingServiceTracker_.close();
-            loggingServiceTracker_ = null;
-        }
-        if( frameworkLogServiceTracker_ != null )
-        {
-            frameworkLogServiceTracker_.close();
-            frameworkLogServiceTracker_ = null;
-        }
         if( extensionRegistryServiceTracker_ != null )
         {
             extensionRegistryServiceTracker_.close();
@@ -167,14 +180,8 @@ public final class Services
         }
 
         // Unregister package-specific services
-        org.gamegineer.common.internal.core.util.logging.Services.getDefault().close();
 
         // Unregister bundle-specific services
-        if( loggingServiceRegistration_ != null )
-        {
-            loggingServiceRegistration_.unregister();
-            loggingServiceRegistration_ = null;
-        }
         if( componentServiceRegistration_ != null )
         {
             componentServiceRegistration_.unregister();
@@ -274,36 +281,18 @@ public final class Services
     }
 
     /**
-     * Gets the framework log service managed by this object.
+     * Gets the logging service.
      * 
-     * @return The framework log service managed by this object; never {@code
-     *         null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If this object is not open.
+     * @return The logging service or {@code null} if no logging service is
+     *         available.
      */
-    /* @NonNull */
-    public FrameworkLog getFrameworkLog()
+    /* @Nullable */
+    public static ILoggingService getLoggingService()
     {
-        assertStateLegal( frameworkLogServiceTracker_ != null, Messages.Services_frameworkLogServiceTracker_notSet );
-
-        return (FrameworkLog)frameworkLogServiceTracker_.getService();
-    }
-
-    /**
-     * Gets the logging service managed by this object.
-     * 
-     * @return The logging service managed by this object; never {@code null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If this object is not open.
-     */
-    /* @NonNull */
-    public ILoggingService getLoggingService()
-    {
-        assertStateLegal( loggingServiceTracker_ != null, Messages.Services_loggingServiceTracker_notSet );
-
-        return (ILoggingService)loggingServiceTracker_.getService();
+        synchronized( lock_ )
+        {
+            return loggingService_;
+        }
     }
 
     /**
@@ -320,10 +309,8 @@ public final class Services
 
         // Register bundle-specific services
         componentServiceRegistration_ = context.registerService( IComponentService.class.getName(), new ComponentService(), null );
-        loggingServiceRegistration_ = context.registerService( ILoggingService.class.getName(), new LoggingService(), null );
 
         // Register package-specific services
-        org.gamegineer.common.internal.core.util.logging.Services.getDefault().open( context );
 
         // Open bundle-specific services
         componentServiceTracker_ = new ServiceTracker( context, componentServiceRegistration_.getReference(), null );
@@ -332,10 +319,6 @@ public final class Services
         componentFactoryServiceTracker_.open();
         extensionRegistryServiceTracker_ = new ServiceTracker( context, IExtensionRegistry.class.getName(), null );
         extensionRegistryServiceTracker_.open();
-        frameworkLogServiceTracker_ = new ServiceTracker( context, FrameworkLog.class.getName(), null );
-        frameworkLogServiceTracker_.open();
-        loggingServiceTracker_ = new ServiceTracker( context, loggingServiceRegistration_.getReference(), null );
-        loggingServiceTracker_.open();
     }
 
     /**
@@ -363,6 +346,34 @@ public final class Services
             if( debugOptions_ == debugOptions )
             {
                 debugOptions_ = null;
+            }
+        }
+    }
+
+    /**
+     * Unbinds the specified logging service.
+     * 
+     * <p>
+     * This method does nothing if the specified logging service is not bound.
+     * </p>
+     * 
+     * @param loggingService
+     *        The logging service to unbind; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code loggingService} is {@code null}.
+     */
+    public static void unbindLoggingService(
+        /* @NonNull */
+        final ILoggingService loggingService )
+    {
+        assertArgumentNotNull( loggingService, "loggingService" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            if( loggingService_ == loggingService )
+            {
+                loggingService_ = null;
             }
         }
     }

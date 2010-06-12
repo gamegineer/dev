@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractHandlerFactoryTestCase.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on May 23, 2008 at 10:05:22 PM.
  */
 
-package org.gamegineer.common.internal.core.util.logging;
+package org.gamegineer.common.internal.core.services.logging;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -30,15 +30,13 @@ import java.util.logging.Filter;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
 import java.util.logging.Level;
-import org.gamegineer.common.core.services.component.IComponentFactory;
-import org.gamegineer.common.internal.core.Activator;
-import org.gamegineer.common.internal.core.services.logging.AbstractAbstractLoggingComponentFactoryTestCase;
+import org.gamegineer.common.core.services.logging.LoggingServiceConstants;
 import org.junit.Test;
 import org.osgi.framework.ServiceRegistration;
 
 /**
  * A fixture for testing the basic aspects of classes that extend the
- * {@link org.gamegineer.common.internal.core.util.logging.AbstractHandlerFactory}
+ * {@link org.gamegineer.common.internal.core.services.logging.AbstractHandlerFactory}
  * class.
  * 
  * @param <F>
@@ -62,8 +60,8 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
     // ======================================================================
 
     /**
-     * Initializes an instance of the
-     * {@code AbstractAbstractHandlerFactoryTestCase} class.
+     * Initializes an instance of the {@code
+     * AbstractAbstractHandlerFactoryTestCase} class.
      */
     protected AbstractAbstractHandlerFactoryTestCase()
     {
@@ -81,8 +79,8 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
      * @param propertyName
      *        The name of the logging property; must not be {@code null}.
      * 
-     * @return The map key for the specified logging property; never
-     *         {@code null}.
+     * @return The map key for the specified logging property; never {@code
+     *         null}.
      */
     /* @NonNull */
     private String getLoggingPropertyKey(
@@ -91,7 +89,7 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
     {
         assert propertyName != null;
 
-        return String.format( "%1$s.%2$s.%3$s", getLoggingComponentFactory().getType().getName(), DEFAULT_INSTANCE_NAME, propertyName ); //$NON-NLS-1$
+        return String.format( "%1$s.%2$s.%3$s", getLoggingComponentType().getName(), DEFAULT_INSTANCE_NAME, propertyName ); //$NON-NLS-1$
     }
 
     /**
@@ -105,173 +103,143 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
     public void testConfigureLoggingComponent_Encoding_Illegal()
         throws Exception
     {
-        final String key = getLoggingPropertyKey( AbstractHandlerFactory.PROPERTY_ENCODING );
+        final String key = getLoggingPropertyKey( LoggingServiceConstants.PROPERTY_HANDLER_ENCODING );
         final Map<String, String> loggingProperties = Collections.singletonMap( key, "WTF?" ); //$NON-NLS-1$
-        final T handler = createLoggingComponent( DEFAULT_INSTANCE_NAME, loggingProperties );
+        final T handler = getLoggingComponent();
         handler.setEncoding( null );
-        configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
+
+        getLoggingComponentFactory().configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
+
         assertNull( handler.getEncoding() );
     }
 
     /**
      * Ensures the {@code configureLoggingComponent} method correctly configures
      * the handler encoding when the value is legal.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testConfigureLoggingComponent_Encoding_Legal()
-        throws Exception
     {
         final String value = "US-ASCII"; //$NON-NLS-1$
-        final String key = getLoggingPropertyKey( AbstractHandlerFactory.PROPERTY_ENCODING );
+        final String key = getLoggingPropertyKey( LoggingServiceConstants.PROPERTY_HANDLER_ENCODING );
         final Map<String, String> loggingProperties = Collections.singletonMap( key, value );
-        final T handler = createLoggingComponent( DEFAULT_INSTANCE_NAME, loggingProperties );
-        configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
+        final T handler = getLoggingComponent();
+
+        getLoggingComponentFactory().configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
+
         assertEquals( value, handler.getEncoding() );
     }
 
     /**
      * Ensures the {@code configureLoggingComponent} method leaves the handler
      * filter unchanged when the value is illegal.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testConfigureLoggingComponent_Filter_Illegal()
-        throws Exception
     {
-        final String key = getLoggingPropertyKey( AbstractHandlerFactory.PROPERTY_FILTER );
+        final String key = getLoggingPropertyKey( LoggingServiceConstants.PROPERTY_HANDLER_FILTER );
         final Map<String, String> loggingProperties = Collections.singletonMap( key, "WTF?" ); //$NON-NLS-1$
-        final T handler = createLoggingComponent( DEFAULT_INSTANCE_NAME, loggingProperties );
-        final Filter value = new MockFilter();
+        final T handler = getLoggingComponent();
+        final Filter value = new FakeFilter();
         handler.setFilter( value );
-        configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
+
+        getLoggingComponentFactory().configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
+
         assertEquals( value, handler.getFilter() );
     }
 
     /**
      * Ensures the {@code configureLoggingComponent} method correctly configures
      * the handler filter when the value is legal.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testConfigureLoggingComponent_Filter_Legal()
-        throws Exception
     {
-        ServiceRegistration serviceRegistration = null;
+        final ServiceRegistration serviceRegistration = FakeFilter.registerComponentFactory();
         try
         {
-            serviceRegistration = Activator.getDefault().getBundleContext().registerService( IComponentFactory.class.getName(), MockFilter.FACTORY, null );
-
-            final String value = String.format( "%1$s.filterName", MockFilter.class.getName() ); //$NON-NLS-1$
-            final String key = getLoggingPropertyKey( AbstractHandlerFactory.PROPERTY_FILTER );
+            final String value = String.format( "%1$s.filterName", FakeFilter.class.getName() ); //$NON-NLS-1$
+            final String key = getLoggingPropertyKey( LoggingServiceConstants.PROPERTY_HANDLER_FILTER );
             final Map<String, String> loggingProperties = Collections.singletonMap( key, value );
-            final T handler = createLoggingComponent( DEFAULT_INSTANCE_NAME, loggingProperties );
-            configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
-            assertTrue( handler.getFilter() instanceof MockFilter );
+            final T handler = getLoggingComponent();
+
+            getLoggingComponentFactory().configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
+
+            assertTrue( handler.getFilter() instanceof FakeFilter );
         }
         finally
         {
-            if( serviceRegistration != null )
-            {
-                serviceRegistration.unregister();
-            }
+            serviceRegistration.unregister();
         }
     }
 
     /**
      * Ensures the {@code configureLoggingComponent} method leaves the handler
      * formatter unchanged when the value is illegal.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testConfigureLoggingComponent_Formatter_Illegal()
-        throws Exception
     {
-        final String key = getLoggingPropertyKey( AbstractHandlerFactory.PROPERTY_FORMATTER );
+        final String key = getLoggingPropertyKey( LoggingServiceConstants.PROPERTY_HANDLER_FORMATTER );
         final Map<String, String> loggingProperties = Collections.singletonMap( key, "WTF?" ); //$NON-NLS-1$
-        final T handler = createLoggingComponent( DEFAULT_INSTANCE_NAME, loggingProperties );
-        final Formatter value = new MockFormatter();
+        final T handler = getLoggingComponent();
+        final Formatter value = new FakeFormatter();
         handler.setFormatter( value );
-        configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
+
+        getLoggingComponentFactory().configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
+
         assertEquals( value, handler.getFormatter() );
     }
 
     /**
      * Ensures the {@code configureLoggingComponent} method correctly configures
      * the handler formatter when the value is legal.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testConfigureLoggingComponent_Formatter_Legal()
-        throws Exception
     {
-        ServiceRegistration serviceRegistration = null;
-        try
-        {
-            serviceRegistration = Activator.getDefault().getBundleContext().registerService( IComponentFactory.class.getName(), MockFormatter.FACTORY, null );
+        final String value = String.format( "%1$s.formatterName", FakeFormatter.class.getName() ); //$NON-NLS-1$
+        final String key = getLoggingPropertyKey( LoggingServiceConstants.PROPERTY_HANDLER_FORMATTER );
+        final Map<String, String> loggingProperties = Collections.singletonMap( key, value );
+        final T handler = getLoggingComponent();
 
-            final String value = String.format( "%1$s.formatterName", MockFormatter.class.getName() ); //$NON-NLS-1$
-            final String key = getLoggingPropertyKey( AbstractHandlerFactory.PROPERTY_FORMATTER );
-            final Map<String, String> loggingProperties = Collections.singletonMap( key, value );
-            final T handler = createLoggingComponent( DEFAULT_INSTANCE_NAME, loggingProperties );
-            configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
-            assertTrue( handler.getFormatter() instanceof MockFormatter );
-        }
-        finally
-        {
-            if( serviceRegistration != null )
-            {
-                serviceRegistration.unregister();
-            }
-        }
+        getLoggingComponentFactory().configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
+
+        assertTrue( handler.getFormatter() instanceof FakeFormatter );
     }
 
     /**
      * Ensures the {@code configureLoggingComponent} method leaves the handler
      * level unchanged when the value is illegal.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testConfigureLoggingComponent_Level_Illegal()
-        throws Exception
     {
-        final String key = getLoggingPropertyKey( AbstractHandlerFactory.PROPERTY_LEVEL );
+        final String key = getLoggingPropertyKey( LoggingServiceConstants.PROPERTY_HANDLER_LEVEL );
         final Map<String, String> loggingProperties = Collections.singletonMap( key, "WTF?" ); //$NON-NLS-1$
-        final T handler = createLoggingComponent( DEFAULT_INSTANCE_NAME, loggingProperties );
+        final T handler = getLoggingComponent();
         final Level value = Level.ALL;
         handler.setLevel( value );
-        configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
+
+        getLoggingComponentFactory().configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
+
         assertEquals( value, handler.getLevel() );
     }
 
     /**
      * Ensures the {@code configureLoggingComponent} method correctly configures
      * the handler level when the value is legal.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testConfigureLoggingComponent_Level_Legal()
-        throws Exception
     {
         final Level value = Level.SEVERE;
-        final String key = getLoggingPropertyKey( AbstractHandlerFactory.PROPERTY_LEVEL );
+        final String key = getLoggingPropertyKey( LoggingServiceConstants.PROPERTY_HANDLER_LEVEL );
         final Map<String, String> loggingProperties = Collections.singletonMap( key, value.getName() );
-        final T handler = createLoggingComponent( DEFAULT_INSTANCE_NAME, loggingProperties );
-        configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
+        final T handler = getLoggingComponent();
+
+        getLoggingComponentFactory().configureLoggingComponent( handler, DEFAULT_INSTANCE_NAME, loggingProperties );
+
         assertEquals( value, handler.getLevel() );
     }
 }

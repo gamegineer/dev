@@ -1,6 +1,6 @@
 /*
- * SimpleFormatterFactory.java
- * Copyright 2008-2009 Gamegineer.org
+ * DefaultFormatterFactory.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,32 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 21, 2008 at 10:46:31 PM.
+ * Created on Jun 4, 2010 at 11:03:27 PM.
  */
 
-package org.gamegineer.common.internal.core.util.logging;
+package org.gamegineer.common.internal.core.services.logging;
 
-import java.util.logging.SimpleFormatter;
+import java.util.logging.Formatter;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.internal.core.services.logging.AbstractLoggingComponentFactory;
 
 /**
  * A component factory for creating instances of
- * {@link java.util.logging.SimpleFormatter}.
+ * {@link java.util.logging.Formatter} whose concrete class is present on the
+ * bundle classpath.
  */
 @ThreadSafe
-final class SimpleFormatterFactory
-    extends AbstractLoggingComponentFactory<SimpleFormatter>
+public final class DefaultFormatterFactory
+    extends AbstractLoggingComponentFactory<Formatter>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code SimpleFormatterFactory} class.
+     * Initializes a new instance of the {@code DefaultFormatterFactory} class.
      */
-    SimpleFormatterFactory()
+    public DefaultFormatterFactory()
     {
-        super( SimpleFormatter.class );
+        super( Formatter.class );
     }
 }

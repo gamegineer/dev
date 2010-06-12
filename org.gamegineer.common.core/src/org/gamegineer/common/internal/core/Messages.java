@@ -43,17 +43,8 @@ final class Messages
     /** The component service tracker is not set. */
     public static String Services_componentServiceTracker_notSet;
 
-    /** The debug options service tracker is not set. */
-    public static String Services_debugOptionsServiceTracker_notSet;
-
     /** The extension registry service tracker is not set. */
     public static String Services_extensionRegistryServiceTracker_notSet;
-
-    /** The framework log service tracker is not set. */
-    public static String Services_frameworkLogServiceTracker_notSet;
-
-    /** The logging service tracker is not set. */
-    public static String Services_loggingServiceTracker_notSet;
 
 
     // ======================================================================

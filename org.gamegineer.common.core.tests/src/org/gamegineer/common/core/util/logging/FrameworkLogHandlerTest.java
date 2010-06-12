@@ -1,6 +1,6 @@
 /*
- * LoggingPropertiesAttribute.java
- * Copyright 2008-2009 Gamegineer.org
+ * FrameworkLogHandlerTest.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,43 +16,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 19, 2008 at 8:47:11 PM.
+ * Created on Jun 11, 2010 at 3:17:05 PM.
  */
 
-package org.gamegineer.common.internal.core.services.logging.attributes;
+package org.gamegineer.common.core.util.logging;
 
-import java.util.Map;
-import net.jcip.annotations.Immutable;
-import org.gamegineer.common.core.services.component.util.attribute.AbstractAttribute;
+import org.junit.Test;
 
 /**
- * An attribute used to specify a collection of optional logging properties.
+ * A fixture for testing the
+ * {@link org.gamegineer.common.core.util.logging.FrameworkLogHandler} class.
  */
-@Immutable
-public final class LoggingPropertiesAttribute
-    extends AbstractAttribute<Map<String, String>>
+public final class FrameworkLogHandlerTest
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The singleton attribute instance. */
-    public static final LoggingPropertiesAttribute INSTANCE = new LoggingPropertiesAttribute();
-
-    /** The attribute name. */
-    private static final String NAME = "org.gamegineer.common.internal.core.services.logging.attributes.loggingProperties"; //$NON-NLS-1$
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code LoggingPropertiesAttribute}
-     * class.
+     * Initializes a new instance of the {@code FrameworkLogHandlerTest} class.
      */
-    private LoggingPropertiesAttribute()
+    public FrameworkLogHandlerTest()
     {
-        super( NAME, Map.class );
+        super();
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * framework log.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_FrameworkLog_Null()
+    {
+        new FrameworkLogHandler( null );
     }
 }

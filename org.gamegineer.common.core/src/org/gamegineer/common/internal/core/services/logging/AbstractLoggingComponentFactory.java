@@ -23,22 +23,18 @@ package org.gamegineer.common.internal.core.services.logging;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.Map;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.runtime.Platform;
-import org.gamegineer.common.core.services.component.AbstractComponentFactory;
-import org.gamegineer.common.core.services.component.ComponentCreationContextBuilder;
-import org.gamegineer.common.core.services.component.ComponentCreationException;
-import org.gamegineer.common.core.services.component.ComponentException;
-import org.gamegineer.common.core.services.component.IComponentCreationContext;
-import org.gamegineer.common.core.services.component.IComponentSpecification;
-import org.gamegineer.common.core.services.component.attributes.ClassNameAttribute;
-import org.gamegineer.common.core.services.component.attributes.SupportedClassNamesAttribute;
-import org.gamegineer.common.core.services.component.specs.ClassNameComponentSpecification;
-import org.gamegineer.common.core.services.component.util.attribute.ComponentCreationContextAttributeAccessor;
-import org.gamegineer.common.core.services.component.util.attribute.IAttributeAccessor;
-import org.gamegineer.common.internal.core.services.logging.attributes.InstanceNameAttribute;
-import org.gamegineer.common.internal.core.services.logging.attributes.LoggingPropertiesAttribute;
+import org.gamegineer.common.core.services.logging.LoggingServiceConstants;
+import org.gamegineer.common.internal.core.Activator;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.ComponentConstants;
+import org.osgi.service.component.ComponentException;
+import org.osgi.service.component.ComponentFactory;
+import org.osgi.service.component.ComponentInstance;
 
 /**
  * Superclass for all factories that create logging components.
@@ -48,7 +44,7 @@ import org.gamegineer.common.internal.core.services.logging.attributes.LoggingPr
  */
 @ThreadSafe
 public abstract class AbstractLoggingComponentFactory<T>
-    extends AbstractComponentFactory
+    implements ComponentFactory
 {
     // ======================================================================
     // Fields
@@ -79,8 +75,6 @@ public abstract class AbstractLoggingComponentFactory<T>
         assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
 
         type_ = type;
-
-        SupportedClassNamesAttribute.INSTANCE.setValue( this, type.getName() );
     }
 
 
@@ -93,6 +87,12 @@ public abstract class AbstractLoggingComponentFactory<T>
      * factory.
      * 
      * <p>
+     * Implementations should use an appropriate default if a particular
+     * property of the logging component cannot be configured successfully. The
+     * failure should be noted using the platform's debug tracing facility.
+     * </p>
+     * 
+     * <p>
      * The default implementation does nothing.
      * </p>
      * 
@@ -102,7 +102,7 @@ public abstract class AbstractLoggingComponentFactory<T>
      *        The instance name of the logging component; must not be {@code
      *        null}. This name is used to discover the component's properties in
      *        the specified logging properties.
-     * @param loggingProperties
+     * @param properties
      *        The logging properties; may be {@code null}.
      * 
      * @throws java.lang.NullPointerException
@@ -114,49 +114,10 @@ public abstract class AbstractLoggingComponentFactory<T>
         /* @NonNull */
         final String instanceName,
         /* @Nullable */
-        final Map<String, String> loggingProperties )
+        final Map<String, String> properties )
     {
         assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
         assertArgumentNotNull( instanceName, "instanceName" ); //$NON-NLS-1$
-    }
-
-    /*
-     * @see org.gamegineer.common.core.services.component.IComponentFactory#containsAttribute(java.lang.String)
-     */
-    @Override
-    public final boolean containsAttribute(
-        final String name )
-    {
-        // NB: This method is declared final to prevent subclasses from modifying
-        // factory attribute behavior so we don't have to test each concrete
-        // subclass with respect to IComponentFactory.
-
-        return super.containsAttribute( name );
-    }
-
-    /*
-     * @see org.gamegineer.common.core.services.component.IComponentFactory#createComponent(org.gamegineer.common.core.services.component.IComponentCreationContext)
-     */
-    @Override
-    public final T createComponent(
-        final IComponentCreationContext context )
-        throws ComponentCreationException
-    {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
-
-        final IAttributeAccessor accessor = new ComponentCreationContextAttributeAccessor( context );
-        final String className = ClassNameAttribute.INSTANCE.getValue( accessor );
-        final String instanceName = InstanceNameAttribute.INSTANCE.getValue( accessor );
-        final Map<String, String> loggingProperties = LoggingPropertiesAttribute.INSTANCE.tryGetValue( accessor );
-
-        if( !type_.getName().equals( className ) )
-        {
-            throw new IllegalArgumentException( Messages.AbstractLoggingComponentFactory_createComponent_unsupportedType( className ) );
-        }
-
-        final T component = createLoggingComponent( instanceName, loggingProperties );
-        configureLoggingComponent( component, instanceName, loggingProperties );
-        return component;
     }
 
     /**
@@ -165,45 +126,46 @@ public abstract class AbstractLoggingComponentFactory<T>
      * 
      * <p>
      * The default implementation creates a new instance of the component using
-     * its default constructor. No attempt is made to configure the component
-     * using the logging properties.
+     * its default constructor
      * </p>
      * 
-     * @param instanceName
-     *        The instance name of the logging component; must not be {@code
-     *        null}. This name is used to discover the component's properties in
-     *        the specified logging properties.
-     * @param loggingProperties
-     *        The logging properties; may be {@code null}.
+     * @param typeName
+     *        The type name of the logging component; must not be {@code null}.
      * 
      * @return A new instance of the logging component; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code instanceName} is {@code null}.
-     * @throws org.gamegineer.common.core.services.component.ComponentCreationException
-     *         If an error occurred during component creation.
+     *         If {@code typeName} is {@code null}.
+     * @throws org.osgi.service.component.ComponentException
+     *         If an error occurs while creating the component.
      */
     /* @NonNull */
     protected T createLoggingComponent(
         /* @NonNull */
-        final String instanceName,
-        /* @Nullable */
-        final Map<String, String> loggingProperties )
-        throws ComponentCreationException
+        final String typeName )
     {
-        assertArgumentNotNull( instanceName, "instanceName" ); //$NON-NLS-1$
+        assertArgumentNotNull( typeName, "typeName" ); //$NON-NLS-1$
 
         try
         {
-            return type_.newInstance();
+            final Class<?> type = Class.forName( typeName );
+            return type_.cast( type.newInstance() );
+        }
+        catch( final ClassNotFoundException e )
+        {
+            throw new ComponentException( Messages.AbstractLoggingComponentFactory_createLoggingComponent_failed( typeName ), e );
         }
         catch( final IllegalAccessException e )
         {
-            throw new ComponentCreationException( Messages.AbstractLoggingComponentFactory_createLoggingComponent_failed( instanceName, type_.getName() ), e );
+            throw new ComponentException( Messages.AbstractLoggingComponentFactory_createLoggingComponent_failed( typeName ), e );
         }
         catch( final InstantiationException e )
         {
-            throw new ComponentCreationException( Messages.AbstractLoggingComponentFactory_createLoggingComponent_failed( instanceName, type_.getName() ), e );
+            throw new ComponentException( Messages.AbstractLoggingComponentFactory_createLoggingComponent_failed( typeName ), e );
+        }
+        catch( final ClassCastException e )
+        {
+            throw new ComponentException( Messages.AbstractLoggingComponentFactory_createLoggingComponent_failed( typeName ), e );
         }
     }
 
@@ -215,127 +177,240 @@ public abstract class AbstractLoggingComponentFactory<T>
      * </p>
      * 
      * <p>
-     * <i>{@literal <class-name>}</i>.<i>{@literal <instance-name>}</i>
+     * <i>{@literal <type-name>}</i>.<i>{@literal <instance-name>}</i>
      * </p>
      * 
      * <p>
-     * where <i>class-name</i> is the fully-qualified component class name and
+     * where <i>type-name</i> is the fully-qualified component type name and
      * <i>instance-name</i> is the component instance name as it is identified
      * in the logging properties. The <i>instance-name</i> must not contain any
      * dots.
      * </p>
      * 
+     * @param <T>
+     *        The type of the logging component.
+     * 
+     * @param type
+     *        The type of the logging component; must not be {@code null}.
      * @param name
      *        The fully-qualified name of the component; must not be {@code
      *        null}.
-     * @param loggingProperties
+     * @param properties
      *        The logging properties; may be {@code null}.
      * 
      * @return The logging component; never {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code name} is not a fully-qualified component name.
-     * @throws java.lang.NullPointerException
-     *         If {@code name} is {@code null}.
-     * @throws org.gamegineer.common.core.services.component.ComponentException
+     * @throws org.osgi.service.component.ComponentException
      *         If the component could not be created.
      */
     /* @NonNull */
-    public static final Object createNamedLoggingComponent(
+    static final <T> T createNamedLoggingComponent(
+        /* @NonNull */
+        final Class<T> type,
         /* @NonNull */
         final String name,
         /* @Nullable */
-        final Map<String, String> loggingProperties )
-        throws ComponentException
+        final Map<String, String> properties )
     {
-        assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
+        assert type != null;
+        assert name != null;
 
         final int index = name.lastIndexOf( '.' );
         assertArgumentLegal( index != -1, "name", Messages.AbstractLoggingComponentFactory_createNamedLoggingComponent_nameNoDots ); //$NON-NLS-1$
-        final String className = name.substring( 0, index );
+        final String typeName = name.substring( 0, index );
         final String instanceName = name.substring( index + 1 );
 
-        final IComponentSpecification specification = new ClassNameComponentSpecification( className );
-        final ComponentCreationContextBuilder builder = new ComponentCreationContextBuilder();
-        ClassNameAttribute.INSTANCE.setValue( builder, className );
-        InstanceNameAttribute.INSTANCE.setValue( builder, instanceName );
-        LoggingPropertiesAttribute.INSTANCE.trySetValue( builder, loggingProperties );
-
-        return Platform.getComponentService().createComponent( specification, builder.toComponentCreationContext() );
-    }
-
-    /*
-     * @see org.gamegineer.common.core.services.component.AbstractComponentFactory#getAttribute(java.lang.String)
-     */
-    @Override
-    public final Object getAttribute(
-        final String name )
-    {
-        // NB: This method is declared final to prevent subclasses from modifying
-        // factory attribute behavior so we don't have to test each concrete
-        // subclass with respect to IComponentFactory.
-
-        return super.getAttribute( name );
+        final ServiceReference serviceReference = findComponentFactory( typeName, type );
+        final ComponentFactory factory = (ComponentFactory)Activator.getDefault().getBundleContext().getService( serviceReference );
+        try
+        {
+            final Dictionary<String, Object> componentProperties = new Hashtable<String, Object>();
+            componentProperties.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, typeName );
+            componentProperties.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME, instanceName );
+            if( properties != null )
+            {
+                componentProperties.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, properties );
+            }
+            return type.cast( factory.newInstance( componentProperties ).getInstance() );
+        }
+        finally
+        {
+            Activator.getDefault().getBundleContext().ungetService( serviceReference );
+        }
     }
 
     /**
-     * Gets the specified logging property.
+     * Finds the most appropriate component factory for the specified component
+     * type information.
      * 
-     * @param instanceName
-     *        The instance name of the logging component; must not be {@code
+     * <p>
+     * This method will attempt to find a component factory registered for the
+     * concrete component type first then fall back to searching for a component
+     * factory registered for its super type.
+     * </p>
+     * 
+     * @param typeName
+     *        The component type name; must not be {@code null}.
+     * @param type
+     *        The component type or one of its super types; must not be {@code
      *        null}.
-     * @param propertyName
-     *        The property name; must not be {@code null}.
-     * @param loggingProperties
-     *        The logging properties; must not be {@code null}.
      * 
-     * @return The requested logging property or {@code null} if the property
-     *         does not exist.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code instanceName}, {@code propertyName}, or {@code
-     *         loggingProperties} is {@code null}.
-     */
-    /* @Nullable */
-    protected final String getLoggingProperty(
-        /* @NonNull */
-        final String instanceName,
-        /* @NonNull */
-        final String propertyName,
-        /* @NonNull */
-        final Map<String, String> loggingProperties )
-    {
-        assertArgumentNotNull( instanceName, "instanceName" ); //$NON-NLS-1$
-        assertArgumentNotNull( propertyName, "propertyName" ); //$NON-NLS-1$
-        assertArgumentNotNull( loggingProperties, "loggingProperties" ); //$NON-NLS-1$
-
-        return loggingProperties.get( String.format( "%1$s.%2$s.%3$s", type_.getName(), instanceName, propertyName ) ); //$NON-NLS-1$
-    }
-
-    /**
-     * Gets the type of the logging component created by the factory.
-     * 
-     * @return The type of the logging component created by the factory; never
-     *         {@code null}.
+     * @return A reference to the most appropriate component factory for the
+     *         specified component type information; never {@code null}.
      */
     /* @NonNull */
-    public final Class<T> getType()
+    private static ServiceReference findComponentFactory(
+        /* @NonNull */
+        final String typeName,
+        /* @NonNull */
+        final Class<?> type )
     {
-        return type_;
+        assert typeName != null;
+        assert type != null;
+
+        ServiceReference serviceReference = getComponentFactory( typeName );
+        if( serviceReference != null )
+        {
+            return serviceReference;
+        }
+
+        serviceReference = getComponentFactory( type.getName() );
+        if( serviceReference != null )
+        {
+            return serviceReference;
+        }
+
+        throw new ComponentException( Messages.AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable( typeName ) );
     }
 
-    /*
-     * @see org.gamegineer.common.core.services.component.AbstractComponentFactory#setAttribute(java.lang.String, java.lang.Object)
+    /**
+     * Gets the component factory for the specified type name.
+     * 
+     * @param typeName
+     *        The type name of the component created by the factory; must not be
+     *        {@code null}.
+     * 
+     * @return A reference to the component factory for the specified type name
+     *         or {@code null} if no component factory is available.
+     * 
+     * @throws org.osgi.service.component.ComponentException
+     *         If an error occurs.
+     */
+    /* @Nullable */
+    private static ServiceReference getComponentFactory(
+        /* @NonNull */
+        final String typeName )
+    {
+        assert typeName != null;
+
+        try
+        {
+            final String filter = String.format( "(%1$s=%2$s)", ComponentConstants.COMPONENT_FACTORY, typeName ); //$NON-NLS-1$
+            final ServiceReference[] serviceReferences = Activator.getDefault().getBundleContext().getServiceReferences( ComponentFactory.class.getName(), filter );
+            if( (serviceReferences == null) || (serviceReferences.length == 0) )
+            {
+                return null;
+            }
+
+            return serviceReferences[ 0 ];
+        }
+        catch( final InvalidSyntaxException e )
+        {
+            throw new ComponentException( Messages.AbstractLoggingComponentFactory_getComponentFactory_invalidFilterSyntax, e );
+        }
+    }
+
+    /**
+     * Gets the specified component property.
+     * 
+     * @param <T>
+     *        The property value type.
+     * 
+     * @param componentProperties
+     *        The collection of component properties; must not be {@code null}.
+     * @param name
+     *        The property name; must not be {@code null}.
+     * @param type
+     *        The property value type; must not be {@code null}.
+     * @param isNullable
+     *        Indicates the property value is nullable.
+     * 
+     * @return The property value; may be {@code null} if {@code isNullable} is
+     *         {@code true}.
+     * 
+     * @throws org.osgi.service.component.ComponentException
+     *         If the property value is not nullable and does not exist in the
+     *         component properties collection or the property value is the
+     *         wrong type.
+     */
+    /* @Nullable */
+    private static <T> T getComponentProperty(
+        /* @NonNull */
+        final Dictionary<?, ?> componentProperties,
+        /* @NonNull */
+        final String name,
+        /* @NonNull */
+        final Class<T> type,
+        final boolean isNullable )
+    {
+        assert componentProperties != null;
+        assert name != null;
+        assert type != null;
+
+        final Object value = componentProperties.get( name );
+        if( (value == null) && !isNullable )
+        {
+            throw new ComponentException( Messages.AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue( name ) );
+        }
+
+        try
+        {
+            return type.cast( value );
+        }
+        catch( final ClassCastException e )
+        {
+            throw new ComponentException( Messages.AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue( name ), e );
+        }
+    }
+
+    /**
+     * @throws org.osgi.service.component.ComponentException
+     *         If {@code componentProperties} is {@code null}.
+     * 
+     * @see org.osgi.service.component.ComponentFactory#newInstance(java.util.Dictionary)
      */
     @Override
-    public final void setAttribute(
-        final String name,
-        final Object value )
+    public final ComponentInstance newInstance(
+        @SuppressWarnings( "unchecked" )
+        final Dictionary componentProperties )
     {
-        // NB: This method is declared final to prevent subclasses from modifying
-        // factory attribute behavior so we don't have to test each concrete
-        // subclass with respect to IComponentFactory.
+        if( componentProperties == null )
+        {
+            throw new ComponentException( Messages.AbstractLoggingComponentFactory_newInstance_noComponentProperties );
+        }
 
-        super.setAttribute( name, value );
+        final String typeName = getComponentProperty( componentProperties, LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, String.class, false );
+        final String instanceName = getComponentProperty( componentProperties, LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME, String.class, false );
+        @SuppressWarnings( "unchecked" )
+        final Map<String, String> loggingProperties = getComponentProperty( componentProperties, LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, Map.class, true );
+
+        final T component = createLoggingComponent( typeName );
+        configureLoggingComponent( component, instanceName, loggingProperties );
+        return new ComponentInstance()
+        {
+            @Override
+            public void dispose()
+            {
+                // do nothing
+            }
+
+            @Override
+            public Object getInstance()
+            {
+                return component;
+            }
+        };
     }
 }

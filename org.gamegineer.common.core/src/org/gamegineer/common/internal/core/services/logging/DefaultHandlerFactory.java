@@ -1,6 +1,6 @@
 /*
- * FrameworkLogHandlerFactory.java
- * Copyright 2008-2009 Gamegineer.org
+ * DefaultHandlerFactory.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,32 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 25, 2008 at 10:38:28 PM.
+ * Created on May 23, 2008 at 12:03:31 AM.
  */
 
-package org.gamegineer.common.internal.core.util.logging;
+package org.gamegineer.common.internal.core.services.logging;
 
+import java.util.logging.Handler;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.logging.FrameworkLogHandler;
 
 /**
  * A component factory for creating instances of
- * {@link org.gamegineer.common.core.util.logging.FrameworkLogHandler}.
+ * {@link java.util.logging.Handler} whose concrete class is present on the
+ * bundle classpath.
  */
 @ThreadSafe
-final class FrameworkLogHandlerFactory
-    extends AbstractHandlerFactory<FrameworkLogHandler>
+public final class DefaultHandlerFactory
+    extends AbstractHandlerFactory<Handler>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code FrameworkLogHandlerFactory}
-     * class.
+     * Initializes a new instance of the {@code DefaultHandlerFactory} class.
      */
-    FrameworkLogHandlerFactory()
+    public DefaultHandlerFactory()
     {
-        super( FrameworkLogHandler.class );
+        super( Handler.class );
     }
 }

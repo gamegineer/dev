@@ -35,6 +35,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.services.logging.ILoggingService;
 import org.gamegineer.common.internal.core.Debug;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 
 /**
  * Implementation of
@@ -78,6 +79,28 @@ public final class LoggingService
     // ======================================================================
 
     /**
+     * Activates the logging service component.
+     * 
+     * @param bundleContext
+     *        The bundle context; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code bundleContext} is {@code null}.
+     */
+    public void activate(
+        /* @NonNull */
+        final BundleContext bundleContext )
+    {
+        assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
+
+        // NB: This seemingly meaningless log message is actually required in
+        // order to ensure the "org.gamegineer" logger is created so that all
+        // other Gamegineer bundle loggers will inherit its attributes.
+        // DO NOT REMOVE THIS STATEMENT!
+        getLogger( bundleContext.getBundle() ).info( "Gamegineer logging service activated." ); //$NON-NLS-1$
+    }
+
+    /**
      * Configures all ancestors of the named logger (creating them if necessary)
      * which have a configuration defined in the specified logging properties.
      * 
@@ -87,7 +110,7 @@ public final class LoggingService
      * 
      * @param loggerName
      *        The logger name; must not be {@code null}.
-     * @param props
+     * @param properties
      *        The logging properties; must not be {@code null}.
      */
     @GuardedBy( "lock_" )
@@ -95,20 +118,20 @@ public final class LoggingService
         /* @NonNull */
         final String loggerName,
         /* @NonNull */
-        final LoggingProperties props )
+        final Map<String, String> properties )
     {
         assert loggerName != null;
-        assert props != null;
+        assert properties != null;
         assert Thread.holdsLock( lock_ );
 
-        for( final String ancestorLoggerName : props.getAncestorLoggerNames( loggerName ) )
+        for( final String ancestorLoggerName : LoggingProperties.getAncestorLoggerNames( properties, loggerName ) )
         {
             final WeakReference<Logger> loggerRef = loggers_.get( ancestorLoggerName );
             if( (loggerRef == null) || (loggerRef.get() == null) )
             {
                 final Logger logger = Logger.getLogger( ancestorLoggerName );
                 loggers_.put( ancestorLoggerName, new WeakReference<Logger>( logger ) );
-                configureLogger( logger, props.getLoggerConfiguration( ancestorLoggerName ) );
+                configureLogger( logger, new LoggerConfiguration( ancestorLoggerName, properties ) );
             }
         }
     }
@@ -180,11 +203,11 @@ public final class LoggingService
             logger = Logger.getLogger( loggerName );
             loggers_.put( loggerName, new WeakReference<Logger>( logger ) );
 
-            final LoggingProperties props = getLoggingProperties( bundle );
-            if( props != null )
+            final Map<String, String> properties = getLoggingProperties( bundle );
+            if( properties != null )
             {
-                configureLogger( logger, props.getLoggerConfiguration( loggerName ) );
-                configureAncestorLoggers( loggerName, props );
+                configureLogger( logger, new LoggerConfiguration( loggerName, properties ) );
+                configureAncestorLoggers( loggerName, properties );
             }
         }
 
@@ -232,29 +255,29 @@ public final class LoggingService
      *         if no properties exist or they could not be loaded.
      */
     /* @Nullable */
-    private static LoggingProperties getLoggingProperties(
+    private static Map<String, String> getLoggingProperties(
         /* @NonNull */
         final Bundle bundle )
     {
         assert bundle != null;
 
-        final URL propsUrl = bundle.getEntry( LOGGING_PROPERTIES_PATH );
-        if( propsUrl == null )
+        final URL propertiesUrl = bundle.getEntry( LOGGING_PROPERTIES_PATH );
+        if( propertiesUrl == null )
         {
             return null;
         }
 
-        final Properties props = new Properties();
+        final Properties properties = new Properties();
         try
         {
-            props.load( propsUrl.openStream() );
+            properties.load( propertiesUrl.openStream() );
         }
         catch( final IOException e )
         {
-            Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to load logging properties from '%1$s'.", propsUrl ), e ); //$NON-NLS-1$
+            Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to load logging properties from '%1$s'.", propertiesUrl ), e ); //$NON-NLS-1$
             return null;
         }
 
-        return new LoggingProperties( props );
+        return LoggingProperties.toMap( properties );
     }
 }

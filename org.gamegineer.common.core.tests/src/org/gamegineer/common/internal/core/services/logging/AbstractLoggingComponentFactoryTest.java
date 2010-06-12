@@ -1,6 +1,6 @@
 /*
  * AbstractLoggingComponentFactoryTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,22 +21,18 @@
 
 package org.gamegineer.common.internal.core.services.logging;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.util.Collections;
-import java.util.Map;
-import org.gamegineer.common.core.services.component.ComponentCreationContextBuilder;
-import org.gamegineer.common.core.services.component.IComponentCreationContext;
-import org.gamegineer.common.core.services.component.IComponentFactory;
-import org.gamegineer.common.core.services.component.attributes.ClassNameAttribute;
-import org.gamegineer.common.internal.core.Activator;
-import org.gamegineer.common.internal.core.services.logging.attributes.InstanceNameAttribute;
-import org.gamegineer.common.internal.core.services.logging.attributes.LoggingPropertiesAttribute;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.logging.Filter;
+import org.gamegineer.common.core.services.logging.LoggingServiceConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.ComponentException;
 
 /**
  * A fixture for testing the
@@ -49,17 +45,11 @@ public final class AbstractLoggingComponentFactoryTest
     // Fields
     // ======================================================================
 
-    /** The default component class name to use in the creation context. */
-    private static final String DEFAULT_CLASS_NAME = MockLoggingComponent.class.getName();
-
-    /** The default component instance name to use in the creation context. */
-    private static final String DEFAULT_INSTANCE_NAME = "instanceName"; //$NON-NLS-1$
-
-    /** The default logging properties to use in the creation context. */
-    private static final Map<String, String> DEFAULT_LOGGING_PROPERTIES = Collections.emptyMap();
+    /** Component properties for use in the fixture. */
+    private Dictionary<String, Object> componentProperties_;
 
     /** The logging component factory under test in the fixture. */
-    private AbstractLoggingComponentFactory<MockLoggingComponent> factory_;
+    private AbstractLoggingComponentFactory<Object> factory_;
 
 
     // ======================================================================
@@ -81,63 +71,6 @@ public final class AbstractLoggingComponentFactoryTest
     // ======================================================================
 
     /**
-     * Creates a component creation context suitable for a logging component
-     * factory.
-     * 
-     * @param addClassName
-     *        {@code true} to add the {@code className} attribute to the
-     *        context; otherwise {@code false}.
-     * @param className
-     *        The component class name; must not be {@code null} if {@code
-     *        addClassName} is {@code true}.
-     * @param addInstanceName
-     *        {@code true} to add the {@code instanceName} attribute to the
-     *        context; otherwise {@code false}.
-     * @param instanceName
-     *        The component instance name; must not be {@code null} if {@code
-     *        addInstanceName} is {@code true}.
-     * @param addLoggingProperties
-     *        {@code true} to add the {@code loggingProperties} attribute to the
-     *        context; otherwise {@code false}.
-     * @param loggingProperties
-     *        The logging properties; must not be {@code null} if {@code
-     *        addLoggingProperties} is {@code true}.
-     * 
-     * @return A component creation context; never {@code null}.
-     */
-    /* @NonNull */
-    private static IComponentCreationContext createComponentCreationContext(
-        final boolean addClassName,
-        /* @Nullable */
-        final String className,
-        final boolean addInstanceName,
-        /* @Nullable */
-        final String instanceName,
-        final boolean addLoggingProperties,
-        /* @Nullable */
-        final Map<String, String> loggingProperties )
-    {
-        assert !addClassName || (className != null);
-        assert !addInstanceName || (instanceName != null);
-        assert !addLoggingProperties || (loggingProperties != null);
-
-        final ComponentCreationContextBuilder builder = new ComponentCreationContextBuilder();
-        if( addClassName )
-        {
-            builder.setAttribute( ClassNameAttribute.INSTANCE.getName(), className );
-        }
-        if( addInstanceName )
-        {
-            builder.setAttribute( InstanceNameAttribute.INSTANCE.getName(), instanceName );
-        }
-        if( addLoggingProperties )
-        {
-            builder.setAttribute( LoggingPropertiesAttribute.INSTANCE.getName(), loggingProperties );
-        }
-        return builder.toComponentCreationContext();
-    }
-
-    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -147,7 +80,12 @@ public final class AbstractLoggingComponentFactoryTest
     public void setUp()
         throws Exception
     {
-        factory_ = new AbstractLoggingComponentFactory<MockLoggingComponent>( MockLoggingComponent.class )
+        componentProperties_ = new Hashtable<String, Object>();
+        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, Object.class.getName() );
+        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME, "instanceName" ); //$NON-NLS-1$
+        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, Collections.<String, String>emptyMap() );
+
+        factory_ = new AbstractLoggingComponentFactory<Object>( Object.class )
         {
             // no overrides
         };
@@ -168,210 +106,129 @@ public final class AbstractLoggingComponentFactoryTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * component type.
+     * type.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Type_Null()
     {
-        new AbstractLoggingComponentFactory<MockLoggingComponent>( null )
+        new AbstractLoggingComponentFactory<Object>( null )
         {
             // no overrides
         };
     }
 
     /**
-     * Ensures the {@code createComponent} method throws an exception if the
-     * class name attribute in the creation context is absent.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testCreateComponent_Context_ClassNameAttribute_Absent()
-        throws Exception
-    {
-        factory_.createComponent( createComponentCreationContext( false, null, true, DEFAULT_INSTANCE_NAME, true, DEFAULT_LOGGING_PROPERTIES ) );
-    }
-
-    /**
-     * Ensures the {@code createComponent} method throws an exception if the
-     * class name attribute in the creation context specifies the wrong
-     * component type supported by the factory.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testCreateComponent_Context_ClassNameAttribute_Present_WrongType()
-        throws Exception
-    {
-        factory_.createComponent( createComponentCreationContext( true, Integer.class.getName(), true, DEFAULT_INSTANCE_NAME, true, DEFAULT_LOGGING_PROPERTIES ) );
-    }
-
-    /**
-     * Ensures the {@code createComponent} method throws an exception if the
-     * instance name attribute in the creation context is absent.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testCreateComponent_Context_InstanceNameAttribute_Absent()
-        throws Exception
-    {
-        factory_.createComponent( createComponentCreationContext( true, DEFAULT_CLASS_NAME, false, null, true, DEFAULT_LOGGING_PROPERTIES ) );
-    }
-
-    /**
-     * Ensures the {@code createComponent} method does not throw an exception if
-     * the logging properties attribute in the creation context is absent.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testCreateComponent_Context_LoggingPropertiesAttribute_Absent()
-        throws Exception
-    {
-        factory_.createComponent( createComponentCreationContext( true, DEFAULT_CLASS_NAME, true, DEFAULT_INSTANCE_NAME, false, null ) );
-    }
-
-    /**
      * Ensures the {@code createNamedLoggingComponent} method creates the
      * expected object.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
-    public void testCreateNamedLoggingComponent()
-        throws Exception
+    public void testCreateNamedLoggingComponent_HappyPath()
     {
-        ServiceRegistration serviceRegistration = null;
+        final ServiceRegistration serviceRegistration = FakeFilter.registerComponentFactory();
         try
         {
-            serviceRegistration = Activator.getDefault().getBundleContext().registerService( IComponentFactory.class.getName(), MockLoggingComponent.FACTORY, null );
+            final String name = String.format( "%1$s.name", FakeFilter.class.getName() ); //$NON-NLS-1$
 
-            final String name = String.format( "%1$s.name", MockLoggingComponent.class.getName() ); //$NON-NLS-1$
-            final Object component = AbstractLoggingComponentFactory.createNamedLoggingComponent( name, null );
-            assertTrue( component instanceof MockLoggingComponent );
+            final Filter component = AbstractLoggingComponentFactory.createNamedLoggingComponent( Filter.class, name, null );
+
+            assertNotNull( component );
+            assertTrue( component instanceof FakeFilter );
         }
         finally
         {
-            if( serviceRegistration != null )
-            {
-                serviceRegistration.unregister();
-            }
-        }
-    }
-
-    /**
-     * Ensures the {@code createNamedLoggingComponent} method does not throw an
-     * exception when passed a {@code null} logging properties object.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testCreateNamedLoggingComponent_LoggingProperties_Null()
-        throws Exception
-    {
-        ServiceRegistration serviceRegistration = null;
-        try
-        {
-            serviceRegistration = Activator.getDefault().getBundleContext().registerService( IComponentFactory.class.getName(), MockLoggingComponent.FACTORY, null );
-
-            final String name = String.format( "%1$s.name", MockLoggingComponent.class.getName() ); //$NON-NLS-1$
-            AbstractLoggingComponentFactory.createNamedLoggingComponent( name, null );
-        }
-        finally
-        {
-            if( serviceRegistration != null )
-            {
-                serviceRegistration.unregister();
-            }
+            serviceRegistration.unregister();
         }
     }
 
     /**
      * Ensures the {@code createNamedLoggingComponent} method throws an
      * exception when passed a name that does not contain at least one dot.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testCreateNamedLoggingComponent_Name_Illegal()
-        throws Exception
     {
-        AbstractLoggingComponentFactory.createNamedLoggingComponent( "name", Collections.<String, String>emptyMap() ); //$NON-NLS-1$
+        AbstractLoggingComponentFactory.createNamedLoggingComponent( Object.class, "name", Collections.<String, String>emptyMap() ); //$NON-NLS-1$
     }
 
     /**
-     * Ensures the {@code createNamedLoggingComponent} method throws an
-     * exception when passed a {@code null} name.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * Ensures the {@code newInstance} method throws an exception when passed a
+     * {@code null} component properties collection.
      */
-    @Test( expected = NullPointerException.class )
-    public void testCreateNamedLoggingComponent_Name_Null()
-        throws Exception
+    @Test( expected = ComponentException.class )
+    public void testNewInstance_ComponentProperties_Null()
     {
-        AbstractLoggingComponentFactory.createNamedLoggingComponent( null, Collections.<String, String>emptyMap() );
+        factory_.newInstance( null );
     }
 
     /**
-     * Ensures the {@code getLoggingProperty} method throws an exception when
-     * passed a {@code null} instance name.
+     * Ensures the {@code newInstance} method throws an exception when the
+     * instance name property is absent.
      */
-    @Test( expected = NullPointerException.class )
-    public void testGetLoggingProperty_InstanceName_Null()
+    @Test( expected = ComponentException.class )
+    public void testNewInstance_InstanceName_Absent()
     {
-        factory_.getLoggingProperty( null, "name", DEFAULT_LOGGING_PROPERTIES ); //$NON-NLS-1$
+        componentProperties_.remove( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME );
+
+        factory_.newInstance( componentProperties_ );
     }
 
     /**
-     * Ensures the {@code getLoggingProperty} method throws an exception when
-     * passed a {@code null} logging properties object.
+     * Ensures the {@code newInstance} method throws an exception when the
+     * instance name property is an illegal type.
      */
-    @Test( expected = NullPointerException.class )
-    public void testGetLoggingProperty_LoggingProperties_Null()
+    @Test( expected = ComponentException.class )
+    public void testNewInstance_InstanceName_IllegalType()
     {
-        factory_.getLoggingProperty( DEFAULT_INSTANCE_NAME, "name", null ); //$NON-NLS-1$
+        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_INSTANCE_NAME, new Object() );
+
+        factory_.newInstance( componentProperties_ );
     }
 
     /**
-     * Ensures the {@code getLoggingProperty} method returns {@code null} when
-     * the logging property is absent.
-     */
-    @Test
-    public void testGetLoggingProperty_Property_Absent()
-    {
-        assertNull( factory_.getLoggingProperty( DEFAULT_INSTANCE_NAME, "name", DEFAULT_LOGGING_PROPERTIES ) ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code getLoggingProperty} method returns the expected value
-     * when the logging property is present.
+     * Ensures the {@code newInstance} method does not throw an exception when
+     * the logging properties property is absent.
      */
     @Test
-    public void testGetLoggingProperty_Property_Present()
+    public void testNewInstance_LoggingProperties_Absent()
     {
-        final String name = "name"; //$NON-NLS-1$
-        final String value = "value"; //$NON-NLS-1$
-        final String key = String.format( "%1$s.%2$s.%3$s", DEFAULT_CLASS_NAME, DEFAULT_INSTANCE_NAME, name ); //$NON-NLS-1$
-        final Map<String, String> loggingProperties = Collections.singletonMap( key, value );
-        assertEquals( value, factory_.getLoggingProperty( DEFAULT_INSTANCE_NAME, name, loggingProperties ) );
+        componentProperties_.remove( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES );
+
+        assertNotNull( factory_.newInstance( componentProperties_ ) );
     }
 
     /**
-     * Ensures the {@code getLoggingProperty} method throws an exception when
-     * passed a {@code null} property name.
+     * Ensures the {@code newInstance} method throws an exception when the
+     * logging properties property is an illegal type.
      */
-    @Test( expected = NullPointerException.class )
-    public void testGetLoggingProperty_PropertyName_Null()
+    @Test( expected = ComponentException.class )
+    public void testNewInstance_LoggingProperties_IllegalType()
     {
-        factory_.getLoggingProperty( DEFAULT_INSTANCE_NAME, null, DEFAULT_LOGGING_PROPERTIES );
+        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_LOGGING_PROPERTIES, new Object() );
+
+        factory_.newInstance( componentProperties_ );
+    }
+
+    /**
+     * Ensures the {@code newInstance} method throws an exception when the type
+     * name property is absent.
+     */
+    @Test( expected = ComponentException.class )
+    public void testNewInstance_TypeName_Absent()
+    {
+        componentProperties_.remove( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME );
+
+        factory_.newInstance( componentProperties_ );
+    }
+
+    /**
+     * Ensures the {@code newInstance} method throws an exception when the type
+     * name property is an illegal type.
+     */
+    @Test( expected = ComponentException.class )
+    public void testNewInstance_TypeName_IllegalType()
+    {
+        componentProperties_.put( LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, new Object() );
+
+        factory_.newInstance( componentProperties_ );
     }
 }

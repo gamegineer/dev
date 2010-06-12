@@ -1,6 +1,6 @@
 /*
- * AbstractLoggingComponentFactoryAsAbstractLoggingComponentFactoryTest.java
- * Copyright 2008 Gamegineer.org
+ * DefaultFormatterFactoryAsAbstractLoggingComponentFactoryTest.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,31 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 24, 2008 at 9:24:14 PM.
+ * Created on Jun 6, 2010 at 9:14:25 PM.
  */
 
 package org.gamegineer.common.internal.core.services.logging;
 
+import java.util.logging.Formatter;
+
 /**
  * A fixture for testing the
- * {@link org.gamegineer.common.internal.core.services.logging.AbstractLoggingComponentFactory}
+ * {@link org.gamegineer.common.internal.core.services.logging.DefaultFormatterFactory}
  * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.common.internal.core.services.logging.AbstractLoggingComponentFactory}
  * class.
  */
-public final class AbstractLoggingComponentFactoryAsAbstractLoggingComponentFactoryTest
-    extends AbstractAbstractLoggingComponentFactoryTestCase<AbstractLoggingComponentFactory<MockLoggingComponent>, MockLoggingComponent>
+public final class DefaultFormatterFactoryAsAbstractLoggingComponentFactoryTest
+    extends AbstractAbstractLoggingComponentFactoryTestCase<DefaultFormatterFactory, Formatter>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code AbstractLoggingComponentFactoryAsAbstractLoggingComponentFactoryTest}
-     * class.
+     * Initializes a new instance of the {@code
+     * DefaultFormatterFactoryAsAbstractLoggingComponentFactoryTest} class.
      */
-    public AbstractLoggingComponentFactoryAsAbstractLoggingComponentFactoryTest()
+    public DefaultFormatterFactoryAsAbstractLoggingComponentFactoryTest()
     {
         super();
     }
@@ -51,14 +52,20 @@ public final class AbstractLoggingComponentFactoryAsAbstractLoggingComponentFact
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.internal.core.util.logging.AbstractAbstractLoggingComponentFactoryTestCase#createLoggingComponentFactory()
+     * @see org.gamegineer.common.internal.core.services.logging.AbstractAbstractLoggingComponentFactoryTestCase#createLoggingComponentFactory()
      */
     @Override
-    protected AbstractLoggingComponentFactory<MockLoggingComponent> createLoggingComponentFactory()
+    protected DefaultFormatterFactory createLoggingComponentFactory()
     {
-        return new AbstractLoggingComponentFactory<MockLoggingComponent>( MockLoggingComponent.class )
-        {
-            // no overrides
-        };
+        return new DefaultFormatterFactory();
+    }
+
+    /*
+     * @see org.gamegineer.common.internal.core.services.logging.AbstractAbstractLoggingComponentFactoryTestCase#getLoggingComponentType()
+     */
+    @Override
+    protected Class<FakeFormatter> getLoggingComponentType()
+    {
+        return FakeFormatter.class;
     }
 }

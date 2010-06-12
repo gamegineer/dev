@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractLoggingComponentFactoryTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,11 +22,8 @@
 package org.gamegineer.common.internal.core.services.logging;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import java.util.Collections;
 import java.util.Map;
-import org.gamegineer.common.core.services.component.ComponentCreationException;
-import org.gamegineer.common.core.services.component.attributes.SupportedClassNamesAttribute;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +36,7 @@ import org.junit.Test;
  * @param <F>
  *        The type of the logging component factory under test.
  * @param <T>
- *        The type of the logging component.
+ *        The type of the logging component; may be an abstract type.
  */
 public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends AbstractLoggingComponentFactory<T>, T>
 {
@@ -52,6 +49,9 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
 
     /** The default logging properties for logging components in the fixture. */
     private static final Map<String, String> DEFAULT_LOGGING_PROPERTIES = Collections.emptyMap();
+
+    /** A logging component for use in the fixture. */
+    private T component_;
 
     /** The logging component factory under test in the fixture. */
     private F factory_;
@@ -76,82 +76,28 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     // ======================================================================
 
     /**
-     * Configures an instance of the logging component associated with the
-     * factory.
-     * 
-     * <p>
-     * This method is provided simply to allow subclasses in other packages to
-     * access the protected
-     * {@link AbstractLoggingComponentFactory#configureLoggingComponent(Object, String, Map)}
-     * method.
-     * </p>
-     * 
-     * @param component
-     *        The logging component; must not be {@code null}.
-     * @param instanceName
-     *        The instance name of the logging component; must not be {@code
-     *        null}. This name is used to discover the component's properties in
-     *        the specified logging properties.
-     * @param loggingProperties
-     *        The logging properties; may be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code component} or {@code instanceName} is {@code null}.
-     */
-    protected final void configureLoggingComponent(
-        /* @NonNull */
-        final T component,
-        /* @NonNull */
-        final String instanceName,
-        /* @Nullable */
-        final Map<String, String> loggingProperties )
-    {
-        factory_.configureLoggingComponent( component, instanceName, loggingProperties );
-    }
-
-    /**
-     * Creates a new instance of the logging component associated with the
-     * factory.
-     * 
-     * <p>
-     * This method is provided simply to allow subclasses in other packages to
-     * access the protected
-     * {@link AbstractLoggingComponentFactory#createLoggingComponent(String, Map)}
-     * method.
-     * </p>
-     * 
-     * @param instanceName
-     *        The instance name of the logging component; must not be {@code
-     *        null}. This name is used to discover the component's properties in
-     *        the specified logging properties.
-     * @param loggingProperties
-     *        The logging properties; may be {@code null}.
-     * 
-     * @return A new instance of the logging component; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code instanceName} is {@code null}.
-     * @throws org.gamegineer.common.core.services.component.ComponentCreationException
-     *         If an error occurred during component creation.
-     */
-    /* @NonNull */
-    protected final T createLoggingComponent(
-        /* @NonNull */
-        final String instanceName,
-        /* @Nullable */
-        final Map<String, String> loggingProperties )
-        throws ComponentCreationException
-    {
-        return factory_.createLoggingComponent( instanceName, loggingProperties );
-    }
-
-    /**
      * Creates the logging component factory to be tested.
      * 
      * @return The logging component factory to be tested; never {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract F createLoggingComponentFactory();
+    protected abstract F createLoggingComponentFactory()
+        throws Exception;
+
+    /**
+     * Gets the logging component for use in the fixture.
+     * 
+     * @return The logging component for use in the fixture; never {@code null}.
+     */
+    /* @NonNull */
+    protected final T getLoggingComponent()
+    {
+        assertNotNull( component_ );
+        return component_;
+    }
 
     /**
      * Gets the logging component factory under test in the fixture.
@@ -167,6 +113,15 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     }
 
     /**
+     * Gets the logging component type created by the factory.
+     * 
+     * @return The logging component type created by the factory; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    protected abstract Class<? extends T> getLoggingComponentType();
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -178,6 +133,8 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     {
         factory_ = createLoggingComponentFactory();
         assertNotNull( factory_ );
+        component_ = factory_.createLoggingComponent( getLoggingComponentType().getName() );
+        assertNotNull( component_ );
     }
 
     /**
@@ -190,6 +147,7 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     public void tearDown()
         throws Exception
     {
+        component_ = null;
         factory_ = null;
     }
 
@@ -206,93 +164,20 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     /**
      * Ensures the {@code configureLoggingComponent} method throws an exception
      * when passed a {@code null} instance name.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
     public void testConfigureLoggingComponent_InstanceName_Null()
-        throws Exception
     {
-        final T component = factory_.createLoggingComponent( DEFAULT_INSTANCE_NAME, DEFAULT_LOGGING_PROPERTIES );
-        factory_.configureLoggingComponent( component, null, DEFAULT_LOGGING_PROPERTIES );
+        factory_.configureLoggingComponent( component_, null, DEFAULT_LOGGING_PROPERTIES );
     }
 
     /**
      * Ensures the {@code createLoggingComponent} method throws an exception
-     * when passed a {@code null} instance name.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * when passed a {@code null} type name.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateLoggingComponent_InstanceName_Null()
-        throws Exception
+    public void testCreateLoggingComponent_TypeName_Null()
     {
-        factory_.createLoggingComponent( null, DEFAULT_LOGGING_PROPERTIES );
-    }
-
-    /**
-     * Ensures the {@code createLoggingComponent} method successfully creates
-     * the logging component when passed an empty collection of logging
-     * properties (because they are optional).
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testCreateLoggingComponent_LoggingProperties_Empty()
-        throws Exception
-    {
-        assertNotNull( factory_.createLoggingComponent( DEFAULT_INSTANCE_NAME, DEFAULT_LOGGING_PROPERTIES ) );
-    }
-
-    /**
-     * Ensures the {@code createLoggingComponent} method successfully creates
-     * the logging component when passed a {@code null} collection of logging
-     * properties (because they are optional).
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testCreateLoggingComponent_LoggingProperties_Null()
-        throws Exception
-    {
-        assertNotNull( factory_.createLoggingComponent( DEFAULT_INSTANCE_NAME, null ) );
-    }
-
-    /**
-     * Ensures the {@code createLoggingComponent} method does not return {@code
-     * null} when passed legal arguments.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testCreateLoggingComponent_ReturnValue_NonNull()
-        throws Exception
-    {
-        final T component = factory_.createLoggingComponent( DEFAULT_INSTANCE_NAME, DEFAULT_LOGGING_PROPERTIES );
-        assertNotNull( component );
-    }
-
-    /**
-     * Ensures the {@code getAttribute} method returns the expected value for
-     * the supported class names attribute.
-     */
-    @Test
-    public void testGetAttribute_SupportedClassNames()
-    {
-        boolean foundClassName = false;
-        for( final String className : SupportedClassNamesAttribute.INSTANCE.getValue( factory_ ) )
-        {
-            if( className.equals( factory_.getType().getName() ) )
-            {
-                foundClassName = true;
-                break;
-            }
-        }
-        assertTrue( foundClassName );
+        factory_.createLoggingComponent( null );
     }
 }

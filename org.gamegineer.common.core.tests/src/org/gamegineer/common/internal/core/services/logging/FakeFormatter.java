@@ -1,6 +1,6 @@
 /*
- * MockFormatter.java
- * Copyright 2008-2009 Gamegineer.org
+ * FakeFormatter.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,43 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 24, 2008 at 10:03:53 PM.
+ * Created on Jun 5, 2010 at 11:06:04 PM.
  */
 
-package org.gamegineer.common.internal.core.util.logging;
+package org.gamegineer.common.internal.core.services.logging;
 
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.services.component.IComponentFactory;
-import org.gamegineer.common.internal.core.services.logging.AbstractLoggingComponentFactory;
 
 /**
- * Mock implementation of {@link java.util.logging.Formatter}.
+ * Fake implementation of {@link java.util.logging.Formatter}.
  */
 @ThreadSafe
-public final class MockFormatter
+public final class FakeFormatter
     extends Formatter
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The component factory for this class. */
-    public static final IComponentFactory FACTORY = new AbstractLoggingComponentFactory<MockFormatter>( MockFormatter.class )
-    {
-        // no overrides
-    };
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MockFormatter} class.
+     * Initializes a new instance of the {@code FakeFormatter} class.
      */
-    public MockFormatter()
+    public FakeFormatter()
     {
         super();
     }
@@ -67,8 +54,9 @@ public final class MockFormatter
      */
     @Override
     public String format(
+        @SuppressWarnings( "unused" )
         final LogRecord record )
     {
-        return record.toString();
+        return ""; //$NON-NLS-1$
     }
 }

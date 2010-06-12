@@ -37,14 +37,28 @@ final class Messages
 
     // --- AbstractLoggingComponentFactory ----------------------------------
 
-    /** The requested class name is unsupported. */
-    public static String AbstractLoggingComponentFactory_createComponent_unsupportedType;
-
     /** Logging component creation failed. */
     public static String AbstractLoggingComponentFactory_createLoggingComponent_failed;
 
     /** The fully-qualified component name must contain at least one dot. */
     public static String AbstractLoggingComponentFactory_createNamedLoggingComponent_nameNoDots;
+
+    /** No component factory available. */
+    public static String AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable;
+
+    /** The filter syntax is invalid. */
+    public static String AbstractLoggingComponentFactory_getComponentFactory_invalidFilterSyntax;
+
+    /** The property value is illegal. */
+    public static String AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue;
+
+    /** No component properties specified. */
+    public static String AbstractLoggingComponentFactory_newInstance_noComponentProperties;
+
+    // --- FrameworkLogHandlerFactory ---------------------------------------
+
+    /** An illegal component type name was specified. */
+    public static String FrameworkLogHandlerFactory_createLoggingComponent_illegalTypeName;
 
 
     // ======================================================================
@@ -75,31 +89,10 @@ final class Messages
     // --- AbstractLoggingComponentFactory ----------------------------------
 
     /**
-     * Gets the formatted message indicating the requested class name is
-     * unsupported.
-     * 
-     * @param className
-     *        The class name; must not be {@code null}.
-     * 
-     * @return The formatted message indicating the requested class name is
-     *         unsupported; never {@code null}.
-     */
-    /* @NonNull */
-    static String AbstractLoggingComponentFactory_createComponent_unsupportedType(
-        /* @NonNull */
-        final String className )
-    {
-        return bind( AbstractLoggingComponentFactory_createComponent_unsupportedType, className );
-    }
-
-    /**
      * Gets the formatted message indicating logging component creation failed.
      * 
-     * @param instanceName
-     *        The instance name of the logging component; must not be {@code
-     *        null}.
-     * @param className
-     *        The class name of the logging component; must not be {@code null}.
+     * @param typeName
+     *        The type name of the logging component; must not be {@code null}.
      * 
      * @return The formatted message indicating logging component creation
      *         failed; never {@code null}.
@@ -107,10 +100,44 @@ final class Messages
     /* @NonNull */
     static String AbstractLoggingComponentFactory_createLoggingComponent_failed(
         /* @NonNull */
-        final String instanceName,
-        /* @NonNull */
-        final String className )
+        final String typeName )
     {
-        return bind( AbstractLoggingComponentFactory_createLoggingComponent_failed, instanceName, className );
+        return bind( AbstractLoggingComponentFactory_createLoggingComponent_failed, typeName );
+    }
+
+    /**
+     * Gets the formatted message indicating no component factory is available
+     * for the specified logging component type.
+     * 
+     * @param typeName
+     *        The type name of the logging component; must not be {@code null}.
+     * 
+     * @return The formatted message indicating no component factory is
+     *         available for the specified logging component type; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    static String AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable(
+        /* @NonNull */
+        final String typeName )
+    {
+        return bind( AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable, typeName );
+    }
+
+    /**
+     * Gets the formatted message indicating the property value is illegal.
+     * 
+     * @param propertyName
+     *        The property name; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the property value is illegal;
+     *         never {@code null}.
+     */
+    /* @NonNull */
+    static String AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue(
+        /* @NonNull */
+        final String propertyName )
+    {
+        return bind( AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue, propertyName );
     }
 }

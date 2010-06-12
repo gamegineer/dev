@@ -1,6 +1,6 @@
 /*
- * StandardOutputHandlerFactoryAsAbstractHandlerFactoryTest.java
- * Copyright 2008 Gamegineer.org
+ * DefaultHandlerFactoryAsAbstractHandlerFactoryTest.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,32 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 25, 2008 at 9:56:46 PM.
+ * Created on Jun 6, 2010 at 9:43:31 PM.
  */
 
-package org.gamegineer.common.internal.core.util.logging;
+package org.gamegineer.common.internal.core.services.logging;
 
-import org.gamegineer.common.core.util.logging.StandardOutputHandler;
+import java.util.logging.Handler;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.common.internal.core.util.logging.StandardOutputHandlerFactory}
+ * {@link org.gamegineer.common.internal.core.services.logging.DefaultHandlerFactory}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.common.internal.core.util.logging.AbstractHandlerFactory}
+ * {@link org.gamegineer.common.internal.core.services.logging.AbstractHandlerFactory}
  * class.
  */
-public final class StandardOutputHandlerFactoryAsAbstractHandlerFactoryTest
-    extends AbstractAbstractHandlerFactoryTestCase<StandardOutputHandlerFactory, StandardOutputHandler>
+public final class DefaultHandlerFactoryAsAbstractHandlerFactoryTest
+    extends AbstractAbstractLoggingComponentFactoryTestCase<DefaultHandlerFactory, Handler>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code StandardOutputHandlerFactoryAsAbstractHandlerFactoryTest} class.
+     * Initializes a new instance of the {@code
+     * DefaultHandlerFactoryAsAbstractHandlerFactoryTest} class.
      */
-    public StandardOutputHandlerFactoryAsAbstractHandlerFactoryTest()
+    public DefaultHandlerFactoryAsAbstractHandlerFactoryTest()
     {
         super();
     }
@@ -55,8 +55,17 @@ public final class StandardOutputHandlerFactoryAsAbstractHandlerFactoryTest
      * @see org.gamegineer.common.internal.core.services.logging.AbstractAbstractLoggingComponentFactoryTestCase#createLoggingComponentFactory()
      */
     @Override
-    protected StandardOutputHandlerFactory createLoggingComponentFactory()
+    protected DefaultHandlerFactory createLoggingComponentFactory()
     {
-        return new StandardOutputHandlerFactory();
+        return new DefaultHandlerFactory();
+    }
+
+    /*
+     * @see org.gamegineer.common.internal.core.services.logging.AbstractAbstractLoggingComponentFactoryTestCase#getLoggingComponentType()
+     */
+    @Override
+    protected Class<? extends Handler> getLoggingComponentType()
+    {
+        return FakeHandler.class;
     }
 }

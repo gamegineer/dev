@@ -1,6 +1,6 @@
 /*
  * FrameworkLogHandler.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.core.util.logging;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.logging.ErrorManager;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
@@ -28,8 +29,8 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import net.jcip.annotations.NotThreadSafe;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.osgi.framework.log.FrameworkLog;
 import org.eclipse.osgi.framework.log.FrameworkLogEntry;
-import org.gamegineer.common.internal.core.Services;
 
 /**
  * A logging handler that publishes records to the Equinox framework log.
@@ -52,7 +53,7 @@ import org.gamegineer.common.internal.core.Services;
  * </p>
  */
 @NotThreadSafe
-public class FrameworkLogHandler
+public final class FrameworkLogHandler
     extends Handler
 {
     // ======================================================================
@@ -62,6 +63,9 @@ public class FrameworkLogHandler
     /** The hard-coded formatter used by the handler. */
     private final Formatter formatter_;
 
+    /** The framework log to which output will be written. */
+    private final FrameworkLog frameworkLog_;
+
 
     // ======================================================================
     // Constructors
@@ -69,9 +73,21 @@ public class FrameworkLogHandler
 
     /**
      * Initializes a new instance of the {@code FrameworkLogHandler} class.
+     * 
+     * @param frameworkLog
+     *        The framework log to which output will be written; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code frameworkLog} is {@code null}.
      */
-    public FrameworkLogHandler()
+    public FrameworkLogHandler(
+        /* @NonNull */
+        final FrameworkLog frameworkLog )
     {
+        assertArgumentNotNull( frameworkLog, "frameworkLog" ); //$NON-NLS-1$
+
+        frameworkLog_ = frameworkLog;
         formatter_ = new FrameworkLogFormatter();
 
         setFilter( null );
@@ -158,7 +174,7 @@ public class FrameworkLogHandler
         }
 
         final FrameworkLogEntry logEntry = new FrameworkLogEntry( record.getLoggerName(), getSeverity( record ), 0, message, 0, record.getThrown(), null );
-        Services.getDefault().getFrameworkLog().log( logEntry );
+        frameworkLog_.log( logEntry );
     }
 
 

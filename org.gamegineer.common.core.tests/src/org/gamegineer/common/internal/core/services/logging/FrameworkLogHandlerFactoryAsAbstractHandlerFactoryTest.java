@@ -1,6 +1,6 @@
 /*
  * FrameworkLogHandlerFactoryAsAbstractHandlerFactoryTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,18 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 25, 2008 at 10:41:20 PM.
+ * Created on Jun 11, 2010 at 3:20:56 PM.
  */
 
-package org.gamegineer.common.internal.core.util.logging;
+package org.gamegineer.common.internal.core.services.logging;
 
+import static org.easymock.EasyMock.createMock;
+import org.eclipse.osgi.framework.log.FrameworkLog;
 import org.gamegineer.common.core.util.logging.FrameworkLogHandler;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.common.internal.core.util.logging.FrameworkLogHandlerFactory}
+ * {@link org.gamegineer.common.internal.core.services.logging.FrameworkLogHandlerFactory}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.common.internal.core.util.logging.AbstractHandlerFactory}
+ * {@link org.gamegineer.common.internal.core.services.logging.AbstractHandlerFactory}
  * class.
  */
 public final class FrameworkLogHandlerFactoryAsAbstractHandlerFactoryTest
@@ -38,8 +40,8 @@ public final class FrameworkLogHandlerFactoryAsAbstractHandlerFactoryTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code FrameworkLogHandlerFactoryAsAbstractHandlerFactoryTest} class.
+     * Initializes a new instance of the {@code
+     * FrameworkLogHandlerFactoryAsAbstractHandlerFactoryTest} class.
      */
     public FrameworkLogHandlerFactoryAsAbstractHandlerFactoryTest()
     {
@@ -52,11 +54,22 @@ public final class FrameworkLogHandlerFactoryAsAbstractHandlerFactoryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.internal.core.util.logging.AbstractAbstractLoggingComponentFactoryTestCase#createLoggingComponentFactory()
+     * @see org.gamegineer.common.internal.core.services.logging.AbstractAbstractLoggingComponentFactoryTestCase#createLoggingComponentFactory()
      */
     @Override
     protected FrameworkLogHandlerFactory createLoggingComponentFactory()
     {
-        return new FrameworkLogHandlerFactory();
+        final FrameworkLogHandlerFactory factory = new FrameworkLogHandlerFactory();
+        factory.bindFrameworkLog( createMock( FrameworkLog.class ) );
+        return factory;
+    }
+
+    /*
+     * @see org.gamegineer.common.internal.core.services.logging.AbstractAbstractLoggingComponentFactoryTestCase#getLoggingComponentType()
+     */
+    @Override
+    protected Class<? extends FrameworkLogHandler> getLoggingComponentType()
+    {
+        return FrameworkLogHandler.class;
     }
 }
