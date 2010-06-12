@@ -37,20 +37,11 @@ public final class Debug
     /** The name of the top-level debug option. */
     public static final String OPTION_DEFAULT = Activator.SYMBOLIC_NAME + "/debug"; //$NON-NLS-1$
 
-    /** The name of the services package debug option. */
-    public static final String OPTION_SERVICES = OPTION_DEFAULT + "/services"; //$NON-NLS-1$
-
-    /** The name of the component service package debug option. */
-    public static final String OPTION_SERVICES_COMPONENT = OPTION_SERVICES + "/component"; //$NON-NLS-1$
-
     /** The name of the logging service package debug option. */
-    public static final String OPTION_SERVICES_LOGGING = OPTION_SERVICES + "/logging"; //$NON-NLS-1$
-
-    /** The name of the utility package debug option. */
-    public static final String OPTION_UTILITY = OPTION_DEFAULT + "/util"; //$NON-NLS-1$
+    public static final String OPTION_SERVICES_LOGGING = OPTION_DEFAULT + "/services/logging"; //$NON-NLS-1$
 
     /** The name of the logging package debug option. */
-    public static final String OPTION_UTILITY_LOGGING = OPTION_UTILITY + "/logging"; //$NON-NLS-1$
+    public static final String OPTION_UTILITY_LOGGING = OPTION_DEFAULT + "/util/logging"; //$NON-NLS-1$
 
 
     // ======================================================================
