@@ -93,6 +93,16 @@ public final class ServicesTest
     }
 
     /**
+     * Ensures the {@code bindExtensionRegistry} method throws an exception when
+     * passed a {@code null} extension registry service.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testBindExtensionRegistry_ExtensionRegistry_Null()
+    {
+        services_.bindExtensionRegistry( null );
+    }
+
+    /**
      * Ensures the {@code bindLoggingService} method throws an exception when
      * passed a {@code null} logging service.
      */
@@ -110,6 +120,16 @@ public final class ServicesTest
     public void testUnbindDebugOptions_DebugOptions_Null()
     {
         services_.unbindDebugOptions( null );
+    }
+
+    /**
+     * Ensures the {@code unbindExtensionRegistry} method throws an exception
+     * when passed a {@code null} extension registry service.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testUnbindExtensionRegistry_ExtensionRegistry_Null()
+    {
+        services_.unbindExtensionRegistry( null );
     }
 
     /**

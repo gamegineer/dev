@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.core.services.cardpilebasedesignregistry;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,6 +32,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.common.core.runtime.Platform;
 import org.gamegineer.table.core.CardPileBaseDesignFactory;
 import org.gamegineer.table.core.CardPileBaseDesignId;
@@ -148,8 +150,15 @@ public final class CardPileBaseDesignRegistry
     /* @NonNull */
     private static Collection<ICardPileBaseDesign> getForeignCardPileBaseDesigns()
     {
+        final IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+        if( extensionRegistry == null )
+        {
+            Loggers.getDefaultLogger().warning( Messages.CardPileBaseDesignRegistry_getForeignCardPileBaseDesigns_noExtensionRegistry );
+            return Collections.emptyList();
+        }
+
         final Collection<ICardPileBaseDesign> cardPileBaseDesigns = new ArrayList<ICardPileBaseDesign>();
-        for( final IConfigurationElement configurationElement : Platform.getExtensionRegistry().getConfigurationElementsFor( Activator.SYMBOLIC_NAME, Activator.EXTENSION_CARD_PILE_BASE_DESIGNS ) )
+        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( Activator.SYMBOLIC_NAME, Activator.EXTENSION_CARD_PILE_BASE_DESIGNS ) )
         {
             try
             {

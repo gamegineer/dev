@@ -57,6 +57,9 @@ final class Messages
     /** A duplicate card pile base design identifier was detected. */
     public static String CardPileBaseDesignUIRegistry_getCardPileBaseDesignUIMap_duplicateId;
 
+    /** The extension registry is not available. */
+    public static String CardPileBaseDesignUIRegistry_getForeignCardPileBaseDesignUIs_noExtensionRegistry;
+
     /**
      * An error occurred while parsing the card pile base design user interface
      * definition.

@@ -52,11 +52,12 @@ public final class Platform
     /**
      * Gets the platform extension registry.
      * 
-     * @return The platform extension registry; never {@code null}.
+     * @return The platform extension registry or {@code null} if no extension
+     *         registry is available.
      */
-    /* @NonNull */
+    /* @Nullable */
     public static IExtensionRegistry getExtensionRegistry()
     {
-        return Services.getDefault().getExtensionRegistry();
+        return Services.getExtensionRegistry();
     }
 }

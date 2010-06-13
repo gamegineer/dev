@@ -23,6 +23,7 @@ package org.gamegineer.common.internal.persistence.schemes.beans.services.persis
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.beans.PersistenceDelegate;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -33,6 +34,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.common.core.runtime.Platform;
 import org.gamegineer.common.internal.persistence.Activator;
 import org.gamegineer.common.internal.persistence.Loggers;
@@ -95,8 +97,15 @@ public final class PersistenceDelegateRegistry
     /* @NonNull */
     private static Map<String, PersistenceDelegate> getForeignPersistenceDelegateMap()
     {
+        final IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+        if( extensionRegistry == null )
+        {
+            Loggers.getDefaultLogger().warning( Messages.PersistenceDelegateRegistry_getForeignPersistenceDelegateMap_noExtensionRegistry );
+            return Collections.emptyMap();
+        }
+
         final Map<String, PersistenceDelegate> persistenceDelegates = new HashMap<String, PersistenceDelegate>();
-        for( final IConfigurationElement configurationElement : Platform.getExtensionRegistry().getConfigurationElementsFor( Activator.SYMBOLIC_NAME, Activator.EXTENSION_BEANS_PERSISTENCE_DELEGATES ) )
+        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( Activator.SYMBOLIC_NAME, Activator.EXTENSION_BEANS_PERSISTENCE_DELEGATES ) )
         {
             try
             {

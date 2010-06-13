@@ -41,6 +41,9 @@ final class Messages
     /** A duplicate card surface design identifier was detected. */
     public static String CardSurfaceDesignRegistry_getCardSurfaceDesignMap_duplicateId;
 
+    /** The extension registry is not available. */
+    public static String CardSurfaceDesignRegistry_getForeignCardSurfaceDesigns_noExtensionRegistry;
+
     /** An error occurred while parsing the card surface design definition. */
     public static String CardSurfaceDesignRegistry_getForeignCardSurfaceDesigns_parseError;
 

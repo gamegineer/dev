@@ -22,21 +22,14 @@
 package org.gamegineer.common.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.osgi.service.debug.DebugOptions;
 import org.gamegineer.common.core.services.logging.ILoggingService;
-import org.osgi.framework.BundleContext;
-import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * Manages the OSGi services used by the bundle.
- * 
- * <p>
- * The {@code close} method should be called before the bundle is stopped.
- * </p>
  */
 @ThreadSafe
 public final class Services
@@ -49,8 +42,9 @@ public final class Services
     @GuardedBy( "lock_" )
     private static DebugOptions debugOptions_ = null;
 
-    /** The singleton instance. */
-    private static final Services instance_ = new Services();
+    /** The extension registry service. */
+    @GuardedBy( "lock_" )
+    private static IExtensionRegistry extensionRegistry_ = null;
 
     /** The logging service. */
     @GuardedBy( "lock_" )
@@ -58,9 +52,6 @@ public final class Services
 
     /** The class lock. */
     private static Object lock_ = new Object();
-
-    /** The extension registry service tracker. */
-    private ServiceTracker extensionRegistryServiceTracker_;
 
 
     // ======================================================================
@@ -111,6 +102,36 @@ public final class Services
     }
 
     /**
+     * Binds the specified extension registry service.
+     * 
+     * <p>
+     * This method will unbind the currently bound extension registry service
+     * before binding the new extension registry service.
+     * </p>
+     * 
+     * @param extensionRegistry
+     *        The extension registry service to bind; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code extensionRegistry} is {@code null}.
+     */
+    public void bindExtensionRegistry(
+        /* @NonNull */
+        final IExtensionRegistry extensionRegistry )
+    {
+        assertArgumentNotNull( extensionRegistry, "extensionRegistry" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            if( extensionRegistry_ != null )
+            {
+                unbindExtensionRegistry( extensionRegistry_ );
+            }
+            extensionRegistry_ = extensionRegistry;
+        }
+    }
+
+    /**
      * Binds the specified logging service.
      * 
      * <p>
@@ -141,23 +162,6 @@ public final class Services
     }
 
     /**
-     * Closes the services managed by this object.
-     */
-    void close()
-    {
-        // Close bundle-specific services
-        if( extensionRegistryServiceTracker_ != null )
-        {
-            extensionRegistryServiceTracker_.close();
-            extensionRegistryServiceTracker_ = null;
-        }
-
-        // Unregister package-specific services
-
-        // Unregister bundle-specific services
-    }
-
-    /**
      * Gets the debug options service.
      * 
      * @return The debug options service or {@code null} if no debug options
@@ -173,32 +177,18 @@ public final class Services
     }
 
     /**
-     * Gets the default instance of the {@code Services} class.
+     * Gets the extension registry service.
      * 
-     * @return The default instance of the {@code Services} class; never {@code
-     *         null}.
+     * @return The extension registry service or {@code null} if no extension
+     *         registry service is available.
      */
-    /* @NonNull */
-    public static Services getDefault()
+    /* @Nullable */
+    public static IExtensionRegistry getExtensionRegistry()
     {
-        return instance_;
-    }
-
-    /**
-     * Gets the extension registry service managed by this object.
-     * 
-     * @return The extension registry service managed by this object; never
-     *         {@code null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If this object is not open.
-     */
-    /* @NonNull */
-    public IExtensionRegistry getExtensionRegistry()
-    {
-        assertStateLegal( extensionRegistryServiceTracker_ != null, Messages.Services_extensionRegistryServiceTracker_notSet );
-
-        return (IExtensionRegistry)extensionRegistryServiceTracker_.getService();
+        synchronized( lock_ )
+        {
+            return extensionRegistry_;
+        }
     }
 
     /**
@@ -214,27 +204,6 @@ public final class Services
         {
             return loggingService_;
         }
-    }
-
-    /**
-     * Opens the services managed by this object.
-     * 
-     * @param context
-     *        The execution context of the bundle; must not be {@code null}.
-     */
-    void open(
-        /* @NonNull */
-        final BundleContext context )
-    {
-        assert context != null;
-
-        // Register bundle-specific services
-
-        // Register package-specific services
-
-        // Open bundle-specific services
-        extensionRegistryServiceTracker_ = new ServiceTracker( context, IExtensionRegistry.class.getName(), null );
-        extensionRegistryServiceTracker_.open();
     }
 
     /**
@@ -262,6 +231,36 @@ public final class Services
             if( debugOptions_ == debugOptions )
             {
                 debugOptions_ = null;
+            }
+        }
+    }
+
+    /**
+     * Unbinds the specified extension registry service.
+     * 
+     * <p>
+     * This method does nothing if the specified extension registry service is
+     * not bound.
+     * </p>
+     * 
+     * @param extensionRegistry
+     *        The extension registry service to unbind; must not be {@code null}
+     *        .
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code extensionRegistry} is {@code null}.
+     */
+    public void unbindExtensionRegistry(
+        /* @NonNull */
+        final IExtensionRegistry extensionRegistry )
+    {
+        assertArgumentNotNull( extensionRegistry, "extensionRegistry" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            if( extensionRegistry_ == extensionRegistry )
+            {
+                extensionRegistry_ = null;
             }
         }
     }

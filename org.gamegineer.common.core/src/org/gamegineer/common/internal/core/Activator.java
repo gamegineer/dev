@@ -99,8 +99,6 @@ public final class Activator
         context_ = context;
         assert instance_ == null;
         instance_ = this;
-
-        Services.getDefault().open( context );
     }
 
     /*
@@ -112,8 +110,6 @@ public final class Activator
         final BundleContext context )
         throws Exception
     {
-        Services.getDefault().close();
-
         instance_ = null;
         context_ = null;
     }

@@ -37,11 +37,14 @@ final class Messages
 
     // --- PersistenceDelegateRegistry --------------------------------------
 
-    /** A duplicate persistence delegate class name was detected. */
-    public static String PersistenceDelegateRegistry_getPersistenceDelegateMap_duplicateClassName;
+    /** The extension registry is not available. */
+    public static String PersistenceDelegateRegistry_getForeignPersistenceDelegateMap_noExtensionRegistry;
 
     /** An error occurred while parsing the persistence delegate definition. */
     public static String PersistenceDelegateRegistry_getForeignPersistenceDelegateMap_parseError;
+
+    /** A duplicate persistence delegate class name was detected. */
+    public static String PersistenceDelegateRegistry_getPersistenceDelegateMap_duplicateClassName;
 
 
     // ======================================================================
@@ -72,24 +75,6 @@ final class Messages
     // --- PersistenceDelegateRegistry --------------------------------------
 
     /**
-     * Gets the formatted message indicating a duplicate persistence delegate
-     * class name was detected.
-     * 
-     * @param className
-     *        The persistence delegate class name; must not be {@code null}.
-     * 
-     * @return The formatted message indicating a duplicate persistence delegate
-     *         class name identifier was detected; never {@code null}.
-     */
-    /* @NonNull */
-    static String PersistenceDelegateRegistry_getPersistenceDelegateMap_duplicateClassName(
-        /* @NonNull */
-        final String className )
-    {
-        return bind( PersistenceDelegateRegistry_getPersistenceDelegateMap_duplicateClassName, className );
-    }
-
-    /**
      * Gets the formatted message indicating an error occurred while parsing the
      * persistence delegate definition.
      * 
@@ -105,5 +90,23 @@ final class Messages
         final String className )
     {
         return bind( PersistenceDelegateRegistry_getForeignPersistenceDelegateMap_parseError, className );
+    }
+
+    /**
+     * Gets the formatted message indicating a duplicate persistence delegate
+     * class name was detected.
+     * 
+     * @param className
+     *        The persistence delegate class name; must not be {@code null}.
+     * 
+     * @return The formatted message indicating a duplicate persistence delegate
+     *         class name identifier was detected; never {@code null}.
+     */
+    /* @NonNull */
+    static String PersistenceDelegateRegistry_getPersistenceDelegateMap_duplicateClassName(
+        /* @NonNull */
+        final String className )
+    {
+        return bind( PersistenceDelegateRegistry_getPersistenceDelegateMap_duplicateClassName, className );
     }
 }

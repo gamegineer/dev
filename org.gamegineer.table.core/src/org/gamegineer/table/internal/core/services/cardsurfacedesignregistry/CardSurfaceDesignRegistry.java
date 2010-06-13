@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.core.services.cardsurfacedesignregistry;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,6 +32,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.common.core.runtime.Platform;
 import org.gamegineer.table.core.CardSurfaceDesignFactory;
 import org.gamegineer.table.core.CardSurfaceDesignId;
@@ -141,8 +143,15 @@ public final class CardSurfaceDesignRegistry
     /* @NonNull */
     private static Collection<ICardSurfaceDesign> getForeignCardSurfaceDesigns()
     {
+        final IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+        if( extensionRegistry == null )
+        {
+            Loggers.getDefaultLogger().warning( Messages.CardSurfaceDesignRegistry_getForeignCardSurfaceDesigns_noExtensionRegistry );
+            return Collections.emptyList();
+        }
+
         final Collection<ICardSurfaceDesign> cardSurfaceDesigns = new ArrayList<ICardSurfaceDesign>();
-        for( final IConfigurationElement configurationElement : Platform.getExtensionRegistry().getConfigurationElementsFor( Activator.SYMBOLIC_NAME, Activator.EXTENSION_CARD_SURFACE_DESIGNS ) )
+        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( Activator.SYMBOLIC_NAME, Activator.EXTENSION_CARD_SURFACE_DESIGNS ) )
         {
             try
             {
