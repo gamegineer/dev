@@ -155,7 +155,7 @@ public final class Card
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.Card_cardLocationChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Card_cardLocationChanged_unexpectedException, e );
             }
         }
     }
@@ -174,7 +174,7 @@ public final class Card
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.Card_cardOrientationChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Card_cardOrientationChanged_unexpectedException, e );
             }
         }
     }

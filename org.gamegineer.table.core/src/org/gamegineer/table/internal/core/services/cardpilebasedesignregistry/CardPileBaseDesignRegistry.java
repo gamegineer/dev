@@ -119,7 +119,7 @@ public final class CardPileBaseDesignRegistry
         {
             if( cardPileBaseDesigns.containsKey( cardPileBaseDesign.getId() ) )
             {
-                Loggers.DEFAULT.warning( Messages.CardPileBaseDesignRegistry_getCardPileBaseDesignMap_duplicateId( cardPileBaseDesign.getId() ) );
+                Loggers.getDefaultLogger().warning( Messages.CardPileBaseDesignRegistry_getCardPileBaseDesignMap_duplicateId( cardPileBaseDesign.getId() ) );
             }
             else
             {
@@ -160,7 +160,7 @@ public final class CardPileBaseDesignRegistry
             }
             catch( final NumberFormatException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardPileBaseDesignRegistry_getForeignCardPileBaseDesigns_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPileBaseDesignRegistry_getForeignCardPileBaseDesigns_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
             }
         }
         return cardPileBaseDesigns;

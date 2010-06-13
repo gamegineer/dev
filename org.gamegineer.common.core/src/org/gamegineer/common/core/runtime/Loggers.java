@@ -36,13 +36,44 @@ import org.osgi.framework.Bundle;
  * This class is intended to be extended by clients. Typically, a client will
  * write their own bundle- or package-specific version of this class and simply
  * inherit the static methods it provides. For example, a client-specific
- * version might include fields that represent the loggers available in the
+ * version might include methods that represent the loggers available in the
  * bundle.
  * </p>
  */
 @ThreadSafe
 public abstract class Loggers
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /**
+     * The default logging service used when no platform logging service is
+     * available. This logging service always uses the global logger regardless
+     * of which bundle and logger name are specified.
+     */
+    private static final ILoggingService DEFAULT_LOGGING_SERVICE = new ILoggingService()
+    {
+        @Override
+        public Logger getLogger(
+            final Bundle bundle )
+        {
+            return getLogger( bundle, null );
+        }
+
+        @Override
+        public Logger getLogger(
+            final Bundle bundle,
+            @SuppressWarnings( "unused" )
+            final String name )
+        {
+            assertArgumentNotNull( bundle, "bundle" ); //$NON-NLS-1$
+
+            return Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
+        }
+    };
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -69,29 +100,6 @@ public abstract class Loggers
     protected static ILoggingService getLoggingService()
     {
         final ILoggingService loggingService = Services.getLoggingService();
-        if( loggingService != null )
-        {
-            return loggingService;
-        }
-
-        return new ILoggingService()
-        {
-            @Override
-            public Logger getLogger(
-                final Bundle bundle )
-            {
-                return getLogger( bundle, null );
-            }
-
-            @Override
-            public Logger getLogger(
-                final Bundle bundle,
-                final String name )
-            {
-                assertArgumentNotNull( bundle, "bundle" ); //$NON-NLS-1$
-
-                return java.util.logging.LogManager.getLogManager().getLogger( name );
-            }
-        };
+        return (loggingService != null) ? loggingService : DEFAULT_LOGGING_SERVICE;
     }
 }

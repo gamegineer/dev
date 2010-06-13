@@ -245,7 +245,7 @@ public final class TableModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.TableModel_cardPileFocusChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableModel_cardPileFocusChanged_unexpectedException, e );
             }
         }
     }
@@ -264,7 +264,7 @@ public final class TableModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.TableModel_tableModelStateChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableModel_tableModelStateChanged_unexpectedException, e );
             }
         }
     }
@@ -283,7 +283,7 @@ public final class TableModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.TableModel_tableOriginOffsetChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableModel_tableOriginOffsetChanged_unexpectedException, e );
             }
         }
     }

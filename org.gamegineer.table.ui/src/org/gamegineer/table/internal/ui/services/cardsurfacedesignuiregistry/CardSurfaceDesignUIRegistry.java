@@ -176,7 +176,7 @@ public final class CardSurfaceDesignUIRegistry
         {
             if( cardSurfaceDesignUIs.containsKey( cardSurfaceDesignUI.getId() ) )
             {
-                Loggers.DEFAULT.warning( Messages.CardSurfaceDesignUIRegistry_getCardSurfaceDesignUIMap_duplicateId( cardSurfaceDesignUI.getId() ) );
+                Loggers.getDefaultLogger().warning( Messages.CardSurfaceDesignUIRegistry_getCardSurfaceDesignUIMap_duplicateId( cardSurfaceDesignUI.getId() ) );
             }
             else
             {
@@ -214,7 +214,7 @@ public final class CardSurfaceDesignUIRegistry
             }
             catch( final IllegalArgumentException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardSurfaceDesignUIRegistry_getForeignCardSurfaceDesignUIs_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardSurfaceDesignUIRegistry_getForeignCardSurfaceDesignUIs_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
             }
         }
         return cardSurfaceDesignUIs;

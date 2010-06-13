@@ -219,7 +219,7 @@ public final class CardPile
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardPile_cardAdded_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPile_cardAdded_unexpectedException, e );
             }
         }
     }
@@ -238,7 +238,7 @@ public final class CardPile
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardPile_cardPileBoundsChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPile_cardPileBoundsChanged_unexpectedException, e );
             }
         }
     }
@@ -264,7 +264,7 @@ public final class CardPile
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardPile_cardRemoved_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPile_cardRemoved_unexpectedException, e );
             }
         }
     }

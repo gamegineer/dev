@@ -136,7 +136,7 @@ public final class CardModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardModel_cardModelStateChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardModel_cardModelStateChanged_unexpectedException, e );
             }
         }
     }

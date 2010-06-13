@@ -348,7 +348,7 @@ public final class MainFrame
             }
             catch( final ModelException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.MainFrame_openTable_error, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainFrame_openTable_error, e );
                 JOptionPane.showMessageDialog( this, Messages.MainFrame_openTable_error, Messages.MainFrame_application_name, JOptionPane.ERROR_MESSAGE );
             }
         }
@@ -416,7 +416,7 @@ public final class MainFrame
         }
         catch( final ModelException e )
         {
-            Loggers.DEFAULT.log( Level.SEVERE, Messages.MainFrame_saveTable_error, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainFrame_saveTable_error, e );
             JOptionPane.showMessageDialog( this, Messages.MainFrame_saveTable_error, Messages.MainFrame_application_name, JOptionPane.ERROR_MESSAGE );
             return false;
         }

@@ -221,7 +221,7 @@ public final class CardPileModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardPileModel_cardPileFocusGained_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPileModel_cardPileFocusGained_unexpectedException, e );
             }
         }
     }
@@ -240,7 +240,7 @@ public final class CardPileModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardPileModel_cardPileFocusLost_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPileModel_cardPileFocusLost_unexpectedException, e );
             }
         }
     }
@@ -259,7 +259,7 @@ public final class CardPileModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardPileModel_cardPileModelStateChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPileModel_cardPileModelStateChanged_unexpectedException, e );
             }
         }
     }

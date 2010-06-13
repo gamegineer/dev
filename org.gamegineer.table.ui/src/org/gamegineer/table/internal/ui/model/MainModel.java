@@ -150,7 +150,7 @@ public final class MainModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.MainModel_mainModelDirtyFlagChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainModel_mainModelDirtyFlagChanged_unexpectedException, e );
             }
         }
     }
@@ -169,7 +169,7 @@ public final class MainModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.MainModel_mainModelFileNameChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainModel_mainModelFileNameChanged_unexpectedException, e );
             }
         }
     }
@@ -188,7 +188,7 @@ public final class MainModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.MainModel_mainModelStateChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainModel_mainModelStateChanged_unexpectedException, e );
             }
         }
     }
@@ -214,7 +214,7 @@ public final class MainModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.MainModel_tableClosed_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainModel_tableClosed_unexpectedException, e );
             }
         }
     }
@@ -240,7 +240,7 @@ public final class MainModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.MainModel_tableOpened_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainModel_tableOpened_unexpectedException, e );
             }
         }
     }

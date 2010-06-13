@@ -109,7 +109,7 @@ public final class PersistenceDelegateRegistry
             }
             catch( final CoreException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.PersistenceDelegateRegistry_getForeignPersistenceDelegateMap_parseError( configurationElement.getAttribute( ATTR_CLASS ) ), e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.PersistenceDelegateRegistry_getForeignPersistenceDelegateMap_parseError( configurationElement.getAttribute( ATTR_CLASS ) ), e );
             }
         }
         return persistenceDelegates;
@@ -155,7 +155,7 @@ public final class PersistenceDelegateRegistry
             final PersistenceDelegate persistenceDelegate = entry.getValue();
             if( persistenceDelegates.containsKey( className ) )
             {
-                Loggers.DEFAULT.warning( Messages.PersistenceDelegateRegistry_getPersistenceDelegateMap_duplicateClassName( className ) );
+                Loggers.getDefaultLogger().warning( Messages.PersistenceDelegateRegistry_getPersistenceDelegateMap_duplicateClassName( className ) );
             }
             else
             {

@@ -112,7 +112,7 @@ public final class CardSurfaceDesignRegistry
         {
             if( cardSurfaceDesigns.containsKey( cardSurfaceDesign.getId() ) )
             {
-                Loggers.DEFAULT.warning( Messages.CardSurfaceDesignRegistry_getCardSurfaceDesignMap_duplicateId( cardSurfaceDesign.getId() ) );
+                Loggers.getDefaultLogger().warning( Messages.CardSurfaceDesignRegistry_getCardSurfaceDesignMap_duplicateId( cardSurfaceDesign.getId() ) );
             }
             else
             {
@@ -153,7 +153,7 @@ public final class CardSurfaceDesignRegistry
             }
             catch( final NumberFormatException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardSurfaceDesignRegistry_getForeignCardSurfaceDesigns_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardSurfaceDesignRegistry_getForeignCardSurfaceDesigns_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
             }
         }
         return cardSurfaceDesigns;

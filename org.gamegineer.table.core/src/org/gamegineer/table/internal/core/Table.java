@@ -149,7 +149,7 @@ public final class Table
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.Table_cardPileAdded_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Table_cardPileAdded_unexpectedException, e );
             }
         }
     }
@@ -175,7 +175,7 @@ public final class Table
             }
             catch( final RuntimeException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.Table_cardPileRemoved_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Table_cardPileRemoved_unexpectedException, e );
             }
         }
     }

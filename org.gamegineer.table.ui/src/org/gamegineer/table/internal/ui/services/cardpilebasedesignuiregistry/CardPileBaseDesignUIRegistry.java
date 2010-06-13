@@ -176,7 +176,7 @@ public final class CardPileBaseDesignUIRegistry
         {
             if( cardPileBaseDesignUIs.containsKey( cardPileBaseDesignUI.getId() ) )
             {
-                Loggers.DEFAULT.warning( Messages.CardPileBaseDesignUIRegistry_getCardPileBaseDesignUIMap_duplicateId( cardPileBaseDesignUI.getId() ) );
+                Loggers.getDefaultLogger().warning( Messages.CardPileBaseDesignUIRegistry_getCardPileBaseDesignUIMap_duplicateId( cardPileBaseDesignUI.getId() ) );
             }
             else
             {
@@ -214,7 +214,7 @@ public final class CardPileBaseDesignUIRegistry
             }
             catch( final IllegalArgumentException e )
             {
-                Loggers.DEFAULT.log( Level.SEVERE, Messages.CardPileBaseDesignUIRegistry_getForeignCardPileBaseDesignUIs_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPileBaseDesignUIRegistry_getForeignCardPileBaseDesignUIs_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
             }
         }
         return cardPileBaseDesignUIs;

@@ -217,7 +217,7 @@ public final class TableRunner
         }
         catch( final Exception e )
         {
-            Loggers.DEFAULT.log( Level.SEVERE, Messages.TableRunner_openFrame_error, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableRunner_openFrame_error, e );
             stop( TableResult.FAIL );
         }
     }

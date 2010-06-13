@@ -1,6 +1,6 @@
 /*
  * Loggers.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,6 @@ package org.gamegineer.table.internal.ui;
 
 import java.util.logging.Logger;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.services.logging.ILoggingService;
-import org.osgi.framework.Bundle;
 
 /**
  * Manages the loggers used by the bundle.
@@ -34,26 +32,8 @@ public final class Loggers
     extends org.gamegineer.common.core.runtime.Loggers
 {
     // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The default logger for the bundle. */
-    public static final Logger DEFAULT;
-
-
-    // ======================================================================
     // Constructors
     // ======================================================================
-
-    /**
-     * Initializes the {@code Loggers} class.
-     */
-    static
-    {
-        final Bundle bundle = Activator.getDefault().getBundleContext().getBundle();
-        final ILoggingService loggingService = getLoggingService();
-        DEFAULT = loggingService.getLogger( bundle );
-    }
 
     /**
      * Initializes a new instance of the {@code Loggers} class.
@@ -61,5 +41,21 @@ public final class Loggers
     private Loggers()
     {
         super();
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Gets the default logger for the bundle.
+     * 
+     * @return The default logger for the bundle; never {@code null}.
+     */
+    /* @NonNull */
+    public static Logger getDefaultLogger()
+    {
+        return getLoggingService().getLogger( Activator.getDefault().getBundleContext().getBundle() );
     }
 }
