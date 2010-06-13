@@ -43,7 +43,7 @@ public final class Activator
     private static Activator instance_;
 
     /** The bundle context. */
-    private BundleContext context_;
+    private BundleContext bundleContext_;
 
 
     // ======================================================================
@@ -71,8 +71,8 @@ public final class Activator
     /* @NonNull */
     public BundleContext getBundleContext()
     {
-        assert context_ != null;
-        return context_;
+        assert bundleContext_ != null;
+        return bundleContext_;
     }
 
     /**
@@ -92,11 +92,10 @@ public final class Activator
      */
     @Override
     public void start(
-        final BundleContext context )
-        throws Exception
+        final BundleContext bundleContext )
     {
-        assert context_ == null;
-        context_ = context;
+        assert bundleContext_ == null;
+        bundleContext_ = bundleContext;
         assert instance_ == null;
         instance_ = this;
     }
@@ -107,10 +106,9 @@ public final class Activator
     @Override
     public void stop(
         @SuppressWarnings( "unused" )
-        final BundleContext context )
-        throws Exception
+        final BundleContext bundleContext )
     {
         instance_ = null;
-        context_ = null;
+        bundleContext_ = null;
     }
 }
