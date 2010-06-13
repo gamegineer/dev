@@ -24,7 +24,7 @@ package org.gamegineer.common.core.services.logging;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * Defines standard values for Logging Service constants.
+ * Defines useful constants for use by the Logging Service and its clients.
  */
 @ThreadSafe
 public final class LoggingServiceConstants
