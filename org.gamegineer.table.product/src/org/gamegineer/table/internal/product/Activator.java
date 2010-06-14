@@ -98,8 +98,6 @@ public final class Activator
         assert wasBundleContextNull;
         final boolean wasInstanceNull = instance_.compareAndSet( null, this );
         assert wasInstanceNull;
-
-        Services.getDefault().open( bundleContext );
     }
 
     /*
@@ -109,8 +107,6 @@ public final class Activator
     public void stop(
         final BundleContext bundleContext )
     {
-        Services.getDefault().close();
-
         final boolean wasInstanceNonNull = instance_.compareAndSet( this, null );
         assert wasInstanceNonNull;
         final boolean wasBundleContextNonNull = bundleContext_.compareAndSet( bundleContext, null );
