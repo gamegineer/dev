@@ -21,6 +21,7 @@
 
 package org.gamegineer.test.internal.core;
 
+import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.ThreadSafe;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -37,10 +38,10 @@ public final class Activator
     // ======================================================================
 
     /** The singleton instance of the bundle activator. */
-    private static Activator instance_;
+    private static final AtomicReference<Activator> instance_ = new AtomicReference<Activator>();
 
     /** The bundle context. */
-    private BundleContext bundleContext_;
+    private final AtomicReference<BundleContext> bundleContext_;
 
 
     // ======================================================================
@@ -52,7 +53,7 @@ public final class Activator
      */
     public Activator()
     {
-        super();
+        bundleContext_ = new AtomicReference<BundleContext>();
     }
 
 
@@ -68,8 +69,9 @@ public final class Activator
     /* @NonNull */
     public BundleContext getBundleContext()
     {
-        assert bundleContext_ != null;
-        return bundleContext_;
+        final BundleContext bundleContext = bundleContext_.get();
+        assert bundleContext != null;
+        return bundleContext;
     }
 
     /**
@@ -80,8 +82,9 @@ public final class Activator
     /* @NonNull */
     public static Activator getDefault()
     {
-        assert instance_ != null;
-        return instance_;
+        final Activator instance = instance_.get();
+        assert instance != null;
+        return instance;
     }
 
     /*
@@ -91,10 +94,10 @@ public final class Activator
     public void start(
         final BundleContext bundleContext )
     {
-        assert bundleContext_ == null;
-        bundleContext_ = bundleContext;
-        assert instance_ == null;
-        instance_ = this;
+        final boolean wasBundleContextNull = bundleContext_.compareAndSet( null, bundleContext );
+        assert wasBundleContextNull;
+        final boolean wasInstanceNull = instance_.compareAndSet( null, this );
+        assert wasInstanceNull;
     }
 
     /*
@@ -102,10 +105,11 @@ public final class Activator
      */
     @Override
     public void stop(
-        @SuppressWarnings( "unused" )
         final BundleContext bundleContext )
     {
-        instance_ = null;
-        bundleContext_ = null;
+        final boolean wasInstanceNonNull = instance_.compareAndSet( this, null );
+        assert wasInstanceNonNull;
+        final boolean wasBundleContextNonNull = bundleContext_.compareAndSet( bundleContext, null );
+        assert wasBundleContextNonNull;
     }
 }
