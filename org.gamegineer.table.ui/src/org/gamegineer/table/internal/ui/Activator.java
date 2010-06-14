@@ -36,15 +36,6 @@ public final class Activator
     // Fields
     // ======================================================================
 
-    /** The card pile base design user interfaces extension point identifier. */
-    public static final String EXTENSION_CARD_PILE_BASE_DESIGN_UIS = "cardPileBaseDesignUIs"; //$NON-NLS-1$
-
-    /** The card surface design user interfaces extension point identifier. */
-    public static final String EXTENSION_CARD_SURFACE_DESIGN_UIS = "cardSurfaceDesignUIs"; //$NON-NLS-1$
-
-    /** The symbolic name of the bundle. */
-    public static final String SYMBOLIC_NAME = "org.gamegineer.table.ui"; //$NON-NLS-1$
-
     /** The singleton instance of the bundle activator. */
     private static Activator instance_;
 

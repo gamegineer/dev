@@ -35,7 +35,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.common.core.runtime.Platform;
-import org.gamegineer.common.internal.persistence.Activator;
+import org.gamegineer.common.internal.persistence.BundleConstants;
 import org.gamegineer.common.internal.persistence.Loggers;
 import org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
@@ -105,7 +105,7 @@ public final class PersistenceDelegateRegistry
         }
 
         final Map<String, IPersistenceDelegate> persistenceDelegates = new HashMap<String, IPersistenceDelegate>();
-        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( Activator.SYMBOLIC_NAME, Activator.EXTENSION_SERIALIZABLE_PERSISTENCE_DELEGATES ) )
+        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( BundleConstants.SYMBOLIC_NAME, BundleConstants.EXTENSION_SERIALIZABLE_PERSISTENCE_DELEGATES ) )
         {
             try
             {

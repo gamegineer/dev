@@ -36,9 +36,6 @@ public final class Activator
     // Fields
     // ======================================================================
 
-    /** The symbolic name of the bundle. */
-    public static final String SYMBOLIC_NAME = "org.gamegineer.table.product"; //$NON-NLS-1$
-
     /** The singleton instance of the bundle activator. */
     private static Activator instance_;
 

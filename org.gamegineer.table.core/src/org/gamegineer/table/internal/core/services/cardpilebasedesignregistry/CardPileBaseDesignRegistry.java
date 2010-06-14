@@ -38,7 +38,7 @@ import org.gamegineer.table.core.CardPileBaseDesignFactory;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry;
-import org.gamegineer.table.internal.core.Activator;
+import org.gamegineer.table.internal.core.BundleConstants;
 import org.gamegineer.table.internal.core.Loggers;
 
 /**
@@ -158,7 +158,7 @@ public final class CardPileBaseDesignRegistry
         }
 
         final Collection<ICardPileBaseDesign> cardPileBaseDesigns = new ArrayList<ICardPileBaseDesign>();
-        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( Activator.SYMBOLIC_NAME, Activator.EXTENSION_CARD_PILE_BASE_DESIGNS ) )
+        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( BundleConstants.SYMBOLIC_NAME, BundleConstants.EXTENSION_CARD_PILE_BASE_DESIGNS ) )
         {
             try
             {

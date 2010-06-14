@@ -38,7 +38,7 @@ import org.gamegineer.table.core.CardSurfaceDesignFactory;
 import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry;
-import org.gamegineer.table.internal.core.Activator;
+import org.gamegineer.table.internal.core.BundleConstants;
 import org.gamegineer.table.internal.core.Loggers;
 
 /**
@@ -151,7 +151,7 @@ public final class CardSurfaceDesignRegistry
         }
 
         final Collection<ICardSurfaceDesign> cardSurfaceDesigns = new ArrayList<ICardSurfaceDesign>();
-        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( Activator.SYMBOLIC_NAME, Activator.EXTENSION_CARD_SURFACE_DESIGNS ) )
+        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( BundleConstants.SYMBOLIC_NAME, BundleConstants.EXTENSION_CARD_SURFACE_DESIGNS ) )
         {
             try
             {

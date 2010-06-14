@@ -35,7 +35,7 @@ public final class Debug
     // ======================================================================
 
     /** The name of the top-level debug option. */
-    public static final String OPTION_DEFAULT = Activator.SYMBOLIC_NAME + "/debug"; //$NON-NLS-1$
+    public static final String OPTION_DEFAULT = BundleConstants.SYMBOLIC_NAME + "/debug"; //$NON-NLS-1$
 
 
     // ======================================================================

@@ -1,5 +1,5 @@
 /*
- * Debug.java
+ * BundleConstants.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 16, 2009 at 11:11:55 PM.
+ * Created on Jun 13, 2010 at 8:57:47 PM.
  */
 
 package org.gamegineer.table.internal.product;
@@ -24,18 +24,17 @@ package org.gamegineer.table.internal.product;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * Debugging utilities for the bundle.
+ * Defines useful constants for use by the bundle.
  */
 @ThreadSafe
-public final class Debug
-    extends org.gamegineer.common.core.runtime.Debug
+public final class BundleConstants
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The name of the top-level debug option. */
-    public static final String OPTION_DEFAULT = BundleConstants.SYMBOLIC_NAME + "/debug"; //$NON-NLS-1$
+    /** The symbolic name of the bundle. */
+    public static final String SYMBOLIC_NAME = "org.gamegineer.table.product"; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -43,9 +42,9 @@ public final class Debug
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code Debug} class.
+     * Initializes a new instance of the {@code BundleConstants} class.
      */
-    private Debug()
+    private BundleConstants()
     {
         super();
     }

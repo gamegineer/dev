@@ -36,15 +36,6 @@ public final class Activator
     // Fields
     // ======================================================================
 
-    /** The JavaBeans persistence delegate extension point identifier. */
-    public static final String EXTENSION_BEANS_PERSISTENCE_DELEGATES = "beansPersistenceDelegates"; //$NON-NLS-1$
-
-    /** The Serializable persistence delegate extension point identifier. */
-    public static final String EXTENSION_SERIALIZABLE_PERSISTENCE_DELEGATES = "serializablePersistenceDelegates"; //$NON-NLS-1$
-
-    /** The symbolic name of the bundle. */
-    public static final String SYMBOLIC_NAME = "org.gamegineer.common.persistence"; //$NON-NLS-1$
-
     /** The singleton instance of the bundle activator. */
     private static Activator instance_;
 

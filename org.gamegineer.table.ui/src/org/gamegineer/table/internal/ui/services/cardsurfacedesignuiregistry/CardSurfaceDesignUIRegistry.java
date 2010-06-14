@@ -39,7 +39,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Path;
 import org.gamegineer.common.core.runtime.Platform;
 import org.gamegineer.table.core.CardSurfaceDesignId;
-import org.gamegineer.table.internal.ui.Activator;
+import org.gamegineer.table.internal.ui.BundleConstants;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.Services;
 import org.gamegineer.table.internal.ui.util.swing.IconProxy;
@@ -215,7 +215,7 @@ public final class CardSurfaceDesignUIRegistry
         }
 
         final Collection<ICardSurfaceDesignUI> cardSurfaceDesignUIs = new ArrayList<ICardSurfaceDesignUI>();
-        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( Activator.SYMBOLIC_NAME, Activator.EXTENSION_CARD_SURFACE_DESIGN_UIS ) )
+        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( BundleConstants.SYMBOLIC_NAME, BundleConstants.EXTENSION_CARD_SURFACE_DESIGN_UIS ) )
         {
             try
             {
