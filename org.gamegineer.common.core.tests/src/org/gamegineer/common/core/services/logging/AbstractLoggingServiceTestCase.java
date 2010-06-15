@@ -1,6 +1,6 @@
 /*
  * AbstractLoggingServiceTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,7 +40,7 @@ public abstract class AbstractLoggingServiceTestCase
     // Fields
     // ======================================================================
 
-    /** The log service under test in the fixture. */
+    /** The logging service under test in the fixture. */
     private ILoggingService service_;
 
 
@@ -63,12 +63,16 @@ public abstract class AbstractLoggingServiceTestCase
     // ======================================================================
 
     /**
-     * Creates the log service to be tested.
+     * Creates the logging service to be tested.
      * 
-     * @return The log service to be tested; never {@code null}.
+     * @return The logging service to be tested; never {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract ILoggingService createLogService();
+    protected abstract ILoggingService createLogService()
+        throws Exception;
 
     /**
      * Sets up the test fixture.
@@ -102,7 +106,7 @@ public abstract class AbstractLoggingServiceTestCase
      * passed a {@code null} bundle.
      */
     @Test( expected = NullPointerException.class )
-    public void testGetDefaultLogger_Bundle_Null()
+    public void testGetLoggerFromBundle_Bundle_Null()
     {
         service_.getLogger( null );
     }
@@ -112,49 +116,51 @@ public abstract class AbstractLoggingServiceTestCase
      * .
      */
     @Test
-    public void testGetDefaultLogger_ReturnValue_NonNull()
+    public void testGetLoggerFromBundle_ReturnValue_NonNull()
     {
         assertNotNull( service_.getLogger( Activator.getDefault().getBundleContext().getBundle() ) );
     }
 
     /**
-     * Ensures the {@code getLogger(Bundle,String)} method throws an exception
+     * Ensures the {@code getLogger(Bundle, String)} method throws an exception
      * when passed a {@code null} bundle.
      */
     @Test( expected = NullPointerException.class )
-    public void testGetLogger_Bundle_Null()
+    public void testGetLoggerFromBundleAndName_Bundle_Null()
     {
         service_.getLogger( null, "name" ); //$NON-NLS-1$
     }
 
     /**
-     * Ensures the {@code getLogger(Bundle,String)} method returns the default
+     * Ensures the {@code getLogger(Bundle, String)} method returns the default
      * logger when passed an empty name.
      */
     @Test
-    public void testGetLogger_Name_Empty()
+    public void testGetLoggerFromBundleAndName_Name_Empty()
     {
         final Bundle bundle = Activator.getDefault().getBundleContext().getBundle();
+
         assertSame( service_.getLogger( bundle ), service_.getLogger( bundle, "" ) ); //$NON-NLS-1$
     }
 
     /**
-     * Ensures the {@code getLogger(Bundle,String)} method returns the default
+     * Ensures the {@code getLogger(Bundle, String)} method returns the default
      * logger when passed a {@code null} name.
      */
     @Test
-    public void testGetLogger_Name_Null()
+    public void testGetLoggerFromBundleAndName_Name_Null()
     {
         final Bundle bundle = Activator.getDefault().getBundleContext().getBundle();
+
         assertSame( service_.getLogger( bundle ), service_.getLogger( bundle, null ) );
     }
 
     /**
-     * Ensures the {@code getLogger(Bundle,String)} method does not return
+     * Ensures the {@code getLogger(Bundle, String)} method does not return
      * {@code null}.
      */
     @Test
-    public void testGetLogger_ReturnValue_NonNull()
+    public void testGetLoggerFromBundleAndName_ReturnValue_NonNull()
     {
         assertNotNull( service_.getLogger( Activator.getDefault().getBundleContext().getBundle(), "name" ) ); //$NON-NLS-1$
     }
