@@ -1066,6 +1066,7 @@ final class TableView
          */
         void activate(
             /* @NonNull */
+            @SuppressWarnings( "unused" )
             final MouseEvent e )
         {
             // default implementation does nothing

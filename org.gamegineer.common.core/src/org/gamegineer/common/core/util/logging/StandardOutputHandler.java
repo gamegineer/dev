@@ -86,7 +86,7 @@ public final class StandardOutputHandler
      * @see java.util.logging.StreamHandler#close()
      */
     @Override
-    public void close()
+    public synchronized void close()
         throws SecurityException
     {
         flush();
@@ -96,10 +96,11 @@ public final class StandardOutputHandler
      * @see java.util.logging.StreamHandler#publish(java.util.logging.LogRecord)
      */
     @Override
-    public void publish(
+    public synchronized void publish(
         final LogRecord record )
     {
         super.publish( record );
+
         flush();
     }
 }

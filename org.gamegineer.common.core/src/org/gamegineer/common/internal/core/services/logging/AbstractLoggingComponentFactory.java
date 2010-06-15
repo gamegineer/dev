@@ -114,6 +114,7 @@ public abstract class AbstractLoggingComponentFactory<T>
         /* @NonNull */
         final String instanceName,
         /* @Nullable */
+        @SuppressWarnings( "unused" )
         final Map<String, String> properties )
     {
         assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
