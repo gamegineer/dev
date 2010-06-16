@@ -43,7 +43,10 @@ final class Messages
     /** The fully-qualified component name must contain at least one dot. */
     public static String AbstractLoggingComponentFactory_createNamedLoggingComponent_nameNoDots;
 
-    /** No component factory available. */
+    /** A component factory is no longer available. */
+    public static String AbstractLoggingComponentFactory_createNamedLoggingComponent_noComponentFactoryAvailable;
+
+    /** No component factory is available. */
     public static String AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable;
 
     /** The filter syntax is invalid. */
@@ -59,6 +62,9 @@ final class Messages
 
     /** An illegal component type name was specified. */
     public static String FrameworkLogHandlerFactory_createLoggingComponent_illegalTypeName;
+
+    /** No framework log service is available. */
+    public static String FrameworkLogHandlerFactory_createLoggingComponent_noFrameworkLogAvailable;
 
 
     // ======================================================================

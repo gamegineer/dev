@@ -98,7 +98,13 @@ public final class FrameworkLogHandlerFactory
             throw new ComponentException( Messages.FrameworkLogHandlerFactory_createLoggingComponent_illegalTypeName );
         }
 
-        return new FrameworkLogHandler( frameworkLog_.get() );
+        final FrameworkLog frameworkLog = frameworkLog_.get();
+        if( frameworkLog == null )
+        {
+            throw new ComponentException( Messages.FrameworkLogHandlerFactory_createLoggingComponent_noFrameworkLogAvailable );
+        }
+
+        return new FrameworkLogHandler( frameworkLog );
     }
 
     /**

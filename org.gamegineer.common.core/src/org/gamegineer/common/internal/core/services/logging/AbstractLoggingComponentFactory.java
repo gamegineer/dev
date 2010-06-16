@@ -225,6 +225,11 @@ public abstract class AbstractLoggingComponentFactory<T>
 
         final ServiceReference serviceReference = findComponentFactory( typeName, type );
         final ComponentFactory factory = (ComponentFactory)Activator.getDefault().getBundleContext().getService( serviceReference );
+        if( factory == null )
+        {
+            throw new ComponentException( Messages.AbstractLoggingComponentFactory_createNamedLoggingComponent_noComponentFactoryAvailable );
+        }
+
         try
         {
             final Dictionary<String, Object> componentProperties = new Hashtable<String, Object>();
