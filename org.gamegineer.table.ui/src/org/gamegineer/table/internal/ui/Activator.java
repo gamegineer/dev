@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.ThreadSafe;
 import org.osgi.framework.BundleActivator;
@@ -94,6 +95,8 @@ public final class Activator
     public void start(
         final BundleContext bundleContext )
     {
+        assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
+
         final boolean wasBundleContextNull = bundleContext_.compareAndSet( null, bundleContext );
         assert wasBundleContextNull;
         final boolean wasInstanceNull = instance_.compareAndSet( null, this );
@@ -109,6 +112,8 @@ public final class Activator
     public void stop(
         final BundleContext bundleContext )
     {
+        assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
+
         Services.getDefault().close();
 
         final boolean wasInstanceNonNull = instance_.compareAndSet( this, null );
