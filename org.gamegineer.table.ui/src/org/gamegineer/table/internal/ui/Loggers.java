@@ -56,6 +56,6 @@ public final class Loggers
     /* @NonNull */
     public static Logger getDefaultLogger()
     {
-        return getLoggingService().getLogger( Activator.getDefault().getBundleContext().getBundle() );
+        return getLogger( Activator.getDefault().getBundleContext().getBundle(), null );
     }
 }

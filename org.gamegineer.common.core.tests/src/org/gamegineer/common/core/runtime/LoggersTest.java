@@ -1,5 +1,5 @@
 /*
- * Loggers.java
+ * LoggersTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 16, 2008 at 10:54:56 PM.
+ * Created on Jun 15, 2010 at 10:37:40 PM.
  */
 
-package org.gamegineer.common.internal.core;
+package org.gamegineer.common.core.runtime;
 
-import java.util.logging.Logger;
-import net.jcip.annotations.ThreadSafe;
+import org.junit.Test;
 
 /**
- * Manages the loggers used by the bundle.
+ * A fixture for testing the {@link org.gamegineer.common.core.runtime.Loggers}
+ * class.
  */
-@ThreadSafe
-public final class Loggers
-    extends org.gamegineer.common.core.runtime.Loggers
+public final class LoggersTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code Loggers} class.
+     * Initializes a new instance of the {@code LoggersTest} class.
      */
-    private Loggers()
+    public LoggersTest()
     {
         super();
     }
@@ -49,13 +47,12 @@ public final class Loggers
     // ======================================================================
 
     /**
-     * Gets the default logger for the bundle.
-     * 
-     * @return The default logger for the bundle; never {@code null}.
+     * Ensures the {@code getLogger} method throws an exception when passed a
+     * {@code null} bundle.
      */
-    /* @NonNull */
-    public static Logger getDefaultLogger()
+    @Test( expected = NullPointerException.class )
+    public void testGetLogger_Bundle_Null()
     {
-        return getLogger( Activator.getDefault().getBundleContext().getBundle(), null );
+        Loggers.getLogger( null, "" ); //$NON-NLS-1$
     }
 }

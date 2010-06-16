@@ -44,37 +44,6 @@ import org.osgi.framework.Bundle;
 public abstract class Loggers
 {
     // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /**
-     * The default logging service used when no platform logging service is
-     * available. This logging service always uses the global logger regardless
-     * of which bundle and logger name are specified.
-     */
-    private static final ILoggingService DEFAULT_LOGGING_SERVICE = new ILoggingService()
-    {
-        @Override
-        public Logger getLogger(
-            final Bundle bundle )
-        {
-            return getLogger( bundle, null );
-        }
-
-        @Override
-        public Logger getLogger(
-            final Bundle bundle,
-            @SuppressWarnings( "unused" )
-            final String name )
-        {
-            assertArgumentNotNull( bundle, "bundle" ); //$NON-NLS-1$
-
-            return Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
-        }
-    };
-
-
-    // ======================================================================
     // Constructors
     // ======================================================================
 
@@ -92,14 +61,34 @@ public abstract class Loggers
     // ======================================================================
 
     /**
-     * Gets the platform logging service.
+     * Gets the named logger for the specified bundle.
      * 
-     * @return The platform logging service; never {@code null}.
+     * @param bundle
+     *        The bundle; must not be {@code null}.
+     * @param name
+     *        The logger name. If {@code null} or an empty string, the default
+     *        logger for the bundle will be returned.
+     * 
+     * @return The named logger for the specified bundle; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code bundle} is {@code null}.
      */
     /* @NonNull */
-    protected static ILoggingService getLoggingService()
+    protected static Logger getLogger(
+        /* @NonNull */
+        final Bundle bundle,
+        /* @Nullable */
+        final String name )
     {
+        assertArgumentNotNull( bundle, "bundle" ); //$NON-NLS-1$
+
         final ILoggingService loggingService = Services.getLoggingService();
-        return (loggingService != null) ? loggingService : DEFAULT_LOGGING_SERVICE;
+        if( loggingService == null )
+        {
+            return Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
+        }
+
+        return loggingService.getLogger( bundle, name );
     }
 }
