@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="org.gamegineer.common.core" version="2">
+    <resource path="src/org/gamegineer/common/core/runtime/Debug.java" type="org.gamegineer.common.core.runtime.Debug$NullDebugTrace">
+        <filter id="574619656">
+            <message_arguments>
+                <message_argument value="DebugTrace"/>
+                <message_argument value="NullDebugTrace"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>

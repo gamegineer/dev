@@ -22,11 +22,10 @@
 package org.gamegineer.common.core.runtime;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Date;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.service.debug.DebugOptions;
+import org.eclipse.osgi.service.debug.DebugTrace;
 import org.gamegineer.common.internal.core.Services;
 
 /**
@@ -44,15 +43,37 @@ import org.gamegineer.common.internal.core.Services;
 public abstract class Debug
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The default debug trace used when no other debug trace is available. */
+    private static final DebugTrace DEFAULT_DEBUG_TRACE = new NullDebugTrace();
+
+    /** The symbolic name of the bundle associated with this instance. */
+    private final String bundleSymbolicName_;
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
      * Initializes a new instance of the {@code Debug} class.
+     * 
+     * @param bundleSymbolicName
+     *        The symbolic name of the bundle associated with this instance;
+     *        must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code bundleSymbolicName} is {@code null}.
      */
-    protected Debug()
+    protected Debug(
+        /* @NonNull */
+        final String bundleSymbolicName )
     {
-        super();
+        assertArgumentNotNull( bundleSymbolicName, "bundleSymbolicName" ); //$NON-NLS-1$
+
+        bundleSymbolicName_ = bundleSymbolicName;
     }
 
 
@@ -61,55 +82,25 @@ public abstract class Debug
     // ======================================================================
 
     /**
-     * Indicates the specified debug option is enabled.
+     * Gets the debug trace for the bundle associated with this instance.
      * 
-     * @param option
-     *        The debug option; may be {@code null}.
-     * 
-     * @return {@code true} if the specified debug option is enabled; otherwise
-     *         {@code false}.
+     * @return The debug trace for the bundle associated with this instance;
+     *         never {@code null}.
      */
-    private static boolean isDebugOptionEnabled(
-        /* @Nullable */
-        final String option )
+    /* @NonNull */
+    private DebugTrace getDebugTrace()
     {
-        if( option == null )
-        {
-            return true;
-        }
-
         final DebugOptions debugOptions = Services.getDebugOptions();
         if( debugOptions == null )
         {
-            return false;
+            return DEFAULT_DEBUG_TRACE;
         }
 
-        return debugOptions.getBooleanOption( option, false );
+        return debugOptions.newDebugTrace( bundleSymbolicName_, Debug.class );
     }
 
     /**
-     * Prints a message to standard output.
-     * 
-     * @param message
-     *        The message; may be {@code null}.
-     */
-    private static void trace(
-        /* @Nullable */
-        final String message )
-    {
-        assert message != null;
-
-        final StringBuilder sb = new StringBuilder();
-        sb.append( new Date( System.currentTimeMillis() ) );
-        sb.append( " - [" ); //$NON-NLS-1$
-        sb.append( Thread.currentThread().getName() );
-        sb.append( "] " ); //$NON-NLS-1$
-        sb.append( message );
-        System.out.println( sb.toString() );
-    }
-
-    /**
-     * Prints a message to standard output for the specified debug option.
+     * Traces a message for the specified debug option.
      * 
      * @param option
      *        The debug option that is used to control whether the trace message
@@ -117,54 +108,267 @@ public abstract class Debug
      * @param message
      *        The message; may be {@code null}.
      */
-    public static void trace(
+    public final void trace(
         /* @Nullable */
         final String option,
         /* @Nullable */
         final String message )
     {
-        if( isDebugOptionEnabled( option ) )
-        {
-            trace( message );
-        }
+        getDebugTrace().trace( option, message );
     }
 
     /**
-     * Prints a message with an associated exception to standard output for the
+     * Traces a message and exception for the specified debug option.
+     * 
+     * @param option
+     *        The debug option that is used to control whether the trace message
+     *        is printed or {@code null} to always print the trace message.
+     * @param message
+     *        The message; may be {@code null}.
+     * @param error
+     *        The exception; may be {@code null}.
+     */
+    public final void trace(
+        /* @Nullable */
+        final String option,
+        /* @Nullable */
+        final String message,
+        /* @Nullable */
+        final Throwable error )
+    {
+        getDebugTrace().trace( option, message, error );
+    }
+
+    /**
+     * Traces a stack dump for the currently executing method for the specified
+     * debug option.
+     * 
+     * @param option
+     *        The debug option that is used to control whether the trace message
+     *        is printed or {@code null} to always print the trace message.
+     */
+    public final void traceDumpStack(
+        /* @Nullable */
+        final String option )
+    {
+        getDebugTrace().traceDumpStack( option );
+    }
+
+    /**
+     * Traces an entry message for the currently executing method for the
      * specified debug option.
      * 
      * @param option
      *        The debug option that is used to control whether the trace message
      *        is printed or {@code null} to always print the trace message.
-     * @param message
-     *        The message to print before the exception; may be {@code null}.
-     * @param exception
-     *        The exception; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code exception} is {@code null}.
      */
-    public static void trace(
+    public final void traceEntry(
+        /* @Nullable */
+        final String option )
+    {
+        getDebugTrace().traceEntry( option );
+    }
+
+    /**
+     * Traces an entry message for the currently executing method with the
+     * specified argument for the specified debug option.
+     * 
+     * @param option
+     *        The debug option that is used to control whether the trace message
+     *        is printed or {@code null} to always print the trace message.
+     * @param methodArgument
+     *        The method argument; may be {@code null}.
+     */
+    public final void traceEntry(
         /* @Nullable */
         final String option,
         /* @Nullable */
-        final String message,
-        /* @NonNull */
-        final Exception exception )
+        final Object methodArgument )
     {
-        assertArgumentNotNull( exception, "exception" ); //$NON-NLS-1$
+        getDebugTrace().traceEntry( option, methodArgument );
+    }
 
-        if( isDebugOptionEnabled( option ) )
+    /**
+     * Traces an entry message for the currently executing method with the
+     * specified arguments for the specified debug option.
+     * 
+     * @param option
+     *        The debug option that is used to control whether the trace message
+     *        is printed or {@code null} to always print the trace message.
+     * @param methodArguments
+     *        The method arguments; may be {@code null}.
+     */
+    public final void traceEntry(
+        /* @Nullable */
+        final String option,
+        /* @Nullable */
+        final Object... methodArguments )
+    {
+        getDebugTrace().traceEntry( option, methodArguments );
+    }
+
+    /**
+     * Traces an exit message for the currently executing method for the
+     * specified debug option.
+     * 
+     * @param option
+     *        The debug option that is used to control whether the trace message
+     *        is printed or {@code null} to always print the trace message.
+     */
+    public final void traceExit(
+        /* @Nullable */
+        final String option )
+    {
+        getDebugTrace().traceExit( option );
+    }
+
+    /**
+     * Traces an exit message for the currently executing method with the
+     * specified result for the specified debug option.
+     * 
+     * @param option
+     *        The debug option that is used to control whether the trace message
+     *        is printed or {@code null} to always print the trace message.
+     * @param result
+     *        The method result; may be {@code null}.
+     */
+    public final void traceExit(
+        /* @Nullable */
+        final String option,
+        /* @Nullable */
+        final Object result )
+    {
+        getDebugTrace().traceExit( option, result );
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * Null implementation of the
+     * {@link org.eclipse.osgi.service.debug.DebugTrace}.
+     */
+    @Immutable
+    private static final class NullDebugTrace
+        implements DebugTrace
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code NullDebugTrace} class.
+         */
+        NullDebugTrace()
         {
-            final StringWriter sw = new StringWriter();
-            final PrintWriter pw = new PrintWriter( sw );
-            if( message != null )
-            {
-                pw.print( message );
-                pw.print( ": " ); //$NON-NLS-1$
-            }
-            exception.printStackTrace( pw );
-            trace( sw.toString() );
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.eclipse.osgi.service.debug.DebugTrace#trace(java.lang.String, java.lang.String)
+         */
+        @Override
+        public void trace(
+            @SuppressWarnings( "unused" )
+            final String option,
+            @SuppressWarnings( "unused" )
+            final String message )
+        {
+            // do nothing
+        }
+
+        /*
+         * @see org.eclipse.osgi.service.debug.DebugTrace#trace(java.lang.String, java.lang.String, java.lang.Throwable)
+         */
+        @Override
+        public void trace(
+            @SuppressWarnings( "unused" )
+            final String option,
+            @SuppressWarnings( "unused" )
+            final String message,
+            @SuppressWarnings( "unused" )
+            final Throwable error )
+        {
+            // do nothing
+        }
+
+        /*
+         * @see org.eclipse.osgi.service.debug.DebugTrace#traceDumpStack(java.lang.String)
+         */
+        @Override
+        public void traceDumpStack(
+            @SuppressWarnings( "unused" )
+            final String option )
+        {
+            // do nothing
+        }
+
+        /*
+         * @see org.eclipse.osgi.service.debug.DebugTrace#traceEntry(java.lang.String)
+         */
+        @Override
+        public void traceEntry(
+            @SuppressWarnings( "unused" )
+            final String option )
+        {
+            // do nothing
+        }
+
+        /*
+         * @see org.eclipse.osgi.service.debug.DebugTrace#traceEntry(java.lang.String, java.lang.Object)
+         */
+        @Override
+        public void traceEntry(
+            @SuppressWarnings( "unused" )
+            final String option,
+            @SuppressWarnings( "unused" )
+            final Object methodArgument )
+        {
+            // do nothing
+        }
+
+        /*
+         * @see org.eclipse.osgi.service.debug.DebugTrace#traceEntry(java.lang.String, java.lang.Object[])
+         */
+        @Override
+        public void traceEntry(
+            @SuppressWarnings( "unused" )
+            final String option,
+            @SuppressWarnings( "unused" )
+            final Object[] methodArguments )
+        {
+            // do nothing
+        }
+
+        /*
+         * @see org.eclipse.osgi.service.debug.DebugTrace#traceExit(java.lang.String)
+         */
+        @Override
+        public void traceExit(
+            @SuppressWarnings( "unused" )
+            final String option )
+        {
+            // do nothing
+        }
+
+        /*
+         * @see org.eclipse.osgi.service.debug.DebugTrace#traceExit(java.lang.String, java.lang.Object)
+         */
+        @Override
+        public void traceExit(
+            @SuppressWarnings( "unused" )
+            final String option,
+            @SuppressWarnings( "unused" )
+            final Object result )
+        {
+            // do nothing
         }
     }
 }

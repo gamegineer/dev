@@ -47,12 +47,15 @@ public final class DebugTest
     // ======================================================================
 
     /**
-     * Ensures the {@code trace(String, String,Exception)} method throws an
-     * exception when passed a {@code null} exception.
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * bundle symbolic name.
      */
     @Test( expected = NullPointerException.class )
-    public void testTraceMessageAndException_Exception_Null()
+    public void testConstructor_BundleSymbolicName_Null()
     {
-        Debug.trace( "option", "message", null ); //$NON-NLS-1$ //$NON-NLS-2$
+        new Debug( null )
+        {
+            // no overrides
+        };
     }
 }

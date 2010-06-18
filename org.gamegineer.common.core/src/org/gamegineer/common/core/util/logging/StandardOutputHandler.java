@@ -70,7 +70,7 @@ public final class StandardOutputHandler
         }
         catch( final UnsupportedEncodingException e )
         {
-            Debug.trace( Debug.OPTION_UTILITY_LOGGING, "Default platform encoding is not supported", e ); //$NON-NLS-1$
+            Debug.getDefault().trace( Debug.OPTION_UTILITY_LOGGING, "Default platform encoding is not supported", e ); //$NON-NLS-1$
         }
 
         setFilter( null );

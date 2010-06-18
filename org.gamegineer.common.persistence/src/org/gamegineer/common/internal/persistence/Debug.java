@@ -34,8 +34,11 @@ public final class Debug
     // Fields
     // ======================================================================
 
+    /** The singleton instance of the bundle debug utility. */
+    private static final Debug INSTANCE = new Debug();
+
     /** The name of the top-level debug option. */
-    public static final String OPTION_DEFAULT = BundleConstants.SYMBOLIC_NAME + "/debug"; //$NON-NLS-1$
+    public static final String OPTION_DEFAULT = "/debug"; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -47,6 +50,23 @@ public final class Debug
      */
     private Debug()
     {
-        super();
+        super( BundleConstants.SYMBOLIC_NAME );
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Gets the default instance of the bundle debug utility.
+     * 
+     * @return The default instance of the bundle debug utility; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    public static Debug getDefault()
+    {
+        return INSTANCE;
     }
 }
