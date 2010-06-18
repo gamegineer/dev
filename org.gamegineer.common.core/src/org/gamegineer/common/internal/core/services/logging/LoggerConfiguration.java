@@ -106,11 +106,11 @@ final class LoggerConfiguration
             }
             catch( final IllegalArgumentException e )
             {
-                Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Illegal filter name specified for logger '%1$s'.", name_ ), e ); //$NON-NLS-1$
+                Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Illegal filter name specified for logger '%1$s'", name_ ), e ); //$NON-NLS-1$
             }
             catch( final ComponentException e )
             {
-                Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to create filter '%1$s' for logger '%2$s'.", value, name_ ), e ); //$NON-NLS-1$
+                Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to create filter '%1$s' for logger '%2$s'", value, name_ ), e ); //$NON-NLS-1$
             }
         }
 
@@ -139,11 +139,11 @@ final class LoggerConfiguration
                 }
                 catch( final IllegalArgumentException e )
                 {
-                    Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Illegal handler name specified for logger '%1$s'.", name_ ), e ); //$NON-NLS-1$
+                    Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Illegal handler name specified for logger '%1$s'", name_ ), e ); //$NON-NLS-1$
                 }
                 catch( final ComponentException e )
                 {
-                    Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to create handler '%1$s' for logger '%2$s'.", name, name_ ), e ); //$NON-NLS-1$
+                    Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to create handler '%1$s' for logger '%2$s'", name, name_ ), e ); //$NON-NLS-1$
                 }
             }
         }
@@ -177,7 +177,7 @@ final class LoggerConfiguration
         }
         catch( final IllegalArgumentException e )
         {
-            Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to parse level for logger '%1$s'.", name_ ), e ); //$NON-NLS-1$
+            Debug.trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to parse level for logger '%1$s'", name_ ), e ); //$NON-NLS-1$
         }
 
         return defaultValue;
