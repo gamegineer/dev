@@ -26,7 +26,9 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.service.debug.DebugOptions;
 import org.eclipse.osgi.service.debug.DebugTrace;
-import org.gamegineer.common.internal.core.Services;
+import org.gamegineer.common.internal.core.Activator;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
 /**
  * A collection of methods useful for debug tracing.
@@ -90,13 +92,27 @@ public abstract class Debug
     /* @NonNull */
     private DebugTrace getDebugTrace()
     {
-        final DebugOptions debugOptions = Services.getDebugOptions();
-        if( debugOptions == null )
+        final BundleContext bundleContext = Activator.getDefault().getBundleContext();
+        final ServiceReference debugOptionsReference = bundleContext.getServiceReference( DebugOptions.class.getName() );
+        if( debugOptionsReference == null )
         {
             return DEFAULT_DEBUG_TRACE;
         }
 
-        return debugOptions.newDebugTrace( bundleSymbolicName_, Debug.class );
+        try
+        {
+            final DebugOptions debugOptions = (DebugOptions)bundleContext.getService( debugOptionsReference );
+            if( debugOptions == null )
+            {
+                return DEFAULT_DEBUG_TRACE;
+            }
+
+            return debugOptions.newDebugTrace( bundleSymbolicName_, Debug.class );
+        }
+        finally
+        {
+            bundleContext.ungetService( debugOptionsReference );
+        }
     }
 
     /**
@@ -281,7 +297,7 @@ public abstract class Debug
             @SuppressWarnings( "unused" )
             final String message )
         {
-            // do nothing
+            warn();
         }
 
         /*
@@ -296,7 +312,7 @@ public abstract class Debug
             @SuppressWarnings( "unused" )
             final Throwable error )
         {
-            // do nothing
+            warn();
         }
 
         /*
@@ -307,7 +323,7 @@ public abstract class Debug
             @SuppressWarnings( "unused" )
             final String option )
         {
-            // do nothing
+            warn();
         }
 
         /*
@@ -318,7 +334,7 @@ public abstract class Debug
             @SuppressWarnings( "unused" )
             final String option )
         {
-            // do nothing
+            warn();
         }
 
         /*
@@ -331,7 +347,7 @@ public abstract class Debug
             @SuppressWarnings( "unused" )
             final Object methodArgument )
         {
-            // do nothing
+            warn();
         }
 
         /*
@@ -344,7 +360,7 @@ public abstract class Debug
             @SuppressWarnings( "unused" )
             final Object[] methodArguments )
         {
-            // do nothing
+            warn();
         }
 
         /*
@@ -355,7 +371,7 @@ public abstract class Debug
             @SuppressWarnings( "unused" )
             final String option )
         {
-            // do nothing
+            warn();
         }
 
         /*
@@ -368,7 +384,16 @@ public abstract class Debug
             @SuppressWarnings( "unused" )
             final Object result )
         {
-            // do nothing
+            warn();
+        }
+
+        /**
+         * Prints a warning to the standard error stream indicating no debug
+         * trace is available resulting in the loss of a trace message.
+         */
+        private static void warn()
+        {
+            System.err.println( "WARNING: no debug trace available; trace message lost" ); //$NON-NLS-1$
         }
     }
 }

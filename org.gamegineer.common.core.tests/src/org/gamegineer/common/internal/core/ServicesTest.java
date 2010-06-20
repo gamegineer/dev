@@ -83,16 +83,6 @@ public final class ServicesTest
     }
 
     /**
-     * Ensures the {@code bindDebugOptions} method throws an exception when
-     * passed a {@code null} debug options service.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBindDebugOptions_DebugOptions_Null()
-    {
-        services_.bindDebugOptions( null );
-    }
-
-    /**
      * Ensures the {@code bindExtensionRegistry} method throws an exception when
      * passed a {@code null} extension registry service.
      */
@@ -103,26 +93,6 @@ public final class ServicesTest
     }
 
     /**
-     * Ensures the {@code bindLoggingService} method throws an exception when
-     * passed a {@code null} logging service.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBindLoggingService_LoggingService_Null()
-    {
-        services_.bindLoggingService( null );
-    }
-
-    /**
-     * Ensures the {@code unbindDebugOptions} method throws an exception when
-     * passed a {@code null} debug options service.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testUnbindDebugOptions_DebugOptions_Null()
-    {
-        services_.unbindDebugOptions( null );
-    }
-
-    /**
      * Ensures the {@code unbindExtensionRegistry} method throws an exception
      * when passed a {@code null} extension registry service.
      */
@@ -130,15 +100,5 @@ public final class ServicesTest
     public void testUnbindExtensionRegistry_ExtensionRegistry_Null()
     {
         services_.unbindExtensionRegistry( null );
-    }
-
-    /**
-     * Ensures the {@code unbindLoggingService} method throws an exception when
-     * passed a {@code null} logging service.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testUnbindLoggingService_LoggingService_Null()
-    {
-        services_.unbindLoggingService( null );
     }
 }

@@ -25,8 +25,6 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.osgi.service.debug.DebugOptions;
-import org.gamegineer.common.core.services.logging.ILoggingService;
 
 /**
  * Manages the OSGi services used by the bundle.
@@ -38,17 +36,9 @@ public final class Services
     // Fields
     // ======================================================================
 
-    /** The debug options service. */
-    @GuardedBy( "lock_" )
-    private static DebugOptions debugOptions_ = null;
-
     /** The extension registry service. */
     @GuardedBy( "lock_" )
     private static IExtensionRegistry extensionRegistry_ = null;
-
-    /** The logging service. */
-    @GuardedBy( "lock_" )
-    private static ILoggingService loggingService_ = null;
 
     /** The class lock. */
     private static Object lock_ = new Object();
@@ -70,36 +60,6 @@ public final class Services
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Binds the specified debug options service.
-     * 
-     * <p>
-     * This method will unbind the currently bound debug options service before
-     * binding the new debug options service.
-     * </p>
-     * 
-     * @param debugOptions
-     *        The debug options service to bind; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code debugOptions} is {@code null}.
-     */
-    public void bindDebugOptions(
-        /* @NonNull */
-        final DebugOptions debugOptions )
-    {
-        assertArgumentNotNull( debugOptions, "debugOptions" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            if( debugOptions_ != null )
-            {
-                unbindDebugOptions( debugOptions_ );
-            }
-            debugOptions_ = debugOptions;
-        }
-    }
 
     /**
      * Binds the specified extension registry service.
@@ -132,51 +92,6 @@ public final class Services
     }
 
     /**
-     * Binds the specified logging service.
-     * 
-     * <p>
-     * This method will unbind the currently bound logging service before
-     * binding the new logging service.
-     * </p>
-     * 
-     * @param loggingService
-     *        The logging service to bind; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code loggingService} is {@code null}.
-     */
-    public void bindLoggingService(
-        /* @NonNull */
-        final ILoggingService loggingService )
-    {
-        assertArgumentNotNull( loggingService, "loggingService" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            if( loggingService_ != null )
-            {
-                unbindLoggingService( loggingService_ );
-            }
-            loggingService_ = loggingService;
-        }
-    }
-
-    /**
-     * Gets the debug options service.
-     * 
-     * @return The debug options service or {@code null} if no debug options
-     *         service is available.
-     */
-    /* @Nullable */
-    public static DebugOptions getDebugOptions()
-    {
-        synchronized( lock_ )
-        {
-            return debugOptions_;
-        }
-    }
-
-    /**
      * Gets the extension registry service.
      * 
      * @return The extension registry service or {@code null} if no extension
@@ -188,50 +103,6 @@ public final class Services
         synchronized( lock_ )
         {
             return extensionRegistry_;
-        }
-    }
-
-    /**
-     * Gets the logging service.
-     * 
-     * @return The logging service or {@code null} if no logging service is
-     *         available.
-     */
-    /* @Nullable */
-    public static ILoggingService getLoggingService()
-    {
-        synchronized( lock_ )
-        {
-            return loggingService_;
-        }
-    }
-
-    /**
-     * Unbinds the specified debug options service.
-     * 
-     * <p>
-     * This method does nothing if the specified debug options service is not
-     * bound.
-     * </p>
-     * 
-     * @param debugOptions
-     *        The debug options service to unbind; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code debugOptions} is {@code null}.
-     */
-    public void unbindDebugOptions(
-        /* @NonNull */
-        final DebugOptions debugOptions )
-    {
-        assertArgumentNotNull( debugOptions, "debugOptions" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            if( debugOptions_ == debugOptions )
-            {
-                debugOptions_ = null;
-            }
         }
     }
 
@@ -261,34 +132,6 @@ public final class Services
             if( extensionRegistry_ == extensionRegistry )
             {
                 extensionRegistry_ = null;
-            }
-        }
-    }
-
-    /**
-     * Unbinds the specified logging service.
-     * 
-     * <p>
-     * This method does nothing if the specified logging service is not bound.
-     * </p>
-     * 
-     * @param loggingService
-     *        The logging service to unbind; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code loggingService} is {@code null}.
-     */
-    public void unbindLoggingService(
-        /* @NonNull */
-        final ILoggingService loggingService )
-    {
-        assertArgumentNotNull( loggingService, "loggingService" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            if( loggingService_ == loggingService )
-            {
-                loggingService_ = null;
             }
         }
     }
