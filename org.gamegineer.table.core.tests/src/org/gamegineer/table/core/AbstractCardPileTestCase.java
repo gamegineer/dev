@@ -29,6 +29,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
+import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
 import org.gamegineer.common.persistence.memento.IMemento;
 import org.junit.After;
 import org.junit.Before;
@@ -46,6 +48,9 @@ public abstract class AbstractCardPileTestCase
 
     /** The card pile under test in the fixture. */
     private ICardPile cardPile_;
+
+    /** The mocks control for use in the fixture. */
+    private IMocksControl mocksControl_;
 
 
     // ======================================================================
@@ -106,6 +111,7 @@ public abstract class AbstractCardPileTestCase
     public void setUp()
         throws Exception
     {
+        mocksControl_ = EasyMock.createControl();
         cardPile_ = createCardPile();
         assertNotNull( cardPile_ );
     }
@@ -121,6 +127,7 @@ public abstract class AbstractCardPileTestCase
         throws Exception
     {
         cardPile_ = null;
+        mocksControl_ = null;
     }
 
     /**
@@ -174,12 +181,14 @@ public abstract class AbstractCardPileTestCase
     public void testAddCard_Card_Absent_ChangesCardLocation()
     {
         final ICard card = Cards.createUniqueCard();
-        final MockCardListener listener = new MockCardListener();
+        final ICardListener listener = mocksControl_.createMock( ICardListener.class );
+        listener.cardLocationChanged( EasyMock.notNull( CardEvent.class ) );
+        mocksControl_.replay();
         card.addCardListener( listener );
 
         cardPile_.addCard( card );
 
-        assertEquals( 1, listener.getCardLocationChangedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -680,12 +689,14 @@ public abstract class AbstractCardPileTestCase
     {
         final ICard card = Cards.createUniqueCard();
         cardPile_.addCard( card );
-        final MockCardListener listener = new MockCardListener();
+        final ICardListener listener = mocksControl_.createMock( ICardListener.class );
+        listener.cardLocationChanged( EasyMock.notNull( CardEvent.class ) );
+        mocksControl_.replay();
         card.addCardListener( listener );
 
         cardPile_.setLocation( new Point( 1010, 2020 ) );
 
-        assertEquals( 1, listener.getCardLocationChangedEventCount() );
+        mocksControl_.verify();
     }
 
     /**

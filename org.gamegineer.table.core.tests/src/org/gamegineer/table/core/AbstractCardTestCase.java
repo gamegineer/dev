@@ -26,6 +26,8 @@ import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
 import org.gamegineer.common.persistence.memento.IMemento;
 import org.junit.After;
 import org.junit.Before;
@@ -43,6 +45,9 @@ public abstract class AbstractCardTestCase
 
     /** The card under test in the fixture. */
     private ICard card_;
+
+    /** The mocks control for use in the fixture. */
+    private IMocksControl mocksControl_;
 
 
     // ======================================================================
@@ -103,6 +108,7 @@ public abstract class AbstractCardTestCase
     public void setUp()
         throws Exception
     {
+        mocksControl_ = EasyMock.createControl();
         card_ = createCard();
         assertNotNull( card_ );
     }
@@ -118,6 +124,7 @@ public abstract class AbstractCardTestCase
         throws Exception
     {
         card_ = null;
+        mocksControl_ = null;
     }
 
     /**
@@ -137,7 +144,7 @@ public abstract class AbstractCardTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testAddCardListener_Listener_Present()
     {
-        final ICardListener listener = new MockCardListener();
+        final ICardListener listener = EasyMock.createMock( ICardListener.class );
         card_.addCardListener( listener );
 
         card_.addCardListener( listener );
@@ -179,12 +186,14 @@ public abstract class AbstractCardTestCase
     @Test
     public void testFlip_FiresCardOrientationChangedEvent()
     {
-        final MockCardListener listener = new MockCardListener();
+        final ICardListener listener = mocksControl_.createMock( ICardListener.class );
+        listener.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
+        mocksControl_.replay();
         card_.addCardListener( listener );
 
         card_.flip();
 
-        assertEquals( 1, listener.getCardOrientationChangedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -366,7 +375,7 @@ public abstract class AbstractCardTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveCardListener_Listener_Absent()
     {
-        card_.removeCardListener( new MockCardListener() );
+        card_.removeCardListener( EasyMock.createMock( ICardListener.class ) );
     }
 
     /**
@@ -386,14 +395,16 @@ public abstract class AbstractCardTestCase
     @Test
     public void testRemoveCardListener_Listener_Present()
     {
-        final MockCardListener listener = new MockCardListener();
+        final ICardListener listener = mocksControl_.createMock( ICardListener.class );
+        listener.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
+        mocksControl_.replay();
         card_.addCardListener( listener );
         card_.flip();
 
         card_.removeCardListener( listener );
-
         card_.flip();
-        assertEquals( 1, listener.getCardOrientationChangedEventCount() );
+
+        mocksControl_.verify();
     }
 
     /**
@@ -403,24 +414,18 @@ public abstract class AbstractCardTestCase
     @Test
     public void testSetLocation_CatchesListenerException()
     {
-        final MockCardListener listener1 = new MockCardListener()
-        {
-            @Override
-            public void cardLocationChanged(
-                final CardEvent event )
-            {
-                super.cardLocationChanged( event );
-
-                throw new RuntimeException();
-            }
-        };
-        final MockCardListener listener2 = new MockCardListener();
+        final ICardListener listener1 = mocksControl_.createMock( ICardListener.class );
+        listener1.cardLocationChanged( EasyMock.notNull( CardEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ICardListener listener2 = mocksControl_.createMock( ICardListener.class );
+        listener2.cardLocationChanged( EasyMock.notNull( CardEvent.class ) );
+        mocksControl_.replay();
         card_.addCardListener( listener1 );
         card_.addCardListener( listener2 );
 
         card_.setLocation( new Point( 1010, 2020 ) );
 
-        assertEquals( 1, listener2.getCardLocationChangedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -430,12 +435,14 @@ public abstract class AbstractCardTestCase
     @Test
     public void testSetLocation_FiresCardLocationChangedEvent()
     {
-        final MockCardListener listener = new MockCardListener();
+        final ICardListener listener = mocksControl_.createMock( ICardListener.class );
+        listener.cardLocationChanged( EasyMock.notNull( CardEvent.class ) );
+        mocksControl_.replay();
         card_.addCardListener( listener );
 
         card_.setLocation( new Point( 1010, 2020 ) );
 
-        assertEquals( 1, listener.getCardLocationChangedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -470,24 +477,18 @@ public abstract class AbstractCardTestCase
     @Test
     public void testSetOrientation_CatchesListenerException()
     {
-        final MockCardListener listener1 = new MockCardListener()
-        {
-            @Override
-            public void cardOrientationChanged(
-                final CardEvent event )
-            {
-                super.cardOrientationChanged( event );
-
-                throw new RuntimeException();
-            }
-        };
-        final MockCardListener listener2 = new MockCardListener();
+        final ICardListener listener1 = mocksControl_.createMock( ICardListener.class );
+        listener1.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ICardListener listener2 = mocksControl_.createMock( ICardListener.class );
+        listener2.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
+        mocksControl_.replay();
         card_.addCardListener( listener1 );
         card_.addCardListener( listener2 );
 
         card_.setOrientation( card_.getOrientation().inverse() );
 
-        assertEquals( 1, listener2.getCardOrientationChangedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -497,12 +498,14 @@ public abstract class AbstractCardTestCase
     @Test
     public void testSetOrientation_FiresCardOrientationChangedEvent()
     {
-        final MockCardListener listener = new MockCardListener();
+        final ICardListener listener = mocksControl_.createMock( ICardListener.class );
+        listener.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
+        mocksControl_.replay();
         card_.addCardListener( listener );
 
         card_.setOrientation( card_.getOrientation().inverse() );
 
-        assertEquals( 1, listener.getCardOrientationChangedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
