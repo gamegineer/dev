@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="org.gamegineer.common.core.services">
-   <implementation class="org.gamegineer.common.internal.core.Services"/>
-   <reference bind="bindExtensionRegistry" cardinality="0..1" interface="org.eclipse.core.runtime.IExtensionRegistry" name="extensionRegistry" policy="dynamic" unbind="unbindExtensionRegistry"/>
-</scr:component>

@@ -27,8 +27,6 @@ import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.service.debug.DebugOptions;
 import org.eclipse.osgi.service.debug.DebugTrace;
 import org.gamegineer.common.internal.core.Activator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 
 /**
  * A collection of methods useful for debug tracing.
@@ -92,27 +90,13 @@ public abstract class Debug
     /* @NonNull */
     private DebugTrace getDebugTrace()
     {
-        final BundleContext bundleContext = Activator.getDefault().getBundleContext();
-        final ServiceReference debugOptionsReference = bundleContext.getServiceReference( DebugOptions.class.getName() );
-        if( debugOptionsReference == null )
+        final DebugOptions debugOptions = Activator.getDefault().getDebugOptions();
+        if( debugOptions == null )
         {
             return DEFAULT_DEBUG_TRACE;
         }
 
-        try
-        {
-            final DebugOptions debugOptions = (DebugOptions)bundleContext.getService( debugOptionsReference );
-            if( debugOptions == null )
-            {
-                return DEFAULT_DEBUG_TRACE;
-            }
-
-            return debugOptions.newDebugTrace( bundleSymbolicName_, Debug.class );
-        }
-        finally
-        {
-            bundleContext.ungetService( debugOptionsReference );
-        }
+        return debugOptions.newDebugTrace( bundleSymbolicName_, Debug.class );
     }
 
     /**

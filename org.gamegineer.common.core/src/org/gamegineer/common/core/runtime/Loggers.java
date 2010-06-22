@@ -27,8 +27,6 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.services.logging.ILoggingService;
 import org.gamegineer.common.internal.core.Activator;
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 
 /**
  * A collection of methods useful for defining a class that manages the loggers
@@ -85,26 +83,12 @@ public abstract class Loggers
     {
         assertArgumentNotNull( bundle, "bundle" ); //$NON-NLS-1$
 
-        final BundleContext bundleContext = Activator.getDefault().getBundleContext();
-        final ServiceReference loggingServiceReference = bundleContext.getServiceReference( ILoggingService.class.getName() );
-        if( loggingServiceReference == null )
+        final ILoggingService loggingService = Activator.getDefault().getLoggingService();
+        if( loggingService == null )
         {
             return Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
         }
 
-        try
-        {
-            final ILoggingService loggingService = (ILoggingService)bundleContext.getService( loggingServiceReference );
-            if( loggingService == null )
-            {
-                return Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );
-            }
-
-            return loggingService.getLogger( bundle, name );
-        }
-        finally
-        {
-            bundleContext.ungetService( loggingServiceReference );
-        }
+        return loggingService.getLogger( bundle, name );
     }
 }

@@ -23,7 +23,7 @@ package org.gamegineer.common.core.runtime;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.gamegineer.common.internal.core.Services;
+import org.gamegineer.common.internal.core.Activator;
 
 /**
  * A collection of useful methods for clients running on the Gamegineer
@@ -58,6 +58,6 @@ public final class Platform
     /* @Nullable */
     public static IExtensionRegistry getExtensionRegistry()
     {
-        return Services.getExtensionRegistry();
+        return Activator.getDefault().getExtensionRegistry();
     }
 }

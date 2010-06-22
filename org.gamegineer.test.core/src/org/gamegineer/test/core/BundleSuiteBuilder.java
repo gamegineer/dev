@@ -39,7 +39,7 @@ import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.test.internal.core.Services;
+import org.gamegineer.test.internal.core.Activator;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
 import org.osgi.service.packageadmin.PackageAdmin;
@@ -185,14 +185,14 @@ public final class BundleSuiteBuilder
         assert hostBundle != null;
         assert fragmentName != null;
 
-        final PackageAdmin packageAdministrationService = Services.getPackageAdministrationService();
-        if( packageAdministrationService == null )
+        final PackageAdmin packageAdmin = Activator.getDefault().getPackageAdmin();
+        if( packageAdmin == null )
         {
             System.err.println( "no package administration service available" ); //$NON-NLS-1$
             return null;
         }
 
-        final Bundle[] fragments = packageAdministrationService.getFragments( hostBundle );
+        final Bundle[] fragments = packageAdmin.getFragments( hostBundle );
         if( fragments == null )
         {
             return null;

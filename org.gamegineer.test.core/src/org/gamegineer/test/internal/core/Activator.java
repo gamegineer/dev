@@ -16,24 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Feb 26, 2008 at 12:18:03 AM.
+ * Created on Jun 21, 2010 at 10:09:09 PM.
  */
 
-package org.gamegineer.common.internal.core;
+package org.gamegineer.test.internal.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.osgi.service.debug.DebugOptions;
-import org.gamegineer.common.core.services.logging.ILoggingService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.packageadmin.PackageAdmin;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
- * The bundle activator for the org.gamegineer.common.core bundle.
+ * The bundle activator for the org.gamegineer.test.core bundle.
  */
 @ThreadSafe
 public final class Activator
@@ -50,20 +47,12 @@ public final class Activator
     @GuardedBy( "lock_" )
     private BundleContext bundleContext_;
 
-    /** The debug options service tracker. */
-    @GuardedBy( "lock_" )
-    private ServiceTracker debugOptionsTracker_;
-
-    /** The extension registry service tracker. */
-    @GuardedBy( "lock_" )
-    private ServiceTracker extensionRegistryTracker_;
-
     /** The instance lock. */
     private final Object lock_;
 
-    /** The logging service tracker. */
+    /** The package administration service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker loggingServiceTracker_;
+    private ServiceTracker packageAdminTracker_;
 
 
     // ======================================================================
@@ -77,9 +66,7 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
-        debugOptionsTracker_ = null;
-        extensionRegistryTracker_ = null;
-        loggingServiceTracker_ = null;
+        packageAdminTracker_ = null;
     }
 
 
@@ -103,29 +90,6 @@ public final class Activator
     }
 
     /**
-     * Gets the debug options service.
-     * 
-     * @return The debug options service or {@code null} if no debug options
-     *         service is available.
-     */
-    /* @Nullable */
-    public DebugOptions getDebugOptions()
-    {
-        synchronized( lock_ )
-        {
-            assert bundleContext_ != null;
-
-            if( debugOptionsTracker_ == null )
-            {
-                debugOptionsTracker_ = new ServiceTracker( bundleContext_, DebugOptions.class.getName(), null );
-                debugOptionsTracker_.open();
-            }
-
-            return (DebugOptions)debugOptionsTracker_.getService();
-        }
-    }
-
-    /**
      * Gets the default instance of the bundle activator.
      * 
      * @return The default instance of the bundle activator; never {@code null}.
@@ -139,48 +103,25 @@ public final class Activator
     }
 
     /**
-     * Gets the extension registry service.
+     * Gets the package administration service.
      * 
-     * @return The extension registry service or {@code null} if no extension
-     *         registry service is available.
+     * @return The package administration service or {@code null} if no package
+     *         administration service is available.
      */
     /* @Nullable */
-    public IExtensionRegistry getExtensionRegistry()
+    public PackageAdmin getPackageAdmin()
     {
         synchronized( lock_ )
         {
             assert bundleContext_ != null;
 
-            if( extensionRegistryTracker_ == null )
+            if( packageAdminTracker_ == null )
             {
-                extensionRegistryTracker_ = new ServiceTracker( bundleContext_, IExtensionRegistry.class.getName(), null );
-                extensionRegistryTracker_.open();
+                packageAdminTracker_ = new ServiceTracker( bundleContext_, PackageAdmin.class.getName(), null );
+                packageAdminTracker_.open();
             }
 
-            return (IExtensionRegistry)extensionRegistryTracker_.getService();
-        }
-    }
-
-    /**
-     * Gets the logging service.
-     * 
-     * @return The logging service or {@code null} if no logging service is
-     *         available.
-     */
-    /* @Nullable */
-    public ILoggingService getLoggingService()
-    {
-        synchronized( lock_ )
-        {
-            assert bundleContext_ != null;
-
-            if( loggingServiceTracker_ == null )
-            {
-                loggingServiceTracker_ = new ServiceTracker( bundleContext_, ILoggingService.class.getName(), null );
-                loggingServiceTracker_.open();
-            }
-
-            return (ILoggingService)loggingServiceTracker_.getService();
+            return (PackageAdmin)packageAdminTracker_.getService();
         }
     }
 
@@ -191,7 +132,10 @@ public final class Activator
     public void start(
         final BundleContext bundleContext )
     {
-        assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
+        if( bundleContext == null )
+        {
+            throw new NullPointerException( "bundleContext" ); //$NON-NLS-1$
+        }
 
         synchronized( lock_ )
         {
@@ -209,7 +153,10 @@ public final class Activator
     public void stop(
         final BundleContext bundleContext )
     {
-        assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
+        if( bundleContext == null )
+        {
+            throw new NullPointerException( "bundleContext" ); //$NON-NLS-1$
+        }
 
         final boolean wasInstanceNonNull = instance_.compareAndSet( this, null );
         assert wasInstanceNonNull;
@@ -218,20 +165,10 @@ public final class Activator
         {
             bundleContext_ = null;
 
-            if( loggingServiceTracker_ != null )
+            if( packageAdminTracker_ != null )
             {
-                loggingServiceTracker_.close();
-                loggingServiceTracker_ = null;
-            }
-            if( debugOptionsTracker_ != null )
-            {
-                debugOptionsTracker_.close();
-                debugOptionsTracker_ = null;
-            }
-            if( extensionRegistryTracker_ != null )
-            {
-                extensionRegistryTracker_.close();
-                extensionRegistryTracker_ = null;
+                packageAdminTracker_.close();
+                packageAdminTracker_ = null;
             }
         }
     }
