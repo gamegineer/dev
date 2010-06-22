@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertNotNull;
+import org.easymock.EasyMock;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.junit.Test;
@@ -59,7 +59,7 @@ public final class InternalCardPileContentChangedEventTest
     @Test( expected = AssertionError.class )
     public void testCreateCardPileContentChangedEvent_Card_Null()
     {
-        InternalCardPileContentChangedEvent.createCardPileContentChangedEvent( createMock( ICardPile.class ), null );
+        InternalCardPileContentChangedEvent.createCardPileContentChangedEvent( EasyMock.createMock( ICardPile.class ), null );
     }
 
     /**
@@ -69,7 +69,7 @@ public final class InternalCardPileContentChangedEventTest
     @Test( expected = AssertionError.class )
     public void testCreateCardPileContentChangedEvent_CardPile_Null()
     {
-        InternalCardPileContentChangedEvent.createCardPileContentChangedEvent( null, createMock( ICard.class ) );
+        InternalCardPileContentChangedEvent.createCardPileContentChangedEvent( null, EasyMock.createMock( ICard.class ) );
     }
 
     /**
@@ -79,6 +79,6 @@ public final class InternalCardPileContentChangedEventTest
     @Test
     public void testCreateCardPileContentChangedEvent_ReturnValue_NonNull()
     {
-        assertNotNull( InternalCardPileContentChangedEvent.createCardPileContentChangedEvent( createMock( ICardPile.class ), createMock( ICard.class ) ) );
+        assertNotNull( InternalCardPileContentChangedEvent.createCardPileContentChangedEvent( EasyMock.createMock( ICardPile.class ), EasyMock.createMock( ICard.class ) ) );
     }
 }

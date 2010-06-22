@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.easymock.EasyMock.createMock;
+import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractAbstractTableContentChangedEventTestCase;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
@@ -60,6 +60,6 @@ public final class InternalTableContentChangedEventAsAbstractTableContentChanged
     @Override
     protected InternalTableContentChangedEvent createTableEvent()
     {
-        return InternalTableContentChangedEvent.createTableContentChangedEvent( createMock( ITable.class ), createMock( ICardPile.class ) );
+        return InternalTableContentChangedEvent.createTableContentChangedEvent( EasyMock.createMock( ITable.class ), EasyMock.createMock( ICardPile.class ) );
     }
 }

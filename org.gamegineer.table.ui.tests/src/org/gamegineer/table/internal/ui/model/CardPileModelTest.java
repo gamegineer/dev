@@ -21,10 +21,10 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Point;
+import org.easymock.EasyMock;
 import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.ICard;
@@ -234,7 +234,7 @@ public final class CardPileModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testGetCardModel_Card_Absent()
     {
-        model_.getCardModel( createMock( ICard.class ) );
+        model_.getCardModel( EasyMock.createMock( ICard.class ) );
     }
 
     /**

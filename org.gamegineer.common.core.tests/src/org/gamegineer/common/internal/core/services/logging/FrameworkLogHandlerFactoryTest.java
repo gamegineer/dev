@@ -21,7 +21,7 @@
 
 package org.gamegineer.common.internal.core.services.logging;
 
-import static org.easymock.EasyMock.createMock;
+import org.easymock.EasyMock;
 import org.eclipse.osgi.framework.log.FrameworkLog;
 import org.junit.After;
 import org.junit.Before;
@@ -103,9 +103,9 @@ public final class FrameworkLogHandlerFactoryTest
     @Test( expected = IllegalStateException.class )
     public void testBindFrameworkLog_ServiceAlreadyBound()
     {
-        factory_.bindFrameworkLog( createMock( FrameworkLog.class ) );
+        factory_.bindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
 
-        factory_.bindFrameworkLog( createMock( FrameworkLog.class ) );
+        factory_.bindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
     }
 
     /**
@@ -125,8 +125,8 @@ public final class FrameworkLogHandlerFactoryTest
     @Test( expected = IllegalStateException.class )
     public void testUnbindFrameworkLog_DifferentServiceBound()
     {
-        factory_.bindFrameworkLog( createMock( FrameworkLog.class ) );
+        factory_.bindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
 
-        factory_.unbindFrameworkLog( createMock( FrameworkLog.class ) );
+        factory_.unbindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
     }
 }

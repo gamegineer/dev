@@ -21,9 +21,9 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import org.easymock.EasyMock;
 import org.gamegineer.table.ui.ITableAdvisor;
 import org.junit.After;
 import org.junit.Before;
@@ -70,7 +70,7 @@ public final class MainModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new MainModelEvent( new MainModel( createMock( ITableAdvisor.class ) ) );
+        event_ = new MainModelEvent( new MainModel( EasyMock.createMock( ITableAdvisor.class ) ) );
     }
 
     /**

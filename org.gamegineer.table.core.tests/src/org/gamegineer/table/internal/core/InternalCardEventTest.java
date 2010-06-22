@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertNotNull;
+import org.easymock.EasyMock;
 import org.gamegineer.table.core.ICard;
 import org.junit.Test;
 
@@ -65,6 +65,6 @@ public final class InternalCardEventTest
     @Test
     public void testCreateCardEvent_ReturnValue_NonNull()
     {
-        assertNotNull( InternalCardEvent.createCardEvent( createMock( ICard.class ) ) );
+        assertNotNull( InternalCardEvent.createCardEvent( EasyMock.createMock( ICard.class ) ) );
     }
 }

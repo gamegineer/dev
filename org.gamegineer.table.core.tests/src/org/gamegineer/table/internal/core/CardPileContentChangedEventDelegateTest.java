@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.easymock.EasyMock.createMock;
+import org.easymock.EasyMock;
 import org.gamegineer.table.core.ICardPile;
 import org.junit.Test;
 
@@ -57,6 +57,6 @@ public final class CardPileContentChangedEventDelegateTest
     @Test( expected = AssertionError.class )
     public void testConstructor_Card_Null()
     {
-        new CardPileContentChangedEventDelegate( createMock( ICardPile.class ), null );
+        new CardPileContentChangedEventDelegate( EasyMock.createMock( ICardPile.class ), null );
     }
 }

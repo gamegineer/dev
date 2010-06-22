@@ -21,7 +21,7 @@
 
 package org.gamegineer.common.internal.core.services.logging;
 
-import static org.easymock.EasyMock.createMock;
+import org.easymock.EasyMock;
 import org.eclipse.osgi.framework.log.FrameworkLog;
 import org.gamegineer.common.core.util.logging.FrameworkLogHandler;
 
@@ -60,7 +60,7 @@ public final class FrameworkLogHandlerFactoryAsAbstractHandlerFactoryTest
     protected FrameworkLogHandlerFactory createLoggingComponentFactory()
     {
         final FrameworkLogHandlerFactory factory = new FrameworkLogHandlerFactory();
-        factory.bindFrameworkLog( createMock( FrameworkLog.class ) );
+        factory.bindFrameworkLog( EasyMock.createMock( FrameworkLog.class ) );
         return factory;
     }
 

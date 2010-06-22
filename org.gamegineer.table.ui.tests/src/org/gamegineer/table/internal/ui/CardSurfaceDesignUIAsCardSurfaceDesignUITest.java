@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.internal.ui;
 
-import static org.easymock.EasyMock.createMock;
 import javax.swing.Icon;
+import org.easymock.EasyMock;
 import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.ui.AbstractCardSurfaceDesignUITestCase;
 import org.gamegineer.table.ui.ICardSurfaceDesignUI;
@@ -60,6 +60,6 @@ public final class CardSurfaceDesignUIAsCardSurfaceDesignUITest
     @Override
     protected ICardSurfaceDesignUI createCardSurfaceDesignUI()
     {
-        return new CardSurfaceDesignUI( CardSurfaceDesignId.fromString( "id" ), "name", createMock( Icon.class ) ); //$NON-NLS-1$ //$NON-NLS-2$
+        return new CardSurfaceDesignUI( CardSurfaceDesignId.fromString( "id" ), "name", EasyMock.createMock( Icon.class ) ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }

@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.ui.view;
 
-import static org.easymock.EasyMock.createMock;
+import org.easymock.EasyMock;
 import org.gamegineer.table.internal.ui.model.AbstractMainModelListenerTestCase;
 import org.gamegineer.table.internal.ui.model.IMainModelListener;
 import org.gamegineer.table.internal.ui.model.MainModel;
@@ -60,6 +60,6 @@ public final class MainViewAsMainModelListenerTest
     @Override
     protected IMainModelListener createMainModelListener()
     {
-        return new MainView( new MainModel( createMock( ITableAdvisor.class ) ) );
+        return new MainView( new MainModel( EasyMock.createMock( ITableAdvisor.class ) ) );
     }
 }

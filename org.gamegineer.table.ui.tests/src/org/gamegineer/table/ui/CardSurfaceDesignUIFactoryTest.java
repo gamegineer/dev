@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.ui;
 
-import static org.easymock.EasyMock.createMock;
 import javax.swing.Icon;
+import org.easymock.EasyMock;
 import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.junit.Test;
 
@@ -67,7 +67,7 @@ public final class CardSurfaceDesignUIFactoryTest
     @Test( expected = NullPointerException.class )
     public void testCreateCardSurfaceDesignUI_Id_Null()
     {
-        CardSurfaceDesignUIFactory.createCardSurfaceDesignUI( null, "name", createMock( Icon.class ) ); //$NON-NLS-1$
+        CardSurfaceDesignUIFactory.createCardSurfaceDesignUI( null, "name", EasyMock.createMock( Icon.class ) ); //$NON-NLS-1$
     }
 
     /**
@@ -77,6 +77,6 @@ public final class CardSurfaceDesignUIFactoryTest
     @Test( expected = NullPointerException.class )
     public void testCreateCardSurfaceDesignUI_Name_Null()
     {
-        CardSurfaceDesignUIFactory.createCardSurfaceDesignUI( CardSurfaceDesignId.fromString( "id" ), null, createMock( Icon.class ) ); //$NON-NLS-1$
+        CardSurfaceDesignUIFactory.createCardSurfaceDesignUI( CardSurfaceDesignId.fromString( "id" ), null, EasyMock.createMock( Icon.class ) ); //$NON-NLS-1$
     }
 }

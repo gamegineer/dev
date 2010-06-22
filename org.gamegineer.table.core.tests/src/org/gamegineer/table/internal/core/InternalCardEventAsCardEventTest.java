@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.easymock.EasyMock.createMock;
+import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractCardEventTestCase;
 import org.gamegineer.table.core.ICard;
 
@@ -58,6 +58,6 @@ public final class InternalCardEventAsCardEventTest
     @Override
     protected InternalCardEvent createCardEvent()
     {
-        return InternalCardEvent.createCardEvent( createMock( ICard.class ) );
+        return InternalCardEvent.createCardEvent( EasyMock.createMock( ICard.class ) );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * CardEventDelegateAsCardEventTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.easymock.EasyMock.createMock;
+import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractCardEventTestCase;
 import org.gamegineer.table.core.ICard;
 
@@ -58,6 +58,6 @@ public final class CardEventDelegateAsCardEventTest
     @Override
     protected CardEventDelegate createCardEvent()
     {
-        return new CardEventDelegate( createMock( ICard.class ) );
+        return new CardEventDelegate( EasyMock.createMock( ICard.class ) );
     }
 }

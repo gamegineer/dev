@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.easymock.EasyMock.createMock;
+import org.easymock.EasyMock;
 import org.gamegineer.table.core.AbstractTableEventTestCase;
 import org.gamegineer.table.core.ITable;
 
@@ -58,6 +58,6 @@ public final class TableEventDelegateAsTableEventTest
     @Override
     protected TableEventDelegate createTableEvent()
     {
-        return new TableEventDelegate( createMock( ITable.class ) );
+        return new TableEventDelegate( EasyMock.createMock( ITable.class ) );
     }
 }

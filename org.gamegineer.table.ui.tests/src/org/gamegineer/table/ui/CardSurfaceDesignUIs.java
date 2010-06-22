@@ -21,10 +21,10 @@
 
 package org.gamegineer.table.ui;
 
-import static org.easymock.EasyMock.createMock;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import javax.swing.Icon;
 import net.jcip.annotations.ThreadSafe;
+import org.easymock.EasyMock;
 import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICardSurfaceDesign;
 
@@ -93,7 +93,7 @@ public final class CardSurfaceDesignUIs
     {
         assertArgumentNotNull( cardSurfaceDesign, "cardSurfaceDesign" ); //$NON-NLS-1$
 
-        return CardSurfaceDesignUIFactory.createCardSurfaceDesignUI( cardSurfaceDesign.getId(), cardSurfaceDesign.getId().toString(), createMock( Icon.class ) );
+        return CardSurfaceDesignUIFactory.createCardSurfaceDesignUI( cardSurfaceDesign.getId(), cardSurfaceDesign.getId().toString(), EasyMock.createMock( Icon.class ) );
     }
 
     /**
