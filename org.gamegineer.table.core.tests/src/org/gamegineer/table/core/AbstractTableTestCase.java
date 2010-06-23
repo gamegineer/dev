@@ -29,6 +29,8 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.awt.Point;
 import java.util.List;
+import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
 import org.gamegineer.common.persistence.memento.IMemento;
 import org.junit.After;
 import org.junit.Before;
@@ -43,6 +45,9 @@ public abstract class AbstractTableTestCase
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The mocks control for use in the fixture. */
+    private IMocksControl mocksControl_;
 
     /** The table under test in the fixture. */
     private ITable table_;
@@ -106,6 +111,7 @@ public abstract class AbstractTableTestCase
     public void setUp()
         throws Exception
     {
+        mocksControl_ = EasyMock.createControl();
         table_ = createTable();
         assertNotNull( table_ );
     }
@@ -121,6 +127,7 @@ public abstract class AbstractTableTestCase
         throws Exception
     {
         table_ = null;
+        mocksControl_ = null;
     }
 
     /**
@@ -144,24 +151,18 @@ public abstract class AbstractTableTestCase
     @Test
     public void testAddCardPile_CardPile_Absent_CatchesListenerException()
     {
-        final MockTableListener listener1 = new MockTableListener()
-        {
-            @Override
-            public void cardPileAdded(
-                final TableContentChangedEvent event )
-            {
-                super.cardPileAdded( event );
-
-                throw new RuntimeException();
-            }
-        };
-        final MockTableListener listener2 = new MockTableListener();
+        final ITableListener listener1 = mocksControl_.createMock( ITableListener.class );
+        listener1.cardPileAdded( EasyMock.notNull( TableContentChangedEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ITableListener listener2 = mocksControl_.createMock( ITableListener.class );
+        listener2.cardPileAdded( EasyMock.notNull( TableContentChangedEvent.class ) );
+        mocksControl_.replay();
         table_.addTableListener( listener1 );
         table_.addTableListener( listener2 );
 
         table_.addCardPile( CardPiles.createUniqueCardPile() );
 
-        assertEquals( 1, listener2.getCardPileAddedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -171,12 +172,14 @@ public abstract class AbstractTableTestCase
     @Test
     public void testAddCardPile_CardPile_Absent_FiresCardPileAddedEvent()
     {
-        final MockTableListener listener = new MockTableListener();
+        final ITableListener listener = mocksControl_.createMock( ITableListener.class );
+        listener.cardPileAdded( EasyMock.notNull( TableContentChangedEvent.class ) );
+        mocksControl_.replay();
         table_.addTableListener( listener );
 
         table_.addCardPile( CardPiles.createUniqueCardPile() );
 
-        assertEquals( 1, listener.getCardPileAddedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -215,12 +218,13 @@ public abstract class AbstractTableTestCase
     {
         final ICardPile cardPile = CardPiles.createUniqueCardPile();
         table_.addCardPile( cardPile );
-        final MockTableListener listener = new MockTableListener();
+        final ITableListener listener = mocksControl_.createMock( ITableListener.class );
+        mocksControl_.replay();
         table_.addTableListener( listener );
 
         table_.addCardPile( cardPile );
 
-        assertEquals( 0, listener.getCardPileAddedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -240,7 +244,7 @@ public abstract class AbstractTableTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testAddTableListener_Listener_Present()
     {
-        final ITableListener listener = new MockTableListener();
+        final ITableListener listener = mocksControl_.createMock( ITableListener.class );
         table_.addTableListener( listener );
 
         table_.addTableListener( listener );
@@ -364,12 +368,13 @@ public abstract class AbstractTableTestCase
     @Test
     public void testRemoveCardPile_Empty_DoesNotFireCardPileRemovedEvent()
     {
-        final MockTableListener listener = new MockTableListener();
+        final ITableListener listener = mocksControl_.createMock( ITableListener.class );
+        mocksControl_.replay();
         table_.addTableListener( listener );
 
         table_.removeCardPile( CardPiles.createUniqueCardPile() );
 
-        assertEquals( 0, listener.getCardPileRemovedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -403,26 +408,20 @@ public abstract class AbstractTableTestCase
     @Test
     public void testRemoveCardPile_CardPile_Present_CatchesListenerException()
     {
-        final MockTableListener listener1 = new MockTableListener()
-        {
-            @Override
-            public void cardPileRemoved(
-                final TableContentChangedEvent event )
-            {
-                super.cardPileRemoved( event );
-
-                throw new RuntimeException();
-            }
-        };
-        final MockTableListener listener2 = new MockTableListener();
-        table_.addTableListener( listener1 );
-        table_.addTableListener( listener2 );
         final ICardPile cardPile = CardPiles.createUniqueCardPile();
         table_.addCardPile( cardPile );
+        final ITableListener listener1 = mocksControl_.createMock( ITableListener.class );
+        listener1.cardPileRemoved( EasyMock.notNull( TableContentChangedEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ITableListener listener2 = mocksControl_.createMock( ITableListener.class );
+        listener2.cardPileRemoved( EasyMock.notNull( TableContentChangedEvent.class ) );
+        mocksControl_.replay();
+        table_.addTableListener( listener1 );
+        table_.addTableListener( listener2 );
 
         table_.removeCardPile( cardPile );
 
-        assertEquals( 1, listener2.getCardPileRemovedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -432,14 +431,16 @@ public abstract class AbstractTableTestCase
     @Test
     public void testRemoveCardPile_CardPile_Present_FiresCardPileRemovedEvent()
     {
-        final MockTableListener listener = new MockTableListener();
-        table_.addTableListener( listener );
         final ICardPile cardPile = CardPiles.createUniqueCardPile();
         table_.addCardPile( cardPile );
+        final ITableListener listener = mocksControl_.createMock( ITableListener.class );
+        listener.cardPileRemoved( EasyMock.notNull( TableContentChangedEvent.class ) );
+        mocksControl_.replay();
+        table_.addTableListener( listener );
 
         table_.removeCardPile( cardPile );
 
-        assertEquals( 1, listener.getCardPileRemovedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -466,7 +467,7 @@ public abstract class AbstractTableTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveTableListener_Listener_Absent()
     {
-        table_.removeTableListener( new MockTableListener() );
+        table_.removeTableListener( mocksControl_.createMock( ITableListener.class ) );
     }
 
     /**
@@ -486,13 +487,15 @@ public abstract class AbstractTableTestCase
     @Test
     public void testRemoveTableListener_Listener_Present()
     {
-        final MockTableListener listener = new MockTableListener();
+        final ITableListener listener = mocksControl_.createMock( ITableListener.class );
+        listener.cardPileAdded( EasyMock.notNull( TableContentChangedEvent.class ) );
+        mocksControl_.replay();
         table_.addTableListener( listener );
         table_.addCardPile( CardPiles.createUniqueCardPile() );
 
         table_.removeTableListener( listener );
-
         table_.addCardPile( CardPiles.createUniqueCardPile() );
-        assertEquals( 1, listener.getCardPileAddedEventCount() );
+
+        mocksControl_.verify();
     }
 }
