@@ -152,24 +152,18 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testAddCard_Card_Absent_CatchesListenerException()
     {
-        final MockCardPileListener listener1 = new MockCardPileListener()
-        {
-            @Override
-            public void cardAdded(
-                final CardPileContentChangedEvent event )
-            {
-                super.cardAdded( event );
-
-                throw new RuntimeException();
-            }
-        };
-        final MockCardPileListener listener2 = new MockCardPileListener();
+        final ICardPileListener listener1 = mocksControl_.createMock( ICardPileListener.class );
+        listener1.cardAdded( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ICardPileListener listener2 = mocksControl_.createMock( ICardPileListener.class );
+        listener2.cardAdded( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        mocksControl_.replay();
         cardPile_.addCardPileListener( listener1 );
         cardPile_.addCardPileListener( listener2 );
 
         cardPile_.addCard( Cards.createUniqueCard() );
 
-        assertEquals( 1, listener2.getCardAddedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -198,15 +192,21 @@ public abstract class AbstractCardPileTestCase
     @Test( timeout = 1000 )
     public void testAddCard_Card_Absent_ChangesCardPileBounds()
     {
-        final MockCardPileListener listener = new MockCardPileListener();
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        listener.cardAdded( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        EasyMock.expectLastCall().anyTimes();
+        listener.cardPileBoundsChanged( EasyMock.notNull( CardPileEvent.class ) );
+        mocksControl_.replay();
         cardPile_.addCardPileListener( listener );
+        final Rectangle originalCardPileBounds = cardPile_.getBounds();
+
         do
         {
             cardPile_.addCard( Cards.createUniqueCard() );
 
-        } while( listener.getCardPileBoundsChangedEventCount() == 0 );
+        } while( originalCardPileBounds.equals( cardPile_.getBounds() ) );
 
-        assertEquals( 1, listener.getCardPileBoundsChangedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -216,12 +216,14 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testAddCard_Card_Absent_FiresCardAddedEvent()
     {
-        final MockCardPileListener listener = new MockCardPileListener();
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        listener.cardAdded( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        mocksControl_.replay();
         cardPile_.addCardPileListener( listener );
 
         cardPile_.addCard( Cards.createUniqueCard() );
 
-        assertEquals( 1, listener.getCardAddedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -260,12 +262,13 @@ public abstract class AbstractCardPileTestCase
     {
         final ICard card = Cards.createUniqueCard();
         cardPile_.addCard( card );
-        final MockCardPileListener listener = new MockCardPileListener();
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        mocksControl_.replay();
         cardPile_.addCardPileListener( listener );
 
         cardPile_.addCard( card );
 
-        assertEquals( 0, listener.getCardAddedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -285,7 +288,7 @@ public abstract class AbstractCardPileTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testAddCardPileListener_Listener_Present()
     {
-        final ICardPileListener listener = new MockCardPileListener();
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
         cardPile_.addCardPileListener( listener );
 
         cardPile_.addCardPileListener( listener );
@@ -486,12 +489,13 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testRemoveCard_Empty_DoesNotFireCardRemovedEvent()
     {
-        final MockCardPileListener listener = new MockCardPileListener();
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        mocksControl_.replay();
         cardPile_.addCardPileListener( listener );
 
         cardPile_.removeCard();
 
-        assertEquals( 0, listener.getCardRemovedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -514,25 +518,19 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testRemoveCard_NotEmpty_CatchesListenerException()
     {
-        final MockCardPileListener listener1 = new MockCardPileListener()
-        {
-            @Override
-            public void cardRemoved(
-                final CardPileContentChangedEvent event )
-            {
-                super.cardRemoved( event );
-
-                throw new RuntimeException();
-            }
-        };
-        final MockCardPileListener listener2 = new MockCardPileListener();
+        cardPile_.addCard( Cards.createUniqueCard() );
+        final ICardPileListener listener1 = mocksControl_.createMock( ICardPileListener.class );
+        listener1.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ICardPileListener listener2 = mocksControl_.createMock( ICardPileListener.class );
+        listener2.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        mocksControl_.replay();
         cardPile_.addCardPileListener( listener1 );
         cardPile_.addCardPileListener( listener2 );
-        cardPile_.addCard( Cards.createUniqueCard() );
 
         cardPile_.removeCard();
 
-        assertEquals( 1, listener2.getCardRemovedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -542,17 +540,24 @@ public abstract class AbstractCardPileTestCase
     @Test( timeout = 1000 )
     public void testRemoveCard_NotEmpty_ChangesCardPileBounds()
     {
-        final MockCardPileListener listener = new MockCardPileListener();
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        listener.cardAdded( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        EasyMock.expectLastCall().anyTimes();
+        listener.cardPileBoundsChanged( EasyMock.notNull( CardPileEvent.class ) );
+        EasyMock.expectLastCall().times( 2 );
+        listener.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        mocksControl_.replay();
         cardPile_.addCardPileListener( listener );
+        final Rectangle originalCardPileBounds = cardPile_.getBounds();
+
         do
         {
             cardPile_.addCard( Cards.createUniqueCard() );
 
-        } while( listener.getCardPileBoundsChangedEventCount() == 0 );
-
+        } while( originalCardPileBounds.equals( cardPile_.getBounds() ) );
         cardPile_.removeCard();
 
-        assertEquals( 2, listener.getCardPileBoundsChangedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -562,13 +567,15 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testRemoveCard_NotEmpty_FiresCardRemovedEvent()
     {
-        final MockCardPileListener listener = new MockCardPileListener();
-        cardPile_.addCardPileListener( listener );
         cardPile_.addCard( Cards.createUniqueCard() );
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        listener.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        mocksControl_.replay();
+        cardPile_.addCardPileListener( listener );
 
         cardPile_.removeCard();
 
-        assertEquals( 1, listener.getCardRemovedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -595,7 +602,7 @@ public abstract class AbstractCardPileTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveCardPileListener_Listener_Absent()
     {
-        cardPile_.removeCardPileListener( new MockCardPileListener() );
+        cardPile_.removeCardPileListener( mocksControl_.createMock( ICardPileListener.class ) );
     }
 
     /**
@@ -615,14 +622,16 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testRemoveCardPileListener_Listener_Present()
     {
-        final MockCardPileListener listener = new MockCardPileListener();
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        listener.cardAdded( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        mocksControl_.replay();
         cardPile_.addCardPileListener( listener );
         cardPile_.addCard( Cards.createUniqueCard() );
 
         cardPile_.removeCardPileListener( listener );
-
         cardPile_.addCard( Cards.createUniqueCard() );
-        assertEquals( 1, listener.getCardAddedEventCount() );
+
+        mocksControl_.verify();
     }
 
     /**
@@ -635,12 +644,14 @@ public abstract class AbstractCardPileTestCase
         cardPile_.setLayout( CardPileLayout.STACKED );
         cardPile_.addCard( Cards.createUniqueCard() );
         cardPile_.addCard( Cards.createUniqueCard() );
-        final MockCardPileListener listener = new MockCardPileListener();
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        listener.cardPileBoundsChanged( EasyMock.notNull( CardPileEvent.class ) );
+        mocksControl_.replay();
         cardPile_.addCardPileListener( listener );
 
         cardPile_.setLayout( CardPileLayout.ACCORDIAN_DOWN );
 
-        assertEquals( 1, listener.getCardPileBoundsChangedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -660,24 +671,18 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testSetLocation_CatchesListenerException()
     {
-        final MockCardPileListener listener1 = new MockCardPileListener()
-        {
-            @Override
-            public void cardPileBoundsChanged(
-                final CardPileEvent event )
-            {
-                super.cardPileBoundsChanged( event );
-
-                throw new RuntimeException();
-            }
-        };
-        final MockCardPileListener listener2 = new MockCardPileListener();
+        final ICardPileListener listener1 = mocksControl_.createMock( ICardPileListener.class );
+        listener1.cardPileBoundsChanged( EasyMock.notNull( CardPileEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ICardPileListener listener2 = mocksControl_.createMock( ICardPileListener.class );
+        listener2.cardPileBoundsChanged( EasyMock.notNull( CardPileEvent.class ) );
+        mocksControl_.replay();
         cardPile_.addCardPileListener( listener1 );
         cardPile_.addCardPileListener( listener2 );
 
         cardPile_.setLocation( new Point( 1010, 2020 ) );
 
-        assertEquals( 1, listener2.getCardPileBoundsChangedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -706,12 +711,14 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testSetLocation_FiresCardPileBoundsChangedEvent()
     {
-        final MockCardPileListener listener = new MockCardPileListener();
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        listener.cardPileBoundsChanged( EasyMock.notNull( CardPileEvent.class ) );
+        mocksControl_.replay();
         cardPile_.addCardPileListener( listener );
 
         cardPile_.setLocation( new Point( 1010, 2020 ) );
 
-        assertEquals( 1, listener.getCardPileBoundsChangedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
