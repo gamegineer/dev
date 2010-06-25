@@ -21,10 +21,12 @@
 
 package org.gamegineer.table.internal.ui.action;
 
-import static org.junit.Assert.assertEquals;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.Action;
-import org.gamegineer.common.core.util.MockPredicate;
+import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
+import org.gamegineer.common.core.util.IPredicate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,6 +43,9 @@ public final class BasicActionTest
 
     /** The basic action under test in the fixture. */
     private BasicAction action_;
+
+    /** The mocks control for use in the fixture. */
+    private IMocksControl mocksControl_;
 
 
     // ======================================================================
@@ -72,6 +77,19 @@ public final class BasicActionTest
     }
 
     /**
+     * Creates a new mock predicate associated with the fixture mocks control.
+     * 
+     * @return A new mock predicate; never {@code null}.
+     */
+    /* @NonNull */
+    private IPredicate<Action> createMockPredicate()
+    {
+        @SuppressWarnings( "unchecked" )
+        final IPredicate<Action> mockPredicate = mocksControl_.createMock( IPredicate.class );
+        return mockPredicate;
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -81,6 +99,7 @@ public final class BasicActionTest
     public void setUp()
         throws Exception
     {
+        mocksControl_ = EasyMock.createControl();
         action_ = new BasicAction();
     }
 
@@ -95,6 +114,7 @@ public final class BasicActionTest
         throws Exception
     {
         action_ = null;
+        mocksControl_ = null;
     }
 
     /**
@@ -104,12 +124,14 @@ public final class BasicActionTest
     @Test
     public void testAddActionListener_Listener_Absent()
     {
-        final MockActionListener listener = new MockActionListener();
+        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
+        listener.actionPerformed( EasyMock.notNull( ActionEvent.class ) );
+        mocksControl_.replay();
 
         action_.addActionListener( listener );
-
         action_.actionPerformed( createActionEvent() );
-        assertEquals( 1, listener.getActionPerformedEventCount() );
+
+        mocksControl_.verify();
     }
 
     /**
@@ -129,7 +151,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddActionListener_Listener_Present()
     {
-        final MockActionListener listener = new MockActionListener();
+        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
         action_.addActionListener( listener );
 
         action_.addActionListener( listener );
@@ -139,15 +161,18 @@ public final class BasicActionTest
      * Ensures the {@code addShouldEnablePredicate} method adds a predicate this
      * is absent from the should enable predicate collection.
      */
+    @SuppressWarnings( "boxing" )
     @Test
     public void testAddShouldEnablePredicate_Predicate_Absent()
     {
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        final IPredicate<Action> predicate = createMockPredicate();
+        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        mocksControl_.replay();
 
         action_.addShouldEnablePredicate( predicate );
-
         action_.update();
-        assertEquals( 1, predicate.getEvaluateCallCount() );
+
+        mocksControl_.verify();
     }
 
     /**
@@ -168,7 +193,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddShouldEnablePredicate_Predicate_Present()
     {
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        final IPredicate<Action> predicate = createMockPredicate();
         action_.addShouldEnablePredicate( predicate );
 
         action_.addShouldEnablePredicate( predicate );
@@ -178,15 +203,18 @@ public final class BasicActionTest
      * Ensures the {@code addShouldSelectPredicate} method adds a predicate this
      * is absent from the should select predicate collection.
      */
+    @SuppressWarnings( "boxing" )
     @Test
     public void testAddShouldSelectPredicate_Predicate_Absent()
     {
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        final IPredicate<Action> predicate = createMockPredicate();
+        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        mocksControl_.replay();
 
         action_.addShouldSelectPredicate( predicate );
-
         action_.update();
-        assertEquals( 1, predicate.getEvaluateCallCount() );
+
+        mocksControl_.verify();
     }
 
     /**
@@ -207,7 +235,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddShouldSelectPredicate_Predicate_Present()
     {
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        final IPredicate<Action> predicate = createMockPredicate();
         action_.addShouldSelectPredicate( predicate );
 
         action_.addShouldSelectPredicate( predicate );
@@ -220,9 +248,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveActionListener_Listener_Absent()
     {
-        final MockActionListener listener = new MockActionListener();
-
-        action_.removeActionListener( listener );
+        action_.removeActionListener( mocksControl_.createMock( ActionListener.class ) );
     }
 
     /**
@@ -242,13 +268,14 @@ public final class BasicActionTest
     @Test
     public void testRemoveActionListener_Listener_Present()
     {
-        final MockActionListener listener = new MockActionListener();
+        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
+        mocksControl_.replay();
         action_.addActionListener( listener );
 
         action_.removeActionListener( listener );
-
         action_.actionPerformed( createActionEvent() );
-        assertEquals( 0, listener.getActionPerformedEventCount() );
+
+        mocksControl_.verify();
     }
 
     /**
@@ -259,9 +286,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveShouldEnablePredicate_Predicate_Absent()
     {
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
-
-        action_.removeShouldEnablePredicate( predicate );
+        action_.removeShouldEnablePredicate( createMockPredicate() );
     }
 
     /**
@@ -281,13 +306,14 @@ public final class BasicActionTest
     @Test
     public void testRemoveShouldEnablePredicate_Predicate_Present()
     {
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        final IPredicate<Action> predicate = createMockPredicate();
+        mocksControl_.replay();
         action_.addShouldEnablePredicate( predicate );
 
         action_.removeShouldEnablePredicate( predicate );
-
         action_.update();
-        assertEquals( 0, predicate.getEvaluateCallCount() );
+
+        mocksControl_.verify();
     }
 
     /**
@@ -298,9 +324,7 @@ public final class BasicActionTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveShouldSelectPredicate_Predicate_Absent()
     {
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
-
-        action_.removeShouldSelectPredicate( predicate );
+        action_.removeShouldSelectPredicate( createMockPredicate() );
     }
 
     /**
@@ -320,12 +344,13 @@ public final class BasicActionTest
     @Test
     public void testRemoveShouldSelectPredicate_Predicate_Present()
     {
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        final IPredicate<Action> predicate = createMockPredicate();
+        mocksControl_.replay();
         action_.addShouldSelectPredicate( predicate );
 
         action_.removeShouldSelectPredicate( predicate );
-
         action_.update();
-        assertEquals( 0, predicate.getEvaluateCallCount() );
+
+        mocksControl_.verify();
     }
 }

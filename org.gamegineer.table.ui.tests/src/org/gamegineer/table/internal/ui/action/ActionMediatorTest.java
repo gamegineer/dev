@@ -21,13 +21,12 @@
 
 package org.gamegineer.table.internal.ui.action;
 
-import static org.junit.Assert.assertEquals;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Action;
 import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
 import org.gamegineer.common.core.util.IPredicate;
-import org.gamegineer.common.core.util.MockPredicate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +43,9 @@ public final class ActionMediatorTest
 
     /** The action mediator under test in the fixture. */
     private ActionMediator mediator_;
+
+    /** The mocks control for use in the fixture. */
+    private IMocksControl mocksControl_;
 
 
     // ======================================================================
@@ -75,6 +77,19 @@ public final class ActionMediatorTest
     }
 
     /**
+     * Creates a new mock predicate associated with the fixture mocks control.
+     * 
+     * @return A new mock predicate; never {@code null}.
+     */
+    /* @NonNull */
+    private IPredicate<Action> createMockPredicate()
+    {
+        @SuppressWarnings( "unchecked" )
+        final IPredicate<Action> mockPredicate = mocksControl_.createMock( IPredicate.class );
+        return mockPredicate;
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -84,6 +99,7 @@ public final class ActionMediatorTest
     public void setUp()
         throws Exception
     {
+        mocksControl_ = EasyMock.createControl();
         mediator_ = new ActionMediator();
     }
 
@@ -98,6 +114,7 @@ public final class ActionMediatorTest
         throws Exception
     {
         mediator_ = null;
+        mocksControl_ = null;
     }
 
     /**
@@ -107,7 +124,7 @@ public final class ActionMediatorTest
     @Test( expected = NullPointerException.class )
     public void testBindActionListener_Action_Null()
     {
-        mediator_.bindActionListener( null, EasyMock.createMock( ActionListener.class ) );
+        mediator_.bindActionListener( null, mocksControl_.createMock( ActionListener.class ) );
     }
 
     /**
@@ -119,7 +136,7 @@ public final class ActionMediatorTest
     public void testBindActionListener_Listener_Bound()
     {
         final BasicAction action = new BasicAction();
-        final MockActionListener listener = new MockActionListener();
+        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
         mediator_.bindActionListener( action, listener );
 
         mediator_.bindActionListener( action, listener );
@@ -143,12 +160,14 @@ public final class ActionMediatorTest
     public void testBindActionListener_Listener_Unbound()
     {
         final BasicAction action = new BasicAction();
-        final MockActionListener listener = new MockActionListener();
+        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
+        listener.actionPerformed( EasyMock.notNull( ActionEvent.class ) );
+        mocksControl_.replay();
 
         mediator_.bindActionListener( action, listener );
-
         action.actionPerformed( createActionEvent() );
-        assertEquals( 1, listener.getActionPerformedEventCount() );
+
+        mocksControl_.verify();
     }
 
     /**
@@ -158,7 +177,7 @@ public final class ActionMediatorTest
     @Test( expected = NullPointerException.class )
     public void testBindShouldEnablePredicate_Action_Null()
     {
-        mediator_.bindShouldEnablePredicate( null, new MockPredicate<Action>() );
+        mediator_.bindShouldEnablePredicate( null, createMockPredicate() );
     }
 
     /**
@@ -170,7 +189,7 @@ public final class ActionMediatorTest
     public void testBindShouldEnablePredicate_Predicate_Bound()
     {
         final BasicAction action = new BasicAction();
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        final IPredicate<Action> predicate = createMockPredicate();
         mediator_.bindShouldEnablePredicate( action, predicate );
 
         mediator_.bindShouldEnablePredicate( action, predicate );
@@ -190,32 +209,37 @@ public final class ActionMediatorTest
      * Ensures the {@code bindShouldEnablePredicate} method binds a predicate
      * when no predicate is already bound to the action.
      */
+    @SuppressWarnings( "boxing" )
     @Test
     public void testBindShouldEnablePredicate_Predicate_Unbound()
     {
         final BasicAction action = new BasicAction();
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        final IPredicate<Action> predicate = createMockPredicate();
+        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false ).times( 2 );
+        mocksControl_.replay();
 
         mediator_.bindShouldEnablePredicate( action, predicate );
-
-        final int expectedEvaluateCallCount = predicate.getEvaluateCallCount() + 1;
         action.update();
-        assertEquals( expectedEvaluateCallCount, predicate.getEvaluateCallCount() );
+
+        mocksControl_.verify();
     }
 
     /**
      * Ensures the {@code bindShouldEnablePredicate} method updates the action
      * after binding the predicate.
      */
+    @SuppressWarnings( "boxing" )
     @Test
     public void testBindShouldEnablePredicate_UpdatesAction()
     {
         final BasicAction action = new BasicAction();
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        final IPredicate<Action> predicate = createMockPredicate();
+        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        mocksControl_.replay();
 
         mediator_.bindShouldEnablePredicate( action, predicate );
 
-        assertEquals( 1, predicate.getEvaluateCallCount() );
+        mocksControl_.verify();
     }
 
     //
@@ -227,7 +251,7 @@ public final class ActionMediatorTest
     @Test( expected = NullPointerException.class )
     public void testBindShouldSelectPredicate_Action_Null()
     {
-        mediator_.bindShouldSelectPredicate( null, new MockPredicate<Action>() );
+        mediator_.bindShouldSelectPredicate( null, createMockPredicate() );
     }
 
     /**
@@ -239,7 +263,7 @@ public final class ActionMediatorTest
     public void testBindShouldSelectPredicate_Predicate_Bound()
     {
         final BasicAction action = new BasicAction();
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        final IPredicate<Action> predicate = createMockPredicate();
         mediator_.bindShouldSelectPredicate( action, predicate );
 
         mediator_.bindShouldSelectPredicate( action, predicate );
@@ -259,32 +283,37 @@ public final class ActionMediatorTest
      * Ensures the {@code bindShouldSelectPredicate} method binds a predicate
      * when no predicate is already bound to the action.
      */
+    @SuppressWarnings( "boxing" )
     @Test
     public void testBindShouldSelectPredicate_Predicate_Unbound()
     {
         final BasicAction action = new BasicAction();
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        final IPredicate<Action> predicate = createMockPredicate();
+        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false ).times( 2 );
+        mocksControl_.replay();
 
         mediator_.bindShouldSelectPredicate( action, predicate );
-
-        final int expectedEvaluateCallCount = predicate.getEvaluateCallCount() + 1;
         action.update();
-        assertEquals( expectedEvaluateCallCount, predicate.getEvaluateCallCount() );
+
+        mocksControl_.verify();
     }
 
     /**
      * Ensures the {@code bindShouldSelectPredicate} method updates the action
      * after binding the predicate.
      */
+    @SuppressWarnings( "boxing" )
     @Test
     public void testBindShouldSelectPredicate_UpdatesAction()
     {
         final BasicAction action = new BasicAction();
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        final IPredicate<Action> predicate = createMockPredicate();
+        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        mocksControl_.replay();
 
         mediator_.bindShouldSelectPredicate( action, predicate );
 
-        assertEquals( 1, predicate.getEvaluateCallCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -315,66 +344,76 @@ public final class ActionMediatorTest
     public void testUnbind_UnbindsActionListeners()
     {
         final BasicAction action = new BasicAction();
-        final MockActionListener listener = new MockActionListener();
+        final ActionListener listener = mocksControl_.createMock( ActionListener.class );
+        mocksControl_.replay();
         mediator_.bindActionListener( action, listener );
 
         mediator_.unbind( action );
-
         action.actionPerformed( createActionEvent() );
-        assertEquals( 0, listener.getActionPerformedEventCount() );
+
+        mocksControl_.verify();
     }
 
     /**
      * Ensures the {@code unbind} method unbinds all should enable predicates
      * from the action.
      */
+    @SuppressWarnings( "boxing" )
     @Test
     public void testUnbind_UnbindsShouldEnablePredicates()
     {
         final BasicAction action = new BasicAction();
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        final IPredicate<Action> predicate = createMockPredicate();
+        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        mocksControl_.replay();
         mediator_.bindShouldEnablePredicate( action, predicate );
-        final int expectedEvaluateCallCount = predicate.getEvaluateCallCount();
 
         mediator_.unbind( action );
-
         action.update();
-        assertEquals( expectedEvaluateCallCount, predicate.getEvaluateCallCount() );
+
+        mocksControl_.verify();
     }
 
     /**
      * Ensures the {@code unbind} method unbinds all should select predicates
      * from the action.
      */
+    @SuppressWarnings( "boxing" )
     @Test
     public void testUnbind_UnbindsShouldSelectPredicates()
     {
         final BasicAction action = new BasicAction();
-        final MockPredicate<Action> predicate = new MockPredicate<Action>();
+        final IPredicate<Action> predicate = createMockPredicate();
+        EasyMock.expect( predicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        mocksControl_.replay();
         mediator_.bindShouldSelectPredicate( action, predicate );
-        final int expectedEvaluateCallCount = predicate.getEvaluateCallCount();
 
         mediator_.unbind( action );
-
         action.update();
-        assertEquals( expectedEvaluateCallCount, predicate.getEvaluateCallCount() );
+
+        mocksControl_.verify();
     }
 
     /**
      * Ensures the {@code unbind} method updates the action after unbinding a
      * bound predicate.
      */
+    @SuppressWarnings( "boxing" )
     @Test
     public void testUnbind_UpdatesAction()
     {
         final BasicAction action = new BasicAction();
-        mediator_.bindShouldEnablePredicate( action, new MockPredicate<Action>() );
-        final MockPredicate<Action> unmanagedPredicate = new MockPredicate<Action>();
+        final IPredicate<Action> managedPredicate = createMockPredicate();
+        EasyMock.expect( managedPredicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        final IPredicate<Action> unmanagedPredicate = createMockPredicate();
+        EasyMock.expect( unmanagedPredicate.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        mocksControl_.replay();
+        mediator_.bindShouldEnablePredicate( action, managedPredicate );
         action.addShouldEnablePredicate( unmanagedPredicate );
 
         mediator_.unbind( action );
 
-        assertEquals( 1, unmanagedPredicate.getEvaluateCallCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -385,87 +424,96 @@ public final class ActionMediatorTest
     public void testUnbindAll_UnbindsActionListeners()
     {
         final BasicAction action1 = new BasicAction();
-        final MockActionListener listener1 = new MockActionListener();
-        mediator_.bindActionListener( action1, listener1 );
+        final ActionListener listener1 = mocksControl_.createMock( ActionListener.class );
         final BasicAction action2 = new BasicAction();
-        final MockActionListener listener2 = new MockActionListener();
+        final ActionListener listener2 = mocksControl_.createMock( ActionListener.class );
+        mocksControl_.replay();
+        mediator_.bindActionListener( action1, listener1 );
         mediator_.bindActionListener( action2, listener2 );
 
         mediator_.unbindAll();
-
         action1.actionPerformed( createActionEvent() );
-        assertEquals( 0, listener1.getActionPerformedEventCount() );
         action2.actionPerformed( createActionEvent() );
-        assertEquals( 0, listener2.getActionPerformedEventCount() );
+
+        mocksControl_.verify();
     }
 
     /**
      * Ensures the {@code unbindAll} method unbinds all should enable predicates
      * from all actions.
      */
+    @SuppressWarnings( "boxing" )
     @Test
     public void testUnbindAll_UnbindsShouldEnablePredicates()
     {
         final BasicAction action1 = new BasicAction();
-        final MockPredicate<Action> predicate1 = new MockPredicate<Action>();
-        mediator_.bindShouldEnablePredicate( action1, predicate1 );
-        final int expectedEvaluateCallCount1 = predicate1.getEvaluateCallCount();
+        final IPredicate<Action> predicate1 = createMockPredicate();
+        EasyMock.expect( predicate1.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
         final BasicAction action2 = new BasicAction();
-        final MockPredicate<Action> predicate2 = new MockPredicate<Action>();
+        final IPredicate<Action> predicate2 = createMockPredicate();
+        EasyMock.expect( predicate2.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        mocksControl_.replay();
+        mediator_.bindShouldEnablePredicate( action1, predicate1 );
         mediator_.bindShouldEnablePredicate( action2, predicate2 );
-        final int expectedEvaluateCallCount2 = predicate2.getEvaluateCallCount();
 
         mediator_.unbindAll();
-
         action1.update();
-        assertEquals( expectedEvaluateCallCount1, predicate1.getEvaluateCallCount() );
         action2.update();
-        assertEquals( expectedEvaluateCallCount2, predicate2.getEvaluateCallCount() );
+
+        mocksControl_.verify();
     }
 
     /**
      * Ensures the {@code unbindAll} method unbinds all should select predicates
      * from all actions.
      */
+    @SuppressWarnings( "boxing" )
     @Test
     public void testUnbindAll_UnbindsShouldSelectPredicates()
     {
         final BasicAction action1 = new BasicAction();
-        final MockPredicate<Action> predicate1 = new MockPredicate<Action>();
-        mediator_.bindShouldSelectPredicate( action1, predicate1 );
-        final int expectedEvaluateCallCount1 = predicate1.getEvaluateCallCount();
+        final IPredicate<Action> predicate1 = createMockPredicate();
+        EasyMock.expect( predicate1.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
         final BasicAction action2 = new BasicAction();
-        final MockPredicate<Action> predicate2 = new MockPredicate<Action>();
+        final IPredicate<Action> predicate2 = createMockPredicate();
+        EasyMock.expect( predicate2.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        mocksControl_.replay();
+        mediator_.bindShouldSelectPredicate( action1, predicate1 );
         mediator_.bindShouldSelectPredicate( action2, predicate2 );
-        final int expectedEvaluateCallCount2 = predicate2.getEvaluateCallCount();
 
         mediator_.unbindAll();
-
         action1.update();
-        assertEquals( expectedEvaluateCallCount1, predicate1.getEvaluateCallCount() );
         action2.update();
-        assertEquals( expectedEvaluateCallCount2, predicate2.getEvaluateCallCount() );
+
+        mocksControl_.verify();
     }
 
     /**
      * Ensures the {@code unbindAll} method updates all actions after unbinding
      * a bound predicate.
      */
+    @SuppressWarnings( "boxing" )
     @Test
     public void testUnbindAll_UpdatesAction()
     {
         final BasicAction action1 = new BasicAction();
-        mediator_.bindShouldEnablePredicate( action1, new MockPredicate<Action>() );
-        final MockPredicate<Action> unmanagedPredicate1 = new MockPredicate<Action>();
-        action1.addShouldEnablePredicate( unmanagedPredicate1 );
+        final IPredicate<Action> managedPredicate1 = createMockPredicate();
+        EasyMock.expect( managedPredicate1.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        final IPredicate<Action> unmanagedPredicate1 = createMockPredicate();
+        EasyMock.expect( unmanagedPredicate1.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
         final BasicAction action2 = new BasicAction();
-        mediator_.bindShouldEnablePredicate( action2, new MockPredicate<Action>() );
-        final MockPredicate<Action> unmanagedPredicate2 = new MockPredicate<Action>();
+        final IPredicate<Action> managedPredicate2 = createMockPredicate();
+        EasyMock.expect( managedPredicate2.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        final IPredicate<Action> unmanagedPredicate2 = createMockPredicate();
+        EasyMock.expect( unmanagedPredicate2.evaluate( EasyMock.notNull( Action.class ) ) ).andReturn( false );
+        mocksControl_.replay();
+        mediator_.bindShouldEnablePredicate( action1, managedPredicate1 );
+        action1.addShouldEnablePredicate( unmanagedPredicate1 );
+        mediator_.bindShouldEnablePredicate( action2, managedPredicate2 );
         action2.addShouldEnablePredicate( unmanagedPredicate2 );
 
         mediator_.unbindAll();
 
-        assertEquals( 1, unmanagedPredicate1.getEvaluateCallCount() );
-        assertEquals( 1, unmanagedPredicate2.getEvaluateCallCount() );
+        mocksControl_.verify();
     }
 }
