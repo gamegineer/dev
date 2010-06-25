@@ -21,8 +21,9 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
 import org.gamegineer.table.core.Cards;
 import org.junit.After;
 import org.junit.Before;
@@ -37,6 +38,9 @@ public final class CardModelTest
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The mocks control for use in the fixture. */
+    private IMocksControl mocksControl_;
 
     /** The card model under test in the fixture. */
     private CardModel model_;
@@ -69,6 +73,7 @@ public final class CardModelTest
     public void setUp()
         throws Exception
     {
+        mocksControl_ = EasyMock.createControl();
         model_ = new CardModel( Cards.createUniqueCard() );
     }
 
@@ -83,6 +88,7 @@ public final class CardModelTest
         throws Exception
     {
         model_ = null;
+        mocksControl_ = null;
     }
 
     /**
@@ -102,7 +108,7 @@ public final class CardModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddCardModelListener_Listener_Present()
     {
-        final ICardModelListener listener = new MockCardModelListener();
+        final ICardModelListener listener = mocksControl_.createMock( ICardModelListener.class );
         model_.addCardModelListener( listener );
 
         model_.addCardModelListener( listener );
@@ -115,12 +121,14 @@ public final class CardModelTest
     @Test
     public void testCard_StateChanged_FiresCardModelStateChangedEvent()
     {
-        final MockCardModelListener listener = new MockCardModelListener();
+        final ICardModelListener listener = mocksControl_.createMock( ICardModelListener.class );
+        listener.cardModelStateChanged( EasyMock.notNull( CardModelEvent.class ) );
+        mocksControl_.replay();
         model_.addCardModelListener( listener );
 
         model_.getCard().flip();
 
-        assertEquals( 1, listener.getCardModelStateChangedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -130,20 +138,15 @@ public final class CardModelTest
     @Test
     public void testCardModelStateChanged_CatchesListenerException()
     {
-        final MockCardModelListener listener = new MockCardModelListener()
-        {
-            @Override
-            public void cardModelStateChanged(
-                final CardModelEvent event )
-            {
-                super.cardModelStateChanged( event );
-
-                throw new RuntimeException();
-            }
-        };
+        final ICardModelListener listener = mocksControl_.createMock( ICardModelListener.class );
+        listener.cardModelStateChanged( EasyMock.notNull( CardModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        mocksControl_.replay();
         model_.addCardModelListener( listener );
 
         model_.getCard().flip();
+
+        mocksControl_.verify();
     }
 
     /**
@@ -173,7 +176,7 @@ public final class CardModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveCardModelListener_Listener_Absent()
     {
-        model_.removeCardModelListener( new MockCardModelListener() );
+        model_.removeCardModelListener( mocksControl_.createMock( ICardModelListener.class ) );
     }
 
     /**
@@ -193,27 +196,15 @@ public final class CardModelTest
     @Test
     public void testRemoveCardModelListener_Listener_Present()
     {
-        final MockCardModelListener listener = new MockCardModelListener();
+        final ICardModelListener listener = mocksControl_.createMock( ICardModelListener.class );
+        listener.cardModelStateChanged( EasyMock.notNull( CardModelEvent.class ) );
+        mocksControl_.replay();
         model_.addCardModelListener( listener );
         model_.getCard().flip();
 
         model_.removeCardModelListener( listener );
-
         model_.getCard().flip();
-        assertEquals( 1, listener.getCardModelStateChangedEventCount() );
+
+        mocksControl_.verify();
     }
-    //
-    //    /**
-    //     * Ensures the {@code setFocused} method fires a card focus lost event.
-    //     */
-    //    @Test
-    //    public void testSetFocused_LostFocus_FiresCardFocusLostEvent()
-    //    {
-    //        final MockCardModelListener listener = new MockCardModelListener();
-    //        model_.addCardModelListener( listener );
-    //
-    //        model_.setFocused( false );
-    //
-    //        assertEquals( 1, listener.getCardFocusLostEventCount() );
-    //    }
 }
