@@ -1,5 +1,5 @@
 /*
- * MockNonPersistableClassPersistenceDelegate.java
+ * FakeNonPersistableClassPersistenceDelegate.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -27,10 +27,10 @@ import java.beans.PersistenceDelegate;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
- * A persistence delegate for the {@code MockNonPersistableClass} class.
+ * A persistence delegate for the {@code FakeNonPersistableClass} class.
  */
 @NotThreadSafe
-public final class MockNonPersistableClassPersistenceDelegate
+public final class FakeNonPersistableClassPersistenceDelegate
     extends PersistenceDelegate
 {
     // ======================================================================
@@ -39,9 +39,9 @@ public final class MockNonPersistableClassPersistenceDelegate
 
     /**
      * Initializes a new instance of the {@code
-     * MockNonPersistableClassPersistenceDelegate} class.
+     * FakeNonPersistableClassPersistenceDelegate} class.
      */
-    public MockNonPersistableClassPersistenceDelegate()
+    public FakeNonPersistableClassPersistenceDelegate()
     {
         super();
     }
@@ -61,8 +61,8 @@ public final class MockNonPersistableClassPersistenceDelegate
         @SuppressWarnings( "unused" )
         final Encoder out )
     {
-        final MockNonPersistableClass obj = (MockNonPersistableClass)oldInstance;
-        return new Expression( oldInstance, MockNonPersistableClass.class, "new", new Object[] { //$NON-NLS-1$
+        final FakeNonPersistableClass obj = (FakeNonPersistableClass)oldInstance;
+        return new Expression( oldInstance, FakeNonPersistableClass.class, "new", new Object[] { //$NON-NLS-1$
                 obj.getIntField(), obj.getStringField()
             } );
     }

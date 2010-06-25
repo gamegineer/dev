@@ -1,6 +1,6 @@
 /*
- * MockNonSerializableClassProxy.java
- * Copyright 2008-2009 Gamegineer.org
+ * FakeNonSerializableClassProxy.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,10 +25,10 @@ import java.io.Serializable;
 import net.jcip.annotations.Immutable;
 
 /**
- * A serializable proxy for the {@code MockNonSerializableClass} class.
+ * A serializable proxy for the {@code FakeNonSerializableClass} class.
  */
 @Immutable
-public final class MockNonSerializableClassProxy
+public final class FakeNonSerializableClassProxy
     implements Serializable
 {
     // ======================================================================
@@ -58,30 +58,30 @@ public final class MockNonSerializableClassProxy
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MockNonSerializableClassProxy}
+     * Initializes a new instance of the {@code FakeNonSerializableClassProxy}
      * class.
      */
     @SuppressWarnings( "unused" )
-    private MockNonSerializableClassProxy()
+    private FakeNonSerializableClassProxy()
     {
         intField_ = 0;
         stringField_ = null;
     }
 
     /**
-     * Initializes a new instance of the {@code MockNonSerializableClassProxy}
-     * class from the specified {@code MockNonSerializableClass} instance.
+     * Initializes a new instance of the {@code FakeNonSerializableClassProxy}
+     * class from the specified {@code FakeNonSerializableClass} instance.
      * 
      * @param subject
-     *        The {@code MockNonSerializableClass} instance; must not be {@code
+     *        The {@code FakeNonSerializableClass} instance; must not be {@code
      *        null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code subject} is {@code null}.
      */
-    public MockNonSerializableClassProxy(
+    public FakeNonSerializableClassProxy(
         /* @NonNull */
-        final MockNonSerializableClass subject )
+        final FakeNonSerializableClass subject )
     {
         intField_ = subject.getIntField();
         stringField_ = subject.getStringField();
@@ -102,6 +102,6 @@ public final class MockNonSerializableClassProxy
     /* @NonNull */
     private Object readResolve()
     {
-        return new MockNonSerializableClass( intField_, stringField_ );
+        return new FakeNonSerializableClass( intField_, stringField_ );
     }
 }

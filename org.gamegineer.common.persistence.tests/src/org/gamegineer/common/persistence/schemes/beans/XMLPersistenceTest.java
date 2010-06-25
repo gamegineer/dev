@@ -82,8 +82,8 @@ public final class XMLPersistenceTest
         throws Exception
     {
         persistenceDelegateRegistry_ = Services.getDefault().getBeansPersistenceDelegateRegistry();
-        persistenceDelegate_ = new MockNonPersistableClassPersistenceDelegate();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( MockNonPersistableClass.class, persistenceDelegate_ );
+        persistenceDelegate_ = new FakeNonPersistableClassPersistenceDelegate();
+        persistenceDelegateRegistry_.registerPersistenceDelegate( FakeNonPersistableClass.class, persistenceDelegate_ );
     }
 
     /**
@@ -96,7 +96,7 @@ public final class XMLPersistenceTest
     public void tearDown()
         throws Exception
     {
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( MockNonPersistableClass.class, persistenceDelegate_ );
+        persistenceDelegateRegistry_.unregisterPersistenceDelegate( FakeNonPersistableClass.class, persistenceDelegate_ );
         persistenceDelegate_ = null;
         persistenceDelegateRegistry_ = null;
     }
@@ -108,14 +108,14 @@ public final class XMLPersistenceTest
     @Test
     public void testRoundTrip_NonPersistableObject()
     {
-        final MockNonPersistableClass obj = new MockNonPersistableClass( 2112, "42" ); //$NON-NLS-1$
+        final FakeNonPersistableClass obj = new FakeNonPersistableClass( 2112, "42" ); //$NON-NLS-1$
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         final XMLEncoder encoder = new XMLEncoder( baos );
         encoder.writeObject( obj );
         encoder.close();
 
         final XMLDecoder decoder = new XMLDecoder( new ByteArrayInputStream( baos.toByteArray() ) );
-        final MockNonPersistableClass deserializedObj = (MockNonPersistableClass)decoder.readObject();
+        final FakeNonPersistableClass deserializedObj = (FakeNonPersistableClass)decoder.readObject();
         decoder.close();
 
         assertEquals( obj, deserializedObj );

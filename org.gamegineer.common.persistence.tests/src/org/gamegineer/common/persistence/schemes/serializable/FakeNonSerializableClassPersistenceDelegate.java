@@ -1,5 +1,5 @@
 /*
- * MockNonSerializableClassPersistenceDelegate.java
+ * FakeNonSerializableClassPersistenceDelegate.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -27,10 +27,10 @@ import java.io.ObjectStreamClass;
 import net.jcip.annotations.Immutable;
 
 /**
- * A persistence delegate for the {@code MockNonSerializableClass} class.
+ * A persistence delegate for the {@code FakeNonSerializableClass} class.
  */
 @Immutable
-public final class MockNonSerializableClassPersistenceDelegate
+public final class FakeNonSerializableClassPersistenceDelegate
     extends AbstractPersistenceDelegate
 {
     // ======================================================================
@@ -39,9 +39,9 @@ public final class MockNonSerializableClassPersistenceDelegate
 
     /**
      * Initializes a new instance of the {@code
-     * MockNonSerializableClassPersistenceDelegate} class.
+     * FakeNonSerializableClassPersistenceDelegate} class.
      */
-    public MockNonSerializableClassPersistenceDelegate()
+    public FakeNonSerializableClassPersistenceDelegate()
     {
         super();
     }
@@ -58,12 +58,12 @@ public final class MockNonSerializableClassPersistenceDelegate
     public Object replaceObject(
         final Object obj )
     {
-        if( !(obj instanceof MockNonSerializableClass) )
+        if( !(obj instanceof FakeNonSerializableClass) )
         {
             return super.replaceObject( obj );
         }
 
-        return new MockNonSerializableClassProxy( (MockNonSerializableClass)obj );
+        return new FakeNonSerializableClassProxy( (FakeNonSerializableClass)obj );
     }
 
     /*
@@ -78,9 +78,9 @@ public final class MockNonSerializableClassPersistenceDelegate
         assertArgumentNotNull( stream, "stream" ); //$NON-NLS-1$
         assertArgumentNotNull( desc, "desc" ); //$NON-NLS-1$
 
-        if( desc.getName().equals( MockNonSerializableClassProxy.class.getName() ) )
+        if( desc.getName().equals( FakeNonSerializableClassProxy.class.getName() ) )
         {
-            return MockNonSerializableClassProxy.class;
+            return FakeNonSerializableClassProxy.class;
         }
 
         return super.resolveClass( stream, desc );

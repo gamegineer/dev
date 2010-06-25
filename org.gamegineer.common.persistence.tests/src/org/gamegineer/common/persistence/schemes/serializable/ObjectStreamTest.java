@@ -83,8 +83,8 @@ public final class ObjectStreamTest
         throws Exception
     {
         persistenceDelegateRegistry_ = Services.getDefault().getSerializablePersistenceDelegateRegistry();
-        persistenceDelegate_ = new MockNonSerializableClassPersistenceDelegate();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( MockNonSerializableClass.class, persistenceDelegate_ );
+        persistenceDelegate_ = new FakeNonSerializableClassPersistenceDelegate();
+        persistenceDelegateRegistry_.registerPersistenceDelegate( FakeNonSerializableClass.class, persistenceDelegate_ );
     }
 
     /**
@@ -97,7 +97,7 @@ public final class ObjectStreamTest
     public void tearDown()
         throws Exception
     {
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( MockNonSerializableClass.class, persistenceDelegate_ );
+        persistenceDelegateRegistry_.unregisterPersistenceDelegate( FakeNonSerializableClass.class, persistenceDelegate_ );
         persistenceDelegate_ = null;
         persistenceDelegateRegistry_ = null;
     }
@@ -113,14 +113,14 @@ public final class ObjectStreamTest
     public void testRoundTrip_NonSerializableObject()
         throws Exception
     {
-        final MockNonSerializableClass obj = new MockNonSerializableClass( 2112, "42" ); //$NON-NLS-1$
+        final FakeNonSerializableClass obj = new FakeNonSerializableClass( 2112, "42" ); //$NON-NLS-1$
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         final ObjectOutputStream oos = new ObjectOutputStream( baos );
         oos.writeObject( obj );
         oos.close();
 
         final ObjectInputStream ois = new ObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
-        final MockNonSerializableClass deserializedObj = (MockNonSerializableClass)ois.readObject();
+        final FakeNonSerializableClass deserializedObj = (FakeNonSerializableClass)ois.readObject();
         ois.close();
 
         assertEquals( obj, deserializedObj );

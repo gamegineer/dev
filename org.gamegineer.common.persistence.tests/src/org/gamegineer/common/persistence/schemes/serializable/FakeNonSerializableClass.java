@@ -1,6 +1,6 @@
 /*
- * MockNonSerializableClass.java
- * Copyright 2008-2009 Gamegineer.org
+ * FakeNonSerializableClass.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@ package org.gamegineer.common.persistence.schemes.serializable;
 import net.jcip.annotations.Immutable;
 
 /**
- * A mock non-serializable class used for testing the object serialization
+ * A fake non-serializable class used for testing the object serialization
  * streams.
  * 
  * <p>
@@ -34,7 +34,7 @@ import net.jcip.annotations.Immutable;
  * </p>
  */
 @Immutable
-public final class MockNonSerializableClass
+public final class FakeNonSerializableClass
 {
     // ======================================================================
     // Fields
@@ -52,14 +52,14 @@ public final class MockNonSerializableClass
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MockNonSerializableClass} class.
+     * Initializes a new instance of the {@code FakeNonSerializableClass} class.
      * 
      * @param intField
      *        The integer field.
      * @param stringField
      *        The string field; may be {@code null}.
      */
-    public MockNonSerializableClass(
+    public FakeNonSerializableClass(
         final int intField,
         /* @Nullable */
         final String stringField )
@@ -85,12 +85,12 @@ public final class MockNonSerializableClass
             return true;
         }
 
-        if( !(obj instanceof MockNonSerializableClass) )
+        if( !(obj instanceof FakeNonSerializableClass) )
         {
             return false;
         }
 
-        final MockNonSerializableClass other = (MockNonSerializableClass)obj;
+        final FakeNonSerializableClass other = (FakeNonSerializableClass)obj;
         return (intField_ == other.intField_) && stringField_.equals( other.stringField_ );
     }
 

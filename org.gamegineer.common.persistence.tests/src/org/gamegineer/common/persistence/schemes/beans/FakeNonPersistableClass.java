@@ -1,6 +1,6 @@
 /*
- * MockNonPersistableClass.java
- * Copyright 2008-2009 Gamegineer.org
+ * FakeNonPersistableClass.java
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@ package org.gamegineer.common.persistence.schemes.beans;
 import net.jcip.annotations.Immutable;
 
 /**
- * A mock non-persistable class used for testing the JavaBeans persistence
+ * A fake non-persistable class used for testing the JavaBeans persistence
  * coders.
  * 
  * <p>
@@ -34,7 +34,7 @@ import net.jcip.annotations.Immutable;
  * </p>
  */
 @Immutable
-public final class MockNonPersistableClass
+public final class FakeNonPersistableClass
 {
     // ======================================================================
     // Fields
@@ -52,14 +52,14 @@ public final class MockNonPersistableClass
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MockNonPersistableClass} class.
+     * Initializes a new instance of the {@code FakeNonPersistableClass} class.
      * 
      * @param intField
      *        The integer field.
      * @param stringField
      *        The string field; may be {@code null}.
      */
-    public MockNonPersistableClass(
+    public FakeNonPersistableClass(
         final int intField,
         /* @Nullable */
         final String stringField )
@@ -85,12 +85,12 @@ public final class MockNonPersistableClass
             return true;
         }
 
-        if( !(obj instanceof MockNonPersistableClass) )
+        if( !(obj instanceof FakeNonPersistableClass) )
         {
             return false;
         }
 
-        final MockNonPersistableClass other = (MockNonPersistableClass)obj;
+        final FakeNonPersistableClass other = (FakeNonPersistableClass)obj;
         return (intField_ == other.intField_) && stringField_.equals( other.stringField_ );
     }
 
