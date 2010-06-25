@@ -21,10 +21,10 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Point;
 import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
 import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.ICard;
@@ -43,8 +43,14 @@ public final class CardPileModelTest
     // Fields
     // ======================================================================
 
+    /** The mocks control for use in the fixture. */
+    private IMocksControl mocksControl_;
+
     /** The card pile model under test in the fixture. */
     private CardPileModel model_;
+
+    /** The nice mocks control for use in the fixture. */
+    private IMocksControl niceMocksControl_;
 
 
     // ======================================================================
@@ -74,6 +80,8 @@ public final class CardPileModelTest
     public void setUp()
         throws Exception
     {
+        mocksControl_ = EasyMock.createControl();
+        niceMocksControl_ = EasyMock.createNiceControl();
         model_ = new CardPileModel( CardPiles.createUniqueCardPile() );
     }
 
@@ -88,6 +96,8 @@ public final class CardPileModelTest
         throws Exception
     {
         model_ = null;
+        niceMocksControl_ = null;
+        mocksControl_ = null;
     }
 
     /**
@@ -108,7 +118,7 @@ public final class CardPileModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddCardPileModelListener_Listener_Present()
     {
-        final ICardPileModelListener listener = new MockCardPileModelListener();
+        final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
         model_.addCardPileModelListener( listener );
 
         model_.addCardPileModelListener( listener );
@@ -124,12 +134,14 @@ public final class CardPileModelTest
     {
         final ICard card = Cards.createUniqueCard();
         model_.getCardPile().addCard( card );
-        final MockCardPileModelListener listener = new MockCardPileModelListener();
+        final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileModelStateChanged( EasyMock.notNull( CardPileModelEvent.class ) );
+        mocksControl_.replay();
         model_.addCardPileModelListener( listener );
 
         // NB: change card model state here when applicable
 
-        assertEquals( 1, listener.getCardPileModelStateChangedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -139,12 +151,14 @@ public final class CardPileModelTest
     @Test
     public void testCardPile_StateChanged_FiresCardPileModelStateChangedEvent()
     {
-        final MockCardPileModelListener listener = new MockCardPileModelListener();
+        final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileModelStateChanged( EasyMock.notNull( CardPileModelEvent.class ) );
+        mocksControl_.replay();
         model_.addCardPileModelListener( listener );
 
         model_.getCardPile().setLocation( new Point( 101, 102 ) );
 
-        assertEquals( 1, listener.getCardPileModelStateChangedEventCount() );
+        mocksControl_.verify();
     }
 
     /**
@@ -154,20 +168,15 @@ public final class CardPileModelTest
     @Test
     public void testCardPileFocusGained_CatchesListenerException()
     {
-        final MockCardPileModelListener listener = new MockCardPileModelListener()
-        {
-            @Override
-            public void cardPileFocusGained(
-                final CardPileModelEvent event )
-            {
-                super.cardPileFocusGained( event );
-
-                throw new RuntimeException();
-            }
-        };
+        final ICardPileModelListener listener = niceMocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileFocusGained( EasyMock.notNull( CardPileModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        niceMocksControl_.replay();
         model_.addCardPileModelListener( listener );
 
         model_.setFocused( true );
+
+        niceMocksControl_.verify();
     }
 
     /**
@@ -177,20 +186,15 @@ public final class CardPileModelTest
     @Test
     public void testCardPileFocusLost_CatchesListenerException()
     {
-        final MockCardPileModelListener listener = new MockCardPileModelListener()
-        {
-            @Override
-            public void cardPileFocusLost(
-                final CardPileModelEvent event )
-            {
-                super.cardPileFocusLost( event );
-
-                throw new RuntimeException();
-            }
-        };
+        final ICardPileModelListener listener = niceMocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileFocusLost( EasyMock.notNull( CardPileModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        niceMocksControl_.replay();
         model_.addCardPileModelListener( listener );
 
         model_.setFocused( false );
+
+        niceMocksControl_.verify();
     }
 
     /**
@@ -201,20 +205,15 @@ public final class CardPileModelTest
     @Test
     public void testCardPileModelStateChanged_CatchesListenerException()
     {
-        final MockCardPileModelListener listener = new MockCardPileModelListener()
-        {
-            @Override
-            public void cardPileModelStateChanged(
-                final CardPileModelEvent event )
-            {
-                super.cardPileModelStateChanged( event );
-
-                throw new RuntimeException();
-            }
-        };
+        final ICardPileModelListener listener = niceMocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileModelStateChanged( EasyMock.notNull( CardPileModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        niceMocksControl_.replay();
         model_.addCardPileModelListener( listener );
 
         model_.getCardPile().setLocation( new Point( 101, 102 ) );
+
+        niceMocksControl_.verify();
     }
 
     /**
@@ -264,7 +263,7 @@ public final class CardPileModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveCardPileModelListener_Listener_Absent()
     {
-        model_.removeCardPileModelListener( new MockCardPileModelListener() );
+        model_.removeCardPileModelListener( mocksControl_.createMock( ICardPileModelListener.class ) );
     }
 
     /**
@@ -284,15 +283,16 @@ public final class CardPileModelTest
     @Test
     public void testRemoveCardPileModelListener_Listener_Present()
     {
-        final MockCardPileModelListener listener = new MockCardPileModelListener();
+        final ICardPileModelListener listener = niceMocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileFocusGained( EasyMock.notNull( CardPileModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.addCardPileModelListener( listener );
         model_.setFocused( true );
 
         model_.removeCardPileModelListener( listener );
-
         model_.setFocused( false );
-        assertEquals( 1, listener.getCardPileFocusGainedEventCount() );
-        assertEquals( 0, listener.getCardPileFocusLostEventCount() );
+
+        niceMocksControl_.verify();
     }
 
     /**
@@ -302,12 +302,14 @@ public final class CardPileModelTest
     @Test
     public void testSetFocused_FiresCardPileModelStateChangedEvent()
     {
-        final MockCardPileModelListener listener = new MockCardPileModelListener();
+        final ICardPileModelListener listener = niceMocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileModelStateChanged( EasyMock.notNull( CardPileModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.addCardPileModelListener( listener );
 
         model_.setFocused( true );
 
-        assertEquals( 1, listener.getCardPileModelStateChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -317,12 +319,14 @@ public final class CardPileModelTest
     @Test
     public void testSetFocused_GainedFocus_FiresCardPileFocusGainedEvent()
     {
-        final MockCardPileModelListener listener = new MockCardPileModelListener();
+        final ICardPileModelListener listener = niceMocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileFocusGained( EasyMock.notNull( CardPileModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.addCardPileModelListener( listener );
 
         model_.setFocused( true );
 
-        assertEquals( 1, listener.getCardPileFocusGainedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -331,11 +335,13 @@ public final class CardPileModelTest
     @Test
     public void testSetFocused_LostFocus_FiresCardPileFocusLostEvent()
     {
-        final MockCardPileModelListener listener = new MockCardPileModelListener();
+        final ICardPileModelListener listener = niceMocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileFocusLost( EasyMock.notNull( CardPileModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.addCardPileModelListener( listener );
 
         model_.setFocused( false );
 
-        assertEquals( 1, listener.getCardPileFocusLostEventCount() );
+        niceMocksControl_.verify();
     }
 }
