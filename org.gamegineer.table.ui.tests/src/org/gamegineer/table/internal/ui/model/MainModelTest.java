@@ -21,11 +21,12 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
 import org.gamegineer.table.ui.TableAdvisor;
 import org.junit.After;
 import org.junit.Before;
@@ -43,6 +44,9 @@ public final class MainModelTest
 
     /** The main model under test in the fixture. */
     private MainModel model_;
+
+    /** The nice mocks control for use in the fixture. */
+    private IMocksControl niceMocksControl_;
 
 
     // ======================================================================
@@ -92,6 +96,7 @@ public final class MainModelTest
     public void setUp()
         throws Exception
     {
+        niceMocksControl_ = EasyMock.createNiceControl();
         model_ = new MainModel( new TableAdvisor() );
     }
 
@@ -106,6 +111,7 @@ public final class MainModelTest
         throws Exception
     {
         model_ = null;
+        niceMocksControl_ = null;
     }
 
     /**
@@ -125,7 +131,7 @@ public final class MainModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddMainModelListener_Listener_Present()
     {
-        final IMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
         model_.addMainModelListener( listener );
 
         model_.addMainModelListener( listener );
@@ -158,22 +164,16 @@ public final class MainModelTest
     @Test
     public void testMainModelDirtyFlagChanged_CatchesListenerException()
     {
-        final MockMainModelListener listener = new MockMainModelListener()
-        {
-            @Override
-            public void mainModelDirtyFlagChanged(
-                final MainModelEvent event )
-            {
-                super.mainModelDirtyFlagChanged( event );
-
-                throw new RuntimeException();
-            }
-        };
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.mainModelDirtyFlagChanged( EasyMock.notNull( MainModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        niceMocksControl_.replay();
         model_.addMainModelListener( listener );
 
         model_.openTable();
-    }
 
+        niceMocksControl_.verify();
+    }
 
     /**
      * Ensures the main model file name changed event catches any exception
@@ -183,20 +183,15 @@ public final class MainModelTest
     @Test
     public void testMainModelFileNameChanged_CatchesListenerException()
     {
-        final MockMainModelListener listener = new MockMainModelListener()
-        {
-            @Override
-            public void mainModelFileNameChanged(
-                final MainModelEvent event )
-            {
-                super.mainModelFileNameChanged( event );
-
-                throw new RuntimeException();
-            }
-        };
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.mainModelFileNameChanged( EasyMock.notNull( MainModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        niceMocksControl_.replay();
         model_.addMainModelListener( listener );
 
         model_.openTable();
+
+        niceMocksControl_.verify();
     }
 
     /**
@@ -206,20 +201,15 @@ public final class MainModelTest
     @Test
     public void testMainModelStateChanged_CatchesListenerException()
     {
-        final MockMainModelListener listener = new MockMainModelListener()
-        {
-            @Override
-            public void mainModelStateChanged(
-                final MainModelEvent event )
-            {
-                super.mainModelStateChanged( event );
-
-                throw new RuntimeException();
-            }
-        };
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        niceMocksControl_.replay();
         model_.addMainModelListener( listener );
 
         model_.openTable();
+
+        niceMocksControl_.verify();
     }
 
     /**
@@ -229,13 +219,15 @@ public final class MainModelTest
     @Test
     public void testOpenTable_FiresMainModelDirtyFlagChangedEvent()
     {
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.mainModelDirtyFlagChanged( EasyMock.notNull( MainModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.openTable();
         model_.addMainModelListener( listener );
 
         model_.openTable();
 
-        assertEquals( 1, listener.getMainModelDirtyFlagChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -245,13 +237,15 @@ public final class MainModelTest
     @Test
     public void testOpenTable_FiresMainModelFileNameChangedEvent()
     {
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.mainModelFileNameChanged( EasyMock.notNull( MainModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.openTable();
         model_.addMainModelListener( listener );
 
         model_.openTable();
 
-        assertEquals( 1, listener.getMainModelFileNameChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -261,12 +255,14 @@ public final class MainModelTest
     @Test
     public void testOpenTable_FiresMainModelStateChangedEvent()
     {
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.addMainModelListener( listener );
 
         model_.openTable();
 
-        assertEquals( 1, listener.getMainModelStateChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -275,13 +271,15 @@ public final class MainModelTest
     @Test
     public void testOpenTable_FiresTableClosedEvent()
     {
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.tableClosed( EasyMock.notNull( MainModelContentChangedEvent.class ) );
+        niceMocksControl_.replay();
         model_.openTable();
         model_.addMainModelListener( listener );
 
         model_.openTable();
 
-        assertEquals( 1, listener.getTableClosedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -290,12 +288,14 @@ public final class MainModelTest
     @Test
     public void testOpenTable_FiresTableOpenedEvent()
     {
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.tableOpened( EasyMock.notNull( MainModelContentChangedEvent.class ) );
+        niceMocksControl_.replay();
         model_.addMainModelListener( listener );
 
         model_.openTable();
 
-        assertEquals( 1, listener.getTableOpenedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -324,14 +324,16 @@ public final class MainModelTest
         throws Exception
     {
         final String fileName = createTemporaryFileName();
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.mainModelDirtyFlagChanged( EasyMock.notNull( MainModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.openTable();
         model_.saveTable( fileName );
         model_.addMainModelListener( listener );
 
         model_.openTable( fileName );
 
-        assertEquals( 1, listener.getMainModelDirtyFlagChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -346,14 +348,16 @@ public final class MainModelTest
         throws Exception
     {
         final String fileName = createTemporaryFileName();
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.mainModelFileNameChanged( EasyMock.notNull( MainModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.openTable();
         model_.saveTable( fileName );
         model_.addMainModelListener( listener );
 
         model_.openTable( fileName );
 
-        assertEquals( 1, listener.getMainModelFileNameChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -368,14 +372,16 @@ public final class MainModelTest
         throws Exception
     {
         final String fileName = createTemporaryFileName();
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.openTable();
         model_.saveTable( fileName );
         model_.addMainModelListener( listener );
 
         model_.openTable( fileName );
 
-        assertEquals( 1, listener.getMainModelStateChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -389,14 +395,16 @@ public final class MainModelTest
         throws Exception
     {
         final String fileName = createTemporaryFileName();
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.tableClosed( EasyMock.notNull( MainModelContentChangedEvent.class ) );
+        niceMocksControl_.replay();
         model_.openTable();
         model_.saveTable( fileName );
         model_.addMainModelListener( listener );
 
         model_.openTable( fileName );
 
-        assertEquals( 1, listener.getTableClosedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -410,14 +418,16 @@ public final class MainModelTest
         throws Exception
     {
         final String fileName = createTemporaryFileName();
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.tableOpened( EasyMock.notNull( MainModelContentChangedEvent.class ) );
+        niceMocksControl_.replay();
         model_.openTable();
         model_.saveTable( fileName );
         model_.addMainModelListener( listener );
 
         model_.openTable( fileName );
 
-        assertEquals( 1, listener.getTableOpenedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -428,7 +438,7 @@ public final class MainModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveMainModelListener_Listener_Absent()
     {
-        model_.removeMainModelListener( new MockMainModelListener() );
+        model_.removeMainModelListener( niceMocksControl_.createMock( IMainModelListener.class ) );
     }
 
     /**
@@ -448,14 +458,16 @@ public final class MainModelTest
     @Test
     public void testRemoveMainModelListener_Listener_Present()
     {
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.tableOpened( EasyMock.notNull( MainModelContentChangedEvent.class ) );
+        niceMocksControl_.replay();
         model_.addMainModelListener( listener );
         model_.openTable();
 
         model_.removeMainModelListener( listener );
-
         model_.openTable();
-        assertEquals( 1, listener.getTableOpenedEventCount() );
+
+        niceMocksControl_.verify();
     }
 
     /**
@@ -484,13 +496,15 @@ public final class MainModelTest
         throws Exception
     {
         final String fileName = createTemporaryFileName();
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.mainModelDirtyFlagChanged( EasyMock.notNull( MainModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.openTable();
         model_.addMainModelListener( listener );
 
         model_.saveTable( fileName );
 
-        assertEquals( 1, listener.getMainModelDirtyFlagChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -505,13 +519,15 @@ public final class MainModelTest
         throws Exception
     {
         final String fileName = createTemporaryFileName();
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.mainModelFileNameChanged( EasyMock.notNull( MainModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.openTable();
         model_.addMainModelListener( listener );
 
         model_.saveTable( fileName );
 
-        assertEquals( 1, listener.getMainModelFileNameChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -526,13 +542,15 @@ public final class MainModelTest
         throws Exception
     {
         final String fileName = createTemporaryFileName();
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.openTable();
         model_.addMainModelListener( listener );
 
         model_.saveTable( fileName );
 
-        assertEquals( 1, listener.getMainModelStateChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -542,21 +560,16 @@ public final class MainModelTest
     @Test
     public void testTableClosed_CatchesListenerException()
     {
-        final MockMainModelListener listener = new MockMainModelListener()
-        {
-            @Override
-            public void tableClosed(
-                final MainModelContentChangedEvent event )
-            {
-                super.tableClosed( event );
-
-                throw new RuntimeException();
-            }
-        };
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.tableClosed( EasyMock.notNull( MainModelContentChangedEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        niceMocksControl_.replay();
         model_.openTable();
         model_.addMainModelListener( listener );
 
         model_.openTable();
+
+        niceMocksControl_.verify();
     }
 
     /**
@@ -567,12 +580,14 @@ public final class MainModelTest
     public void testTableModel_StateChanged_FiresMainModelDirtyFlagChangedEvent()
     {
         model_.openTable();
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.mainModelDirtyFlagChanged( EasyMock.notNull( MainModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.addMainModelListener( listener );
 
         model_.getTableModel().setOriginOffset( new Dimension( 100, 200 ) );
 
-        assertEquals( 2, listener.getMainModelDirtyFlagChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -583,12 +598,14 @@ public final class MainModelTest
     public void testTableModel_StateChanged_FiresMainModelStateChangedEvent()
     {
         model_.openTable();
-        final MockMainModelListener listener = new MockMainModelListener();
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.addMainModelListener( listener );
 
         model_.getTableModel().setOriginOffset( new Dimension( 100, 200 ) );
 
-        assertEquals( 2, listener.getMainModelStateChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -598,19 +615,14 @@ public final class MainModelTest
     @Test
     public void testTableOpened_CatchesListenerException()
     {
-        final MockMainModelListener listener = new MockMainModelListener()
-        {
-            @Override
-            public void tableOpened(
-                final MainModelContentChangedEvent event )
-            {
-                super.tableOpened( event );
-
-                throw new RuntimeException();
-            }
-        };
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.tableOpened( EasyMock.notNull( MainModelContentChangedEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        niceMocksControl_.replay();
         model_.addMainModelListener( listener );
 
         model_.openTable();
+
+        niceMocksControl_.verify();
     }
 }
