@@ -27,6 +27,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.awt.Dimension;
 import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
 import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.TableFactory;
@@ -46,6 +47,9 @@ public final class TableModelTest
 
     /** The table model under test in the fixture. */
     private TableModel model_;
+
+    /** The nice mocks control for use in the fixture. */
+    private IMocksControl niceMocksControl_;
 
 
     // ======================================================================
@@ -75,6 +79,7 @@ public final class TableModelTest
     public void setUp()
         throws Exception
     {
+        niceMocksControl_ = EasyMock.createNiceControl();
         model_ = new TableModel( TableFactory.createTable() );
     }
 
@@ -89,6 +94,7 @@ public final class TableModelTest
         throws Exception
     {
         model_ = null;
+        niceMocksControl_ = null;
     }
 
     /**
@@ -108,7 +114,7 @@ public final class TableModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddTableModelListener_Listener_Present()
     {
-        final ITableModelListener listener = new MockTableModelListener();
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         model_.addTableModelListener( listener );
 
         model_.addTableModelListener( listener );
@@ -123,20 +129,15 @@ public final class TableModelTest
     {
         final ICardPile cardPile = CardPiles.createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
-        final MockTableModelListener listener = new MockTableModelListener()
-        {
-            @Override
-            public void cardPileFocusChanged(
-                final TableModelEvent event )
-            {
-                super.cardPileFocusChanged( event );
-
-                throw new RuntimeException();
-            }
-        };
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.cardPileFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
         model_.setFocus( cardPile );
+
+        niceMocksControl_.verify();
     }
 
     /**
@@ -148,12 +149,14 @@ public final class TableModelTest
     {
         final ICardPile cardPile = CardPiles.createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
-        final MockTableModelListener listener = new MockTableModelListener();
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelStateChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
         model_.getCardPileModel( cardPile ).setFocused( true );
 
-        assertEquals( 2, listener.getTableModelStateChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -173,7 +176,7 @@ public final class TableModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testGetCardPileModel_CardPile_Absent()
     {
-        model_.getCardPileModel( EasyMock.createMock( ICardPile.class ) );
+        model_.getCardPileModel( niceMocksControl_.createMock( ICardPile.class ) );
     }
 
     /**
@@ -228,7 +231,7 @@ public final class TableModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveTableModelListener_Listener_Absent()
     {
-        model_.removeTableModelListener( new MockTableModelListener() );
+        model_.removeTableModelListener( niceMocksControl_.createMock( ITableModelListener.class ) );
     }
 
     /**
@@ -250,14 +253,16 @@ public final class TableModelTest
     {
         final ICardPile cardPile = CardPiles.createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
-        final MockTableModelListener listener = new MockTableModelListener();
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.cardPileFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.addTableModelListener( listener );
         model_.setFocus( cardPile );
 
         model_.removeTableModelListener( listener );
-
         model_.setFocus( null );
-        assertEquals( 1, listener.getCardPileFocusChangedEventCount() );
+
+        niceMocksControl_.verify();
     }
 
     /**
@@ -298,12 +303,14 @@ public final class TableModelTest
     {
         final ICardPile cardPile = CardPiles.createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
-        final MockTableModelListener listener = new MockTableModelListener();
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.cardPileFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
         model_.setFocus( cardPile );
 
-        assertEquals( 1, listener.getCardPileFocusChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -315,12 +322,14 @@ public final class TableModelTest
     {
         final ICardPile cardPile = CardPiles.createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
-        final MockTableModelListener listener = new MockTableModelListener();
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelStateChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
         model_.setFocus( cardPile );
 
-        assertEquals( 3, listener.getTableModelStateChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -330,12 +339,14 @@ public final class TableModelTest
     @Test
     public void testSetOriginOffset_FiresTableModelStateChangedEvent()
     {
-        final MockTableModelListener listener = new MockTableModelListener();
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelStateChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
         model_.setOriginOffset( new Dimension( 100, 200 ) );
 
-        assertEquals( 1, listener.getTableModelStateChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -345,12 +356,14 @@ public final class TableModelTest
     @Test
     public void testSetOriginOffset_FiresTableOriginOffsetChangedEvent()
     {
-        final MockTableModelListener listener = new MockTableModelListener();
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableOriginOffsetChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
         model_.setOriginOffset( new Dimension( 100, 200 ) );
 
-        assertEquals( 1, listener.getTableOriginOffsetChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -370,12 +383,14 @@ public final class TableModelTest
     @Test
     public void testTable_StateChanged_FiresTableModelStateChangedEvent()
     {
-        final MockTableModelListener listener = new MockTableModelListener();
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelStateChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
         model_.getTable().addCardPile( CardPiles.createUniqueCardPile() );
 
-        assertEquals( 1, listener.getTableModelStateChangedEventCount() );
+        niceMocksControl_.verify();
     }
 
     /**
@@ -386,19 +401,14 @@ public final class TableModelTest
     @Test
     public void testTableOriginOffsetChanged_CatchesListenerException()
     {
-        final MockTableModelListener listener = new MockTableModelListener()
-        {
-            @Override
-            public void tableOriginOffsetChanged(
-                final TableModelEvent event )
-            {
-                super.tableOriginOffsetChanged( event );
-
-                throw new RuntimeException();
-            }
-        };
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableOriginOffsetChanged( EasyMock.notNull( TableModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
         model_.setOriginOffset( new Dimension( 100, 200 ) );
+
+        niceMocksControl_.verify();
     }
 }
