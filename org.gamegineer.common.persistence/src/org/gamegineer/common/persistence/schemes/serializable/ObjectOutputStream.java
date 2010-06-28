@@ -21,10 +21,11 @@
 
 package org.gamegineer.common.persistence.schemes.serializable;
 
+import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.io.OutputStream;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.common.internal.persistence.Services;
+import org.gamegineer.common.internal.persistence.Activator;
 import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 
 /**
@@ -65,6 +66,9 @@ public final class ObjectOutputStream
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs while writing the stream header.
+     * @throws java.lang.IllegalStateException
+     *         If the Serializable persistence delegate registry is not
+     *         available.
      * @throws java.lang.NullPointerException
      *         If {@code out} is {@code null}.
      */
@@ -75,7 +79,8 @@ public final class ObjectOutputStream
     {
         super( out );
 
-        persistenceDelegateRegistry_ = Services.getDefault().getSerializablePersistenceDelegateRegistry();
+        persistenceDelegateRegistry_ = Activator.getDefault().getSerializablePersistenceDelegateRegistry();
+        assertStateLegal( persistenceDelegateRegistry_ != null, Messages.Common_persistenceDelegateRegistry_notAvailable );
 
         enableReplaceObject( true );
     }

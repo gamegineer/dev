@@ -23,9 +23,11 @@ package org.gamegineer.common.internal.persistence;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicReference;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The bundle activator for the org.gamegineer.common.persistence bundle.
@@ -41,8 +43,20 @@ public final class Activator
     /** The singleton instance of the bundle activator. */
     private static final AtomicReference<Activator> instance_ = new AtomicReference<Activator>();
 
+    /** The JavaBeans persistence delegate registry service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker beansPersistenceDelegateRegistryServiceTracker_;
+
     /** The bundle context. */
-    private final AtomicReference<BundleContext> bundleContext_;
+    @GuardedBy( "lock_" )
+    private BundleContext bundleContext_;
+
+    /** The instance lock. */
+    private final Object lock_;
+
+    /** The Serializable persistence delegate registry service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker serializablePersistenceDelegateRegistryServiceTracker_;
 
 
     // ======================================================================
@@ -54,13 +68,40 @@ public final class Activator
      */
     public Activator()
     {
-        bundleContext_ = new AtomicReference<BundleContext>();
+        lock_ = new Object();
+        beansPersistenceDelegateRegistryServiceTracker_ = null;
+        bundleContext_ = null;
+        serializablePersistenceDelegateRegistryServiceTracker_ = null;
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the JavaBeans persistence delegate registry service.
+     * 
+     * @return The JavaBeans persistence delegate registry service or {@code
+     *         null} if no JavaBeans persistence delegate registry service is
+     *         available.
+     */
+    /* @Nullable */
+    public org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry getBeansPersistenceDelegateRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( beansPersistenceDelegateRegistryServiceTracker_ == null )
+            {
+                beansPersistenceDelegateRegistryServiceTracker_ = new ServiceTracker( bundleContext_, org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry.class.getName(), null );
+                beansPersistenceDelegateRegistryServiceTracker_.open();
+            }
+
+            return (org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry)beansPersistenceDelegateRegistryServiceTracker_.getService();
+        }
+    }
 
     /**
      * Gets the bundle context.
@@ -70,9 +111,11 @@ public final class Activator
     /* @NonNull */
     public BundleContext getBundleContext()
     {
-        final BundleContext bundleContext = bundleContext_.get();
-        assert bundleContext != null;
-        return bundleContext;
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+            return bundleContext_;
+        }
     }
 
     /**
@@ -88,6 +131,30 @@ public final class Activator
         return instance;
     }
 
+    /**
+     * Gets the Serializable persistence delegate registry service.
+     * 
+     * @return The Serializable persistence delegate registry service or {@code
+     *         null} if no Serializable persistence delegate registry service is
+     *         available.
+     */
+    /* @Nullable */
+    public org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry getSerializablePersistenceDelegateRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( serializablePersistenceDelegateRegistryServiceTracker_ == null )
+            {
+                serializablePersistenceDelegateRegistryServiceTracker_ = new ServiceTracker( bundleContext_, org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry.class.getName(), null );
+                serializablePersistenceDelegateRegistryServiceTracker_.open();
+            }
+
+            return (org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry)serializablePersistenceDelegateRegistryServiceTracker_.getService();
+        }
+    }
+
     /*
      * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
      */
@@ -97,12 +164,13 @@ public final class Activator
     {
         assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
 
-        final boolean wasBundleContextNull = bundleContext_.compareAndSet( null, bundleContext );
-        assert wasBundleContextNull;
+        synchronized( lock_ )
+        {
+            bundleContext_ = bundleContext;
+        }
+
         final boolean wasInstanceNull = instance_.compareAndSet( null, this );
         assert wasInstanceNull;
-
-        Services.getDefault().open( bundleContext );
     }
 
     /*
@@ -114,11 +182,23 @@ public final class Activator
     {
         assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
 
-        Services.getDefault().close();
-
         final boolean wasInstanceNonNull = instance_.compareAndSet( this, null );
         assert wasInstanceNonNull;
-        final boolean wasBundleContextNonNull = bundleContext_.compareAndSet( bundleContext, null );
-        assert wasBundleContextNonNull;
+
+        synchronized( lock_ )
+        {
+            bundleContext_ = null;
+
+            if( beansPersistenceDelegateRegistryServiceTracker_ != null )
+            {
+                beansPersistenceDelegateRegistryServiceTracker_.close();
+                beansPersistenceDelegateRegistryServiceTracker_ = null;
+            }
+            if( serializablePersistenceDelegateRegistryServiceTracker_ != null )
+            {
+                serializablePersistenceDelegateRegistryServiceTracker_.close();
+                serializablePersistenceDelegateRegistryServiceTracker_ = null;
+            }
+        }
     }
 }

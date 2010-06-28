@@ -22,11 +22,12 @@
 package org.gamegineer.common.persistence.schemes.serializable;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
-import org.gamegineer.common.internal.persistence.Services;
+import org.gamegineer.common.internal.persistence.Activator;
 import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.junit.After;
 import org.junit.Before;
@@ -82,7 +83,8 @@ public final class ObjectStreamTest
     public void setUp()
         throws Exception
     {
-        persistenceDelegateRegistry_ = Services.getDefault().getSerializablePersistenceDelegateRegistry();
+        persistenceDelegateRegistry_ = Activator.getDefault().getSerializablePersistenceDelegateRegistry();
+        assertNotNull( persistenceDelegateRegistry_ );
         persistenceDelegate_ = new FakeNonSerializableClassPersistenceDelegate();
         persistenceDelegateRegistry_.registerPersistenceDelegate( FakeNonSerializableClass.class, persistenceDelegate_ );
     }

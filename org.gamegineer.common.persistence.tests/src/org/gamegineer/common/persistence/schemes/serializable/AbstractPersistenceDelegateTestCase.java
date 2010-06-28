@@ -21,11 +21,15 @@
 
 package org.gamegineer.common.persistence.schemes.serializable;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectStreamClass;
-import org.gamegineer.common.internal.persistence.Services;
+import org.gamegineer.common.internal.persistence.Activator;
+import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -35,6 +39,14 @@ import org.junit.Test;
  */
 public abstract class AbstractPersistenceDelegateTestCase
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The persistence delegate registry. */
+    private IPersistenceDelegateRegistry persistenceDelegateRegistry_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -60,6 +72,33 @@ public abstract class AbstractPersistenceDelegateTestCase
      */
     /* @NonNull */
     protected abstract Object createSubject();
+
+    /**
+     * Sets up the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Before
+    public void setUp()
+        throws Exception
+    {
+        persistenceDelegateRegistry_ = Activator.getDefault().getSerializablePersistenceDelegateRegistry();
+        assertNotNull( persistenceDelegateRegistry_ );
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        persistenceDelegateRegistry_ = null;
+    }
 
     /**
      * Indicates the specified objects are equal.
@@ -105,7 +144,7 @@ public abstract class AbstractPersistenceDelegateTestCase
         final Object obj = createSubject();
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         final ObjectOutputStream oos = new ObjectOutputStream( baos );
-        final IPersistenceDelegate persistenceDelegate = Services.getDefault().getSerializablePersistenceDelegateRegistry().getPersistenceDelegate( obj.getClass().getName() );
+        final IPersistenceDelegate persistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( obj.getClass().getName() );
 
         persistenceDelegate.annotateClass( oos, null );
     }
@@ -122,7 +161,7 @@ public abstract class AbstractPersistenceDelegateTestCase
         throws Exception
     {
         final Object obj = createSubject();
-        final IPersistenceDelegate persistenceDelegate = Services.getDefault().getSerializablePersistenceDelegateRegistry().getPersistenceDelegate( obj.getClass().getName() );
+        final IPersistenceDelegate persistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( obj.getClass().getName() );
 
         persistenceDelegate.annotateClass( null, String.class );
     }
@@ -144,7 +183,7 @@ public abstract class AbstractPersistenceDelegateTestCase
         oos.writeObject( obj );
         oos.close();
         final ObjectInputStream ois = new ObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
-        final IPersistenceDelegate persistenceDelegate = Services.getDefault().getSerializablePersistenceDelegateRegistry().getPersistenceDelegate( obj.getClass().getName() );
+        final IPersistenceDelegate persistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( obj.getClass().getName() );
 
         persistenceDelegate.resolveClass( ois, null );
     }
@@ -161,7 +200,7 @@ public abstract class AbstractPersistenceDelegateTestCase
         throws Exception
     {
         final Object obj = createSubject();
-        final IPersistenceDelegate persistenceDelegate = Services.getDefault().getSerializablePersistenceDelegateRegistry().getPersistenceDelegate( obj.getClass().getName() );
+        final IPersistenceDelegate persistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( obj.getClass().getName() );
 
         persistenceDelegate.resolveClass( null, ObjectStreamClass.lookup( String.class ) );
     }

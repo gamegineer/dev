@@ -24,7 +24,8 @@ package org.gamegineer.common.persistence.schemes.beans;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.beans.PersistenceDelegate;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.common.internal.persistence.Services;
+import org.gamegineer.common.internal.persistence.Activator;
+import org.gamegineer.common.internal.persistence.Loggers;
 import org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 
 /**
@@ -80,16 +81,24 @@ public final class ClassLoaderContext
 
         className_ = className;
 
-        final IPersistenceDelegateRegistry persistenceDelegateRegistry = Services.getDefault().getBeansPersistenceDelegateRegistry();
-        final PersistenceDelegate persistenceDelegate = persistenceDelegateRegistry.getPersistenceDelegate( className );
-        if( persistenceDelegate != null )
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry = Activator.getDefault().getBeansPersistenceDelegateRegistry();
+        if( persistenceDelegateRegistry != null )
         {
-            final Thread thread = Thread.currentThread();
-            oldContextClassLoader_ = thread.getContextClassLoader();
-            thread.setContextClassLoader( persistenceDelegate.getClass().getClassLoader() );
+            final PersistenceDelegate persistenceDelegate = persistenceDelegateRegistry.getPersistenceDelegate( className );
+            if( persistenceDelegate != null )
+            {
+                final Thread thread = Thread.currentThread();
+                oldContextClassLoader_ = thread.getContextClassLoader();
+                thread.setContextClassLoader( persistenceDelegate.getClass().getClassLoader() );
+            }
+            else
+            {
+                oldContextClassLoader_ = null;
+            }
         }
         else
         {
+            Loggers.getDefaultLogger().warning( Messages.Common_persistenceDelegateRegistry_notAvailable );
             oldContextClassLoader_ = null;
         }
     }

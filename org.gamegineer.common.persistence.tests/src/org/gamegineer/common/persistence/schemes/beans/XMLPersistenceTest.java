@@ -22,12 +22,13 @@
 package org.gamegineer.common.persistence.schemes.beans;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import java.beans.PersistenceDelegate;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
-import org.gamegineer.common.internal.persistence.Services;
+import org.gamegineer.common.internal.persistence.Activator;
 import org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.junit.After;
 import org.junit.Before;
@@ -81,7 +82,8 @@ public final class XMLPersistenceTest
     public void setUp()
         throws Exception
     {
-        persistenceDelegateRegistry_ = Services.getDefault().getBeansPersistenceDelegateRegistry();
+        persistenceDelegateRegistry_ = Activator.getDefault().getBeansPersistenceDelegateRegistry();
+        assertNotNull( persistenceDelegateRegistry_ );
         persistenceDelegate_ = new FakeNonPersistableClassPersistenceDelegate();
         persistenceDelegateRegistry_.registerPersistenceDelegate( FakeNonPersistableClass.class, persistenceDelegate_ );
     }

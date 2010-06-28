@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.gamegineer.common.persistence.beansPersistenceDelegateRegistry">
+   <implementation class="org.gamegineer.common.internal.persistence.schemes.beans.services.persistencedelegateregistry.PersistenceDelegateRegistry"/>
+   <service>
+      <provide interface="org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry"/>
+   </service>
+</scr:component>

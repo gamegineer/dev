@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 20, 2008 at 9:30:36 PM.
+ * Created on Jun 27, 2010 at 9:25:48 PM.
  */
 
-package org.gamegineer.common.internal.persistence;
+package org.gamegineer.common.persistence.schemes.beans;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
@@ -35,16 +35,10 @@ final class Messages
     // Fields
     // ======================================================================
 
-    // --- Services ---------------------------------------------------------
+    // --- Common -----------------------------------------------------------
 
-    /** The JavaBeans persistence delegate registry service tracker is not set. */
-    public static String Services_beansPersistenceDelegateRegistryServiceTracker_notSet;
-
-    /**
-     * The Serializable persistence delegate registry service tracker is not
-     * set.
-     */
-    public static String Services_serializablePersistenceDelegateRegistryServiceTracker_notSet;
+    /** The JavaBeans persistence delegate registry is not available. */
+    public static String Common_persistenceDelegateRegistry_notAvailable;
 
 
     // ======================================================================

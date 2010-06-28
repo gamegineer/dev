@@ -22,10 +22,11 @@
 package org.gamegineer.common.persistence.schemes.beans;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.beans.PersistenceDelegate;
 import java.io.OutputStream;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.common.internal.persistence.Services;
+import org.gamegineer.common.internal.persistence.Activator;
 import org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 
 /**
@@ -66,6 +67,8 @@ public final class XMLEncoder
      * @param out
      *        The output stream on which to write; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalStateException
+     *         If the JavaBeans persistence delegate registry is not available.
      * @throws java.lang.NullPointerException
      *         If {@code out} is {@code null}.
      */
@@ -77,7 +80,8 @@ public final class XMLEncoder
 
         assertArgumentNotNull( out, "out" ); //$NON-NLS-1$
 
-        persistenceDelegateRegistry_ = Services.getDefault().getBeansPersistenceDelegateRegistry();
+        persistenceDelegateRegistry_ = Activator.getDefault().getBeansPersistenceDelegateRegistry();
+        assertStateLegal( persistenceDelegateRegistry_ != null, Messages.Common_persistenceDelegateRegistry_notAvailable );
 
         setPersistenceDelegate( ClassLoaderContext.class, new ClassLoaderContextPersistenceDelegate() );
     }
