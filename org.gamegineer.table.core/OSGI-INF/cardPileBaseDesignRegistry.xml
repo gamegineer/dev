@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.gamegineer.table.core.cardPileBaseDesignRegistry">
+   <implementation class="org.gamegineer.table.internal.core.services.cardpilebasedesignregistry.CardPileBaseDesignRegistry"/>
+   <service>
+      <provide interface="org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry"/>
+   </service>
+</scr:component>

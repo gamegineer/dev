@@ -97,14 +97,6 @@ final class Messages
     /** The card surface design width must not be negative. */
     public static String CardSurfaceDesign_ctor_width_negative;
 
-    // --- Services ---------------------------------------------------------
-
-    /** The card pile base design registry service tracker is not set. */
-    public static String Services_cardPileBaseDesignRegistryServiceTracker_notSet;
-
-    /** The card surface design registry service tracker is not set. */
-    public static String Services_cardSurfaceDesignRegistryServiceTracker_notSet;
-
     // --- Table ------------------------------------------------------------
 
     /** The table listener is already registered. */
