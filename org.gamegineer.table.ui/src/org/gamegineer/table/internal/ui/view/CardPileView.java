@@ -34,12 +34,13 @@ import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPileListener;
-import org.gamegineer.table.internal.ui.Services;
+import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
 import org.gamegineer.table.internal.ui.model.CardPileModelEvent;
 import org.gamegineer.table.internal.ui.model.ICardPileModelListener;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.gamegineer.table.ui.ICardSurfaceDesignUI;
+import org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry;
 
 /**
  * A view of a card pile.
@@ -298,8 +299,10 @@ final class CardPileView
         assert card != null;
         assert isInitialized();
 
-        final ICardSurfaceDesignUI backDesignUI = Services.getDefault().getCardSurfaceDesignUIRegistry().getCardSurfaceDesignUI( card.getBackDesign().getId() );
-        final ICardSurfaceDesignUI faceDesignUI = Services.getDefault().getCardSurfaceDesignUIRegistry().getCardSurfaceDesignUI( card.getFaceDesign().getId() );
+        final ICardSurfaceDesignUIRegistry cardSurfaceDesignUIRegistry = Activator.getDefault().getCardSurfaceDesignUIRegistry();
+        assert cardSurfaceDesignUIRegistry != null;
+        final ICardSurfaceDesignUI backDesignUI = cardSurfaceDesignUIRegistry.getCardSurfaceDesignUI( card.getBackDesign().getId() );
+        final ICardSurfaceDesignUI faceDesignUI = cardSurfaceDesignUIRegistry.getCardSurfaceDesignUI( card.getFaceDesign().getId() );
         final CardView view = new CardView( model_.getCardModel( card ), backDesignUI, faceDesignUI );
         cardViews_.put( card, view );
         view.initialize( tableView_ ); // TODO: Change to accept CardPileView?

@@ -23,9 +23,16 @@ package org.gamegineer.table.internal.ui;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicReference;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry;
+import org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry;
+import org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry;
+import org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.packageadmin.PackageAdmin;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The bundle activator for the org.gamegineer.table.ui bundle.
@@ -42,7 +49,31 @@ public final class Activator
     private static final AtomicReference<Activator> instance_ = new AtomicReference<Activator>();
 
     /** The bundle context. */
-    private final AtomicReference<BundleContext> bundleContext_;
+    @GuardedBy( "lock_" )
+    private BundleContext bundleContext_;
+
+    /** The card pile base design registry service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker cardPileBaseDesignRegistryTracker_;
+
+    /** The card pile base design user interface registry service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker cardPileBaseDesignUIRegistryTracker_;
+
+    /** The card surface design registry service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker cardSurfaceDesignRegistryTracker_;
+
+    /** The card surface design user interface registry service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker cardSurfaceDesignUIRegistryTracker_;
+
+    /** The instance lock. */
+    private final Object lock_;
+
+    /** The package administration service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker packageAdminTracker_;
 
 
     // ======================================================================
@@ -54,7 +85,13 @@ public final class Activator
      */
     public Activator()
     {
-        bundleContext_ = new AtomicReference<BundleContext>();
+        lock_ = new Object();
+        bundleContext_ = null;
+        cardPileBaseDesignRegistryTracker_ = null;
+        cardPileBaseDesignUIRegistryTracker_ = null;
+        cardSurfaceDesignRegistryTracker_ = null;
+        cardSurfaceDesignUIRegistryTracker_ = null;
+        packageAdminTracker_ = null;
     }
 
 
@@ -70,9 +107,105 @@ public final class Activator
     /* @NonNull */
     public BundleContext getBundleContext()
     {
-        final BundleContext bundleContext = bundleContext_.get();
-        assert bundleContext != null;
-        return bundleContext;
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+            return bundleContext_;
+        }
+    }
+
+    /**
+     * Gets the card pile base design registry service.
+     * 
+     * @return The card pile base design registry service or {@code null} if no
+     *         card pile base design registry service is available.
+     */
+    /* @Nullable */
+    public ICardPileBaseDesignRegistry getCardPileBaseDesignRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( cardPileBaseDesignRegistryTracker_ == null )
+            {
+                cardPileBaseDesignRegistryTracker_ = new ServiceTracker( bundleContext_, ICardPileBaseDesignRegistry.class.getName(), null );
+                cardPileBaseDesignRegistryTracker_.open();
+            }
+
+            return (ICardPileBaseDesignRegistry)cardPileBaseDesignRegistryTracker_.getService();
+        }
+    }
+
+    /**
+     * Gets the card pile base design user interface registry service.
+     * 
+     * @return The card pile base design user interface registry service or
+     *         {@code null} if no card pile base design user interface registry
+     *         service is available.
+     */
+    /* @Nullable */
+    public ICardPileBaseDesignUIRegistry getCardPileBaseDesignUIRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( cardPileBaseDesignUIRegistryTracker_ == null )
+            {
+                cardPileBaseDesignUIRegistryTracker_ = new ServiceTracker( bundleContext_, ICardPileBaseDesignUIRegistry.class.getName(), null );
+                cardPileBaseDesignUIRegistryTracker_.open();
+            }
+
+            return (ICardPileBaseDesignUIRegistry)cardPileBaseDesignUIRegistryTracker_.getService();
+        }
+    }
+
+    /**
+     * Gets the card surface design registry service.
+     * 
+     * @return The card surface design registry service or {@code null} if no
+     *         card surface design registry service is available.
+     */
+    /* @Nullable */
+    public ICardSurfaceDesignRegistry getCardSurfaceDesignRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( cardSurfaceDesignRegistryTracker_ == null )
+            {
+                cardSurfaceDesignRegistryTracker_ = new ServiceTracker( bundleContext_, ICardSurfaceDesignRegistry.class.getName(), null );
+                cardSurfaceDesignRegistryTracker_.open();
+            }
+
+            return (ICardSurfaceDesignRegistry)cardSurfaceDesignRegistryTracker_.getService();
+        }
+    }
+
+    /**
+     * Gets the card surface design user interface registry service.
+     * 
+     * @return The card surface design user interface registry service or
+     *         {@code null} if no card surface design user interface registry
+     *         service is available.
+     */
+    /* @Nullable */
+    public ICardSurfaceDesignUIRegistry getCardSurfaceDesignUIRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( cardSurfaceDesignUIRegistryTracker_ == null )
+            {
+                cardSurfaceDesignUIRegistryTracker_ = new ServiceTracker( bundleContext_, ICardSurfaceDesignUIRegistry.class.getName(), null );
+                cardSurfaceDesignUIRegistryTracker_.open();
+            }
+
+            return (ICardSurfaceDesignUIRegistry)cardSurfaceDesignUIRegistryTracker_.getService();
+        }
     }
 
     /**
@@ -88,6 +221,29 @@ public final class Activator
         return instance;
     }
 
+    /**
+     * Gets the package administration service.
+     * 
+     * @return The package administration service or {@code null} if no package
+     *         administration service is available.
+     */
+    /* @Nullable */
+    public PackageAdmin getPackageAdmin()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( packageAdminTracker_ == null )
+            {
+                packageAdminTracker_ = new ServiceTracker( bundleContext_, PackageAdmin.class.getName(), null );
+                packageAdminTracker_.open();
+            }
+
+            return (PackageAdmin)packageAdminTracker_.getService();
+        }
+    }
+
     /*
      * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
      */
@@ -97,12 +253,13 @@ public final class Activator
     {
         assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
 
-        final boolean wasBundleContextNull = bundleContext_.compareAndSet( null, bundleContext );
-        assert wasBundleContextNull;
+        synchronized( lock_ )
+        {
+            bundleContext_ = bundleContext;
+        }
+
         final boolean wasInstanceNull = instance_.compareAndSet( null, this );
         assert wasInstanceNull;
-
-        Services.getDefault().open( bundleContext );
     }
 
     /*
@@ -114,11 +271,38 @@ public final class Activator
     {
         assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
 
-        Services.getDefault().close();
-
         final boolean wasInstanceNonNull = instance_.compareAndSet( this, null );
         assert wasInstanceNonNull;
-        final boolean wasBundleContextNonNull = bundleContext_.compareAndSet( bundleContext, null );
-        assert wasBundleContextNonNull;
+
+        synchronized( lock_ )
+        {
+            bundleContext_ = null;
+
+            if( cardPileBaseDesignRegistryTracker_ != null )
+            {
+                cardPileBaseDesignRegistryTracker_.close();
+                cardPileBaseDesignRegistryTracker_ = null;
+            }
+            if( cardPileBaseDesignUIRegistryTracker_ != null )
+            {
+                cardPileBaseDesignUIRegistryTracker_.close();
+                cardPileBaseDesignUIRegistryTracker_ = null;
+            }
+            if( cardSurfaceDesignRegistryTracker_ != null )
+            {
+                cardSurfaceDesignRegistryTracker_.close();
+                cardSurfaceDesignRegistryTracker_ = null;
+            }
+            if( cardSurfaceDesignUIRegistryTracker_ != null )
+            {
+                cardSurfaceDesignUIRegistryTracker_.close();
+                cardSurfaceDesignUIRegistryTracker_ = null;
+            }
+            if( packageAdminTracker_ != null )
+            {
+                packageAdminTracker_.close();
+                packageAdminTracker_ = null;
+            }
+        }
     }
 }

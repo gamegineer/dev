@@ -60,12 +60,15 @@ import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
-import org.gamegineer.table.internal.ui.Services;
+import org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry;
+import org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry;
+import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
+import org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry;
 
 /**
  * A view of the table.
@@ -152,8 +155,10 @@ final class TableView
         final ICardPile cardPile = model_.getFocusedCardPile();
         if( cardPile != null )
         {
-            final ICardSurfaceDesign backDesign = Services.getDefault().getCardSurfaceDesignRegistry().getCardSurfaceDesign( CardSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.back.red" ) ); //$NON-NLS-1$ );
-            final ICardSurfaceDesign faceDesign = Services.getDefault().getCardSurfaceDesignRegistry().getCardSurfaceDesign( faceDesignId );
+            final ICardSurfaceDesignRegistry cardSurfaceDesignRegistry = Activator.getDefault().getCardSurfaceDesignRegistry();
+            assert cardSurfaceDesignRegistry != null;
+            final ICardSurfaceDesign backDesign = cardSurfaceDesignRegistry.getCardSurfaceDesign( CardSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.back.red" ) ); //$NON-NLS-1$ );
+            final ICardSurfaceDesign faceDesign = cardSurfaceDesignRegistry.getCardSurfaceDesign( faceDesignId );
             final ICard card = CardFactory.createCard( backDesign, faceDesign );
             cardPile.addCard( card );
         }
@@ -164,7 +169,9 @@ final class TableView
      */
     private void addCardPile()
     {
-        final ICardPileBaseDesign cardPileBaseDesign = Services.getDefault().getCardPileDesignRegistry().getCardPileBaseDesign( CardPileBaseDesignId.fromString( "org.gamegineer.cardPileBases.default" ) ); //$NON-NLS-1$
+        final ICardPileBaseDesignRegistry cardPileBaseDesignRegistry = Activator.getDefault().getCardPileBaseDesignRegistry();
+        assert cardPileBaseDesignRegistry != null;
+        final ICardPileBaseDesign cardPileBaseDesign = cardPileBaseDesignRegistry.getCardPileBaseDesign( CardPileBaseDesignId.fromString( "org.gamegineer.cardPileBases.default" ) ); //$NON-NLS-1$
         final ICardPile cardPile = CardPileFactory.createCardPile( cardPileBaseDesign );
 
         final Point location = getMouseLocation();
@@ -710,7 +717,9 @@ final class TableView
     {
         assert cardPile != null;
 
-        final ICardPileBaseDesignUI cardPileBaseDesignUI = Services.getDefault().getCardPileDesignUIRegistry().getCardPileBaseDesignUI( cardPile.getBaseDesign().getId() );
+        final ICardPileBaseDesignUIRegistry cardPileBaseDesignUIRegistry = Activator.getDefault().getCardPileBaseDesignUIRegistry();
+        assert cardPileBaseDesignUIRegistry != null;
+        final ICardPileBaseDesignUI cardPileBaseDesignUI = cardPileBaseDesignUIRegistry.getCardPileBaseDesignUI( cardPile.getBaseDesign().getId() );
         final CardPileView view = new CardPileView( model_.getCardPileModel( cardPile ), cardPileBaseDesignUI );
         cardPileViews_.put( cardPile, view );
         view.initialize( this );

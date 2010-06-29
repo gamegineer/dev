@@ -54,6 +54,9 @@ final class Messages
     /** The card pile base design name is missing. */
     public static String CardPileBaseDesignUIRegistry_createCardPileBaseDesignUI_missingName;
 
+    /** No package administration service is available. */
+    public static String CardPileBaseDesignUIRegistry_createCardPileBaseDesignUI_noPackageAdminService;
+
     /** A duplicate card pile base design identifier was detected. */
     public static String CardPileBaseDesignUIRegistry_getCardPileBaseDesignUIMap_duplicateId;
 

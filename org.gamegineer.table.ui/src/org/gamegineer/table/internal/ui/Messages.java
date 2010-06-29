@@ -40,26 +40,6 @@ final class Messages
     /** The description for the "help" option. */
     public static String CommandLineOptions_help_description;
 
-    // --- Services ---------------------------------------------------------
-
-    /** The card pile design registry service tracker is not set. */
-    public static String Services_cardPileDesignRegistryServiceTracker_notSet;
-
-    /** The card pile design user interface registry service tracker is not set. */
-    public static String Services_cardPileDesignUIRegistryServiceTracker_notSet;
-
-    /** The card surface design registry service tracker is not set. */
-    public static String Services_cardSurfaceDesignRegistryServiceTracker_notSet;
-
-    /**
-     * The card surface design user interface registry service tracker is not
-     * set.
-     */
-    public static String Services_cardSurfaceDesignUIRegistryServiceTracker_notSet;
-
-    /** The package administration service tracker is not set. */
-    public static String Services_packageAdminServiceTracker_notSet;
-
     // --- TableRunner ------------------------------------------------------
 
     /** The command line usage message. */

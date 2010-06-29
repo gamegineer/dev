@@ -39,14 +39,15 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Path;
 import org.gamegineer.common.core.runtime.Platform;
 import org.gamegineer.table.core.CardPileBaseDesignId;
+import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleConstants;
 import org.gamegineer.table.internal.ui.Loggers;
-import org.gamegineer.table.internal.ui.Services;
 import org.gamegineer.table.internal.ui.util.swing.IconProxy;
 import org.gamegineer.table.ui.CardPileBaseDesignUIFactory;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry;
 import org.osgi.framework.Bundle;
+import org.osgi.service.packageadmin.PackageAdmin;
 
 /**
  * Implementation of
@@ -136,7 +137,12 @@ public final class CardPileBaseDesignUIRegistry
         {
             throw new IllegalArgumentException( Messages.CardPileBaseDesignUIRegistry_createCardPileBaseDesignUI_missingIconPath );
         }
-        final Bundle[] bundles = Services.getDefault().getPackageAdministrationService().getBundles( configurationElement.getNamespaceIdentifier(), null );
+        final PackageAdmin packageAdmin = Activator.getDefault().getPackageAdmin();
+        if( packageAdmin == null )
+        {
+            throw new IllegalArgumentException( Messages.CardPileBaseDesignUIRegistry_createCardPileBaseDesignUI_noPackageAdminService );
+        }
+        final Bundle[] bundles = packageAdmin.getBundles( configurationElement.getNamespaceIdentifier(), null );
         if( (bundles == null) || (bundles.length == 0) )
         {
             throw new IllegalArgumentException( Messages.CardPileBaseDesignUIRegistry_createCardPileBaseDesignUI_iconBundleNotFound( configurationElement.getNamespaceIdentifier() ) );

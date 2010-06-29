@@ -54,6 +54,9 @@ final class Messages
     /** The card surface design name is missing. */
     public static String CardSurfaceDesignUIRegistry_createCardSurfaceDesignUI_missingName;
 
+    /** No package administration service is available. */
+    public static String CardSurfaceDesignUIRegistry_createCardSurfaceDesignUI_noPackageAdminService;
+
     /** A duplicate card surface design identifier was detected. */
     public static String CardSurfaceDesignUIRegistry_getCardSurfaceDesignUIMap_duplicateId;
 
