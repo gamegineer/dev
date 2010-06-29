@@ -195,6 +195,7 @@ public final class Activator
 
         synchronized( lock_ )
         {
+            assert bundleContext_ == null;
             bundleContext_ = bundleContext;
         }
 
@@ -216,6 +217,7 @@ public final class Activator
 
         synchronized( lock_ )
         {
+            assert bundleContext_ != null;
             bundleContext_ = null;
 
             if( loggingServiceTracker_ != null )

@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.product;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicReference;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -42,7 +43,11 @@ public final class Activator
     private static final AtomicReference<Activator> instance_ = new AtomicReference<Activator>();
 
     /** The bundle context. */
-    private final AtomicReference<BundleContext> bundleContext_;
+    @GuardedBy( "lock_" )
+    private BundleContext bundleContext_;
+
+    /** The instance lock. */
+    private final Object lock_;
 
 
     // ======================================================================
@@ -54,7 +59,8 @@ public final class Activator
      */
     public Activator()
     {
-        bundleContext_ = new AtomicReference<BundleContext>();
+        lock_ = new Object();
+        bundleContext_ = null;
     }
 
 
@@ -70,9 +76,11 @@ public final class Activator
     /* @NonNull */
     public BundleContext getBundleContext()
     {
-        final BundleContext bundleContext = bundleContext_.get();
-        assert bundleContext != null;
-        return bundleContext;
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+            return bundleContext_;
+        }
     }
 
     /**
@@ -97,8 +105,12 @@ public final class Activator
     {
         assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
 
-        final boolean wasBundleContextNull = bundleContext_.compareAndSet( null, bundleContext );
-        assert wasBundleContextNull;
+        synchronized( lock_ )
+        {
+            assert bundleContext_ == null;
+            bundleContext_ = bundleContext;
+        }
+
         final boolean wasInstanceNull = instance_.compareAndSet( null, this );
         assert wasInstanceNull;
     }
@@ -114,7 +126,11 @@ public final class Activator
 
         final boolean wasInstanceNonNull = instance_.compareAndSet( this, null );
         assert wasInstanceNonNull;
-        final boolean wasBundleContextNonNull = bundleContext_.compareAndSet( bundleContext, null );
-        assert wasBundleContextNonNull;
+
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+            bundleContext_ = null;
+        }
     }
 }
