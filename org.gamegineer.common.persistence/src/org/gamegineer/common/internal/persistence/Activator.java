@@ -45,7 +45,7 @@ public final class Activator
 
     /** The JavaBeans persistence delegate registry service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker beansPersistenceDelegateRegistryServiceTracker_;
+    private ServiceTracker beansPersistenceDelegateRegistryTracker_;
 
     /** The bundle context. */
     @GuardedBy( "lock_" )
@@ -56,7 +56,7 @@ public final class Activator
 
     /** The Serializable persistence delegate registry service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker serializablePersistenceDelegateRegistryServiceTracker_;
+    private ServiceTracker serializablePersistenceDelegateRegistryTracker_;
 
 
     // ======================================================================
@@ -69,9 +69,9 @@ public final class Activator
     public Activator()
     {
         lock_ = new Object();
-        beansPersistenceDelegateRegistryServiceTracker_ = null;
+        beansPersistenceDelegateRegistryTracker_ = null;
         bundleContext_ = null;
-        serializablePersistenceDelegateRegistryServiceTracker_ = null;
+        serializablePersistenceDelegateRegistryTracker_ = null;
     }
 
 
@@ -93,13 +93,13 @@ public final class Activator
         {
             assert bundleContext_ != null;
 
-            if( beansPersistenceDelegateRegistryServiceTracker_ == null )
+            if( beansPersistenceDelegateRegistryTracker_ == null )
             {
-                beansPersistenceDelegateRegistryServiceTracker_ = new ServiceTracker( bundleContext_, org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry.class.getName(), null );
-                beansPersistenceDelegateRegistryServiceTracker_.open();
+                beansPersistenceDelegateRegistryTracker_ = new ServiceTracker( bundleContext_, org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry.class.getName(), null );
+                beansPersistenceDelegateRegistryTracker_.open();
             }
 
-            return (org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry)beansPersistenceDelegateRegistryServiceTracker_.getService();
+            return (org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry)beansPersistenceDelegateRegistryTracker_.getService();
         }
     }
 
@@ -145,13 +145,13 @@ public final class Activator
         {
             assert bundleContext_ != null;
 
-            if( serializablePersistenceDelegateRegistryServiceTracker_ == null )
+            if( serializablePersistenceDelegateRegistryTracker_ == null )
             {
-                serializablePersistenceDelegateRegistryServiceTracker_ = new ServiceTracker( bundleContext_, org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry.class.getName(), null );
-                serializablePersistenceDelegateRegistryServiceTracker_.open();
+                serializablePersistenceDelegateRegistryTracker_ = new ServiceTracker( bundleContext_, org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry.class.getName(), null );
+                serializablePersistenceDelegateRegistryTracker_.open();
             }
 
-            return (org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry)serializablePersistenceDelegateRegistryServiceTracker_.getService();
+            return (org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry)serializablePersistenceDelegateRegistryTracker_.getService();
         }
     }
 
@@ -189,15 +189,15 @@ public final class Activator
         {
             bundleContext_ = null;
 
-            if( beansPersistenceDelegateRegistryServiceTracker_ != null )
+            if( beansPersistenceDelegateRegistryTracker_ != null )
             {
-                beansPersistenceDelegateRegistryServiceTracker_.close();
-                beansPersistenceDelegateRegistryServiceTracker_ = null;
+                beansPersistenceDelegateRegistryTracker_.close();
+                beansPersistenceDelegateRegistryTracker_ = null;
             }
-            if( serializablePersistenceDelegateRegistryServiceTracker_ != null )
+            if( serializablePersistenceDelegateRegistryTracker_ != null )
             {
-                serializablePersistenceDelegateRegistryServiceTracker_.close();
-                serializablePersistenceDelegateRegistryServiceTracker_ = null;
+                serializablePersistenceDelegateRegistryTracker_.close();
+                serializablePersistenceDelegateRegistryTracker_ = null;
             }
         }
     }
