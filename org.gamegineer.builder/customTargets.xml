@@ -227,6 +227,9 @@
 
         <!-- Run all tests in all Gamegineer test plugins. -->
         <subant>
+            <property name="os" value="${baseos}" />
+            <property name="ws" value="${basews}" />
+            <property name="arch" value="${basearch}" />
             <fileset dir="${buildDirectory}/${buildLabel}/test-workspace/${archivePrefix}/plugins" includes="org.gamegineer.*.tests_*/test.xml" />
         </subant>
 
