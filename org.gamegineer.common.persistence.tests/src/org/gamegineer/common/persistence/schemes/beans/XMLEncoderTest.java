@@ -1,6 +1,6 @@
 /*
  * XMLEncoderTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,9 @@
 
 package org.gamegineer.common.persistence.schemes.beans;
 
+import java.io.ByteArrayOutputStream;
+import org.easymock.EasyMock;
+import org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.junit.Test;
 
 /**
@@ -48,11 +51,21 @@ public final class XMLEncoderTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
+     * persistence delegate registry.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_PersistenceDelegateRegistry_Null()
+    {
+        new XMLEncoder( new ByteArrayOutputStream(), null );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
      * stream.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_Stream_Null()
     {
-        new XMLEncoder( null );
+        new XMLEncoder( null, EasyMock.createMock( IPersistenceDelegateRegistry.class ) );
     }
 }

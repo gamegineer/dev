@@ -24,6 +24,10 @@ package org.gamegineer.common.persistence.schemes.beans;
 import static org.junit.Assert.assertTrue;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.FakePersistenceDelegateRegistry;
+import org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -33,6 +37,14 @@ import org.junit.Test;
  */
 public abstract class AbstractPersistenceDelegateTestCase
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The persistence delegate registry for use in the fixture. */
+    private IPersistenceDelegateRegistry persistenceDelegateRegistry_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -90,6 +102,48 @@ public abstract class AbstractPersistenceDelegateTestCase
     }
 
     /**
+     * Registers the persistence delegate required for the subject to be
+     * persisted.
+     * 
+     * @param persistenceDelegateRegistry
+     *        The persistence delegate registry for use in the fixture; must not
+     *        be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code persistenceDelegateRegistry} is {@code null}.
+     */
+    protected abstract void registerPersistenceDelegates(
+        /* @NonNull */
+        IPersistenceDelegateRegistry persistenceDelegateRegistry );
+
+    /**
+     * Sets up the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Before
+    public void setUp()
+        throws Exception
+    {
+        persistenceDelegateRegistry_ = new FakePersistenceDelegateRegistry();
+        registerPersistenceDelegates( persistenceDelegateRegistry_ );
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        persistenceDelegateRegistry_ = null;
+    }
+
+    /**
      * Ensures the persistence delegate can round-trip the subject.
      */
     @Test
@@ -97,11 +151,11 @@ public abstract class AbstractPersistenceDelegateTestCase
     {
         final Object obj = createSubject();
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final XMLEncoder encoder = new XMLEncoder( baos );
+        final XMLEncoder encoder = new XMLEncoder( baos, persistenceDelegateRegistry_ );
         encoder.writeObject( obj );
         encoder.close();
 
-        final XMLDecoder decoder = new XMLDecoder( new ByteArrayInputStream( baos.toByteArray() ) );
+        final XMLDecoder decoder = new XMLDecoder( new ByteArrayInputStream( baos.toByteArray() ), persistenceDelegateRegistry_ );
         final Object deserializedObj = decoder.readObject();
         decoder.close();
 

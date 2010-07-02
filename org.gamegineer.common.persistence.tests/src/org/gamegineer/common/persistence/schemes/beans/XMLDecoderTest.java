@@ -1,5 +1,5 @@
 /*
- * Messages.java
+ * XMLDecoderTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,48 +16,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 27, 2010 at 9:25:48 PM.
+ * Created on Jul 1, 2010 at 11:15:53 PM.
  */
 
 package org.gamegineer.common.persistence.schemes.beans;
 
-import net.jcip.annotations.ThreadSafe;
-import org.eclipse.osgi.util.NLS;
+import org.junit.Test;
 
 /**
- * A utility class to manage localized messages for the package.
+ * A fixture for testing the
+ * {@link org.gamegineer.common.persistence.schemes.beans.XMLDecoder} class.
  */
-@ThreadSafe
-final class Messages
-    extends NLS
+public final class XMLDecoderTest
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    // --- Coders -----------------------------------------------------------
-
-    /** The platform JavaBeans persistence delegate registry is not available. */
-    public static String Coders_platformPersistenceDelegateRegistry_notAvailable;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes the {@code Messages} class.
+     * Initializes a new instance of the {@code XMLDecoderTest} class.
      */
-    static
-    {
-        NLS.initializeMessages( Messages.class.getName(), Messages.class );
-    }
-
-    /**
-     * Initializes a new instance of the {@code Messages} class.
-     */
-    private Messages()
+    public XMLDecoderTest()
     {
         super();
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Ensures the primary constructor throws an exception when passed a {@code
+     * null} persistence delegate registry.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructorPrimary_PersistenceDelegateRegistry_Null()
+    {
+        new XMLDecoder( null, null, null, null, null );
     }
 }

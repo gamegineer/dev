@@ -22,11 +22,9 @@
 package org.gamegineer.common.persistence.schemes.beans;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.beans.PersistenceDelegate;
 import java.io.OutputStream;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.common.internal.persistence.Activator;
 import org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 
 /**
@@ -42,7 +40,7 @@ import org.gamegineer.common.persistence.schemes.beans.services.persistencedeleg
  * 
  * <p>
  * To contribute a persistence delegate for a specific class, register it with
- * the platform's {@code IPersistenceDelegateRegistry}.
+ * the {@code IPersistenceDelegateRegistry} passed to the encoder.
  * </p>
  */
 @NotThreadSafe
@@ -66,22 +64,25 @@ public final class XMLEncoder
      * 
      * @param out
      *        The output stream on which to write; must not be {@code null}.
+     * @param persistenceDelegateRegistry
+     *        The persistence delegate registry; must not be {@code null}.
      * 
-     * @throws java.lang.IllegalStateException
-     *         If the JavaBeans persistence delegate registry is not available.
      * @throws java.lang.NullPointerException
-     *         If {@code out} is {@code null}.
+     *         If {@code out} or {@code persistenceDelegateRegistry} is {@code
+     *         null}.
      */
     public XMLEncoder(
         /* @NonNull */
-        final OutputStream out )
+        final OutputStream out,
+        /* @NonNull */
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry )
     {
         super( out );
 
         assertArgumentNotNull( out, "out" ); //$NON-NLS-1$
+        assertArgumentNotNull( persistenceDelegateRegistry, "persistenceDelegateRegistry" ); //$NON-NLS-1$
 
-        persistenceDelegateRegistry_ = Activator.getDefault().getBeansPersistenceDelegateRegistry();
-        assertStateLegal( persistenceDelegateRegistry_ != null, Messages.Common_persistenceDelegateRegistry_notAvailable );
+        persistenceDelegateRegistry_ = persistenceDelegateRegistry;
 
         setPersistenceDelegate( ClassLoaderContext.class, new ClassLoaderContextPersistenceDelegate() );
     }
@@ -190,6 +191,7 @@ public final class XMLEncoder
         {
             if( classLoaderContext != null )
             {
+                classLoaderContext.open( persistenceDelegateRegistry_ );
                 super.writeObject( classLoaderContext );
             }
 

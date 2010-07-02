@@ -1,6 +1,6 @@
 /*
  * MementoPersistenceDelegateAsPersistenceDelegateTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.gamegineer.common.internal.persistence.memento.Memento;
 import org.gamegineer.common.persistence.schemes.beans.AbstractPersistenceDelegateTestCase;
+import org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 
 /**
  * A fixture for testing the
@@ -79,5 +80,15 @@ public final class MementoPersistenceDelegateAsPersistenceDelegateTest
         final Memento originalMemento = (Memento)originalObj;
         final Memento deserializedMemento = (Memento)deserializedObj;
         return originalMemento.getAttributes().equals( deserializedMemento.getAttributes() );
+    }
+
+    /*
+     * @see org.gamegineer.common.persistence.schemes.beans.AbstractPersistenceDelegateTestCase#registerPersistenceDelegates(org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry)
+     */
+    @Override
+    protected void registerPersistenceDelegates(
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry )
+    {
+        persistenceDelegateRegistry.registerPersistenceDelegate( Memento.class, new MementoPersistenceDelegate() );
     }
 }

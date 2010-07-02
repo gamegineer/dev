@@ -22,13 +22,13 @@
 package org.gamegineer.common.persistence.schemes.beans;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import java.beans.PersistenceDelegate;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
-import org.gamegineer.common.internal.persistence.Activator;
+import org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.FakePersistenceDelegateRegistry;
 import org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.junit.After;
 import org.junit.Before;
@@ -45,13 +45,7 @@ public final class XMLPersistenceTest
     // Fields
     // ======================================================================
 
-    /**
-     * The persistence delegate for the non-serializable class used in the
-     * fixture.
-     */
-    private PersistenceDelegate persistenceDelegate_;
-
-    /** The persistence delegate registry. */
+    /** The persistence delegate registry for use in the fixture. */
     private IPersistenceDelegateRegistry persistenceDelegateRegistry_;
 
 
@@ -73,6 +67,44 @@ public final class XMLPersistenceTest
     // ======================================================================
 
     /**
+     * Creates a new XML decoder for the specified input stream.
+     * 
+     * @param is
+     *        The input stream; must not be {@code null}.
+     * 
+     * @return A new XML decoder for the specified input stream; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    private XMLDecoder createXMLDecoder(
+        /* @NonNull */
+        final InputStream is )
+    {
+        assert is != null;
+
+        return new XMLDecoder( is, persistenceDelegateRegistry_ );
+    }
+
+    /**
+     * Creates a new XML encoder for the specified output stream.
+     * 
+     * @param os
+     *        The output stream; must not be {@code null}.
+     * 
+     * @return A new XML encoder for the specified output stream; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    private XMLEncoder createXMLEncoder(
+        /* @NonNull */
+        final OutputStream os )
+    {
+        assert os != null;
+
+        return new XMLEncoder( os, persistenceDelegateRegistry_ );
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -82,10 +114,8 @@ public final class XMLPersistenceTest
     public void setUp()
         throws Exception
     {
-        persistenceDelegateRegistry_ = Activator.getDefault().getBeansPersistenceDelegateRegistry();
-        assertNotNull( persistenceDelegateRegistry_ );
-        persistenceDelegate_ = new FakeNonPersistableClassPersistenceDelegate();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( FakeNonPersistableClass.class, persistenceDelegate_ );
+        persistenceDelegateRegistry_ = new FakePersistenceDelegateRegistry();
+        persistenceDelegateRegistry_.registerPersistenceDelegate( FakeNonPersistableClass.class, new FakeNonPersistableClassPersistenceDelegate() );
     }
 
     /**
@@ -98,8 +128,6 @@ public final class XMLPersistenceTest
     public void tearDown()
         throws Exception
     {
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( FakeNonPersistableClass.class, persistenceDelegate_ );
-        persistenceDelegate_ = null;
         persistenceDelegateRegistry_ = null;
     }
 
@@ -112,11 +140,11 @@ public final class XMLPersistenceTest
     {
         final FakeNonPersistableClass obj = new FakeNonPersistableClass( 2112, "42" ); //$NON-NLS-1$
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final XMLEncoder encoder = new XMLEncoder( baos );
+        final XMLEncoder encoder = createXMLEncoder( baos );
         encoder.writeObject( obj );
         encoder.close();
 
-        final XMLDecoder decoder = new XMLDecoder( new ByteArrayInputStream( baos.toByteArray() ) );
+        final XMLDecoder decoder = createXMLDecoder( new ByteArrayInputStream( baos.toByteArray() ) );
         final FakeNonPersistableClass deserializedObj = (FakeNonPersistableClass)decoder.readObject();
         decoder.close();
 
@@ -130,11 +158,11 @@ public final class XMLPersistenceTest
     public void testRoundTrip_NullObject()
     {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final XMLEncoder encoder = new XMLEncoder( baos );
+        final XMLEncoder encoder = createXMLEncoder( baos );
         encoder.writeObject( null );
         encoder.close();
 
-        final XMLDecoder decoder = new XMLDecoder( new ByteArrayInputStream( baos.toByteArray() ) );
+        final XMLDecoder decoder = createXMLDecoder( new ByteArrayInputStream( baos.toByteArray() ) );
         final Object deserializedObj = decoder.readObject();
         decoder.close();
 
@@ -150,11 +178,11 @@ public final class XMLPersistenceTest
     {
         final Date obj = new Date();
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final XMLEncoder encoder = new XMLEncoder( baos );
+        final XMLEncoder encoder = createXMLEncoder( baos );
         encoder.writeObject( obj );
         encoder.close();
 
-        final XMLDecoder decoder = new XMLDecoder( new ByteArrayInputStream( baos.toByteArray() ) );
+        final XMLDecoder decoder = createXMLDecoder( new ByteArrayInputStream( baos.toByteArray() ) );
         final Date deserializedObj = (Date)decoder.readObject();
         decoder.close();
 

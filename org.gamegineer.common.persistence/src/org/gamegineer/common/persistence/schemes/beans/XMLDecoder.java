@@ -21,9 +21,11 @@
 
 package org.gamegineer.common.persistence.schemes.beans;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.beans.ExceptionListener;
 import java.io.InputStream;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 
 /**
  * A decoder used for persisting objects using an XML representation.
@@ -32,6 +34,14 @@ import net.jcip.annotations.NotThreadSafe;
 public final class XMLDecoder
     extends java.beans.XMLDecoder
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The persistence delegate registry. */
+    private final IPersistenceDelegateRegistry persistenceDelegateRegistry_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -43,12 +53,19 @@ public final class XMLDecoder
      * @param in
      *        The input stream from which to read; may be {@code null} but the
      *        resulting decoder will be useless.
+     * @param persistenceDelegateRegistry
+     *        The persistence delegate registry; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code persistenceDelegateRegistry} is {@code null}.
      */
     public XMLDecoder(
         /* @Nullable */
-        final InputStream in )
+        final InputStream in,
+        /* @NonNull */
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry )
     {
-        this( in, null );
+        this( in, null, persistenceDelegateRegistry );
     }
 
     /**
@@ -60,14 +77,21 @@ public final class XMLDecoder
      *        resulting decoder will be useless.
      * @param owner
      *        The owner of this decoder; may be {@code null}.
+     * @param persistenceDelegateRegistry
+     *        The persistence delegate registry; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code persistenceDelegateRegistry} is {@code null}.
      */
     public XMLDecoder(
         /* @Nullable */
         final InputStream in,
         /* @Nullable */
-        final Object owner )
+        final Object owner,
+        /* @NonNull */
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry )
     {
-        this( in, owner, null );
+        this( in, owner, null, persistenceDelegateRegistry );
     }
 
     /**
@@ -82,6 +106,11 @@ public final class XMLDecoder
      * @param exceptionListener
      *        The exception listener for this decoder; may be {@code null} to
      *        use the default exception listener.
+     * @param persistenceDelegateRegistry
+     *        The persistence delegate registry; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code persistenceDelegateRegistry} is {@code null}.
      */
     public XMLDecoder(
         /* @Nullable */
@@ -89,9 +118,11 @@ public final class XMLDecoder
         /* @Nullable */
         final Object owner,
         /* @Nullable */
-        final ExceptionListener exceptionListener )
+        final ExceptionListener exceptionListener,
+        /* @NonNull */
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry )
     {
-        this( in, owner, exceptionListener, null );
+        this( in, owner, exceptionListener, null, persistenceDelegateRegistry );
     }
 
     /**
@@ -109,6 +140,11 @@ public final class XMLDecoder
      * @param cl
      *        The class loader to use for instantiating objects; may be {@code
      *        null} to use the default class loader.
+     * @param persistenceDelegateRegistry
+     *        The persistence delegate registry; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code persistenceDelegateRegistry} is {@code null}.
      */
     public XMLDecoder(
         /* @Nullable */
@@ -118,9 +154,15 @@ public final class XMLDecoder
         /* @Nullable */
         final ExceptionListener exceptionListener,
         /* @Nullable */
-        final ClassLoader cl )
+        final ClassLoader cl,
+        /* @NonNull */
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry )
     {
         super( in, owner, exceptionListener, cl );
+
+        assertArgumentNotNull( persistenceDelegateRegistry, "persistenceDelegateRegistry" ); //$NON-NLS-1$
+
+        persistenceDelegateRegistry_ = persistenceDelegateRegistry;
     }
 
 
@@ -141,6 +183,7 @@ public final class XMLDecoder
         }
 
         final ClassLoaderContext classLoaderContext = (ClassLoaderContext)o;
+        classLoaderContext.open( persistenceDelegateRegistry_ );
         try
         {
             return super.readObject();

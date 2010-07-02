@@ -23,9 +23,7 @@ package org.gamegineer.common.persistence.schemes.beans;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.beans.PersistenceDelegate;
-import net.jcip.annotations.Immutable;
-import org.gamegineer.common.internal.persistence.Activator;
-import org.gamegineer.common.internal.persistence.Loggers;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 
 /**
@@ -33,22 +31,29 @@ import org.gamegineer.common.persistence.schemes.beans.services.persistencedeleg
  * JavaBeans persistence framework encoding or decoding operation.
  * 
  * <p>
+ * An instance of this class must have its {@code open} method called before an
+ * object is encoded or decoded in order to activate the class loader associated
+ * with the context. The class loader must be deactivated by closing the context
+ * via the {@code close} method once the object has been encoded or decoded.
+ * </p>
+ * 
+ * <p>
  * This class is intended to support the JavaBeans persistence framework and is
  * not intended to be used by clients.
  * </p>
  */
-@Immutable
+@NotThreadSafe
 public final class ClassLoaderContext
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The name of the class whose loader is active within this context. */
+    /** The name of the class whose loader is associated with this context. */
     private final String className_;
 
     /** The thread context class loader that was previously active. */
-    private final ClassLoader oldContextClassLoader_;
+    private ClassLoader oldContextClassLoader_;
 
 
     // ======================================================================
@@ -58,17 +63,9 @@ public final class ClassLoaderContext
     /**
      * Initializes a new instance of the {@code ClassLoaderContext} class.
      * 
-     * <p>
-     * If a persistence delegate for the specified class name is registered with
-     * the {@code IPersistenceDelegateRegistry} service, the associated class
-     * loader will be activated before this method returns. It must be
-     * deactivated by closing this context via the {@code close} method once the
-     * object has been encoded or decoded.
-     * </p>
-     * 
      * @param className
-     *        The name of the class whose loader is active within this context;
-     *        must not be {@code null}.
+     *        The name of the class whose loader is associated with this
+     *        context; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code className} is {@code null}.
@@ -80,27 +77,7 @@ public final class ClassLoaderContext
         assertArgumentNotNull( className, "className" ); //$NON-NLS-1$
 
         className_ = className;
-
-        final IPersistenceDelegateRegistry persistenceDelegateRegistry = Activator.getDefault().getBeansPersistenceDelegateRegistry();
-        if( persistenceDelegateRegistry != null )
-        {
-            final PersistenceDelegate persistenceDelegate = persistenceDelegateRegistry.getPersistenceDelegate( className );
-            if( persistenceDelegate != null )
-            {
-                final Thread thread = Thread.currentThread();
-                oldContextClassLoader_ = thread.getContextClassLoader();
-                thread.setContextClassLoader( persistenceDelegate.getClass().getClassLoader() );
-            }
-            else
-            {
-                oldContextClassLoader_ = null;
-            }
-        }
-        else
-        {
-            Loggers.getDefaultLogger().warning( Messages.Common_persistenceDelegateRegistry_notAvailable );
-            oldContextClassLoader_ = null;
-        }
+        oldContextClassLoader_ = null;
     }
 
 
@@ -110,7 +87,7 @@ public final class ClassLoaderContext
 
     /**
      * Closes this context and restores the class loader that was active before
-     * this context was created.
+     * this context was opened.
      */
     void close()
     {
@@ -121,14 +98,37 @@ public final class ClassLoaderContext
     }
 
     /**
-     * Gets the name of the class whose loader is active within this context.
+     * Gets the name of the class whose loader is associated with this context.
      * 
-     * @return The name of the class whose loader is active within this context;
-     *         never {@code null}.
+     * @return The name of the class whose loader is associated with this
+     *         context; never {@code null}.
      */
     /* @NonNull */
     String getClassName()
     {
         return className_;
+    }
+
+    /**
+     * Opens this context and activates the class loader associated with the
+     * context.
+     * 
+     * @param persistenceDelegateRegistry
+     *        The persistence delegate registry; must not be {@code null}.
+     */
+    void open(
+        /* @NonNull */
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry )
+    {
+        assert persistenceDelegateRegistry != null;
+        assert oldContextClassLoader_ == null;
+
+        final PersistenceDelegate persistenceDelegate = persistenceDelegateRegistry.getPersistenceDelegate( className_ );
+        if( persistenceDelegate != null )
+        {
+            final Thread thread = Thread.currentThread();
+            oldContextClassLoader_ = thread.getContextClassLoader();
+            thread.setContextClassLoader( persistenceDelegate.getClass().getClassLoader() );
+        }
     }
 }
