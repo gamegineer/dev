@@ -1,6 +1,6 @@
 /*
  * AllTests.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.common.persistence;
 
 import junit.framework.Test;
 import org.gamegineer.common.internal.persistence.Activator;
+import org.gamegineer.common.internal.persistence.TestsFragmentConstants;
 import org.gamegineer.test.core.BundleSuiteBuilder;
 
 /**
@@ -54,6 +55,6 @@ public final class AllTests
      */
     public static Test suite()
     {
-        return BundleSuiteBuilder.suite( Activator.getDefault().getBundleContext().getBundle(), "org.gamegineer.common.persistence.tests" ); //$NON-NLS-1$
+        return BundleSuiteBuilder.suite( Activator.getDefault().getBundleContext().getBundle(), TestsFragmentConstants.SYMBOLIC_NAME );
     }
 }

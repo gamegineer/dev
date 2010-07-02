@@ -1,6 +1,6 @@
 /*
  * AllTests.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.table.ui;
 
 import junit.framework.Test;
 import org.gamegineer.table.internal.ui.Activator;
+import org.gamegineer.table.internal.ui.TestsFragmentConstants;
 import org.gamegineer.test.core.BundleSuiteBuilder;
 
 /**
@@ -54,6 +55,6 @@ public final class AllTests
      */
     public static Test suite()
     {
-        return BundleSuiteBuilder.suite( Activator.getDefault().getBundleContext().getBundle(), "org.gamegineer.table.ui.tests" ); //$NON-NLS-1$
+        return BundleSuiteBuilder.suite( Activator.getDefault().getBundleContext().getBundle(), TestsFragmentConstants.SYMBOLIC_NAME );
     }
 }

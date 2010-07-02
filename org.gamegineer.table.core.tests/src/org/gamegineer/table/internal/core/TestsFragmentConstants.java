@@ -1,5 +1,5 @@
 /*
- * AllTests.java
+ * TestsFragmentConstants.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,45 +16,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 15, 2009 at 11:30:37 PM.
+ * Created on Jul 2, 2010 at 12:02:27 AM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.internal.core;
 
-import junit.framework.Test;
-import org.gamegineer.table.internal.core.Activator;
-import org.gamegineer.table.internal.core.TestsFragmentConstants;
-import org.gamegineer.test.core.BundleSuiteBuilder;
+import net.jcip.annotations.ThreadSafe;
 
 /**
- * Defines a test suite for running all tests in the fragment.
+ * Defines useful constants for use by the fragment.
  */
-public final class AllTests
+@ThreadSafe
+public final class TestsFragmentConstants
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The symbolic name of the fragment. */
+    public static final String SYMBOLIC_NAME = "org.gamegineer.table.core.tests"; //$NON-NLS-1$
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AllTests} class.
+     * Initializes a new instance of the {@code TestsFragmentConstants} class.
      */
-    public AllTests()
+    private TestsFragmentConstants()
     {
         super();
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /**
-     * Creates a test suite consisting of all tests in the fragment.
-     * 
-     * @return A test suite consisting of all tests in the fragment.
-     */
-    public static Test suite()
-    {
-        return BundleSuiteBuilder.suite( Activator.getDefault().getBundleContext().getBundle(), TestsFragmentConstants.SYMBOLIC_NAME );
     }
 }
