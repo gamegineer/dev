@@ -102,7 +102,7 @@ public abstract class AbstractPersistenceDelegateTestCase
     }
 
     /**
-     * Registers the persistence delegate required for the subject to be
+     * Registers the persistence delegates required for the subject to be
      * persisted.
      * 
      * @param persistenceDelegateRegistry

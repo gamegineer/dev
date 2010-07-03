@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.core.persistence.schemes.serializable;
 
 import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase;
+import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.internal.core.CardPileBaseDesign;
 
@@ -73,5 +74,16 @@ public final class CardPileBaseDesignPersistenceDelegateAsPersistenceDelegateTes
         final CardPileBaseDesign originalCardPileBaseDesign = (CardPileBaseDesign)originalObj;
         final CardPileBaseDesign deserializedCardPileBaseDesign = (CardPileBaseDesign)deserializedObj;
         return originalCardPileBaseDesign.getId().equals( deserializedCardPileBaseDesign.getId() ) && originalCardPileBaseDesign.getSize().equals( deserializedCardPileBaseDesign.getSize() );
+    }
+
+    /*
+     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase#registerPersistenceDelegates(org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry)
+     */
+    @Override
+    protected void registerPersistenceDelegates(
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry )
+    {
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardPileBaseDesign.class, new CardPileBaseDesignPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardPileBaseDesignProxy.class, new CardPileBaseDesignPersistenceDelegate() );
     }
 }

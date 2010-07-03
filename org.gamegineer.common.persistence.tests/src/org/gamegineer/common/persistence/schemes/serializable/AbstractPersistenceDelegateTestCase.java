@@ -21,12 +21,14 @@
 
 package org.gamegineer.common.persistence.schemes.serializable;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectStreamClass;
-import org.gamegineer.common.internal.persistence.Activator;
+import java.io.OutputStream;
+import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.FakePersistenceDelegateRegistry;
 import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.junit.After;
 import org.junit.Before;
@@ -43,7 +45,7 @@ public abstract class AbstractPersistenceDelegateTestCase
     // Fields
     // ======================================================================
 
-    /** The persistence delegate registry. */
+    /** The persistence delegate registry for use in the fixture. */
     private IPersistenceDelegateRegistry persistenceDelegateRegistry_;
 
 
@@ -66,12 +68,73 @@ public abstract class AbstractPersistenceDelegateTestCase
     // ======================================================================
 
     /**
+     * Creates a new object input stream for the specified input stream.
+     * 
+     * @param is
+     *        The input stream; must not be {@code null}.
+     * 
+     * @return A new object input stream for the specified input stream; never
+     *         {@code null}.
+     * 
+     * @throws java.io.IOException
+     *         If an I/O error occurs.
+     */
+    /* @NonNull */
+    private ObjectInputStream createObjectInputStream(
+        /* @NonNull */
+        final InputStream is )
+        throws IOException
+    {
+        assert is != null;
+
+        return new ObjectInputStream( is, persistenceDelegateRegistry_ );
+    }
+
+    /**
+     * Creates a new object output stream for the specified output stream.
+     * 
+     * @param os
+     *        The output stream; must not be {@code null}.
+     * 
+     * @return A new object output stream for the specified output stream; never
+     *         {@code null}.
+     * 
+     * @throws java.io.IOException
+     *         If an I/O error occurs.
+     */
+    /* @NonNull */
+    private ObjectOutputStream createObjectOutputStream(
+        /* @NonNull */
+        final OutputStream os )
+        throws IOException
+    {
+        assert os != null;
+
+        return new ObjectOutputStream( os, persistenceDelegateRegistry_ );
+    }
+
+    /**
      * Creates the subject to be persisted.
      * 
      * @return The subject to be persisted; never {@code null}.
      */
     /* @NonNull */
     protected abstract Object createSubject();
+
+    /**
+     * Registers the persistence delegates required for the subject to be
+     * persisted.
+     * 
+     * @param persistenceDelegateRegistry
+     *        The persistence delegate registry for use in the fixture; must not
+     *        be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code persistenceDelegateRegistry} is {@code null}.
+     */
+    protected abstract void registerPersistenceDelegates(
+        /* @NonNull */
+        IPersistenceDelegateRegistry persistenceDelegateRegistry );
 
     /**
      * Sets up the test fixture.
@@ -83,8 +146,8 @@ public abstract class AbstractPersistenceDelegateTestCase
     public void setUp()
         throws Exception
     {
-        persistenceDelegateRegistry_ = Activator.getDefault().getSerializablePersistenceDelegateRegistry();
-        assertNotNull( persistenceDelegateRegistry_ );
+        persistenceDelegateRegistry_ = new FakePersistenceDelegateRegistry();
+        registerPersistenceDelegates( persistenceDelegateRegistry_ );
     }
 
     /**
@@ -143,7 +206,7 @@ public abstract class AbstractPersistenceDelegateTestCase
     {
         final Object obj = createSubject();
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = new ObjectOutputStream( baos );
+        final ObjectOutputStream oos = createObjectOutputStream( baos );
         final IPersistenceDelegate persistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( obj.getClass().getName() );
 
         persistenceDelegate.annotateClass( oos, null );
@@ -179,10 +242,10 @@ public abstract class AbstractPersistenceDelegateTestCase
     {
         final Object obj = createSubject();
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = new ObjectOutputStream( baos );
+        final ObjectOutputStream oos = createObjectOutputStream( baos );
         oos.writeObject( obj );
         oos.close();
-        final ObjectInputStream ois = new ObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
+        final ObjectInputStream ois = createObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
         final IPersistenceDelegate persistenceDelegate = persistenceDelegateRegistry_.getPersistenceDelegate( obj.getClass().getName() );
 
         persistenceDelegate.resolveClass( ois, null );
@@ -217,11 +280,11 @@ public abstract class AbstractPersistenceDelegateTestCase
     {
         final Object obj = createSubject();
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = new ObjectOutputStream( baos );
+        final ObjectOutputStream oos = createObjectOutputStream( baos );
         oos.writeObject( obj );
         oos.close();
 
-        final ObjectInputStream ois = new ObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
+        final ObjectInputStream ois = createObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
         final Object deserializedObj = ois.readObject();
         ois.close();
 

@@ -35,10 +35,12 @@ final class Messages
     // Fields
     // ======================================================================
 
-    // --- Common -----------------------------------------------------------
+    // --- ObjectStreams ----------------------------------------------------
 
-    /** The Serializable persistence delegate registry is not available. */
-    public static String Common_persistenceDelegateRegistry_notAvailable;
+    /**
+     * The platform Serializable persistence delegate registry is not available.
+     */
+    public static String ObjectStreams_platformPersistenceDelegateRegistry_notAvailable;
 
 
     // ======================================================================

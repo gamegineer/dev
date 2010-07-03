@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.core.persistence.schemes.serializable;
 
 import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase;
+import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.internal.core.CardSurfaceDesign;
 
@@ -73,5 +74,16 @@ public final class CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest
         final CardSurfaceDesign originalCardSurfaceDesign = (CardSurfaceDesign)originalObj;
         final CardSurfaceDesign deserializedCardSurfaceDesign = (CardSurfaceDesign)deserializedObj;
         return originalCardSurfaceDesign.getId().equals( deserializedCardSurfaceDesign.getId() ) && originalCardSurfaceDesign.getSize().equals( deserializedCardSurfaceDesign.getSize() );
+    }
+
+    /*
+     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase#registerPersistenceDelegates(org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry)
+     */
+    @Override
+    protected void registerPersistenceDelegates(
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry )
+    {
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardSurfaceDesign.class, new CardSurfaceDesignPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardSurfaceDesignProxy.class, new CardSurfaceDesignPersistenceDelegate() );
     }
 }

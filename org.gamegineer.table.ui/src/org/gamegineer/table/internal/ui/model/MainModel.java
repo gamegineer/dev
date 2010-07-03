@@ -26,14 +26,15 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.persistence.memento.IMemento;
 import org.gamegineer.common.persistence.memento.MalformedMementoException;
-import org.gamegineer.common.persistence.schemes.serializable.ObjectInputStream;
-import org.gamegineer.common.persistence.schemes.serializable.ObjectOutputStream;
+import org.gamegineer.common.persistence.schemes.serializable.ObjectStreams;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.Loggers;
@@ -350,7 +351,7 @@ public final class MainModel
         final ITable table;
         try
         {
-            final ObjectInputStream inputStream = new ObjectInputStream( new FileInputStream( fileName ) );
+            final ObjectInputStream inputStream = ObjectStreams.createPlatformObjectInputStream( new FileInputStream( fileName ) );
             try
             {
                 final IMemento memento = (IMemento)inputStream.readObject();
@@ -445,7 +446,7 @@ public final class MainModel
 
         try
         {
-            final ObjectOutputStream outputStream = new ObjectOutputStream( new FileOutputStream( fileName ) );
+            final ObjectOutputStream outputStream = ObjectStreams.createPlatformObjectOutputStream( new FileOutputStream( fileName ) );
             try
             {
                 outputStream.writeObject( memento );

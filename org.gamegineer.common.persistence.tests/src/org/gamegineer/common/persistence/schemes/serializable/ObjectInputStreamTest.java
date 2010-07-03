@@ -1,6 +1,6 @@
 /*
  * ObjectInputStreamTest.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,11 @@
 
 package org.gamegineer.common.persistence.schemes.serializable;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import org.easymock.EasyMock;
+import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.FakePersistenceDelegateRegistry;
+import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.junit.Test;
 
 /**
@@ -49,6 +54,25 @@ public final class ObjectInputStreamTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
+     * persistence delegate registry.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_PersistenceDelegateRegistry_Null()
+        throws Exception
+    {
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ObjectOutputStream oos = new ObjectOutputStream( baos, new FakePersistenceDelegateRegistry() );
+        oos.writeObject( null );
+        oos.close();
+
+        new ObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ), null );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
      * stream.
      * 
      * @throws java.lang.Exception
@@ -58,6 +82,6 @@ public final class ObjectInputStreamTest
     public void testConstructor_Stream_Null()
         throws Exception
     {
-        new ObjectInputStream( null );
+        new ObjectInputStream( null, EasyMock.createMock( IPersistenceDelegateRegistry.class ) );
     }
 }

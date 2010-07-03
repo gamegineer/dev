@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.core.persistence.schemes.serializable;
 
 import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase;
+import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.gamegineer.table.core.CardOrientation;
 
 /**
@@ -59,5 +60,15 @@ public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
     protected Object createSubject()
     {
         return CardOrientation.FACE_UP;
+    }
+
+    /*
+     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase#registerPersistenceDelegates(org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry)
+     */
+    @Override
+    protected void registerPersistenceDelegates(
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry )
+    {
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardOrientation.class, new CardOrientationPersistenceDelegate() );
     }
 }

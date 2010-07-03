@@ -22,12 +22,14 @@
 package org.gamegineer.common.persistence.schemes.serializable;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
-import org.gamegineer.common.internal.persistence.Activator;
+import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.FakePersistenceDelegateRegistry;
 import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.junit.After;
 import org.junit.Before;
@@ -46,13 +48,7 @@ public final class ObjectStreamTest
     // Fields
     // ======================================================================
 
-    /**
-     * The persistence delegate for the non-serializable class used in the
-     * fixture.
-     */
-    private IPersistenceDelegate persistenceDelegate_;
-
-    /** The persistence delegate registry. */
+    /** The persistence delegate registry for use in the fixture. */
     private IPersistenceDelegateRegistry persistenceDelegateRegistry_;
 
 
@@ -74,6 +70,52 @@ public final class ObjectStreamTest
     // ======================================================================
 
     /**
+     * Creates a new object input stream for the specified input stream.
+     * 
+     * @param is
+     *        The input stream; must not be {@code null}.
+     * 
+     * @return A new object input stream for the specified input stream; never
+     *         {@code null}.
+     * 
+     * @throws java.io.IOException
+     *         If an I/O error occurs.
+     */
+    /* @NonNull */
+    private ObjectInputStream createObjectInputStream(
+        /* @NonNull */
+        final InputStream is )
+        throws IOException
+    {
+        assert is != null;
+
+        return new ObjectInputStream( is, persistenceDelegateRegistry_ );
+    }
+
+    /**
+     * Creates a new object output stream for the specified output stream.
+     * 
+     * @param os
+     *        The output stream; must not be {@code null}.
+     * 
+     * @return A new object output stream for the specified output stream; never
+     *         {@code null}.
+     * 
+     * @throws java.io.IOException
+     *         If an I/O error occurs.
+     */
+    /* @NonNull */
+    private ObjectOutputStream createObjectOutputStream(
+        /* @NonNull */
+        final OutputStream os )
+        throws IOException
+    {
+        assert os != null;
+
+        return new ObjectOutputStream( os, persistenceDelegateRegistry_ );
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -83,10 +125,8 @@ public final class ObjectStreamTest
     public void setUp()
         throws Exception
     {
-        persistenceDelegateRegistry_ = Activator.getDefault().getSerializablePersistenceDelegateRegistry();
-        assertNotNull( persistenceDelegateRegistry_ );
-        persistenceDelegate_ = new FakeNonSerializableClassPersistenceDelegate();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( FakeNonSerializableClass.class, persistenceDelegate_ );
+        persistenceDelegateRegistry_ = new FakePersistenceDelegateRegistry();
+        persistenceDelegateRegistry_.registerPersistenceDelegate( FakeNonSerializableClass.class, new FakeNonSerializableClassPersistenceDelegate() );
     }
 
     /**
@@ -99,8 +139,6 @@ public final class ObjectStreamTest
     public void tearDown()
         throws Exception
     {
-        persistenceDelegateRegistry_.unregisterPersistenceDelegate( FakeNonSerializableClass.class, persistenceDelegate_ );
-        persistenceDelegate_ = null;
         persistenceDelegateRegistry_ = null;
     }
 
@@ -117,11 +155,11 @@ public final class ObjectStreamTest
     {
         final FakeNonSerializableClass obj = new FakeNonSerializableClass( 2112, "42" ); //$NON-NLS-1$
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = new ObjectOutputStream( baos );
+        final ObjectOutputStream oos = createObjectOutputStream( baos );
         oos.writeObject( obj );
         oos.close();
 
-        final ObjectInputStream ois = new ObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
+        final ObjectInputStream ois = createObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
         final FakeNonSerializableClass deserializedObj = (FakeNonSerializableClass)ois.readObject();
         ois.close();
 
@@ -140,11 +178,11 @@ public final class ObjectStreamTest
         throws Exception
     {
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = new ObjectOutputStream( baos );
+        final ObjectOutputStream oos = createObjectOutputStream( baos );
         oos.writeObject( null );
         oos.close();
 
-        final ObjectInputStream ois = new ObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
+        final ObjectInputStream ois = createObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
         final Object deserializedObj = ois.readObject();
         ois.close();
 
@@ -164,11 +202,11 @@ public final class ObjectStreamTest
     {
         final Date obj = new Date();
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = new ObjectOutputStream( baos );
+        final ObjectOutputStream oos = createObjectOutputStream( baos );
         oos.writeObject( obj );
         oos.close();
 
-        final ObjectInputStream ois = new ObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
+        final ObjectInputStream ois = createObjectInputStream( new ByteArrayInputStream( baos.toByteArray() ) );
         final Date deserializedObj = (Date)ois.readObject();
         ois.close();
 

@@ -21,25 +21,24 @@
 
 package org.gamegineer.common.persistence.schemes.serializable;
 
-import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
 import java.io.OutputStream;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.common.internal.persistence.Activator;
 import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 
 /**
  * A stream used for serializing objects.
  * 
  * <p>
- * Before serializing an object, the stream will query the platform for an
- * associated persistence delegate and give it an opportunity to substitute the
- * object with a compatible serializable object.
+ * Before serializing an object, the stream will query its persistence delegate
+ * registry for an associated persistence delegate and give it an opportunity to
+ * substitute the object with a compatible serializable object.
  * </p>
  * 
  * <p>
  * To contribute a persistence delegate for a specific class, register it with
- * the platform's {@code IPersistenceDelegateRegistry}.
+ * the {@code IPersistenceDelegateRegistry} passed to the output stream.
  * </p>
  */
 @NotThreadSafe
@@ -63,24 +62,27 @@ public final class ObjectOutputStream
      * 
      * @param out
      *        The output stream on which to write; must not be {@code null}.
+     * @param persistenceDelegateRegistry
+     *        The persistence delegate registry; must not be {@code null}.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs while writing the stream header.
-     * @throws java.lang.IllegalStateException
-     *         If the Serializable persistence delegate registry is not
-     *         available.
      * @throws java.lang.NullPointerException
-     *         If {@code out} is {@code null}.
+     *         If {@code out} or {@code persistenceDelegateRegistry} is {@code
+     *         null}.
      */
     public ObjectOutputStream(
         /* @NonNull */
-        final OutputStream out )
+        final OutputStream out,
+        /* @NonNull */
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry )
         throws IOException
     {
         super( out );
 
-        persistenceDelegateRegistry_ = Activator.getDefault().getSerializablePersistenceDelegateRegistry();
-        assertStateLegal( persistenceDelegateRegistry_ != null, Messages.Common_persistenceDelegateRegistry_notAvailable );
+        assertArgumentNotNull( persistenceDelegateRegistry, "persistenceDelegateRegistry" ); //$NON-NLS-1$
+
+        persistenceDelegateRegistry_ = persistenceDelegateRegistry;
 
         enableReplaceObject( true );
     }
