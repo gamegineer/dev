@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.gamegineer.table.ui.cardSurfaceDesignUIRegistry">
-   <implementation class="org.gamegineer.table.internal.ui.services.cardsurfacedesignuiregistry.CardSurfaceDesignUIRegistry"/>
-   <service>
-      <provide interface="org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry"/>
-   </service>
+<scr:component
+		name="org.gamegineer.table.ui.cardSurfaceDesignUIRegistry"
+		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+	<implementation
+			class="org.gamegineer.table.internal.ui.services.cardsurfacedesignuiregistry.CardSurfaceDesignUIRegistry" />
+	<service>
+		<provide
+				interface="org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry" />
+	</service>
 </scr:component>

@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-    <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.gamegineer.common.persistence.serializable.mementoPersistenceDelegate">
-       <implementation class="org.gamegineer.common.internal.persistence.memento.schemes.serializable.MementoPersistenceDelegate"/>
-       <service>
-          <provide interface="org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate"/>
-       </service>
-       <property name="delegators" type="String">
-            org.gamegineer.common.internal.persistence.memento.Memento
-            org.gamegineer.common.internal.persistence.memento.schemes.serializable.MementoProxy
-       </property>
-    </scr:component>
+	<scr:component
+			name="org.gamegineer.common.persistence.serializable.mementoPersistenceDelegate"
+			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+		<implementation
+				class="org.gamegineer.common.internal.persistence.memento.schemes.serializable.MementoPersistenceDelegate" />
+		<service>
+			<provide
+					interface="org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate" />
+		</service>
+		<property
+				name="delegators"
+				type="String">
+			org.gamegineer.common.internal.persistence.memento.Memento
+			org.gamegineer.common.internal.persistence.memento.schemes.serializable.MementoProxy
+		</property>
+	</scr:component>
 </root>

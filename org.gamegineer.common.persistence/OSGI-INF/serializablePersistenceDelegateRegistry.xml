@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.gamegineer.common.persistence.serializable.persistenceDelegateRegistry">
-   <implementation class="org.gamegineer.common.internal.persistence.schemes.serializable.services.persistencedelegateregistry.PersistenceDelegateRegistry"/>
-   <service>
-      <provide interface="org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry"/>
-   </service>
-   <reference bind="registerPersistenceDelegate" cardinality="0..n" interface="org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate" name="persistenceDelegate" policy="dynamic" unbind="unregisterPersistenceDelegate"/>
+<scr:component
+		name="org.gamegineer.common.persistence.serializable.persistenceDelegateRegistry"
+		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+	<implementation
+			class="org.gamegineer.common.internal.persistence.schemes.serializable.services.persistencedelegateregistry.PersistenceDelegateRegistry" />
+	<service>
+		<provide
+				interface="org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry" />
+	</service>
+	<reference
+			bind="registerPersistenceDelegate"
+			cardinality="0..n"
+			interface="org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate"
+			name="persistenceDelegate"
+			policy="dynamic"
+			unbind="unregisterPersistenceDelegate" />
 </scr:component>
