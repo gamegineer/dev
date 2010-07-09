@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.gamegineer.common.core.services.logging.defaultFormatterFactory">
-   <implementation class="org.gamegineer.common.internal.core.services.logging.DefaultFormatterFactory"/>
-   <service>
-      <provide interface="org.osgi.service.component.ComponentFactory"/>
-   </service>
-   <property name="component.factory" type="String" value="java.util.logging.Formatter"/>
-</scr:component>
