@@ -61,41 +61,6 @@
         </unzip>
     </target>
 
-    <!-- Generate Javadocs for the entire workspace. -->
-    <target name="javadoc">
-        <javadoc
-                access="private"
-                author="true"
-                bottom="Copyright 2008-2010 Gamegineer.org.  All rights reserved."
-                destdir="${buildDirectory}/${buildLabel}/docs/api"
-                doctitle="Gamegineer API"
-                failonerror="true"
-                nodeprecated="false"
-                nodeprecatedlist="false"
-                noindex="false"
-                nonavbar="false"
-                notree="false"
-                source="1.6"
-                splitindex="true"
-                use="true"
-                version="true"
-                windowtitle="Gamegineer API">
-            <classpath>
-                <fileset dir="${baseLocation}">
-                    <include name="plugins/**/*.jar" />
-                </fileset>
-                <fileset dir="${buildDirectory}">
-                    <include name="plugins/**/lib/*.jar" />
-                </fileset>
-            </classpath>
-            <sourcepath>
-                <dirset dir="${buildDirectory}">
-                    <include name="plugins/**/src" />
-                </dirset>
-            </sourcepath>
-        </javadoc>
-    </target>
-
     <!-- ===================================================================== -->
     <!-- Steps to do before setup.                                             -->
     <!-- ===================================================================== -->
@@ -178,6 +143,44 @@
         <antcall target="javadoc" />
         <antcall target="test" />
         <antcall target="packageProduct" />
+    </target>
+
+    <!-- ===================================================================== -->
+    <!-- Steps to do to generate Javadocs for the entire workspace.            -->
+    <!-- ===================================================================== -->
+    <target name="javadoc">
+        <javadoc
+                access="private"
+                author="true"
+                bottom="Copyright 2008-2010 Gamegineer.org.  All rights reserved."
+                destdir="${buildDirectory}/${buildLabel}/docs/api"
+                doctitle="Gamegineer API"
+                failonerror="true"
+                nodeprecated="false"
+                nodeprecatedlist="false"
+                noindex="false"
+                nonavbar="false"
+                notree="false"
+                source="1.6"
+                splitindex="true"
+                use="true"
+                version="true"
+                windowtitle="Gamegineer API">
+            <classpath>
+                <fileset dir="${baseLocation}">
+                    <include name="plugins/**/*.jar" />
+                </fileset>
+                <fileset dir="${buildDirectory}">
+                    <include name="plugins/**/lib/*.jar" />
+                </fileset>
+            </classpath>
+            <sourcepath>
+                <dirset dir="${buildDirectory}">
+                    <include name="plugins/**/src" />
+                    <exclude name="plugins/*.tests*/src" />
+                </dirset>
+            </sourcepath>
+        </javadoc>
     </target>
 
     <!-- ===================================================================== -->
