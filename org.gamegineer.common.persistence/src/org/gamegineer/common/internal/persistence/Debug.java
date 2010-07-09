@@ -40,6 +40,11 @@ public final class Debug
     /** The name of the top-level debug option. */
     public static final String OPTION_DEFAULT = "/debug"; //$NON-NLS-1$
 
+    /**
+     * The name of the Java object serialization framework package debug option.
+     */
+    public static final String OPTION_SERIALIZABLE = OPTION_DEFAULT + "/serializable"; //$NON-NLS-1$
+
 
     // ======================================================================
     // Constructors

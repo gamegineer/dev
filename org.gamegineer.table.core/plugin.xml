@@ -12,27 +12,6 @@
             schema="schema/cardSurfaceDesigns.exsd" />
 
     <extension
-            point="org.gamegineer.common.persistence.serializablePersistenceDelegates">
-        <serializablePersistenceDelegate
-                class="org.gamegineer.table.internal.core.persistence.schemes.serializable.CardOrientationPersistenceDelegate">
-            <delegator class="org.gamegineer.table.core.CardOrientation" />
-        </serializablePersistenceDelegate>
-        <serializablePersistenceDelegate
-                class="org.gamegineer.table.internal.core.persistence.schemes.serializable.CardPileBaseDesignPersistenceDelegate">
-            <delegator class="org.gamegineer.table.internal.core.CardPileBaseDesign" />
-            <delegator class="org.gamegineer.table.internal.core.persistence.schemes.serializable.CardPileBaseDesignProxy" />
-        </serializablePersistenceDelegate>
-        <serializablePersistenceDelegate
-                class="org.gamegineer.table.internal.core.persistence.schemes.serializable.CardPileLayoutPersistenceDelegate">
-            <delegator class="org.gamegineer.table.core.CardPileLayout" />
-        </serializablePersistenceDelegate>
-        <serializablePersistenceDelegate
-                class="org.gamegineer.table.internal.core.persistence.schemes.serializable.CardSurfaceDesignPersistenceDelegate">
-            <delegator class="org.gamegineer.table.internal.core.CardSurfaceDesign" />
-            <delegator class="org.gamegineer.table.internal.core.persistence.schemes.serializable.CardSurfaceDesignProxy" />
-        </serializablePersistenceDelegate>
-    </extension>
-    <extension
             point="org.gamegineer.table.core.cardPileBaseDesigns">
         <cardPileBaseDesign
                 height="96"

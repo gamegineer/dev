@@ -6,10 +6,6 @@
             id="beansPersistenceDelegates"
             name="JavaBeans Persistence Delegates"
             schema="schema/beansPersistenceDelegates.exsd" />
-    <extension-point
-            id="serializablePersistenceDelegates"
-            name="Serializable Persistence Delegates"
-            schema="schema/serializablePersistenceDelegates.exsd" />
 
     <extension
             point="org.gamegineer.common.persistence.beansPersistenceDelegates">
@@ -17,14 +13,6 @@
                 class="org.gamegineer.common.internal.persistence.memento.schemes.beans.MementoPersistenceDelegate">
             <delegator class="org.gamegineer.common.internal.persistence.memento.Memento" />
         </beansPersistenceDelegate>
-    </extension>
-    <extension
-            point="org.gamegineer.common.persistence.serializablePersistenceDelegates">
-        <serializablePersistenceDelegate
-                class="org.gamegineer.common.internal.persistence.memento.schemes.serializable.MementoPersistenceDelegate">
-            <delegator class="org.gamegineer.common.internal.persistence.memento.Memento" />
-            <delegator class="org.gamegineer.common.internal.persistence.memento.schemes.serializable.MementoProxy" />
-        </serializablePersistenceDelegate>
     </extension>
 
 </plugin>

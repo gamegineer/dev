@@ -1,5 +1,5 @@
 /*
- * FakePersistenceDelegateRegistryAsPersistenceDelegateRegistry.java
+ * FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -28,7 +28,7 @@ package org.gamegineer.common.persistence.schemes.serializable.services.persiste
  * {@link org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry}
  * interface.
  */
-public final class FakePersistenceDelegateRegistryAsPersistenceDelegateRegistry
+public final class FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest
     extends AbstractPersistenceDelegateRegistryTestCase
 {
     // ======================================================================
@@ -37,9 +37,9 @@ public final class FakePersistenceDelegateRegistryAsPersistenceDelegateRegistry
 
     /**
      * Initializes a new instance of the {@code
-     * FakePersistenceDelegateRegistryAsPersistenceDelegateRegistry} class.
+     * FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest} class.
      */
-    public FakePersistenceDelegateRegistryAsPersistenceDelegateRegistry()
+    public FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest()
     {
         super();
     }

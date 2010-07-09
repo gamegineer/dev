@@ -19,4 +19,5 @@ Import-Package: net.jcip.annotations;version="1.0.0",
  org.osgi.framework;version="1.5.0"
 Require-Bundle: org.eclipse.equinox.registry;bundle-version="3.4.100"
 Service-Component: OSGI-INF/cardPileBaseDesignRegistry.xml,
- OSGI-INF/cardSurfaceDesignRegistry.xml
+ OSGI-INF/cardSurfaceDesignRegistry.xml, 
+ OSGI-INF/serializablePersistenceDelegates.xml

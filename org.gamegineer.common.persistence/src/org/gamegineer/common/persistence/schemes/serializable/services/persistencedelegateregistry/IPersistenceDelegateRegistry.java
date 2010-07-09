@@ -87,12 +87,7 @@ public interface IPersistenceDelegateRegistry
     public Set<String> getTypeNames();
 
     /**
-     * Registers the specified persistence delegate.
-     * 
-     * <p>
-     * This method does nothing if a persistence delegate associated with the
-     * same type was previously registered.
-     * </p>
+     * Registers the specified persistence delegate for the specified type.
      * 
      * @param type
      *        The type associated with the persistence delegate; must not be
@@ -100,6 +95,9 @@ public interface IPersistenceDelegateRegistry
      * @param persistenceDelegate
      *        The persistence delegate; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If a persistence delegate is already registered for the specified
+     *         type.
      * @throws java.lang.NullPointerException
      *         If {@code type} or {@code persistenceDelegate} is {@code null}.
      */
@@ -110,12 +108,7 @@ public interface IPersistenceDelegateRegistry
         IPersistenceDelegate persistenceDelegate );
 
     /**
-     * Unregisters the persistence delegate associated with the specified type.
-     * 
-     * <p>
-     * This method does nothing if the specified persistence delegate was not
-     * previously registered for the specified type.
-     * </p>
+     * Unregisters the persistence delegate for the specified type.
      * 
      * @param type
      *        The type associated with the persistence delegate; must not be
@@ -123,6 +116,9 @@ public interface IPersistenceDelegateRegistry
      * @param persistenceDelegate
      *        The persistence delegate; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If the specified persistence delegate was not previously
+     *         registered for the specified type.
      * @throws java.lang.NullPointerException
      *         If {@code type} or {@code persistenceDelegate} is {@code null}.
      */

@@ -1,5 +1,5 @@
 /*
- * BundleConstants.java
+ * PersistenceDelegateRegistryConstants.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,28 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 13, 2010 at 8:30:27 PM.
+ * Created on Jul 5, 2010 at 9:22:52 PM.
  */
 
-package org.gamegineer.common.internal.persistence;
+package org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry;
 
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * Defines useful constants for use by the bundle.
+ * Defines useful constants for use by the persistence delegate registry and its
+ * clients.
  */
 @ThreadSafe
-public final class BundleConstants
+public final class PersistenceDelegateRegistryConstants
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The JavaBeans persistence delegate extension point identifier. */
-    public static final String EXTENSION_BEANS_PERSISTENCE_DELEGATES = "beansPersistenceDelegates"; //$NON-NLS-1$
-
-    /** The symbolic name of the bundle. */
-    public static final String SYMBOLIC_NAME = "org.gamegineer.common.persistence"; //$NON-NLS-1$
+    /**
+     * The name of the delegators property.
+     * 
+     * <p>
+     * The value of this property is either a string or a string array
+     * representing the type name of the class that delegates its persistence
+     * behavior to the persistence delegate.
+     * </p>
+     */
+    public static final String PROPERTY_DELEGATORS = "delegators"; //$NON-NLS-1$
 
 
     // ======================================================================
@@ -45,9 +51,10 @@ public final class BundleConstants
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code BundleConstants} class.
+     * Initializes a new instance of the {@code
+     * PersistenceDelegateRegistryConstants} class.
      */
-    private BundleConstants()
+    private PersistenceDelegateRegistryConstants()
     {
         super();
     }
