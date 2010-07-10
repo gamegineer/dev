@@ -131,14 +131,14 @@ final class PersistenceDelegateProxy
     {
         synchronized( lock_ )
         {
-            assertStateLegal( !isDisposed_, Messages.PersistenceDelegateProxy_getPersistenceDelegate_proxyDisposed );
+            assertStateLegal( !isDisposed_, Messages.PersistenceDelegateProxy_getActualPersistenceDelegate_proxyDisposed );
 
             if( persistenceDelegate_ == null )
             {
                 persistenceDelegate_ = (IPersistenceDelegate)Activator.getDefault().getBundleContext().getService( persistenceDelegateReference_ );
             }
 
-            assertStateLegal( persistenceDelegate_ != null, Messages.PersistenceDelegateProxy_getPersistenceDelegate_actualObjectNotAvailable );
+            assertStateLegal( persistenceDelegate_ != null, Messages.PersistenceDelegateProxy_getActualPersistenceDelegate_actualObjectNotAvailable );
             return persistenceDelegate_;
         }
     }

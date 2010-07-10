@@ -39,10 +39,10 @@ final class Messages
     // --- PersistenceDelegateProxy -----------------------------------------
 
     /** The actual object is not available. */
-    public static String PersistenceDelegateProxy_getPersistenceDelegate_actualObjectNotAvailable;
+    public static String PersistenceDelegateProxy_getActualPersistenceDelegate_actualObjectNotAvailable;
 
     /** The proxy has been disposed. */
-    public static String PersistenceDelegateProxy_getPersistenceDelegate_proxyDisposed;
+    public static String PersistenceDelegateProxy_getActualPersistenceDelegate_proxyDisposed;
 
     // --- PersistenceDelegateRegistry --------------------------------------
 
