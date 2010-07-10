@@ -227,41 +227,17 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerPersistenceDelegate} method properly ignores a
-     * persistence delegate whose type has already been registered for a
-     * different persistence delegate.
+     * Ensures the {@code registerPersistenceDelegate} method throws an
+     * exception when a persistence delegate is already registered for the
+     * specified type.
      */
-    @Test
-    public void testRegisterPersistenceDelegate_Type_Registered_DifferentInstance()
+    @Test( expected = IllegalArgumentException.class )
+    public void testRegisterPersistenceDelegate_Type_Registered()
     {
         final Class<?> type = Object.class;
-        final PersistenceDelegate expectedPersistenceDelegate = new DefaultPersistenceDelegate();
-        final int originalTypeNamesSize = persistenceDelegateRegistry_.getTypeNames().size();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( type, expectedPersistenceDelegate );
-
         persistenceDelegateRegistry_.registerPersistenceDelegate( type, new DefaultPersistenceDelegate() );
 
-        assertSame( expectedPersistenceDelegate, persistenceDelegateRegistry_.getPersistenceDelegate( type ) );
-        assertEquals( originalTypeNamesSize + 1, persistenceDelegateRegistry_.getTypeNames().size() );
-    }
-
-    /**
-     * Ensures the {@code registerPersistenceDelegate} method properly ignores a
-     * persistence delegate whose type has already been registered for the same
-     * persistence delegate.
-     */
-    @Test
-    public void testRegisterPersistenceDelegate_Type_Registered_SameInstance()
-    {
-        final Class<?> type = Object.class;
-        final PersistenceDelegate expectedPersistenceDelegate = new DefaultPersistenceDelegate();
-        final int originalTypeNamesSize = persistenceDelegateRegistry_.getTypeNames().size();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( type, expectedPersistenceDelegate );
-
-        persistenceDelegateRegistry_.registerPersistenceDelegate( type, expectedPersistenceDelegate );
-
-        assertSame( expectedPersistenceDelegate, persistenceDelegateRegistry_.getPersistenceDelegate( type ) );
-        assertEquals( originalTypeNamesSize + 1, persistenceDelegateRegistry_.getTypeNames().size() );
+        persistenceDelegateRegistry_.registerPersistenceDelegate( type, new DefaultPersistenceDelegate() );
     }
 
     /**
@@ -300,23 +276,17 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterPersistenceDelegate} method ignores a type
-     * that was previously registered but with a different persistence delegate
-     * instance.
+     * Ensures the {@code unregisterPersistenceDelegate} method throws an
+     * exception when passed a type that was previously registered but with a
+     * different persistence delegate instance.
      */
-    @Test
+    @Test( expected = IllegalArgumentException.class )
     public void testUnregisterPersistenceDelegate_Type_Registered_DifferentInstance()
     {
         final Class<?> type = Object.class;
-        final PersistenceDelegate expectedPersistenceDelegate = new DefaultPersistenceDelegate();
-        final int originalTypeNamesSize = persistenceDelegateRegistry_.getTypeNames().size();
-        persistenceDelegateRegistry_.registerPersistenceDelegate( type, expectedPersistenceDelegate );
-        assertEquals( originalTypeNamesSize + 1, persistenceDelegateRegistry_.getTypeNames().size() );
+        persistenceDelegateRegistry_.registerPersistenceDelegate( type, new DefaultPersistenceDelegate() );
 
         persistenceDelegateRegistry_.unregisterPersistenceDelegate( type, new DefaultPersistenceDelegate() );
-
-        assertSame( expectedPersistenceDelegate, persistenceDelegateRegistry_.getPersistenceDelegate( type ) );
-        assertEquals( originalTypeNamesSize + 1, persistenceDelegateRegistry_.getTypeNames().size() );
     }
 
     /**
@@ -339,17 +309,14 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterPersistenceDelegate} method properly ignores
-     * a type that was not previously registered.
+     * Ensures the {@code unregisterPersistenceDelegate} method throws an
+     * exception when passed a type that was not previously registered.
      */
-    @Test
+    @Test( expected = IllegalArgumentException.class )
     public void testUnregisterPersistenceDelegate_Type_Unregistered()
     {
         final Class<?> type = Object.class;
-        final int originalTypeNamesSize = persistenceDelegateRegistry_.getTypeNames().size();
 
         persistenceDelegateRegistry_.unregisterPersistenceDelegate( type, new DefaultPersistenceDelegate() );
-
-        assertEquals( originalTypeNamesSize, persistenceDelegateRegistry_.getTypeNames().size() );
     }
 }

@@ -3,5 +3,8 @@
 # Reports default bundle activity.
 org.gamegineer.common.persistence/debug=false
 
+# Reports JavaBeans persistence framework package activity.
+org.gamegineer.common.persistence/debug/beans=false
+
 # Reports Java object serialization framework package activity.
 org.gamegineer.common.persistence/debug/serializable=false

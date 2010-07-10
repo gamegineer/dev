@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.beans.PersistenceDelegate;
 import java.util.HashSet;
@@ -107,8 +108,7 @@ public final class FakePersistenceDelegateRegistry
     {
         assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
         assertArgumentNotNull( persistenceDelegate, "persistenceDelegate" ); //$NON-NLS-1$
-
-        persistenceDelegates_.putIfAbsent( type.getName(), persistenceDelegate );
+        assertArgumentLegal( persistenceDelegates_.putIfAbsent( type.getName(), persistenceDelegate ) == null );
     }
 
     /*
@@ -121,7 +121,6 @@ public final class FakePersistenceDelegateRegistry
     {
         assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
         assertArgumentNotNull( persistenceDelegate, "persistenceDelegate" ); //$NON-NLS-1$
-
-        persistenceDelegates_.remove( type.getName(), persistenceDelegate );
+        assertArgumentLegal( persistenceDelegates_.remove( type.getName(), persistenceDelegate ) );
     }
 }

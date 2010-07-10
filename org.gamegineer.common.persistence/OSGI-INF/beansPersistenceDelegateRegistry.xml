@@ -8,4 +8,11 @@
 		<provide
 				interface="org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry" />
 	</service>
+	<reference
+			bind="registerPersistenceDelegate"
+			cardinality="0..n"
+			interface="java.beans.PersistenceDelegate"
+			name="persistenceDelegate"
+			policy="dynamic"
+			unbind="unregisterPersistenceDelegate" />
 </scr:component>

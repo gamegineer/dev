@@ -23,6 +23,7 @@ package org.gamegineer.common.internal.persistence.schemes.beans.services.persis
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
+import org.osgi.framework.ServiceReference;
 
 /**
  * A utility class to manage localized messages for the package.
@@ -35,16 +36,33 @@ final class Messages
     // Fields
     // ======================================================================
 
+    // --- PersistenceDelegateProxy -----------------------------------------
+
+    /** The actual object is not available. */
+    public static String PersistenceDelegateProxy_getActualPersistenceDelegate_actualObjectNotAvailable;
+
+    /** The proxy has been disposed. */
+    public static String PersistenceDelegateProxy_getActualPersistenceDelegate_proxyDisposed;
+
     // --- PersistenceDelegateRegistry --------------------------------------
 
-    /** The extension registry is not available. */
-    public static String PersistenceDelegateRegistry_getForeignPersistenceDelegateMap_noExtensionRegistry;
+    /**
+     * The persistence delegate associated with the specified service reference
+     * has no delegators.
+     */
+    public static String PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators;
 
-    /** An error occurred while parsing the persistence delegate definition. */
-    public static String PersistenceDelegateRegistry_getForeignPersistenceDelegateMap_parseError;
+    /** A persistence delegate is already registered for the specified type. */
+    public static String PersistenceDelegateRegistry_registerPersistenceDelegate_type_registered;
 
-    /** A duplicate persistence delegate class name was detected. */
-    public static String PersistenceDelegateRegistry_getPersistenceDelegateMap_duplicateClassName;
+    /**
+     * The persistence delegate associated with the specified service reference
+     * cannot be registered for the specified type.
+     */
+    public static String PersistenceDelegateRegistry_registerPersistenceDelegateFromServiceReference_registrationFailed;
+
+    /** The persistence delegate is not registered for the specified type. */
+    public static String PersistenceDelegateRegistry_unregisterPersistenceDelegate_type_unregistered;
 
 
     // ======================================================================
@@ -75,38 +93,84 @@ final class Messages
     // --- PersistenceDelegateRegistry --------------------------------------
 
     /**
-     * Gets the formatted message indicating an error occurred while parsing the
-     * persistence delegate definition.
+     * Gets the formatted message indicating the persistence delegate associated
+     * with the specified service reference has no delegators.
      * 
-     * @param className
-     *        The persistence delegate class name; must not be {@code null}.
+     * @param persistenceDelegateReference
+     *        The persistence delegate reference; must not be {@code null}.
      * 
-     * @return The formatted message indicating an error occurred while parsing
-     *         the persistence delegate definition; never {@code null}.
+     * @return The formatted message indicating the persistence delegate
+     *         associated with the specified service reference has no
+     *         delegators; never {@code null}.
      */
     /* @NonNull */
-    static String PersistenceDelegateRegistry_getForeignPersistenceDelegateMap_parseError(
+    static String PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators(
         /* @NonNull */
-        final String className )
+        final ServiceReference persistenceDelegateReference )
     {
-        return bind( PersistenceDelegateRegistry_getForeignPersistenceDelegateMap_parseError, className );
+        return bind( PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators, persistenceDelegateReference );
     }
 
     /**
-     * Gets the formatted message indicating a duplicate persistence delegate
-     * class name was detected.
+     * Gets the formatted message indicating a persistence delegate is already
+     * registered for the specified type.
      * 
-     * @param className
-     *        The persistence delegate class name; must not be {@code null}.
+     * @param typeName
+     *        The name of the type associated with the persistence delegate;
+     *        must not be {@code null}.
      * 
-     * @return The formatted message indicating a duplicate persistence delegate
-     *         class name identifier was detected; never {@code null}.
+     * @return The formatted message indicating a persistence delegate is
+     *         already registered for the specified type; never {@code null}.
      */
     /* @NonNull */
-    static String PersistenceDelegateRegistry_getPersistenceDelegateMap_duplicateClassName(
+    static String PersistenceDelegateRegistry_registerPersistenceDelegate_type_registered(
         /* @NonNull */
-        final String className )
+        final String typeName )
     {
-        return bind( PersistenceDelegateRegistry_getPersistenceDelegateMap_duplicateClassName, className );
+        return bind( PersistenceDelegateRegistry_registerPersistenceDelegate_type_registered, typeName );
+    }
+
+    /**
+     * Gets the formatted message indicating the persistence delegate associated
+     * with the specified service reference cannot be registered for the
+     * specified type.
+     * 
+     * @param typeName
+     *        The name of the type associated with the persistence delegate;
+     *        must not be {@code null}.
+     * @param persistenceDelegateReference
+     *        The persistence delegate reference; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the persistence delegate
+     *         associated with the specified service reference cannot be
+     *         registered for the specified type; never {@code null}.
+     */
+    /* @NonNull */
+    static String PersistenceDelegateRegistry_registerPersistenceDelegateFromServiceReference_registrationFailed(
+        /* @NonNull */
+        final String typeName,
+        /* @NonNull */
+        final ServiceReference persistenceDelegateReference )
+    {
+        return bind( PersistenceDelegateRegistry_registerPersistenceDelegateFromServiceReference_registrationFailed, persistenceDelegateReference, typeName );
+    }
+
+    /**
+     * Gets the formatted message indicating the persistence delegate is not
+     * registered for the specified type.
+     * 
+     * @param typeName
+     *        The name of the type associated with the persistence delegate;
+     *        must not be {@code null}.
+     * 
+     * @return The formatted message indicating the persistence delegate is not
+     *         registered for the specified type; never {@code null}.
+     */
+    /* @NonNull */
+    static String PersistenceDelegateRegistry_unregisterPersistenceDelegate_type_unregistered(
+        /* @NonNull */
+        final String typeName )
+    {
+        return bind( PersistenceDelegateRegistry_unregisterPersistenceDelegate_type_unregistered, typeName );
     }
 }
