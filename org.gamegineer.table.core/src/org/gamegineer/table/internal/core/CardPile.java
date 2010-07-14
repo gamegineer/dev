@@ -29,6 +29,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
@@ -346,6 +347,30 @@ public final class CardPile
             final Rectangle bottomCardBounds = cards_.get( 0 ).getBounds();
             return topCardBounds.union( bottomCardBounds );
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPile#getCard(java.awt.Point)
+     */
+    @Override
+    public ICard getCard(
+        final Point location )
+    {
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            for( final ListIterator<ICard> iterator = cards_.listIterator( cards_.size() ); iterator.hasPrevious(); )
+            {
+                final ICard card = iterator.previous();
+                if( card.getBounds().contains( location ) )
+                {
+                    return card;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**

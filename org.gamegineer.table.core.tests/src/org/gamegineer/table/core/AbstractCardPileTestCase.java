@@ -345,6 +345,58 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
+     * Ensures the {@code getCard} method returns {@code null} when a card is
+     * absent at the specified location.
+     */
+    @Test
+    public void testGetCard_Location_CardAbsent()
+    {
+        assertNull( cardPile_.getCard( new Point( 0, 0 ) ) );
+    }
+
+    /**
+     * Ensures the {@code getCard} method returns the top-most card when
+     * multiple cards are present at the specified location.
+     */
+    @Test
+    public void testGetCard_Location_MultipleCardsPresent()
+    {
+        final ICard initialCard = Cards.createUniqueCard();
+        cardPile_.addCard( initialCard );
+        final ICard expectedCard = Cards.createUniqueCard();
+        cardPile_.addCard( expectedCard );
+
+        final ICard actualCard = cardPile_.getCard( new Point( 0, 0 ) );
+
+        assertSame( expectedCard, actualCard );
+    }
+
+    /**
+     * Ensures the {@code getCard} method returns the appropriate card when a
+     * single card is present at the specified location.
+     */
+    @Test
+    public void testGetCard_Location_SingleCardPresent()
+    {
+        final ICard expectedCard = Cards.createUniqueCard();
+        cardPile_.addCard( expectedCard );
+
+        final ICard actualCard = cardPile_.getCard( new Point( 0, 0 ) );
+
+        assertSame( expectedCard, actualCard );
+    }
+
+    /**
+     * Ensures the {@code getCard} method throws an exception when passed a
+     * {@code null} location.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetCard_Location_Null()
+    {
+        cardPile_.getCard( null );
+    }
+
+    /**
      * Ensures the {@code getCards} method returns a copy of the card
      * collection.
      */

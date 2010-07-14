@@ -91,6 +91,34 @@ public interface ICardPile
     public Rectangle getBounds();
 
     /**
+     * Gets the card in this card pile at the specified location.
+     * 
+     * <p>
+     * If two or more cards occupy the specified location, the top-most card
+     * will be returned.
+     * </p>
+     * 
+     * <p>
+     * Note that the returned card may have been moved by the time this method
+     * returns to the caller. Therefore, callers should not cache the results of
+     * this method for an extended period of time.
+     * </p>
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * 
+     * @return The card in this card pile at the specified location or {@code
+     *         null} if no card in this card pile is at that location.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code location} is {@code null}.
+     */
+    /* @Nullable */
+    public ICard getCard(
+        /* @NonNull */
+        Point location );
+
+    /**
      * Gets the collection of cards in this card pile.
      * 
      * @return The collection of cards in this card pile; never {@code null}.
