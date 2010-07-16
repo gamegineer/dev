@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -359,7 +360,7 @@ public abstract class AbstractCardPileTestCase
      * multiple cards are present at the specified location.
      */
     @Test
-    public void testGetCard_Location_MultipleCardsPresent()
+    public void testGetCard_Location_CardPresent_MultipleCards()
     {
         final ICard initialCard = Cards.createUniqueCard();
         cardPile_.addCard( initialCard );
@@ -372,11 +373,34 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
+     * Ensures the {@code getCard} method returns {@code null} when a card is
+     * present at the specified location but the card is not the top-most card
+     * when the stacked layout is active.
+     */
+    @Test
+    public void testGetCard_Location_CardPresent_NotTopCardInStackedLayout()
+    {
+        cardPile_.setLayout( CardPileLayout.STACKED );
+        final Rectangle originalBounds = cardPile_.getBounds();
+        do
+        {
+            cardPile_.addCard( Cards.createUniqueCard() );
+
+        } while( originalBounds.equals( cardPile_.getBounds() ) );
+
+        final Point location = new Point( 0, 0 );
+        final ICard actualCard = cardPile_.getCard( location );
+
+        assertTrue( cardPile_.getBounds().contains( location ) );
+        assertNull( actualCard );
+    }
+
+    /**
      * Ensures the {@code getCard} method returns the appropriate card when a
      * single card is present at the specified location.
      */
     @Test
-    public void testGetCard_Location_SingleCardPresent()
+    public void testGetCard_Location_CardPresent_SingleCard()
     {
         final ICard expectedCard = Cards.createUniqueCard();
         cardPile_.addCard( expectedCard );

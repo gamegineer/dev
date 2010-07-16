@@ -360,12 +360,28 @@ public final class CardPile
 
         synchronized( lock_ )
         {
-            for( final ListIterator<ICard> iterator = cards_.listIterator( cards_.size() ); iterator.hasPrevious(); )
+            if( cards_.isEmpty() )
             {
-                final ICard card = iterator.previous();
+                return null;
+            }
+
+            if( layout_ == CardPileLayout.STACKED )
+            {
+                final ICard card = cards_.get( cards_.size() - 1 );
                 if( card.getBounds().contains( location ) )
                 {
                     return card;
+                }
+            }
+            else
+            {
+                for( final ListIterator<ICard> iterator = cards_.listIterator( cards_.size() ); iterator.hasPrevious(); )
+                {
+                    final ICard card = iterator.previous();
+                    if( card.getBounds().contains( location ) )
+                    {
+                        return card;
+                    }
                 }
             }
         }

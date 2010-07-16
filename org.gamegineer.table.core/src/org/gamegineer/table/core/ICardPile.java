@@ -99,6 +99,13 @@ public interface ICardPile
      * </p>
      * 
      * <p>
+     * In the stacked layout, only the top-most card will ever be returned and
+     * only if the specified location lies within the bounds of the top-most
+     * card. In any of the accordian layouts, any card may potentially be
+     * returned.
+     * </p>
+     * 
+     * <p>
      * Note that the returned card may have been moved by the time this method
      * returns to the caller. Therefore, callers should not cache the results of
      * this method for an extended period of time.
