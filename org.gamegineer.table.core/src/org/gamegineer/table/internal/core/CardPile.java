@@ -34,6 +34,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.common.persistence.memento.IMemento;
 import org.gamegineer.common.persistence.memento.MalformedMementoException;
 import org.gamegineer.common.persistence.memento.MementoBuilder;
@@ -152,40 +153,7 @@ public final class CardPile
     {
         assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
 
-        final boolean cardAdded;
-        final boolean cardPileBoundsChanged;
-        synchronized( lock_ )
-        {
-            if( cards_.contains( card ) )
-            {
-                cardAdded = false;
-                cardPileBoundsChanged = false;
-            }
-            else
-            {
-                final Rectangle oldBounds = getBounds();
-
-                final Point cardLocation = new Point( baseLocation_ );
-                final Dimension cardOffset = getCardOffsetAt( cards_.size() );
-                cardLocation.translate( cardOffset.width, cardOffset.height );
-                card.setLocation( cardLocation );
-                cards_.add( card );
-                cardAdded = true;
-
-                final Rectangle newBounds = getBounds();
-                cardPileBoundsChanged = !newBounds.equals( oldBounds );
-            }
-        }
-
-        if( cardAdded )
-        {
-            fireCardAdded( card );
-        }
-
-        if( cardPileBoundsChanged )
-        {
-            fireCardPileBoundsChanged();
-        }
+        addCards( Collections.singletonList( card ) );
     }
 
     /*
@@ -197,6 +165,50 @@ public final class CardPile
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.CardPile_addCardPileListener_listener_registered ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPile#addCards(java.util.List)
+     */
+    @Override
+    public void addCards(
+        final List<ICard> cards )
+    {
+        assertArgumentNotNull( cards, "cards" ); //$NON-NLS-1$
+        assertArgumentLegal( !cards.contains( null ), "cards", Messages.CardPile_addCards_cards_containsNullElement ); //$NON-NLS-1$
+
+        final List<ICard> addedCards = new ArrayList<ICard>();
+        final boolean cardPileBoundsChanged;
+        synchronized( lock_ )
+        {
+            final Rectangle oldBounds = getBounds();
+
+            for( final ICard card : cards )
+            {
+                if( !cards_.contains( card ) )
+                {
+                    final Point cardLocation = new Point( baseLocation_ );
+                    final Dimension cardOffset = getCardOffsetAt( cards_.size() );
+                    cardLocation.translate( cardOffset.width, cardOffset.height );
+                    card.setLocation( cardLocation );
+                    cards_.add( card );
+                    addedCards.add( card );
+                }
+            }
+
+            final Rectangle newBounds = getBounds();
+            cardPileBoundsChanged = !newBounds.equals( oldBounds );
+        }
+
+        for( final ICard card : addedCards )
+        {
+            fireCardAdded( card );
+        }
+
+        if( cardPileBoundsChanged )
+        {
+            fireCardPileBoundsChanged();
+        }
     }
 
     /**
@@ -508,37 +520,21 @@ public final class CardPile
     @Override
     public ICard removeCard()
     {
-        final ICard card;
-        final boolean cardPileBoundsChanged;
-        synchronized( lock_ )
+        final IPredicate<Integer> removeCardPredicate = new IPredicate<Integer>()
         {
-            if( cards_.isEmpty() )
+            @Override
+            @SuppressWarnings( {
+                "boxing", "synthetic-access"
+            } )
+            public boolean evaluate(
+                final Integer obj )
             {
-                card = null;
-                cardPileBoundsChanged = false;
+                return obj == (cards_.size() - 1);
             }
-            else
-            {
-                final Rectangle oldBounds = getBounds();
-
-                card = cards_.remove( cards_.size() - 1 );
-
-                final Rectangle newBounds = getBounds();
-                cardPileBoundsChanged = !newBounds.equals( oldBounds );
-            }
-        }
-
-        if( card != null )
-        {
-            fireCardRemoved( card );
-        }
-
-        if( cardPileBoundsChanged )
-        {
-            fireCardPileBoundsChanged();
-        }
-
-        return card;
+        };
+        final List<ICard> cards = removeCards( removeCardPredicate );
+        assert cards.size() <= 1;
+        return cards.isEmpty() ? null : cards.get( 0 );
     }
 
     /*
@@ -550,6 +546,80 @@ public final class CardPile
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.CardPile_removeCardPileListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPile#removeCards()
+     */
+    @Override
+    public List<ICard> removeCards()
+    {
+        final IPredicate<Integer> removeCardPredicate = new IPredicate<Integer>()
+        {
+            @Override
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Integer obj )
+            {
+                return true;
+            }
+        };
+        return removeCards( removeCardPredicate );
+    }
+
+    /**
+     * Removes all cards from this card pile that satisfy the specified
+     * predicate.
+     * 
+     * @param removeCardPredicate
+     *        The predicate used to determine if a particular card will be
+     *        removed; must not be {@code null}. The predicate argument is the
+     *        card index. The predicate will be invoked while the card pile is
+     *        synchronized.
+     * 
+     * @return The collection of cards removed from this card pile; never
+     *         {@code null}. The cards are returned in order from the card
+     *         nearest the bottom of the card pile to the card nearest the top
+     *         of the card pile.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private List<ICard> removeCards(
+        /* @NonNull */
+        final IPredicate<Integer> removeCardPredicate )
+    {
+        assert removeCardPredicate != null;
+
+        final List<ICard> removedCards = new ArrayList<ICard>();
+        final boolean cardPileBoundsChanged;
+        synchronized( lock_ )
+        {
+            final Rectangle oldBounds = getBounds();
+
+            for( int index = 0, size = cards_.size(); index < size; ++index )
+            {
+                if( removeCardPredicate.evaluate( index ) )
+                {
+                    removedCards.add( cards_.get( index ) );
+                }
+            }
+            cards_.removeAll( removedCards );
+
+            final Rectangle newBounds = getBounds();
+            cardPileBoundsChanged = !newBounds.equals( oldBounds );
+        }
+
+        for( final ICard card : removedCards )
+        {
+            fireCardRemoved( card );
+        }
+
+        if( cardPileBoundsChanged )
+        {
+            fireCardPileBoundsChanged();
+        }
+
+        return removedCards;
     }
 
     /*

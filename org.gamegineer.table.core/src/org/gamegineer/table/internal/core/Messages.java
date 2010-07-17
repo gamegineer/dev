@@ -63,6 +63,9 @@ final class Messages
     /** The card pile listener is already registered. */
     public static String CardPile_addCardPileListener_listener_registered;
 
+    /** The card collection contains a {@code null} element. */
+    public static String CardPile_addCards_cards_containsNullElement;
+
     /** An unexpected exception was thrown from ICardPileListener.cardAdded(). */
     public static String CardPile_cardAdded_unexpectedException;
 

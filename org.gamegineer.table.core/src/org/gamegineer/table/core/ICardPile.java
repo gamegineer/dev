@@ -74,6 +74,28 @@ public interface ICardPile
         ICardPileListener listener );
 
     /**
+     * Adds the specified collection of cards to the top of this card pile.
+     * 
+     * <p>
+     * This method does nothing if any card in the specified collection is
+     * already in the card pile.
+     * </p>
+     * 
+     * @param cards
+     *        The collection of cards to be added to this card pile; must not be
+     *        {@code null}. The cards are added to the top of this card pile in
+     *        the order they appear in the collection.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code cards} contains a {@code null} element.
+     * @throws java.lang.NullPointerException
+     *         If {@code cards} is {@code null}.
+     */
+    public void addCards(
+        /* @NonNull */
+        List<ICard> cards );
+
+    /**
      * Gets the design of the card pile base.
      * 
      * @return The design of the card pile base; never {@code null}.
@@ -193,6 +215,17 @@ public interface ICardPile
     public void removeCardPileListener(
         /* @NonNull */
         ICardPileListener listener );
+
+    /**
+     * Removes all the cards in this card pile.
+     * 
+     * @return The collection of cards removed from this card pile; never
+     *         {@code null}. The cards are returned in order from the card at
+     *         the bottom of the card pile to the card at the top of the card
+     *         pile.
+     */
+    /* @NonNull */
+    public List<ICard> removeCards();
 
     /**
      * Sets the layout of cards within this card pile.
