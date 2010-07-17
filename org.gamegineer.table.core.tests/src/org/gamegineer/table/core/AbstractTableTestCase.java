@@ -145,27 +145,6 @@ public abstract class AbstractTableTestCase
     }
 
     /**
-     * Ensures the {@code addCardPile} method catches any exception thrown by
-     * the {@code cardPileAdded} method of a table listener.
-     */
-    @Test
-    public void testAddCardPile_CardPile_Absent_CatchesListenerException()
-    {
-        final ITableListener listener1 = mocksControl_.createMock( ITableListener.class );
-        listener1.cardPileAdded( EasyMock.notNull( TableContentChangedEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ITableListener listener2 = mocksControl_.createMock( ITableListener.class );
-        listener2.cardPileAdded( EasyMock.notNull( TableContentChangedEvent.class ) );
-        mocksControl_.replay();
-        table_.addTableListener( listener1 );
-        table_.addTableListener( listener2 );
-
-        table_.addCardPile( CardPiles.createUniqueCardPile() );
-
-        mocksControl_.verify();
-    }
-
-    /**
      * Ensures the {@code addCardPile} method fires a card pile added event when
      * the card pile is absent from the table.
      */
@@ -248,6 +227,50 @@ public abstract class AbstractTableTestCase
         table_.addTableListener( listener );
 
         table_.addTableListener( listener );
+    }
+
+    /**
+     * Ensures the card pile added event catches any exception thrown by the
+     * {@code cardPileAdded} method of a table listener.
+     */
+    @Test
+    public void testCardPileAdded_CatchesListenerException()
+    {
+        final ITableListener listener1 = mocksControl_.createMock( ITableListener.class );
+        listener1.cardPileAdded( EasyMock.notNull( TableContentChangedEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ITableListener listener2 = mocksControl_.createMock( ITableListener.class );
+        listener2.cardPileAdded( EasyMock.notNull( TableContentChangedEvent.class ) );
+        mocksControl_.replay();
+        table_.addTableListener( listener1 );
+        table_.addTableListener( listener2 );
+
+        table_.addCardPile( CardPiles.createUniqueCardPile() );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the card pile removed event catches any exception thrown by the
+     * {@code cardPileRemoved} method of a table listener.
+     */
+    @Test
+    public void testCardPileRemoved_CatchesListenerException()
+    {
+        final ICardPile cardPile = CardPiles.createUniqueCardPile();
+        table_.addCardPile( cardPile );
+        final ITableListener listener1 = mocksControl_.createMock( ITableListener.class );
+        listener1.cardPileRemoved( EasyMock.notNull( TableContentChangedEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ITableListener listener2 = mocksControl_.createMock( ITableListener.class );
+        listener2.cardPileRemoved( EasyMock.notNull( TableContentChangedEvent.class ) );
+        mocksControl_.replay();
+        table_.addTableListener( listener1 );
+        table_.addTableListener( listener2 );
+
+        table_.removeCardPile( cardPile );
+
+        mocksControl_.verify();
     }
 
     /**
@@ -399,29 +422,6 @@ public abstract class AbstractTableTestCase
     public void testRemoveCardPile_CardPile_Null()
     {
         table_.removeCardPile( null );
-    }
-
-    /**
-     * Ensures the {@code removeCardPile} method catches any exception thrown by
-     * the {@code cardPileRemoved} method of a table listener.
-     */
-    @Test
-    public void testRemoveCardPile_CardPile_Present_CatchesListenerException()
-    {
-        final ICardPile cardPile = CardPiles.createUniqueCardPile();
-        table_.addCardPile( cardPile );
-        final ITableListener listener1 = mocksControl_.createMock( ITableListener.class );
-        listener1.cardPileRemoved( EasyMock.notNull( TableContentChangedEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ITableListener listener2 = mocksControl_.createMock( ITableListener.class );
-        listener2.cardPileRemoved( EasyMock.notNull( TableContentChangedEvent.class ) );
-        mocksControl_.replay();
-        table_.addTableListener( listener1 );
-        table_.addTableListener( listener2 );
-
-        table_.removeCardPile( cardPile );
-
-        mocksControl_.verify();
     }
 
     /**

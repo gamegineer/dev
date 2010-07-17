@@ -151,6 +151,48 @@ public abstract class AbstractCardTestCase
     }
 
     /**
+     * Ensures the card location changed event catches any exception thrown by
+     * the {@code cardLocationChanged} method of a card listener.
+     */
+    @Test
+    public void testCardLocationChanged_CatchesListenerException()
+    {
+        final ICardListener listener1 = mocksControl_.createMock( ICardListener.class );
+        listener1.cardLocationChanged( EasyMock.notNull( CardEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ICardListener listener2 = mocksControl_.createMock( ICardListener.class );
+        listener2.cardLocationChanged( EasyMock.notNull( CardEvent.class ) );
+        mocksControl_.replay();
+        card_.addCardListener( listener1 );
+        card_.addCardListener( listener2 );
+
+        card_.setLocation( new Point( 1010, 2020 ) );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the card orientation changed event catches any exception thrown
+     * by the {@code cardOrientationChanged} method of a card listener.
+     */
+    @Test
+    public void testCardOrientationChanged_CatchesListenerException()
+    {
+        final ICardListener listener1 = mocksControl_.createMock( ICardListener.class );
+        listener1.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ICardListener listener2 = mocksControl_.createMock( ICardListener.class );
+        listener2.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
+        mocksControl_.replay();
+        card_.addCardListener( listener1 );
+        card_.addCardListener( listener2 );
+
+        card_.setOrientation( card_.getOrientation().inverse() );
+
+        mocksControl_.verify();
+    }
+
+    /**
      * Ensures the {@code flip} method correctly changes the card orientation
      * when the card back is initially up.
      */
@@ -408,27 +450,6 @@ public abstract class AbstractCardTestCase
     }
 
     /**
-     * Ensures the {@code setLocation} method catches any exception thrown by
-     * the {@code cardLocationChanged} method of a card listener.
-     */
-    @Test
-    public void testSetLocation_CatchesListenerException()
-    {
-        final ICardListener listener1 = mocksControl_.createMock( ICardListener.class );
-        listener1.cardLocationChanged( EasyMock.notNull( CardEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ICardListener listener2 = mocksControl_.createMock( ICardListener.class );
-        listener2.cardLocationChanged( EasyMock.notNull( CardEvent.class ) );
-        mocksControl_.replay();
-        card_.addCardListener( listener1 );
-        card_.addCardListener( listener2 );
-
-        card_.setLocation( new Point( 1010, 2020 ) );
-
-        mocksControl_.verify();
-    }
-
-    /**
      * Ensures the {@code setLocation} method fires a card location changed
      * event.
      */
@@ -468,27 +489,6 @@ public abstract class AbstractCardTestCase
     public void testSetLocation_Location_Null()
     {
         card_.setLocation( null );
-    }
-
-    /**
-     * Ensures the {@code setOrientation} method catches any exception thrown by
-     * the {@code cardOrientationChanged} method of a card listener.
-     */
-    @Test
-    public void testSetOrientation_CatchesListenerException()
-    {
-        final ICardListener listener1 = mocksControl_.createMock( ICardListener.class );
-        listener1.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ICardListener listener2 = mocksControl_.createMock( ICardListener.class );
-        listener2.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
-        mocksControl_.replay();
-        card_.addCardListener( listener1 );
-        card_.addCardListener( listener2 );
-
-        card_.setOrientation( card_.getOrientation().inverse() );
-
-        mocksControl_.verify();
     }
 
     /**
