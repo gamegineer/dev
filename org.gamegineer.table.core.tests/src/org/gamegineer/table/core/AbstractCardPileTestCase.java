@@ -431,6 +431,27 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
+     * Ensures the card pile bounds changed event catches any exception thrown
+     * by the {@code cardPileBoundsChanged} method of a card pile listener.
+     */
+    @Test
+    public void testCardPileBoundsChanged_CatchesListenerException()
+    {
+        final ICardPileListener listener1 = mocksControl_.createMock( ICardPileListener.class );
+        listener1.cardPileBoundsChanged( EasyMock.notNull( CardPileEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ICardPileListener listener2 = mocksControl_.createMock( ICardPileListener.class );
+        listener2.cardPileBoundsChanged( EasyMock.notNull( CardPileEvent.class ) );
+        mocksControl_.replay();
+        cardPile_.addCardPileListener( listener1 );
+        cardPile_.addCardPileListener( listener2 );
+
+        cardPile_.setLocation( new Point( 1010, 2020 ) );
+
+        mocksControl_.verify();
+    }
+
+    /**
      * Ensures the card removed event catches any exception thrown by the
      * {@code cardRemoved} method of a card pile listener.
      */
@@ -971,27 +992,6 @@ public abstract class AbstractCardPileTestCase
     public void testSetLayout_Layout_Null()
     {
         cardPile_.setLayout( null );
-    }
-
-    /**
-     * Ensures the {@code setLocation} method catches any exception thrown by
-     * the {@code cardPileBoundsChanged} method of a card pile listener.
-     */
-    @Test
-    public void testSetLocation_CatchesListenerException()
-    {
-        final ICardPileListener listener1 = mocksControl_.createMock( ICardPileListener.class );
-        listener1.cardPileBoundsChanged( EasyMock.notNull( CardPileEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ICardPileListener listener2 = mocksControl_.createMock( ICardPileListener.class );
-        listener2.cardPileBoundsChanged( EasyMock.notNull( CardPileEvent.class ) );
-        mocksControl_.replay();
-        cardPile_.addCardPileListener( listener1 );
-        cardPile_.addCardPileListener( listener2 );
-
-        cardPile_.setLocation( new Point( 1010, 2020 ) );
-
-        mocksControl_.verify();
     }
 
     /**
