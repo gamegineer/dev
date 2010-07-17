@@ -29,6 +29,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.easymock.EasyMock;
@@ -145,27 +146,6 @@ public abstract class AbstractCardPileTestCase
 
         final List<ICard> cards = cardPile_.getCards();
         assertSame( card, cards.get( cards.size() - 1 ) );
-    }
-
-    /**
-     * Ensures the {@code addCard} method catches any exception thrown by the
-     * {@code cardAdded} method of a card pile listener.
-     */
-    @Test
-    public void testAddCard_Card_Absent_CatchesListenerException()
-    {
-        final ICardPileListener listener1 = mocksControl_.createMock( ICardPileListener.class );
-        listener1.cardAdded( EasyMock.notNull( CardPileContentChangedEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ICardPileListener listener2 = mocksControl_.createMock( ICardPileListener.class );
-        listener2.cardAdded( EasyMock.notNull( CardPileContentChangedEvent.class ) );
-        mocksControl_.replay();
-        cardPile_.addCardPileListener( listener1 );
-        cardPile_.addCardPileListener( listener2 );
-
-        cardPile_.addCard( Cards.createUniqueCard() );
-
-        mocksControl_.verify();
     }
 
     /**
@@ -297,44 +277,25 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code addCards} method adds a card that is absent from the
+     * Ensures the {@code addCards} method adds cards that are absent from the
      * card pile.
      */
     @Test
-    public void testAddCards_Cards_Absent_AddsCard()
+    public void testAddCards_Cards_Absent_AddsCards()
     {
-        final ICard card = Cards.createUniqueCard();
+        final ICard card1 = Cards.createUniqueCard();
+        final ICard card2 = Cards.createUniqueCard();
 
-        cardPile_.addCards( Collections.singletonList( card ) );
+        cardPile_.addCards( Arrays.asList( card1, card2 ) );
 
         final List<ICard> cards = cardPile_.getCards();
-        assertSame( card, cards.get( cards.size() - 1 ) );
+        assertSame( card1, cards.get( 0 ) );
+        assertSame( card2, cards.get( 1 ) );
     }
 
     /**
-     * Ensures the {@code addCards} method catches any exception thrown by the
-     * {@code cardAdded} method of a card pile listener.
-     */
-    @Test
-    public void testAddCards_Cards_Absent_CatchesListenerException()
-    {
-        final ICardPileListener listener1 = mocksControl_.createMock( ICardPileListener.class );
-        listener1.cardAdded( EasyMock.notNull( CardPileContentChangedEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ICardPileListener listener2 = mocksControl_.createMock( ICardPileListener.class );
-        listener2.cardAdded( EasyMock.notNull( CardPileContentChangedEvent.class ) );
-        mocksControl_.replay();
-        cardPile_.addCardPileListener( listener1 );
-        cardPile_.addCardPileListener( listener2 );
-
-        cardPile_.addCards( Collections.singletonList( Cards.createUniqueCard() ) );
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code addCards} method changes the location of the card to
-     * reflect the card pile location when the card is absent from the card
+     * Ensures the {@code addCards} method changes the location of the cards to
+     * reflect the card pile location when the cards are absent from the card
      * pile.
      */
     @Test
@@ -353,7 +314,7 @@ public abstract class AbstractCardPileTestCase
 
     /**
      * Ensures the {@code addCards} method changes the card pile bounds when the
-     * card is absent from the card pile.
+     * cards are absent from the card pile.
      */
     @Test( timeout = 1000 )
     public void testAddCards_Cards_Absent_ChangesCardPileBounds()
@@ -377,17 +338,18 @@ public abstract class AbstractCardPileTestCase
 
     /**
      * Ensures the {@code addCards} method fires a card added event when the
-     * card is absent from the card pile.
+     * cards are absent from the card pile.
      */
     @Test
     public void testAddCards_Cards_Absent_FiresCardAddedEvent()
     {
         final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
         listener.cardAdded( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        EasyMock.expectLastCall().times( 2 );
         mocksControl_.replay();
         cardPile_.addCardPileListener( listener );
 
-        cardPile_.addCards( Collections.singletonList( Cards.createUniqueCard() ) );
+        cardPile_.addCards( Arrays.asList( Cards.createUniqueCard(), Cards.createUniqueCard() ) );
 
         mocksControl_.verify();
     }
@@ -413,7 +375,7 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code addCards} method does not add a card that is present
+     * Ensures the {@code addCards} method does not add cards that are present
      * in the card pile.
      */
     @Test
@@ -431,7 +393,7 @@ public abstract class AbstractCardPileTestCase
 
     /**
      * Ensures the {@code addCards} method does not fire a card added event when
-     * the card is present in the card pile.
+     * the cards are present in the card pile.
      */
     @Test
     public void testAddCards_Cards_Present_DoesNotFireCardAddedEvent()
@@ -443,6 +405,49 @@ public abstract class AbstractCardPileTestCase
         cardPile_.addCardPileListener( listener );
 
         cardPile_.addCards( Collections.singletonList( card ) );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the card added event catches any exception thrown by the {@code
+     * cardAdded} method of a card pile listener.
+     */
+    @Test
+    public void testCardAdded_CatchesListenerException()
+    {
+        final ICardPileListener listener1 = mocksControl_.createMock( ICardPileListener.class );
+        listener1.cardAdded( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ICardPileListener listener2 = mocksControl_.createMock( ICardPileListener.class );
+        listener2.cardAdded( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        mocksControl_.replay();
+        cardPile_.addCardPileListener( listener1 );
+        cardPile_.addCardPileListener( listener2 );
+
+        cardPile_.addCard( Cards.createUniqueCard() );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the card removed event catches any exception thrown by the
+     * {@code cardRemoved} method of a card pile listener.
+     */
+    @Test
+    public void testCardRemoved_CatchesListenerException()
+    {
+        cardPile_.addCard( Cards.createUniqueCard() );
+        final ICardPileListener listener1 = mocksControl_.createMock( ICardPileListener.class );
+        listener1.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ICardPileListener listener2 = mocksControl_.createMock( ICardPileListener.class );
+        listener2.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        mocksControl_.replay();
+        cardPile_.addCardPileListener( listener1 );
+        cardPile_.addCardPileListener( listener2 );
+
+        cardPile_.removeCard();
 
         mocksControl_.verify();
     }
@@ -739,29 +744,6 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code removeCard} method catches any exception thrown by the
-     * {@code cardRemoved} method of a card pile listener when the card pile is
-     * not empty.
-     */
-    @Test
-    public void testRemoveCard_NotEmpty_CatchesListenerException()
-    {
-        cardPile_.addCard( Cards.createUniqueCard() );
-        final ICardPileListener listener1 = mocksControl_.createMock( ICardPileListener.class );
-        listener1.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ICardPileListener listener2 = mocksControl_.createMock( ICardPileListener.class );
-        listener2.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
-        mocksControl_.replay();
-        cardPile_.addCardPileListener( listener1 );
-        cardPile_.addCardPileListener( listener2 );
-
-        cardPile_.removeCard();
-
-        mocksControl_.verify();
-    }
-
-    /**
      * Ensures the {@code removeCard} method changes the card pile bounds when
      * the card pile is not empty.
      */
@@ -892,29 +874,6 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code removeCards} method catches any exception thrown by
-     * the {@code cardRemoved} method of a card pile listener when the card pile
-     * is not empty.
-     */
-    @Test
-    public void testRemoveCards_NotEmpty_CatchesListenerException()
-    {
-        cardPile_.addCard( Cards.createUniqueCard() );
-        final ICardPileListener listener1 = mocksControl_.createMock( ICardPileListener.class );
-        listener1.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ICardPileListener listener2 = mocksControl_.createMock( ICardPileListener.class );
-        listener2.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
-        mocksControl_.replay();
-        cardPile_.addCardPileListener( listener1 );
-        cardPile_.addCardPileListener( listener2 );
-
-        cardPile_.removeCards();
-
-        mocksControl_.verify();
-    }
-
-    /**
      * Ensures the {@code removeCards} method changes the card pile bounds when
      * the card pile is not empty.
      */
@@ -949,9 +908,10 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testRemoveCards_NotEmpty_FiresCardRemovedEvent()
     {
-        cardPile_.addCard( Cards.createUniqueCard() );
+        cardPile_.addCards( Arrays.asList( Cards.createUniqueCard(), Cards.createUniqueCard() ) );
         final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
         listener.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        EasyMock.expectLastCall().times( 2 );
         mocksControl_.replay();
         cardPile_.addCardPileListener( listener );
 
