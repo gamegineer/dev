@@ -597,7 +597,7 @@ final class TableView
         assert cardPile != null;
 
         final CardPileView view = createCardPileView( cardPile );
-        repaintTable( view.getBounds() );
+        repaintTable( view.getDirtyBounds() );
     }
 
     /*
@@ -646,7 +646,7 @@ final class TableView
         final CardPileView view = cardPileViews_.remove( cardPile );
         if( view != null )
         {
-            repaintTable( view.getBounds() );
+            repaintTable( view.getDirtyBounds() );
             view.uninitialize();
         }
     }
@@ -760,7 +760,7 @@ final class TableView
     {
         final Map<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler> mouseInputHandlers = new HashMap<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler>();
         mouseInputHandlers.put( DefaultMouseInputHandler.class, new DefaultMouseInputHandler() );
-        mouseInputHandlers.put( DraggingCardMouseInputHandler.class, new DraggingCardMouseInputHandler() );
+        mouseInputHandlers.put( DraggingCardsMouseInputHandler.class, new DraggingCardsMouseInputHandler() );
         mouseInputHandlers.put( DraggingCardPileMouseInputHandler.class, new DraggingCardPileMouseInputHandler() );
         mouseInputHandlers.put( DraggingTableMouseInputHandler.class, new DraggingTableMouseInputHandler() );
         mouseInputHandlers.put( PopupMenuMouseInputHandler.class, new PopupMenuMouseInputHandler() );
@@ -1166,7 +1166,7 @@ final class TableView
                     }
                     else
                     {
-                        setMouseInputHandler( DraggingCardMouseInputHandler.class, e );
+                        setMouseInputHandler( DraggingCardsMouseInputHandler.class, e );
                     }
                 }
                 else
@@ -1192,25 +1192,26 @@ final class TableView
     }
 
     /**
-     * The mouse input handler that is active when a card is being dragged.
+     * The mouse input handler that is active when a collection of cards are
+     * being dragged.
      */
-    private final class DraggingCardMouseInputHandler
+    private final class DraggingCardsMouseInputHandler
         extends AbstractMouseInputHandler
     {
         // ==================================================================
         // Fields
         // ==================================================================
 
-        /** The card pile that temporarily holds the card being dragged. */
+        /** The card pile that temporarily holds the cards being dragged. */
         private ICardPile mobileCardPile_;
 
         /**
-         * The offset between the mouse pointer and the mobile card pile
+         * The offset between the mouse pointer and the mobile card pile base
          * location.
          */
-        private final Dimension mobileCardPileLocationOffset_;
+        private final Dimension mobileCardPileBaseLocationOffset_;
 
-        /** The card pile that is the source of the card being dragged. */
+        /** The card pile that is the source of the cards being dragged. */
         private ICardPile sourceCardPile_;
 
 
@@ -1220,11 +1221,11 @@ final class TableView
 
         /**
          * Initializes a new instance of the {@code
-         * DraggingCardMouseInputHandler} class.
+         * DraggingCardsMouseInputHandler} class.
          */
-        DraggingCardMouseInputHandler()
+        DraggingCardsMouseInputHandler()
         {
-            mobileCardPileLocationOffset_ = new Dimension( 0, 0 );
+            mobileCardPileBaseLocationOffset_ = new Dimension( 0, 0 );
         }
 
 
@@ -1244,15 +1245,16 @@ final class TableView
             sourceCardPile_ = model_.getTable().getCardPile( mouseLocation );
             if( sourceCardPile_ != null )
             {
-                final ICard draggedCard = sourceCardPile_.removeCard();
-                if( draggedCard != null )
+                final List<ICard> draggedCards = sourceCardPile_.removeCards( mouseLocation );
+                if( !draggedCards.isEmpty() )
                 {
-                    final Point draggedCardLocation = draggedCard.getLocation();
-                    mobileCardPileLocationOffset_.setSize( draggedCardLocation.x - mouseLocation.x, draggedCardLocation.y - mouseLocation.y );
+                    final Point draggedCardsBaseLocation = draggedCards.get( 0 ).getLocation();
+                    mobileCardPileBaseLocationOffset_.setSize( draggedCardsBaseLocation.x - mouseLocation.x, draggedCardsBaseLocation.y - mouseLocation.y );
                     mobileCardPile_ = CardPileFactory.createCardPile( sourceCardPile_.getBaseDesign() );
-                    mobileCardPile_.setLocation( draggedCardLocation );
+                    mobileCardPile_.setBaseLocation( draggedCardsBaseLocation );
+                    mobileCardPile_.setLayout( sourceCardPile_.getLayout() );
                     model_.getTable().addCardPile( mobileCardPile_ );
-                    mobileCardPile_.addCard( draggedCard );
+                    mobileCardPile_.addCards( draggedCards );
                     model_.setFocus( mobileCardPile_ );
                 }
                 else
@@ -1273,7 +1275,7 @@ final class TableView
         void deactivate()
         {
             mobileCardPile_ = null;
-            mobileCardPileLocationOffset_.setSize( 0, 0 );
+            mobileCardPileBaseLocationOffset_.setSize( 0, 0 );
             sourceCardPile_ = null;
         }
 
@@ -1285,8 +1287,8 @@ final class TableView
             final MouseEvent e )
         {
             final Point location = getMouseLocation( e );
-            location.translate( mobileCardPileLocationOffset_.width, mobileCardPileLocationOffset_.height );
-            mobileCardPile_.setLocation( location );
+            location.translate( mobileCardPileBaseLocationOffset_.width, mobileCardPileBaseLocationOffset_.height );
+            mobileCardPile_.setBaseLocation( location );
         }
 
         /*
@@ -1304,7 +1306,7 @@ final class TableView
                 final Point mouseLocation = getMouseLocation( e );
                 final ICardPile cardPile = model_.getTable().getCardPile( mouseLocation );
                 final ICardPile targetCardPile = (cardPile != null) ? cardPile : sourceCardPile_;
-                targetCardPile.addCard( mobileCardPile_.removeCard() );
+                targetCardPile.addCards( mobileCardPile_.removeCards() );
                 model_.setFocus( targetCardPile );
 
                 setMouseInputHandler( DefaultMouseInputHandler.class, null );

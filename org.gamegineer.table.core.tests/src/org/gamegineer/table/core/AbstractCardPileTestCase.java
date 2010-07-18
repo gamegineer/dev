@@ -29,6 +29,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -483,6 +484,45 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
+     * Ensures the {@code getBaseLocation} method returns a copy of the base
+     * location.
+     */
+    @Test
+    public void testGetBaseLocation_ReturnValue_Copy()
+    {
+        final Point baseLocation = cardPile_.getBaseLocation();
+        final Point expectedBaseLocation = new Point( baseLocation );
+
+        baseLocation.setLocation( 1010, 2020 );
+
+        assertEquals( expectedBaseLocation, cardPile_.getBaseLocation() );
+    }
+
+    /**
+     * Ensures the {@code getBaseLocation} method does not return {@code null}.
+     */
+    @Test
+    public void testGetBaseLocation_ReturnValue_NonNull()
+    {
+        assertNotNull( cardPile_.getBaseLocation() );
+    }
+
+    /**
+     * Ensures the {@code getBaseLocation} method returns the correct value
+     * after a translation.
+     */
+    @Test
+    public void testGetBaseLocation_Translate()
+    {
+        final Point expectedBaseLocation = new Point( 1010, 2020 );
+        cardPile_.setBaseLocation( expectedBaseLocation );
+
+        final Point actualBaseLocation = cardPile_.getBaseLocation();
+
+        assertEquals( expectedBaseLocation, actualBaseLocation );
+    }
+
+    /**
      * Ensures the {@code getBounds} method returns a copy of the bounds.
      */
     @Test
@@ -866,8 +906,8 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code removeCards} method does not fire a card removed event
-     * when the card pile is empty.
+     * Ensures the {@code removeCards()} method does not fire a card removed
+     * event when the card pile is empty.
      */
     @Test
     public void testRemoveCards_Empty_DoesNotFireCardRemovedEvent()
@@ -882,11 +922,11 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code removeCards} method returns an empty collection when
+     * Ensures the {@code removeCards()} method returns an empty collection when
      * the card pile is empty.
      */
     @Test
-    public void testRemoveCards_Empty_DoesNotRemoveCard()
+    public void testRemoveCards_Empty_DoesNotRemoveCards()
     {
         final List<ICard> cards = cardPile_.removeCards();
 
@@ -895,8 +935,8 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code removeCards} method changes the card pile bounds when
-     * the card pile is not empty.
+     * Ensures the {@code removeCards()} method changes the card pile bounds
+     * when the card pile is not empty.
      */
     @Test( timeout = 1000 )
     public void testRemoveCards_NotEmpty_ChangesCardPileBounds()
@@ -923,7 +963,7 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code removeCards} method fires a card removed event when
+     * Ensures the {@code removeCards()} method fires a card removed event when
      * the card pile is not empty.
      */
     @Test
@@ -942,26 +982,195 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code removeCards} method removes all cards in the card pile
-     * when the card pile is not empty.
+     * Ensures the {@code removeCards()} method removes all cards in the card
+     * pile when the card pile is not empty.
      */
     @Test
     public void testRemoveCards_NotEmpty_RemovesAllCards()
     {
-        final ICard expectedCard1 = Cards.createUniqueCard();
-        final ICard expectedCard2 = Cards.createUniqueCard();
-        final ICard expectedCard3 = Cards.createUniqueCard();
-        cardPile_.addCard( expectedCard1 );
-        cardPile_.addCard( expectedCard2 );
-        cardPile_.addCard( expectedCard3 );
+        final List<ICard> expectedCards = new ArrayList<ICard>();
+        expectedCards.add( Cards.createUniqueCard() );
+        expectedCards.add( Cards.createUniqueCard() );
+        expectedCards.add( Cards.createUniqueCard() );
+        cardPile_.addCards( expectedCards );
 
         final List<ICard> actualCards = cardPile_.removeCards();
 
-        assertEquals( 3, actualCards.size() );
-        assertSame( expectedCard1, actualCards.get( 0 ) );
-        assertSame( expectedCard2, actualCards.get( 1 ) );
-        assertSame( expectedCard3, actualCards.get( 2 ) );
+        assertEquals( expectedCards, actualCards );
         assertEquals( 0, cardPile_.getCards().size() );
+    }
+
+    /**
+     * Ensures the {@code removeCards(Point)} method does not fire a card
+     * removed event when a card is absent at the specified location.
+     */
+    @Test
+    public void testRemoveCardsFromPoint_Location_CardAbsent_DoesNotFireCardRemovedEvent()
+    {
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        mocksControl_.replay();
+        cardPile_.addCardPileListener( listener );
+
+        cardPile_.removeCards( new Point( 0, 0 ) );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code removeCards(Point)} method returns an empty collection
+     * when a card is absent at the specified location.
+     */
+    @Test
+    public void testRemoveCardsFromPoint_Location_CardAbsent_DoesNotRemoveCards()
+    {
+        final List<ICard> cards = cardPile_.removeCards( new Point( 0, 0 ) );
+
+        assertNotNull( cards );
+        assertEquals( 0, cards.size() );
+    }
+
+    /**
+     * Ensures the {@code removeCards(Point)} method changes the card pile
+     * bounds when a card is present at the specified location.
+     */
+    @Test
+    public void testRemoveCardsFromPoint_Location_CardPresent_ChangesCardPileBounds()
+    {
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        listener.cardAdded( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        EasyMock.expectLastCall().anyTimes();
+        listener.cardPileBoundsChanged( EasyMock.notNull( CardPileEvent.class ) );
+        EasyMock.expectLastCall().times( 2 );
+        listener.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        EasyMock.expectLastCall().anyTimes();
+        mocksControl_.replay();
+        cardPile_.addCardPileListener( listener );
+        final Rectangle originalCardPileBounds = cardPile_.getBounds();
+
+        do
+        {
+            cardPile_.addCard( Cards.createUniqueCard() );
+
+        } while( originalCardPileBounds.equals( cardPile_.getBounds() ) );
+        final List<ICard> cards = cardPile_.getCards();
+        cardPile_.removeCards( cards.get( cards.size() - 1 ).getLocation() );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code removeCards(Point)} method fires a card removed event
+     * when a card is present at the specified location.
+     */
+    @Test
+    public void testRemoveCardsFromPoint_Location_CardPresent_FiresCardRemovedEvent()
+    {
+        cardPile_.setLayout( CardPileLayout.ACCORDIAN_RIGHT );
+        cardPile_.addCards( Arrays.asList( Cards.createUniqueCard(), Cards.createUniqueCard() ) );
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        listener.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        EasyMock.expectLastCall().times( 2 );
+        listener.cardPileBoundsChanged( EasyMock.notNull( CardPileEvent.class ) );
+        EasyMock.expectLastCall().anyTimes();
+        mocksControl_.replay();
+        cardPile_.addCardPileListener( listener );
+
+        cardPile_.removeCards( cardPile_.getCards().get( 0 ).getLocation() );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code removeCards(Point)} method removes the correct cards
+     * from the card pile when a card is present at the specified location.
+     */
+    @Test
+    public void testRemoveCardsFromPoint_Location_CardPresent_RemovesCards()
+    {
+        final List<ICard> cards = new ArrayList<ICard>();
+        cards.add( Cards.createUniqueCard() );
+        cards.add( Cards.createUniqueCard() );
+        cards.add( Cards.createUniqueCard() );
+        cardPile_.setLayout( CardPileLayout.ACCORDIAN_RIGHT );
+        cardPile_.addCards( cards );
+        final List<ICard> expectedCards = cards.subList( 1, cards.size() );
+
+        final List<ICard> actualCards = cardPile_.removeCards( cards.get( 1 ).getLocation() );
+
+        assertEquals( expectedCards, actualCards );
+        assertEquals( cards.size() - expectedCards.size(), cardPile_.getCards().size() );
+    }
+
+    /**
+     * Ensures the {@code removeCards(Point)} method throws an exception when
+     * passed a {@code null} location.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testRemoveCardsFromPoint_Location_Null()
+    {
+        cardPile_.removeCards( null );
+    }
+
+    /**
+     * Ensures the {@code setBaseLocation} method changes the location of all
+     * child cards to reflect the new card pile base location.
+     */
+    @Test
+    public void testSetBaseLocation_ChangesChildCardLocation()
+    {
+        final ICard card = Cards.createUniqueCard();
+        cardPile_.addCard( card );
+        final ICardListener listener = mocksControl_.createMock( ICardListener.class );
+        listener.cardLocationChanged( EasyMock.notNull( CardEvent.class ) );
+        mocksControl_.replay();
+        card.addCardListener( listener );
+
+        cardPile_.setBaseLocation( new Point( 1010, 2020 ) );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code setBaseLocation} method fires a card pile bounds
+     * changed event.
+     */
+    @Test
+    public void testSetBaseLocation_FiresCardPileBoundsChangedEvent()
+    {
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        listener.cardPileBoundsChanged( EasyMock.notNull( CardPileEvent.class ) );
+        mocksControl_.replay();
+        cardPile_.addCardPileListener( listener );
+
+        cardPile_.setBaseLocation( new Point( 1010, 2020 ) );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code setBaseLocation} method makes a copy of the base
+     * location.
+     */
+    @Test
+    public void testSetBaseLocation_BaseLocation_Copy()
+    {
+        final Point expectedBaseLocation = new Point( 1010, 2020 );
+        final Point baseLocation = new Point( expectedBaseLocation );
+
+        cardPile_.setBaseLocation( baseLocation );
+        baseLocation.setLocation( 1, 2 );
+
+        assertEquals( expectedBaseLocation, cardPile_.getBaseLocation() );
+    }
+
+    /**
+     * Ensures the {@code setBaseLocation} method throws an exception when
+     * passed a {@code null} base location.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetBaseLocation_BaseLocation_Null()
+    {
+        cardPile_.setBaseLocation( null );
     }
 
     /**

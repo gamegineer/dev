@@ -56,11 +56,11 @@ final class CardPileView
     /** The card pile base design user interface. */
     private final ICardPileBaseDesignUI baseDesignUI_;
 
-    /** The current bounds of this view in table coordinates. */
-    private Rectangle bounds_;
-
     /** The collection of card views. */
     private final Map<ICard, CardView> cardViews_;
+
+    /** The dirty bounds of this view in table coordinates. */
+    private Rectangle dirtyBounds_;
 
     /** The model associated with this view. */
     private final CardPileModel model_;
@@ -92,8 +92,8 @@ final class CardPileView
         assert baseDesignUI != null;
 
         baseDesignUI_ = baseDesignUI;
-        bounds_ = null;
         cardViews_ = new IdentityHashMap<ICard, CardView>();
+        dirtyBounds_ = new Rectangle();
         model_ = model;
         tableView_ = null;
     }
@@ -170,9 +170,8 @@ final class CardPileView
     {
         if( isInitialized() )
         {
-            final Rectangle newBounds = getBounds();
-            tableView_.repaintTable( newBounds.union( bounds_ ) );
-            bounds_ = newBounds;
+            dirtyBounds_.add( getBounds() );
+            tableView_.repaintTable( getDirtyBounds() );
         }
     }
 
@@ -183,7 +182,7 @@ final class CardPileView
     {
         if( isInitialized() )
         {
-            tableView_.repaintTable( getBounds() );
+            tableView_.repaintTable( getDirtyBounds() );
         }
     }
 
@@ -323,6 +322,24 @@ final class CardPileView
     }
 
     /**
+     * Gets the dirty bounds of this view in table coordinates.
+     * 
+     * <p>
+     * The dirty bounds represents the largest region this view has occupied
+     * since the last paint operation. It is at least as large as the bounds
+     * returned from {@link #getBounds()}.
+     * </p>
+     * 
+     * @return The dirty bounds of this view in table coordinates; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    Rectangle getDirtyBounds()
+    {
+        return new Rectangle( dirtyBounds_ );
+    }
+
+    /**
      * Initializes this view.
      * 
      * <p>
@@ -340,7 +357,7 @@ final class CardPileView
         assert !isInitialized();
 
         tableView_ = tableView;
-        bounds_ = getBounds();
+        dirtyBounds_.setBounds( getBounds() );
         model_.addCardPileModelListener( this );
         model_.getCardPile().addCardPileListener( this );
 
@@ -404,6 +421,8 @@ final class CardPileView
             g.drawRect( viewBounds.x, viewBounds.y, viewBounds.width - 1, viewBounds.height - 1 );
             g.setColor( oldColor );
         }
+
+        dirtyBounds_.setBounds( getBounds() );
     }
 
     /**

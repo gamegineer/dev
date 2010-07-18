@@ -104,6 +104,15 @@ public interface ICardPile
     public ICardPileBaseDesign getBaseDesign();
 
     /**
+     * Gets the location of the card pile base in table coordinates.
+     * 
+     * @return The location of the card pile base in table coordinates; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public Point getBaseLocation();
+
+    /**
      * Gets the bounds of this card pile in table coordinates.
      * 
      * @return The bounds of this card pile in table coordinates; never {@code
@@ -217,7 +226,7 @@ public interface ICardPile
         ICardPileListener listener );
 
     /**
-     * Removes all the cards in this card pile.
+     * Removes all cards in this card pile.
      * 
      * @return The collection of cards removed from this card pile; never
      *         {@code null}. The cards are returned in order from the card at
@@ -226,6 +235,36 @@ public interface ICardPile
      */
     /* @NonNull */
     public List<ICard> removeCards();
+
+    /**
+     * Removes all cards in this card pile from the card at the specified
+     * location to the top-most card.
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * 
+     * @return The collection of cards removed from this card pile; never
+     *         {@code null}. The cards are returned in order from the card at
+     *         the specified location to the card at the top of the card pile.
+     */
+    /* @NonNull */
+    public List<ICard> removeCards(
+        /* @NonNull */
+        Point location );
+
+    /**
+     * Sets the location of the card pile base in table coordinates.
+     * 
+     * @param baseLocation
+     *        The location of the card pile base in table coordinates; must not
+     *        be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code baseLocation} is {@code null}.
+     */
+    public void setBaseLocation(
+        /* @NonNull */
+        Point baseLocation );
 
     /**
      * Sets the layout of cards within this card pile.

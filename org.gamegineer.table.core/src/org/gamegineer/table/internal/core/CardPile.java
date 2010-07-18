@@ -29,12 +29,11 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.common.persistence.memento.IMemento;
 import org.gamegineer.common.persistence.memento.MalformedMementoException;
 import org.gamegineer.common.persistence.memento.MementoBuilder;
@@ -343,6 +342,18 @@ public final class CardPile
     }
 
     /*
+     * @see org.gamegineer.table.core.ICardPile#getBaseLocation()
+     */
+    @Override
+    public Point getBaseLocation()
+    {
+        synchronized( lock_ )
+        {
+            return new Point( baseLocation_ );
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.ICardPile#getBounds()
      */
     @Override
@@ -372,33 +383,43 @@ public final class CardPile
 
         synchronized( lock_ )
         {
-            if( cards_.isEmpty() )
-            {
-                return null;
-            }
+            final int index = getCardIndex( location );
+            return (index != -1) ? cards_.get( index ) : null;
+        }
+    }
 
-            if( layout_ == CardPileLayout.STACKED )
+    /**
+     * Gets the index of the card in this card pile at the specified location.
+     * 
+     * <p>
+     * This method follows the same rules defined by {@link #getCard(Point)}.
+     * </p>
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * 
+     * @return The index of the card in this card pile at the specified location
+     *         or -1 if no card in this card pile is at that location.
+     */
+    @GuardedBy( "lock_" )
+    private int getCardIndex(
+        /* @NonNull */
+        final Point location )
+    {
+        assert location != null;
+        assert Thread.holdsLock( lock_ );
+
+        final int upperIndex = cards_.size() - 1;
+        final int lowerIndex = Math.max( 0, (layout_ == CardPileLayout.STACKED) ? upperIndex : 0 );
+        for( int index = upperIndex; index >= lowerIndex; --index )
+        {
+            if( cards_.get( index ).getBounds().contains( location ) )
             {
-                final ICard card = cards_.get( cards_.size() - 1 );
-                if( card.getBounds().contains( location ) )
-                {
-                    return card;
-                }
-            }
-            else
-            {
-                for( final ListIterator<ICard> iterator = cards_.listIterator( cards_.size() ); iterator.hasPrevious(); )
-                {
-                    final ICard card = iterator.previous();
-                    if( card.getBounds().contains( location ) )
-                    {
-                        return card;
-                    }
-                }
+                return index;
             }
         }
 
-        return null;
+        return -1;
     }
 
     /**
@@ -520,19 +541,16 @@ public final class CardPile
     @Override
     public ICard removeCard()
     {
-        final IPredicate<Integer> removeCardPredicate = new IPredicate<Integer>()
+        final CardRangeStrategy cardRangeStrategy = new CardRangeStrategy()
         {
             @Override
-            @SuppressWarnings( {
-                "boxing", "synthetic-access"
-            } )
-            public boolean evaluate(
-                final Integer obj )
+            @SuppressWarnings( "synthetic-access" )
+            int getLowerIndex()
             {
-                return obj == (cards_.size() - 1);
+                return cards_.isEmpty() ? 0 : cards_.size() - 1;
             }
         };
-        final List<ICard> cards = removeCards( removeCardPredicate );
+        final List<ICard> cards = removeCards( cardRangeStrategy );
         assert cards.size() <= 1;
         return cards.isEmpty() ? null : cards.get( 0 );
     }
@@ -554,28 +572,38 @@ public final class CardPile
     @Override
     public List<ICard> removeCards()
     {
-        final IPredicate<Integer> removeCardPredicate = new IPredicate<Integer>()
+        return removeCards( new CardRangeStrategy() );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPile#removeCards(java.awt.Point)
+     */
+    @Override
+    public List<ICard> removeCards(
+        final Point location )
+    {
+        assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
+
+        final CardRangeStrategy cardRangeStrategy = new CardRangeStrategy()
         {
             @Override
-            public boolean evaluate(
-                @SuppressWarnings( "unused" )
-                final Integer obj )
+            @SuppressWarnings( "synthetic-access" )
+            int getLowerIndex()
             {
-                return true;
+                final int cardIndex = getCardIndex( location );
+                return (cardIndex != -1) ? cardIndex : cards_.size();
             }
         };
-        return removeCards( removeCardPredicate );
+        return removeCards( cardRangeStrategy );
     }
 
     /**
-     * Removes all cards from this card pile that satisfy the specified
-     * predicate.
+     * Removes all cards from this card pile in the specified range.
      * 
-     * @param removeCardPredicate
-     *        The predicate used to determine if a particular card will be
-     *        removed; must not be {@code null}. The predicate argument is the
-     *        card index. The predicate will be invoked while the card pile is
-     *        synchronized.
+     * @param cardRangeStrategy
+     *        The strategy used to determine the range of cards to remove; must
+     *        not be {@code null}. The strategy will be invoked while the card
+     *        pile is synchronized.
      * 
      * @return The collection of cards removed from this card pile; never
      *         {@code null}. The cards are returned in order from the card
@@ -583,12 +611,11 @@ public final class CardPile
      *         of the card pile.
      */
     /* @NonNull */
-    @SuppressWarnings( "boxing" )
     private List<ICard> removeCards(
         /* @NonNull */
-        final IPredicate<Integer> removeCardPredicate )
+        final CardRangeStrategy cardRangeStrategy )
     {
-        assert removeCardPredicate != null;
+        assert cardRangeStrategy != null;
 
         final List<ICard> removedCards = new ArrayList<ICard>();
         final boolean cardPileBoundsChanged;
@@ -596,13 +623,7 @@ public final class CardPile
         {
             final Rectangle oldBounds = getBounds();
 
-            for( int index = 0, size = cards_.size(); index < size; ++index )
-            {
-                if( removeCardPredicate.evaluate( index ) )
-                {
-                    removedCards.add( cards_.get( index ) );
-                }
-            }
+            removedCards.addAll( cards_.subList( cardRangeStrategy.getLowerIndex(), cardRangeStrategy.getUpperIndex() ) );
             cards_.removeAll( removedCards );
 
             final Rectangle newBounds = getBounds();
@@ -620,6 +641,27 @@ public final class CardPile
         }
 
         return removedCards;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPile#setBaseLocation(java.awt.Point)
+     */
+    @Override
+    public void setBaseLocation(
+        final Point baseLocation )
+    {
+        assertArgumentNotNull( baseLocation, "baseLocation" ); //$NON-NLS-1$
+
+        final TranslationOffsetStrategy translationOffsetStrategy = new TranslationOffsetStrategy()
+        {
+            @Override
+            Dimension getOffset()
+            {
+                final Point oldBaseLocation = getBaseLocation();
+                return new Dimension( baseLocation.x - oldBaseLocation.x, baseLocation.y - oldBaseLocation.y );
+            }
+        };
+        translateBaseLocation( translationOffsetStrategy );
     }
 
     /*
@@ -673,20 +715,16 @@ public final class CardPile
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        final TranslationOffsetStrategy translationOffsetStrategy = new TranslationOffsetStrategy()
         {
-            final Point oldLocation = getLocation();
-            final Dimension offset = new Dimension( location.x - oldLocation.x, location.y - oldLocation.y );
-            baseLocation_.translate( offset.width, offset.height );
-            for( final ICard card : cards_ )
+            @Override
+            Dimension getOffset()
             {
-                final Point cardLocation = card.getLocation();
-                cardLocation.translate( offset.width, offset.height );
-                card.setLocation( cardLocation );
+                final Point oldLocation = getLocation();
+                return new Dimension( location.x - oldLocation.x, location.y - oldLocation.y );
             }
-        }
-
-        fireCardPileBoundsChanged();
+        };
+        translateBaseLocation( translationOffsetStrategy );
     }
 
     /*
@@ -699,6 +737,133 @@ public final class CardPile
         synchronized( lock_ )
         {
             return String.format( "CardPile[baseDesign_='%1$s', baseLocation_='%2$s', layout_='%3$s', cards_.size='%4$d'", baseDesign_, baseLocation_, layout_, cards_.size() ); //$NON-NLS-1$
+        }
+    }
+
+    /**
+     * Translates the card pile base location by the specified amount.
+     * 
+     * @param translationOffsetStrategy
+     *        The strategy used to calculate the amount to translate the base
+     *        location; must not be {@code null}. The strategy will be invoked
+     *        while the card pile is synchronized.
+     */
+    private void translateBaseLocation(
+        /* @NonNull */
+        final TranslationOffsetStrategy translationOffsetStrategy )
+    {
+        assert translationOffsetStrategy != null;
+
+        synchronized( lock_ )
+        {
+            final Dimension offset = translationOffsetStrategy.getOffset();
+            baseLocation_.translate( offset.width, offset.height );
+            for( final ICard card : cards_ )
+            {
+                final Point cardLocation = card.getLocation();
+                cardLocation.translate( offset.width, offset.height );
+                card.setLocation( cardLocation );
+            }
+        }
+
+        fireCardPileBoundsChanged();
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * A strategy to calculate a contiguous range of cards in a card pile.
+     */
+    @Immutable
+    private class CardRangeStrategy
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code CardRangeStrategy} class.
+         */
+        CardRangeStrategy()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Gets the lower index of the card range, inclusive.
+         * 
+         * <p>
+         * The default implementation returns 0.
+         * </p>
+         * 
+         * @return The lower index of the card range, inclusive.
+         */
+        int getLowerIndex()
+        {
+            return 0;
+        }
+
+        /**
+         * Gets the upper index of the card range, exclusive.
+         * 
+         * <p>
+         * The default implementation returns the size of the card collection.
+         * </p>
+         * 
+         * @return The upper index of the card range, exclusive.
+         */
+        @SuppressWarnings( "synthetic-access" )
+        int getUpperIndex()
+        {
+            return cards_.size();
+        }
+    }
+
+    /**
+     * A strategy to calculate a translation offset.
+     */
+    @Immutable
+    private class TranslationOffsetStrategy
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code TranslationOffsetStrategy}
+         * class.
+         */
+        TranslationOffsetStrategy()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Gets the translation offset.
+         * 
+         * <p>
+         * The default implementation returns a zero offset.
+         * </p>
+         * 
+         * @return The translation offset; never {@code null}.
+         */
+        /* @NonNull */
+        Dimension getOffset()
+        {
+            return new Dimension( 0, 0 );
         }
     }
 }
