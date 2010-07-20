@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import org.easymock.EasyMock;
 import org.gamegineer.common.persistence.memento.IMemento;
 import org.gamegineer.common.persistence.memento.MalformedMementoException;
 import org.gamegineer.common.persistence.memento.MementoBuilder;
@@ -167,48 +166,6 @@ public final class MementoUtilsTest
     }
 
     /**
-     * Ensures the {@code getOptionalAttribute} method throws an exception when
-     * passed a {@code null} memento.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = AssertionError.class )
-    public void testGetOptionalAttribute_Memento_Null()
-        throws Exception
-    {
-        MementoUtils.getOptionalAttribute( null, "name", Object.class ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code getOptionalAttribute} method throws an exception when
-     * passed a {@code null} name.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = AssertionError.class )
-    public void testGetOptionalAttribute_Name_Null()
-        throws Exception
-    {
-        MementoUtils.getOptionalAttribute( EasyMock.createMock( IMemento.class ), null, Object.class );
-    }
-
-    /**
-     * Ensures the {@code getOptionalAttribute} method throws an exception when
-     * passed a {@code null} type.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = AssertionError.class )
-    public void testGetOptionalAttribute_Type_Null()
-        throws Exception
-    {
-        MementoUtils.getOptionalAttribute( EasyMock.createMock( IMemento.class ), "name", null ); //$NON-NLS-1$
-    }
-
-    /**
      * Ensures the {@code getRequiredAttribute} method throws an exception when
      * the attribute is absent.
      * 
@@ -264,47 +221,5 @@ public final class MementoUtilsTest
         throws Exception
     {
         MementoUtils.getRequiredAttribute( memento_, PRESENT_ATTRIBUTE_NAME, Integer.class );
-    }
-
-    /**
-     * Ensures the {@code getRequiredAttribute} method throws an exception when
-     * passed a {@code null} memento.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = AssertionError.class )
-    public void testGetRequiredAttribute_Memento_Null()
-        throws Exception
-    {
-        MementoUtils.getRequiredAttribute( null, "name", Object.class ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code getRequiredAttribute} method throws an exception when
-     * passed a {@code null} name.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = AssertionError.class )
-    public void testGetRequiredAttribute_Name_Null()
-        throws Exception
-    {
-        MementoUtils.getRequiredAttribute( EasyMock.createMock( IMemento.class ), null, Object.class );
-    }
-
-    /**
-     * Ensures the {@code getRequiredAttribute} method throws an exception when
-     * passed a {@code null} type.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = AssertionError.class )
-    public void testGetRequiredAttribute_Type_Null()
-        throws Exception
-    {
-        MementoUtils.getRequiredAttribute( EasyMock.createMock( IMemento.class ), "name", null ); //$NON-NLS-1$
     }
 }

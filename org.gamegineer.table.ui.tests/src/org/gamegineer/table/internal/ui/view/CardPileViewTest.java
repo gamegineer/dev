@@ -24,14 +24,11 @@ package org.gamegineer.table.internal.ui.view;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Rectangle;
-import javax.swing.DebugGraphics;
 import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.core.CardPileFactory;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardPileBaseDesign;
-import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
-import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.ui.CardPileBaseDesignUIs;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.junit.After;
@@ -108,26 +105,6 @@ public final class CardPileViewTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * card pile base design user interface.
-     */
-    @Test( expected = AssertionError.class )
-    public void testConstructor_BaseDesignUI_Null()
-    {
-        new CardPileView( cardPileModel_, null );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * model.
-     */
-    @Test( expected = AssertionError.class )
-    public void testConstructor_Model_Null()
-    {
-        new CardPileView( null, cardPileBaseDesignUI_ );
-    }
-
-    /**
      * Ensures the {@code getBounds} method returns a copy of the bounds.
      */
     @Test
@@ -149,58 +126,5 @@ public final class CardPileViewTest
     public void testGetBounds_ReturnValue_NonNull()
     {
         assertNotNull( cardPileView_.getBounds() );
-    }
-
-    /**
-     * Ensures the {@code initialize} method throws an exception when the card
-     * pile view is already initialized.
-     */
-    @Test( expected = AssertionError.class )
-    public void testInitialize_Initialized()
-    {
-        final TableView tableView = new TableView( new TableModel( TableFactory.createTable() ) );
-        cardPileView_.initialize( tableView );
-
-        cardPileView_.initialize( tableView );
-    }
-
-    /**
-     * Ensures the {@code initialize} method throws an exception when passed a
-     * {@code null} table view.
-     */
-    @Test( expected = AssertionError.class )
-    public void testInitialize_TableView_Null()
-    {
-        cardPileView_.initialize( null );
-    }
-
-    /**
-     * Ensures the {@code paint} method throws an exception when passed a
-     * {@code null} graphics context.
-     */
-    @Test( expected = AssertionError.class )
-    public void testPaint_Graphics_Null()
-    {
-        cardPileView_.paint( null );
-    }
-
-    /**
-     * Ensures the {@code paint} method throws an exception when the card pile
-     * view is uninitialized.
-     */
-    @Test( expected = AssertionError.class )
-    public void testPaint_Uninitialized()
-    {
-        cardPileView_.paint( new DebugGraphics() );
-    }
-
-    /**
-     * Ensures the {@code uninitialize} method throws an exception when the card
-     * pile view is uninitialized.
-     */
-    @Test( expected = AssertionError.class )
-    public void testUninitialize_Uninitialized()
-    {
-        cardPileView_.uninitialize();
     }
 }

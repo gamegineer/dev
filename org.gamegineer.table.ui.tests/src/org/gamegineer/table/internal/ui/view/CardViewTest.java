@@ -24,14 +24,11 @@ package org.gamegineer.table.internal.ui.view;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Rectangle;
-import javax.swing.DebugGraphics;
 import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardSurfaceDesign;
-import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.CardModel;
-import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.ui.CardSurfaceDesignUIs;
 import org.gamegineer.table.ui.ICardSurfaceDesignUI;
 import org.junit.After;
@@ -120,36 +117,6 @@ public final class CardViewTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * card surface design user interface for the card back.
-     */
-    @Test( expected = AssertionError.class )
-    public void testConstructor_BackDesignUI_Null()
-    {
-        new CardView( cardModel_, null, faceDesignUI_ );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * card surface design user interface for the card face.
-     */
-    @Test( expected = AssertionError.class )
-    public void testConstructor_FaceDesignUI_Null()
-    {
-        new CardView( cardModel_, backDesignUI_, null );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * model.
-     */
-    @Test( expected = AssertionError.class )
-    public void testConstructor_Model_Null()
-    {
-        new CardView( null, backDesignUI_, faceDesignUI_ );
-    }
-
-    /**
      * Ensures the {@code getBounds} method returns a copy of the bounds.
      */
     @Test
@@ -171,58 +138,5 @@ public final class CardViewTest
     public void testGetBounds_ReturnValue_NonNull()
     {
         assertNotNull( cardView_.getBounds() );
-    }
-
-    /**
-     * Ensures the {@code initialize} method throws an exception when the card
-     * view is already initialized.
-     */
-    @Test( expected = AssertionError.class )
-    public void testInitialize_Initialized()
-    {
-        final TableView tableView = new TableView( new TableModel( TableFactory.createTable() ) );
-        cardView_.initialize( tableView );
-
-        cardView_.initialize( tableView );
-    }
-
-    /**
-     * Ensures the {@code initialize} method throws an exception when passed a
-     * {@code null} table view.
-     */
-    @Test( expected = AssertionError.class )
-    public void testInitialize_TableView_Null()
-    {
-        cardView_.initialize( null );
-    }
-
-    /**
-     * Ensures the {@code paint} method throws an exception when passed a
-     * {@code null} graphics context.
-     */
-    @Test( expected = AssertionError.class )
-    public void testPaint_Graphics_Null()
-    {
-        cardView_.paint( null );
-    }
-
-    /**
-     * Ensures the {@code paint} method throws an exception when the card view
-     * is uninitialized.
-     */
-    @Test( expected = AssertionError.class )
-    public void testPaint_Uninitialized()
-    {
-        cardView_.paint( new DebugGraphics() );
-    }
-
-    /**
-     * Ensures the {@code uninitialize} method throws an exception when the card
-     * view is uninitialized.
-     */
-    @Test( expected = AssertionError.class )
-    public void testUninitialize_Uninitialized()
-    {
-        cardView_.uninitialize();
     }
 }

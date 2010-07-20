@@ -130,16 +130,6 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@code getProperty(Map, String, String)} method throws an
-     * exception when passed a component name that does not contain a dot.
-     */
-    @Test( expected = AssertionError.class )
-    public void testGetPropertyForComponentName_ComponentName_NotDotted()
-    {
-        LoggingProperties.getProperty( properties_, "a", "p" ); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-    /**
      * Ensures the {@code getProperty(Map, String, String)} method returns the
      * expected value for a property that is absent.
      */
@@ -157,26 +147,6 @@ public final class LoggingPropertiesTest
     public void testGetPropertyForComponentName_Property_Present()
     {
         assertEquals( "v1", LoggingProperties.getProperty( properties_, "a.b.c.d", "p1" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    }
-
-    /**
-     * Ensures the {@code getProperty(Map, String, String)} method throws an
-     * exception when passed a property name that contains dots.
-     */
-    @Test( expected = AssertionError.class )
-    public void testGetPropertyForComponentName_PropertyName_Dotted()
-    {
-        LoggingProperties.getProperty( properties_, "a.b.c.d", "p.p" ); //$NON-NLS-1$ //$NON-NLS-2$
-    }
-
-    /**
-     * Ensures the {@code getProperty(Map, Class, String, String)} method throws
-     * an exception when passed an instance name that contains dots.
-     */
-    @Test( expected = AssertionError.class )
-    public void testGetPropertyForInstanceName_InstanceName_Dotted()
-    {
-        LoggingProperties.getProperty( properties_, Object.class, "a.b", "p" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -208,16 +178,6 @@ public final class LoggingPropertiesTest
         final Map<String, String> properties = Collections.singletonMap( String.format( "%1$s.%2$s.%3$s", type.getName(), instanceName, propertyName ), propertyValue ); //$NON-NLS-1$
 
         assertEquals( propertyValue, LoggingProperties.getProperty( properties, type, instanceName, propertyName ) );
-    }
-
-    /**
-     * Ensures the {@code getProperty(Map, Class, String, String)} method throws
-     * an exception when passed a property name that contains dots.
-     */
-    @Test( expected = AssertionError.class )
-    public void testGetPropertyForInstanceName_PropertyName_Dotted()
-    {
-        LoggingProperties.getProperty( properties_, Object.class, "a", "p.p" ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
