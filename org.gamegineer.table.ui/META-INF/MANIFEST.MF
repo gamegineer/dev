@@ -24,6 +24,7 @@ Import-Package: net.jcip.annotations;version="1.0.0",
  org.gamegineer.table.core.services.cardsurfacedesignregistry;version="0.4.0",
  org.osgi.framework;version="1.5.0",
  org.osgi.service.packageadmin;version="1.2.0",
+ org.osgi.service.prefs;version="1.1.1",
  org.osgi.util.tracker;version="1.4.2"
 Require-Bundle: org.eclipse.equinox.registry;bundle-version="3.4.100"
 Service-Component: OSGI-INF/cardPileBaseDesignUIRegistry.xml,

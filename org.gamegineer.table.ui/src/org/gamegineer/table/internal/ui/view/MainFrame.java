@@ -34,6 +34,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
+import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.model.IMainModelListener;
@@ -43,6 +44,7 @@ import org.gamegineer.table.internal.ui.model.MainModelEvent;
 import org.gamegineer.table.internal.ui.model.ModelException;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
 import org.gamegineer.table.ui.ITableAdvisor;
+import org.osgi.service.prefs.Preferences;
 
 /**
  * The top-level frame.
@@ -55,6 +57,21 @@ public final class MainFrame
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The name of the preference that stores the window height. */
+    private static final String PREFERENCE_HEIGHT = "height"; //$NON-NLS-1$
+
+    /** The name of the preference that stores the window state. */
+    private static final String PREFERENCE_STATE = "state"; //$NON-NLS-1$
+
+    /** The name of the preference that stores the window width. */
+    private static final String PREFERENCE_WIDTH = "width"; //$NON-NLS-1$
+
+    /** The name of the preference that stores the window x location. */
+    private static final String PREFERENCE_X = "x"; //$NON-NLS-1$
+
+    /** The name of the preference that stores the window y location. */
+    private static final String PREFERENCE_Y = "y"; //$NON-NLS-1$
 
     /** Serializable class version number. */
     private static final long serialVersionUID = 1087139002992381995L;
@@ -244,6 +261,18 @@ public final class MainFrame
     }
 
     /**
+     * Gets the preferences for this class.
+     * 
+     * @return The preferences for this class or {@code null} if no preferences
+     *         are available.
+     */
+    /* @Nullable */
+    private static Preferences getPreferences()
+    {
+        return Activator.getDefault().getUserPreferences( MainFrame.class );
+    }
+
+    /**
      * Gets the name of the table.
      * 
      * @return The name of the table; never {@code null}.
@@ -273,6 +302,33 @@ public final class MainFrame
         setLocationByPlatform( true );
         setSize( 300, 300 );
         updateTitle();
+        loadPreferences();
+    }
+
+    /**
+     * Loads the preferences for this class.
+     */
+    private void loadPreferences()
+    {
+        final Preferences preferences = getPreferences();
+        if( preferences != null )
+        {
+            final int x = preferences.getInt( PREFERENCE_X, Integer.MAX_VALUE );
+            final int y = preferences.getInt( PREFERENCE_Y, Integer.MAX_VALUE );
+            if( (x != Integer.MAX_VALUE) && (y != Integer.MAX_VALUE) )
+            {
+                setLocation( x, y );
+            }
+
+            final int width = preferences.getInt( PREFERENCE_WIDTH, Integer.MAX_VALUE );
+            final int height = preferences.getInt( PREFERENCE_HEIGHT, Integer.MAX_VALUE );
+            if( (width != Integer.MAX_VALUE) && (height != Integer.MAX_VALUE) )
+            {
+                setSize( width, height );
+            }
+
+            setExtendedState( preferences.getInt( PREFERENCE_STATE, NORMAL ) );
+        }
     }
 
     /*
@@ -361,9 +417,18 @@ public final class MainFrame
     protected void processWindowEvent(
         final WindowEvent e )
     {
-        if( (e.getID() == WindowEvent.WINDOW_CLOSING) && !confirmSaveDirtyTable() )
+        switch( e.getID() )
         {
-            return;
+            case WindowEvent.WINDOW_CLOSED:
+                savePreferences();
+                break;
+
+            case WindowEvent.WINDOW_CLOSING:
+                if( !confirmSaveDirtyTable() )
+                {
+                    return;
+                }
+                break;
         }
 
         super.processWindowEvent( e );
@@ -379,6 +444,22 @@ public final class MainFrame
         actionMediator_.unbindAll();
 
         super.removeNotify();
+    }
+
+    /**
+     * Saves the preferences for this class.
+     */
+    private void savePreferences()
+    {
+        final Preferences preferences = getPreferences();
+        if( preferences != null )
+        {
+            preferences.putInt( PREFERENCE_X, getX() );
+            preferences.putInt( PREFERENCE_Y, getY() );
+            preferences.putInt( PREFERENCE_WIDTH, getWidth() );
+            preferences.putInt( PREFERENCE_HEIGHT, getHeight() );
+            preferences.putInt( PREFERENCE_STATE, getExtendedState() );
+        }
     }
 
     /**

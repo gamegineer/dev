@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry;
@@ -32,6 +33,9 @@ import org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurface
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.packageadmin.PackageAdmin;
+import org.osgi.service.prefs.BackingStoreException;
+import org.osgi.service.prefs.Preferences;
+import org.osgi.service.prefs.PreferencesService;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
@@ -75,6 +79,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private ServiceTracker packageAdminTracker_;
 
+    /** The preferences service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker preferencesServiceTracker_;
+
 
     // ======================================================================
     // Constructors
@@ -92,6 +100,7 @@ public final class Activator
         cardSurfaceDesignRegistryTracker_ = null;
         cardSurfaceDesignUIRegistryTracker_ = null;
         packageAdminTracker_ = null;
+        preferencesServiceTracker_ = null;
     }
 
 
@@ -244,6 +253,97 @@ public final class Activator
         }
     }
 
+    /**
+     * Gets the preferences service.
+     * 
+     * @return The preferences service or {@code null} if no preferences service
+     *         is available.
+     */
+    /* @Nullable */
+    public PreferencesService getPreferencesService()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( preferencesServiceTracker_ == null )
+            {
+                preferencesServiceTracker_ = new ServiceTracker( bundleContext_, PreferencesService.class.getName(), null );
+                preferencesServiceTracker_.open();
+            }
+
+            return (PreferencesService)preferencesServiceTracker_.getService();
+        }
+    }
+
+    /**
+     * Gets the root node from the user preferences for this bundle.
+     * 
+     * @return The root node from the user preferences for this bundle or
+     *         {@code null} if no preferences service is available.
+     */
+    /* @Nullable */
+    public Preferences getUserPreferences()
+    {
+        final PreferencesService preferencesService = getPreferencesService();
+        if( preferencesService == null )
+        {
+            return null;
+        }
+
+        return preferencesService.getUserPreferences( System.getProperty( "user.name" ) ); //$NON-NLS-1$
+    }
+
+    /**
+     * Gets the node for the specified type from the user preferences for this
+     * bundle.
+     * 
+     * @param type
+     *        The type whose user preference node is desired; must not be
+     *        {@code null}.
+     * 
+     * @return The node for the specified type from the user preferences for
+     *         this bundle or {@code null} if no preferences service is
+     *         available.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code type} is {@code null}.
+     */
+    /* @Nullable */
+    public Preferences getUserPreferences(
+        /* @NonNull */
+        final Class<?> type )
+    {
+        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
+
+        final Preferences userPreferences = getUserPreferences();
+        if( userPreferences == null )
+        {
+            return null;
+        }
+
+        return userPreferences.node( type.getName().replace( '.', '/' ) );
+    }
+
+    /**
+     * Saves the current user's preferences for this bundle.
+     */
+    private void saveUserPreferences()
+    {
+        final Preferences userPreferences = getUserPreferences();
+        if( userPreferences != null )
+        {
+            try
+            {
+                userPreferences.flush();
+            }
+            catch( final BackingStoreException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Activator_saveUserPreferenecs_error, e );
+            }
+        }
+    }
+
     /*
      * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
      */
@@ -271,6 +371,8 @@ public final class Activator
         final BundleContext bundleContext )
     {
         assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
+
+        saveUserPreferences();
 
         final boolean wasInstanceNonNull = instance_.compareAndSet( this, null );
         assert wasInstanceNonNull;
@@ -304,6 +406,11 @@ public final class Activator
             {
                 packageAdminTracker_.close();
                 packageAdminTracker_ = null;
+            }
+            if( preferencesServiceTracker_ != null )
+            {
+                preferencesServiceTracker_.close();
+                preferencesServiceTracker_ = null;
             }
         }
     }

@@ -35,6 +35,11 @@ final class Messages
     // Fields
     // ======================================================================
 
+    // --- Activator --------------------------------------------------------
+
+    /** An error occurred while saving the user preferences. */
+    public static String Activator_saveUserPreferenecs_error;
+
     // --- CommandLineOptions -----------------------------------------------
 
     /** The description for the "help" option. */
