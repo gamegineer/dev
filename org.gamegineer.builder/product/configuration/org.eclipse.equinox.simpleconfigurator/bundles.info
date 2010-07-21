@@ -4,6 +4,7 @@ org.apache.commons.cli,1.2.0,plugins/commons-cli-1.2.jar,4,false
 org.eclipse.equinox.app,1.2.1.R35x_v20091203,plugins/org.eclipse.equinox.app_1.2.1.R35x_v20091203.jar,4,true
 org.eclipse.equinox.common,3.5.1.R35x_v20090807-1100,plugins/org.eclipse.equinox.common_3.5.1.R35x_v20090807-1100.jar,2,true
 org.eclipse.equinox.ds,1.1.1.R35x_v20090806,plugins/org.eclipse.equinox.ds_1.1.1.R35x_v20090806.jar,1,true
+org.eclipse.equinox.preferences_3.2.301.R35x_v20091117,plugins/org.eclipse.equinox.preferences_3.2.301.R35x_v20091117.jar,4,false
 org.eclipse.equinox.registry,3.4.100.v20090520-1800,plugins/org.eclipse.equinox.registry_3.4.100.v20090520-1800.jar,4,false
 org.eclipse.equinox.util,1.0.100.v20090520-1800,plugins/org.eclipse.equinox.util_1.0.100.v20090520-1800.jar,4,false
 org.eclipse.osgi.services,3.2.0.v20090520-1800,plugins/org.eclipse.osgi.services_3.2.0.v20090520-1800.jar,4,false
