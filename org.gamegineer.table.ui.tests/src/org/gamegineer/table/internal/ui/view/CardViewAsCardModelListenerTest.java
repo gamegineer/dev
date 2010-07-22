@@ -21,10 +21,10 @@
 
 package org.gamegineer.table.internal.ui.view;
 
-import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardSurfaceDesign;
+import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.AbstractCardModelListenerTestCase;
 import org.gamegineer.table.internal.ui.model.CardModel;
 import org.gamegineer.table.internal.ui.model.ICardModelListener;
@@ -68,7 +68,7 @@ public final class CardViewAsCardModelListenerTest
         final ICardSurfaceDesignUI backDesignUI = CardSurfaceDesignUIs.createCardSurfaceDesignUI( backDesign );
         final ICardSurfaceDesign faceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
         final ICardSurfaceDesignUI faceDesignUI = CardSurfaceDesignUIs.createCardSurfaceDesignUI( faceDesign );
-        final ICard card = CardFactory.createCard( backDesign, faceDesign );
+        final ICard card = TableFactory.createCard( backDesign, faceDesign );
         return new CardView( new CardModel( card ), backDesignUI, faceDesignUI );
     }
 }

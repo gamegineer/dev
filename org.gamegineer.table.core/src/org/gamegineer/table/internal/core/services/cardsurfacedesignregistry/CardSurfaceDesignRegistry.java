@@ -34,9 +34,9 @@ import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.common.core.runtime.Platform;
-import org.gamegineer.table.core.CardSurfaceDesignFactory;
 import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.core.ICardSurfaceDesign;
+import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry;
 import org.gamegineer.table.internal.core.BundleConstants;
 import org.gamegineer.table.internal.core.Loggers;
@@ -158,7 +158,7 @@ public final class CardSurfaceDesignRegistry
                 final CardSurfaceDesignId id = CardSurfaceDesignId.fromString( configurationElement.getAttribute( ATTR_ID ) );
                 final int width = Integer.parseInt( configurationElement.getAttribute( ATTR_WIDTH ) );
                 final int height = Integer.parseInt( configurationElement.getAttribute( ATTR_HEIGHT ) );
-                cardSurfaceDesigns.add( CardSurfaceDesignFactory.createCardSurfaceDesign( id, width, height ) );
+                cardSurfaceDesigns.add( TableFactory.createCardSurfaceDesign( id, width, height ) );
             }
             catch( final NumberFormatException e )
             {

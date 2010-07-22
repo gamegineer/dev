@@ -25,9 +25,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Rectangle;
 import org.gamegineer.table.core.CardPileBaseDesigns;
-import org.gamegineer.table.core.CardPileFactory;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardPileBaseDesign;
+import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
 import org.gamegineer.table.ui.CardPileBaseDesignUIs;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
@@ -84,7 +84,7 @@ public final class CardPileViewTest
     {
         final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
         cardPileBaseDesignUI_ = CardPileBaseDesignUIs.createCardPileBaseDesignUI( cardPileBaseDesign );
-        final ICardPile cardPile = CardPileFactory.createCardPile( cardPileBaseDesign );
+        final ICardPile cardPile = TableFactory.createCardPile( cardPileBaseDesign );
         cardPileModel_ = new CardPileModel( cardPile );
         cardPileView_ = new CardPileView( cardPileModel_, cardPileBaseDesignUI_ );
     }

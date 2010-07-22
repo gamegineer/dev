@@ -34,9 +34,9 @@ import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.common.core.runtime.Platform;
-import org.gamegineer.table.core.CardPileBaseDesignFactory;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.ICardPileBaseDesign;
+import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry;
 import org.gamegineer.table.internal.core.BundleConstants;
 import org.gamegineer.table.internal.core.Loggers;
@@ -165,7 +165,7 @@ public final class CardPileBaseDesignRegistry
                 final CardPileBaseDesignId id = CardPileBaseDesignId.fromString( configurationElement.getAttribute( ATTR_ID ) );
                 final int width = Integer.parseInt( configurationElement.getAttribute( ATTR_WIDTH ) );
                 final int height = Integer.parseInt( configurationElement.getAttribute( ATTR_HEIGHT ) );
-                cardPileBaseDesigns.add( CardPileBaseDesignFactory.createCardPileBaseDesign( id, width, height ) );
+                cardPileBaseDesigns.add( TableFactory.createCardPileBaseDesign( id, width, height ) );
             }
             catch( final NumberFormatException e )
             {

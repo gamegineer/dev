@@ -24,10 +24,10 @@ package org.gamegineer.table.internal.ui.view;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Rectangle;
-import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardSurfaceDesign;
+import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.CardModel;
 import org.gamegineer.table.ui.CardSurfaceDesignUIs;
 import org.gamegineer.table.ui.ICardSurfaceDesignUI;
@@ -95,7 +95,7 @@ public final class CardViewTest
         backDesignUI_ = CardSurfaceDesignUIs.createCardSurfaceDesignUI( backDesign );
         final ICardSurfaceDesign faceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
         faceDesignUI_ = CardSurfaceDesignUIs.createCardSurfaceDesignUI( faceDesign );
-        final ICard card = CardFactory.createCard( backDesign, faceDesign );
+        final ICard card = TableFactory.createCard( backDesign, faceDesign );
         cardModel_ = new CardModel( card );
         cardView_ = new CardView( cardModel_, backDesignUI_, faceDesignUI_ );
     }

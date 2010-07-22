@@ -37,7 +37,6 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.persistence.memento.IMemento;
 import org.gamegineer.common.persistence.memento.MalformedMementoException;
 import org.gamegineer.common.persistence.memento.MementoBuilder;
-import org.gamegineer.table.core.CardFactory;
 import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.CardPileLayout;
@@ -45,6 +44,7 @@ import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.core.ICardPileListener;
+import org.gamegineer.table.core.TableFactory;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ICardPile}.
@@ -325,7 +325,7 @@ public final class CardPile
         {
             for( final IMemento cardMemento : cardMementos )
             {
-                cardPile.addCard( CardFactory.createCard( cardMemento ) );
+                cardPile.addCard( TableFactory.createCard( cardMemento ) );
             }
         }
 

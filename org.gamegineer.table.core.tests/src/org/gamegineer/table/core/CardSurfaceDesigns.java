@@ -75,7 +75,7 @@ public final class CardSurfaceDesigns
     {
         assertArgumentNotNull( cardSurfaceDesign, "cardSurfaceDesign" ); //$NON-NLS-1$
 
-        return CardSurfaceDesignFactory.createCardSurfaceDesign( cardSurfaceDesign.getId(), cardSurfaceDesign.getSize() );
+        return TableFactory.createCardSurfaceDesign( cardSurfaceDesign.getId(), cardSurfaceDesign.getSize() );
     }
 
     /**
@@ -111,7 +111,7 @@ public final class CardSurfaceDesigns
         final int width,
         final int height )
     {
-        return CardSurfaceDesignFactory.createCardSurfaceDesign( getUniqueCardSurfaceDesignId(), width, height );
+        return TableFactory.createCardSurfaceDesign( getUniqueCardSurfaceDesignId(), width, height );
     }
 
     /**

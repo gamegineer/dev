@@ -35,11 +35,11 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.persistence.memento.IMemento;
 import org.gamegineer.common.persistence.memento.MalformedMementoException;
 import org.gamegineer.common.persistence.memento.MementoBuilder;
-import org.gamegineer.table.core.CardPileFactory;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
+import org.gamegineer.table.core.TableFactory;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ITable}.
@@ -211,7 +211,7 @@ public final class Table
         {
             for( final IMemento cardPileMemento : cardPileMementos )
             {
-                table.addCardPile( CardPileFactory.createCardPile( cardPileMemento ) );
+                table.addCardPile( TableFactory.createCardPile( cardPileMemento ) );
             }
         }
 

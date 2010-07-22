@@ -54,6 +54,6 @@ public final class CardPiles
     /* @NonNull */
     public static ICardPile createUniqueCardPile()
     {
-        return CardPileFactory.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
+        return TableFactory.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
     }
 }

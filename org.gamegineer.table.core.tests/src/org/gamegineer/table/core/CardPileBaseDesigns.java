@@ -75,7 +75,7 @@ public final class CardPileBaseDesigns
     {
         assertArgumentNotNull( cardPileBaseDesign, "cardPileBaseDesign" ); //$NON-NLS-1$
 
-        return CardPileBaseDesignFactory.createCardPileBaseDesign( cardPileBaseDesign.getId(), cardPileBaseDesign.getSize() );
+        return TableFactory.createCardPileBaseDesign( cardPileBaseDesign.getId(), cardPileBaseDesign.getSize() );
     }
 
     /**
@@ -111,7 +111,7 @@ public final class CardPileBaseDesigns
         final int width,
         final int height )
     {
-        return CardPileBaseDesignFactory.createCardPileBaseDesign( getUniqueCardPileBaseDesignId(), width, height );
+        return TableFactory.createCardPileBaseDesign( getUniqueCardPileBaseDesignId(), width, height );
     }
 
     /**
