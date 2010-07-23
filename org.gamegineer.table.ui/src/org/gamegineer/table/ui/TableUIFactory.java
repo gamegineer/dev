@@ -1,5 +1,5 @@
 /*
- * CardSurfaceDesignUIFactory.java
+ * TableUIFactory.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,31 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 21, 2009 at 12:18:33 AM.
+ * Created on Jul 21, 2010 at 11:06:36 PM.
  */
 
 package org.gamegineer.table.ui;
 
 import javax.swing.Icon;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.CardSurfaceDesignId;
+import org.gamegineer.table.internal.ui.CardPileBaseDesignUI;
 import org.gamegineer.table.internal.ui.CardSurfaceDesignUI;
 
 /**
- * A factory for creating card surface design user interfaces.
+ * A factory for creating table component user interfaces.
  */
 @ThreadSafe
-public final class CardSurfaceDesignUIFactory
+public final class TableUIFactory
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardSurfaceDesignUIFactory}
-     * class.
+     * Initializes a new instance of the {@code TableUIFactory} class.
      */
-    private CardSurfaceDesignUIFactory()
+    private TableUIFactory()
     {
         super();
     }
@@ -49,6 +50,33 @@ public final class CardSurfaceDesignUIFactory
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates a new card pile base design user interface.
+     * 
+     * @param id
+     *        The card pile base design identifier; must not be {@code null}.
+     * @param name
+     *        The card pile base design name; must not be {@code null}.
+     * @param icon
+     *        The card pile base design icon; must not be {@code null}.
+     * 
+     * @return A new card pile base design user interface; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id}, {@code name}, or {@code icon} is {@code null}.
+     */
+    /* @NonNull */
+    public static ICardPileBaseDesignUI createCardPileBaseDesignUI(
+        /* @NonNull */
+        final CardPileBaseDesignId id,
+        /* @NonNull */
+        final String name,
+        /* @NonNull */
+        final Icon icon )
+    {
+        return new CardPileBaseDesignUI( id, name, icon );
+    }
 
     /**
      * Creates a new card surface design user interface.

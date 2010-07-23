@@ -1,5 +1,5 @@
 /*
- * CardSurfaceDesignUIFactoryTest.java
+ * TableUIFactoryTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,31 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 21, 2009 at 9:40:11 PM.
+ * Created on Jul 21, 2010 at 11:09:06 PM.
  */
 
 package org.gamegineer.table.ui;
 
 import javax.swing.Icon;
 import org.easymock.EasyMock;
+import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.ui.CardSurfaceDesignUIFactory} class.
+ * A fixture for testing the {@link org.gamegineer.table.ui.TableUIFactory}
+ * class.
  */
-public final class CardSurfaceDesignUIFactoryTest
+public final class TableUIFactoryTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardSurfaceDesignUIFactoryTest}
-     * class.
+     * Initializes a new instance of the {@code TableUIFactoryTest} class.
      */
-    public CardSurfaceDesignUIFactoryTest()
+    public TableUIFactoryTest()
     {
         super();
     }
@@ -51,13 +51,43 @@ public final class CardSurfaceDesignUIFactoryTest
     // ======================================================================
 
     /**
+     * Ensures the {@code createCardPileBaseDesignUI} method throws an exception
+     * when passed a {@code null} icon.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateCardPileBaseDesignUI_Icon_Null()
+    {
+        TableUIFactory.createCardPileBaseDesignUI( CardPileBaseDesignId.fromString( "id" ), "name", null ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Ensures the {@code createCardPileBaseDesignUI} method throws an exception
+     * when passed a {@code null} identifier.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateCardPileBaseDesignUI_Id_Null()
+    {
+        TableUIFactory.createCardPileBaseDesignUI( null, "name", EasyMock.createMock( Icon.class ) ); //$NON-NLS-1$
+    }
+
+    /**
+     * Ensures the {@code createCardPileBaseDesignUI} method throws an exception
+     * when passed a {@code null} name.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateCardPileBaseDesignUI_Name_Null()
+    {
+        TableUIFactory.createCardPileBaseDesignUI( CardPileBaseDesignId.fromString( "id" ), null, EasyMock.createMock( Icon.class ) ); //$NON-NLS-1$
+    }
+
+    /**
      * Ensures the {@code createCardSurfaceDesignUI} method throws an exception
      * when passed a {@code null} icon.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateCardSurfaceDesignUI_Icon_Null()
     {
-        CardSurfaceDesignUIFactory.createCardSurfaceDesignUI( CardSurfaceDesignId.fromString( "id" ), "name", null ); //$NON-NLS-1$ //$NON-NLS-2$
+        TableUIFactory.createCardSurfaceDesignUI( CardSurfaceDesignId.fromString( "id" ), "name", null ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -67,7 +97,7 @@ public final class CardSurfaceDesignUIFactoryTest
     @Test( expected = NullPointerException.class )
     public void testCreateCardSurfaceDesignUI_Id_Null()
     {
-        CardSurfaceDesignUIFactory.createCardSurfaceDesignUI( null, "name", EasyMock.createMock( Icon.class ) ); //$NON-NLS-1$
+        TableUIFactory.createCardSurfaceDesignUI( null, "name", EasyMock.createMock( Icon.class ) ); //$NON-NLS-1$
     }
 
     /**
@@ -77,6 +107,6 @@ public final class CardSurfaceDesignUIFactoryTest
     @Test( expected = NullPointerException.class )
     public void testCreateCardSurfaceDesignUI_Name_Null()
     {
-        CardSurfaceDesignUIFactory.createCardSurfaceDesignUI( CardSurfaceDesignId.fromString( "id" ), null, EasyMock.createMock( Icon.class ) ); //$NON-NLS-1$
+        TableUIFactory.createCardSurfaceDesignUI( CardSurfaceDesignId.fromString( "id" ), null, EasyMock.createMock( Icon.class ) ); //$NON-NLS-1$
     }
 }

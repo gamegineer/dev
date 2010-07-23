@@ -71,7 +71,7 @@ public final class CardPileBaseDesignUIs
     {
         assertArgumentNotNull( cardPileBaseDesignUI, "cardPileBaseDesignUI" ); //$NON-NLS-1$
 
-        return CardPileBaseDesignUIFactory.createCardPileBaseDesignUI( cardPileBaseDesignUI.getId(), cardPileBaseDesignUI.getName(), cardPileBaseDesignUI.getIcon() );
+        return TableUIFactory.createCardPileBaseDesignUI( cardPileBaseDesignUI.getId(), cardPileBaseDesignUI.getName(), cardPileBaseDesignUI.getIcon() );
     }
 
     /**
@@ -93,7 +93,7 @@ public final class CardPileBaseDesignUIs
     {
         assertArgumentNotNull( cardPileBaseDesign, "cardPileBaseDesign" ); //$NON-NLS-1$
 
-        return CardPileBaseDesignUIFactory.createCardPileBaseDesignUI( cardPileBaseDesign.getId(), cardPileBaseDesign.getId().toString(), EasyMock.createMock( Icon.class ) );
+        return TableUIFactory.createCardPileBaseDesignUI( cardPileBaseDesign.getId(), cardPileBaseDesign.getId().toString(), EasyMock.createMock( Icon.class ) );
     }
 
     /**

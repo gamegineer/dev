@@ -43,8 +43,8 @@ import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleConstants;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.util.swing.IconProxy;
-import org.gamegineer.table.ui.CardPileBaseDesignUIFactory;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
+import org.gamegineer.table.ui.TableUIFactory;
 import org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry;
 import org.osgi.framework.Bundle;
 import org.osgi.service.packageadmin.PackageAdmin;
@@ -154,7 +154,7 @@ public final class CardPileBaseDesignUIRegistry
         }
         final Icon icon = new IconProxy( iconUrl );
 
-        return CardPileBaseDesignUIFactory.createCardPileBaseDesignUI( id, name, icon );
+        return TableUIFactory.createCardPileBaseDesignUI( id, name, icon );
     }
 
     /*
