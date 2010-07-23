@@ -109,4 +109,14 @@ public final class TableUIFactoryTest
     {
         TableUIFactory.createCardSurfaceDesignUI( CardSurfaceDesignId.fromString( "id" ), null, EasyMock.createMock( Icon.class ) ); //$NON-NLS-1$
     }
+
+    /**
+     * Ensures the {@code createTableRunner} method throws an exception when
+     * passed a {@code null} table advisor.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateTableRunner_Advisor_Null()
+    {
+        TableUIFactory.createTableRunner( null );
+    }
 }

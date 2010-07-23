@@ -38,7 +38,7 @@ import org.eclipse.equinox.app.IApplicationContext;
 import org.gamegineer.table.ui.ITableAdvisor;
 import org.gamegineer.table.ui.TableAdvisor;
 import org.gamegineer.table.ui.TableResult;
-import org.gamegineer.table.ui.TableUI;
+import org.gamegineer.table.ui.TableUIFactory;
 import org.osgi.framework.Version;
 
 /**
@@ -130,7 +130,7 @@ public final class Application
         final ExecutorService executor = Executors.newSingleThreadExecutor();
         try
         {
-            final Future<TableResult> task = executor.submit( TableUI.createTableRunner( advisor ) );
+            final Future<TableResult> task = executor.submit( TableUIFactory.createTableRunner( advisor ) );
             task_.set( task );
 
             TableResult result;

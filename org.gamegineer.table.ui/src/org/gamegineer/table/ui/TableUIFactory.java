@@ -21,12 +21,14 @@
 
 package org.gamegineer.table.ui;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import javax.swing.Icon;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.internal.ui.CardPileBaseDesignUI;
 import org.gamegineer.table.internal.ui.CardSurfaceDesignUI;
+import org.gamegineer.table.internal.ui.TableRunner;
 
 /**
  * A factory for creating table component user interfaces.
@@ -103,5 +105,28 @@ public final class TableUIFactory
         final Icon icon )
     {
         return new CardSurfaceDesignUI( id, name, icon );
+    }
+
+    /**
+     * Creates the table user interface and returns an object capable of running
+     * it.
+     * 
+     * @param advisor
+     *        The table advisor; must not be {@code null}.
+     * 
+     * @return An object capable of running the table user interface; never
+     *         {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code advisor} is {@code null}.
+     */
+    /* @NonNull */
+    public static ITableRunner createTableRunner(
+        /* @NonNull */
+        final ITableAdvisor advisor )
+    {
+        assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
+
+        return new TableRunner( advisor );
     }
 }
