@@ -1,21 +1,21 @@
 Gamegineer
 Version 0.4.0
-DD MM YYYY
+24 July 2010
 
 Defects closed:
-    * [#4] Card pile rendered incorrectly while dragging
-    * [#9] Serializable persistence delegate framework uses wrong classpath
-    * [#10] Beans persistence delegate framework uses wrong classpath
-    * [#15] Keyboard accelerators stop working after opening a new table
+    * [#20] Bundle activators are not thread safe
+    * [#21] Bundle loggers not inherting org.gamegineer logger as parent
+    * [#22] Race condition between logging service activation and debug options activation
+    * [#23] Cannot drag multiple cards in accordian layouts
 
 Enhancements closed:
-    * [#1] Support scrolling of table view
-    * [#2] Add support for alternate card pile layouts
-    * [#3] Add support for persisting table state
-    * [#11] Display file name of active table in title bar
-    * [#12] Prompt to save a dirty table before discarding it
-    * [#13] Maintain current directory across invocations of file open/save chooser
-    * [#14] Prompt to overwrite existing file from the file save chooser
+    * [#24] Persist window state across sessions
 
 Tasks closed:
-    * [#5] Upgrade to Apache Commons CLI 1.2
+    * [#6] Upgrade to Eclipse 3.5.2
+    * [#7] Add standard test case classes for equals() and hashCode()
+    * [#8] Change Gamegineer bundle dependencies to package dependencies
+    * [#16] Upgrade to JDK 6 Update 20
+    * [#17] Add EasyMock to target platform
+    * [#18] Remove org.apache.commons.cli bundle
+    * [#19] Refactor logging service to use OSGi component service
