@@ -5,7 +5,7 @@ Bundle-Localization: plugin
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundleName
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-SymbolicName: org.gamegineer.common.core;singleton:=true
+Bundle-SymbolicName: org.gamegineer.common.core
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.5.0
 Export-Package: org.gamegineer.common.core.runtime;version="0.5.0",
