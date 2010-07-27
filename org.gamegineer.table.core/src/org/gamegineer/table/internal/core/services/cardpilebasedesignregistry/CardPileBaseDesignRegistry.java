@@ -33,11 +33,11 @@ import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.gamegineer.common.core.runtime.Platform;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry;
+import org.gamegineer.table.internal.core.Activator;
 import org.gamegineer.table.internal.core.BundleConstants;
 import org.gamegineer.table.internal.core.Loggers;
 
@@ -150,7 +150,7 @@ public final class CardPileBaseDesignRegistry
     /* @NonNull */
     private static Collection<ICardPileBaseDesign> getForeignCardPileBaseDesigns()
     {
-        final IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+        final IExtensionRegistry extensionRegistry = Activator.getDefault().getExtensionRegistry();
         if( extensionRegistry == null )
         {
             Loggers.getDefaultLogger().warning( Messages.CardPileBaseDesignRegistry_getForeignCardPileBaseDesigns_noExtensionRegistry );

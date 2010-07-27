@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry;
 import org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry;
 import org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry;
@@ -72,6 +73,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private ServiceTracker cardSurfaceDesignUIRegistryTracker_;
 
+    /** The extension registry service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker extensionRegistryTracker_;
+
     /** The instance lock. */
     private final Object lock_;
 
@@ -99,6 +104,7 @@ public final class Activator
         cardPileBaseDesignUIRegistryTracker_ = null;
         cardSurfaceDesignRegistryTracker_ = null;
         cardSurfaceDesignUIRegistryTracker_ = null;
+        extensionRegistryTracker_ = null;
         packageAdminTracker_ = null;
         preferencesServiceTracker_ = null;
     }
@@ -228,6 +234,29 @@ public final class Activator
         final Activator instance = instance_.get();
         assert instance != null;
         return instance;
+    }
+
+    /**
+     * Gets the extension registry service.
+     * 
+     * @return The extension registry service or {@code null} if no extension
+     *         registry service is available.
+     */
+    /* @Nullable */
+    public IExtensionRegistry getExtensionRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( extensionRegistryTracker_ == null )
+            {
+                extensionRegistryTracker_ = new ServiceTracker( bundleContext_, IExtensionRegistry.class.getName(), null );
+                extensionRegistryTracker_.open();
+            }
+
+            return (IExtensionRegistry)extensionRegistryTracker_.getService();
+        }
     }
 
     /**
@@ -401,6 +430,11 @@ public final class Activator
             {
                 cardSurfaceDesignUIRegistryTracker_.close();
                 cardSurfaceDesignUIRegistryTracker_ = null;
+            }
+            if( extensionRegistryTracker_ != null )
+            {
+                extensionRegistryTracker_.close();
+                extensionRegistryTracker_ = null;
             }
             if( packageAdminTracker_ != null )
             {

@@ -37,7 +37,6 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Path;
-import org.gamegineer.common.core.runtime.Platform;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleConstants;
@@ -213,7 +212,7 @@ public final class CardPileBaseDesignUIRegistry
     /* @NonNull */
     private static Collection<ICardPileBaseDesignUI> getForeignCardPileBaseDesignUIs()
     {
-        final IExtensionRegistry extensionRegistry = Platform.getExtensionRegistry();
+        final IExtensionRegistry extensionRegistry = Activator.getDefault().getExtensionRegistry();
         if( extensionRegistry == null )
         {
             Loggers.getDefaultLogger().warning( Messages.CardPileBaseDesignUIRegistry_getForeignCardPileBaseDesignUIs_noExtensionRegistry );

@@ -25,8 +25,10 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The bundle activator for the org.gamegineer.table.core bundle.
@@ -46,6 +48,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private BundleContext bundleContext_;
 
+    /** The extension registry service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker extensionRegistryTracker_;
+
     /** The instance lock. */
     private final Object lock_;
 
@@ -61,6 +67,7 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
+        extensionRegistryTracker_ = null;
     }
 
 
@@ -94,6 +101,29 @@ public final class Activator
         final Activator instance = instance_.get();
         assert instance != null;
         return instance;
+    }
+
+    /**
+     * Gets the extension registry service.
+     * 
+     * @return The extension registry service or {@code null} if no extension
+     *         registry service is available.
+     */
+    /* @Nullable */
+    public IExtensionRegistry getExtensionRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( extensionRegistryTracker_ == null )
+            {
+                extensionRegistryTracker_ = new ServiceTracker( bundleContext_, IExtensionRegistry.class.getName(), null );
+                extensionRegistryTracker_.open();
+            }
+
+            return (IExtensionRegistry)extensionRegistryTracker_.getService();
+        }
     }
 
     /*
@@ -131,6 +161,12 @@ public final class Activator
         {
             assert bundleContext_ != null;
             bundleContext_ = null;
+
+            if( extensionRegistryTracker_ != null )
+            {
+                extensionRegistryTracker_.close();
+                extensionRegistryTracker_ = null;
+            }
         }
     }
 }
