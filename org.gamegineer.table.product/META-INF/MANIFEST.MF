@@ -7,10 +7,10 @@ Bundle-Name: %bundleName
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.gamegineer.table.product;singleton:=true
 Bundle-Vendor: %bundleVendor
-Bundle-Version: 0.4.0
+Bundle-Version: 0.5.0
 Import-Package: net.jcip.annotations;version="1.0.0",
  org.eclipse.equinox.app;version="1.0.0",
  org.eclipse.osgi.util;version="1.1.0",
- org.gamegineer.common.core.runtime;version="0.4.0",
- org.gamegineer.table.ui;version="0.4.0",
+ org.gamegineer.common.core.runtime;version="0.5.0",
+ org.gamegineer.table.ui;version="0.5.0",
  org.osgi.framework;version="1.5.0"
