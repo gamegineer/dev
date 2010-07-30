@@ -82,3 +82,4 @@ accordian
 delegator
 equatable
 delegators
+namespace
