@@ -181,37 +181,17 @@ public abstract class AbstractCardPileBaseDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerCardPileBaseDesign} method properly ignores a
-     * card pile base design whose identifier has already been registered.
+     * Ensures the {@code registerCardPileBaseDesign} method throws an exception
+     * when a card pile base design with the same identifier is already
+     * registered.
      */
-    @Test
-    public void testRegisterCardPileBaseDesign_CardPileBaseDesign_Registered_DifferentInstance()
+    @Test( expected = IllegalArgumentException.class )
+    public void testRegisterCardPileBaseDesign_CardPileBaseDesign_Registered()
     {
         final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
-        final int originalCardPileBaseDesignsSize = cardPileBaseDesignRegistry_.getCardPileBaseDesigns().size();
         cardPileBaseDesignRegistry_.registerCardPileBaseDesign( cardPileBaseDesign );
 
         cardPileBaseDesignRegistry_.registerCardPileBaseDesign( CardPileBaseDesigns.cloneCardPileBaseDesign( cardPileBaseDesign ) );
-
-        assertTrue( cardPileBaseDesignRegistry_.getCardPileBaseDesigns().contains( cardPileBaseDesign ) );
-        assertEquals( originalCardPileBaseDesignsSize + 1, cardPileBaseDesignRegistry_.getCardPileBaseDesigns().size() );
-    }
-
-    /**
-     * Ensures the {@code registerCardPileBaseDesign} method properly ignores a
-     * card pile base design instance that has already been registered.
-     */
-    @Test
-    public void testRegisterCardPileBaseDesign_CardPileBaseDesign_Registered_SameInstance()
-    {
-        final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
-        final int originalCardPileBaseDesignsSize = cardPileBaseDesignRegistry_.getCardPileBaseDesigns().size();
-        cardPileBaseDesignRegistry_.registerCardPileBaseDesign( cardPileBaseDesign );
-
-        cardPileBaseDesignRegistry_.registerCardPileBaseDesign( cardPileBaseDesign );
-
-        assertTrue( cardPileBaseDesignRegistry_.getCardPileBaseDesigns().contains( cardPileBaseDesign ) );
-        assertEquals( originalCardPileBaseDesignsSize + 1, cardPileBaseDesignRegistry_.getCardPileBaseDesigns().size() );
     }
 
     /**
@@ -239,11 +219,11 @@ public abstract class AbstractCardPileBaseDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterCardPileBaseDesign} method ignores a card
-     * pile base design whose identifier was previously registered but by a
-     * different card pile base design instance.
+     * Ensures the {@code unregisterCardPileBaseDesign} method throws an
+     * exception when passed a card pile base design whose identifier was
+     * previously registered but by a different card pile base design instance.
      */
-    @Test
+    @Test( expected = IllegalArgumentException.class )
     public void testUnregisterCardPileBaseDesign_CardPileBaseDesign_Registered_DifferentInstance()
     {
         final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
@@ -252,8 +232,6 @@ public abstract class AbstractCardPileBaseDesignRegistryTestCase
         assertEquals( originalCardPileBaseDesignsSize + 1, cardPileBaseDesignRegistry_.getCardPileBaseDesigns().size() );
 
         cardPileBaseDesignRegistry_.unregisterCardPileBaseDesign( CardPileBaseDesigns.cloneCardPileBaseDesign( cardPileBaseDesign ) );
-
-        assertEquals( originalCardPileBaseDesignsSize + 1, cardPileBaseDesignRegistry_.getCardPileBaseDesigns().size() );
     }
 
     /**
@@ -274,17 +252,15 @@ public abstract class AbstractCardPileBaseDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterCardPileBaseDesign} method properly ignores
-     * a card pile base design that was not previously registered.
+     * Ensures the {@code unregisterCardPileBaseDesign} method throws an
+     * exception when passed a card pile base design that was not previously
+     * registered.
      */
-    @Test
+    @Test( expected = IllegalArgumentException.class )
     public void testUnregisterCardPileBaseDesign_CardPileBaseDesign_Unregistered()
     {
         final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
-        final int originalCardPileBaseDesignsSize = cardPileBaseDesignRegistry_.getCardPileBaseDesigns().size();
 
         cardPileBaseDesignRegistry_.unregisterCardPileBaseDesign( cardPileBaseDesign );
-
-        assertEquals( originalCardPileBaseDesignsSize, cardPileBaseDesignRegistry_.getCardPileBaseDesigns().size() );
     }
 }

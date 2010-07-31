@@ -21,25 +21,17 @@
 
 package org.gamegineer.table.internal.core.services.cardpilebasedesignregistry;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.ICardPileBaseDesign;
-import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry;
-import org.gamegineer.table.internal.core.Activator;
-import org.gamegineer.table.internal.core.BundleConstants;
-import org.gamegineer.table.internal.core.Loggers;
+import org.gamegineer.table.internal.core.Debug;
 
 /**
  * Implementation of
@@ -53,23 +45,6 @@ public final class CardPileBaseDesignRegistry
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /**
-     * The extension point attribute specifying the card pile base design
-     * height.
-     */
-    private static final String ATTR_HEIGHT = "height"; //$NON-NLS-1$
-
-    /**
-     * The extension point attribute specifying the card pile base design
-     * identifier.
-     */
-    private static final String ATTR_ID = "id"; //$NON-NLS-1$
-
-    /**
-     * The extension point attribute specifying the card pile base design width.
-     */
-    private static final String ATTR_WIDTH = "width"; //$NON-NLS-1$
 
     /**
      * The collection of card pile base designs directly managed by this object.
@@ -104,31 +79,7 @@ public final class CardPileBaseDesignRegistry
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
-        return getCardPileBaseDesignMap().get( id );
-    }
-
-    /**
-     * Gets a map view of all card pile base designs known by this object.
-     * 
-     * @return A map view of all card pile base designs known by this object;
-     *         never {@code null}.
-     */
-    /* @NonNull */
-    private Map<CardPileBaseDesignId, ICardPileBaseDesign> getCardPileBaseDesignMap()
-    {
-        final Map<CardPileBaseDesignId, ICardPileBaseDesign> cardPileBaseDesigns = new HashMap<CardPileBaseDesignId, ICardPileBaseDesign>( cardPileBaseDesigns_ );
-        for( final ICardPileBaseDesign cardPileBaseDesign : getForeignCardPileBaseDesigns() )
-        {
-            if( cardPileBaseDesigns.containsKey( cardPileBaseDesign.getId() ) )
-            {
-                Loggers.getDefaultLogger().warning( Messages.CardPileBaseDesignRegistry_getCardPileBaseDesignMap_duplicateId( cardPileBaseDesign.getId() ) );
-            }
-            else
-            {
-                cardPileBaseDesigns.put( cardPileBaseDesign.getId(), cardPileBaseDesign );
-            }
-        }
-        return cardPileBaseDesigns;
+        return cardPileBaseDesigns_.get( id );
     }
 
     /*
@@ -137,42 +88,7 @@ public final class CardPileBaseDesignRegistry
     @Override
     public Collection<ICardPileBaseDesign> getCardPileBaseDesigns()
     {
-        return new ArrayList<ICardPileBaseDesign>( getCardPileBaseDesignMap().values() );
-    }
-
-    /**
-     * Gets a collection of all foreign card pile base designs not directly
-     * managed by this object.
-     * 
-     * @return A collection of all foreign card pile base designs not directly
-     *         managed by this object; never {@code null}.
-     */
-    /* @NonNull */
-    private static Collection<ICardPileBaseDesign> getForeignCardPileBaseDesigns()
-    {
-        final IExtensionRegistry extensionRegistry = Activator.getDefault().getExtensionRegistry();
-        if( extensionRegistry == null )
-        {
-            Loggers.getDefaultLogger().warning( Messages.CardPileBaseDesignRegistry_getForeignCardPileBaseDesigns_noExtensionRegistry );
-            return Collections.emptyList();
-        }
-
-        final Collection<ICardPileBaseDesign> cardPileBaseDesigns = new ArrayList<ICardPileBaseDesign>();
-        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( BundleConstants.SYMBOLIC_NAME, BundleConstants.EXTENSION_CARD_PILE_BASE_DESIGNS ) )
-        {
-            try
-            {
-                final CardPileBaseDesignId id = CardPileBaseDesignId.fromString( configurationElement.getAttribute( ATTR_ID ) );
-                final int width = Integer.parseInt( configurationElement.getAttribute( ATTR_WIDTH ) );
-                final int height = Integer.parseInt( configurationElement.getAttribute( ATTR_HEIGHT ) );
-                cardPileBaseDesigns.add( TableFactory.createCardPileBaseDesign( id, width, height ) );
-            }
-            catch( final NumberFormatException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPileBaseDesignRegistry_getForeignCardPileBaseDesigns_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
-            }
-        }
-        return cardPileBaseDesigns;
+        return new ArrayList<ICardPileBaseDesign>( cardPileBaseDesigns_.values() );
     }
 
     /*
@@ -183,8 +99,9 @@ public final class CardPileBaseDesignRegistry
         final ICardPileBaseDesign cardPileBaseDesign )
     {
         assertArgumentNotNull( cardPileBaseDesign, "cardPileBaseDesign" ); //$NON-NLS-1$
+        assertArgumentLegal( cardPileBaseDesigns_.putIfAbsent( cardPileBaseDesign.getId(), cardPileBaseDesign ) == null, "cardPileBaseDesign", Messages.CardPileBaseDesignRegistry_registerCardPileBaseDesign_cardPileBaseDesign_registered( cardPileBaseDesign.getId() ) ); //$NON-NLS-1$
 
-        cardPileBaseDesigns_.putIfAbsent( cardPileBaseDesign.getId(), cardPileBaseDesign );
+        Debug.getDefault().trace( Debug.OPTION_SERVICES_CARD_PILE_BASE_DESIGN_REGISTRY, String.format( "Registered card pile base design '%1$s'", cardPileBaseDesign.getId() ) ); //$NON-NLS-1$
     }
 
     /*
@@ -195,7 +112,8 @@ public final class CardPileBaseDesignRegistry
         final ICardPileBaseDesign cardPileBaseDesign )
     {
         assertArgumentNotNull( cardPileBaseDesign, "cardPileBaseDesign" ); //$NON-NLS-1$
+        assertArgumentLegal( cardPileBaseDesigns_.remove( cardPileBaseDesign.getId(), cardPileBaseDesign ), "cardPileBaseDesign", Messages.CardPileBaseDesignRegistry_unregisterCardPileBaseDesign_cardPileBaseDesign_unregistered( cardPileBaseDesign.getId() ) ); //$NON-NLS-1$
 
-        cardPileBaseDesigns_.remove( cardPileBaseDesign.getId(), cardPileBaseDesign );
+        Debug.getDefault().trace( Debug.OPTION_SERVICES_CARD_PILE_BASE_DESIGN_REGISTRY, String.format( "Unregistered card pile base design '%1$s'", cardPileBaseDesign.getId() ) ); //$NON-NLS-1$
     }
 }

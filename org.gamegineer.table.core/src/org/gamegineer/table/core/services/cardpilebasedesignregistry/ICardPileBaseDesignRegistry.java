@@ -69,14 +69,12 @@ public interface ICardPileBaseDesignRegistry
     /**
      * Registers the specified card pile base design.
      * 
-     * <p>
-     * This method does nothing if the specified card pile base design or a card
-     * pile base design with the same identifier was previously registered.
-     * </p>
-     * 
      * @param cardPileBaseDesign
      *        The card pile base design; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If a card pile base design with the same identifier is already
+     *         registered.
      * @throws java.lang.NullPointerException
      *         If {@code cardPileBaseDesign} is {@code null}.
      */
@@ -87,14 +85,12 @@ public interface ICardPileBaseDesignRegistry
     /**
      * Unregisters the specified card pile base design.
      * 
-     * <p>
-     * This method does nothing if the specified card pile base design was not
-     * previously registered.
-     * </p>
-     * 
      * @param cardPileBaseDesign
      *        The card pile base design; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If the specified card pile base design was not previously
+     *         registered.
      * @throws java.lang.NullPointerException
      *         If {@code cardPileBaseDesign} is {@code null}.
      */

@@ -38,14 +38,36 @@ final class Messages
 
     // --- CardPileBaseDesignRegistry ---------------------------------------
 
-    /** A duplicate card pile base design identifier was detected. */
-    public static String CardPileBaseDesignRegistry_getCardPileBaseDesignMap_duplicateId;
+    /**
+     * A card pile base design is already registered for the specified
+     * identifier.
+     */
+    public static String CardPileBaseDesignRegistry_registerCardPileBaseDesign_cardPileBaseDesign_registered;
 
-    /** The extension registry is not available. */
-    public static String CardPileBaseDesignRegistry_getForeignCardPileBaseDesigns_noExtensionRegistry;
+    /**
+     * The card pile base design is not registered for the specified identifier.
+     */
+    public static String CardPileBaseDesignRegistry_unregisterCardPileBaseDesign_cardPileBaseDesign_unregistered;
 
-    /** An error occurred while parsing the card pile base design definition. */
-    public static String CardPileBaseDesignRegistry_getForeignCardPileBaseDesigns_parseError;
+    // --- CardPileBaseDesignRegistryExtensionPointAdapter ------------------
+
+    /** The card pile base design registry service is already bound. */
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_bindCardPileBaseDesignRegistry_bound;
+
+    /** The extension registry service is already bound. */
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
+
+    /**
+     * An error occurred while parsing the card pile base design configuration
+     * element.
+     */
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseError;
+
+    /** The card pile base design registry service is not bound. */
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_unbindCardPileBaseDesignRegistry_notBound;
+
+    /** The extension registry service is not bound. */
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
 
 
     // ======================================================================
@@ -76,38 +98,60 @@ final class Messages
     // --- CardPileBaseDesignRegistry ---------------------------------------
 
     /**
-     * Gets the formatted message indicating a duplicate card pile base design
-     * identifier was detected.
+     * Gets the formatted message indicating a card pile base design is already
+     * registered for the specified identifier.
      * 
      * @param cardPileBaseDesignId
      *        The card pile base design identifier; must not be {@code null}.
      * 
-     * @return The formatted message indicating a duplicate card pile base
-     *         design identifier was detected; never {@code null}.
+     * @return The formatted message indicating a card pile base design is
+     *         already registered for the specified identifier; never {@code
+     *         null}.
      */
     /* @NonNull */
-    static String CardPileBaseDesignRegistry_getCardPileBaseDesignMap_duplicateId(
+    static String CardPileBaseDesignRegistry_registerCardPileBaseDesign_cardPileBaseDesign_registered(
         /* @NonNull */
         final CardPileBaseDesignId cardPileBaseDesignId )
     {
-        return bind( CardPileBaseDesignRegistry_getCardPileBaseDesignMap_duplicateId, cardPileBaseDesignId );
+        return bind( CardPileBaseDesignRegistry_registerCardPileBaseDesign_cardPileBaseDesign_registered, cardPileBaseDesignId );
     }
 
     /**
+     * Gets the formatted message indicating the card pile base design is not
+     * registered for the specified identifier.
+     * 
+     * @param cardPileBaseDesignId
+     *        The card pile base design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the card pile base design is not
+     *         registered for the specified identifier; never {@code null}.
+     */
+    /* @NonNull */
+    static String CardPileBaseDesignRegistry_unregisterCardPileBaseDesign_cardPileBaseDesign_unregistered(
+        /* @NonNull */
+        final CardPileBaseDesignId cardPileBaseDesignId )
+    {
+        return bind( CardPileBaseDesignRegistry_unregisterCardPileBaseDesign_cardPileBaseDesign_unregistered, cardPileBaseDesignId );
+    }
+
+    // --- CardPileBaseDesignRegistryExtensionPointAdapter ------------------
+
+    /**
      * Gets the formatted message indicating an error occurred while parsing the
-     * card pile base design definition.
+     * card pile base design configuration element.
      * 
      * @param cardPileBaseDesignId
      *        The card pile base design identifier; must not be {@code null}.
      * 
      * @return The formatted message indicating an error occurred while parsing
-     *         the card pile base design definition; never {@code null}.
+     *         the card pile base design configuration element; never {@code
+     *         null}.
      */
     /* @NonNull */
-    static String CardPileBaseDesignRegistry_getForeignCardPileBaseDesigns_parseError(
+    static String CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseError(
         /* @NonNull */
         final String cardPileBaseDesignId )
     {
-        return bind( CardPileBaseDesignRegistry_getForeignCardPileBaseDesigns_parseError, cardPileBaseDesignId );
+        return bind( CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseError, cardPileBaseDesignId );
     }
 }

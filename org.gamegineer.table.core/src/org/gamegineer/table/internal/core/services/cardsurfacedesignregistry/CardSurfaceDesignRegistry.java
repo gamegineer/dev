@@ -151,7 +151,7 @@ public final class CardSurfaceDesignRegistry
         }
 
         final Collection<ICardSurfaceDesign> cardSurfaceDesigns = new ArrayList<ICardSurfaceDesign>();
-        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( BundleConstants.SYMBOLIC_NAME, BundleConstants.EXTENSION_CARD_SURFACE_DESIGNS ) )
+        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( BundleConstants.SYMBOLIC_NAME, BundleConstants.CARD_SURFACE_DESIGNS_EXTENSION_POINT_SIMPLE_ID ) )
         {
             try
             {
