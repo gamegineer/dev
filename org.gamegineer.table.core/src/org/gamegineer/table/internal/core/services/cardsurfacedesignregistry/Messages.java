@@ -38,14 +38,33 @@ final class Messages
 
     // --- CardSurfaceDesignRegistry ----------------------------------------
 
-    /** A duplicate card surface design identifier was detected. */
-    public static String CardSurfaceDesignRegistry_getCardSurfaceDesignMap_duplicateId;
+    /**
+     * A card surface design is already registered for the specified identifier.
+     */
+    public static String CardSurfaceDesignRegistry_registerCardSurfaceDesign_cardSurfaceDesign_registered;
 
-    /** The extension registry is not available. */
-    public static String CardSurfaceDesignRegistry_getForeignCardSurfaceDesigns_noExtensionRegistry;
+    /** The card surface design is not registered for the specified identifier. */
+    public static String CardSurfaceDesignRegistry_unregisterCardSurfaceDesign_cardSurfaceDesign_unregistered;
 
-    /** An error occurred while parsing the card surface design definition. */
-    public static String CardSurfaceDesignRegistry_getForeignCardSurfaceDesigns_parseError;
+    // --- CardSurfaceDesignRegistryExtensionPointAdapter -------------------
+
+    /** The card surface design registry service is already bound. */
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_bindCardSurfaceDesignRegistry_bound;
+
+    /** The extension registry service is already bound. */
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
+
+    /**
+     * An error occurred while parsing the card surface design configuration
+     * element.
+     */
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseError;
+
+    /** The card surface design registry service is not bound. */
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_unbindCardSurfaceDesignRegistry_notBound;
+
+    /** The extension registry service is not bound. */
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
 
 
     // ======================================================================
@@ -76,38 +95,59 @@ final class Messages
     // --- CardSurfaceDesignRegistry ----------------------------------------
 
     /**
-     * Gets the formatted message indicating a duplicate card surface design
-     * identifier was detected.
+     * Gets the formatted message indicating a card surface design is already
+     * registered for the specified identifier.
      * 
      * @param cardSurfaceDesignId
      *        The card surface design identifier; must not be {@code null}.
      * 
-     * @return The formatted message indicating a duplicate card surface design
-     *         identifier was detected; never {@code null}.
+     * @return The formatted message indicating a card surface design is already
+     *         registered for the specified identifier; never {@code null}.
      */
     /* @NonNull */
-    static String CardSurfaceDesignRegistry_getCardSurfaceDesignMap_duplicateId(
+    static String CardSurfaceDesignRegistry_registerCardSurfaceDesign_cardSurfaceDesign_registered(
         /* @NonNull */
         final CardSurfaceDesignId cardSurfaceDesignId )
     {
-        return bind( CardSurfaceDesignRegistry_getCardSurfaceDesignMap_duplicateId, cardSurfaceDesignId );
+        return bind( CardSurfaceDesignRegistry_registerCardSurfaceDesign_cardSurfaceDesign_registered, cardSurfaceDesignId );
     }
 
     /**
+     * Gets the formatted message indicating the card surface design is not
+     * registered for the specified identifier.
+     * 
+     * @param cardSurfaceDesignId
+     *        The card surface design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the card surface design is not
+     *         registered for the specified identifier; never {@code null}.
+     */
+    /* @NonNull */
+    static String CardSurfaceDesignRegistry_unregisterCardSurfaceDesign_cardSurfaceDesign_unregistered(
+        /* @NonNull */
+        final CardSurfaceDesignId cardSurfaceDesignId )
+    {
+        return bind( CardSurfaceDesignRegistry_unregisterCardSurfaceDesign_cardSurfaceDesign_unregistered, cardSurfaceDesignId );
+    }
+
+    // --- CardSurfaceDesignRegistryExtensionPointAdapter ------------------
+
+    /**
      * Gets the formatted message indicating an error occurred while parsing the
-     * card surface design definition.
+     * card surface design configuration element.
      * 
      * @param cardSurfaceDesignId
      *        The card surface design identifier; must not be {@code null}.
      * 
      * @return The formatted message indicating an error occurred while parsing
-     *         the card surface design definition; never {@code null}.
+     *         the card surface design configuration element; never {@code null}
+     *         .
      */
     /* @NonNull */
-    static String CardSurfaceDesignRegistry_getForeignCardSurfaceDesigns_parseError(
+    static String CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseError(
         /* @NonNull */
         final String cardSurfaceDesignId )
     {
-        return bind( CardSurfaceDesignRegistry_getForeignCardSurfaceDesigns_parseError, cardSurfaceDesignId );
+        return bind( CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseError, cardSurfaceDesignId );
     }
 }

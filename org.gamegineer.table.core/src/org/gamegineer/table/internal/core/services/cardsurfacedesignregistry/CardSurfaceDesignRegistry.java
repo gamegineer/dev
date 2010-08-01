@@ -21,25 +21,17 @@
 
 package org.gamegineer.table.internal.core.services.cardsurfacedesignregistry;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.core.ICardSurfaceDesign;
-import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry;
-import org.gamegineer.table.internal.core.Activator;
-import org.gamegineer.table.internal.core.BundleConstants;
-import org.gamegineer.table.internal.core.Loggers;
+import org.gamegineer.table.internal.core.Debug;
 
 /**
  * Implementation of
@@ -53,18 +45,6 @@ public final class CardSurfaceDesignRegistry
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /** The extension point attribute specifying the card surface design height. */
-    private static final String ATTR_HEIGHT = "height"; //$NON-NLS-1$
-
-    /**
-     * The extension point attribute specifying the card surface design
-     * identifier.
-     */
-    private static final String ATTR_ID = "id"; //$NON-NLS-1$
-
-    /** The extension point attribute specifying the card surface design width. */
-    private static final String ATTR_WIDTH = "width"; //$NON-NLS-1$
 
     /** The collection of card surface designs directly managed by this object. */
     private final ConcurrentMap<CardSurfaceDesignId, ICardSurfaceDesign> cardSurfaceDesigns_;
@@ -97,31 +77,7 @@ public final class CardSurfaceDesignRegistry
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
 
-        return getCardSurfaceDesignMap().get( id );
-    }
-
-    /**
-     * Gets a map view of all card surface designs known by this object.
-     * 
-     * @return A map view of all card surface designs known by this object;
-     *         never {@code null}.
-     */
-    /* @NonNull */
-    private Map<CardSurfaceDesignId, ICardSurfaceDesign> getCardSurfaceDesignMap()
-    {
-        final Map<CardSurfaceDesignId, ICardSurfaceDesign> cardSurfaceDesigns = new HashMap<CardSurfaceDesignId, ICardSurfaceDesign>( cardSurfaceDesigns_ );
-        for( final ICardSurfaceDesign cardSurfaceDesign : getForeignCardSurfaceDesigns() )
-        {
-            if( cardSurfaceDesigns.containsKey( cardSurfaceDesign.getId() ) )
-            {
-                Loggers.getDefaultLogger().warning( Messages.CardSurfaceDesignRegistry_getCardSurfaceDesignMap_duplicateId( cardSurfaceDesign.getId() ) );
-            }
-            else
-            {
-                cardSurfaceDesigns.put( cardSurfaceDesign.getId(), cardSurfaceDesign );
-            }
-        }
-        return cardSurfaceDesigns;
+        return cardSurfaceDesigns_.get( id );
     }
 
     /*
@@ -130,42 +86,7 @@ public final class CardSurfaceDesignRegistry
     @Override
     public Collection<ICardSurfaceDesign> getCardSurfaceDesigns()
     {
-        return new ArrayList<ICardSurfaceDesign>( getCardSurfaceDesignMap().values() );
-    }
-
-    /**
-     * Gets a collection of all foreign card surface designs not directly
-     * managed by this object.
-     * 
-     * @return A collection of all foreign card surface designs not directly
-     *         managed by this object; never {@code null}.
-     */
-    /* @NonNull */
-    private static Collection<ICardSurfaceDesign> getForeignCardSurfaceDesigns()
-    {
-        final IExtensionRegistry extensionRegistry = Activator.getDefault().getExtensionRegistry();
-        if( extensionRegistry == null )
-        {
-            Loggers.getDefaultLogger().warning( Messages.CardSurfaceDesignRegistry_getForeignCardSurfaceDesigns_noExtensionRegistry );
-            return Collections.emptyList();
-        }
-
-        final Collection<ICardSurfaceDesign> cardSurfaceDesigns = new ArrayList<ICardSurfaceDesign>();
-        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( BundleConstants.SYMBOLIC_NAME, BundleConstants.CARD_SURFACE_DESIGNS_EXTENSION_POINT_SIMPLE_ID ) )
-        {
-            try
-            {
-                final CardSurfaceDesignId id = CardSurfaceDesignId.fromString( configurationElement.getAttribute( ATTR_ID ) );
-                final int width = Integer.parseInt( configurationElement.getAttribute( ATTR_WIDTH ) );
-                final int height = Integer.parseInt( configurationElement.getAttribute( ATTR_HEIGHT ) );
-                cardSurfaceDesigns.add( TableFactory.createCardSurfaceDesign( id, width, height ) );
-            }
-            catch( final NumberFormatException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardSurfaceDesignRegistry_getForeignCardSurfaceDesigns_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
-            }
-        }
-        return cardSurfaceDesigns;
+        return new ArrayList<ICardSurfaceDesign>( cardSurfaceDesigns_.values() );
     }
 
     /*
@@ -176,8 +97,9 @@ public final class CardSurfaceDesignRegistry
         final ICardSurfaceDesign cardSurfaceDesign )
     {
         assertArgumentNotNull( cardSurfaceDesign, "cardSurfaceDesign" ); //$NON-NLS-1$
+        assertArgumentLegal( cardSurfaceDesigns_.putIfAbsent( cardSurfaceDesign.getId(), cardSurfaceDesign ) == null, "cardSurfaceDesign", Messages.CardSurfaceDesignRegistry_registerCardSurfaceDesign_cardSurfaceDesign_registered( cardSurfaceDesign.getId() ) ); //$NON-NLS-1$
 
-        cardSurfaceDesigns_.putIfAbsent( cardSurfaceDesign.getId(), cardSurfaceDesign );
+        Debug.getDefault().trace( Debug.OPTION_SERVICES_CARD_SURFACE_DESIGN_REGISTRY, String.format( "Registered card surface design '%1$s'", cardSurfaceDesign.getId() ) ); //$NON-NLS-1$
     }
 
     /*
@@ -188,7 +110,8 @@ public final class CardSurfaceDesignRegistry
         final ICardSurfaceDesign cardSurfaceDesign )
     {
         assertArgumentNotNull( cardSurfaceDesign, "cardSurfaceDesign" ); //$NON-NLS-1$
+        assertArgumentLegal( cardSurfaceDesigns_.remove( cardSurfaceDesign.getId(), cardSurfaceDesign ), "cardSurfaceDesign", Messages.CardSurfaceDesignRegistry_unregisterCardSurfaceDesign_cardSurfaceDesign_unregistered( cardSurfaceDesign.getId() ) ); //$NON-NLS-1$
 
-        cardSurfaceDesigns_.remove( cardSurfaceDesign.getId(), cardSurfaceDesign );
+        Debug.getDefault().trace( Debug.OPTION_SERVICES_CARD_SURFACE_DESIGN_REGISTRY, String.format( "Unregistered card surface design '%1$s'", cardSurfaceDesign.getId() ) ); //$NON-NLS-1$
     }
 }

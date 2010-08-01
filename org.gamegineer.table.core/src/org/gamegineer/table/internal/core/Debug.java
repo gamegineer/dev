@@ -46,6 +46,12 @@ public final class Debug
      */
     public static final String OPTION_SERVICES_CARD_PILE_BASE_DESIGN_REGISTRY = OPTION_DEFAULT + "/services/cardPileBaseDesignRegistry"; //$NON-NLS-1$
 
+    /**
+     * The name of the card surface design registry service package debug
+     * option.
+     */
+    public static final String OPTION_SERVICES_CARD_SURFACE_DESIGN_REGISTRY = OPTION_DEFAULT + "/services/cardSurfaceDesignRegistry"; //$NON-NLS-1$
+
 
     // ======================================================================
     // Constructors

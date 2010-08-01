@@ -22,4 +22,5 @@ Require-Bundle: org.eclipse.equinox.registry;bundle-version="3.4.100"
 Service-Component: OSGI-INF/cardPileBaseDesignRegistry.xml,
  OSGI-INF/cardPileBaseDesignRegistryExtensionPointAdapter.xml,
  OSGI-INF/cardSurfaceDesignRegistry.xml,
+ OSGI-INF/cardSurfaceDesignRegistryExtensionPointAdapter.xml,
  OSGI-INF/serializablePersistenceDelegates.xml

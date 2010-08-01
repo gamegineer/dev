@@ -69,14 +69,12 @@ public interface ICardSurfaceDesignRegistry
     /**
      * Registers the specified card surface design.
      * 
-     * <p>
-     * This method does nothing if the specified card surface design or a card
-     * surface design with the same identifier was previously registered.
-     * </p>
-     * 
      * @param cardSurfaceDesign
      *        The card surface design; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If a card surface design with the same identifier is already
+     *         registered.
      * @throws java.lang.NullPointerException
      *         If {@code cardSurfaceDesign} is {@code null}.
      */
@@ -87,14 +85,12 @@ public interface ICardSurfaceDesignRegistry
     /**
      * Unregisters the specified card surface design.
      * 
-     * <p>
-     * This method does nothing if the specified card surface design was not
-     * previously registered.
-     * </p>
-     * 
      * @param cardSurfaceDesign
      *        The card surface design; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If the specified card surface design was not previously
+     *         registered.
      * @throws java.lang.NullPointerException
      *         If {@code cardSurfaceDesign} is {@code null}.
      */

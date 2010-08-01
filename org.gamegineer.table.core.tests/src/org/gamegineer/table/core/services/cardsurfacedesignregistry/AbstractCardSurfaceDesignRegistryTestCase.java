@@ -181,37 +181,17 @@ public abstract class AbstractCardSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerCardSurfaceDesign} method properly ignores a
-     * card surface design whose identifier has already been registered.
+     * Ensures the {@code registerCardSurfaceDesign} method throws an exception
+     * when a card surface design with the same identifier is already
+     * registered.
      */
-    @Test
-    public void testRegisterCardSurfaceDesign_CardSurfaceDesign_Registered_DifferentInstance()
+    @Test( expected = IllegalArgumentException.class )
+    public void testRegisterCardSurfaceDesign_CardSurfaceDesign_Registered()
     {
         final ICardSurfaceDesign cardSurfaceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
-        final int originalCardSurfaceDesignsSize = cardSurfaceDesignRegistry_.getCardSurfaceDesigns().size();
         cardSurfaceDesignRegistry_.registerCardSurfaceDesign( cardSurfaceDesign );
 
         cardSurfaceDesignRegistry_.registerCardSurfaceDesign( CardSurfaceDesigns.cloneCardSurfaceDesign( cardSurfaceDesign ) );
-
-        assertTrue( cardSurfaceDesignRegistry_.getCardSurfaceDesigns().contains( cardSurfaceDesign ) );
-        assertEquals( originalCardSurfaceDesignsSize + 1, cardSurfaceDesignRegistry_.getCardSurfaceDesigns().size() );
-    }
-
-    /**
-     * Ensures the {@code registerCardSurfaceDesign} method properly ignores a
-     * card surface design instance that has already been registered.
-     */
-    @Test
-    public void testRegisterCardSurfaceDesign_CardSurfaceDesign_Registered_SameInstance()
-    {
-        final ICardSurfaceDesign cardSurfaceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
-        final int originalCardSurfaceDesignsSize = cardSurfaceDesignRegistry_.getCardSurfaceDesigns().size();
-        cardSurfaceDesignRegistry_.registerCardSurfaceDesign( cardSurfaceDesign );
-
-        cardSurfaceDesignRegistry_.registerCardSurfaceDesign( cardSurfaceDesign );
-
-        assertTrue( cardSurfaceDesignRegistry_.getCardSurfaceDesigns().contains( cardSurfaceDesign ) );
-        assertEquals( originalCardSurfaceDesignsSize + 1, cardSurfaceDesignRegistry_.getCardSurfaceDesigns().size() );
     }
 
     /**
@@ -239,11 +219,11 @@ public abstract class AbstractCardSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterCardSurfaceDesign} method ignores a card
-     * surface design whose identifier was previously registered but by a
-     * different card surface design instance.
+     * Ensures the {@code unregisterCardSurfaceDesign} method throws an
+     * exception when passed a card surface design whose identifier was
+     * previously registered but by a different card surface design instance.
      */
-    @Test
+    @Test( expected = IllegalArgumentException.class )
     public void testUnregisterCardSurfaceDesign_CardSurfaceDesign_Registered_DifferentInstance()
     {
         final ICardSurfaceDesign cardSurfaceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
@@ -252,8 +232,6 @@ public abstract class AbstractCardSurfaceDesignRegistryTestCase
         assertEquals( originalCardSurfaceDesignsSize + 1, cardSurfaceDesignRegistry_.getCardSurfaceDesigns().size() );
 
         cardSurfaceDesignRegistry_.unregisterCardSurfaceDesign( CardSurfaceDesigns.cloneCardSurfaceDesign( cardSurfaceDesign ) );
-
-        assertEquals( originalCardSurfaceDesignsSize + 1, cardSurfaceDesignRegistry_.getCardSurfaceDesigns().size() );
     }
 
     /**
@@ -274,17 +252,15 @@ public abstract class AbstractCardSurfaceDesignRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterCardSurfaceDesign} method properly ignores a
-     * card surface design that was not previously registered.
+     * Ensures the {@code unregisterCardSurfaceDesign} method throws an
+     * exception when passed a card surface design that was not previously
+     * registered.
      */
-    @Test
+    @Test( expected = IllegalArgumentException.class )
     public void testUnregisterCardSurfaceDesign_CardSurfaceDesign_Unregistered()
     {
         final ICardSurfaceDesign cardSurfaceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
-        final int originalCardSurfaceDesignsSize = cardSurfaceDesignRegistry_.getCardSurfaceDesigns().size();
 
         cardSurfaceDesignRegistry_.unregisterCardSurfaceDesign( cardSurfaceDesign );
-
-        assertEquals( originalCardSurfaceDesignsSize, cardSurfaceDesignRegistry_.getCardSurfaceDesigns().size() );
     }
 }

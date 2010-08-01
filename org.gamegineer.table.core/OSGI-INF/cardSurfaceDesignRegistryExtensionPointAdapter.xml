@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component
+		activate="activate"
+		deactivate="deactivate"
+		name="org.gamegineer.table.core.cardSurfaceDesignRegistryExtensionPointAdapter"
+		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+	<implementation
+			class="org.gamegineer.table.internal.core.services.cardsurfacedesignregistry.CardSurfaceDesignRegistryExtensionPointAdapter" />
+	<reference
+			bind="bindCardSurfaceDesignRegistry"
+			cardinality="1..1"
+			interface="org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry"
+			name="ICardSurfaceDesignRegistry"
+			policy="static"
+			unbind="unbindCardSurfaceDesignRegistry" />
+	<reference
+			bind="bindExtensionRegistry"
+			cardinality="1..1"
+			interface="org.eclipse.core.runtime.IExtensionRegistry"
+			name="IExtensionRegistry"
+			policy="static"
+			unbind="unbindExtensionRegistry" />
+</scr:component>
