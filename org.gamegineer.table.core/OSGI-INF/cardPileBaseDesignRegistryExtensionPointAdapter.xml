@@ -10,14 +10,14 @@
 			bind="bindCardPileBaseDesignRegistry"
 			cardinality="1..1"
 			interface="org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry"
-			name="ICardPileBaseDesignRegistry"
+			name="cardPileBaseDesignRegistry"
 			policy="static"
 			unbind="unbindCardPileBaseDesignRegistry" />
 	<reference
 			bind="bindExtensionRegistry"
 			cardinality="1..1"
 			interface="org.eclipse.core.runtime.IExtensionRegistry"
-			name="IExtensionRegistry"
+			name="extensionRegistry"
 			policy="static"
 			unbind="unbindExtensionRegistry" />
 </scr:component>
