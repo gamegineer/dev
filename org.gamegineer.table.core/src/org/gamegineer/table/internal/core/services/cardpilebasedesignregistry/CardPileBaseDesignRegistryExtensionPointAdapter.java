@@ -457,7 +457,8 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
          * Initializes a new instance of the {@code CardPileBaseDesign} class.
          * 
          * @param extension
-         *        The extension that contributed this card pile base design.
+         *        The extension that contributed this card pile base design;
+         *        must not be {@code null}.
          * @param id
          *        The card pile base design identifier; must not be {@code null}
          *        .

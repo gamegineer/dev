@@ -457,7 +457,8 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
          * Initializes a new instance of the {@code CardSurfaceDesign} class.
          * 
          * @param extension
-         *        The extension that contributed this card surface design.
+         *        The extension that contributed this card surface design; must
+         *        not be {@code null}.
          * @param id
          *        The card surface design identifier; must not be {@code null}.
          * @param width
