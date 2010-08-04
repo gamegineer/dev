@@ -58,10 +58,22 @@ final class Messages
     public static String CardPileBaseDesignRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
 
     /**
+     * An error occurred while parsing the height attribute of a card pile base
+     * design configuration element.
+     */
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseHeightError;
+
+    /**
+     * An error occurred while parsing the width attribute of a card pile base
+     * design configuration element.
+     */
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseWidthError;
+
+    /**
      * An error occurred while parsing the card pile base design configuration
      * element.
      */
-    public static String CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseError;
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_registerCardPileBaseDesign_parseError;
 
     /** The card pile base design registry service is not bound. */
     public static String CardPileBaseDesignRegistryExtensionPointAdapter_unbindCardPileBaseDesignRegistry_notBound;
@@ -148,10 +160,10 @@ final class Messages
      *         null}.
      */
     /* @NonNull */
-    static String CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseError(
+    static String CardPileBaseDesignRegistryExtensionPointAdapter_registerCardPileBaseDesign_parseError(
         /* @NonNull */
         final String cardPileBaseDesignId )
     {
-        return bind( CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseError, cardPileBaseDesignId );
+        return bind( CardPileBaseDesignRegistryExtensionPointAdapter_registerCardPileBaseDesign_parseError, cardPileBaseDesignId );
     }
 }

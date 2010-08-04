@@ -207,29 +207,42 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
      * @param configurationElement
      *        The extension configuration element; must not be {@code null}.
      * 
-     * @return A card pile base design or {@code null} if a card pile base
-     *         design could not be created from the specified extension
-     *         configuration element.
+     * @return A card pile base design; never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If the configuration element represents an illegal card pile base
+     *         design.
      */
-    /* @Nullable */
+    /* @NonNull */
     private static CardPileBaseDesign createCardPileBaseDesign(
         /* @NonNull */
         final IConfigurationElement configurationElement )
     {
         assert configurationElement != null;
 
+        final CardPileBaseDesignId id = CardPileBaseDesignId.fromString( configurationElement.getAttribute( ATTR_ID ) );
+
+        final int width;
         try
         {
-            final CardPileBaseDesignId id = CardPileBaseDesignId.fromString( configurationElement.getAttribute( ATTR_ID ) );
-            final int width = Integer.parseInt( configurationElement.getAttribute( ATTR_WIDTH ) );
-            final int height = Integer.parseInt( configurationElement.getAttribute( ATTR_HEIGHT ) );
-            return new CardPileBaseDesign( configurationElement.getDeclaringExtension(), id, width, height );
+            width = Integer.parseInt( configurationElement.getAttribute( ATTR_WIDTH ) );
         }
         catch( final NumberFormatException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
-            return null;
+            throw new IllegalArgumentException( Messages.CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseWidthError, e );
         }
+
+        final int height;
+        try
+        {
+            height = Integer.parseInt( configurationElement.getAttribute( ATTR_HEIGHT ) );
+        }
+        catch( final NumberFormatException e )
+        {
+            throw new IllegalArgumentException( Messages.CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseHeightError, e );
+        }
+
+        return new CardPileBaseDesign( configurationElement.getDeclaringExtension(), id, width, height );
     }
 
     /**
@@ -284,14 +297,21 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
     {
         assert configurationElement != null;
 
-        final CardPileBaseDesign cardPileBaseDesign = createCardPileBaseDesign( configurationElement );
-        if( cardPileBaseDesign != null )
+        final CardPileBaseDesign cardPileBaseDesign;
+        try
         {
-            synchronized( lock_ )
-            {
-                cardPileBaseDesignRegistry_.registerCardPileBaseDesign( cardPileBaseDesign );
-                cardPileBaseDesigns_.add( cardPileBaseDesign );
-            }
+            cardPileBaseDesign = createCardPileBaseDesign( configurationElement );
+        }
+        catch( final IllegalArgumentException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPileBaseDesignRegistryExtensionPointAdapter_registerCardPileBaseDesign_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
+            return;
+        }
+
+        synchronized( lock_ )
+        {
+            cardPileBaseDesignRegistry_.registerCardPileBaseDesign( cardPileBaseDesign );
+            cardPileBaseDesigns_.add( cardPileBaseDesign );
         }
     }
 

@@ -207,29 +207,42 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
      * @param configurationElement
      *        The extension configuration element; must not be {@code null}.
      * 
-     * @return A card surface design or {@code null} if a card surface design
-     *         could not be created from the specified extension configuration
-     *         element.
+     * @return A card surface design; never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If the configuration element represents an illegal card surface
+     *         design.
      */
-    /* @Nullable */
+    /* @NonNull */
     private static CardSurfaceDesign createCardSurfaceDesign(
         /* @NonNull */
         final IConfigurationElement configurationElement )
     {
         assert configurationElement != null;
 
+        final CardSurfaceDesignId id = CardSurfaceDesignId.fromString( configurationElement.getAttribute( ATTR_ID ) );
+
+        final int width;
         try
         {
-            final CardSurfaceDesignId id = CardSurfaceDesignId.fromString( configurationElement.getAttribute( ATTR_ID ) );
-            final int width = Integer.parseInt( configurationElement.getAttribute( ATTR_WIDTH ) );
-            final int height = Integer.parseInt( configurationElement.getAttribute( ATTR_HEIGHT ) );
-            return new CardSurfaceDesign( configurationElement.getDeclaringExtension(), id, width, height );
+            width = Integer.parseInt( configurationElement.getAttribute( ATTR_WIDTH ) );
         }
         catch( final NumberFormatException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
-            return null;
+            throw new IllegalArgumentException( Messages.CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseWidthError, e );
         }
+
+        final int height;
+        try
+        {
+            height = Integer.parseInt( configurationElement.getAttribute( ATTR_HEIGHT ) );
+        }
+        catch( final NumberFormatException e )
+        {
+            throw new IllegalArgumentException( Messages.CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseHeightError, e );
+        }
+
+        return new CardSurfaceDesign( configurationElement.getDeclaringExtension(), id, width, height );
     }
 
     /**
@@ -284,14 +297,21 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
     {
         assert configurationElement != null;
 
-        final CardSurfaceDesign cardSurfaceDesign = createCardSurfaceDesign( configurationElement );
-        if( cardSurfaceDesign != null )
+        final CardSurfaceDesign cardSurfaceDesign;
+        try
         {
-            synchronized( lock_ )
-            {
-                cardSurfaceDesignRegistry_.registerCardSurfaceDesign( cardSurfaceDesign );
-                cardSurfaceDesigns_.add( cardSurfaceDesign );
-            }
+            cardSurfaceDesign = createCardSurfaceDesign( configurationElement );
+        }
+        catch( final IllegalArgumentException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardSurfaceDesignRegistryExtensionPointAdapter_registerCardSurfaceDesign_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
+            return;
+        }
+
+        synchronized( lock_ )
+        {
+            cardSurfaceDesignRegistry_.registerCardSurfaceDesign( cardSurfaceDesign );
+            cardSurfaceDesigns_.add( cardSurfaceDesign );
         }
     }
 

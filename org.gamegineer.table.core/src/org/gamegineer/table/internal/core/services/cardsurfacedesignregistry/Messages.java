@@ -55,10 +55,22 @@ final class Messages
     public static String CardSurfaceDesignRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
 
     /**
+     * An error occurred while parsing the height attribute of a card surface
+     * design configuration element.
+     */
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseHeightError;
+
+    /**
+     * An error occurred while parsing the width attribute of a card surface
+     * design configuration element.
+     */
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseWidthError;
+
+    /**
      * An error occurred while parsing the card surface design configuration
      * element.
      */
-    public static String CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseError;
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_registerCardSurfaceDesign_parseError;
 
     /** The card surface design registry service is not bound. */
     public static String CardSurfaceDesignRegistryExtensionPointAdapter_unbindCardSurfaceDesignRegistry_notBound;
@@ -144,10 +156,10 @@ final class Messages
      *         .
      */
     /* @NonNull */
-    static String CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseError(
+    static String CardSurfaceDesignRegistryExtensionPointAdapter_registerCardSurfaceDesign_parseError(
         /* @NonNull */
         final String cardSurfaceDesignId )
     {
-        return bind( CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseError, cardSurfaceDesignId );
+        return bind( CardSurfaceDesignRegistryExtensionPointAdapter_registerCardSurfaceDesign_parseError, cardSurfaceDesignId );
     }
 }
