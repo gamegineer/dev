@@ -39,35 +39,58 @@ final class Messages
 
     // --- CardPileBaseDesignUIRegistry -------------------------------------
 
+    /**
+     * A card pile base design user interface is already registered for the
+     * specified identifier.
+     */
+    public static String CardPileBaseDesignUIRegistry_registerCardPileBaseDesignUI_cardPileBaseDesignUI_registered;
+
+    /**
+     * The card pile base design user interface is not registered for the
+     * specified identifier.
+     */
+    public static String CardPileBaseDesignUIRegistry_unregisterCardPileBaseDesignUI_cardPileBaseDesignUI_unregistered;
+
+    // --- CardPileBaseDesignUIRegistryExtensionPointAdapter ----------------
+
+    /**
+     * The card pile base design user interface registry service is already
+     * bound.
+     */
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_bindCardPileBaseDesignUIRegistry_bound;
+
+    /** The extension registry service is already bound. */
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
+
     /** The bundle hosting the card pile base design icon was not found. */
-    public static String CardPileBaseDesignUIRegistry_createCardPileBaseDesignUI_iconBundleNotFound;
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconBundleNotFound;
 
     /** The card pile base design icon file was not found. */
-    public static String CardPileBaseDesignUIRegistry_createCardPileBaseDesignUI_iconFileNotFound;
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconFileNotFound;
 
     /** The card pile base design icon path is missing. */
-    public static String CardPileBaseDesignUIRegistry_createCardPileBaseDesignUI_missingIconPath;
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingIconPath;
 
     /** The card pile base design identifier is missing. */
-    public static String CardPileBaseDesignUIRegistry_createCardPileBaseDesignUI_missingId;
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingId;
 
     /** The card pile base design name is missing. */
-    public static String CardPileBaseDesignUIRegistry_createCardPileBaseDesignUI_missingName;
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingName;
 
     /** No package administration service is available. */
-    public static String CardPileBaseDesignUIRegistry_createCardPileBaseDesignUI_noPackageAdminService;
-
-    /** A duplicate card pile base design identifier was detected. */
-    public static String CardPileBaseDesignUIRegistry_getCardPileBaseDesignUIMap_duplicateId;
-
-    /** The extension registry is not available. */
-    public static String CardPileBaseDesignUIRegistry_getForeignCardPileBaseDesignUIs_noExtensionRegistry;
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_noPackageAdminService;
 
     /**
      * An error occurred while parsing the card pile base design user interface
-     * definition.
+     * configuration element.
      */
-    public static String CardPileBaseDesignUIRegistry_getForeignCardPileBaseDesignUIs_parseError;
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_registerCardPileBaseDesignUI_parseError;
+
+    /** The card pile base design user interface registry service is not bound. */
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_unbindCardPileBaseDesignUIRegistry_notBound;
+
+    /** The extension registry service is not bound. */
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
 
 
     // ======================================================================
@@ -98,6 +121,46 @@ final class Messages
     // --- CardPileBaseDesignUIRegistry -------------------------------------
 
     /**
+     * Gets the formatted message indicating a card pile base design user
+     * interface is already registered for the specified identifier.
+     * 
+     * @param cardPileBaseDesignId
+     *        The card pile base design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating a card pile base design user
+     *         interface is already registered for the specified identifier;
+     *         never {@code null}.
+     */
+    /* @NonNull */
+    static String CardPileBaseDesignUIRegistry_registerCardPileBaseDesignUI_cardPileBaseDesignUI_registered(
+        /* @NonNull */
+        final CardPileBaseDesignId cardPileBaseDesignId )
+    {
+        return bind( CardPileBaseDesignUIRegistry_registerCardPileBaseDesignUI_cardPileBaseDesignUI_registered, cardPileBaseDesignId );
+    }
+
+    /**
+     * Gets the formatted message indicating the card pile base design user
+     * interface is not registered for the specified identifier.
+     * 
+     * @param cardPileBaseDesignId
+     *        The card pile base design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the card pile base design user
+     *         interface is not registered for the specified identifier; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    static String CardPileBaseDesignUIRegistry_unregisterCardPileBaseDesignUI_cardPileBaseDesignUI_unregistered(
+        /* @NonNull */
+        final CardPileBaseDesignId cardPileBaseDesignId )
+    {
+        return bind( CardPileBaseDesignUIRegistry_unregisterCardPileBaseDesignUI_cardPileBaseDesignUI_unregistered, cardPileBaseDesignId );
+    }
+
+    // --- CardPileBaseDesignUIRegistryExtensionPointAdapter ----------------
+
+    /**
      * Gets the formatted message indicating the bundle hosting the card pile
      * base design icon file was not found.
      * 
@@ -108,11 +171,11 @@ final class Messages
      *         base design icon file was not found; never {@code null}.
      */
     /* @NonNull */
-    static String CardPileBaseDesignUIRegistry_createCardPileBaseDesignUI_iconBundleNotFound(
+    static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconBundleNotFound(
         /* @NonNull */
         final String name )
     {
-        return bind( CardPileBaseDesignUIRegistry_createCardPileBaseDesignUI_iconBundleNotFound, name );
+        return bind( CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconBundleNotFound, name );
     }
 
     /**
@@ -130,49 +193,31 @@ final class Messages
      *         file was not found; never {@code null}.
      */
     /* @NonNull */
-    static String CardPileBaseDesignUIRegistry_createCardPileBaseDesignUI_iconFileNotFound(
+    static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconFileNotFound(
         /* @NonNull */
         final Bundle bundle,
         /* @NonNull */
         final String path )
     {
-        return bind( CardPileBaseDesignUIRegistry_createCardPileBaseDesignUI_iconFileNotFound, bundle.getSymbolicName(), path );
-    }
-
-    /**
-     * Gets the formatted message indicating a duplicate card pile base design
-     * identifier was detected.
-     * 
-     * @param cardPileBaseDesignId
-     *        The card pile base design identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating a duplicate card pile base
-     *         design identifier was detected; never {@code null}.
-     */
-    /* @NonNull */
-    static String CardPileBaseDesignUIRegistry_getCardPileBaseDesignUIMap_duplicateId(
-        /* @NonNull */
-        final CardPileBaseDesignId cardPileBaseDesignId )
-    {
-        return bind( CardPileBaseDesignUIRegistry_getCardPileBaseDesignUIMap_duplicateId, cardPileBaseDesignId );
+        return bind( CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconFileNotFound, bundle.getSymbolicName(), path );
     }
 
     /**
      * Gets the formatted message indicating an error occurred while parsing the
-     * card pile base design user interface definition.
+     * card pile base design user interface configuration element.
      * 
      * @param cardPileBaseDesignId
      *        The card pile base design identifier; must not be {@code null}.
      * 
      * @return The formatted message indicating an error occurred while parsing
-     *         the card pile base design user interface definition; never
-     *         {@code null}.
+     *         the card pile base design user interface configuration element;
+     *         never {@code null}.
      */
     /* @NonNull */
-    static String CardPileBaseDesignUIRegistry_getForeignCardPileBaseDesignUIs_parseError(
+    static String CardPileBaseDesignUIRegistryExtensionPointAdapter_registerCardPileBaseDesignUI_parseError(
         /* @NonNull */
         final String cardPileBaseDesignId )
     {
-        return bind( CardPileBaseDesignUIRegistry_getForeignCardPileBaseDesignUIs_parseError, cardPileBaseDesignId );
+        return bind( CardPileBaseDesignUIRegistryExtensionPointAdapter_registerCardPileBaseDesignUI_parseError, cardPileBaseDesignId );
     }
 }

@@ -33,14 +33,32 @@ public final class BundleConstants
     // Fields
     // ======================================================================
 
-    /** The card pile base design user interfaces extension point identifier. */
-    public static final String EXTENSION_CARD_PILE_BASE_DESIGN_UIS = "cardPileBaseDesignUIs"; //$NON-NLS-1$
+    /**
+     * The simple identifier of card pile base design user interfaces extension
+     * point.
+     */
+    public static final String CARD_PILE_BASE_DESIGN_UIS_EXTENSION_POINT_SIMPLE_ID = "cardPileBaseDesignUIs"; //$NON-NLS-1$
 
-    /** The card surface design user interfaces extension point identifier. */
-    public static final String EXTENSION_CARD_SURFACE_DESIGN_UIS = "cardSurfaceDesignUIs"; //$NON-NLS-1$
+    /**
+     * The simple identifier of the card surface design user interfaces
+     * extension point.
+     */
+    public static final String CARD_SURFACE_DESIGN_UIS_EXTENSION_POINT_SIMPLE_ID = "cardSurfaceDesignUIs"; //$NON-NLS-1$
 
     /** The symbolic name of the bundle. */
     public static final String SYMBOLIC_NAME = "org.gamegineer.table.ui"; //$NON-NLS-1$
+
+    /**
+     * The unique identifier of the card pile base design user interfaces
+     * extension point.
+     */
+    public static final String CARD_PILE_BASE_DESIGN_UIS_EXTENSION_POINT_UNIQUE_ID = SYMBOLIC_NAME + "." + CARD_PILE_BASE_DESIGN_UIS_EXTENSION_POINT_SIMPLE_ID; //$NON-NLS-1$
+
+    /**
+     * The unique identifier of the card surface design user interfaces
+     * extension point.
+     */
+    public static final String CARD_SURFACE_DESIGN_UIS_EXTENSION_POINT_UNIQUE_ID = SYMBOLIC_NAME + "." + CARD_SURFACE_DESIGN_UIS_EXTENSION_POINT_SIMPLE_ID; //$NON-NLS-1$
 
 
     // ======================================================================

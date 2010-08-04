@@ -220,7 +220,7 @@ public final class CardSurfaceDesignUIRegistry
         }
 
         final Collection<ICardSurfaceDesignUI> cardSurfaceDesignUIs = new ArrayList<ICardSurfaceDesignUI>();
-        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( BundleConstants.SYMBOLIC_NAME, BundleConstants.EXTENSION_CARD_SURFACE_DESIGN_UIS ) )
+        for( final IConfigurationElement configurationElement : extensionRegistry.getConfigurationElementsFor( BundleConstants.SYMBOLIC_NAME, BundleConstants.CARD_SURFACE_DESIGN_UIS_EXTENSION_POINT_SIMPLE_ID ) )
         {
             try
             {

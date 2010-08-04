@@ -72,16 +72,13 @@ public interface ICardPileBaseDesignUIRegistry
     /**
      * Registers the specified card pile base design user interface.
      * 
-     * <p>
-     * This method does nothing if the specified card pile base design user
-     * interface or a card pile base design user interface with the same
-     * identifier was previously registered.
-     * </p>
-     * 
      * @param cardPileBaseDesignUI
      *        The card pile base design user interface; must not be {@code null}
      *        .
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If a card pile base design user interface with the same
+     *         identifier is already registered.
      * @throws java.lang.NullPointerException
      *         If {@code cardPileBaseDesignUI} is {@code null}.
      */
@@ -92,15 +89,13 @@ public interface ICardPileBaseDesignUIRegistry
     /**
      * Unregisters the specified card pile base design user interface.
      * 
-     * <p>
-     * This method does nothing if the specified card pile base design user
-     * interface was not previously registered.
-     * </p>
-     * 
      * @param cardPileBaseDesignUI
      *        The card pile base design user interface; must not be {@code null}
      *        .
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If the specified card pile base design user interface was not
+     *         previously registered.
      * @throws java.lang.NullPointerException
      *         If {@code cardPileBaseDesignUI} is {@code null}.
      */

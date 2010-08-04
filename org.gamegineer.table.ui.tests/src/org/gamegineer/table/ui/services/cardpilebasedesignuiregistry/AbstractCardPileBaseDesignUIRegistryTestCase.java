@@ -185,39 +185,17 @@ public abstract class AbstractCardPileBaseDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerCardPileBaseDesignUI} method properly ignores
-     * a card pile base design user interface whose identifier has already been
-     * registered.
+     * Ensures the {@code registerCardPileBaseDesignUI} method throws an
+     * exception when a card pile base design user interface with the same
+     * identifier is already registered.
      */
-    @Test
-    public void testRegisterCardPileBaseDesignUI_CardPileBaseDesignUI_Registered_DifferentInstance()
+    @Test( expected = IllegalArgumentException.class )
+    public void testRegisterCardPileBaseDesignUI_CardPileBaseDesignUI_Registered()
     {
         final ICardPileBaseDesignUI cardPileBaseDesignUI = CardPileBaseDesignUIs.createUniqueCardPileBaseDesignUI();
-        final int originalCardPileBaseDesignUIsSize = cardPileBaseDesignUIRegistry_.getCardPileBaseDesignUIs().size();
         cardPileBaseDesignUIRegistry_.registerCardPileBaseDesignUI( cardPileBaseDesignUI );
 
         cardPileBaseDesignUIRegistry_.registerCardPileBaseDesignUI( CardPileBaseDesignUIs.cloneCardPileBaseDesignUI( cardPileBaseDesignUI ) );
-
-        assertTrue( cardPileBaseDesignUIRegistry_.getCardPileBaseDesignUIs().contains( cardPileBaseDesignUI ) );
-        assertEquals( originalCardPileBaseDesignUIsSize + 1, cardPileBaseDesignUIRegistry_.getCardPileBaseDesignUIs().size() );
-    }
-
-    /**
-     * Ensures the {@code registerCardPileBaseDesignUI} method properly ignores
-     * a card pile base design user interface instance that has already been
-     * registered.
-     */
-    @Test
-    public void testRegisterCardPileBaseDesignUI_CardPileBaseDesignUI_Registered_SameInstance()
-    {
-        final ICardPileBaseDesignUI cardPileBaseDesignUI = CardPileBaseDesignUIs.createUniqueCardPileBaseDesignUI();
-        final int originalCardPileBaseDesignUIsSize = cardPileBaseDesignUIRegistry_.getCardPileBaseDesignUIs().size();
-        cardPileBaseDesignUIRegistry_.registerCardPileBaseDesignUI( cardPileBaseDesignUI );
-
-        cardPileBaseDesignUIRegistry_.registerCardPileBaseDesignUI( cardPileBaseDesignUI );
-
-        assertTrue( cardPileBaseDesignUIRegistry_.getCardPileBaseDesignUIs().contains( cardPileBaseDesignUI ) );
-        assertEquals( originalCardPileBaseDesignUIsSize + 1, cardPileBaseDesignUIRegistry_.getCardPileBaseDesignUIs().size() );
     }
 
     /**
@@ -246,12 +224,12 @@ public abstract class AbstractCardPileBaseDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterCardPileBaseDesignUI} method ignores a card
-     * pile base design user interface whose identifier was previously
-     * registered but by a different card pile base design user interface
-     * instance.
+     * Ensures the {@code unregisterCardPileBaseDesignUI} method throws an
+     * exception when passed a card pile base design user interface whose
+     * identifier was previously registered but by a different card pile base
+     * design user interface instance.
      */
-    @Test
+    @Test( expected = IllegalArgumentException.class )
     public void testUnregisterCardPileBaseDesignUI_CardPileBaseDesignUI_Registered_DifferentInstance()
     {
         final ICardPileBaseDesignUI cardPileBaseDesignUI = CardPileBaseDesignUIs.createUniqueCardPileBaseDesignUI();
@@ -260,8 +238,6 @@ public abstract class AbstractCardPileBaseDesignUIRegistryTestCase
         assertEquals( originalCardPileBaseDesignUIsSize + 1, cardPileBaseDesignUIRegistry_.getCardPileBaseDesignUIs().size() );
 
         cardPileBaseDesignUIRegistry_.unregisterCardPileBaseDesignUI( CardPileBaseDesignUIs.cloneCardPileBaseDesignUI( cardPileBaseDesignUI ) );
-
-        assertEquals( originalCardPileBaseDesignUIsSize + 1, cardPileBaseDesignUIRegistry_.getCardPileBaseDesignUIs().size() );
     }
 
     /**
@@ -282,18 +258,15 @@ public abstract class AbstractCardPileBaseDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterCardPileBaseDesignUI} method properly
-     * ignores a card pile base design user interface that was not previously
-     * registered.
+     * Ensures the {@code unregisterCardPileBaseDesignUI} method throws an
+     * exception when passed a card pile base design user interface that was not
+     * previously registered.
      */
-    @Test
+    @Test( expected = IllegalArgumentException.class )
     public void testUnregisterCardPileBaseDesignUI_CardPileBaseDesignUI_Unregistered()
     {
         final ICardPileBaseDesignUI cardPileBaseDesignUI = CardPileBaseDesignUIs.createUniqueCardPileBaseDesignUI();
-        final int originalCardPileBaseDesignUIsSize = cardPileBaseDesignUIRegistry_.getCardPileBaseDesignUIs().size();
 
         cardPileBaseDesignUIRegistry_.unregisterCardPileBaseDesignUI( cardPileBaseDesignUI );
-
-        assertEquals( originalCardPileBaseDesignUIsSize, cardPileBaseDesignUIRegistry_.getCardPileBaseDesignUIs().size() );
     }
 }
