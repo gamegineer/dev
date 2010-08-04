@@ -210,8 +210,8 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapterTest
             configurationElement
         } ).anyTimes();
         final ICardSurfaceDesignRegistry cardSurfaceDesignRegistry = mocksControl_.createMock( ICardSurfaceDesignRegistry.class );
-        final Capture<ICardSurfaceDesign> cardSurfaceDesignCapture = new Capture<ICardSurfaceDesign>();
         cardSurfaceDesignRegistry.registerCardSurfaceDesign( EasyMock.notNull( ICardSurfaceDesign.class ) );
+        final Capture<ICardSurfaceDesign> cardSurfaceDesignCapture = new Capture<ICardSurfaceDesign>();
         cardSurfaceDesignRegistry.unregisterCardSurfaceDesign( EasyMock.capture( cardSurfaceDesignCapture ) );
         mocksControl_.replay();
         cardSurfaceDesignRegistryExtensionPointAdapter_.bindCardSurfaceDesignRegistry( cardSurfaceDesignRegistry );
