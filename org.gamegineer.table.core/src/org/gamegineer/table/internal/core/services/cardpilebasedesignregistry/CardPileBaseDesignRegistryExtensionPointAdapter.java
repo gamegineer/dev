@@ -351,7 +351,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
     }
 
     /**
-     * Unbinds the card pile base design registry service to this component.
+     * Unbinds the card pile base design registry service from this component.
      * 
      * @param cardPileBaseDesignRegistry
      *        The card pile base design registry service; must not be {@code
@@ -376,7 +376,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
     }
 
     /**
-     * Unbinds the extension registry service to this component.
+     * Unbinds the extension registry service from this component.
      * 
      * @param extensionRegistry
      *        The extension registry service; must not be {@code null}.

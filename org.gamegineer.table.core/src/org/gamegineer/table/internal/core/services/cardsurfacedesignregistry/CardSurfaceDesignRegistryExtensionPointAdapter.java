@@ -351,7 +351,7 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
     }
 
     /**
-     * Unbinds the card surface design registry service to this component.
+     * Unbinds the card surface design registry service from this component.
      * 
      * @param cardSurfaceDesignRegistry
      *        The card surface design registry service; must not be {@code null}
@@ -376,7 +376,7 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
     }
 
     /**
-     * Unbinds the extension registry service to this component.
+     * Unbinds the extension registry service from this component.
      * 
      * @param extensionRegistry
      *        The extension registry service; must not be {@code null}.
