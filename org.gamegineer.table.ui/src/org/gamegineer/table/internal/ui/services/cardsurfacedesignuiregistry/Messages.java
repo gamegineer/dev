@@ -39,35 +39,57 @@ final class Messages
 
     // --- CardSurfaceDesignUIRegistry --------------------------------------
 
+    /**
+     * A card surface design user interface is already registered for the
+     * specified identifier.
+     */
+    public static String CardSurfaceDesignUIRegistry_registerCardSurfaceDesignUI_cardSurfaceDesignUI_registered;
+
+    /**
+     * The card surface design user interface is not registered for the
+     * specified identifier.
+     */
+    public static String CardSurfaceDesignUIRegistry_unregisterCardSurfaceDesignUI_cardSurfaceDesignUI_unregistered;
+
+    // --- CardSurfaceDesignUIRegistryExtensionPointAdapter -----------------
+
+    /**
+     * The card surface design user interface registry service is already bound.
+     */
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_bindCardSurfaceDesignUIRegistry_bound;
+
+    /** The extension registry service is already bound. */
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
+
     /** The bundle hosting the card surface design icon was not found. */
-    public static String CardSurfaceDesignUIRegistry_createCardSurfaceDesignUI_iconBundleNotFound;
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconBundleNotFound;
 
     /** The card surface design icon file was not found. */
-    public static String CardSurfaceDesignUIRegistry_createCardSurfaceDesignUI_iconFileNotFound;
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconFileNotFound;
 
     /** The card surface design icon path is missing. */
-    public static String CardSurfaceDesignUIRegistry_createCardSurfaceDesignUI_missingIconPath;
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingIconPath;
 
     /** The card surface design identifier is missing. */
-    public static String CardSurfaceDesignUIRegistry_createCardSurfaceDesignUI_missingId;
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingId;
 
     /** The card surface design name is missing. */
-    public static String CardSurfaceDesignUIRegistry_createCardSurfaceDesignUI_missingName;
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingName;
 
     /** No package administration service is available. */
-    public static String CardSurfaceDesignUIRegistry_createCardSurfaceDesignUI_noPackageAdminService;
-
-    /** A duplicate card surface design identifier was detected. */
-    public static String CardSurfaceDesignUIRegistry_getCardSurfaceDesignUIMap_duplicateId;
-
-    /** The extension registry is not available. */
-    public static String CardSurfaceDesignUIRegistry_getForeignCardSurfaceDesignUIs_noExtensionRegistry;
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_noPackageAdminService;
 
     /**
      * An error occurred while parsing the card surface design user interface
-     * definition.
+     * configuration element.
      */
-    public static String CardSurfaceDesignUIRegistry_getForeignCardSurfaceDesignUIs_parseError;
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_registerCardSurfaceDesignUI_parseError;
+
+    /** The card surface design user interface registry service is not bound. */
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_unbindCardSurfaceDesignUIRegistry_notBound;
+
+    /** The extension registry service is not bound. */
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
 
 
     // ======================================================================
@@ -98,6 +120,46 @@ final class Messages
     // --- CardSurfaceDesignUIRegistry --------------------------------------
 
     /**
+     * Gets the formatted message indicating a card surface design user
+     * interface is already registered for the specified identifier.
+     * 
+     * @param cardSurfaceDesignId
+     *        The card surface design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating a card surface design user
+     *         interface is already registered for the specified identifier;
+     *         never {@code null}.
+     */
+    /* @NonNull */
+    static String CardSurfaceDesignUIRegistry_registerCardSurfaceDesignUI_cardSurfaceDesignUI_registered(
+        /* @NonNull */
+        final CardSurfaceDesignId cardSurfaceDesignId )
+    {
+        return bind( CardSurfaceDesignUIRegistry_registerCardSurfaceDesignUI_cardSurfaceDesignUI_registered, cardSurfaceDesignId );
+    }
+
+    /**
+     * Gets the formatted message indicating the card surface design user
+     * interface is not registered for the specified identifier.
+     * 
+     * @param cardSurfaceDesignId
+     *        The card surface design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the card surface design user
+     *         interface is not registered for the specified identifier; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    static String CardSurfaceDesignUIRegistry_unregisterCardSurfaceDesignUI_cardSurfaceDesignUI_unregistered(
+        /* @NonNull */
+        final CardSurfaceDesignId cardSurfaceDesignId )
+    {
+        return bind( CardSurfaceDesignUIRegistry_unregisterCardSurfaceDesignUI_cardSurfaceDesignUI_unregistered, cardSurfaceDesignId );
+    }
+
+    // --- CardSurfaceDesignUIRegistryExtensionPointAdapter -----------------
+
+    /**
      * Gets the formatted message indicating the bundle hosting the card surface
      * design icon file was not found.
      * 
@@ -108,11 +170,11 @@ final class Messages
      *         surface design icon file was not found; never {@code null}.
      */
     /* @NonNull */
-    static String CardSurfaceDesignUIRegistry_createCardSurfaceDesignUI_iconBundleNotFound(
+    static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconBundleNotFound(
         /* @NonNull */
         final String name )
     {
-        return bind( CardSurfaceDesignUIRegistry_createCardSurfaceDesignUI_iconBundleNotFound, name );
+        return bind( CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconBundleNotFound, name );
     }
 
     /**
@@ -130,49 +192,31 @@ final class Messages
      *         file was not found; never {@code null}.
      */
     /* @NonNull */
-    static String CardSurfaceDesignUIRegistry_createCardSurfaceDesignUI_iconFileNotFound(
+    static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconFileNotFound(
         /* @NonNull */
         final Bundle bundle,
         /* @NonNull */
         final String path )
     {
-        return bind( CardSurfaceDesignUIRegistry_createCardSurfaceDesignUI_iconFileNotFound, bundle.getSymbolicName(), path );
-    }
-
-    /**
-     * Gets the formatted message indicating a duplicate card surface design
-     * identifier was detected.
-     * 
-     * @param cardSurfaceDesignId
-     *        The card surface design identifier; must not be {@code null}.
-     * 
-     * @return The formatted message indicating a duplicate card surface design
-     *         identifier was detected; never {@code null}.
-     */
-    /* @NonNull */
-    static String CardSurfaceDesignUIRegistry_getCardSurfaceDesignUIMap_duplicateId(
-        /* @NonNull */
-        final CardSurfaceDesignId cardSurfaceDesignId )
-    {
-        return bind( CardSurfaceDesignUIRegistry_getCardSurfaceDesignUIMap_duplicateId, cardSurfaceDesignId );
+        return bind( CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconFileNotFound, bundle.getSymbolicName(), path );
     }
 
     /**
      * Gets the formatted message indicating an error occurred while parsing the
-     * card surface design user interface definition.
+     * card surface design user interface configuration element.
      * 
      * @param cardSurfaceDesignId
      *        The card surface design identifier; must not be {@code null}.
      * 
      * @return The formatted message indicating an error occurred while parsing
-     *         the card surface design user interface definition; never {@code
-     *         null}.
+     *         the card surface design user interface configuration element;
+     *         never {@code null}.
      */
     /* @NonNull */
-    static String CardSurfaceDesignUIRegistry_getForeignCardSurfaceDesignUIs_parseError(
+    static String CardSurfaceDesignUIRegistryExtensionPointAdapter_registerCardSurfaceDesignUI_parseError(
         /* @NonNull */
         final String cardSurfaceDesignId )
     {
-        return bind( CardSurfaceDesignUIRegistry_getForeignCardSurfaceDesignUIs_parseError, cardSurfaceDesignId );
+        return bind( CardSurfaceDesignUIRegistryExtensionPointAdapter_registerCardSurfaceDesignUI_parseError, cardSurfaceDesignId );
     }
 }

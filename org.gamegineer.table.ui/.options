@@ -5,3 +5,6 @@ org.gamegineer.table.ui/debug=false
 
 # Reports card pile base design user interface registry service package activity.
 org.gamegineer.table.ui/debug/services/cardPileBaseDesignUIRegistry=false
+
+# Reports card surface design user interface registry service package activity.
+org.gamegineer.table.ui/debug/services/cardSurfaceDesignUIRegistry=false

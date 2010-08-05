@@ -184,39 +184,17 @@ public abstract class AbstractCardSurfaceDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code registerCardSurfaceDesignUI} method properly ignores a
-     * card surface design user interface whose identifier has already been
-     * registered.
+     * Ensures the {@code registerCardSurfaceDesignUI} method throws an
+     * exception when a card surface design user interface with the same
+     * identifier is already registered.
      */
-    @Test
-    public void testRegisterCardSurfaceDesignUI_CardSurfaceDesignUI_Registered_DifferentInstance()
+    @Test( expected = IllegalArgumentException.class )
+    public void testRegisterCardSurfaceDesignUI_CardSurfaceDesignUI_Registered()
     {
         final ICardSurfaceDesignUI cardSurfaceDesignUI = CardSurfaceDesignUIs.createUniqueCardSurfaceDesignUI();
-        final int originalCardSurfaceDesignUIsSize = cardSurfaceDesignUIRegistry_.getCardSurfaceDesignUIs().size();
         cardSurfaceDesignUIRegistry_.registerCardSurfaceDesignUI( cardSurfaceDesignUI );
 
         cardSurfaceDesignUIRegistry_.registerCardSurfaceDesignUI( CardSurfaceDesignUIs.cloneCardSurfaceDesignUI( cardSurfaceDesignUI ) );
-
-        assertTrue( cardSurfaceDesignUIRegistry_.getCardSurfaceDesignUIs().contains( cardSurfaceDesignUI ) );
-        assertEquals( originalCardSurfaceDesignUIsSize + 1, cardSurfaceDesignUIRegistry_.getCardSurfaceDesignUIs().size() );
-    }
-
-    /**
-     * Ensures the {@code registerCardSurfaceDesignUI} method properly ignores a
-     * card surface design user interface instance that has already been
-     * registered.
-     */
-    @Test
-    public void testRegisterCardSurfaceDesignUI_CardSurfaceDesignUI_Registered_SameInstance()
-    {
-        final ICardSurfaceDesignUI cardSurfaceDesignUI = CardSurfaceDesignUIs.createUniqueCardSurfaceDesignUI();
-        final int originalCardSurfaceDesignUIsSize = cardSurfaceDesignUIRegistry_.getCardSurfaceDesignUIs().size();
-        cardSurfaceDesignUIRegistry_.registerCardSurfaceDesignUI( cardSurfaceDesignUI );
-
-        cardSurfaceDesignUIRegistry_.registerCardSurfaceDesignUI( cardSurfaceDesignUI );
-
-        assertTrue( cardSurfaceDesignUIRegistry_.getCardSurfaceDesignUIs().contains( cardSurfaceDesignUI ) );
-        assertEquals( originalCardSurfaceDesignUIsSize + 1, cardSurfaceDesignUIRegistry_.getCardSurfaceDesignUIs().size() );
     }
 
     /**
@@ -244,11 +222,12 @@ public abstract class AbstractCardSurfaceDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterCardSurfaceDesignUI} method ignores a card
-     * surface design user interface whose identifier was previously registered
-     * but by a different card surface design user interface instance.
+     * Ensures the {@code unregisterCardSurfaceDesignUI} method throws an
+     * exception when passed a card surface design user interface whose
+     * identifier was previously registered but by a different card surface
+     * design user interface instance.
      */
-    @Test
+    @Test( expected = IllegalArgumentException.class )
     public void testUnregisterCardSurfaceDesignUI_CardSurfaceDesignUI_Registered_DifferentInstance()
     {
         final ICardSurfaceDesignUI cardSurfaceDesignUI = CardSurfaceDesignUIs.createUniqueCardSurfaceDesignUI();
@@ -257,8 +236,6 @@ public abstract class AbstractCardSurfaceDesignUIRegistryTestCase
         assertEquals( originalCardSurfaceDesignUIsSize + 1, cardSurfaceDesignUIRegistry_.getCardSurfaceDesignUIs().size() );
 
         cardSurfaceDesignUIRegistry_.unregisterCardSurfaceDesignUI( CardSurfaceDesignUIs.cloneCardSurfaceDesignUI( cardSurfaceDesignUI ) );
-
-        assertEquals( originalCardSurfaceDesignUIsSize + 1, cardSurfaceDesignUIRegistry_.getCardSurfaceDesignUIs().size() );
     }
 
     /**
@@ -279,17 +256,15 @@ public abstract class AbstractCardSurfaceDesignUIRegistryTestCase
     }
 
     /**
-     * Ensures the {@code unregisterCardSurfaceDesignUI} method properly ignores
-     * a card surface design user interface that was not previously registered.
+     * Ensures the {@code unregisterCardSurfaceDesignUI} method throws an
+     * exception when passed a card surface design user interface that was not
+     * previously registered.
      */
-    @Test
+    @Test( expected = IllegalArgumentException.class )
     public void testUnregisterCardSurfaceDesignUI_CardSurfaceDesignUI_Unregistered()
     {
         final ICardSurfaceDesignUI cardSurfaceDesignUI = CardSurfaceDesignUIs.createUniqueCardSurfaceDesignUI();
-        final int originalCardSurfaceDesignUIsSize = cardSurfaceDesignUIRegistry_.getCardSurfaceDesignUIs().size();
 
         cardSurfaceDesignUIRegistry_.unregisterCardSurfaceDesignUI( cardSurfaceDesignUI );
-
-        assertEquals( originalCardSurfaceDesignUIsSize, cardSurfaceDesignUIRegistry_.getCardSurfaceDesignUIs().size() );
     }
 }

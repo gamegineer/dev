@@ -29,4 +29,5 @@ Import-Package: net.jcip.annotations;version="1.0.0",
 Require-Bundle: org.eclipse.equinox.registry;bundle-version="3.4.100"
 Service-Component: OSGI-INF/cardPileBaseDesignUIRegistry.xml,
  OSGI-INF/cardPileBaseDesignUIRegistryExtensionPointAdapter.xml,
- OSGI-INF/cardSurfaceDesignUIRegistry.xml
+ OSGI-INF/cardSurfaceDesignUIRegistry.xml,
+ OSGI-INF/cardSurfaceDesignUIRegistryExtensionPointAdapter.xml
