@@ -1068,7 +1068,12 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
+                // NB: Using an empty string for the command key to force the user to be
+                // prompted for a file name.  Cannot use null because AbstractButton
+                // substitutes the button text for the command key when the command key
+                // is null.
                 putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.OpenTableAction_accelerator ) );
+                putValue( ACTION_COMMAND_KEY, "" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.OpenTableAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.OpenTableAction_text );
             }

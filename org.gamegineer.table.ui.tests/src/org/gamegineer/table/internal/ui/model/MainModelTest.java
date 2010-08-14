@@ -21,10 +21,14 @@
 
 package org.gamegineer.table.internal.ui.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.ui.TableAdvisor;
@@ -145,6 +149,22 @@ public final class MainModelTest
     public void testConstructor_Advisor_Null()
     {
         new MainModel( null );
+    }
+
+    /**
+     * Ensures the {@code getFileNameHistory} method returns a copy of the file
+     * name history collection.
+     */
+    @Test
+    public void testGetFileNameHistory_ReturnValue_Copy()
+    {
+        final Collection<String> fileNameHistory = model_.getFileNameHistory();
+        final Collection<String> expectedFileNameHistory = new ArrayList<String>( fileNameHistory );
+        fileNameHistory.add( "fileName" ); //$NON-NLS-1$
+
+        final Collection<String> actualFileNameHistory = model_.getFileNameHistory();
+
+        assertEquals( expectedFileNameHistory, actualFileNameHistory );
     }
 
     /**
@@ -551,6 +571,26 @@ public final class MainModelTest
         model_.saveTable( fileName );
 
         niceMocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code setFileNameHistory} method throws an exception when
+     * passed a {@code null} file name history.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetFileNameHistory_FileNameHistory_Null()
+    {
+        model_.setFileNameHistory( null );
+    }
+
+    /**
+     * Ensures the {@code setFileNameHistory} method throws an exception when
+     * passed a file name history that contains a {@code null} entry.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testSetFileNameHistory_FileNameHistory_NullEntry()
+    {
+        model_.setFileNameHistory( Collections.<String>singletonList( null ) );
     }
 
     /**

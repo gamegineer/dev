@@ -21,6 +21,9 @@
 
 package org.gamegineer.table.internal.ui.view;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -28,6 +31,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.ui.model.MainModel;
+import org.gamegineer.table.internal.ui.util.swing.JMenuItemGroup;
 
 /**
  * The menu bar view.
@@ -43,7 +47,6 @@ final class MenuBarView
     private final JMenuBar menuBar_;
 
     /** The model associated with this view. */
-    @SuppressWarnings( "unused" )
     private final MainModel model_;
 
 
@@ -238,6 +241,17 @@ final class MenuBarView
         menu.addSeparator();
         menu.add( Actions.getSaveTableAction() );
         menu.add( Actions.getSaveTableAsAction() );
+        menu.add( new JMenuItemGroup( menu, Actions.getOpenTableAction(), new JMenuItemGroup.IContentProvider()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Collection<String> getMenuItemLabels()
+            {
+                final List<String> fileNameHistory = model_.getFileNameHistory();
+                Collections.reverse( fileNameHistory );
+                return fileNameHistory;
+            }
+        } ) );
         menu.addSeparator();
         menu.add( Actions.getExitAction() );
         return menu;

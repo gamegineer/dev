@@ -26,6 +26,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import javax.swing.Action;
 import javax.swing.JFrame;
@@ -57,6 +59,9 @@ public final class MainFrame
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The name of the preference that stores a file name history entry. */
+    private static final String PREFERENCE_FILE_NAME_HISTORY_ENTRY = "fileNameHistoryEntry"; //$NON-NLS-1$
 
     /** The name of the preference that stores the window height. */
     private static final String PREFERENCE_HEIGHT = "height"; //$NON-NLS-1$
@@ -175,10 +180,9 @@ public final class MainFrame
         {
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                @SuppressWarnings( "unused" )
                 final ActionEvent e )
             {
-                openTable();
+                openTable( e.getActionCommand() );
             }
         } );
         actionMediator_.bindActionListener( Actions.getSaveTableAction(), new ActionListener()
@@ -311,24 +315,39 @@ public final class MainFrame
     private void loadPreferences()
     {
         final Preferences preferences = getPreferences();
-        if( preferences != null )
+        if( preferences == null )
         {
-            final int x = preferences.getInt( PREFERENCE_X, Integer.MAX_VALUE );
-            final int y = preferences.getInt( PREFERENCE_Y, Integer.MAX_VALUE );
-            if( (x != Integer.MAX_VALUE) && (y != Integer.MAX_VALUE) )
-            {
-                setLocation( x, y );
-            }
-
-            final int width = preferences.getInt( PREFERENCE_WIDTH, Integer.MAX_VALUE );
-            final int height = preferences.getInt( PREFERENCE_HEIGHT, Integer.MAX_VALUE );
-            if( (width != Integer.MAX_VALUE) && (height != Integer.MAX_VALUE) )
-            {
-                setSize( width, height );
-            }
-
-            setExtendedState( preferences.getInt( PREFERENCE_STATE, NORMAL ) );
+            return;
         }
+
+        final int x = preferences.getInt( PREFERENCE_X, Integer.MAX_VALUE );
+        final int y = preferences.getInt( PREFERENCE_Y, Integer.MAX_VALUE );
+        if( (x != Integer.MAX_VALUE) && (y != Integer.MAX_VALUE) )
+        {
+            setLocation( x, y );
+        }
+
+        final int width = preferences.getInt( PREFERENCE_WIDTH, Integer.MAX_VALUE );
+        final int height = preferences.getInt( PREFERENCE_HEIGHT, Integer.MAX_VALUE );
+        if( (width != Integer.MAX_VALUE) && (height != Integer.MAX_VALUE) )
+        {
+            setSize( width, height );
+        }
+
+        setExtendedState( preferences.getInt( PREFERENCE_STATE, NORMAL ) );
+
+        final List<String> fileNameHistory = new ArrayList<String>();
+        for( int index = 0; true; ++index )
+        {
+            final String fileName = preferences.get( PREFERENCE_FILE_NAME_HISTORY_ENTRY + index, null );
+            if( fileName == null )
+            {
+                break;
+            }
+
+            fileNameHistory.add( fileName );
+        }
+        model_.setFileNameHistory( fileNameHistory );
     }
 
     /*
@@ -386,11 +405,25 @@ public final class MainFrame
     }
 
     /**
-     * Opens an existing table.
+     * Opens the an existing table from the specified file.
+     * 
+     * @param fileName
+     *        The name of the file from which the table will be opened; must not be {@code null}.
+     *        Pass an empty string to prompt the user for a file name.
      */
-    private void openTable()
+    private void openTable(
+        /* @NonNull */
+        final String fileName )
     {
-        if( confirmSaveDirtyTable() )
+        assert fileName != null;
+
+        if( !confirmSaveDirtyTable() )
+        {
+            return;
+        }
+
+        final String checkedFileName;
+        if( fileName.isEmpty() )
         {
             final JFileChooser fileChooser = createFileChooser();
             if( fileChooser.showOpenDialog( this ) == JFileChooser.CANCEL_OPTION )
@@ -398,15 +431,21 @@ public final class MainFrame
                 return;
             }
 
-            try
-            {
-                model_.openTable( fileChooser.getSelectedFile().getAbsolutePath() );
-            }
-            catch( final ModelException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainFrame_openTable_error, e );
-                JOptionPane.showMessageDialog( this, Messages.MainFrame_openTable_error, Messages.MainFrame_application_name, JOptionPane.ERROR_MESSAGE );
-            }
+            checkedFileName = fileChooser.getSelectedFile().getAbsolutePath();
+        }
+        else
+        {
+            checkedFileName = fileName;
+        }
+
+        try
+        {
+            model_.openTable( checkedFileName );
+        }
+        catch( final ModelException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainFrame_openTable_error, e );
+            JOptionPane.showMessageDialog( this, Messages.MainFrame_openTable_error, Messages.MainFrame_application_name, JOptionPane.ERROR_MESSAGE );
         }
     }
 
@@ -452,13 +491,21 @@ public final class MainFrame
     private void savePreferences()
     {
         final Preferences preferences = getPreferences();
-        if( preferences != null )
+        if( preferences == null )
         {
-            preferences.putInt( PREFERENCE_X, getX() );
-            preferences.putInt( PREFERENCE_Y, getY() );
-            preferences.putInt( PREFERENCE_WIDTH, getWidth() );
-            preferences.putInt( PREFERENCE_HEIGHT, getHeight() );
-            preferences.putInt( PREFERENCE_STATE, getExtendedState() );
+            return;
+        }
+
+        preferences.putInt( PREFERENCE_X, getX() );
+        preferences.putInt( PREFERENCE_Y, getY() );
+        preferences.putInt( PREFERENCE_WIDTH, getWidth() );
+        preferences.putInt( PREFERENCE_HEIGHT, getHeight() );
+        preferences.putInt( PREFERENCE_STATE, getExtendedState() );
+
+        final List<String> fileNameHistory = model_.getFileNameHistory();
+        for( int index = 0, size = fileNameHistory.size(); index < size; ++index )
+        {
+            preferences.put( PREFERENCE_FILE_NAME_HISTORY_ENTRY + index, fileNameHistory.get( index ) );
         }
     }
 

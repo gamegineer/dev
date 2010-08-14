@@ -110,6 +110,9 @@ final class Messages
     /** An error occurred while saving the table. */
     public static String MainModel_saveTable_error;
 
+    /** The file name history contains a null entry. */
+    public static String MainModel_setFileNameHistory_fileNameHistory_containsNullEntry;
+
     /**
      * An unexpected exception was thrown from IMainModelListener.tableClosed().
      */
