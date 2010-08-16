@@ -247,7 +247,7 @@ final class MenuBarView
             @SuppressWarnings( "synthetic-access" )
             public Collection<String> getMenuItemLabels()
             {
-                final List<String> fileNameHistory = model_.getFileNameHistory();
+                final List<String> fileNameHistory = model_.getPreferencesModel().getFileNameHistoryPreferences().getFileNames();
                 Collections.reverse( fileNameHistory );
                 return fileNameHistory;
             }

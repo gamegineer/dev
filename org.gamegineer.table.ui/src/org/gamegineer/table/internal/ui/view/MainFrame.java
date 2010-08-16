@@ -22,12 +22,12 @@
 package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import javax.swing.Action;
 import javax.swing.JFrame;
@@ -36,9 +36,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
-import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
+import org.gamegineer.table.internal.ui.model.FramePreferences;
 import org.gamegineer.table.internal.ui.model.IMainModelListener;
 import org.gamegineer.table.internal.ui.model.MainModel;
 import org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent;
@@ -46,7 +46,6 @@ import org.gamegineer.table.internal.ui.model.MainModelEvent;
 import org.gamegineer.table.internal.ui.model.ModelException;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
 import org.gamegineer.table.ui.ITableAdvisor;
-import org.osgi.service.prefs.Preferences;
 
 /**
  * The top-level frame.
@@ -59,24 +58,6 @@ public final class MainFrame
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /** The name of the preference that stores a file name history entry. */
-    private static final String PREFERENCE_FILE_NAME_HISTORY_ENTRY = "fileNameHistoryEntry"; //$NON-NLS-1$
-
-    /** The name of the preference that stores the window height. */
-    private static final String PREFERENCE_HEIGHT = "height"; //$NON-NLS-1$
-
-    /** The name of the preference that stores the window state. */
-    private static final String PREFERENCE_STATE = "state"; //$NON-NLS-1$
-
-    /** The name of the preference that stores the window width. */
-    private static final String PREFERENCE_WIDTH = "width"; //$NON-NLS-1$
-
-    /** The name of the preference that stores the window x location. */
-    private static final String PREFERENCE_X = "x"; //$NON-NLS-1$
-
-    /** The name of the preference that stores the window y location. */
-    private static final String PREFERENCE_Y = "y"; //$NON-NLS-1$
 
     /** Serializable class version number. */
     private static final long serialVersionUID = 1087139002992381995L;
@@ -119,6 +100,8 @@ public final class MainFrame
         menuBarView_ = new MenuBarView( model_ );
 
         initializeComponent();
+
+        loadApplicationState();
     }
 
 
@@ -265,18 +248,6 @@ public final class MainFrame
     }
 
     /**
-     * Gets the preferences for this class.
-     * 
-     * @return The preferences for this class or {@code null} if no preferences
-     *         are available.
-     */
-    /* @Nullable */
-    private static Preferences getPreferences()
-    {
-        return Activator.getDefault().getUserPreferences( MainFrame.class );
-    }
-
-    /**
      * Gets the name of the table.
      * 
      * @return The name of the table; never {@code null}.
@@ -306,48 +277,43 @@ public final class MainFrame
         setLocationByPlatform( true );
         setSize( 300, 300 );
         updateTitle();
+    }
+
+    /**
+     * Loads the global application state.
+     */
+    private void loadApplicationState()
+    {
+        model_.load();
+
         loadPreferences();
     }
 
     /**
      * Loads the preferences for this class.
      */
+    @SuppressWarnings( "boxing" )
     private void loadPreferences()
     {
-        final Preferences preferences = getPreferences();
-        if( preferences == null )
+        final FramePreferences framePreferences = model_.getPreferencesModel().getFramePreferences();
+
+        final Point location = framePreferences.getLocation();
+        if( location != null )
         {
-            return;
+            setLocation( location );
         }
 
-        final int x = preferences.getInt( PREFERENCE_X, Integer.MAX_VALUE );
-        final int y = preferences.getInt( PREFERENCE_Y, Integer.MAX_VALUE );
-        if( (x != Integer.MAX_VALUE) && (y != Integer.MAX_VALUE) )
+        final Dimension size = framePreferences.getSize();
+        if( size != null )
         {
-            setLocation( x, y );
+            setSize( size );
         }
 
-        final int width = preferences.getInt( PREFERENCE_WIDTH, Integer.MAX_VALUE );
-        final int height = preferences.getInt( PREFERENCE_HEIGHT, Integer.MAX_VALUE );
-        if( (width != Integer.MAX_VALUE) && (height != Integer.MAX_VALUE) )
+        final Integer state = framePreferences.getState();
+        if( state != null )
         {
-            setSize( width, height );
+            setExtendedState( state );
         }
-
-        setExtendedState( preferences.getInt( PREFERENCE_STATE, NORMAL ) );
-
-        final List<String> fileNameHistory = new ArrayList<String>();
-        for( int index = 0; true; ++index )
-        {
-            final String fileName = preferences.get( PREFERENCE_FILE_NAME_HISTORY_ENTRY + index, null );
-            if( fileName == null )
-            {
-                break;
-            }
-
-            fileNameHistory.add( fileName );
-        }
-        model_.setFileNameHistory( fileNameHistory );
     }
 
     /*
@@ -408,8 +374,9 @@ public final class MainFrame
      * Opens the an existing table from the specified file.
      * 
      * @param fileName
-     *        The name of the file from which the table will be opened; must not be {@code null}.
-     *        Pass an empty string to prompt the user for a file name.
+     *        The name of the file from which the table will be opened; must not
+     *        be {@code null}. Pass an empty string to prompt the user for a
+     *        file name.
      */
     private void openTable(
         /* @NonNull */
@@ -459,7 +426,7 @@ public final class MainFrame
         switch( e.getID() )
         {
             case WindowEvent.WINDOW_CLOSED:
-                savePreferences();
+                saveApplicationState();
                 break;
 
             case WindowEvent.WINDOW_CLOSING:
@@ -486,27 +453,25 @@ public final class MainFrame
     }
 
     /**
+     * Saves the global application state.
+     */
+    private void saveApplicationState()
+    {
+        savePreferences();
+
+        model_.save();
+    }
+
+    /**
      * Saves the preferences for this class.
      */
+    @SuppressWarnings( "boxing" )
     private void savePreferences()
     {
-        final Preferences preferences = getPreferences();
-        if( preferences == null )
-        {
-            return;
-        }
-
-        preferences.putInt( PREFERENCE_X, getX() );
-        preferences.putInt( PREFERENCE_Y, getY() );
-        preferences.putInt( PREFERENCE_WIDTH, getWidth() );
-        preferences.putInt( PREFERENCE_HEIGHT, getHeight() );
-        preferences.putInt( PREFERENCE_STATE, getExtendedState() );
-
-        final List<String> fileNameHistory = model_.getFileNameHistory();
-        for( int index = 0, size = fileNameHistory.size(); index < size; ++index )
-        {
-            preferences.put( PREFERENCE_FILE_NAME_HISTORY_ENTRY + index, fileNameHistory.get( index ) );
-        }
+        final FramePreferences framePreferences = model_.getPreferencesModel().getFramePreferences();
+        framePreferences.setLocation( getLocation() );
+        framePreferences.setSize( getSize() );
+        framePreferences.setState( getExtendedState() );
     }
 
     /**

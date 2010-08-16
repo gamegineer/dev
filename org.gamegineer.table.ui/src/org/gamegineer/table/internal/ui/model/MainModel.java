@@ -28,10 +28,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
@@ -63,10 +59,6 @@ public final class MainModel
     @GuardedBy( "lock_" )
     private String fileName_;
 
-    /** The file name history. */
-    @GuardedBy( "lock_" )
-    private final Map<String, String> fileNameHistory_;
-
     /** Indicates the main model is dirty. */
     @GuardedBy( "lock_" )
     private boolean isDirty_;
@@ -76,6 +68,9 @@ public final class MainModel
 
     /** The instance lock. */
     private final Object lock_;
+
+    /** The preferences model. */
+    private final PreferencesModel preferencesModel_;
 
     /** The table model. */
     @GuardedBy( "lock_" )
@@ -104,9 +99,9 @@ public final class MainModel
         lock_ = new Object();
         advisor_ = advisor;
         fileName_ = null;
-        fileNameHistory_ = createFileNameHistory();
         isDirty_ = false;
         listeners_ = new CopyOnWriteArrayList<IMainModelListener>();
+        preferencesModel_ = new PreferencesModel();
         tableModel_ = null;
     }
 
@@ -114,23 +109,6 @@ public final class MainModel
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Adds the specified file name to the file name history.
-     * 
-     * @param fileName
-     *        The file name; must not be {@code null}.
-     */
-    @GuardedBy( "lock_" )
-    private void addFileNameToHistory(
-        /* @NonNull */
-        final String fileName )
-    {
-        assert fileName != null;
-        assert Thread.holdsLock( lock_ );
-
-        fileNameHistory_.put( fileName, fileName );
-    }
 
     /**
      * Adds the specified main model listener to this main model.
@@ -161,29 +139,6 @@ public final class MainModel
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
         setDirty();
-    }
-
-    /**
-     * Creates the file name history.
-     * 
-     * @return The file name history; never {@code null}.
-     */
-    /* @NonNull */
-    private static Map<String, String> createFileNameHistory()
-    {
-        final int FILE_NAME_HISTORY_CAPACITY = 4;
-        return new LinkedHashMap<String, String>( FILE_NAME_HISTORY_CAPACITY, 0.75F, true )
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            protected boolean removeEldestEntry(
-                @SuppressWarnings( "unused" )
-                final Map.Entry<String, String> eldest )
-            {
-                return size() > FILE_NAME_HISTORY_CAPACITY;
-            }
-        };
     }
 
     /**
@@ -311,18 +266,14 @@ public final class MainModel
     }
 
     /**
-     * Gets the file name history.
+     * Gets the preferences model.
      * 
-     * @return The file name history; never {@code null}. The collection is
-     *         ordered from the oldest file name to the newest file name.
+     * @return The preferences model; never {@code null}.
      */
     /* @NonNull */
-    public List<String> getFileNameHistory()
+    public PreferencesModel getPreferencesModel()
     {
-        synchronized( lock_ )
-        {
-            return new ArrayList<String>( fileNameHistory_.values() );
-        }
+        return preferencesModel_;
     }
 
     /**
@@ -361,6 +312,14 @@ public final class MainModel
         {
             return isDirty_;
         }
+    }
+
+    /**
+     * Loads the main model from persistent storage.
+     */
+    public void load()
+    {
+        preferencesModel_.load();
     }
 
     /**
@@ -451,7 +410,7 @@ public final class MainModel
             openedTableModel = tableModel_ = new TableModel( table );
             openedTableModel.addTableModelListener( this );
             fileName_ = fileName;
-            addFileNameToHistory( fileName );
+            preferencesModel_.getFileNameHistoryPreferences().addFileName( fileName );
             isDirty_ = false;
         }
 
@@ -482,6 +441,14 @@ public final class MainModel
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.MainModel_removeMainModelListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+    /**
+     * Stores the main model to persistent storage.
+     */
+    public void save()
+    {
+        preferencesModel_.save();
     }
 
     /**
@@ -529,7 +496,7 @@ public final class MainModel
         synchronized( lock_ )
         {
             fileName_ = fileName;
-            addFileNameToHistory( fileName );
+            preferencesModel_.getFileNameHistoryPreferences().addFileName( fileName );
             isDirty_ = false;
         }
 
@@ -550,36 +517,6 @@ public final class MainModel
 
         fireMainModelDirtyFlagChanged();
         fireMainModelStateChanged();
-    }
-
-    /**
-     * Sets the file name history.
-     * 
-     * @param fileNameHistory
-     *        The file name history; must not be {@code null}. The collection is
-     *        assumed to be ordered from the oldest file name to the newest file
-     *        name.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code fileNameHistory} contains a {@code null} entry.
-     * @throws java.lang.NullPointerException
-     *         If {@code fileNameHistory} is {@code null}.
-     */
-    public void setFileNameHistory(
-        /* @NonNull */
-        final List<String> fileNameHistory )
-    {
-        assertArgumentNotNull( fileNameHistory, "fileNameHistory" ); //$NON-NLS-1$
-        assertArgumentLegal( !fileNameHistory.contains( null ), "fileNameHistory", Messages.MainModel_setFileNameHistory_fileNameHistory_containsNullEntry ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            fileNameHistory_.clear();
-            for( final String fileName : fileNameHistory )
-            {
-                addFileNameToHistory( fileName );
-            }
-        }
     }
 
     /*

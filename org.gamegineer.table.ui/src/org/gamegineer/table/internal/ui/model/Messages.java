@@ -123,6 +123,11 @@ final class Messages
      */
     public static String MainModel_tableOpened_unexpectedException;
 
+    // --- PreferencesModel -------------------------------------------------
+
+    /** The user preferences are not available. */
+    public static String PreferencesModel_userPreferences_notAvailable;
+
     // --- TableModel -------------------------------------------------------
 
     /** The table model listener is already registered. */
