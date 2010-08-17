@@ -7,7 +7,7 @@ Bundle-Name: %bundleName
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.gamegineer.common.persistence
 Bundle-Vendor: %bundleVendor
-Bundle-Version: 0.5.0
+Bundle-Version: 0.5.0.qualifier
 Export-Package: org.gamegineer.common.persistence.memento;version="0.5.0",
  org.gamegineer.common.persistence.schemes.beans;version="0.5.0",
  org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry;version="0.5.0",

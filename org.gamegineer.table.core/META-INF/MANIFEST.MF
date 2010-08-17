@@ -7,7 +7,7 @@ Bundle-Name: %bundleName
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.gamegineer.table.core;singleton:=true
 Bundle-Vendor: %bundleVendor
-Bundle-Version: 0.5.0
+Bundle-Version: 0.5.0.qualifier
 Export-Package: org.gamegineer.table.core;version="0.5.0",
  org.gamegineer.table.core.services.cardpilebasedesignregistry;version="0.5.0",
  org.gamegineer.table.core.services.cardsurfacedesignregistry;version="0.5.0"
