@@ -3,6 +3,11 @@
 
     <property environment="env" />
 
+    <!-- Generate version qualifier -->
+    <tstamp>
+        <format pattern="'v'yyyyMMdd-HHmm" property="qualifier" timezone="UTC" />
+    </tstamp>
+
     <!--
         Builds the entire Gamegineer workspace.
 
@@ -11,6 +16,20 @@
         to the Gamegineer build system guidelines.
     -->
     <target name="build">
+        <antcall target="before-build" />
+        <antcall target="core-build" />
+        <antcall target="after-build" />
+    </target>
+
+    <target name="before-build">
+        <!-- Update version qualifiers not managed by PDE Build -->
+        <replace
+        		file="product/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
+            	token="qualifier"
+            	value="${qualifier}" />
+    </target>
+
+    <target name="core-build">
         <java
                 classname="org.eclipse.core.launcher.Main"
                 failonerror="true"
@@ -21,11 +40,15 @@
                     <include name="org.eclipse.equinox.launcher_*.jar" />
                 </fileset>
             </classpath>
+            <jvmarg value="-DbuildDirectory=${basedir}" />
+            <jvmarg value="-DforceContextQualifier=${qualifier}" />
+            <jvmarg value="-DJavaSE-1.6=${env.JAVA_HOME}/jre/lib/rt.jar" />
             <arg value="-application" />
             <arg value="org.eclipse.pde.build.Build" />
-            <arg value="-DbuildDirectory=${basedir}" />
-            <arg value="-DJavaSE-1.6=${env.JAVA_HOME}/jre/lib/rt.jar" />
         </java>
+    </target>
+
+    <target name="after-build">
     </target>
 
 </project>
