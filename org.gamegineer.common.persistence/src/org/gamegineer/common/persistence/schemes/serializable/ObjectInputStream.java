@@ -125,12 +125,21 @@ public final class ObjectInputStream
         final Object obj )
         throws IOException
     {
-        final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( obj.getClass().getName() );
-        if( delegate != null )
+        Object object = obj;
+        while( true )
         {
-            return delegate.resolveObject( obj );
+            final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( object.getClass().getName() );
+            final Object resolvedObject = (delegate != null) ? delegate.resolveObject( object ) : super.resolveObject( object );
+            if( object != resolvedObject )
+            {
+                object = resolvedObject;
+            }
+            else
+            {
+                break;
+            }
         }
 
-        return super.resolveObject( obj );
+        return object;
     }
 }

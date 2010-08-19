@@ -24,13 +24,11 @@ package org.gamegineer.table.internal.core.services.cardpilebasedesignregistry;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -38,8 +36,6 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.gamegineer.table.core.CardPileBaseDesignId;
-import org.gamegineer.table.core.ICardPileBaseDesign;
-import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry;
 import org.gamegineer.table.internal.core.BundleConstants;
 import org.gamegineer.table.internal.core.Loggers;
@@ -84,7 +80,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
      * registry.
      */
     @GuardedBy( "lock_" )
-    private Collection<CardPileBaseDesign> cardPileBaseDesigns_;
+    private Collection<CardPileBaseDesignExtensionProxy> cardPileBaseDesigns_;
 
     /** The extension registry service. */
     @GuardedBy( "lock_" )
@@ -106,7 +102,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
     {
         lock_ = new Object();
         cardPileBaseDesignRegistry_ = null;
-        cardPileBaseDesigns_ = new ArrayList<CardPileBaseDesign>();
+        cardPileBaseDesigns_ = new ArrayList<CardPileBaseDesignExtensionProxy>();
         extensionRegistry_ = null;
     }
 
@@ -214,7 +210,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
      *         design.
      */
     /* @NonNull */
-    private static CardPileBaseDesign createCardPileBaseDesign(
+    private static CardPileBaseDesignExtensionProxy createCardPileBaseDesign(
         /* @NonNull */
         final IConfigurationElement configurationElement )
     {
@@ -242,7 +238,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
             throw new IllegalArgumentException( Messages.CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseHeightError, e );
         }
 
-        return new CardPileBaseDesign( configurationElement.getDeclaringExtension(), id, width, height );
+        return new CardPileBaseDesignExtensionProxy( configurationElement.getDeclaringExtension(), id, width, height );
     }
 
     /**
@@ -268,7 +264,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
      */
     private static boolean isCardPileBaseDesignContributedByExtension(
         /* @NonNull */
-        final CardPileBaseDesign cardPileBaseDesign,
+        final CardPileBaseDesignExtensionProxy cardPileBaseDesign,
         /* @NonNull */
         final IExtension extension )
     {
@@ -297,7 +293,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
     {
         assert configurationElement != null;
 
-        final CardPileBaseDesign cardPileBaseDesign;
+        final CardPileBaseDesignExtensionProxy cardPileBaseDesign;
         try
         {
             cardPileBaseDesign = createCardPileBaseDesign( configurationElement );
@@ -406,7 +402,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
     {
         synchronized( lock_ )
         {
-            for( final CardPileBaseDesign cardPileBaseDesign : cardPileBaseDesigns_ )
+            for( final CardPileBaseDesignExtensionProxy cardPileBaseDesign : cardPileBaseDesigns_ )
             {
                 cardPileBaseDesignRegistry_.unregisterCardPileBaseDesign( cardPileBaseDesign );
             }
@@ -430,130 +426,15 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            for( final Iterator<CardPileBaseDesign> iterator = cardPileBaseDesigns_.iterator(); iterator.hasNext(); )
+            for( final Iterator<CardPileBaseDesignExtensionProxy> iterator = cardPileBaseDesigns_.iterator(); iterator.hasNext(); )
             {
-                final CardPileBaseDesign cardPileBaseDesign = iterator.next();
+                final CardPileBaseDesignExtensionProxy cardPileBaseDesign = iterator.next();
                 if( isCardPileBaseDesignContributedByExtension( cardPileBaseDesign, extension ) )
                 {
                     cardPileBaseDesignRegistry_.unregisterCardPileBaseDesign( cardPileBaseDesign );
                     iterator.remove();
                 }
             }
-        }
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * Implementation of {@link org.gamegineer.table.core.ICardPileBaseDesign}
-     * created from an extension.
-     */
-    @Immutable
-    private static final class CardPileBaseDesign
-        implements ICardPileBaseDesign
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** The card pile base design to which all behavior is delegated. */
-        private final ICardPileBaseDesign delegate_;
-
-        /** The namespace identifier of the contributing extension. */
-        private final String extensionNamespaceId_;
-
-        /** The simple identifier of the contributing extension. */
-        private final String extensionSimpleId_;
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code CardPileBaseDesign} class.
-         * 
-         * @param extension
-         *        The extension that contributed this card pile base design;
-         *        must not be {@code null}.
-         * @param id
-         *        The card pile base design identifier; must not be {@code null}
-         *        .
-         * @param width
-         *        The card pile base design width in table coordinates; must not
-         *        be negative.
-         * @param height
-         *        The card pile base design height in table coordinates; must
-         *        not be negative.
-         * 
-         * @throws java.lang.IllegalArgumentException
-         *         If {@code width} or {@code height} is negative.
-         * @throws java.lang.NullPointerException
-         *         If {@code id} is {@code null}.
-         */
-        CardPileBaseDesign(
-            /* @NonNull */
-            final IExtension extension,
-            /* @NonNull */
-            final CardPileBaseDesignId id,
-            final int width,
-            final int height )
-        {
-            assert extension != null;
-
-            extensionNamespaceId_ = extension.getNamespaceIdentifier();
-            extensionSimpleId_ = extension.getSimpleIdentifier();
-            delegate_ = TableFactory.createCardPileBaseDesign( id, width, height );
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /**
-         * Gets the namespace identifier of the contributing extension.
-         * 
-         * @return The namespace identifier of the contributing extension; never
-         *         {@code null}.
-         */
-        /* @NonNull */
-        String getExtensionNamespaceId()
-        {
-            return extensionNamespaceId_;
-        }
-
-        /**
-         * Gets the simple identifier of the contributing extension.
-         * 
-         * @return The simple identifier of the contributing extension; may be
-         *         {@code null}.
-         */
-        /* @Nullable */
-        String getExtensionSimpleId()
-        {
-            return extensionSimpleId_;
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ICardPileBaseDesign#getId()
-         */
-        @Override
-        public CardPileBaseDesignId getId()
-        {
-            return delegate_.getId();
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ICardPileBaseDesign#getSize()
-         */
-        @Override
-        public Dimension getSize()
-        {
-            return delegate_.getSize();
         }
     }
 }

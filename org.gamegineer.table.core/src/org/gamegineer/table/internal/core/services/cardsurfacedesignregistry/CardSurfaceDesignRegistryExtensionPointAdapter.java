@@ -24,13 +24,11 @@ package org.gamegineer.table.internal.core.services.cardsurfacedesignregistry;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -38,8 +36,6 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.gamegineer.table.core.CardSurfaceDesignId;
-import org.gamegineer.table.core.ICardSurfaceDesign;
-import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry;
 import org.gamegineer.table.internal.core.BundleConstants;
 import org.gamegineer.table.internal.core.Loggers;
@@ -84,7 +80,7 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
      * registry.
      */
     @GuardedBy( "lock_" )
-    private Collection<CardSurfaceDesign> cardSurfaceDesigns_;
+    private Collection<CardSurfaceDesignExtensionProxy> cardSurfaceDesigns_;
 
     /** The extension registry service. */
     @GuardedBy( "lock_" )
@@ -106,7 +102,7 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
     {
         lock_ = new Object();
         cardSurfaceDesignRegistry_ = null;
-        cardSurfaceDesigns_ = new ArrayList<CardSurfaceDesign>();
+        cardSurfaceDesigns_ = new ArrayList<CardSurfaceDesignExtensionProxy>();
         extensionRegistry_ = null;
     }
 
@@ -214,7 +210,7 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
      *         design.
      */
     /* @NonNull */
-    private static CardSurfaceDesign createCardSurfaceDesign(
+    private static CardSurfaceDesignExtensionProxy createCardSurfaceDesign(
         /* @NonNull */
         final IConfigurationElement configurationElement )
     {
@@ -242,7 +238,7 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
             throw new IllegalArgumentException( Messages.CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseHeightError, e );
         }
 
-        return new CardSurfaceDesign( configurationElement.getDeclaringExtension(), id, width, height );
+        return new CardSurfaceDesignExtensionProxy( configurationElement.getDeclaringExtension(), id, width, height );
     }
 
     /**
@@ -268,7 +264,7 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
      */
     private static boolean isCardSurfaceDesignContributedByExtension(
         /* @NonNull */
-        final CardSurfaceDesign cardSurfaceDesign,
+        final CardSurfaceDesignExtensionProxy cardSurfaceDesign,
         /* @NonNull */
         final IExtension extension )
     {
@@ -297,7 +293,7 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
     {
         assert configurationElement != null;
 
-        final CardSurfaceDesign cardSurfaceDesign;
+        final CardSurfaceDesignExtensionProxy cardSurfaceDesign;
         try
         {
             cardSurfaceDesign = createCardSurfaceDesign( configurationElement );
@@ -406,7 +402,7 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
     {
         synchronized( lock_ )
         {
-            for( final CardSurfaceDesign cardSurfaceDesign : cardSurfaceDesigns_ )
+            for( final CardSurfaceDesignExtensionProxy cardSurfaceDesign : cardSurfaceDesigns_ )
             {
                 cardSurfaceDesignRegistry_.unregisterCardSurfaceDesign( cardSurfaceDesign );
             }
@@ -430,129 +426,15 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            for( final Iterator<CardSurfaceDesign> iterator = cardSurfaceDesigns_.iterator(); iterator.hasNext(); )
+            for( final Iterator<CardSurfaceDesignExtensionProxy> iterator = cardSurfaceDesigns_.iterator(); iterator.hasNext(); )
             {
-                final CardSurfaceDesign cardSurfaceDesign = iterator.next();
+                final CardSurfaceDesignExtensionProxy cardSurfaceDesign = iterator.next();
                 if( isCardSurfaceDesignContributedByExtension( cardSurfaceDesign, extension ) )
                 {
                     cardSurfaceDesignRegistry_.unregisterCardSurfaceDesign( cardSurfaceDesign );
                     iterator.remove();
                 }
             }
-        }
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * Implementation of {@link org.gamegineer.table.core.ICardSurfaceDesign}
-     * created from an extension.
-     */
-    @Immutable
-    private static final class CardSurfaceDesign
-        implements ICardSurfaceDesign
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** The card surface design to which all behavior is delegated. */
-        private final ICardSurfaceDesign delegate_;
-
-        /** The namespace identifier of the contributing extension. */
-        private final String extensionNamespaceId_;
-
-        /** The simple identifier of the contributing extension. */
-        private final String extensionSimpleId_;
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code CardSurfaceDesign} class.
-         * 
-         * @param extension
-         *        The extension that contributed this card surface design; must
-         *        not be {@code null}.
-         * @param id
-         *        The card surface design identifier; must not be {@code null}.
-         * @param width
-         *        The card surface design width in table coordinates; must not
-         *        be negative.
-         * @param height
-         *        The card surface design height in table coordinates; must not
-         *        be negative.
-         * 
-         * @throws java.lang.IllegalArgumentException
-         *         If {@code width} or {@code height} is negative.
-         * @throws java.lang.NullPointerException
-         *         If {@code id} is {@code null}.
-         */
-        CardSurfaceDesign(
-            /* @NonNull */
-            final IExtension extension,
-            /* @NonNull */
-            final CardSurfaceDesignId id,
-            final int width,
-            final int height )
-        {
-            assert extension != null;
-
-            extensionNamespaceId_ = extension.getNamespaceIdentifier();
-            extensionSimpleId_ = extension.getSimpleIdentifier();
-            delegate_ = TableFactory.createCardSurfaceDesign( id, width, height );
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /**
-         * Gets the namespace identifier of the contributing extension.
-         * 
-         * @return The namespace identifier of the contributing extension; never
-         *         {@code null}.
-         */
-        /* @NonNull */
-        String getExtensionNamespaceId()
-        {
-            return extensionNamespaceId_;
-        }
-
-        /**
-         * Gets the simple identifier of the contributing extension.
-         * 
-         * @return The simple identifier of the contributing extension; may be
-         *         {@code null}.
-         */
-        /* @Nullable */
-        String getExtensionSimpleId()
-        {
-            return extensionSimpleId_;
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ICardSurfaceDesign#getId()
-         */
-        @Override
-        public CardSurfaceDesignId getId()
-        {
-            return delegate_.getId();
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ICardSurfaceDesign#getSize()
-         */
-        @Override
-        public Dimension getSize()
-        {
-            return delegate_.getSize();
         }
     }
 }

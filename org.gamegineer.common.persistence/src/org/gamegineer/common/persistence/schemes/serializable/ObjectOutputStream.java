@@ -119,12 +119,21 @@ public final class ObjectOutputStream
         final Object obj )
         throws IOException
     {
-        final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( obj.getClass().getName() );
-        if( delegate != null )
+        Object object = obj;
+        while( true )
         {
-            return delegate.replaceObject( obj );
+            final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( object.getClass().getName() );
+            final Object replacedObject = (delegate != null) ? delegate.replaceObject( object ) : super.replaceObject( object );
+            if( object != replacedObject )
+            {
+                object = replacedObject;
+            }
+            else
+            {
+                break;
+            }
         }
 
-        return super.replaceObject( obj );
+        return object;
     }
 }
