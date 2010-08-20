@@ -27,7 +27,7 @@
         <ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
             <property name="data-dir" value="data-folder" />
             <property name="plugin-name" value="${plugin-name}" />
-            <property name="classname" value="org.gamegineer.table.core.persistence.serializable.AllPersistenceSerializableTests" />
+            <property name="classname" value="org.gamegineer.table.core.AllPersistenceSerializableTests" />
             <property name="vmargs" value="-ea" />
         </ant>
     </target>
