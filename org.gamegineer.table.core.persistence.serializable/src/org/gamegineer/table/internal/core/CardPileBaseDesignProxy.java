@@ -1,5 +1,5 @@
 /*
- * CardSurfaceDesignProxy.java
+ * CardPileBaseDesignProxy.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,23 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 8, 2010 at 9:13:57 PM.
+ * Created on Apr 27, 2010 at 10:35:29 PM.
  */
 
-package org.gamegineer.table.internal.core.persistence.schemes.serializable;
+package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.CardSurfaceDesignId;
-import org.gamegineer.table.internal.core.CardSurfaceDesign;
+import org.gamegineer.table.core.CardPileBaseDesignId;
 
 /**
- * A serializable proxy for the {@code CardSurfaceDesign} class.
+ * A serializable proxy for the {@code CardPileBaseDesign} class.
  */
 @NotThreadSafe
-public final class CardSurfaceDesignProxy
+public final class CardPileBaseDesignProxy
     implements Serializable
 {
     // ======================================================================
@@ -40,24 +39,24 @@ public final class CardSurfaceDesignProxy
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = 2089743515488679664L;
+    private static final long serialVersionUID = 8230792419874139320L;
 
     /**
-     * The card surface design height in table coordinates.
+     * The card pile base design height in table coordinates.
      * 
      * @serial
      */
     private int height_;
 
     /**
-     * The card surface design identifier.
+     * The card pile base design identifier.
      * 
      * @serial
      */
     private String id_;
 
     /**
-     * The card surface design width in table coordinates.
+     * The card pile base design width in table coordinates.
      * 
      * @serial
      */
@@ -69,10 +68,10 @@ public final class CardSurfaceDesignProxy
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardSurfaceDesignProxy} class.
+     * Initializes a new instance of the {@code CardPileBaseDesignProxy} class.
      */
     @SuppressWarnings( "unused" )
-    private CardSurfaceDesignProxy()
+    private CardPileBaseDesignProxy()
     {
         height_ = 0;
         id_ = null;
@@ -80,23 +79,23 @@ public final class CardSurfaceDesignProxy
     }
 
     /**
-     * Initializes a new instance of the {@code CardSurfaceDesignProxy} class
-     * from the specified {@code CardSurfaceDesign} instance.
+     * Initializes a new instance of the {@code CardPileBaseDesignProxy} class
+     * from the specified {@code CardPileBaseDesign} instance.
      * 
-     * @param cardSurfaceDesign
-     *        The {@code CardSurfaceDesign} instance; must not be {@code null}.
+     * @param cardPileBaseDesign
+     *        The {@code CardPileBaseDesign} instance; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code cardSurfaceDesign} is {@code null}.
+     *         If {@code cardPileBaseDesign} is {@code null}.
      */
-    public CardSurfaceDesignProxy(
+    public CardPileBaseDesignProxy(
         /* @NonNull */
-        final CardSurfaceDesign cardSurfaceDesign )
+        final CardPileBaseDesign cardPileBaseDesign )
     {
-        assertArgumentNotNull( cardSurfaceDesign, "cardSurfaceDesign" ); //$NON-NLS-1$
+        assertArgumentNotNull( cardPileBaseDesign, "cardPileBaseDesign" ); //$NON-NLS-1$
 
-        id_ = cardSurfaceDesign.getId().toString();
-        final Dimension size = cardSurfaceDesign.getSize();
+        id_ = cardPileBaseDesign.getId().toString();
+        final Dimension size = cardPileBaseDesign.getSize();
         height_ = size.height;
         width_ = size.width;
     }
@@ -116,6 +115,6 @@ public final class CardSurfaceDesignProxy
     /* @NonNull */
     private Object readResolve()
     {
-        return new CardSurfaceDesign( CardSurfaceDesignId.fromString( id_ ), width_, height_ );
+        return new CardPileBaseDesign( CardPileBaseDesignId.fromString( id_ ), width_, height_ );
     }
 }

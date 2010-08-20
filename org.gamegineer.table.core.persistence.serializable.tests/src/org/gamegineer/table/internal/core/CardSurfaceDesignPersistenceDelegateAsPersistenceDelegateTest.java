@@ -1,5 +1,5 @@
 /*
- * CardOrientationPersistenceDelegateAsPersistenceDelegateTest.java
+ * CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,23 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 9, 2010 at 9:37:46 PM.
+ * Created on May 8, 2010 at 9:14:35 PM.
  */
 
-package org.gamegineer.table.internal.core.persistence.schemes.serializable;
+package org.gamegineer.table.internal.core;
 
 import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
-import org.gamegineer.table.core.CardOrientation;
+import org.gamegineer.table.core.CardSurfaceDesigns;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.persistence.schemes.serializable.CardOrientationPersistenceDelegate}
+ * {@link org.gamegineer.table.internal.core.CardSurfaceDesignPersistenceDelegate}
  * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate}
  * interface.
  */
-public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
+public final class CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest
     extends AbstractPersistenceDelegateTestCase
 {
     // ======================================================================
@@ -41,9 +41,9 @@ public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
 
     /**
      * Initializes a new instance of the {@code
-     * CardOrientationPersistenceDelegateAsPersistenceDelegateTest} class.
+     * CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest} class.
      */
-    public CardOrientationPersistenceDelegateAsPersistenceDelegateTest()
+    public CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest()
     {
         super();
     }
@@ -59,7 +59,20 @@ public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
     @Override
     protected Object createSubject()
     {
-        return CardOrientation.FACE_UP;
+        return CardSurfaceDesigns.createUniqueCardSurfaceDesign();
+    }
+
+    /*
+     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase#isEqual(java.lang.Object, java.lang.Object)
+     */
+    @Override
+    protected boolean isEqual(
+        final Object originalObj,
+        final Object deserializedObj )
+    {
+        final CardSurfaceDesign originalCardSurfaceDesign = (CardSurfaceDesign)originalObj;
+        final CardSurfaceDesign deserializedCardSurfaceDesign = (CardSurfaceDesign)deserializedObj;
+        return originalCardSurfaceDesign.getId().equals( deserializedCardSurfaceDesign.getId() ) && originalCardSurfaceDesign.getSize().equals( deserializedCardSurfaceDesign.getSize() );
     }
 
     /*
@@ -69,6 +82,7 @@ public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
     protected void registerPersistenceDelegates(
         final IPersistenceDelegateRegistry persistenceDelegateRegistry )
     {
-        persistenceDelegateRegistry.registerPersistenceDelegate( CardOrientation.class, new CardOrientationPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardSurfaceDesign.class, new CardSurfaceDesignPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardSurfaceDesignProxy.class, new CardSurfaceDesignPersistenceDelegate() );
     }
 }

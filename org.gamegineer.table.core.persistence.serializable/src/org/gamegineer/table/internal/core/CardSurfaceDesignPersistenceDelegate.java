@@ -19,7 +19,7 @@
  * Created on May 8, 2010 at 9:14:08 PM.
  */
 
-package org.gamegineer.table.internal.core.persistence.schemes.serializable;
+package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
@@ -27,7 +27,6 @@ import java.io.ObjectStreamClass;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegate;
 import org.gamegineer.common.persistence.schemes.serializable.ObjectInputStream;
-import org.gamegineer.table.internal.core.CardSurfaceDesign;
 
 /**
  * A persistence delegate for the {@code CardSurfaceDesign} class.

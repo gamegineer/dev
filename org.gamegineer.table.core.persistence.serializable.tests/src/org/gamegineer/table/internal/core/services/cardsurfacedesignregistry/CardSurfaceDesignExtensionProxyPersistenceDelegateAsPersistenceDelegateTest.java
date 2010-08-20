@@ -1,5 +1,5 @@
 /*
- * CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest.java
+ * CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,24 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 8, 2010 at 9:14:35 PM.
+ * Created on Aug 18, 2010 at 11:37:34 PM.
  */
 
-package org.gamegineer.table.internal.core.persistence.schemes.serializable;
+package org.gamegineer.table.internal.core.services.cardsurfacedesignregistry;
 
+import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
+import org.eclipse.core.runtime.IExtension;
 import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.gamegineer.table.core.CardSurfaceDesigns;
+import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.internal.core.CardSurfaceDesign;
+import org.gamegineer.table.internal.core.CardSurfaceDesignPersistenceDelegate;
+import org.gamegineer.table.internal.core.CardSurfaceDesignProxy;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.persistence.schemes.serializable.CardSurfaceDesignPersistenceDelegate}
+ * {@link org.gamegineer.table.internal.core.services.cardsurfacedesignregistry.CardSurfaceDesignExtensionProxyPersistenceDelegate}
  * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate}
  * interface.
  */
-public final class CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest
+public final class CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest
     extends AbstractPersistenceDelegateTestCase
 {
     // ======================================================================
@@ -41,10 +47,11 @@ public final class CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest} class.
+     * Initializes a new instance of the {@code 
+     * CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest
+     * * } class.
      */
-    public CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest()
+    public CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest()
     {
         super();
     }
@@ -60,7 +67,13 @@ public final class CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest
     @Override
     protected Object createSubject()
     {
-        return CardSurfaceDesigns.createUniqueCardSurfaceDesign();
+        final IMocksControl mocksControl = EasyMock.createNiceControl();
+        final IExtension extension = mocksControl.createMock( IExtension.class );
+        EasyMock.expect( extension.getNamespaceIdentifier() ).andReturn( "namespace-id" ); //$NON-NLS-1$
+        EasyMock.expect( extension.getSimpleIdentifier() ).andReturn( "simple-id" ); //$NON-NLS-1$
+        mocksControl.replay();
+        final ICardSurfaceDesign cardSurfaceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
+        return new CardSurfaceDesignExtensionProxy( extension, cardSurfaceDesign.getId(), cardSurfaceDesign.getSize().width, cardSurfaceDesign.getSize().height );
     }
 
     /*
@@ -71,8 +84,8 @@ public final class CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest
         final Object originalObj,
         final Object deserializedObj )
     {
-        final CardSurfaceDesign originalCardSurfaceDesign = (CardSurfaceDesign)originalObj;
-        final CardSurfaceDesign deserializedCardSurfaceDesign = (CardSurfaceDesign)deserializedObj;
+        final ICardSurfaceDesign originalCardSurfaceDesign = (ICardSurfaceDesign)originalObj;
+        final ICardSurfaceDesign deserializedCardSurfaceDesign = (ICardSurfaceDesign)deserializedObj;
         return originalCardSurfaceDesign.getId().equals( deserializedCardSurfaceDesign.getId() ) && originalCardSurfaceDesign.getSize().equals( deserializedCardSurfaceDesign.getSize() );
     }
 
@@ -85,5 +98,6 @@ public final class CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest
     {
         persistenceDelegateRegistry.registerPersistenceDelegate( CardSurfaceDesign.class, new CardSurfaceDesignPersistenceDelegate() );
         persistenceDelegateRegistry.registerPersistenceDelegate( CardSurfaceDesignProxy.class, new CardSurfaceDesignPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardSurfaceDesignExtensionProxy.class, new CardSurfaceDesignExtensionProxyPersistenceDelegate() );
     }
 }

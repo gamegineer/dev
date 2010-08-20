@@ -9,5 +9,6 @@
 		</accessrules>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.gamegineer.table.core.persistence.serializable"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.gamegineer.table.core.tests"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

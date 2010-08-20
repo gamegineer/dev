@@ -75,7 +75,7 @@ public final class CardSurfaceDesignExtensionProxy
      * @throws java.lang.NullPointerException
      *         If {@code id} is {@code null}.
      */
-    public CardSurfaceDesignExtensionProxy(
+    CardSurfaceDesignExtensionProxy(
         /* @NonNull */
         final IExtension extension,
         /* @NonNull */
@@ -102,7 +102,7 @@ public final class CardSurfaceDesignExtensionProxy
      *         {@code null}.
      */
     /* @NonNull */
-    public ICardSurfaceDesign getDelegate()
+    ICardSurfaceDesign getDelegate()
     {
         return delegate_;
     }

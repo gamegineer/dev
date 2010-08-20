@@ -16,11 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 27, 2010 at 10:28:13 PM.
+ * Created on Aug 19, 2010 at 10:14:37 PM.
  */
 
 /**
- * Provides support for persisting table model classes using the Java object
+ * Provides support for persisting classes in the
+ * {@code org.gamegineer.table.internal.core} package using the Java object
  * serialization framework.
  * 
  * <p>
@@ -28,4 +29,4 @@
  * {@code org.gamegineer.table} project.
  * </p>
  */
-package org.gamegineer.table.internal.core.persistence.schemes.serializable;
+package org.gamegineer.table.internal.core;

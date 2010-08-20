@@ -1,5 +1,5 @@
 /*
- * CardPileBaseDesignProxyTest.java
+ * CardSurfaceDesignExtensionProxyPersistenceDelegate.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 28, 2010 at 10:17:04 PM.
+ * Created on Aug 18, 2010 at 11:37:10 PM.
  */
 
-package org.gamegineer.table.internal.core.persistence.schemes.serializable;
+package org.gamegineer.table.internal.core.services.cardsurfacedesignregistry;
 
-import org.junit.Test;
+import net.jcip.annotations.Immutable;
+import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegate;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.persistence.schemes.serializable.CardPileBaseDesignProxy}
- * class.
+ * A persistence delegate for the {@code CardSurfaceDesignExtensionProxy} class.
  */
-public final class CardPileBaseDesignProxyTest
+@Immutable
+public final class CardSurfaceDesignExtensionProxyPersistenceDelegate
+    extends AbstractPersistenceDelegate
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileBaseDesignProxyTest}
-     * class.
+     * Initializes a new instance of the {@code
+     * CardSurfaceDesignExtensionProxyPersistenceDelegate} class.
      */
-    public CardPileBaseDesignProxyTest()
+    public CardSurfaceDesignExtensionProxyPersistenceDelegate()
     {
         super();
     }
@@ -48,13 +49,18 @@ public final class CardPileBaseDesignProxyTest
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * card pile base design.
+    /*
+     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
      */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_CardPileBaseDesign_Null()
+    @Override
+    public Object replaceObject(
+        final Object obj )
     {
-        new CardPileBaseDesignProxy( null );
+        if( !(obj instanceof CardSurfaceDesignExtensionProxy) )
+        {
+            return super.replaceObject( obj );
+        }
+
+        return ((CardSurfaceDesignExtensionProxy)obj).getDelegate();
     }
 }

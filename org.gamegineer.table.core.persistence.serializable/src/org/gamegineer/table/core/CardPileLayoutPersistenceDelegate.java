@@ -1,5 +1,5 @@
 /*
- * CardPileBaseDesignExtensionProxyPersistenceDelegate.java
+ * CardPileLayoutPersistenceDelegate.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,21 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 18, 2010 at 10:41:32 PM.
+ * Created on May 9, 2010 at 9:19:39 PM.
  */
 
-package org.gamegineer.table.internal.core.persistence.schemes.serializable;
+package org.gamegineer.table.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.io.IOException;
+import java.io.ObjectStreamClass;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegate;
-import org.gamegineer.table.internal.core.services.cardpilebasedesignregistry.CardPileBaseDesignExtensionProxy;
+import org.gamegineer.common.persistence.schemes.serializable.ObjectInputStream;
 
 /**
- * A persistence delegate for the {@code CardPileBaseDesignExtensionProxy}
- * class.
+ * A persistence delegate for the {@code CardPileLayout} class.
  */
 @Immutable
-public final class CardPileBaseDesignExtensionProxyPersistenceDelegate
+public final class CardPileLayoutPersistenceDelegate
     extends AbstractPersistenceDelegate
 {
     // ======================================================================
@@ -39,9 +41,9 @@ public final class CardPileBaseDesignExtensionProxyPersistenceDelegate
 
     /**
      * Initializes a new instance of the {@code
-     * CardPileBaseDesignExtensionProxyPersistenceDelegate} class.
+     * CardPileLayoutPersistenceDelegate} class.
      */
-    public CardPileBaseDesignExtensionProxyPersistenceDelegate()
+    public CardPileLayoutPersistenceDelegate()
     {
         super();
     }
@@ -52,17 +54,22 @@ public final class CardPileBaseDesignExtensionProxyPersistenceDelegate
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
+     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegate#resolveClass(org.gamegineer.common.persistence.schemes.serializable.ObjectInputStream, java.io.ObjectStreamClass)
      */
     @Override
-    public Object replaceObject(
-        final Object obj )
+    public Class<?> resolveClass(
+        final ObjectInputStream stream,
+        final ObjectStreamClass desc )
+        throws IOException
     {
-        if( !(obj instanceof CardPileBaseDesignExtensionProxy) )
+        assertArgumentNotNull( stream, "stream" ); //$NON-NLS-1$
+        assertArgumentNotNull( desc, "desc" ); //$NON-NLS-1$
+
+        if( desc.getName().equals( CardPileLayout.class.getName() ) )
         {
-            return super.replaceObject( obj );
+            return CardPileLayout.class;
         }
 
-        return ((CardPileBaseDesignExtensionProxy)obj).getDelegate();
+        return super.resolveClass( stream, desc );
     }
 }

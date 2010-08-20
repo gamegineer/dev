@@ -75,7 +75,7 @@ public final class CardPileBaseDesignExtensionProxy
      * @throws java.lang.NullPointerException
      *         If {@code id} is {@code null}.
      */
-    public CardPileBaseDesignExtensionProxy(
+    CardPileBaseDesignExtensionProxy(
         /* @NonNull */
         final IExtension extension,
         /* @NonNull */
@@ -102,7 +102,7 @@ public final class CardPileBaseDesignExtensionProxy
      *         never {@code null}.
      */
     /* @NonNull */
-    public ICardPileBaseDesign getDelegate()
+    ICardPileBaseDesign getDelegate()
     {
         return delegate_;
     }

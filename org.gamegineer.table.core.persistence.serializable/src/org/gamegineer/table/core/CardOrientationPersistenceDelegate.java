@@ -1,5 +1,5 @@
 /*
- * CardPileLayoutPersistenceDelegate.java
+ * CardOrientationPersistenceDelegate.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 9, 2010 at 9:19:39 PM.
+ * Created on May 9, 2010 at 9:36:35 PM.
  */
 
-package org.gamegineer.table.internal.core.persistence.schemes.serializable;
+package org.gamegineer.table.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
@@ -27,13 +27,12 @@ import java.io.ObjectStreamClass;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegate;
 import org.gamegineer.common.persistence.schemes.serializable.ObjectInputStream;
-import org.gamegineer.table.core.CardPileLayout;
 
 /**
- * A persistence delegate for the {@code CardPileLayout} class.
+ * A persistence delegate for the {@code CardOrientation} class.
  */
 @Immutable
-public final class CardPileLayoutPersistenceDelegate
+public final class CardOrientationPersistenceDelegate
     extends AbstractPersistenceDelegate
 {
     // ======================================================================
@@ -42,9 +41,9 @@ public final class CardPileLayoutPersistenceDelegate
 
     /**
      * Initializes a new instance of the {@code
-     * CardPileLayoutPersistenceDelegate} class.
+     * CardOrientationPersistenceDelegate} class.
      */
-    public CardPileLayoutPersistenceDelegate()
+    public CardOrientationPersistenceDelegate()
     {
         super();
     }
@@ -66,9 +65,9 @@ public final class CardPileLayoutPersistenceDelegate
         assertArgumentNotNull( stream, "stream" ); //$NON-NLS-1$
         assertArgumentNotNull( desc, "desc" ); //$NON-NLS-1$
 
-        if( desc.getName().equals( CardPileLayout.class.getName() ) )
+        if( desc.getName().equals( CardOrientation.class.getName() ) )
         {
-            return CardPileLayout.class;
+            return CardOrientation.class;
         }
 
         return super.resolveClass( stream, desc );

@@ -1,5 +1,5 @@
 /*
- * CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest.java
+ * CardPileBaseDesignPersistenceDelegateAsPersistenceDelegateTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 18, 2010 at 10:50:52 PM.
+ * Created on Apr 28, 2010 at 10:32:09 PM.
  */
 
-package org.gamegineer.table.internal.core.persistence.schemes.serializable;
+package org.gamegineer.table.internal.core;
 
-import org.easymock.EasyMock;
-import org.easymock.IMocksControl;
-import org.eclipse.core.runtime.IExtension;
 import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.gamegineer.table.core.CardPileBaseDesigns;
-import org.gamegineer.table.core.ICardPileBaseDesign;
-import org.gamegineer.table.internal.core.CardPileBaseDesign;
-import org.gamegineer.table.internal.core.services.cardpilebasedesignregistry.CardPileBaseDesignExtensionProxy;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.persistence.schemes.serializable.CardPileBaseDesignExtensionProxyPersistenceDelegate}
+ * {@link org.gamegineer.table.internal.core.CardPileBaseDesignPersistenceDelegate}
  * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate}
  * interface.
  */
-public final class CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest
+public final class CardPileBaseDesignPersistenceDelegateAsPersistenceDelegateTest
     extends AbstractPersistenceDelegateTestCase
 {
     // ======================================================================
@@ -46,11 +40,10 @@ public final class CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersiste
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code 
-     * CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest
-     * * } class.
+     * Initializes a new instance of the {@code
+     * CardPileBaseDesignPersistenceDelegateAsPersistenceDelegateTest} class.
      */
-    public CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest()
+    public CardPileBaseDesignPersistenceDelegateAsPersistenceDelegateTest()
     {
         super();
     }
@@ -66,13 +59,7 @@ public final class CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersiste
     @Override
     protected Object createSubject()
     {
-        final IMocksControl mocksControl = EasyMock.createNiceControl();
-        final IExtension extension = mocksControl.createMock( IExtension.class );
-        EasyMock.expect( extension.getNamespaceIdentifier() ).andReturn( "namespace-id" ); //$NON-NLS-1$
-        EasyMock.expect( extension.getSimpleIdentifier() ).andReturn( "simple-id" ); //$NON-NLS-1$
-        mocksControl.replay();
-        final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
-        return new CardPileBaseDesignExtensionProxy( extension, cardPileBaseDesign.getId(), cardPileBaseDesign.getSize().width, cardPileBaseDesign.getSize().height );
+        return CardPileBaseDesigns.createUniqueCardPileBaseDesign();
     }
 
     /*
@@ -83,8 +70,8 @@ public final class CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersiste
         final Object originalObj,
         final Object deserializedObj )
     {
-        final ICardPileBaseDesign originalCardPileBaseDesign = (ICardPileBaseDesign)originalObj;
-        final ICardPileBaseDesign deserializedCardPileBaseDesign = (ICardPileBaseDesign)deserializedObj;
+        final CardPileBaseDesign originalCardPileBaseDesign = (CardPileBaseDesign)originalObj;
+        final CardPileBaseDesign deserializedCardPileBaseDesign = (CardPileBaseDesign)deserializedObj;
         return originalCardPileBaseDesign.getId().equals( deserializedCardPileBaseDesign.getId() ) && originalCardPileBaseDesign.getSize().equals( deserializedCardPileBaseDesign.getSize() );
     }
 
@@ -97,6 +84,5 @@ public final class CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersiste
     {
         persistenceDelegateRegistry.registerPersistenceDelegate( CardPileBaseDesign.class, new CardPileBaseDesignPersistenceDelegate() );
         persistenceDelegateRegistry.registerPersistenceDelegate( CardPileBaseDesignProxy.class, new CardPileBaseDesignPersistenceDelegate() );
-        persistenceDelegateRegistry.registerPersistenceDelegate( CardPileBaseDesignExtensionProxy.class, new CardPileBaseDesignExtensionProxyPersistenceDelegate() );
     }
 }
