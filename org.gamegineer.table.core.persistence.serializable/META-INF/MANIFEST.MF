@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-Localization: fragment-persistence-serializable
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundleName
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-SymbolicName: org.gamegineer.table.core.persistence.serializable
+Bundle-Vendor: %bundleVendor
+Bundle-Version: 0.5.0.qualifier
+Fragment-Host: org.gamegineer.table.core;bundle-version="0.5.0"
+Service-Component: OSGI-INF/persistenceDelegates.xml
