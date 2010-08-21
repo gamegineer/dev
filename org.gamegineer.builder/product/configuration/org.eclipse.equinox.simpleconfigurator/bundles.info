@@ -11,5 +11,6 @@ org.eclipse.osgi.services,3.2.0.v20090520-1800,plugins/org.eclipse.osgi.services
 org.gamegineer.common.core,0.5.0.qualifier,plugins/org.gamegineer.common.core_0.5.0.qualifier.jar,4,false
 org.gamegineer.common.persistence,0.5.0.qualifier,plugins/org.gamegineer.common.persistence_0.5.0.qualifier.jar,4,false
 org.gamegineer.table.core,0.5.0.qualifier,plugins/org.gamegineer.table.core_0.5.0.qualifier.jar,4,false
+org.gamegineer.table.core.persistence.serializable,0.5.0.qualifier,plugins/org.gamegineer.table.core.persistence.serializable_0.5.0.qualifier.jar,4,false
 org.gamegineer.table.product,0.5.0.qualifier,plugins/org.gamegineer.table.product_0.5.0.qualifier.jar,4,false
 org.gamegineer.table.ui,0.5.0.qualifier,plugins/org.gamegineer.table.ui_0.5.0.qualifier.jar,4,false
