@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
@@ -786,6 +787,14 @@ final class TableView
 
             @Override
             @SuppressWarnings( "synthetic-access" )
+            public void mouseMoved(
+                final MouseEvent e )
+            {
+                mouseInputHandler_.mouseMoved( e );
+            }
+
+            @Override
+            @SuppressWarnings( "synthetic-access" )
             public void mousePressed(
                 final MouseEvent e )
             {
@@ -1141,6 +1150,26 @@ final class TableView
         // ==================================================================
 
         /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
+         */
+        @Override
+        void activate(
+            final MouseEvent e )
+        {
+            updateCursor( e );
+        }
+
+        /*
+         * @see java.awt.event.MouseAdapter#mouseMoved(java.awt.event.MouseEvent)
+         */
+        @Override
+        public void mouseMoved(
+            final MouseEvent e )
+        {
+            updateCursor( e );
+        }
+
+        /*
          * @see java.awt.event.MouseAdapter#mousePressed(java.awt.event.MouseEvent)
          */
         @Override
@@ -1186,6 +1215,26 @@ final class TableView
             if( e.isPopupTrigger() )
             {
                 setMouseInputHandler( PopupMenuMouseInputHandler.class, e );
+            }
+        }
+
+        /**
+         * Updates the mouse cursor.
+         * 
+         * @param e
+         *        The mouse event; may be {@code null} if no mouse event is
+         *        available.
+         */
+        @SuppressWarnings( "synthetic-access" )
+        private void updateCursor(
+            /* @Nullable */
+            final MouseEvent e )
+        {
+            final ICardPile cardPile = model_.getTable().getCardPile( getMouseLocation( e ) );
+            final Cursor newCursor = (cardPile == null) ? Cursors.getHandCursor() : Cursors.getDefaultCursor();
+            if( newCursor != getCursor() )
+            {
+                setCursor( newCursor );
             }
         }
     }
@@ -1460,6 +1509,8 @@ final class TableView
             convertPointFromTable( location );
             originalLocation_.setLocation( location );
             originalOriginOffset_.setSize( model_.getOriginOffset() );
+
+            setCursor( Cursors.getGrabCursor() );
         }
 
         /*

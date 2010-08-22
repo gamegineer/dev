@@ -545,6 +545,14 @@ final class Messages
     /** The Layout menu text. */
     public static String CardPilePopupMenu_layout_text;
 
+    // --- Cursors ----------------------------------------------------------
+
+    /** The name of the grab cursor. */
+    public static String Cursors_grab_name;
+
+    /** The name of the hand cursor. */
+    public static String Cursors_hand_name;
+
     // --- ExitAction -------------------------------------------------------
 
     /** The exit action mnemonic. */
