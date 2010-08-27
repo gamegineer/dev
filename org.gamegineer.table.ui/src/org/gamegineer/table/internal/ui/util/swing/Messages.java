@@ -44,6 +44,11 @@ final class Messages
     /** The Confirm Overwrite File dialog title. */
     public static String JFileChooser_confirmOverwriteFile_title;
 
+    // --- SwingTextUtilities -----------------------------------------------
+
+    /** The maximum length is negative. */
+    public static String SwingTextUtilities_shortenPath_maxLengthNegative;
+
 
     // ======================================================================
     // Constructors

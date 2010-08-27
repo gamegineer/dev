@@ -31,6 +31,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
@@ -180,21 +181,21 @@ public final class JMenuItemGroup
             }
         }
 
-        final Collection<String> menuItemLabels = contentProvider_.getMenuItemLabels();
+        final Collection<MenuItemDescriptor> menuItemDescriptors = contentProvider_.getMenuItemDescriptors();
         int index = 1;
-        for( final String menuItemLabel : menuItemLabels )
+        for( final MenuItemDescriptor menuItemDescriptor : menuItemDescriptors )
         {
             final JMenuItem menuItem = new JMenuItem( action_ );
             menuItem.setName( MENU_ITEM_NAME_PREFIX + index );
-            menuItem.setActionCommand( menuItemLabel );
-            menuItem.setText( String.format( "%1$d %2$s", index, menuItemLabel ) ); //$NON-NLS-1$
+            menuItem.setText( String.format( "%1$d %2$s", index, menuItemDescriptor.getText() ) ); //$NON-NLS-1$
+            menuItem.setActionCommand( menuItemDescriptor.getActionCommand() );
             menuItem.setAccelerator( null );
             menuItem.setMnemonic( KeyEvent.VK_0 + index );
             menu.add( menuItem, beginIndex + index );
             ++index;
         }
 
-        setVisible( !menuItemLabels.isEmpty() );
+        setVisible( !menuItemDescriptors.isEmpty() );
     }
 
 
@@ -207,18 +208,90 @@ public final class JMenuItemGroup
      */
     public interface IContentProvider
     {
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
         /**
-         * Gets a collection of menu item labels for the group.
+         * Gets a collection of menu item descriptors for the group.
          * 
          * <p>
-         * The group menu items will appear in the same order as the labels in
-         * the returned collection.
+         * The group menu items will appear in the same order as the descriptors
+         * in the returned collection.
          * </p>
          * 
-         * @return A collection of menu item labels for the group; never {@code
-         *         null}.
+         * @return A collection of menu item descriptors for the group; never
+         *         {@code null}.
          */
         /* @NonNull */
-        public Collection<String> getMenuItemLabels();
+        public Collection<MenuItemDescriptor> getMenuItemDescriptors();
+    }
+
+    /**
+     * A descriptor for a menu item in a menu item group.
+     */
+    @Immutable
+    public static final class MenuItemDescriptor
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The menu item action command. */
+        private final String actionCommand_;
+
+        /** The menu item text. */
+        private final String text_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code MenuItemDescriptor} class
+         * with the specified text and action command.
+         * 
+         * @param text
+         *        The menu item text; may be {@code null}.
+         * @param actionCommand
+         *        The menu item action command; may be {@code null}.
+         */
+        public MenuItemDescriptor(
+            /* @Nullable */
+            final String text,
+            /* @Nullable */
+            final String actionCommand )
+        {
+            text_ = text;
+            actionCommand_ = actionCommand;
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Gets the menu item action command.
+         * 
+         * @return The menu item action command; may be {@code null}.
+         */
+        /* @Nullable */
+        public String getActionCommand()
+        {
+            return actionCommand_;
+        }
+
+        /**
+         * Gets the menu item text.
+         * 
+         * @return The menu item text; may be {@code null}.
+         */
+        /* @Nullable */
+        public String getText()
+        {
+            return text_;
+        }
     }
 }
