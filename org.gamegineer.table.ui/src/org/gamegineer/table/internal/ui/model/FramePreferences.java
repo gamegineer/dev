@@ -75,7 +75,7 @@ public final class FramePreferences
     /**
      * Initializes a new instance of the {@code FramePreferences} class.
      */
-    public FramePreferences()
+    FramePreferences()
     {
         lock_ = new Object();
         location_ = null;

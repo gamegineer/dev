@@ -101,14 +101,11 @@ final class Messages
      */
     public static String MainModel_mainModelStateChanged_unexpectedException;
 
-    /** An error occurred while opening the table. */
-    public static String MainModel_openTable_error;
+    /** An error occurred while reading the table. */
+    public static String MainModel_readTable_error;
 
     /** The main model listener is not registered. */
     public static String MainModel_removeMainModelListener_listener_notRegistered;
-
-    /** An error occurred while saving the table. */
-    public static String MainModel_saveTable_error;
 
     /** The file name history contains a null entry. */
     public static String MainModel_setFileNameHistory_fileNameHistory_containsNullEntry;
@@ -122,6 +119,9 @@ final class Messages
      * An unexpected exception was thrown from IMainModelListener.tableOpened().
      */
     public static String MainModel_tableOpened_unexpectedException;
+
+    /** An error occurred while writing the table. */
+    public static String MainModel_writeTable_error;
 
     // --- PreferencesModel -------------------------------------------------
 
@@ -186,40 +186,40 @@ final class Messages
     // --- MainModel --------------------------------------------------------
 
     /**
-     * Gets the formatted message indicating an error occurred while opening the
+     * Gets the formatted message indicating an error occurred while reading the
      * table.
      * 
      * @param fileName
-     *        The name of the file from which the table is opened; must not be
+     *        The name of the file from which the table is read; must not be
      *        {@code null}.
      * 
-     * @return The formatted message indicating an error occurred while opening
+     * @return The formatted message indicating an error occurred while reading
      *         the table; never {@code null}.
      */
     /* @NonNull */
-    static String MainModel_openTable_error(
+    static String MainModel_readTable_error(
         /* @NonNull */
         final String fileName )
     {
-        return bind( MainModel_openTable_error, fileName );
+        return bind( MainModel_readTable_error, fileName );
     }
 
     /**
-     * Gets the formatted message indicating an error occurred while saving the
+     * Gets the formatted message indicating an error occurred while writing the
      * table.
      * 
      * @param fileName
-     *        The name of the file to which the table is saved; must not be
+     *        The name of the file to which the table is written; must not be
      *        {@code null}.
      * 
-     * @return The formatted message indicating an error occurred while saving
+     * @return The formatted message indicating an error occurred while writing
      *         the table; never {@code null}.
      */
     /* @NonNull */
-    static String MainModel_saveTable_error(
+    static String MainModel_writeTable_error(
         /* @NonNull */
         final String fileName )
     {
-        return bind( MainModel_saveTable_error, fileName );
+        return bind( MainModel_writeTable_error, fileName );
     }
 }

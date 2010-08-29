@@ -371,36 +371,20 @@ public final class MainModel
     {
         assertArgumentNotNull( fileName, "fileName" ); //$NON-NLS-1$
 
-        final ITable table;
-        try
-        {
-            final ObjectInputStream inputStream = ObjectStreams.createPlatformObjectInputStream( new FileInputStream( fileName ) );
-            try
-            {
-                final IMemento memento = (IMemento)inputStream.readObject();
-                table = TableFactory.createTable( memento );
-            }
-            finally
-            {
-                inputStream.close();
-            }
-        }
-        catch( final ClassNotFoundException e )
-        {
-            throw new ModelException( Messages.MainModel_openTable_error( fileName ), e );
-        }
-        catch( final IOException e )
-        {
-            throw new ModelException( Messages.MainModel_openTable_error( fileName ), e );
-        }
-        catch( final MalformedMementoException e )
-        {
-            throw new ModelException( Messages.MainModel_openTable_error( fileName ), e );
-        }
-
         final TableModel closedTableModel, openedTableModel;
         synchronized( lock_ )
         {
+            final ITable table;
+            try
+            {
+                table = readTable( fileName );
+            }
+            catch( final ModelException e )
+            {
+                preferencesModel_.getFileNameHistoryPreferences().removeFileName( fileName );
+                throw e;
+            }
+
             closedTableModel = tableModel_;
             if( closedTableModel != null )
             {
@@ -422,6 +406,54 @@ public final class MainModel
         fireMainModelFileNameChanged();
         fireMainModelDirtyFlagChanged();
         fireMainModelStateChanged();
+    }
+
+    /**
+     * Reads a table from the specified file.
+     * 
+     * @param fileName
+     *        The name of the file from which the table will be read; must not
+     *        be {@code null}.
+     * 
+     * @return The table that was read from the specified file; never {@code
+     *         null}.
+     * 
+     * @throws org.gamegineer.table.internal.ui.model.ModelException
+     *         If an error occurs while reading the file.
+     */
+    /* @NonNull */
+    private static ITable readTable(
+        /* @NonNull */
+        final String fileName )
+        throws ModelException
+    {
+        assert fileName != null;
+
+        try
+        {
+            final ObjectInputStream inputStream = ObjectStreams.createPlatformObjectInputStream( new FileInputStream( fileName ) );
+            try
+            {
+                final IMemento memento = (IMemento)inputStream.readObject();
+                return TableFactory.createTable( memento );
+            }
+            finally
+            {
+                inputStream.close();
+            }
+        }
+        catch( final ClassNotFoundException e )
+        {
+            throw new ModelException( Messages.MainModel_readTable_error( fileName ), e );
+        }
+        catch( final IOException e )
+        {
+            throw new ModelException( Messages.MainModel_readTable_error( fileName ), e );
+        }
+        catch( final MalformedMementoException e )
+        {
+            throw new ModelException( Messages.MainModel_readTable_error( fileName ), e );
+        }
     }
 
     /**
@@ -470,31 +502,18 @@ public final class MainModel
     {
         assertArgumentNotNull( fileName, "fileName" ); //$NON-NLS-1$
 
-        final IMemento memento;
         synchronized( lock_ )
         {
-            memento = tableModel_.getTable().getMemento();
-        }
-
-        try
-        {
-            final ObjectOutputStream outputStream = ObjectStreams.createPlatformObjectOutputStream( new FileOutputStream( fileName ) );
             try
             {
-                outputStream.writeObject( memento );
+                writeTable( fileName, tableModel_.getTable() );
             }
-            finally
+            catch( final ModelException e )
             {
-                outputStream.close();
+                preferencesModel_.getFileNameHistoryPreferences().removeFileName( fileName );
+                throw e;
             }
-        }
-        catch( final IOException e )
-        {
-            throw new ModelException( Messages.MainModel_saveTable_error( fileName ), e );
-        }
 
-        synchronized( lock_ )
-        {
             fileName_ = fileName;
             preferencesModel_.getFileNameHistoryPreferences().addFileName( fileName );
             isDirty_ = false;
@@ -541,5 +560,45 @@ public final class MainModel
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
         setDirty();
+    }
+
+    /**
+     * Writes the specified table to the specified file.
+     * 
+     * @param fileName
+     *        The name of the file to which the table will be written; must not
+     *        be {@code null}.
+     * @param table
+     *        The table to be written; must not be {@code null}.
+     * 
+     * @throws org.gamegineer.table.internal.ui.model.ModelException
+     *         If an error occurs while writing the file.
+     */
+    private static void writeTable(
+        /* @NonNull */
+        final String fileName,
+        /* @NonNull */
+        final ITable table )
+        throws ModelException
+    {
+        assert fileName != null;
+        assert table != null;
+
+        try
+        {
+            final ObjectOutputStream outputStream = ObjectStreams.createPlatformObjectOutputStream( new FileOutputStream( fileName ) );
+            try
+            {
+                outputStream.writeObject( table.getMemento() );
+            }
+            finally
+            {
+                outputStream.close();
+            }
+        }
+        catch( final IOException e )
+        {
+            throw new ModelException( Messages.MainModel_writeTable_error( fileName ), e );
+        }
     }
 }

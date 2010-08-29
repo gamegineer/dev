@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -73,7 +72,7 @@ public final class FileNameHistoryPreferences
      * Initializes a new instance of the {@code FileNameHistoryPreferences}
      * class.
      */
-    public FileNameHistoryPreferences()
+    FileNameHistoryPreferences()
     {
         lock_ = new Object();
     }
@@ -88,15 +87,12 @@ public final class FileNameHistoryPreferences
      * 
      * @param fileName
      *        The file name; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code fileName} is {@code null}.
      */
-    public void addFileName(
+    void addFileName(
         /* @NonNull */
         final String fileName )
     {
-        assertArgumentNotNull( fileName, "fileName" ); //$NON-NLS-1$
+        assert fileName != null;
 
         synchronized( lock_ )
         {
@@ -148,6 +144,24 @@ public final class FileNameHistoryPreferences
                     break;
                 }
             }
+        }
+    }
+
+    /**
+     * Removes the specified file name from the history.
+     * 
+     * @param fileName
+     *        The file name; must not be {@code null}.
+     */
+    void removeFileName(
+        /* @NonNull */
+        final String fileName )
+    {
+        assert fileName != null;
+
+        synchronized( lock_ )
+        {
+            fileNames_.remove( fileName );
         }
     }
 

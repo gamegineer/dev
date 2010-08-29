@@ -88,16 +88,6 @@ public final class FileNameHistoryPreferencesTest
     }
 
     /**
-     * Ensures the {@code addFileName} method throws an exception when passed a
-     * {@code null} file name.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAddFileName_FileName_Null()
-    {
-        fileNameHistoryPreferences_.addFileName( null );
-    }
-
-    /**
      * Ensures the {@code getFileNames} method returns a copy of the file names
      * collection.
      */
