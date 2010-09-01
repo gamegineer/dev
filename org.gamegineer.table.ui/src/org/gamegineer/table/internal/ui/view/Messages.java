@@ -788,6 +788,11 @@ final class Messages
     /** The set stacked card pile layout action text. */
     public static String SetStackedCardPileLayoutAction_text;
 
+    // --- TableView --------------------------------------------------------
+
+    /** An error occurred while reading the background image. */
+    public static String TableView_createBackgroundPaint_readImageError;
+
 
     // ======================================================================
     // Constructors

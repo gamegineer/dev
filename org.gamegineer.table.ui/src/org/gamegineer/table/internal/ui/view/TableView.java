@@ -26,9 +26,12 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.MouseInfo;
+import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.TexturePaint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -36,10 +39,15 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import javax.imageio.ImageIO;
 import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -63,6 +71,7 @@ import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry;
 import org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry;
 import org.gamegineer.table.internal.ui.Activator;
+import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.TableModel;
@@ -87,6 +96,9 @@ final class TableView
 
     /** The action mediator. */
     private final ActionMediator actionMediator_;
+
+    /** The background paint. */
+    private final Paint backgroundPaint_;
 
     /** The collection of card pile views. */
     private final Map<ICardPile, CardPileView> cardPileViews_;
@@ -124,6 +136,7 @@ final class TableView
         assert model != null;
 
         actionMediator_ = new ActionMediator();
+        backgroundPaint_ = createBackgroundPaint();
         cardPileViews_ = new IdentityHashMap<ICardPile, CardPileView>();
         keyListener_ = createKeyListener();
         model_ = model;
@@ -565,6 +578,28 @@ final class TableView
         actionMediator_.bindShouldSelectPredicate( Actions.getSetStackedCardPileLayoutAction(), isCardPileLayoutSelectedPredicate );
     }
 
+    /**
+     * Creates the background paint.
+     * 
+     * @return The background paint; never {@code null}.
+     */
+    /* @NonNull */
+    private static Paint createBackgroundPaint()
+    {
+        try
+        {
+            final URL url = Activator.getDefault().getBundleContext().getBundle().getEntry( "/icons/backgrounds/green-felt.jpg" ); //$NON-NLS-1$
+            assert url != null;
+            final BufferedImage image = ImageIO.read( url );
+            return new TexturePaint( image, new Rectangle( 0, 0, image.getWidth(), image.getHeight() ) );
+        }
+        catch( final IOException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableView_createBackgroundPaint_readImageError, e );
+            return new Color( 0, 128, 0 );
+        }
+    }
+
     /*
      * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
      */
@@ -848,7 +883,6 @@ final class TableView
     {
         setLayout( null );
         setOpaque( true );
-        setBackground( new Color( 0, 128, 0 ) );
     }
 
     /*
@@ -869,10 +903,15 @@ final class TableView
     {
         super.paintChildren( g );
 
+        final Graphics2D g2d = (Graphics2D)g;
+
         final Dimension originOffset = model_.getOriginOffset();
         g.translate( originOffset.width, originOffset.height );
 
         final Rectangle clipBounds = g.getClipBounds();
+
+        g2d.setPaint( backgroundPaint_ );
+        g2d.fillRect( -originOffset.width, -originOffset.height, getWidth(), getHeight() );
 
         for( final ICardPile cardPile : model_.getTable().getCardPiles() )
         {
