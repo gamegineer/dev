@@ -588,7 +588,7 @@ final class TableView
     {
         try
         {
-            final URL url = Activator.getDefault().getBundleContext().getBundle().getEntry( "/icons/backgrounds/green-felt.jpg" ); //$NON-NLS-1$
+            final URL url = Activator.getDefault().getBundleContext().getBundle().getEntry( "/icons/backgrounds/green-felt.png" ); //$NON-NLS-1$
             assert url != null;
             final BufferedImage image = ImageIO.read( url );
             return new TexturePaint( image, new Rectangle( 0, 0, image.getWidth(), image.getHeight() ) );
