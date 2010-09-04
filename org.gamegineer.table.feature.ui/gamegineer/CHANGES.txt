@@ -1,21 +1,16 @@
 Gamegineer
 Version 0.5.0
-XX XX XXXX
+4 September 2010
 
 Defects closed:
-    * [#20] Bundle activators are not thread safe
-    * [#21] Bundle loggers not inherting org.gamegineer logger as parent
-    * [#22] Race condition between logging service activation and debug options activation
-    * [#23] Cannot drag multiple cards in accordian layouts
+	* [#27] Cannot save table  
 
 Enhancements closed:
-    * [#24] Persist window state across sessions
+	* [#25] Add most recently used file list  
+	* [#28] Use custom cursor image when cursor is over table  
+	* [#29] Shorten paths in MRU file list if they are too long  
+	* [#30] Remove entries from MRU file list upon exception  
+	* [#31] Use texture as table background image instead of solid color  
 
 Tasks closed:
-    * [#6] Upgrade to Eclipse 3.5.2
-    * [#7] Add standard test case classes for equals() and hashCode()
-    * [#8] Change Gamegineer bundle dependencies to package dependencies
-    * [#16] Upgrade to JDK 6 Update 20
-    * [#17] Add EasyMock to target platform
-    * [#18] Remove org.apache.commons.cli bundle
-    * [#19] Refactor logging service to use OSGi component service
+	* [#26] Add qualifier field to all bundle and feature version numbers  
