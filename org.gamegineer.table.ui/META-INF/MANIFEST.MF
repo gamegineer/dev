@@ -7,21 +7,21 @@ Bundle-Name: %bundleName
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.gamegineer.table.ui;singleton:=true
 Bundle-Vendor: %bundleVendor
-Bundle-Version: 0.5.0.qualifier
-Export-Package: org.gamegineer.table.ui;version="0.5.0",
- org.gamegineer.table.ui.services.cardpilebasedesignuiregistry;version="0.5.0",
- org.gamegineer.table.ui.services.cardsurfacedesignuiregistry;version="0.5.0"
+Bundle-Version: 0.6.0.qualifier
+Export-Package: org.gamegineer.table.ui;version="0.6.0",
+ org.gamegineer.table.ui.services.cardpilebasedesignuiregistry;version="0.6.0",
+ org.gamegineer.table.ui.services.cardsurfacedesignuiregistry;version="0.6.0"
 Import-Package: net.jcip.annotations;version="1.0.0",
  org.apache.commons.cli;version="1.2.0",
  org.eclipse.osgi.util;version="1.1.0",
- org.gamegineer.common.core.runtime;version="0.5.0",
- org.gamegineer.common.core.util;version="0.5.0",
- org.gamegineer.common.core.util.concurrent;version="0.5.0",
- org.gamegineer.common.persistence.memento;version="0.5.0",
- org.gamegineer.common.persistence.schemes.serializable;version="0.5.0",
- org.gamegineer.table.core;version="0.5.0",
- org.gamegineer.table.core.services.cardpilebasedesignregistry;version="0.5.0",
- org.gamegineer.table.core.services.cardsurfacedesignregistry;version="0.5.0",
+ org.gamegineer.common.core.runtime;version="0.6.0",
+ org.gamegineer.common.core.util;version="0.6.0",
+ org.gamegineer.common.core.util.concurrent;version="0.6.0",
+ org.gamegineer.common.persistence.memento;version="0.6.0",
+ org.gamegineer.common.persistence.schemes.serializable;version="0.6.0",
+ org.gamegineer.table.core;version="0.6.0",
+ org.gamegineer.table.core.services.cardpilebasedesignregistry;version="0.6.0",
+ org.gamegineer.table.core.services.cardsurfacedesignregistry;version="0.6.0",
  org.osgi.framework;version="1.5.0",
  org.osgi.service.packageadmin;version="1.2.0",
  org.osgi.service.prefs;version="1.1.1",
