@@ -3,14 +3,14 @@ Version 0.5.0
 4 September 2010
 
 Defects closed:
-	* [#27] Cannot save table  
+    * [#27] Cannot save table  
 
 Enhancements closed:
-	* [#25] Add most recently used file list  
-	* [#28] Use custom cursor image when cursor is over table  
-	* [#29] Shorten paths in MRU file list if they are too long  
-	* [#30] Remove entries from MRU file list upon exception  
-	* [#31] Use texture as table background image instead of solid color  
+    * [#25] Add most recently used file list  
+    * [#28] Use custom cursor image when cursor is over table  
+    * [#29] Shorten paths in MRU file list if they are too long  
+    * [#30] Remove entries from MRU file list upon exception  
+    * [#31] Use texture as table background image instead of solid color  
 
 Tasks closed:
-	* [#26] Add qualifier field to all bundle and feature version numbers  
+    * [#26] Add qualifier field to all bundle and feature version numbers  
