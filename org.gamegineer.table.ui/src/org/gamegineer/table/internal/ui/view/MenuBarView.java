@@ -238,7 +238,7 @@ final class MenuBarView
         menu.addSeparator();
         menu.add( Actions.getSaveTableAction() );
         menu.add( Actions.getSaveTableAsAction() );
-        menu.add( new JMenuItemGroup( menu, Actions.getOpenTableAction(), new FileNameHistoryMenuItemGroupContentProvider( model_ ) ) );
+        menu.add( new JMenuItemGroup( menu, Actions.getOpenTableAction(), new FileHistoryMenuItemGroupContentProvider( model_ ) ) );
         menu.addSeparator();
         menu.add( Actions.getExitAction() );
         return menu;

@@ -36,14 +36,14 @@ public final class PreferencesModel
     // Fields
     // ======================================================================
 
-    /** The preference node for the file name history. */
-    private static final String NODE_FILE_NAME_HISTORY = "fileNameHistory"; //$NON-NLS-1$
+    /** The preference node for the file history. */
+    private static final String NODE_FILE_HISTORY = "fileHistory"; //$NON-NLS-1$
 
     /** The preference node for the frame preferences. */
     private static final String NODE_FRAME = "frame"; //$NON-NLS-1$
 
-    /** The file name history preferences. */
-    private final FileNameHistoryPreferences fileNameHistoryPreferences_;
+    /** The file history preferences. */
+    private final FileHistoryPreferences fileHistoryPreferences_;
 
     /** The frame window preferences. */
     private final FramePreferences framePreferences_;
@@ -58,7 +58,7 @@ public final class PreferencesModel
      */
     public PreferencesModel()
     {
-        fileNameHistoryPreferences_ = new FileNameHistoryPreferences();
+        fileHistoryPreferences_ = new FileHistoryPreferences();
         framePreferences_ = new FramePreferences();
     }
 
@@ -68,14 +68,14 @@ public final class PreferencesModel
     // ======================================================================
 
     /**
-     * Gets the file name history preferences.
+     * Gets the file history preferences.
      * 
-     * @return The file name history preferences; never {@code null}.
+     * @return The file history preferences; never {@code null}.
      */
     /* @NonNull */
-    public FileNameHistoryPreferences getFileNameHistoryPreferences()
+    public FileHistoryPreferences getFileHistoryPreferences()
     {
-        return fileNameHistoryPreferences_;
+        return fileHistoryPreferences_;
     }
 
     /**
@@ -101,7 +101,7 @@ public final class PreferencesModel
             return;
         }
 
-        fileNameHistoryPreferences_.load( preferences.node( NODE_FILE_NAME_HISTORY ) );
+        fileHistoryPreferences_.load( preferences.node( NODE_FILE_HISTORY ) );
         framePreferences_.load( preferences.node( NODE_FRAME ) );
     }
 
@@ -117,7 +117,7 @@ public final class PreferencesModel
             return;
         }
 
-        fileNameHistoryPreferences_.save( preferences.node( NODE_FILE_NAME_HISTORY ) );
+        fileHistoryPreferences_.save( preferences.node( NODE_FILE_HISTORY ) );
         framePreferences_.save( preferences.node( NODE_FRAME ) );
     }
 }

@@ -48,7 +48,7 @@ public interface IMainModelListener
         MainModelEvent event );
 
     /**
-     * Invoked after the main model file name has changed.
+     * Invoked after the main model file has changed.
      * 
      * @param event
      *        The event describing the main model; must not be {@code null}.
@@ -56,7 +56,7 @@ public interface IMainModelListener
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void mainModelFileNameChanged(
+    public void mainModelFileChanged(
         /* @NonNull */
         MainModelEvent event );
 

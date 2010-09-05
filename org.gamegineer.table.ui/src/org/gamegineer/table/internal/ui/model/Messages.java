@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.model;
 
+import java.io.File;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -91,9 +92,9 @@ final class Messages
 
     /**
      * An unexpected exception was thrown from
-     * IMainModelListener.mainModelFileNameChanged().
+     * IMainModelListener.mainModelFileChanged().
      */
-    public static String MainModel_mainModelFileNameChanged_unexpectedException;
+    public static String MainModel_mainModelFileChanged_unexpectedException;
 
     /**
      * An unexpected exception was thrown from
@@ -106,9 +107,6 @@ final class Messages
 
     /** The main model listener is not registered. */
     public static String MainModel_removeMainModelListener_listener_notRegistered;
-
-    /** The file name history contains a null entry. */
-    public static String MainModel_setFileNameHistory_fileNameHistory_containsNullEntry;
 
     /**
      * An unexpected exception was thrown from IMainModelListener.tableClosed().
@@ -189,9 +187,8 @@ final class Messages
      * Gets the formatted message indicating an error occurred while reading the
      * table.
      * 
-     * @param fileName
-     *        The name of the file from which the table is read; must not be
-     *        {@code null}.
+     * @param file
+     *        The file from which the table is read; must not be {@code null}.
      * 
      * @return The formatted message indicating an error occurred while reading
      *         the table; never {@code null}.
@@ -199,18 +196,17 @@ final class Messages
     /* @NonNull */
     static String MainModel_readTable_error(
         /* @NonNull */
-        final String fileName )
+        final File file )
     {
-        return bind( MainModel_readTable_error, fileName );
+        return bind( MainModel_readTable_error, file.getAbsolutePath() );
     }
 
     /**
      * Gets the formatted message indicating an error occurred while writing the
      * table.
      * 
-     * @param fileName
-     *        The name of the file to which the table is written; must not be
-     *        {@code null}.
+     * @param file
+     *        The file to which the table is written; must not be {@code null}.
      * 
      * @return The formatted message indicating an error occurred while writing
      *         the table; never {@code null}.
@@ -218,8 +214,8 @@ final class Messages
     /* @NonNull */
     static String MainModel_writeTable_error(
         /* @NonNull */
-        final String fileName )
+        final File file )
     {
-        return bind( MainModel_writeTable_error, fileName );
+        return bind( MainModel_writeTable_error, file.getAbsolutePath() );
     }
 }

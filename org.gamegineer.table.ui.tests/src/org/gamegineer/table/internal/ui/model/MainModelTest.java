@@ -67,18 +67,18 @@ public final class MainModelTest
     // ======================================================================
 
     /**
-     * Creates a temporary file name.
+     * Creates a temporary file.
      * 
-     * @return A temporary file name; never {@code null}.
+     * @return A temporary file; never {@code null}.
      */
     /* @NonNull */
-    private static String createTemporaryFileName()
+    private static File createTemporaryFile()
     {
         try
         {
             final File temporaryFile = File.createTempFile( MainModelTest.class.getName(), null );
             temporaryFile.deleteOnExit();
-            return temporaryFile.getAbsolutePath();
+            return temporaryFile;
         }
         catch( final IOException e )
         {
@@ -176,15 +176,14 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the main model file name changed event catches any exception
-     * thrown by the {@code mainModelFileNameChanged} method of a main model
-     * listener.
+     * Ensures the main model file changed event catches any exception thrown by
+     * the {@code mainModelFileChanged} method of a main model listener.
      */
     @Test
-    public void testMainModelFileNameChanged_CatchesListenerException()
+    public void testMainModelFileChanged_CatchesListenerException()
     {
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelFileNameChanged( EasyMock.notNull( MainModelEvent.class ) );
+        listener.mainModelFileChanged( EasyMock.notNull( MainModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         niceMocksControl_.replay();
         model_.addMainModelListener( listener );
@@ -231,14 +230,14 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code openTable()} method fires a main model file name
-     * changed event.
+     * Ensures the {@code openTable()} method fires a main model file changed
+     * event.
      */
     @Test
-    public void testOpenTable_FiresMainModelFileNameChangedEvent()
+    public void testOpenTable_FiresMainModelFileChangedEvent()
     {
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelFileNameChanged( EasyMock.notNull( MainModelEvent.class ) );
+        listener.mainModelFileChanged( EasyMock.notNull( MainModelEvent.class ) );
         niceMocksControl_.replay();
         model_.openTable();
         model_.addMainModelListener( listener );
@@ -299,22 +298,22 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code openTable(String)} method throws an exception when
-     * passed a {@code null} file name.
+     * Ensures the {@code openTable(File)} method throws an exception when
+     * passed a {@code null} file.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
-    public void testOpenTableFromFile_FileName_Null()
+    public void testOpenTableFromFile_File_Null()
         throws Exception
     {
         model_.openTable( null );
     }
 
     /**
-     * Ensures the {@code openTable(String)} method fires a main model dirty
-     * flag changed event.
+     * Ensures the {@code openTable(File)} method fires a main model dirty flag
+     * changed event.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -323,45 +322,45 @@ public final class MainModelTest
     public void testOpenTableFromFile_FiresMainModelDirtyFlagChangedEvent()
         throws Exception
     {
-        final String fileName = createTemporaryFileName();
+        final File file = createTemporaryFile();
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
         listener.mainModelDirtyFlagChanged( EasyMock.notNull( MainModelEvent.class ) );
         niceMocksControl_.replay();
         model_.openTable();
-        model_.saveTable( fileName );
+        model_.saveTable( file );
         model_.addMainModelListener( listener );
 
-        model_.openTable( fileName );
+        model_.openTable( file );
 
         niceMocksControl_.verify();
     }
 
     /**
-     * Ensures the {@code openTable(String)} method fires a main model file name
+     * Ensures the {@code openTable(File)} method fires a main model file
      * changed event.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test
-    public void testOpenTableFromFile_FiresMainModelFileNameChangedEvent()
+    public void testOpenTableFromFile_FiresMainModelFileChangedEvent()
         throws Exception
     {
-        final String fileName = createTemporaryFileName();
+        final File file = createTemporaryFile();
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelFileNameChanged( EasyMock.notNull( MainModelEvent.class ) );
+        listener.mainModelFileChanged( EasyMock.notNull( MainModelEvent.class ) );
         niceMocksControl_.replay();
         model_.openTable();
-        model_.saveTable( fileName );
+        model_.saveTable( file );
         model_.addMainModelListener( listener );
 
-        model_.openTable( fileName );
+        model_.openTable( file );
 
         niceMocksControl_.verify();
     }
 
     /**
-     * Ensures the {@code openTable(String)} method fires a main model state
+     * Ensures the {@code openTable(File)} method fires a main model state
      * changed event.
      * 
      * @throws java.lang.Exception
@@ -371,21 +370,21 @@ public final class MainModelTest
     public void testOpenTableFromFile_FiresMainModelStateChangedEvent()
         throws Exception
     {
-        final String fileName = createTemporaryFileName();
+        final File file = createTemporaryFile();
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
         listener.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
         niceMocksControl_.replay();
         model_.openTable();
-        model_.saveTable( fileName );
+        model_.saveTable( file );
         model_.addMainModelListener( listener );
 
-        model_.openTable( fileName );
+        model_.openTable( file );
 
         niceMocksControl_.verify();
     }
 
     /**
-     * Ensures the {@code openTable(String)} method fires a table closed event.
+     * Ensures the {@code openTable(File)} method fires a table closed event.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -394,21 +393,21 @@ public final class MainModelTest
     public void testOpenTableFromFile_FiresTableClosedEvent()
         throws Exception
     {
-        final String fileName = createTemporaryFileName();
+        final File file = createTemporaryFile();
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
         listener.tableClosed( EasyMock.notNull( MainModelContentChangedEvent.class ) );
         niceMocksControl_.replay();
         model_.openTable();
-        model_.saveTable( fileName );
+        model_.saveTable( file );
         model_.addMainModelListener( listener );
 
-        model_.openTable( fileName );
+        model_.openTable( file );
 
         niceMocksControl_.verify();
     }
 
     /**
-     * Ensures the {@code openTable(String)} method fires a table opened event.
+     * Ensures the {@code openTable(File)} method fires a table opened event.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -417,15 +416,15 @@ public final class MainModelTest
     public void testOpenTableFromFile_FiresTableOpenedEvent()
         throws Exception
     {
-        final String fileName = createTemporaryFileName();
+        final File file = createTemporaryFile();
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
         listener.tableOpened( EasyMock.notNull( MainModelContentChangedEvent.class ) );
         niceMocksControl_.replay();
         model_.openTable();
-        model_.saveTable( fileName );
+        model_.saveTable( file );
         model_.addMainModelListener( listener );
 
-        model_.openTable( fileName );
+        model_.openTable( file );
 
         niceMocksControl_.verify();
     }
@@ -472,13 +471,13 @@ public final class MainModelTest
 
     /**
      * Ensures the {@code saveTable} method throws an exception when passed a
-     * {@code null} file name.
+     * {@code null} file.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
-    public void testSaveTable_FileName_Null()
+    public void testSaveTable_File_Null()
         throws Exception
     {
         model_.saveTable( null );
@@ -495,37 +494,37 @@ public final class MainModelTest
     public void testSaveTable_FiresMainModelDirtyFlagChangedEvent()
         throws Exception
     {
-        final String fileName = createTemporaryFileName();
+        final File file = createTemporaryFile();
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
         listener.mainModelDirtyFlagChanged( EasyMock.notNull( MainModelEvent.class ) );
         niceMocksControl_.replay();
         model_.openTable();
         model_.addMainModelListener( listener );
 
-        model_.saveTable( fileName );
+        model_.saveTable( file );
 
         niceMocksControl_.verify();
     }
 
     /**
-     * Ensures the {@code saveTable} method fires a main model file name changed
+     * Ensures the {@code saveTable} method fires a main model file changed
      * event.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test
-    public void testSaveTable_FiresMainModelFileNameChangedEvent()
+    public void testSaveTable_FiresMainModelFileChangedEvent()
         throws Exception
     {
-        final String fileName = createTemporaryFileName();
+        final File file = createTemporaryFile();
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelFileNameChanged( EasyMock.notNull( MainModelEvent.class ) );
+        listener.mainModelFileChanged( EasyMock.notNull( MainModelEvent.class ) );
         niceMocksControl_.replay();
         model_.openTable();
         model_.addMainModelListener( listener );
 
-        model_.saveTable( fileName );
+        model_.saveTable( file );
 
         niceMocksControl_.verify();
     }
@@ -541,14 +540,14 @@ public final class MainModelTest
     public void testSaveTable_FiresMainModelStateChangedEvent()
         throws Exception
     {
-        final String fileName = createTemporaryFileName();
+        final File file = createTemporaryFile();
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
         listener.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
         niceMocksControl_.replay();
         model_.openTable();
         model_.addMainModelListener( listener );
 
-        model_.saveTable( fileName );
+        model_.saveTable( file );
 
         niceMocksControl_.verify();
     }

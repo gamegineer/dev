@@ -1,5 +1,5 @@
 /*
- * FileNameHistoryMenuItemGroupContentProvider.java
+ * FileHistoryMenuItemGroupContentProvider.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -33,10 +33,10 @@ import org.gamegineer.table.internal.ui.util.swing.JMenuItemGroup.IContentProvid
 import org.gamegineer.table.internal.ui.util.swing.JMenuItemGroup.MenuItemDescriptor;
 
 /**
- * A content provider for the file name history menu item group.
+ * A content provider for the file history menu item group.
  */
 @Immutable
-final class FileNameHistoryMenuItemGroupContentProvider
+final class FileHistoryMenuItemGroupContentProvider
     implements IContentProvider
 {
     // ======================================================================
@@ -56,12 +56,12 @@ final class FileNameHistoryMenuItemGroupContentProvider
 
     /**
      * Initializes a new instance of the {@code
-     * FileNameHistoryMenuItemGroupContentProvider} class.
+     * FileHistoryMenuItemGroupContentProvider} class.
      * 
      * @param mainModel
      *        The main model; must not be {@code null}.
      */
-    FileNameHistoryMenuItemGroupContentProvider(
+    FileHistoryMenuItemGroupContentProvider(
         /* @NonNull */
         final MainModel mainModel )
     {
@@ -81,19 +81,19 @@ final class FileNameHistoryMenuItemGroupContentProvider
     @Override
     public Collection<MenuItemDescriptor> getMenuItemDescriptors()
     {
-        final List<String> paths = mainModel_.getPreferencesModel().getFileNameHistoryPreferences().getFileNames();
-        Collections.reverse( paths );
+        final List<File> files = mainModel_.getPreferencesModel().getFileHistoryPreferences().getFiles();
+        Collections.reverse( files );
 
         final List<String> fileNames = new ArrayList<String>();
-        for( final String path : paths )
+        for( final File file : files )
         {
-            fileNames.add( new File( path ).getName() );
+            fileNames.add( file.getName() );
         }
 
         final Collection<MenuItemDescriptor> menuItemDescriptors = new ArrayList<MenuItemDescriptor>();
-        for( int index = 0, size = paths.size(); index < size; ++index )
+        for( int index = 0, size = files.size(); index < size; ++index )
         {
-            final String path = paths.get( index );
+            final String path = files.get( index ).getAbsolutePath();
             final String fileName = fileNames.get( index );
             final String label;
             if( Collections.frequency( fileNames, fileName ) > 1 )

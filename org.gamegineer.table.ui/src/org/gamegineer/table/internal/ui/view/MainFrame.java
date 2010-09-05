@@ -242,7 +242,7 @@ public final class MainFrame
     /* @NonNull */
     private JFileChooser createFileChooser()
     {
-        final JFileChooser fileChooser = new JFileChooser( model_.getFileName() );
+        final JFileChooser fileChooser = new JFileChooser( model_.getFile() );
         fileChooser.addChoosableFileFilter( new FileNameExtensionFilter( Messages.MainFrame_fileFilter_table, "ser" ) ); //$NON-NLS-1$
         return fileChooser;
     }
@@ -255,13 +255,12 @@ public final class MainFrame
     /* @NonNull */
     private String getTableName()
     {
-        final String tableFileName = model_.getFileName();
-        if( tableFileName == null )
+        final File file = model_.getFile();
+        if( file == null )
         {
             return Messages.MainFrame_untitledTable;
         }
 
-        final File file = new File( tableFileName );
         return file.getName();
     }
 
@@ -329,10 +328,10 @@ public final class MainFrame
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelFileNameChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelFileChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
      */
     @Override
-    public void mainModelFileNameChanged(
+    public void mainModelFileChanged(
         final MainModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
@@ -389,7 +388,7 @@ public final class MainFrame
             return;
         }
 
-        final String checkedFileName;
+        final File file;
         if( fileName.isEmpty() )
         {
             final JFileChooser fileChooser = createFileChooser();
@@ -398,16 +397,16 @@ public final class MainFrame
                 return;
             }
 
-            checkedFileName = fileChooser.getSelectedFile().getAbsolutePath();
+            file = fileChooser.getSelectedFile();
         }
         else
         {
-            checkedFileName = fileName;
+            file = new File( fileName );
         }
 
         try
         {
-            model_.openTable( checkedFileName );
+            model_.openTable( file );
         }
         catch( final ModelException e )
         {
@@ -477,18 +476,18 @@ public final class MainFrame
     /**
      * Saves the table state to a file.
      * 
-     * @param forcePromptForFileName
-     *        Indicates the user should be forced to choose a file name
-     *        regardless of whether or not the table state is already associated
-     *        with an existing file.
+     * @param forcePromptForFile
+     *        Indicates the user should be forced to choose a file regardless of
+     *        whether or not the table state is already associated with an
+     *        existing file.
      * 
      * @return {@code true} if the table was saved; otherwise {@code false}.
      */
     private boolean saveTable(
-        final boolean forcePromptForFileName )
+        final boolean forcePromptForFile )
     {
-        final String fileName;
-        if( forcePromptForFileName || (model_.getFileName() == null) )
+        final File file;
+        if( forcePromptForFile || (model_.getFile() == null) )
         {
             final JFileChooser fileChooser = createFileChooser();
             if( fileChooser.showSaveDialog( this ) == JFileChooser.CANCEL_OPTION )
@@ -496,16 +495,16 @@ public final class MainFrame
                 return false;
             }
 
-            fileName = fileChooser.getSelectedFile().getAbsolutePath();
+            file = fileChooser.getSelectedFile();
         }
         else
         {
-            fileName = model_.getFileName();
+            file = model_.getFile();
         }
 
         try
         {
-            model_.saveTable( fileName );
+            model_.saveTable( file );
         }
         catch( final ModelException e )
         {

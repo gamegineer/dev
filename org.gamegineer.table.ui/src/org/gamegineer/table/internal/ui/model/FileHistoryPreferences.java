@@ -1,5 +1,5 @@
 /*
- * FileNameHistoryPreferences.java
+ * FileHistoryPreferences.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,31 +31,31 @@ import net.jcip.annotations.ThreadSafe;
 import org.osgi.service.prefs.Preferences;
 
 /**
- * The preference for main model file name history.
+ * The preference for main model file history.
  */
 @ThreadSafe
-public final class FileNameHistoryPreferences
+public final class FileHistoryPreferences
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The capacity of the file name history. */
+    /** The capacity of the file history. */
     private static final int CAPACITY = 4;
 
     /** The preference key for a history entry. */
     private static final String KEY_ENTRY = "entry"; //$NON-NLS-1$
 
-    /** The file names. */
+    /** The files. */
     @GuardedBy( "lock_" )
-    private final Map<String, String> fileNames_ = new LinkedHashMap<String, String>( CAPACITY, 0.75F, true )
+    private final Map<File, File> files_ = new LinkedHashMap<File, File>( CAPACITY, 0.75F, true )
     {
         private static final long serialVersionUID = 1L;
 
         @Override
         protected boolean removeEldestEntry(
             @SuppressWarnings( "unused" )
-            final Map.Entry<String, String> eldest )
+            final Map.Entry<File, File> eldest )
         {
             return size() > CAPACITY;
         }
@@ -69,10 +70,9 @@ public final class FileNameHistoryPreferences
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code FileNameHistoryPreferences}
-     * class.
+     * Initializes a new instance of the {@code FileHistoryPreferences} class.
      */
-    FileNameHistoryPreferences()
+    FileHistoryPreferences()
     {
         lock_ = new Object();
     }
@@ -83,42 +83,40 @@ public final class FileNameHistoryPreferences
     // ======================================================================
 
     /**
-     * Adds the specified file name to the history.
+     * Adds the specified file to the history.
      * 
-     * @param fileName
-     *        The file name; must not be {@code null}.
+     * @param file
+     *        The file; must not be {@code null}.
      */
-    void addFileName(
+    void addFile(
         /* @NonNull */
-        final String fileName )
+        final File file )
     {
-        assert fileName != null;
+        assert file != null;
 
         synchronized( lock_ )
         {
-            fileNames_.put( fileName, fileName );
+            files_.put( file, file );
         }
     }
 
     /**
-     * Gets the collection of file names in the history.
+     * Gets the collection of files in the history.
      * 
-     * @return The collection of file names in the history; never {@code null}.
-     *         The collection is ordered from the oldest file name to the newest
-     *         file name.
+     * @return The collection of files in the history; never {@code null}. The
+     *         collection is ordered from the oldest file to the newest file.
      */
     /* @NonNull */
-    public List<String> getFileNames()
+    public List<File> getFiles()
     {
         synchronized( lock_ )
         {
-            return new ArrayList<String>( fileNames_.values() );
+            return new ArrayList<File>( files_.values() );
         }
     }
 
     /**
-     * Loads the file name history preferences from the specified preference
-     * node.
+     * Loads the file history preferences from the specified preference node.
      * 
      * @param preferences
      *        The preferences node; must not be {@code null}.
@@ -131,13 +129,14 @@ public final class FileNameHistoryPreferences
 
         synchronized( lock_ )
         {
-            fileNames_.clear();
+            files_.clear();
             for( int index = 0; true; ++index )
             {
-                final String fileName = preferences.get( KEY_ENTRY + index, null );
-                if( fileName != null )
+                final String path = preferences.get( KEY_ENTRY + index, null );
+                if( path != null )
                 {
-                    fileNames_.put( fileName, fileName );
+                    final File file = new File( path );
+                    files_.put( file, file );
                 }
                 else
                 {
@@ -148,26 +147,25 @@ public final class FileNameHistoryPreferences
     }
 
     /**
-     * Removes the specified file name from the history.
+     * Removes the specified file from the history.
      * 
-     * @param fileName
-     *        The file name; must not be {@code null}.
+     * @param file
+     *        The file; must not be {@code null}.
      */
-    void removeFileName(
+    void removeFile(
         /* @NonNull */
-        final String fileName )
+        final File file )
     {
-        assert fileName != null;
+        assert file != null;
 
         synchronized( lock_ )
         {
-            fileNames_.remove( fileName );
+            files_.remove( file );
         }
     }
 
     /**
-     * Stores the file name history preferences in the specified preference
-     * node.
+     * Stores the file history preferences in the specified preference node.
      * 
      * @param preferences
      *        The preferences node; must not be {@code null}.
@@ -181,9 +179,9 @@ public final class FileNameHistoryPreferences
         synchronized( lock_ )
         {
             int index = 0;
-            for( final String fileName : fileNames_.values() )
+            for( final File file : files_.values() )
             {
-                preferences.put( KEY_ENTRY + index, fileName );
+                preferences.put( KEY_ENTRY + index, file.getAbsolutePath() );
                 ++index;
             }
         }

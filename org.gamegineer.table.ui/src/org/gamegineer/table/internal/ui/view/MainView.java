@@ -114,10 +114,10 @@ final class MainView
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelFileNameChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelFileChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
      */
     @Override
-    public void mainModelFileNameChanged(
+    public void mainModelFileChanged(
         final MainModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$

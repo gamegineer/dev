@@ -1,5 +1,5 @@
 /*
- * FileNameHistoryPreferencesTest.java
+ * FileHistoryPreferencesTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertEquals;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
@@ -30,17 +31,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.FileNameHistoryPreferences}
- * class.
+ * {@link org.gamegineer.table.internal.ui.model.FileHistoryPreferences} class.
  */
-public final class FileNameHistoryPreferencesTest
+public final class FileHistoryPreferencesTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The file name history preferences under test in the fixture. */
-    private FileNameHistoryPreferences fileNameHistoryPreferences_;
+    /** The file history preferences under test in the fixture. */
+    private FileHistoryPreferences fileHistoryPreferences_;
 
 
     // ======================================================================
@@ -48,10 +48,10 @@ public final class FileNameHistoryPreferencesTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code FileNameHistoryPreferencesTest}
+     * Initializes a new instance of the {@code FileHistoryPreferencesTest}
      * class.
      */
-    public FileNameHistoryPreferencesTest()
+    public FileHistoryPreferencesTest()
     {
         super();
     }
@@ -71,7 +71,7 @@ public final class FileNameHistoryPreferencesTest
     public void setUp()
         throws Exception
     {
-        fileNameHistoryPreferences_ = new FileNameHistoryPreferences();
+        fileHistoryPreferences_ = new FileHistoryPreferences();
     }
 
     /**
@@ -84,22 +84,22 @@ public final class FileNameHistoryPreferencesTest
     public void tearDown()
         throws Exception
     {
-        fileNameHistoryPreferences_ = null;
+        fileHistoryPreferences_ = null;
     }
 
     /**
-     * Ensures the {@code getFileNames} method returns a copy of the file names
+     * Ensures the {@code getFiles} method returns a copy of the files
      * collection.
      */
     @Test
-    public void testGetFileNames_ReturnValue_Copy()
+    public void testGetFiles_ReturnValue_Copy()
     {
-        final List<String> fileNames = fileNameHistoryPreferences_.getFileNames();
-        final List<String> expectedFileNames = new ArrayList<String>( fileNames );
-        fileNames.add( "fileName" ); //$NON-NLS-1$
+        final List<File> files = fileHistoryPreferences_.getFiles();
+        final List<File> expectedFiles = new ArrayList<File>( files );
+        files.add( new File( "path" ) ); //$NON-NLS-1$
 
-        final List<String> actualFileNames = fileNameHistoryPreferences_.getFileNames();
+        final List<File> actualFiles = fileHistoryPreferences_.getFiles();
 
-        assertEquals( expectedFileNames, actualFileNames );
+        assertEquals( expectedFiles, actualFiles );
     }
 }

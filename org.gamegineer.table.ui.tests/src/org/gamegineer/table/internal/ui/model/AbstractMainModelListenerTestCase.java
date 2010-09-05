@@ -108,13 +108,13 @@ public abstract class AbstractMainModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code mainModelFileNameChanged} method throws an exception
-     * when passed a {@code null} event.
+     * Ensures the {@code mainModelFileChanged} method throws an exception when
+     * passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
-    public void testMainModelFileNameChanged_Event_Null()
+    public void testMainModelFileChanged_Event_Null()
     {
-        listener_.mainModelFileNameChanged( null );
+        listener_.mainModelFileChanged( null );
     }
 
     /**
