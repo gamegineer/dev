@@ -23,6 +23,8 @@ package org.gamegineer.table.internal.ui.util.swing;
 
 import java.io.File;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import net.jcip.annotations.NotThreadSafe;
 
@@ -147,6 +149,28 @@ public final class JFileChooser
     // Methods
     // ======================================================================
 
+    /**
+     * Adds the default extension to the selected file if the extension is
+     * absent.
+     */
+    private void addExtensionIfAbsent()
+    {
+        final File file = getSelectedFile();
+        if( (file == null) || (file.getName().indexOf( '.' ) != -1) )
+        {
+            return;
+        }
+
+        final FileFilter fileFilter = getFileFilter();
+        if( !(fileFilter instanceof FileNameExtensionFilter) )
+        {
+            return;
+        }
+
+        final FileNameExtensionFilter fileNameExtensionFilter = (FileNameExtensionFilter)fileFilter;
+        setSelectedFile( new File( file.getAbsolutePath() + "." + fileNameExtensionFilter.getExtensions()[ 0 ] ) ); //$NON-NLS-1$
+    }
+
     /*
      * @see javax.swing.JFileChooser#approveSelection()
      */
@@ -155,6 +179,8 @@ public final class JFileChooser
     {
         if( getDialogType() == SAVE_DIALOG )
         {
+            addExtensionIfAbsent();
+
             final File selectedFile = getSelectedFile();
             if( (selectedFile != null) && selectedFile.exists() )
             {
@@ -183,6 +209,11 @@ public final class JFileChooser
     {
         assert file != null;
 
-        return JOptionPane.showConfirmDialog( this, Messages.JFileChooser_confirmOverwriteFile_message( file ), Messages.JFileChooser_confirmOverwriteFile_title, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE ) == JOptionPane.YES_OPTION;
+        return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog( //
+            this, //
+            Messages.JFileChooser_confirmOverwriteFile_message( file ), //
+            Messages.JFileChooser_confirmOverwriteFile_title, //
+            JOptionPane.YES_NO_OPTION, //
+            JOptionPane.WARNING_MESSAGE );
     }
 }
