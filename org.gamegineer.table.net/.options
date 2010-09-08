@@ -1,0 +1,4 @@
+# Debugging options for the org.gamegineer.table.net bundle.
+
+# Reports default bundle activity.
+org.gamegineer.table.net/debug=false
