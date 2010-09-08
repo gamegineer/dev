@@ -12,5 +12,6 @@ org.gamegineer.common.core,0.6.0.qualifier,plugins/org.gamegineer.common.core_0.
 org.gamegineer.common.persistence,0.6.0.qualifier,plugins/org.gamegineer.common.persistence_0.6.0.qualifier.jar,4,false
 org.gamegineer.table.core,0.6.0.qualifier,plugins/org.gamegineer.table.core_0.6.0.qualifier.jar,4,false
 org.gamegineer.table.core.persistence.serializable,0.6.0.qualifier,plugins/org.gamegineer.table.core.persistence.serializable_0.6.0.qualifier.jar,4,false
+org.gamegineer.table.net,0.6.0.qualifier,plugins/org.gamegineer.table.net_0.6.0.qualifier.jar,4,false
 org.gamegineer.table.product,0.6.0.qualifier,plugins/org.gamegineer.table.product_0.6.0.qualifier.jar,4,false
 org.gamegineer.table.ui,0.6.0.qualifier,plugins/org.gamegineer.table.ui_0.6.0.qualifier.jar,4,false
