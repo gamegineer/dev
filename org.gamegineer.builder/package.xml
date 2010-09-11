@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    package.xml
+    Copyright 2008-2010 Gamegineer.org
+    All rights reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+    Created on Sep 9, 2010 at 10:37:26 PM.
+-->
+<project name="packager" default="main" basedir=".">
+
+    <target name="init">
+        <mkdir dir="${workingDirectory}" />
+        <mkdir dir="${downloadDirectory}" />
+        <mkdir dir="${tempDirectory}" />
+    </target>
+
+    <target name="retrieveMapFiles" unless="skipMaps">
+        <available property="mapsFetched" file="${workingDirectory}/all.maps" />
+        <ant antfile="${customTargets}" target="getMapFiles" />
+        <concat destfile="${workingDirectory}/all.maps">
+            <fileset dir="${downloadDirectory}" includes="**/*.map" />
+        </concat>
+    </target>
+
+    <!-- take the content of all.maps, retrieve the files according to the filtering options (config, content), 
+	and generate a directory.txt for the rest of the process using config as a key, and containing the name of the zip and the directory -->
+    <target name="retrieveFiles" unless="skipFetch">
+        <eclipse.fetchFilesGenerator map="${workingDirectory}/all.maps" workingDirectory="${workingDirectory}" configInfo="${config}" contentFilter="${contentFilter}" componentFilter="${componentFilter}" />
+        <ant antfile="fetch.xml" dir="${workingDirectory}" />
+    </target>
+
+    <!-- Process the directory.txt to create unzipper.xml, and run unzipper.xml-->
+    <target name="prepareResources" unless="skipUnzip">
+        <eclipse.unzipperBuilder workingDirectory="${workingDirectory}" configInfo="${config}" packagePropertyFile="${packagingPropertyFile}" />
+        <ant antfile="${workingDirectory}/unzipper.xml" />
+    </target>
+
+    <!-- Generate an assemble script (assemble.xml) for the given features -->
+    <target name="generateAssembleScripts">
+        <echo message="${target}" />
+        <eclipse.assembler featureList="${featureList}" workingDirectory="${workingDirectory}" configInfo="${config}" baseLocation="${target}" packagePropertyFile="${packagingPropertyFile}" deltaPack="${deltaPack}" archivesFormat="${archivesFormat}" filteredDependencyCheck="${filteredDependencyCheck}" normalize="${normalizeWhilePackaging}" />
+    </target>
+
+    <!-- Call the assemble.xml script -->
+    <target name="callAssembleScripts">
+        <ant antfile="package.all.xml" dir="${workingDirectory}" />
+    </target>
+
+    <target name="main" description="Start the packager for a given config">
+        <property file="${packagingInfo}/packager.properties" />
+        <property name="customTargets" location="${packagingInfo}/customTargets.xml" />
+        <property name="packagingPropertyFile" location="${packagingInfo}/${packagingProperties}" />
+
+        <condition property="skipMaps" value="true">
+            <isset property="prefilledTarget" />
+        </condition>
+        <condition property="skipFetch" value="true">
+            <isset property="prefilledTarget" />
+        </condition>
+        <condition property="skipUnzip" value="true">
+            <isset property="prefilledTarget" />
+        </condition>
+
+        <!-- Compatibility -->
+        <property name="filteredDependencyCheck" value="false" />
+        <condition property="skipMaps" value="true">
+            <isset property="localMaps" />
+        </condition>
+        <condition property="target" value="${tempDirectory}/${featurePaths}">
+            <isset property="featurePaths" />
+        </condition>
+        <property name="normalizeWhilePackaging" value="true" />
+
+        <!-- End of compatibility -->
+
+        <antcall target="init" />
+        <antcall target="retrieveMapFiles" />
+        <antcall target="retrieveFiles" />
+        <antcall target="prepareResources" />
+        <antcall target="generateAssembleScripts" />
+        <antcall target="callAssembleScripts" />
+    </target>
+
+</project>

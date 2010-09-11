@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    run-build.xml
+    Copyright 2008-2010 Gamegineer.org
+    All rights reserved.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+    Created on Mar 15, 2008 at 9:53:00 PM.
+-->
+<project name="gamegineer" default="build" basedir=".">
+
+    <property environment="env" />
+
+    <!-- Generate version qualifier -->
+    <tstamp>
+        <format pattern="'v'yyyyMMdd-HHmm" property="qualifier" timezone="UTC" />
+    </tstamp>
+
+    <!--
+        Builds the entire Gamegineer workspace.
+
+        This target should be run from the org.gamegineer.builder directory
+        and assumes the environment has been set up appropriately according
+        to the Gamegineer build system guidelines.
+    -->
+    <target name="build">
+        <antcall target="before-build" />
+        <antcall target="core-build" />
+        <antcall target="after-build" />
+    </target>
+
+    <target name="before-build">
+        <!-- Update version qualifiers not managed by PDE Build -->
+        <replace
+        		file="product/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
+            	token="qualifier"
+            	value="${qualifier}" />
+    </target>
+
+    <target name="core-build">
+        <java
+                failonerror="true"
+                fork="true"
+                jar="${env.ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher_1.0.201.R35x_v20090715.jar"
+                maxmemory="256m">
+            <jvmarg value="-DbuildDirectory=${basedir}" />
+            <jvmarg value="-DforceContextQualifier=${qualifier}" />
+            <jvmarg value="-DJavaSE-1.6=${env.JAVA_HOME}/jre/lib/rt.jar" />
+            <arg value="-application" />
+            <arg value="org.eclipse.ant.core.antRunner" />
+            <arg value="-buildfile" />
+            <arg value="build.xml" />
+        </java>
+    </target>
+
+    <target name="after-build">
+    </target>
+
+</project>
