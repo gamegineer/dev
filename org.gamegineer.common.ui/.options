@@ -1,0 +1,4 @@
+# Debugging options for the org.gamegineer.common.ui bundle.
+
+# Reports default bundle activity.
+org.gamegineer.common.ui/debug=false
