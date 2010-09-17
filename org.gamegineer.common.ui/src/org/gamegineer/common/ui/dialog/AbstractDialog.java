@@ -318,30 +318,19 @@ public abstract class AbstractDialog
     protected final Component createContent(
         final Container parent )
     {
-        // create the top level composite for the dialog
         final Container composite = new JPanel();
         parent.add( composite );
 
-        final GroupLayout layout = new GroupLayout( composite );
+        final BorderLayout layout = new BorderLayout();
         composite.setLayout( layout );
 
-        //composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-        //applyDialogFont(composite);
-
-        // initialize the dialog units
         initializeDialogUnits( composite );
 
-        // create the dialog area and button bar
         dialogArea_ = createDialogArea( composite );
         buttonBar_ = createButtonBar( composite );
 
-        final GroupLayout.SequentialGroup hGroup = layout.createSequentialGroup();
-        hGroup.addGroup( layout.createParallelGroup().addComponent( dialogArea_ ).addComponent( buttonBar_ ) );
-        layout.setHorizontalGroup( hGroup );
-
-        final GroupLayout.SequentialGroup vGroup = layout.createSequentialGroup();
-        vGroup.addComponent( dialogArea_ ).addComponent( buttonBar_, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE );
-        layout.setVerticalGroup( vGroup );
+        layout.addLayoutComponent( dialogArea_, BorderLayout.CENTER );
+        layout.addLayoutComponent( buttonBar_, BorderLayout.SOUTH );
 
         return composite;
     }
