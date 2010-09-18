@@ -161,6 +161,6 @@ public final class DialogUtils
         final FontMetrics fontMetrics )
     {
         // using Windows definition of average character width
-        return fontMetrics.charWidth( 'X' );
+        return (fontMetrics.charWidth( 'X' ) + fontMetrics.charWidth( 'x' )) / 2;
     }
 }
