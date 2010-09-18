@@ -160,7 +160,7 @@ public final class DialogUtils
         /* @NonNull */
         final FontMetrics fontMetrics )
     {
-        // using Windows definition of average character width
-        return fontMetrics.charWidth( 'x' );
+        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"; //$NON-NLS-1$
+        return fontMetrics.stringWidth( chars ) / chars.length();
     }
 }
