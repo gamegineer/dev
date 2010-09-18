@@ -353,7 +353,9 @@ public abstract class AbstractWindow
     {
         final Dimension size = getInitialSize();
         final Point location = getInitialLocation( size );
-        shell_.setBounds( getConstrainedBounds( new Rectangle( location, size ) ) );
+        final Rectangle bounds = getConstrainedBounds( new Rectangle( location, size ) );
+        shell_.setBounds( bounds );
+        shell_.setPreferredSize( bounds.getSize() );
     }
 
     /**
