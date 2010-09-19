@@ -115,7 +115,7 @@ public class TitleAreaDialog
         subtitleLabel_ = null;
         subtitle_ = ""; //$NON-NLS-1$
         title_ = ""; //$NON-NLS-1$
-        titleImage_ = Activator.getDefault().getImageRegistry().getImage( ImageRegistry.DIALOG_DEFAULT_TITLE_PATH );
+        titleImage_ = null;
         titleImageLabel_ = null;
         titleLabel_ = null;
     }
@@ -251,6 +251,11 @@ public class TitleAreaDialog
                 layout.getConstraint( SpringLayout.SOUTH, titleImageLabel_ ) ) );
 
         layout.putConstraint( SpringLayout.SOUTH, composite, 0, SpringLayout.SOUTH, separator );
+
+        if( titleImage_ == null )
+        {
+            titleImage_ = Activator.getDefault().getImageRegistry().getImage( ImageRegistry.DIALOG_DEFAULT_TITLE_PATH );
+        }
 
         setTitle( title_ );
         setTitleImage( titleImage_ );
