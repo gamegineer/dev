@@ -46,6 +46,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private BundleContext bundleContext_;
 
+    /** The bundle image registry. */
+    @GuardedBy( "lock_" )
+    private ImageRegistry imageRegistry_;
+
     /** The instance lock. */
     private final Object lock_;
 
@@ -61,6 +65,7 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
+        imageRegistry_ = null;
     }
 
 
@@ -94,6 +99,27 @@ public final class Activator
         final Activator instance = instance_.get();
         assert instance != null;
         return instance;
+    }
+
+    /**
+     * Gets the bundle image registry.
+     * 
+     * @return The bundle image registry; never {@code null}.
+     */
+    /* @NonNull */
+    public ImageRegistry getImageRegistry()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( imageRegistry_ == null )
+            {
+                imageRegistry_ = new ImageRegistry();
+            }
+
+            return imageRegistry_;
+        }
     }
 
     /*
@@ -131,6 +157,12 @@ public final class Activator
         {
             assert bundleContext_ != null;
             bundleContext_ = null;
+
+            if( imageRegistry_ != null )
+            {
+                imageRegistry_.dispose();
+                imageRegistry_ = null;
+            }
         }
     }
 }

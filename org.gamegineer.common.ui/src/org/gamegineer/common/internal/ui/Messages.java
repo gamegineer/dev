@@ -1,5 +1,5 @@
 /*
- * TitleAreaDialogTest.java
+ * Messages.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,27 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 16, 2010 at 9:58:17 PM.
+ * Created on Sep 18, 2010 at 11:43:06 PM.
  */
 
-package org.gamegineer.common.ui.dialog;
+package org.gamegineer.common.internal.ui;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import net.jcip.annotations.ThreadSafe;
+import org.eclipse.osgi.util.NLS;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.ui.dialog.TitleAreaDialog} class.
+ * A utility class to manage localized messages for the package.
  */
-public final class TitleAreaDialogTest
+@ThreadSafe
+final class Messages
+    extends NLS
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The dialog under test in the fixture. */
-    private TitleAreaDialog dialog_;
+    // --- ImageRegistry ----------------------------------------------------
+
+    /** An error occurred while loading the image. */
+    public static String ImageRegistry_loadImage_error;
 
 
     // ======================================================================
@@ -44,9 +46,17 @@ public final class TitleAreaDialogTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TitleAreaDialogTest} class.
+     * Initializes the {@code Messages} class.
      */
-    public TitleAreaDialogTest()
+    static
+    {
+        NLS.initializeMessages( Messages.class.getName(), Messages.class );
+    }
+
+    /**
+     * Initializes a new instance of the {@code Messages} class.
+     */
+    private Messages()
     {
         super();
     }
@@ -56,39 +66,23 @@ public final class TitleAreaDialogTest
     // Methods
     // ======================================================================
 
-    /**
-     * Sets up the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Before
-    public void setUp()
-        throws Exception
-    {
-        dialog_ = new TitleAreaDialog( null );
-    }
+    // --- ImageRegistry ----------------------------------------------------
 
     /**
-     * Tears down the test fixture.
+     * Gets the formatted message indicating an error occurred while loading the
+     * image.
      * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * @param imagePath
+     *        The bundle-relative path of the image; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while loading
+     *         the image; never {@code null}.
      */
-    @After
-    public void tearDown()
-        throws Exception
+    /* @NonNull */
+    static String ImageRegistry_loadImage_error(
+        /* @NonNull */
+        final String imagePath )
     {
-        dialog_ = null;
-    }
-
-    /**
-     * Ensures the {@code createCotnentArea} method throws an exception when
-     * passed a {@code null} parent.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testContentArea_Parent_Null()
-    {
-        dialog_.createContentArea( null );
+        return bind( ImageRegistry_loadImage_error, imagePath );
     }
 }

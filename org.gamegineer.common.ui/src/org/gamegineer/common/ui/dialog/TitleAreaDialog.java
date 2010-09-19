@@ -27,8 +27,8 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Window;
-import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -41,11 +41,11 @@ import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.internal.ui.Activator;
+import org.gamegineer.common.internal.ui.ImageRegistry;
 
 /**
  * A dialog that has a title area for displaying a title and an image, as well
- * as a common area for displaying a description, a message, or an error
- * message.
+ * as a common area for displaying a subtitle or a temporary message.
  */
 @NotThreadSafe
 public class TitleAreaDialog
@@ -61,20 +61,35 @@ public class TitleAreaDialog
     /** The minimum dialog width in dialog units. */
     private static final int MINIMUM_DIALOG_WIDTH = 350;
 
-    /** The image label. */
-    private JLabel imageLabel_;
+    /** The dialog content area component. */
+    private Component contentArea_;
 
-    /** The message image label. */
-    private JLabel messageImageLabel_;
+    /** The active message or {@code null} if no active message. */
+    private String message_;
 
-    /** The message label. */
-    private JTextArea messageLabel_;
+    /** The active message type or {@code null} if no active message. */
+    private MessageType messageType_;
+
+    /** The subtitle. */
+    private String subtitle_;
+
+    /** The subtitle image label. */
+    private JLabel subtitleImageLabel_;
+
+    /** The subtitle label. */
+    private JTextArea subtitleLabel_;
+
+    /** The title. */
+    private String title_;
+
+    /** The title image. */
+    private Image titleImage_;
+
+    /** The title image label. */
+    private JLabel titleImageLabel_;
 
     /** The title label. */
     private JLabel titleLabel_;
-
-    /** The dialog work area component. */
-    private Component workArea_;
 
 
     // ======================================================================
@@ -93,17 +108,57 @@ public class TitleAreaDialog
     {
         super( parentShell );
 
-        imageLabel_ = null;
-        messageImageLabel_ = null;
-        messageLabel_ = null;
+        contentArea_ = null;
+        message_ = null;
+        messageType_ = null;
+        subtitleImageLabel_ = null;
+        subtitleLabel_ = null;
+        subtitle_ = ""; //$NON-NLS-1$
+        title_ = ""; //$NON-NLS-1$
+        titleImage_ = Activator.getDefault().getImageRegistry().getImage( ImageRegistry.DIALOG_DEFAULT_TITLE_PATH );
+        titleImageLabel_ = null;
         titleLabel_ = null;
-        workArea_ = null;
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates the dialog content area component (the area above the button bar
+     * and below the title area).
+     * 
+     * <p>
+     * The default implementation creates a panel with standard dialog margins
+     * and a layout manager of type {@link java.awt.BorderLayout}.
+     * </p>
+     * 
+     * @param parent
+     *        The parent container for the dialog content area; must not be
+     *        {@code null}.
+     * 
+     * @return The dialog content area component; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code parent} is {@code null}.
+     */
+    /* @NonNull */
+    protected Component createContentArea(
+        /* @NonNull */
+        final Container parent )
+    {
+        final JComponent composite = new JPanel();
+        parent.add( composite );
+
+        final int marginHeight = convertHeightInDlusToPixels( DialogConstants.VERTICAL_MARGIN );
+        final int marginWidth = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_MARGIN );
+        composite.setBorder( BorderFactory.createEmptyBorder( marginHeight, marginWidth, marginHeight, marginWidth ) );
+
+        composite.setLayout( new BorderLayout() );
+
+        return composite;
+    }
 
     /*
      * @see org.gamegineer.common.ui.dialog.AbstractDialog#createDialogArea(java.awt.Container)
@@ -119,10 +174,10 @@ public class TitleAreaDialog
         composite.setLayout( layout );
 
         final Component titleArea = createTitleArea( composite );
-        workArea_ = createWorkArea( composite );
+        contentArea_ = createContentArea( composite );
 
         layout.addLayoutComponent( titleArea, BorderLayout.NORTH );
-        layout.addLayoutComponent( workArea_, BorderLayout.CENTER );
+        layout.addLayoutComponent( contentArea_, BorderLayout.CENTER );
 
         return composite;
     }
@@ -153,38 +208,36 @@ public class TitleAreaDialog
         final int horizontalSpacing = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_SPACING );
         final int verticalSpacing = convertHeightInDlusToPixels( DialogConstants.VERTICAL_SPACING );
 
-        titleLabel_ = new JLabel( "title" );
+        titleImageLabel_ = new JLabel();
+        titleImageLabel_.setVerticalAlignment( SwingConstants.BOTTOM );
+        composite.add( titleImageLabel_ );
+        layout.putConstraint( SpringLayout.EAST, titleImageLabel_, 0, SpringLayout.EAST, composite );
+        layout.putConstraint( SpringLayout.NORTH, titleImageLabel_, 0, SpringLayout.NORTH, composite );
+
+        titleLabel_ = new JLabel();
         titleLabel_.setFont( titleLabel_.getFont().deriveFont( Font.BOLD ).deriveFont( titleLabel_.getFont().getSize() * 1.2F ) );
         composite.add( titleLabel_ );
         layout.putConstraint( SpringLayout.WEST, titleLabel_, horizontalMargin, SpringLayout.WEST, composite );
         layout.putConstraint( SpringLayout.NORTH, titleLabel_, verticalMargin, SpringLayout.NORTH, composite );
+        layout.putConstraint( SpringLayout.EAST, titleLabel_, 0, SpringLayout.WEST, titleImageLabel_ );
 
-        imageLabel_ = new JLabel();
-        final URL url = Activator.getDefault().getBundleContext().getBundle().getEntry( "/icons/default-title-image.png" ); //$NON-NLS-1$
-        imageLabel_.setIcon( new ImageIcon( url ) );
-        imageLabel_.setVerticalAlignment( SwingConstants.BOTTOM );
-        composite.add( imageLabel_ );
-        layout.putConstraint( SpringLayout.EAST, imageLabel_, 0, SpringLayout.EAST, composite );
-        layout.putConstraint( SpringLayout.NORTH, imageLabel_, 0, SpringLayout.NORTH, composite );
+        subtitleImageLabel_ = new JLabel();
+        composite.add( subtitleImageLabel_ );
+        layout.putConstraint( SpringLayout.WEST, subtitleImageLabel_, 0, SpringLayout.WEST, titleLabel_ );
+        layout.putConstraint( SpringLayout.NORTH, subtitleImageLabel_, verticalSpacing, SpringLayout.SOUTH, titleLabel_ );
 
-        messageImageLabel_ = new JLabel();
-        final URL url2 = Activator.getDefault().getBundleContext().getBundle().getEntry( "/icons/message-error.png" ); //$NON-NLS-1$
-        messageImageLabel_.setIcon( new ImageIcon( url2 ) );
-        composite.add( messageImageLabel_ );
-        layout.putConstraint( SpringLayout.WEST, messageImageLabel_, 0, SpringLayout.WEST, titleLabel_ );
-        layout.putConstraint( SpringLayout.NORTH, messageImageLabel_, verticalSpacing, SpringLayout.SOUTH, titleLabel_ );
-
-        messageLabel_ = new JTextArea( "Message line 1\nMessage line 2" );
-        messageLabel_.setFont( composite.getFont() );
-        messageLabel_.setEditable( false );
-        messageLabel_.setFocusable( false );
-        messageLabel_.setLineWrap( true );
-        messageLabel_.setOpaque( false );
-        messageLabel_.setWrapStyleWord( true );
-        composite.add( messageLabel_ );
-        layout.putConstraint( SpringLayout.WEST, messageLabel_, horizontalSpacing, SpringLayout.EAST, messageImageLabel_ );
-        layout.putConstraint( SpringLayout.NORTH, messageLabel_, verticalSpacing, SpringLayout.SOUTH, titleLabel_ );
-        layout.putConstraint( SpringLayout.EAST, messageLabel_, 0, SpringLayout.WEST, imageLabel_ );
+        subtitleLabel_ = new JTextArea();
+        subtitleLabel_.setFont( composite.getFont() );
+        subtitleLabel_.setEditable( false );
+        subtitleLabel_.setFocusable( false );
+        subtitleLabel_.setLineWrap( true );
+        subtitleLabel_.setOpaque( false );
+        subtitleLabel_.setWrapStyleWord( true );
+        composite.add( subtitleLabel_ );
+        layout.putConstraint( SpringLayout.WEST, subtitleLabel_, horizontalSpacing, SpringLayout.EAST, subtitleImageLabel_ );
+        layout.putConstraint( SpringLayout.NORTH, subtitleLabel_, verticalSpacing, SpringLayout.SOUTH, titleLabel_ );
+        layout.putConstraint( SpringLayout.EAST, subtitleLabel_, 0, SpringLayout.WEST, titleImageLabel_ );
+        layout.getConstraints( subtitleLabel_ ).setHeight( Spring.constant( convertHeightInCharsToPixels( 2 ) ) );
 
         final JSeparator separator = new JSeparator();
         composite.add( separator );
@@ -193,46 +246,15 @@ public class TitleAreaDialog
         layout.getConstraints( separator ).setConstraint( SpringLayout.NORTH, //
             Spring.max( //
                 Spring.sum( //
-                    layout.getConstraint( SpringLayout.SOUTH, messageLabel_ ), //
+                    layout.getConstraint( SpringLayout.SOUTH, subtitleLabel_ ), //
                     Spring.constant( verticalSpacing ) ), //
-                layout.getConstraint( SpringLayout.SOUTH, imageLabel_ ) ) );
+                layout.getConstraint( SpringLayout.SOUTH, titleImageLabel_ ) ) );
 
         layout.putConstraint( SpringLayout.SOUTH, composite, 0, SpringLayout.SOUTH, separator );
 
-        return composite;
-    }
-
-    /**
-     * Creates the dialog work area component (the area above the button bar and
-     * below the title area).
-     * 
-     * <p>
-     * The default implementation creates a panel with standard dialog margins
-     * and a layout manager of type {@link java.awt.BorderLayout}.
-     * </p>
-     * 
-     * @param parent
-     *        The parent container for the dialog work area; must not be {@code
-     *        null}.
-     * 
-     * @return The dialog work area component; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code parent} is {@code null}.
-     */
-    /* @NonNull */
-    protected Component createWorkArea(
-        /* @NonNull */
-        final Container parent )
-    {
-        final JComponent composite = new JPanel();
-        parent.add( composite );
-
-        final int marginHeight = convertHeightInDlusToPixels( DialogConstants.VERTICAL_MARGIN );
-        final int marginWidth = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_MARGIN );
-        composite.setBorder( BorderFactory.createEmptyBorder( marginHeight, marginWidth, marginHeight, marginWidth ) );
-
-        composite.setLayout( new BorderLayout() );
+        setTitle( title_ );
+        setTitleImage( titleImage_ );
+        setSubtitle( subtitle_ );
 
         return composite;
     }
@@ -247,5 +269,126 @@ public class TitleAreaDialog
         initialSize.width = Math.max( convertWidthInDlusToPixels( MINIMUM_DIALOG_WIDTH ), initialSize.width );
         initialSize.height = Math.max( convertHeightInDlusToPixels( MINIMUM_DIALOG_HEIGHT ), initialSize.height );
         return initialSize;
+    }
+
+    /**
+     * Sets the dialog message.
+     * 
+     * <p>
+     * The dialog message temporarily replaces the dialog subtitle. The dialog
+     * subtitle is restored automatically when the dialog message is cleared.
+     * </p>
+     * 
+     * @param message
+     *        The dialog message or {@code null} to clear the message.
+     * @param messageType
+     *        The dialog message type or {@code null} to clear the message.
+     */
+    public final void setMessage(
+        /* @Nullable */
+        final String message,
+        /* @Nullable */
+        final MessageType messageType )
+    {
+        if( (message != null) && (messageType != null) )
+        {
+            message_ = message;
+            messageType_ = messageType;
+        }
+        else
+        {
+            message_ = null;
+            messageType_ = null;
+        }
+
+        updateSubtitle();
+    }
+
+    /**
+     * Sets the subtitle to be displayed in the dialog title area.
+     * 
+     * @param subtitle
+     *        The dialog subtitle or {@code null} to clear the subtitle.
+     */
+    public final void setSubtitle(
+        /* @Nullable */
+        final String subtitle )
+    {
+        subtitle_ = (subtitle != null) ? subtitle : ""; //$NON-NLS-1$
+
+        updateSubtitle();
+    }
+
+    /**
+     * Sets the title to be displayed in the dialog title area.
+     * 
+     * @param title
+     *        The dialog title or {@code null} to clear the title.
+     */
+    public final void setTitle(
+        /* @Nullable */
+        final String title )
+    {
+        title_ = (title != null) ? title : ""; //$NON-NLS-1$
+
+        if( titleLabel_ != null )
+        {
+            titleLabel_.setText( title );
+        }
+    }
+
+    /**
+     * Sets the dialog title image.
+     * 
+     * @param titleImage
+     *        The dialog title image or {@code null} to clear the title image.
+     */
+    public final void setTitleImage(
+        /* @Nullable */
+        final Image titleImage )
+    {
+        titleImage_ = titleImage;
+
+        if( titleImageLabel_ != null )
+        {
+            titleImageLabel_.setIcon( (titleImage_ != null) ? new ImageIcon( titleImage_ ) : null );
+        }
+    }
+
+    /**
+     * Updates the dialog subtitle.
+     */
+    @SuppressWarnings( "incomplete-switch" )
+    private void updateSubtitle()
+    {
+        if( subtitleLabel_ != null )
+        {
+            subtitleLabel_.setText( (message_ != null) ? message_ : subtitle_ );
+        }
+
+        if( subtitleImageLabel_ != null )
+        {
+            String imagePath = null;
+            if( messageType_ != null )
+            {
+                switch( messageType_ )
+                {
+                    case INFORMATION:
+                        imagePath = ImageRegistry.DIALOG_INFORMATION_MESSAGE_PATH;
+                        break;
+
+                    case WARNING:
+                        imagePath = ImageRegistry.DIALOG_WARNING_MESSAGE_PATH;
+                        break;
+
+                    case ERROR:
+                        imagePath = ImageRegistry.DIALOG_ERROR_MESSAGE_PATH;
+                        break;
+                }
+            }
+
+            final Image image = (imagePath != null) ? Activator.getDefault().getImageRegistry().getImage( imagePath ) : null;
+            subtitleImageLabel_.setIcon( (image != null) ? new ImageIcon( image ) : null );
+        }
     }
 }

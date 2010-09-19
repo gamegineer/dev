@@ -1,5 +1,5 @@
 /*
- * TitleAreaDialogTest.java
+ * ImageRegistryTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 16, 2010 at 9:58:17 PM.
+ * Created on Sep 18, 2010 at 10:53:25 PM.
  */
 
-package org.gamegineer.common.ui.dialog;
+package org.gamegineer.common.internal.ui;
 
 import org.junit.After;
 import org.junit.Before;
@@ -27,16 +27,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.common.ui.dialog.TitleAreaDialog} class.
+ * {@link org.gamegineer.common.internal.ui.ImageRegistry} class.
  */
-public final class TitleAreaDialogTest
+public final class ImageRegistryTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The dialog under test in the fixture. */
-    private TitleAreaDialog dialog_;
+    /** The image registry under test in the fixture. */
+    private ImageRegistry imageRegistry_;
 
 
     // ======================================================================
@@ -44,9 +44,9 @@ public final class TitleAreaDialogTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TitleAreaDialogTest} class.
+     * Initializes a new instance of the {@code ImageRegistryTest} class.
      */
-    public TitleAreaDialogTest()
+    public ImageRegistryTest()
     {
         super();
     }
@@ -66,7 +66,7 @@ public final class TitleAreaDialogTest
     public void setUp()
         throws Exception
     {
-        dialog_ = new TitleAreaDialog( null );
+        imageRegistry_ = new ImageRegistry();
     }
 
     /**
@@ -79,16 +79,16 @@ public final class TitleAreaDialogTest
     public void tearDown()
         throws Exception
     {
-        dialog_ = null;
+        imageRegistry_ = null;
     }
 
     /**
-     * Ensures the {@code createCotnentArea} method throws an exception when
-     * passed a {@code null} parent.
+     * Ensures the {@code getImage} method throws an exception when passed a
+     * {@code null} path.
      */
     @Test( expected = NullPointerException.class )
-    public void testContentArea_Parent_Null()
+    public void testGetImage_Path_Null()
     {
-        dialog_.createContentArea( null );
+        imageRegistry_.getImage( null );
     }
 }
