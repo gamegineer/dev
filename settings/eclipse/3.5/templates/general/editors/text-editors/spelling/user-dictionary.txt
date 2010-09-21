@@ -84,3 +84,4 @@ equatable
 delegators
 namespace
 cancellable
+multi
