@@ -83,3 +83,4 @@ delegator
 equatable
 delegators
 namespace
+cancellable
