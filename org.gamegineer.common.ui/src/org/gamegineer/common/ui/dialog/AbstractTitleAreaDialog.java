@@ -1,5 +1,5 @@
 /*
- * TitleAreaDialog.java
+ * AbstractTitleAreaDialog.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -44,11 +44,12 @@ import org.gamegineer.common.internal.ui.Activator;
 import org.gamegineer.common.internal.ui.ImageRegistry;
 
 /**
- * A dialog that has a title area for displaying a title and an image, as well
- * as a common area for displaying a subtitle or a temporary message.
+ * Superclass for all dialogs that have a title area for displaying a title and
+ * an image, as well as a common area for displaying a description or a
+ * temporary message.
  */
 @NotThreadSafe
-public class TitleAreaDialog
+public abstract class AbstractTitleAreaDialog
     extends AbstractDialog
 {
     // ======================================================================
@@ -64,20 +65,20 @@ public class TitleAreaDialog
     /** The dialog content area component. */
     private Component contentArea_;
 
+    /** The description. */
+    private String description_;
+
+    /** The description image label. */
+    private JLabel descriptionImageLabel_;
+
+    /** The description label. */
+    private JTextArea descriptionLabel_;
+
     /** The active message or {@code null} if no active message. */
     private String message_;
 
     /** The active message type or {@code null} if no active message. */
     private MessageType messageType_;
-
-    /** The subtitle. */
-    private String subtitle_;
-
-    /** The subtitle image label. */
-    private JLabel subtitleImageLabel_;
-
-    /** The subtitle label. */
-    private JTextArea subtitleLabel_;
 
     /** The title. */
     private String title_;
@@ -97,12 +98,12 @@ public class TitleAreaDialog
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TitleAreaDialog} class.
+     * Initializes a new instance of the {@code AbstractTitleAreaDialog} class.
      * 
      * @param parentShell
      *        The parent shell or {@code null} to create a top-level shell.
      */
-    public TitleAreaDialog(
+    protected AbstractTitleAreaDialog(
         /* @Nullable */
         final Window parentShell )
     {
@@ -111,9 +112,9 @@ public class TitleAreaDialog
         contentArea_ = null;
         message_ = null;
         messageType_ = null;
-        subtitleImageLabel_ = null;
-        subtitleLabel_ = null;
-        subtitle_ = ""; //$NON-NLS-1$
+        descriptionImageLabel_ = null;
+        descriptionLabel_ = null;
+        description_ = ""; //$NON-NLS-1$
         title_ = ""; //$NON-NLS-1$
         titleImage_ = null;
         titleImageLabel_ = null;
@@ -221,23 +222,23 @@ public class TitleAreaDialog
         layout.putConstraint( SpringLayout.NORTH, titleLabel_, verticalMargin, SpringLayout.NORTH, composite );
         layout.putConstraint( SpringLayout.EAST, titleLabel_, 0, SpringLayout.WEST, titleImageLabel_ );
 
-        subtitleImageLabel_ = new JLabel();
-        composite.add( subtitleImageLabel_ );
-        layout.putConstraint( SpringLayout.WEST, subtitleImageLabel_, 0, SpringLayout.WEST, titleLabel_ );
-        layout.putConstraint( SpringLayout.NORTH, subtitleImageLabel_, verticalSpacing, SpringLayout.SOUTH, titleLabel_ );
+        descriptionImageLabel_ = new JLabel();
+        composite.add( descriptionImageLabel_ );
+        layout.putConstraint( SpringLayout.WEST, descriptionImageLabel_, 0, SpringLayout.WEST, titleLabel_ );
+        layout.putConstraint( SpringLayout.NORTH, descriptionImageLabel_, verticalSpacing, SpringLayout.SOUTH, titleLabel_ );
 
-        subtitleLabel_ = new JTextArea();
-        subtitleLabel_.setFont( composite.getFont() );
-        subtitleLabel_.setEditable( false );
-        subtitleLabel_.setFocusable( false );
-        subtitleLabel_.setLineWrap( true );
-        subtitleLabel_.setOpaque( false );
-        subtitleLabel_.setWrapStyleWord( true );
-        composite.add( subtitleLabel_ );
-        layout.putConstraint( SpringLayout.WEST, subtitleLabel_, horizontalSpacing, SpringLayout.EAST, subtitleImageLabel_ );
-        layout.putConstraint( SpringLayout.NORTH, subtitleLabel_, verticalSpacing, SpringLayout.SOUTH, titleLabel_ );
-        layout.putConstraint( SpringLayout.EAST, subtitleLabel_, 0, SpringLayout.WEST, titleImageLabel_ );
-        layout.getConstraints( subtitleLabel_ ).setHeight( Spring.constant( convertHeightInCharsToPixels( 2 ) ) );
+        descriptionLabel_ = new JTextArea();
+        descriptionLabel_.setFont( composite.getFont() );
+        descriptionLabel_.setEditable( false );
+        descriptionLabel_.setFocusable( false );
+        descriptionLabel_.setLineWrap( true );
+        descriptionLabel_.setOpaque( false );
+        descriptionLabel_.setWrapStyleWord( true );
+        composite.add( descriptionLabel_ );
+        layout.putConstraint( SpringLayout.WEST, descriptionLabel_, horizontalSpacing, SpringLayout.EAST, descriptionImageLabel_ );
+        layout.putConstraint( SpringLayout.NORTH, descriptionLabel_, verticalSpacing, SpringLayout.SOUTH, titleLabel_ );
+        layout.putConstraint( SpringLayout.EAST, descriptionLabel_, 0, SpringLayout.WEST, titleImageLabel_ );
+        layout.getConstraints( descriptionLabel_ ).setHeight( Spring.constant( convertHeightInCharsToPixels( 2 ) ) );
 
         final JSeparator separator = new JSeparator();
         composite.add( separator );
@@ -246,7 +247,7 @@ public class TitleAreaDialog
         layout.getConstraints( separator ).setConstraint( SpringLayout.NORTH, //
             Spring.max( //
                 Spring.sum( //
-                    layout.getConstraint( SpringLayout.SOUTH, subtitleLabel_ ), //
+                    layout.getConstraint( SpringLayout.SOUTH, descriptionLabel_ ), //
                     Spring.constant( verticalSpacing ) ), //
                 layout.getConstraint( SpringLayout.SOUTH, titleImageLabel_ ) ) );
 
@@ -259,7 +260,7 @@ public class TitleAreaDialog
 
         setTitle( title_ );
         setTitleImage( titleImage_ );
-        setSubtitle( subtitle_ );
+        setDescription( description_ );
 
         return composite;
     }
@@ -277,11 +278,27 @@ public class TitleAreaDialog
     }
 
     /**
+     * Sets the description to be displayed in the dialog title area.
+     * 
+     * @param description
+     *        The dialog description or {@code null} to clear the description.
+     */
+    protected final void setDescription(
+        /* @Nullable */
+        final String description )
+    {
+        description_ = (description != null) ? description : ""; //$NON-NLS-1$
+
+        updateDescription();
+    }
+
+    /**
      * Sets the dialog message.
      * 
      * <p>
-     * The dialog message temporarily replaces the dialog subtitle. The dialog
-     * subtitle is restored automatically when the dialog message is cleared.
+     * The dialog message temporarily replaces the dialog description. The
+     * dialog description is restored automatically when the dialog message is
+     * cleared.
      * </p>
      * 
      * @param message
@@ -289,7 +306,7 @@ public class TitleAreaDialog
      * @param messageType
      *        The dialog message type or {@code null} to clear the message.
      */
-    public final void setMessage(
+    protected final void setMessage(
         /* @Nullable */
         final String message,
         /* @Nullable */
@@ -306,22 +323,7 @@ public class TitleAreaDialog
             messageType_ = null;
         }
 
-        updateSubtitle();
-    }
-
-    /**
-     * Sets the subtitle to be displayed in the dialog title area.
-     * 
-     * @param subtitle
-     *        The dialog subtitle or {@code null} to clear the subtitle.
-     */
-    public final void setSubtitle(
-        /* @Nullable */
-        final String subtitle )
-    {
-        subtitle_ = (subtitle != null) ? subtitle : ""; //$NON-NLS-1$
-
-        updateSubtitle();
+        updateDescription();
     }
 
     /**
@@ -330,7 +332,7 @@ public class TitleAreaDialog
      * @param title
      *        The dialog title or {@code null} to clear the title.
      */
-    public final void setTitle(
+    protected final void setTitle(
         /* @Nullable */
         final String title )
     {
@@ -348,7 +350,7 @@ public class TitleAreaDialog
      * @param titleImage
      *        The dialog title image or {@code null} to clear the title image.
      */
-    public final void setTitleImage(
+    protected final void setTitleImage(
         /* @Nullable */
         final Image titleImage )
     {
@@ -361,17 +363,17 @@ public class TitleAreaDialog
     }
 
     /**
-     * Updates the dialog subtitle.
+     * Updates the dialog description.
      */
     @SuppressWarnings( "incomplete-switch" )
-    private void updateSubtitle()
+    private void updateDescription()
     {
-        if( subtitleLabel_ != null )
+        if( descriptionLabel_ != null )
         {
-            subtitleLabel_.setText( (message_ != null) ? message_ : subtitle_ );
+            descriptionLabel_.setText( (message_ != null) ? message_ : description_ );
         }
 
-        if( subtitleImageLabel_ != null )
+        if( descriptionImageLabel_ != null )
         {
             String imagePath = null;
             if( messageType_ != null )
@@ -393,7 +395,7 @@ public class TitleAreaDialog
             }
 
             final Image image = (imagePath != null) ? Activator.getDefault().getImageRegistry().getImage( imagePath ) : null;
-            subtitleImageLabel_.setIcon( (image != null) ? new ImageIcon( image ) : null );
+            descriptionImageLabel_.setIcon( (image != null) ? new ImageIcon( image ) : null );
         }
     }
 }
