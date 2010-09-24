@@ -54,6 +54,9 @@ public abstract class AbstractDialogPage
     /** The dialog page font metrics. */
     private FontMetrics fontMetrics_;
 
+    /** The dialog page message. */
+    private Message message_;
+
     /** The dialog page title. */
     private String title_;
 
@@ -70,6 +73,7 @@ public abstract class AbstractDialogPage
         content_ = null;
         description_ = null;
         fontMetrics_ = null;
+        message_ = null;
         title_ = null;
     }
 
@@ -163,15 +167,15 @@ public abstract class AbstractDialogPage
     }
 
     /*
-     * @see org.gamegineer.common.ui.dialog.IDialogPage#createContent(java.awt.Container)
+     * @see org.gamegineer.common.ui.dialog.IDialogPage#create(java.awt.Container)
      */
     @Override
-    public final void createContent(
+    public final void create(
         final Container parent )
     {
         initializeDialogUnits( parent );
 
-        content_ = createDialogPageArea( parent );
+        content_ = createContent( parent );
     }
 
     /**
@@ -192,7 +196,7 @@ public abstract class AbstractDialogPage
      *         If {@code parent} is {@code null}.
      */
     /* @NonNull */
-    protected Component createDialogPageArea(
+    protected Component createContent(
         /* @NonNull */
         final Container parent )
     {
@@ -233,6 +237,15 @@ public abstract class AbstractDialogPage
     public final String getDescription()
     {
         return description_;
+    }
+
+    /*
+     * @see org.gamegineer.common.ui.dialog.IDialogPage#getMessage()
+     */
+    @Override
+    public final Message getMessage()
+    {
+        return message_;
     }
 
     /*
@@ -286,21 +299,40 @@ public abstract class AbstractDialogPage
         button.setPreferredSize( preferredSize );
     }
 
-    /*
-     * @see org.gamegineer.common.ui.dialog.IDialogPage#setDescription(java.lang.String)
+    /**
+     * Sets the dialog page description.
+     * 
+     * @param description
+     *        The dialog page description or {@code null} to clear it.
      */
-    @Override
-    public final void setDescription(
+    protected final void setDescription(
+        /* @Nullable */
         final String description )
     {
         description_ = description;
     }
 
-    /*
-     * @see org.gamegineer.common.ui.dialog.IDialogPage#setTitle(java.lang.String)
+    /**
+     * Sets the dialog page message.
+     * 
+     * @param message
+     *        The dialog page message or {@code null} to clear the message.
      */
-    @Override
-    public final void setTitle(
+    protected final void setMessage(
+        /* @Nullable */
+        final Message message )
+    {
+        message_ = message;
+    }
+
+    /**
+     * Sets the dialog page title.
+     * 
+     * @param title
+     *        The dialog page title or {@code null} to clear it.
+     */
+    protected final void setTitle(
+        /* @Nullable */
         final String title )
     {
         title_ = title;

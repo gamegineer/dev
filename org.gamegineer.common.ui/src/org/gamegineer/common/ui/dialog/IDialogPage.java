@@ -34,7 +34,7 @@ public interface IDialogPage
     // ======================================================================
 
     /**
-     * Creates the dialog page content.
+     * Creates the dialog page.
      * 
      * <p>
      * The top-level component created by this method must be accessible via
@@ -42,13 +42,13 @@ public interface IDialogPage
      * </p>
      * 
      * @param parent
-     *        The parent container for the dialog page content; must not be
-     *        {@code null}.
+     *        The parent container for the dialog page; must not be {@code null}
+     *        .
      * 
      * @throws java.lang.NullPointerException
      *         If {@code parent} is {@code null}.
      */
-    public void createContent(
+    public void create(
         /* @NonNull */
         Container parent );
 
@@ -76,6 +76,15 @@ public interface IDialogPage
     public String getDescription();
 
     /**
+     * Gets the dialog page message.
+     * 
+     * @return The dialog page message or {@code null} if the dialog page has no
+     *         message.
+     */
+    /* @Nullable */
+    public Message getMessage();
+
+    /**
      * Gets the dialog page title.
      * 
      * @return The dialog page title or {@code null} if the dialog page has no
@@ -83,26 +92,6 @@ public interface IDialogPage
      */
     /* @Nullable */
     public String getTitle();
-
-    /**
-     * Sets the dialog page description.
-     * 
-     * @param description
-     *        The dialog page description or {@code null} to clear it.
-     */
-    public void setDescription(
-        /* @Nullable */
-        String description );
-
-    /**
-     * Sets the dialog page title.
-     * 
-     * @param title
-     *        The dialog page title or {@code null} to clear it.
-     */
-    public void setTitle(
-        /* @Nullable */
-        String title );
 
     /**
      * Sets the visibility of the dialog page.

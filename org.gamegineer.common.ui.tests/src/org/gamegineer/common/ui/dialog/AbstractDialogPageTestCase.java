@@ -98,12 +98,12 @@ public abstract class AbstractDialogPageTestCase
     }
 
     /**
-     * Ensures the {@code createContent} method throws an exception when passed
-     * a {@code null} parent.
+     * Ensures the {@code create} method throws an exception when passed a
+     * {@code null} parent.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateContent_Parent_Null()
+    public void testCreate_Parent_Null()
     {
-        dialogPage_.createContent( null );
+        dialogPage_.create( null );
     }
 }
