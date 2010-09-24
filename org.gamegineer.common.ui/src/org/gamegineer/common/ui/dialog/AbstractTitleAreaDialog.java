@@ -75,10 +75,7 @@ public abstract class AbstractTitleAreaDialog
     private JTextArea descriptionLabel_;
 
     /** The active message or {@code null} if no active message. */
-    private String message_;
-
-    /** The active message type or {@code null} if no active message. */
-    private MessageType messageType_;
+    private Message message_;
 
     /** The title. */
     private String title_;
@@ -111,7 +108,6 @@ public abstract class AbstractTitleAreaDialog
 
         contentArea_ = null;
         message_ = null;
-        messageType_ = null;
         descriptionImageLabel_ = null;
         descriptionLabel_ = null;
         description_ = ""; //$NON-NLS-1$
@@ -303,25 +299,12 @@ public abstract class AbstractTitleAreaDialog
      * 
      * @param message
      *        The dialog message or {@code null} to clear the message.
-     * @param messageType
-     *        The dialog message type or {@code null} to clear the message.
      */
     protected final void setMessage(
         /* @Nullable */
-        final String message,
-        /* @Nullable */
-        final MessageType messageType )
+        final Message message )
     {
-        if( (message != null) && (messageType != null) )
-        {
-            message_ = message;
-            messageType_ = messageType;
-        }
-        else
-        {
-            message_ = null;
-            messageType_ = null;
-        }
+        message_ = message;
 
         updateDescription();
     }
@@ -370,15 +353,15 @@ public abstract class AbstractTitleAreaDialog
     {
         if( descriptionLabel_ != null )
         {
-            descriptionLabel_.setText( (message_ != null) ? message_ : description_ );
+            descriptionLabel_.setText( (message_ != null) ? message_.getText() : description_ );
         }
 
         if( descriptionImageLabel_ != null )
         {
             String imagePath = null;
-            if( messageType_ != null )
+            if( message_ != null )
             {
-                switch( messageType_ )
+                switch( message_.getType() )
                 {
                     case INFORMATION:
                         imagePath = ImageRegistry.DIALOG_INFORMATION_MESSAGE_PATH;
