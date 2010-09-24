@@ -437,7 +437,7 @@ public abstract class AbstractDialog
      * @throws java.lang.NullPointerException
      *         If {@code component} is {@code null}.
      */
-    protected final void initializeDialogUnits(
+    private void initializeDialogUnits(
         /* @NonNull */
         final Component component )
     {

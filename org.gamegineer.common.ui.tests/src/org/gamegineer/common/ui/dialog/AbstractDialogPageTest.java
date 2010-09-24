@@ -1,5 +1,5 @@
 /*
- * AbstractDialogTest.java
+ * AbstractDialogPageTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 14, 2010 at 9:43:16 PM.
+ * Created on Sep 23, 2010 at 10:43:59 PM.
  */
 
 package org.gamegineer.common.ui.dialog;
@@ -27,16 +27,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.common.ui.dialog.AbstractDialog} class.
+ * {@link org.gamegineer.common.ui.dialog.AbstractDialogPage} class.
  */
-public final class AbstractDialogTest
+public final class AbstractDialogPageTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The dialog under test in the fixture. */
-    private AbstractDialog dialog_;
+    /** The dialog page under test in the fixture. */
+    private AbstractDialogPage dialogPage_;
 
 
     // ======================================================================
@@ -44,9 +44,9 @@ public final class AbstractDialogTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractDialogTest} class.
+     * Initializes a new instance of the {@code AbstractDialogPageTest} class.
      */
-    public AbstractDialogTest()
+    public AbstractDialogPageTest()
     {
         super();
     }
@@ -66,7 +66,7 @@ public final class AbstractDialogTest
     public void setUp()
         throws Exception
     {
-        dialog_ = new AbstractDialog( null )
+        dialogPage_ = new AbstractDialogPage()
         {
             // no overrides
         };
@@ -82,47 +82,17 @@ public final class AbstractDialogTest
     public void tearDown()
         throws Exception
     {
-        dialog_ = null;
+        dialogPage_ = null;
     }
 
     /**
-     * Ensures the {@code createButton} method throws an exception when passed a
-     * {@code null} parent.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateButton_Parent_Null()
-    {
-        dialog_.createButton( null, 0, "", false ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code createButtonBar} method throws an exception when
+     * Ensures the {@code createDialogPageArea} method throws an exception when
      * passed a {@code null} parent.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateButtonBar_Parent_Null()
+    public void testCreateDialogPageArea_Parent_Null()
     {
-        dialog_.createButtonBar( null );
-    }
-
-    /**
-     * Ensures the {@code createButtonsForButtonBar} method throws an exception
-     * when passed a {@code null} parent.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateButtonsForButtonBar_Parent_Null()
-    {
-        dialog_.createButtonsForButtonBar( null );
-    }
-
-    /**
-     * Ensures the {@code createDialogArea} method throws an exception when
-     * passed a {@code null} parent.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateDialogArea_Parent_Null()
-    {
-        dialog_.createDialogArea( null );
+        dialogPage_.createDialogPageArea( null );
     }
 
     /**
@@ -132,6 +102,6 @@ public final class AbstractDialogTest
     @Test( expected = NullPointerException.class )
     public void testSetButtonLayoutData_Button_Null()
     {
-        dialog_.setButtonLayoutData( null );
+        dialogPage_.setButtonLayoutData( null );
     }
 }
