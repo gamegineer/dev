@@ -302,10 +302,14 @@ public abstract class AbstractDialogPage
     /**
      * Sets the dialog page description.
      * 
+     * <p>
+     * This implementation updates the dialog page description field.
+     * </p>
+     * 
      * @param description
      *        The dialog page description or {@code null} to clear it.
      */
-    protected final void setDescription(
+    protected void setDescription(
         /* @Nullable */
         final String description )
     {
@@ -315,10 +319,14 @@ public abstract class AbstractDialogPage
     /**
      * Sets the dialog page message.
      * 
+     * <p>
+     * This implementation updates the dialog page message field.
+     * </p>
+     * 
      * @param message
      *        The dialog page message or {@code null} to clear the message.
      */
-    protected final void setMessage(
+    protected void setMessage(
         /* @Nullable */
         final Message message )
     {
@@ -328,10 +336,14 @@ public abstract class AbstractDialogPage
     /**
      * Sets the dialog page title.
      * 
+     * <p>
+     * This implementation updates the dialog page title field.
+     * </p>
+     * 
      * @param title
      *        The dialog page title or {@code null} to clear it.
      */
-    protected final void setTitle(
+    protected void setTitle(
         /* @Nullable */
         final String title )
     {
