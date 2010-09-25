@@ -21,7 +21,7 @@
 
 package org.gamegineer.common.ui.wizard;
 
-import java.awt.Composite;
+import java.awt.Container;
 import java.util.Collection;
 
 /**
@@ -47,18 +47,17 @@ public interface IWizard
     public boolean canFinish();
 
     /**
-     * Creates the wizard content.
+     * Creates the wizard.
      * 
      * @param parent
-     *        The parent container for the wizard content; must not be {@code
-     *        null}.
+     *        The parent container for the wizard; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code parent} is {@code null}.
      */
-    public void createContent(
+    public void create(
         /* @NonNull */
-        Composite parent );
+        Container parent );
 
     /**
      * Disposes the resources used by the wizard.
