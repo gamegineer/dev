@@ -85,7 +85,7 @@ public interface IWizardPage
      * 
      * @return {@code true} if the page is complete; otherwise {@code false}.
      */
-    public boolean isPageComplete();
+    public boolean isComplete();
 
     /**
      * Sets the previous page in the wizard sequence.

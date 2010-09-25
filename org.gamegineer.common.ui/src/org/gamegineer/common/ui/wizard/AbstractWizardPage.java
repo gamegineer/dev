@@ -40,7 +40,7 @@ public abstract class AbstractWizardPage
     // ======================================================================
 
     /** Indicates the page is complete. */
-    private boolean isPageComplete_;
+    private boolean isComplete_;
 
     /** The unique name of the page within the wizard. */
     private final String name_;
@@ -72,7 +72,7 @@ public abstract class AbstractWizardPage
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
-        isPageComplete_ = true;
+        isComplete_ = true;
         name_ = name;
         previousPage_ = null;
         wizard_ = null;
@@ -89,7 +89,7 @@ public abstract class AbstractWizardPage
     @Override
     public final boolean canMoveToNextPage()
     {
-        return isPageComplete() && (getNextPage() != null);
+        return isComplete() && (getNextPage() != null);
     }
 
     /**
@@ -180,12 +180,31 @@ public abstract class AbstractWizardPage
     }
 
     /*
-     * @see org.gamegineer.common.ui.wizard.IWizardPage#isPageComplete()
+     * @see org.gamegineer.common.ui.wizard.IWizardPage#isComplete()
      */
     @Override
-    public final boolean isPageComplete()
+    public final boolean isComplete()
     {
-        return isPageComplete_;
+        return isComplete_;
+    }
+
+    /**
+     * Sets a flag indicating the page is complete.
+     * 
+     * @param isComplete
+     *        {@code true} if the page is complete; otherwise {@code false}.
+     */
+    protected final void setComplete(
+        final boolean isComplete )
+    {
+        isComplete_ = isComplete;
+
+        if( isActivePage() )
+        {
+            final IWizardContainer container = getContainer();
+            assert container != null;
+            container.updateButtons();
+        }
     }
 
     /**
