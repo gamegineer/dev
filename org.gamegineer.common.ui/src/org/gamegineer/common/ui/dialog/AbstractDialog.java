@@ -66,6 +66,9 @@ public abstract class AbstractDialog
     /** The dialog font metrics. */
     private FontMetrics fontMetrics_;
 
+    /** The dialog title. */
+    private String title_;
+
 
     // ======================================================================
     // Constructors
@@ -87,6 +90,7 @@ public abstract class AbstractDialog
         buttons_ = new LinkedHashMap<Integer, JButton>();
         dialogArea_ = null;
         fontMetrics_ = null;
+        title_ = null;
     }
 
 
@@ -109,6 +113,22 @@ public abstract class AbstractDialog
         }
 
         return isClosed;
+    }
+
+    /**
+     * This implementation extends the superclass implementation and sets the
+     * dialog title.
+     * 
+     * @see org.gamegineer.common.ui.window.AbstractWindow#configureShell(java.awt.Window)
+     */
+    @Override
+    protected void configureShell(
+        final Window shell )
+    {
+        super.configureShell( shell );
+
+        final JDialog dialog = (JDialog)shell;
+        dialog.setTitle( title_ );
     }
 
     /**
@@ -374,7 +394,7 @@ public abstract class AbstractDialog
      * @see org.gamegineer.common.ui.window.AbstractWindow#createShell(java.awt.Window)
      */
     @Override
-    protected final Window createShell(
+    protected final JDialog createShell(
         final Window parent )
     {
         return new JDialog( parent, Dialog.ModalityType.APPLICATION_MODAL );
@@ -461,5 +481,24 @@ public abstract class AbstractDialog
         final Dimension preferredSize = button.getPreferredSize();
         preferredSize.width = Math.max( defaultWidth, preferredSize.width );
         button.setPreferredSize( preferredSize );
+    }
+
+    /**
+     * Sets the dialog title.
+     * 
+     * @param title
+     *        The dialog title or {@code null} to clear the title.
+     */
+    protected final void setTitle(
+        /* @Nullable */
+        final String title )
+    {
+        title_ = title;
+
+        final JDialog dialog = (JDialog)getShell();
+        if( dialog != null )
+        {
+            dialog.setTitle( title_ );
+        }
     }
 }

@@ -77,17 +77,17 @@ public abstract class AbstractTitleAreaDialog
     /** The active message or {@code null} if no active message. */
     private Message message_;
 
-    /** The title. */
-    private String title_;
+    /** The title area image. */
+    private Image titleAreaImage_;
 
-    /** The title image. */
-    private Image titleImage_;
+    /** The title area image label. */
+    private JLabel titleAreaImageLabel_;
 
-    /** The title image label. */
-    private JLabel titleImageLabel_;
+    /** The title area title. */
+    private String titleAreaTitle_;
 
-    /** The title label. */
-    private JLabel titleLabel_;
+    /** The title area title label. */
+    private JLabel titleAreaTitleLabel_;
 
 
     // ======================================================================
@@ -111,10 +111,10 @@ public abstract class AbstractTitleAreaDialog
         descriptionImageLabel_ = null;
         descriptionLabel_ = null;
         description_ = ""; //$NON-NLS-1$
-        title_ = ""; //$NON-NLS-1$
-        titleImage_ = null;
-        titleImageLabel_ = null;
-        titleLabel_ = null;
+        titleAreaImage_ = null;
+        titleAreaImageLabel_ = null;
+        titleAreaTitle_ = ""; //$NON-NLS-1$
+        titleAreaTitleLabel_ = null;
     }
 
 
@@ -205,23 +205,23 @@ public abstract class AbstractTitleAreaDialog
         final int horizontalSpacing = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_SPACING );
         final int verticalSpacing = convertHeightInDlusToPixels( DialogConstants.VERTICAL_SPACING );
 
-        titleImageLabel_ = new JLabel();
-        titleImageLabel_.setVerticalAlignment( SwingConstants.BOTTOM );
-        composite.add( titleImageLabel_ );
-        layout.putConstraint( SpringLayout.EAST, titleImageLabel_, 0, SpringLayout.EAST, composite );
-        layout.putConstraint( SpringLayout.NORTH, titleImageLabel_, 0, SpringLayout.NORTH, composite );
+        titleAreaImageLabel_ = new JLabel();
+        titleAreaImageLabel_.setVerticalAlignment( SwingConstants.BOTTOM );
+        composite.add( titleAreaImageLabel_ );
+        layout.putConstraint( SpringLayout.EAST, titleAreaImageLabel_, 0, SpringLayout.EAST, composite );
+        layout.putConstraint( SpringLayout.NORTH, titleAreaImageLabel_, 0, SpringLayout.NORTH, composite );
 
-        titleLabel_ = new JLabel();
-        titleLabel_.setFont( titleLabel_.getFont().deriveFont( Font.BOLD ).deriveFont( titleLabel_.getFont().getSize() * 1.2F ) );
-        composite.add( titleLabel_ );
-        layout.putConstraint( SpringLayout.WEST, titleLabel_, horizontalMargin, SpringLayout.WEST, composite );
-        layout.putConstraint( SpringLayout.NORTH, titleLabel_, verticalMargin, SpringLayout.NORTH, composite );
-        layout.putConstraint( SpringLayout.EAST, titleLabel_, 0, SpringLayout.WEST, titleImageLabel_ );
+        titleAreaTitleLabel_ = new JLabel();
+        titleAreaTitleLabel_.setFont( titleAreaTitleLabel_.getFont().deriveFont( Font.BOLD ).deriveFont( titleAreaTitleLabel_.getFont().getSize() * 1.2F ) );
+        composite.add( titleAreaTitleLabel_ );
+        layout.putConstraint( SpringLayout.WEST, titleAreaTitleLabel_, horizontalMargin, SpringLayout.WEST, composite );
+        layout.putConstraint( SpringLayout.NORTH, titleAreaTitleLabel_, verticalMargin, SpringLayout.NORTH, composite );
+        layout.putConstraint( SpringLayout.EAST, titleAreaTitleLabel_, 0, SpringLayout.WEST, titleAreaImageLabel_ );
 
         descriptionImageLabel_ = new JLabel();
         composite.add( descriptionImageLabel_ );
-        layout.putConstraint( SpringLayout.WEST, descriptionImageLabel_, 0, SpringLayout.WEST, titleLabel_ );
-        layout.putConstraint( SpringLayout.NORTH, descriptionImageLabel_, verticalSpacing, SpringLayout.SOUTH, titleLabel_ );
+        layout.putConstraint( SpringLayout.WEST, descriptionImageLabel_, 0, SpringLayout.WEST, titleAreaTitleLabel_ );
+        layout.putConstraint( SpringLayout.NORTH, descriptionImageLabel_, verticalSpacing, SpringLayout.SOUTH, titleAreaTitleLabel_ );
 
         descriptionLabel_ = new JTextArea();
         descriptionLabel_.setFont( composite.getFont() );
@@ -232,8 +232,8 @@ public abstract class AbstractTitleAreaDialog
         descriptionLabel_.setWrapStyleWord( true );
         composite.add( descriptionLabel_ );
         layout.putConstraint( SpringLayout.WEST, descriptionLabel_, horizontalSpacing, SpringLayout.EAST, descriptionImageLabel_ );
-        layout.putConstraint( SpringLayout.NORTH, descriptionLabel_, verticalSpacing, SpringLayout.SOUTH, titleLabel_ );
-        layout.putConstraint( SpringLayout.EAST, descriptionLabel_, 0, SpringLayout.WEST, titleImageLabel_ );
+        layout.putConstraint( SpringLayout.NORTH, descriptionLabel_, verticalSpacing, SpringLayout.SOUTH, titleAreaTitleLabel_ );
+        layout.putConstraint( SpringLayout.EAST, descriptionLabel_, 0, SpringLayout.WEST, titleAreaImageLabel_ );
         layout.getConstraints( descriptionLabel_ ).setHeight( Spring.constant( convertHeightInCharsToPixels( 2 ) ) );
 
         final JSeparator separator = new JSeparator();
@@ -245,17 +245,17 @@ public abstract class AbstractTitleAreaDialog
                 Spring.sum( //
                     layout.getConstraint( SpringLayout.SOUTH, descriptionLabel_ ), //
                     Spring.constant( verticalSpacing ) ), //
-                layout.getConstraint( SpringLayout.SOUTH, titleImageLabel_ ) ) );
+                layout.getConstraint( SpringLayout.SOUTH, titleAreaImageLabel_ ) ) );
 
         layout.putConstraint( SpringLayout.SOUTH, composite, 0, SpringLayout.SOUTH, separator );
 
-        if( titleImage_ == null )
+        if( titleAreaImage_ == null )
         {
-            titleImage_ = Activator.getDefault().getImageRegistry().getImage( ImageRegistry.DIALOG_DEFAULT_TITLE_PATH );
+            titleAreaImage_ = Activator.getDefault().getImageRegistry().getImage( ImageRegistry.DIALOG_DEFAULT_TITLE_PATH );
         }
 
-        setTitle( title_ );
-        setTitleImage( titleImage_ );
+        setTitleAreaTitle( titleAreaTitle_ );
+        setTitleAreaImage( titleAreaImage_ );
         setDescription( description_ );
 
         return composite;
@@ -310,38 +310,40 @@ public abstract class AbstractTitleAreaDialog
     }
 
     /**
-     * Sets the title to be displayed in the dialog title area.
+     * Sets the dialog title area image.
      * 
-     * @param title
-     *        The dialog title or {@code null} to clear the title.
+     * @param image
+     *        The dialog title area image or {@code null} to clear the title
+     *        area image.
      */
-    protected final void setTitle(
+    protected final void setTitleAreaImage(
         /* @Nullable */
-        final String title )
+        final Image image )
     {
-        title_ = (title != null) ? title : ""; //$NON-NLS-1$
+        titleAreaImage_ = image;
 
-        if( titleLabel_ != null )
+        if( titleAreaImageLabel_ != null )
         {
-            titleLabel_.setText( title );
+            titleAreaImageLabel_.setIcon( (titleAreaImage_ != null) ? new ImageIcon( titleAreaImage_ ) : null );
         }
     }
 
     /**
-     * Sets the dialog title image.
+     * Sets the title to be displayed in the dialog title area.
      * 
-     * @param titleImage
-     *        The dialog title image or {@code null} to clear the title image.
+     * @param title
+     *        The dialog title area title or {@code null} to clear the title
+     *        area title.
      */
-    protected final void setTitleImage(
+    protected final void setTitleAreaTitle(
         /* @Nullable */
-        final Image titleImage )
+        final String title )
     {
-        titleImage_ = titleImage;
+        titleAreaTitle_ = (title != null) ? title : ""; //$NON-NLS-1$
 
-        if( titleImageLabel_ != null )
+        if( titleAreaTitleLabel_ != null )
         {
-            titleImageLabel_.setIcon( (titleImage_ != null) ? new ImageIcon( titleImage_ ) : null );
+            titleAreaTitleLabel_.setText( title );
         }
     }
 
