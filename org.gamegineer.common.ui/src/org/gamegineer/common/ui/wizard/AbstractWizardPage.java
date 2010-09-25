@@ -115,13 +115,12 @@ public abstract class AbstractWizardPage
     }
 
     /**
-     * The default implementation returns the next page as identified by the
-     * wizard.
+     * This implementation returns the next page as identified by the wizard.
      * 
      * @see org.gamegineer.common.ui.wizard.IWizardPage#getNextPage()
      */
     @Override
-    public final IWizardPage getNextPage()
+    public IWizardPage getNextPage()
     {
         if( wizard_ != null )
         {
@@ -132,13 +131,13 @@ public abstract class AbstractWizardPage
     }
 
     /**
-     * The default implementation returns the cached previous page. If the cache
-     * is empty, it returns the previous page as identified by the wizard.
+     * This implementation returns the cached previous page. If the cache is
+     * empty, it returns the previous page as identified by the wizard.
      * 
      * @see org.gamegineer.common.ui.wizard.IWizardPage#getPreviousPage()
      */
     @Override
-    public final IWizardPage getPreviousPage()
+    public IWizardPage getPreviousPage()
     {
         if( previousPage_ != null )
         {
