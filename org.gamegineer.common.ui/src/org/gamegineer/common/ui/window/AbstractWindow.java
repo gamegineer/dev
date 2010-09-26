@@ -140,34 +140,36 @@ public abstract class AbstractWindow
     }
 
     /**
+     * Invoked after the window content has been created.
+     * 
+     * <p>
+     * This implementation does nothing.
+     * </p>
+     */
+    protected void contentCreated()
+    {
+        // do nothing
+    }
+
+    /**
      * Creates the window.
      */
     public final void create()
     {
-        shell_ = createAndConfigureShell();
+        shell_ = createShell( getParentShell() );
+        configureShell( shell_ );
+
         content_ = createContent( shell_ );
+        contentCreated();
 
         initializeBounds();
-    }
-
-    /**
-     * Creates and configures the window shell.
-     * 
-     * @return The window shell; never {@code null}.
-     */
-    /* @NonNull */
-    private Window createAndConfigureShell()
-    {
-        final Window shell = createShell( getParentShell() );
-        configureShell( shell );
-        return shell;
     }
 
     /**
      * Creates the window content.
      * 
      * <p>
-     * The default implementation creates a panel.
+     * This implementation creates a panel.
      * </p>
      * 
      * @param parent

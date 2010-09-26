@@ -291,7 +291,7 @@ public abstract class AbstractDialog
         createButtonsForButtonBar( composite );
 
         final GroupLayout.Group hGroup = layout.createSequentialGroup();
-        hGroup.addGap( 0, 0, Short.MAX_VALUE );
+        hGroup.addGap( 0, 0, Integer.MAX_VALUE );
         final GroupLayout.Group vGroup = layout.createParallelGroup();
         final int hGap = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_SPACING );
         int index = 0;
