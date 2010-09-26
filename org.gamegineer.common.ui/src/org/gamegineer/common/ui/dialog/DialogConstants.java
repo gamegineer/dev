@@ -37,7 +37,7 @@ public final class DialogConstants
     public static final int BUTTON_WIDTH = 61;
 
     /** The identifier for the Cancel button. */
-    public static final int CANCEL_BUTTON_ID = 1;
+    public static final String CANCEL_BUTTON_ID = "cancel"; //$NON-NLS-1$
 
     /** The label for the Cancel button. */
     public static final String CANCEL_BUTTON_LABEL = Messages.DialogConstants_cancelButton_label;
@@ -52,7 +52,7 @@ public final class DialogConstants
     public static final int INDENT = 21;
 
     /** The identifier for the OK button. */
-    public static final int OK_BUTTON_ID = 0;
+    public static final String OK_BUTTON_ID = "ok"; //$NON-NLS-1$
 
     /** The label for the OK button. */
     public static final String OK_BUTTON_LABEL = Messages.DialogConstants_okButton_label;

@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.ui.dialog;
 
+import javax.swing.JPanel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -86,13 +87,33 @@ public final class AbstractDialogTest
     }
 
     /**
+     * Ensures the {@code buttonPressed} method throws an exception when passed
+     * a {@code null} identifier.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testButtonPressed_Id_Null()
+    {
+        dialog_.buttonPressed( null );
+    }
+
+    /**
+     * Ensures the {@code createButton} method throws an exception when passed a
+     * {@code null} identifier.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateButton_Id_Null()
+    {
+        dialog_.createButton( new JPanel(), null, "label", false ); //$NON-NLS-1$
+    }
+
+    /**
      * Ensures the {@code createButton} method throws an exception when passed a
      * {@code null} parent.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateButton_Parent_Null()
     {
-        dialog_.createButton( null, 0, "", false ); //$NON-NLS-1$
+        dialog_.createButton( null, "id", "label", false ); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -123,6 +144,16 @@ public final class AbstractDialogTest
     public void testCreateDialogArea_Parent_Null()
     {
         dialog_.createDialogArea( null );
+    }
+
+    /**
+     * Ensures the {@code getButton} method throws an exception when passed a
+     * {@code null} identifier.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetButton_Id_Null()
+    {
+        dialog_.getButton( null );
     }
 
     /**

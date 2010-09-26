@@ -109,7 +109,7 @@ public abstract class AbstractWindow<T extends Window>
      * Configures the specified shell before opening the window.
      * 
      * <p>
-     * The default implementation sets the layout of the shell.
+     * This implementation sets the layout of the shell.
      * </p>
      * 
      * @param shell
@@ -258,10 +258,9 @@ public abstract class AbstractWindow<T extends Window>
      * Gets the initial location of shell.
      * 
      * <p>
-     * The default implementation centers the shell horizontally (1/2 to the
-     * left and 1/2 to the right) and vertically (1/3 above and 2/3 below)
-     * relative to the parent shell or the display bounds if there is no parent
-     * shell.
+     * This implementation centers the shell horizontally (1/2 to the left and
+     * 1/2 to the right) and vertically (1/3 above and 2/3 below) relative to
+     * the parent shell or the display bounds if there is no parent shell.
      * </p>
      * 
      * @param initialSize
@@ -289,7 +288,7 @@ public abstract class AbstractWindow<T extends Window>
      * Gets the initial size of the shell.
      * 
      * <p>
-     * The default implementation returns the preferred size of the shell.
+     * This implementation returns the preferred size of the shell.
      * </p>
      * 
      * @return The initial size of the shell; never {@code null}.
@@ -304,8 +303,7 @@ public abstract class AbstractWindow<T extends Window>
      * Gets the layout for the shell.
      * 
      * <p>
-     * The default implementation returns an instance of
-     * {@link java.awt.BorderLayout}.
+     * This implementation returns an instance of {@link java.awt.BorderLayout}.
      * </p>
      * 
      * @return The layout for the shell or {@code null} if no layout should be
@@ -382,5 +380,17 @@ public abstract class AbstractWindow<T extends Window>
         shell_.setVisible( true );
 
         return returnCode_;
+    }
+
+    /**
+     * Sets the window return code.
+     * 
+     * @param returnCode
+     *        The window return code.
+     */
+    protected final void setReturnCode(
+        final int returnCode )
+    {
+        returnCode_ = returnCode;
     }
 }

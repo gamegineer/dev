@@ -50,13 +50,13 @@ public final class WizardDialog
     // ======================================================================
 
     /** The identifier for the Back button. */
-    private static final int BACK_BUTTON_ID = 14;
+    private static final String BACK_BUTTON_ID = "back"; //$NON-NLS-1$
 
     /** The identifier for the Finish button. */
-    private static final int FINISH_BUTTON_ID = 16;
+    private static final String FINISH_BUTTON_ID = "finish"; //$NON-NLS-1$
 
     /** The identifier for the Next button. */
-    private static final int NEXT_BUTTON_ID = 15;
+    private static final String NEXT_BUTTON_ID = "next"; //$NON-NLS-1$
 
     /** The active wizard page. */
     private IWizardPage activePage_;

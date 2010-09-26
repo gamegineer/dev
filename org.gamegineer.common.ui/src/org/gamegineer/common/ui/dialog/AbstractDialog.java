@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.ui.dialog;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -28,6 +29,8 @@ import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.BorderFactory;
@@ -39,6 +42,7 @@ import javax.swing.JPanel;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.internal.ui.Debug;
 import org.gamegineer.common.ui.window.AbstractWindow;
+import org.gamegineer.common.ui.window.WindowConstants;
 
 /**
  * Superclass for all dialogs.
@@ -58,7 +62,7 @@ public abstract class AbstractDialog
      * The collection of dialog buttons. The key is the button identifier. The
      * value is the button.
      */
-    private final Map<Integer, JButton> buttons_;
+    private final Map<String, JButton> buttons_;
 
     /** The dialog content area component. */
     private Component dialogArea_;
@@ -87,7 +91,7 @@ public abstract class AbstractDialog
         super( parentShell );
 
         buttonBar_ = null;
-        buttons_ = new LinkedHashMap<Integer, JButton>();
+        buttons_ = new LinkedHashMap<String, JButton>();
         dialogArea_ = null;
         fontMetrics_ = null;
         title_ = null;
@@ -97,6 +101,50 @@ public abstract class AbstractDialog
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Invoked when a dialog button is pressed.
+     * 
+     * <p>
+     * This implementation invokes the {@link #okPressed()} method if the OK
+     * button is pressed or the {@link #cancelPressed()} method if the Cancel
+     * button is pressed.
+     * </p>
+     * 
+     * @param id
+     *        The identifier of the button that was pressed; must not be {@code
+     *        null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
+     */
+    protected void buttonPressed(
+        /* @NonNull */
+        final String id )
+    {
+        if( id.equals( DialogConstants.OK_BUTTON_ID ) )
+        {
+            okPressed();
+        }
+        else if( id.equals( DialogConstants.CANCEL_BUTTON_ID ) )
+        {
+            cancelPressed();
+        }
+    }
+
+    /**
+     * Invoked when the Cancel button is pressed.
+     * 
+     * <p>
+     * This implementation sets the dialog return code to
+     * {@link WindowConstants#RETURN_CODE_CANCEL} and closes the dialog.
+     * </p>
+     */
+    protected void cancelPressed()
+    {
+        setReturnCode( WindowConstants.RETURN_CODE_CANCEL );
+        close();
+    }
 
     /*
      * @see org.gamegineer.common.ui.window.AbstractWindow#close()
@@ -220,7 +268,7 @@ public abstract class AbstractDialog
      * @param parent
      *        The parent container for the button; must not be {@code null}.
      * @param id
-     *        The button identifier.
+     *        The button identifier; must not be {@code null}.
      * @param label
      *        The button label; may be {@code null}.
      * @param defaultButton
@@ -228,20 +276,35 @@ public abstract class AbstractDialog
      *        {@code false}.
      * 
      * @return The new button; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code parent} or {@code id} is {@code null}.
      */
     /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    protected JButton createButton(
+    protected final JButton createButton(
         /* @NonNull */
         final Container parent,
-        final int id,
+        /* @NonNull */
+        final String id,
         /* @Nullable */
         final String label,
         final boolean defaultButton )
     {
+        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
+
         final JButton button = new JButton();
         parent.add( button );
+        button.setActionCommand( id );
         button.setText( label );
+        button.addActionListener( new ActionListener()
+        {
+            @Override
+            public void actionPerformed(
+                final ActionEvent event )
+            {
+                buttonPressed( event.getActionCommand() );
+            }
+        } );
         setButtonLayoutData( button );
 
         if( defaultButton )
@@ -258,7 +321,7 @@ public abstract class AbstractDialog
      * Creates the dialog button bar component.
      * 
      * <p>
-     * The default implementation creates a panel and calls
+     * This implementation creates a panel and calls
      * {@link #createButtonsForButtonBar(Container)} to populate the button bar.
      * </p>
      * 
@@ -313,7 +376,7 @@ public abstract class AbstractDialog
      * Creates the buttons for the dialog button bar.
      * 
      * <p>
-     * The default implementation creates OK and Cancel buttons.
+     * This implementation creates OK and Cancel buttons.
      * </p>
      * 
      * @param parent
@@ -359,8 +422,8 @@ public abstract class AbstractDialog
      * bar).
      * 
      * <p>
-     * The default implementation creates a panel with standard dialog margins
-     * and a layout manager of type {@link java.awt.BorderLayout}.
+     * This implementation creates a panel with standard dialog margins and a
+     * layout manager of type {@link java.awt.BorderLayout}.
      * </p>
      * 
      * @param parent
@@ -407,12 +470,17 @@ public abstract class AbstractDialog
      * 
      * @return The button with the specified identifier or {@code null} if no
      *         such button exists.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id} is {@code null}.
      */
     /* @Nullable */
-    @SuppressWarnings( "boxing" )
     protected final JButton getButton(
-        final int id )
+        /* @NonNull */
+        final String id )
     {
+        assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
+
         return buttons_.get( id );
     }
 
@@ -461,6 +529,20 @@ public abstract class AbstractDialog
         final Component component )
     {
         fontMetrics_ = component.getFontMetrics( component.getFont() );
+    }
+
+    /**
+     * Invoked when the OK button is pressed.
+     * 
+     * <p>
+     * This implementation sets the dialog return code to
+     * {@link WindowConstants#RETURN_CODE_OK} and closes the dialog.
+     * </p>
+     */
+    protected void okPressed()
+    {
+        setReturnCode( WindowConstants.RETURN_CODE_OK );
+        close();
     }
 
     /**
