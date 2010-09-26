@@ -37,7 +37,7 @@ public final class AbstractWindowTest
     // ======================================================================
 
     /** The window under test in the fixture. */
-    private AbstractWindow window_;
+    private AbstractWindow<Window> window_;
 
 
     // ======================================================================
@@ -67,7 +67,7 @@ public final class AbstractWindowTest
     public void setUp()
         throws Exception
     {
-        window_ = new AbstractWindow( null )
+        window_ = new AbstractWindow<Window>( null )
         {
             @Override
             protected Window createShell(

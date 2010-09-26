@@ -36,9 +36,12 @@ import org.gamegineer.common.ui.util.Geometry;
 
 /**
  * Superclass for all windows.
+ * 
+ * @param <T>
+ *        The type of the window shell.
  */
 @NotThreadSafe
-public abstract class AbstractWindow
+public abstract class AbstractWindow<T extends Window>
 {
     // ======================================================================
     // Fields
@@ -54,7 +57,7 @@ public abstract class AbstractWindow
     private int returnCode_;
 
     /** The window shell. */
-    private Window shell_;
+    private T shell_;
 
 
     // ======================================================================
@@ -117,7 +120,7 @@ public abstract class AbstractWindow
      */
     protected void configureShell(
         /* @NonNull */
-        final Window shell )
+        final T shell )
     {
         final LayoutManager layout = getLayout();
         if( layout != null )
@@ -199,7 +202,7 @@ public abstract class AbstractWindow
      * @return The window shell; never {@code null}.
      */
     /* @NonNull */
-    protected abstract Window createShell(
+    protected abstract T createShell(
         /* @Nullable */
         final Window parent );
 
@@ -343,7 +346,7 @@ public abstract class AbstractWindow
      *         been created.
      */
     /* @Nullable */
-    public final Window getShell()
+    public final T getShell()
     {
         return shell_;
     }

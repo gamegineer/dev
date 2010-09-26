@@ -30,7 +30,6 @@ import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.ui.dialog.AbstractTitleAreaDialog;
@@ -286,8 +285,7 @@ public final class WizardDialog
         assert finishButton != null;
         finishButton.setEnabled( canFinish );
 
-        final JDialog dialog = (JDialog)getShell();
-        dialog.getRootPane().setDefaultButton( (canMoveToNextPage && !canFinish) ? nextButton : finishButton );
+        getShell().getRootPane().setDefaultButton( (canMoveToNextPage && !canFinish) ? nextButton : finishButton );
     }
 
     /*

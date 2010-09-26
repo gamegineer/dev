@@ -45,7 +45,7 @@ import org.gamegineer.common.ui.window.AbstractWindow;
  */
 @NotThreadSafe
 public abstract class AbstractDialog
-    extends AbstractWindow
+    extends AbstractWindow<JDialog>
 {
     // ======================================================================
     // Fields
@@ -123,12 +123,11 @@ public abstract class AbstractDialog
      */
     @Override
     protected void configureShell(
-        final Window shell )
+        final JDialog shell )
     {
         super.configureShell( shell );
 
-        final JDialog dialog = (JDialog)shell;
-        dialog.setTitle( title_ );
+        shell.setTitle( title_ );
     }
 
     /**
@@ -247,7 +246,7 @@ public abstract class AbstractDialog
 
         if( defaultButton )
         {
-            ((JDialog)getShell()).getRootPane().setDefaultButton( button );
+            getShell().getRootPane().setDefaultButton( button );
         }
 
         buttons_.put( id, button );
@@ -495,10 +494,10 @@ public abstract class AbstractDialog
     {
         title_ = title;
 
-        final JDialog dialog = (JDialog)getShell();
-        if( dialog != null )
+        final JDialog shell = getShell();
+        if( shell != null )
         {
-            dialog.setTitle( title_ );
+            shell.setTitle( title_ );
         }
     }
 }
