@@ -36,6 +36,7 @@ import org.gamegineer.common.ui.dialog.AbstractTitleAreaDialog;
 import org.gamegineer.common.ui.dialog.DialogConstants;
 import org.gamegineer.common.ui.dialog.Message;
 import org.gamegineer.common.ui.operation.IRunnableWithProgress;
+import org.gamegineer.common.ui.window.WindowConstants;
 
 /**
  * A dialog that hosts a wizard.
@@ -60,6 +61,9 @@ public final class WizardDialog
 
     /** The active wizard page. */
     private IWizardPage activePage_;
+
+    /** Indicates the wizard is in the process of moving to the previous page. */
+    private boolean isMovingToPreviousPage_;
 
     /** The container for all page content. */
     private Container pageContainer_;
@@ -94,6 +98,7 @@ public final class WizardDialog
         wizard.setContainer( this );
 
         activePage_ = null;
+        isMovingToPreviousPage_ = false;
         pageContainer_ = null;
         wizard_ = wizard;
     }
@@ -110,9 +115,99 @@ public final class WizardDialog
     public void activatePage(
         final IWizardPage page )
     {
-        assertArgumentNotNull( page );
+        assertArgumentNotNull( page, "page" ); //$NON-NLS-1$
 
-        // TODO Auto-generated method stub
+        if( page == activePage_ )
+        {
+            return;
+        }
+
+        if( isMovingToPreviousPage_ )
+        {
+            isMovingToPreviousPage_ = false;
+        }
+        else
+        {
+            page.setPreviousPage( activePage_ );
+        }
+
+        if( page.getContent() == null )
+        {
+            page.create( pageContainer_ );
+            assert page.getContent() != null;
+        }
+
+        if( activePage_ != null )
+        {
+            activePage_.setVisible( false );
+        }
+        activePage_ = page;
+        activePage_.setVisible( true );
+
+        update();
+    }
+
+    /**
+     * Invoked when the Back button is pressed.
+     */
+    private void backPressed()
+    {
+        final IWizardPage previousPage = activePage_.getPreviousPage();
+        if( previousPage != null )
+        {
+            isMovingToPreviousPage_ = true;
+            activatePage( previousPage );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.common.ui.dialog.AbstractDialog#buttonPressed(java.lang.String)
+     */
+    @Override
+    protected void buttonPressed(
+        final String id )
+    {
+        if( id.equals( BACK_BUTTON_ID ) )
+        {
+            backPressed();
+        }
+        else if( id.equals( NEXT_BUTTON_ID ) )
+        {
+            nextPressed();
+        }
+        else if( id.equals( FINISH_BUTTON_ID ) )
+        {
+            finishPressed();
+        }
+        else if( id.equals( DialogConstants.CANCEL_BUTTON_ID ) )
+        {
+            cancelPressed();
+        }
+    }
+
+    /*
+     * @see org.gamegineer.common.ui.dialog.AbstractDialog#cancelPressed()
+     */
+    @Override
+    protected void cancelPressed()
+    {
+        if( wizard_.performCancel() )
+        {
+            setReturnCode( WindowConstants.RETURN_CODE_CANCEL );
+            close();
+        }
+    }
+
+    /*
+     * @see org.gamegineer.common.ui.dialog.AbstractDialog#close()
+     */
+    @Override
+    public boolean close()
+    {
+        wizard_.dispose();
+        wizard_.setContainer( null );
+
+        return super.close();
     }
 
     /*
@@ -205,6 +300,18 @@ public final class WizardDialog
         return pageContainer_;
     }
 
+    /**
+     * Invoked when the Finish button is pressed.
+     */
+    private void finishPressed()
+    {
+        if( wizard_.performFinish() )
+        {
+            setReturnCode( WindowConstants.RETURN_CODE_OK );
+            close();
+        }
+    }
+
     /*
      * @see org.gamegineer.common.ui.wizard.IWizardContainer#getActivePage()
      */
@@ -212,6 +319,18 @@ public final class WizardDialog
     public IWizardPage getActivePage()
     {
         return activePage_;
+    }
+
+    /**
+     * Invoked when the Next button is pressed.
+     */
+    private void nextPressed()
+    {
+        final IWizardPage nextPage = activePage_.getNextPage();
+        if( nextPage != null )
+        {
+            activatePage( nextPage );
+        }
     }
 
     /*
