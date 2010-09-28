@@ -55,7 +55,7 @@ public abstract class AbstractDialogPage
     private FontMetrics fontMetrics_;
 
     /** The dialog page message. */
-    private Message message_;
+    private DialogMessage message_;
 
     /** The dialog page title. */
     private String title_;
@@ -243,7 +243,7 @@ public abstract class AbstractDialogPage
      * @see org.gamegineer.common.ui.dialog.IDialogPage#getMessage()
      */
     @Override
-    public final Message getMessage()
+    public final DialogMessage getMessage()
     {
         return message_;
     }
@@ -328,7 +328,7 @@ public abstract class AbstractDialogPage
      */
     protected void setMessage(
         /* @Nullable */
-        final Message message )
+        final DialogMessage message )
     {
         message_ = message;
     }

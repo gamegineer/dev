@@ -1,5 +1,5 @@
 /*
- * Message.java
+ * DialogMessage.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -28,7 +28,7 @@ import net.jcip.annotations.Immutable;
  * A dialog message.
  */
 @Immutable
-public final class Message
+public final class DialogMessage
 {
     // ======================================================================
     // Fields
@@ -38,7 +38,7 @@ public final class Message
     private final String text_;
 
     /** The message type. */
-    private final MessageType type_;
+    private final DialogMessageType type_;
 
 
     // ======================================================================
@@ -46,7 +46,7 @@ public final class Message
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code Message} class.
+     * Initializes a new instance of the {@code DialogMessage} class.
      * 
      * @param text
      *        The message text; must not be {@code null}.
@@ -56,11 +56,11 @@ public final class Message
      * @throws java.lang.NullPointerException
      *         If {@code text} or {@code type} is {@code null}.
      */
-    public Message(
+    public DialogMessage(
         /* @NonNull */
         final String text,
         /* @NonNull */
-        final MessageType type )
+        final DialogMessageType type )
     {
         assertArgumentNotNull( text, "text" ); //$NON-NLS-1$
         assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
@@ -91,7 +91,7 @@ public final class Message
      * @return The message type; never {@code null}.
      */
     /* @NonNull */
-    public MessageType getType()
+    public DialogMessageType getType()
     {
         return type_;
     }

@@ -24,7 +24,7 @@ package org.gamegineer.common.ui.wizard;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.ui.dialog.AbstractDialogPage;
-import org.gamegineer.common.ui.dialog.Message;
+import org.gamegineer.common.ui.dialog.DialogMessage;
 
 /**
  * Superclass for all implementations of
@@ -230,11 +230,11 @@ public abstract class AbstractWizardPage
      * This implementation extends the superclass implementation and updates the
      * wizard container message if this page is active.
      * 
-     * @see org.gamegineer.common.ui.dialog.AbstractDialogPage#setMessage(org.gamegineer.common.ui.dialog.Message)
+     * @see org.gamegineer.common.ui.dialog.AbstractDialogPage#setMessage(org.gamegineer.common.ui.dialog.DialogMessage)
      */
     @Override
     protected void setMessage(
-        final Message message )
+        final DialogMessage message )
     {
         super.setMessage( message );
 

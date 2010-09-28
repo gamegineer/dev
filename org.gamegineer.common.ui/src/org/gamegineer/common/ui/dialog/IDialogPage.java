@@ -82,7 +82,7 @@ public interface IDialogPage
      *         message.
      */
     /* @Nullable */
-    public Message getMessage();
+    public DialogMessage getMessage();
 
     /**
      * Gets the dialog page title.

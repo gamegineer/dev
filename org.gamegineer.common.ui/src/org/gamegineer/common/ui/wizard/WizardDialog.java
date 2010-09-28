@@ -34,7 +34,7 @@ import javax.swing.JPanel;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.ui.dialog.AbstractBannerDialog;
 import org.gamegineer.common.ui.dialog.DialogConstants;
-import org.gamegineer.common.ui.dialog.Message;
+import org.gamegineer.common.ui.dialog.DialogMessage;
 import org.gamegineer.common.ui.operation.IRunnableWithProgress;
 import org.gamegineer.common.ui.window.WindowConstants;
 
@@ -425,7 +425,7 @@ public final class WizardDialog
     public void updateMessage()
     {
         final String description;
-        final Message message;
+        final DialogMessage message;
         if( activePage_ != null )
         {
             description = activePage_.getDescription();

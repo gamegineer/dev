@@ -87,7 +87,7 @@ public abstract class AbstractBannerDialog
     private JTextArea descriptionLabel_;
 
     /** The active message or {@code null} if no active message. */
-    private Message message_;
+    private DialogMessage message_;
 
 
     // ======================================================================
@@ -338,7 +338,7 @@ public abstract class AbstractBannerDialog
      */
     protected final void setMessage(
         /* @Nullable */
-        final Message message )
+        final DialogMessage message )
     {
         message_ = message;
 

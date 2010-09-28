@@ -1,5 +1,5 @@
 /*
- * MessageType.java
+ * DialogMessageType.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -24,7 +24,7 @@ package org.gamegineer.common.ui.dialog;
 /**
  * A dialog message type.
  */
-public enum MessageType
+public enum DialogMessageType
 {
     // ======================================================================
     // Enum Constants

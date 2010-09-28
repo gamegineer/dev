@@ -1,5 +1,5 @@
 /*
- * MessageTest.java
+ * DialogMessageTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -24,19 +24,19 @@ package org.gamegineer.common.ui.dialog;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.common.ui.dialog.Message}
- * class.
+ * A fixture for testing the
+ * {@link org.gamegineer.common.ui.dialog.DialogMessage} class.
  */
-public final class MessageTest
+public final class DialogMessageTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MessageTest} class.
+     * Initializes a new instance of the {@code DialogMessageTest} class.
      */
-    public MessageTest()
+    public DialogMessageTest()
     {
         super();
     }
@@ -53,7 +53,7 @@ public final class MessageTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_Text_Null()
     {
-        new Message( null, MessageType.NORMAL );
+        new DialogMessage( null, DialogMessageType.NORMAL );
     }
 
     /**
@@ -63,6 +63,6 @@ public final class MessageTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_Type_Null()
     {
-        new Message( "text", null ); //$NON-NLS-1$
+        new DialogMessage( "text", null ); //$NON-NLS-1$
     }
 }
