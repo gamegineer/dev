@@ -32,7 +32,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.common.ui.dialog.AbstractTitleAreaDialog;
+import org.gamegineer.common.ui.dialog.AbstractBannerDialog;
 import org.gamegineer.common.ui.dialog.DialogConstants;
 import org.gamegineer.common.ui.dialog.Message;
 import org.gamegineer.common.ui.operation.IRunnableWithProgress;
@@ -43,7 +43,7 @@ import org.gamegineer.common.ui.window.WindowConstants;
  */
 @NotThreadSafe
 public final class WizardDialog
-    extends AbstractTitleAreaDialog
+    extends AbstractBannerDialog
     implements IWizardContainer
 {
     // ======================================================================
@@ -281,7 +281,7 @@ public final class WizardDialog
     }
 
     /*
-     * @see org.gamegineer.common.ui.dialog.AbstractTitleAreaDialog#createContentArea(java.awt.Container)
+     * @see org.gamegineer.common.ui.dialog.AbstractBannerDialog#createContentArea(java.awt.Container)
      */
     @Override
     protected Component createContentArea(
@@ -374,8 +374,19 @@ public final class WizardDialog
     private void update()
     {
         updateShell();
-        updateTitleArea();
+        updateBanner();
         updateButtons();
+    }
+
+    /*
+     * @see org.gamegineer.common.ui.wizard.IWizardContainer#updateBanner()
+     */
+    @Override
+    public void updateBanner()
+    {
+        setBannerTitle( (activePage_ != null) ? activePage_.getTitle() : null );
+
+        updateMessage();
     }
 
     /*
@@ -437,16 +448,5 @@ public final class WizardDialog
     public void updateShell()
     {
         setTitle( wizard_.getTitle() );
-    }
-
-    /*
-     * @see org.gamegineer.common.ui.wizard.IWizardContainer#updateTitleArea()
-     */
-    @Override
-    public void updateTitleArea()
-    {
-        setTitleAreaTitle( (activePage_ != null) ? activePage_.getTitle() : null );
-
-        updateMessage();
     }
 }

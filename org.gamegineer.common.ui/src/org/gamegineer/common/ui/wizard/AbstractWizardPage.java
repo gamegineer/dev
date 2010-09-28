@@ -208,7 +208,7 @@ public abstract class AbstractWizardPage
 
     /**
      * This implementation extends the superclass implementation and updates the
-     * wizard container title area if this page is active.
+     * wizard container banner if this page is active.
      * 
      * @see org.gamegineer.common.ui.dialog.AbstractDialogPage#setDescription(java.lang.String)
      */
@@ -222,7 +222,7 @@ public abstract class AbstractWizardPage
         {
             final IWizardContainer container = getContainer();
             assert container != null;
-            container.updateTitleArea();
+            container.updateBanner();
         }
     }
 
@@ -258,7 +258,7 @@ public abstract class AbstractWizardPage
 
     /**
      * This implementation extends the superclass implementation and updates the
-     * wizard container title area if this page is active.
+     * wizard container banner if this page is active.
      * 
      * @see org.gamegineer.common.ui.dialog.AbstractDialogPage#setTitle(java.lang.String)
      */
@@ -272,7 +272,7 @@ public abstract class AbstractWizardPage
         {
             final IWizardContainer container = getContainer();
             assert container != null;
-            container.updateTitleArea();
+            container.updateBanner();
         }
     }
 

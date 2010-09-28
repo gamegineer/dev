@@ -1,5 +1,5 @@
 /*
- * AbstractTitleAreaDialogTest.java
+ * AbstractBannerDialogTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -27,16 +27,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.common.ui.dialog.AbstractTitleAreaDialog} class.
+ * {@link org.gamegineer.common.ui.dialog.AbstractBannerDialog} class.
  */
-public final class AbstractTitleAreaDialogTest
+public final class AbstractBannerDialogTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The dialog under test in the fixture. */
-    private AbstractTitleAreaDialog dialog_;
+    private AbstractBannerDialog dialog_;
 
 
     // ======================================================================
@@ -44,10 +44,9 @@ public final class AbstractTitleAreaDialogTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractTitleAreaDialogTest}
-     * class.
+     * Initializes a new instance of the {@code AbstractBannerDialogTest} class.
      */
-    public AbstractTitleAreaDialogTest()
+    public AbstractBannerDialogTest()
     {
         super();
     }
@@ -67,7 +66,7 @@ public final class AbstractTitleAreaDialogTest
     public void setUp()
         throws Exception
     {
-        dialog_ = new AbstractTitleAreaDialog( null )
+        dialog_ = new AbstractBannerDialog( null )
         {
             // no overrides
         };

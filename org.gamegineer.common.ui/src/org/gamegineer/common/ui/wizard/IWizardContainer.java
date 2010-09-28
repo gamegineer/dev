@@ -66,6 +66,12 @@ public interface IWizardContainer
     public Window getShell();
 
     /**
+     * Updates the container banner (title, description, and image) based on the
+     * state of the active page.
+     */
+    public void updateBanner();
+
+    /**
      * Updates the container buttons based on the state of the active page.
      */
     public void updateButtons();
@@ -80,10 +86,4 @@ public interface IWizardContainer
      * wizard.
      */
     public void updateShell();
-
-    /**
-     * Updates the container title area (title, description, and image) based on
-     * the state of the active page.
-     */
-    public void updateTitleArea();
 }

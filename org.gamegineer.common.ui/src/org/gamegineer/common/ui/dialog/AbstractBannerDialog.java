@@ -1,5 +1,5 @@
 /*
- * AbstractTitleAreaDialog.java
+ * AbstractBannerDialog.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -44,12 +44,12 @@ import org.gamegineer.common.internal.ui.Activator;
 import org.gamegineer.common.internal.ui.ImageRegistry;
 
 /**
- * Superclass for all dialogs that have a title area for displaying a title and
- * an image, as well as a common area for displaying a description or a
- * temporary message.
+ * Superclass for all dialogs that have a banner for displaying a title and an
+ * image, as well as a common area for displaying a description or a temporary
+ * message.
  */
 @NotThreadSafe
-public abstract class AbstractTitleAreaDialog
+public abstract class AbstractBannerDialog
     extends AbstractDialog
 {
     // ======================================================================
@@ -61,6 +61,18 @@ public abstract class AbstractTitleAreaDialog
 
     /** The minimum dialog width in dialog units. */
     private static final int MINIMUM_DIALOG_WIDTH = 350;
+
+    /** The banner image. */
+    private Image bannerImage_;
+
+    /** The banner image label. */
+    private JLabel bannerImageLabel_;
+
+    /** The banner title. */
+    private String bannerTitle_;
+
+    /** The banner title label. */
+    private JLabel bannerTitleLabel_;
 
     /** The dialog content area component. */
     private Component contentArea_;
@@ -77,44 +89,32 @@ public abstract class AbstractTitleAreaDialog
     /** The active message or {@code null} if no active message. */
     private Message message_;
 
-    /** The title area image. */
-    private Image titleAreaImage_;
-
-    /** The title area image label. */
-    private JLabel titleAreaImageLabel_;
-
-    /** The title area title. */
-    private String titleAreaTitle_;
-
-    /** The title area title label. */
-    private JLabel titleAreaTitleLabel_;
-
 
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractTitleAreaDialog} class.
+     * Initializes a new instance of the {@code AbstractBannerDialog} class.
      * 
      * @param parentShell
      *        The parent shell or {@code null} to create a top-level shell.
      */
-    protected AbstractTitleAreaDialog(
+    protected AbstractBannerDialog(
         /* @Nullable */
         final Window parentShell )
     {
         super( parentShell );
 
+        bannerImage_ = null;
+        bannerImageLabel_ = null;
+        bannerTitle_ = ""; //$NON-NLS-1$
+        bannerTitleLabel_ = null;
         contentArea_ = null;
         message_ = null;
         descriptionImageLabel_ = null;
         descriptionLabel_ = null;
         description_ = ""; //$NON-NLS-1$
-        titleAreaImage_ = null;
-        titleAreaImageLabel_ = null;
-        titleAreaTitle_ = ""; //$NON-NLS-1$
-        titleAreaTitleLabel_ = null;
     }
 
 
@@ -123,8 +123,90 @@ public abstract class AbstractTitleAreaDialog
     // ======================================================================
 
     /**
+     * Creates the dialog banner component.
+     * 
+     * @param parent
+     *        The parent container for the dialog banner; must not be {@code
+     *        null}.
+     * 
+     * @return The dialog banner component; never {@code null}.
+     */
+    /* @NonNull */
+    private Component createBanner(
+        /* @NonNull */
+        final Container parent )
+    {
+        final JPanel composite = new JPanel();
+        parent.add( composite );
+
+        final SpringLayout layout = new SpringLayout();
+        composite.setLayout( layout );
+        composite.setBackground( Color.WHITE );
+
+        final int horizontalMargin = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_MARGIN );
+        final int verticalMargin = convertHeightInDlusToPixels( DialogConstants.VERTICAL_MARGIN );
+        final int horizontalSpacing = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_SPACING );
+        final int verticalSpacing = convertHeightInDlusToPixels( DialogConstants.VERTICAL_SPACING );
+
+        bannerImageLabel_ = new JLabel();
+        bannerImageLabel_.setVerticalAlignment( SwingConstants.BOTTOM );
+        composite.add( bannerImageLabel_ );
+        layout.putConstraint( SpringLayout.EAST, bannerImageLabel_, 0, SpringLayout.EAST, composite );
+        layout.putConstraint( SpringLayout.NORTH, bannerImageLabel_, 0, SpringLayout.NORTH, composite );
+
+        bannerTitleLabel_ = new JLabel();
+        bannerTitleLabel_.setFont( bannerTitleLabel_.getFont().deriveFont( Font.BOLD ).deriveFont( bannerTitleLabel_.getFont().getSize() * 1.2F ) );
+        composite.add( bannerTitleLabel_ );
+        layout.putConstraint( SpringLayout.WEST, bannerTitleLabel_, horizontalMargin, SpringLayout.WEST, composite );
+        layout.putConstraint( SpringLayout.NORTH, bannerTitleLabel_, verticalMargin, SpringLayout.NORTH, composite );
+        layout.putConstraint( SpringLayout.EAST, bannerTitleLabel_, 0, SpringLayout.WEST, bannerImageLabel_ );
+
+        descriptionImageLabel_ = new JLabel();
+        composite.add( descriptionImageLabel_ );
+        layout.putConstraint( SpringLayout.WEST, descriptionImageLabel_, 0, SpringLayout.WEST, bannerTitleLabel_ );
+        layout.putConstraint( SpringLayout.NORTH, descriptionImageLabel_, verticalSpacing, SpringLayout.SOUTH, bannerTitleLabel_ );
+
+        descriptionLabel_ = new JTextArea();
+        descriptionLabel_.setFont( composite.getFont() );
+        descriptionLabel_.setEditable( false );
+        descriptionLabel_.setFocusable( false );
+        descriptionLabel_.setLineWrap( true );
+        descriptionLabel_.setOpaque( false );
+        descriptionLabel_.setWrapStyleWord( true );
+        composite.add( descriptionLabel_ );
+        layout.putConstraint( SpringLayout.WEST, descriptionLabel_, horizontalSpacing, SpringLayout.EAST, descriptionImageLabel_ );
+        layout.putConstraint( SpringLayout.NORTH, descriptionLabel_, verticalSpacing, SpringLayout.SOUTH, bannerTitleLabel_ );
+        layout.putConstraint( SpringLayout.EAST, descriptionLabel_, 0, SpringLayout.WEST, bannerImageLabel_ );
+        layout.getConstraints( descriptionLabel_ ).setHeight( Spring.constant( convertHeightInCharsToPixels( 2 ) ) );
+
+        final JSeparator separator = new JSeparator();
+        composite.add( separator );
+        layout.putConstraint( SpringLayout.WEST, separator, 0, SpringLayout.WEST, composite );
+        layout.putConstraint( SpringLayout.EAST, separator, 0, SpringLayout.EAST, composite );
+        layout.getConstraints( separator ).setConstraint( SpringLayout.NORTH, //
+            Spring.max( //
+                Spring.sum( //
+                    layout.getConstraint( SpringLayout.SOUTH, descriptionLabel_ ), //
+                    Spring.constant( verticalSpacing ) ), //
+                layout.getConstraint( SpringLayout.SOUTH, bannerImageLabel_ ) ) );
+
+        layout.putConstraint( SpringLayout.SOUTH, composite, 0, SpringLayout.SOUTH, separator );
+
+        if( bannerImage_ == null )
+        {
+            bannerImage_ = Activator.getDefault().getImageRegistry().getImage( ImageRegistry.DIALOG_DEFAULT_TITLE_PATH );
+        }
+
+        setBannerTitle( bannerTitle_ );
+        setBannerImage( bannerImage_ );
+        setDescription( description_ );
+
+        return composite;
+    }
+
+    /**
      * Creates the dialog content area component (the area above the button bar
-     * and below the title area).
+     * and below the banner).
      * 
      * <p>
      * The default implementation creates a panel with standard dialog margins
@@ -170,93 +252,11 @@ public abstract class AbstractTitleAreaDialog
         final BorderLayout layout = new BorderLayout();
         composite.setLayout( layout );
 
-        final Component titleArea = createTitleArea( composite );
+        final Component banner = createBanner( composite );
         contentArea_ = createContentArea( composite );
 
-        layout.addLayoutComponent( titleArea, BorderLayout.NORTH );
+        layout.addLayoutComponent( banner, BorderLayout.NORTH );
         layout.addLayoutComponent( contentArea_, BorderLayout.CENTER );
-
-        return composite;
-    }
-
-    /**
-     * Creates the dialog title area component.
-     * 
-     * @param parent
-     *        The parent container for the dialog title area; must not be
-     *        {@code null}.
-     * 
-     * @return The dialog title area component; never {@code null}.
-     */
-    /* @NonNull */
-    private Component createTitleArea(
-        /* @NonNull */
-        final Container parent )
-    {
-        final JPanel composite = new JPanel();
-        parent.add( composite );
-
-        final SpringLayout layout = new SpringLayout();
-        composite.setLayout( layout );
-        composite.setBackground( Color.WHITE );
-
-        final int horizontalMargin = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_MARGIN );
-        final int verticalMargin = convertHeightInDlusToPixels( DialogConstants.VERTICAL_MARGIN );
-        final int horizontalSpacing = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_SPACING );
-        final int verticalSpacing = convertHeightInDlusToPixels( DialogConstants.VERTICAL_SPACING );
-
-        titleAreaImageLabel_ = new JLabel();
-        titleAreaImageLabel_.setVerticalAlignment( SwingConstants.BOTTOM );
-        composite.add( titleAreaImageLabel_ );
-        layout.putConstraint( SpringLayout.EAST, titleAreaImageLabel_, 0, SpringLayout.EAST, composite );
-        layout.putConstraint( SpringLayout.NORTH, titleAreaImageLabel_, 0, SpringLayout.NORTH, composite );
-
-        titleAreaTitleLabel_ = new JLabel();
-        titleAreaTitleLabel_.setFont( titleAreaTitleLabel_.getFont().deriveFont( Font.BOLD ).deriveFont( titleAreaTitleLabel_.getFont().getSize() * 1.2F ) );
-        composite.add( titleAreaTitleLabel_ );
-        layout.putConstraint( SpringLayout.WEST, titleAreaTitleLabel_, horizontalMargin, SpringLayout.WEST, composite );
-        layout.putConstraint( SpringLayout.NORTH, titleAreaTitleLabel_, verticalMargin, SpringLayout.NORTH, composite );
-        layout.putConstraint( SpringLayout.EAST, titleAreaTitleLabel_, 0, SpringLayout.WEST, titleAreaImageLabel_ );
-
-        descriptionImageLabel_ = new JLabel();
-        composite.add( descriptionImageLabel_ );
-        layout.putConstraint( SpringLayout.WEST, descriptionImageLabel_, 0, SpringLayout.WEST, titleAreaTitleLabel_ );
-        layout.putConstraint( SpringLayout.NORTH, descriptionImageLabel_, verticalSpacing, SpringLayout.SOUTH, titleAreaTitleLabel_ );
-
-        descriptionLabel_ = new JTextArea();
-        descriptionLabel_.setFont( composite.getFont() );
-        descriptionLabel_.setEditable( false );
-        descriptionLabel_.setFocusable( false );
-        descriptionLabel_.setLineWrap( true );
-        descriptionLabel_.setOpaque( false );
-        descriptionLabel_.setWrapStyleWord( true );
-        composite.add( descriptionLabel_ );
-        layout.putConstraint( SpringLayout.WEST, descriptionLabel_, horizontalSpacing, SpringLayout.EAST, descriptionImageLabel_ );
-        layout.putConstraint( SpringLayout.NORTH, descriptionLabel_, verticalSpacing, SpringLayout.SOUTH, titleAreaTitleLabel_ );
-        layout.putConstraint( SpringLayout.EAST, descriptionLabel_, 0, SpringLayout.WEST, titleAreaImageLabel_ );
-        layout.getConstraints( descriptionLabel_ ).setHeight( Spring.constant( convertHeightInCharsToPixels( 2 ) ) );
-
-        final JSeparator separator = new JSeparator();
-        composite.add( separator );
-        layout.putConstraint( SpringLayout.WEST, separator, 0, SpringLayout.WEST, composite );
-        layout.putConstraint( SpringLayout.EAST, separator, 0, SpringLayout.EAST, composite );
-        layout.getConstraints( separator ).setConstraint( SpringLayout.NORTH, //
-            Spring.max( //
-                Spring.sum( //
-                    layout.getConstraint( SpringLayout.SOUTH, descriptionLabel_ ), //
-                    Spring.constant( verticalSpacing ) ), //
-                layout.getConstraint( SpringLayout.SOUTH, titleAreaImageLabel_ ) ) );
-
-        layout.putConstraint( SpringLayout.SOUTH, composite, 0, SpringLayout.SOUTH, separator );
-
-        if( titleAreaImage_ == null )
-        {
-            titleAreaImage_ = Activator.getDefault().getImageRegistry().getImage( ImageRegistry.DIALOG_DEFAULT_TITLE_PATH );
-        }
-
-        setTitleAreaTitle( titleAreaTitle_ );
-        setTitleAreaImage( titleAreaImage_ );
-        setDescription( description_ );
 
         return composite;
     }
@@ -274,7 +274,43 @@ public abstract class AbstractTitleAreaDialog
     }
 
     /**
-     * Sets the description to be displayed in the dialog title area.
+     * Sets the dialog banner image.
+     * 
+     * @param image
+     *        The dialog banner image or {@code null} to clear the banner image.
+     */
+    protected final void setBannerImage(
+        /* @Nullable */
+        final Image image )
+    {
+        bannerImage_ = image;
+
+        if( bannerImageLabel_ != null )
+        {
+            bannerImageLabel_.setIcon( (bannerImage_ != null) ? new ImageIcon( bannerImage_ ) : null );
+        }
+    }
+
+    /**
+     * Sets the title to be displayed in the dialog banner.
+     * 
+     * @param title
+     *        The dialog banner title or {@code null} to clear the banner title.
+     */
+    protected final void setBannerTitle(
+        /* @Nullable */
+        final String title )
+    {
+        bannerTitle_ = (title != null) ? title : ""; //$NON-NLS-1$
+
+        if( bannerTitleLabel_ != null )
+        {
+            bannerTitleLabel_.setText( title );
+        }
+    }
+
+    /**
+     * Sets the description to be displayed in the dialog banner.
      * 
      * @param description
      *        The dialog description or {@code null} to clear the description.
@@ -307,44 +343,6 @@ public abstract class AbstractTitleAreaDialog
         message_ = message;
 
         updateDescription();
-    }
-
-    /**
-     * Sets the dialog title area image.
-     * 
-     * @param image
-     *        The dialog title area image or {@code null} to clear the title
-     *        area image.
-     */
-    protected final void setTitleAreaImage(
-        /* @Nullable */
-        final Image image )
-    {
-        titleAreaImage_ = image;
-
-        if( titleAreaImageLabel_ != null )
-        {
-            titleAreaImageLabel_.setIcon( (titleAreaImage_ != null) ? new ImageIcon( titleAreaImage_ ) : null );
-        }
-    }
-
-    /**
-     * Sets the title to be displayed in the dialog title area.
-     * 
-     * @param title
-     *        The dialog title area title or {@code null} to clear the title
-     *        area title.
-     */
-    protected final void setTitleAreaTitle(
-        /* @Nullable */
-        final String title )
-    {
-        titleAreaTitle_ = (title != null) ? title : ""; //$NON-NLS-1$
-
-        if( titleAreaTitleLabel_ != null )
-        {
-            titleAreaTitleLabel_.setText( title );
-        }
     }
 
     /**
