@@ -305,12 +305,14 @@ final class MenuBarView
         menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_table_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddCardPileAction() );
         menu.add( Actions.getRemoveCardPileAction() );
+        menu.add( Actions.getRemoveAllCardPilesAction() );
         menu.addSeparator();
         menu.add( createLayoutMenu() );
         menu.addSeparator();
         menu.add( createAddCardMenu() );
         menu.add( createAddDeckMenu() );
         menu.add( Actions.getRemoveCardAction() );
+        menu.add( Actions.getRemoveAllCardsAction() );
         menu.add( Actions.getFlipCardAction() );
         return menu;
     }

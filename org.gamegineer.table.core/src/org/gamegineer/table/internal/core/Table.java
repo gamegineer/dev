@@ -275,6 +275,25 @@ public final class Table
     }
 
     /*
+     * @see org.gamegineer.table.core.ITable#removeAllCardPiles()
+     */
+    @Override
+    public void removeAllCardPiles()
+    {
+        final List<ICardPile> cardPiles;
+        synchronized( lock_ )
+        {
+            cardPiles = new ArrayList<ICardPile>( cardPiles_ );
+            cardPiles_.clear();
+        }
+
+        for( final ICardPile cardPile : cardPiles )
+        {
+            fireCardPileRemoved( cardPile );
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.ITable#removeCardPile(org.gamegineer.table.core.ICardPile)
      */
     @Override

@@ -385,19 +385,54 @@ public abstract class AbstractTableTestCase
     }
 
     /**
-     * Ensures the {@code removeCardPile} method does not fire a card pile
-     * removed event for a card pile that is absent from the table.
+     * Ensures the {@code removeAllCardPiles} method does not fire a card pile
+     * removed event when the table is empty.
      */
     @Test
-    public void testRemoveCardPile_Empty_DoesNotFireCardPileRemovedEvent()
+    public void testRemoveAllCardPiles_Empty_DoesNotFireCardPileRemovedEvent()
     {
         final ITableListener listener = mocksControl_.createMock( ITableListener.class );
         mocksControl_.replay();
         table_.addTableListener( listener );
 
-        table_.removeCardPile( CardPiles.createUniqueCardPile() );
+        table_.removeAllCardPiles();
 
         mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code removeAllCardPiles} method fires a card pile removed
+     * event for each card pile present on the table.
+     */
+    @Test
+    public void testRemoveAllCardPiles_FiresCardPileRemovedEvent()
+    {
+        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        final ITableListener listener = mocksControl_.createMock( ITableListener.class );
+        listener.cardPileRemoved( EasyMock.notNull( TableContentChangedEvent.class ) );
+        listener.cardPileRemoved( EasyMock.notNull( TableContentChangedEvent.class ) );
+        mocksControl_.replay();
+        table_.addTableListener( listener );
+
+        table_.removeAllCardPiles();
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code removeAllCardPiles} method removes all card piles
+     * present on the table.
+     */
+    @Test
+    public void testRemoveAllCardPiles_RemovesCardPiles()
+    {
+        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        table_.addCardPile( CardPiles.createUniqueCardPile() );
+
+        table_.removeAllCardPiles();
+
+        assertEquals( 0, table_.getCardPiles().size() );
     }
 
     /**
@@ -458,6 +493,22 @@ public abstract class AbstractTableTestCase
         final List<ICardPile> cardPiles = table_.getCardPiles();
         assertFalse( cardPiles.contains( cardPile ) );
         assertEquals( 0, cardPiles.size() );
+    }
+
+    /**
+     * Ensures the {@code removeCardPile} method does not fire a card pile
+     * removed event for a card pile that is absent from the table.
+     */
+    @Test
+    public void testRemoveCardPile_Empty_DoesNotFireCardPileRemovedEvent()
+    {
+        final ITableListener listener = mocksControl_.createMock( ITableListener.class );
+        mocksControl_.replay();
+        table_.addTableListener( listener );
+
+        table_.removeCardPile( CardPiles.createUniqueCardPile() );
+
+        mocksControl_.verify();
     }
 
     /**

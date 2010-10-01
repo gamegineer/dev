@@ -238,6 +238,7 @@ final class CardPilePopupMenu
         add( createAddCardMenu() );
         add( createAddDeckMenu() );
         add( Actions.getRemoveCardAction() );
+        add( Actions.getRemoveAllCardsAction() );
         add( Actions.getFlipCardAction() );
         addSeparator();
         add( createLayoutMenu() );

@@ -384,6 +384,15 @@ final class Actions
     /** The identifier of the action used to open an existing table. */
     private static final String OPEN_TABLE_ACTION_ID = "openTableAction"; //$NON-NLS-1$
 
+    /**
+     * The identifier of the action used to remove all card piles from the
+     * table.
+     */
+    private static final String REMOVE_ALL_CARD_PILES_ACTION_ID = "removeAllCardPilesAction"; //$NON-NLS-1$
+
+    /** The identifier of the action used to remove all cards from a card pile. */
+    private static final String REMOVE_ALL_CARDS_ACTION_ID = "removeAllCardsAction"; //$NON-NLS-1$
+
     /** The identifier of the action used to remove a card from a card pile. */
     private static final String REMOVE_CARD_ACTION_ID = "removeCardAction"; //$NON-NLS-1$
 
@@ -1076,6 +1085,26 @@ final class Actions
                 putValue( ACTION_COMMAND_KEY, "" ); //$NON-NLS-1$
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.OpenTableAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.OpenTableAction_text );
+            }
+        } );
+        actions.put( REMOVE_ALL_CARD_PILES_ACTION_ID, new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.RemoveAllCardPilesAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.RemoveAllCardPilesAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.RemoveAllCardPilesAction_text );
+            }
+        } );
+        actions.put( REMOVE_ALL_CARDS_ACTION_ID, new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.RemoveAllCardsAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.RemoveAllCardsAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.RemoveAllCardsAction_text );
             }
         } );
         actions.put( REMOVE_CARD_ACTION_ID, new BasicAction()
@@ -1849,6 +1878,28 @@ final class Actions
     static BasicAction getOpenTableAction()
     {
         return actions_.get( OPEN_TABLE_ACTION_ID );
+    }
+
+    /**
+     * Gets the remove all card piles action.
+     * 
+     * @return The remove all card piles action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getRemoveAllCardPilesAction()
+    {
+        return actions_.get( REMOVE_ALL_CARD_PILES_ACTION_ID );
+    }
+
+    /**
+     * Gets the remove all cards action.
+     * 
+     * @return The remove all cards action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getRemoveAllCardsAction()
+    {
+        return actions_.get( REMOVE_ALL_CARDS_ACTION_ID );
     }
 
     /**

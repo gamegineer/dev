@@ -119,6 +119,11 @@ public interface ITable
     public IMemento getMemento();
 
     /**
+     * Removes all card piles from this table.
+     */
+    public void removeAllCardPiles();
+
+    /**
      * Removes the specified card pile from this table.
      * 
      * <p>

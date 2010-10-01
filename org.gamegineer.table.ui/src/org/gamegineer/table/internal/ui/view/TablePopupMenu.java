@@ -62,5 +62,6 @@ final class TablePopupMenu
     private void initializeComponent()
     {
         add( Actions.getAddCardPileAction() );
+        add( Actions.getRemoveAllCardPilesAction() );
     }
 }

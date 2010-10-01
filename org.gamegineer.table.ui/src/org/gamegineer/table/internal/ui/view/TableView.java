@@ -428,6 +428,26 @@ final class TableView
                 flipTopCard();
             }
         } );
+        actionMediator_.bindActionListener( Actions.getRemoveAllCardPilesAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                removeAllCardPiles();
+            }
+        } );
+        actionMediator_.bindActionListener( Actions.getRemoveAllCardsAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                removeAllCards();
+            }
+        } );
         actionMediator_.bindActionListener( Actions.getRemoveCardAction(), new ActionListener()
         {
             @SuppressWarnings( "synthetic-access" )
@@ -464,6 +484,16 @@ final class TableView
         actionMediator_.bindActionListener( Actions.getSetAccordianUpCardPileLayoutAction(), setCardPileLayoutActionListener );
         actionMediator_.bindActionListener( Actions.getSetStackedCardPileLayoutAction(), setCardPileLayoutActionListener );
 
+        final IPredicate<Action> hasCardPilePredicate = new IPredicate<Action>()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Action obj )
+            {
+                return !model_.getTable().getCardPiles().isEmpty();
+            }
+        };
         final IPredicate<Action> hasCardPredicate = new IPredicate<Action>()
         {
             @SuppressWarnings( "synthetic-access" )
@@ -547,6 +577,8 @@ final class TableView
         actionMediator_.bindShouldEnablePredicate( Actions.getAddTwoOfHeartsCardAction(), hasFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getAddTwoOfSpadesCardAction(), hasFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getFlipCardAction(), hasCardPredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardPilesAction(), hasCardPilePredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardsAction(), hasFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveCardAction(), hasCardPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveCardPileAction(), hasFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getSetAccordianDownCardPileLayoutAction(), hasFocusedCardPilePredicate );
@@ -923,6 +955,26 @@ final class TableView
                     view.paint( g );
                 }
             }
+        }
+    }
+
+    /**
+     * Removes all card piles from the table.
+     */
+    private void removeAllCardPiles()
+    {
+        model_.getTable().removeAllCardPiles();
+    }
+
+    /**
+     * Removes all cards from the focused card pile.
+     */
+    private void removeAllCards()
+    {
+        final ICardPile cardPile = model_.getFocusedCardPile();
+        if( cardPile != null )
+        {
+            cardPile.removeCards();
         }
     }
 

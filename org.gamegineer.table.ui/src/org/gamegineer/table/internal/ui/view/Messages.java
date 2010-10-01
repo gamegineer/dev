@@ -699,6 +699,28 @@ final class Messages
     /** The open table action text. */
     public static String OpenTableAction_text;
 
+    // --- RemoveAllCardPilesAction -----------------------------------------
+
+    /** The remove all card piles action accelerator. */
+    public static String RemoveAllCardPilesAction_accelerator;
+
+    /** The remove all card piles action mnemonic. */
+    public static String RemoveAllCardPilesAction_mnemonic;
+
+    /** The remove all card piles action text. */
+    public static String RemoveAllCardPilesAction_text;
+
+    // --- RemoveAllCardsAction ---------------------------------------------
+
+    /** The remove all cards action accelerator. */
+    public static String RemoveAllCardsAction_accelerator;
+
+    /** The remove all cards action mnemonic. */
+    public static String RemoveAllCardsAction_mnemonic;
+
+    /** The remove all cards action text. */
+    public static String RemoveAllCardsAction_text;
+
     // --- RemoveCardAction -------------------------------------------------
 
     /** The remove card action accelerator. */

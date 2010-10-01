@@ -657,6 +657,26 @@ public final class ActionsTest
     }
 
     /**
+     * Ensures the {@code getRemoveAllCardPilesAction} method does not return
+     * {@code null}.
+     */
+    @Test
+    public void testGetRemoveAllCardPilesAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getRemoveAllCardPilesAction() );
+    }
+
+    /**
+     * Ensures the {@code getRemoveAllCardsAction} method does not return
+     * {@code null}.
+     */
+    @Test
+    public void testGetRemoveAllCardsAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getRemoveAllCardsAction() );
+    }
+
+    /**
      * Ensures the {@code getRemoveCardAction} method does not return {@code
      * null}.
      */
