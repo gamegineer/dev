@@ -583,6 +583,9 @@ final class Messages
     /** The table file filter. */
     public static String MainFrame_fileFilter_table;
 
+    /** An error occurred while reading an application icon image. */
+    public static String MainFrame_getApplicationIconImages_readImageError_nonNls;
+
     /** An error occurred while opening the table. */
     public static String MainFrame_openTable_error;
 
@@ -878,6 +881,24 @@ final class Messages
         final String tableName )
     {
         return bind( MainFrame_confirmSaveDirtyTable_message, tableName );
+    }
+
+    /**
+     * Gets the formatted message that indicates an error occurred while reading
+     * an application icon image.
+     * 
+     * @param imagePath
+     *        The bundle-relative path to the image; must not be {@code null}.
+     * 
+     * @return The formatted message that indicates an error occurred while
+     *         reading an application icon image; never {@code null}.
+     */
+    /* @NonNull */
+    static String MainFrame_getApplicationIconImages_readImageError_nonNls(
+        /* @NonNull */
+        final String imagePath )
+    {
+        return bind( MainFrame_getApplicationIconImages_readImageError_nonNls, imagePath );
     }
 
     /**

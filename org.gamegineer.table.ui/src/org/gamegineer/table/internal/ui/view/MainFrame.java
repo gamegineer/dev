@@ -23,12 +23,18 @@ package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
+import javax.imageio.ImageIO;
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -36,6 +42,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
+import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.model.FramePreferences;
@@ -46,6 +53,7 @@ import org.gamegineer.table.internal.ui.model.MainModelEvent;
 import org.gamegineer.table.internal.ui.model.ModelException;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
 import org.gamegineer.table.ui.ITableAdvisor;
+import org.osgi.framework.Bundle;
 
 /**
  * The top-level frame.
@@ -248,6 +256,39 @@ public final class MainFrame
     }
 
     /**
+     * Gets the collection of application icon images.
+     * 
+     * @return The collection of application icon images; never {@code null}.
+     */
+    /* @NonNull */
+    private static List<Image> getApplicationIconImages()
+    {
+        final String[] imagePaths = new String[] { //
+            "/icons/application-16.png", //$NON-NLS-1$
+            "/icons/application-32.png", //$NON-NLS-1$
+            "/icons/application-48.png", //$NON-NLS-1$
+            "/icons/application-64.png" //$NON-NLS-1$
+        };
+
+        final Bundle bundle = Activator.getDefault().getBundleContext().getBundle();
+        final List<Image> iconImages = new ArrayList<Image>();
+        for( final String imagePath : imagePaths )
+        {
+            try
+            {
+                final URL url = bundle.getEntry( imagePath );
+                assert url != null;
+                iconImages.add( ImageIO.read( url ) );
+            }
+            catch( final IOException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainFrame_getApplicationIconImages_readImageError_nonNls( imagePath ), e );
+            }
+        }
+        return iconImages;
+    }
+
+    /**
      * Gets the name of the table.
      * 
      * @return The name of the table; never {@code null}.
@@ -275,6 +316,7 @@ public final class MainFrame
 
         setLocationByPlatform( true );
         setSize( 300, 300 );
+        setIconImages( getApplicationIconImages() );
         updateTitle();
     }
 
