@@ -24,20 +24,10 @@ package org.gamegineer.table.internal.ui.model;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.persistence.memento.IMemento;
-import org.gamegineer.common.persistence.memento.MalformedMementoException;
-import org.gamegineer.common.persistence.schemes.serializable.ObjectStreams;
-import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.ui.ITableAdvisor;
 import org.osgi.framework.Version;
@@ -55,14 +45,6 @@ public final class MainModel
 
     /** The table advisor. */
     private final ITableAdvisor advisor_;
-
-    /** The file to which the model was last saved. */
-    @GuardedBy( "lock_" )
-    private File file_;
-
-    /** Indicates the main model is dirty. */
-    @GuardedBy( "lock_" )
-    private boolean isDirty_;
 
     /** The collection of main model listeners. */
     private final CopyOnWriteArrayList<IMainModelListener> listeners_;
@@ -99,8 +81,6 @@ public final class MainModel
 
         lock_ = new Object();
         advisor_ = advisor;
-        file_ = null;
-        isDirty_ = false;
         listeners_ = new CopyOnWriteArrayList<IMainModelListener>();
         preferencesModel_ = new PreferencesModel();
         tableModel_ = null;
@@ -139,45 +119,7 @@ public final class MainModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        setDirty();
-    }
-
-    /**
-     * Fires a main model dirty flag changed event.
-     */
-    private void fireMainModelDirtyFlagChanged()
-    {
-        final MainModelEvent event = new MainModelEvent( this );
-        for( final IMainModelListener listener : listeners_ )
-        {
-            try
-            {
-                listener.mainModelDirtyFlagChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainModel_mainModelDirtyFlagChanged_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a main model file changed event.
-     */
-    private void fireMainModelFileChanged()
-    {
-        final MainModelEvent event = new MainModelEvent( this );
-        for( final IMainModelListener listener : listeners_ )
-        {
-            try
-            {
-                listener.mainModelFileChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainModel_mainModelFileChanged_unexpectedException, e );
-            }
-        }
+        // do nothing
     }
 
     /**
@@ -252,21 +194,6 @@ public final class MainModel
     }
 
     /**
-     * Gets the file to which this model was last saved.
-     * 
-     * @return The file to which this model was last saved or {@code null} if
-     *         this model has not yet been saved.
-     */
-    /* @Nullable */
-    public File getFile()
-    {
-        synchronized( lock_ )
-        {
-            return file_;
-        }
-    }
-
-    /**
      * Gets the preferences model.
      * 
      * @return The preferences model; never {@code null}.
@@ -303,19 +230,6 @@ public final class MainModel
     }
 
     /**
-     * Gets a value indicating if the main model is dirty.
-     * 
-     * @return {@code true} if the main model is dirty; otherwise {@code false}.
-     */
-    public boolean isDirty()
-    {
-        synchronized( lock_ )
-        {
-            return isDirty_;
-        }
-    }
-
-    /**
      * Loads the main model from persistent storage.
      */
     public void load()
@@ -337,10 +251,8 @@ public final class MainModel
                 closedTableModel.removeTableModelListener( this );
             }
 
-            openedTableModel = tableModel_ = new TableModel( TableFactory.createTable() );
+            openedTableModel = tableModel_ = TableModel.createTableModel();
             openedTableModel.addTableModelListener( this );
-            file_ = null;
-            isDirty_ = false;
         }
 
         if( closedTableModel != null )
@@ -348,8 +260,6 @@ public final class MainModel
             fireTableClosed( closedTableModel );
         }
         fireTableOpened( openedTableModel );
-        fireMainModelFileChanged();
-        fireMainModelDirtyFlagChanged();
         fireMainModelStateChanged();
     }
 
@@ -375,10 +285,9 @@ public final class MainModel
         final TableModel closedTableModel, openedTableModel;
         synchronized( lock_ )
         {
-            final ITable table;
             try
             {
-                table = readTable( file );
+                openedTableModel = TableModel.createTableModel( file );
             }
             catch( final ModelException e )
             {
@@ -392,11 +301,9 @@ public final class MainModel
                 closedTableModel.removeTableModelListener( this );
             }
 
-            openedTableModel = tableModel_ = new TableModel( table );
+            tableModel_ = openedTableModel;
             openedTableModel.addTableModelListener( this );
-            file_ = file;
             preferencesModel_.getFileHistoryPreferences().addFile( file );
-            isDirty_ = false;
         }
 
         if( closedTableModel != null )
@@ -404,57 +311,7 @@ public final class MainModel
             fireTableClosed( closedTableModel );
         }
         fireTableOpened( openedTableModel );
-        fireMainModelFileChanged();
-        fireMainModelDirtyFlagChanged();
         fireMainModelStateChanged();
-    }
-
-    /**
-     * Reads a table from the specified file.
-     * 
-     * @param file
-     *        The file from which the table will be read; must not be {@code
-     *        null}.
-     * 
-     * @return The table that was read from the specified file; never {@code
-     *         null}.
-     * 
-     * @throws org.gamegineer.table.internal.ui.model.ModelException
-     *         If an error occurs while reading the file.
-     */
-    /* @NonNull */
-    private static ITable readTable(
-        /* @NonNull */
-        final File file )
-        throws ModelException
-    {
-        assert file != null;
-
-        try
-        {
-            final ObjectInputStream inputStream = ObjectStreams.createPlatformObjectInputStream( new FileInputStream( file ) );
-            try
-            {
-                final IMemento memento = (IMemento)inputStream.readObject();
-                return TableFactory.createTable( memento );
-            }
-            finally
-            {
-                inputStream.close();
-            }
-        }
-        catch( final ClassNotFoundException e )
-        {
-            throw new ModelException( Messages.MainModel_readTable_error( file ), e );
-        }
-        catch( final IOException e )
-        {
-            throw new ModelException( Messages.MainModel_readTable_error( file ), e );
-        }
-        catch( final MalformedMementoException e )
-        {
-            throw new ModelException( Messages.MainModel_readTable_error( file ), e );
-        }
     }
 
     /**
@@ -507,36 +364,39 @@ public final class MainModel
         {
             try
             {
-                writeTable( file, tableModel_.getTable() );
+                tableModel_.save( file );
+                preferencesModel_.getFileHistoryPreferences().addFile( file );
             }
             catch( final ModelException e )
             {
                 preferencesModel_.getFileHistoryPreferences().removeFile( file );
                 throw e;
             }
-
-            file_ = file;
-            preferencesModel_.getFileHistoryPreferences().addFile( file );
-            isDirty_ = false;
         }
-
-        fireMainModelFileChanged();
-        fireMainModelDirtyFlagChanged();
-        fireMainModelStateChanged();
     }
 
-    /**
-     * Marks the main model as dirty.
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
-    private void setDirty()
+    @Override
+    public void tableModelDirtyFlagChanged(
+        final TableModelEvent event )
     {
-        synchronized( lock_ )
-        {
-            isDirty_ = true;
-        }
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireMainModelDirtyFlagChanged();
-        fireMainModelStateChanged();
+        // do nothing
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelFileChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    @Override
+    public void tableModelFileChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing
     }
 
     /*
@@ -548,7 +408,7 @@ public final class MainModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        setDirty();
+        fireMainModelStateChanged();
     }
 
     /*
@@ -560,46 +420,6 @@ public final class MainModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        setDirty();
-    }
-
-    /**
-     * Writes the specified table to the specified file.
-     * 
-     * @param file
-     *        The file to which the table will be written; must not be {@code
-     *        null}.
-     * @param table
-     *        The table to be written; must not be {@code null}.
-     * 
-     * @throws org.gamegineer.table.internal.ui.model.ModelException
-     *         If an error occurs while writing the file.
-     */
-    private static void writeTable(
-        /* @NonNull */
-        final File file,
-        /* @NonNull */
-        final ITable table )
-        throws ModelException
-    {
-        assert file != null;
-        assert table != null;
-
-        try
-        {
-            final ObjectOutputStream outputStream = ObjectStreams.createPlatformObjectOutputStream( new FileOutputStream( file ) );
-            try
-            {
-                outputStream.writeObject( table.getMemento() );
-            }
-            finally
-            {
-                outputStream.close();
-            }
-        }
-        catch( final IOException e )
-        {
-            throw new ModelException( Messages.MainModel_writeTable_error( file ), e );
-        }
+        // do nothing
     }
 }

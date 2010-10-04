@@ -48,6 +48,32 @@ public interface ITableModelListener
         TableModelEvent event );
 
     /**
+     * Invoked after the table model dirty flag has changed.
+     * 
+     * @param event
+     *        The event describing the table model; must not be {@code null} .
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void tableModelDirtyFlagChanged(
+        /* @NonNull */
+        TableModelEvent event );
+
+    /**
+     * Invoked after the table model file has changed.
+     * 
+     * @param event
+     *        The event describing the table model; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void tableModelFileChanged(
+        /* @NonNull */
+        TableModelEvent event );
+
+    /**
      * Invoked after the table model state has changed.
      * 
      * @param event

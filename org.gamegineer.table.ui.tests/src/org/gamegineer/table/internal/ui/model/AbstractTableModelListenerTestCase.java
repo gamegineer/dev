@@ -108,6 +108,26 @@ public abstract class AbstractTableModelListenerTestCase
     }
 
     /**
+     * Ensures the {@code tableModelDirtyFlagChanged} method throws an exception
+     * when passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testTableModelDirtyFlagChanged_Event_Null()
+    {
+        listener_.tableModelDirtyFlagChanged( null );
+    }
+
+    /**
+     * Ensures the {@code tableModelFileChanged} method throws an exception when
+     * passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testTableModelFileChanged_Event_Null()
+    {
+        listener_.tableModelFileChanged( null );
+    }
+
+    /**
      * Ensures the {@code tableModelStateChanged} method throws an exception
      * when passed a {@code null} event.
      */

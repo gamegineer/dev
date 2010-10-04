@@ -24,16 +24,26 @@ package org.gamegineer.table.internal.ui.model;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.persistence.memento.IMemento;
+import org.gamegineer.common.persistence.memento.MalformedMementoException;
+import org.gamegineer.common.persistence.schemes.serializable.ObjectStreams;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
+import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.Loggers;
 
 /**
@@ -51,9 +61,17 @@ public final class TableModel
     @GuardedBy( "lock_" )
     private final Map<ICardPile, CardPileModel> cardPileModels_;
 
+    /** The file to which the model was last saved. */
+    @GuardedBy( "lock_" )
+    private File file_;
+
     /** The focused card pile or {@code null} if no card pile has the focus. */
     @GuardedBy( "lock_" )
     private ICardPile focusedCardPile_;
+
+    /** Indicates the table model is dirty. */
+    @GuardedBy( "lock_" )
+    private boolean isDirty_;
 
     /** The collection of table model listeners. */
     private final CopyOnWriteArrayList<ITableModelListener> listeners_;
@@ -74,7 +92,8 @@ public final class TableModel
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableModel} class.
+     * Initializes a new instance of the {@code TableModel} class from the
+     * specified table.
      * 
      * @param table
      *        The table associated with this model; must not be {@code null}.
@@ -82,7 +101,7 @@ public final class TableModel
      * @throws java.lang.NullPointerException
      *         If {@code table} is {@code null}.
      */
-    public TableModel(
+    private TableModel(
         /* @NonNull */
         final ITable table )
     {
@@ -90,7 +109,9 @@ public final class TableModel
 
         lock_ = new Object();
         cardPileModels_ = new IdentityHashMap<ICardPile, CardPileModel>();
+        file_ = null;
         focusedCardPile_ = null;
+        isDirty_ = false;
         listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
         originOffset_ = new Dimension( 0, 0 );
         table_ = table;
@@ -139,8 +160,10 @@ public final class TableModel
         synchronized( lock_ )
         {
             createCardPileModel( event.getCardPile() );
+            isDirty_ = true;
         }
 
+        fireTableModelDirtyFlagChanged();
         fireTableModelStateChanged();
     }
 
@@ -153,7 +176,7 @@ public final class TableModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireTableModelStateChanged();
+        setDirty();
     }
 
     /*
@@ -165,7 +188,7 @@ public final class TableModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireTableModelStateChanged();
+        setDirty();
     }
 
     /*
@@ -177,7 +200,7 @@ public final class TableModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireTableModelStateChanged();
+        setDirty();
     }
 
     /*
@@ -200,6 +223,7 @@ public final class TableModel
             }
 
             clearFocusedCardPile = (focusedCardPile_ == cardPile);
+            isDirty_ = true;
         }
 
         if( clearFocusedCardPile )
@@ -207,6 +231,7 @@ public final class TableModel
             setFocus( (ICardPile)null );
         }
 
+        fireTableModelDirtyFlagChanged();
         fireTableModelStateChanged();
     }
 
@@ -232,6 +257,45 @@ public final class TableModel
     }
 
     /**
+     * Creates a new instance of the {@code TableModel} class and initializes it
+     * with an empty table.
+     * 
+     * @return A new instance of the {@code TableModel} class; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    public static TableModel createTableModel()
+    {
+        return new TableModel( TableFactory.createTable() );
+    }
+
+    /**
+     * Creates a new instance of the {@code TableModel} class and initializes it
+     * with the table contained in the specified file.
+     * 
+     * @param file
+     *        The file that contains the table; must not be {@code null}.
+     * 
+     * @return A new instance of the {@code TableModel} class; never {@code
+     *         null}.
+     * 
+     * @throws org.gamegineer.table.internal.ui.model.ModelException
+     *         If an error occurs.
+     */
+    /* @NonNull */
+    public static TableModel createTableModel(
+        /* @NonNull */
+        final File file )
+        throws ModelException
+    {
+        assertArgumentNotNull( file, "file" ); //$NON-NLS-1$
+
+        final TableModel tableModel = new TableModel( readTable( file ) );
+        tableModel.file_ = file;
+        return tableModel;
+    }
+
+    /**
      * Fires a card pile focus changed event.
      */
     private void fireCardPileFocusChanged()
@@ -246,6 +310,44 @@ public final class TableModel
             catch( final RuntimeException e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableModel_cardPileFocusChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a table model dirty flag changed event.
+     */
+    private void fireTableModelDirtyFlagChanged()
+    {
+        final TableModelEvent event = new TableModelEvent( this );
+        for( final ITableModelListener listener : listeners_ )
+        {
+            try
+            {
+                listener.tableModelDirtyFlagChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableModel_tableModelDirtyFlagChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a table model file changed event.
+     */
+    private void fireTableModelFileChanged()
+    {
+        final TableModelEvent event = new TableModelEvent( this );
+        for( final ITableModelListener listener : listeners_ )
+        {
+            try
+            {
+                listener.tableModelFileChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableModel_tableModelFileChanged_unexpectedException, e );
             }
         }
     }
@@ -321,6 +423,21 @@ public final class TableModel
     }
 
     /**
+     * Gets the file to which this model was last saved.
+     * 
+     * @return The file to which this model was last saved or {@code null} if
+     *         this model has not yet been saved.
+     */
+    /* @Nullable */
+    public File getFile()
+    {
+        synchronized( lock_ )
+        {
+            return file_;
+        }
+    }
+
+    /**
      * Gets the focused card pile.
      * 
      * @return The focused card pile or {@code null} if no card pile has the
@@ -363,6 +480,68 @@ public final class TableModel
     }
 
     /**
+     * Indicates the table model is dirty.
+     * 
+     * @return {@code true} if the table model is dirty; otherwise {@code false}
+     *         .
+     */
+    public boolean isDirty()
+    {
+        synchronized( lock_ )
+        {
+            return isDirty_;
+        }
+    }
+
+    /**
+     * Reads a table from the specified file.
+     * 
+     * @param file
+     *        The file from which the table will be read; must not be {@code
+     *        null}.
+     * 
+     * @return The table that was read from the specified file; never {@code
+     *         null}.
+     * 
+     * @throws org.gamegineer.table.internal.ui.model.ModelException
+     *         If an error occurs while reading the file.
+     */
+    /* @NonNull */
+    private static ITable readTable(
+        /* @NonNull */
+        final File file )
+        throws ModelException
+    {
+        assert file != null;
+
+        try
+        {
+            final ObjectInputStream inputStream = ObjectStreams.createPlatformObjectInputStream( new FileInputStream( file ) );
+            try
+            {
+                final IMemento memento = (IMemento)inputStream.readObject();
+                return TableFactory.createTable( memento );
+            }
+            finally
+            {
+                inputStream.close();
+            }
+        }
+        catch( final ClassNotFoundException e )
+        {
+            throw new ModelException( Messages.TableModel_readTable_error( file ), e );
+        }
+        catch( final IOException e )
+        {
+            throw new ModelException( Messages.TableModel_readTable_error( file ), e );
+        }
+        catch( final MalformedMementoException e )
+        {
+            throw new ModelException( Messages.TableModel_readTable_error( file ), e );
+        }
+    }
+
+    /**
      * Removes the specified table model listener from this table model.
      * 
      * @param listener
@@ -379,6 +558,50 @@ public final class TableModel
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.TableModel_removeTableModelListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+    /**
+     * Saves the table to the specified file.
+     * 
+     * @param file
+     *        The file to which the table will be saved; must not be {@code
+     *        null}.
+     * 
+     * @throws org.gamegineer.table.internal.ui.model.ModelException
+     *         If an error occurs while saving the file.
+     */
+    void save(
+        /* @NonNull */
+        final File file )
+        throws ModelException
+    {
+        assert file != null;
+
+        synchronized( lock_ )
+        {
+            writeTable( file, table_ );
+
+            file_ = file;
+            isDirty_ = false;
+        }
+
+        fireTableModelFileChanged();
+        fireTableModelDirtyFlagChanged();
+        fireTableModelStateChanged();
+    }
+
+    /**
+     * Marks the table model as dirty.
+     */
+    private void setDirty()
+    {
+        synchronized( lock_ )
+        {
+            isDirty_ = true;
+        }
+
+        fireTableModelDirtyFlagChanged();
+        fireTableModelStateChanged();
     }
 
     /**
@@ -404,6 +627,7 @@ public final class TableModel
                 oldFocusedCardPileModel = (focusedCardPile_ != null) ? cardPileModels_.get( focusedCardPile_ ) : null;
                 newFocusedCardPileModel = (cardPile != null) ? cardPileModels_.get( cardPile ) : null;
                 focusedCardPile_ = cardPile;
+                isDirty_ = true;
             }
             else
             {
@@ -425,6 +649,7 @@ public final class TableModel
             }
 
             fireCardPileFocusChanged();
+            fireTableModelDirtyFlagChanged();
             fireTableModelStateChanged();
         }
     }
@@ -449,9 +674,51 @@ public final class TableModel
         synchronized( lock_ )
         {
             originOffset_.setSize( originOffset );
+            isDirty_ = true;
         }
 
         fireTableOriginOffsetChanged();
+        fireTableModelDirtyFlagChanged();
         fireTableModelStateChanged();
+    }
+
+    /**
+     * Writes the specified table to the specified file.
+     * 
+     * @param file
+     *        The file to which the table will be written; must not be {@code
+     *        null}.
+     * @param table
+     *        The table to be written; must not be {@code null}.
+     * 
+     * @throws org.gamegineer.table.internal.ui.model.ModelException
+     *         If an error occurs while writing the file.
+     */
+    private static void writeTable(
+        /* @NonNull */
+        final File file,
+        /* @NonNull */
+        final ITable table )
+        throws ModelException
+    {
+        assert file != null;
+        assert table != null;
+
+        try
+        {
+            final ObjectOutputStream outputStream = ObjectStreams.createPlatformObjectOutputStream( new FileOutputStream( file ) );
+            try
+            {
+                outputStream.writeObject( table.getMemento() );
+            }
+            finally
+            {
+                outputStream.close();
+            }
+        }
+        catch( final IOException e )
+        {
+            throw new ModelException( Messages.TableModel_writeTable_error( file ), e );
+        }
     }
 }

@@ -89,7 +89,6 @@ final class MainView
         super.addNotify();
 
         model_.addMainModelListener( this );
-        model_.openTable();
     }
 
     /**
@@ -99,30 +98,6 @@ final class MainView
     {
         setLayout( new BorderLayout() );
         setOpaque( true );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
-     */
-    @Override
-    public void mainModelDirtyFlagChanged(
-        final MainModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelFileChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
-     */
-    @Override
-    public void mainModelFileChanged(
-        final MainModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
     }
 
     /*

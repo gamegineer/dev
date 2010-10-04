@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import org.gamegineer.table.core.TableFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,7 +68,7 @@ public final class TableModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new TableModelEvent( new TableModel( TableFactory.createTable() ) );
+        event_ = new TableModelEvent( TableModel.createTableModel() );
     }
 
     /**

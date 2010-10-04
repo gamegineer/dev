@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
-import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.ui.ITableAdvisor;
 import org.junit.After;
 import org.junit.Before;
@@ -72,7 +71,7 @@ public final class MainModelContentChangedEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new MainModelContentChangedEvent( new MainModel( EasyMock.createMock( ITableAdvisor.class ) ), new TableModel( TableFactory.createTable() ) );
+        event_ = new MainModelContentChangedEvent( new MainModel( EasyMock.createMock( ITableAdvisor.class ) ), TableModel.createTableModel() );
     }
 
     /**

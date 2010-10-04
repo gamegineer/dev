@@ -157,43 +157,6 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the main model dirty flag changed event catches any exception
-     * thrown by the {@code mainModelDirtyFlagChanged} method of a main model
-     * listener.
-     */
-    @Test
-    public void testMainModelDirtyFlagChanged_CatchesListenerException()
-    {
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelDirtyFlagChanged( EasyMock.notNull( MainModelEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        niceMocksControl_.replay();
-        model_.addMainModelListener( listener );
-
-        model_.openTable();
-
-        niceMocksControl_.verify();
-    }
-
-    /**
-     * Ensures the main model file changed event catches any exception thrown by
-     * the {@code mainModelFileChanged} method of a main model listener.
-     */
-    @Test
-    public void testMainModelFileChanged_CatchesListenerException()
-    {
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelFileChanged( EasyMock.notNull( MainModelEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        niceMocksControl_.replay();
-        model_.addMainModelListener( listener );
-
-        model_.openTable();
-
-        niceMocksControl_.verify();
-    }
-
-    /**
      * Ensures the main model state changed event catches any exception thrown
      * by the {@code mainModelStateChanged} method of a main model listener.
      */
@@ -204,42 +167,6 @@ public final class MainModelTest
         listener.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         niceMocksControl_.replay();
-        model_.addMainModelListener( listener );
-
-        model_.openTable();
-
-        niceMocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code openTable()} method fires a main model dirty flag
-     * changed event.
-     */
-    @Test
-    public void testOpenTable_FiresMainModelDirtyFlagChangedEvent()
-    {
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelDirtyFlagChanged( EasyMock.notNull( MainModelEvent.class ) );
-        niceMocksControl_.replay();
-        model_.openTable();
-        model_.addMainModelListener( listener );
-
-        model_.openTable();
-
-        niceMocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code openTable()} method fires a main model file changed
-     * event.
-     */
-    @Test
-    public void testOpenTable_FiresMainModelFileChangedEvent()
-    {
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelFileChanged( EasyMock.notNull( MainModelEvent.class ) );
-        niceMocksControl_.replay();
-        model_.openTable();
         model_.addMainModelListener( listener );
 
         model_.openTable();
@@ -309,54 +236,6 @@ public final class MainModelTest
         throws Exception
     {
         model_.openTable( null );
-    }
-
-    /**
-     * Ensures the {@code openTable(File)} method fires a main model dirty flag
-     * changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testOpenTableFromFile_FiresMainModelDirtyFlagChangedEvent()
-        throws Exception
-    {
-        final File file = createTemporaryFile();
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelDirtyFlagChanged( EasyMock.notNull( MainModelEvent.class ) );
-        niceMocksControl_.replay();
-        model_.openTable();
-        model_.saveTable( file );
-        model_.addMainModelListener( listener );
-
-        model_.openTable( file );
-
-        niceMocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code openTable(File)} method fires a main model file
-     * changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testOpenTableFromFile_FiresMainModelFileChangedEvent()
-        throws Exception
-    {
-        final File file = createTemporaryFile();
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelFileChanged( EasyMock.notNull( MainModelEvent.class ) );
-        niceMocksControl_.replay();
-        model_.openTable();
-        model_.saveTable( file );
-        model_.addMainModelListener( listener );
-
-        model_.openTable( file );
-
-        niceMocksControl_.verify();
     }
 
     /**
@@ -484,52 +363,6 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code saveTable} method fires a main model dirty flag
-     * changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testSaveTable_FiresMainModelDirtyFlagChangedEvent()
-        throws Exception
-    {
-        final File file = createTemporaryFile();
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelDirtyFlagChanged( EasyMock.notNull( MainModelEvent.class ) );
-        niceMocksControl_.replay();
-        model_.openTable();
-        model_.addMainModelListener( listener );
-
-        model_.saveTable( file );
-
-        niceMocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code saveTable} method fires a main model file changed
-     * event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testSaveTable_FiresMainModelFileChangedEvent()
-        throws Exception
-    {
-        final File file = createTemporaryFile();
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelFileChanged( EasyMock.notNull( MainModelEvent.class ) );
-        niceMocksControl_.replay();
-        model_.openTable();
-        model_.addMainModelListener( listener );
-
-        model_.saveTable( file );
-
-        niceMocksControl_.verify();
-    }
-
-    /**
      * Ensures the {@code saveTable} method fires a main model state changed
      * event.
      * 
@@ -567,24 +400,6 @@ public final class MainModelTest
         model_.addMainModelListener( listener );
 
         model_.openTable();
-
-        niceMocksControl_.verify();
-    }
-
-    /**
-     * Ensures a change to a table model owned by the main model fires a main
-     * model dirty flag changed event.
-     */
-    @Test
-    public void testTableModel_StateChanged_FiresMainModelDirtyFlagChangedEvent()
-    {
-        model_.openTable();
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.mainModelDirtyFlagChanged( EasyMock.notNull( MainModelEvent.class ) );
-        niceMocksControl_.replay();
-        model_.addMainModelListener( listener );
-
-        model_.getTableModel().setOriginOffset( new Dimension( 100, 200 ) );
 
         niceMocksControl_.verify();
     }

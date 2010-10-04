@@ -47,10 +47,13 @@ import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.model.FramePreferences;
 import org.gamegineer.table.internal.ui.model.IMainModelListener;
+import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.MainModel;
 import org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent;
 import org.gamegineer.table.internal.ui.model.MainModelEvent;
 import org.gamegineer.table.internal.ui.model.ModelException;
+import org.gamegineer.table.internal.ui.model.TableModel;
+import org.gamegineer.table.internal.ui.model.TableModelEvent;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
 import org.gamegineer.table.ui.ITableAdvisor;
 import org.osgi.framework.Bundle;
@@ -61,7 +64,7 @@ import org.osgi.framework.Bundle;
 @NotThreadSafe
 public final class MainFrame
     extends JFrame
-    implements IMainModelListener
+    implements IMainModelListener, ITableModelListener
 {
     // ======================================================================
     // Fields
@@ -127,6 +130,7 @@ public final class MainFrame
 
         bindActions();
         model_.addMainModelListener( this );
+        model_.openTable();
     }
 
     /**
@@ -204,9 +208,21 @@ public final class MainFrame
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
-                return model_.isDirty();
+                return isTableDirty();
             }
         } );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#cardPileFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    @Override
+    public void cardPileFocusChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing
     }
 
     /**
@@ -224,7 +240,7 @@ public final class MainFrame
      */
     private boolean confirmSaveDirtyTable()
     {
-        if( !model_.isDirty() )
+        if( !isTableDirty() )
         {
             return true;
         }
@@ -250,7 +266,7 @@ public final class MainFrame
     /* @NonNull */
     private JFileChooser createFileChooser()
     {
-        final JFileChooser fileChooser = new JFileChooser( model_.getFile() );
+        final JFileChooser fileChooser = new JFileChooser( getTableFile() );
         fileChooser.addChoosableFileFilter( new FileNameExtensionFilter( Messages.MainFrame_fileFilter_table, "ser" ) ); //$NON-NLS-1$
         return fileChooser;
     }
@@ -289,6 +305,23 @@ public final class MainFrame
     }
 
     /**
+     * Gets the file associated with the table.
+     * 
+     * @return The file associated with the table; never {@code null}.
+     */
+    /* @NonNull */
+    private File getTableFile()
+    {
+        final TableModel tableModel = model_.getTableModel();
+        if( tableModel == null )
+        {
+            return null;
+        }
+
+        return tableModel.getFile();
+    }
+
+    /**
      * Gets the name of the table.
      * 
      * @return The name of the table; never {@code null}.
@@ -296,13 +329,29 @@ public final class MainFrame
     /* @NonNull */
     private String getTableName()
     {
-        final File file = model_.getFile();
+        final File file = getTableFile();
         if( file == null )
         {
             return Messages.MainFrame_untitledTable;
         }
 
         return file.getName();
+    }
+
+    /**
+     * Indicates the table is dirty.
+     * 
+     * @return {@code true} if the table is dirty; otherwise {@code false}.
+     */
+    private boolean isTableDirty()
+    {
+        final TableModel tableModel = model_.getTableModel();
+        if( tableModel == null )
+        {
+            return false;
+        }
+
+        return tableModel.isDirty();
     }
 
     /**
@@ -355,37 +404,6 @@ public final class MainFrame
         {
             setExtendedState( state );
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
-     */
-    @Override
-    public void mainModelDirtyFlagChanged(
-        final MainModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelFileChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
-     */
-    @Override
-    public void mainModelFileChanged(
-        final MainModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                updateTitle();
-            }
-        } );
     }
 
     /*
@@ -529,7 +547,7 @@ public final class MainFrame
         final boolean forcePromptForFile )
     {
         final File file;
-        if( forcePromptForFile || (model_.getFile() == null) )
+        if( forcePromptForFile || (getTableFile() == null) )
         {
             final JFileChooser fileChooser = createFileChooser();
             if( fileChooser.showSaveDialog( this ) == JFileChooser.CANCEL_OPTION )
@@ -541,7 +559,7 @@ public final class MainFrame
         }
         else
         {
-            file = model_.getFile();
+            file = getTableFile();
         }
 
         try
@@ -567,6 +585,71 @@ public final class MainFrame
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                event.getTableModel().removeTableModelListener( MainFrame.this );
+                updateTitle();
+            }
+        } );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    @Override
+    public void tableModelDirtyFlagChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelFileChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    @Override
+    public void tableModelFileChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                updateTitle();
+            }
+        } );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelStateChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    @Override
+    public void tableModelStateChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    @Override
+    public void tableOriginOffsetChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
         // do nothing
     }
 
@@ -579,7 +662,16 @@ public final class MainFrame
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        // do nothing
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                event.getTableModel().addTableModelListener( MainFrame.this );
+                updateTitle();
+            }
+        } );
     }
 
     /**

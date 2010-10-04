@@ -98,26 +98,6 @@ public abstract class AbstractMainModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code mainModelDirtyFlagChanged} method throws an exception
-     * when passed a {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testMainModelDirtyFlagChanged_Event_Null()
-    {
-        listener_.mainModelDirtyFlagChanged( null );
-    }
-
-    /**
-     * Ensures the {@code mainModelFileChanged} method throws an exception when
-     * passed a {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testMainModelFileChanged_Event_Null()
-    {
-        listener_.mainModelFileChanged( null );
-    }
-
-    /**
      * Ensures the {@code mainModelStateChanged} method throws an exception when
      * passed a {@code null} event.
      */

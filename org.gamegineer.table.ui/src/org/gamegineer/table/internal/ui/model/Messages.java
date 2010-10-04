@@ -86,24 +86,9 @@ final class Messages
 
     /**
      * An unexpected exception was thrown from
-     * IMainModelListener.mainModelDirtyFlagChanged().
-     */
-    public static String MainModel_mainModelDirtyFlagChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * IMainModelListener.mainModelFileChanged().
-     */
-    public static String MainModel_mainModelFileChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
      * IMainModelListener.mainModelStateChanged().
      */
     public static String MainModel_mainModelStateChanged_unexpectedException;
-
-    /** An error occurred while reading the table. */
-    public static String MainModel_readTable_error;
 
     /** The main model listener is not registered. */
     public static String MainModel_removeMainModelListener_listener_notRegistered;
@@ -117,9 +102,6 @@ final class Messages
      * An unexpected exception was thrown from IMainModelListener.tableOpened().
      */
     public static String MainModel_tableOpened_unexpectedException;
-
-    /** An error occurred while writing the table. */
-    public static String MainModel_writeTable_error;
 
     // --- PreferencesModel -------------------------------------------------
 
@@ -140,8 +122,23 @@ final class Messages
     /** The card pile is not present in the table. */
     public static String TableModel_getCardPileModel_cardPile_absent;
 
+    /** An error occurred while reading the table. */
+    public static String TableModel_readTable_error;
+
     /** The table model listener is not registered. */
     public static String TableModel_removeTableModelListener_listener_notRegistered;
+
+    /**
+     * An unexpected exception was thrown from
+     * ITableModelListener.tableModelDirtyFlagChanged().
+     */
+    public static String TableModel_tableModelDirtyFlagChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * ITableModelListener.tableModelFileChanged().
+     */
+    public static String TableModel_tableModelFileChanged_unexpectedException;
 
     /**
      * An unexpected exception was thrown from
@@ -154,6 +151,9 @@ final class Messages
      * ITableModelListener.tableOriginOffsetChanged().
      */
     public static String TableModel_tableOriginOffsetChanged_unexpectedException;
+
+    /** An error occurred while writing the table. */
+    public static String TableModel_writeTable_error;
 
 
     // ======================================================================
@@ -181,7 +181,7 @@ final class Messages
     // Methods
     // ======================================================================
 
-    // --- MainModel --------------------------------------------------------
+    // --- TableModel -------------------------------------------------------
 
     /**
      * Gets the formatted message indicating an error occurred while reading the
@@ -194,11 +194,11 @@ final class Messages
      *         the table; never {@code null}.
      */
     /* @NonNull */
-    static String MainModel_readTable_error(
+    static String TableModel_readTable_error(
         /* @NonNull */
         final File file )
     {
-        return bind( MainModel_readTable_error, file.getAbsolutePath() );
+        return bind( TableModel_readTable_error, file.getAbsolutePath() );
     }
 
     /**
@@ -212,10 +212,10 @@ final class Messages
      *         the table; never {@code null}.
      */
     /* @NonNull */
-    static String MainModel_writeTable_error(
+    static String TableModel_writeTable_error(
         /* @NonNull */
         final File file )
     {
-        return bind( MainModel_writeTable_error, file.getAbsolutePath() );
+        return bind( TableModel_writeTable_error, file.getAbsolutePath() );
     }
 }

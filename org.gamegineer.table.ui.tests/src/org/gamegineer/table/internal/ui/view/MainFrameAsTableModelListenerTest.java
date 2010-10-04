@@ -1,5 +1,5 @@
 /*
- * TableModelAsCardPileModelListenerTest.java
+ * MainFrameAsTableModelListenerTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,21 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 17, 2010 at 10:07:24 PM.
+ * Created on Oct 1, 2010 at 11:39:48 PM.
  */
 
-package org.gamegineer.table.internal.ui.model;
+package org.gamegineer.table.internal.ui.view;
 
+import org.gamegineer.table.internal.ui.model.AbstractTableModelListenerTestCase;
+import org.gamegineer.table.internal.ui.model.ITableModelListener;
+import org.gamegineer.table.ui.TableAdvisor;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.TableModel} class to ensure it
+ * {@link org.gamegineer.table.internal.ui.view.MainFrame} class to ensure it
  * does not violate the contract of the
- * {@link org.gamegineer.table.internal.ui.model.ICardPileModelListener}
- * interface.
+ * {@link org.gamegineer.table.internal.ui.model.ITableModelListener} interface.
  */
-public final class TableModelAsCardPileModelListenerTest
-    extends AbstractCardPileModelListenerTestCase
+public final class MainFrameAsTableModelListenerTest
+    extends AbstractTableModelListenerTestCase
 {
     // ======================================================================
     // Constructors
@@ -38,9 +40,9 @@ public final class TableModelAsCardPileModelListenerTest
 
     /**
      * Initializes a new instance of the {@code
-     * TableModelAsCardPileModelListenerTest} class.
+     * MainFrameAsTableModelListenerTest} class.
      */
-    public TableModelAsCardPileModelListenerTest()
+    public MainFrameAsTableModelListenerTest()
     {
         super();
     }
@@ -51,11 +53,11 @@ public final class TableModelAsCardPileModelListenerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.AbstractCardPileModelListenerTestCase#createCardPileModelListener()
+     * @see org.gamegineer.table.internal.ui.model.AbstractTableModelListenerTestCase#createTableModelListener()
      */
     @Override
-    protected ICardPileModelListener createCardPileModelListener()
+    protected ITableModelListener createTableModelListener()
     {
-        return TableModel.createTableModel();
+        return new MainFrame( new TableAdvisor() );
     }
 }
