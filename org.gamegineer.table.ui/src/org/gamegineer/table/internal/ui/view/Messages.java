@@ -545,6 +545,11 @@ final class Messages
     /** The Layout menu text. */
     public static String CardPilePopupMenu_layout_text;
 
+    // --- Common -----------------------------------------------------------
+
+    /** The application name. */
+    public static String Common_application_name;
+
     // --- Cursors ----------------------------------------------------------
 
     /** The name of the grab cursor. */
@@ -561,6 +566,11 @@ final class Messages
     /** The exit action text. */
     public static String ExitAction_text;
 
+    // --- FileChoosers -----------------------------------------------------
+
+    /** The table file filter. */
+    public static String FileChoosers_fileFilter_table;
+
     // --- FlipCardAction ---------------------------------------------------
 
     /** The flip card action accelerator. */
@@ -572,16 +582,18 @@ final class Messages
     /** The flip card action text. */
     public static String FlipCardAction_text;
 
-    // --- MainFrame --------------------------------------------------------
+    // --- ImportTableAction ------------------------------------------------
 
-    /** The application name. */
-    public static String MainFrame_application_name;
+    /** The import table action mnemonic. */
+    public static String ImportTableAction_mnemonic;
+
+    /** The import table action text. */
+    public static String ImportTableAction_text;
+
+    // --- MainFrame --------------------------------------------------------
 
     /** The Confirm Save Dirty Table dialog message. */
     public static String MainFrame_confirmSaveDirtyTable_message;
-
-    /** The table file filter. */
-    public static String MainFrame_fileFilter_table;
 
     /** An error occurred while reading an application icon image. */
     public static String MainFrame_getApplicationIconImages_readImageError_nonNls;
@@ -818,6 +830,9 @@ final class Messages
     /** An error occurred while reading the background image. */
     public static String TableView_createBackgroundPaint_readImageError;
 
+    /** An error occurred while importing the table. */
+    public static String TableView_importTable_error;
+
 
     // ======================================================================
     // Constructors
@@ -914,6 +929,6 @@ final class Messages
         /* @NonNull */
         final String tableName )
     {
-        return bind( MainFrame_title, tableName, MainFrame_application_name );
+        return bind( MainFrame_title, tableName, Common_application_name );
     }
 }

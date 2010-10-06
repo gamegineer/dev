@@ -480,6 +480,38 @@ public final class TableModel
     }
 
     /**
+     * Imports the table contained in the specified file and replaces the
+     * contents of the current table with the imported table.
+     * 
+     * @param file
+     *        The file from which the table will be imported; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code file} is {@code null}.
+     * @throws org.gamegineer.table.internal.ui.model.ModelException
+     *         If an error occurs.
+     */
+    public void importTable(
+        /* @NonNull */
+        final File file )
+        throws ModelException
+    {
+        assertArgumentNotNull( file, "file" ); //$NON-NLS-1$
+
+        final ITable table = readTable( file );
+
+        // NB: Consider encapsulating this logic because, as the table gets more and
+        // more complex, this code could get unwieldy.
+        table_.removeAllCardPiles();
+        for( final ICardPile cardPile : table.getCardPiles() )
+        {
+            table.removeCardPile( cardPile );
+            table_.addCardPile( cardPile );
+        }
+    }
+
+    /**
      * Indicates the table model is dirty.
      * 
      * @return {@code true} if the table model is dirty; otherwise {@code false}

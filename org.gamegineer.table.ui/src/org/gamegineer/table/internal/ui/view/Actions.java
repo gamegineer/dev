@@ -375,6 +375,9 @@ final class Actions
     /** The identifier of the action used to flip a card in a card pile. */
     private static final String FLIP_CARD_ACTION_ID = "flipCardAction"; //$NON-NLS-1$
 
+    /** The identifier of the action used to import a table. */
+    private static final String IMPORT_TABLE_ACTION_ID = "importTableAction"; //$NON-NLS-1$
+
     /** The identifier of the action used to open the about dialog. */
     private static final String OPEN_ABOUT_DIALOG_ACTION_ID = "openAboutDialogAction"; //$NON-NLS-1$
 
@@ -1051,6 +1054,15 @@ final class Actions
                 putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.FlipCardAction_accelerator ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.FlipCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.FlipCardAction_text );
+            }
+        } );
+        actions.put( IMPORT_TABLE_ACTION_ID, new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.ImportTableAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.ImportTableAction_text );
             }
         } );
         actions.put( OPEN_ABOUT_DIALOG_ACTION_ID, new BasicAction()
@@ -1845,6 +1857,17 @@ final class Actions
     static BasicAction getFlipCardAction()
     {
         return actions_.get( FLIP_CARD_ACTION_ID );
+    }
+
+    /**
+     * Gets the import table action.
+     * 
+     * @return The import table action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getImportTableAction()
+    {
+        return actions_.get( IMPORT_TABLE_ACTION_ID );
     }
 
     /**

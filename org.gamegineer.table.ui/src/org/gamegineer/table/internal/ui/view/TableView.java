@@ -74,8 +74,10 @@ import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
+import org.gamegineer.table.internal.ui.model.ModelException;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
+import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry;
 
@@ -426,6 +428,16 @@ final class TableView
                 final ActionEvent e )
             {
                 flipTopCard();
+            }
+        } );
+        actionMediator_.bindActionListener( Actions.getImportTableAction(), new ActionListener()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent e )
+            {
+                importTable();
             }
         } );
         actionMediator_.bindActionListener( Actions.getRemoveAllCardPilesAction(), new ActionListener()
@@ -906,6 +918,28 @@ final class TableView
         SwingUtilities.convertPointFromScreen( location, this );
         convertPointToTable( location );
         return location;
+    }
+
+    /**
+     * Imports a table into the existing table model.
+     */
+    private void importTable()
+    {
+        final JFileChooser fileChooser = FileChoosers.getTableFileChooser( model_.getFile() );
+        if( fileChooser.showOpenDialog( this ) == JFileChooser.CANCEL_OPTION )
+        {
+            return;
+        }
+
+        try
+        {
+            model_.importTable( fileChooser.getSelectedFile() );
+        }
+        catch( final ModelException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableView_importTable_error, e );
+            OptionDialogs.showErrorMessageDialog( this, Messages.TableView_importTable_error );
+        }
     }
 
     /**

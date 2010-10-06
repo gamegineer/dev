@@ -627,6 +627,16 @@ public final class ActionsTest
     }
 
     /**
+     * Ensures the {@code getImportTableAction} method does not return {@code
+     * null}.
+     */
+    @Test
+    public void testGetImportTableAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getImportTableAction() );
+    }
+
+    /**
      * Ensures the {@code getOpenAboutDialogAction} method does not return
      * {@code null}.
      */

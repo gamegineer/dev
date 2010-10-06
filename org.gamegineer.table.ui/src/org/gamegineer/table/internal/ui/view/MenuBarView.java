@@ -314,6 +314,8 @@ final class MenuBarView
         menu.add( Actions.getRemoveCardAction() );
         menu.add( Actions.getRemoveAllCardsAction() );
         menu.add( Actions.getFlipCardAction() );
+        menu.addSeparator();
+        menu.add( Actions.getImportTableAction() );
         return menu;
     }
 

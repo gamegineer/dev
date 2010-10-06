@@ -268,6 +268,20 @@ public final class TableModelTest
     }
 
     /**
+     * Ensures the {@code importTable} method throws an exception when passed a
+     * {@code null} file.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testImportTable_File_Null()
+        throws Exception
+    {
+        model_.importTable( null );
+    }
+
+    /**
      * Ensures the {@code removeTableModelListener} method throws an exception
      * when passed a listener that is absent from the table model listener
      * collection.

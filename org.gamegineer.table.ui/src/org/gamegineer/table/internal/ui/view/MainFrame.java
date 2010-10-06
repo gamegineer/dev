@@ -39,7 +39,6 @@ import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.table.internal.ui.Activator;
@@ -245,7 +244,7 @@ public final class MainFrame
             return true;
         }
 
-        final int result = JOptionPane.showConfirmDialog( this, Messages.MainFrame_confirmSaveDirtyTable_message( getTableName() ), Messages.MainFrame_application_name, JOptionPane.YES_NO_CANCEL_OPTION );
+        final int result = OptionDialogs.showConfirmDialog( this, Messages.MainFrame_confirmSaveDirtyTable_message( getTableName() ) );
         if( result == JOptionPane.YES_OPTION )
         {
             return saveTable( false );
@@ -256,19 +255,6 @@ public final class MainFrame
         }
 
         return false; // JOptionPane.CANCEL_OPTION
-    }
-
-    /**
-     * Creates a file chooser initialized appropriately for the application.
-     * 
-     * @return A file chooser; never {@code null}.
-     */
-    /* @NonNull */
-    private JFileChooser createFileChooser()
-    {
-        final JFileChooser fileChooser = new JFileChooser( getTableFile() );
-        fileChooser.addChoosableFileFilter( new FileNameExtensionFilter( Messages.MainFrame_fileFilter_table, "ser" ) ); //$NON-NLS-1$
-        return fileChooser;
     }
 
     /**
@@ -451,7 +437,7 @@ public final class MainFrame
         final File file;
         if( fileName.isEmpty() )
         {
-            final JFileChooser fileChooser = createFileChooser();
+            final JFileChooser fileChooser = FileChoosers.getTableFileChooser( getTableFile() );
             if( fileChooser.showOpenDialog( this ) == JFileChooser.CANCEL_OPTION )
             {
                 return;
@@ -471,7 +457,7 @@ public final class MainFrame
         catch( final ModelException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainFrame_openTable_error, e );
-            JOptionPane.showMessageDialog( this, Messages.MainFrame_openTable_error, Messages.MainFrame_application_name, JOptionPane.ERROR_MESSAGE );
+            OptionDialogs.showErrorMessageDialog( this, Messages.MainFrame_openTable_error );
         }
     }
 
@@ -549,7 +535,7 @@ public final class MainFrame
         final File file;
         if( forcePromptForFile || (getTableFile() == null) )
         {
-            final JFileChooser fileChooser = createFileChooser();
+            final JFileChooser fileChooser = FileChoosers.getTableFileChooser( getTableFile() );
             if( fileChooser.showSaveDialog( this ) == JFileChooser.CANCEL_OPTION )
             {
                 return false;
@@ -569,7 +555,7 @@ public final class MainFrame
         catch( final ModelException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainFrame_saveTable_error, e );
-            JOptionPane.showMessageDialog( this, Messages.MainFrame_saveTable_error, Messages.MainFrame_application_name, JOptionPane.ERROR_MESSAGE );
+            OptionDialogs.showErrorMessageDialog( this, Messages.MainFrame_saveTable_error );
             return false;
         }
 
