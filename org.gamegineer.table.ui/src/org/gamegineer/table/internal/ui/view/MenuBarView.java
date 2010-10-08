@@ -278,6 +278,22 @@ final class MenuBarView
     }
 
     /**
+     * Creates the network menu.
+     * 
+     * @return The network menu; never {@code null}.
+     */
+    /* @NonNull */
+    private JMenu createNetworkMenu()
+    {
+        final JMenu menu = new JMenu( Messages.MenuBarView_network_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_network_mnemonic ).getKeyCode() );
+        menu.add( Actions.getHostNetworkTableAction() );
+        menu.add( Actions.getJoinNetworkTableAction() );
+        menu.add( Actions.getDisconnectNetworkTableAction() );
+        return menu;
+    }
+
+    /**
      * Creates the menu bar.
      * 
      * @return The menu bar; never {@code null}.
@@ -289,6 +305,7 @@ final class MenuBarView
         menuBar.add( createFileMenu() );
         menuBar.add( createViewMenu() );
         menuBar.add( createTableMenu() );
+        menuBar.add( createNetworkMenu() );
         menuBar.add( createHelpMenu() );
         return menuBar;
     }

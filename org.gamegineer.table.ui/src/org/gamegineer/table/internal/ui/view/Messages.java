@@ -558,6 +558,14 @@ final class Messages
     /** The name of the hand cursor. */
     public static String Cursors_hand_name;
 
+    // --- DisconnectNetworkTableAction -------------------------------------
+
+    /** The disconnect network table action mnemonic. */
+    public static String DisconnectNetworkTableAction_mnemonic;
+
+    /** The disconnect network table action text. */
+    public static String DisconnectNetworkTableAction_text;
+
     // --- ExitAction -------------------------------------------------------
 
     /** The exit action mnemonic. */
@@ -582,6 +590,14 @@ final class Messages
     /** The flip card action text. */
     public static String FlipCardAction_text;
 
+    // --- HostNetworkTableAction -------------------------------------------
+
+    /** The host network table action mnemonic. */
+    public static String HostNetworkTableAction_mnemonic;
+
+    /** The host network table action text. */
+    public static String HostNetworkTableAction_text;
+
     // --- ImportTableAction ------------------------------------------------
 
     /** The import table action mnemonic. */
@@ -589,6 +605,14 @@ final class Messages
 
     /** The import table action text. */
     public static String ImportTableAction_text;
+
+    // --- JoinNetworkTableAction -------------------------------------------
+
+    /** The join network table action mnemonic. */
+    public static String JoinNetworkTableAction_mnemonic;
+
+    /** The join network table action text. */
+    public static String JoinNetworkTableAction_text;
 
     // --- MainFrame --------------------------------------------------------
 
@@ -671,6 +695,12 @@ final class Messages
 
     /** The Layout menu text. */
     public static String MenuBarView_layout_text;
+
+    /** The Network menu mnemonic. */
+    public static String MenuBarView_network_mnemonic;
+
+    /** The Network menu text. */
+    public static String MenuBarView_network_text;
 
     /** The Table menu mnemonic. */
     public static String MenuBarView_table_mnemonic;

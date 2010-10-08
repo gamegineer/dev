@@ -369,14 +369,23 @@ final class Actions
      */
     private static final String ADD_TWO_OF_SPADES_CARD_ACTION_ID = "addTwoOfSpadesCardAction"; //$NON-NLS-1$
 
+    /** The identifier of the action used to disconnect a network table. */
+    private static final String DISCONNECT_NETWORK_TABLE_ACTION_ID = "disconnectNetworkTableAction"; //$NON-NLS-1$
+
     /** The identifier of the action used to exit the application. */
     private static final String EXIT_ACTION_ID = "exitAction"; //$NON-NLS-1$
 
     /** The identifier of the action used to flip a card in a card pile. */
     private static final String FLIP_CARD_ACTION_ID = "flipCardAction"; //$NON-NLS-1$
 
+    /** The identifier of the action used to host a network table. */
+    private static final String HOST_NETWORK_TABLE_ACTION_ID = "hostNetworkTableAction"; //$NON-NLS-1$
+
     /** The identifier of the action used to import a table. */
     private static final String IMPORT_TABLE_ACTION_ID = "importTableAction"; //$NON-NLS-1$
+
+    /** The identifier of the action used to join a network table. */
+    private static final String JOIN_NETWORK_TABLE_ACTION_ID = "joinNetworkTableAction"; //$NON-NLS-1$
 
     /** The identifier of the action used to open the about dialog. */
     private static final String OPEN_ABOUT_DIALOG_ACTION_ID = "openAboutDialogAction"; //$NON-NLS-1$
@@ -1037,6 +1046,15 @@ final class Actions
                 putValue( NAME, Messages.AddTwoOfSpadesCardAction_text );
             }
         } );
+        actions.put( DISCONNECT_NETWORK_TABLE_ACTION_ID, new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.DisconnectNetworkTableAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.DisconnectNetworkTableAction_text );
+            }
+        } );
         actions.put( EXIT_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
@@ -1056,6 +1074,15 @@ final class Actions
                 putValue( NAME, Messages.FlipCardAction_text );
             }
         } );
+        actions.put( HOST_NETWORK_TABLE_ACTION_ID, new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.HostNetworkTableAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.HostNetworkTableAction_text );
+            }
+        } );
         actions.put( IMPORT_TABLE_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
@@ -1063,6 +1090,15 @@ final class Actions
             {
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.ImportTableAction_mnemonic ).getKeyCode() );
                 putValue( NAME, Messages.ImportTableAction_text );
+            }
+        } );
+        actions.put( JOIN_NETWORK_TABLE_ACTION_ID, new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.JoinNetworkTableAction_mnemonic ).getKeyCode() );
+                putValue( NAME, Messages.JoinNetworkTableAction_text );
             }
         } );
         actions.put( OPEN_ABOUT_DIALOG_ACTION_ID, new BasicAction()
@@ -1838,6 +1874,17 @@ final class Actions
     }
 
     /**
+     * Gets the disconnect network table action.
+     * 
+     * @return The disconnect network table action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getDisconnectNetworkTableAction()
+    {
+        return actions_.get( DISCONNECT_NETWORK_TABLE_ACTION_ID );
+    }
+
+    /**
      * Gets the exit action.
      * 
      * @return The exit action; never {@code null}.
@@ -1860,6 +1907,17 @@ final class Actions
     }
 
     /**
+     * Gets the host network table action.
+     * 
+     * @return The host network table action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getHostNetworkTableAction()
+    {
+        return actions_.get( HOST_NETWORK_TABLE_ACTION_ID );
+    }
+
+    /**
      * Gets the import table action.
      * 
      * @return The import table action; never {@code null}.
@@ -1868,6 +1926,17 @@ final class Actions
     static BasicAction getImportTableAction()
     {
         return actions_.get( IMPORT_TABLE_ACTION_ID );
+    }
+
+    /**
+     * Gets the join network table action.
+     * 
+     * @return The join network table action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getJoinNetworkTableAction()
+    {
+        return actions_.get( JOIN_NETWORK_TABLE_ACTION_ID );
     }
 
     /**

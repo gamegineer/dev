@@ -608,6 +608,16 @@ public final class ActionsTest
     }
 
     /**
+     * Ensures the {@code getDisconnectNetworkTableAction} method does not
+     * return {@code null}.
+     */
+    @Test
+    public void testGetDisconnectNetworkTableAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getDisconnectNetworkTableAction() );
+    }
+
+    /**
      * Ensures the {@code getExitAction} method does not return {@code null}.
      */
     @Test
@@ -627,6 +637,16 @@ public final class ActionsTest
     }
 
     /**
+     * Ensures the {@code getHostNetworkTableAction} method does not return
+     * {@code null}.
+     */
+    @Test
+    public void testGetHostNetworkTableAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getHostNetworkTableAction() );
+    }
+
+    /**
      * Ensures the {@code getImportTableAction} method does not return {@code
      * null}.
      */
@@ -634,6 +654,16 @@ public final class ActionsTest
     public void testGetImportTableAction_ReturnValue_NonNull()
     {
         assertNotNull( Actions.getImportTableAction() );
+    }
+
+    /**
+     * Ensures the {@code getJoinNetworkTableAction} method does not return
+     * {@code null}.
+     */
+    @Test
+    public void testGetJoinNetworkTableAction_ReturnValue_NonNull()
+    {
+        assertNotNull( Actions.getJoinNetworkTableAction() );
     }
 
     /**
