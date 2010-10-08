@@ -282,6 +282,54 @@ public final class TableModelTest
     }
 
     /**
+     * Ensures the {@code importTable} method fires a table model dirty flag
+     * changed event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testImportTable_FiresTableModelDirtyFlagChangedEvent()
+        throws Exception
+    {
+        final File file = createTemporaryFile();
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelDirtyFlagChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.getTable().addCardPile( CardPiles.createUniqueCardPile() );
+        model_.save( file );
+        model_.addTableModelListener( listener );
+
+        model_.importTable( file );
+
+        niceMocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code importTable} method fires a table model state changed
+     * event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testImportTable_FiresTableModelStateChangedEvent()
+        throws Exception
+    {
+        final File file = createTemporaryFile();
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelStateChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.getTable().addCardPile( CardPiles.createUniqueCardPile() );
+        model_.save( file );
+        model_.addTableModelListener( listener );
+
+        model_.importTable( file );
+
+        niceMocksControl_.verify();
+    }
+
+    /**
      * Ensures the {@code removeTableModelListener} method throws an exception
      * when passed a listener that is absent from the table model listener
      * collection.
