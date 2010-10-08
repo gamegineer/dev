@@ -202,7 +202,7 @@ public final class TableRunner
                 @SuppressWarnings( "synthetic-access" )
                 public void windowClosed(
                     @SuppressWarnings( "unused" )
-                    final WindowEvent e )
+                    final WindowEvent event )
                 {
                     Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Frame window closed by user" ); //$NON-NLS-1$
                     stop( TableResult.OK );

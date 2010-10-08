@@ -323,18 +323,18 @@ final class TableView
         {
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                final ActionEvent e )
+                final ActionEvent event )
             {
-                addCard( CardSurfaceDesignId.fromString( e.getActionCommand() ) );
+                addCard( CardSurfaceDesignId.fromString( event.getActionCommand() ) );
             }
         };
         final ActionListener setCardPileLayoutActionListener = new ActionListener()
         {
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                final ActionEvent e )
+                final ActionEvent event )
             {
-                setCardPileLayout( CardPileLayout.valueOf( e.getActionCommand() ) );
+                setCardPileLayout( CardPileLayout.valueOf( event.getActionCommand() ) );
             }
         };
         actionMediator_.bindActionListener( Actions.getAddAceOfClubsCardAction(), addCardActionListener );
@@ -346,7 +346,7 @@ final class TableView
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
-                final ActionEvent e )
+                final ActionEvent event )
             {
                 addCardPile();
             }
@@ -393,7 +393,7 @@ final class TableView
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
-                final ActionEvent e )
+                final ActionEvent event )
             {
                 addStandard52CardDeck();
             }
@@ -403,7 +403,7 @@ final class TableView
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
-                final ActionEvent e )
+                final ActionEvent event )
             {
                 addStandard54CardDeck();
             }
@@ -425,7 +425,7 @@ final class TableView
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
-                final ActionEvent e )
+                final ActionEvent event )
             {
                 flipTopCard();
             }
@@ -435,7 +435,7 @@ final class TableView
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
-                final ActionEvent e )
+                final ActionEvent event )
             {
                 importTable();
             }
@@ -445,7 +445,7 @@ final class TableView
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
-                final ActionEvent e )
+                final ActionEvent event )
             {
                 removeAllCardPiles();
             }
@@ -455,7 +455,7 @@ final class TableView
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
-                final ActionEvent e )
+                final ActionEvent event )
             {
                 removeAllCards();
             }
@@ -465,7 +465,7 @@ final class TableView
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
-                final ActionEvent e )
+                final ActionEvent event )
             {
                 removeTopCard();
             }
@@ -475,7 +475,7 @@ final class TableView
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
-                final ActionEvent e )
+                final ActionEvent event )
             {
                 removeFocusedCardPile();
             }
@@ -485,7 +485,7 @@ final class TableView
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
-                final ActionEvent e )
+                final ActionEvent event )
             {
                 resetTableOrigin();
             }
@@ -818,9 +818,9 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void keyReleased(
-                final KeyEvent e )
+                final KeyEvent event )
             {
-                if( e.getKeyCode() == KeyEvent.VK_CONTEXT_MENU )
+                if( event.getKeyCode() == KeyEvent.VK_CONTEXT_MENU )
                 {
                     setMouseInputHandler( PopupMenuMouseInputHandler.class, null );
                 }
@@ -859,33 +859,33 @@ final class TableView
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void mouseDragged(
-                final MouseEvent e )
+                final MouseEvent event )
             {
-                mouseInputHandler_.mouseDragged( e );
+                mouseInputHandler_.mouseDragged( event );
             }
 
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void mouseMoved(
-                final MouseEvent e )
+                final MouseEvent event )
             {
-                mouseInputHandler_.mouseMoved( e );
+                mouseInputHandler_.mouseMoved( event );
             }
 
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void mousePressed(
-                final MouseEvent e )
+                final MouseEvent event )
             {
-                mouseInputHandler_.mousePressed( e );
+                mouseInputHandler_.mousePressed( event );
             }
 
             @Override
             @SuppressWarnings( "synthetic-access" )
             public void mouseReleased(
-                final MouseEvent e )
+                final MouseEvent event )
             {
-                mouseInputHandler_.mouseReleased( e );
+                mouseInputHandler_.mouseReleased( event );
             }
         };
     }
@@ -1107,7 +1107,7 @@ final class TableView
      * @param handlerClass
      *        The class of the mouse input handler to activate; must not be
      *        {@code null}.
-     * @param e
+     * @param event
      *        The mouse event that triggered activation of the mouse input
      *        handler; may be {@code null} if no mouse event triggered the
      *        activation.
@@ -1116,14 +1116,14 @@ final class TableView
         /* @NonNUll */
         final Class<? extends AbstractMouseInputHandler> handlerClass,
         /* @Nullable */
-        final MouseEvent e )
+        final MouseEvent event )
     {
         assert handlerClass != null;
 
         mouseInputHandler_.deactivate();
         mouseInputHandler_ = mouseInputHandlers_.get( handlerClass );
         assert mouseInputHandler_ != null;
-        mouseInputHandler_.activate( e );
+        mouseInputHandler_.activate( event );
     }
 
     /*
@@ -1226,14 +1226,14 @@ final class TableView
         /**
          * Activates this handler.
          * 
-         * @param e
+         * @param event
          *        The mouse event that triggered activation of this handler; may
          *        be {@code null} if no mouse event triggered the activation.
          */
         void activate(
             /* @NonNull */
             @SuppressWarnings( "unused" )
-            final MouseEvent e )
+            final MouseEvent event )
         {
             // default implementation does nothing
         }
@@ -1251,7 +1251,7 @@ final class TableView
          * specified mouse event or the current mouse location if no mouse event
          * is available.
          * 
-         * @param e
+         * @param event
          *        The mouse event; may be {@code null} if no mouse event is
          *        available.
          * 
@@ -1261,11 +1261,11 @@ final class TableView
         @SuppressWarnings( "synthetic-access" )
         protected final Point getMouseLocation(
             /* @Nullable */
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            if( e != null )
+            if( event != null )
             {
-                final Point location = e.getPoint();
+                final Point location = event.getPoint();
                 convertPointToTable( location );
                 return location;
             }
@@ -1303,9 +1303,9 @@ final class TableView
          */
         @Override
         void activate(
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            updateCursor( e );
+            updateCursor( event );
         }
 
         /*
@@ -1313,9 +1313,9 @@ final class TableView
          */
         @Override
         public void mouseMoved(
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            updateCursor( e );
+            updateCursor( event );
         }
 
         /*
@@ -1324,31 +1324,31 @@ final class TableView
         @Override
         @SuppressWarnings( "synthetic-access" )
         public void mousePressed(
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            final ICardPile cardPile = model_.getTable().getCardPile( getMouseLocation( e ) );
+            final ICardPile cardPile = model_.getTable().getCardPile( getMouseLocation( event ) );
             model_.setFocus( cardPile );
 
-            if( e.isPopupTrigger() )
+            if( event.isPopupTrigger() )
             {
-                setMouseInputHandler( PopupMenuMouseInputHandler.class, e );
+                setMouseInputHandler( PopupMenuMouseInputHandler.class, event );
             }
-            else if( SwingUtilities.isLeftMouseButton( e ) )
+            else if( SwingUtilities.isLeftMouseButton( event ) )
             {
                 if( cardPile != null )
                 {
-                    if( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK )
+                    if( (event.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK )
                     {
-                        setMouseInputHandler( DraggingCardPileMouseInputHandler.class, e );
+                        setMouseInputHandler( DraggingCardPileMouseInputHandler.class, event );
                     }
                     else
                     {
-                        setMouseInputHandler( DraggingCardsMouseInputHandler.class, e );
+                        setMouseInputHandler( DraggingCardsMouseInputHandler.class, event );
                     }
                 }
                 else
                 {
-                    setMouseInputHandler( DraggingTableMouseInputHandler.class, e );
+                    setMouseInputHandler( DraggingTableMouseInputHandler.class, event );
                 }
             }
         }
@@ -1359,27 +1359,27 @@ final class TableView
         @Override
         @SuppressWarnings( "synthetic-access" )
         public void mouseReleased(
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            if( e.isPopupTrigger() )
+            if( event.isPopupTrigger() )
             {
-                setMouseInputHandler( PopupMenuMouseInputHandler.class, e );
+                setMouseInputHandler( PopupMenuMouseInputHandler.class, event );
             }
         }
 
         /**
          * Updates the mouse cursor.
          * 
-         * @param e
+         * @param event
          *        The mouse event; may be {@code null} if no mouse event is
          *        available.
          */
         @SuppressWarnings( "synthetic-access" )
         private void updateCursor(
             /* @Nullable */
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            final ICardPile cardPile = model_.getTable().getCardPile( getMouseLocation( e ) );
+            final ICardPile cardPile = model_.getTable().getCardPile( getMouseLocation( event ) );
             final Cursor newCursor = (cardPile == null) ? Cursors.getHandCursor() : Cursors.getDefaultCursor();
             if( newCursor != getCursor() )
             {
@@ -1436,9 +1436,9 @@ final class TableView
         @Override
         @SuppressWarnings( "synthetic-access" )
         void activate(
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            final Point mouseLocation = getMouseLocation( e );
+            final Point mouseLocation = getMouseLocation( event );
             sourceCardPile_ = model_.getTable().getCardPile( mouseLocation );
             if( sourceCardPile_ != null )
             {
@@ -1481,9 +1481,9 @@ final class TableView
          */
         @Override
         public void mouseDragged(
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            final Point location = getMouseLocation( e );
+            final Point location = getMouseLocation( event );
             location.translate( mobileCardPileBaseLocationOffset_.width, mobileCardPileBaseLocationOffset_.height );
             mobileCardPile_.setBaseLocation( location );
         }
@@ -1494,13 +1494,13 @@ final class TableView
         @Override
         @SuppressWarnings( "synthetic-access" )
         public void mouseReleased(
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            if( SwingUtilities.isLeftMouseButton( e ) )
+            if( SwingUtilities.isLeftMouseButton( event ) )
             {
                 model_.getTable().removeCardPile( mobileCardPile_ );
 
-                final Point mouseLocation = getMouseLocation( e );
+                final Point mouseLocation = getMouseLocation( event );
                 final ICardPile cardPile = model_.getTable().getCardPile( mouseLocation );
                 final ICardPile targetCardPile = (cardPile != null) ? cardPile : sourceCardPile_;
                 targetCardPile.addCards( mobileCardPile_.removeCards() );
@@ -1555,9 +1555,9 @@ final class TableView
         @Override
         @SuppressWarnings( "synthetic-access" )
         void activate(
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            final Point mouseLocation = getMouseLocation( e );
+            final Point mouseLocation = getMouseLocation( event );
             draggedCardPile_ = model_.getTable().getCardPile( mouseLocation );
             if( draggedCardPile_ != null )
             {
@@ -1585,9 +1585,9 @@ final class TableView
          */
         @Override
         public void mouseDragged(
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            final Point location = getMouseLocation( e );
+            final Point location = getMouseLocation( event );
             location.translate( draggedCardPileLocationOffset_.width, draggedCardPileLocationOffset_.height );
             draggedCardPile_.setLocation( location );
         }
@@ -1598,9 +1598,9 @@ final class TableView
         @Override
         @SuppressWarnings( "synthetic-access" )
         public void mouseReleased(
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            if( SwingUtilities.isLeftMouseButton( e ) )
+            if( SwingUtilities.isLeftMouseButton( event ) )
             {
                 setMouseInputHandler( DefaultMouseInputHandler.class, null );
             }
@@ -1652,9 +1652,9 @@ final class TableView
         @Override
         @SuppressWarnings( "synthetic-access" )
         void activate(
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            final Point location = getMouseLocation( e );
+            final Point location = getMouseLocation( event );
             convertPointFromTable( location );
             originalLocation_.setLocation( location );
             originalOriginOffset_.setSize( model_.getOriginOffset() );
@@ -1678,9 +1678,9 @@ final class TableView
         @Override
         @SuppressWarnings( "synthetic-access" )
         public void mouseDragged(
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            final Point location = getMouseLocation( e );
+            final Point location = getMouseLocation( event );
             convertPointFromTable( location );
             final Dimension originOffset = new Dimension( originalOriginOffset_.width + (location.x - originalLocation_.x), originalOriginOffset_.height + (location.y - originalLocation_.y) );
             model_.setOriginOffset( originOffset );
@@ -1692,9 +1692,9 @@ final class TableView
         @Override
         @SuppressWarnings( "synthetic-access" )
         public void mouseReleased(
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            if( SwingUtilities.isLeftMouseButton( e ) )
+            if( SwingUtilities.isLeftMouseButton( event ) )
             {
                 setMouseInputHandler( DefaultMouseInputHandler.class, null );
             }
@@ -1732,9 +1732,9 @@ final class TableView
         @Override
         @SuppressWarnings( "synthetic-access" )
         void activate(
-            final MouseEvent e )
+            final MouseEvent event )
         {
-            final Point location = getMouseLocation( e );
+            final Point location = getMouseLocation( event );
             final JPopupMenu menu = getPopupMenu( location );
             menu.addPopupMenuListener( this );
             convertPointFromTable( location );
@@ -1773,7 +1773,7 @@ final class TableView
         @SuppressWarnings( "synthetic-access" )
         public void popupMenuCanceled(
             @SuppressWarnings( "unused" )
-            final PopupMenuEvent e )
+            final PopupMenuEvent event )
         {
             setMouseInputHandler( DefaultMouseInputHandler.class, null );
         }
@@ -1785,7 +1785,7 @@ final class TableView
         @SuppressWarnings( "synthetic-access" )
         public void popupMenuWillBecomeInvisible(
             @SuppressWarnings( "unused" )
-            final PopupMenuEvent e )
+            final PopupMenuEvent event )
         {
             setMouseInputHandler( DefaultMouseInputHandler.class, null );
         }
@@ -1796,7 +1796,7 @@ final class TableView
         @Override
         public void popupMenuWillBecomeVisible(
             @SuppressWarnings( "unused" )
-            final PopupMenuEvent e )
+            final PopupMenuEvent event )
         {
             // do nothing
         }

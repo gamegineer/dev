@@ -142,7 +142,7 @@ public final class MainFrame
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
-                final ActionEvent e )
+                final ActionEvent event )
             {
                 if( confirmSaveDirtyTable() )
                 {
@@ -155,7 +155,7 @@ public final class MainFrame
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
-                final ActionEvent e )
+                final ActionEvent event )
             {
                 JOptionPane.showMessageDialog( MainFrame.this, Messages.AboutDialog_message( model_.getVersion() ), Messages.AboutDialog_title, JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE );
             }
@@ -165,7 +165,7 @@ public final class MainFrame
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
-                final ActionEvent e )
+                final ActionEvent event )
             {
                 openNewTable();
             }
@@ -174,9 +174,9 @@ public final class MainFrame
         {
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
-                final ActionEvent e )
+                final ActionEvent event )
             {
-                openTable( e.getActionCommand() );
+                openTable( event.getActionCommand() );
             }
         } );
         actionMediator_.bindActionListener( Actions.getSaveTableAction(), new ActionListener()
@@ -184,7 +184,7 @@ public final class MainFrame
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
-                final ActionEvent e )
+                final ActionEvent event )
             {
                 saveTable( false );
             }
@@ -194,7 +194,7 @@ public final class MainFrame
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
-                final ActionEvent e )
+                final ActionEvent event )
             {
                 saveTable( true );
             }
@@ -466,9 +466,9 @@ public final class MainFrame
      */
     @Override
     protected void processWindowEvent(
-        final WindowEvent e )
+        final WindowEvent event )
     {
-        switch( e.getID() )
+        switch( event.getID() )
         {
             case WindowEvent.WINDOW_CLOSED:
                 saveApplicationState();
@@ -482,7 +482,7 @@ public final class MainFrame
                 break;
         }
 
-        super.processWindowEvent( e );
+        super.processWindowEvent( event );
     }
 
     /*

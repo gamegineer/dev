@@ -80,11 +80,11 @@ public class BasicAction
      */
     @Override
     public final void actionPerformed(
-        final ActionEvent e )
+        final ActionEvent event )
     {
         for( final ActionListener listener : actionListeners_ )
         {
-            listener.actionPerformed( e );
+            listener.actionPerformed( event );
         }
     }
 
