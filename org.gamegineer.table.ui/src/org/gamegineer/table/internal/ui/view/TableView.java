@@ -49,6 +49,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
@@ -58,6 +59,8 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
+import org.gamegineer.common.ui.wizard.IWizard;
+import org.gamegineer.common.ui.wizard.WizardDialog;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.CardPileLayout;
 import org.gamegineer.table.core.CardSurfaceDesignId;
@@ -78,6 +81,8 @@ import org.gamegineer.table.internal.ui.model.ModelException;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
+import org.gamegineer.table.internal.ui.wizards.hostnetworktable.HostNetworkTableWizard;
+import org.gamegineer.table.internal.ui.wizards.joinnetworktable.JoinNetworkTableWizard;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry;
 
@@ -430,6 +435,17 @@ final class TableView
                 flipTopCard();
             }
         } );
+        actionMediator_.bindActionListener( Actions.getHostNetworkTableAction(), new ActionListener()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent event )
+            {
+                hostNetworkTable();
+            }
+        } );
         actionMediator_.bindActionListener( Actions.getImportTableAction(), new ActionListener()
         {
             @SuppressWarnings( "synthetic-access" )
@@ -438,6 +454,17 @@ final class TableView
                 final ActionEvent event )
             {
                 importTable();
+            }
+        } );
+        actionMediator_.bindActionListener( Actions.getJoinNetworkTableAction(), new ActionListener()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent event )
+            {
+                joinNetworkTable();
             }
         } );
         actionMediator_.bindActionListener( Actions.getRemoveAllCardPilesAction(), new ActionListener()
@@ -921,6 +948,16 @@ final class TableView
     }
 
     /**
+     * Hosts the current table on the network.
+     */
+    private void hostNetworkTable()
+    {
+        final IWizard wizard = new HostNetworkTableWizard();
+        final WizardDialog dialog = new WizardDialog( JOptionPane.getFrameForComponent( this ), wizard );
+        dialog.open();
+    }
+
+    /**
      * Imports a table into the existing table model.
      */
     private void importTable()
@@ -958,6 +995,16 @@ final class TableView
     public boolean isFocusable()
     {
         return true;
+    }
+
+    /**
+     * Joins the current table to a table on the network.
+     */
+    private void joinNetworkTable()
+    {
+        final IWizard wizard = new JoinNetworkTableWizard();
+        final WizardDialog dialog = new WizardDialog( JOptionPane.getFrameForComponent( this ), wizard );
+        dialog.open();
     }
 
     /*
