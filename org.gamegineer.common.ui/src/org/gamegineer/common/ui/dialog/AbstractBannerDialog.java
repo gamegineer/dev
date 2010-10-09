@@ -31,7 +31,6 @@ import java.awt.Image;
 import java.awt.Window;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -136,12 +135,12 @@ public abstract class AbstractBannerDialog
         /* @NonNull */
         final Container parent )
     {
-        final JPanel composite = new JPanel();
-        parent.add( composite );
+        final JPanel container = new JPanel();
+        parent.add( container );
 
         final SpringLayout layout = new SpringLayout();
-        composite.setLayout( layout );
-        composite.setBackground( Color.WHITE );
+        container.setLayout( layout );
+        container.setBackground( Color.WHITE );
 
         final int horizontalMargin = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_MARGIN );
         final int verticalMargin = convertHeightInDlusToPixels( DialogConstants.VERTICAL_MARGIN );
@@ -150,39 +149,39 @@ public abstract class AbstractBannerDialog
 
         bannerImageLabel_ = new JLabel();
         bannerImageLabel_.setVerticalAlignment( SwingConstants.BOTTOM );
-        composite.add( bannerImageLabel_ );
-        layout.putConstraint( SpringLayout.EAST, bannerImageLabel_, 0, SpringLayout.EAST, composite );
-        layout.putConstraint( SpringLayout.NORTH, bannerImageLabel_, 0, SpringLayout.NORTH, composite );
+        container.add( bannerImageLabel_ );
+        layout.putConstraint( SpringLayout.EAST, bannerImageLabel_, 0, SpringLayout.EAST, container );
+        layout.putConstraint( SpringLayout.NORTH, bannerImageLabel_, 0, SpringLayout.NORTH, container );
 
         bannerTitleLabel_ = new JLabel();
         bannerTitleLabel_.setFont( bannerTitleLabel_.getFont().deriveFont( Font.BOLD ).deriveFont( bannerTitleLabel_.getFont().getSize() * 1.2F ) );
-        composite.add( bannerTitleLabel_ );
-        layout.putConstraint( SpringLayout.WEST, bannerTitleLabel_, horizontalMargin, SpringLayout.WEST, composite );
-        layout.putConstraint( SpringLayout.NORTH, bannerTitleLabel_, verticalMargin, SpringLayout.NORTH, composite );
+        container.add( bannerTitleLabel_ );
+        layout.putConstraint( SpringLayout.WEST, bannerTitleLabel_, horizontalMargin, SpringLayout.WEST, container );
+        layout.putConstraint( SpringLayout.NORTH, bannerTitleLabel_, verticalMargin, SpringLayout.NORTH, container );
         layout.putConstraint( SpringLayout.EAST, bannerTitleLabel_, 0, SpringLayout.WEST, bannerImageLabel_ );
 
         descriptionImageLabel_ = new JLabel();
-        composite.add( descriptionImageLabel_ );
+        container.add( descriptionImageLabel_ );
         layout.putConstraint( SpringLayout.WEST, descriptionImageLabel_, 0, SpringLayout.WEST, bannerTitleLabel_ );
         layout.putConstraint( SpringLayout.NORTH, descriptionImageLabel_, verticalSpacing, SpringLayout.SOUTH, bannerTitleLabel_ );
 
         descriptionLabel_ = new JTextArea();
-        descriptionLabel_.setFont( composite.getFont() );
+        descriptionLabel_.setFont( container.getFont() );
         descriptionLabel_.setEditable( false );
         descriptionLabel_.setFocusable( false );
         descriptionLabel_.setLineWrap( true );
         descriptionLabel_.setOpaque( false );
         descriptionLabel_.setWrapStyleWord( true );
-        composite.add( descriptionLabel_ );
+        container.add( descriptionLabel_ );
         layout.putConstraint( SpringLayout.WEST, descriptionLabel_, horizontalSpacing, SpringLayout.EAST, descriptionImageLabel_ );
         layout.putConstraint( SpringLayout.NORTH, descriptionLabel_, verticalSpacing, SpringLayout.SOUTH, bannerTitleLabel_ );
         layout.putConstraint( SpringLayout.EAST, descriptionLabel_, 0, SpringLayout.WEST, bannerImageLabel_ );
         layout.getConstraints( descriptionLabel_ ).setHeight( Spring.constant( convertHeightInCharsToPixels( 2 ) ) );
 
         final JSeparator separator = new JSeparator();
-        composite.add( separator );
-        layout.putConstraint( SpringLayout.WEST, separator, 0, SpringLayout.WEST, composite );
-        layout.putConstraint( SpringLayout.EAST, separator, 0, SpringLayout.EAST, composite );
+        container.add( separator );
+        layout.putConstraint( SpringLayout.WEST, separator, 0, SpringLayout.WEST, container );
+        layout.putConstraint( SpringLayout.EAST, separator, 0, SpringLayout.EAST, container );
         layout.getConstraints( separator ).setConstraint( SpringLayout.NORTH, //
             Spring.max( //
                 Spring.sum( //
@@ -190,7 +189,7 @@ public abstract class AbstractBannerDialog
                     Spring.constant( verticalSpacing ) ), //
                 layout.getConstraint( SpringLayout.SOUTH, bannerImageLabel_ ) ) );
 
-        layout.putConstraint( SpringLayout.SOUTH, composite, 0, SpringLayout.SOUTH, separator );
+        layout.putConstraint( SpringLayout.SOUTH, container, 0, SpringLayout.SOUTH, separator );
 
         if( bannerImage_ == null )
         {
@@ -201,7 +200,7 @@ public abstract class AbstractBannerDialog
         setBannerImage( bannerImage_ );
         setDescription( description_ );
 
-        return composite;
+        return container;
     }
 
     /**
@@ -227,16 +226,16 @@ public abstract class AbstractBannerDialog
         /* @NonNull */
         final Container parent )
     {
-        final JComponent composite = new JPanel();
-        parent.add( composite );
+        final JPanel container = new JPanel();
+        parent.add( container );
 
         final int marginHeight = convertHeightInDlusToPixels( DialogConstants.VERTICAL_MARGIN );
         final int marginWidth = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_MARGIN );
-        composite.setBorder( BorderFactory.createEmptyBorder( marginHeight, marginWidth, marginHeight, marginWidth ) );
+        container.setBorder( BorderFactory.createEmptyBorder( marginHeight, marginWidth, marginHeight, marginWidth ) );
 
-        composite.setLayout( new BorderLayout() );
+        container.setLayout( new BorderLayout() );
 
-        return composite;
+        return container;
     }
 
     /*
@@ -246,19 +245,19 @@ public abstract class AbstractBannerDialog
     protected final Component createDialogArea(
         final Container parent )
     {
-        final Container composite = new JPanel();
-        parent.add( composite );
+        final Container container = new JPanel();
+        parent.add( container );
 
         final BorderLayout layout = new BorderLayout();
-        composite.setLayout( layout );
+        container.setLayout( layout );
 
-        final Component banner = createBanner( composite );
-        contentArea_ = createContentArea( composite );
+        final Component banner = createBanner( container );
+        contentArea_ = createContentArea( container );
 
         layout.addLayoutComponent( banner, BorderLayout.NORTH );
         layout.addLayoutComponent( contentArea_, BorderLayout.CENTER );
 
-        return composite;
+        return container;
     }
 
     /*

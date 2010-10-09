@@ -29,7 +29,6 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.ui.dialog.AbstractBannerDialog;
@@ -228,17 +227,17 @@ public final class WizardDialog
     protected Component createButtonBar(
         final Container parent )
     {
-        final JComponent composite = new JPanel();
-        parent.add( composite );
+        final JPanel container = new JPanel();
+        parent.add( container );
 
-        final GroupLayout layout = new GroupLayout( composite );
-        composite.setLayout( layout );
+        final GroupLayout layout = new GroupLayout( container );
+        container.setLayout( layout );
 
         final int marginWidth = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_MARGIN );
         final int marginHeight = convertHeightInDlusToPixels( DialogConstants.VERTICAL_MARGIN );
-        composite.setBorder( BorderFactory.createEmptyBorder( marginHeight, marginWidth, marginHeight, marginWidth ) );
+        container.setBorder( BorderFactory.createEmptyBorder( marginHeight, marginWidth, marginHeight, marginWidth ) );
 
-        composite.setFont( parent.getFont() );
+        container.setFont( parent.getFont() );
 
         final GroupLayout.Group hGroup = layout.createSequentialGroup();
         final GroupLayout.Group vGroup = layout.createParallelGroup();
@@ -277,7 +276,7 @@ public final class WizardDialog
         layout.setHorizontalGroup( hGroup );
         layout.setVerticalGroup( vGroup );
 
-        return composite;
+        return container;
     }
 
     /*

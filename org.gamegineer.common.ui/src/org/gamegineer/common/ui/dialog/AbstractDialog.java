@@ -36,7 +36,6 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import net.jcip.annotations.NotThreadSafe;
@@ -338,19 +337,19 @@ public abstract class AbstractDialog
         /* @NonNull */
         final Container parent )
     {
-        final JComponent composite = new JPanel();
-        parent.add( composite );
+        final JPanel container = new JPanel();
+        parent.add( container );
 
-        final GroupLayout layout = new GroupLayout( composite );
-        composite.setLayout( layout );
+        final GroupLayout layout = new GroupLayout( container );
+        container.setLayout( layout );
 
         final int marginWidth = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_MARGIN );
         final int marginHeight = convertHeightInDlusToPixels( DialogConstants.VERTICAL_MARGIN );
-        composite.setBorder( BorderFactory.createEmptyBorder( marginHeight, marginWidth, marginHeight, marginWidth ) );
+        container.setBorder( BorderFactory.createEmptyBorder( marginHeight, marginWidth, marginHeight, marginWidth ) );
 
-        composite.setFont( parent.getFont() );
+        container.setFont( parent.getFont() );
 
-        createButtonsForButtonBar( composite );
+        createButtonsForButtonBar( container );
 
         final GroupLayout.Group hGroup = layout.createSequentialGroup();
         hGroup.addGap( 0, 0, Integer.MAX_VALUE );
@@ -369,7 +368,7 @@ public abstract class AbstractDialog
         layout.setHorizontalGroup( hGroup );
         layout.setVerticalGroup( vGroup );
 
-        return composite;
+        return container;
     }
 
     /**
@@ -400,21 +399,21 @@ public abstract class AbstractDialog
     protected final Component createContent(
         final Container parent )
     {
-        final Container composite = new JPanel();
-        parent.add( composite );
+        final Container container = new JPanel();
+        parent.add( container );
 
         final BorderLayout layout = new BorderLayout();
-        composite.setLayout( layout );
+        container.setLayout( layout );
 
-        initializeDialogUnits( composite );
+        initializeDialogUnits( container );
 
-        dialogArea_ = createDialogArea( composite );
-        buttonBar_ = createButtonBar( composite );
+        dialogArea_ = createDialogArea( container );
+        buttonBar_ = createButtonBar( container );
 
         layout.addLayoutComponent( dialogArea_, BorderLayout.CENTER );
         layout.addLayoutComponent( buttonBar_, BorderLayout.SOUTH );
 
-        return composite;
+        return container;
     }
 
     /**
@@ -440,16 +439,16 @@ public abstract class AbstractDialog
         /* @NonNull */
         final Container parent )
     {
-        final JComponent composite = new JPanel();
-        parent.add( composite );
+        final JPanel container = new JPanel();
+        parent.add( container );
 
         final int marginHeight = convertHeightInDlusToPixels( DialogConstants.VERTICAL_MARGIN );
         final int marginWidth = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_MARGIN );
-        composite.setBorder( BorderFactory.createEmptyBorder( marginHeight, marginWidth, marginHeight, marginWidth ) );
+        container.setBorder( BorderFactory.createEmptyBorder( marginHeight, marginWidth, marginHeight, marginWidth ) );
 
-        composite.setLayout( new BorderLayout() );
+        container.setLayout( new BorderLayout() );
 
-        return composite;
+        return container;
     }
 
     /*

@@ -26,9 +26,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.internal.ui.Debug;
@@ -182,8 +180,8 @@ public abstract class AbstractDialogPage
      * Creates the dialog page content area component.
      * 
      * <p>
-     * The default implementation creates a panel with standard dialog margins
-     * and a layout manager of type {@link java.awt.BorderLayout}.
+     * The default implementation creates a panel with no margins and a layout
+     * manager of type {@link java.awt.BorderLayout}.
      * </p>
      * 
      * @param parent
@@ -200,16 +198,12 @@ public abstract class AbstractDialogPage
         /* @NonNull */
         final Container parent )
     {
-        final JComponent composite = new JPanel();
-        parent.add( composite );
+        final JPanel container = new JPanel();
+        parent.add( container );
 
-        final int marginHeight = convertHeightInDlusToPixels( DialogConstants.VERTICAL_MARGIN );
-        final int marginWidth = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_MARGIN );
-        composite.setBorder( BorderFactory.createEmptyBorder( marginHeight, marginWidth, marginHeight, marginWidth ) );
+        container.setLayout( new BorderLayout() );
 
-        composite.setLayout( new BorderLayout() );
-
-        return composite;
+        return container;
     }
 
     /*
