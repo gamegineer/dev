@@ -165,6 +165,8 @@ public abstract class AbstractWindow<T extends Window>
         content_ = createContent( shell_ );
         contentCreated();
 
+        shell_.pack();
+
         initializeBounds();
     }
 
@@ -376,7 +378,6 @@ public abstract class AbstractWindow<T extends Window>
 
         constrainShellSize();
 
-        shell_.pack();
         shell_.setVisible( true );
 
         return returnCode_;
