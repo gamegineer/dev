@@ -1,6 +1,6 @@
 /*
  * package-info.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,5 +21,10 @@
 
 /**
  * Provides support for using the Java Swing framework.
+ * 
+ * <p>
+ * This package is only intended for use by members of the
+ * {@code org.gamegineer.table} project.
+ * </p>
  */
 package org.gamegineer.table.internal.ui.util.swing;

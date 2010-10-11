@@ -21,8 +21,18 @@
 
 package org.gamegineer.table.internal.ui.wizards.hostnetworktable;
 
+import java.awt.Component;
+import java.awt.Container;
+import javax.swing.JLabel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.SpringLayout;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.ui.dialog.DialogConstants;
 import org.gamegineer.common.ui.wizard.AbstractWizardPage;
+import org.gamegineer.table.internal.ui.util.swing.JComponents;
+import org.gamegineer.table.internal.ui.util.swing.SpringUtilities;
 
 /**
  * The main page in the host network table wizard.
@@ -46,5 +56,58 @@ final class MainPage
         setDescription( Messages.MainPage_description );
     }
 
-    // TODO: prompt for user name, port, and password
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /*
+     * @see org.gamegineer.common.ui.dialog.AbstractDialogPage#createContent(java.awt.Container)
+     */
+    @Override
+    protected Component createContent(
+        final Container parent )
+    {
+        final Container container = (Container)super.createContent( parent );
+        final SpringLayout layout = new SpringLayout();
+        container.setLayout( layout );
+
+        final JLabel playerNameLabel = new JLabel( Messages.MainPage_playerNameLabel_text );
+        playerNameLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( Messages.MainPage_playerNameLabel_mnemonic ).getKeyCode() );
+        container.add( playerNameLabel );
+        final JTextField playerNameTextField = new JTextField();
+        JComponents.freezeHeight( playerNameTextField );
+        container.add( playerNameTextField );
+        playerNameLabel.setLabelFor( playerNameTextField );
+
+        final JLabel portLabel = new JLabel( Messages.MainPage_portLabel_text );
+        portLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( Messages.MainPage_portLabel_mnemonic ).getKeyCode() );
+        container.add( portLabel );
+        final JTextField portTextField = new JTextField();
+        JComponents.freezeHeight( portTextField );
+        container.add( portTextField );
+        portLabel.setLabelFor( portTextField );
+
+        final JLabel passwordLabel = new JLabel( Messages.MainPage_passwordLabel_text );
+        passwordLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( Messages.MainPage_passwordLabel_mnemonic ).getKeyCode() );
+        container.add( passwordLabel );
+        final JPasswordField passwordField = new JPasswordField();
+        JComponents.freezeHeight( passwordField );
+        container.add( passwordField );
+        passwordLabel.setLabelFor( passwordField );
+
+        final JLabel confirmPasswordLabel = new JLabel( Messages.MainPage_confirmPasswordLabel_text );
+        confirmPasswordLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( Messages.MainPage_confirmPasswordLabel_mnemonic ).getKeyCode() );
+        container.add( confirmPasswordLabel );
+        final JPasswordField confirmPasswordField = new JPasswordField();
+        JComponents.freezeHeight( confirmPasswordField );
+        container.add( confirmPasswordField );
+        confirmPasswordLabel.setLabelFor( confirmPasswordField );
+
+        final int horizontalSpacing = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_SPACING );
+        final int verticalSpacing = convertHeightInDlusToPixels( DialogConstants.VERTICAL_SPACING );
+        SpringUtilities.buildCompactGrid( container, 4, 2, 0, 0, horizontalSpacing, verticalSpacing );
+
+        return container;
+    }
 }

@@ -42,8 +42,32 @@ final class Messages
 
     // --- MainPage ---------------------------------------------------------
 
+    /** The confirm password label widget mnemonic. */
+    public static String MainPage_confirmPasswordLabel_mnemonic;
+
+    /** The confirm password label widget text. */
+    public static String MainPage_confirmPasswordLabel_text;
+
     /** The page description. */
     public static String MainPage_description;
+
+    /** The password label widget mnemonic. */
+    public static String MainPage_passwordLabel_mnemonic;
+
+    /** The password label widget text. */
+    public static String MainPage_passwordLabel_text;
+
+    /** The player name label widget mnemonic. */
+    public static String MainPage_playerNameLabel_mnemonic;
+
+    /** The player name label widget text. */
+    public static String MainPage_playerNameLabel_text;
+
+    /** The port label widget mnemonic. */
+    public static String MainPage_portLabel_mnemonic;
+
+    /** The port label widget text. */
+    public static String MainPage_portLabel_text;
 
     /** The page title. */
     public static String MainPage_title;
