@@ -88,6 +88,15 @@ public interface IWizardPage
     public boolean isComplete();
 
     /**
+     * Sets a flag indicating the page is complete.
+     * 
+     * @param isComplete
+     *        {@code true} if the page is complete; otherwise {@code false}.
+     */
+    public void setComplete(
+        boolean isComplete );
+
+    /**
      * Sets the previous page in the wizard sequence.
      * 
      * <p>

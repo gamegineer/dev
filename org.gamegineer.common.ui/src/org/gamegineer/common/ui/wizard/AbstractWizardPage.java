@@ -187,13 +187,11 @@ public abstract class AbstractWizardPage
         return isComplete_;
     }
 
-    /**
-     * Sets a flag indicating the page is complete.
-     * 
-     * @param isComplete
-     *        {@code true} if the page is complete; otherwise {@code false}.
+    /*
+     * @see org.gamegineer.common.ui.wizard.IWizardPage#setComplete(boolean)
      */
-    protected final void setComplete(
+    @Override
+    public final void setComplete(
         final boolean isComplete )
     {
         isComplete_ = isComplete;
