@@ -233,7 +233,7 @@ public abstract class AbstractWizardPage
      * @see org.gamegineer.common.ui.dialog.AbstractDialogPage#setMessage(org.gamegineer.common.ui.dialog.DialogMessage)
      */
     @Override
-    protected void setMessage(
+    public void setMessage(
         final DialogMessage message )
     {
         super.setMessage( message );

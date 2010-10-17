@@ -327,16 +327,12 @@ public abstract class AbstractDialogPage
     }
 
     /**
-     * Sets the dialog page message.
-     * 
-     * <p>
      * This implementation updates the dialog page message field.
-     * </p>
      * 
-     * @param message
-     *        The dialog page message or {@code null} to clear the message.
+     * @see org.gamegineer.common.ui.dialog.IDialogPage#setMessage(org.gamegineer.common.ui.dialog.DialogMessage)
      */
-    protected void setMessage(
+    @Override
+    public void setMessage(
         /* @Nullable */
         final DialogMessage message )
     {

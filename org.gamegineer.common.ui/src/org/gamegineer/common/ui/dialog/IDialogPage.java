@@ -104,6 +104,16 @@ public interface IDialogPage
     public String getTitle();
 
     /**
+     * Sets the dialog page message.
+     * 
+     * @param message
+     *        The dialog page message or {@code null} to clear the message.
+     */
+    public void setMessage(
+        /* @Nullable */
+        DialogMessage message );
+
+    /**
      * Sets the visibility of the dialog page.
      * 
      * @param isVisible
