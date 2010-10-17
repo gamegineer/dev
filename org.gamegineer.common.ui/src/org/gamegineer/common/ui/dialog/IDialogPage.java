@@ -23,6 +23,7 @@ package org.gamegineer.common.ui.dialog;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Window;
 
 /**
  * A page in a multi-page dialog.
@@ -83,6 +84,15 @@ public interface IDialogPage
      */
     /* @Nullable */
     public DialogMessage getMessage();
+
+    /**
+     * Gets the dialog page shell.
+     * 
+     * @return The dialog page shell or {@code null} if the dialog page has no
+     *         shell.
+     */
+    /* @Nullable */
+    public Window getShell();
 
     /**
      * Gets the dialog page title.

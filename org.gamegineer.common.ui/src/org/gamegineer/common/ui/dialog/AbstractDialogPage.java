@@ -26,8 +26,10 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
+import java.awt.Window;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.internal.ui.Debug;
 
@@ -240,6 +242,20 @@ public abstract class AbstractDialogPage
     public final DialogMessage getMessage()
     {
         return message_;
+    }
+
+    /*
+     * @see org.gamegineer.common.ui.dialog.IDialogPage#getShell()
+     */
+    @Override
+    public final Window getShell()
+    {
+        if( content_ == null )
+        {
+            return null;
+        }
+
+        return SwingUtilities.getWindowAncestor( content_ );
     }
 
     /*
