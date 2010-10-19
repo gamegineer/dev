@@ -85,3 +85,4 @@ delegators
 namespace
 cancellable
 multi
+uninstalls
