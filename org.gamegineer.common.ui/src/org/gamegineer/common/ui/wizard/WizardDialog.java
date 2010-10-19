@@ -22,6 +22,7 @@
 package org.gamegineer.common.ui.wizard;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Window;
@@ -30,6 +31,7 @@ import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.ui.dialog.AbstractBannerDialog;
 import org.gamegineer.common.ui.dialog.DialogConstants;
@@ -229,15 +231,20 @@ public final class WizardDialog
     {
         final JPanel container = new JPanel();
         parent.add( container );
+        container.setLayout( new BorderLayout() );
 
-        final GroupLayout layout = new GroupLayout( container );
-        container.setLayout( layout );
+        container.add( new JSeparator(), BorderLayout.NORTH );
+
+        final JPanel buttonPanel = new JPanel();
+        container.add( buttonPanel, BorderLayout.CENTER );
+        final GroupLayout layout = new GroupLayout( buttonPanel );
+        buttonPanel.setLayout( layout );
 
         final int marginWidth = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_MARGIN );
         final int marginHeight = convertHeightInDlusToPixels( DialogConstants.VERTICAL_MARGIN );
-        container.setBorder( BorderFactory.createEmptyBorder( marginHeight, marginWidth, marginHeight, marginWidth ) );
+        buttonPanel.setBorder( BorderFactory.createEmptyBorder( marginHeight, marginWidth, marginHeight, marginWidth ) );
 
-        container.setFont( parent.getFont() );
+        buttonPanel.setFont( parent.getFont() );
 
         final GroupLayout.Group hGroup = layout.createSequentialGroup();
         final GroupLayout.Group vGroup = layout.createParallelGroup();
