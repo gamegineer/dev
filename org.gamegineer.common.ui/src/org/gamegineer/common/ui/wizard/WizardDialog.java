@@ -244,8 +244,6 @@ public final class WizardDialog
         final int marginHeight = convertHeightInDlusToPixels( DialogConstants.VERTICAL_MARGIN );
         buttonPanel.setBorder( BorderFactory.createEmptyBorder( marginHeight, marginWidth, marginHeight, marginWidth ) );
 
-        buttonPanel.setFont( parent.getFont() );
-
         final GroupLayout.Group hGroup = layout.createSequentialGroup();
         final GroupLayout.Group vGroup = layout.createParallelGroup();
         final int hGap = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_SPACING );
