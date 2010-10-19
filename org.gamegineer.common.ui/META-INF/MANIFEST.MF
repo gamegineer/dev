@@ -9,6 +9,7 @@ Bundle-SymbolicName: org.gamegineer.common.ui
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.6.0.qualifier
 Export-Package: org.gamegineer.common.ui.databinding.dialog;version="0.6.0",
+ org.gamegineer.common.ui.databinding.swing;version="0.6.0",
  org.gamegineer.common.ui.databinding.wizard;version="0.6.0",
  org.gamegineer.common.ui.dialog;version="0.6.0",
  org.gamegineer.common.ui.operation;version="0.6.0",

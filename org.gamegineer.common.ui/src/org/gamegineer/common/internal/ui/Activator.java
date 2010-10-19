@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.ui.databinding.swing.SwingRealm;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -139,6 +140,8 @@ public final class Activator
 
         final boolean wasInstanceNull = instance_.compareAndSet( null, this );
         assert wasInstanceNull;
+
+        SwingRealm.installSystemRealm();
     }
 
     /*
@@ -149,6 +152,8 @@ public final class Activator
         final BundleContext bundleContext )
     {
         assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
+
+        SwingRealm.uninstallSystemRealm();
 
         final boolean wasInstanceNonNull = instance_.compareAndSet( this, null );
         assert wasInstanceNonNull;
