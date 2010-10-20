@@ -1,11 +1,11 @@
 #version=1
-com.ibm.icu,4.0.1,plugins/com.ibm.icu_4.0.1.v20090822.jar,4,false
+com.ibm.icu,4.0.1.v20090822,plugins/com.ibm.icu_4.0.1.v20090822.jar,4,false
 net.jcip.annotations,1.0.0,plugins/net.jcip.annotations_1.0.0/,4,false
 org.apache.commons.cli,1.2.0,plugins/commons-cli-1.2.jar,4,false
-org.eclipse.core.databinding,1.2.0,plugins/org.eclipse.core.databinding_1.2.0.M20090819-0800.jar,4,false
-org.eclipse.core.databinding.beans,1.2.0,plugins/org.eclipse.core.databinding.beans_1.2.0.I20090525-2000.jar,4,false
-org.eclipse.core.databinding.observable,1.2.0,plugins/org.eclipse.core.databinding.observable_1.2.0.M20090902-0800.jar,4,false
-org.eclipse.core.databinding.property,1.2.0,plugins/org.eclipse.core.databinding.property_1.2.0.M20090819-0800.jar,4,false
+org.eclipse.core.databinding,1.2.0.M20090819-0800,plugins/org.eclipse.core.databinding_1.2.0.M20090819-0800.jar,4,false
+org.eclipse.core.databinding.beans,1.2.0.I20090525-2000,plugins/org.eclipse.core.databinding.beans_1.2.0.I20090525-2000.jar,4,false
+org.eclipse.core.databinding.observable,1.2.0.M20090902-0800,plugins/org.eclipse.core.databinding.observable_1.2.0.M20090902-0800.jar,4,false
+org.eclipse.core.databinding.property,1.2.0.M20090819-0800,plugins/org.eclipse.core.databinding.property_1.2.0.M20090819-0800.jar,4,false
 org.eclipse.equinox.app,1.2.1.R35x_v20091203,plugins/org.eclipse.equinox.app_1.2.1.R35x_v20091203.jar,4,true
 org.eclipse.equinox.common,3.5.1.R35x_v20090807-1100,plugins/org.eclipse.equinox.common_3.5.1.R35x_v20090807-1100.jar,2,true
 org.eclipse.equinox.ds,1.1.1.R35x_v20090806,plugins/org.eclipse.equinox.ds_1.1.1.R35x_v20090806.jar,1,true
