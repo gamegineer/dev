@@ -31,13 +31,17 @@ import java.awt.FontMetrics;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.internal.ui.Debug;
 import org.gamegineer.common.ui.window.AbstractWindow;
@@ -458,7 +462,30 @@ public abstract class AbstractDialog
     protected final JDialog createShell(
         final Window parent )
     {
-        return new JDialog( parent, Dialog.ModalityType.APPLICATION_MODAL );
+        final ActionListener escapeKeyListener = new ActionListener()
+        {
+            @Override
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent event )
+            {
+                cancelPressed();
+            }
+        };
+
+        return new JDialog( parent, Dialog.ModalityType.APPLICATION_MODAL )
+        {
+            private static final long serialVersionUID = -1569267715967524723L;
+
+            @Override
+            protected JRootPane createRootPane()
+            {
+                @SuppressWarnings( "hiding" )
+                final JRootPane rootPane = super.createRootPane();
+                rootPane.registerKeyboardAction( escapeKeyListener, KeyStroke.getKeyStroke( KeyEvent.VK_ESCAPE, 0 ), JComponent.WHEN_IN_FOCUSED_WINDOW );
+                return rootPane;
+            }
+        };
     }
 
     /**
