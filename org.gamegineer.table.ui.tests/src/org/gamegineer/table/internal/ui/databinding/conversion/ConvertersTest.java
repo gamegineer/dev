@@ -1,5 +1,5 @@
 /*
- * HostNetworkTableWizard.java
+ * ConvertersTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,41 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 7, 2010 at 11:18:30 PM.
+ * Created on Oct 21, 2010 at 10:38:34 PM.
  */
 
-package org.gamegineer.table.internal.ui.wizards.hostnetworktable;
+package org.gamegineer.table.internal.ui.databinding.conversion;
 
-import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.common.ui.wizard.AbstractWizard;
+import org.easymock.EasyMock;
+import org.eclipse.core.databinding.conversion.IConverter;
+import org.junit.Test;
 
 /**
- * The host network table wizard.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.ui.databinding.conversion.Converters}
+ * class.
  */
-@NotThreadSafe
-public final class HostNetworkTableWizard
-    extends AbstractWizard
+public final class ConvertersTest
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The wizard model. */
-    private final Model model_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code HostNetworkTableWizard} class.
+     * Initializes a new instance of the {@code ConvertersTest} class.
      */
-    public HostNetworkTableWizard()
+    public ConvertersTest()
     {
-        model_ = new Model();
-
-        setTitle( Messages.HostNetworkTableWizard_title );
+        super();
     }
 
 
@@ -58,23 +49,23 @@ public final class HostNetworkTableWizard
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.common.ui.wizard.AbstractWizard#addPages()
+    /**
+     * Ensures the {@code withExceptionMessage} method throws an exception when
+     * passed a {@code null} converter.
      */
-    @Override
-    public void addPages()
+    @Test( expected = NullPointerException.class )
+    public void testWithExceptionMessage_Converter_Null()
     {
-        addPage( new MainPage() );
+        Converters.withExceptionMessage( null, "message" ); //$NON-NLS-1$
     }
 
     /**
-     * Gets the wizard model.
-     * 
-     * @return The wizard model; never {@code null}.
+     * Ensures the {@code withExceptionMessage} method throws an exception when
+     * passed a {@code null} exception message.
      */
-    /* @NonNull */
-    Model getModel()
+    @Test( expected = NullPointerException.class )
+    public void testWithExceptionMessage_ExceptionMessage_Null()
     {
-        return model_;
+        Converters.withExceptionMessage( EasyMock.createMock( IConverter.class ), null );
     }
 }

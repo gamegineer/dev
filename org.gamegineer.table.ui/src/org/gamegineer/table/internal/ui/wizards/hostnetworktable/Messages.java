@@ -63,6 +63,9 @@ final class Messages
     /** The player name label widget text. */
     public static String MainPage_playerNameLabel_text;
 
+    /** The port value is illegal. */
+    public static String MainPage_port_illegal;
+
     /** The port label widget mnemonic. */
     public static String MainPage_portLabel_mnemonic;
 
@@ -71,6 +74,17 @@ final class Messages
 
     /** The page title. */
     public static String MainPage_title;
+
+    // --- Model ------------------------------------------------------------
+
+    /** The passwords do not match. */
+    public static String Model_password_unconfirmed;
+
+    /** The player name is empty. */
+    public static String Model_playerName_empty;
+
+    /** The port is out of range. */
+    public static String Model_port_outOfRange;
 
 
     // ======================================================================

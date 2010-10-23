@@ -29,8 +29,15 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpringLayout;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.gamegineer.common.ui.databinding.swing.ComponentProperties;
+import org.gamegineer.common.ui.databinding.wizard.WizardPageDataBindingAdapter;
 import org.gamegineer.common.ui.dialog.DialogConstants;
 import org.gamegineer.common.ui.wizard.AbstractWizardPage;
+import org.gamegineer.table.internal.ui.databinding.conversion.Converters;
 import org.gamegineer.table.internal.ui.util.swing.JComponents;
 import org.gamegineer.table.internal.ui.util.swing.SpringUtilities;
 
@@ -42,6 +49,29 @@ final class MainPage
     extends AbstractWizardPage
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The confirmed password field widget. */
+    private JPasswordField confirmedPasswordField_;
+
+    /** The page data binding adapter. */
+    private WizardPageDataBindingAdapter dataBindingAdapter_;
+
+    /** The page data binding context. */
+    private DataBindingContext dataBindingContext_;
+
+    /** The password field widget. */
+    private JPasswordField passwordField_;
+
+    /** The player name text field widget. */
+    private JTextField playerNameTextField_;
+
+    /** The port text field widget. */
+    private JTextField portTextField_;
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
@@ -51,6 +81,13 @@ final class MainPage
     MainPage()
     {
         super( MainPage.class.getName() );
+
+        confirmedPasswordField_ = null;
+        dataBindingAdapter_ = null;
+        dataBindingContext_ = null;
+        passwordField_ = null;
+        playerNameTextField_ = null;
+        portTextField_ = null;
 
         setTitle( Messages.MainPage_title );
         setDescription( Messages.MainPage_description );
@@ -75,39 +112,98 @@ final class MainPage
         final JLabel playerNameLabel = new JLabel( Messages.MainPage_playerNameLabel_text );
         playerNameLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( Messages.MainPage_playerNameLabel_mnemonic ).getKeyCode() );
         container.add( playerNameLabel );
-        final JTextField playerNameTextField = new JTextField();
-        JComponents.freezeHeight( playerNameTextField );
-        container.add( playerNameTextField );
-        playerNameLabel.setLabelFor( playerNameTextField );
+        playerNameTextField_ = new JTextField();
+        JComponents.freezeHeight( playerNameTextField_ );
+        container.add( playerNameTextField_ );
+        playerNameLabel.setLabelFor( playerNameTextField_ );
 
         final JLabel portLabel = new JLabel( Messages.MainPage_portLabel_text );
         portLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( Messages.MainPage_portLabel_mnemonic ).getKeyCode() );
         container.add( portLabel );
-        final JTextField portTextField = new JTextField();
-        JComponents.freezeHeight( portTextField );
-        container.add( portTextField );
-        portLabel.setLabelFor( portTextField );
+        portTextField_ = new JTextField();
+        JComponents.freezeHeight( portTextField_ );
+        container.add( portTextField_ );
+        portLabel.setLabelFor( portTextField_ );
 
         final JLabel passwordLabel = new JLabel( Messages.MainPage_passwordLabel_text );
         passwordLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( Messages.MainPage_passwordLabel_mnemonic ).getKeyCode() );
         container.add( passwordLabel );
-        final JPasswordField passwordField = new JPasswordField();
-        JComponents.freezeHeight( passwordField );
-        container.add( passwordField );
-        passwordLabel.setLabelFor( passwordField );
+        passwordField_ = new JPasswordField();
+        JComponents.freezeHeight( passwordField_ );
+        container.add( passwordField_ );
+        passwordLabel.setLabelFor( passwordField_ );
 
         final JLabel confirmPasswordLabel = new JLabel( Messages.MainPage_confirmPasswordLabel_text );
         confirmPasswordLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( Messages.MainPage_confirmPasswordLabel_mnemonic ).getKeyCode() );
         container.add( confirmPasswordLabel );
-        final JPasswordField confirmPasswordField = new JPasswordField();
-        JComponents.freezeHeight( confirmPasswordField );
-        container.add( confirmPasswordField );
-        confirmPasswordLabel.setLabelFor( confirmPasswordField );
+        confirmedPasswordField_ = new JPasswordField();
+        JComponents.freezeHeight( confirmedPasswordField_ );
+        container.add( confirmedPasswordField_ );
+        confirmPasswordLabel.setLabelFor( confirmedPasswordField_ );
 
         final int horizontalSpacing = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_SPACING );
         final int verticalSpacing = convertHeightInDlusToPixels( DialogConstants.VERTICAL_SPACING );
         SpringUtilities.buildCompactGrid( container, 4, 2, 0, 0, horizontalSpacing, verticalSpacing );
 
+        createDataBindings();
+
         return container;
+    }
+
+    /**
+     * Creates the data bindings for this page.
+     */
+    private void createDataBindings()
+    {
+        final Model model = ((HostNetworkTableWizard)getWizard()).getModel();
+        dataBindingContext_ = new DataBindingContext();
+
+        final IObservableValue playerNameTargetValue = ComponentProperties.text().observe( playerNameTextField_ );
+        final UpdateValueStrategy playerNameTargetStrategy = new UpdateValueStrategy();
+        playerNameTargetStrategy.setBeforeSetValidator( model.getPlayerNameValidator() );
+        final IObservableValue playerNameModelValue = PojoProperties.value( "playerName" ).observe( model ); //$NON-NLS-1$
+        dataBindingContext_.bindValue( playerNameTargetValue, playerNameModelValue, playerNameTargetStrategy, null );
+
+        final IObservableValue portTargetValue = ComponentProperties.text().observe( portTextField_ );
+        final UpdateValueStrategy portTargetStrategy = new UpdateValueStrategy();
+        portTargetStrategy.setConverter( Converters.withExceptionMessage( Converters.getStringToPrimitiveIntegerConverter(), Messages.MainPage_port_illegal ) );
+        portTargetStrategy.setBeforeSetValidator( model.getPortValidator() );
+        final IObservableValue portModelValue = PojoProperties.value( "port" ).observe( model ); //$NON-NLS-1$
+        final UpdateValueStrategy portModelStrategy = new UpdateValueStrategy();
+        portModelStrategy.setConverter( Converters.getPrimitiveIntegerToStringConverter() );
+        dataBindingContext_.bindValue( portTargetValue, portModelValue, portTargetStrategy, portModelStrategy );
+
+        final IObservableValue passwordTargetValue = ComponentProperties.text().observe( passwordField_ );
+        final IObservableValue passwordModelValue = PojoProperties.value( "password" ).observe( model ); //$NON-NLS-1$
+        dataBindingContext_.bindValue( passwordTargetValue, passwordModelValue );
+
+        final IObservableValue confirmedPasswordTargetValue = ComponentProperties.text().observe( confirmedPasswordField_ );
+        final IObservableValue confirmedPasswordModelValue = PojoProperties.value( "confirmedPassword" ).observe( model ); //$NON-NLS-1$
+        dataBindingContext_.bindValue( confirmedPasswordTargetValue, confirmedPasswordModelValue );
+
+        dataBindingContext_.addValidationStatusProvider( model.getPasswordValidationStatusProvider( passwordTargetValue, confirmedPasswordTargetValue ) );
+
+        dataBindingAdapter_ = new WizardPageDataBindingAdapter( this, dataBindingContext_ );
+    }
+
+    /*
+     * @see org.gamegineer.common.ui.dialog.AbstractDialogPage#dispose()
+     */
+    @Override
+    public void dispose()
+    {
+        if( dataBindingAdapter_ != null )
+        {
+            dataBindingAdapter_.dispose();
+            dataBindingAdapter_ = null;
+        }
+
+        if( dataBindingContext_ != null )
+        {
+            dataBindingContext_.dispose();
+            dataBindingContext_ = null;
+        }
+
+        super.dispose();
     }
 }

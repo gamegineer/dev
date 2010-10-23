@@ -1,5 +1,5 @@
 /*
- * HostNetworkTableWizard.java
+ * PrimitiveIntegerToStringConverter.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,41 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 7, 2010 at 11:18:30 PM.
+ * Created on Oct 21, 2010 at 11:17:24 PM.
  */
 
-package org.gamegineer.table.internal.ui.wizards.hostnetworktable;
+package org.gamegineer.table.internal.ui.databinding.conversion;
 
-import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.common.ui.wizard.AbstractWizard;
+import net.jcip.annotations.Immutable;
+import org.eclipse.core.databinding.conversion.Converter;
 
 /**
- * The host network table wizard.
+ * A data binding converter from values of type {@link java.lang.Integer#TYPE}
+ * to values of type {@link java.lang.String}.
  */
-@NotThreadSafe
-public final class HostNetworkTableWizard
-    extends AbstractWizard
+@Immutable
+public final class PrimitiveIntegerToStringConverter
+    extends Converter
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The wizard model. */
-    private final Model model_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code HostNetworkTableWizard} class.
+     * Initializes a new instance of the {@code
+     * PrimitiveIntegerToStringConverter} class.
      */
-    public HostNetworkTableWizard()
+    public PrimitiveIntegerToStringConverter()
     {
-        model_ = new Model();
-
-        setTitle( Messages.HostNetworkTableWizard_title );
+        super( Integer.TYPE, String.class );
     }
 
 
@@ -59,22 +51,12 @@ public final class HostNetworkTableWizard
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.ui.wizard.AbstractWizard#addPages()
+     * @see org.eclipse.core.databinding.conversion.IConverter#convert(java.lang.Object)
      */
     @Override
-    public void addPages()
+    public Object convert(
+        final Object fromObject )
     {
-        addPage( new MainPage() );
-    }
-
-    /**
-     * Gets the wizard model.
-     * 
-     * @return The wizard model; never {@code null}.
-     */
-    /* @NonNull */
-    Model getModel()
-    {
-        return model_;
+        return String.valueOf( fromObject );
     }
 }
