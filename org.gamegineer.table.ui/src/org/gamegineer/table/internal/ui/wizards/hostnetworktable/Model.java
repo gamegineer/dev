@@ -39,8 +39,6 @@ final class Model
     // Fields
     // ======================================================================
 
-    // TODO: Change all password fields to char[].
-
     /** The confirmed password. */
     private String confirmedPassword_;
 
