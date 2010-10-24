@@ -159,19 +159,19 @@ final class MainPage
         dataBindingContext_ = new DataBindingContext();
 
         final IObservableValue playerNameTargetValue = ComponentProperties.text().observe( playerNameTextField_ );
-        final UpdateValueStrategy playerNameTargetStrategy = new UpdateValueStrategy();
-        playerNameTargetStrategy.setBeforeSetValidator( model.getPlayerNameValidator() );
         final IObservableValue playerNameModelValue = PojoProperties.value( "playerName" ).observe( model ); //$NON-NLS-1$
-        dataBindingContext_.bindValue( playerNameTargetValue, playerNameModelValue, playerNameTargetStrategy, null );
+        final UpdateValueStrategy playerNameTargetToModelStrategy = new UpdateValueStrategy();
+        playerNameTargetToModelStrategy.setBeforeSetValidator( model.getPlayerNameValidator() );
+        dataBindingContext_.bindValue( playerNameTargetValue, playerNameModelValue, playerNameTargetToModelStrategy, null );
 
         final IObservableValue portTargetValue = ComponentProperties.text().observe( portTextField_ );
-        final UpdateValueStrategy portTargetStrategy = new UpdateValueStrategy();
-        portTargetStrategy.setConverter( Converters.withExceptionMessage( Converters.getStringToPrimitiveIntegerConverter(), Messages.MainPage_port_illegal ) );
-        portTargetStrategy.setBeforeSetValidator( model.getPortValidator() );
+        final UpdateValueStrategy portModelToTargetStrategy = new UpdateValueStrategy();
+        portModelToTargetStrategy.setConverter( Converters.getPrimitiveIntegerToStringConverter() );
         final IObservableValue portModelValue = PojoProperties.value( "port" ).observe( model ); //$NON-NLS-1$
-        final UpdateValueStrategy portModelStrategy = new UpdateValueStrategy();
-        portModelStrategy.setConverter( Converters.getPrimitiveIntegerToStringConverter() );
-        dataBindingContext_.bindValue( portTargetValue, portModelValue, portTargetStrategy, portModelStrategy );
+        final UpdateValueStrategy portTargetToModelStrategy = new UpdateValueStrategy();
+        portTargetToModelStrategy.setConverter( Converters.withExceptionMessage( Converters.getStringToPrimitiveIntegerConverter(), Messages.MainPage_port_illegal ) );
+        portTargetToModelStrategy.setBeforeSetValidator( model.getPortValidator() );
+        dataBindingContext_.bindValue( portTargetValue, portModelValue, portTargetToModelStrategy, portModelToTargetStrategy );
 
         final IObservableValue passwordTargetValue = ComponentProperties.text().observe( passwordField_ );
         final IObservableValue passwordModelValue = PojoProperties.value( "password" ).observe( model ); //$NON-NLS-1$
