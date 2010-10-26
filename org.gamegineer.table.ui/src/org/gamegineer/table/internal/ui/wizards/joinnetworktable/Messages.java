@@ -45,8 +45,46 @@ final class Messages
     /** The page description. */
     public static String MainPage_description;
 
+    /** The host name label widget mnemonic. */
+    public static String MainPage_hostNameLabel_mnemonic;
+
+    /** The host name label widget text. */
+    public static String MainPage_hostNameLabel_text;
+
+    /** The password label widget mnemonic. */
+    public static String MainPage_passwordLabel_mnemonic;
+
+    /** The password label widget text. */
+    public static String MainPage_passwordLabel_text;
+
+    /** The player name label widget mnemonic. */
+    public static String MainPage_playerNameLabel_mnemonic;
+
+    /** The player name label widget text. */
+    public static String MainPage_playerNameLabel_text;
+
+    /** The port value is illegal. */
+    public static String MainPage_port_illegal;
+
+    /** The port label widget mnemonic. */
+    public static String MainPage_portLabel_mnemonic;
+
+    /** The port label widget text. */
+    public static String MainPage_portLabel_text;
+
     /** The page title. */
     public static String MainPage_title;
+
+    // --- Model ------------------------------------------------------------
+
+    /** The host name is empty. */
+    public static String Model_hostName_empty;
+
+    /** The player name is empty. */
+    public static String Model_playerName_empty;
+
+    /** The port is out of range. */
+    public static String Model_port_outOfRange;
 
 
     // ======================================================================

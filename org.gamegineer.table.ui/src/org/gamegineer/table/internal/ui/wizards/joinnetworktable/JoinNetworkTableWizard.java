@@ -32,6 +32,14 @@ public final class JoinNetworkTableWizard
     extends AbstractWizard
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The wizard model. */
+    private final Model model_;
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
@@ -40,6 +48,8 @@ public final class JoinNetworkTableWizard
      */
     public JoinNetworkTableWizard()
     {
+        model_ = new Model();
+
         setTitle( Messages.JoinNetworkTableWizard_title );
     }
 
@@ -55,5 +65,16 @@ public final class JoinNetworkTableWizard
     public void addPages()
     {
         addPage( new MainPage() );
+    }
+
+    /**
+     * Gets the wizard model.
+     * 
+     * @return The wizard model; never {@code null}.
+     */
+    /* @NonNull */
+    Model getModel()
+    {
+        return model_;
     }
 }
