@@ -95,14 +95,15 @@ final class Model
     }
 
     /**
-     * Gets a validator for the password fields.
+     * Gets a validation status provider for the password fields.
      * 
      * @param passwordValue
      *        The password observable value; must not be {@code null}.
      * @param confirmedPasswordValue
      *        The confirmed password observable value; must not be {@code null}.
      * 
-     * @return A validator for the password fields; never {@code null}.
+     * @return A validation status provider for the password fields; never
+     *         {@code null}.
      */
     /* @NonNull */
     ValidationStatusProvider getPasswordValidationStatusProvider(
