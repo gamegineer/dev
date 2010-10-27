@@ -41,6 +41,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
+import org.gamegineer.common.ui.databinding.swing.SwingRealm;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
@@ -126,6 +127,8 @@ public final class MainFrame
     public void addNotify()
     {
         super.addNotify();
+
+        SwingRealm.installSystemRealm();
 
         bindActions();
         model_.addMainModelListener( this );
@@ -493,6 +496,8 @@ public final class MainFrame
     {
         model_.removeMainModelListener( this );
         actionMediator_.unbindAll();
+
+        SwingRealm.uninstallSystemRealm();
 
         super.removeNotify();
     }
