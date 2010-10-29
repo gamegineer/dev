@@ -28,6 +28,7 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.MultiValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
+import org.gamegineer.table.net.NetworkTableConstants;
 
 /**
  * The host network table wizard model.
@@ -64,7 +65,7 @@ final class Model
         confirmedPassword_ = ""; //$NON-NLS-1$
         password_ = ""; //$NON-NLS-1$
         playerName_ = ""; //$NON-NLS-1$
-        port_ = 21112; // TODO: Refer to appropriate constant from network table model.
+        port_ = NetworkTableConstants.DEFAULT_PORT;
     }
 
 

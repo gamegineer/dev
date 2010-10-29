@@ -25,6 +25,7 @@ import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
+import org.gamegineer.table.net.NetworkTableConstants;
 
 /**
  * The join network table wizard model.
@@ -61,7 +62,7 @@ final class Model
         hostName_ = "localhost"; //$NON-NLS-1$
         password_ = ""; //$NON-NLS-1$
         playerName_ = ""; //$NON-NLS-1$
-        port_ = 21112; // TODO: Refer to appropriate constant from network table model.
+        port_ = NetworkTableConstants.DEFAULT_PORT;
     }
 
 

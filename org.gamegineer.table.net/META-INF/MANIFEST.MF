@@ -8,6 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.gamegineer.table.net
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.6.0.qualifier
+Export-Package: org.gamegineer.table.net;version="0.6.0"
 Import-Package: net.jcip.annotations;version="1.0.0",
  org.gamegineer.common.core.runtime;version="0.6.0",
  org.osgi.framework;version="1.5.0"
