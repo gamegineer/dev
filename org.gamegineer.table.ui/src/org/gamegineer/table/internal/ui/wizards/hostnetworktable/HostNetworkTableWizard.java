@@ -67,6 +67,17 @@ public final class HostNetworkTableWizard
         addPage( new MainPage() );
     }
 
+    /*
+     * @see org.gamegineer.common.ui.wizard.AbstractWizard#dispose()
+     */
+    @Override
+    public void dispose()
+    {
+        model_.dispose();
+
+        super.dispose();
+    }
+
     /**
      * Gets the wizard model.
      * 

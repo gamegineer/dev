@@ -48,6 +48,18 @@ public final class ComponentProperties
     // ======================================================================
 
     /**
+     * Gets a value property for observing the password of a
+     * {@link javax.swing.JPasswordField}.
+     * 
+     * @return A value property for observing the password of a
+     *         {@link javax.swing.JPasswordField}; never {@code null}.
+     */
+    public static IValueProperty password()
+    {
+        return new ComponentPasswordProperty();
+    }
+
+    /**
      * Gets a value property for observing the text of a
      * {@link javax.swing.text.JTextComponent}.
      * 

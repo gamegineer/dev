@@ -28,6 +28,7 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.MultiValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
+import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.net.NetworkTableConstants;
 
 /**
@@ -41,10 +42,10 @@ final class Model
     // ======================================================================
 
     /** The confirmed password. */
-    private String confirmedPassword_;
+    private SecureString confirmedPassword_;
 
     /** The password. */
-    private String password_;
+    private SecureString password_;
 
     /** The player name. */
     private String playerName_;
@@ -62,8 +63,8 @@ final class Model
      */
     Model()
     {
-        confirmedPassword_ = ""; //$NON-NLS-1$
-        password_ = ""; //$NON-NLS-1$
+        confirmedPassword_ = new SecureString();
+        password_ = new SecureString();
         playerName_ = ""; //$NON-NLS-1$
         port_ = NetworkTableConstants.DEFAULT_PORT;
     }
@@ -74,12 +75,21 @@ final class Model
     // ======================================================================
 
     /**
+     * Disposes the resources used by the model.
+     */
+    public void dispose()
+    {
+        confirmedPassword_.dispose();
+        password_.dispose();
+    }
+
+    /**
      * Gets the confirmed password.
      * 
      * @return The confirmed password; never {@code null}.
      */
     /* @NonNull */
-    public String getConfirmedPassword()
+    public SecureString getConfirmedPassword()
     {
         return confirmedPassword_;
     }
@@ -90,7 +100,7 @@ final class Model
      * @return The password; never {@code null}.
      */
     /* @NonNull */
-    public String getPassword()
+    public SecureString getPassword()
     {
         return password_;
     }
@@ -121,8 +131,8 @@ final class Model
             @Override
             protected IStatus validate()
             {
-                final String password = (String)passwordValue.getValue();
-                final String confirmedPassword = (String)confirmedPasswordValue.getValue();
+                final SecureString password = (SecureString)passwordValue.getValue();
+                final SecureString confirmedPassword = (SecureString)confirmedPasswordValue.getValue();
                 if( (password == null) || (confirmedPassword == null) || !password.equals( confirmedPassword ) )
                 {
                     return ValidationStatus.error( Messages.Model_password_unconfirmed );
@@ -213,10 +223,11 @@ final class Model
      */
     public void setConfirmedPassword(
         /* @NonNull */
-        final String confirmedPassword )
+        final SecureString confirmedPassword )
     {
         assert confirmedPassword != null;
 
+        confirmedPassword_.dispose();
         confirmedPassword_ = confirmedPassword;
     }
 
@@ -228,10 +239,11 @@ final class Model
      */
     public void setPassword(
         /* @NonNull */
-        final String password )
+        final SecureString password )
     {
         assert password != null;
 
+        password_.dispose();
         password_ = password;
     }
 

@@ -25,6 +25,7 @@ import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
+import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.net.NetworkTableConstants;
 
 /**
@@ -41,7 +42,7 @@ final class Model
     private String hostName_;
 
     /** The password. */
-    private String password_;
+    private SecureString password_;
 
     /** The player name. */
     private String playerName_;
@@ -60,7 +61,7 @@ final class Model
     Model()
     {
         hostName_ = "localhost"; //$NON-NLS-1$
-        password_ = ""; //$NON-NLS-1$
+        password_ = new SecureString();
         playerName_ = ""; //$NON-NLS-1$
         port_ = NetworkTableConstants.DEFAULT_PORT;
     }
@@ -69,6 +70,14 @@ final class Model
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Disposes the resources used by the model.
+     */
+    public void dispose()
+    {
+        password_.dispose();
+    }
 
     /**
      * Gets the host name.
@@ -112,7 +121,7 @@ final class Model
      * @return The password; never {@code null}.
      */
     /* @NonNull */
-    public String getPassword()
+    public SecureString getPassword()
     {
         return password_;
     }
@@ -212,10 +221,11 @@ final class Model
      */
     public void setPassword(
         /* @NonNull */
-        final String password )
+        final SecureString password )
     {
         assert password != null;
 
+        password_.dispose();
         password_ = password;
     }
 

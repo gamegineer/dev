@@ -173,11 +173,11 @@ final class MainPage
         portTargetToModelStrategy.setBeforeSetValidator( model.getPortValidator() );
         dataBindingContext_.bindValue( portTargetValue, portModelValue, portTargetToModelStrategy, portModelToTargetStrategy );
 
-        final IObservableValue passwordTargetValue = ComponentProperties.text().observe( passwordField_ );
+        final IObservableValue passwordTargetValue = ComponentProperties.password().observe( passwordField_ );
         final IObservableValue passwordModelValue = PojoProperties.value( "password" ).observe( model ); //$NON-NLS-1$
         dataBindingContext_.bindValue( passwordTargetValue, passwordModelValue );
 
-        final IObservableValue confirmedPasswordTargetValue = ComponentProperties.text().observe( confirmedPasswordField_ );
+        final IObservableValue confirmedPasswordTargetValue = ComponentProperties.password().observe( confirmedPasswordField_ );
         final IObservableValue confirmedPasswordModelValue = PojoProperties.value( "confirmedPassword" ).observe( model ); //$NON-NLS-1$
         dataBindingContext_.bindValue( confirmedPasswordTargetValue, confirmedPasswordModelValue );
 

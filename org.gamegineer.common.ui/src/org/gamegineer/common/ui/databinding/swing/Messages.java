@@ -37,6 +37,9 @@ final class Messages
 
     // --- ComponentProperties ----------------------------------------------
 
+    /** The password property was requested for an unsupported component. */
+    public static String ComponentProperties_password_unsupportedComponent;
+
     /** The text property was requested for an unsupported component. */
     public static String ComponentProperties_text_unsupportedComponent;
 
@@ -74,14 +77,32 @@ final class Messages
     // --- ComponentProperties ----------------------------------------------
 
     /**
+     * Gets the formatted message indicating the password property was requested
+     * for an unsupported component.
+     * 
+     * @param source
+     *        The property source; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the password property was
+     *         requested for an unsupported component; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentProperties_password_unsupportedComponent(
+        /* @NonNull */
+        final Object source )
+    {
+        return bind( ComponentProperties_password_unsupportedComponent, source );
+    }
+
+    /**
      * Gets the formatted message indicating the text property was requested for
-     * an unsupported property.
+     * an unsupported component.
      * 
      * @param source
      *        The property source; must not be {@code null}.
      * 
      * @return The formatted message indicating the text property was requested
-     *         for an unsupported property; never {@code null}.
+     *         for an unsupported component; never {@code null}.
      */
     /* @NonNull */
     static String ComponentProperties_text_unsupportedComponent(

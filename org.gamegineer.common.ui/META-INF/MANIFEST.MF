@@ -25,5 +25,6 @@ Import-Package: net.jcip.annotations;version="1.0.0",
  org.eclipse.core.databinding.property.value,
  org.eclipse.osgi.util;version="1.1.0",
  org.gamegineer.common.core.runtime;version="0.6.0",
+ org.gamegineer.common.core.security;version="0.6.0",
  org.osgi.framework;version="1.5.0"
 Require-Bundle: org.eclipse.equinox.common;bundle-version="3.5.1"
