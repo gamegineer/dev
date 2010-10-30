@@ -9,6 +9,7 @@ Bundle-SymbolicName: org.gamegineer.common.core
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.6.0.qualifier
 Export-Package: org.gamegineer.common.core.runtime;version="0.6.0",
+ org.gamegineer.common.core.security;version="0.6.0",
  org.gamegineer.common.core.services.logging;version="0.6.0",
  org.gamegineer.common.core.util;version="0.6.0",
  org.gamegineer.common.core.util.concurrent;version="0.6.0",
