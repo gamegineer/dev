@@ -46,6 +46,9 @@ public abstract class AbstractNetworkTableTestCase
     /** The network table under test in the fixture. */
     private INetworkTable networkTable_;
 
+    /** The network table configuration for use in the fixture. */
+    private INetworkTableConfiguration networkTableConfiguration_;
+
     /** The table for use in the fixture. */
     private ITable table_;
 
@@ -102,6 +105,7 @@ public abstract class AbstractNetworkTableTestCase
         table_ = TableFactory.createTable();
         networkTable_ = createNetworkTable( table_ );
         assertNotNull( networkTable_ );
+        networkTableConfiguration_ = mocksControl_.createMock( INetworkTableConfiguration.class );
     }
 
     /**
@@ -114,6 +118,7 @@ public abstract class AbstractNetworkTableTestCase
     public void tearDown()
         throws Exception
     {
+        networkTableConfiguration_ = null;
         networkTable_ = null;
         table_ = null;
         mocksControl_ = null;
@@ -154,7 +159,7 @@ public abstract class AbstractNetworkTableTestCase
     public void testDisconnect_Connected_FiresNetworkConnectionStateChangedEvent()
         throws Exception
     {
-        networkTable_.host( new NetworkTableConnectionContext() );
+        networkTable_.host( networkTableConfiguration_ );
         final INetworkTableListener listener = mocksControl_.createMock( INetworkTableListener.class );
         listener.networkConnectionStateChanged( EasyMock.notNull( NetworkTableEvent.class ) );
         mocksControl_.replay();
@@ -196,20 +201,20 @@ public abstract class AbstractNetworkTableTestCase
     public void testHost_Connected_ThrowsException()
         throws Exception
     {
-        networkTable_.host( new NetworkTableConnectionContext() );
+        networkTable_.host( networkTableConfiguration_ );
 
-        networkTable_.host( new NetworkTableConnectionContext() );
+        networkTable_.host( networkTableConfiguration_ );
     }
 
     /**
      * Ensures the {@code host} method throws an exception when passed a {@code
-     * null} context.
+     * null} configuration.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
-    public void testHost_Context_Null()
+    public void testHost_Configuration_Null()
         throws Exception
     {
         networkTable_.host( null );
@@ -231,7 +236,7 @@ public abstract class AbstractNetworkTableTestCase
         mocksControl_.replay();
         networkTable_.addNetworkTableListener( listener );
 
-        networkTable_.host( new NetworkTableConnectionContext() );
+        networkTable_.host( networkTableConfiguration_ );
 
         mocksControl_.verify();
     }
@@ -247,20 +252,20 @@ public abstract class AbstractNetworkTableTestCase
     public void testJoin_Connected_ThrowsException()
         throws Exception
     {
-        networkTable_.join( new NetworkTableConnectionContext() );
+        networkTable_.join( networkTableConfiguration_ );
 
-        networkTable_.join( new NetworkTableConnectionContext() );
+        networkTable_.join( networkTableConfiguration_ );
     }
 
     /**
      * Ensures the {@code join} method throws an exception when passed a {@code
-     * null} context.
+     * null} configuration.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
-    public void testJoin_Context_Null()
+    public void testJoin_Configuration_Null()
         throws Exception
     {
         networkTable_.join( null );
@@ -282,7 +287,7 @@ public abstract class AbstractNetworkTableTestCase
         mocksControl_.replay();
         networkTable_.addNetworkTableListener( listener );
 
-        networkTable_.join( new NetworkTableConnectionContext() );
+        networkTable_.join( networkTableConfiguration_ );
 
         mocksControl_.verify();
     }
@@ -308,7 +313,7 @@ public abstract class AbstractNetworkTableTestCase
         networkTable_.addNetworkTableListener( listener1 );
         networkTable_.addNetworkTableListener( listener2 );
 
-        networkTable_.host( new NetworkTableConnectionContext() );
+        networkTable_.host( networkTableConfiguration_ );
 
         mocksControl_.verify();
     }
@@ -349,7 +354,7 @@ public abstract class AbstractNetworkTableTestCase
         listener.networkConnectionStateChanged( EasyMock.notNull( NetworkTableEvent.class ) );
         mocksControl_.replay();
         networkTable_.addNetworkTableListener( listener );
-        networkTable_.host( new NetworkTableConnectionContext() );
+        networkTable_.host( networkTableConfiguration_ );
 
         networkTable_.removeNetworkTableListener( listener );
         networkTable_.disconnect();

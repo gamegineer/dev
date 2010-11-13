@@ -66,19 +66,18 @@ public interface INetworkTable
     /**
      * Hosts the network table.
      * 
-     * @param context
-     *        The context for hosting the network table; must not be {@code
-     *        null}.
+     * @param configuration
+     *        The network table configuration; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
+     *         If {@code configuration} is {@code null}.
      * @throws org.gamegineer.table.net.NetworkTableException
      *         If the connection cannot be established or the network is already
      *         connected.
      */
     public void host(
         /* @NonNull */
-        NetworkTableConnectionContext context )
+        INetworkTableConfiguration configuration )
         throws NetworkTableException;
 
     /**
@@ -92,19 +91,18 @@ public interface INetworkTable
     /**
      * Joins another network table.
      * 
-     * @param context
-     *        The context for joining the network table; must not be {@code
-     *        null}.
+     * @param configuration
+     *        The network table configuration; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
+     *         If {@code configuration} is {@code null}.
      * @throws org.gamegineer.table.net.NetworkTableException
      *         If the connection cannot be established or the network is already
      *         connected.
      */
     public void join(
         /* @NonNull */
-        NetworkTableConnectionContext context )
+        INetworkTableConfiguration configuration )
         throws NetworkTableException;
 
     /**

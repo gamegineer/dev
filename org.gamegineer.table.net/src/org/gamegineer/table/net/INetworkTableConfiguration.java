@@ -1,5 +1,5 @@
 /*
- * NetworkTableConnectionContext.java
+ * INetworkTableConfiguration.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,63 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 4, 2010 at 11:47:54 PM.
+ * Created on Nov 12, 2010 at 9:46:57 PM.
  */
 
 package org.gamegineer.table.net;
 
-import java.net.InetAddress;
-import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
 
 /**
- * A context for establishing a network table connection.
+ * The configuration for a network table.
+ * 
+ * @noextend This interface is not intended to be extended by clients.
+ * 
+ * @noimplement This interface is not intended to be implemented by clients.
  */
-@Immutable
-public final class NetworkTableConnectionContext
+public interface INetworkTableConfiguration
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    // TODO: add fields
-
-
-    // ======================================================================
-    // Constructors
-    // ======================================================================
-
-    /**
-     * Initializes a new instance of the {@code NetworkTableConnectionContext}
-     * class.
-     */
-    public NetworkTableConnectionContext()
-    {
-        super();
-    }
-
-
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Gets the address of the network table.
+     * Gets the host name of the network table.
      * 
      * <p>
-     * When hosting a network table, the return value is the address to which
+     * When hosting a network table, the return value is the host name to which
      * the network table will be bound. When joining a network table, the return
-     * value is the address of the remote network table.
+     * value is the host name of the remote network table.
      * </p>
      * 
-     * @return The address of the network table; never {@code null}.
+     * @return The host name of the network table; never {@code null}.
      */
     /* @NonNull */
-    public InetAddress getAddress()
-    {
-        // TODO
-        return null;
-    }
+    public String getHostName();
 
     /**
      * Gets the name of the local player.
@@ -86,11 +62,7 @@ public final class NetworkTableConnectionContext
      * @return The name of the local player; never {@code null}.
      */
     /* @NonNull */
-    public String getLocalPlayerName()
-    {
-        // TODO
-        return null;
-    }
+    public String getLocalPlayerName();
 
     /**
      * Gets the password used to authenticate the connection.
@@ -106,11 +78,7 @@ public final class NetworkTableConnectionContext
      *         null}.
      */
     /* @NonNull */
-    public SecureString getPassword()
-    {
-        // TODO
-        return null;
-    }
+    public SecureString getPassword();
 
     /**
      * Gets the port of the network table.
@@ -123,9 +91,5 @@ public final class NetworkTableConnectionContext
      * 
      * @return The port of the network table; never {@code null}.
      */
-    public int getPort()
-    {
-        // TODO
-        return 0;
-    }
+    public int getPort();
 }

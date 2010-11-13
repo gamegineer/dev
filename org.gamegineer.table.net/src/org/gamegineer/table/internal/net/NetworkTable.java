@@ -29,8 +29,8 @@ import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.net.INetworkTable;
+import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.INetworkTableListener;
-import org.gamegineer.table.net.NetworkTableConnectionContext;
 import org.gamegineer.table.net.NetworkTableEvent;
 import org.gamegineer.table.net.NetworkTableException;
 
@@ -128,14 +128,14 @@ public final class NetworkTable
     }
 
     /*
-     * @see org.gamegineer.table.net.INetworkTable#host(org.gamegineer.table.net.NetworkTableConnectionContext)
+     * @see org.gamegineer.table.net.INetworkTable#host(org.gamegineer.table.net.INetworkTableConfiguration)
      */
     @Override
     public void host(
-        final NetworkTableConnectionContext context )
+        final INetworkTableConfiguration configuration )
         throws NetworkTableException
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
+        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
         if( isConnected_.compareAndSet( false, true ) )
         {
@@ -156,15 +156,12 @@ public final class NetworkTable
         return isConnected_.get();
     }
 
-    /*
-     * @see org.gamegineer.table.net.INetworkTable#join(org.gamegineer.table.net.NetworkTableConnectionContext)
-     */
     @Override
     public void join(
-        final NetworkTableConnectionContext context )
+        final INetworkTableConfiguration configuration )
         throws NetworkTableException
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
+        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
         if( isConnected_.compareAndSet( false, true ) )
         {
