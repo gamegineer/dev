@@ -32,6 +32,8 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.swing.BorderFactory;
@@ -179,6 +181,18 @@ public abstract class AbstractDialog
         super.configureShell( shell );
 
         shell.setTitle( title_ );
+
+        shell.setDefaultCloseOperation( JDialog.DO_NOTHING_ON_CLOSE );
+        shell.addWindowListener( new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(
+                @SuppressWarnings( "unused" )
+                final WindowEvent event )
+            {
+                cancelPressed();
+            }
+        } );
     }
 
     /**
