@@ -43,6 +43,12 @@ final class Messages
     /** The mnemonic for the Back button. */
     public static String WizardDialog_backButton_mnemonic;
 
+    /** An error occurred while executing the wizard task. */
+    public static String WizardDialog_executeTask_error;
+
+    /** Interrupted while waiting for the wizard task to complete. */
+    public static String WizardDialog_executeTask_interrupted;
+
     /** The label for the Finish button. */
     public static String WizardDialog_finishButton_label;
 

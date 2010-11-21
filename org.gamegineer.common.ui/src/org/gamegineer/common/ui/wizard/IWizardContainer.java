@@ -22,13 +22,11 @@
 package org.gamegineer.common.ui.wizard;
 
 import java.awt.Window;
-import org.gamegineer.common.ui.operation.IRunnableContext;
 
 /**
  * The user interface container that hosts a wizard.
  */
 public interface IWizardContainer
-    extends IRunnableContext
 {
     // ======================================================================
     // Methods
@@ -46,6 +44,26 @@ public interface IWizardContainer
     public void activatePage(
         /* @NonNull */
         IWizardPage page );
+
+    /**
+     * Executes the specified wizard task asynchronously.
+     * 
+     * <p>
+     * If the task is not cancelled and completes without error, the task result
+     * is interpreted as a wizard button identifier. If the result is not
+     * {@code null}, the specified button is pressed just as if the user had
+     * pressed it. If the result is {@code null}, no action is taken.
+     * </p>
+     * 
+     * @param task
+     *        The wizard task to execute; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code task} is {@code null}.
+     */
+    public void executeTask(
+        /* @NonNull */
+        WizardTask<?> task );
 
     /**
      * Gets the active page displayed in the container.

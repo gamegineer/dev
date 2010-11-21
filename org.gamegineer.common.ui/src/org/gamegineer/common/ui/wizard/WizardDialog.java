@@ -25,18 +25,27 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Window;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.internal.ui.Loggers;
 import org.gamegineer.common.ui.dialog.AbstractBannerDialog;
+import org.gamegineer.common.ui.dialog.ComponentEnableState;
 import org.gamegineer.common.ui.dialog.DialogConstants;
 import org.gamegineer.common.ui.dialog.DialogMessage;
-import org.gamegineer.common.ui.operation.IRunnableWithProgress;
 import org.gamegineer.common.ui.window.WindowConstants;
 
 /**
@@ -51,23 +60,29 @@ public final class WizardDialog
     // Fields
     // ======================================================================
 
-    /** The identifier for the Back button. */
-    private static final String BACK_BUTTON_ID = "back"; //$NON-NLS-1$
+    /** The minimum dialog height in dialog units. */
+    private static final int MINIMUM_DIALOG_HEIGHT = 300;
 
-    /** The identifier for the Finish button. */
-    private static final String FINISH_BUTTON_ID = "finish"; //$NON-NLS-1$
-
-    /** The identifier for the Next button. */
-    private static final String NEXT_BUTTON_ID = "next"; //$NON-NLS-1$
+    /** The minimum dialog width in dialog units. */
+    private static final int MINIMUM_DIALOG_WIDTH = 350;
 
     /** The active wizard page. */
     private IWizardPage activePage_;
+
+    /** The component enable state before executing the active wizard task. */
+    private ComponentEnableState componentEnableState_;
 
     /** Indicates the wizard is in the process of moving to the previous page. */
     private boolean isMovingToPreviousPage_;
 
     /** The container for all page content. */
     private Container pageContainer_;
+
+    /** The wizard progress monitor component. */
+    private ProgressMonitorComponent progressMonitorComponent_;
+
+    /** The active wizard task. */
+    private WizardTask<?> task_;
 
     /** The wizard hosted in the dialog. */
     private final IWizard wizard_;
@@ -99,8 +114,11 @@ public final class WizardDialog
         wizard.setContainer( this );
 
         activePage_ = null;
+        componentEnableState_ = null;
         isMovingToPreviousPage_ = false;
         pageContainer_ = null;
+        progressMonitorComponent_ = null;
+        task_ = null;
         wizard_ = wizard;
     }
 
@@ -161,6 +179,39 @@ public final class WizardDialog
         }
     }
 
+    /**
+     * Begins the execution of the specified wizard task.
+     * 
+     * @param task
+     *        The wizard task; must not be {@code null}.
+     */
+    private void beginExecuteTask(
+        /* @NonNull */
+        final WizardTask<?> task )
+    {
+        assert task != null;
+
+        assert task_ == null;
+        task_ = task;
+
+        componentEnableState_ = ComponentEnableState.disable( pageContainer_ );
+        updateButtons();
+
+        getShell().setCursor( Cursor.getPredefinedCursor( Cursor.WAIT_CURSOR ) );
+        if( task.isCancellable() )
+        {
+            final JButton cancelButton = getButton( DialogConstants.CANCEL_BUTTON_ID );
+            assert cancelButton != null;
+            cancelButton.setCursor( Cursor.getDefaultCursor() );
+        }
+
+        if( wizard_.needsProgressMonitor() )
+        {
+            progressMonitorComponent_.setVisible( true );
+            task.addPropertyChangeListener( progressMonitorComponent_ );
+        }
+    }
+
     /*
      * @see org.gamegineer.common.ui.dialog.AbstractDialog#buttonPressed(java.lang.String)
      */
@@ -168,15 +219,15 @@ public final class WizardDialog
     protected void buttonPressed(
         final String id )
     {
-        if( id.equals( BACK_BUTTON_ID ) )
+        if( id.equals( WizardConstants.BACK_BUTTON_ID ) )
         {
             backPressed();
         }
-        else if( id.equals( NEXT_BUTTON_ID ) )
+        else if( id.equals( WizardConstants.NEXT_BUTTON_ID ) )
         {
             nextPressed();
         }
-        else if( id.equals( FINISH_BUTTON_ID ) )
+        else if( id.equals( WizardConstants.FINISH_BUTTON_ID ) )
         {
             finishPressed();
         }
@@ -192,10 +243,23 @@ public final class WizardDialog
     @Override
     protected void cancelPressed()
     {
-        if( wizard_.performCancel() )
+        if( task_ != null )
         {
-            setReturnCode( WindowConstants.RETURN_CODE_CANCEL );
-            close();
+            if( task_.isCancellable() )
+            {
+                final JButton cancelButton = getButton( DialogConstants.CANCEL_BUTTON_ID );
+                cancelButton.setEnabled( false );
+                cancelButton.setCursor( Cursor.getPredefinedCursor( Cursor.WAIT_CURSOR ) );
+                task_.cancel( task_.isInterruptible() );
+            }
+        }
+        else
+        {
+            if( wizard_.performCancel() )
+            {
+                setReturnCode( WindowConstants.RETURN_CODE_CANCEL );
+                close();
+            }
         }
     }
 
@@ -252,14 +316,14 @@ public final class WizardDialog
 
         if( wizard_.needsPreviousAndNextButtons() )
         {
-            final JButton backButton = createButton( parent, BACK_BUTTON_ID, Messages.WizardDialog_backButton_label, false );
+            final JButton backButton = createButton( parent, WizardConstants.BACK_BUTTON_ID, Messages.WizardDialog_backButton_label, false );
             backButton.setMnemonic( Messages.WizardDialog_backButton_mnemonic.charAt( 0 ) );
             hGroup.addComponent( backButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE );
             vGroup.addComponent( backButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE );
 
             hGroup.addGap( convertWidthInDlusToPixels( 1 ) );
 
-            final JButton nextButton = createButton( parent, NEXT_BUTTON_ID, Messages.WizardDialog_nextButton_label, false );
+            final JButton nextButton = createButton( parent, WizardConstants.NEXT_BUTTON_ID, Messages.WizardDialog_nextButton_label, false );
             nextButton.setMnemonic( Messages.WizardDialog_nextButton_mnemonic.charAt( 0 ) );
             hGroup.addComponent( nextButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE );
             vGroup.addComponent( nextButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE );
@@ -267,7 +331,7 @@ public final class WizardDialog
             hGroup.addGap( hGap );
         }
 
-        final JButton finishButton = createButton( parent, FINISH_BUTTON_ID, Messages.WizardDialog_finishButton_label, true );
+        final JButton finishButton = createButton( parent, WizardConstants.FINISH_BUTTON_ID, Messages.WizardDialog_finishButton_label, true );
         finishButton.setMnemonic( Messages.WizardDialog_finishButton_mnemonic.charAt( 0 ) );
         hGroup.addComponent( finishButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE );
         vGroup.addComponent( finishButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE );
@@ -293,7 +357,28 @@ public final class WizardDialog
     {
         wizard_.addPages();
 
-        pageContainer_ = (Container)super.createContentArea( parent );
+        final Container container = (Container)super.createContentArea( parent );
+        final GroupLayout layout = new GroupLayout( container );
+        container.setLayout( layout );
+
+        pageContainer_ = new JPanel();
+        pageContainer_.setLayout( new BorderLayout() );
+        container.add( pageContainer_ );
+
+        progressMonitorComponent_ = new ProgressMonitorComponent();
+        progressMonitorComponent_.setBorder( BorderFactory.createEmptyBorder( convertHeightInDlusToPixels( DialogConstants.VERTICAL_MARGIN ), 0, 0, 0 ) );
+        progressMonitorComponent_.setVisible( false );
+        container.add( progressMonitorComponent_ );
+
+        final GroupLayout.Group hGroup = layout.createParallelGroup();
+        hGroup.addComponent( pageContainer_ );
+        hGroup.addComponent( progressMonitorComponent_ );
+        final GroupLayout.Group vGroup = layout.createSequentialGroup();
+        vGroup.addComponent( pageContainer_ );
+        vGroup.addComponent( progressMonitorComponent_, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE );
+        layout.setHorizontalGroup( hGroup );
+        layout.setVerticalGroup( vGroup );
+        layout.setHonorsVisibility( progressMonitorComponent_, Boolean.FALSE );
 
         wizard_.create( pageContainer_ );
         for( final IWizardPage page : wizard_.getPages() )
@@ -301,7 +386,86 @@ public final class WizardDialog
             page.setVisible( false );
         }
 
-        return pageContainer_;
+        return container;
+    }
+
+    /**
+     * Ends the execution of the active wizard task.
+     */
+    private void endExecuteTask()
+    {
+        assert SwingUtilities.isEventDispatchThread();
+        assert task_ != null;
+
+        final WizardTask<?> task = task_;
+        task_ = null;
+
+        if( wizard_.needsProgressMonitor() )
+        {
+            task.removePropertyChangeListener( progressMonitorComponent_ );
+            progressMonitorComponent_.setVisible( false );
+        }
+
+        componentEnableState_.restore();
+        componentEnableState_ = null;
+        updateButtons();
+
+        getShell().setCursor( null );
+        if( task.isCancellable() )
+        {
+            final JButton cancelButton = getButton( DialogConstants.CANCEL_BUTTON_ID );
+            assert cancelButton != null;
+            cancelButton.setCursor( null );
+        }
+
+        try
+        {
+            final String buttonId = task.get();
+            if( buttonId != null )
+            {
+                buttonPressed( buttonId );
+            }
+        }
+        catch( final CancellationException e )
+        {
+            // do nothing
+        }
+        catch( final ExecutionException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.WizardDialog_executeTask_error, e );
+        }
+        catch( final InterruptedException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.WizardDialog_executeTask_interrupted, e );
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    /*
+     * @see org.gamegineer.common.ui.wizard.IWizardContainer#executeTask(org.gamegineer.common.ui.wizard.WizardTask)
+     */
+    @Override
+    public void executeTask(
+        final WizardTask<?> task )
+    {
+        assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
+
+        beginExecuteTask( task );
+
+        task.addPropertyChangeListener( new PropertyChangeListener()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void propertyChange(
+                final PropertyChangeEvent event )
+            {
+                if( WizardTask.STATE_PROPERTY_NAME.equals( event.getPropertyName() ) && (event.getNewValue() == SwingWorker.StateValue.DONE) )
+                {
+                    endExecuteTask();
+                }
+            }
+        } );
+        task.execute();
     }
 
     /**
@@ -325,6 +489,18 @@ public final class WizardDialog
         return activePage_;
     }
 
+    /*
+     * @see org.gamegineer.common.ui.window.AbstractWindow#getInitialSize()
+     */
+    @Override
+    protected Dimension getInitialSize()
+    {
+        final Dimension initialSize = super.getInitialSize();
+        initialSize.width = Math.max( convertWidthInDlusToPixels( MINIMUM_DIALOG_WIDTH ), initialSize.width );
+        initialSize.height = Math.max( convertHeightInDlusToPixels( MINIMUM_DIALOG_HEIGHT ), initialSize.height );
+        return initialSize;
+    }
+
     /**
      * Invoked when the Next button is pressed.
      */
@@ -335,20 +511,6 @@ public final class WizardDialog
         {
             activatePage( nextPage );
         }
-    }
-
-    /*
-     * @see org.gamegineer.common.ui.operation.IRunnableContext#run(org.gamegineer.common.ui.operation.IRunnableWithProgress, boolean, boolean)
-     */
-    @Override
-    @SuppressWarnings( "unused" )
-    public void run(
-        final IRunnableWithProgress runnable,
-        final boolean isCancellable,
-        final boolean fork )
-        throws InterruptedException, ExecutionException
-    {
-        // TODO Auto-generated method stub
     }
 
     /**
@@ -401,23 +563,28 @@ public final class WizardDialog
     {
         boolean canMoveToNextPage = false;
         final boolean canFinish = wizard_.canFinish();
+        final boolean isTaskIdle = (task_ == null);
 
-        final JButton backButton = getButton( BACK_BUTTON_ID );
+        final JButton backButton = getButton( WizardConstants.BACK_BUTTON_ID );
         if( backButton != null )
         {
-            backButton.setEnabled( activePage_.getPreviousPage() != null );
+            backButton.setEnabled( isTaskIdle && (activePage_.getPreviousPage() != null) );
         }
 
-        final JButton nextButton = getButton( NEXT_BUTTON_ID );
+        final JButton nextButton = getButton( WizardConstants.NEXT_BUTTON_ID );
         if( nextButton != null )
         {
             canMoveToNextPage = activePage_.canMoveToNextPage();
-            nextButton.setEnabled( canMoveToNextPage );
+            nextButton.setEnabled( isTaskIdle && canMoveToNextPage );
         }
 
-        final JButton finishButton = getButton( FINISH_BUTTON_ID );
+        final JButton finishButton = getButton( WizardConstants.FINISH_BUTTON_ID );
         assert finishButton != null;
-        finishButton.setEnabled( canFinish );
+        finishButton.setEnabled( isTaskIdle && canFinish );
+
+        final JButton cancelButton = getButton( DialogConstants.CANCEL_BUTTON_ID );
+        assert cancelButton != null;
+        cancelButton.setEnabled( isTaskIdle || task_.isCancellable() );
 
         getShell().getRootPane().setDefaultButton( (canMoveToNextPage && !canFinish) ? nextButton : finishButton );
     }
