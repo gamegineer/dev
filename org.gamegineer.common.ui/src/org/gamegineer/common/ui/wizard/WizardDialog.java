@@ -162,6 +162,15 @@ public final class WizardDialog
         update();
     }
 
+    /*
+     * @see org.gamegineer.common.ui.wizard.IWizardContainer#back()
+     */
+    @Override
+    public void back()
+    {
+        pressButton( WizardConstants.BACK_BUTTON_ID );
+    }
+
     /**
      * Invoked when the Back button is pressed.
      */
@@ -231,6 +240,15 @@ public final class WizardDialog
         {
             cancelPressed();
         }
+    }
+
+    /*
+     * @see org.gamegineer.common.ui.wizard.IWizardContainer#cancel()
+     */
+    @Override
+    public void cancel()
+    {
+        pressButton( DialogConstants.CANCEL_BUTTON_ID );
     }
 
     /*
@@ -413,19 +431,6 @@ public final class WizardDialog
             assert cancelButton != null;
             cancelButton.setCursor( null );
         }
-
-        final String buttonId = task.getPressedWizardButtonId();
-        if( buttonId != null )
-        {
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    buttonPressed( buttonId );
-                }
-            } );
-        }
     }
 
     /*
@@ -453,6 +458,15 @@ public final class WizardDialog
             }
         } );
         task.execute();
+    }
+
+    /*
+     * @see org.gamegineer.common.ui.wizard.IWizardContainer#finish()
+     */
+    @Override
+    public void finish()
+    {
+        pressButton( WizardConstants.FINISH_BUTTON_ID );
     }
 
     /**
@@ -488,6 +502,15 @@ public final class WizardDialog
         return initialSize;
     }
 
+    /*
+     * @see org.gamegineer.common.ui.wizard.IWizardContainer#next()
+     */
+    @Override
+    public void next()
+    {
+        pressButton( WizardConstants.NEXT_BUTTON_ID );
+    }
+
     /**
      * Invoked when the Next button is pressed.
      */
@@ -498,6 +521,39 @@ public final class WizardDialog
         {
             activatePage( nextPage );
         }
+    }
+
+    /**
+     * Simulates pressing the specified button.
+     * 
+     * <p>
+     * This method does nothing if the specified button does not exist or is not
+     * enabled. The button press is submitted to the window's event queue and
+     * will be processed as soon as possible.
+     * </p>
+     * 
+     * @param id
+     *        The button identifier; must not be {@code null}.
+     */
+    private void pressButton(
+        /* @NonNull */
+        final String id )
+    {
+        assert id != null;
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                final JButton button = getButton( id );
+                if( (button != null) && button.isEnabled() )
+                {
+                    buttonPressed( id );
+                }
+            }
+        } );
     }
 
     /**

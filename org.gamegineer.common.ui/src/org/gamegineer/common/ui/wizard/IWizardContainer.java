@@ -46,6 +46,26 @@ public interface IWizardContainer
         IWizardPage page );
 
     /**
+     * Presses the container Back button.
+     * 
+     * <p>
+     * This method does nothing if the Back button does not exist or is not
+     * enabled.
+     * </p>
+     */
+    public void back();
+
+    /**
+     * Presses the container Cancel button.
+     * 
+     * <p>
+     * This method does nothing if the Cancel button does not exist or is not
+     * enabled.
+     * </p>
+     */
+    public void cancel();
+
+    /**
      * Executes the specified wizard task asynchronously.
      * 
      * <p>
@@ -66,6 +86,16 @@ public interface IWizardContainer
         WizardTask<?, ?> task );
 
     /**
+     * Presses the container Finish button.
+     * 
+     * <p>
+     * This method does nothing if the Finish button does not exist or is not
+     * enabled.
+     * </p>
+     */
+    public void finish();
+
+    /**
      * Gets the active page displayed in the container.
      * 
      * @return The active page displayed in the container or {@code null} if no
@@ -82,6 +112,16 @@ public interface IWizardContainer
      */
     /* @Nullable */
     public Window getShell();
+
+    /**
+     * Presses the container Next button.
+     * 
+     * <p>
+     * This method does nothing if the Next button does not exist or is not
+     * enabled.
+     * </p>
+     */
+    public void next();
 
     /**
      * Updates the container banner (title, description, and image) based on the

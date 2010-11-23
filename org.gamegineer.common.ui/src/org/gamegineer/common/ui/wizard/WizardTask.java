@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.ui.wizard;
 
-import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.SwingWorker;
 import net.jcip.annotations.ThreadSafe;
 
@@ -67,12 +66,6 @@ public abstract class WizardTask<T, V>
     /** Indicates the task is interruptible. */
     private final boolean isInterruptible_;
 
-    /**
-     * The identifier of the button that should be pressed when the task is
-     * complete.
-     */
-    private final AtomicReference<String> pressedButtonId_;
-
 
     // ======================================================================
     // Constructors
@@ -116,27 +109,12 @@ public abstract class WizardTask<T, V>
     {
         isCancellable_ = isCancellable;
         isInterruptible_ = isInterruptible;
-        pressedButtonId_ = new AtomicReference<String>( null );
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Gets the identifier of the wizard button that should be pressed when the
-     * task is complete.
-     * 
-     * @return The identifier of the wizard button that should be pressed when
-     *         the task is complete or {@code null} if no button should be
-     *         pressed.
-     */
-    /* @Nullable */
-    public final String getPressedWizardButtonId()
-    {
-        return pressedButtonId_.get();
-    }
 
     /**
      * Indicates the task is cancellable.
@@ -157,24 +135,5 @@ public abstract class WizardTask<T, V>
     public final boolean isInterruptible()
     {
         return isInterruptible_;
-    }
-
-    /**
-     * Sets the identifier of the button that should be pressed when the task is
-     * complete.
-     * 
-     * <p>
-     * This method must be called before the {@link #done()} method completes.
-     * </p>
-     * 
-     * @param buttonId
-     *        The identifier of the button that should be pressed when the task
-     *        is complete or {@code null} if no button should be pressed.
-     */
-    protected final void pressWizardButton(
-        /* @Nullable */
-        final String buttonId )
-    {
-        pressedButtonId_.set( buttonId );
     }
 }
