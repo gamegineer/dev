@@ -63,7 +63,7 @@ public interface IWizardContainer
      */
     public void executeTask(
         /* @NonNull */
-        WizardTask<?> task );
+        WizardTask<?, ?> task );
 
     /**
      * Gets the active page displayed in the container.

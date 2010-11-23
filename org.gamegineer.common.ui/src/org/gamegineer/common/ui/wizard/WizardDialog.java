@@ -30,9 +30,6 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -41,7 +38,6 @@ import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.common.internal.ui.Loggers;
 import org.gamegineer.common.ui.dialog.AbstractBannerDialog;
 import org.gamegineer.common.ui.dialog.ComponentEnableState;
 import org.gamegineer.common.ui.dialog.DialogConstants;
@@ -82,7 +78,7 @@ public final class WizardDialog
     private ProgressMonitorComponent progressMonitorComponent_;
 
     /** The active wizard task. */
-    private WizardTask<?> task_;
+    private WizardTask<?, ?> task_;
 
     /** The wizard hosted in the dialog. */
     private final IWizard wizard_;
@@ -187,7 +183,7 @@ public final class WizardDialog
      */
     private void beginExecuteTask(
         /* @NonNull */
-        final WizardTask<?> task )
+        final WizardTask<?, ?> task )
     {
         assert task != null;
 
@@ -397,7 +393,7 @@ public final class WizardDialog
         assert SwingUtilities.isEventDispatchThread();
         assert task_ != null;
 
-        final WizardTask<?> task = task_;
+        final WizardTask<?, ?> task = task_;
         task_ = null;
 
         if( wizard_.needsProgressMonitor() )
@@ -418,26 +414,17 @@ public final class WizardDialog
             cancelButton.setCursor( null );
         }
 
-        try
+        final String buttonId = task.getPressedWizardButtonId();
+        if( buttonId != null )
         {
-            final String buttonId = task.get();
-            if( buttonId != null )
+            SwingUtilities.invokeLater( new Runnable()
             {
-                buttonPressed( buttonId );
-            }
-        }
-        catch( final CancellationException e )
-        {
-            // do nothing
-        }
-        catch( final ExecutionException e )
-        {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.WizardDialog_executeTask_error, e );
-        }
-        catch( final InterruptedException e )
-        {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.WizardDialog_executeTask_interrupted, e );
-            Thread.currentThread().interrupt();
+                @Override
+                public void run()
+                {
+                    buttonPressed( buttonId );
+                }
+            } );
         }
     }
 
@@ -446,7 +433,7 @@ public final class WizardDialog
      */
     @Override
     public void executeTask(
-        final WizardTask<?> task )
+        final WizardTask<?, ?> task )
     {
         assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
 
