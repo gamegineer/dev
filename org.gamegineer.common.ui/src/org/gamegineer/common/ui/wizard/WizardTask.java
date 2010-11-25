@@ -21,17 +21,13 @@
 
 package org.gamegineer.common.ui.wizard;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.SwingWorker;
 import net.jcip.annotations.ThreadSafe;
 
 /**
  * A task to be executed within a wizard.
- * 
- * <p>
- * The {@code doInBackground} method is expected to return the identifier of the
- * button to be pressed when the task is finished or {@code null} to take no
- * action.
- * </p>
  * 
  * <p>
  * A task that is interruptible will have its thread interrupted upon
@@ -54,11 +50,17 @@ public abstract class WizardTask<T, V>
     // Fields
     // ======================================================================
 
+    /** The name of the {@code description} property. */
+    public static final String DESCRIPTION_PROPERTY_NAME = "description"; //$NON-NLS-1$
+
     /** The name of the {@code progress} property. */
     public static final String PROGRESS_PROPERTY_NAME = "progress"; //$NON-NLS-1$
 
     /** The name of the {@code state} property. */
     public static final String STATE_PROPERTY_NAME = "state"; //$NON-NLS-1$
+
+    /** The current task description. */
+    private final AtomicReference<String> description_;
 
     /** Indicates the task is cancellable. */
     private final boolean isCancellable_;
@@ -107,6 +109,7 @@ public abstract class WizardTask<T, V>
         final boolean isCancellable,
         final boolean isInterruptible )
     {
+        description_ = new AtomicReference<String>( "" ); //$NON-NLS-1$
         isCancellable_ = isCancellable;
         isInterruptible_ = isInterruptible;
     }
@@ -115,6 +118,17 @@ public abstract class WizardTask<T, V>
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the current task description.
+     * 
+     * @return The current task description; never {@code null}.
+     */
+    /* @NonNull */
+    public final String getDescription()
+    {
+        return description_.get();
+    }
 
     /**
      * Indicates the task is cancellable.
@@ -135,5 +149,24 @@ public abstract class WizardTask<T, V>
     public final boolean isInterruptible()
     {
         return isInterruptible_;
+    }
+
+    /**
+     * Sets the current task description.
+     * 
+     * @param description
+     *        The current task description; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code description} is {@code null}.
+     */
+    protected final void setDescription(
+        /* @NonNull */
+        final String description )
+    {
+        assertArgumentNotNull( description, "description" ); //$NON-NLS-1$
+
+        final String oldDescription = description_.getAndSet( description );
+        firePropertyChange( DESCRIPTION_PROPERTY_NAME, oldDescription, description );
     }
 }

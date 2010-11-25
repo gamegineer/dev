@@ -92,13 +92,17 @@ final class ProgressMonitorComponent
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     @Override
+    @SuppressWarnings( "boxing" )
     public void propertyChange(
         final PropertyChangeEvent event )
     {
         if( WizardTask.PROGRESS_PROPERTY_NAME.equals( event.getPropertyName() ) )
         {
-            final Integer progress = (Integer)event.getNewValue();
-            progressBar_.setValue( progress.intValue() );
+            progressBar_.setValue( (Integer)event.getNewValue() );
+        }
+        else if( WizardTask.DESCRIPTION_PROPERTY_NAME.equals( event.getPropertyName() ) )
+        {
+            label_.setText( (String)event.getNewValue() );
         }
     }
 
@@ -111,8 +115,7 @@ final class ProgressMonitorComponent
     {
         if( isVisible )
         {
-            // TODO: set text based on task name
-            label_.setText( "TODO" ); //$NON-NLS-1$
+            label_.setText( "" ); //$NON-NLS-1$
             progressBar_.setValue( 0 );
         }
 
