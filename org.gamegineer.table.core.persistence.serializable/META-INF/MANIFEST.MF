@@ -8,4 +8,3 @@ Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.6.0.qualifier
 Import-Package: org.gamegineer.common.persistence.schemes.serializable;version="0.6.0"
 Fragment-Host: org.gamegineer.table.core;bundle-version="0.6.0"
-Service-Component: OSGI-INF/persistenceDelegates.xml
