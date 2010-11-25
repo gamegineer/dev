@@ -1,5 +1,5 @@
 /*
- * WizardTask.java
+ * RunnableTask.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -19,7 +19,7 @@
  * Created on Nov 17, 2010 at 10:24:27 PM.
  */
 
-package org.gamegineer.common.ui.wizard;
+package org.gamegineer.common.ui.operation;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.atomic.AtomicReference;
@@ -27,7 +27,7 @@ import javax.swing.SwingWorker;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * A task to be executed within a wizard.
+ * An operation to be executed asynchronously within a user interface component.
  * 
  * <p>
  * A task that is interruptible will have its thread interrupted upon
@@ -43,7 +43,7 @@ import net.jcip.annotations.ThreadSafe;
  *        {@code publish} and {@code process} methods.
  */
 @ThreadSafe
-public abstract class WizardTask<T, V>
+public abstract class RunnableTask<T, V>
     extends SwingWorker<T, V>
 {
     // ======================================================================
@@ -74,29 +74,29 @@ public abstract class WizardTask<T, V>
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code WizardTask} class that is both
+     * Initializes a new instance of the {@code RunnableTask} class that is both
      * cancellable and interruptible.
      */
-    protected WizardTask()
+    protected RunnableTask()
     {
         this( true );
     }
 
     /**
-     * Initializes a new instance of the {@code WizardTask} class that is
+     * Initializes a new instance of the {@code RunnableTask} class that is
      * interruptible and using the specified cancellable indicator.
      * 
      * @param isCancellable
      *        {@code true} if the task is cancellable; otherwise {@code false}.
      */
-    protected WizardTask(
+    protected RunnableTask(
         final boolean isCancellable )
     {
         this( isCancellable, true );
     }
 
     /**
-     * Initializes a new instance of the {@code WizardTask} class using the
+     * Initializes a new instance of the {@code RunnableTask} class using the
      * specified cancellable and interruptible indicators.
      * 
      * @param isCancellable
@@ -105,7 +105,7 @@ public abstract class WizardTask<T, V>
      *        {@code true} if the task is interruptible; otherwise {@code false}
      *        .
      */
-    protected WizardTask(
+    protected RunnableTask(
         final boolean isCancellable,
         final boolean isInterruptible )
     {

@@ -42,6 +42,7 @@ import org.gamegineer.common.ui.dialog.AbstractBannerDialog;
 import org.gamegineer.common.ui.dialog.ComponentEnableState;
 import org.gamegineer.common.ui.dialog.DialogConstants;
 import org.gamegineer.common.ui.dialog.DialogMessage;
+import org.gamegineer.common.ui.operation.RunnableTask;
 import org.gamegineer.common.ui.window.WindowConstants;
 
 /**
@@ -77,8 +78,8 @@ public final class WizardDialog
     /** The wizard progress monitor component. */
     private ProgressMonitorComponent progressMonitorComponent_;
 
-    /** The active wizard task. */
-    private WizardTask<?, ?> task_;
+    /** The active task. */
+    private RunnableTask<?, ?> task_;
 
     /** The wizard hosted in the dialog. */
     private final IWizard wizard_;
@@ -185,14 +186,14 @@ public final class WizardDialog
     }
 
     /**
-     * Begins the execution of the specified wizard task.
+     * Begins the execution of the specified task.
      * 
      * @param task
-     *        The wizard task; must not be {@code null}.
+     *        The task; must not be {@code null}.
      */
     private void beginExecuteTask(
         /* @NonNull */
-        final WizardTask<?, ?> task )
+        final RunnableTask<?, ?> task )
     {
         assert task != null;
 
@@ -404,14 +405,14 @@ public final class WizardDialog
     }
 
     /**
-     * Ends the execution of the active wizard task.
+     * Ends the execution of the active task.
      */
     private void endExecuteTask()
     {
         assert SwingUtilities.isEventDispatchThread();
         assert task_ != null;
 
-        final WizardTask<?, ?> task = task_;
+        final RunnableTask<?, ?> task = task_;
         task_ = null;
 
         if( wizard_.needsProgressMonitor() )
@@ -434,11 +435,11 @@ public final class WizardDialog
     }
 
     /*
-     * @see org.gamegineer.common.ui.wizard.IWizardContainer#executeTask(org.gamegineer.common.ui.wizard.WizardTask)
+     * @see org.gamegineer.common.ui.operation.IRunnableContext#executeTask(org.gamegineer.common.ui.operation.RunnableTask)
      */
     @Override
     public void executeTask(
-        final WizardTask<?, ?> task )
+        final RunnableTask<?, ?> task )
     {
         assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
 
@@ -451,7 +452,7 @@ public final class WizardDialog
             public void propertyChange(
                 final PropertyChangeEvent event )
             {
-                if( WizardTask.STATE_PROPERTY_NAME.equals( event.getPropertyName() ) && (event.getNewValue() == SwingWorker.StateValue.DONE) )
+                if( RunnableTask.STATE_PROPERTY_NAME.equals( event.getPropertyName() ) && (event.getNewValue() == SwingWorker.StateValue.DONE) )
                 {
                     endExecuteTask();
                 }

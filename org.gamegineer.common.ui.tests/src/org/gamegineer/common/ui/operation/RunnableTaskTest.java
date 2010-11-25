@@ -1,5 +1,5 @@
 /*
- * WizardTaskTest.java
+ * RunnableTaskTest.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -19,24 +19,24 @@
  * Created on Nov 23, 2010 at 8:35:03 PM.
  */
 
-package org.gamegineer.common.ui.wizard;
+package org.gamegineer.common.ui.operation;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.common.ui.wizard.WizardTask}
- * class.
+ * A fixture for testing the
+ * {@link org.gamegineer.common.ui.operation.RunnableTask} class.
  */
-public final class WizardTaskTest
+public final class RunnableTaskTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The wizard task under test in the fixture. */
-    private WizardTask<?, ?> task_;
+    /** The task under test in the fixture. */
+    private RunnableTask<?, ?> task_;
 
 
     // ======================================================================
@@ -44,9 +44,9 @@ public final class WizardTaskTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code WizardTaskTest} class.
+     * Initializes a new instance of the {@code RunnableTaskTest} class.
      */
-    public WizardTaskTest()
+    public RunnableTaskTest()
     {
         super();
     }
@@ -66,7 +66,7 @@ public final class WizardTaskTest
     public void setUp()
         throws Exception
     {
-        task_ = new WizardTask<Object, Object>()
+        task_ = new RunnableTask<Object, Object>()
         {
             @Override
             protected Object doInBackground()

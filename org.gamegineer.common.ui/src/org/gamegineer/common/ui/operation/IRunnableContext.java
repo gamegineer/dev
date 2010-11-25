@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.ui.operation;
 
-import java.util.concurrent.ExecutionException;
 
 /**
  * A context in which a potentially long-running operation can be executed.
@@ -38,31 +37,15 @@ public interface IRunnableContext
     // ======================================================================
 
     /**
-     * Runs the specified operation in the context.
+     * Executes the specified task asynchronously.
      * 
-     * @param runnable
-     *        The operation to run; must not be {@code null}.
-     * @param isCancellable
-     *        {@code true} if the operation is cancellable; otherwise {@code
-     *        false}.
-     * @param fork
-     *        {@code true} to run the operation in a separate thread; {@code
-     *        false} to run the operation on the current thread.
+     * @param task
+     *        The task to execute; must not be {@code null}.
      * 
-     * @throws java.lang.InterruptedException
-     *         If the current thread was interrupted while waiting for the
-     *         operation.
      * @throws java.lang.NullPointerException
-     *         If {@code runnable} is {@code null}.
-     * @throws java.util.concurrent.CancellationException
-     *         If the operation was cancelled.
-     * @throws java.util.concurrent.ExecutionException
-     *         If the operation threw an exception.
+     *         If {@code task} is {@code null}.
      */
-    public void run(
+    public void executeTask(
         /* @NonNull */
-        IRunnableWithProgress runnable,
-        boolean isCancellable,
-        boolean fork )
-        throws InterruptedException, ExecutionException;
+        RunnableTask<?, ?> task );
 }

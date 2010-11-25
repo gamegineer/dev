@@ -25,8 +25,8 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.ui.operation.RunnableTask;
 import org.gamegineer.common.ui.wizard.AbstractWizard;
-import org.gamegineer.common.ui.wizard.WizardTask;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.util.OptionDialogs;
 
@@ -109,7 +109,7 @@ public final class HostNetworkTableWizard
         if( connectionState_ == ConnectionState.DISCONNECTED )
         {
             connectionState_ = ConnectionState.CONNECTING;
-            getContainer().executeTask( new WizardTask<ConnectionState, Void>()
+            getContainer().executeTask( new RunnableTask<ConnectionState, Void>()
             {
                 @Override
                 protected ConnectionState doInBackground()

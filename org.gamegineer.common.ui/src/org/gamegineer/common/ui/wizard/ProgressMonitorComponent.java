@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.ui.dialog.DialogUtils;
+import org.gamegineer.common.ui.operation.RunnableTask;
 
 /**
  * A progress monitor component used to display progress within a wizard
@@ -96,11 +97,11 @@ final class ProgressMonitorComponent
     public void propertyChange(
         final PropertyChangeEvent event )
     {
-        if( WizardTask.PROGRESS_PROPERTY_NAME.equals( event.getPropertyName() ) )
+        if( RunnableTask.PROGRESS_PROPERTY_NAME.equals( event.getPropertyName() ) )
         {
             progressBar_.setValue( (Integer)event.getNewValue() );
         }
-        else if( WizardTask.DESCRIPTION_PROPERTY_NAME.equals( event.getPropertyName() ) )
+        else if( RunnableTask.DESCRIPTION_PROPERTY_NAME.equals( event.getPropertyName() ) )
         {
             label_.setText( (String)event.getNewValue() );
         }
