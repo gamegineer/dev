@@ -19,8 +19,9 @@
  * Created on Oct 5, 2010 at 9:53:38 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
+package org.gamegineer.table.internal.ui.util;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Component;
 import javax.swing.JOptionPane;
 import net.jcip.annotations.ThreadSafe;
@@ -30,7 +31,7 @@ import net.jcip.annotations.ThreadSafe;
  * application.
  */
 @ThreadSafe
-final class OptionDialogs
+public final class OptionDialogs
 {
     // ======================================================================
     // Constructors
@@ -58,16 +59,19 @@ final class OptionDialogs
      *        The dialog message; must not be {@code null}.
      * 
      * @return The option selected by the user.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code message} is {@code null}.
      */
-    static int showConfirmDialog(
+    public static int showConfirmDialog(
         /* @Nullable */
         final Component parentComponent,
         /* @NonNull */
         final String message )
     {
-        assert message != null;
+        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
 
-        return JOptionPane.showConfirmDialog( parentComponent, message, Messages.Common_application_name, JOptionPane.YES_NO_CANCEL_OPTION );
+        return JOptionPane.showConfirmDialog( parentComponent, message, CommonMessages.Common_application_name, JOptionPane.YES_NO_CANCEL_OPTION );
     }
 
     /**
@@ -77,15 +81,18 @@ final class OptionDialogs
      *        The parent component of the dialog; may be {@code null}.
      * @param message
      *        The dialog message; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code message} is {@code null}.
      */
-    static void showErrorMessageDialog(
+    public static void showErrorMessageDialog(
         /* @Nullable */
         final Component parentComponent,
         /* @NonNull */
         final String message )
     {
-        assert message != null;
+        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
 
-        JOptionPane.showMessageDialog( parentComponent, message, Messages.Common_application_name, JOptionPane.ERROR_MESSAGE );
+        JOptionPane.showMessageDialog( parentComponent, message, CommonMessages.Common_application_name, JOptionPane.ERROR_MESSAGE );
     }
 }

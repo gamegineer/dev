@@ -80,6 +80,7 @@ import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.ModelException;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
+import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
 import org.gamegineer.table.internal.ui.wizards.hostnetworktable.HostNetworkTableWizard;
 import org.gamegineer.table.internal.ui.wizards.joinnetworktable.JoinNetworkTableWizard;

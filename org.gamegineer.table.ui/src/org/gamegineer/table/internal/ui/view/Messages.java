@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.view;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
+import org.gamegineer.table.internal.ui.util.CommonMessages;
 import org.osgi.framework.Version;
 
 /**
@@ -545,11 +546,6 @@ final class Messages
     /** The Layout menu text. */
     public static String CardPilePopupMenu_layout_text;
 
-    // --- Common -----------------------------------------------------------
-
-    /** The application name. */
-    public static String Common_application_name;
-
     // --- Cursors ----------------------------------------------------------
 
     /** The name of the grab cursor. */
@@ -959,6 +955,6 @@ final class Messages
         /* @NonNull */
         final String tableName )
     {
-        return bind( MainFrame_title, tableName, Common_application_name );
+        return bind( MainFrame_title, tableName, CommonMessages.Common_application_name );
     }
 }
