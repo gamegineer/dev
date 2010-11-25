@@ -37,6 +37,15 @@ final class Messages
 
     // --- HostNetworkTableWizard -------------------------------------------
 
+    /** An error occurred while executing the finish task. */
+    public static String HostNetworkTableWizard_finish_error;
+
+    /** An error occurred while executing the finish task. */
+    public static String HostNetworkTableWizard_finish_error_nonNls;
+
+    /** Interrupted while waiting for the finish task to complete. */
+    public static String HostNetworkTableWizard_finish_interrupted_nonNls;
+
     /** The wizard title. */
     public static String HostNetworkTableWizard_title;
 
