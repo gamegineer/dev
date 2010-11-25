@@ -138,7 +138,7 @@ public final class XMLEncoder
      * @param type
      *        A class; may be {@code null}.
      * 
-     * @return The persistence delegate fort he specified class that is
+     * @return The persistence delegate for the specified class that is
      *         registered with the persistence delegate registry service or
      *         {@code null} if no persistence delegate has been registered.
      */
@@ -162,7 +162,7 @@ public final class XMLEncoder
      * @param o
      *        An object; may be {@code null}.
      * 
-     * @return The persistence delegate fort he specified object that is
+     * @return The persistence delegate for the specified object that is
      *         registered with the persistence delegate registry service or
      *         {@code null} if no persistence delegate has been registered.
      */
