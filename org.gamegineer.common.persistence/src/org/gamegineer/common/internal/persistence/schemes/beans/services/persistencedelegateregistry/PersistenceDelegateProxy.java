@@ -31,6 +31,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.common.internal.persistence.Activator;
+import org.gamegineer.common.persistence.schemes.beans.IAdvancedPersistenceDelegate;
 import org.osgi.framework.ServiceReference;
 
 /**
@@ -40,6 +41,7 @@ import org.osgi.framework.ServiceReference;
 @ThreadSafe
 final class PersistenceDelegateProxy
     extends PersistenceDelegate
+    implements IAdvancedPersistenceDelegate
 {
     // ======================================================================
     // Fields
@@ -133,6 +135,55 @@ final class PersistenceDelegateProxy
     }
 
     /*
+     * @see org.gamegineer.common.persistence.schemes.beans.IAdvancedPersistenceDelegate#getContextClassLoader()
+     */
+    @Override
+    public ClassLoader getContextClassLoader()
+    {
+        final PersistenceDelegate actualPersistenceDelegate = getActualPersistenceDelegate();
+        if( actualPersistenceDelegate instanceof IAdvancedPersistenceDelegate )
+        {
+            final ClassLoader contextClassLoader = ((IAdvancedPersistenceDelegate)actualPersistenceDelegate).getContextClassLoader();
+            if( contextClassLoader != null )
+            {
+                return contextClassLoader;
+            }
+        }
+
+        return actualPersistenceDelegate.getClass().getClassLoader();
+    }
+
+    /*
+     * @see java.beans.PersistenceDelegate#initialize(java.lang.Class, java.lang.Object, java.lang.Object, java.beans.Encoder)
+     */
+    @Override
+    protected void initialize(
+        final Class<?> type,
+        final Object oldInstance,
+        final Object newInstance,
+        final Encoder out )
+    {
+        try
+        {
+            final Method method = PersistenceDelegate.class.getDeclaredMethod( "initialize", Class.class, Object.class, Object.class, Encoder.class ); //$NON-NLS-1$
+            method.setAccessible( true );
+            method.invoke( getActualPersistenceDelegate(), type, oldInstance, newInstance, out );
+        }
+        catch( final NoSuchMethodException e )
+        {
+            throw new AssertionError( e );
+        }
+        catch( final IllegalAccessException e )
+        {
+            throw new AssertionError( e );
+        }
+        catch( final InvocationTargetException e )
+        {
+            throw TaskUtils.launderThrowable( e.getCause() );
+        }
+    }
+
+    /*
      * @see java.beans.PersistenceDelegate#instantiate(java.lang.Object, java.beans.Encoder)
      */
     @Override
@@ -158,5 +209,67 @@ final class PersistenceDelegateProxy
         {
             throw TaskUtils.launderThrowable( e.getCause() );
         }
+    }
+
+    /*
+     * @see java.beans.PersistenceDelegate#mutatesTo(java.lang.Object, java.lang.Object)
+     */
+    @Override
+    @SuppressWarnings( "boxing" )
+    protected boolean mutatesTo(
+        final Object oldInstance,
+        final Object newInstance )
+    {
+        try
+        {
+            final Method method = PersistenceDelegate.class.getDeclaredMethod( "mutatesTo", Object.class, Object.class ); //$NON-NLS-1$
+            method.setAccessible( true );
+            return (Boolean)method.invoke( getActualPersistenceDelegate(), oldInstance, newInstance );
+        }
+        catch( final NoSuchMethodException e )
+        {
+            throw new AssertionError( e );
+        }
+        catch( final IllegalAccessException e )
+        {
+            throw new AssertionError( e );
+        }
+        catch( final InvocationTargetException e )
+        {
+            throw TaskUtils.launderThrowable( e.getCause() );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.common.persistence.schemes.beans.IAdvancedPersistenceDelegate#replaceObject(java.lang.Object)
+     */
+    @Override
+    public Object replaceObject(
+        final Object obj )
+    {
+        final PersistenceDelegate actualPersistenceDelegate = getActualPersistenceDelegate();
+        if( actualPersistenceDelegate instanceof IAdvancedPersistenceDelegate )
+        {
+            return ((IAdvancedPersistenceDelegate)actualPersistenceDelegate).replaceObject( obj );
+        }
+
+
+        return obj;
+    }
+
+    /*
+     * @see org.gamegineer.common.persistence.schemes.beans.IAdvancedPersistenceDelegate#resolveObject(java.lang.Object)
+     */
+    @Override
+    public Object resolveObject(
+        final Object obj )
+    {
+        final PersistenceDelegate actualPersistenceDelegate = getActualPersistenceDelegate();
+        if( actualPersistenceDelegate instanceof IAdvancedPersistenceDelegate )
+        {
+            return ((IAdvancedPersistenceDelegate)actualPersistenceDelegate).resolveObject( obj );
+        }
+
+        return obj;
     }
 }

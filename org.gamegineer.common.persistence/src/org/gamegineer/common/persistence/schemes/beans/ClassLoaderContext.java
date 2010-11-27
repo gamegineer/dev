@@ -110,6 +110,35 @@ public final class ClassLoaderContext
     }
 
     /**
+     * Gets the context class loader to use for the specified persistence
+     * delegate.
+     * 
+     * @param persistenceDelegate
+     *        The persistence delegate; must not be {@code null}.
+     * 
+     * @return The context class loader to use for the specified persistence
+     *         delegate; never {@code null}.
+     */
+    /* @NonNull */
+    private static ClassLoader getContextClassLoader(
+        /* @NonNull */
+        final PersistenceDelegate persistenceDelegate )
+    {
+        assert persistenceDelegate != null;
+
+        if( persistenceDelegate instanceof IAdvancedPersistenceDelegate )
+        {
+            final ClassLoader contextClassLoader = ((IAdvancedPersistenceDelegate)persistenceDelegate).getContextClassLoader();
+            if( contextClassLoader != null )
+            {
+                return contextClassLoader;
+            }
+        }
+
+        return persistenceDelegate.getClass().getClassLoader();
+    }
+
+    /**
      * Opens this context and activates the class loader associated with the
      * context.
      * 
@@ -128,7 +157,7 @@ public final class ClassLoaderContext
         {
             final Thread thread = Thread.currentThread();
             oldContextClassLoader_ = thread.getContextClassLoader();
-            thread.setContextClassLoader( persistenceDelegate.getClass().getClassLoader() );
+            thread.setContextClassLoader( getContextClassLoader( persistenceDelegate ) );
         }
     }
 }

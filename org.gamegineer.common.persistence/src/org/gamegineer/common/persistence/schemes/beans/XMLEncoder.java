@@ -179,6 +179,48 @@ public final class XMLEncoder
         return getServicePersistenceDelegate( o.getClass() );
     }
 
+    /**
+     * Allows the persistence delegate registered for the specified object to
+     * replace it with another object before it is written by
+     * {@link #writeObject(Object)}.
+     * 
+     * @param o
+     *        The object to replace; may be {@code null}.
+     * 
+     * @return The replaced object; may be {@code null}.
+     */
+    /* @Nullable */
+    private Object replaceObject(
+        /* @Nullable */
+        final Object o )
+    {
+        Object object = o;
+        while( true )
+        {
+            final PersistenceDelegate persistenceDelegate = getServicePersistenceDelegate( object );
+            final Object replacedObject;
+            if( persistenceDelegate instanceof IAdvancedPersistenceDelegate )
+            {
+                replacedObject = ((IAdvancedPersistenceDelegate)persistenceDelegate).replaceObject( object );
+            }
+            else
+            {
+                replacedObject = object;
+            }
+
+            if( object != replacedObject )
+            {
+                object = replacedObject;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return object;
+    }
+
     /*
      * @see java.beans.XMLEncoder#writeObject(java.lang.Object)
      */
@@ -186,7 +228,9 @@ public final class XMLEncoder
     public void writeObject(
         final Object o )
     {
-        final ClassLoaderContext classLoaderContext = getClassLoaderContext( o );
+        final Object replacedObject = replaceObject( o );
+
+        final ClassLoaderContext classLoaderContext = getClassLoaderContext( replacedObject );
         try
         {
             if( classLoaderContext != null )
@@ -195,7 +239,7 @@ public final class XMLEncoder
                 super.writeObject( classLoaderContext );
             }
 
-            super.writeObject( o );
+            super.writeObject( replacedObject );
         }
         finally
         {

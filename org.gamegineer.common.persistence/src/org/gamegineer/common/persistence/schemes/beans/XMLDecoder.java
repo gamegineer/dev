@@ -23,6 +23,7 @@ package org.gamegineer.common.persistence.schemes.beans;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.beans.ExceptionListener;
+import java.beans.PersistenceDelegate;
 import java.io.InputStream;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
@@ -170,6 +171,54 @@ public final class XMLDecoder
     // Methods
     // ======================================================================
 
+    /**
+     * Gets the persistence delegate for the specified class that is registered
+     * with the persistence delegate registry service.
+     * 
+     * @param type
+     *        A class; may be {@code null}.
+     * 
+     * @return The persistence delegate for the specified class that is
+     *         registered with the persistence delegate registry service or
+     *         {@code null} if no persistence delegate has been registered.
+     */
+    /* @Nullable */
+    private PersistenceDelegate getServicePersistenceDelegate(
+        /* @Nullable */
+        final Class<?> type )
+    {
+        if( type == null )
+        {
+            return null;
+        }
+
+        return persistenceDelegateRegistry_.getPersistenceDelegate( type.getName() );
+    }
+
+    /**
+     * Gets the persistence delegate for the specified object that is registered
+     * with the persistence delegate registry service.
+     * 
+     * @param o
+     *        An object; may be {@code null}.
+     * 
+     * @return The persistence delegate for the specified object that is
+     *         registered with the persistence delegate registry service or
+     *         {@code null} if no persistence delegate has been registered.
+     */
+    /* @Nullable */
+    private PersistenceDelegate getServicePersistenceDelegate(
+        /* @Nullable */
+        final Object o )
+    {
+        if( o == null )
+        {
+            return null;
+        }
+
+        return getServicePersistenceDelegate( o.getClass() );
+    }
+
     /*
      * @see java.beans.XMLDecoder#readObject()
      */
@@ -186,11 +235,53 @@ public final class XMLDecoder
         classLoaderContext.open( persistenceDelegateRegistry_ );
         try
         {
-            return super.readObject();
+            return resolveObject( super.readObject() );
         }
         finally
         {
             classLoaderContext.close();
         }
+    }
+
+    /**
+     * Allows the persistence delegate registered for the specified object to
+     * resolve it with another object before it is returned from
+     * {@link #readObject()}.
+     * 
+     * @param o
+     *        The object to resolve; may be {@code null}.
+     * 
+     * @return The resolved object; may be {@code null}.
+     */
+    /* @Nullable */
+    private Object resolveObject(
+        /* @Nullable */
+        final Object o )
+    {
+        Object object = o;
+        while( true )
+        {
+            final PersistenceDelegate persistenceDelegate = getServicePersistenceDelegate( object );
+            final Object resolvedObject;
+            if( persistenceDelegate instanceof IAdvancedPersistenceDelegate )
+            {
+                resolvedObject = ((IAdvancedPersistenceDelegate)persistenceDelegate).resolveObject( object );
+            }
+            else
+            {
+                resolvedObject = object;
+            }
+
+            if( object != resolvedObject )
+            {
+                object = resolvedObject;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return object;
     }
 }
