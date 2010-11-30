@@ -21,8 +21,14 @@
 
 package org.gamegineer.table.internal.ui.wizards.joinnetworktable;
 
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.ui.operation.RunnableTask;
 import org.gamegineer.common.ui.wizard.AbstractWizard;
+import org.gamegineer.table.internal.ui.Loggers;
+import org.gamegineer.table.internal.ui.util.OptionDialogs;
 
 /**
  * The join network table wizard.
@@ -34,6 +40,9 @@ public final class JoinNetworkTableWizard
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The connection state. */
+    private ConnectionState connectionState_;
 
     /** The wizard model. */
     private final Model model_;
@@ -48,9 +57,11 @@ public final class JoinNetworkTableWizard
      */
     public JoinNetworkTableWizard()
     {
+        connectionState_ = ConnectionState.DISCONNECTED;
         model_ = new Model();
 
         setTitle( Messages.JoinNetworkTableWizard_title );
+        setNeedsProgressMonitor( true );
     }
 
 
@@ -87,5 +98,98 @@ public final class JoinNetworkTableWizard
     Model getModel()
     {
         return model_;
+    }
+
+    /*
+     * @see org.gamegineer.common.ui.wizard.AbstractWizard#performFinish()
+     */
+    @Override
+    public boolean performFinish()
+    {
+        if( connectionState_ == ConnectionState.DISCONNECTED )
+        {
+            connectionState_ = ConnectionState.CONNECTING;
+            getContainer().executeTask( new RunnableTask<ConnectionState, Void>()
+            {
+                @Override
+                protected ConnectionState doInBackground()
+                    throws Exception
+                {
+                    setDescription( "Opening port..." ); //$NON-NLS-1$
+
+                    for( int index = 0; index <= 100; ++index )
+                    {
+                        if( index == 33 )
+                        {
+                            setDescription( "Connecting..." ); //$NON-NLS-1$
+                        }
+                        else if( index == 67 )
+                        {
+                            setDescription( "Authenticating..." ); //$NON-NLS-1$
+                        }
+
+                        setProgress( index );
+                        Thread.sleep( 50 );
+                    }
+
+                    return ConnectionState.CONNECTED;
+                }
+
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                protected void done()
+                {
+                    ConnectionState newState = ConnectionState.DISCONNECTED;
+                    try
+                    {
+                        newState = get();
+                        if( newState == ConnectionState.CONNECTED )
+                        {
+                            getContainer().finish();
+                        }
+                    }
+                    catch( final CancellationException e )
+                    {
+                        // do nothing
+                    }
+                    catch( final ExecutionException e )
+                    {
+                        Loggers.getDefaultLogger().log( Level.SEVERE, Messages.JoinNetworkTableWizard_finish_error_nonNls, e );
+                        OptionDialogs.showErrorMessageDialog( getContainer().getShell(), Messages.JoinNetworkTableWizard_finish_error );
+                    }
+                    catch( final InterruptedException e )
+                    {
+                        Loggers.getDefaultLogger().log( Level.SEVERE, Messages.JoinNetworkTableWizard_finish_interrupted_nonNls, e );
+                        Thread.currentThread().interrupt();
+                    }
+                    finally
+                    {
+                        connectionState_ = newState;
+                    }
+                }
+            } );
+        }
+
+        return connectionState_ == ConnectionState.CONNECTED;
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * The connection state.
+     */
+    private enum ConnectionState
+    {
+        /** The wizard is disconnected. */
+        DISCONNECTED,
+
+        /** The wizard is connecting. */
+        CONNECTING,
+
+        /** The wizard is connected. */
+        CONNECTED;
     }
 }
