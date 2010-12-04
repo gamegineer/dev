@@ -354,7 +354,7 @@ public final class MainFrame
         setContentPane( mainView_ );
 
         setLocationByPlatform( true );
-        setSize( 300, 300 );
+        setSize( 640, 480 );
         setIconImages( getApplicationIconImages() );
         updateTitle();
     }
