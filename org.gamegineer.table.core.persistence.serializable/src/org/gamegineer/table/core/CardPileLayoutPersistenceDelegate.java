@@ -25,8 +25,8 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
 import java.io.ObjectStreamClass;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegate;
-import org.gamegineer.common.persistence.schemes.serializable.ObjectInputStream;
+import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
+import org.gamegineer.common.persistence.serializable.ObjectInputStream;
 
 /**
  * A persistence delegate for the {@code CardPileLayout} class.
@@ -54,7 +54,7 @@ public final class CardPileLayoutPersistenceDelegate
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegate#resolveClass(org.gamegineer.common.persistence.schemes.serializable.ObjectInputStream, java.io.ObjectStreamClass)
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#resolveClass(org.gamegineer.common.persistence.serializable.ObjectInputStream, java.io.ObjectStreamClass)
      */
     @Override
     public Class<?> resolveClass(

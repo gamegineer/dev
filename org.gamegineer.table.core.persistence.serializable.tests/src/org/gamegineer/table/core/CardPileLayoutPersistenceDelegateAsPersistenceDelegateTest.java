@@ -21,14 +21,14 @@
 
 package org.gamegineer.table.core;
 
-import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase;
-import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
+import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
+import org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 
 /**
  * A fixture for testing the
  * {@link org.gamegineer.table.core.CardPileLayoutPersistenceDelegate} class to
  * ensure it does not violate the contract of the
- * {@link org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate}
+ * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegate}
  * interface.
  */
 public final class CardPileLayoutPersistenceDelegateAsPersistenceDelegateTest
@@ -53,7 +53,7 @@ public final class CardPileLayoutPersistenceDelegateAsPersistenceDelegateTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase#createSubject()
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createSubject()
      */
     @Override
     protected Object createSubject()
@@ -62,7 +62,7 @@ public final class CardPileLayoutPersistenceDelegateAsPersistenceDelegateTest
     }
 
     /*
-     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase#registerPersistenceDelegates(org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry)
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#registerPersistenceDelegates(org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry)
      */
     @Override
     protected void registerPersistenceDelegates(

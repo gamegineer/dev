@@ -87,7 +87,7 @@ public final class Activator
      *         available.
      */
     /* @Nullable */
-    public org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry getBeansPersistenceDelegateRegistry()
+    public org.gamegineer.common.persistence.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry getBeansPersistenceDelegateRegistry()
     {
         synchronized( lock_ )
         {
@@ -95,11 +95,11 @@ public final class Activator
 
             if( beansPersistenceDelegateRegistryTracker_ == null )
             {
-                beansPersistenceDelegateRegistryTracker_ = new ServiceTracker( bundleContext_, org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry.class.getName(), null );
+                beansPersistenceDelegateRegistryTracker_ = new ServiceTracker( bundleContext_, org.gamegineer.common.persistence.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry.class.getName(), null );
                 beansPersistenceDelegateRegistryTracker_.open();
             }
 
-            return (org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry)beansPersistenceDelegateRegistryTracker_.getService();
+            return (org.gamegineer.common.persistence.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry)beansPersistenceDelegateRegistryTracker_.getService();
         }
     }
 
@@ -139,7 +139,7 @@ public final class Activator
      *         available.
      */
     /* @Nullable */
-    public org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry getSerializablePersistenceDelegateRegistry()
+    public org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry getSerializablePersistenceDelegateRegistry()
     {
         synchronized( lock_ )
         {
@@ -147,11 +147,11 @@ public final class Activator
 
             if( serializablePersistenceDelegateRegistryTracker_ == null )
             {
-                serializablePersistenceDelegateRegistryTracker_ = new ServiceTracker( bundleContext_, org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry.class.getName(), null );
+                serializablePersistenceDelegateRegistryTracker_ = new ServiceTracker( bundleContext_, org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry.class.getName(), null );
                 serializablePersistenceDelegateRegistryTracker_.open();
             }
 
-            return (org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry)serializablePersistenceDelegateRegistryTracker_.getService();
+            return (org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry)serializablePersistenceDelegateRegistryTracker_.getService();
         }
     }
 

@@ -4,7 +4,7 @@
 			name="org.gamegineer.common.persistence.beans.mementoPersistenceDelegate"
 			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 		<implementation
-				class="org.gamegineer.common.internal.persistence.memento.schemes.beans.MementoPersistenceDelegate" />
+				class="org.gamegineer.common.internal.persistence.memento.beans.MementoPersistenceDelegate" />
 		<service>
 			<provide
 					interface="java.beans.PersistenceDelegate" />

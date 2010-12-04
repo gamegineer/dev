@@ -3,10 +3,10 @@
 		name="org.gamegineer.common.persistence.beans.persistenceDelegateRegistry"
 		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 	<implementation
-			class="org.gamegineer.common.internal.persistence.schemes.beans.services.persistencedelegateregistry.PersistenceDelegateRegistry" />
+			class="org.gamegineer.common.internal.persistence.beans.services.persistencedelegateregistry.PersistenceDelegateRegistry" />
 	<service>
 		<provide
-				interface="org.gamegineer.common.persistence.schemes.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry" />
+				interface="org.gamegineer.common.persistence.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry" />
 	</service>
 	<reference
 			bind="registerPersistenceDelegate"

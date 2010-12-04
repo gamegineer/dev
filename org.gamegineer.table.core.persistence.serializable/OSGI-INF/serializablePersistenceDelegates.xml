@@ -7,7 +7,7 @@
 				class="org.gamegineer.table.core.CardOrientationPersistenceDelegate" />
 		<service>
 			<provide
-					interface="org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate" />
+					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
 		</service>
 		<property
 				name="delegators"
@@ -22,7 +22,7 @@
 				class="org.gamegineer.table.internal.core.services.cardpilebasedesignregistry.CardPileBaseDesignExtensionProxyPersistenceDelegate" />
 		<service>
 			<provide
-					interface="org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate" />
+					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
 		</service>
 		<property
 				name="delegators"
@@ -37,7 +37,7 @@
 				class="org.gamegineer.table.internal.core.CardPileBaseDesignPersistenceDelegate" />
 		<service>
 			<provide
-					interface="org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate" />
+					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
 		</service>
 		<property
 				name="delegators"
@@ -53,7 +53,7 @@
 				class="org.gamegineer.table.core.CardPileLayoutPersistenceDelegate" />
 		<service>
 			<provide
-					interface="org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate" />
+					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
 		</service>
 		<property
 				name="delegators"
@@ -68,7 +68,7 @@
 				class="org.gamegineer.table.internal.core.services.cardsurfacedesignregistry.CardSurfaceDesignExtensionProxyPersistenceDelegate" />
 		<service>
 			<provide
-					interface="org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate" />
+					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
 		</service>
 		<property
 				name="delegators"
@@ -83,7 +83,7 @@
 				class="org.gamegineer.table.internal.core.CardSurfaceDesignPersistenceDelegate" />
 		<service>
 			<provide
-					interface="org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate" />
+					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
 		</service>
 		<property
 				name="delegators"

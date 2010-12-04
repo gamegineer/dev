@@ -4,16 +4,16 @@
 			name="org.gamegineer.common.persistence.serializable.mementoPersistenceDelegate"
 			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 		<implementation
-				class="org.gamegineer.common.internal.persistence.memento.schemes.serializable.MementoPersistenceDelegate" />
+				class="org.gamegineer.common.internal.persistence.memento.serializable.MementoPersistenceDelegate" />
 		<service>
 			<provide
-					interface="org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate" />
+					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
 		</service>
 		<property
 				name="delegators"
 				type="String">
 			org.gamegineer.common.internal.persistence.memento.Memento
-			org.gamegineer.common.internal.persistence.memento.schemes.serializable.MementoProxy
+			org.gamegineer.common.internal.persistence.memento.serializable.MementoProxy
 		</property>
 	</scr:component>
 </root>

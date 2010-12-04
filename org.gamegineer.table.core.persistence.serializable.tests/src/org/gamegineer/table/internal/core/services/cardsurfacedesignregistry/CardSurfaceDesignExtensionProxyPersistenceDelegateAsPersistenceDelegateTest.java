@@ -24,8 +24,8 @@ package org.gamegineer.table.internal.core.services.cardsurfacedesignregistry;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IExtension;
-import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase;
-import org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
+import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
+import org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.internal.core.CardSurfaceDesign;
@@ -36,7 +36,7 @@ import org.gamegineer.table.internal.core.CardSurfaceDesignProxy;
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.core.services.cardsurfacedesignregistry.CardSurfaceDesignExtensionProxyPersistenceDelegate}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate}
+ * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegate}
  * interface.
  */
 public final class CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest
@@ -62,7 +62,7 @@ public final class CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersisten
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase#createSubject()
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createSubject()
      */
     @Override
     protected Object createSubject()
@@ -77,7 +77,7 @@ public final class CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersisten
     }
 
     /*
-     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase#isEqual(java.lang.Object, java.lang.Object)
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#isEqual(java.lang.Object, java.lang.Object)
      */
     @Override
     protected boolean isEqual(
@@ -90,7 +90,7 @@ public final class CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersisten
     }
 
     /*
-     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegateTestCase#registerPersistenceDelegates(org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry)
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#registerPersistenceDelegates(org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry)
      */
     @Override
     protected void registerPersistenceDelegates(

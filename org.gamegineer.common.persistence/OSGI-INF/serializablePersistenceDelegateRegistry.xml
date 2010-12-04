@@ -3,15 +3,15 @@
 		name="org.gamegineer.common.persistence.serializable.persistenceDelegateRegistry"
 		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 	<implementation
-			class="org.gamegineer.common.internal.persistence.schemes.serializable.services.persistencedelegateregistry.PersistenceDelegateRegistry" />
+			class="org.gamegineer.common.internal.persistence.serializable.services.persistencedelegateregistry.PersistenceDelegateRegistry" />
 	<service>
 		<provide
-				interface="org.gamegineer.common.persistence.schemes.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry" />
+				interface="org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry" />
 	</service>
 	<reference
 			bind="registerPersistenceDelegate"
 			cardinality="0..n"
-			interface="org.gamegineer.common.persistence.schemes.serializable.IPersistenceDelegate"
+			interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate"
 			name="persistenceDelegate"
 			policy="dynamic"
 			unbind="unregisterPersistenceDelegate" />

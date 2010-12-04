@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.core.services.cardpilebasedesignregistry;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegate;
+import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
 
 /**
  * A persistence delegate for the {@code CardPileBaseDesignExtensionProxy}
@@ -51,7 +51,7 @@ public final class CardPileBaseDesignExtensionProxyPersistenceDelegate
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.persistence.schemes.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
      */
     @Override
     public Object replaceObject(
