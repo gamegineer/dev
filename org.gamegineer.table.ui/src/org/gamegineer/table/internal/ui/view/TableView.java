@@ -84,6 +84,7 @@ import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
 import org.gamegineer.table.internal.ui.wizards.hostnetworktable.HostNetworkTableWizard;
 import org.gamegineer.table.internal.ui.wizards.joinnetworktable.JoinNetworkTableWizard;
+import org.gamegineer.table.net.NetworkTableException;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry;
 
@@ -431,6 +432,17 @@ final class TableView
         actionMediator_.bindActionListener( Actions.getAddTwoOfDiamondsCardAction(), addCardActionListener );
         actionMediator_.bindActionListener( Actions.getAddTwoOfHeartsCardAction(), addCardActionListener );
         actionMediator_.bindActionListener( Actions.getAddTwoOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bindActionListener( Actions.getDisconnectNetworkTableAction(), new ActionListener()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent event )
+            {
+                disconnectNetworkTable();
+            }
+        } );
         actionMediator_.bindActionListener( Actions.getFlipCardAction(), new ActionListener()
         {
             @Override
@@ -575,6 +587,28 @@ final class TableView
                 return model_.getFocusedCardPile() != null;
             }
         };
+        final IPredicate<Action> isNetworkConnectedPredicate = new IPredicate<Action>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Action obj )
+            {
+                return model_.getNetworkTable().isConnected();
+            }
+        };
+        final IPredicate<Action> isNetworkDisconnectedPredicate = new IPredicate<Action>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Action obj )
+            {
+                return !model_.getNetworkTable().isConnected();
+            }
+        };
         actionMediator_.bindShouldEnablePredicate( Actions.getAddAceOfClubsCardAction(), hasFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getAddAceOfDiamondsCardAction(), hasFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getAddAceOfHeartsCardAction(), hasFocusedCardPilePredicate );
@@ -630,7 +664,10 @@ final class TableView
         actionMediator_.bindShouldEnablePredicate( Actions.getAddTwoOfDiamondsCardAction(), hasFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getAddTwoOfHeartsCardAction(), hasFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getAddTwoOfSpadesCardAction(), hasFocusedCardPilePredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getDisconnectNetworkTableAction(), isNetworkConnectedPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getFlipCardAction(), hasCardPredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getHostNetworkTableAction(), isNetworkDisconnectedPredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getJoinNetworkTableAction(), isNetworkDisconnectedPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardPilesAction(), hasCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardsAction(), hasFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveCardAction(), hasCardPredicate );
@@ -936,6 +973,21 @@ final class TableView
     }
 
     /**
+     * Disconnects the network table.
+     */
+    private void disconnectNetworkTable()
+    {
+        try
+        {
+            model_.getNetworkTable().disconnect();
+        }
+        catch( final NetworkTableException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableView_disconnectNetworkTable_error, e );
+        }
+    }
+
+    /**
      * Flips the card at the top of the focused card pile.
      */
     private void flipTopCard()
@@ -970,7 +1022,7 @@ final class TableView
      */
     private void hostNetworkTable()
     {
-        final IWizard wizard = new HostNetworkTableWizard();
+        final IWizard wizard = new HostNetworkTableWizard( model_ );
         final WizardDialog dialog = new WizardDialog( JOptionPane.getFrameForComponent( this ), wizard );
         dialog.open();
     }
@@ -992,7 +1044,7 @@ final class TableView
         }
         catch( final ModelException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableView_importTable_error, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableView_importTable_error_nonNls, e );
             OptionDialogs.showErrorMessageDialog( this, Messages.TableView_importTable_error );
         }
     }
@@ -1020,7 +1072,7 @@ final class TableView
      */
     private void joinNetworkTable()
     {
-        final IWizard wizard = new JoinNetworkTableWizard();
+        final IWizard wizard = new JoinNetworkTableWizard( model_ );
         final WizardDialog dialog = new WizardDialog( JOptionPane.getFrameForComponent( this ), wizard );
         dialog.open();
     }

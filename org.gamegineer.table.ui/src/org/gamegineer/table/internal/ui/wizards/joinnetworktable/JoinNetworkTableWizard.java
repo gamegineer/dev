@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.wizards.joinnetworktable;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -28,7 +29,10 @@ import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.ui.operation.RunnableTask;
 import org.gamegineer.common.ui.wizard.AbstractWizard;
 import org.gamegineer.table.internal.ui.Loggers;
+import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.util.OptionDialogs;
+import org.gamegineer.table.net.INetworkTableConfiguration;
+import org.gamegineer.table.net.NetworkTableConfigurationBuilder;
 
 /**
  * The join network table wizard.
@@ -47,6 +51,9 @@ public final class JoinNetworkTableWizard
     /** The wizard model. */
     private final Model model_;
 
+    /** The table model associated with the wizard. */
+    private final TableModel tableModel_;
+
 
     // ======================================================================
     // Constructors
@@ -54,11 +61,23 @@ public final class JoinNetworkTableWizard
 
     /**
      * Initializes a new instance of the {@code JoinNetworkTableWizard} class.
+     * 
+     * @param tableModel
+     *        The table model associated with the wizard; must not be {@code
+     *        null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableModel} is {@code null}.
      */
-    public JoinNetworkTableWizard()
+    public JoinNetworkTableWizard(
+        /* @NonNull */
+        final TableModel tableModel )
     {
+        assertArgumentNotNull( tableModel, "tableModel" ); //$NON-NLS-1$
+
         connectionState_ = ConnectionState.DISCONNECTED;
         model_ = new Model();
+        tableModel_ = tableModel;
 
         setTitle( Messages.JoinNetworkTableWizard_title );
         setNeedsProgressMonitor( true );
@@ -100,6 +119,22 @@ public final class JoinNetworkTableWizard
         return model_;
     }
 
+    /**
+     * Gets the network table configuration.
+     * 
+     * @return The network table configuration; never {@code null}.
+     */
+    /* @NonNull */
+    private INetworkTableConfiguration getNetworkTableConfiguration()
+    {
+        final NetworkTableConfigurationBuilder configurationBuilder = new NetworkTableConfigurationBuilder();
+        configurationBuilder.setHostName( model_.getHostName() );
+        configurationBuilder.setPort( model_.getPort() );
+        configurationBuilder.setLocalPlayerName( model_.getPlayerName() );
+        configurationBuilder.setPassword( model_.getPassword() );
+        return configurationBuilder.toNetworkTableConfiguration();
+    }
+
     /*
      * @see org.gamegineer.common.ui.wizard.AbstractWizard#performFinish()
      */
@@ -108,10 +143,12 @@ public final class JoinNetworkTableWizard
     {
         if( connectionState_ == ConnectionState.DISCONNECTED )
         {
+            final INetworkTableConfiguration configuration = getNetworkTableConfiguration();
             connectionState_ = ConnectionState.CONNECTING;
             getContainer().executeTask( new RunnableTask<ConnectionState, Void>()
             {
                 @Override
+                @SuppressWarnings( "synthetic-access" )
                 protected ConnectionState doInBackground()
                     throws Exception
                 {
@@ -132,6 +169,7 @@ public final class JoinNetworkTableWizard
                         Thread.sleep( 50 );
                     }
 
+                    tableModel_.getNetworkTable().join( configuration );
                     return ConnectionState.CONNECTED;
                 }
 

@@ -13,5 +13,10 @@
 			<accessrule kind="nonaccessible" pattern="**/internal/**"/>
 		</accessrules>
 	</classpathentry>
+	<classpathentry kind="src" path="/org.gamegineer.table.net.tests">
+		<accessrules>
+			<accessrule kind="nonaccessible" pattern="**/internal/**"/>
+		</accessrules>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -45,13 +45,17 @@ import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.Loggers;
+import org.gamegineer.table.net.INetworkTable;
+import org.gamegineer.table.net.INetworkTableListener;
+import org.gamegineer.table.net.NetworkTableEvent;
+import org.gamegineer.table.net.NetworkTableFactory;
 
 /**
  * The table model.
  */
 @ThreadSafe
 public final class TableModel
-    implements ICardPileModelListener, ITableListener
+    implements ICardPileModelListener, INetworkTableListener, ITableListener
 {
     // ======================================================================
     // Fields
@@ -78,6 +82,9 @@ public final class TableModel
 
     /** The instance lock. */
     private final Object lock_;
+
+    /** The network table associated with this model. */
+    private final INetworkTable networkTable_;
 
     /** The offset of the table origin relative to the view origin. */
     @GuardedBy( "lock_" )
@@ -113,10 +120,12 @@ public final class TableModel
         focusedCardPile_ = null;
         isDirty_ = false;
         listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
+        networkTable_ = NetworkTableFactory.createNetworkTable( table );
         originOffset_ = new Dimension( 0, 0 );
         table_ = table;
 
         table_.addTableListener( this );
+        networkTable_.addNetworkTableListener( this );
 
         for( final ICardPile cardPile : table.getCardPiles() )
         {
@@ -453,6 +462,17 @@ public final class TableModel
     }
 
     /**
+     * Gets the network table associated with this model.
+     * 
+     * @return The network table associated with this model; never {@code null}.
+     */
+    /* @NonNull */
+    public INetworkTable getNetworkTable()
+    {
+        return networkTable_;
+    }
+
+    /**
      * Gets the offset of the table origin relative to the view origin in table
      * coordinates.
      * 
@@ -523,6 +543,18 @@ public final class TableModel
         {
             return isDirty_;
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.net.INetworkTableListener#networkConnectionStateChanged(org.gamegineer.table.net.NetworkTableEvent)
+     */
+    @Override
+    public void networkConnectionStateChanged(
+        final NetworkTableEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        fireTableModelStateChanged();
     }
 
     /**
