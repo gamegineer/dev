@@ -327,6 +327,7 @@ final class TableView
     {
         final ActionListener addCardActionListener = new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 final ActionEvent event )
@@ -336,6 +337,7 @@ final class TableView
         };
         final ActionListener setCardPileLayoutActionListener = new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 final ActionEvent event )
@@ -349,6 +351,7 @@ final class TableView
         actionMediator_.bindActionListener( Actions.getAddAceOfSpadesCardAction(), addCardActionListener );
         actionMediator_.bindActionListener( Actions.getAddCardPileAction(), new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -396,6 +399,7 @@ final class TableView
         actionMediator_.bindActionListener( Actions.getAddSixOfSpadesCardAction(), addCardActionListener );
         actionMediator_.bindActionListener( Actions.getAddStandard52CardDeckAction(), new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -406,6 +410,7 @@ final class TableView
         } );
         actionMediator_.bindActionListener( Actions.getAddStandard54CardDeckAction(), new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -428,6 +433,7 @@ final class TableView
         actionMediator_.bindActionListener( Actions.getAddTwoOfSpadesCardAction(), addCardActionListener );
         actionMediator_.bindActionListener( Actions.getFlipCardAction(), new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -449,6 +455,7 @@ final class TableView
         } );
         actionMediator_.bindActionListener( Actions.getImportTableAction(), new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -470,6 +477,7 @@ final class TableView
         } );
         actionMediator_.bindActionListener( Actions.getRemoveAllCardPilesAction(), new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -480,6 +488,7 @@ final class TableView
         } );
         actionMediator_.bindActionListener( Actions.getRemoveAllCardsAction(), new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -490,6 +499,7 @@ final class TableView
         } );
         actionMediator_.bindActionListener( Actions.getRemoveCardAction(), new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -500,6 +510,7 @@ final class TableView
         } );
         actionMediator_.bindActionListener( Actions.getRemoveCardPileAction(), new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -510,6 +521,7 @@ final class TableView
         } );
         actionMediator_.bindActionListener( Actions.getResetTableOriginAction(), new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -526,6 +538,7 @@ final class TableView
 
         final IPredicate<Action> hasCardPilePredicate = new IPredicate<Action>()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
                 @SuppressWarnings( "unused" )
@@ -536,6 +549,7 @@ final class TableView
         };
         final IPredicate<Action> hasCardPredicate = new IPredicate<Action>()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
                 @SuppressWarnings( "unused" )
@@ -552,7 +566,7 @@ final class TableView
         };
         final IPredicate<Action> hasFocusedCardPilePredicate = new IPredicate<Action>()
         {
-
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
                 @SuppressWarnings( "unused" )
@@ -629,6 +643,7 @@ final class TableView
 
         final IPredicate<Action> isCardPileLayoutSelectedPredicate = new IPredicate<Action>()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
                 final Action obj )
@@ -683,6 +698,7 @@ final class TableView
 
         SwingUtilities.invokeLater( new Runnable()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
@@ -730,6 +746,7 @@ final class TableView
 
         SwingUtilities.invokeLater( new Runnable()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
@@ -1221,6 +1238,7 @@ final class TableView
 
         SwingUtilities.invokeLater( new Runnable()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
