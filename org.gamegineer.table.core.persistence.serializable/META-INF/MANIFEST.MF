@@ -6,5 +6,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.gamegineer.table.core.persistence.serializable
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.6.0.qualifier
-Import-Package: org.gamegineer.common.persistence.serializable;version="0.6.0"
 Fragment-Host: org.gamegineer.table.core;bundle-version="0.6.0"
+Import-Package: org.gamegineer.common.persistence.serializable;version="0.6.0"
