@@ -49,6 +49,9 @@ public final class ClassLoaderContext
     // Fields
     // ======================================================================
 
+    /** The persistence delegate registry to use on the current thread. */
+    private static final ThreadLocal<IPersistenceDelegateRegistry> persistenceDelegateRegistry_ = new ThreadLocal<IPersistenceDelegateRegistry>();
+
     /** The name of the class whose loader is associated with this context. */
     private final String className_;
 
@@ -78,6 +81,8 @@ public final class ClassLoaderContext
 
         className_ = className;
         oldContextClassLoader_ = null;
+
+        open( persistenceDelegateRegistry_.get() );
     }
 
 
@@ -145,7 +150,7 @@ public final class ClassLoaderContext
      * @param persistenceDelegateRegistry
      *        The persistence delegate registry; must not be {@code null}.
      */
-    void open(
+    private void open(
         /* @NonNull */
         final IPersistenceDelegateRegistry persistenceDelegateRegistry )
     {
@@ -159,5 +164,36 @@ public final class ClassLoaderContext
             oldContextClassLoader_ = thread.getContextClassLoader();
             thread.setContextClassLoader( getContextClassLoader( persistenceDelegate ) );
         }
+    }
+
+    /**
+     * Sets the persistence delegate registry to use on the current thread.
+     * 
+     * <p>
+     * This method is intended to be invoked by instances of {@link XMLEncoder}
+     * and {@link XMLDecoder} immediately before an instance of {@code
+     * ClassLoaderContext} is created and immediately after invoking the
+     * {@link #close()} method. Before creating a class loader context, the
+     * coder should call this method passing its persistence delegate registry.
+     * After closing a class loader context, the coder should call this method
+     * passing the previously active persistence delegate registry that was
+     * returned from the first invocation of this method.
+     * </p>
+     * 
+     * @param persistenceDelegateRegistry
+     *        The persistence delegate registry to use on the current thread or
+     *        {@code null} to clear the persistence delegate registry.
+     * 
+     * @return The persistence delegate registry to use on the current thread or
+     *         {@code null} if no persistence delegate registry is available.
+     */
+    /* @Nullable */
+    static IPersistenceDelegateRegistry setPersistenceDelegateRegistry(
+        /* @Nullable */
+        final IPersistenceDelegateRegistry persistenceDelegateRegistry )
+    {
+        final IPersistenceDelegateRegistry oldPersistenceDelegateRegistry = persistenceDelegateRegistry_.get();
+        persistenceDelegateRegistry_.set( persistenceDelegateRegistry );
+        return oldPersistenceDelegateRegistry;
     }
 }

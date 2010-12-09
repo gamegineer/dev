@@ -230,23 +230,30 @@ public final class XMLEncoder
     {
         final Object replacedObject = replaceObject( o );
 
-        final ClassLoaderContext classLoaderContext = getClassLoaderContext( replacedObject );
+        final IPersistenceDelegateRegistry oldPersistenceDelegateRegistry = ClassLoaderContext.setPersistenceDelegateRegistry( persistenceDelegateRegistry_ );
         try
         {
-            if( classLoaderContext != null )
+            final ClassLoaderContext classLoaderContext = getClassLoaderContext( replacedObject );
+            try
             {
-                classLoaderContext.open( persistenceDelegateRegistry_ );
-                super.writeObject( classLoaderContext );
-            }
+                if( classLoaderContext != null )
+                {
+                    super.writeObject( classLoaderContext );
+                }
 
-            super.writeObject( replacedObject );
+                super.writeObject( replacedObject );
+            }
+            finally
+            {
+                if( classLoaderContext != null )
+                {
+                    classLoaderContext.close();
+                }
+            }
         }
         finally
         {
-            if( classLoaderContext != null )
-            {
-                classLoaderContext.close();
-            }
+            ClassLoaderContext.setPersistenceDelegateRegistry( oldPersistenceDelegateRegistry );
         }
     }
 }

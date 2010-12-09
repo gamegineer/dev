@@ -225,21 +225,28 @@ public final class XMLDecoder
     @Override
     public Object readObject()
     {
-        final Object o = super.readObject();
-        if( !(o instanceof ClassLoaderContext) )
-        {
-            return o;
-        }
-
-        final ClassLoaderContext classLoaderContext = (ClassLoaderContext)o;
-        classLoaderContext.open( persistenceDelegateRegistry_ );
+        final IPersistenceDelegateRegistry oldPersistenceDelegateRegistry = ClassLoaderContext.setPersistenceDelegateRegistry( persistenceDelegateRegistry_ );
         try
         {
-            return resolveObject( super.readObject() );
+            final Object o = super.readObject();
+            if( !(o instanceof ClassLoaderContext) )
+            {
+                return o;
+            }
+
+            final ClassLoaderContext classLoaderContext = (ClassLoaderContext)o;
+            try
+            {
+                return resolveObject( super.readObject() );
+            }
+            finally
+            {
+                classLoaderContext.close();
+            }
         }
         finally
         {
-            classLoaderContext.close();
+            ClassLoaderContext.setPersistenceDelegateRegistry( oldPersistenceDelegateRegistry );
         }
     }
 
