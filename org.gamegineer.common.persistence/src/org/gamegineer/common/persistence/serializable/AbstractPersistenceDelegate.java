@@ -53,9 +53,7 @@ public abstract class AbstractPersistenceDelegate
     // ======================================================================
 
     /**
-     * <p>
-     * The default implementation does nothing.
-     * </p>
+     * This implementation does nothing.
      * 
      * @see org.gamegineer.common.persistence.serializable.IPersistenceDelegate#annotateClass(org.gamegineer.common.persistence.serializable.ObjectOutputStream,
      *      java.lang.Class)
@@ -72,8 +70,8 @@ public abstract class AbstractPersistenceDelegate
     }
 
     /**
-     * The default implementation does not attempt to replace the object and
-     * returns the same instance without modification.
+     * This implementation does not attempt to replace the object and returns
+     * the same instance without modification.
      * 
      * @see org.gamegineer.common.persistence.serializable.IPersistenceDelegate#replaceObject(java.lang.Object)
      */
@@ -85,8 +83,8 @@ public abstract class AbstractPersistenceDelegate
     }
 
     /**
-     * The default implementation does not attempt to resolve the specified
-     * class and always returns {@code null}.
+     * This implementation does not attempt to resolve the specified class and
+     * always returns {@code null}.
      * 
      * @see org.gamegineer.common.persistence.serializable.IPersistenceDelegate#resolveClass(org.gamegineer.common.persistence.serializable.ObjectInputStream,
      *      java.io.ObjectStreamClass)
@@ -105,8 +103,8 @@ public abstract class AbstractPersistenceDelegate
     }
 
     /**
-     * The default implementation does not attempt to resolve the object and
-     * returns the same instance without modification.
+     * This implementation does not attempt to resolve the object and returns
+     * the same instance without modification.
      * 
      * @see org.gamegineer.common.persistence.serializable.IPersistenceDelegate#resolveObject(java.lang.Object)
      */
