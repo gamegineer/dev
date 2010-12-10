@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.internal.persistence.memento.serializable;
 
+import static org.junit.Assert.assertEquals;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +58,19 @@ public final class MementoPersistenceDelegateAsPersistenceDelegateTest
     // ======================================================================
 
     /*
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#assertSubjectEquals(java.lang.Object, java.lang.Object)
+     */
+    @Override
+    protected void assertSubjectEquals(
+        final Object expected,
+        final Object actual )
+    {
+        final Memento expectedMemento = (Memento)expected;
+        final Memento actualMemento = (Memento)actual;
+        assertEquals( expectedMemento.getAttributes(), actualMemento.getAttributes() );
+    }
+
+    /*
      * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createSubject()
      */
     @Override
@@ -69,19 +83,6 @@ public final class MementoPersistenceDelegateAsPersistenceDelegateTest
         attributes.put( "doubleName", new Double( -42.0 ) ); //$NON-NLS-1$
         attributes.put( "longListName", Collections.singletonList( new Long( 1001001L ) ) ); //$NON-NLS-1$
         return new Memento( attributes );
-    }
-
-    /*
-     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#isEqual(java.lang.Object, java.lang.Object)
-     */
-    @Override
-    protected boolean isEqual(
-        final Object originalObj,
-        final Object deserializedObj )
-    {
-        final Memento originalMemento = (Memento)originalObj;
-        final Memento deserializedMemento = (Memento)deserializedObj;
-        return originalMemento.getAttributes().equals( deserializedMemento.getAttributes() );
     }
 
     /*

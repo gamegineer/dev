@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core.services.cardpilebasedesignregistry;
 
+import static org.junit.Assert.assertEquals;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IExtension;
@@ -62,6 +63,20 @@ public final class CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersiste
     // ======================================================================
 
     /*
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#assertSubjectEquals(java.lang.Object, java.lang.Object)
+     */
+    @Override
+    protected void assertSubjectEquals(
+        final Object expected,
+        final Object actual )
+    {
+        final ICardPileBaseDesign expectedCardPileBaseDesign = (ICardPileBaseDesign)expected;
+        final ICardPileBaseDesign actualCardPileBaseDesign = (ICardPileBaseDesign)actual;
+        assertEquals( expectedCardPileBaseDesign.getId(), actualCardPileBaseDesign.getId() );
+        assertEquals( expectedCardPileBaseDesign.getSize(), actualCardPileBaseDesign.getSize() );
+    }
+
+    /*
      * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createSubject()
      */
     @Override
@@ -74,19 +89,6 @@ public final class CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersiste
         mocksControl.replay();
         final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
         return new CardPileBaseDesignExtensionProxy( extension, cardPileBaseDesign.getId(), cardPileBaseDesign.getSize().width, cardPileBaseDesign.getSize().height );
-    }
-
-    /*
-     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#isEqual(java.lang.Object, java.lang.Object)
-     */
-    @Override
-    protected boolean isEqual(
-        final Object originalObj,
-        final Object deserializedObj )
-    {
-        final ICardPileBaseDesign originalCardPileBaseDesign = (ICardPileBaseDesign)originalObj;
-        final ICardPileBaseDesign deserializedCardPileBaseDesign = (ICardPileBaseDesign)deserializedObj;
-        return originalCardPileBaseDesign.getId().equals( deserializedCardPileBaseDesign.getId() ) && originalCardPileBaseDesign.getSize().equals( deserializedCardPileBaseDesign.getSize() );
     }
 
     /*

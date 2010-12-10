@@ -21,7 +21,7 @@
 
 package org.gamegineer.common.persistence.serializable;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -66,6 +66,33 @@ public abstract class AbstractPersistenceDelegateTestCase
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Asserts that the specified subjects are equal.
+     * 
+     * <p>
+     * This implementation compares the two objects using the {@code equals}
+     * method.
+     * </p>
+     * 
+     * @param expected
+     *        The expected subject; must not be {@code null}.
+     * @param actual
+     *        The actual subject; may be {@code null}.
+     * 
+     * @throws java.lang.AssertionError
+     *         If the two subjects are not equal.
+     * @throws java.lang.NullPointerException
+     *         If {@code expected} is {@code null}.
+     */
+    protected void assertSubjectEquals(
+        /* @NonNull */
+        final Object expected,
+        /* @Nullable */
+        final Object actual )
+    {
+        assertEquals( expected, actual );
+    }
 
     /**
      * Creates a new object input stream for the specified input stream.
@@ -164,36 +191,6 @@ public abstract class AbstractPersistenceDelegateTestCase
     }
 
     /**
-     * Indicates the specified objects are equal.
-     * 
-     * <p>
-     * The default implementation compares the two objects using the {@code
-     * equals} method.
-     * </p>
-     * 
-     * @param originalObj
-     *        The original object; must not be {@code null}.
-     * @param deserializedObj
-     *        The deserialized object; may be {@code null}.
-     * 
-     * @return {@code true} if the two objects are equal; otherwise {@code
-     *         false}.
-     * 
-     * @throws java.lang.ClassCastException
-     *         If {@code deserializedObj} is not of the subject type.
-     * @throws java.lang.NullPointerException
-     *         If {@code originalObj} is {@code null}.
-     */
-    protected boolean isEqual(
-        /* @NonNull */
-        final Object originalObj,
-        /* @Nullable */
-        final Object deserializedObj )
-    {
-        return originalObj.equals( deserializedObj );
-    }
-
-    /**
      * Ensures the {@code annotateClass} method throws an exception when passed
      * a {@code null} class.
      * 
@@ -288,6 +285,6 @@ public abstract class AbstractPersistenceDelegateTestCase
         final Object deserializedObj = ois.readObject();
         ois.close();
 
-        assertTrue( isEqual( obj, deserializedObj ) );
+        assertSubjectEquals( obj, deserializedObj );
     }
 }

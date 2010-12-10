@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core.services.cardsurfacedesignregistry;
 
+import static org.junit.Assert.assertEquals;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IExtension;
@@ -62,6 +63,20 @@ public final class CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersisten
     // ======================================================================
 
     /*
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#assertSubjectEquals(java.lang.Object, java.lang.Object)
+     */
+    @Override
+    protected void assertSubjectEquals(
+        final Object expected,
+        final Object actual )
+    {
+        final ICardSurfaceDesign expectedCardSurfaceDesign = (ICardSurfaceDesign)expected;
+        final ICardSurfaceDesign actualCardSurfaceDesign = (ICardSurfaceDesign)actual;
+        assertEquals( expectedCardSurfaceDesign.getId(), actualCardSurfaceDesign.getId() );
+        assertEquals( expectedCardSurfaceDesign.getSize(), actualCardSurfaceDesign.getSize() );
+    }
+
+    /*
      * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createSubject()
      */
     @Override
@@ -74,19 +89,6 @@ public final class CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersisten
         mocksControl.replay();
         final ICardSurfaceDesign cardSurfaceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
         return new CardSurfaceDesignExtensionProxy( extension, cardSurfaceDesign.getId(), cardSurfaceDesign.getSize().width, cardSurfaceDesign.getSize().height );
-    }
-
-    /*
-     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#isEqual(java.lang.Object, java.lang.Object)
-     */
-    @Override
-    protected boolean isEqual(
-        final Object originalObj,
-        final Object deserializedObj )
-    {
-        final ICardSurfaceDesign originalCardSurfaceDesign = (ICardSurfaceDesign)originalObj;
-        final ICardSurfaceDesign deserializedCardSurfaceDesign = (ICardSurfaceDesign)deserializedObj;
-        return originalCardSurfaceDesign.getId().equals( deserializedCardSurfaceDesign.getId() ) && originalCardSurfaceDesign.getSize().equals( deserializedCardSurfaceDesign.getSize() );
     }
 
     /*
