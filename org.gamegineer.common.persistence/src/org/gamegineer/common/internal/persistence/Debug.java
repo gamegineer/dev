@@ -40,9 +40,6 @@ public final class Debug
     /** The name of the top-level debug option. */
     public static final String OPTION_DEFAULT = "/debug"; //$NON-NLS-1$
 
-    /** The name of the JavaBeans persistence framework package debug option. */
-    public static final String OPTION_BEANS = OPTION_DEFAULT + "/beans"; //$NON-NLS-1$
-
     /**
      * The name of the Java object serialization framework package debug option.
      */

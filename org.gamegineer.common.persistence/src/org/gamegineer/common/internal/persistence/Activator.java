@@ -43,10 +43,6 @@ public final class Activator
     /** The singleton instance of the bundle activator. */
     private static final AtomicReference<Activator> instance_ = new AtomicReference<Activator>();
 
-    /** The JavaBeans persistence delegate registry service tracker. */
-    @GuardedBy( "lock_" )
-    private ServiceTracker beansPersistenceDelegateRegistryTracker_;
-
     /** The bundle context. */
     @GuardedBy( "lock_" )
     private BundleContext bundleContext_;
@@ -69,7 +65,6 @@ public final class Activator
     public Activator()
     {
         lock_ = new Object();
-        beansPersistenceDelegateRegistryTracker_ = null;
         bundleContext_ = null;
         serializablePersistenceDelegateRegistryTracker_ = null;
     }
@@ -78,30 +73,6 @@ public final class Activator
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Gets the JavaBeans persistence delegate registry service.
-     * 
-     * @return The JavaBeans persistence delegate registry service or {@code
-     *         null} if no JavaBeans persistence delegate registry service is
-     *         available.
-     */
-    /* @Nullable */
-    public org.gamegineer.common.persistence.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry getBeansPersistenceDelegateRegistry()
-    {
-        synchronized( lock_ )
-        {
-            assert bundleContext_ != null;
-
-            if( beansPersistenceDelegateRegistryTracker_ == null )
-            {
-                beansPersistenceDelegateRegistryTracker_ = new ServiceTracker( bundleContext_, org.gamegineer.common.persistence.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry.class.getName(), null );
-                beansPersistenceDelegateRegistryTracker_.open();
-            }
-
-            return (org.gamegineer.common.persistence.beans.services.persistencedelegateregistry.IPersistenceDelegateRegistry)beansPersistenceDelegateRegistryTracker_.getService();
-        }
-    }
 
     /**
      * Gets the bundle context.
@@ -191,11 +162,6 @@ public final class Activator
             assert bundleContext_ != null;
             bundleContext_ = null;
 
-            if( beansPersistenceDelegateRegistryTracker_ != null )
-            {
-                beansPersistenceDelegateRegistryTracker_.close();
-                beansPersistenceDelegateRegistryTracker_ = null;
-            }
             if( serializablePersistenceDelegateRegistryTracker_ != null )
             {
                 serializablePersistenceDelegateRegistryTracker_.close();
