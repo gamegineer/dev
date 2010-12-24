@@ -22,6 +22,7 @@
 package org.gamegineer.common.ui.operation;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.SwingWorker;
 import net.jcip.annotations.ThreadSafe;
@@ -56,6 +57,9 @@ public abstract class RunnableTask<T, V>
     /** The name of the {@code progress} property. */
     public static final String PROGRESS_PROPERTY_NAME = "progress"; //$NON-NLS-1$
 
+    /** The name of the {@code progressIndeterminate} property. */
+    public static final String PROGRESS_INDETERMINATE_PROPERTY_NAME = "progressIndeterminate"; //$NON-NLS-1$
+
     /** The name of the {@code state} property. */
     public static final String STATE_PROPERTY_NAME = "state"; //$NON-NLS-1$
 
@@ -67,6 +71,9 @@ public abstract class RunnableTask<T, V>
 
     /** Indicates the task is interruptible. */
     private final boolean isInterruptible_;
+
+    /** Indicates the task progress is indeterminate. */
+    private final AtomicBoolean isProgressIndeterminate_;
 
 
     // ======================================================================
@@ -112,6 +119,7 @@ public abstract class RunnableTask<T, V>
         description_ = new AtomicReference<String>( "" ); //$NON-NLS-1$
         isCancellable_ = isCancellable;
         isInterruptible_ = isInterruptible;
+        isProgressIndeterminate_ = new AtomicBoolean( false );
     }
 
 
@@ -152,6 +160,17 @@ public abstract class RunnableTask<T, V>
     }
 
     /**
+     * Indicates the task progress is indeterminate.
+     * 
+     * @return {@code true} if the task progress is indeterminate; otherwise
+     *         {@code false}.
+     */
+    public final boolean isProgressIndeterminate()
+    {
+        return isProgressIndeterminate_.get();
+    }
+
+    /**
      * Sets the current task description.
      * 
      * @param description
@@ -168,5 +187,20 @@ public abstract class RunnableTask<T, V>
 
         final String oldDescription = description_.getAndSet( description );
         firePropertyChange( DESCRIPTION_PROPERTY_NAME, oldDescription, description );
+    }
+
+    /**
+     * Sets a flag that indicates the task progress is indeterminate.
+     * 
+     * @param isProgressIndeterminate
+     *        {@code true} if the task progress is indeterminate; otherwise
+     *        {@code false}.
+     */
+    @SuppressWarnings( "boxing" )
+    protected final void setProgressIndeterminate(
+        final boolean isProgressIndeterminate )
+    {
+        final boolean oldIsProgressIndeterminate = isProgressIndeterminate_.getAndSet( isProgressIndeterminate );
+        firePropertyChange( PROGRESS_INDETERMINATE_PROPERTY_NAME, oldIsProgressIndeterminate, isProgressIndeterminate );
     }
 }

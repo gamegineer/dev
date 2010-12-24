@@ -97,11 +97,16 @@ final class ProgressMonitorComponent
     public void propertyChange(
         final PropertyChangeEvent event )
     {
-        if( RunnableTask.PROGRESS_PROPERTY_NAME.equals( event.getPropertyName() ) )
+        final String propertyName = event.getPropertyName();
+        if( RunnableTask.PROGRESS_PROPERTY_NAME.equals( propertyName ) )
         {
             progressBar_.setValue( (Integer)event.getNewValue() );
         }
-        else if( RunnableTask.DESCRIPTION_PROPERTY_NAME.equals( event.getPropertyName() ) )
+        else if( RunnableTask.PROGRESS_INDETERMINATE_PROPERTY_NAME.equals( propertyName ) )
+        {
+            progressBar_.setIndeterminate( (Boolean)event.getNewValue() );
+        }
+        else if( RunnableTask.DESCRIPTION_PROPERTY_NAME.equals( propertyName ) )
         {
             label_.setText( (String)event.getNewValue() );
         }
