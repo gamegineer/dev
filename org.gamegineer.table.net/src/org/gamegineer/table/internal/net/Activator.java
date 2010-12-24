@@ -22,6 +22,9 @@
 package org.gamegineer.table.internal.net;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -46,6 +49,9 @@ public final class Activator
     @GuardedBy( "lock_" )
     private BundleContext bundleContext_;
 
+    /** The bundle executor service. */
+    private final ExecutorService executorService_;
+
     /** The instance lock. */
     private final Object lock_;
 
@@ -61,6 +67,7 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
+        executorService_ = Executors.newCachedThreadPool();
     }
 
 
@@ -96,6 +103,17 @@ public final class Activator
         return instance;
     }
 
+    /**
+     * Gets the bundle executor service.
+     * 
+     * @return The bundle executor service; never {@code null}.
+     */
+    /* @NonNull */
+    public ExecutorService getExecutorService()
+    {
+        return executorService_;
+    }
+
     /*
      * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
      */
@@ -121,6 +139,7 @@ public final class Activator
     @Override
     public void stop(
         final BundleContext bundleContext )
+        throws Exception
     {
         assertArgumentNotNull( bundleContext, "bundleContext" ); //$NON-NLS-1$
 
@@ -131,6 +150,12 @@ public final class Activator
         {
             assert bundleContext_ != null;
             bundleContext_ = null;
+
+            executorService_.shutdown();
+            if( !executorService_.awaitTermination( 10, TimeUnit.SECONDS ) )
+            {
+                executorService_.shutdownNow();
+            }
         }
     }
 }

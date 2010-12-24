@@ -31,6 +31,7 @@ import org.gamegineer.common.ui.wizard.AbstractWizard;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.util.OptionDialogs;
+import org.gamegineer.table.net.INetworkTable;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.NetworkTableConfigurationBuilder;
 
@@ -169,7 +170,8 @@ public final class JoinNetworkTableWizard
                         Thread.sleep( 50 );
                     }
 
-                    tableModel_.getNetworkTable().join( configuration );
+                    final INetworkTable networkTable = tableModel_.getNetworkTable();
+                    networkTable.endJoin( networkTable.beginJoin( configuration ) );
                     return ConnectionState.CONNECTED;
                 }
 

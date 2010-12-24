@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.net;
 
+import java.util.concurrent.Future;
+
 /**
  * A network adapter for a virtual game table.
  * 
@@ -51,34 +53,124 @@ public interface INetworkTable
         INetworkTableListener listener );
 
     /**
-     * Disconnects from the network.
+     * Begins an asynchronous operation to disconnect from the network.
      * 
      * <p>
-     * This method does nothing if the network is not connected.
+     * The operation does nothing if the network is not connected.
      * </p>
      * 
-     * @throws org.gamegineer.table.net.NetworkTableException
-     *         If an error occurs.
+     * @return An asynchronous completion token for the operation; never {@code
+     *         null}.
      */
-    public void disconnect()
-        throws NetworkTableException;
+    /* @NonNull */
+    public Future<Void> beginDisconnect();
 
     /**
-     * Hosts the network table.
+     * Begins an asynchronous operation to host the network table.
      * 
      * @param configuration
      *        The network table configuration; must not be {@code null}.
      * 
+     * @return An asynchronous completion token for the operation; never {@code
+     *         null}.
+     * 
      * @throws java.lang.NullPointerException
      *         If {@code configuration} is {@code null}.
+     */
+    /* @NonNull */
+    public Future<Void> beginHost(
+        /* @NonNull */
+        INetworkTableConfiguration configuration );
+
+    /**
+     * Begins an asynchronous operation to join another network table.
+     * 
+     * @param configuration
+     *        The network table configuration; must not be {@code null}.
+     * 
+     * @return An asynchronous completion token for the operation; never {@code
+     *         null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code configuration} is {@code null}.
+     */
+    public Future<Void> beginJoin(
+        /* @NonNull */
+        INetworkTableConfiguration configuration );
+
+    /**
+     * Ends an asynchronous operation to disconnect from the network.
+     * 
+     * @param token
+     *        The asynchronous completion token for the operation; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code token} is not a token for the expected operation.
+     * @throws java.lang.InterruptedException
+     *         If the thread is interrupted while waiting for the operation to
+     *         complete.
+     * @throws java.lang.NullPointerException
+     *         If {@code token} is {@code null}.
+     * @throws java.util.concurrent.CancellationException
+     *         If the operation was cancelled.
+     * @throws org.gamegineer.table.net.NetworkTableException
+     *         If an error occurs.
+     */
+    public void endDisconnect(
+        /* @NonNull */
+        Future<Void> token )
+        throws NetworkTableException, InterruptedException;
+
+    /**
+     * Ends an asynchronous operation to host the network table associated
+     * 
+     * @param token
+     *        The asynchronous completion token for the operation; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code token} is not a token for the expected operation.
+     * @throws java.lang.InterruptedException
+     *         If the thread is interrupted while waiting for the operation to
+     *         complete.
+     * @throws java.lang.NullPointerException
+     *         If {@code token} is {@code null}.
+     * @throws java.util.concurrent.CancellationException
+     *         If the operation was cancelled.
      * @throws org.gamegineer.table.net.NetworkTableException
      *         If the connection cannot be established or the network is already
      *         connected.
      */
-    public void host(
+    public void endHost(
         /* @NonNull */
-        INetworkTableConfiguration configuration )
-        throws NetworkTableException;
+        Future<Void> token )
+        throws NetworkTableException, InterruptedException;
+
+    /**
+     * Ends an asynchronous operation to join another network table.
+     * 
+     * @param token
+     *        The asynchronous completion token for the operation; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code token} is not a token for the expected operation.
+     * @throws java.lang.InterruptedException
+     *         If the thread is interrupted while waiting for the operation to
+     *         complete.
+     * @throws java.lang.NullPointerException
+     *         If {@code token} is {@code null}.
+     * @throws java.util.concurrent.CancellationException
+     *         If the operation was cancelled.
+     * @throws org.gamegineer.table.net.NetworkTableException
+     *         If the connection cannot be established or the network is already
+     *         connected.
+     */
+    public void endJoin(
+        /* @NonNull */
+        Future<Void> token )
+        throws NetworkTableException, InterruptedException;
 
     /**
      * Indicates the network is connected.
@@ -87,23 +179,6 @@ public interface INetworkTable
      *         .
      */
     public boolean isConnected();
-
-    /**
-     * Joins another network table.
-     * 
-     * @param configuration
-     *        The network table configuration; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code configuration} is {@code null}.
-     * @throws org.gamegineer.table.net.NetworkTableException
-     *         If the connection cannot be established or the network is already
-     *         connected.
-     */
-    public void join(
-        /* @NonNull */
-        INetworkTableConfiguration configuration )
-        throws NetworkTableException;
 
     /**
      * Removes the specified network table listener from this network table.

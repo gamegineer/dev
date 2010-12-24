@@ -84,7 +84,6 @@ import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
 import org.gamegineer.table.internal.ui.wizards.hostnetworktable.HostNetworkTableWizard;
 import org.gamegineer.table.internal.ui.wizards.joinnetworktable.JoinNetworkTableWizard;
-import org.gamegineer.table.net.NetworkTableException;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry;
 
@@ -977,14 +976,7 @@ final class TableView
      */
     private void disconnectNetworkTable()
     {
-        try
-        {
-            model_.getNetworkTable().disconnect();
-        }
-        catch( final NetworkTableException e )
-        {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableView_disconnectNetworkTable_error, e );
-        }
+        model_.getNetworkTable().beginDisconnect();
     }
 
     /**

@@ -22,6 +22,8 @@
 package org.gamegineer.table.net;
 
 import static org.junit.Assert.assertNotNull;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.ITable;
@@ -70,6 +72,22 @@ public abstract class AbstractNetworkTableTestCase
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Connects the fixture network table.
+     * 
+     * <p>
+     * This method blocks until the network table is connected.
+     * </p>
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    private void connectNetworkTable()
+        throws Exception
+    {
+        networkTable_.endHost( networkTable_.beginHost( networkTableConfiguration_ ) );
+    }
 
     /**
      * Creates the network table to be tested.
@@ -149,8 +167,28 @@ public abstract class AbstractNetworkTableTestCase
     }
 
     /**
-     * Ensures the {@code disconnect} method fires a network connection state
-     * changed event when the network is connected.
+     * Ensures the {@code beginHost} method throws an exception when passed a
+     * {@code null} configuration.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testBeginHost_Configuration_Null()
+    {
+        networkTable_.beginHost( null );
+    }
+
+    /**
+     * Ensures the {@code beginJoin} method throws an exception when passed a
+     * {@code null} configuration.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testBeginJoin_Configuration_Null()
+    {
+        networkTable_.beginJoin( null );
+    }
+
+    /**
+     * Ensures the disconnect operation fires a network connection state changed
+     * event when the network is connected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -159,20 +197,20 @@ public abstract class AbstractNetworkTableTestCase
     public void testDisconnect_Connected_FiresNetworkConnectionStateChangedEvent()
         throws Exception
     {
-        networkTable_.host( networkTableConfiguration_ );
+        connectNetworkTable();
         final INetworkTableListener listener = mocksControl_.createMock( INetworkTableListener.class );
         listener.networkConnectionStateChanged( EasyMock.notNull( NetworkTableEvent.class ) );
         mocksControl_.replay();
         networkTable_.addNetworkTableListener( listener );
 
-        networkTable_.disconnect();
+        networkTable_.endDisconnect( networkTable_.beginDisconnect() );
 
         mocksControl_.verify();
     }
 
     /**
-     * Ensures the {@code disconnect} method does not fire a network connection
-     * state changed event when the network is connected.
+     * Ensures the disconnect operation does not fire a network connection state
+     * changed event when the network is connected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -185,49 +223,156 @@ public abstract class AbstractNetworkTableTestCase
         mocksControl_.replay();
         networkTable_.addNetworkTableListener( listener );
 
-        networkTable_.disconnect();
+        networkTable_.endDisconnect( networkTable_.beginDisconnect() );
 
         mocksControl_.verify();
     }
 
     /**
-     * Ensures the {@code host} method throws an exception when the network is
-     * connected.
+     * Ensures the {@code endDisconnect} method throws an exception when passed
+     * an illegal token.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( expected = NetworkTableException.class )
-    public void testHost_Connected_ThrowsException()
+    @Test( expected = IllegalArgumentException.class )
+    public void testEndDisconnect_Token_Illegal()
         throws Exception
     {
-        networkTable_.host( networkTableConfiguration_ );
-
-        networkTable_.host( networkTableConfiguration_ );
+        networkTable_.endDisconnect( new FutureTask<Void>( new Callable<Void>()
+        {
+            @Override
+            public Void call()
+            {
+                return null;
+            }
+        } ) );
     }
 
     /**
-     * Ensures the {@code host} method throws an exception when passed a {@code
-     * null} configuration.
+     * Ensures the {@code endDisconnect} method throws an exception when passed
+     * a {@code null} token.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
-    public void testHost_Configuration_Null()
+    public void testEndDisconnect_Token_Null()
         throws Exception
     {
-        networkTable_.host( null );
+        networkTable_.endDisconnect( null );
     }
 
     /**
-     * Ensures the {@code host} method fires a network connection state changed
-     * event when the network is disconnected.
+     * Ensures the {@code endHost} method throws an exception when the network
+     * is connected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test
+    @Test( expected = NetworkTableException.class, timeout = 5000 )
+    public void testEndHost_Connected_ThrowsException()
+        throws Exception
+    {
+        networkTable_.endHost( networkTable_.beginHost( networkTableConfiguration_ ) );
+
+        networkTable_.endHost( networkTable_.beginHost( networkTableConfiguration_ ) );
+    }
+
+    /**
+     * Ensures the {@code endHost} method throws an exception when passed an
+     * illegal token.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testEndHost_Token_Illegal()
+        throws Exception
+    {
+        networkTable_.endHost( new FutureTask<Void>( new Callable<Void>()
+        {
+            @Override
+            public Void call()
+            {
+                return null;
+            }
+        } ) );
+    }
+
+    /**
+     * Ensures the {@code endHost} method throws an exception when passed a
+     * {@code null} token.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testEndHost_Token_Null()
+        throws Exception
+    {
+        networkTable_.endHost( null );
+    }
+
+    /**
+     * Ensures the {@code endJoin} method throws an exception when the network
+     * is connected.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NetworkTableException.class, timeout = 5000 )
+    public void testEndJoin_Connected_ThrowsException()
+        throws Exception
+    {
+        networkTable_.endJoin( networkTable_.beginJoin( networkTableConfiguration_ ) );
+
+        networkTable_.endJoin( networkTable_.beginJoin( networkTableConfiguration_ ) );
+    }
+
+    /**
+     * Ensures the {@code endJoin} method throws an exception when passed an
+     * illegal token.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testEndJoin_Token_Illegal()
+        throws Exception
+    {
+        networkTable_.endJoin( new FutureTask<Void>( new Callable<Void>()
+        {
+            @Override
+            public Void call()
+            {
+                return null;
+            }
+        } ) );
+    }
+
+    /**
+     * Ensures the {@code endHost} method throws an exception when passed a
+     * {@code null} token.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testEndJoin_Token_Null()
+        throws Exception
+    {
+        networkTable_.endJoin( null );
+    }
+
+    /**
+     * Ensures the host operation fires a network connection state changed event
+     * when the network is disconnected.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( timeout = 5000 )
     public void testHost_Disconnected_FiresNetworkConnectionStateChangedEvent()
         throws Exception
     {
@@ -236,44 +381,14 @@ public abstract class AbstractNetworkTableTestCase
         mocksControl_.replay();
         networkTable_.addNetworkTableListener( listener );
 
-        networkTable_.host( networkTableConfiguration_ );
+        networkTable_.endHost( networkTable_.beginHost( networkTableConfiguration_ ) );
 
         mocksControl_.verify();
     }
 
     /**
-     * Ensures the {@code join} method throws an exception when the network is
-     * connected.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NetworkTableException.class )
-    public void testJoin_Connected_ThrowsException()
-        throws Exception
-    {
-        networkTable_.join( networkTableConfiguration_ );
-
-        networkTable_.join( networkTableConfiguration_ );
-    }
-
-    /**
-     * Ensures the {@code join} method throws an exception when passed a {@code
-     * null} configuration.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testJoin_Configuration_Null()
-        throws Exception
-    {
-        networkTable_.join( null );
-    }
-
-    /**
-     * Ensures the {@code join} method fires a network connection state changed
-     * event when the network is disconnected.
+     * Ensures the join operation fires a network connection state changed event
+     * when the network is disconnected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -287,7 +402,7 @@ public abstract class AbstractNetworkTableTestCase
         mocksControl_.replay();
         networkTable_.addNetworkTableListener( listener );
 
-        networkTable_.join( networkTableConfiguration_ );
+        networkTable_.endJoin( networkTable_.beginJoin( networkTableConfiguration_ ) );
 
         mocksControl_.verify();
     }
@@ -313,7 +428,7 @@ public abstract class AbstractNetworkTableTestCase
         networkTable_.addNetworkTableListener( listener1 );
         networkTable_.addNetworkTableListener( listener2 );
 
-        networkTable_.host( networkTableConfiguration_ );
+        connectNetworkTable();
 
         mocksControl_.verify();
     }
@@ -354,10 +469,10 @@ public abstract class AbstractNetworkTableTestCase
         listener.networkConnectionStateChanged( EasyMock.notNull( NetworkTableEvent.class ) );
         mocksControl_.replay();
         networkTable_.addNetworkTableListener( listener );
-        networkTable_.host( networkTableConfiguration_ );
+        connectNetworkTable();
 
         networkTable_.removeNetworkTableListener( listener );
-        networkTable_.disconnect();
+        networkTable_.endDisconnect( networkTable_.beginDisconnect() );
 
         mocksControl_.verify();
     }

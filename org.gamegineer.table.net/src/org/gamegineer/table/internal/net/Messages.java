@@ -40,6 +40,18 @@ final class Messages
     /** The network table listener is already registered. */
     public static String NetworkTable_addNetworkTableListener_listener_registered;
 
+    /** The token is not a network table asynchronous completion token. */
+    public static String NetworkTable_endAsyncOperation_illegalToken;
+
+    /** The token is not associated with a disconnect operation. */
+    public static String NetworkTable_endDisconnect_illegalOperation;
+
+    /** The token is not associated with a host operation. */
+    public static String NetworkTable_endHost_illegalOperation;
+
+    /** The token is not associated with a join operation. */
+    public static String NetworkTable_endJoin_illegalOperation;
+
     /** The network is already connected. */
     public static String NetworkTable_host_networkConnected;
 
