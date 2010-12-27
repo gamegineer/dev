@@ -270,7 +270,7 @@ public abstract class AbstractNetworkTableTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( expected = NetworkTableException.class, timeout = 5000 )
+    @Test( expected = NetworkTableException.class )
     public void testEndHost_Connected_ThrowsException()
         throws Exception
     {
@@ -321,7 +321,7 @@ public abstract class AbstractNetworkTableTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( expected = NetworkTableException.class, timeout = 5000 )
+    @Test( expected = NetworkTableException.class )
     public void testEndJoin_Connected_ThrowsException()
         throws Exception
     {
@@ -372,7 +372,7 @@ public abstract class AbstractNetworkTableTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( timeout = 5000 )
+    @Test
     public void testHost_Disconnected_FiresNetworkConnectionStateChangedEvent()
         throws Exception
     {
