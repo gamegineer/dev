@@ -24,8 +24,13 @@ package org.gamegineer.table.internal.ui.wizards.hostnetworktable;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
+import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.common.ui.operation.RunnableTask;
 import org.gamegineer.common.ui.wizard.AbstractWizard;
 import org.gamegineer.table.internal.ui.Loggers;
@@ -34,6 +39,7 @@ import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.net.INetworkTable;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.NetworkTableConfigurationBuilder;
+import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * The host network table wizard.
@@ -153,26 +159,41 @@ public final class HostNetworkTableWizard
                 protected ConnectionState doInBackground()
                     throws Exception
                 {
-                    setDescription( "Searching for network..." ); //$NON-NLS-1$
-
-                    for( int index = 0; index <= 100; ++index )
-                    {
-                        if( index == 33 )
-                        {
-                            setDescription( "Opening port..." ); //$NON-NLS-1$
-                        }
-                        else if( index == 67 )
-                        {
-                            setDescription( "Waiting for connections..." ); //$NON-NLS-1$
-                        }
-
-                        setProgress( index );
-                        Thread.sleep( 50 );
-                    }
+                    setDescription( Messages.HostNetworkTableWizard_description_connecting );
+                    setProgressIndeterminate( true );
 
                     final INetworkTable networkTable = tableModel_.getNetworkTable();
-                    networkTable.endHost( networkTable.beginHost( configuration ) );
-                    return ConnectionState.CONNECTED;
+                    final Future<Void> token = networkTable.beginHost( configuration );
+                    try
+                    {
+                        while( !token.isDone() )
+                        {
+                            try
+                            {
+                                token.get( 1L, TimeUnit.SECONDS );
+                            }
+                            catch( final TimeoutException e )
+                            {
+                                // do nothing
+                            }
+                            catch( final InterruptedException e )
+                            {
+                                token.cancel( true );
+                            }
+                        }
+                    }
+                    catch( final ExecutionException e )
+                    {
+                        final Throwable cause = e.getCause();
+                        if( cause instanceof NetworkTableException )
+                        {
+                            throw (NetworkTableException)cause;
+                        }
+
+                        throw TaskUtils.launderThrowable( cause );
+                    }
+
+                    return networkTable.isConnected() ? ConnectionState.CONNECTED : ConnectionState.DISCONNECTED;
                 }
 
                 @Override
@@ -195,12 +216,12 @@ public final class HostNetworkTableWizard
                     catch( final ExecutionException e )
                     {
                         Loggers.getDefaultLogger().log( Level.SEVERE, Messages.HostNetworkTableWizard_finish_error_nonNls, e );
-                        OptionDialogs.showErrorMessageDialog( getContainer().getShell(), Messages.HostNetworkTableWizard_finish_error );
+                        showErrorMessageDialogLater( Messages.HostNetworkTableWizard_finish_error );
                     }
                     catch( final InterruptedException e )
                     {
                         Loggers.getDefaultLogger().log( Level.SEVERE, Messages.HostNetworkTableWizard_finish_interrupted_nonNls, e );
-                        Thread.currentThread().interrupt();
+                        showErrorMessageDialogLater( Messages.HostNetworkTableWizard_finish_interrupted );
                     }
                     finally
                     {
@@ -211,6 +232,28 @@ public final class HostNetworkTableWizard
         }
 
         return connectionState_ == ConnectionState.CONNECTED;
+    }
+
+    /**
+     * Shows an error message dialog at the next available opportunity.
+     * 
+     * @param message
+     *        The error message; must not be {@code null}.
+     */
+    private void showErrorMessageDialogLater(
+        /* @NonNull */
+        final String message )
+    {
+        assert message != null;
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                OptionDialogs.showErrorMessageDialog( getContainer().getShell(), message );
+            }
+        } );
     }
 
 

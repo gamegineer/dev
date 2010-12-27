@@ -37,11 +37,17 @@ final class Messages
 
     // --- JoinNetworkTableWizard -------------------------------------------
 
+    /** The connecting task description. */
+    public static String JoinNetworkTableWizard_description_connecting;
+
     /** An error occurred while executing the finish task. */
     public static String JoinNetworkTableWizard_finish_error;
 
     /** An error occurred while executing the finish task. */
     public static String JoinNetworkTableWizard_finish_error_nonNls;
+
+    /** Interrupted while waiting for the finish task to complete. */
+    public static String JoinNetworkTableWizard_finish_interrupted;
 
     /** Interrupted while waiting for the finish task to complete. */
     public static String JoinNetworkTableWizard_finish_interrupted_nonNls;
