@@ -286,6 +286,9 @@ public final class NetworkTable
      * @param configuration
      *        The network table configuration; must not be {@code null}.
      * 
+     * @throws java.lang.InterruptedException
+     *         If the thread is interrupted while waiting for the operation to
+     *         complete.
      * @throws org.gamegineer.table.net.NetworkTableException
      *         If the connection cannot be established or the network is already
      *         connected.
@@ -293,9 +296,11 @@ public final class NetworkTable
     private void host(
         /* @NonNull */
         final INetworkTableConfiguration configuration )
-        throws NetworkTableException
+        throws NetworkTableException, InterruptedException
     {
         assert configuration != null;
+
+        Thread.sleep( 5000L );
 
         if( isConnected_.compareAndSet( false, true ) )
         {
@@ -322,6 +327,9 @@ public final class NetworkTable
      * @param configuration
      *        The network table configuration; must not be {@code null}.
      * 
+     * @throws java.lang.InterruptedException
+     *         If the thread is interrupted while waiting for the operation to
+     *         complete.
      * @throws org.gamegineer.table.net.NetworkTableException
      *         If the connection cannot be established or the network is already
      *         connected.
@@ -329,9 +337,11 @@ public final class NetworkTable
     private void join(
         /* @NonNull */
         final INetworkTableConfiguration configuration )
-        throws NetworkTableException
+        throws NetworkTableException, InterruptedException
     {
         assert configuration != null;
+
+        Thread.sleep( 5000L );
 
         if( isConnected_.compareAndSet( false, true ) )
         {
