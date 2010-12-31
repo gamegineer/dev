@@ -29,8 +29,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
@@ -52,11 +52,25 @@ public final class NetworkTable
     // Fields
     // ======================================================================
 
-    /** Indicates the network is connected. */
-    private final AtomicBoolean isConnected_;
+    /** The connection state. */
+    @GuardedBy( "lock_" )
+    private ConnectionState connectionState_;
 
     /** The collection of network table listeners. */
     private final CopyOnWriteArrayList<INetworkTableListener> listeners_;
+
+    /** The instance lock. */
+    private final Object lock_;
+
+    /**
+     * The active network table strategy or {@code null} if the network is not
+     * connected.
+     */
+    @GuardedBy( "lock_" )
+    private AbstractNetworkTableStrategy strategy_;
+
+    /** The network table strategy factory. */
+    private final AbstractNetworkTableStrategyFactory strategyFactory_;
 
     /** The table to be attached to the network. */
     @SuppressWarnings( "unused" )
@@ -68,7 +82,8 @@ public final class NetworkTable
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code NetworkTable} class.
+     * Initializes a new instance of the {@code NetworkTable} class using the
+     * default strategy factory.
      * 
      * @param table
      *        The table to be attached to the network; must not be {@code null}.
@@ -80,10 +95,35 @@ public final class NetworkTable
         /* @NonNull */
         final ITable table )
     {
-        assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
+        this( table, new DefaultNetworkTableStrategyFactory() );
+    }
 
-        isConnected_ = new AtomicBoolean( false );
+    /**
+     * Initializes a new instance of the {@code NetworkTable} class using the
+     * specified strategy factory.
+     * 
+     * @param table
+     *        The table to be attached to the network; must not be {@code null}.
+     * @param strategyFactory
+     *        The network table strategy factory; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code table} is {@code null}.
+     */
+    NetworkTable(
+        /* @NonNull */
+        final ITable table,
+        /* @NonNull */
+        final AbstractNetworkTableStrategyFactory strategyFactory )
+    {
+        assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
+        assert strategyFactory != null;
+
+        connectionState_ = ConnectionState.DISCONNECTED;
         listeners_ = new CopyOnWriteArrayList<INetworkTableListener>();
+        lock_ = new Object();
+        strategy_ = null;
+        strategyFactory_ = strategyFactory;
         table_ = table;
     }
 
@@ -138,7 +178,7 @@ public final class NetworkTable
             public Void call()
                 throws Exception
             {
-                host( configuration );
+                connect( configuration, strategyFactory_.createServerNetworkTableStrategy( NetworkTable.this ) );
                 return null;
             }
         } ) );
@@ -160,21 +200,112 @@ public final class NetworkTable
             public Void call()
                 throws Exception
             {
-                join( configuration );
+                connect( configuration, strategyFactory_.createClientNetworkTableStrategy( NetworkTable.this ) );
                 return null;
             }
         } ) );
     }
 
     /**
-     * Disconnects from the network.
+     * Connects to the network.
+     * 
+     * @param configuration
+     *        The network table configuration; must not be {@code null}.
+     * @param strategy
+     *        The strategy to use for the connection; must not be {@code null}.
+     * 
+     * @throws org.gamegineer.table.net.NetworkTableException
+     *         If the connection cannot be established or the network is already
+     *         connected.
      */
-    private void disconnect()
+    private void connect(
+        /* @NonNull */
+        final INetworkTableConfiguration configuration,
+        /* @NonNull */
+        final AbstractNetworkTableStrategy strategy )
+        throws NetworkTableException
     {
-        if( isConnected_.compareAndSet( true, false ) )
+        assert configuration != null;
+        assert strategy != null;
+
+        synchronized( lock_ )
         {
+            if( connectionState_ != ConnectionState.DISCONNECTED )
+            {
+                throw new NetworkTableException( Messages.NetworkTable_connect_networkConnected );
+            }
+
+            connectionState_ = ConnectionState.CONNECTING;
+        }
+
+        try
+        {
+            strategy.connect( configuration );
+
+            synchronized( lock_ )
+            {
+                connectionState_ = ConnectionState.CONNECTED;
+                strategy_ = strategy;
+            }
+
             fireNetworkConnectionStateChanged();
         }
+        catch( final NetworkTableException e )
+        {
+            synchronized( lock_ )
+            {
+                connectionState_ = ConnectionState.DISCONNECTED;
+            }
+
+            throw e;
+        }
+    }
+
+    /**
+     * Disconnects from the network.
+     * 
+     * @throws org.gamegineer.table.net.NetworkTableException
+     *         If an error occurs.
+     */
+    private void disconnect()
+        throws NetworkTableException
+    {
+        final AbstractNetworkTableStrategy strategy;
+        synchronized( lock_ )
+        {
+            if( connectionState_ != ConnectionState.CONNECTED )
+            {
+                return;
+            }
+
+            connectionState_ = ConnectionState.DISCONNECTING;
+            strategy = strategy_;
+            assert strategy != null;
+        }
+
+        try
+        {
+            strategy.disconnect();
+        }
+        finally
+        {
+            disconnected();
+        }
+    }
+
+    /**
+     * Invoked when the network has been either passively or actively
+     * disconnected.
+     */
+    void disconnected()
+    {
+        synchronized( lock_ )
+        {
+            connectionState_ = ConnectionState.DISCONNECTED;
+            strategy_ = null;
+        }
+
+        fireNetworkConnectionStateChanged();
     }
 
     /*
@@ -280,76 +411,15 @@ public final class NetworkTable
         }
     }
 
-    /**
-     * Hosts the network table.
-     * 
-     * @param configuration
-     *        The network table configuration; must not be {@code null}.
-     * 
-     * @throws java.lang.InterruptedException
-     *         If the thread is interrupted while waiting for the operation to
-     *         complete.
-     * @throws org.gamegineer.table.net.NetworkTableException
-     *         If the connection cannot be established or the network is already
-     *         connected.
-     */
-    private void host(
-        /* @NonNull */
-        final INetworkTableConfiguration configuration )
-        throws NetworkTableException, InterruptedException
-    {
-        assert configuration != null;
-
-        Thread.sleep( 5000L );
-
-        if( isConnected_.compareAndSet( false, true ) )
-        {
-            fireNetworkConnectionStateChanged();
-        }
-        else
-        {
-            throw new NetworkTableException( Messages.NetworkTable_host_networkConnected );
-        }
-    }
-
     /*
      * @see org.gamegineer.table.net.INetworkTable#isConnected()
      */
     @Override
     public boolean isConnected()
     {
-        return isConnected_.get();
-    }
-
-    /**
-     * Joins another network table.
-     * 
-     * @param configuration
-     *        The network table configuration; must not be {@code null}.
-     * 
-     * @throws java.lang.InterruptedException
-     *         If the thread is interrupted while waiting for the operation to
-     *         complete.
-     * @throws org.gamegineer.table.net.NetworkTableException
-     *         If the connection cannot be established or the network is already
-     *         connected.
-     */
-    private void join(
-        /* @NonNull */
-        final INetworkTableConfiguration configuration )
-        throws NetworkTableException, InterruptedException
-    {
-        assert configuration != null;
-
-        Thread.sleep( 5000L );
-
-        if( isConnected_.compareAndSet( false, true ) )
+        synchronized( lock_ )
         {
-            fireNetworkConnectionStateChanged();
-        }
-        else
-        {
-            throw new NetworkTableException( Messages.NetworkTable_join_networkConnected );
+            return connectionState_ == ConnectionState.CONNECTED;
         }
     }
 
@@ -368,6 +438,24 @@ public final class NetworkTable
     // ======================================================================
     // Nested Types
     // ======================================================================
+
+    /**
+     * The network table connection state.
+     */
+    private enum ConnectionState
+    {
+        /** The network is disconnected. */
+        DISCONNECTED,
+
+        /** The network is connecting. */
+        CONNECTING,
+
+        /** The network is connected. */
+        CONNECTED,
+
+        /** The network is being disconnected. */
+        DISCONNECTING;
+    }
 
     /**
      * A network table operation.

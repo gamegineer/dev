@@ -1,5 +1,5 @@
 /*
- * NetworkTableAsNetworkTableTest.java
+ * FakeClientNetworkTableStrategy.java
  * Copyright 2008-2010 Gamegineer.org
  * All rights reserved.
  *
@@ -16,35 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 9, 2010 at 10:58:36 PM.
+ * Created on Dec 30, 2010 at 12:12:32 PM.
  */
 
 package org.gamegineer.table.internal.net;
 
-import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.net.AbstractNetworkTableTestCase;
-import org.gamegineer.table.net.INetworkTable;
+import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.net.INetworkTableConfiguration;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.NetworkTable} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.net.INetworkTable} interface.
+ * A fake client network table strategy.
  */
-public final class NetworkTableAsNetworkTableTest
-    extends AbstractNetworkTableTestCase
+@ThreadSafe
+final class FakeClientNetworkTableStrategy
+    extends AbstractNetworkTableStrategy
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code NetworkTableAsNetworkTableTest}
+     * Initializes a new instance of the {@code FakeClientNetworkTableStrategy}
      * class.
+     * 
+     * @param networkTable
+     *        The network table that hosts the strategy; must not be {@code
+     *        null}.
      */
-    public NetworkTableAsNetworkTableTest()
+    FakeClientNetworkTableStrategy(
+        /* @NonNull */
+        final NetworkTable networkTable )
     {
-        super();
+        super( networkTable );
     }
 
 
@@ -53,12 +56,21 @@ public final class NetworkTableAsNetworkTableTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.net.AbstractNetworkTableTestCase#createNetworkTable(org.gamegineer.table.core.ITable)
+     * @see org.gamegineer.table.internal.net.AbstractNetworkTableStrategy#connect(org.gamegineer.table.net.INetworkTableConfiguration)
      */
     @Override
-    protected INetworkTable createNetworkTable(
-        final ITable table )
+    void connect(
+        final INetworkTableConfiguration configuration )
     {
-        return new NetworkTable( table, new FakeNetworkTableStrategyFactory() );
+        assert configuration != null;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.AbstractNetworkTableStrategy#disconnect()
+     */
+    @Override
+    void disconnect()
+    {
+        // do nothing
     }
 }
