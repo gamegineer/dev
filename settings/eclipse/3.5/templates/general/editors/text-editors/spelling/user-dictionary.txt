@@ -87,3 +87,4 @@ cancellable
 multi
 uninstalls
 validator
+unregistration
