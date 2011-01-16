@@ -1,6 +1,6 @@
 /*
  * Messages.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,26 +40,26 @@ final class Messages
     /** The network table listener is already registered. */
     public static String NetworkTable_addNetworkTableListener_listener_registered;
 
+    /** An error occurred waiting for the network to disconnect. */
+    public static String NetworkTable_disconnect_error;
+
     /** The network is already connected. */
-    public static String NetworkTable_connect_networkConnected;
+    public static String NetworkTable_host_networkConnected;
 
-    /** The token is not a network table asynchronous completion token. */
-    public static String NetworkTable_endAsyncOperation_illegalToken;
-
-    /** The token is not associated with a disconnect operation. */
-    public static String NetworkTable_endDisconnect_illegalOperation;
-
-    /** The token is not associated with a host operation. */
-    public static String NetworkTable_endHost_illegalOperation;
-
-    /** The token is not associated with a join operation. */
-    public static String NetworkTable_endJoin_illegalOperation;
+    /** The network is already connected. */
+    public static String NetworkTable_join_networkConnected;
 
     /**
      * An unexpected exception was thrown from
-     * INetworkTableListener.networkConnectionStateChanged().
+     * INetworkTableListener.networkConnected().
      */
-    public static String NetworkTable_networkConnectionStateChanged_unexpectedException;
+    public static String NetworkTable_networkConnected_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * INetworkTableListener.networkDisconnected().
+     */
+    public static String NetworkTable_networkDisconnected_unexpectedException;
 
     /** The network table listener is not registered. */
     public static String NetworkTable_removeNetworkTableListener_listener_notRegistered;

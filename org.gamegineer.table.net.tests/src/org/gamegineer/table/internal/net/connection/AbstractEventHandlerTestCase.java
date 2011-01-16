@@ -1,6 +1,6 @@
 /*
- * AbstractNetworkTableEventTestCase.java
- * Copyright 2008-2010 Gamegineer.org
+ * AbstractEventHandlerTestCase.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 9, 2010 at 10:18:39 PM.
+ * Created on Jan 8, 2011 at 10:37:08 PM.
  */
 
-package org.gamegineer.table.net;
+package org.gamegineer.table.internal.net.connection;
 
 import static org.junit.Assert.assertNotNull;
 import org.junit.After;
@@ -28,19 +28,23 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.net.INetworkTableEvent} interface.
+ * {@link org.gamegineer.table.internal.net.connection.IEventHandler} interface.
  * 
+ * @param <H>
+ *        The type of the transport handle.
+ * @param <E>
+ *        The type of the event.
  * @param <T>
- *        The type of the network table event.
+ *        The type of the event handler.
  */
-public abstract class AbstractNetworkTableEventTestCase<T extends INetworkTableEvent>
+public abstract class AbstractEventHandlerTestCase<H, E, T extends IEventHandler<H, E>>
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The network table event under test in the fixture. */
-    private T event_;
+    /** The event handler under test in the fixture. */
+    private T eventHandler_;
 
 
     // ======================================================================
@@ -48,10 +52,10 @@ public abstract class AbstractNetworkTableEventTestCase<T extends INetworkTableE
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractNetworkTableEventTestCase} class.
+     * Initializes a new instance of the {@code AbstractEventHandlerTestCase}
+     * class.
      */
-    protected AbstractNetworkTableEventTestCase()
+    protected AbstractEventHandlerTestCase()
     {
         super();
     }
@@ -62,28 +66,45 @@ public abstract class AbstractNetworkTableEventTestCase<T extends INetworkTableE
     // ======================================================================
 
     /**
-     * Creates the network table event to be tested.
+     * Creates the event handler to be tested.
      * 
-     * @return The network table event to be tested; never {@code null}.
+     * @return The event handler to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract T createNetworkTableEvent()
+    protected abstract T createEventHandler()
         throws Exception;
 
     /**
-     * Gets the network table event under test in the fixture.
+     * Creates a mock event for the event handler under test.
      * 
-     * @return The network table event under test in the fixture; never {@code
-     *         null}.
+     * @return A mock event for the event handler under test; never {@code null}
+     *         .
      */
     /* @NonNull */
-    protected final T getNetworkTableEvent()
+    protected abstract E createMockEvent();
+
+    /**
+     * Creates a mock transport handle for the event handler under test.
+     * 
+     * @return A mock transport handle for the event handler under test; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    protected abstract H createMockTransportHandle();
+
+    /**
+     * Gets the event handler under test in the fixture.
+     * 
+     * @return The event handler under test in the fixture; never {@code null}.
+     */
+    /* @NonNull */
+    protected final T getEventHandler()
     {
-        assertNotNull( event_ );
-        return event_;
+        assertNotNull( eventHandler_ );
+        return eventHandler_;
     }
 
     /**
@@ -96,8 +117,8 @@ public abstract class AbstractNetworkTableEventTestCase<T extends INetworkTableE
     public void setUp()
         throws Exception
     {
-        event_ = createNetworkTableEvent();
-        assertNotNull( event_ );
+        eventHandler_ = createEventHandler();
+        assertNotNull( eventHandler_ );
     }
 
     /**
@@ -110,15 +131,16 @@ public abstract class AbstractNetworkTableEventTestCase<T extends INetworkTableE
     public void tearDown()
         throws Exception
     {
-        event_ = null;
+        eventHandler_ = null;
     }
 
     /**
-     * Ensures the {@code getNetworkTable} method does not return {@code null}.
+     * Ensures the {@code handleEvent} method throws an exception when passed a
+     * {@code null} event.
      */
-    @Test
-    public void testGetNetworkTable_ReturnValue_NonNull()
+    @Test( expected = NullPointerException.class )
+    public void testHandleEvent_Event_Null()
     {
-        assertNotNull( event_.getNetworkTable() );
+        eventHandler_.handleEvent( null );
     }
 }

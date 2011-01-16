@@ -1,5 +1,5 @@
 /*
- * AbstractNetworkTableListenerTestCase.java
+ * AbstractNetworkInterfaceFactoryTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 9, 2010 at 10:13:09 PM.
+ * Created on Jan 15, 2011 at 11:52:40 PM.
  */
 
-package org.gamegineer.table.net;
+package org.gamegineer.table.internal.net.connection;
 
 import static org.junit.Assert.assertNotNull;
 import org.junit.After;
@@ -28,16 +28,17 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.net.INetworkTableListener} interface.
+ * {@link org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory}
+ * interface.
  */
-public abstract class AbstractNetworkTableListenerTestCase
+public abstract class AbstractNetworkInterfaceFactoryTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The network table listener under test in the fixture. */
-    private INetworkTableListener listener_;
+    /** The network interface factory under test in the fixture. */
+    private INetworkInterfaceFactory networkInterfaceFactory_;
 
 
     // ======================================================================
@@ -46,9 +47,9 @@ public abstract class AbstractNetworkTableListenerTestCase
 
     /**
      * Initializes a new instance of the {@code
-     * AbstractNetworkTableListenerTestCase} class.
+     * AbstractNetworkInterfaceFactoryTestCase} class.
      */
-    protected AbstractNetworkTableListenerTestCase()
+    protected AbstractNetworkInterfaceFactoryTestCase()
     {
         super();
     }
@@ -59,15 +60,15 @@ public abstract class AbstractNetworkTableListenerTestCase
     // ======================================================================
 
     /**
-     * Creates the network table listener to be tested.
+     * Creates the connection factory to be tested.
      * 
-     * @return The network table listener to be tested; never {@code null}.
+     * @return The connection factory to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract INetworkTableListener createNetworkTableListener()
+    protected abstract INetworkInterfaceFactory createConnectionFactory()
         throws Exception;
 
     /**
@@ -80,8 +81,8 @@ public abstract class AbstractNetworkTableListenerTestCase
     public void setUp()
         throws Exception
     {
-        listener_ = createNetworkTableListener();
-        assertNotNull( listener_ );
+        networkInterfaceFactory_ = createConnectionFactory();
+        assertNotNull( networkInterfaceFactory_ );
     }
 
     /**
@@ -94,26 +95,16 @@ public abstract class AbstractNetworkTableListenerTestCase
     public void tearDown()
         throws Exception
     {
-        listener_ = null;
+        networkInterfaceFactory_ = null;
     }
 
     /**
-     * Ensures the {@code networkConnected} method throws an exception when
-     * passed a {@code null} event.
+     * Ensures the {@code createNetworkInterface} method throws an exception
+     * when passed a {@code null} network table.
      */
     @Test( expected = NullPointerException.class )
-    public void testNetworkConnected_Event_Null()
+    public void testCreateNetworkInterface_NetworkTable_Null()
     {
-        listener_.networkConnected( null );
-    }
-
-    /**
-     * Ensures the {@code networkDisconnected} method throws an exception when
-     * passed a {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testNetworkDisconnected_Event_Null()
-    {
-        listener_.networkDisconnected( null );
+        networkInterfaceFactory_.createNetworkInterface( null );
     }
 }

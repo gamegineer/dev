@@ -1,6 +1,6 @@
 /*
  * HostNetworkTableWizard.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,13 +24,9 @@ package org.gamegineer.table.internal.ui.wizards.hostnetworktable;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.common.ui.operation.RunnableTask;
 import org.gamegineer.common.ui.wizard.AbstractWizard;
 import org.gamegineer.table.internal.ui.Loggers;
@@ -39,7 +35,6 @@ import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.net.INetworkTable;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.NetworkTableConfigurationBuilder;
-import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * The host network table wizard.
@@ -150,48 +145,19 @@ public final class HostNetworkTableWizard
     {
         if( connectionState_ == ConnectionState.DISCONNECTED )
         {
+            final INetworkTable networkTable = tableModel_.getNetworkTable();
             final INetworkTableConfiguration configuration = getNetworkTableConfiguration();
             connectionState_ = ConnectionState.CONNECTING;
             getContainer().executeTask( new RunnableTask<ConnectionState, Void>()
             {
                 @Override
-                @SuppressWarnings( "synthetic-access" )
                 protected ConnectionState doInBackground()
                     throws Exception
                 {
                     setDescription( Messages.HostNetworkTableWizard_description_connecting );
                     setProgressIndeterminate( true );
 
-                    final INetworkTable networkTable = tableModel_.getNetworkTable();
-                    final Future<Void> token = networkTable.beginHost( configuration );
-                    try
-                    {
-                        while( !token.isDone() )
-                        {
-                            try
-                            {
-                                token.get( 1L, TimeUnit.SECONDS );
-                            }
-                            catch( final TimeoutException e )
-                            {
-                                // do nothing
-                            }
-                            catch( final InterruptedException e )
-                            {
-                                token.cancel( true );
-                            }
-                        }
-                    }
-                    catch( final ExecutionException e )
-                    {
-                        final Throwable cause = e.getCause();
-                        if( cause instanceof NetworkTableException )
-                        {
-                            throw (NetworkTableException)cause;
-                        }
-
-                        throw TaskUtils.launderThrowable( cause );
-                    }
+                    networkTable.host( configuration );
 
                     return networkTable.isConnected() ? ConnectionState.CONNECTED : ConnectionState.DISCONNECTED;
                 }

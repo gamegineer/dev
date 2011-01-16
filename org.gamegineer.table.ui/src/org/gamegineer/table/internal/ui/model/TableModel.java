@@ -1,6 +1,6 @@
 /*
  * TableModel.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -546,10 +546,22 @@ public final class TableModel
     }
 
     /*
-     * @see org.gamegineer.table.net.INetworkTableListener#networkConnectionStateChanged(org.gamegineer.table.net.NetworkTableEvent)
+     * @see org.gamegineer.table.net.INetworkTableListener#networkConnected(org.gamegineer.table.net.NetworkTableEvent)
      */
     @Override
-    public void networkConnectionStateChanged(
+    public void networkConnected(
+        final NetworkTableEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        fireTableModelStateChanged();
+    }
+
+    /*
+     * @see org.gamegineer.table.net.INetworkTableListener#networkDisconnected(org.gamegineer.table.net.NetworkTableEvent)
+     */
+    @Override
+    public void networkDisconnected(
         final NetworkTableEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$

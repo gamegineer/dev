@@ -1,5 +1,5 @@
 /*
- * INetworkTableListener.java
+ * IEventHandler.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,49 +16,57 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 3, 2010 at 10:30:43 PM.
+ * Created on Jan 7, 2011 at 9:59:16 PM.
  */
 
-package org.gamegineer.table.net;
-
-import java.util.EventListener;
+package org.gamegineer.table.internal.net.connection;
 
 /**
- * The listener interface for use by clients to be notified of changes to the
- * network table state.
+ * A handler of events dispatched in the network table Acceptor-Connector
+ * pattern implementation.
  * 
- * @noextend This interface is not intended to be extended by clients.
+ * @param <H>
+ *        The type of the transport handle.
+ * @param <E>
+ *        The type of the event.
  */
-public interface INetworkTableListener
-    extends EventListener
+public interface IEventHandler<H, E>
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Invoked when the network table has connected to the network.
-     * 
-     * @param event
-     *        The event describing the network table; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
+     * Closes the event handler.
      */
-    public void networkConnected(
-        /* @NonNull */
-        NetworkTableEvent event );
+    public void close();
 
     /**
-     * Invoked when the network table has disconnected from the network.
+     * Gets the event mask associated with the event handler.
+     * 
+     * @return The event mask associated with the event handler.
+     */
+    public int getEvents();
+
+    /**
+     * Gets the transport handle associated with the event handler.
+     * 
+     * @return The transport handle associated with the event handler or {@code
+     *         null} if the transport handle is not available.
+     */
+    /* @Nullable */
+    public H getTransportHandle();
+
+    /**
+     * Invoked by the dispatcher to handle the specified event.
      * 
      * @param event
-     *        The event describing the network table; must not be {@code null}.
+     *        The event; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void networkDisconnected(
+    public void handleEvent(
         /* @NonNull */
-        NetworkTableEvent event );
+        E event );
 }

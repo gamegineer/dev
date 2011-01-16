@@ -1,6 +1,6 @@
 /*
  * NetworkTableEvent.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,9 +30,8 @@ import net.jcip.annotations.ThreadSafe;
  * @noextend This class is not intended to be subclassed by clients.
  */
 @ThreadSafe
-public abstract class NetworkTableEvent
+public class NetworkTableEvent
     extends EventObject
-    implements INetworkTableEvent
 {
     // ======================================================================
     // Fields
@@ -55,11 +54,27 @@ public abstract class NetworkTableEvent
      * @throws java.lang.IllegalArgumentException
      *         If {@code source} is {@code null}.
      */
-    protected NetworkTableEvent(
+    public NetworkTableEvent(
         /* @NonNull */
         @SuppressWarnings( "hiding" )
         final INetworkTable source )
     {
         super( source );
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Gets the network table that fired the event.
+     * 
+     * @return The network table that fired the event; never {@code null}.
+     */
+    /* @NonNull */
+    public final INetworkTable getNetworkTable()
+    {
+        return (INetworkTable)getSource();
     }
 }

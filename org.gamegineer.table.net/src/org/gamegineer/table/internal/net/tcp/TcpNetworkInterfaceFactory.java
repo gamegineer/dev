@@ -1,5 +1,5 @@
 /*
- * NetworkTableAsNetworkTableTest.java
+ * TcpNetworkInterfaceFactory.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,34 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 9, 2010 at 10:58:36 PM.
+ * Created on Jan 7, 2011 at 10:32:35 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.tcp;
 
-import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.fake.FakeNetworkInterfaceFactory;
-import org.gamegineer.table.net.AbstractNetworkTableTestCase;
-import org.gamegineer.table.net.INetworkTable;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.NetworkTable;
+import org.gamegineer.table.internal.net.connection.INetworkInterface;
+import org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.NetworkTable} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.net.INetworkTable} interface.
+ * Implementation of
+ * {@link org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory}
+ * for TCP connections.
  */
-public final class NetworkTableAsNetworkTableTest
-    extends AbstractNetworkTableTestCase
+@Immutable
+public final class TcpNetworkInterfaceFactory
+    implements INetworkInterfaceFactory
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code NetworkTableAsNetworkTableTest}
-     * class.
+     * Initializes a new instance of the {@code TcpNetworkInterfaceFactory}.
      */
-    public NetworkTableAsNetworkTableTest()
+    public TcpNetworkInterfaceFactory()
     {
         super();
     }
@@ -54,12 +54,14 @@ public final class NetworkTableAsNetworkTableTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.net.AbstractNetworkTableTestCase#createNetworkTable(org.gamegineer.table.core.ITable)
+     * @see org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory#createNetworkInterface(org.gamegineer.table.internal.net.NetworkTable)
      */
     @Override
-    protected INetworkTable createNetworkTable(
-        final ITable table )
+    public INetworkInterface createNetworkInterface(
+        final NetworkTable networkTable )
     {
-        return new NetworkTable( table, new FakeNetworkInterfaceFactory() );
+        assertArgumentNotNull( networkTable, "networkTable" ); //$NON-NLS-1$
+
+        return new NetworkInterface();
     }
 }

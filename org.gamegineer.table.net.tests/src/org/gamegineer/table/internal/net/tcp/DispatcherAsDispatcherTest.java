@@ -1,6 +1,6 @@
 /*
- * InternalNetworkTableEventAsAbstractNetworkTableEventTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * DispatcherAsDispatcherTest.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,33 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 9, 2010 at 10:41:40 PM.
+ * Created on Jan 13, 2011 at 10:58:09 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.tcp;
 
-import org.easymock.EasyMock;
-import org.gamegineer.table.net.AbstractAbstractNetworkTableEventTestCase;
-import org.gamegineer.table.net.INetworkTable;
+import java.nio.channels.SelectableChannel;
+import java.nio.channels.SelectionKey;
+import org.gamegineer.table.internal.net.connection.AbstractDispatcherTestCase;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.InternalNetworkTableEvent} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.net.NetworkTableEvent} class.
+ * {@link org.gamegineer.table.internal.net.tcp.Dispatcher} class to ensure it
+ * does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.connection.IDispatcher} interface.
  */
-public final class InternalNetworkTableEventAsAbstractNetworkTableEventTest
-    extends AbstractAbstractNetworkTableEventTestCase<InternalNetworkTableEvent>
+public final class DispatcherAsDispatcherTest
+    extends AbstractDispatcherTestCase<SelectableChannel, SelectionKey, Dispatcher>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * InternalNetworkTableEventAsAbstractNetworkTableEventTest} class.
+     * Initializes a new instance of the {@code DispatcherAsDispatcherTest}
+     * class.
      */
-    public InternalNetworkTableEventAsAbstractNetworkTableEventTest()
+    public DispatcherAsDispatcherTest()
     {
         super();
     }
@@ -53,11 +53,11 @@ public final class InternalNetworkTableEventAsAbstractNetworkTableEventTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.net.AbstractAbstractNetworkTableEventTestCase#createNetworkTableEvent()
+     * @see org.gamegineer.table.internal.net.connection.AbstractDispatcherTestCase#createDispatcher()
      */
     @Override
-    protected InternalNetworkTableEvent createNetworkTableEvent()
+    protected Dispatcher createDispatcher()
     {
-        return InternalNetworkTableEvent.createNetworkTableEvent( EasyMock.createMock( INetworkTable.class ) );
+        return new Dispatcher();
     }
 }

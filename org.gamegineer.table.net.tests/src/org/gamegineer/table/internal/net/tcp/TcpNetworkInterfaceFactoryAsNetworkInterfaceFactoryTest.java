@@ -1,6 +1,6 @@
 /*
- * InternalNetworkTableEventAsNetworkTableEventTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,23 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 9, 2010 at 10:41:26 PM.
+ * Created on Jan 15, 2011 at 11:56:00 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.tcp;
 
-import org.easymock.EasyMock;
-import org.gamegineer.table.net.AbstractNetworkTableEventTestCase;
-import org.gamegineer.table.net.INetworkTable;
+import org.gamegineer.table.internal.net.connection.AbstractNetworkInterfaceFactoryTestCase;
+import org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.InternalNetworkTableEvent} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.net.INetworkTableEvent} interface.
+ * {@link org.gamegineer.table.internal.net.tcp.TcpNetworkInterfaceFactory}
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory}
+ * interface.
  */
-public final class InternalNetworkTableEventAsNetworkTableEventTest
-    extends AbstractNetworkTableEventTestCase<InternalNetworkTableEvent>
+public final class TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest
+    extends AbstractNetworkInterfaceFactoryTestCase
 {
     // ======================================================================
     // Constructors
@@ -40,9 +40,9 @@ public final class InternalNetworkTableEventAsNetworkTableEventTest
 
     /**
      * Initializes a new instance of the {@code
-     * InternalNetworkTableEventAsNetworkTableEventTest} class.
+     * TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest} class.
      */
-    public InternalNetworkTableEventAsNetworkTableEventTest()
+    public TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest()
     {
         super();
     }
@@ -53,11 +53,11 @@ public final class InternalNetworkTableEventAsNetworkTableEventTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.net.AbstractNetworkTableEventTestCase#createNetworkTableEvent()
+     * @see org.gamegineer.table.internal.net.connection.AbstractNetworkInterfaceFactoryTestCase#createConnectionFactory()
      */
     @Override
-    protected InternalNetworkTableEvent createNetworkTableEvent()
+    protected INetworkInterfaceFactory createConnectionFactory()
     {
-        return InternalNetworkTableEvent.createNetworkTableEvent( EasyMock.createMock( INetworkTable.class ) );
+        return new TcpNetworkInterfaceFactory();
     }
 }

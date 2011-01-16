@@ -1,6 +1,6 @@
 /*
- * FakeNetworkTableStrategyFactory.java
- * Copyright 2008-2010 Gamegineer.org
+ * FakeNetworkInterfaceFactory.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,29 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Dec 30, 2010 at 12:13:00 PM.
+ * Created on Jan 8, 2011 at 8:37:36 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.fake;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.NetworkTable;
+import org.gamegineer.table.internal.net.connection.INetworkInterface;
+import org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory;
 
 /**
- * A fake network table strategy factory.
+ * Fake implementation of
+ * {@link org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory}
+ * .
  */
 @Immutable
-final class FakeNetworkTableStrategyFactory
-    extends AbstractNetworkTableStrategyFactory
+public final class FakeNetworkInterfaceFactory
+    implements INetworkInterfaceFactory
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code FakeNetworkTableStrategyFactory}
+     * Initializes a new instance of the {@code FakeNetworkInterfaceFactory}
      * class.
      */
-    FakeNetworkTableStrategyFactory()
+    public FakeNetworkInterfaceFactory()
     {
         super();
     }
@@ -49,26 +55,14 @@ final class FakeNetworkTableStrategyFactory
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkTableStrategyFactory#createClientNetworkTableStrategy(org.gamegineer.table.internal.net.NetworkTable)
+     * @see org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory#createNetworkInterface(org.gamegineer.table.internal.net.NetworkTable)
      */
     @Override
-    AbstractNetworkTableStrategy createClientNetworkTableStrategy(
+    public INetworkInterface createNetworkInterface(
         final NetworkTable networkTable )
     {
-        assert networkTable != null;
+        assertArgumentNotNull( networkTable, "networkTable" ); //$NON-NLS-1$
 
-        return new FakeClientNetworkTableStrategy( networkTable );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkTableStrategyFactory#createServerNetworkTableStrategy(org.gamegineer.table.internal.net.NetworkTable)
-     */
-    @Override
-    AbstractNetworkTableStrategy createServerNetworkTableStrategy(
-        final NetworkTable networkTable )
-    {
-        assert networkTable != null;
-
-        return new FakeServerNetworkTableStrategy( networkTable );
+        return new NetworkInterface();
     }
 }

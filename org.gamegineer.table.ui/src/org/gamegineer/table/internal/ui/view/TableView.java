@@ -1,6 +1,6 @@
 /*
  * TableView.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -976,7 +976,7 @@ final class TableView
      */
     private void disconnectNetworkTable()
     {
-        model_.getNetworkTable().beginDisconnect();
+        model_.getNetworkTable().disconnect();
     }
 
     /**

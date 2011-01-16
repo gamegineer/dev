@@ -1,6 +1,6 @@
 /*
- * AbstractAbstractNetworkTableEventTestCase.java
- * Copyright 2008-2010 Gamegineer.org
+ * NetworkTableEventTest.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,32 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 9, 2010 at 10:38:50 PM.
+ * Created on Nov 9, 2010 at 10:18:39 PM.
  */
 
 package org.gamegineer.table.net;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that extend the
- * {@link org.gamegineer.table.net.NetworkTableEvent} class.
- * 
- * @param <T>
- *        The type of the network table event.
+ * A fixture for testing the {@link org.gamegineer.table.net.NetworkTableEvent}
+ * class.
  */
-public abstract class AbstractAbstractNetworkTableEventTestCase<T extends NetworkTableEvent>
+public final class NetworkTableEventTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The network table event under test in the fixture. */
-    private T event_;
+    private NetworkTableEvent event_;
 
 
     // ======================================================================
@@ -49,10 +47,9 @@ public abstract class AbstractAbstractNetworkTableEventTestCase<T extends Networ
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractAbstractNetworkTableEventTestCase} class.
+     * Initializes a new instance of the {@code NetworkTableEventTest} class.
      */
-    protected AbstractAbstractNetworkTableEventTestCase()
+    public NetworkTableEventTest()
     {
         super();
     }
@@ -61,31 +58,6 @@ public abstract class AbstractAbstractNetworkTableEventTestCase<T extends Networ
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates the network table event to be tested.
-     * 
-     * @return The network table event to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    /* @NonNull */
-    protected abstract T createNetworkTableEvent()
-        throws Exception;
-
-    /**
-     * Gets the network table event under test in the fixture.
-     * 
-     * @return The network table event under test in the fixture; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    protected final T getNetworkTableEvent()
-    {
-        assertNotNull( event_ );
-        return event_;
-    }
 
     /**
      * Sets up the test fixture.
@@ -97,7 +69,7 @@ public abstract class AbstractAbstractNetworkTableEventTestCase<T extends Networ
     public void setUp()
         throws Exception
     {
-        event_ = createNetworkTableEvent();
+        event_ = new NetworkTableEvent( EasyMock.createMock( INetworkTable.class ) );
         assertNotNull( event_ );
     }
 
@@ -112,6 +84,25 @@ public abstract class AbstractAbstractNetworkTableEventTestCase<T extends Networ
         throws Exception
     {
         event_ = null;
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * network table.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testConstructor_NetworkTable_Null()
+    {
+        new NetworkTableEvent( null );
+    }
+
+    /**
+     * Ensures the {@code getNetworkTable} method does not return {@code null}.
+     */
+    @Test
+    public void testGetNetworkTable_ReturnValue_NonNull()
+    {
+        assertNotNull( event_.getNetworkTable() );
     }
 
     /**

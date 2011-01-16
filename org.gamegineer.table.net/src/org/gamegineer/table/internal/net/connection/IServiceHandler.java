@@ -1,6 +1,6 @@
 /*
- * INetworkTableEvent.java
- * Copyright 2008-2010 Gamegineer.org
+ * IServiceHandler.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,30 +16,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 9, 2010 at 10:17:33 PM.
+ * Created on Jan 6, 2011 at 10:59:45 PM.
  */
 
-package org.gamegineer.table.net;
+package org.gamegineer.table.internal.net.connection;
 
 /**
- * The interface that defines the behavior of all event objects fired by a
- * network table.
+ * A service handler in the network table Acceptor-Connector pattern
+ * implementation.
  * 
- * @noextend This interface is not intended to be extended by clients.
+ * <p>
+ * A service handler implements one half of an end-to-end protocol in a
+ * networked application.
+ * </p>
  * 
- * @noimplement This interface is not intended to be implemented by clients.
+ * @param <H>
+ *        The type of the transport handle.
+ * @param <E>
+ *        The type of the event.
  */
-public interface INetworkTableEvent
+public interface IServiceHandler<H, E>
+    extends IEventHandler<H, E>
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Gets the network table that fired the event.
+     * Opens the service handler.
      * 
-     * @return The network table that fired the event; never {@code null}.
+     * @param handle
+     *        The transport handle associated with the service handler; must not
+     *        be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code handle} is {@code null}.
      */
-    /* @NonNull */
-    public INetworkTable getNetworkTable();
+    public void open(
+        /* @NonNull */
+        H handle );
 }
