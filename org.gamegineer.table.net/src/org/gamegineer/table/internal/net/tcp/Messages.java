@@ -70,6 +70,15 @@ final class Messages
 
     // --- Dispatcher -------------------------------------------------------
 
+    /** An error occurred while closing the dispatcher. */
+    public static String Dispatcher_close_error;
+
+    /** An error occurred on the event dispatch thread. */
+    public static String Dispatcher_dispatchEvents_error;
+
+    /** The dispatcher state is closed. */
+    public static String Dispatcher_state_closed;
+
     /** The dispatcher state is not pristine. */
     public static String Dispatcher_state_notPristine;
 

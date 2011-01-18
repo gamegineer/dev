@@ -116,7 +116,32 @@ public abstract class AbstractDispatcherTestCase<H, E, T extends IDispatcher<H, 
     public void tearDown()
         throws Exception
     {
+        dispatcher_.close();
         dispatcher_ = null;
+    }
+
+    /**
+     * Ensures the {@code open} method throws an exception if the dispatcher has
+     * been closed.
+     */
+    @Test( expected = IllegalStateException.class )
+    public void testOpen_AfterClose()
+    {
+        dispatcher_.close();
+
+        dispatcher_.open();
+    }
+
+    /**
+     * Ensures the {@code open} method throws an exception when attempting to
+     * open the dispatcher more than once.
+     */
+    @Test( expected = IllegalStateException.class )
+    public void testOpen_MultipleInvocations()
+    {
+        dispatcher_.open();
+
+        dispatcher_.open();
     }
 
     /**

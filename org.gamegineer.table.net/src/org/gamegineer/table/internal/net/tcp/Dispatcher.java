@@ -29,14 +29,17 @@ import java.nio.channels.Selector;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.net.Activator;
+import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.connection.IDispatcher;
 import org.gamegineer.table.internal.net.connection.IEventHandler;
-
-// TODO: This class should implement the Active Object pattern such that open() no
-// longer blocks but simply starts the task.
 
 /**
  * Implementation of
@@ -58,6 +61,13 @@ final class Dispatcher
     private final Queue<IEventHandler<SelectableChannel, SelectionKey>> eventHandlerUnregistrationRequests_;
 
     /**
+     * The instance lock used to synchronize access to public methods that are
+     * invoked on a client thread (i.e. any thread other than the event dispatch
+     * thread).
+     */
+    private final Object externalLock_;
+
+    /**
      * A reference to the dispatcher channel multiplexor executing on the event
      * dispatch thread. The referee is {@code null} if the event dispatch thread
      * is not running.
@@ -66,6 +76,12 @@ final class Dispatcher
 
     /** A reference to the dispatcher state. */
     private final AtomicReference<State> stateRef_;
+
+    /**
+     * A reference to the task executing the event dispatch thread or {@code
+     * null} if the event dispatch thread is not running.
+     */
+    private final AtomicReference<Future<?>> taskRef_;
 
 
     // ======================================================================
@@ -79,8 +95,10 @@ final class Dispatcher
     {
         eventHandlerRegistrationRequests_ = new ConcurrentLinkedQueue<IEventHandler<SelectableChannel, SelectionKey>>();
         eventHandlerUnregistrationRequests_ = new ConcurrentLinkedQueue<IEventHandler<SelectableChannel, SelectionKey>>();
+        externalLock_ = new Object();
         selectorRef_ = new AtomicReference<Selector>( null );
         stateRef_ = new AtomicReference<State>( State.PRISTINE );
+        taskRef_ = new AtomicReference<Future<?>>( null );
     }
 
 
@@ -99,10 +117,28 @@ final class Dispatcher
         // Could do it here but that means the registered event handler collection
         // must be a thread-safe field.
 
-        // TODO: Interrupt the EDT instead; that's our standard mechanism for indicating
-        // the EDT should shutdown.
-        stateRef_.set( State.CLOSED );
-        wakeupEventDispatchThread();
+        synchronized( externalLock_ )
+        {
+            final Future<?> task = taskRef_.getAndSet( null );
+            stateRef_.set( State.CLOSED );
+
+            if( task != null )
+            {
+                task.cancel( true );
+                try
+                {
+                    task.get( 10, TimeUnit.SECONDS );
+                }
+                catch( final CancellationException e )
+                {
+                    // do nothing
+                }
+                catch( final Exception e )
+                {
+                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_close_error, e );
+                }
+            }
+        }
     }
 
     /**
@@ -118,6 +154,11 @@ final class Dispatcher
 
         try
         {
+            // TODO: May consider not interrupting thread to terminate it because a race condition
+            // may occur where the interrupt happens while the following method is executing.  This
+            // leads to a harmless but annoying IOException which will ultimately be logged during
+            // testing.  Alternatively, use a separate flag (or a CLOSING state) to indicate the
+            // EDT should shut down and wake up the selector.
             final Selector selector = Selector.open();
             try
             {
@@ -183,13 +224,11 @@ final class Dispatcher
         }
         catch( final Exception e )
         {
-            // TODO
-            e.printStackTrace();
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_dispatchEvents_error, e );
         }
         finally
         {
             System.out.println( "stopping dispatch event handler" ); //$NON-NLS-1$ // XXX
-            stateRef_.set( State.CLOSED );
         }
     }
 
@@ -199,8 +238,20 @@ final class Dispatcher
     @Override
     public void open()
     {
-        // TODO: Spawn new task.
-        dispatchEvents();
+        synchronized( externalLock_ )
+        {
+            assertStateLegal( stateRef_.compareAndSet( State.PRISTINE, State.OPENED ), Messages.Dispatcher_state_notPristine );
+
+            taskRef_.set( Activator.getDefault().getExecutorService().submit( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    dispatchEvents();
+                }
+            } ) );
+        }
     }
 
     /*
@@ -211,7 +262,7 @@ final class Dispatcher
         final IEventHandler<SelectableChannel, SelectionKey> eventHandler )
     {
         assertArgumentNotNull( eventHandler, "eventHandler" ); //$NON-NLS-1$
-        assertStateLegal( stateRef_.get() != State.CLOSED, Messages.Dispatcher_state_notPristine );
+        assertStateLegal( stateRef_.get() != State.CLOSED, Messages.Dispatcher_state_closed );
 
         eventHandlerRegistrationRequests_.offer( eventHandler );
         wakeupEventDispatchThread();
@@ -225,7 +276,7 @@ final class Dispatcher
         final IEventHandler<SelectableChannel, SelectionKey> eventHandler )
     {
         assertArgumentNotNull( eventHandler, "eventHandler" ); //$NON-NLS-1$
-        assertStateLegal( stateRef_.get() != State.CLOSED, Messages.Dispatcher_state_notPristine );
+        assertStateLegal( stateRef_.get() != State.CLOSED, Messages.Dispatcher_state_closed );
 
         eventHandlerUnregistrationRequests_.offer( eventHandler );
         wakeupEventDispatchThread();

@@ -49,6 +49,9 @@ public interface IDispatcher<H, E>
 
     /**
      * Opens the dispatcher.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If the dispatcher has already been opened or is closed.
      */
     public void open();
 

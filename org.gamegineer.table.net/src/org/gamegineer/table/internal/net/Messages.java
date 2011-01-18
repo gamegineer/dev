@@ -40,9 +40,6 @@ final class Messages
     /** The network table listener is already registered. */
     public static String NetworkTable_addNetworkTableListener_listener_registered;
 
-    /** An error occurred waiting for the network to disconnect. */
-    public static String NetworkTable_disconnect_error;
-
     /** The network is already connected. */
     public static String NetworkTable_host_networkConnected;
 

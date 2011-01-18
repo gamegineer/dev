@@ -23,10 +23,7 @@ package org.gamegineer.table.internal.net;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.util.concurrent.CancellationException;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -54,18 +51,18 @@ public final class NetworkTable
     // Fields
     // ======================================================================
 
-    /**
-     * The task executing the dispatcher or {@code null} if the network is not
-     * connected.
-     */
-    @GuardedBy( "lock_" )
-    private Future<?> dispatcherTask_;
-
     /** The collection of network table listeners. */
     private final CopyOnWriteArrayList<INetworkTableListener> listeners_;
 
     /** The instance lock. */
     private final Object lock_;
+
+    /**
+     * The active network interface or {@code null} if the network is not
+     * connected.
+     */
+    @GuardedBy( "lock_" )
+    private INetworkInterface networkInterface_;
 
     /** The network table network interface factory. */
     private final INetworkInterfaceFactory networkInterfaceFactory_;
@@ -118,9 +115,9 @@ public final class NetworkTable
         assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
         assert networkInterfaceFactory != null;
 
-        dispatcherTask_ = null;
         listeners_ = new CopyOnWriteArrayList<INetworkTableListener>();
         lock_ = new Object();
+        networkInterface_ = null;
         networkInterfaceFactory_ = networkInterfaceFactory;
         table_ = table;
     }
@@ -150,26 +147,11 @@ public final class NetworkTable
         final boolean fireNetworkDisconnected;
         synchronized( lock_ )
         {
-            if( dispatcherTask_ != null )
+            if( networkInterface_ != null )
             {
                 fireNetworkDisconnected = true;
-
-                final Future<?> task = dispatcherTask_;
-                dispatcherTask_ = null;
-
-                task.cancel( true );
-                try
-                {
-                    task.get( 10, TimeUnit.SECONDS );
-                }
-                catch( final CancellationException e )
-                {
-                    // do nothing
-                }
-                catch( final Exception e )
-                {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.NetworkTable_disconnect_error, e );
-                }
+                networkInterface_.getDispatcher().close();
+                networkInterface_ = null;
             }
             else
             {
@@ -233,21 +215,14 @@ public final class NetworkTable
 
         synchronized( lock_ )
         {
-            if( dispatcherTask_ != null )
+            if( networkInterface_ != null )
             {
                 throw new NetworkTableException( Messages.NetworkTable_host_networkConnected );
             }
 
             final INetworkInterface networkInterface = networkInterfaceFactory_.createNetworkInterface( this );
             final IDispatcher<?, ?> dispatcher = networkInterface.getDispatcher();
-            final Future<?> dispatcherTask = Activator.getDefault().getExecutorService().submit( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    dispatcher.open();
-                }
-            } );
+            dispatcher.open();
 
             try
             {
@@ -256,11 +231,11 @@ public final class NetworkTable
             }
             catch( final NetworkTableException e )
             {
-                dispatcherTask.cancel( true );
+                dispatcher.close();
                 throw e;
             }
 
-            dispatcherTask_ = dispatcherTask;
+            networkInterface_ = networkInterface;
         }
 
         fireNetworkConnected();
@@ -274,8 +249,7 @@ public final class NetworkTable
     {
         synchronized( lock_ )
         {
-            //return connectionState_ == ConnectionState.CONNECTED;
-            return dispatcherTask_ != null;
+            return networkInterface_ != null;
         }
     }
 
@@ -291,21 +265,14 @@ public final class NetworkTable
 
         synchronized( lock_ )
         {
-            if( dispatcherTask_ != null )
+            if( networkInterface_ != null )
             {
                 throw new NetworkTableException( Messages.NetworkTable_join_networkConnected );
             }
 
             final INetworkInterface networkInterface = networkInterfaceFactory_.createNetworkInterface( this );
             final IDispatcher<?, ?> dispatcher = networkInterface.getDispatcher();
-            final Future<?> dispatcherTask = Activator.getDefault().getExecutorService().submit( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    dispatcher.open();
-                }
-            } );
+            dispatcher.open();
 
             final IConnector<?, ?> connector = networkInterface.createConnector();
             try
@@ -314,7 +281,7 @@ public final class NetworkTable
             }
             catch( final NetworkTableException e )
             {
-                dispatcherTask.cancel( true );
+                dispatcher.close();
                 throw e;
             }
             finally
@@ -322,7 +289,7 @@ public final class NetworkTable
                 connector.close();
             }
 
-            dispatcherTask_ = dispatcherTask;
+            networkInterface_ = networkInterface;
         }
 
         fireNetworkConnected();
