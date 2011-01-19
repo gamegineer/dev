@@ -23,14 +23,14 @@ package org.gamegineer.table.internal.net.tcp;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.INetworkInterface;
+import org.gamegineer.table.internal.net.INetworkInterfaceFactory;
 import org.gamegineer.table.internal.net.NetworkTable;
-import org.gamegineer.table.internal.net.connection.INetworkInterface;
-import org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory;
 
 /**
  * Implementation of
- * {@link org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory}
- * for TCP connections.
+ * {@link org.gamegineer.table.internal.net.INetworkInterfaceFactory} for TCP
+ * connections.
  */
 @Immutable
 public final class TcpNetworkInterfaceFactory

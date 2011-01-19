@@ -22,15 +22,14 @@
 package org.gamegineer.table.internal.net.tcp;
 
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.INetworkInterface;
 import org.gamegineer.table.internal.net.connection.IAcceptor;
 import org.gamegineer.table.internal.net.connection.IConnector;
 import org.gamegineer.table.internal.net.connection.IDispatcher;
-import org.gamegineer.table.internal.net.connection.INetworkInterface;
 
 /**
- * Implementation of
- * {@link org.gamegineer.table.internal.net.connection.INetworkInterface} for
- * TCP connections.
+ * Implementation of {@link org.gamegineer.table.internal.net.INetworkInterface}
+ * for TCP connections.
  */
 @Immutable
 final class NetworkInterface

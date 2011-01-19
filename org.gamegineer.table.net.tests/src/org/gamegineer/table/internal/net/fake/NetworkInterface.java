@@ -22,14 +22,14 @@
 package org.gamegineer.table.internal.net.fake;
 
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.INetworkInterface;
 import org.gamegineer.table.internal.net.connection.IAcceptor;
 import org.gamegineer.table.internal.net.connection.IConnector;
 import org.gamegineer.table.internal.net.connection.IDispatcher;
-import org.gamegineer.table.internal.net.connection.INetworkInterface;
 
 /**
  * Fake implementation of
- * {@link org.gamegineer.table.internal.net.connection.INetworkInterface}.
+ * {@link org.gamegineer.table.internal.net.INetworkInterface}.
  */
 @Immutable
 final class NetworkInterface

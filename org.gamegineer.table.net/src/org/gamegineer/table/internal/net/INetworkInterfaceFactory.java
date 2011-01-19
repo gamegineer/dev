@@ -19,9 +19,8 @@
  * Created on Jan 6, 2011 at 11:00:18 PM.
  */
 
-package org.gamegineer.table.internal.net.connection;
+package org.gamegineer.table.internal.net;
 
-import org.gamegineer.table.internal.net.NetworkTable;
 
 /**
  * A factory for creating a network table network interface for a specific

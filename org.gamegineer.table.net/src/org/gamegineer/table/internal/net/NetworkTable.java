@@ -31,8 +31,6 @@ import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.connection.IAcceptor;
 import org.gamegineer.table.internal.net.connection.IConnector;
 import org.gamegineer.table.internal.net.connection.IDispatcher;
-import org.gamegineer.table.internal.net.connection.INetworkInterface;
-import org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory;
 import org.gamegineer.table.internal.net.tcp.TcpNetworkInterfaceFactory;
 import org.gamegineer.table.net.INetworkTable;
 import org.gamegineer.table.net.INetworkTableConfiguration;

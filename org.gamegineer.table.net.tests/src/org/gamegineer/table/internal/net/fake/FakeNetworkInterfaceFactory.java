@@ -23,14 +23,13 @@ package org.gamegineer.table.internal.net.fake;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.INetworkInterface;
+import org.gamegineer.table.internal.net.INetworkInterfaceFactory;
 import org.gamegineer.table.internal.net.NetworkTable;
-import org.gamegineer.table.internal.net.connection.INetworkInterface;
-import org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory;
 
 /**
  * Fake implementation of
- * {@link org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory}
- * .
+ * {@link org.gamegineer.table.internal.net.INetworkInterfaceFactory} .
  */
 @Immutable
 public final class FakeNetworkInterfaceFactory

@@ -19,7 +19,7 @@
  * Created on Jan 15, 2011 at 11:52:40 PM.
  */
 
-package org.gamegineer.table.internal.net.connection;
+package org.gamegineer.table.internal.net;
 
 import static org.junit.Assert.assertNotNull;
 import org.junit.After;
@@ -28,8 +28,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory}
- * interface.
+ * {@link org.gamegineer.table.internal.net.INetworkInterfaceFactory} interface.
  */
 public abstract class AbstractNetworkInterfaceFactoryTestCase
 {

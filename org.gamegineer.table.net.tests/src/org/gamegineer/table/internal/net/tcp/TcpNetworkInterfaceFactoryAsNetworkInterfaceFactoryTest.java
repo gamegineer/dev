@@ -21,15 +21,14 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
-import org.gamegineer.table.internal.net.connection.AbstractNetworkInterfaceFactoryTestCase;
-import org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory;
+import org.gamegineer.table.internal.net.AbstractNetworkInterfaceFactoryTestCase;
+import org.gamegineer.table.internal.net.INetworkInterfaceFactory;
 
 /**
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.net.tcp.TcpNetworkInterfaceFactory}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory}
- * interface.
+ * {@link org.gamegineer.table.internal.net.INetworkInterfaceFactory} interface.
  */
 public final class TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest
     extends AbstractNetworkInterfaceFactoryTestCase

@@ -19,7 +19,11 @@
  * Created on Jan 16, 2011 at 5:05:40 PM.
  */
 
-package org.gamegineer.table.internal.net.connection;
+package org.gamegineer.table.internal.net;
+
+import org.gamegineer.table.internal.net.connection.IAcceptor;
+import org.gamegineer.table.internal.net.connection.IConnector;
+import org.gamegineer.table.internal.net.connection.IDispatcher;
 
 /**
  * Encapsulates the participants of the network table Acceptor-Connector pattern
