@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -33,18 +32,21 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Loggers;
-import org.gamegineer.table.internal.net.connection.IAcceptor;
-import org.gamegineer.table.internal.net.connection.IServiceHandler;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
- * Implementation of
- * {@link org.gamegineer.table.internal.net.connection.IAcceptor} that uses TCP.
+ * An acceptor in the TCP network interface Acceptor-Connector pattern
+ * implementation.
+ * 
+ * <p>
+ * An acceptor is responsible for passively connecting and initializing a
+ * server-side service handler.
+ * </p>
  */
 @ThreadSafe
 final class Acceptor
-    implements IAcceptor<SelectableChannel, SelectionKey>
+    extends AbstractEventHandler
 {
     // ======================================================================
     // Fields
@@ -123,19 +125,33 @@ final class Acceptor
             return;
         }
 
-        final IServiceHandler<SelectableChannel, SelectionKey> serviceHandler = new ServerServiceHandler( dispatcher_ );
+        final AbstractServiceHandler serviceHandler = new ServerServiceHandler( dispatcher_ );
         serviceHandler.open( clientChannel );
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.connection.IAcceptor#bind(org.gamegineer.table.net.INetworkTableConfiguration)
+    /**
+     * Opens the acceptor and binds the acceptor transport handle.
+     * 
+     * <p>
+     * This method blocks until the acceptor transport handle is bound or an
+     * error occurs.
+     * </p>
+     * 
+     * @param configuration
+     *        The network table configuration; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If an attempt has already been made to bind the acceptor
+     *         transport handle.
+     * @throws org.gamegineer.table.net.NetworkTableException
+     *         If an error occurs
      */
-    @Override
-    public void bind(
+    void bind(
+        /* @NonNull */
         final INetworkTableConfiguration configuration )
         throws NetworkTableException
     {
-        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
+        assert configuration != null;
 
         synchronized( lock_ )
         {
@@ -158,10 +174,10 @@ final class Acceptor
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#close()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#close()
      */
     @Override
-    public void close()
+    void close()
     {
         synchronized( lock_ )
         {
@@ -214,19 +230,19 @@ final class Acceptor
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#getEvents()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getEvents()
      */
     @Override
-    public int getEvents()
+    int getEvents()
     {
         return SelectionKey.OP_ACCEPT;
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#getTransportHandle()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getTransportHandle()
      */
     @Override
-    public SelectableChannel getTransportHandle()
+    SelectableChannel getTransportHandle()
     {
         synchronized( lock_ )
         {
@@ -235,13 +251,13 @@ final class Acceptor
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#handleEvent(java.lang.Object)
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#handleEvent(java.nio.channels.SelectionKey)
      */
     @Override
-    public void handleEvent(
+    void handleEvent(
         final SelectionKey event )
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        assert event != null;
 
         synchronized( lock_ )
         {

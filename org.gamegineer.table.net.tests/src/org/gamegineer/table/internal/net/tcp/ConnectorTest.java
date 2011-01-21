@@ -1,5 +1,5 @@
 /*
- * AbstractAcceptorTestCase.java
+ * ConnectorTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,39 +16,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 8, 2011 at 9:48:17 PM.
+ * Created on Jan 13, 2011 at 10:08:14 PM.
  */
 
-package org.gamegineer.table.internal.net.connection;
+package org.gamegineer.table.internal.net.tcp;
 
 import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.NetworkTableConfigurationBuilder;
 import org.gamegineer.table.net.NetworkTableConstants;
 import org.gamegineer.table.net.NetworkTableException;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.connection.IAcceptor} interface.
- * 
- * @param <H>
- *        The type of the transport handle.
- * @param <E>
- *        The type of the event.
- * @param <T>
- *        The type of the acceptor.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.net.tcp.Connector} class.
  */
-public abstract class AbstractAcceptorTestCase<H, E, T extends IAcceptor<H, E>>
-    extends AbstractEventHandlerTestCase<H, E, T>
+public final class ConnectorTest
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The connector under test in the fixture. */
+    private Connector connector_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractAcceptorTestCase} class.
+     * Initializes a new instance of the {@code ConnectorTest} class.
      */
-    protected AbstractAcceptorTestCase()
+    public ConnectorTest()
     {
         super();
     }
@@ -73,56 +75,68 @@ public abstract class AbstractAcceptorTestCase<H, E, T extends IAcceptor<H, E>>
     }
 
     /**
-     * Ensures the {@code bind} method throws an exception if the acceptor has
-     * been closed.
+     * Sets up the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Before
+    public void setUp()
+        throws Exception
+    {
+        connector_ = new Connector( new Dispatcher() );
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        connector_ = null;
+    }
+
+    /**
+     * Ensures the {@code connect} method throws an exception if the connector
+     * has been closed.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
-    public void testBind_AfterClose()
+    public void testConnect_AfterClose()
         throws Exception
     {
-        getEventHandler().close();
+        connector_.close();
 
-        getEventHandler().bind( createNetworkTableConfiguration() );
+        connector_.connect( createNetworkTableConfiguration() );
     }
 
     /**
-     * Ensures the {@code bind} method throws an exception when passed a {@code
-     * null} configuration.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testBind_Configuration_Null()
-        throws Exception
-    {
-        getEventHandler().bind( null );
-    }
-
-    /**
-     * Ensures the {@code bind} method throws an exception when attempting to
-     * bind the transport handle more than once.
+     * Ensures the {@code connect} method throws an exception when attempting to
+     * connect to the peer host more than once.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
-    public void testBind_MultipleInvocations()
+    public void testConnect_MultipleInvocations()
         throws Exception
     {
         final INetworkTableConfiguration configuration = createNetworkTableConfiguration();
         try
         {
-            getEventHandler().bind( configuration );
+            connector_.connect( configuration );
         }
         catch( final NetworkTableException e )
         {
             // ignore network errors
         }
 
-        getEventHandler().bind( configuration );
+        connector_.connect( configuration );
     }
 }

@@ -108,6 +108,44 @@ final class Mocks
     }
 
     /**
+     * Creates a mock event handler.
+     * 
+     * @return A mock event handler; never {@code null}.
+     */
+    /* @NonNull */
+    static AbstractEventHandler createMockEventHandler()
+    {
+        return new AbstractEventHandler()
+        {
+            @Override
+            void close()
+            {
+                // do nothing
+            }
+
+            @Override
+            int getEvents()
+            {
+                return 0;
+            }
+
+            @Override
+            SelectableChannel getTransportHandle()
+            {
+                return null;
+            }
+
+            @Override
+            void handleEvent(
+                @SuppressWarnings( "unused" )
+                final SelectionKey event )
+            {
+                // do nothing
+            }
+        };
+    }
+
+    /**
      * Creates a mock transport handle.
      * 
      * @return A mock transport handle; never {@code null}.

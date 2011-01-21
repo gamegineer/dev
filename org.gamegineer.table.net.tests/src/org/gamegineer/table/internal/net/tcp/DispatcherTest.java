@@ -1,5 +1,5 @@
 /*
- * AbstractDispatcherTestCase.java
+ * DispatcherTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,36 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 13, 2011 at 10:51:29 PM.
+ * Created on Jan 13, 2011 at 10:58:09 PM.
  */
 
-package org.gamegineer.table.internal.net.connection;
+package org.gamegineer.table.internal.net.tcp;
 
-import static org.junit.Assert.assertNotNull;
-import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.connection.IDispatcher} interface.
- * 
- * @param <H>
- *        The type of the transport handle.
- * @param <E>
- *        The type of the event.
- * @param <T>
- *        The type of the dispatcher.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.net.tcp.Dispatcher} class.
  */
-public abstract class AbstractDispatcherTestCase<H, E, T extends IDispatcher<H, E>>
+public final class DispatcherTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The dispatcher under test in the fixture. */
-    private T dispatcher_;
+    private Dispatcher dispatcher_;
 
 
     // ======================================================================
@@ -53,10 +44,9 @@ public abstract class AbstractDispatcherTestCase<H, E, T extends IDispatcher<H, 
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractDispatcherTestCase}
-     * class.
+     * Initializes a new instance of the {@code DispatcherTest} class.
      */
-    protected AbstractDispatcherTestCase()
+    public DispatcherTest()
     {
         super();
     }
@@ -65,32 +55,6 @@ public abstract class AbstractDispatcherTestCase<H, E, T extends IDispatcher<H, 
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates the dispatcher to be tested.
-     * 
-     * @return The dispatcher to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    /* @NonNull */
-    protected abstract T createDispatcher()
-        throws Exception;
-
-    /**
-     * Creates a mock event handler for the dispatcher under test.
-     * 
-     * @return A mock event handler for the dispatcher under test; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    protected final IEventHandler<H, E> createMockEventHandler()
-    {
-        @SuppressWarnings( "unchecked" )
-        final IEventHandler<H, E> eventHandler = EasyMock.createMock( IEventHandler.class );
-        return eventHandler;
-    }
 
     /**
      * Sets up the test fixture.
@@ -102,8 +66,7 @@ public abstract class AbstractDispatcherTestCase<H, E, T extends IDispatcher<H, 
     public void setUp()
         throws Exception
     {
-        dispatcher_ = createDispatcher();
-        assertNotNull( dispatcher_ );
+        dispatcher_ = new Dispatcher();
     }
 
     /**
@@ -153,17 +116,7 @@ public abstract class AbstractDispatcherTestCase<H, E, T extends IDispatcher<H, 
     {
         dispatcher_.close();
 
-        dispatcher_.registerEventHandler( createMockEventHandler() );
-    }
-
-    /**
-     * Ensures the {@code registerEventHandler} method throws an exception when
-     * passed a {@code null} event handler.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRegisterEventHandler_EventHandler_Null()
-    {
-        dispatcher_.registerEventHandler( null );
+        dispatcher_.registerEventHandler( Mocks.createMockEventHandler() );
     }
 
     /**
@@ -175,16 +128,6 @@ public abstract class AbstractDispatcherTestCase<H, E, T extends IDispatcher<H, 
     {
         dispatcher_.close();
 
-        dispatcher_.unregisterEventHandler( createMockEventHandler() );
-    }
-
-    /**
-     * Ensures the {@code unregisterEventHandler} method throws an exception
-     * when passed a {@code null} event handler.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testUnregisterEventHandler_EventHandler_Null()
-    {
-        dispatcher_.unregisterEventHandler( null );
+        dispatcher_.unregisterEventHandler( Mocks.createMockEventHandler() );
     }
 }

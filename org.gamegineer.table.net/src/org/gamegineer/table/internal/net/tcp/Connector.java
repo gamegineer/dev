@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -30,19 +29,21 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.connection.IConnector;
-import org.gamegineer.table.internal.net.connection.IServiceHandler;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
- * Implementation of
- * {@link org.gamegineer.table.internal.net.connection.IConnector} that uses
- * TCP.
+ * A connector in the TCP network interface Acceptor-Connector pattern
+ * implementation.
+ * 
+ * <p>
+ * A connector is responsible for actively connecting and initializing a
+ * client-side service handler.
+ * </p>
  */
 @ThreadSafe
 final class Connector
-    implements IConnector<SelectableChannel, SelectionKey>
+    extends AbstractEventHandler
 {
     // ======================================================================
     // Fields
@@ -87,10 +88,10 @@ final class Connector
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#close()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#close()
      */
     @Override
-    public void close()
+    void close()
     {
         synchronized( lock_ )
         {
@@ -98,15 +99,28 @@ final class Connector
         }
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.connection.IConnector#connect(org.gamegineer.table.net.INetworkTableConfiguration)
+    /**
+     * Opens the connector and connects to the peer host.
+     * 
+     * <p>
+     * This method blocks until the connection is established or an error
+     * occurs.
+     * </p>
+     * 
+     * @param configuration
+     *        The network table configuration; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If an attempt has already been made to connect to the peer host.
+     * @throws org.gamegineer.table.net.NetworkTableException
+     *         If an error occurs
      */
-    @Override
-    public void connect(
+    void connect(
+        /* @NonNull */
         final INetworkTableConfiguration configuration )
         throws NetworkTableException
     {
-        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
+        assert configuration != null;
 
         synchronized( lock_ )
         {
@@ -126,7 +140,7 @@ final class Connector
                 state_ = State.CLOSED;
             }
 
-            final IServiceHandler<SelectableChannel, SelectionKey> serviceHandler = new ClientServiceHandler( dispatcher_ );
+            final AbstractServiceHandler serviceHandler = new ClientServiceHandler( dispatcher_ );
             serviceHandler.open( channel );
         }
     }
@@ -167,31 +181,31 @@ final class Connector
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#getEvents()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getEvents()
      */
     @Override
-    public int getEvents()
+    int getEvents()
     {
         throw new UnsupportedOperationException( "asynchronous connection not supported" ); //$NON-NLS-1$
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#getTransportHandle()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getTransportHandle()
      */
     @Override
-    public SelectableChannel getTransportHandle()
+    SelectableChannel getTransportHandle()
     {
         throw new UnsupportedOperationException( "asynchronous connection not supported" ); //$NON-NLS-1$
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#handleEvent(java.lang.Object)
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#handleEvent(java.nio.channels.SelectionKey)
      */
     @Override
-    public void handleEvent(
+    void handleEvent(
         final SelectionKey event )
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        assert event != null;
 
         throw new UnsupportedOperationException( "asynchronous connection not supported" ); //$NON-NLS-1$
     }

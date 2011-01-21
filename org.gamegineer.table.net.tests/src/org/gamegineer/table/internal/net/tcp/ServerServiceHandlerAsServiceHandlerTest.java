@@ -21,19 +21,14 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
-import java.nio.channels.SelectableChannel;
-import java.nio.channels.SelectionKey;
-import org.gamegineer.table.internal.net.connection.AbstractServiceHandlerTestCase;
-
 /**
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.net.tcp.ServerServiceHandler} class to
  * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.connection.IServiceHandler}
- * interface.
+ * {@link org.gamegineer.table.internal.net.tcp.AbstractServiceHandler} class.
  */
 public final class ServerServiceHandlerAsServiceHandlerTest
-    extends AbstractServiceHandlerTestCase<SelectableChannel, SelectionKey, ServerServiceHandler>
+    extends AbstractAbstractServiceHandlerTestCase
 {
     // ======================================================================
     // Constructors
@@ -54,29 +49,11 @@ public final class ServerServiceHandlerAsServiceHandlerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.AbstractEventHandlerTestCase#createEventHandler()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractAbstractServiceHandlerTestCase#createServiceHandler()
      */
     @Override
-    protected ServerServiceHandler createEventHandler()
+    protected AbstractServiceHandler createServiceHandler()
     {
         return new ServerServiceHandler( new Dispatcher() );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.connection.AbstractEventHandlerTestCase#createMockEvent()
-     */
-    @Override
-    protected SelectionKey createMockEvent()
-    {
-        return Mocks.createMockEvent();
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.connection.AbstractEventHandlerTestCase#createMockTransportHandle()
-     */
-    @Override
-    protected SelectableChannel createMockTransportHandle()
-    {
-        return Mocks.createMockTransportHandle();
     }
 }

@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
@@ -38,27 +37,29 @@ import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Activator;
 import org.gamegineer.table.internal.net.Loggers;
-import org.gamegineer.table.internal.net.connection.IDispatcher;
-import org.gamegineer.table.internal.net.connection.IEventHandler;
 
 /**
- * Implementation of
- * {@link org.gamegineer.table.internal.net.connection.IDispatcher} that uses
- * TCP.
+ * An event dispatcher in the TCP network interface Acceptor-Connector pattern
+ * implementation.
+ * 
+ * <p>
+ * An event dispatcher is responsible for managing event handlers and
+ * appropriately dispatching events that occur on the event handler transport
+ * handles.
+ * </p>
  */
 @ThreadSafe
 final class Dispatcher
-    implements IDispatcher<SelectableChannel, SelectionKey>
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The collection of event handler registration requests. */
-    private final Queue<IEventHandler<SelectableChannel, SelectionKey>> eventHandlerRegistrationRequests_;
+    private final Queue<AbstractEventHandler> eventHandlerRegistrationRequests_;
 
     /** The collection of event handler unregistration requests. */
-    private final Queue<IEventHandler<SelectableChannel, SelectionKey>> eventHandlerUnregistrationRequests_;
+    private final Queue<AbstractEventHandler> eventHandlerUnregistrationRequests_;
 
     /**
      * The instance lock used to synchronize access to public methods that are
@@ -93,8 +94,8 @@ final class Dispatcher
      */
     Dispatcher()
     {
-        eventHandlerRegistrationRequests_ = new ConcurrentLinkedQueue<IEventHandler<SelectableChannel, SelectionKey>>();
-        eventHandlerUnregistrationRequests_ = new ConcurrentLinkedQueue<IEventHandler<SelectableChannel, SelectionKey>>();
+        eventHandlerRegistrationRequests_ = new ConcurrentLinkedQueue<AbstractEventHandler>();
+        eventHandlerUnregistrationRequests_ = new ConcurrentLinkedQueue<AbstractEventHandler>();
         externalLock_ = new Object();
         selectorRef_ = new AtomicReference<Selector>( null );
         stateRef_ = new AtomicReference<State>( State.PRISTINE );
@@ -106,11 +107,10 @@ final class Dispatcher
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.internal.net.connection.IDispatcher#close()
+    /**
+     * Closes the dispatcher.
      */
-    @Override
-    public void close()
+    void close()
     {
         // XXX: WHO IS GOING TO BE RESPONSIBLE for closing any service handlers
         // that are registered with the dispatcher before closing the dispatcher?
@@ -149,8 +149,8 @@ final class Dispatcher
     {
         System.out.println( "starting dispatch event handler" ); //$NON-NLS-1$ // XXX
 
-        final Map<SelectionKey, IEventHandler<SelectableChannel, SelectionKey>> eventHandlers = new IdentityHashMap<SelectionKey, IEventHandler<SelectableChannel, SelectionKey>>();
-        final Map<IEventHandler<SelectableChannel, SelectionKey>, SelectionKey> selectionKeys = new IdentityHashMap<IEventHandler<SelectableChannel, SelectionKey>, SelectionKey>();
+        final Map<SelectionKey, AbstractEventHandler> eventHandlers = new IdentityHashMap<SelectionKey, AbstractEventHandler>();
+        final Map<AbstractEventHandler, SelectionKey> selectionKeys = new IdentityHashMap<AbstractEventHandler, SelectionKey>();
 
         try
         {
@@ -180,7 +180,7 @@ final class Dispatcher
 
                     // TODO: Need to avoid registering handlers twice; log warning in that case.
                     {
-                        IEventHandler<SelectableChannel, SelectionKey> eventHandler = null;
+                        AbstractEventHandler eventHandler = null;
                         while( (eventHandler = eventHandlerRegistrationRequests_.poll()) != null )
                         {
                             final SelectableChannel channel = eventHandler.getTransportHandle();
@@ -191,7 +191,7 @@ final class Dispatcher
                     }
 
                     {
-                        IEventHandler<SelectableChannel, SelectionKey> eventHandler = null;
+                        AbstractEventHandler eventHandler = null;
                         while( (eventHandler = eventHandlerUnregistrationRequests_.poll()) != null )
                         {
                             // TODO: Log warning if handler not registered.
@@ -209,7 +209,7 @@ final class Dispatcher
                         // Check key validity as associated channel may have been closed by another thread
                         if( selectionKey.isValid() )
                         {
-                            final IEventHandler<SelectableChannel, SelectionKey> eventHandler = eventHandlers.get( selectionKey );
+                            final AbstractEventHandler eventHandler = eventHandlers.get( selectionKey );
                             assert eventHandler != null; // XXX: may have to check for null
                             eventHandler.handleEvent( selectionKey );
                         }
@@ -232,11 +232,13 @@ final class Dispatcher
         }
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.connection.IDispatcher#open()
+    /**
+     * Opens the dispatcher.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If the dispatcher has already been opened or is closed.
      */
-    @Override
-    public void open()
+    void open()
     {
         synchronized( externalLock_ )
         {
@@ -254,28 +256,40 @@ final class Dispatcher
         }
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.connection.IDispatcher#registerEventHandler(org.gamegineer.table.internal.net.connection.IEventHandler)
+    /**
+     * Registers the specified event handler.
+     * 
+     * @param eventHandler
+     *        The event handler; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If the dispatcher is closed.
      */
-    @Override
-    public void registerEventHandler(
-        final IEventHandler<SelectableChannel, SelectionKey> eventHandler )
+    void registerEventHandler(
+        /* @NonNull */
+        final AbstractEventHandler eventHandler )
     {
-        assertArgumentNotNull( eventHandler, "eventHandler" ); //$NON-NLS-1$
+        assert eventHandler != null;
         assertStateLegal( stateRef_.get() != State.CLOSED, Messages.Dispatcher_state_closed );
 
         eventHandlerRegistrationRequests_.offer( eventHandler );
         wakeupEventDispatchThread();
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.connection.IDispatcher#unregisterEventHandler(org.gamegineer.table.internal.net.connection.IEventHandler)
+    /**
+     * Unregisters the specified event handler.
+     * 
+     * @param eventHandler
+     *        The event handler; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If the dispatcher is closed.
      */
-    @Override
-    public void unregisterEventHandler(
-        final IEventHandler<SelectableChannel, SelectionKey> eventHandler )
+    void unregisterEventHandler(
+        /* @NonNull */
+        final AbstractEventHandler eventHandler )
     {
-        assertArgumentNotNull( eventHandler, "eventHandler" ); //$NON-NLS-1$
+        assert eventHandler != null;
         assertStateLegal( stateRef_.get() != State.CLOSED, Messages.Dispatcher_state_closed );
 
         eventHandlerUnregistrationRequests_.offer( eventHandler );

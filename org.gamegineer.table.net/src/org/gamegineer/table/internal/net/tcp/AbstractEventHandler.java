@@ -1,5 +1,5 @@
 /*
- * IEventHandler.java
+ * AbstractEventHandler.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -19,19 +19,32 @@
  * Created on Jan 7, 2011 at 9:59:16 PM.
  */
 
-package org.gamegineer.table.internal.net.connection;
+package org.gamegineer.table.internal.net.tcp;
+
+import java.nio.channels.SelectableChannel;
+import java.nio.channels.SelectionKey;
+import net.jcip.annotations.Immutable;
 
 /**
- * A handler of events dispatched in the network table Acceptor-Connector
- * pattern implementation.
- * 
- * @param <H>
- *        The type of the transport handle.
- * @param <E>
- *        The type of the event.
+ * Superclass for all event handlers in the TCP network interface
+ * Acceptor-Connector pattern implementation.
  */
-public interface IEventHandler<H, E>
+@Immutable
+abstract class AbstractEventHandler
 {
+    // ======================================================================
+    // Constructors
+    // ======================================================================
+
+    /**
+     * Initializes a new instance of the {@code AbstractEventHandler} class.
+     */
+    AbstractEventHandler()
+    {
+        super();
+    }
+
+
     // ======================================================================
     // Methods
     // ======================================================================
@@ -39,14 +52,14 @@ public interface IEventHandler<H, E>
     /**
      * Closes the event handler.
      */
-    public void close();
+    abstract void close();
 
     /**
      * Gets the event mask associated with the event handler.
      * 
      * @return The event mask associated with the event handler.
      */
-    public int getEvents();
+    abstract int getEvents();
 
     /**
      * Gets the transport handle associated with the event handler.
@@ -55,18 +68,15 @@ public interface IEventHandler<H, E>
      *         null} if the transport handle is not available.
      */
     /* @Nullable */
-    public H getTransportHandle();
+    abstract SelectableChannel getTransportHandle();
 
     /**
      * Invoked by the dispatcher to handle the specified event.
      * 
      * @param event
      *        The event; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
      */
-    public void handleEvent(
+    abstract void handleEvent(
         /* @NonNull */
-        E event );
+        SelectionKey event );
 }

@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.nio.channels.SelectableChannel;
@@ -30,7 +29,6 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Loggers;
-import org.gamegineer.table.internal.net.connection.IServiceHandler;
 
 /**
  * A service handler that represents the client half of a network table
@@ -38,7 +36,7 @@ import org.gamegineer.table.internal.net.connection.IServiceHandler;
  */
 @ThreadSafe
 final class ClientServiceHandler
-    implements IServiceHandler<SelectableChannel, SelectionKey>
+    extends AbstractServiceHandler
 {
     // ======================================================================
     // Fields
@@ -88,10 +86,10 @@ final class ClientServiceHandler
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#close()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#close()
      */
     @Override
-    public void close()
+    void close()
     {
         synchronized( lock_ )
         {
@@ -118,19 +116,19 @@ final class ClientServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#getEvents()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getEvents()
      */
     @Override
-    public int getEvents()
+    int getEvents()
     {
         return SelectionKey.OP_READ | SelectionKey.OP_WRITE;
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#getTransportHandle()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getTransportHandle()
      */
     @Override
-    public SelectableChannel getTransportHandle()
+    SelectableChannel getTransportHandle()
     {
         synchronized( lock_ )
         {
@@ -139,25 +137,25 @@ final class ClientServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#handleEvent(java.lang.Object)
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#handleEvent(java.nio.channels.SelectionKey)
      */
     @Override
-    public void handleEvent(
+    void handleEvent(
         final SelectionKey event )
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        assert event != null;
 
         // TODO: process events as needed
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IServiceHandler#open(java.lang.Object)
+     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#open(java.nio.channels.SelectableChannel)
      */
     @Override
-    public void open(
+    void open(
         final SelectableChannel handle )
     {
-        assertArgumentNotNull( handle, "handle" ); //$NON-NLS-1$
+        assert handle != null;
 
         synchronized( lock_ )
         {
