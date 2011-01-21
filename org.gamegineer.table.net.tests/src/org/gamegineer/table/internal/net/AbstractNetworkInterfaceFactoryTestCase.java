@@ -59,15 +59,15 @@ public abstract class AbstractNetworkInterfaceFactoryTestCase
     // ======================================================================
 
     /**
-     * Creates the connection factory to be tested.
+     * Creates the network interface factory to be tested.
      * 
-     * @return The connection factory to be tested; never {@code null}.
+     * @return The network interface factory to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract INetworkInterfaceFactory createConnectionFactory()
+    protected abstract INetworkInterfaceFactory createNetworkInterfaceFactory()
         throws Exception;
 
     /**
@@ -80,7 +80,7 @@ public abstract class AbstractNetworkInterfaceFactoryTestCase
     public void setUp()
         throws Exception
     {
-        networkInterfaceFactory_ = createConnectionFactory();
+        networkInterfaceFactory_ = createNetworkInterfaceFactory();
         assertNotNull( networkInterfaceFactory_ );
     }
 
@@ -98,12 +98,22 @@ public abstract class AbstractNetworkInterfaceFactoryTestCase
     }
 
     /**
-     * Ensures the {@code createNetworkInterface} method throws an exception
-     * when passed a {@code null} network table.
+     * Ensures the {@code createClientNetworkInterface} method throws an
+     * exception when passed a {@code null} network table.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateNetworkInterface_NetworkTable_Null()
+    public void testCreateClientNetworkInterface_NetworkTable_Null()
     {
-        networkInterfaceFactory_.createNetworkInterface( null );
+        networkInterfaceFactory_.createClientNetworkInterface( null );
+    }
+
+    /**
+     * Ensures the {@code createServerNetworkInterface} method throws an
+     * exception when passed a {@code null} network table.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateServerNetworkInterface_NetworkTable_Null()
+    {
+        networkInterfaceFactory_.createServerNetworkInterface( null );
     }
 }

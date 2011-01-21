@@ -21,10 +21,9 @@
 
 package org.gamegineer.table.internal.net;
 
-
 /**
- * A factory for creating a network table network interface for a specific
- * transport implementation.
+ * A factory for creating a network table network interface for a specific role
+ * and transport implementation.
  */
 public interface INetworkInterfaceFactory
 {
@@ -33,19 +32,36 @@ public interface INetworkInterfaceFactory
     // ======================================================================
 
     /**
-     * Creates a new network interface for the specified network table.
+     * Creates a new client network interface for the specified network table.
      * 
      * @param networkTable
      *        The network table to associate with the network interface; must
      *        not be {@code null}.
      * 
-     * @return A new network interface; never {@code null}.
+     * @return A new client network interface; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code networkTable} is {@code null}.
      */
     /* @NonNull */
-    public INetworkInterface createNetworkInterface(
+    public INetworkInterface createClientNetworkInterface(
+        /* @NonNull */
+        NetworkTable networkTable );
+
+    /**
+     * Creates a new server network interface for the specified network table.
+     * 
+     * @param networkTable
+     *        The network table to associate with the network interface; must
+     *        not be {@code null}.
+     * 
+     * @return A new server network interface; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code networkTable} is {@code null}.
+     */
+    /* @NonNull */
+    public INetworkInterface createServerNetworkInterface(
         /* @NonNull */
         NetworkTable networkTable );
 }

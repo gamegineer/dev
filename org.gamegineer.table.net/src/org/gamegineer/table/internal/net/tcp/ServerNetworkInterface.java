@@ -1,5 +1,5 @@
 /*
- * NetworkInterface.java
+ * ServerNetworkInterface.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,23 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 16, 2011 at 5:14:58 PM.
+ * Created on Jan 18, 2011 at 8:36:24 PM.
  */
 
 package org.gamegineer.table.internal.net.tcp;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.INetworkInterface;
-import org.gamegineer.table.internal.net.connection.IAcceptor;
-import org.gamegineer.table.internal.net.connection.IConnector;
-import org.gamegineer.table.internal.net.connection.IDispatcher;
+import org.gamegineer.table.net.INetworkTableConfiguration;
+import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * Implementation of {@link org.gamegineer.table.internal.net.INetworkInterface}
- * for TCP connections.
+ * for the server role over a TCP connection.
  */
 @Immutable
-final class NetworkInterface
+final class ServerNetworkInterface
     implements INetworkInterface
 {
     // ======================================================================
@@ -48,9 +48,9 @@ final class NetworkInterface
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code NetworkInterface} class.
+     * Initializes a new instance of the {@code ServerNetworkInterface} class.
      */
-    NetworkInterface()
+    ServerNetworkInterface()
     {
         dispatcher_ = new Dispatcher();
     }
@@ -61,29 +61,35 @@ final class NetworkInterface
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.INetworkInterface#createAcceptor()
+     * @see org.gamegineer.table.internal.net.INetworkInterface#close()
      */
     @Override
-    public IAcceptor<?, ?> createAcceptor()
+    public void close()
     {
-        return new Acceptor( dispatcher_ );
+        dispatcher_.close();
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.INetworkInterface#createConnector()
+     * @see org.gamegineer.table.internal.net.INetworkInterface#open(org.gamegineer.table.net.INetworkTableConfiguration)
      */
     @Override
-    public IConnector<?, ?> createConnector()
+    public void open(
+        final INetworkTableConfiguration configuration )
+        throws NetworkTableException
     {
-        return new Connector( dispatcher_ );
-    }
+        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-    /*
-     * @see org.gamegineer.table.internal.net.connection.INetworkInterface#getDispatcher()
-     */
-    @Override
-    public IDispatcher<?, ?> getDispatcher()
-    {
-        return dispatcher_;
+        dispatcher_.open();
+
+        final Acceptor acceptor = new Acceptor( dispatcher_ );
+        try
+        {
+            acceptor.bind( configuration );
+        }
+        catch( final NetworkTableException e )
+        {
+            close();
+            throw e;
+        }
     }
 }

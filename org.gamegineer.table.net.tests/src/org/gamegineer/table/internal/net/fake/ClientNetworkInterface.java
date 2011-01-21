@@ -1,5 +1,5 @@
 /*
- * Connector.java
+ * ClientNetworkInterface.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,32 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 8, 2011 at 8:37:09 PM.
+ * Created on Jan 16, 2011 at 5:19:25 PM.
  */
 
 package org.gamegineer.table.internal.net.fake;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.connection.IConnector;
+import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.INetworkInterface;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 
 /**
  * Fake implementation of
- * {@link org.gamegineer.table.internal.net.connection.IConnector}.
+ * {@link org.gamegineer.table.internal.net.INetworkInterface} for the client
+ * role.
  */
-@ThreadSafe
-final class Connector
-    implements IConnector<Object, Object>
+@Immutable
+final class ClientNetworkInterface
+    implements INetworkInterface
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code Connector} class.
+     * Initializes a new instance of the {@code ClientNetworkInterface} class.
      */
-    Connector()
+    ClientNetworkInterface()
     {
         super();
     }
@@ -52,7 +53,7 @@ final class Connector
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#close()
+     * @see org.gamegineer.table.internal.net.INetworkInterface#close()
      */
     @Override
     public void close()
@@ -61,40 +62,12 @@ final class Connector
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IConnector#connect(org.gamegineer.table.net.INetworkTableConfiguration)
+     * @see org.gamegineer.table.internal.net.INetworkInterface#open(org.gamegineer.table.net.INetworkTableConfiguration)
      */
     @Override
-    public void connect(
+    public void open(
         final INetworkTableConfiguration configuration )
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#getEvents()
-     */
-    @Override
-    public int getEvents()
-    {
-        return 0;
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#getTransportHandle()
-     */
-    @Override
-    public Object getTransportHandle()
-    {
-        return null;
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#handleEvent(java.lang.Object)
-     */
-    @Override
-    public void handleEvent(
-        final Object event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
     }
 }

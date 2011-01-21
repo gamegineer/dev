@@ -21,13 +21,11 @@
 
 package org.gamegineer.table.internal.net;
 
-import org.gamegineer.table.internal.net.connection.IAcceptor;
-import org.gamegineer.table.internal.net.connection.IConnector;
-import org.gamegineer.table.internal.net.connection.IDispatcher;
+import org.gamegineer.table.net.INetworkTableConfiguration;
+import org.gamegineer.table.net.NetworkTableException;
 
 /**
- * Encapsulates the participants of the network table Acceptor-Connector pattern
- * for a specific transport implementation.
+ * A network interface for a specific role and transport implementation.
  */
 public interface INetworkInterface
 {
@@ -36,27 +34,39 @@ public interface INetworkInterface
     // ======================================================================
 
     /**
-     * Creates a new acceptor for the network interface.
+     * Closes the network interface.
      * 
-     * @return A new acceptor; never {@code null}.
+     * <p>
+     * This method does nothing if the network interface is already closed.
+     * </p>
+     * 
+     * <p>
+     * This method blocks until the network interface is closed or an error
+     * occurs.
+     * </p>
      */
-    /* @NonNull */
-    public IAcceptor<?, ?> createAcceptor();
+    public void close();
 
     /**
-     * Creates a new connector for the network interface.
+     * Opens the network interface.
      * 
-     * @return A new connector; never {@code null}.
-     */
-    /* @NonNull */
-    public IConnector<?, ?> createConnector();
-
-    /**
-     * Gets the dispatcher associated with the network interface.
+     * <p>
+     * This method blocks until the network interface is connected or an error
+     * occurs.
+     * </p>
      * 
-     * @return The dispatcher associated with the network interface; never
-     *         {@code null}.
+     * @param configuration
+     *        The network table configuration; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If the network interface has already been opened or is closed.
+     * @throws java.lang.NullPointerException
+     *         If {@code configuration} is {@code null}.
+     * @throws org.gamegineer.table.net.NetworkTableException
+     *         If an error occurs.
      */
-    /* @NonNull */
-    public IDispatcher<?, ?> getDispatcher();
+    public void open(
+        /* @NonNull */
+        INetworkTableConfiguration configuration )
+        throws NetworkTableException;
 }

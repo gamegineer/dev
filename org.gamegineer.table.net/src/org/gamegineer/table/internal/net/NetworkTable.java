@@ -28,9 +28,6 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.connection.IAcceptor;
-import org.gamegineer.table.internal.net.connection.IConnector;
-import org.gamegineer.table.internal.net.connection.IDispatcher;
 import org.gamegineer.table.internal.net.tcp.TcpNetworkInterfaceFactory;
 import org.gamegineer.table.net.INetworkTable;
 import org.gamegineer.table.net.INetworkTableConfiguration;
@@ -136,6 +133,43 @@ public final class NetworkTable
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.NetworkTable_addNetworkTableListener_listener_registered ); //$NON-NLS-1$
     }
 
+    /**
+     * Connects the network table using the specified network interface.
+     * 
+     * @param configuration
+     *        The network table configuration; must not be {@code null}.
+     * @param networkInterface
+     *        The network interface used to establish the connection; must not
+     *        be {@code null}.
+     * 
+     * @throws org.gamegineer.table.net.NetworkTableException
+     *         If the connection cannot be established or the network is already
+     *         connected.
+     */
+    private void connect(
+        /* @NonNull */
+        final INetworkTableConfiguration configuration,
+        /* @NonNull */
+        final INetworkInterface networkInterface )
+        throws NetworkTableException
+    {
+        assert configuration != null;
+        assert networkInterface != null;
+
+        synchronized( lock_ )
+        {
+            if( networkInterface_ != null )
+            {
+                throw new NetworkTableException( Messages.NetworkTable_connect_networkConnected );
+            }
+
+            networkInterface.open( configuration );
+            networkInterface_ = networkInterface;
+        }
+
+        fireNetworkConnected();
+    }
+
     /*
      * @see org.gamegineer.table.net.INetworkTable#disconnect()
      */
@@ -148,7 +182,7 @@ public final class NetworkTable
             if( networkInterface_ != null )
             {
                 fireNetworkDisconnected = true;
-                networkInterface_.getDispatcher().close();
+                networkInterface_.close();
                 networkInterface_ = null;
             }
             else
@@ -211,32 +245,7 @@ public final class NetworkTable
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
-        {
-            if( networkInterface_ != null )
-            {
-                throw new NetworkTableException( Messages.NetworkTable_host_networkConnected );
-            }
-
-            final INetworkInterface networkInterface = networkInterfaceFactory_.createNetworkInterface( this );
-            final IDispatcher<?, ?> dispatcher = networkInterface.getDispatcher();
-            dispatcher.open();
-
-            try
-            {
-                final IAcceptor<?, ?> acceptor = networkInterface.createAcceptor();
-                acceptor.bind( configuration );
-            }
-            catch( final NetworkTableException e )
-            {
-                dispatcher.close();
-                throw e;
-            }
-
-            networkInterface_ = networkInterface;
-        }
-
-        fireNetworkConnected();
+        connect( configuration, networkInterfaceFactory_.createServerNetworkInterface( this ) );
     }
 
     /*
@@ -261,36 +270,7 @@ public final class NetworkTable
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
-        {
-            if( networkInterface_ != null )
-            {
-                throw new NetworkTableException( Messages.NetworkTable_join_networkConnected );
-            }
-
-            final INetworkInterface networkInterface = networkInterfaceFactory_.createNetworkInterface( this );
-            final IDispatcher<?, ?> dispatcher = networkInterface.getDispatcher();
-            dispatcher.open();
-
-            final IConnector<?, ?> connector = networkInterface.createConnector();
-            try
-            {
-                connector.connect( configuration );
-            }
-            catch( final NetworkTableException e )
-            {
-                dispatcher.close();
-                throw e;
-            }
-            finally
-            {
-                connector.close();
-            }
-
-            networkInterface_ = networkInterface;
-        }
-
-        fireNetworkConnected();
+        connect( configuration, networkInterfaceFactory_.createClientNetworkInterface( this ) );
     }
 
     /*

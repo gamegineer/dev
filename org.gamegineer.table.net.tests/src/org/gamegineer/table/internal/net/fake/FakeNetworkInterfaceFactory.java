@@ -54,14 +54,26 @@ public final class FakeNetworkInterfaceFactory
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.INetworkInterfaceFactory#createNetworkInterface(org.gamegineer.table.internal.net.NetworkTable)
+     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createClientNetworkInterface(org.gamegineer.table.internal.net.NetworkTable)
      */
     @Override
-    public INetworkInterface createNetworkInterface(
+    public INetworkInterface createClientNetworkInterface(
         final NetworkTable networkTable )
     {
         assertArgumentNotNull( networkTable, "networkTable" ); //$NON-NLS-1$
 
-        return new NetworkInterface();
+        return new ClientNetworkInterface();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createServerNetworkInterface(org.gamegineer.table.internal.net.NetworkTable)
+     */
+    @Override
+    public INetworkInterface createServerNetworkInterface(
+        final NetworkTable networkTable )
+    {
+        assertArgumentNotNull( networkTable, "networkTable" ); //$NON-NLS-1$
+
+        return new ServerNetworkInterface();
     }
 }

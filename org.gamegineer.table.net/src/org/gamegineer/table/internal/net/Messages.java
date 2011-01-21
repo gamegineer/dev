@@ -41,10 +41,7 @@ final class Messages
     public static String NetworkTable_addNetworkTableListener_listener_registered;
 
     /** The network is already connected. */
-    public static String NetworkTable_host_networkConnected;
-
-    /** The network is already connected. */
-    public static String NetworkTable_join_networkConnected;
+    public static String NetworkTable_connect_networkConnected;
 
     /**
      * An unexpected exception was thrown from

@@ -1,5 +1,5 @@
 /*
- * TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest.java
+ * ClientNetworkInterfaceAsNetworkInterfaceTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,22 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 15, 2011 at 11:56:00 PM.
+ * Created on Jan 18, 2011 at 9:00:54 PM.
  */
 
 package org.gamegineer.table.internal.net.tcp;
 
-import org.gamegineer.table.internal.net.AbstractNetworkInterfaceFactoryTestCase;
-import org.gamegineer.table.internal.net.INetworkInterfaceFactory;
+import org.gamegineer.table.internal.net.AbstractNetworkInterfaceTestCase;
+import org.gamegineer.table.internal.net.INetworkInterface;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.tcp.TcpNetworkInterfaceFactory}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.INetworkInterfaceFactory} interface.
+ * {@link org.gamegineer.table.internal.net.tcp.ClientNetworkInterface} class to
+ * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.INetworkInterface} interface.
  */
-public final class TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest
-    extends AbstractNetworkInterfaceFactoryTestCase
+public final class ClientNetworkInterfaceAsNetworkInterfaceTest
+    extends AbstractNetworkInterfaceTestCase
 {
     // ======================================================================
     // Constructors
@@ -39,9 +39,9 @@ public final class TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest
 
     /**
      * Initializes a new instance of the {@code
-     * TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest} class.
+     * ClientNetworkInterfaceAsNetworkInterfaceTest} class.
      */
-    public TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest()
+    public ClientNetworkInterfaceAsNetworkInterfaceTest()
     {
         super();
     }
@@ -52,11 +52,11 @@ public final class TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkInterfaceFactoryTestCase#createNetworkInterfaceFactory()
+     * @see org.gamegineer.table.internal.net.AbstractNetworkInterfaceTestCase#createNetworkInterface()
      */
     @Override
-    protected INetworkInterfaceFactory createNetworkInterfaceFactory()
+    protected INetworkInterface createNetworkInterface()
     {
-        return new TcpNetworkInterfaceFactory();
+        return new ClientNetworkInterface();
     }
 }

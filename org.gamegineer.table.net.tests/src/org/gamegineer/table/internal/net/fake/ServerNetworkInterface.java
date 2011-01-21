@@ -1,5 +1,5 @@
 /*
- * Acceptor.java
+ * ServerNetworkInterface.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,32 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 8, 2011 at 8:37:02 PM.
+ * Created on Jan 18, 2011 at 8:31:02 PM.
  */
 
 package org.gamegineer.table.internal.net.fake;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.connection.IAcceptor;
+import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.INetworkInterface;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 
 /**
  * Fake implementation of
- * {@link org.gamegineer.table.internal.net.connection.IAcceptor}.
+ * {@link org.gamegineer.table.internal.net.INetworkInterface} for the server
+ * role.
  */
-@ThreadSafe
-final class Acceptor
-    implements IAcceptor<Object, Object>
+@Immutable
+final class ServerNetworkInterface
+    implements INetworkInterface
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code Acceptor} class.
+     * Initializes a new instance of the {@code ServerNetworkInterface} class.
      */
-    Acceptor()
+    ServerNetworkInterface()
     {
         super();
     }
@@ -52,17 +53,7 @@ final class Acceptor
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IAcceptor#bind(org.gamegineer.table.net.INetworkTableConfiguration)
-     */
-    @Override
-    public void bind(
-        final INetworkTableConfiguration configuration )
-    {
-        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#close()
+     * @see org.gamegineer.table.internal.net.INetworkInterface#close()
      */
     @Override
     public void close()
@@ -71,30 +62,12 @@ final class Acceptor
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#getEvents()
+     * @see org.gamegineer.table.internal.net.INetworkInterface#open(org.gamegineer.table.net.INetworkTableConfiguration)
      */
     @Override
-    public int getEvents()
+    public void open(
+        final INetworkTableConfiguration configuration )
     {
-        return 0;
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#getTransportHandle()
-     */
-    @Override
-    public Object getTransportHandle()
-    {
-        return null;
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.connection.IEventHandler#handleEvent(java.lang.Object)
-     */
-    @Override
-    public void handleEvent(
-        final Object event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
     }
 }
