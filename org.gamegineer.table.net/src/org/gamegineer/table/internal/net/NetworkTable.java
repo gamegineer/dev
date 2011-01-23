@@ -24,8 +24,8 @@ package org.gamegineer.table.internal.net;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
-import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.tcp.TcpNetworkInterfaceFactory;
@@ -46,18 +46,17 @@ public final class NetworkTable
     // Fields
     // ======================================================================
 
+    /** A reference to the connection state. */
+    private final AtomicReference<ConnectionState> connectionStateRef_;
+
     /** The collection of network table listeners. */
     private final CopyOnWriteArrayList<INetworkTableListener> listeners_;
 
-    /** The instance lock. */
-    private final Object lock_;
-
     /**
-     * The active network interface or {@code null} if the network is not
-     * connected.
+     * A reference to the active network interface or {@code null} if the
+     * network is not connected.
      */
-    @GuardedBy( "lock_" )
-    private INetworkInterface networkInterface_;
+    private final AtomicReference<INetworkInterface> networkInterfaceRef_;
 
     /** The network table network interface factory. */
     private final INetworkInterfaceFactory networkInterfaceFactory_;
@@ -110,9 +109,9 @@ public final class NetworkTable
         assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
         assert networkInterfaceFactory != null;
 
+        connectionStateRef_ = new AtomicReference<ConnectionState>( ConnectionState.DISCONNECTED );
         listeners_ = new CopyOnWriteArrayList<INetworkTableListener>();
-        lock_ = new Object();
-        networkInterface_ = null;
+        networkInterfaceRef_ = new AtomicReference<INetworkInterface>( null );
         networkInterfaceFactory_ = networkInterfaceFactory;
         table_ = table;
     }
@@ -156,18 +155,17 @@ public final class NetworkTable
         assert configuration != null;
         assert networkInterface != null;
 
-        synchronized( lock_ )
+        if( connectionStateRef_.compareAndSet( ConnectionState.DISCONNECTED, ConnectionState.CONNECTING ) )
         {
-            if( networkInterface_ != null )
-            {
-                throw new NetworkTableException( Messages.NetworkTable_connect_networkConnected );
-            }
-
             networkInterface.open( configuration );
-            networkInterface_ = networkInterface;
+            networkInterfaceRef_.set( networkInterface );
+            connectionStateRef_.set( ConnectionState.CONNECTED );
+            fireNetworkConnected();
         }
-
-        fireNetworkConnected();
+        else
+        {
+            throw new NetworkTableException( Messages.NetworkTable_connect_networkConnected );
+        }
     }
 
     /*
@@ -176,23 +174,11 @@ public final class NetworkTable
     @Override
     public void disconnect()
     {
-        final boolean fireNetworkDisconnected;
-        synchronized( lock_ )
+        if( connectionStateRef_.compareAndSet( ConnectionState.CONNECTED, ConnectionState.DISCONNECTING ) )
         {
-            if( networkInterface_ != null )
-            {
-                fireNetworkDisconnected = true;
-                networkInterface_.close();
-                networkInterface_ = null;
-            }
-            else
-            {
-                fireNetworkDisconnected = false;
-            }
-        }
-
-        if( fireNetworkDisconnected )
-        {
+            final INetworkInterface networkInterface = networkInterfaceRef_.getAndSet( null );
+            networkInterface.close();
+            connectionStateRef_.set( ConnectionState.DISCONNECTED );
             fireNetworkDisconnected();
         }
     }
@@ -254,10 +240,7 @@ public final class NetworkTable
     @Override
     public boolean isConnected()
     {
-        synchronized( lock_ )
-        {
-            return networkInterface_ != null;
-        }
+        return connectionStateRef_.get() == ConnectionState.CONNECTED;
     }
 
     /*
@@ -282,5 +265,28 @@ public final class NetworkTable
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.NetworkTable_removeNetworkTableListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * The possible network table connection states.
+     */
+    private enum ConnectionState
+    {
+        /** The network table is processing a connect request. */
+        CONNECTING,
+
+        /** The network table is connected. */
+        CONNECTED,
+
+        /** The network table is processing a disconnect request. */
+        DISCONNECTING,
+
+        /** The network table is disconnected. */
+        DISCONNECTED;
     }
 }
