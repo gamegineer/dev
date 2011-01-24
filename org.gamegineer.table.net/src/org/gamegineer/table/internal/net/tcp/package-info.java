@@ -20,7 +20,7 @@
  */
 
 /**
- * TODO: should this package be under another package, like .connections.tcp
+ * Provides classes that define the TCP network interface implementation.
  * 
  * <p>
  * This package is only intended for use by members of the
