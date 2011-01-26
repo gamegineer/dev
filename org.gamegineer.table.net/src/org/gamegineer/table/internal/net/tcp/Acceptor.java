@@ -55,16 +55,9 @@ final class Acceptor
     /** The dispatcher associated with the acceptor. */
     private final Dispatcher dispatcher_;
 
-    /** The instance lock. */
-    private final Object lock_;
-
     /** The server socket channel on which incoming connections are accepted. */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private ServerSocketChannel serverChannel_;
-
-    /** The acceptor state. */
-    @GuardedBy( "lock_" )
-    private State state_;
 
 
     // ======================================================================
@@ -85,9 +78,7 @@ final class Acceptor
         assert dispatcher != null;
 
         dispatcher_ = dispatcher;
-        lock_ = new Object();
         serverChannel_ = null;
-        state_ = State.PRISTINE;
     }
 
 
@@ -98,12 +89,10 @@ final class Acceptor
     /**
      * Invoked when the server channel is ready to accept a new connection.
      */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private void accept()
     {
-        assert Thread.holdsLock( lock_ );
-        assert state_ == State.OPENED;
-        assert serverChannel_ != null;
+        assert Thread.holdsLock( getLock() );
 
         final SocketChannel clientChannel;
         try
@@ -130,19 +119,18 @@ final class Acceptor
     }
 
     /**
-     * Opens the acceptor and binds the acceptor transport handle.
+     * Opens the acceptor and binds the acceptor channel.
      * 
      * <p>
-     * This method blocks until the acceptor transport handle is bound or an
-     * error occurs.
+     * This method blocks until the acceptor channel is bound or an error
+     * occurs.
      * </p>
      * 
      * @param configuration
      *        The network table configuration; must not be {@code null}.
      * 
      * @throws java.lang.IllegalStateException
-     *         If an attempt has already been made to bind the acceptor
-     *         transport handle.
+     *         If an attempt has already been made to bind the acceptor channel.
      * @throws org.gamegineer.table.net.NetworkTableException
      *         If an error occurs
      */
@@ -153,9 +141,9 @@ final class Acceptor
     {
         assert configuration != null;
 
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
-            assertStateLegal( state_ == State.PRISTINE, Messages.Acceptor_state_notPristine );
+            assertStateLegal( getState() == State.PRISTINE, Messages.Acceptor_state_notPristine );
 
             try
             {
@@ -163,11 +151,11 @@ final class Acceptor
             }
             catch( final IOException e )
             {
-                state_ = State.CLOSED;
+                setState( State.CLOSED );
                 throw new NetworkTableException( Messages.Acceptor_bind_ioError, e );
             }
 
-            state_ = State.OPENED;
+            setState( State.OPENED );
 
             dispatcher_.registerEventHandler( this );
         }
@@ -179,9 +167,9 @@ final class Acceptor
     @Override
     void close()
     {
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
-            if( state_ == State.OPENED )
+            if( getState() == State.OPENED )
             {
                 dispatcher_.unregisterEventHandler( this );
 
@@ -199,7 +187,7 @@ final class Acceptor
                 }
             }
 
-            state_ = State.CLOSED;
+            setState( State.CLOSED );
         }
     }
 
@@ -230,6 +218,18 @@ final class Acceptor
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getChannel()
+     */
+    @Override
+    SelectableChannel getChannel()
+    {
+        synchronized( getLock() )
+        {
+            return serverChannel_;
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getEvents()
      */
     @Override
@@ -239,59 +239,22 @@ final class Acceptor
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getTransportHandle()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#handleEvent()
      */
     @Override
-    SelectableChannel getTransportHandle()
+    void handleEvent()
     {
-        synchronized( lock_ )
-        {
-            return serverChannel_;
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#handleEvent(java.nio.channels.SelectionKey)
-     */
-    @Override
-    void handleEvent(
-        final SelectionKey event )
-    {
-        assert event != null;
-
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
             // Handle race condition when acceptor is closed after an event has been
             // dispatched but before this method is called
-            if( state_ != State.OPENED )
+            if( getState() == State.OPENED )
             {
-                return;
-            }
-
-            if( event.isAcceptable() )
-            {
-                accept();
+                if( getSelectionKey().isAcceptable() )
+                {
+                    accept();
+                }
             }
         }
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * The possible acceptor states.
-     */
-    private enum State
-    {
-        /** The acceptor has never been used. */
-        PRISTINE,
-
-        /** The acceptor is open. */
-        OPENED,
-
-        /** The acceptor is closed. */
-        CLOSED;
     }
 }

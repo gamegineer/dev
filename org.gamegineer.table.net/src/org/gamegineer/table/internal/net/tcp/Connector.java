@@ -25,9 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SelectableChannel;
-import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.NetworkTableException;
@@ -52,13 +50,6 @@ final class Connector
     /** The dispatcher associated with the connector. */
     private final Dispatcher dispatcher_;
 
-    /** The instance lock. */
-    private final Object lock_;
-
-    /** The connector state. */
-    @GuardedBy( "lock_" )
-    private State state_;
-
 
     // ======================================================================
     // Constructors
@@ -78,8 +69,6 @@ final class Connector
         assert dispatcher != null;
 
         dispatcher_ = dispatcher;
-        lock_ = new Object();
-        state_ = State.PRISTINE;
     }
 
 
@@ -93,9 +82,9 @@ final class Connector
     @Override
     void close()
     {
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
-            state_ = State.CLOSED;
+            setState( State.CLOSED );
         }
     }
 
@@ -122,9 +111,9 @@ final class Connector
     {
         assert configuration != null;
 
-        synchronized( lock_ )
+        synchronized( getLock() )
         {
-            assertStateLegal( state_ == State.PRISTINE, Messages.Connector_state_notPristine );
+            assertStateLegal( getState() == State.PRISTINE, Messages.Connector_state_notPristine );
 
             final SocketChannel channel;
             try
@@ -137,7 +126,7 @@ final class Connector
             }
             finally
             {
-                state_ = State.CLOSED;
+                setState( State.CLOSED );
             }
 
             final AbstractServiceHandler serviceHandler = new ClientServiceHandler( dispatcher_ );
@@ -181,6 +170,15 @@ final class Connector
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getChannel()
+     */
+    @Override
+    SelectableChannel getChannel()
+    {
+        throw new UnsupportedOperationException( "asynchronous connection not supported" ); //$NON-NLS-1$
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getEvents()
      */
     @Override
@@ -190,40 +188,11 @@ final class Connector
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getTransportHandle()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#handleEvent()
      */
     @Override
-    SelectableChannel getTransportHandle()
+    void handleEvent()
     {
         throw new UnsupportedOperationException( "asynchronous connection not supported" ); //$NON-NLS-1$
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#handleEvent(java.nio.channels.SelectionKey)
-     */
-    @Override
-    void handleEvent(
-        final SelectionKey event )
-    {
-        assert event != null;
-
-        throw new UnsupportedOperationException( "asynchronous connection not supported" ); //$NON-NLS-1$
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * The possible connector states.
-     */
-    private enum State
-    {
-        /** The connector has never been used. */
-        PRISTINE,
-
-        /** The connector is closed. */
-        CLOSED;
     }
 }

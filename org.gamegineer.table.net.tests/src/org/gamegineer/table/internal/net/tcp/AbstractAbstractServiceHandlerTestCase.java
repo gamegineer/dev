@@ -37,6 +37,9 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     // Fields
     // ======================================================================
 
+    /** The dispatcher for use in the fixture. */
+    private Dispatcher dispatcher_;
+
     /** The service handler under test in the fixture. */
     private AbstractServiceHandler serviceHandler_;
 
@@ -62,13 +65,20 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     /**
      * Creates the service handler to be tested.
      * 
+     * @param dispatcher
+     *        The dispatcher for use in the fixture; must not be {@code null}.
+     * 
      * @return The service handler to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
+     * @throws java.lang.NullPointerException
+     *         If {@code dispatcher} is {@code null}.
      */
     /* @NonNull */
-    protected abstract AbstractServiceHandler createServiceHandler()
+    protected abstract AbstractServiceHandler createServiceHandler(
+        /* @NonNull */
+        Dispatcher dispatcher )
         throws Exception;
 
     /**
@@ -81,7 +91,9 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     public void setUp()
         throws Exception
     {
-        serviceHandler_ = createServiceHandler();
+        dispatcher_ = new Dispatcher();
+        dispatcher_.open();
+        serviceHandler_ = createServiceHandler( dispatcher_ );
         assertNotNull( serviceHandler_ );
     }
 
@@ -95,7 +107,10 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     public void tearDown()
         throws Exception
     {
+        serviceHandler_.close();
         serviceHandler_ = null;
+        dispatcher_.close();
+        dispatcher_ = null;
     }
 
     /**
@@ -107,7 +122,7 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     {
         serviceHandler_.close();
 
-        serviceHandler_.open( Mocks.createMockTransportHandle() );
+        serviceHandler_.open( TestUtils.createMockChannel() );
     }
 
     /**
@@ -117,7 +132,7 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     @Test( expected = IllegalStateException.class )
     public void testOpen_MultipleInvocations()
     {
-        final SelectableChannel handle = Mocks.createMockTransportHandle();
+        final SelectableChannel handle = TestUtils.createMockChannel();
         serviceHandler_.open( handle );
 
         serviceHandler_.open( handle );

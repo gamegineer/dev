@@ -21,8 +21,14 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
+import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import java.io.IOException;
 import java.nio.channels.SelectableChannel;
-import net.jcip.annotations.Immutable;
+import java.nio.channels.SelectionKey;
+import java.util.logging.Level;
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.net.Loggers;
 
 /**
  * A service handler in the TCP network interface Acceptor-Connector pattern
@@ -33,20 +39,41 @@ import net.jcip.annotations.Immutable;
  * networked application.
  * </p>
  */
-@Immutable
+@ThreadSafe
 abstract class AbstractServiceHandler
     extends AbstractEventHandler
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The channel associated with the service handler. */
+    @GuardedBy( "getLock()" )
+    private SelectableChannel channel_;
+
+    /** The dispatcher associated with the service handler. */
+    private final Dispatcher dispatcher_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
      * Initializes a new instance of the {@code AbstractServiceHandler} class.
+     * 
+     * @param dispatcher
+     *        The dispatcher associated with the service handler; must not be
+     *        {@code null}.
      */
-    AbstractServiceHandler()
+    AbstractServiceHandler(
+        /* @NonNull */
+        final Dispatcher dispatcher )
     {
-        super();
+        assert dispatcher != null;
+
+        channel_ = null;
+        dispatcher_ = dispatcher;
     }
 
 
@@ -54,14 +81,78 @@ abstract class AbstractServiceHandler
     // Methods
     // ======================================================================
 
+    /*
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#close()
+     */
+    @Override
+    final void close()
+    {
+        synchronized( getLock() )
+        {
+            if( getState() == State.OPENED )
+            {
+                dispatcher_.unregisterEventHandler( this );
+
+                try
+                {
+                    channel_.close();
+                }
+                catch( final IOException e )
+                {
+                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractServiceHandler_close_ioError, e );
+                }
+                finally
+                {
+                    channel_ = null;
+                }
+            }
+
+            setState( State.CLOSED );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getChannel()
+     */
+    @Override
+    final SelectableChannel getChannel()
+    {
+        synchronized( getLock() )
+        {
+            return channel_;
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getEvents()
+     */
+    @Override
+    final int getEvents()
+    {
+        return SelectionKey.OP_READ | SelectionKey.OP_WRITE;
+    }
+
     /**
      * Opens the service handler.
      * 
-     * @param handle
-     *        The transport handle associated with the service handler; must not
-     *        be {@code null}.
+     * @param channel
+     *        The channel associated with the service handler; must not be
+     *        {@code null}.
      */
-    abstract void open(
+    final void open(
         /* @NonNull */
-        SelectableChannel handle );
+        final SelectableChannel channel )
+    {
+        assert channel != null;
+
+        synchronized( getLock() )
+        {
+            assertStateLegal( getState() == State.PRISTINE, Messages.AbstractServiceHandler_state_notPristine );
+
+            channel_ = channel;
+            setState( State.OPENED );
+
+            dispatcher_.registerEventHandler( this );
+        }
+    }
 }

@@ -23,15 +23,36 @@ package org.gamegineer.table.internal.net.tcp;
 
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
-import net.jcip.annotations.Immutable;
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
 
 /**
  * Superclass for all event handlers in the TCP network interface
  * Acceptor-Connector pattern implementation.
  */
-@Immutable
+@ThreadSafe
 abstract class AbstractEventHandler
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The instance lock. */
+    private final Object lock_;
+
+    /**
+     * The selection key representing the binding between the event handler and
+     * an event dispatcher or {@code null} if the event handler is not currently
+     * bound to an event dispatcher.
+     */
+    @GuardedBy( "getLock()" )
+    private SelectionKey selectionKey_;
+
+    /** The event handler state. */
+    @GuardedBy( "getLock()" )
+    private State state_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -41,7 +62,9 @@ abstract class AbstractEventHandler
      */
     AbstractEventHandler()
     {
-        super();
+        lock_ = new Object();
+        selectionKey_ = null;
+        state_ = State.PRISTINE;
     }
 
 
@@ -55,28 +78,125 @@ abstract class AbstractEventHandler
     abstract void close();
 
     /**
-     * Gets the event mask associated with the event handler.
+     * Gets the channel associated with the event handler.
      * 
-     * @return The event mask associated with the event handler.
+     * @return The channel associated with the event handler or {@code null} if
+     *         the channel is not available.
+     */
+    /* @Nullable */
+    abstract SelectableChannel getChannel();
+
+    /**
+     * Gets a bit mask of the events in which the event handler is interested.
+     * 
+     * @return A bit mask of the events in which the event handler is
+     *         interested.
      */
     abstract int getEvents();
 
     /**
-     * Gets the transport handle associated with the event handler.
+     * Gets the instance lock for the event handler.
      * 
-     * @return The transport handle associated with the event handler or {@code
-     *         null} if the transport handle is not available.
+     * @return The instance lock for the event handler; never {@code null}.
      */
-    /* @Nullable */
-    abstract SelectableChannel getTransportHandle();
+    /* @NonNull */
+    final Object getLock()
+    {
+        return lock_;
+    }
 
     /**
-     * Invoked by the dispatcher to handle the specified event.
+     * Gets the selection key representing the binding between the event handler
+     * and an event dispatcher.
      * 
-     * @param event
-     *        The event; must not be {@code null}.
+     * @return The selection key representing the binding between the event
+     *         handler and an event dispatcher or {@code null} if the event
+     *         handler is not currently bound to an event dispatcher.
      */
-    abstract void handleEvent(
+    /* @Nullable */
+    final SelectionKey getSelectionKey()
+    {
+        synchronized( getLock() )
+        {
+            return selectionKey_;
+        }
+    }
+
+    /**
+     * Gets the event handler state.
+     * 
+     * @return The event handler state; never {@code null}.
+     */
+    /* @NonNull */
+    final State getState()
+    {
+        synchronized( getLock() )
+        {
+            return state_;
+        }
+    }
+
+    // TODO: may rename notify()
+    /**
+     * Invoked by the event dispatcher to notify the event handler that its
+     * selection key has one or more events ready.
+     */
+    abstract void handleEvent();
+
+    /**
+     * Sets the selection key representing the binding between the event handler
+     * and an event dispatcher.
+     * 
+     * @param selectionKey
+     *        The selection key representing the binding between the event
+     *        handler and an event dispatcher or {@code null} to clear the
+     *        binding.
+     */
+    final void setSelectionKey(
+        /* @Nullable */
+        final SelectionKey selectionKey )
+    {
+        synchronized( getLock() )
+        {
+            selectionKey_ = selectionKey;
+        }
+    }
+
+    /**
+     * Sets the event handler state.
+     * 
+     * @param state
+     *        The event handler state; must not be {@code null}.
+     */
+    final void setState(
         /* @NonNull */
-        SelectionKey event );
+        final State state )
+    {
+        assert state != null;
+
+        synchronized( getLock() )
+        {
+            state_ = state;
+        }
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * The possible event handler states.
+     */
+    enum State
+    {
+        /** The event handler has never been opened. */
+        PRISTINE,
+
+        /** The event handler is open. */
+        OPENED,
+
+        /** The event handler is closed. */
+        CLOSED;
+    }
 }

@@ -35,6 +35,14 @@ final class Messages
     // Fields
     // ======================================================================
 
+    // --- AbstractServiceHandler -------------------------------------------
+
+    /** An I/O error occurred while closing the socket channel. */
+    public static String AbstractServiceHandler_close_ioError;
+
+    /** The client service handler state is not pristine. */
+    public static String AbstractServiceHandler_state_notPristine;
+
     // --- Acceptor ---------------------------------------------------------
 
     /** An I/O error occurred while accepting a new connection. */
@@ -48,14 +56,6 @@ final class Messages
 
     /** The acceptor state is not pristine. */
     public static String Acceptor_state_notPristine;
-
-    // --- ClientServiceHandler ---------------------------------------------
-
-    /** An I/O error occurred while closing the socket channel. */
-    public static String ClientServiceHandler_close_ioError;
-
-    /** The client service handler state is not pristine. */
-    public static String ClientServiceHandler_state_notPristine;
 
     // --- Connector --------------------------------------------------------
 
@@ -76,19 +76,14 @@ final class Messages
     /** An error occurred on the event dispatch thread. */
     public static String Dispatcher_dispatchEvents_error;
 
-    /** The dispatcher state is closed. */
-    public static String Dispatcher_state_closed;
+    /** An I/O error occurred while opening the dispatcher. */
+    public static String Dispatcher_open_ioError;
+
+    /** The dispatcher state is not open. */
+    public static String Dispatcher_state_notOpen;
 
     /** The dispatcher state is not pristine. */
     public static String Dispatcher_state_notPristine;
-
-    // --- ServerServiceHandler ---------------------------------------------
-
-    /** An I/O error occurred while closing the socket channel. */
-    public static String ServerServiceHandler_close_ioError;
-
-    /** The server service handler state is not pristine. */
-    public static String ServerServiceHandler_state_notPristine;
 
 
     // ======================================================================

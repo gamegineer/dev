@@ -22,21 +22,22 @@
 package org.gamegineer.table.internal.net.tcp;
 
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
-import java.nio.channels.SelectableChannel;
+import java.io.IOException;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
-import java.util.IdentityHashMap;
-import java.util.Map;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.CancellationException;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Activator;
+import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.Loggers;
+import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * An event dispatcher in the TCP network interface Acceptor-Connector pattern
@@ -44,8 +45,7 @@ import org.gamegineer.table.internal.net.Loggers;
  * 
  * <p>
  * An event dispatcher is responsible for managing event handlers and
- * appropriately dispatching events that occur on the event handler transport
- * handles.
+ * appropriately dispatching events that occur on the event handler channels.
  * </p>
  */
 @ThreadSafe
@@ -55,34 +55,30 @@ final class Dispatcher
     // Fields
     // ======================================================================
 
-    /** The collection of event handler registration requests. */
-    private final Queue<AbstractEventHandler> eventHandlerRegistrationRequests_;
+    /**
+     * The task executing the event dispatch thread or {@code null} if the event
+     * dispatch thread is not running.
+     */
+    @GuardedBy( "lock_" )
+    private Future<?> eventDispatchTask_;
 
-    /** The collection of event handler unregistration requests. */
-    private final Queue<AbstractEventHandler> eventHandlerUnregistrationRequests_;
+    /** The collection of registered event handlers. */
+    @GuardedBy( "lock_" )
+    private final Collection<AbstractEventHandler> eventHandlers_;
+
+    /** The instance lock. */
+    private final Object lock_;
 
     /**
-     * The instance lock used to synchronize access to public methods that are
-     * invoked on a client thread (i.e. any thread other than the event dispatch
-     * thread).
+     * The dispatcher channel multiplexor executing on the event dispatch thread
+     * or {@code null} if the event dispatch thread is not running.
      */
-    private final Object externalLock_;
+    @GuardedBy( "lock_" )
+    private Selector selector_;
 
-    /**
-     * A reference to the dispatcher channel multiplexor executing on the event
-     * dispatch thread. The referee is {@code null} if the event dispatch thread
-     * is not running.
-     */
-    private final AtomicReference<Selector> selectorRef_;
-
-    /** A reference to the dispatcher state. */
-    private final AtomicReference<State> stateRef_;
-
-    /**
-     * A reference to the task executing the event dispatch thread or {@code
-     * null} if the event dispatch thread is not running.
-     */
-    private final AtomicReference<Future<?>> taskRef_;
+    /** The dispatcher state. */
+    @GuardedBy( "lock_" )
+    private State state_;
 
 
     // ======================================================================
@@ -94,12 +90,11 @@ final class Dispatcher
      */
     Dispatcher()
     {
-        eventHandlerRegistrationRequests_ = new ConcurrentLinkedQueue<AbstractEventHandler>();
-        eventHandlerUnregistrationRequests_ = new ConcurrentLinkedQueue<AbstractEventHandler>();
-        externalLock_ = new Object();
-        selectorRef_ = new AtomicReference<Selector>( null );
-        stateRef_ = new AtomicReference<State>( State.PRISTINE );
-        taskRef_ = new AtomicReference<Future<?>>( null );
+        eventDispatchTask_ = null;
+        eventHandlers_ = new ArrayList<AbstractEventHandler>();
+        lock_ = new Object();
+        selector_ = null;
+        state_ = State.PRISTINE;
     }
 
 
@@ -112,22 +107,22 @@ final class Dispatcher
      */
     void close()
     {
-        // XXX: WHO IS GOING TO BE RESPONSIBLE for closing any service handlers
-        // that are registered with the dispatcher before closing the dispatcher?
-        // Could do it here but that means the registered event handler collection
-        // must be a thread-safe field.
-
-        synchronized( externalLock_ )
+        synchronized( lock_ )
         {
-            final Future<?> task = taskRef_.getAndSet( null );
-            stateRef_.set( State.CLOSED );
-
-            if( task != null )
+            if( state_ == State.OPENED )
             {
-                task.cancel( true );
+                // TODO: unregister handlers first if we move unregister() calls outside of close() methods
+                final Collection<AbstractEventHandler> eventHandlers = new ArrayList<AbstractEventHandler>( eventHandlers_ );
+                for( final AbstractEventHandler eventHandler : eventHandlers )
+                {
+                    Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Closing orphaned event handler '%s'", eventHandler ) ); //$NON-NLS-1$
+                    eventHandler.close();
+                }
+
+                eventDispatchTask_.cancel( true );
                 try
                 {
-                    task.get( 10, TimeUnit.SECONDS );
+                    eventDispatchTask_.get( 10, TimeUnit.SECONDS );
                 }
                 catch( final CancellationException e )
                 {
@@ -137,98 +132,62 @@ final class Dispatcher
                 {
                     Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_close_error, e );
                 }
+
+                try
+                {
+                    selector_.close();
+                }
+                catch( final IOException e )
+                {
+                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_close_error, e );
+                }
             }
+
+            state_ = State.CLOSED;
+            selector_ = null;
+            eventDispatchTask_ = null;
         }
     }
 
     /**
-     * Dispatches events on all channels registered with this object until this
-     * thread is interrupted.
+     * Dispatches events on all channels registered with the specified selector
+     * until this thread is interrupted.
+     * 
+     * @param selector
+     *        The event selector; must not be {@code null}.
      */
-    private void dispatchEvents()
+    private void dispatchEvents(
+        /* @NonNull */
+        final Selector selector )
     {
-        System.out.println( "starting dispatch event handler" ); //$NON-NLS-1$ // XXX
+        assert selector != null;
 
-        final Map<SelectionKey, AbstractEventHandler> eventHandlers = new IdentityHashMap<SelectionKey, AbstractEventHandler>();
-        final Map<AbstractEventHandler, SelectionKey> selectionKeys = new IdentityHashMap<AbstractEventHandler, SelectionKey>();
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Event dispatch thread started" ); //$NON-NLS-1$
 
         try
         {
-            // TODO: May consider not interrupting thread to terminate it because a race condition
-            // may occur where the interrupt happens while the following method is executing.  This
-            // leads to a harmless but annoying IOException which will ultimately be logged during
-            // testing.  Alternatively, use a separate flag (or a CLOSING state) to indicate the
-            // EDT should shut down and wake up the selector.
-            final Selector selector = Selector.open();
-            try
+            while( !Thread.interrupted() )
             {
-                selectorRef_.set( selector );
-
-                while( true )
+                if( selector.select( 100 ) > 0 )
                 {
-                    final int n = selector.select();
-                    if( (n == 0) && Thread.interrupted() )
-                    {
-                        // TODO: Need to clean up as if we've been closed.
-                        //
-                        // Note that we cannot call close() on the remaining event handlers
-                        // because close() will most likely call unregisterEventHandler
-                        // thus creating a circularity.
-
-                        return;
-                    }
-
-                    // TODO: Need to avoid registering handlers twice; log warning in that case.
-                    {
-                        AbstractEventHandler eventHandler = null;
-                        while( (eventHandler = eventHandlerRegistrationRequests_.poll()) != null )
-                        {
-                            final SelectableChannel channel = eventHandler.getTransportHandle();
-                            final SelectionKey selectionKey = channel.register( selector, eventHandler.getEvents() );
-                            eventHandlers.put( selectionKey, eventHandler );
-                            selectionKeys.put( eventHandler, selectionKey );
-                        }
-                    }
-
-                    {
-                        AbstractEventHandler eventHandler = null;
-                        while( (eventHandler = eventHandlerUnregistrationRequests_.poll()) != null )
-                        {
-                            // TODO: Log warning if handler not registered.
-                            final SelectionKey selectionKey = selectionKeys.remove( eventHandler );
-                            if( selectionKey != null )
-                            {
-                                eventHandlers.remove( selectionKey );
-                                selectionKey.cancel();
-                            }
-                        }
-                    }
-
                     for( final SelectionKey selectionKey : selector.selectedKeys() )
                     {
-                        // Check key validity as associated channel may have been closed by another thread
                         if( selectionKey.isValid() )
                         {
-                            final AbstractEventHandler eventHandler = eventHandlers.get( selectionKey );
-                            assert eventHandler != null; // XXX: may have to check for null
-                            eventHandler.handleEvent( selectionKey );
+                            final AbstractEventHandler eventHandler = (AbstractEventHandler)selectionKey.attachment();
+                            eventHandler.handleEvent();
                         }
                     }
                 }
             }
-            finally
-            {
-                selectorRef_.set( null );
-                selector.close();
-            }
         }
-        catch( final Exception e )
+        catch( final IOException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_dispatchEvents_error, e );
         }
         finally
         {
-            System.out.println( "stopping dispatch event handler" ); //$NON-NLS-1$ // XXX
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Event dispatch thread stopped" ); //$NON-NLS-1$
         }
     }
 
@@ -237,22 +196,38 @@ final class Dispatcher
      * 
      * @throws java.lang.IllegalStateException
      *         If the dispatcher has already been opened or is closed.
+     * @throws org.gamegineer.table.net.NetworkTableException
+     *         If an error occurs.
      */
     void open()
+        throws NetworkTableException
     {
-        synchronized( externalLock_ )
+        synchronized( lock_ )
         {
-            assertStateLegal( stateRef_.compareAndSet( State.PRISTINE, State.OPENED ), Messages.Dispatcher_state_notPristine );
+            assertStateLegal( state_ == State.PRISTINE, Messages.Dispatcher_state_notPristine );
 
-            taskRef_.set( Activator.getDefault().getExecutorService().submit( new Runnable()
+            final Selector selector;
+            try
+            {
+                selector = Selector.open();
+            }
+            catch( final IOException e )
+            {
+                state_ = State.CLOSED;
+                throw new NetworkTableException( Messages.Dispatcher_open_ioError, e );
+            }
+
+            state_ = State.OPENED;
+            selector_ = selector;
+            eventDispatchTask_ = Activator.getDefault().getExecutorService().submit( new Runnable()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    dispatchEvents();
+                    dispatchEvents( selector );
                 }
-            } ) );
+            } );
         }
     }
 
@@ -262,18 +237,37 @@ final class Dispatcher
      * @param eventHandler
      *        The event handler; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If the event handler is already registered with the dispatcher or
+     *         its associated channel is closed.
      * @throws java.lang.IllegalStateException
-     *         If the dispatcher is closed.
+     *         If the dispatcher is not open.
      */
     void registerEventHandler(
         /* @NonNull */
         final AbstractEventHandler eventHandler )
     {
         assert eventHandler != null;
-        assertStateLegal( stateRef_.get() != State.CLOSED, Messages.Dispatcher_state_closed );
 
-        eventHandlerRegistrationRequests_.offer( eventHandler );
-        wakeupEventDispatchThread();
+        synchronized( lock_ )
+        {
+            assertStateLegal( state_ == State.OPENED, Messages.Dispatcher_state_notOpen );
+
+            // TODO: check for duplicate registration
+            eventHandlers_.add( eventHandler );
+
+            try
+            {
+                final SelectionKey selectionKey = eventHandler.getChannel().register( selector_, eventHandler.getEvents(), eventHandler );
+                eventHandler.setSelectionKey( selectionKey );
+                Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
+            }
+            catch( final ClosedChannelException e )
+            {
+                // TODO: throw IllegalArgumentException
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -282,29 +276,32 @@ final class Dispatcher
      * @param eventHandler
      *        The event handler; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If the event handler is not registered with the dispatcher.
      * @throws java.lang.IllegalStateException
-     *         If the dispatcher is closed.
+     *         If the dispatcher is not open.
      */
     void unregisterEventHandler(
         /* @NonNull */
         final AbstractEventHandler eventHandler )
     {
         assert eventHandler != null;
-        assertStateLegal( stateRef_.get() != State.CLOSED, Messages.Dispatcher_state_closed );
 
-        eventHandlerUnregistrationRequests_.offer( eventHandler );
-        wakeupEventDispatchThread();
-    }
-
-    /**
-     * Wakes up the event dispatch thread if it is running.
-     */
-    private void wakeupEventDispatchThread()
-    {
-        final Selector selector = selectorRef_.get();
-        if( selector != null )
+        synchronized( lock_ )
         {
-            selector.wakeup();
+            assertStateLegal( state_ == State.OPENED, Messages.Dispatcher_state_notOpen );
+
+            // TODO: check for unregistered event handler
+            eventHandlers_.remove( eventHandler );
+
+            final SelectionKey selectionKey = eventHandler.getSelectionKey();
+            if( selectionKey != null )
+            {
+                // TODO: should the following two calls be in EventHandler.close() ??
+                selectionKey.cancel();
+                eventHandler.setSelectionKey( null );
+                Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
+            }
         }
     }
 

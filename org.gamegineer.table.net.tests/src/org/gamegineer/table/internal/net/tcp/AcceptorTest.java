@@ -22,8 +22,6 @@
 package org.gamegineer.table.internal.net.tcp;
 
 import org.gamegineer.table.net.INetworkTableConfiguration;
-import org.gamegineer.table.net.NetworkTableConfigurationBuilder;
-import org.gamegineer.table.net.NetworkTableConstants;
 import org.gamegineer.table.net.NetworkTableException;
 import org.junit.After;
 import org.junit.Before;
@@ -41,6 +39,9 @@ public final class AcceptorTest
 
     /** The acceptor under test in the fixture. */
     private Acceptor acceptor_;
+
+    /** The dispatcher for use in the fixture. */
+    private Dispatcher dispatcher_;
 
 
     // ======================================================================
@@ -61,20 +62,6 @@ public final class AcceptorTest
     // ======================================================================
 
     /**
-     * Creates a new network table configuration suitable for testing.
-     * 
-     * @return A new network table configuration suitable for testing; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    private static INetworkTableConfiguration createNetworkTableConfiguration()
-    {
-        final NetworkTableConfigurationBuilder builder = new NetworkTableConfigurationBuilder();
-        builder.setLocalPlayerName( "playerName" ).setHostName( "localhost" ).setPort( NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$ //$NON-NLS-2$
-        return builder.toNetworkTableConfiguration();
-    }
-
-    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -84,7 +71,9 @@ public final class AcceptorTest
     public void setUp()
         throws Exception
     {
-        acceptor_ = new Acceptor( new Dispatcher() );
+        dispatcher_ = new Dispatcher();
+        dispatcher_.open();
+        acceptor_ = new Acceptor( dispatcher_ );
     }
 
     /**
@@ -97,7 +86,10 @@ public final class AcceptorTest
     public void tearDown()
         throws Exception
     {
+        acceptor_.close();
         acceptor_ = null;
+        dispatcher_.close();
+        dispatcher_ = null;
     }
 
     /**
@@ -113,12 +105,12 @@ public final class AcceptorTest
     {
         acceptor_.close();
 
-        acceptor_.bind( createNetworkTableConfiguration() );
+        acceptor_.bind( TestUtils.createNetworkTableConfiguration() );
     }
 
     /**
      * Ensures the {@code bind} method throws an exception when attempting to
-     * bind the transport handle more than once.
+     * bind the channel more than once.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -127,7 +119,7 @@ public final class AcceptorTest
     public void testBind_MultipleInvocations()
         throws Exception
     {
-        final INetworkTableConfiguration configuration = createNetworkTableConfiguration();
+        final INetworkTableConfiguration configuration = TestUtils.createNetworkTableConfiguration();
         try
         {
             acceptor_.bind( configuration );

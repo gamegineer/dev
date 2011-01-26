@@ -22,8 +22,6 @@
 package org.gamegineer.table.internal.net.tcp;
 
 import org.gamegineer.table.net.INetworkTableConfiguration;
-import org.gamegineer.table.net.NetworkTableConfigurationBuilder;
-import org.gamegineer.table.net.NetworkTableConstants;
 import org.gamegineer.table.net.NetworkTableException;
 import org.junit.After;
 import org.junit.Before;
@@ -41,6 +39,9 @@ public final class ConnectorTest
 
     /** The connector under test in the fixture. */
     private Connector connector_;
+
+    /** The dispatcher for use in the fixture. */
+    private Dispatcher dispatcher_;
 
 
     // ======================================================================
@@ -61,20 +62,6 @@ public final class ConnectorTest
     // ======================================================================
 
     /**
-     * Creates a new network table configuration suitable for testing.
-     * 
-     * @return A new network table configuration suitable for testing; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    private static INetworkTableConfiguration createNetworkTableConfiguration()
-    {
-        final NetworkTableConfigurationBuilder builder = new NetworkTableConfigurationBuilder();
-        builder.setLocalPlayerName( "playerName" ).setHostName( "localhost" ).setPort( NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$ //$NON-NLS-2$
-        return builder.toNetworkTableConfiguration();
-    }
-
-    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -84,7 +71,9 @@ public final class ConnectorTest
     public void setUp()
         throws Exception
     {
-        connector_ = new Connector( new Dispatcher() );
+        dispatcher_ = new Dispatcher();
+        dispatcher_.open();
+        connector_ = new Connector( dispatcher_ );
     }
 
     /**
@@ -97,7 +86,10 @@ public final class ConnectorTest
     public void tearDown()
         throws Exception
     {
+        connector_.close();
         connector_ = null;
+        dispatcher_.close();
+        dispatcher_ = null;
     }
 
     /**
@@ -113,7 +105,7 @@ public final class ConnectorTest
     {
         connector_.close();
 
-        connector_.connect( createNetworkTableConfiguration() );
+        connector_.connect( TestUtils.createNetworkTableConfiguration() );
     }
 
     /**
@@ -127,7 +119,7 @@ public final class ConnectorTest
     public void testConnect_MultipleInvocations()
         throws Exception
     {
-        final INetworkTableConfiguration configuration = createNetworkTableConfiguration();
+        final INetworkTableConfiguration configuration = TestUtils.createNetworkTableConfiguration();
         try
         {
             connector_.connect( configuration );

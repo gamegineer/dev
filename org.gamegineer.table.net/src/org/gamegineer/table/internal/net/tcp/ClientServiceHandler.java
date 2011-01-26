@@ -21,14 +21,7 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
-import java.io.IOException;
-import java.nio.channels.SelectableChannel;
-import java.nio.channels.SelectionKey;
-import java.util.logging.Level;
-import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.Loggers;
 
 /**
  * A service handler that represents the client half of a network table
@@ -38,25 +31,6 @@ import org.gamegineer.table.internal.net.Loggers;
 final class ClientServiceHandler
     extends AbstractServiceHandler
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The channel associated with the peer server. */
-    @GuardedBy( "lock_" )
-    private SelectableChannel channel_;
-
-    /** The dispatcher associated with the service handler. */
-    private final Dispatcher dispatcher_;
-
-    /** The instance lock. */
-    private final Object lock_;
-
-    /** The client service handler state. */
-    @GuardedBy( "lock_" )
-    private State state_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -72,12 +46,7 @@ final class ClientServiceHandler
         /* @NonNull */
         final Dispatcher dispatcher )
     {
-        assert dispatcher != null;
-
-        channel_ = null;
-        dispatcher_ = dispatcher;
-        lock_ = new Object();
-        state_ = State.PRISTINE;
+        super( dispatcher );
     }
 
 
@@ -86,105 +55,11 @@ final class ClientServiceHandler
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#close()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#handleEvent()
      */
     @Override
-    void close()
+    void handleEvent()
     {
-        synchronized( lock_ )
-        {
-            if( state_ == State.OPENED )
-            {
-                dispatcher_.unregisterEventHandler( this );
-
-                try
-                {
-                    channel_.close();
-                }
-                catch( final IOException e )
-                {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ClientServiceHandler_close_ioError, e );
-                }
-                finally
-                {
-                    channel_ = null;
-                }
-            }
-
-            state_ = State.CLOSED;
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getEvents()
-     */
-    @Override
-    int getEvents()
-    {
-        return SelectionKey.OP_READ | SelectionKey.OP_WRITE;
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getTransportHandle()
-     */
-    @Override
-    SelectableChannel getTransportHandle()
-    {
-        synchronized( lock_ )
-        {
-            return channel_;
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#handleEvent(java.nio.channels.SelectionKey)
-     */
-    @Override
-    void handleEvent(
-        final SelectionKey event )
-    {
-        assert event != null;
-
         // TODO: process events as needed
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#open(java.nio.channels.SelectableChannel)
-     */
-    @Override
-    void open(
-        final SelectableChannel handle )
-    {
-        assert handle != null;
-
-        synchronized( lock_ )
-        {
-            assertStateLegal( state_ == State.PRISTINE, Messages.ClientServiceHandler_state_notPristine );
-
-            channel_ = handle;
-            state_ = State.OPENED;
-
-            dispatcher_.registerEventHandler( this );
-        }
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * The possible client service handler states.
-     */
-    private enum State
-    {
-        /** The client service handler has never been used. */
-        PRISTINE,
-
-        /** The client service handler is open. */
-        OPENED,
-
-        /** The client service handler is closed. */
-        CLOSED;
     }
 }

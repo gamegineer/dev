@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
+import static org.junit.Assert.assertEquals;
+import org.gamegineer.table.internal.net.tcp.AbstractEventHandler.State;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -84,11 +86,36 @@ public final class DispatcherTest
     }
 
     /**
+     * Ensures the {@code close} method closes any event handler that is still
+     * registered when the dispatcher is closed.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testClose_ClosesRegisteredEventHandlers()
+        throws Exception
+    {
+        dispatcher_.open();
+        final Acceptor acceptor = new Acceptor( dispatcher_ );
+        acceptor.bind( TestUtils.createNetworkTableConfiguration() );
+        assertEquals( State.OPENED, acceptor.getState() );
+
+        dispatcher_.close();
+
+        assertEquals( State.CLOSED, acceptor.getState() );
+    }
+
+    /**
      * Ensures the {@code open} method throws an exception if the dispatcher has
      * been closed.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
     public void testOpen_AfterClose()
+        throws Exception
     {
         dispatcher_.close();
 
@@ -98,9 +125,13 @@ public final class DispatcherTest
     /**
      * Ensures the {@code open} method throws an exception when attempting to
      * open the dispatcher more than once.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
     public void testOpen_MultipleInvocations()
+        throws Exception
     {
         dispatcher_.open();
 
@@ -116,7 +147,17 @@ public final class DispatcherTest
     {
         dispatcher_.close();
 
-        dispatcher_.registerEventHandler( Mocks.createMockEventHandler() );
+        dispatcher_.registerEventHandler( TestUtils.createMockEventHandler() );
+    }
+
+    /**
+     * Ensures the {@code registerEventHandler} method throws an exception if
+     * the dispatcher has not yet been opened.
+     */
+    @Test( expected = IllegalStateException.class )
+    public void testRegisterEventHandler_BeforeOpen()
+    {
+        dispatcher_.registerEventHandler( TestUtils.createMockEventHandler() );
     }
 
     /**
@@ -128,6 +169,22 @@ public final class DispatcherTest
     {
         dispatcher_.close();
 
-        dispatcher_.unregisterEventHandler( Mocks.createMockEventHandler() );
+        dispatcher_.unregisterEventHandler( TestUtils.createMockEventHandler() );
     }
+
+    /**
+     * Ensures the {@code unregisterEventHandler} method throws an exception if
+     * the dispatcher has not yet been opened.
+     */
+    @Test( expected = IllegalStateException.class )
+    public void testUnegisterEventHandler_BeforeOpen()
+    {
+        dispatcher_.unregisterEventHandler( TestUtils.createMockEventHandler() );
+    }
+
+    // TODO: add unit tests for...
+    //
+    // - invoking registerEventHandler() with an event handler that is already registered
+    // - invoking registerEventHandler() with an event handler whose channel is already closed
+    // - invoking unregisterEventHandler() with an event handler that is not registered
 }
