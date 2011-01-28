@@ -179,19 +179,19 @@ final class Connector
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getEvents()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getInterestOperations()
      */
     @Override
-    int getEvents()
+    int getInterestOperations()
     {
         throw new UnsupportedOperationException( "asynchronous connection not supported" ); //$NON-NLS-1$
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#handleEvent()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#operationReady()
      */
     @Override
-    void handleEvent()
+    void operationReady()
     {
         throw new UnsupportedOperationException( "asynchronous connection not supported" ); //$NON-NLS-1$
     }

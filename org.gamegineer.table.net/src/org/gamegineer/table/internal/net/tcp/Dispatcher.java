@@ -176,7 +176,7 @@ final class Dispatcher
                         if( selectionKey.isValid() )
                         {
                             final AbstractEventHandler eventHandler = (AbstractEventHandler)selectionKey.attachment();
-                            eventHandler.handleEvent();
+                            eventHandler.operationReady();
                         }
                     }
                 }
@@ -257,7 +257,7 @@ final class Dispatcher
             assertStateLegal( state_ == State.OPENED, Messages.Dispatcher_state_notOpen );
             assertArgumentLegal( !eventHandlers_.contains( eventHandler ), "eventHandler", Messages.Dispatcher_registerEventHandler_eventHandlerRegistered ); //$NON-NLS-1$
 
-            eventHandler.setSelectionKey( eventHandler.getChannel().register( selector_, eventHandler.getEvents(), eventHandler ) );
+            eventHandler.setSelectionKey( eventHandler.getChannel().register( selector_, eventHandler.getInterestOperations(), eventHandler ) );
             eventHandlers_.add( eventHandler );
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
         }

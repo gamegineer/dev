@@ -55,10 +55,10 @@ final class ClientServiceHandler
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#handleEvent()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#operationReady()
      */
     @Override
-    void handleEvent()
+    void operationReady()
     {
         // TODO: process events as needed
     }

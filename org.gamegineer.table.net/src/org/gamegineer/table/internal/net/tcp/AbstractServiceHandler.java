@@ -125,10 +125,10 @@ abstract class AbstractServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getEvents()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getInterestOperations()
      */
     @Override
-    final int getEvents()
+    final int getInterestOperations()
     {
         return SelectionKey.OP_READ | SelectionKey.OP_WRITE;
     }

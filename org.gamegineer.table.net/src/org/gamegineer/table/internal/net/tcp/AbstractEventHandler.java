@@ -87,12 +87,13 @@ abstract class AbstractEventHandler
     abstract SelectableChannel getChannel();
 
     /**
-     * Gets a bit mask of the events in which the event handler is interested.
+     * Gets a bit mask of the channel operations in which the event handler is
+     * interested.
      * 
-     * @return A bit mask of the events in which the event handler is
-     *         interested.
+     * @return A bit mask of the channel operations in which the event handler
+     *         is interested.
      */
-    abstract int getEvents();
+    abstract int getInterestOperations();
 
     /**
      * Gets the instance lock for the event handler.
@@ -136,12 +137,11 @@ abstract class AbstractEventHandler
         }
     }
 
-    // TODO: may rename notify()
     /**
-     * Invoked by the event dispatcher to notify the event handler that its
-     * selection key has one or more events ready.
+     * Invoked by the event dispatcher when one or more interest operations are
+     * ready.
      */
-    abstract void handleEvent();
+    abstract void operationReady();
 
     /**
      * Sets the selection key representing the binding between the event handler
