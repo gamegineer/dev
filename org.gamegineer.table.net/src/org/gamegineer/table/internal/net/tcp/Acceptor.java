@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.net.tcp;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
@@ -157,7 +158,15 @@ final class Acceptor
 
             setState( State.OPENED );
 
-            dispatcher_.registerEventHandler( this );
+            try
+            {
+                dispatcher_.registerEventHandler( this );
+            }
+            catch( final ClosedChannelException e )
+            {
+                // TODO
+                e.printStackTrace();
+            }
         }
     }
 

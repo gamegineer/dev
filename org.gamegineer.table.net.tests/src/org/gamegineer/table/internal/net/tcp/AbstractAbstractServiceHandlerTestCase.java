@@ -122,7 +122,7 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     {
         serviceHandler_.close();
 
-        serviceHandler_.open( TestUtils.createMockChannel() );
+        serviceHandler_.open( new FakeSelectableChannel() );
     }
 
     /**
@@ -132,9 +132,9 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     @Test( expected = IllegalStateException.class )
     public void testOpen_MultipleInvocations()
     {
-        final SelectableChannel handle = TestUtils.createMockChannel();
-        serviceHandler_.open( handle );
+        final SelectableChannel channel = new FakeSelectableChannel();
+        serviceHandler_.open( channel );
 
-        serviceHandler_.open( handle );
+        serviceHandler_.open( channel );
     }
 }

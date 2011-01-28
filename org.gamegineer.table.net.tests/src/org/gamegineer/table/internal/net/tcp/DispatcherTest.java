@@ -22,6 +22,10 @@
 package org.gamegineer.table.internal.net.tcp;
 
 import static org.junit.Assert.assertEquals;
+import java.nio.channels.ClosedChannelException;
+import java.nio.channels.SelectableChannel;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
 import org.gamegineer.table.internal.net.tcp.AbstractEventHandler.State;
 import org.junit.After;
 import org.junit.Before;
@@ -141,23 +145,78 @@ public final class DispatcherTest
     /**
      * Ensures the {@code registerEventHandler} method throws an exception if
      * the dispatcher has been closed.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
     public void testRegisterEventHandler_AfterClose()
+        throws Exception
     {
         dispatcher_.close();
 
-        dispatcher_.registerEventHandler( TestUtils.createMockEventHandler() );
+        dispatcher_.registerEventHandler( new FakeEventHandler() );
     }
 
     /**
      * Ensures the {@code registerEventHandler} method throws an exception if
      * the dispatcher has not yet been opened.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
     public void testRegisterEventHandler_BeforeOpen()
+        throws Exception
     {
-        dispatcher_.registerEventHandler( TestUtils.createMockEventHandler() );
+        dispatcher_.registerEventHandler( new FakeEventHandler() );
+    }
+
+    /**
+     * Ensures the {@code registerEventHandler} method throws an exception if
+     * the event handler channel is closed.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = ClosedChannelException.class )
+    public void testRegisterEventHandler_EventHandler_ChannelClosed()
+        throws Exception
+    {
+        final SelectableChannel channel = new FakeSelectableChannel()
+        {
+            @Override
+            @SuppressWarnings( "unused" )
+            public SelectionKey register(
+                final Selector selector,
+                final int ops,
+                final Object attachment )
+                throws ClosedChannelException
+            {
+                throw new ClosedChannelException();
+            }
+        };
+        dispatcher_.open();
+
+        dispatcher_.registerEventHandler( new FakeEventHandler( channel ) );
+    }
+
+    /**
+     * Ensures the {@code registerEventHandler} method throws an exception if
+     * the event handler has already been registered.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testRegisterEventHandler_EventHandler_Registered()
+        throws Exception
+    {
+        final AbstractEventHandler eventHandler = new FakeEventHandler();
+        dispatcher_.open();
+        dispatcher_.registerEventHandler( eventHandler );
+
+        dispatcher_.registerEventHandler( eventHandler );
     }
 
     /**
@@ -169,7 +228,7 @@ public final class DispatcherTest
     {
         dispatcher_.close();
 
-        dispatcher_.unregisterEventHandler( TestUtils.createMockEventHandler() );
+        dispatcher_.unregisterEventHandler( new FakeEventHandler() );
     }
 
     /**
@@ -179,12 +238,22 @@ public final class DispatcherTest
     @Test( expected = IllegalStateException.class )
     public void testUnegisterEventHandler_BeforeOpen()
     {
-        dispatcher_.unregisterEventHandler( TestUtils.createMockEventHandler() );
+        dispatcher_.unregisterEventHandler( new FakeEventHandler() );
     }
 
-    // TODO: add unit tests for...
-    //
-    // - invoking registerEventHandler() with an event handler that is already registered
-    // - invoking registerEventHandler() with an event handler whose channel is already closed
-    // - invoking unregisterEventHandler() with an event handler that is not registered
+    /**
+     * Ensures the {@code unregisterEventHandler} method throws an exception if
+     * the event handler is not registered.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testUnregisterEventHandler_EventHandler_Unregistered()
+        throws Exception
+    {
+        dispatcher_.open();
+
+        dispatcher_.unregisterEventHandler( new FakeEventHandler() );
+    }
 }

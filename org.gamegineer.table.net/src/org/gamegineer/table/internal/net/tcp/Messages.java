@@ -79,11 +79,17 @@ final class Messages
     /** An I/O error occurred while opening the dispatcher. */
     public static String Dispatcher_open_ioError;
 
+    /** The event handler is already registered. */
+    public static String Dispatcher_registerEventHandler_eventHandlerRegistered;
+
     /** The dispatcher state is not open. */
     public static String Dispatcher_state_notOpen;
 
     /** The dispatcher state is not pristine. */
     public static String Dispatcher_state_notPristine;
+
+    /** The event handler is not registered. */
+    public static String Dispatcher_unregisterEventHandler_eventHandlerUnregistered;
 
 
     // ======================================================================

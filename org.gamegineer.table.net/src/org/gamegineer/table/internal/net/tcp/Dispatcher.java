@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
@@ -238,35 +239,27 @@ final class Dispatcher
      *        The event handler; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If the event handler is already registered with the dispatcher or
-     *         its associated channel is closed.
+     *         If the event handler is already registered with the dispatcher.
      * @throws java.lang.IllegalStateException
      *         If the dispatcher is not open.
+     * @throws java.nio.channels.ClosedChannelException
+     *         If the event handler channel is closed.
      */
     void registerEventHandler(
         /* @NonNull */
         final AbstractEventHandler eventHandler )
+        throws ClosedChannelException
     {
         assert eventHandler != null;
 
         synchronized( lock_ )
         {
             assertStateLegal( state_ == State.OPENED, Messages.Dispatcher_state_notOpen );
+            assertArgumentLegal( !eventHandlers_.contains( eventHandler ), "eventHandler", Messages.Dispatcher_registerEventHandler_eventHandlerRegistered ); //$NON-NLS-1$
 
-            // TODO: check for duplicate registration
+            eventHandler.setSelectionKey( eventHandler.getChannel().register( selector_, eventHandler.getEvents(), eventHandler ) );
             eventHandlers_.add( eventHandler );
-
-            try
-            {
-                final SelectionKey selectionKey = eventHandler.getChannel().register( selector_, eventHandler.getEvents(), eventHandler );
-                eventHandler.setSelectionKey( selectionKey );
-                Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
-            }
-            catch( final ClosedChannelException e )
-            {
-                // TODO: throw IllegalArgumentException
-                e.printStackTrace();
-            }
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
         }
     }
 
@@ -290,18 +283,16 @@ final class Dispatcher
         synchronized( lock_ )
         {
             assertStateLegal( state_ == State.OPENED, Messages.Dispatcher_state_notOpen );
-
-            // TODO: check for unregistered event handler
-            eventHandlers_.remove( eventHandler );
+            assertArgumentLegal( eventHandlers_.remove( eventHandler ), "eventHandler", Messages.Dispatcher_unregisterEventHandler_eventHandlerUnregistered ); //$NON-NLS-1$
 
             final SelectionKey selectionKey = eventHandler.getSelectionKey();
             if( selectionKey != null )
             {
-                // TODO: should the following two calls be in EventHandler.close() ??
                 selectionKey.cancel();
                 eventHandler.setSelectionKey( null );
-                Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
             }
+
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
         }
     }
 
