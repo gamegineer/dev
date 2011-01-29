@@ -153,7 +153,7 @@ public abstract class AbstractNetworkInterfaceTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( expected = IllegalStateException.class, timeout = 5000 )
+    @Test( expected = IllegalStateException.class )
     public void testOpen_MultipleInvocations()
         throws Exception
     {

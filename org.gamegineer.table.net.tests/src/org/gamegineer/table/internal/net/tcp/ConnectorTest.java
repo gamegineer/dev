@@ -115,7 +115,7 @@ public final class ConnectorTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( expected = IllegalStateException.class, timeout = 5000 )
+    @Test( expected = IllegalStateException.class )
     public void testConnect_MultipleInvocations()
         throws Exception
     {
