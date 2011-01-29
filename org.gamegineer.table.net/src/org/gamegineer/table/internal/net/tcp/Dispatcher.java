@@ -29,9 +29,12 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -74,8 +77,11 @@ final class Dispatcher
      * The dispatcher channel multiplexor executing on the event dispatch thread
      * or {@code null} if the event dispatch thread is not running.
      */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "selectorGuard_" )
     private Selector selector_;
+
+    /** The selector lock. */
+    private final ReadWriteLock selectorGuard_;
 
     /** The dispatcher state. */
     @GuardedBy( "lock_" )
@@ -95,6 +101,7 @@ final class Dispatcher
         eventHandlers_ = new ArrayList<AbstractEventHandler>();
         lock_ = new Object();
         selector_ = null;
+        selectorGuard_ = new ReentrantReadWriteLock();
         state_ = State.PRISTINE;
     }
 
@@ -102,6 +109,19 @@ final class Dispatcher
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Acquires the selector guard.
+     */
+    private void acquireSelectorGuard()
+    {
+        selectorGuard_.readLock().lock();
+
+        if( selector_ != null )
+        {
+            selector_.wakeup();
+        }
+    }
 
     /**
      * Closes the dispatcher.
@@ -133,7 +153,12 @@ final class Dispatcher
                 {
                     Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_close_error, e );
                 }
+                finally
+                {
+                    eventDispatchTask_ = null;
+                }
 
+                acquireSelectorGuard();
                 try
                 {
                     selector_.close();
@@ -142,11 +167,14 @@ final class Dispatcher
                 {
                     Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_close_error, e );
                 }
+                finally
+                {
+                    selector_ = null;
+                    releaseSelectorGuard();
+                }
             }
 
             state_ = State.CLOSED;
-            selector_ = null;
-            eventDispatchTask_ = null;
         }
     }
 
@@ -169,9 +197,12 @@ final class Dispatcher
         {
             while( !Thread.interrupted() )
             {
-                if( selector.select( 100 ) > 0 )
+                selectorGuardBarrier();
+
+                if( selector.select() > 0 )
                 {
-                    for( final SelectionKey selectionKey : selector.selectedKeys() )
+                    final Set<SelectionKey> selectionKeys = selector.selectedKeys();
+                    for( final SelectionKey selectionKey : selectionKeys )
                     {
                         if( selectionKey.isValid() )
                         {
@@ -179,6 +210,8 @@ final class Dispatcher
                             eventHandler.operationReady();
                         }
                     }
+
+                    selectionKeys.clear();
                 }
             }
         }
@@ -219,17 +252,34 @@ final class Dispatcher
             }
 
             state_ = State.OPENED;
-            selector_ = selector;
-            eventDispatchTask_ = Activator.getDefault().getExecutorService().submit( new Runnable()
+
+            acquireSelectorGuard();
+            try
             {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
+                selector_ = selector;
+                eventDispatchTask_ = Activator.getDefault().getExecutorService().submit( new Runnable()
                 {
-                    dispatchEvents( selector );
-                }
-            } );
+                    @Override
+                    @SuppressWarnings( "synthetic-access" )
+                    public void run()
+                    {
+                        dispatchEvents( selector );
+                    }
+                } );
+            }
+            finally
+            {
+                releaseSelectorGuard();
+            }
         }
+    }
+
+    /**
+     * Releases the selector guard.
+     */
+    private void releaseSelectorGuard()
+    {
+        selectorGuard_.readLock().unlock();
     }
 
     /**
@@ -257,10 +307,29 @@ final class Dispatcher
             assertStateLegal( state_ == State.OPENED, Messages.Dispatcher_state_notOpen );
             assertArgumentLegal( !eventHandlers_.contains( eventHandler ), "eventHandler", Messages.Dispatcher_registerEventHandler_eventHandlerRegistered ); //$NON-NLS-1$
 
-            eventHandler.setSelectionKey( eventHandler.getChannel().register( selector_, eventHandler.getInterestOperations(), eventHandler ) );
+            acquireSelectorGuard();
+            try
+            {
+                eventHandler.setSelectionKey( eventHandler.getChannel().register( selector_, eventHandler.getInterestOperations(), eventHandler ) );
+            }
+            finally
+            {
+                releaseSelectorGuard();
+            }
+
             eventHandlers_.add( eventHandler );
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
         }
+    }
+
+    /**
+     * Blocks the event dispatch thread until no client threads hold the
+     * selector guard.
+     */
+    private void selectorGuardBarrier()
+    {
+        selectorGuard_.writeLock().lock();
+        selectorGuard_.writeLock().unlock();
     }
 
     /**
@@ -285,11 +354,19 @@ final class Dispatcher
             assertStateLegal( state_ == State.OPENED, Messages.Dispatcher_state_notOpen );
             assertArgumentLegal( eventHandlers_.remove( eventHandler ), "eventHandler", Messages.Dispatcher_unregisterEventHandler_eventHandlerUnregistered ); //$NON-NLS-1$
 
-            final SelectionKey selectionKey = eventHandler.getSelectionKey();
-            if( selectionKey != null )
+            acquireSelectorGuard();
+            try
             {
-                selectionKey.cancel();
-                eventHandler.setSelectionKey( null );
+                final SelectionKey selectionKey = eventHandler.getSelectionKey();
+                if( selectionKey != null )
+                {
+                    selectionKey.cancel();
+                    eventHandler.setSelectionKey( null );
+                }
+            }
+            finally
+            {
+                releaseSelectorGuard();
             }
 
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
