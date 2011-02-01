@@ -99,9 +99,6 @@ final class Acceptor
         try
         {
             clientChannel = serverChannel_.accept();
-            // XXX: how is this possible?  do we have to handle this?
-            // for sure might have to do it in the case the dispatcher gets shut down
-            // but verify after we impl the logic to unregister any open service handlers
             if( clientChannel == null )
             {
                 return;
