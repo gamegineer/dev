@@ -116,9 +116,13 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     /**
      * Ensures the {@code open} method throws an exception if the service
      * handler has been closed.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
     public void testOpen_AfterClose()
+        throws Exception
     {
         serviceHandler_.close();
 
@@ -128,9 +132,13 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     /**
      * Ensures the {@code open} method throws an exception when attempting to
      * open the service handler more than once.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
     public void testOpen_MultipleInvocations()
+        throws Exception
     {
         final SelectableChannel channel = new FakeSelectableChannel();
         serviceHandler_.open( channel );

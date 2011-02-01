@@ -28,7 +28,6 @@ import java.nio.channels.SelectableChannel;
 import java.nio.channels.SocketChannel;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.net.INetworkTableConfiguration;
-import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * A connector in the TCP network interface Acceptor-Connector pattern
@@ -99,15 +98,15 @@ final class Connector
      * @param configuration
      *        The network table configuration; must not be {@code null}.
      * 
+     * @throws java.io.IOException
+     *         If an I/O error occurs
      * @throws java.lang.IllegalStateException
      *         If an attempt has already been made to connect to the peer host.
-     * @throws org.gamegineer.table.net.NetworkTableException
-     *         If an error occurs
      */
     void connect(
         /* @NonNull */
         final INetworkTableConfiguration configuration )
-        throws NetworkTableException
+        throws IOException
     {
         assert configuration != null;
 
@@ -115,22 +114,17 @@ final class Connector
         {
             assertStateLegal( getState() == State.PRISTINE, Messages.Connector_state_notPristine );
 
-            final SocketChannel channel;
             try
             {
-                channel = createSocketChannel( configuration );
-            }
-            catch( final IOException e )
-            {
-                throw new NetworkTableException( Messages.Connector_connect_ioError, e );
+                final SocketChannel channel = createSocketChannel( configuration );
+
+                final AbstractServiceHandler serviceHandler = new ClientServiceHandler( dispatcher_ );
+                serviceHandler.open( channel );
             }
             finally
             {
-                setState( State.CLOSED );
+                close();
             }
-
-            final AbstractServiceHandler serviceHandler = new ClientServiceHandler( dispatcher_ );
-            serviceHandler.open( channel );
         }
     }
 
@@ -145,21 +139,19 @@ final class Connector
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs.
-     * @throws org.gamegineer.table.net.NetworkTableException
-     *         If any other error occurs.
      */
     /* @NonNull */
     private static SocketChannel createSocketChannel(
         /* @NonNull */
         final INetworkTableConfiguration configuration )
-        throws IOException, NetworkTableException
+        throws IOException
     {
         assert configuration != null;
 
         final InetSocketAddress address = new InetSocketAddress( configuration.getHostName(), configuration.getPort() );
         if( address.isUnresolved() )
         {
-            throw new NetworkTableException( Messages.Connector_createSocketChannel_addressUnresolved );
+            throw new IOException( Messages.Connector_createSocketChannel_addressUnresolved );
         }
 
         final SocketChannel channel = SocketChannel.open();

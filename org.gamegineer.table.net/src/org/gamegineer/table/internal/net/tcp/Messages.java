@@ -48,19 +48,18 @@ final class Messages
     /** An I/O error occurred while accepting a new connection. */
     public static String Acceptor_accept_ioError;
 
-    /** An I/O error occurred while binding the server socket channel. */
-    public static String Acceptor_bind_ioError;
-
     /** An I/O error occurred while closing the server socket channel. */
     public static String Acceptor_close_ioError;
 
     /** The acceptor state is not pristine. */
     public static String Acceptor_state_notPristine;
 
-    // --- Connector --------------------------------------------------------
+    // --- ClientNetworkInterface -------------------------------------------
 
-    /** An I/O error occurred while connecting the socket channel. */
-    public static String Connector_connect_ioError;
+    /** An I/O error occurred while opening the network interface. */
+    public static String ClientNetworkInterface_open_ioError;
+
+    // --- Connector --------------------------------------------------------
 
     /** The peer address cannot be resolved. */
     public static String Connector_createSocketChannel_addressUnresolved;
@@ -90,6 +89,11 @@ final class Messages
 
     /** The event handler is not registered. */
     public static String Dispatcher_unregisterEventHandler_eventHandlerUnregistered;
+
+    // --- ServerNetworkInterface -------------------------------------------
+
+    /** An I/O error occurred while opening the network interface. */
+    public static String ServerNetworkInterface_open_ioError;
 
 
     // ======================================================================

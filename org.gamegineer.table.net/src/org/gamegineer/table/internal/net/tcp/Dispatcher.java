@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.net.tcp;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
-import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.util.ArrayList;
@@ -288,17 +287,17 @@ final class Dispatcher
      * @param eventHandler
      *        The event handler; must not be {@code null}.
      * 
+     * @throws java.io.IOException
+     *         If an I/O error occurs.
      * @throws java.lang.IllegalArgumentException
      *         If the event handler is already registered with the dispatcher.
      * @throws java.lang.IllegalStateException
      *         If the dispatcher is not open.
-     * @throws java.nio.channels.ClosedChannelException
-     *         If the event handler channel is closed.
      */
     void registerEventHandler(
         /* @NonNull */
         final AbstractEventHandler eventHandler )
-        throws ClosedChannelException
+        throws IOException
     {
         assert eventHandler != null;
 

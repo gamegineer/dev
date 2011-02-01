@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.net.tcp;
 
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
-import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.util.logging.Level;
@@ -55,6 +54,10 @@ abstract class AbstractServiceHandler
     /** The dispatcher associated with the service handler. */
     private final Dispatcher dispatcher_;
 
+    /** Indicates the service handler has been registered with the dispatcher. */
+    @GuardedBy( "getLock()" )
+    private boolean isRegistered_;
+
 
     // ======================================================================
     // Constructors
@@ -75,6 +78,7 @@ abstract class AbstractServiceHandler
 
         channel_ = null;
         dispatcher_ = dispatcher;
+        isRegistered_ = false;
     }
 
 
@@ -92,7 +96,11 @@ abstract class AbstractServiceHandler
         {
             if( getState() == State.OPENED )
             {
-                dispatcher_.unregisterEventHandler( this );
+                if( isRegistered_ )
+                {
+                    isRegistered_ = false;
+                    dispatcher_.unregisterEventHandler( this );
+                }
 
                 try
                 {
@@ -139,10 +147,14 @@ abstract class AbstractServiceHandler
      * @param channel
      *        The channel associated with the service handler; must not be
      *        {@code null}.
+     * 
+     * @throws java.io.IOException
+     *         If an I/O error occurs
      */
     final void open(
         /* @NonNull */
         final SelectableChannel channel )
+        throws IOException
     {
         assert channel != null;
 
@@ -156,11 +168,12 @@ abstract class AbstractServiceHandler
             try
             {
                 dispatcher_.registerEventHandler( this );
+                isRegistered_ = true;
             }
-            catch( final ClosedChannelException e )
+            catch( final IOException e )
             {
-                // TODO
-                e.printStackTrace();
+                close();
+                throw e;
             }
         }
     }

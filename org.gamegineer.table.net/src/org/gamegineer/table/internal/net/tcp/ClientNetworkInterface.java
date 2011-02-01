@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.tcp;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.io.IOException;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.INetworkInterface;
 import org.gamegineer.table.net.INetworkTableConfiguration;
@@ -86,10 +87,10 @@ final class ClientNetworkInterface
         {
             connector.connect( configuration );
         }
-        catch( final NetworkTableException e )
+        catch( final IOException e )
         {
             close();
-            throw e;
+            throw new NetworkTableException( Messages.ClientNetworkInterface_open_ioError, e );
         }
         finally
         {

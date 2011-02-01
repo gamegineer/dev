@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.net.tcp;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
@@ -34,7 +33,6 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.net.INetworkTableConfiguration;
-import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * An acceptor in the TCP network interface Acceptor-Connector pattern
@@ -55,6 +53,10 @@ final class Acceptor
 
     /** The dispatcher associated with the acceptor. */
     private final Dispatcher dispatcher_;
+
+    /** Indicates the acceptor is registered with the dispatcher. */
+    @GuardedBy( "getLock()" )
+    private boolean isRegistered_;
 
     /** The server socket channel on which incoming connections are accepted. */
     @GuardedBy( "getLock()" )
@@ -79,6 +81,7 @@ final class Acceptor
         assert dispatcher != null;
 
         dispatcher_ = dispatcher;
+        isRegistered_ = false;
         serverChannel_ = null;
     }
 
@@ -105,15 +108,14 @@ final class Acceptor
             }
 
             clientChannel.configureBlocking( false );
+
+            final AbstractServiceHandler serviceHandler = new ServerServiceHandler( dispatcher_ );
+            serviceHandler.open( clientChannel );
         }
         catch( final IOException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Acceptor_accept_ioError, e );
-            return;
         }
-
-        final AbstractServiceHandler serviceHandler = new ServerServiceHandler( dispatcher_ );
-        serviceHandler.open( clientChannel );
     }
 
     /**
@@ -127,15 +129,15 @@ final class Acceptor
      * @param configuration
      *        The network table configuration; must not be {@code null}.
      * 
+     * @throws java.io.IOException
+     *         If an I/O error occurs
      * @throws java.lang.IllegalStateException
      *         If an attempt has already been made to bind the acceptor channel.
-     * @throws org.gamegineer.table.net.NetworkTableException
-     *         If an error occurs
      */
     void bind(
         /* @NonNull */
         final INetworkTableConfiguration configuration )
-        throws NetworkTableException
+        throws IOException
     {
         assert configuration != null;
 
@@ -146,23 +148,15 @@ final class Acceptor
             try
             {
                 serverChannel_ = createServerSocketChannel( configuration );
+                setState( State.OPENED );
+
+                dispatcher_.registerEventHandler( this );
+                isRegistered_ = true;
             }
             catch( final IOException e )
             {
-                setState( State.CLOSED );
-                throw new NetworkTableException( Messages.Acceptor_bind_ioError, e );
-            }
-
-            setState( State.OPENED );
-
-            try
-            {
-                dispatcher_.registerEventHandler( this );
-            }
-            catch( final ClosedChannelException e )
-            {
-                // TODO
-                e.printStackTrace();
+                close();
+                throw e;
             }
         }
     }
@@ -177,7 +171,11 @@ final class Acceptor
         {
             if( getState() == State.OPENED )
             {
-                dispatcher_.unregisterEventHandler( this );
+                if( isRegistered_ )
+                {
+                    isRegistered_ = false;
+                    dispatcher_.unregisterEventHandler( this );
+                }
 
                 try
                 {

@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
+import java.io.IOException;
 import org.gamegineer.table.net.INetworkTableConfiguration;
-import org.gamegineer.table.net.NetworkTableException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -124,9 +124,9 @@ public final class AcceptorTest
         {
             acceptor_.bind( configuration );
         }
-        catch( final NetworkTableException e )
+        catch( final IOException e )
         {
-            // ignore network errors
+            // ignore I/O errors
         }
 
         acceptor_.bind( configuration );
