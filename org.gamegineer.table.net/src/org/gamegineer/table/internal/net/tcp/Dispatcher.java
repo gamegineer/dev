@@ -29,6 +29,8 @@ import java.nio.channels.Selector;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -58,6 +60,9 @@ final class Dispatcher
     // Fields
     // ======================================================================
 
+    /** The byte buffer pool associated with the dispatcher. */
+    private final ByteBufferPool bufferPool_;
+
     /**
      * The task executing the event dispatch thread or {@code null} if the event
      * dispatch thread is not running.
@@ -86,6 +91,9 @@ final class Dispatcher
     @GuardedBy( "lock_" )
     private State state_;
 
+    /** The event handler status change queue. */
+    private final BlockingQueue<AbstractEventHandler> statusChangeQueue_;
+
 
     // ======================================================================
     // Constructors
@@ -96,12 +104,14 @@ final class Dispatcher
      */
     Dispatcher()
     {
+        bufferPool_ = new ByteBufferPool( 1024 );
         eventDispatchTask_ = null;
         eventHandlers_ = new ArrayList<AbstractEventHandler>();
         lock_ = new Object();
         selector_ = null;
         selectorGuard_ = new ReentrantReadWriteLock();
         state_ = State.PRISTINE;
+        statusChangeQueue_ = new ArrayBlockingQueue<AbstractEventHandler>( 100 );
     }
 
 
@@ -178,6 +188,26 @@ final class Dispatcher
     }
 
     /**
+     * Processes event handlers in the status change queue.
+     */
+    private void checkStatusChangeQueue()
+    {
+        AbstractEventHandler eventHandler = null;
+        while( (eventHandler = statusChangeQueue_.poll()) != null )
+        {
+            // TODO
+            //if( eventHandler.isDead() )
+            //{
+            //    unregisterEventHandler( eventHandler );
+            //}
+            //else
+            {
+                resumeSelection( eventHandler );
+            }
+        }
+    }
+
+    /**
      * Dispatches events on all channels registered with the specified selector
      * until this thread is interrupted.
      * 
@@ -198,20 +228,32 @@ final class Dispatcher
             {
                 selectorGuardBarrier();
 
-                if( selector.select() > 0 )
-                {
-                    final Set<SelectionKey> selectionKeys = selector.selectedKeys();
-                    for( final SelectionKey selectionKey : selectionKeys )
-                    {
-                        if( selectionKey.isValid() )
-                        {
-                            final AbstractEventHandler eventHandler = (AbstractEventHandler)selectionKey.attachment();
-                            eventHandler.operationReady();
-                        }
-                    }
+                selector.select();
 
-                    selectionKeys.clear();
+                checkStatusChangeQueue();
+
+                final Set<SelectionKey> selectionKeys = selector.selectedKeys();
+                for( final SelectionKey selectionKey : selectionKeys )
+                {
+                    final AbstractEventHandler eventHandler = (AbstractEventHandler)selectionKey.attachment();
+                    eventHandler.prepareToRun();
+                    selectionKey.interestOps( 0 );
+
+                    try
+                    {
+                        eventHandler.run();
+                    }
+                    catch( final RuntimeException e )
+                    {
+                        Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_dispatchEvents_runEventHandlerError, e );
+                    }
+                    finally
+                    {
+                        resumeSelection( eventHandler );
+                    }
                 }
+
+                selectionKeys.clear();
             }
         }
         catch( final IOException e )
@@ -222,6 +264,57 @@ final class Dispatcher
         {
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Event dispatch thread stopped" ); //$NON-NLS-1$
         }
+    }
+
+    /**
+     * Adds the specified event handler to the status change queue.
+     * 
+     * @param eventHandler
+     *        The event handler; must not be {@code null}.
+     */
+    void enqueueStatusChange(
+        /* @NonNull */
+        final AbstractEventHandler eventHandler )
+    {
+        assert eventHandler != null;
+
+        boolean interrupted = false;
+        try
+        {
+            while( true )
+            {
+                try
+                {
+                    statusChangeQueue_.put( eventHandler );
+                    acquireSelectorGuard(); // forces thread-safe wake up of selector
+                    releaseSelectorGuard();
+                    return;
+                }
+                catch( final InterruptedException e )
+                {
+                    interrupted = true;
+                }
+            }
+        }
+        finally
+        {
+            if( interrupted )
+            {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
+    /**
+     * Gets the byte buffer pool associated with the dispatcher.
+     * 
+     * @return The byte buffer pool associated with the dispatcher; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    ByteBufferPool getByteBufferPool()
+    {
+        return bufferPool_;
     }
 
     /**
@@ -318,6 +411,25 @@ final class Dispatcher
 
             eventHandlers_.add( eventHandler );
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
+        }
+    }
+
+    /**
+     * Resumes event selection of the specified event handler.
+     * 
+     * @param eventHandler
+     *        The event handler; must not be {@code null}.
+     */
+    private void resumeSelection(
+        /* @NonNull */
+        final AbstractEventHandler eventHandler )
+    {
+        assert eventHandler != null;
+
+        final SelectionKey selectionKey = eventHandler.getSelectionKey();
+        if( selectionKey.isValid() )
+        {
+            selectionKey.interestOps( eventHandler.getInterestOperations() );
         }
     }
 

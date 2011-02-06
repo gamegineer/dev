@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
+import java.io.IOException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import net.jcip.annotations.GuardedBy;
@@ -138,10 +139,21 @@ abstract class AbstractEventHandler
     }
 
     /**
-     * Invoked by the event dispatcher when one or more interest operations are
-     * ready.
+     * Invoked by the event dispatcher immediately before the handler is run.
      */
-    abstract void operationReady();
+    void prepareToRun()
+    {
+        // do nothing
+    }
+
+    /**
+     * Invoked by the event dispatcher to execute the event handler.
+     * 
+     * @throws java.io.IOException
+     *         If an I/O error occurs.
+     */
+    abstract void run()
+        throws IOException;
 
     /**
      * Sets the selection key representing the binding between the event handler

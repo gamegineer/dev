@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import net.jcip.annotations.ThreadSafe;
 
 /**
@@ -55,11 +57,71 @@ final class ClientServiceHandler
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#operationReady()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#doOpen()
      */
     @Override
-    void operationReady()
+    void doOpen()
     {
-        // TODO: process events as needed
+        final Thread t = new Thread()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    while( true )
+                    {
+                        Thread.sleep( 5000L );
+
+                        final String message = "a message\n"; //$NON-NLS-1$
+                        final ByteBuffer buffer = ByteBuffer.allocate( 1024 );
+                        buffer.put( message.getBytes( Charset.forName( "US-ASCII" ) ) ); //$NON-NLS-1$
+                        buffer.flip();
+                        getOutputQueue().enqueueBytes( buffer );
+                    }
+                }
+                catch( final Exception e )
+                {
+                    e.printStackTrace();
+                }
+            }
+        };
+        t.setDaemon( true );
+        t.start();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#getNextMessage()
+     */
+    @Override
+    ByteBuffer getNextMessage()
+    {
+        // TODO: Temporary protocol
+
+        final InputQueue inputQueue = getInputQueue();
+        final int newLinePosition = inputQueue.indexOf( (byte)'\n' );
+        if( newLinePosition == -1 )
+        {
+            return null;
+        }
+
+        return inputQueue.dequeueBytes( newLinePosition + 1 );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleMessage(java.nio.ByteBuffer)
+     */
+    @Override
+    void handleMessage(
+        final ByteBuffer message )
+    {
+        assert message != null;
+
+        // TODO: Temporary protocol
+
+        byte[] messageAsBytes = new byte[ message.remaining() ];
+        message.get( messageAsBytes );
+        final String messageAsString = new String( messageAsBytes, Charset.forName( "US-ASCII" ) ); //$NON-NLS-1$
+        System.out.println( String.format( "ClientServiceHandler received message '%1'", messageAsString ) ); //$NON-NLS-1$
     }
 }

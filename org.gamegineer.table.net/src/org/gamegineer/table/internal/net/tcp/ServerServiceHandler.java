@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import net.jcip.annotations.ThreadSafe;
 
 /**
@@ -55,11 +57,39 @@ final class ServerServiceHandler
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#operationReady()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#getNextMessage()
      */
     @Override
-    void operationReady()
+    ByteBuffer getNextMessage()
     {
-        // TODO: process events as needed
+        // TODO: Temporary protocol
+
+        final InputQueue inputQueue = getInputQueue();
+        final int newLinePosition = inputQueue.indexOf( (byte)'\n' );
+        if( newLinePosition == -1 )
+        {
+            return null;
+        }
+
+        return inputQueue.dequeueBytes( newLinePosition + 1 );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleMessage(java.nio.ByteBuffer)
+     */
+    @Override
+    void handleMessage(
+        final ByteBuffer message )
+    {
+        assert message != null;
+
+        // TODO: Temporary protocol
+
+        byte[] messageAsBytes = new byte[ message.remaining() ];
+        message.get( messageAsBytes );
+        final String messageAsString = new String( messageAsBytes, Charset.forName( "US-ASCII" ) ); //$NON-NLS-1$
+        System.out.println( String.format( "ServerServiceHandler received message '%1'", messageAsString ) ); //$NON-NLS-1$
+
+        getOutputQueue().enqueueBytes( ByteBuffer.wrap( messageAsBytes ) );
     }
 }

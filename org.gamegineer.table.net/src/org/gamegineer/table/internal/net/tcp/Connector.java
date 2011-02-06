@@ -180,10 +180,10 @@ final class Connector
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#operationReady()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#run()
      */
     @Override
-    void operationReady()
+    void run()
     {
         throw new UnsupportedOperationException( "asynchronous connection not supported" ); //$NON-NLS-1$
     }

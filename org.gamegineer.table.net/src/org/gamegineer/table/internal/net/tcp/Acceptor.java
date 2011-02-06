@@ -243,10 +243,10 @@ final class Acceptor
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#operationReady()
+     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#run()
      */
     @Override
-    void operationReady()
+    void run()
     {
         synchronized( getLock() )
         {

@@ -75,6 +75,9 @@ final class Messages
     /** An error occurred on the event dispatch thread. */
     public static String Dispatcher_dispatchEvents_error;
 
+    /** An error occurred while running an event handler. */
+    public static String Dispatcher_dispatchEvents_runEventHandlerError;
+
     /** An I/O error occurred while opening the dispatcher. */
     public static String Dispatcher_open_ioError;
 
