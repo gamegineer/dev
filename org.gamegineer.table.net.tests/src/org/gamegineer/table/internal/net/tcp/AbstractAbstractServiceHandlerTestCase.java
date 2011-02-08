@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.net.tcp;
 
 import static org.junit.Assert.assertNotNull;
-import java.nio.channels.SelectableChannel;
+import java.nio.channels.SocketChannel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -126,7 +126,7 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     {
         serviceHandler_.close();
 
-        serviceHandler_.open( new FakeSelectableChannel() );
+        serviceHandler_.open( new FakeSocketChannel() );
     }
 
     /**
@@ -140,7 +140,7 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     public void testOpen_MultipleInvocations()
         throws Exception
     {
-        final SelectableChannel channel = new FakeSelectableChannel();
+        final SocketChannel channel = new FakeSocketChannel();
         serviceHandler_.open( channel );
 
         serviceHandler_.open( channel );

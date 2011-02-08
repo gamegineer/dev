@@ -25,7 +25,6 @@ import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
-import java.nio.channels.ByteChannel;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
@@ -53,7 +52,7 @@ abstract class AbstractServiceHandler
 
     /** The channel associated with the service handler. */
     @GuardedBy( "getLock()" )
-    private SelectableChannel channel_;
+    private SocketChannel channel_;
 
     /** The dispatcher associated with the service handler. */
     private final Dispatcher dispatcher_;
@@ -179,7 +178,7 @@ abstract class AbstractServiceHandler
 
         if( ((readyOperations_ & SelectionKey.OP_WRITE) != 0) && !outputQueue_.isEmpty() )
         {
-            outputQueue_.drainTo( (ByteChannel)channel_ );
+            outputQueue_.drainTo( channel_ );
         }
 
         if( outputQueue_.isEmpty() )
@@ -205,18 +204,16 @@ abstract class AbstractServiceHandler
             return;
         }
 
-        final int bytesRead = inputQueue_.fillFrom( (ByteChannel)channel_ );
+        final int bytesRead = inputQueue_.fillFrom( channel_ );
         if( bytesRead == -1 )
         {
             modifyInterestOperations( 0, SelectionKey.OP_READ );
 
-            // XXX: replace SelectableChanel with SocketChannel ... need to create new Fakes
-            final SocketChannel socketChannel = (SocketChannel)channel_;
-            if( socketChannel.socket().isConnected() )
+            if( channel_.socket().isConnected() )
             {
                 try
                 {
-                    socketChannel.socket().shutdownInput();
+                    channel_.socket().shutdownInput();
                 }
                 catch( final SocketException e )
                 {
@@ -333,7 +330,7 @@ abstract class AbstractServiceHandler
      */
     final void open(
         /* @NonNull */
-        final SelectableChannel channel )
+        final SocketChannel channel )
         throws IOException
     {
         assert channel != null;
