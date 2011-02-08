@@ -88,7 +88,7 @@ final class ServerServiceHandler
         byte[] messageAsBytes = new byte[ message.remaining() ];
         message.get( messageAsBytes );
         final String messageAsString = new String( messageAsBytes, Charset.forName( "US-ASCII" ) ); //$NON-NLS-1$
-        System.out.println( String.format( "ServerServiceHandler received message '%1'", messageAsString ) ); //$NON-NLS-1$
+        System.out.println( String.format( "ServerServiceHandler received message '%s'", messageAsString ) ); //$NON-NLS-1$
 
         getOutputQueue().enqueueBytes( ByteBuffer.wrap( messageAsBytes ) );
     }
