@@ -235,24 +235,8 @@ final class Dispatcher
                 final Set<SelectionKey> selectionKeys = selector.selectedKeys();
                 for( final SelectionKey selectionKey : selectionKeys )
                 {
-                    final AbstractEventHandler eventHandler = (AbstractEventHandler)selectionKey.attachment();
-                    eventHandler.prepareToRun();
-                    selectionKey.interestOps( 0 );
-
-                    try
-                    {
-                        eventHandler.run();
-                    }
-                    catch( final RuntimeException e )
-                    {
-                        Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_dispatchEvents_runEventHandlerError, e );
-                    }
-                    finally
-                    {
-                        resumeSelection( eventHandler );
-                    }
+                    processEvents( selectionKey );
                 }
-
                 selectionKeys.clear();
             }
         }
@@ -363,6 +347,37 @@ final class Dispatcher
             {
                 releaseSelectorGuard();
             }
+        }
+    }
+
+    /**
+     * Processes the events associated with the specified selection key.
+     * 
+     * @param selectionKey
+     *        The selection key; must not be {@code null}.
+     */
+    private void processEvents(
+        /* @NonNull */
+        final SelectionKey selectionKey )
+    {
+        assert selectionKey != null;
+
+        final AbstractEventHandler eventHandler = (AbstractEventHandler)selectionKey.attachment();
+        eventHandler.prepareToRun();
+        selectionKey.interestOps( 0 );
+
+        // TODO: Eventually submit to executor to run the handler asynchronously.
+        try
+        {
+            eventHandler.run();
+        }
+        catch( final Exception e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_processEvents_runEventHandlerError, e );
+        }
+        finally
+        {
+            resumeSelection( eventHandler );
         }
     }
 
