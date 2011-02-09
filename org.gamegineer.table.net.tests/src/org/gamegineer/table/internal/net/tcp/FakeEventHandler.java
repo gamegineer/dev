@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
-import java.io.IOException;
 import java.nio.channels.SelectableChannel;
 import net.jcip.annotations.NotThreadSafe;
 
@@ -106,9 +105,7 @@ class FakeEventHandler
      * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#run()
      */
     @Override
-    @SuppressWarnings( "unused" )
     void run()
-        throws IOException
     {
         // do nothing
     }

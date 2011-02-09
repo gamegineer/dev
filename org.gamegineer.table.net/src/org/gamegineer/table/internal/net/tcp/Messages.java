@@ -40,6 +40,9 @@ final class Messages
     /** An I/O error occurred while closing the socket channel. */
     public static String AbstractServiceHandler_close_ioError;
 
+    /** An error occurred while running the event handler. */
+    public static String AbstractServiceHandler_run_error;
+
     /** The client service handler state is not pristine. */
     public static String AbstractServiceHandler_state_notPristine;
 
@@ -78,8 +81,8 @@ final class Messages
     /** An I/O error occurred while opening the dispatcher. */
     public static String Dispatcher_open_ioError;
 
-    /** An error occurred while running an event handler. */
-    public static String Dispatcher_processEvents_runEventHandlerError;
+    /** An unexpected error occurred while running an event handler. */
+    public static String Dispatcher_processEvents_unexpectedError;
 
     /** The event handler is already registered. */
     public static String Dispatcher_registerEventHandler_eventHandlerRegistered;

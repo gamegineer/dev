@@ -64,6 +64,10 @@ abstract class AbstractServiceHandler
     @GuardedBy( "getLock()" )
     private int interestOperations_;
 
+    /** Indicates the input stream is shut down. */
+    @GuardedBy( "getLock()" )
+    private boolean isInputShutDown_;
+
     /** Indicates the service handler has been registered with the dispatcher. */
     @GuardedBy( "getLock()" )
     private boolean isRegistered_;
@@ -71,10 +75,6 @@ abstract class AbstractServiceHandler
     /** Indicates the handler is running. */
     @GuardedBy( "getLock()" )
     private boolean isRunning_;
-
-    /** Indicates the handler is shutting down. */
-    @GuardedBy( "getLock()" )
-    private boolean isShuttingDown_;
 
     /** The output handler associated with the service handler. */
     private final OutputQueue outputQueue_;
@@ -108,9 +108,9 @@ abstract class AbstractServiceHandler
         dispatcher_ = dispatcher;
         inputQueue_ = new InputQueue( dispatcher.getByteBufferPool() );
         interestOperations_ = SelectionKey.OP_READ;
+        isInputShutDown_ = false;
         isRegistered_ = false;
         isRunning_ = false;
-        isShuttingDown_ = false;
         outputQueue_ = new OutputQueue( dispatcher.getByteBufferPool(), this );
         readyOperations_ = 0;
     }
@@ -199,7 +199,7 @@ abstract class AbstractServiceHandler
     {
         assert Thread.holdsLock( getLock() );
 
-        if( isShuttingDown_ )
+        if( isInputShutDown_ )
         {
             return;
         }
@@ -221,7 +221,7 @@ abstract class AbstractServiceHandler
                 }
             }
 
-            isShuttingDown_ = true;
+            isInputShutDown_ = true;
             modifyInterestOperations( SelectionKey.OP_WRITE, 0 );
         }
     }
@@ -377,7 +377,6 @@ abstract class AbstractServiceHandler
      */
     @Override
     final void run()
-        throws IOException
     {
         synchronized( getLock() )
         {
@@ -391,6 +390,11 @@ abstract class AbstractServiceHandler
                 {
                     handleMessage( message );
                 }
+            }
+            catch( final Exception e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractServiceHandler_run_error, e );
+                setState( State.DEAD );
             }
             finally
             {

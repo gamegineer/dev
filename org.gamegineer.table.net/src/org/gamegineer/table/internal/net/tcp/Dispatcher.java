@@ -141,7 +141,6 @@ final class Dispatcher
         {
             if( state_ == State.OPENED )
             {
-                // TODO: unregister handlers first if we move unregister() calls outside of close() methods
                 final Collection<AbstractEventHandler> eventHandlers = new ArrayList<AbstractEventHandler>( eventHandlers_ );
                 for( final AbstractEventHandler eventHandler : eventHandlers )
                 {
@@ -195,12 +194,11 @@ final class Dispatcher
         AbstractEventHandler eventHandler = null;
         while( (eventHandler = statusChangeQueue_.poll()) != null )
         {
-            // TODO
-            //if( eventHandler.isDead() )
-            //{
-            //    unregisterEventHandler( eventHandler );
-            //}
-            //else
+            if( eventHandler.getState() == AbstractEventHandler.State.DEAD )
+            {
+                eventHandler.close();
+            }
+            else
             {
                 resumeSelection( eventHandler );
             }
@@ -371,13 +369,13 @@ final class Dispatcher
         {
             eventHandler.run();
         }
-        catch( final Exception e )
+        catch( final RuntimeException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_processEvents_runEventHandlerError, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_processEvents_unexpectedError, e );
         }
         finally
         {
-            resumeSelection( eventHandler );
+            enqueueStatusChange( eventHandler );
         }
     }
 
