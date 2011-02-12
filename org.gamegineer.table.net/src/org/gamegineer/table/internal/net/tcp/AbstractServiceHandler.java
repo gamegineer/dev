@@ -394,7 +394,7 @@ abstract class AbstractServiceHandler
             catch( final Exception e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractServiceHandler_run_error, e );
-                setState( State.DEAD );
+                close();
             }
             finally
             {

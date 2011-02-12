@@ -194,11 +194,7 @@ final class Dispatcher
         AbstractEventHandler eventHandler = null;
         while( (eventHandler = statusChangeQueue_.poll()) != null )
         {
-            if( eventHandler.getState() == AbstractEventHandler.State.DEAD )
-            {
-                eventHandler.close();
-            }
-            else
+            if( eventHandler.getState() != AbstractEventHandler.State.CLOSED )
             {
                 resumeSelection( eventHandler );
             }

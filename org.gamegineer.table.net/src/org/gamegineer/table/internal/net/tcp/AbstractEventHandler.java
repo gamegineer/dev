@@ -203,12 +203,6 @@ abstract class AbstractEventHandler
         /** The event handler is open. */
         OPENED,
 
-        /**
-         * The event handler was opened but is now dead due to an error and is
-         * waiting to be closed.
-         */
-        DEAD,
-
         /** The event handler is closed. */
         CLOSED;
     }
