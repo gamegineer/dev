@@ -40,8 +40,8 @@ public final class ConnectorTest
     /** The connector under test in the fixture. */
     private Connector connector_;
 
-    /** The dispatcher for use in the fixture. */
-    private Dispatcher dispatcher_;
+    /** The network interface for use in the fixture. */
+    private AbstractNetworkInterface networkInterface_;
 
 
     // ======================================================================
@@ -71,9 +71,9 @@ public final class ConnectorTest
     public void setUp()
         throws Exception
     {
-        dispatcher_ = new Dispatcher();
-        dispatcher_.open();
-        connector_ = new Connector( dispatcher_ );
+        networkInterface_ = new FakeNetworkInterface();
+        networkInterface_.open( TestUtils.createNetworkTableConfiguration() );
+        connector_ = new Connector( networkInterface_ );
     }
 
     /**
@@ -88,8 +88,8 @@ public final class ConnectorTest
     {
         connector_.close();
         connector_ = null;
-        dispatcher_.close();
-        dispatcher_ = null;
+        networkInterface_.close();
+        networkInterface_ = null;
     }
 
     /**

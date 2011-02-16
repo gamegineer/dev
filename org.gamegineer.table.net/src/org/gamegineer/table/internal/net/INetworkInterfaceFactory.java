@@ -32,36 +32,34 @@ public interface INetworkInterfaceFactory
     // ======================================================================
 
     /**
-     * Creates a new client network interface for the specified network table.
+     * Creates a new client network interface for the specified listener.
      * 
-     * @param networkTable
-     *        The network table to associate with the network interface; must
-     *        not be {@code null}.
+     * @param listener
+     *        The network interface listener; must not be {@code null}.
      * 
      * @return A new client network interface; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code networkTable} is {@code null}.
+     *         If {@code listener} is {@code null}.
      */
     /* @NonNull */
     public INetworkInterface createClientNetworkInterface(
         /* @NonNull */
-        NetworkTable networkTable );
+        INetworkInterfaceListener listener );
 
     /**
-     * Creates a new server network interface for the specified network table.
+     * Creates a new server network interface for the specified listener.
      * 
-     * @param networkTable
-     *        The network table to associate with the network interface; must
-     *        not be {@code null}.
+     * @param listener
+     *        The network interface listener; must not be {@code null}.
      * 
      * @return A new server network interface; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code networkTable} is {@code null}.
+     *         If {@code listener} is {@code null}.
      */
     /* @NonNull */
     public INetworkInterface createServerNetworkInterface(
         /* @NonNull */
-        NetworkTable networkTable );
+        INetworkInterfaceListener listener );
 }

@@ -1,5 +1,5 @@
 /*
- * TcpNetworkInterfaceFactory.java
+ * FakeNetworkInterface.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,36 +16,52 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 7, 2011 at 10:32:35 PM.
+ * Created on Feb 12, 2011 at 11:15:36 PM.
  */
 
 package org.gamegineer.table.internal.net.tcp;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.INetworkInterface;
-import org.gamegineer.table.internal.net.INetworkInterfaceFactory;
+import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.INetworkInterfaceListener;
+import org.gamegineer.table.net.INetworkTableConfiguration;
+import org.gamegineer.table.net.NetworkTableException;
 
 /**
- * Implementation of
- * {@link org.gamegineer.table.internal.net.INetworkInterfaceFactory} for TCP
- * connections.
+ * Fake implementation of
+ * {@link org.gamegineer.table.internal.net.tcp.AbstractNetworkInterface}.
  */
 @Immutable
-public final class TcpNetworkInterfaceFactory
-    implements INetworkInterfaceFactory
+final class FakeNetworkInterface
+    extends AbstractNetworkInterface
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TcpNetworkInterfaceFactory}.
+     * Initializes a new instance of the {@code FakeNetworkInterface} class
+     * using a new dispatcher.
      */
-    public TcpNetworkInterfaceFactory()
+    FakeNetworkInterface()
     {
-        super();
+        this( new Dispatcher() );
+    }
+
+    /**
+     * Initializes a new instance of the {@code FakeNetworkInterface} class
+     * using the specified dispatcher.
+     * 
+     * @param dispatcher
+     *        The dispatcher associated with the network interface; must not be
+     *        {@code null}.
+     */
+    FakeNetworkInterface(
+        /* @NonNull */
+        final Dispatcher dispatcher )
+    {
+        super( EasyMock.createMock( INetworkInterfaceListener.class ), dispatcher );
     }
 
 
@@ -54,26 +70,15 @@ public final class TcpNetworkInterfaceFactory
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createClientNetworkInterface(org.gamegineer.table.internal.net.INetworkInterfaceListener)
+     * @see org.gamegineer.table.internal.net.INetworkInterface#open(org.gamegineer.table.net.INetworkTableConfiguration)
      */
     @Override
-    public INetworkInterface createClientNetworkInterface(
-        final INetworkInterfaceListener listener )
+    public void open(
+        final INetworkTableConfiguration configuration )
+        throws NetworkTableException
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        return new ClientNetworkInterface( listener );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createServerNetworkInterface(org.gamegineer.table.internal.net.INetworkInterfaceListener)
-     */
-    @Override
-    public INetworkInterface createServerNetworkInterface(
-        final INetworkInterfaceListener listener )
-    {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-
-        return new ServerNetworkInterface( listener );
+        getDispatcher().open();
     }
 }

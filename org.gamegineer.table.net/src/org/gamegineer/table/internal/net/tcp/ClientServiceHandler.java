@@ -40,15 +40,15 @@ final class ClientServiceHandler
     /**
      * Initializes a new instance of the {@code ClientServiceHandler} class.
      * 
-     * @param dispatcher
-     *        The dispatcher associated with the service handler; must not be
-     *        {@code null}.
+     * @param networkInterface
+     *        The network interface associated with the service handler; must
+     *        not be {@code null}.
      */
     ClientServiceHandler(
         /* @NonNull */
-        final Dispatcher dispatcher )
+        final AbstractNetworkInterface networkInterface )
     {
-        super( dispatcher );
+        super( networkInterface );
     }
 
 
@@ -123,5 +123,14 @@ final class ClientServiceHandler
         message.get( messageAsBytes );
         final String messageAsString = new String( messageAsBytes, Charset.forName( "US-ASCII" ) ); //$NON-NLS-1$
         System.out.println( String.format( "ClientServiceHandler received message '%s'", messageAsString ) ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#serviceHandlerClosed()
+     */
+    @Override
+    void serviceHandlerClosed()
+    {
+        getNetworkInterface().getListener().networkInterfaceDisconnected();
     }
 }

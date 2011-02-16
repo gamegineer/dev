@@ -46,8 +46,8 @@ final class Connector
     // Fields
     // ======================================================================
 
-    /** The dispatcher associated with the connector. */
-    private final Dispatcher dispatcher_;
+    /** The network interface associated with the connector. */
+    private final AbstractNetworkInterface networkInterface_;
 
 
     // ======================================================================
@@ -57,17 +57,17 @@ final class Connector
     /**
      * Initializes a new instance of the {@code Connector} class.
      * 
-     * @param dispatcher
-     *        The dispatcher associated with the connector; must not be {@code
-     *        null}.
+     * @param networkInterface
+     *        The network interface associated with the connector; must not be
+     *        {@code null}.
      */
     Connector(
         /* @NonNull */
-        final Dispatcher dispatcher )
+        final AbstractNetworkInterface networkInterface )
     {
-        assert dispatcher != null;
+        assert networkInterface != null;
 
-        dispatcher_ = dispatcher;
+        networkInterface_ = networkInterface;
     }
 
 
@@ -118,7 +118,7 @@ final class Connector
             {
                 final SocketChannel channel = createSocketChannel( configuration );
 
-                final AbstractServiceHandler serviceHandler = new ClientServiceHandler( dispatcher_ );
+                final AbstractServiceHandler serviceHandler = new ClientServiceHandler( networkInterface_ );
                 serviceHandler.open( channel );
             }
             finally

@@ -201,7 +201,7 @@ abstract class AbstractEventHandler
         PRISTINE,
 
         /** The event handler is open. */
-        OPENED,
+        OPEN,
 
         /** The event handler is closed. */
         CLOSED;

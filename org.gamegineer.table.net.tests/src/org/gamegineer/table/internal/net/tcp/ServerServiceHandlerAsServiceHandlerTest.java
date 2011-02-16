@@ -49,12 +49,12 @@ public final class ServerServiceHandlerAsServiceHandlerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractAbstractServiceHandlerTestCase#createServiceHandler(org.gamegineer.table.internal.net.tcp.Dispatcher)
+     * @see org.gamegineer.table.internal.net.tcp.AbstractAbstractServiceHandlerTestCase#createServiceHandler(org.gamegineer.table.internal.net.tcp.AbstractNetworkInterface)
      */
     @Override
     protected AbstractServiceHandler createServiceHandler(
-        final Dispatcher dispatcher )
+        final AbstractNetworkInterface networkInterface )
     {
-        return new ServerServiceHandler( dispatcher );
+        return new ServerServiceHandler( networkInterface );
     }
 }

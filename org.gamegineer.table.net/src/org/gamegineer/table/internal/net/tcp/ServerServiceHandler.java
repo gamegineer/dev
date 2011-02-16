@@ -40,15 +40,15 @@ final class ServerServiceHandler
     /**
      * Initializes a new instance of the {@code ServerServiceHandler} class.
      * 
-     * @param dispatcher
-     *        The dispatcher associated with the service handler; must not be
-     *        {@code null}.
+     * @param networkInterface
+     *        The network interface associated with the service handler; must
+     *        not be {@code null}.
      */
     ServerServiceHandler(
         /* @NonNull */
-        final Dispatcher dispatcher )
+        final AbstractNetworkInterface networkInterface )
     {
-        super( dispatcher );
+        super( networkInterface );
     }
 
 
@@ -91,5 +91,14 @@ final class ServerServiceHandler
         System.out.println( String.format( "ServerServiceHandler received message '%s'", messageAsString ) ); //$NON-NLS-1$
 
         getOutputQueue().enqueueBytes( ByteBuffer.wrap( messageAsBytes ) );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#serviceHandlerClosed()
+     */
+    @Override
+    void serviceHandlerClosed()
+    {
+        // TODO: Inform network interface listener the player has disconnected.
     }
 }

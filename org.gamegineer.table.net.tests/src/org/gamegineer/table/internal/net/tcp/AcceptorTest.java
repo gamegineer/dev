@@ -40,8 +40,8 @@ public final class AcceptorTest
     /** The acceptor under test in the fixture. */
     private Acceptor acceptor_;
 
-    /** The dispatcher for use in the fixture. */
-    private Dispatcher dispatcher_;
+    /** The network interface for use in the fixture. */
+    private AbstractNetworkInterface networkInterface_;
 
 
     // ======================================================================
@@ -71,9 +71,9 @@ public final class AcceptorTest
     public void setUp()
         throws Exception
     {
-        dispatcher_ = new Dispatcher();
-        dispatcher_.open();
-        acceptor_ = new Acceptor( dispatcher_ );
+        networkInterface_ = new FakeNetworkInterface();
+        networkInterface_.open( TestUtils.createNetworkTableConfiguration() );
+        acceptor_ = new Acceptor( networkInterface_ );
     }
 
     /**
@@ -88,8 +88,8 @@ public final class AcceptorTest
     {
         acceptor_.close();
         acceptor_ = null;
-        dispatcher_.close();
-        dispatcher_ = null;
+        networkInterface_.close();
+        networkInterface_ = null;
     }
 
     /**

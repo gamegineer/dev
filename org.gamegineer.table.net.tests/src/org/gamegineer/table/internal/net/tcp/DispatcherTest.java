@@ -101,9 +101,9 @@ public final class DispatcherTest
         throws Exception
     {
         dispatcher_.open();
-        final Acceptor acceptor = new Acceptor( dispatcher_ );
+        final Acceptor acceptor = new Acceptor( new FakeNetworkInterface( dispatcher_ ) );
         acceptor.bind( TestUtils.createNetworkTableConfiguration() );
-        assertEquals( State.OPENED, acceptor.getState() );
+        assertEquals( State.OPEN, acceptor.getState() );
 
         dispatcher_.close();
 

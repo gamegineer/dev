@@ -139,7 +139,7 @@ final class Dispatcher
     {
         synchronized( lock_ )
         {
-            if( state_ == State.OPENED )
+            if( state_ == State.OPEN )
             {
                 final Collection<AbstractEventHandler> eventHandlers = new ArrayList<AbstractEventHandler>( eventHandlers_ );
                 for( final AbstractEventHandler eventHandler : eventHandlers )
@@ -156,6 +156,10 @@ final class Dispatcher
                 catch( final CancellationException e )
                 {
                     // do nothing
+                }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
                 }
                 catch( final Exception e )
                 {
@@ -321,7 +325,7 @@ final class Dispatcher
                 throw new NetworkTableException( Messages.Dispatcher_open_ioError, e );
             }
 
-            state_ = State.OPENED;
+            state_ = State.OPEN;
 
             acquireSelectorGuard();
             try
@@ -405,7 +409,7 @@ final class Dispatcher
 
         synchronized( lock_ )
         {
-            assertStateLegal( state_ == State.OPENED, Messages.Dispatcher_state_notOpen );
+            assertStateLegal( state_ == State.OPEN, Messages.Dispatcher_state_notOpen );
             assertArgumentLegal( !eventHandlers_.contains( eventHandler ), "eventHandler", Messages.Dispatcher_registerEventHandler_eventHandlerRegistered ); //$NON-NLS-1$
 
             acquireSelectorGuard();
@@ -471,7 +475,7 @@ final class Dispatcher
 
         synchronized( lock_ )
         {
-            assertStateLegal( state_ == State.OPENED, Messages.Dispatcher_state_notOpen );
+            assertStateLegal( state_ == State.OPEN, Messages.Dispatcher_state_notOpen );
             assertArgumentLegal( eventHandlers_.remove( eventHandler ), "eventHandler", Messages.Dispatcher_unregisterEventHandler_eventHandlerUnregistered ); //$NON-NLS-1$
 
             acquireSelectorGuard();
@@ -507,7 +511,7 @@ final class Dispatcher
         PRISTINE,
 
         /** The dispatcher is open. */
-        OPENED,
+        OPEN,
 
         /** The dispatcher is closed. */
         CLOSED;

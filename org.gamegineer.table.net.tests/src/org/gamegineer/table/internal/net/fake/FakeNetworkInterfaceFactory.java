@@ -25,7 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.INetworkInterface;
 import org.gamegineer.table.internal.net.INetworkInterfaceFactory;
-import org.gamegineer.table.internal.net.NetworkTable;
+import org.gamegineer.table.internal.net.INetworkInterfaceListener;
 
 /**
  * Fake implementation of
@@ -54,25 +54,25 @@ public final class FakeNetworkInterfaceFactory
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createClientNetworkInterface(org.gamegineer.table.internal.net.NetworkTable)
+     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createClientNetworkInterface(org.gamegineer.table.internal.net.INetworkInterfaceListener)
      */
     @Override
     public INetworkInterface createClientNetworkInterface(
-        final NetworkTable networkTable )
+        final INetworkInterfaceListener listener )
     {
-        assertArgumentNotNull( networkTable, "networkTable" ); //$NON-NLS-1$
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
 
         return new ClientNetworkInterface();
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createServerNetworkInterface(org.gamegineer.table.internal.net.NetworkTable)
+     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createServerNetworkInterface(org.gamegineer.table.internal.net.INetworkInterfaceListener)
      */
     @Override
     public INetworkInterface createServerNetworkInterface(
-        final NetworkTable networkTable )
+        final INetworkInterfaceListener listener )
     {
-        assertArgumentNotNull( networkTable, "networkTable" ); //$NON-NLS-1$
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
 
         return new ServerNetworkInterface();
     }

@@ -54,9 +54,6 @@ abstract class AbstractServiceHandler
     @GuardedBy( "getLock()" )
     private SocketChannel channel_;
 
-    /** The dispatcher associated with the service handler. */
-    private final Dispatcher dispatcher_;
-
     /** The input queue associated with the service handler. */
     private final InputQueue inputQueue_;
 
@@ -76,6 +73,9 @@ abstract class AbstractServiceHandler
     @GuardedBy( "getLock()" )
     private boolean isRunning_;
 
+    /** The network interface associated with the service handler. */
+    private final AbstractNetworkInterface networkInterface_;
+
     /** The output handler associated with the service handler. */
     private final OutputQueue outputQueue_;
 
@@ -94,24 +94,24 @@ abstract class AbstractServiceHandler
     /**
      * Initializes a new instance of the {@code AbstractServiceHandler} class.
      * 
-     * @param dispatcher
-     *        The dispatcher associated with the service handler; must not be
-     *        {@code null}.
+     * @param networkInterface
+     *        The network interface associated with the service handler; must
+     *        not be {@code null}.
      */
     AbstractServiceHandler(
         /* @NonNull */
-        final Dispatcher dispatcher )
+        final AbstractNetworkInterface networkInterface )
     {
-        assert dispatcher != null;
+        assert networkInterface != null;
 
         channel_ = null;
-        dispatcher_ = dispatcher;
-        inputQueue_ = new InputQueue( dispatcher.getByteBufferPool() );
+        inputQueue_ = new InputQueue( networkInterface.getDispatcher().getByteBufferPool() );
         interestOperations_ = SelectionKey.OP_READ;
         isInputShutDown_ = false;
         isRegistered_ = false;
         isRunning_ = false;
-        outputQueue_ = new OutputQueue( dispatcher.getByteBufferPool(), this );
+        networkInterface_ = networkInterface;
+        outputQueue_ = new OutputQueue( networkInterface.getDispatcher().getByteBufferPool(), this );
         readyOperations_ = 0;
     }
 
@@ -126,14 +126,16 @@ abstract class AbstractServiceHandler
     @Override
     final void close()
     {
+        final State state;
+
         synchronized( getLock() )
         {
-            if( getState() == State.OPENED )
+            if( (state = getState()) == State.OPEN )
             {
                 if( isRegistered_ )
                 {
                     isRegistered_ = false;
-                    dispatcher_.unregisterEventHandler( this );
+                    networkInterface_.getDispatcher().unregisterEventHandler( this );
                 }
 
                 try
@@ -151,6 +153,11 @@ abstract class AbstractServiceHandler
             }
 
             setState( State.CLOSED );
+        }
+
+        if( state == State.OPEN )
+        {
+            serviceHandlerClosed();
         }
     }
 
@@ -263,6 +270,18 @@ abstract class AbstractServiceHandler
     }
 
     /**
+     * Gets the network interface associated with the service handler.
+     * 
+     * @return The network interface associated with the service handler; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    final AbstractNetworkInterface getNetworkInterface()
+    {
+        return networkInterface_;
+    }
+
+    /**
      * Gets the next message available from the input queue.
      * 
      * @return The next message available from the input queue or {@code null}
@@ -313,7 +332,7 @@ abstract class AbstractServiceHandler
 
             if( !isRunning_ )
             {
-                dispatcher_.enqueueStatusChange( this );
+                networkInterface_.getDispatcher().enqueueStatusChange( this );
             }
         }
     }
@@ -340,11 +359,11 @@ abstract class AbstractServiceHandler
             assertStateLegal( getState() == State.PRISTINE, Messages.AbstractServiceHandler_state_notPristine );
 
             channel_ = channel;
-            setState( State.OPENED );
+            setState( State.OPEN );
 
             try
             {
-                dispatcher_.registerEventHandler( this );
+                networkInterface_.getDispatcher().registerEventHandler( this );
                 isRegistered_ = true;
             }
             catch( final IOException e )
@@ -403,4 +422,14 @@ abstract class AbstractServiceHandler
             }
         }
     }
+
+    /**
+     * Template method invoked after the service handler has been closed.
+     * 
+     * <p>
+     * This method is NOT invoked while the instance lock is held. Subclasses
+     * may override to notify the network interface in an appropriate manner.
+     * </p>
+     */
+    abstract void serviceHandlerClosed();
 }

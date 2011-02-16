@@ -37,8 +37,8 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     // Fields
     // ======================================================================
 
-    /** The dispatcher for use in the fixture. */
-    private Dispatcher dispatcher_;
+    /** The network interface for use in the fixture. */
+    private AbstractNetworkInterface networkInterface_;
 
     /** The service handler under test in the fixture. */
     private AbstractServiceHandler serviceHandler_;
@@ -65,20 +65,21 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     /**
      * Creates the service handler to be tested.
      * 
-     * @param dispatcher
-     *        The dispatcher for use in the fixture; must not be {@code null}.
+     * @param networkInterface
+     *        The network interface for use in the fixture; must not be {@code
+     *        null}.
      * 
      * @return The service handler to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      * @throws java.lang.NullPointerException
-     *         If {@code dispatcher} is {@code null}.
+     *         If {@code networkInterface} is {@code null}.
      */
     /* @NonNull */
     protected abstract AbstractServiceHandler createServiceHandler(
         /* @NonNull */
-        Dispatcher dispatcher )
+        AbstractNetworkInterface networkInterface )
         throws Exception;
 
     /**
@@ -91,9 +92,9 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     public void setUp()
         throws Exception
     {
-        dispatcher_ = new Dispatcher();
-        dispatcher_.open();
-        serviceHandler_ = createServiceHandler( dispatcher_ );
+        networkInterface_ = new FakeNetworkInterface();
+        networkInterface_.open( TestUtils.createNetworkTableConfiguration() );
+        serviceHandler_ = createServiceHandler( networkInterface_ );
         assertNotNull( serviceHandler_ );
     }
 
@@ -109,8 +110,8 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     {
         serviceHandler_.close();
         serviceHandler_ = null;
-        dispatcher_.close();
-        dispatcher_ = null;
+        networkInterface_.close();
+        networkInterface_ = null;
     }
 
     /**

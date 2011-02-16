@@ -40,7 +40,7 @@ import org.gamegineer.table.net.NetworkTableException;
  */
 @ThreadSafe
 public final class NetworkTable
-    implements INetworkTable
+    implements INetworkTable, INetworkInterfaceListener
 {
     // ======================================================================
     // Fields
@@ -254,6 +254,15 @@ public final class NetworkTable
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
         connect( configuration, networkInterfaceFactory_.createClientNetworkInterface( this ) );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.INetworkInterfaceListener#networkInterfaceDisconnected()
+     */
+    @Override
+    public void networkInterfaceDisconnected()
+    {
+        disconnect();
     }
 
     /*

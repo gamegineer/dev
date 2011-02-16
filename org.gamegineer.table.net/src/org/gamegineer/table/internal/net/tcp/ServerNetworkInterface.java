@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.net.tcp;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.INetworkInterface;
+import org.gamegineer.table.internal.net.INetworkInterfaceListener;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.NetworkTableException;
 
@@ -34,41 +34,29 @@ import org.gamegineer.table.net.NetworkTableException;
  */
 @Immutable
 final class ServerNetworkInterface
-    implements INetworkInterface
+    extends AbstractNetworkInterface
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The dispatcher associated with the network interface. */
-    private final Dispatcher dispatcher_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
      * Initializes a new instance of the {@code ServerNetworkInterface} class.
+     * 
+     * @param listener
+     *        The network interface listener; must not be {@code null}.
      */
-    ServerNetworkInterface()
+    ServerNetworkInterface(
+        /* @NonNull */
+        final INetworkInterfaceListener listener )
     {
-        dispatcher_ = new Dispatcher();
+        super( listener, new Dispatcher() );
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.internal.net.INetworkInterface#close()
-     */
-    @Override
-    public void close()
-    {
-        dispatcher_.close();
-    }
 
     /*
      * @see org.gamegineer.table.internal.net.INetworkInterface#open(org.gamegineer.table.net.INetworkTableConfiguration)
@@ -80,9 +68,9 @@ final class ServerNetworkInterface
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        dispatcher_.open();
+        getDispatcher().open();
 
-        final Acceptor acceptor = new Acceptor( dispatcher_ );
+        final Acceptor acceptor = new Acceptor( this );
         try
         {
             acceptor.bind( configuration );

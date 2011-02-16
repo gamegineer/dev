@@ -51,12 +51,12 @@ final class Acceptor
     // Fields
     // ======================================================================
 
-    /** The dispatcher associated with the acceptor. */
-    private final Dispatcher dispatcher_;
-
     /** Indicates the acceptor is registered with the dispatcher. */
     @GuardedBy( "getLock()" )
     private boolean isRegistered_;
+
+    /** The network interface associated with the acceptor. */
+    private final AbstractNetworkInterface networkInterface_;
 
     /** The server socket channel on which incoming connections are accepted. */
     @GuardedBy( "getLock()" )
@@ -70,18 +70,18 @@ final class Acceptor
     /**
      * Initializes a new instance of the {@code Acceptor} class.
      * 
-     * @param dispatcher
-     *        The dispatcher associated with the acceptor; must not be {@code
-     *        null}.
+     * @param networkInterface
+     *        The network interface associated with the acceptor; must not be
+     *        {@code null}.
      */
     Acceptor(
         /* @NonNull */
-        final Dispatcher dispatcher )
+        final AbstractNetworkInterface networkInterface )
     {
-        assert dispatcher != null;
+        assert networkInterface != null;
 
-        dispatcher_ = dispatcher;
         isRegistered_ = false;
+        networkInterface_ = networkInterface;
         serverChannel_ = null;
     }
 
@@ -109,7 +109,7 @@ final class Acceptor
 
             clientChannel.configureBlocking( false );
 
-            final AbstractServiceHandler serviceHandler = new ServerServiceHandler( dispatcher_ );
+            final AbstractServiceHandler serviceHandler = new ServerServiceHandler( networkInterface_ );
             serviceHandler.open( clientChannel );
         }
         catch( final IOException e )
@@ -148,9 +148,9 @@ final class Acceptor
             try
             {
                 serverChannel_ = createServerSocketChannel( configuration );
-                setState( State.OPENED );
+                setState( State.OPEN );
 
-                dispatcher_.registerEventHandler( this );
+                networkInterface_.getDispatcher().registerEventHandler( this );
                 isRegistered_ = true;
             }
             catch( final IOException e )
@@ -167,14 +167,16 @@ final class Acceptor
     @Override
     void close()
     {
+        final State state;
+
         synchronized( getLock() )
         {
-            if( getState() == State.OPENED )
+            if( (state = getState()) == State.OPEN )
             {
                 if( isRegistered_ )
                 {
                     isRegistered_ = false;
-                    dispatcher_.unregisterEventHandler( this );
+                    networkInterface_.getDispatcher().unregisterEventHandler( this );
                 }
 
                 try
@@ -192,6 +194,11 @@ final class Acceptor
             }
 
             setState( State.CLOSED );
+        }
+
+        if( state == State.OPEN )
+        {
+            networkInterface_.getListener().networkInterfaceDisconnected();
         }
     }
 
@@ -252,7 +259,7 @@ final class Acceptor
         {
             // Handle race condition when acceptor is closed after an event has been
             // dispatched but before this method is called
-            if( getState() == State.OPENED )
+            if( getState() == State.OPEN )
             {
                 if( getSelectionKey().isAcceptable() )
                 {
