@@ -1,6 +1,6 @@
 /*
  * CardSurfaceDesignUIRegistry.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Nov 21, 2009 at 12:27:06 AM.
  */
 
-package org.gamegineer.table.internal.ui.services.cardsurfacedesignuiregistry;
+package org.gamegineer.table.internal.ui;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
@@ -29,14 +29,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.CardSurfaceDesignId;
-import org.gamegineer.table.internal.ui.Debug;
 import org.gamegineer.table.ui.ICardSurfaceDesignUI;
-import org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry;
+import org.gamegineer.table.ui.ICardSurfaceDesignUIRegistry;
 
 /**
  * Implementation of
- * {@link org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry}
- * .
+ * {@link org.gamegineer.table.ui.ICardSurfaceDesignUIRegistry}.
  */
 @ThreadSafe
 public final class CardSurfaceDesignUIRegistry

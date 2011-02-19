@@ -1,6 +1,6 @@
 /*
  * CardPileBaseDesignUIRegistry.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Jan 23, 2010 at 9:37:47 PM.
  */
 
-package org.gamegineer.table.internal.ui.services.cardpilebasedesignuiregistry;
+package org.gamegineer.table.internal.ui;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
@@ -29,14 +29,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.CardPileBaseDesignId;
-import org.gamegineer.table.internal.ui.Debug;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
-import org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry;
+import org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry;
 
 /**
  * Implementation of
- * {@link org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry}
- * .
+ * {@link org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry}.
  */
 @ThreadSafe
 public final class CardPileBaseDesignUIRegistry

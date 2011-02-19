@@ -3,9 +3,9 @@
 		name="org.gamegineer.table.ui.cardPileBaseDesignUIRegistry"
 		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 	<implementation
-			class="org.gamegineer.table.internal.ui.services.cardpilebasedesignuiregistry.CardPileBaseDesignUIRegistry" />
+			class="org.gamegineer.table.internal.ui.CardPileBaseDesignUIRegistry" />
 	<service>
 		<provide
-				interface="org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry" />
+				interface="org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry" />
 	</service>
 </scr:component>

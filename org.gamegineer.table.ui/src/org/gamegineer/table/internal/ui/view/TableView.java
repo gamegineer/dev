@@ -85,7 +85,7 @@ import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
 import org.gamegineer.table.internal.ui.wizards.hostnetworktable.HostNetworkTableWizard;
 import org.gamegineer.table.internal.ui.wizards.joinnetworktable.JoinNetworkTableWizard;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
-import org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry;
+import org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry;
 
 /**
  * A view of the table.

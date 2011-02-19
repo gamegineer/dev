@@ -1,6 +1,6 @@
 /*
- * CardPileBaseDesignUIRegistryExtensionPointAdapter.java
- * Copyright 2008-2010 Gamegineer.org
+ * CardSurfaceDesignUIRegistryExtensionPointAdapter.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 2, 2010 at 9:46:32 PM.
+ * Created on Aug 4, 2010 at 10:00:14 PM.
  */
 
-package org.gamegineer.table.internal.ui.services.cardpilebasedesignuiregistry;
+package org.gamegineer.table.internal.ui;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
@@ -40,24 +40,21 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.Path;
-import org.gamegineer.table.core.CardPileBaseDesignId;
-import org.gamegineer.table.internal.ui.Activator;
-import org.gamegineer.table.internal.ui.BundleConstants;
-import org.gamegineer.table.internal.ui.Loggers;
+import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.internal.ui.util.swing.IconProxy;
-import org.gamegineer.table.ui.ICardPileBaseDesignUI;
+import org.gamegineer.table.ui.ICardSurfaceDesignUI;
+import org.gamegineer.table.ui.ICardSurfaceDesignUIRegistry;
 import org.gamegineer.table.ui.TableUIFactory;
-import org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry;
 import org.osgi.framework.Bundle;
 import org.osgi.service.packageadmin.PackageAdmin;
 
 /**
- * A component that adapts card pile base design user interfaces published via
- * the {@code org.gamegineer.table.ui.cardPileBaseDesignUIs} extension point to
- * the card pile base design user interface registry.
+ * A component that adapts card surface design user interfaces published via the
+ * {@code org.gamegineer.table.ui.cardSurfaceDesignUIs} extension point to the
+ * card surface design user interface registry.
  */
 @ThreadSafe
-public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
+public final class CardSurfaceDesignUIRegistryExtensionPointAdapter
     implements IRegistryEventListener
 {
     // ======================================================================
@@ -65,33 +62,33 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
     // ======================================================================
 
     /**
-     * The configuration element attribute specifying the card pile base design
+     * The configuration element attribute specifying the card surface design
      * icon.
      */
     private static final String ATTR_ICON = "icon"; //$NON-NLS-1$
 
     /**
-     * The configuration element attribute specifying the card pile base design
+     * The configuration element attribute specifying the card surface design
      * identifier.
      */
     private static final String ATTR_ID = "id"; //$NON-NLS-1$
 
     /**
-     * The configuration element attribute specifying the card pile base design
+     * The configuration element attribute specifying the card surface design
      * name.
      */
     private static final String ATTR_NAME = "name"; //$NON-NLS-1$
 
-    /** The card pile base design user interface registry service. */
+    /** The card surface design user interface registry service. */
     @GuardedBy( "lock_" )
-    private ICardPileBaseDesignUIRegistry cardPileBaseDesignUIRegistry_;
+    private ICardSurfaceDesignUIRegistry cardSurfaceDesignUIRegistry_;
 
     /**
-     * The collection of card pile base design user interfaces created from the
+     * The collection of card surface design user interfaces created from the
      * extension registry.
      */
     @GuardedBy( "lock_" )
-    private Collection<CardPileBaseDesignUI> cardPileBaseDesignUIs_;
+    private Collection<CardSurfaceDesignUI> cardSurfaceDesignUIs_;
 
     /** The extension registry service. */
     @GuardedBy( "lock_" )
@@ -107,13 +104,13 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
 
     /**
      * Initializes a new instance of the {@code
-     * CardPileBaseDesignUIRegistryExtensionPointAdapter} class.
+     * CardSurfaceDesignUIRegistryExtensionPointAdapter} class.
      */
-    public CardPileBaseDesignUIRegistryExtensionPointAdapter()
+    public CardSurfaceDesignUIRegistryExtensionPointAdapter()
     {
         lock_ = new Object();
-        cardPileBaseDesignUIRegistry_ = null;
-        cardPileBaseDesignUIs_ = new ArrayList<CardPileBaseDesignUI>();
+        cardSurfaceDesignUIRegistry_ = null;
+        cardSurfaceDesignUIs_ = new ArrayList<CardSurfaceDesignUI>();
         extensionRegistry_ = null;
     }
 
@@ -127,8 +124,8 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
      */
     public void activate()
     {
-        registerCardPileBaseDesignUIs();
-        extensionRegistry_.addListener( this, BundleConstants.CARD_PILE_BASE_DESIGN_UIS_EXTENSION_POINT_UNIQUE_ID );
+        registerCardSurfaceDesignUIs();
+        extensionRegistry_.addListener( this, BundleConstants.CARD_SURFACE_DESIGN_UIS_EXTENSION_POINT_UNIQUE_ID );
     }
 
     /*
@@ -142,7 +139,7 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
         {
             for( final IConfigurationElement configurationElement : extension.getConfigurationElements() )
             {
-                registerCardPileBaseDesignUI( configurationElement );
+                registerCardSurfaceDesignUI( configurationElement );
             }
         }
     }
@@ -159,29 +156,29 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
     }
 
     /**
-     * Binds the card pile base design user interface registry service to this
+     * Binds the card surface design user interface registry service to this
      * component.
      * 
-     * @param cardPileBaseDesignUIRegistry
-     *        The card pile base design user interface registry service; must
-     *        not be {@code null}.
+     * @param cardSurfaceDesignUIRegistry
+     *        The card surface design user interface registry service; must not
+     *        be {@code null}.
      * 
      * @throws java.lang.IllegalStateException
-     *         If the card pile base design user interface registry is already
+     *         If the card surface design user interface registry is already
      *         bound.
      * @throws java.lang.NullPointerException
-     *         If {@code cardPileBaseDesignUIRegistry} is {@code null}.
+     *         If {@code cardSurfaceDesignUIRegistry} is {@code null}.
      */
-    public void bindCardPileBaseDesignUIRegistry(
+    public void bindCardSurfaceDesignUIRegistry(
         /* @NonNull */
-        final ICardPileBaseDesignUIRegistry cardPileBaseDesignUIRegistry )
+        final ICardSurfaceDesignUIRegistry cardSurfaceDesignUIRegistry )
     {
-        assertArgumentNotNull( cardPileBaseDesignUIRegistry, "cardPileBaseDesignUIRegistry" ); //$NON-NLS-1$
+        assertArgumentNotNull( cardSurfaceDesignUIRegistry, "cardSurfaceDesignUIRegistry" ); //$NON-NLS-1$
 
         synchronized( lock_ )
         {
-            assertStateLegal( cardPileBaseDesignUIRegistry_ == null, Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_bindCardPileBaseDesignUIRegistry_bound );
-            cardPileBaseDesignUIRegistry_ = cardPileBaseDesignUIRegistry;
+            assertStateLegal( cardSurfaceDesignUIRegistry_ == null, Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_bindCardSurfaceDesignUIRegistry_bound );
+            cardSurfaceDesignUIRegistry_ = cardSurfaceDesignUIRegistry;
         }
     }
 
@@ -204,26 +201,26 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            assertStateLegal( extensionRegistry_ == null, Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_bindExtensionRegistry_bound );
+            assertStateLegal( extensionRegistry_ == null, Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_bindExtensionRegistry_bound );
             extensionRegistry_ = extensionRegistry;
         }
     }
 
     /**
-     * Creates a card pile base design user interface based on the specified
+     * Creates a card surface design user interface based on the specified
      * extension configuration element.
      * 
      * @param configurationElement
      *        The extension configuration element; must not be {@code null}.
      * 
-     * @return A card pile base design user interface; never {@code null}.
+     * @return A card surface design user interface; never {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If the configuration element represents an illegal card pile base
+     *         If the configuration element represents an illegal card surface
      *         design user interface.
      */
     /* @NonNull */
-    private static CardPileBaseDesignUI createCardPileBaseDesignUI(
+    private static CardSurfaceDesignUI createCardSurfaceDesignUI(
         /* @NonNull */
         final IConfigurationElement configurationElement )
     {
@@ -232,39 +229,39 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
         final String idString = configurationElement.getAttribute( ATTR_ID );
         if( idString == null )
         {
-            throw new IllegalArgumentException( Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingId );
+            throw new IllegalArgumentException( Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingId );
         }
-        final CardPileBaseDesignId id = CardPileBaseDesignId.fromString( idString );
+        final CardSurfaceDesignId id = CardSurfaceDesignId.fromString( idString );
 
         final String name = configurationElement.getAttribute( ATTR_NAME );
         if( name == null )
         {
-            throw new IllegalArgumentException( Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingName );
+            throw new IllegalArgumentException( Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingName );
         }
 
         final String iconPath = configurationElement.getAttribute( ATTR_ICON );
         if( iconPath == null )
         {
-            throw new IllegalArgumentException( Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingIconPath );
+            throw new IllegalArgumentException( Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingIconPath );
         }
         final PackageAdmin packageAdmin = Activator.getDefault().getPackageAdmin();
         if( packageAdmin == null )
         {
-            throw new IllegalArgumentException( Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_noPackageAdminService );
+            throw new IllegalArgumentException( Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_noPackageAdminService );
         }
         final Bundle[] bundles = packageAdmin.getBundles( configurationElement.getNamespaceIdentifier(), null );
         if( (bundles == null) || (bundles.length == 0) )
         {
-            throw new IllegalArgumentException( Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconBundleNotFound( configurationElement.getNamespaceIdentifier() ) );
+            throw new IllegalArgumentException( Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconBundleNotFound( configurationElement.getNamespaceIdentifier() ) );
         }
         final URL iconUrl = FileLocator.find( bundles[ 0 ], new Path( iconPath ), null );
         if( iconUrl == null )
         {
-            throw new IllegalArgumentException( Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconFileNotFound( bundles[ 0 ], iconPath ) );
+            throw new IllegalArgumentException( Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconFileNotFound( bundles[ 0 ], iconPath ) );
         }
         final Icon icon = new IconProxy( iconUrl );
 
-        return new CardPileBaseDesignUI( configurationElement.getDeclaringExtension(), id, name, icon );
+        return new CardSurfaceDesignUI( configurationElement.getDeclaringExtension(), id, name, icon );
     }
 
     /**
@@ -273,81 +270,80 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
     public void deactivate()
     {
         extensionRegistry_.removeListener( this );
-        unregisterCardPileBaseDesignUIs();
+        unregisterCardSurfaceDesignUIs();
     }
 
     /**
-     * Indicates the specified card pile base design user interface was
+     * Indicates the specified card surface design user interface was
      * contributed by the specified extension.
      * 
-     * @param cardPileBaseDesignUI
-     *        The card pile base design user interface; must not be {@code null}
-     *        .
+     * @param cardSurfaceDesignUI
+     *        The card surface design user interface; must not be {@code null}.
      * @param extension
      *        The extension; must not be {@code null}.
      * 
-     * @return {@code true} if the specified card pile base design user
-     *         interface was contributed by the specified extension; otherwise
-     *         {@code false}.
+     * @return {@code true} if the specified card surface design user interface
+     *         was contributed by the specified extension; otherwise {@code
+     *         false}.
      */
-    private static boolean isCardPileBaseDesignUIContributedByExtension(
+    private static boolean isCardSurfaceDesignUIContributedByExtension(
         /* @NonNull */
-        final CardPileBaseDesignUI cardPileBaseDesignUI,
+        final CardSurfaceDesignUI cardSurfaceDesignUI,
         /* @NonNull */
         final IExtension extension )
     {
-        assert cardPileBaseDesignUI != null;
+        assert cardSurfaceDesignUI != null;
         assert extension != null;
 
-        if( !cardPileBaseDesignUI.getExtensionNamespaceId().equals( extension.getNamespaceIdentifier() ) )
+        if( !cardSurfaceDesignUI.getExtensionNamespaceId().equals( extension.getNamespaceIdentifier() ) )
         {
             return false;
         }
 
-        final String extensionSimpleId = cardPileBaseDesignUI.getExtensionSimpleId();
+        final String extensionSimpleId = cardSurfaceDesignUI.getExtensionSimpleId();
         return (extensionSimpleId == null) || extensionSimpleId.equals( extension.getSimpleIdentifier() );
     }
 
     /**
-     * Registers the card pile base design user interface represented by the
+     * Registers the card surface design user interface represented by the
      * specified extension configuration element.
      * 
      * @param configurationElement
      *        The extension configuration element; must not be {@code null}.
      */
-    private void registerCardPileBaseDesignUI(
+    private void registerCardSurfaceDesignUI(
         /* @NonNull */
         final IConfigurationElement configurationElement )
     {
         assert configurationElement != null;
 
-        final CardPileBaseDesignUI cardPileBaseDesignUI;
+        final CardSurfaceDesignUI cardSurfaceDesignUI;
         try
         {
-            cardPileBaseDesignUI = createCardPileBaseDesignUI( configurationElement );
+            cardSurfaceDesignUI = createCardSurfaceDesignUI( configurationElement );
         }
         catch( final IllegalArgumentException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_registerCardPileBaseDesignUI_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_registerCardSurfaceDesignUI_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
             return;
         }
 
         synchronized( lock_ )
         {
-            cardPileBaseDesignUIRegistry_.registerCardPileBaseDesignUI( cardPileBaseDesignUI );
-            cardPileBaseDesignUIs_.add( cardPileBaseDesignUI );
+            cardSurfaceDesignUIRegistry_.registerCardSurfaceDesignUI( cardSurfaceDesignUI );
+            cardSurfaceDesignUIs_.add( cardSurfaceDesignUI );
         }
     }
 
     /**
-     * Registers all card pile base design user interfaces in the extension
+     * Registers all card surface design user interfaces in the extension
      * registry.
      */
-    private void registerCardPileBaseDesignUIs()
+    private void registerCardSurfaceDesignUIs()
     {
-        for( final IConfigurationElement configurationElement : extensionRegistry_.getConfigurationElementsFor( BundleConstants.CARD_PILE_BASE_DESIGN_UIS_EXTENSION_POINT_UNIQUE_ID ) )
+        for( final IConfigurationElement configurationElement : extensionRegistry_.getConfigurationElementsFor( BundleConstants.CARD_SURFACE_DESIGN_UIS_EXTENSION_POINT_UNIQUE_ID ) )
         {
-            registerCardPileBaseDesignUI( configurationElement );
+            registerCardSurfaceDesignUI( configurationElement );
         }
     }
 
@@ -360,7 +356,7 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
     {
         for( final IExtension extension : extensions )
         {
-            unregisterCardPileBaseDesignUIs( extension );
+            unregisterCardSurfaceDesignUIs( extension );
         }
     }
 
@@ -376,28 +372,28 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
     }
 
     /**
-     * Unbinds the card pile base design user interface registry service from
-     * this component.
+     * Unbinds the card surface design user interface registry service from this
+     * component.
      * 
-     * @param cardPileBaseDesignUIRegistry
-     *        The card pile base design user interface registry service; must
-     *        not be {@code null}.
+     * @param cardSurfaceDesignUIRegistry
+     *        The card surface design user interface registry service; must not
+     *        be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code cardPileBaseDesignUIRegistry} is not currently bound.
+     *         If {@code cardSurfaceDesignUIRegistry} is not currently bound.
      * @throws java.lang.NullPointerException
-     *         If {@code cardPileBaseDesignUIRegistry} is {@code null}.
+     *         If {@code cardSurfaceDesignUIRegistry} is {@code null}.
      */
-    public void unbindCardPileBaseDesignUIRegistry(
+    public void unbindCardSurfaceDesignUIRegistry(
         /* @NonNull */
-        final ICardPileBaseDesignUIRegistry cardPileBaseDesignUIRegistry )
+        final ICardSurfaceDesignUIRegistry cardSurfaceDesignUIRegistry )
     {
-        assertArgumentNotNull( cardPileBaseDesignUIRegistry, "cardPileBaseDesignUIRegistry" ); //$NON-NLS-1$
+        assertArgumentNotNull( cardSurfaceDesignUIRegistry, "cardSurfaceDesignUIRegistry" ); //$NON-NLS-1$
 
         synchronized( lock_ )
         {
-            assertArgumentLegal( cardPileBaseDesignUIRegistry_ == cardPileBaseDesignUIRegistry, "cardPileBaseDesignUIRegistry", Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_unbindCardPileBaseDesignUIRegistry_notBound ); //$NON-NLS-1$
-            cardPileBaseDesignUIRegistry_ = null;
+            assertArgumentLegal( cardSurfaceDesignUIRegistry_ == cardSurfaceDesignUIRegistry, "cardSurfaceDesignUIRegistry", Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_unbindCardSurfaceDesignUIRegistry_notBound ); //$NON-NLS-1$
+            cardSurfaceDesignUIRegistry_ = null;
         }
     }
 
@@ -420,35 +416,35 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            assertArgumentLegal( extensionRegistry_ == extensionRegistry, "extensionRegistry", Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound ); //$NON-NLS-1$
+            assertArgumentLegal( extensionRegistry_ == extensionRegistry, "extensionRegistry", Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound ); //$NON-NLS-1$
             extensionRegistry_ = null;
         }
     }
 
     /**
-     * Unregisters all card pile base design user interfaces.
+     * Unregisters all card surface design user interfaces.
      */
-    private void unregisterCardPileBaseDesignUIs()
+    private void unregisterCardSurfaceDesignUIs()
     {
         synchronized( lock_ )
         {
-            for( final CardPileBaseDesignUI cardPileBaseDesignUI : cardPileBaseDesignUIs_ )
+            for( final CardSurfaceDesignUI cardSurfaceDesignUI : cardSurfaceDesignUIs_ )
             {
-                cardPileBaseDesignUIRegistry_.unregisterCardPileBaseDesignUI( cardPileBaseDesignUI );
+                cardSurfaceDesignUIRegistry_.unregisterCardSurfaceDesignUI( cardSurfaceDesignUI );
             }
 
-            cardPileBaseDesignUIs_.clear();
+            cardSurfaceDesignUIs_.clear();
         }
     }
 
     /**
-     * Unregisters all card pile base design user interfaces contributed by the
+     * Unregisters all card surface design user interfaces contributed by the
      * specified extension.
      * 
      * @param extension
      *        The extension; must not be {@code null}.
      */
-    private void unregisterCardPileBaseDesignUIs(
+    private void unregisterCardSurfaceDesignUIs(
         /* @NonNull */
         final IExtension extension )
     {
@@ -456,12 +452,12 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            for( final Iterator<CardPileBaseDesignUI> iterator = cardPileBaseDesignUIs_.iterator(); iterator.hasNext(); )
+            for( final Iterator<CardSurfaceDesignUI> iterator = cardSurfaceDesignUIs_.iterator(); iterator.hasNext(); )
             {
-                final CardPileBaseDesignUI cardPileBaseDesignUI = iterator.next();
-                if( isCardPileBaseDesignUIContributedByExtension( cardPileBaseDesignUI, extension ) )
+                final CardSurfaceDesignUI cardSurfaceDesignUI = iterator.next();
+                if( isCardSurfaceDesignUIContributedByExtension( cardSurfaceDesignUI, extension ) )
                 {
-                    cardPileBaseDesignUIRegistry_.unregisterCardPileBaseDesignUI( cardPileBaseDesignUI );
+                    cardSurfaceDesignUIRegistry_.unregisterCardSurfaceDesignUI( cardSurfaceDesignUI );
                     iterator.remove();
                 }
             }
@@ -474,22 +470,22 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
     // ======================================================================
 
     /**
-     * Implementation of {@link org.gamegineer.table.ui.ICardPileBaseDesignUI}
+     * Implementation of {@link org.gamegineer.table.ui.ICardSurfaceDesignUI}
      * created from an extension.
      */
     @Immutable
-    private static final class CardPileBaseDesignUI
-        implements ICardPileBaseDesignUI
+    private static final class CardSurfaceDesignUI
+        implements ICardSurfaceDesignUI
     {
         // ==================================================================
         // Fields
         // ==================================================================
 
         /**
-         * The card pile base design user interface to which all behavior is
+         * The card surface design user interface to which all behavior is
          * delegated.
          */
-        private final ICardPileBaseDesignUI delegate_;
+        private final ICardSurfaceDesignUI delegate_;
 
         /** The namespace identifier of the contributing extension. */
         private final String extensionNamespaceId_;
@@ -503,27 +499,26 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code CardPileBaseDesignUI} class.
+         * Initializes a new instance of the {@code CardSurfaceDesignUI} class.
          * 
          * @param extension
-         *        The extension that contributed this card pile base design user
+         *        The extension that contributed this card surface design user
          *        interface; must not be {@code null}.
          * @param id
-         *        The card pile base design identifier; must not be {@code null}
-         *        .
+         *        The card surface design identifier; must not be {@code null}.
          * @param name
-         *        The card pile base design name; must not be {@code null}.
+         *        The card surface design name; must not be {@code null}.
          * @param icon
-         *        The card pile base design icon; must not be {@code null}.
+         *        The card surface design icon; must not be {@code null}.
          * 
          * @throws java.lang.NullPointerException
          *         If {@code id}, {@code name}, or {@code icon} is {@code null}.
          */
-        CardPileBaseDesignUI(
+        CardSurfaceDesignUI(
             /* @NonNull */
             final IExtension extension,
             /* @NonNull */
-            final CardPileBaseDesignId id,
+            final CardSurfaceDesignId id,
             /* @NonNull */
             final String name,
             /* @NonNull */
@@ -533,7 +528,7 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
 
             extensionNamespaceId_ = extension.getNamespaceIdentifier();
             extensionSimpleId_ = extension.getSimpleIdentifier();
-            delegate_ = TableUIFactory.createCardPileBaseDesignUI( id, name, icon );
+            delegate_ = TableUIFactory.createCardSurfaceDesignUI( id, name, icon );
         }
 
 
@@ -566,7 +561,7 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
         }
 
         /*
-         * @see org.gamegineer.table.ui.ICardPileBaseDesignUI#getIcon()
+         * @see org.gamegineer.table.ui.ICardSurfaceDesignUI#getIcon()
          */
         @Override
         public Icon getIcon()
@@ -575,16 +570,16 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
         }
 
         /*
-         * @see org.gamegineer.table.ui.ICardPileBaseDesignUI#getId()
+         * @see org.gamegineer.table.ui.ICardSurfaceDesignUI#getId()
          */
         @Override
-        public CardPileBaseDesignId getId()
+        public CardSurfaceDesignId getId()
         {
             return delegate_.getId();
         }
 
         /*
-         * @see org.gamegineer.table.ui.ICardPileBaseDesignUI#getName()
+         * @see org.gamegineer.table.ui.ICardSurfaceDesignUI#getName()
          */
         @Override
         public String getName()

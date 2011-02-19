@@ -1,6 +1,6 @@
 /*
  * CardPileBaseDesignUIRegistryExtensionPointAdapterTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Aug 2, 2010 at 10:35:21 PM.
  */
 
-package org.gamegineer.table.internal.ui.services.cardpilebasedesignuiregistry;
+package org.gamegineer.table.internal.ui;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -30,17 +30,16 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.table.core.CardPileBaseDesignId;
-import org.gamegineer.table.internal.ui.BundleConstants;
 import org.gamegineer.table.internal.ui.util.swing.IconProxy;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
-import org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry;
+import org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.services.cardpilebasedesignuiregistry.CardPileBaseDesignUIRegistryExtensionPointAdapter}
+ * {@link org.gamegineer.table.internal.ui.CardPileBaseDesignUIRegistryExtensionPointAdapter}
  * class.
  */
 public final class CardPileBaseDesignUIRegistryExtensionPointAdapterTest

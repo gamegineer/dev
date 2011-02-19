@@ -1,6 +1,6 @@
 /*
  * AbstractCardPileBaseDesignUIRegistryTestCase.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Jan 23, 2010 at 9:31:39 PM.
  */
 
-package org.gamegineer.table.ui.services.cardpilebasedesignuiregistry;
+package org.gamegineer.table.ui;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -28,16 +28,13 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import org.gamegineer.table.core.CardPileBaseDesignId;
-import org.gamegineer.table.ui.CardPileBaseDesignUIs;
-import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry}
- * interface.
+ * {@link org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry} interface.
  */
 public abstract class AbstractCardPileBaseDesignUIRegistryTestCase
 {

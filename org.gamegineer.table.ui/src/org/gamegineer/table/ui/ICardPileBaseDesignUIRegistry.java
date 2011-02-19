@@ -1,6 +1,6 @@
 /*
- * ICardSurfaceDesignUIRegistry.java
- * Copyright 2008-2010 Gamegineer.org
+ * ICardPileBaseDesignUIRegistry.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,88 +16,89 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 20, 2009 at 11:16:02 PM.
+ * Created on Jan 23, 2010 at 9:29:27 PM.
  */
 
-package org.gamegineer.table.ui.services.cardsurfacedesignuiregistry;
+package org.gamegineer.table.ui;
 
 import java.util.Collection;
-import org.gamegineer.table.core.CardSurfaceDesignId;
-import org.gamegineer.table.ui.ICardSurfaceDesignUI;
+import org.gamegineer.table.core.CardPileBaseDesignId;
 
 /**
- * A service for the management and discovery of card surface design user
+ * A service for the management and discovery of card pile base design user
  * interfaces.
  * 
  * @noextend This interface is not intended to be extended by clients.
  * 
  * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface ICardSurfaceDesignUIRegistry
+public interface ICardPileBaseDesignUIRegistry
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Gets the card surface design user interface with the specified
+     * Gets the card pile base design user interface with the specified
      * identifier.
      * 
      * @param id
-     *        The card surface design identifier; must not be {@code null}.
+     *        The card pile base design identifier; must not be {@code null}.
      * 
-     * @return The card surface design user interface with the specified
+     * @return The card pile base design user interface with the specified
      *         identifier or {@code null} if no such identifier is registered.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code id} is {@code null}.
      */
     /* @Nullable */
-    public ICardSurfaceDesignUI getCardSurfaceDesignUI(
+    public ICardPileBaseDesignUI getCardPileBaseDesignUI(
         /* @NonNull */
-        CardSurfaceDesignId id );
+        CardPileBaseDesignId id );
 
     /**
-     * Gets a collection of all card surface design user interfaces registered
+     * Gets a collection of all card pile base design user interfaces registered
      * with this service.
      * 
-     * @return A collection of all card surface design user interfaces
+     * @return A collection of all card pile base design user interfaces
      *         registered with this service; never {@code null}. This collection
-     *         is a snapshot of the card surface design user interfaces
+     *         is a snapshot of the card pile base design user interfaces
      *         registered at the time of the call.
      */
     /* @NonNull */
-    public Collection<ICardSurfaceDesignUI> getCardSurfaceDesignUIs();
+    public Collection<ICardPileBaseDesignUI> getCardPileBaseDesignUIs();
 
     /**
-     * Registers the specified card surface design user interface.
+     * Registers the specified card pile base design user interface.
      * 
-     * @param cardSurfaceDesignUI
-     *        The card surface design user interface; must not be {@code null}.
+     * @param cardPileBaseDesignUI
+     *        The card pile base design user interface; must not be {@code null}
+     *        .
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If a card surface design user interface with the same identifier
-     *         is already registered.
+     *         If a card pile base design user interface with the same
+     *         identifier is already registered.
      * @throws java.lang.NullPointerException
-     *         If {@code cardSurfaceDesignUI} is {@code null}.
+     *         If {@code cardPileBaseDesignUI} is {@code null}.
      */
-    public void registerCardSurfaceDesignUI(
+    public void registerCardPileBaseDesignUI(
         /* @NonNull */
-        ICardSurfaceDesignUI cardSurfaceDesignUI );
+        ICardPileBaseDesignUI cardPileBaseDesignUI );
 
     /**
-     * Unregisters the specified card surface design user interface.
+     * Unregisters the specified card pile base design user interface.
      * 
-     * @param cardSurfaceDesignUI
-     *        The card surface design user interface; must not be {@code null}.
+     * @param cardPileBaseDesignUI
+     *        The card pile base design user interface; must not be {@code null}
+     *        .
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If the specified card surface design user interface was not
+     *         If the specified card pile base design user interface was not
      *         previously registered.
      * @throws java.lang.NullPointerException
-     *         If {@code cardSurfaceDesignUI} is {@code null}.
+     *         If {@code cardPileBaseDesignUI} is {@code null}.
      */
-    public void unregisterCardSurfaceDesignUI(
+    public void unregisterCardPileBaseDesignUI(
         /* @NonNull */
-        ICardSurfaceDesignUI cardSurfaceDesignUI );
+        ICardPileBaseDesignUI cardPileBaseDesignUI );
 }

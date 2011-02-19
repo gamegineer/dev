@@ -1,6 +1,6 @@
 /*
  * CardSurfaceDesignUIRegistryExtensionPointAdapterTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Aug 4, 2010 at 10:32:57 PM.
  */
 
-package org.gamegineer.table.internal.ui.services.cardsurfacedesignuiregistry;
+package org.gamegineer.table.internal.ui;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -30,17 +30,16 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.table.core.CardSurfaceDesignId;
-import org.gamegineer.table.internal.ui.BundleConstants;
 import org.gamegineer.table.internal.ui.util.swing.IconProxy;
 import org.gamegineer.table.ui.ICardSurfaceDesignUI;
-import org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry;
+import org.gamegineer.table.ui.ICardSurfaceDesignUIRegistry;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.services.cardsurfacedesignuiregistry.CardSurfaceDesignUIRegistryExtensionPointAdapter}
+ * {@link org.gamegineer.table.internal.ui.CardSurfaceDesignUIRegistryExtensionPointAdapter}
  * class.
  */
 public final class CardSurfaceDesignUIRegistryExtensionPointAdapterTest

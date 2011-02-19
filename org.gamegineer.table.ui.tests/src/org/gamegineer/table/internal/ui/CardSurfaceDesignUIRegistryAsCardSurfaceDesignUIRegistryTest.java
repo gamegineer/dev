@@ -1,6 +1,6 @@
 /*
  * CardSurfaceDesignUIRegistryAsCardSurfaceDesignUIRegistryTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,17 +19,16 @@
  * Created on Nov 21, 2009 at 10:14:38 PM.
  */
 
-package org.gamegineer.table.internal.ui.services.cardsurfacedesignuiregistry;
+package org.gamegineer.table.internal.ui;
 
-import org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.AbstractCardSurfaceDesignUIRegistryTestCase;
-import org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry;
+import org.gamegineer.table.ui.AbstractCardSurfaceDesignUIRegistryTestCase;
+import org.gamegineer.table.ui.ICardSurfaceDesignUIRegistry;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.services.cardsurfacedesignuiregistry.CardSurfaceDesignUIRegistry}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry}
- * interface.
+ * {@link org.gamegineer.table.internal.ui.CardSurfaceDesignUIRegistry} class to
+ * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.ui.ICardSurfaceDesignUIRegistry} interface.
  */
 public final class CardSurfaceDesignUIRegistryAsCardSurfaceDesignUIRegistryTest
     extends AbstractCardSurfaceDesignUIRegistryTestCase

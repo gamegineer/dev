@@ -1,6 +1,6 @@
 /*
  * CardPileBaseDesignUIRegistryAsCardPileBaseDesignUIRegistryTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,17 +19,16 @@
  * Created on Jan 23, 2010 at 9:50:52 PM.
  */
 
-package org.gamegineer.table.internal.ui.services.cardpilebasedesignuiregistry;
+package org.gamegineer.table.internal.ui;
 
-import org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.AbstractCardPileBaseDesignUIRegistryTestCase;
-import org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry;
+import org.gamegineer.table.ui.AbstractCardPileBaseDesignUIRegistryTestCase;
+import org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.services.cardpilebasedesignuiregistry.CardPileBaseDesignUIRegistry}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry}
- * interface.
+ * {@link org.gamegineer.table.internal.ui.CardPileBaseDesignUIRegistry} class
+ * to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry} interface.
  */
 public final class CardPileBaseDesignUIRegistryAsCardPileBaseDesignUIRegistryTest
     extends AbstractCardPileBaseDesignUIRegistryTestCase

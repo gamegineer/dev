@@ -1,6 +1,6 @@
 /*
  * AbstractCardSurfaceDesignUIRegistryTestCase.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Nov 20, 2009 at 11:43:50 PM.
  */
 
-package org.gamegineer.table.ui.services.cardsurfacedesignuiregistry;
+package org.gamegineer.table.ui;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -28,16 +28,13 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import org.gamegineer.table.core.CardSurfaceDesignId;
-import org.gamegineer.table.ui.CardSurfaceDesignUIs;
-import org.gamegineer.table.ui.ICardSurfaceDesignUI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry}
- * interface.
+ * {@link org.gamegineer.table.ui.ICardSurfaceDesignUIRegistry} interface.
  */
 public abstract class AbstractCardSurfaceDesignUIRegistryTestCase
 {

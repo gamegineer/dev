@@ -1,6 +1,6 @@
 /*
  * CardPileView.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,7 +40,7 @@ import org.gamegineer.table.internal.ui.model.CardPileModelEvent;
 import org.gamegineer.table.internal.ui.model.ICardPileModelListener;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.gamegineer.table.ui.ICardSurfaceDesignUI;
-import org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry;
+import org.gamegineer.table.ui.ICardSurfaceDesignUIRegistry;
 
 /**
  * A view of a card pile.
