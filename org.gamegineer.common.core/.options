@@ -3,8 +3,5 @@
 # Reports default bundle activity.
 org.gamegineer.common.core/debug=false
 
-# Reports logging service package activity.
-org.gamegineer.common.core/debug/services/logging=false
-
 # Reports logging package activity.
-org.gamegineer.common.core/debug/util/logging=false
+org.gamegineer.common.core/debug/logging=false

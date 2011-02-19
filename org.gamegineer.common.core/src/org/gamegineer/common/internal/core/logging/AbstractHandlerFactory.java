@@ -121,7 +121,7 @@ public abstract class AbstractHandlerFactory<T extends Handler>
             }
             catch( final UnsupportedEncodingException e )
             {
-                Debug.getDefault().trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to parse encoding for handler '%1$s.%2$s'", handler.getClass().getName(), instanceName ), e ); //$NON-NLS-1$
+                Debug.getDefault().trace( Debug.OPTION_LOGGING, String.format( "Failed to parse encoding for handler '%1$s.%2$s'", handler.getClass().getName(), instanceName ), e ); //$NON-NLS-1$
             }
         }
     }
@@ -158,11 +158,11 @@ public abstract class AbstractHandlerFactory<T extends Handler>
             }
             catch( final IllegalArgumentException e )
             {
-                Debug.getDefault().trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Illegal filter name specified for handler '%1$s.%2$s'", handler.getClass().getName(), instanceName ), e ); //$NON-NLS-1$
+                Debug.getDefault().trace( Debug.OPTION_LOGGING, String.format( "Illegal filter name specified for handler '%1$s.%2$s'", handler.getClass().getName(), instanceName ), e ); //$NON-NLS-1$
             }
             catch( final ComponentException e )
             {
-                Debug.getDefault().trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to create filter '%1$s' for handler '%2$s.%3$s'", value, handler.getClass().getName(), instanceName ), e ); //$NON-NLS-1$
+                Debug.getDefault().trace( Debug.OPTION_LOGGING, String.format( "Failed to create filter '%1$s' for handler '%2$s.%3$s'", value, handler.getClass().getName(), instanceName ), e ); //$NON-NLS-1$
             }
         }
     }
@@ -199,11 +199,11 @@ public abstract class AbstractHandlerFactory<T extends Handler>
             }
             catch( final IllegalArgumentException e )
             {
-                Debug.getDefault().trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Illegal formatter name specified for handler '%1$s.%2$s'", handler.getClass().getName(), instanceName ), e ); //$NON-NLS-1$
+                Debug.getDefault().trace( Debug.OPTION_LOGGING, String.format( "Illegal formatter name specified for handler '%1$s.%2$s'", handler.getClass().getName(), instanceName ), e ); //$NON-NLS-1$
             }
             catch( final ComponentException e )
             {
-                Debug.getDefault().trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to create formatter '%1$s' for handler '%2$s.%3$s'", value, handler.getClass().getName(), instanceName ), e ); //$NON-NLS-1$
+                Debug.getDefault().trace( Debug.OPTION_LOGGING, String.format( "Failed to create formatter '%1$s' for handler '%2$s.%3$s'", value, handler.getClass().getName(), instanceName ), e ); //$NON-NLS-1$
             }
         }
     }
@@ -240,7 +240,7 @@ public abstract class AbstractHandlerFactory<T extends Handler>
             }
             catch( final IllegalArgumentException e )
             {
-                Debug.getDefault().trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to parse level for handler '%1$s.%2$s'", handler.getClass().getName(), instanceName ), e ); //$NON-NLS-1$
+                Debug.getDefault().trace( Debug.OPTION_LOGGING, String.format( "Failed to parse level for handler '%1$s.%2$s'", handler.getClass().getName(), instanceName ), e ); //$NON-NLS-1$
             }
         }
     }

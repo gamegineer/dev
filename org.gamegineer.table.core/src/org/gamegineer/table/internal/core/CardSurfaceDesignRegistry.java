@@ -97,7 +97,7 @@ public final class CardSurfaceDesignRegistry
         assertArgumentNotNull( cardSurfaceDesign, "cardSurfaceDesign" ); //$NON-NLS-1$
         assertArgumentLegal( cardSurfaceDesigns_.putIfAbsent( cardSurfaceDesign.getId(), cardSurfaceDesign ) == null, "cardSurfaceDesign", Messages.CardSurfaceDesignRegistry_registerCardSurfaceDesign_cardSurfaceDesign_registered( cardSurfaceDesign.getId() ) ); //$NON-NLS-1$
 
-        Debug.getDefault().trace( Debug.OPTION_SERVICES_CARD_SURFACE_DESIGN_REGISTRY, String.format( "Registered card surface design '%1$s'", cardSurfaceDesign.getId() ) ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered card surface design '%1$s'", cardSurfaceDesign.getId() ) ); //$NON-NLS-1$
     }
 
     /*
@@ -110,6 +110,6 @@ public final class CardSurfaceDesignRegistry
         assertArgumentNotNull( cardSurfaceDesign, "cardSurfaceDesign" ); //$NON-NLS-1$
         assertArgumentLegal( cardSurfaceDesigns_.remove( cardSurfaceDesign.getId(), cardSurfaceDesign ), "cardSurfaceDesign", Messages.CardSurfaceDesignRegistry_unregisterCardSurfaceDesign_cardSurfaceDesign_unregistered( cardSurfaceDesign.getId() ) ); //$NON-NLS-1$
 
-        Debug.getDefault().trace( Debug.OPTION_SERVICES_CARD_SURFACE_DESIGN_REGISTRY, String.format( "Unregistered card surface design '%1$s'", cardSurfaceDesign.getId() ) ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered card surface design '%1$s'", cardSurfaceDesign.getId() ) ); //$NON-NLS-1$
     }
 }

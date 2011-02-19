@@ -152,7 +152,7 @@ public final class LoggingService
         assert logger != null;
         assert config != null;
 
-        Debug.getDefault().trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Configuring logger '%1$s'", logger.getName() ) ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_LOGGING, String.format( "Configuring logger '%1$s'", logger.getName() ) ); //$NON-NLS-1$
 
         logger.setFilter( config.getFilter( logger.getFilter() ) );
         logger.setLevel( config.getLevel( logger.getLevel() ) );
@@ -273,7 +273,7 @@ public final class LoggingService
         }
         catch( final IOException e )
         {
-            Debug.getDefault().trace( Debug.OPTION_SERVICES_LOGGING, String.format( "Failed to load logging properties from '%1$s'", propertiesUrl ), e ); //$NON-NLS-1$
+            Debug.getDefault().trace( Debug.OPTION_LOGGING, String.format( "Failed to load logging properties from '%1$s'", propertiesUrl ), e ); //$NON-NLS-1$
             return null;
         }
 

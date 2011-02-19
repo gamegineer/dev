@@ -2,9 +2,3 @@
 
 # Reports default bundle activity.
 org.gamegineer.table.core/debug=false
-
-# Reports card pile base design registry service package activity.
-org.gamegineer.table.core/debug/services/cardPileBaseDesignRegistry=false
-
-# Reports card surface design registry service package activity.
-org.gamegineer.table.core/debug/services/cardSurfaceDesignRegistry=false

@@ -1,6 +1,6 @@
 /*
  * Debug.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,18 +39,6 @@ public final class Debug
 
     /** The name of the top-level debug option. */
     public static final String OPTION_DEFAULT = "/debug"; //$NON-NLS-1$
-
-    /**
-     * The name of the card pile base design registry service package debug
-     * option.
-     */
-    public static final String OPTION_SERVICES_CARD_PILE_BASE_DESIGN_REGISTRY = OPTION_DEFAULT + "/services/cardPileBaseDesignRegistry"; //$NON-NLS-1$
-
-    /**
-     * The name of the card surface design registry service package debug
-     * option.
-     */
-    public static final String OPTION_SERVICES_CARD_SURFACE_DESIGN_REGISTRY = OPTION_DEFAULT + "/services/cardSurfaceDesignRegistry"; //$NON-NLS-1$
 
 
     // ======================================================================

@@ -1,6 +1,6 @@
 /*
  * Debug.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,11 +40,8 @@ public final class Debug
     /** The name of the top-level debug option. */
     public static final String OPTION_DEFAULT = "/debug"; //$NON-NLS-1$
 
-    /** The name of the logging service package debug option. */
-    public static final String OPTION_SERVICES_LOGGING = OPTION_DEFAULT + "/services/logging"; //$NON-NLS-1$
-
     /** The name of the logging package debug option. */
-    public static final String OPTION_UTILITY_LOGGING = OPTION_DEFAULT + "/util/logging"; //$NON-NLS-1$
+    public static final String OPTION_LOGGING = OPTION_DEFAULT + "/logging"; //$NON-NLS-1$
 
 
     // ======================================================================
