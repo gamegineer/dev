@@ -1,6 +1,6 @@
 /*
  * ObjectInputStreamTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,6 @@ package org.gamegineer.common.persistence.serializable;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import org.easymock.EasyMock;
-import org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.FakePersistenceDelegateRegistry;
-import org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.junit.Test;
 
 /**

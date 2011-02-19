@@ -1,6 +1,6 @@
 /*
  * PersistenceDelegateRegistryConstants.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Jul 5, 2010 at 9:22:52 PM.
  */
 
-package org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry;
+package org.gamegineer.common.persistence.serializable;
 
 import net.jcip.annotations.ThreadSafe;
 

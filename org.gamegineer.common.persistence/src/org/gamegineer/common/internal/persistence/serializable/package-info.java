@@ -1,6 +1,6 @@
 /*
  * package-info.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,11 +20,12 @@
  */
 
 /**
- * Provides the implementation of the persistence delegate registry service.
+ * Provides the implementation of classes that augment the Java object
+ * serialization framework.
  * 
  * <p>
  * This package is only intended for use by members of the
  * {@code org.gamegineer.common} project.
  * </p>
  */
-package org.gamegineer.common.internal.persistence.serializable.services.persistencedelegateregistry;
+package org.gamegineer.common.internal.persistence.serializable;

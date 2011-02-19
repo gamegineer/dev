@@ -1,6 +1,6 @@
 /*
  * IPersistenceDelegateRegistry.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,10 +19,9 @@
  * Created on Apr 29, 2010 at 11:39:31 PM.
  */
 
-package org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry;
+package org.gamegineer.common.persistence.serializable;
 
 import java.util.Set;
-import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 
 /**
  * A service for the management and discovery of Java object serialization

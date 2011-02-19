@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -110,7 +110,7 @@ public final class Activator
      *         available.
      */
     /* @Nullable */
-    public org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry getSerializablePersistenceDelegateRegistry()
+    public org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry getSerializablePersistenceDelegateRegistry()
     {
         synchronized( lock_ )
         {
@@ -118,11 +118,11 @@ public final class Activator
 
             if( serializablePersistenceDelegateRegistryTracker_ == null )
             {
-                serializablePersistenceDelegateRegistryTracker_ = new ServiceTracker( bundleContext_, org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry.class.getName(), null );
+                serializablePersistenceDelegateRegistryTracker_ = new ServiceTracker( bundleContext_, org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry.class.getName(), null );
                 serializablePersistenceDelegateRegistryTracker_.open();
             }
 
-            return (org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry)serializablePersistenceDelegateRegistryTracker_.getService();
+            return (org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry)serializablePersistenceDelegateRegistryTracker_.getService();
         }
     }
 

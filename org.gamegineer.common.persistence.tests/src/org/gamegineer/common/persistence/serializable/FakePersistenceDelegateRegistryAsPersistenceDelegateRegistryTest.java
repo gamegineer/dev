@@ -1,6 +1,6 @@
 /*
- * PersistenceDelegateRegistryAsPersistenceDelegateRegistryTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,22 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 1, 2010 at 10:20:11 PM.
+ * Created on Jul 2, 2010 at 9:27:52 PM.
  */
 
-package org.gamegineer.common.internal.persistence.serializable.services.persistencedelegateregistry;
-
-import org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.AbstractPersistenceDelegateRegistryTestCase;
-import org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
+package org.gamegineer.common.persistence.serializable;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.common.internal.persistence.serializable.services.persistencedelegateregistry.PersistenceDelegateRegistry}
+ * {@link org.gamegineer.common.persistence.serializable.FakePersistenceDelegateRegistry}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry}
+ * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry}
  * interface.
  */
-public final class PersistenceDelegateRegistryAsPersistenceDelegateRegistryTest
+public final class FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest
     extends AbstractPersistenceDelegateRegistryTestCase
 {
     // ======================================================================
@@ -40,9 +37,9 @@ public final class PersistenceDelegateRegistryAsPersistenceDelegateRegistryTest
 
     /**
      * Initializes a new instance of the {@code
-     * PersistenceDelegateRegistryAsPersistenceDelegateRegistryTest} class.
+     * FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest} class.
      */
-    public PersistenceDelegateRegistryAsPersistenceDelegateRegistryTest()
+    public FakePersistenceDelegateRegistryAsPersistenceDelegateRegistryTest()
     {
         super();
     }
@@ -53,11 +50,11 @@ public final class PersistenceDelegateRegistryAsPersistenceDelegateRegistryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.AbstractPersistenceDelegateRegistryTestCase#createPersistenceDelegateRegistry()
+     * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.AbstractPersistenceDelegateRegistryTestCase#createPersistenceDelegateRegistry()
      */
     @Override
     protected IPersistenceDelegateRegistry createPersistenceDelegateRegistry()
     {
-        return new PersistenceDelegateRegistry();
+        return new FakePersistenceDelegateRegistry();
     }
 }

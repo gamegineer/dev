@@ -1,6 +1,6 @@
 /*
  * CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IExtension;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
-import org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
+import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
 import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.internal.core.CardPileBaseDesign;

@@ -1,6 +1,6 @@
 /*
  * AbstractPersistenceDelegateRegistryTestCase.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Apr 30, 2010 at 12:05:25 AM.
  */
 
-package org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry;
+package org.gamegineer.common.persistence.serializable;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -27,15 +27,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Set;
-import org.gamegineer.common.persistence.serializable.FakePersistenceDelegate;
-import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry}
+ * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry}
  * interface.
  */
 public abstract class AbstractPersistenceDelegateRegistryTestCase

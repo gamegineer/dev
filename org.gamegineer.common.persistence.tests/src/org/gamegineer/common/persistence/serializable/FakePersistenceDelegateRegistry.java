@@ -1,6 +1,6 @@
 /*
  * FakePersistenceDelegateRegistry.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Jul 2, 2010 at 9:27:30 PM.
  */
 
-package org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry;
+package org.gamegineer.common.persistence.serializable;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
@@ -28,11 +28,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 
 /**
  * Fake implementation of
- * {@link org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry}
+ * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry}
  * .
  */
 @ThreadSafe
@@ -66,7 +65,7 @@ public final class FakePersistenceDelegateRegistry
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.Class)
+     * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.Class)
      */
     @Override
     public IPersistenceDelegate getPersistenceDelegate(
@@ -78,7 +77,7 @@ public final class FakePersistenceDelegateRegistry
     }
 
     /*
-     * @see org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.String)
+     * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.String)
      */
     @Override
     public IPersistenceDelegate getPersistenceDelegate(
@@ -90,7 +89,7 @@ public final class FakePersistenceDelegateRegistry
     }
 
     /*
-     * @see org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#getTypeNames()
+     * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#getTypeNames()
      */
     @Override
     public Set<String> getTypeNames()
@@ -99,7 +98,7 @@ public final class FakePersistenceDelegateRegistry
     }
 
     /*
-     * @see org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#registerPersistenceDelegate(java.lang.Class, org.gamegineer.common.persistence.serializable.IPersistenceDelegate)
+     * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#registerPersistenceDelegate(java.lang.Class, org.gamegineer.common.persistence.serializable.IPersistenceDelegate)
      */
     @Override
     public void registerPersistenceDelegate(
@@ -112,7 +111,7 @@ public final class FakePersistenceDelegateRegistry
     }
 
     /*
-     * @see org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#unregisterPersistenceDelegate(java.lang.Class, org.gamegineer.common.persistence.serializable.IPersistenceDelegate)
+     * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#unregisterPersistenceDelegate(java.lang.Class, org.gamegineer.common.persistence.serializable.IPersistenceDelegate)
      */
     @Override
     public void unregisterPersistenceDelegate(

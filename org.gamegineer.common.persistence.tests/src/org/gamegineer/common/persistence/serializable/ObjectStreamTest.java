@@ -1,6 +1,6 @@
 /*
  * ObjectStreamTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,8 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
-import org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.FakePersistenceDelegateRegistry;
-import org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

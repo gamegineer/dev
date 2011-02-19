@@ -1,6 +1,6 @@
 /*
  * ObjectStreams.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,7 +31,6 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.internal.persistence.Activator;
 import org.gamegineer.common.internal.persistence.Loggers;
-import org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
 
 /**
  * A factory for creating various types of input and output object streams for
@@ -144,7 +143,7 @@ public final class ObjectStreams
 
     /**
      * Null implementation of
-     * {@link org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry}
+     * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry}
      * .
      */
     @Immutable
@@ -170,7 +169,7 @@ public final class ObjectStreams
         // ==================================================================
 
         /*
-         * @see org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.Class)
+         * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.Class)
          */
         @Override
         public IPersistenceDelegate getPersistenceDelegate(
@@ -182,7 +181,7 @@ public final class ObjectStreams
         }
 
         /*
-         * @see org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.String)
+         * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#getPersistenceDelegate(java.lang.String)
          */
         @Override
         public IPersistenceDelegate getPersistenceDelegate(
@@ -194,7 +193,7 @@ public final class ObjectStreams
         }
 
         /*
-         * @see org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#getTypeNames()
+         * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#getTypeNames()
          */
         @Override
         public Set<String> getTypeNames()
@@ -203,7 +202,7 @@ public final class ObjectStreams
         }
 
         /*
-         * @see org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#registerPersistenceDelegate(java.lang.Class, org.gamegineer.common.persistence.serializable.IPersistenceDelegate)
+         * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#registerPersistenceDelegate(java.lang.Class, org.gamegineer.common.persistence.serializable.IPersistenceDelegate)
          */
         @Override
         public void registerPersistenceDelegate(
@@ -217,7 +216,7 @@ public final class ObjectStreams
         }
 
         /*
-         * @see org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry#unregisterPersistenceDelegate(java.lang.Class, org.gamegineer.common.persistence.serializable.IPersistenceDelegate)
+         * @see org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry#unregisterPersistenceDelegate(java.lang.Class, org.gamegineer.common.persistence.serializable.IPersistenceDelegate)
          */
         @Override
         public void unregisterPersistenceDelegate(

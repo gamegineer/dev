@@ -1,6 +1,6 @@
 /*
  * CardPileBaseDesignPersistenceDelegateAsPersistenceDelegateTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
-import org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry;
+import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
 import org.gamegineer.table.core.CardPileBaseDesigns;
 
 /**
