@@ -1,5 +1,5 @@
 /*
- * CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest.java
+ * CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 18, 2010 at 11:37:34 PM.
+ * Created on Aug 18, 2010 at 10:50:52 PM.
  */
 
-package org.gamegineer.table.internal.core.services.cardsurfacedesignregistry;
+package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
 import org.easymock.EasyMock;
@@ -27,20 +27,17 @@ import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IExtension;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
-import org.gamegineer.table.core.CardSurfaceDesigns;
-import org.gamegineer.table.core.ICardSurfaceDesign;
-import org.gamegineer.table.internal.core.CardSurfaceDesign;
-import org.gamegineer.table.internal.core.CardSurfaceDesignPersistenceDelegate;
-import org.gamegineer.table.internal.core.CardSurfaceDesignProxy;
+import org.gamegineer.table.core.CardPileBaseDesigns;
+import org.gamegineer.table.core.ICardPileBaseDesign;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.services.cardsurfacedesignregistry.CardSurfaceDesignExtensionProxyPersistenceDelegate}
+ * {@link org.gamegineer.table.internal.core.CardPileBaseDesignExtensionProxyPersistenceDelegate}
  * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegate}
  * interface.
  */
-public final class CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest
+public final class CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest
     extends AbstractPersistenceDelegateTestCase
 {
     // ======================================================================
@@ -49,10 +46,10 @@ public final class CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersisten
 
     /**
      * Initializes a new instance of the {@code 
-     * CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest
+     * CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest
      * * } class.
      */
-    public CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest()
+    public CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest()
     {
         super();
     }
@@ -70,10 +67,10 @@ public final class CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersisten
         final Object expected,
         final Object actual )
     {
-        final ICardSurfaceDesign expectedCardSurfaceDesign = (ICardSurfaceDesign)expected;
-        final ICardSurfaceDesign actualCardSurfaceDesign = (ICardSurfaceDesign)actual;
-        assertEquals( expectedCardSurfaceDesign.getId(), actualCardSurfaceDesign.getId() );
-        assertEquals( expectedCardSurfaceDesign.getSize(), actualCardSurfaceDesign.getSize() );
+        final ICardPileBaseDesign expectedCardPileBaseDesign = (ICardPileBaseDesign)expected;
+        final ICardPileBaseDesign actualCardPileBaseDesign = (ICardPileBaseDesign)actual;
+        assertEquals( expectedCardPileBaseDesign.getId(), actualCardPileBaseDesign.getId() );
+        assertEquals( expectedCardPileBaseDesign.getSize(), actualCardPileBaseDesign.getSize() );
     }
 
     /*
@@ -87,19 +84,19 @@ public final class CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersisten
         EasyMock.expect( extension.getNamespaceIdentifier() ).andReturn( "namespace-id" ); //$NON-NLS-1$
         EasyMock.expect( extension.getSimpleIdentifier() ).andReturn( "simple-id" ); //$NON-NLS-1$
         mocksControl.replay();
-        final ICardSurfaceDesign cardSurfaceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
-        return new CardSurfaceDesignExtensionProxy( extension, cardSurfaceDesign.getId(), cardSurfaceDesign.getSize().width, cardSurfaceDesign.getSize().height );
+        final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
+        return new CardPileBaseDesignExtensionProxy( extension, cardPileBaseDesign.getId(), cardPileBaseDesign.getSize().width, cardPileBaseDesign.getSize().height );
     }
 
     /*
-     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#registerPersistenceDelegates(org.gamegineer.common.persistence.serializable.services.persistencedelegateregistry.IPersistenceDelegateRegistry)
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#registerPersistenceDelegates(org.gamegineer.common.persistence.serializable.persistencedelegateregistry.IPersistenceDelegateRegistry)
      */
     @Override
     protected void registerPersistenceDelegates(
         final IPersistenceDelegateRegistry persistenceDelegateRegistry )
     {
-        persistenceDelegateRegistry.registerPersistenceDelegate( CardSurfaceDesign.class, new CardSurfaceDesignPersistenceDelegate() );
-        persistenceDelegateRegistry.registerPersistenceDelegate( CardSurfaceDesignProxy.class, new CardSurfaceDesignPersistenceDelegate() );
-        persistenceDelegateRegistry.registerPersistenceDelegate( CardSurfaceDesignExtensionProxy.class, new CardSurfaceDesignExtensionProxyPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardPileBaseDesign.class, new CardPileBaseDesignPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardPileBaseDesignProxy.class, new CardPileBaseDesignPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardPileBaseDesignExtensionProxy.class, new CardPileBaseDesignExtensionProxyPersistenceDelegate() );
     }
 }

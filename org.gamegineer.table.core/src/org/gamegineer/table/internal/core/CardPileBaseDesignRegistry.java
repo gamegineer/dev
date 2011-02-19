@@ -1,6 +1,6 @@
 /*
  * CardPileBaseDesignRegistry.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Jan 19, 2010 at 11:26:51 PM.
  */
 
-package org.gamegineer.table.internal.core.services.cardpilebasedesignregistry;
+package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
@@ -30,13 +30,11 @@ import java.util.concurrent.ConcurrentMap;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.ICardPileBaseDesign;
-import org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry;
-import org.gamegineer.table.internal.core.Debug;
+import org.gamegineer.table.core.ICardPileBaseDesignRegistry;
 
 /**
  * Implementation of
- * {@link org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry}
- * .
+ * {@link org.gamegineer.table.core.ICardPileBaseDesignRegistry} .
  */
 @ThreadSafe
 public final class CardPileBaseDesignRegistry
@@ -71,7 +69,7 @@ public final class CardPileBaseDesignRegistry
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry#getCardPileBaseDesign(org.gamegineer.table.core.CardPileBaseDesignId)
+     * @see org.gamegineer.table.core.cardpilebasedesignregistry.ICardPileBaseDesignRegistry#getCardPileBaseDesign(org.gamegineer.table.core.CardPileBaseDesignId)
      */
     @Override
     public ICardPileBaseDesign getCardPileBaseDesign(
@@ -83,7 +81,7 @@ public final class CardPileBaseDesignRegistry
     }
 
     /*
-     * @see org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry#getCardPileBaseDesigns()
+     * @see org.gamegineer.table.core.cardpilebasedesignregistry.ICardPileBaseDesignRegistry#getCardPileBaseDesigns()
      */
     @Override
     public Collection<ICardPileBaseDesign> getCardPileBaseDesigns()
@@ -92,7 +90,7 @@ public final class CardPileBaseDesignRegistry
     }
 
     /*
-     * @see org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry#registerCardPileBaseDesign(org.gamegineer.table.core.ICardPileBaseDesign)
+     * @see org.gamegineer.table.core.cardpilebasedesignregistry.ICardPileBaseDesignRegistry#registerCardPileBaseDesign(org.gamegineer.table.core.ICardPileBaseDesign)
      */
     @Override
     public void registerCardPileBaseDesign(
@@ -105,7 +103,7 @@ public final class CardPileBaseDesignRegistry
     }
 
     /*
-     * @see org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry#unregisterCardPileBaseDesign(org.gamegineer.table.core.ICardPileBaseDesign)
+     * @see org.gamegineer.table.core.cardpilebasedesignregistry.ICardPileBaseDesignRegistry#unregisterCardPileBaseDesign(org.gamegineer.table.core.ICardPileBaseDesign)
      */
     @Override
     public void unregisterCardPileBaseDesign(

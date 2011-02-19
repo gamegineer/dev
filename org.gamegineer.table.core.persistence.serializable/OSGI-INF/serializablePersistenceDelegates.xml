@@ -19,7 +19,7 @@
 			name="org.gamegineer.table.core.cardPileBaseDesignExtensionProxyPersistenceDelegate"
 			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 		<implementation
-				class="org.gamegineer.table.internal.core.services.cardpilebasedesignregistry.CardPileBaseDesignExtensionProxyPersistenceDelegate" />
+				class="org.gamegineer.table.internal.core.CardPileBaseDesignExtensionProxyPersistenceDelegate" />
 		<service>
 			<provide
 					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
@@ -27,7 +27,7 @@
 		<property
 				name="delegators"
 				type="String">
-			org.gamegineer.table.internal.core.services.cardpilebasedesignregistry.CardPileBaseDesignExtensionProxy
+			org.gamegineer.table.internal.core.CardPileBaseDesignExtensionProxy
 		</property>
 	</scr:component>
 	<scr:component
@@ -65,7 +65,7 @@
 			name="org.gamegineer.table.core.cardSurfaceDesignExtensionProxyPersistenceDelegate"
 			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 		<implementation
-				class="org.gamegineer.table.internal.core.services.cardsurfacedesignregistry.CardSurfaceDesignExtensionProxyPersistenceDelegate" />
+				class="org.gamegineer.table.internal.core.CardSurfaceDesignExtensionProxyPersistenceDelegate" />
 		<service>
 			<provide
 					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
@@ -73,7 +73,7 @@
 		<property
 				name="delegators"
 				type="String">
-			org.gamegineer.table.internal.core.services.cardsurfacedesignregistry.CardSurfaceDesignExtensionProxy
+			org.gamegineer.table.internal.core.CardSurfaceDesignExtensionProxy
 		</property>
 	</scr:component>
 	<scr:component

@@ -1,6 +1,6 @@
 /*
  * CardSurfaceDesignRegistryAsCardSurfaceDesignRegistryTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,17 +19,16 @@
  * Created on Nov 17, 2009 at 10:23:40 PM.
  */
 
-package org.gamegineer.table.internal.core.services.cardsurfacedesignregistry;
+package org.gamegineer.table.internal.core;
 
-import org.gamegineer.table.core.services.cardsurfacedesignregistry.AbstractCardSurfaceDesignRegistryTestCase;
-import org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry;
+import org.gamegineer.table.core.AbstractCardSurfaceDesignRegistryTestCase;
+import org.gamegineer.table.core.ICardSurfaceDesignRegistry;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.services.cardsurfacedesignregistry.CardSurfaceDesignRegistry}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry}
- * interface.
+ * {@link org.gamegineer.table.internal.core.CardSurfaceDesignRegistry} class to
+ * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.ICardSurfaceDesignRegistry} interface.
  */
 public final class CardSurfaceDesignRegistryAsCardSurfaceDesignRegistryTest
     extends AbstractCardSurfaceDesignRegistryTestCase
@@ -53,7 +52,7 @@ public final class CardSurfaceDesignRegistryAsCardSurfaceDesignRegistryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.services.cardsurfacedesignregistry.AbstractCardSurfaceDesignRegistryTestCase#createCardSurfaceDesignRegistry()
+     * @see org.gamegineer.table.core.cardsurfacedesignregistry.AbstractCardSurfaceDesignRegistryTestCase#createCardSurfaceDesignRegistry()
      */
     @Override
     protected ICardSurfaceDesignRegistry createCardSurfaceDesignRegistry()

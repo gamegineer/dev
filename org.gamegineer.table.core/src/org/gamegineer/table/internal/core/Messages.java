@@ -1,6 +1,6 @@
 /*
  * Messages.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,8 @@ package org.gamegineer.table.internal.core;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
+import org.gamegineer.table.core.CardPileBaseDesignId;
+import org.gamegineer.table.core.CardSurfaceDesignId;
 
 /**
  * A utility class to manage localized messages for the package.
@@ -92,6 +94,51 @@ final class Messages
     /** The card pile base design width must not be negative. */
     public static String CardPileBaseDesign_ctor_width_negative;
 
+    // --- CardPileBaseDesignRegistry ---------------------------------------
+
+    /**
+     * A card pile base design is already registered for the specified
+     * identifier.
+     */
+    public static String CardPileBaseDesignRegistry_registerCardPileBaseDesign_cardPileBaseDesign_registered;
+
+    /**
+     * The card pile base design is not registered for the specified identifier.
+     */
+    public static String CardPileBaseDesignRegistry_unregisterCardPileBaseDesign_cardPileBaseDesign_unregistered;
+
+    // --- CardPileBaseDesignRegistryExtensionPointAdapter ------------------
+
+    /** The card pile base design registry service is already bound. */
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_bindCardPileBaseDesignRegistry_bound;
+
+    /** The extension registry service is already bound. */
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
+
+    /**
+     * An error occurred while parsing the height attribute of a card pile base
+     * design configuration element.
+     */
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseHeightError;
+
+    /**
+     * An error occurred while parsing the width attribute of a card pile base
+     * design configuration element.
+     */
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseWidthError;
+
+    /**
+     * An error occurred while parsing the card pile base design configuration
+     * element.
+     */
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_registerCardPileBaseDesign_parseError;
+
+    /** The card pile base design registry service is not bound. */
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_unbindCardPileBaseDesignRegistry_notBound;
+
+    /** The extension registry service is not bound. */
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
+
     // --- CardSurfaceDesign ------------------------------------------------
 
     /** The card surface design height must not be negative. */
@@ -99,6 +146,48 @@ final class Messages
 
     /** The card surface design width must not be negative. */
     public static String CardSurfaceDesign_ctor_width_negative;
+
+    // --- CardSurfaceDesignRegistry ----------------------------------------
+
+    /**
+     * A card surface design is already registered for the specified identifier.
+     */
+    public static String CardSurfaceDesignRegistry_registerCardSurfaceDesign_cardSurfaceDesign_registered;
+
+    /** The card surface design is not registered for the specified identifier. */
+    public static String CardSurfaceDesignRegistry_unregisterCardSurfaceDesign_cardSurfaceDesign_unregistered;
+
+    // --- CardSurfaceDesignRegistryExtensionPointAdapter -------------------
+
+    /** The card surface design registry service is already bound. */
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_bindCardSurfaceDesignRegistry_bound;
+
+    /** The extension registry service is already bound. */
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
+
+    /**
+     * An error occurred while parsing the height attribute of a card surface
+     * design configuration element.
+     */
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseHeightError;
+
+    /**
+     * An error occurred while parsing the width attribute of a card surface
+     * design configuration element.
+     */
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseWidthError;
+
+    /**
+     * An error occurred while parsing the card surface design configuration
+     * element.
+     */
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_registerCardSurfaceDesign_parseError;
+
+    /** The card surface design registry service is not bound. */
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_unbindCardSurfaceDesignRegistry_notBound;
+
+    /** The extension registry service is not bound. */
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
 
     // --- Table ------------------------------------------------------------
 
@@ -135,5 +224,129 @@ final class Messages
     private Messages()
     {
         super();
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    // --- CardPileBaseDesignRegistry ---------------------------------------
+
+    /**
+     * Gets the formatted message indicating a card pile base design is already
+     * registered for the specified identifier.
+     * 
+     * @param cardPileBaseDesignId
+     *        The card pile base design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating a card pile base design is
+     *         already registered for the specified identifier; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    static String CardPileBaseDesignRegistry_registerCardPileBaseDesign_cardPileBaseDesign_registered(
+        /* @NonNull */
+        final CardPileBaseDesignId cardPileBaseDesignId )
+    {
+        return bind( CardPileBaseDesignRegistry_registerCardPileBaseDesign_cardPileBaseDesign_registered, cardPileBaseDesignId );
+    }
+
+    /**
+     * Gets the formatted message indicating the card pile base design is not
+     * registered for the specified identifier.
+     * 
+     * @param cardPileBaseDesignId
+     *        The card pile base design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the card pile base design is not
+     *         registered for the specified identifier; never {@code null}.
+     */
+    /* @NonNull */
+    static String CardPileBaseDesignRegistry_unregisterCardPileBaseDesign_cardPileBaseDesign_unregistered(
+        /* @NonNull */
+        final CardPileBaseDesignId cardPileBaseDesignId )
+    {
+        return bind( CardPileBaseDesignRegistry_unregisterCardPileBaseDesign_cardPileBaseDesign_unregistered, cardPileBaseDesignId );
+    }
+
+    // --- CardPileBaseDesignRegistryExtensionPointAdapter ------------------
+
+    /**
+     * Gets the formatted message indicating an error occurred while parsing the
+     * card pile base design configuration element.
+     * 
+     * @param cardPileBaseDesignId
+     *        The card pile base design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while parsing
+     *         the card pile base design configuration element; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    static String CardPileBaseDesignRegistryExtensionPointAdapter_registerCardPileBaseDesign_parseError(
+        /* @NonNull */
+        final String cardPileBaseDesignId )
+    {
+        return bind( CardPileBaseDesignRegistryExtensionPointAdapter_registerCardPileBaseDesign_parseError, cardPileBaseDesignId );
+    }
+
+    // --- CardSurfaceDesignRegistry ----------------------------------------
+
+    /**
+     * Gets the formatted message indicating a card surface design is already
+     * registered for the specified identifier.
+     * 
+     * @param cardSurfaceDesignId
+     *        The card surface design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating a card surface design is already
+     *         registered for the specified identifier; never {@code null}.
+     */
+    /* @NonNull */
+    static String CardSurfaceDesignRegistry_registerCardSurfaceDesign_cardSurfaceDesign_registered(
+        /* @NonNull */
+        final CardSurfaceDesignId cardSurfaceDesignId )
+    {
+        return bind( CardSurfaceDesignRegistry_registerCardSurfaceDesign_cardSurfaceDesign_registered, cardSurfaceDesignId );
+    }
+
+    /**
+     * Gets the formatted message indicating the card surface design is not
+     * registered for the specified identifier.
+     * 
+     * @param cardSurfaceDesignId
+     *        The card surface design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the card surface design is not
+     *         registered for the specified identifier; never {@code null}.
+     */
+    /* @NonNull */
+    static String CardSurfaceDesignRegistry_unregisterCardSurfaceDesign_cardSurfaceDesign_unregistered(
+        /* @NonNull */
+        final CardSurfaceDesignId cardSurfaceDesignId )
+    {
+        return bind( CardSurfaceDesignRegistry_unregisterCardSurfaceDesign_cardSurfaceDesign_unregistered, cardSurfaceDesignId );
+    }
+
+    // --- CardSurfaceDesignRegistryExtensionPointAdapter ------------------
+
+    /**
+     * Gets the formatted message indicating an error occurred while parsing the
+     * card surface design configuration element.
+     * 
+     * @param cardSurfaceDesignId
+     *        The card surface design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while parsing
+     *         the card surface design configuration element; never {@code null}
+     *         .
+     */
+    /* @NonNull */
+    static String CardSurfaceDesignRegistryExtensionPointAdapter_registerCardSurfaceDesign_parseError(
+        /* @NonNull */
+        final String cardSurfaceDesignId )
+    {
+        return bind( CardSurfaceDesignRegistryExtensionPointAdapter_registerCardSurfaceDesign_parseError, cardSurfaceDesignId );
     }
 }

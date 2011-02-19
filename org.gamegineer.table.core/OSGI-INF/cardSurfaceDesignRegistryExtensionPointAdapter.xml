@@ -5,11 +5,11 @@
 		name="org.gamegineer.table.core.cardSurfaceDesignRegistryExtensionPointAdapter"
 		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 	<implementation
-			class="org.gamegineer.table.internal.core.services.cardsurfacedesignregistry.CardSurfaceDesignRegistryExtensionPointAdapter" />
+			class="org.gamegineer.table.internal.core.CardSurfaceDesignRegistryExtensionPointAdapter" />
 	<reference
 			bind="bindCardSurfaceDesignRegistry"
 			cardinality="1..1"
-			interface="org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry"
+			interface="org.gamegineer.table.core.ICardSurfaceDesignRegistry"
 			name="cardSurfaceDesignRegistry"
 			policy="static"
 			unbind="unbindCardSurfaceDesignRegistry" />

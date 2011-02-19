@@ -1,6 +1,6 @@
 /*
- * CardPileBaseDesignExtensionProxyPersistenceDelegate.java
- * Copyright 2008-2010 Gamegineer.org
+ * CardSurfaceDesignExtensionProxyPersistenceDelegate.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,20 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 18, 2010 at 10:41:32 PM.
+ * Created on Aug 18, 2010 at 11:37:10 PM.
  */
 
-package org.gamegineer.table.internal.core.services.cardpilebasedesignregistry;
+package org.gamegineer.table.internal.core;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
 
 /**
- * A persistence delegate for the {@code CardPileBaseDesignExtensionProxy}
- * class.
+ * A persistence delegate for the {@code CardSurfaceDesignExtensionProxy} class.
  */
 @Immutable
-public final class CardPileBaseDesignExtensionProxyPersistenceDelegate
+public final class CardSurfaceDesignExtensionProxyPersistenceDelegate
     extends AbstractPersistenceDelegate
 {
     // ======================================================================
@@ -38,9 +37,9 @@ public final class CardPileBaseDesignExtensionProxyPersistenceDelegate
 
     /**
      * Initializes a new instance of the {@code
-     * CardPileBaseDesignExtensionProxyPersistenceDelegate} class.
+     * CardSurfaceDesignExtensionProxyPersistenceDelegate} class.
      */
-    public CardPileBaseDesignExtensionProxyPersistenceDelegate()
+    public CardSurfaceDesignExtensionProxyPersistenceDelegate()
     {
         super();
     }
@@ -57,11 +56,11 @@ public final class CardPileBaseDesignExtensionProxyPersistenceDelegate
     public Object replaceObject(
         final Object obj )
     {
-        if( !(obj instanceof CardPileBaseDesignExtensionProxy) )
+        if( !(obj instanceof CardSurfaceDesignExtensionProxy) )
         {
             return super.replaceObject( obj );
         }
 
-        return ((CardPileBaseDesignExtensionProxy)obj).getDelegate();
+        return ((CardSurfaceDesignExtensionProxy)obj).getDelegate();
     }
 }

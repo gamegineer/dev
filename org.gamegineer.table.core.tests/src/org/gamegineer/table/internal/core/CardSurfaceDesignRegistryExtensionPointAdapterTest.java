@@ -1,6 +1,6 @@
 /*
  * CardSurfaceDesignRegistryExtensionPointAdapterTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Jul 31, 2010 at 10:24:11 PM.
  */
 
-package org.gamegineer.table.internal.core.services.cardsurfacedesignregistry;
+package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
@@ -30,14 +30,14 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.core.ICardSurfaceDesign;
-import org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry;
+import org.gamegineer.table.core.ICardSurfaceDesignRegistry;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.services.cardsurfacedesignregistry.CardSurfaceDesignRegistryExtensionPointAdapter}
+ * {@link org.gamegineer.table.internal.core.CardSurfaceDesignRegistryExtensionPointAdapter}
  * class.
  */
 public final class CardSurfaceDesignRegistryExtensionPointAdapterTest

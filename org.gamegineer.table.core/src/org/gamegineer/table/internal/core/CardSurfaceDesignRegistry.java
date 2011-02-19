@@ -1,6 +1,6 @@
 /*
  * CardSurfaceDesignRegistry.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Nov 17, 2009 at 9:32:25 PM.
  */
 
-package org.gamegineer.table.internal.core.services.cardsurfacedesignregistry;
+package org.gamegineer.table.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
@@ -30,13 +30,11 @@ import java.util.concurrent.ConcurrentMap;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.core.ICardSurfaceDesign;
-import org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry;
-import org.gamegineer.table.internal.core.Debug;
+import org.gamegineer.table.core.ICardSurfaceDesignRegistry;
 
 /**
  * Implementation of
- * {@link org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry}
- * .
+ * {@link org.gamegineer.table.core.ICardSurfaceDesignRegistry} .
  */
 @ThreadSafe
 public final class CardSurfaceDesignRegistry
@@ -69,7 +67,7 @@ public final class CardSurfaceDesignRegistry
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry#getCardSurfaceDesign(org.gamegineer.table.core.CardSurfaceDesignId)
+     * @see org.gamegineer.table.core.cardsurfacedesignregistry.ICardSurfaceDesignRegistry#getCardSurfaceDesign(org.gamegineer.table.core.CardSurfaceDesignId)
      */
     @Override
     public ICardSurfaceDesign getCardSurfaceDesign(
@@ -81,7 +79,7 @@ public final class CardSurfaceDesignRegistry
     }
 
     /*
-     * @see org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry#getCardSurfaceDesigns()
+     * @see org.gamegineer.table.core.cardsurfacedesignregistry.ICardSurfaceDesignRegistry#getCardSurfaceDesigns()
      */
     @Override
     public Collection<ICardSurfaceDesign> getCardSurfaceDesigns()
@@ -90,7 +88,7 @@ public final class CardSurfaceDesignRegistry
     }
 
     /*
-     * @see org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry#registerCardSurfaceDesign(org.gamegineer.table.core.ICardSurfaceDesign)
+     * @see org.gamegineer.table.core.cardsurfacedesignregistry.ICardSurfaceDesignRegistry#registerCardSurfaceDesign(org.gamegineer.table.core.ICardSurfaceDesign)
      */
     @Override
     public void registerCardSurfaceDesign(
@@ -103,7 +101,7 @@ public final class CardSurfaceDesignRegistry
     }
 
     /*
-     * @see org.gamegineer.table.core.services.cardsurfacedesignregistry.ICardSurfaceDesignRegistry#unregisterCardSurfaceDesign(org.gamegineer.table.core.ICardSurfaceDesign)
+     * @see org.gamegineer.table.core.cardsurfacedesignregistry.ICardSurfaceDesignRegistry#unregisterCardSurfaceDesign(org.gamegineer.table.core.ICardSurfaceDesign)
      */
     @Override
     public void unregisterCardSurfaceDesign(

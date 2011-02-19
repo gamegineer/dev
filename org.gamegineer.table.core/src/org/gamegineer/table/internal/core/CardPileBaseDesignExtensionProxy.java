@@ -1,6 +1,6 @@
 /*
- * CardSurfaceDesignExtensionProxy.java
- * Copyright 2008-2010 Gamegineer.org
+ * CardPileBaseDesignExtensionProxy.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,32 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 18, 2010 at 11:30:51 PM.
+ * Created on Aug 18, 2010 at 10:35:26 PM.
  */
 
-package org.gamegineer.table.internal.core.services.cardsurfacedesignregistry;
+package org.gamegineer.table.internal.core;
 
 import java.awt.Dimension;
 import net.jcip.annotations.Immutable;
 import org.eclipse.core.runtime.IExtension;
-import org.gamegineer.table.core.CardSurfaceDesignId;
-import org.gamegineer.table.core.ICardSurfaceDesign;
+import org.gamegineer.table.core.CardPileBaseDesignId;
+import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.core.TableFactory;
 
 /**
- * Implementation of {@link org.gamegineer.table.core.ICardSurfaceDesign} that
- * acts as a proxy for a card surface design created from an extension.
+ * Implementation of {@link org.gamegineer.table.core.ICardPileBaseDesign} that
+ * acts as a proxy for a card pile base design created from an extension.
  */
 @Immutable
-public final class CardSurfaceDesignExtensionProxy
-    implements ICardSurfaceDesign
+public final class CardPileBaseDesignExtensionProxy
+    implements ICardPileBaseDesign
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The card surface design to which all behavior is delegated. */
-    private final ICardSurfaceDesign delegate_;
+    /** The card pile base design to which all behavior is delegated. */
+    private final ICardPileBaseDesign delegate_;
 
     /** The namespace identifier of the contributing extension. */
     private final String extensionNamespaceId_;
@@ -55,19 +55,19 @@ public final class CardSurfaceDesignExtensionProxy
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardSurfaceDesignExtensionProxy}
-     * class.
+     * Initializes a new instance of the {@code
+     * CardPileBaseDesignExtensionProxy} class.
      * 
      * @param extension
-     *        The extension that contributed this card surface design; must not
-     *        be {@code null}.
+     *        The extension that contributed this card pile base design; must
+     *        not be {@code null}.
      * @param id
-     *        The card surface design identifier; must not be {@code null}.
+     *        The card pile base design identifier; must not be {@code null} .
      * @param width
-     *        The card surface design width in table coordinates; must not be
+     *        The card pile base design width in table coordinates; must not be
      *        negative.
      * @param height
-     *        The card surface design height in table coordinates; must not be
+     *        The card pile base design height in table coordinates; must not be
      *        negative.
      * 
      * @throws java.lang.IllegalArgumentException
@@ -75,11 +75,11 @@ public final class CardSurfaceDesignExtensionProxy
      * @throws java.lang.NullPointerException
      *         If {@code id} is {@code null}.
      */
-    CardSurfaceDesignExtensionProxy(
+    CardPileBaseDesignExtensionProxy(
         /* @NonNull */
         final IExtension extension,
         /* @NonNull */
-        final CardSurfaceDesignId id,
+        final CardPileBaseDesignId id,
         final int width,
         final int height )
     {
@@ -87,7 +87,7 @@ public final class CardSurfaceDesignExtensionProxy
 
         extensionNamespaceId_ = extension.getNamespaceIdentifier();
         extensionSimpleId_ = extension.getSimpleIdentifier();
-        delegate_ = TableFactory.createCardSurfaceDesign( id, width, height );
+        delegate_ = TableFactory.createCardPileBaseDesign( id, width, height );
     }
 
 
@@ -96,13 +96,13 @@ public final class CardSurfaceDesignExtensionProxy
     // ======================================================================
 
     /**
-     * Gets the card surface design to which all behavior is delegated.
+     * Gets the card pile base design to which all behavior is delegated.
      * 
-     * @return The card surface design to which all behavior is delegated; never
-     *         {@code null}.
+     * @return The card pile base design to which all behavior is delegated;
+     *         never {@code null}.
      */
     /* @NonNull */
-    ICardSurfaceDesign getDelegate()
+    ICardPileBaseDesign getDelegate()
     {
         return delegate_;
     }
@@ -132,16 +132,16 @@ public final class CardSurfaceDesignExtensionProxy
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardSurfaceDesign#getId()
+     * @see org.gamegineer.table.core.ICardPileBaseDesign#getId()
      */
     @Override
-    public CardSurfaceDesignId getId()
+    public CardPileBaseDesignId getId()
     {
         return delegate_.getId();
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardSurfaceDesign#getSize()
+     * @see org.gamegineer.table.core.ICardPileBaseDesign#getSize()
      */
     @Override
     public Dimension getSize()

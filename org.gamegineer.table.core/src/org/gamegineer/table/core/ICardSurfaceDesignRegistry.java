@@ -1,6 +1,6 @@
 /*
  * ICardSurfaceDesignRegistry.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,11 +19,9 @@
  * Created on Nov 11, 2009 at 9:10:06 PM.
  */
 
-package org.gamegineer.table.core.services.cardsurfacedesignregistry;
+package org.gamegineer.table.core;
 
 import java.util.Collection;
-import org.gamegineer.table.core.CardSurfaceDesignId;
-import org.gamegineer.table.core.ICardSurfaceDesign;
 
 /**
  * A service for the management and discovery of card surface designs.

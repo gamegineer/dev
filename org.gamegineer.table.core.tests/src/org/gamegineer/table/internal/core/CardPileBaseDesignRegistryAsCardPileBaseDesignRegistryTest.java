@@ -1,6 +1,6 @@
 /*
  * CardPileBaseDesignRegistryAsCardPileBaseDesignRegistryTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,17 +19,16 @@
  * Created on Jan 19, 2010 at 11:39:33 PM.
  */
 
-package org.gamegineer.table.internal.core.services.cardpilebasedesignregistry;
+package org.gamegineer.table.internal.core;
 
-import org.gamegineer.table.core.services.cardpilebasedesignregistry.AbstractCardPileBaseDesignRegistryTestCase;
-import org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry;
+import org.gamegineer.table.core.AbstractCardPileBaseDesignRegistryTestCase;
+import org.gamegineer.table.core.ICardPileBaseDesignRegistry;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.services.cardpilebasedesignregistry.CardPileBaseDesignRegistry}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry}
- * interface.
+ * {@link org.gamegineer.table.internal.core.CardPileBaseDesignRegistry} class
+ * to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.ICardPileBaseDesignRegistry} interface.
  */
 public final class CardPileBaseDesignRegistryAsCardPileBaseDesignRegistryTest
     extends AbstractCardPileBaseDesignRegistryTestCase
@@ -53,7 +52,7 @@ public final class CardPileBaseDesignRegistryAsCardPileBaseDesignRegistryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.services.cardpilebasedesignregistry.AbstractCardPileBaseDesignRegistryTestCase#createCardPileBaseDesignRegistry()
+     * @see org.gamegineer.table.core.cardpilebasedesignregistry.AbstractCardPileBaseDesignRegistryTestCase#createCardPileBaseDesignRegistry()
      */
     @Override
     protected ICardPileBaseDesignRegistry createCardPileBaseDesignRegistry()

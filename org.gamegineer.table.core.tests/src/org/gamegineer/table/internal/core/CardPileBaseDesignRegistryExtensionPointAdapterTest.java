@@ -1,6 +1,6 @@
 /*
  * CardPileBaseDesignRegistryExtensionPointAdapterTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Jul 27, 2010 at 10:16:31 PM.
  */
 
-package org.gamegineer.table.internal.core.services.cardpilebasedesignregistry;
+package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
@@ -30,14 +30,14 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.ICardPileBaseDesign;
-import org.gamegineer.table.core.services.cardpilebasedesignregistry.ICardPileBaseDesignRegistry;
+import org.gamegineer.table.core.ICardPileBaseDesignRegistry;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.services.cardpilebasedesignregistry.CardPileBaseDesignRegistryExtensionPointAdapter}
+ * {@link org.gamegineer.table.internal.core.CardPileBaseDesignRegistryExtensionPointAdapter}
  * class.
  */
 public final class CardPileBaseDesignRegistryExtensionPointAdapterTest

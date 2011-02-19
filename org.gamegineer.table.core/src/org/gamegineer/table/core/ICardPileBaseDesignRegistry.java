@@ -1,6 +1,6 @@
 /*
  * ICardPileBaseDesignRegistry.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,11 +19,9 @@
  * Created on Jan 19, 2010 at 11:13:54 PM.
  */
 
-package org.gamegineer.table.core.services.cardpilebasedesignregistry;
+package org.gamegineer.table.core;
 
 import java.util.Collection;
-import org.gamegineer.table.core.CardPileBaseDesignId;
-import org.gamegineer.table.core.ICardPileBaseDesign;
 
 /**
  * A service for the management and discovery of card pile base designs.
