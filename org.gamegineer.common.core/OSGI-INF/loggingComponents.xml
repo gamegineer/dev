@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
 	<scr:component
-			name="org.gamegineer.common.core.services.logging.defaultFormatterFactory"
+			name="org.gamegineer.common.core.logging.defaultFormatterFactory"
 			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 		<implementation
-				class="org.gamegineer.common.internal.core.services.logging.DefaultFormatterFactory" />
+				class="org.gamegineer.common.internal.core.logging.DefaultFormatterFactory" />
 		<service>
 			<provide
 					interface="org.osgi.service.component.ComponentFactory" />
@@ -15,10 +15,10 @@
 				value="java.util.logging.Formatter" />
 	</scr:component>
 	<scr:component
-			name="org.gamegineer.common.core.services.logging.defaultHandlerFactory"
+			name="org.gamegineer.common.core.logging.defaultHandlerFactory"
 			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 		<implementation
-				class="org.gamegineer.common.internal.core.services.logging.DefaultHandlerFactory" />
+				class="org.gamegineer.common.internal.core.logging.DefaultHandlerFactory" />
 		<service>
 			<provide
 					interface="org.osgi.service.component.ComponentFactory" />
@@ -29,10 +29,10 @@
 				value="java.util.logging.Handler" />
 	</scr:component>
 	<scr:component
-			name="org.gamegineer.common.core.services.logging.frameworkLogHandlerFactory"
+			name="org.gamegineer.common.core.logging.frameworkLogHandlerFactory"
 			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 		<implementation
-				class="org.gamegineer.common.internal.core.services.logging.FrameworkLogHandlerFactory" />
+				class="org.gamegineer.common.internal.core.logging.FrameworkLogHandlerFactory" />
 		<reference
 				bind="bindFrameworkLog"
 				cardinality="1..1"
@@ -47,6 +47,6 @@
 		<property
 				name="component.factory"
 				type="String"
-				value="org.gamegineer.common.core.util.logging.FrameworkLogHandler" />
+				value="org.gamegineer.common.core.logging.FrameworkLogHandler" />
 	</scr:component>
 </root>

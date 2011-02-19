@@ -24,7 +24,7 @@ package org.gamegineer.common.core.runtime;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.logging.Logger;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.services.logging.ILoggingService;
+import org.gamegineer.common.core.logging.ILoggingService;
 import org.gamegineer.common.internal.core.Activator;
 import org.osgi.framework.Bundle;
 

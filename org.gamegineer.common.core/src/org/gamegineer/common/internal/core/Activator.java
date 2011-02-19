@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.service.debug.DebugOptions;
-import org.gamegineer.common.core.services.logging.ILoggingService;
+import org.gamegineer.common.core.logging.ILoggingService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scr:component
 		activate="activate"
-		name="org.gamegineer.common.core.services.logging.loggingService"
+		name="org.gamegineer.common.core.logging.loggingService"
 		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 	<implementation
-			class="org.gamegineer.common.internal.core.services.logging.LoggingService" />
+			class="org.gamegineer.common.internal.core.logging.LoggingService" />
 	<service>
 		<provide
-				interface="org.gamegineer.common.core.services.logging.ILoggingService" />
+				interface="org.gamegineer.common.core.logging.ILoggingService" />
 	</service>
 </scr:component>
