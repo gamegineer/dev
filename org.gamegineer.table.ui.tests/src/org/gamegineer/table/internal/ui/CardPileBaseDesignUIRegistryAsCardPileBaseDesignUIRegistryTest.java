@@ -52,7 +52,7 @@ public final class CardPileBaseDesignUIRegistryAsCardPileBaseDesignUIRegistryTes
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.AbstractCardPileBaseDesignUIRegistryTestCase#createCardPileBaseDesignUIRegistry()
+     * @see org.gamegineer.table.ui.cardpilebasedesignuiregistry.AbstractCardPileBaseDesignUIRegistryTestCase#createCardPileBaseDesignUIRegistry()
      */
     @Override
     protected ICardPileBaseDesignUIRegistry createCardPileBaseDesignUIRegistry()

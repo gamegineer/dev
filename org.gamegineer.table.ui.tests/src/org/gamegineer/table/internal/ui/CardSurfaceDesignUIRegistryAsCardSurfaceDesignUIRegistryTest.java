@@ -52,7 +52,7 @@ public final class CardSurfaceDesignUIRegistryAsCardSurfaceDesignUIRegistryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.AbstractCardSurfaceDesignUIRegistryTestCase#createCardSurfaceDesignUIRegistry()
+     * @see org.gamegineer.table.ui.cardsurfacedesignuiregistry.AbstractCardSurfaceDesignUIRegistryTestCase#createCardSurfaceDesignUIRegistry()
      */
     @Override
     protected ICardSurfaceDesignUIRegistry createCardSurfaceDesignUIRegistry()

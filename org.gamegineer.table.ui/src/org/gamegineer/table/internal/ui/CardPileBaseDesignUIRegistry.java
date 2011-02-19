@@ -70,7 +70,7 @@ public final class CardPileBaseDesignUIRegistry
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry#getCardPileBaseDesignUI(org.gamegineer.table.core.CardPileBaseDesignId)
+     * @see org.gamegineer.table.ui.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry#getCardPileBaseDesignUI(org.gamegineer.table.core.CardPileBaseDesignId)
      */
     @Override
     public ICardPileBaseDesignUI getCardPileBaseDesignUI(
@@ -82,7 +82,7 @@ public final class CardPileBaseDesignUIRegistry
     }
 
     /*
-     * @see org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry#getCardPileBaseDesignUIs()
+     * @see org.gamegineer.table.ui.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry#getCardPileBaseDesignUIs()
      */
     @Override
     public Collection<ICardPileBaseDesignUI> getCardPileBaseDesignUIs()
@@ -91,7 +91,7 @@ public final class CardPileBaseDesignUIRegistry
     }
 
     /*
-     * @see org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry#registerCardPileBaseDesignUI(org.gamegineer.table.ui.ICardPileBaseDesignUI)
+     * @see org.gamegineer.table.ui.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry#registerCardPileBaseDesignUI(org.gamegineer.table.ui.ICardPileBaseDesignUI)
      */
     @Override
     public void registerCardPileBaseDesignUI(
@@ -100,11 +100,11 @@ public final class CardPileBaseDesignUIRegistry
         assertArgumentNotNull( cardPileBaseDesignUI, "cardPileBaseDesignUI" ); //$NON-NLS-1$
         assertArgumentLegal( cardPileBaseDesignUIs_.putIfAbsent( cardPileBaseDesignUI.getId(), cardPileBaseDesignUI ) == null, "cardPileBaseDesignUI", Messages.CardPileBaseDesignUIRegistry_registerCardPileBaseDesignUI_cardPileBaseDesignUI_registered( cardPileBaseDesignUI.getId() ) ); //$NON-NLS-1$
 
-        Debug.getDefault().trace( Debug.OPTION_SERVICES_CARD_PILE_BASE_DESIGN_UI_REGISTRY, String.format( "Registered card pile base design user interface '%1$s'", cardPileBaseDesignUI.getId() ) ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered card pile base design user interface '%1$s'", cardPileBaseDesignUI.getId() ) ); //$NON-NLS-1$
     }
 
     /*
-     * @see org.gamegineer.table.ui.services.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry#unregisterCardPileBaseDesignUI(org.gamegineer.table.ui.ICardPileBaseDesignUI)
+     * @see org.gamegineer.table.ui.cardpilebasedesignuiregistry.ICardPileBaseDesignUIRegistry#unregisterCardPileBaseDesignUI(org.gamegineer.table.ui.ICardPileBaseDesignUI)
      */
     @Override
     public void unregisterCardPileBaseDesignUI(
@@ -113,6 +113,6 @@ public final class CardPileBaseDesignUIRegistry
         assertArgumentNotNull( cardPileBaseDesignUI, "cardPileBaseDesignUI" ); //$NON-NLS-1$
         assertArgumentLegal( cardPileBaseDesignUIs_.remove( cardPileBaseDesignUI.getId(), cardPileBaseDesignUI ), "cardPileBaseDesignUI", Messages.CardPileBaseDesignUIRegistry_unregisterCardPileBaseDesignUI_cardPileBaseDesignUI_unregistered( cardPileBaseDesignUI.getId() ) ); //$NON-NLS-1$
 
-        Debug.getDefault().trace( Debug.OPTION_SERVICES_CARD_PILE_BASE_DESIGN_UI_REGISTRY, String.format( "Unregistered card pile base design user interface '%1$s'", cardPileBaseDesignUI.getId() ) ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered card pile base design user interface '%1$s'", cardPileBaseDesignUI.getId() ) ); //$NON-NLS-1$
     }
 }

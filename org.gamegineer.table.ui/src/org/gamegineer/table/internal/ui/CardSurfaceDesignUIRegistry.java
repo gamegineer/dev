@@ -70,7 +70,7 @@ public final class CardSurfaceDesignUIRegistry
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry#getCardSurfaceDesignUI(org.gamegineer.table.core.CardSurfaceDesignId)
+     * @see org.gamegineer.table.ui.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry#getCardSurfaceDesignUI(org.gamegineer.table.core.CardSurfaceDesignId)
      */
     @Override
     public ICardSurfaceDesignUI getCardSurfaceDesignUI(
@@ -82,7 +82,7 @@ public final class CardSurfaceDesignUIRegistry
     }
 
     /*
-     * @see org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry#getCardSurfaceDesignUIs()
+     * @see org.gamegineer.table.ui.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry#getCardSurfaceDesignUIs()
      */
     @Override
     public Collection<ICardSurfaceDesignUI> getCardSurfaceDesignUIs()
@@ -91,7 +91,7 @@ public final class CardSurfaceDesignUIRegistry
     }
 
     /*
-     * @see org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry#registerCardSurfaceDesignUI(org.gamegineer.table.ui.ICardSurfaceDesignUI)
+     * @see org.gamegineer.table.ui.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry#registerCardSurfaceDesignUI(org.gamegineer.table.ui.ICardSurfaceDesignUI)
      */
     @Override
     public void registerCardSurfaceDesignUI(
@@ -100,11 +100,11 @@ public final class CardSurfaceDesignUIRegistry
         assertArgumentNotNull( cardSurfaceDesignUI, "cardSurfaceDesignUI" ); //$NON-NLS-1$
         assertArgumentLegal( cardSurfaceDesignUIs_.putIfAbsent( cardSurfaceDesignUI.getId(), cardSurfaceDesignUI ) == null, "cardSurfaceDesignUI", Messages.CardSurfaceDesignUIRegistry_registerCardSurfaceDesignUI_cardSurfaceDesignUI_registered( cardSurfaceDesignUI.getId() ) ); //$NON-NLS-1$
 
-        Debug.getDefault().trace( Debug.OPTION_SERVICES_CARD_SURFACE_DESIGN_UI_REGISTRY, String.format( "Registered card surface design user interface '%1$s'", cardSurfaceDesignUI.getId() ) ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered card surface design user interface '%1$s'", cardSurfaceDesignUI.getId() ) ); //$NON-NLS-1$
     }
 
     /*
-     * @see org.gamegineer.table.ui.services.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry#unregisterCardSurfaceDesignUI(org.gamegineer.table.ui.ICardSurfaceDesignUI)
+     * @see org.gamegineer.table.ui.cardsurfacedesignuiregistry.ICardSurfaceDesignUIRegistry#unregisterCardSurfaceDesignUI(org.gamegineer.table.ui.ICardSurfaceDesignUI)
      */
     @Override
     public void unregisterCardSurfaceDesignUI(
@@ -113,6 +113,6 @@ public final class CardSurfaceDesignUIRegistry
         assertArgumentNotNull( cardSurfaceDesignUI, "cardSurfaceDesignUI" ); //$NON-NLS-1$
         assertArgumentLegal( cardSurfaceDesignUIs_.remove( cardSurfaceDesignUI.getId(), cardSurfaceDesignUI ), "cardSurfaceDesignUI", Messages.CardSurfaceDesignUIRegistry_unregisterCardSurfaceDesignUI_cardSurfaceDesignUI_unregistered( cardSurfaceDesignUI.getId() ) ); //$NON-NLS-1$
 
-        Debug.getDefault().trace( Debug.OPTION_SERVICES_CARD_SURFACE_DESIGN_UI_REGISTRY, String.format( "Unregistered card surface design user interface '%1$s'", cardSurfaceDesignUI.getId() ) ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered card surface design user interface '%1$s'", cardSurfaceDesignUI.getId() ) ); //$NON-NLS-1$
     }
 }
