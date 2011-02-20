@@ -45,4 +45,26 @@ public interface INetworkInterfaceListener
      * </p>
      */
     public void networkInterfaceDisconnected();
+
+    /**
+     * Invoked by the network interface when a remote player has connected.
+     * 
+     * @param playerId
+     *        The identifier of the remote player that has connected; must not
+     *        be {@code null}.
+     */
+    public void playerConnected(
+        /* @NonNull */
+        String playerId );
+
+    /**
+     * Invoked by the network interface when a remote player has disconnected.
+     * 
+     * @param playerId
+     *        The identifier of the remote player that has disconnected; must
+     *        not be {@code null}.
+     */
+    public void playerDisconnected(
+        /* @NonNull */
+        String playerId );
 }

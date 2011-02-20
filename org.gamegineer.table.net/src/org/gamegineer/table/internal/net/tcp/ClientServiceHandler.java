@@ -96,6 +96,8 @@ final class ClientServiceHandler
     @Override
     ByteBuffer getNextMessage()
     {
+        assert Thread.holdsLock( getLock() );
+
         // TODO: Temporary protocol
 
         final InputQueue inputQueue = getInputQueue();
@@ -109,6 +111,15 @@ final class ClientServiceHandler
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleInputShutDown()
+     */
+    @Override
+    void handleInputShutDown()
+    {
+        getNetworkInterface().getListener().networkInterfaceDisconnected();
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleMessage(java.nio.ByteBuffer)
      */
     @Override
@@ -116,6 +127,7 @@ final class ClientServiceHandler
         final ByteBuffer message )
     {
         assert message != null;
+        assert Thread.holdsLock( getLock() );
 
         // TODO: Temporary protocol
 

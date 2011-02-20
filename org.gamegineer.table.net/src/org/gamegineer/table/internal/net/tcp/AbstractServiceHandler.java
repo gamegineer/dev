@@ -284,9 +284,14 @@ abstract class AbstractServiceHandler
     /**
      * Gets the next message available from the input queue.
      * 
+     * <p>
+     * This method is invoked while the instance lock is held.
+     * </p>
+     * 
      * @return The next message available from the input queue or {@code null}
      *         if no message is available.
      */
+    @GuardedBy( "getLock()" )
     /* @Nullable */
     abstract ByteBuffer getNextMessage();
 
@@ -303,11 +308,26 @@ abstract class AbstractServiceHandler
     }
 
     /**
+     * Invoked when the input stream is shut down.
+     * 
+     * <p>
+     * This method is invoked while the instance lock is held.
+     * </p>
+     */
+    @GuardedBy( "getLock()" )
+    abstract void handleInputShutDown();
+
+    /**
      * Invoked to handle the specified message.
+     * 
+     * <p>
+     * This method is invoked while the instance lock is held.
+     * </p>
      * 
      * @param message
      *        The message; must not be {@code null}.
      */
+    @GuardedBy( "getLock()" )
     abstract void handleMessage(
         /* @NonNull */
         ByteBuffer message );
@@ -408,6 +428,11 @@ abstract class AbstractServiceHandler
                 while( (message = getNextMessage()) != null )
                 {
                     handleMessage( message );
+                }
+
+                if( isInputShutDown_ )
+                {
+                    handleInputShutDown();
                 }
             }
             catch( final Exception e )

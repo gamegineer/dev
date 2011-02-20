@@ -23,6 +23,8 @@ package org.gamegineer.table.internal.net.tcp;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.concurrent.atomic.AtomicInteger;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 /**
@@ -33,6 +35,25 @@ import net.jcip.annotations.ThreadSafe;
 final class ServerServiceHandler
     extends AbstractServiceHandler
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The next available player identifier. */
+    private static final AtomicInteger nextPlayerId_ = new AtomicInteger( 0 );
+
+    /** Indicates the remote player is connected. */
+    @GuardedBy( "getLock()" )
+    private boolean isConnected_;
+
+    /**
+     * The identifier of the remote player or {@code null} if the player
+     * identity has not yet been established.
+     */
+    @GuardedBy( "getLock()" )
+    private String playerId_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -49,6 +70,9 @@ final class ServerServiceHandler
         final AbstractNetworkInterface networkInterface )
     {
         super( networkInterface );
+
+        isConnected_ = false;
+        playerId_ = null;
     }
 
 
@@ -62,6 +86,8 @@ final class ServerServiceHandler
     @Override
     ByteBuffer getNextMessage()
     {
+        assert Thread.holdsLock( getLock() );
+
         // TODO: Temporary protocol
 
         final InputQueue inputQueue = getInputQueue();
@@ -75,6 +101,19 @@ final class ServerServiceHandler
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleInputShutDown()
+     */
+    @Override
+    void handleInputShutDown()
+    {
+        if( isConnected_ )
+        {
+            isConnected_ = false;
+            getNetworkInterface().getListener().playerDisconnected( playerId_ );
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleMessage(java.nio.ByteBuffer)
      */
     @Override
@@ -82,8 +121,17 @@ final class ServerServiceHandler
         final ByteBuffer message )
     {
         assert message != null;
+        assert Thread.holdsLock( getLock() );
 
         // TODO: Temporary protocol
+
+        if( !isConnected_ )
+        {
+            // TODO: Player ID will be obtained via protocol.
+            isConnected_ = true;
+            playerId_ = String.format( "player-%d", new Integer( nextPlayerId_.incrementAndGet() ) ); //$NON-NLS-1$
+            getNetworkInterface().getListener().playerConnected( playerId_ );
+        }
 
         byte[] messageAsBytes = new byte[ message.remaining() ];
         message.get( messageAsBytes );
@@ -99,6 +147,13 @@ final class ServerServiceHandler
     @Override
     void serviceHandlerClosed()
     {
-        // TODO: Inform network interface listener the player has disconnected.
+        synchronized( getLock() )
+        {
+            if( isConnected_ )
+            {
+                isConnected_ = false;
+                getNetworkInterface().getListener().playerDisconnected( playerId_ );
+            }
+        }
     }
 }

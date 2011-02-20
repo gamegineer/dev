@@ -266,6 +266,32 @@ public final class NetworkTable
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.INetworkInterfaceListener#playerConnected(java.lang.String)
+     */
+    @Override
+    public void playerConnected(
+        final String playerId )
+    {
+        assertArgumentNotNull( playerId, "playerId" ); //$NON-NLS-1$
+
+        // TODO
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has connected", playerId ) ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.INetworkInterfaceListener#playerDisconnected(java.lang.String)
+     */
+    @Override
+    public void playerDisconnected(
+        final String playerId )
+    {
+        assertArgumentNotNull( playerId, "playerId" ); //$NON-NLS-1$
+
+        // TODO
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has disconnected", playerId ) ); //$NON-NLS-1$
+    }
+
+    /*
      * @see org.gamegineer.table.net.INetworkTable#removeNetworkTableListener(org.gamegineer.table.net.INetworkTableListener)
      */
     @Override
