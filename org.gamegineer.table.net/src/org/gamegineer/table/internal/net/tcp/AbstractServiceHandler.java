@@ -57,13 +57,13 @@ abstract class AbstractServiceHandler
     /** The input queue associated with the service handler. */
     private final InputQueue inputQueue_;
 
+    /** The state of the input queue. */
+    @GuardedBy( "getLock()" )
+    private InputQueueState inputQueueState_;
+
     /** The channel operations in which the handler is interested. */
     @GuardedBy( "getLock()" )
     private int interestOperations_;
-
-    /** Indicates the input stream is shut down. */
-    @GuardedBy( "getLock()" )
-    private boolean isInputShutDown_;
 
     /** Indicates the service handler has been registered with the dispatcher. */
     @GuardedBy( "getLock()" )
@@ -106,8 +106,8 @@ abstract class AbstractServiceHandler
 
         channel_ = null;
         inputQueue_ = new InputQueue( networkInterface.getDispatcher().getByteBufferPool() );
+        inputQueueState_ = InputQueueState.OPEN;
         interestOperations_ = SelectionKey.OP_READ;
-        isInputShutDown_ = false;
         isRegistered_ = false;
         isRunning_ = false;
         networkInterface_ = networkInterface;
@@ -206,7 +206,7 @@ abstract class AbstractServiceHandler
     {
         assert Thread.holdsLock( getLock() );
 
-        if( isInputShutDown_ )
+        if( inputQueueState_ != InputQueueState.OPEN )
         {
             return;
         }
@@ -228,7 +228,7 @@ abstract class AbstractServiceHandler
                 }
             }
 
-            isInputShutDown_ = true;
+            inputQueueState_ = InputQueueState.SHUTTING_DOWN;
             modifyInterestOperations( SelectionKey.OP_WRITE, 0 );
         }
     }
@@ -424,15 +424,19 @@ abstract class AbstractServiceHandler
                 drainOutput();
                 fillInput();
 
-                ByteBuffer message = null;
-                while( (message = getNextMessage()) != null )
+                if( inputQueueState_ != InputQueueState.SHUT_DOWN )
                 {
-                    handleMessage( message );
-                }
+                    ByteBuffer message = null;
+                    while( (message = getNextMessage()) != null )
+                    {
+                        handleMessage( message );
+                    }
 
-                if( isInputShutDown_ )
-                {
-                    handleInputShutDown();
+                    if( inputQueueState_ == InputQueueState.SHUTTING_DOWN )
+                    {
+                        inputQueueState_ = InputQueueState.SHUT_DOWN;
+                        handleInputShutDown();
+                    }
                 }
             }
             catch( final Exception e )
@@ -457,4 +461,30 @@ abstract class AbstractServiceHandler
      * </p>
      */
     abstract void serviceHandlerClosed();
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * The possible states of the service handler input queue.
+     */
+    private enum InputQueueState
+    {
+        /** The input queue is open. */
+        OPEN,
+
+        /**
+         * The input queue is shutting down. The underlying input stream has
+         * been shut down but there may still be unprocessed data in the queue.
+         */
+        SHUTTING_DOWN,
+
+        /**
+         * The input queue is shut down. No more data remains in the queue to be
+         * processed.
+         */
+        SHUT_DOWN;
+    }
 }
