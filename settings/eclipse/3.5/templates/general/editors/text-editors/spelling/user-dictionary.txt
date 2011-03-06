@@ -88,3 +88,4 @@ multi
 uninstalls
 validator
 unregistration
+deserializes
