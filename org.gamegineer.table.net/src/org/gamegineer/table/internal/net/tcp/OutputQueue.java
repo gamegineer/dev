@@ -29,6 +29,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.net.NetworkTableMessageEnvelope;
 
 /**
  * A message output queue.
@@ -190,6 +191,25 @@ final class OutputQueue
         serviceHandler_.modifyInterestOperations( SelectionKey.OP_WRITE, 0 );
 
         return true;
+    }
+
+    /**
+     * Adds the specified message envelope to the queue.
+     * 
+     * @param messageEnvelope
+     *        The message envelope to be added to the queue; must not be {@code
+     *        null}.
+     * 
+     * @return {@code true} if the specified message envelope was added to the
+     *         queue; otherwise {@code false}.
+     */
+    boolean enqueueMessageEnvelope(
+        /* @NonNull */
+        final NetworkTableMessageEnvelope messageEnvelope )
+    {
+        assert messageEnvelope != null;
+
+        return enqueueBytes( messageEnvelope.toByteBuffer() );
     }
 
     /**

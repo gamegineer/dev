@@ -21,9 +21,12 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
+import java.io.IOException;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.net.AbstractNetworkTableMessage;
+import org.gamegineer.table.internal.net.NetworkTableMessageEnvelope;
+import org.gamegineer.table.internal.net.messages.EchoRequestMessage;
+import org.gamegineer.table.internal.net.messages.EchoResponseMessage;
 
 /**
  * A service handler that represents the client half of a network table
@@ -69,15 +72,21 @@ final class ClientServiceHandler
             {
                 try
                 {
+                    int nextTag = AbstractNetworkTableMessage.MIN_TAG;
+
                     while( true )
                     {
                         Thread.sleep( 5000L );
 
-                        final String message = "a message\n"; //$NON-NLS-1$
-                        final ByteBuffer buffer = ByteBuffer.allocate( 1024 );
-                        buffer.put( message.getBytes( Charset.forName( "US-ASCII" ) ) ); //$NON-NLS-1$
-                        buffer.flip();
-                        getOutputQueue().enqueueBytes( buffer );
+                        final EchoRequestMessage message = new EchoRequestMessage();
+                        message.setTag( nextTag );
+                        message.setContent( "a message" ); //$NON-NLS-1$
+                        getOutputQueue().enqueueMessageEnvelope( NetworkTableMessageEnvelope.fromMessage( message ) );
+
+                        if( ++nextTag > AbstractNetworkTableMessage.MAX_TAG )
+                        {
+                            nextTag = AbstractNetworkTableMessage.MIN_TAG;
+                        }
                     }
                 }
                 catch( final Exception e )
@@ -91,26 +100,6 @@ final class ClientServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#getNextMessage()
-     */
-    @Override
-    ByteBuffer getNextMessage()
-    {
-        assert Thread.holdsLock( getLock() );
-
-        // TODO: Temporary protocol
-
-        final InputQueue inputQueue = getInputQueue();
-        final int newLinePosition = inputQueue.indexOf( (byte)'\n' );
-        if( newLinePosition == -1 )
-        {
-            return null;
-        }
-
-        return inputQueue.dequeueBytes( newLinePosition + 1 );
-    }
-
-    /*
      * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleInputShutDown()
      */
     @Override
@@ -120,21 +109,43 @@ final class ClientServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleMessage(java.nio.ByteBuffer)
+     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleMessageEnvelope(org.gamegineer.table.internal.net.NetworkTableMessageEnvelope)
      */
     @Override
-    void handleMessage(
-        final ByteBuffer message )
+    @SuppressWarnings( "boxing" )
+    void handleMessageEnvelope(
+        final NetworkTableMessageEnvelope messageEnvelope )
     {
-        assert message != null;
+        assert messageEnvelope != null;
         assert Thread.holdsLock( getLock() );
 
         // TODO: Temporary protocol
 
-        byte[] messageAsBytes = new byte[ message.remaining() ];
-        message.get( messageAsBytes );
-        final String messageAsString = new String( messageAsBytes, Charset.forName( "US-ASCII" ) ); //$NON-NLS-1$
-        System.out.println( String.format( "ClientServiceHandler received message '%s'", messageAsString ) ); //$NON-NLS-1$
+        final AbstractNetworkTableMessage message;
+        try
+        {
+            message = messageEnvelope.getBodyAsMessage();
+        }
+        catch( final IOException e )
+        {
+            System.out.println( String.format( "ClientServiceHandler : failed to deserialize a message (id=%d, tag=%d): ", messageEnvelope.getId(), messageEnvelope.getTag() ) + e ); //$NON-NLS-1$
+            return;
+        }
+        catch( final ClassNotFoundException e )
+        {
+            System.out.println( String.format( "ClientServiceHandler : failed to deserialize a message (id=%d, tag=%d): ", messageEnvelope.getId(), messageEnvelope.getTag() ) + e ); //$NON-NLS-1$
+            return;
+        }
+
+        if( message instanceof EchoResponseMessage )
+        {
+            final EchoResponseMessage response = (EchoResponseMessage)message;
+            System.out.println( String.format( "ClientServiceHandler : received echo response (tag=%d) '%s'", response.getTag(), response.getContent() ) ); //$NON-NLS-1$
+        }
+        else
+        {
+            System.out.println( String.format( "ClientServiceHandler : received unknown message (id=%d, tag=%d)", message.getId(), message.getTag() ) ); //$NON-NLS-1$
+        }
     }
 
     /*

@@ -23,6 +23,11 @@ package org.gamegineer.table.internal.net;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 import net.jcip.annotations.NotThreadSafe;
 
@@ -156,6 +161,39 @@ public final class NetworkTableMessageEnvelope
     }
 
     /**
+     * Deserializes the message contained in the specified byte array.
+     * 
+     * @param body
+     *        The byte array that contains the serialized message; must not be
+     *        {@code null}.
+     * 
+     * @return The deserialized message; never {@code null}.
+     * 
+     * @throws java.io.IOException
+     *         If an I/O error occurs.
+     * @throws java.lang.ClassNotFoundException
+     *         If the class of the serialized message cannot be found.
+     */
+    /* @NonNull */
+    private static AbstractNetworkTableMessage deserializeMessage(
+        /* @NonNull */
+        final byte[] body )
+        throws IOException, ClassNotFoundException
+    {
+        assert body != null;
+
+        final ObjectInputStream stream = new ObjectInputStream( new ByteArrayInputStream( body ) );
+        try
+        {
+            return (AbstractNetworkTableMessage)stream.readObject();
+        }
+        finally
+        {
+            stream.close();
+        }
+    }
+
+    /**
      * Creates a new message envelope from the specified byte buffer.
      * 
      * @param buffer
@@ -190,9 +228,35 @@ public final class NetworkTableMessageEnvelope
     }
 
     /**
-     * Gets an immutable view of the message body.
+     * Creates a new message envelope from the specified message.
      * 
-     * @return An immutable view of the message body; never {@code null}.
+     * @param message
+     *        The message; must not be {@code null}.
+     * 
+     * @return A new message envelope; never {@code null}.
+     * 
+     * @throws java.io.IOException
+     *         If the specified message cannot be serialized to the message
+     *         envelope.
+     * @throws java.lang.NullPointerException
+     *         If {@code message} is {@code null}.
+     */
+    /* @NonNull */
+    public static NetworkTableMessageEnvelope fromMessage(
+        /* @NonNull */
+        final AbstractNetworkTableMessage message )
+        throws IOException
+    {
+        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
+
+        return new NetworkTableMessageEnvelope( message.getId(), message.getTag(), serializeMessage( message ) );
+    }
+
+    /**
+     * Gets an immutable view of the message envelope body.
+     * 
+     * @return An immutable view of the message envelope body; never {@code
+     *         null}.
      */
     /* @NonNull */
     public ByteBuffer getBody()
@@ -200,6 +264,27 @@ public final class NetworkTableMessageEnvelope
         final ByteBuffer body = buffer_.slice().asReadOnlyBuffer();
         body.position( HEADER_LENGTH );
         return body;
+    }
+
+    /**
+     * Gets the message envelope body as a message.
+     * 
+     * @return The message envelope body as a message; never {@code null}.
+     * 
+     * @throws java.io.IOException
+     *         If the message cannot be deserialized from the message envelope
+     *         body.
+     * @throws java.lang.ClassNotFoundException
+     *         If the class of the message cannot be found.
+     */
+    /* @NonNull */
+    public AbstractNetworkTableMessage getBodyAsMessage()
+        throws IOException, ClassNotFoundException
+    {
+        final ByteBuffer buffer = getBody();
+        final byte[] body = new byte[ buffer.remaining() ];
+        buffer.get( body );
+        return deserializeMessage( body );
     }
 
     /**
@@ -221,6 +306,40 @@ public final class NetworkTableMessageEnvelope
     {
         final int tagAndLength = buffer_.getInt( HEADER_TAG_AND_LENGTH_OFFSET );
         return decodeMessageTag( tagAndLength );
+    }
+
+    /**
+     * Serializes the specified message to a byte array.
+     * 
+     * @param message
+     *        The message; must not be {@code null}.
+     * 
+     * @return A byte array that contains the serialized message; never {@code
+     *         null}.
+     * 
+     * @throws java.io.IOException
+     *         If an I/O error occurs.
+     */
+    /* @NonNull */
+    private static byte[] serializeMessage(
+        /* @NonNull */
+        final AbstractNetworkTableMessage message )
+        throws IOException
+    {
+        assert message != null;
+
+        final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        final ObjectOutputStream objectStream = new ObjectOutputStream( byteStream );
+        try
+        {
+            objectStream.writeObject( message );
+        }
+        finally
+        {
+            objectStream.close();
+        }
+
+        return byteStream.toByteArray();
     }
 
     /**

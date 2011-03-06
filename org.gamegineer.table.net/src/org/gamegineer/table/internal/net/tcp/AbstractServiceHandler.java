@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.net.tcp;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.net.SocketException;
-import java.nio.ByteBuffer;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
@@ -32,6 +31,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Loggers;
+import org.gamegineer.table.internal.net.NetworkTableMessageEnvelope;
 
 /**
  * A service handler in the TCP network interface Acceptor-Connector pattern
@@ -282,20 +282,6 @@ abstract class AbstractServiceHandler
     }
 
     /**
-     * Gets the next message available from the input queue.
-     * 
-     * <p>
-     * This method is invoked while the instance lock is held.
-     * </p>
-     * 
-     * @return The next message available from the input queue or {@code null}
-     *         if no message is available.
-     */
-    @GuardedBy( "getLock()" )
-    /* @Nullable */
-    abstract ByteBuffer getNextMessage();
-
-    /**
      * Gets the output queue associated with the service handler.
      * 
      * @return The output queue associated with the service handler; never
@@ -318,19 +304,19 @@ abstract class AbstractServiceHandler
     abstract void handleInputShutDown();
 
     /**
-     * Invoked to handle the specified message.
+     * Invoked to handle the specified message envelope.
      * 
      * <p>
      * This method is invoked while the instance lock is held.
      * </p>
      * 
-     * @param message
-     *        The message; must not be {@code null}.
+     * @param messageEnvelope
+     *        The message envelope; must not be {@code null}.
      */
     @GuardedBy( "getLock()" )
-    abstract void handleMessage(
+    abstract void handleMessageEnvelope(
         /* @NonNull */
-        ByteBuffer message );
+        NetworkTableMessageEnvelope messageEnvelope );
 
     /**
      * Modifies the channel operations in which the handler is interested.
@@ -426,10 +412,10 @@ abstract class AbstractServiceHandler
 
                 if( inputQueueState_ != InputQueueState.SHUT_DOWN )
                 {
-                    ByteBuffer message = null;
-                    while( (message = getNextMessage()) != null )
+                    NetworkTableMessageEnvelope messageEnvelope = null;
+                    while( (messageEnvelope = inputQueue_.dequeueMessageEnvelope()) != null )
                     {
-                        handleMessage( message );
+                        handleMessageEnvelope( messageEnvelope );
                     }
 
                     if( inputQueueState_ == InputQueueState.SHUTTING_DOWN )

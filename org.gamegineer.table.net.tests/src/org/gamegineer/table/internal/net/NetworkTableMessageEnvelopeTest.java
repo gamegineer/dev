@@ -202,6 +202,43 @@ public final class NetworkTableMessageEnvelopeTest
     }
 
     /**
+     * Ensures the {@code fromMessage} method returns the correct message
+     * envelope.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testFromMessage()
+        throws Exception
+    {
+        final AbstractNetworkTableMessage expectedValue = new FakeMessage();
+        expectedValue.setTag( FakeMessage.MAX_TAG );
+
+        final NetworkTableMessageEnvelope messageEnvelope = NetworkTableMessageEnvelope.fromMessage( expectedValue );
+        final AbstractNetworkTableMessage actualValue = messageEnvelope.getBodyAsMessage();
+
+        assertEquals( expectedValue.getId(), messageEnvelope.getId() );
+        assertEquals( expectedValue.getTag(), messageEnvelope.getTag() );
+        assertEquals( expectedValue.getId(), actualValue.getId() );
+        assertEquals( expectedValue.getTag(), actualValue.getTag() );
+    }
+
+    /**
+     * Ensures the {@code fromMessage} method throws an exception when passed a
+     * {@code null} message.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testFromMessage_Message_Null()
+        throws Exception
+    {
+        NetworkTableMessageEnvelope.fromMessage( null );
+    }
+
+    /**
      * Ensures the {@code getBody} method returns the message body.
      */
     @Test

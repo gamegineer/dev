@@ -26,6 +26,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ByteChannel;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.net.NetworkTableMessageEnvelope;
 
 /**
  * A message input queue.
@@ -131,6 +132,44 @@ final class InputQueue
             outgoingBuffer.flip();
 
             return outgoingBuffer;
+        }
+    }
+
+    /**
+     * Removes the next available message envelope from the queue.
+     * 
+     * @return The message envelope removed from the queue or {@code null} if no
+     *         message envelope is available.
+     */
+    /* @Nullable */
+    NetworkTableMessageEnvelope dequeueMessageEnvelope()
+    {
+        synchronized( lock_ )
+        {
+            if( isEmpty() )
+            {
+                return null;
+            }
+
+            buffer_.flip();
+
+            final NetworkTableMessageEnvelope messageEnvelope = NetworkTableMessageEnvelope.fromByteBuffer( buffer_ );
+            if( messageEnvelope == null )
+            {
+                return null;
+            }
+
+            if( buffer_.hasRemaining() )
+            {
+                buffer_.compact();
+            }
+            else
+            {
+                bufferPool_.returnByteBuffer( buffer_ );
+                buffer_ = null;
+            }
+
+            return messageEnvelope;
         }
     }
 

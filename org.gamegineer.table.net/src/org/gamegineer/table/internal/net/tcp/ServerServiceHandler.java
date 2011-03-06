@@ -21,11 +21,14 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.net.AbstractNetworkTableMessage;
+import org.gamegineer.table.internal.net.NetworkTableMessageEnvelope;
+import org.gamegineer.table.internal.net.messages.EchoRequestMessage;
+import org.gamegineer.table.internal.net.messages.EchoResponseMessage;
 
 /**
  * A service handler that represents the server half of a network table
@@ -81,26 +84,6 @@ final class ServerServiceHandler
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#getNextMessage()
-     */
-    @Override
-    ByteBuffer getNextMessage()
-    {
-        assert Thread.holdsLock( getLock() );
-
-        // TODO: Temporary protocol
-
-        final InputQueue inputQueue = getInputQueue();
-        final int newLinePosition = inputQueue.indexOf( (byte)'\n' );
-        if( newLinePosition == -1 )
-        {
-            return null;
-        }
-
-        return inputQueue.dequeueBytes( newLinePosition + 1 );
-    }
-
-    /*
      * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleInputShutDown()
      */
     @Override
@@ -114,13 +97,14 @@ final class ServerServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleMessage(java.nio.ByteBuffer)
+     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleMessageEnvelope(org.gamegineer.table.internal.net.NetworkTableMessageEnvelope)
      */
     @Override
-    void handleMessage(
-        final ByteBuffer message )
+    @SuppressWarnings( "boxing" )
+    void handleMessageEnvelope(
+        final NetworkTableMessageEnvelope messageEnvelope )
     {
-        assert message != null;
+        assert messageEnvelope != null;
         assert Thread.holdsLock( getLock() );
 
         // TODO: Temporary protocol
@@ -133,12 +117,43 @@ final class ServerServiceHandler
             getNetworkInterface().getListener().playerConnected( playerId_ );
         }
 
-        byte[] messageAsBytes = new byte[ message.remaining() ];
-        message.get( messageAsBytes );
-        final String messageAsString = new String( messageAsBytes, Charset.forName( "US-ASCII" ) ); //$NON-NLS-1$
-        System.out.println( String.format( "ServerServiceHandler received message '%s'", messageAsString ) ); //$NON-NLS-1$
+        final AbstractNetworkTableMessage message;
+        try
+        {
+            message = messageEnvelope.getBodyAsMessage();
+        }
+        catch( final IOException e )
+        {
+            System.out.println( String.format( "ServerServiceHandler : failed to deserialize a message (id=%d, tag=%d): ", messageEnvelope.getId(), messageEnvelope.getTag() ) + e ); //$NON-NLS-1$
+            return;
+        }
+        catch( final ClassNotFoundException e )
+        {
+            System.out.println( String.format( "ServerServiceHandler : failed to deserialize a message (id=%d, tag=%d): ", messageEnvelope.getId(), messageEnvelope.getTag() ) + e ); //$NON-NLS-1$
+            return;
+        }
 
-        getOutputQueue().enqueueBytes( ByteBuffer.wrap( messageAsBytes ) );
+        if( message instanceof EchoRequestMessage )
+        {
+            final EchoRequestMessage request = (EchoRequestMessage)message;
+            System.out.println( String.format( "ServerServiceHandler : received echo request (tag=%d) '%s'", request.getTag(), request.getContent() ) ); //$NON-NLS-1$
+
+            final EchoResponseMessage response = new EchoResponseMessage();
+            response.setTag( request.getTag() );
+            response.setContent( request.getContent() );
+            try
+            {
+                getOutputQueue().enqueueMessageEnvelope( NetworkTableMessageEnvelope.fromMessage( response ) );
+            }
+            catch( final IOException e )
+            {
+                System.out.println( "ServerServiceHandler : failed to send echo response: " + e ); //$NON-NLS-1$
+            }
+        }
+        else
+        {
+            System.out.println( String.format( "ServerServiceHandler : received unknown message (id=%d, tag=%d)", message.getId(), message.getTag() ) ); //$NON-NLS-1$
+        }
     }
 
     /*
