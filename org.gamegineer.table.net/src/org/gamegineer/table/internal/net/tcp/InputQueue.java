@@ -26,7 +26,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ByteChannel;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.NetworkTableMessageEnvelope;
+import org.gamegineer.table.internal.net.MessageEnvelope;
 
 /**
  * A message input queue.
@@ -142,7 +142,7 @@ final class InputQueue
      *         message envelope is available.
      */
     /* @Nullable */
-    NetworkTableMessageEnvelope dequeueMessageEnvelope()
+    MessageEnvelope dequeueMessageEnvelope()
     {
         synchronized( lock_ )
         {
@@ -153,7 +153,7 @@ final class InputQueue
 
             buffer_.flip();
 
-            final NetworkTableMessageEnvelope messageEnvelope = NetworkTableMessageEnvelope.fromByteBuffer( buffer_ );
+            final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteBuffer( buffer_ );
             if( messageEnvelope == null )
             {
                 return null;

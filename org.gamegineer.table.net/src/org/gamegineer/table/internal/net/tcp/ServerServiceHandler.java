@@ -25,8 +25,8 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.AbstractNetworkTableMessage;
-import org.gamegineer.table.internal.net.NetworkTableMessageEnvelope;
+import org.gamegineer.table.internal.net.AbstractMessage;
+import org.gamegineer.table.internal.net.MessageEnvelope;
 import org.gamegineer.table.internal.net.messages.EchoRequestMessage;
 import org.gamegineer.table.internal.net.messages.EchoResponseMessage;
 
@@ -97,12 +97,12 @@ final class ServerServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleMessageEnvelope(org.gamegineer.table.internal.net.NetworkTableMessageEnvelope)
+     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleMessageEnvelope(org.gamegineer.table.internal.net.MessageEnvelope)
      */
     @Override
     @SuppressWarnings( "boxing" )
     void handleMessageEnvelope(
-        final NetworkTableMessageEnvelope messageEnvelope )
+        final MessageEnvelope messageEnvelope )
     {
         assert messageEnvelope != null;
         assert Thread.holdsLock( getLock() );
@@ -117,7 +117,7 @@ final class ServerServiceHandler
             getNetworkInterface().getListener().playerConnected( playerId_ );
         }
 
-        final AbstractNetworkTableMessage message;
+        final AbstractMessage message;
         try
         {
             message = messageEnvelope.getBodyAsMessage();
@@ -143,7 +143,7 @@ final class ServerServiceHandler
             response.setContent( request.getContent() );
             try
             {
-                getOutputQueue().enqueueMessageEnvelope( NetworkTableMessageEnvelope.fromMessage( response ) );
+                getOutputQueue().enqueueMessageEnvelope( MessageEnvelope.fromMessage( response ) );
             }
             catch( final IOException e )
             {

@@ -23,14 +23,14 @@ package org.gamegineer.table.internal.net.messages;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.internal.net.AbstractNetworkTableMessage;
+import org.gamegineer.table.internal.net.AbstractMessage;
 
 /**
  * A request to echo the message content.
  */
 @NotThreadSafe
 public final class EchoRequestMessage
-    extends AbstractNetworkTableMessage
+    extends AbstractMessage
 {
     // ======================================================================
     // Fields

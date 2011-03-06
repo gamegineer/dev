@@ -29,7 +29,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.NetworkTableMessageEnvelope;
+import org.gamegineer.table.internal.net.MessageEnvelope;
 
 /**
  * A message output queue.
@@ -205,7 +205,7 @@ final class OutputQueue
      */
     boolean enqueueMessageEnvelope(
         /* @NonNull */
-        final NetworkTableMessageEnvelope messageEnvelope )
+        final MessageEnvelope messageEnvelope )
     {
         assert messageEnvelope != null;
 

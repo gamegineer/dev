@@ -1,5 +1,5 @@
 /*
- * NetworkTableMessageEnvelope.java
+ * MessageEnvelope.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -35,7 +35,7 @@ import net.jcip.annotations.NotThreadSafe;
  * A network table protocol message envelope.
  */
 @NotThreadSafe
-public final class NetworkTableMessageEnvelope
+public final class MessageEnvelope
 {
     // ======================================================================
     // Fields
@@ -62,8 +62,7 @@ public final class NetworkTableMessageEnvelope
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code NetworkTableMessageEnvelope}
-     * class.
+     * Initializes a new instance of the {@code MessageEnvelope} class.
      * 
      * @param id
      *        The message identifier.
@@ -74,18 +73,18 @@ public final class NetworkTableMessageEnvelope
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code tag} is less than zero or greater than
-     *         {@link AbstractNetworkTableMessage#MAX_TAG}; if the length of
-     *         {@code body} is greater than {@link #MAX_BODY_LENGTH}.
+     *         {@link AbstractMessage#MAX_TAG}; if the length of {@code body} is
+     *         greater than {@link #MAX_BODY_LENGTH}.
      * @throws java.lang.NullPointerException
      *         If {@code body} is {@code null}.
      */
-    public NetworkTableMessageEnvelope(
+    public MessageEnvelope(
         final int id,
         final int tag,
         /* @NonNull */
         final byte[] body )
     {
-        assertArgumentLegal( (tag >= 0) && (tag <= AbstractNetworkTableMessage.MAX_TAG), "tag" ); //$NON-NLS-1$
+        assertArgumentLegal( (tag >= 0) && (tag <= AbstractMessage.MAX_TAG), "tag" ); //$NON-NLS-1$
         assertArgumentNotNull( body, "body" ); //$NON-NLS-1$
         assertArgumentLegal( body.length <= MAX_BODY_LENGTH, "body" ); //$NON-NLS-1$
 
@@ -175,7 +174,7 @@ public final class NetworkTableMessageEnvelope
      *         If the class of the serialized message cannot be found.
      */
     /* @NonNull */
-    private static AbstractNetworkTableMessage deserializeMessage(
+    private static AbstractMessage deserializeMessage(
         /* @NonNull */
         final byte[] body )
         throws IOException, ClassNotFoundException
@@ -185,7 +184,7 @@ public final class NetworkTableMessageEnvelope
         final ObjectInputStream stream = new ObjectInputStream( new ByteArrayInputStream( body ) );
         try
         {
-            return (AbstractNetworkTableMessage)stream.readObject();
+            return (AbstractMessage)stream.readObject();
         }
         finally
         {
@@ -206,7 +205,7 @@ public final class NetworkTableMessageEnvelope
      *         If {@code buffer} is {@code null}.
      */
     /* @Nullable */
-    public static NetworkTableMessageEnvelope fromByteBuffer(
+    public static MessageEnvelope fromByteBuffer(
         /* @NonNull */
         final ByteBuffer buffer )
     {
@@ -224,7 +223,7 @@ public final class NetworkTableMessageEnvelope
         final byte[] body = new byte[ bodyLength ];
         buffer.get( body );
 
-        return new NetworkTableMessageEnvelope( id, tag, body );
+        return new MessageEnvelope( id, tag, body );
     }
 
     /**
@@ -242,14 +241,14 @@ public final class NetworkTableMessageEnvelope
      *         If {@code message} is {@code null}.
      */
     /* @NonNull */
-    public static NetworkTableMessageEnvelope fromMessage(
+    public static MessageEnvelope fromMessage(
         /* @NonNull */
-        final AbstractNetworkTableMessage message )
+        final AbstractMessage message )
         throws IOException
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
 
-        return new NetworkTableMessageEnvelope( message.getId(), message.getTag(), serializeMessage( message ) );
+        return new MessageEnvelope( message.getId(), message.getTag(), serializeMessage( message ) );
     }
 
     /**
@@ -278,7 +277,7 @@ public final class NetworkTableMessageEnvelope
      *         If the class of the message cannot be found.
      */
     /* @NonNull */
-    public AbstractNetworkTableMessage getBodyAsMessage()
+    public AbstractMessage getBodyAsMessage()
         throws IOException, ClassNotFoundException
     {
         final ByteBuffer buffer = getBody();
@@ -323,7 +322,7 @@ public final class NetworkTableMessageEnvelope
     /* @NonNull */
     private static byte[] serializeMessage(
         /* @NonNull */
-        final AbstractNetworkTableMessage message )
+        final AbstractMessage message )
         throws IOException
     {
         assert message != null;

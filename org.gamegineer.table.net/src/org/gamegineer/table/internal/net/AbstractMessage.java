@@ -1,5 +1,5 @@
 /*
- * AbstractNetworkTableMessage.java
+ * AbstractMessage.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -29,7 +29,7 @@ import net.jcip.annotations.NotThreadSafe;
  * A network table protocol message.
  */
 @NotThreadSafe
-public abstract class AbstractNetworkTableMessage
+public abstract class AbstractMessage
     implements Serializable
 {
     // ======================================================================
@@ -60,13 +60,12 @@ public abstract class AbstractNetworkTableMessage
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractNetworkTableMessage}
-     * class.
+     * Initializes a new instance of the {@code AbstractMessage} class.
      * 
      * @param id
      *        The message identifier.
      */
-    protected AbstractNetworkTableMessage(
+    protected AbstractMessage(
         final int id )
     {
         id_ = id;

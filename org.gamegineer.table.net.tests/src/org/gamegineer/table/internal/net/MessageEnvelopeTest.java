@@ -1,5 +1,5 @@
 /*
- * NetworkTableMessageEnvelopeTest.java
+ * MessageEnvelopeTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -31,9 +31,9 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.NetworkTableMessageEnvelope} class.
+ * {@link org.gamegineer.table.internal.net.MessageEnvelope} class.
  */
-public final class NetworkTableMessageEnvelopeTest
+public final class MessageEnvelopeTest
 {
     // ======================================================================
     // Fields
@@ -51,7 +51,7 @@ public final class NetworkTableMessageEnvelopeTest
     private static final int DEFAULT_TAG = 42;
 
     /** The message envelope under test in the fixture. */
-    private NetworkTableMessageEnvelope messageEnvelope_;
+    private MessageEnvelope messageEnvelope_;
 
 
     // ======================================================================
@@ -59,10 +59,9 @@ public final class NetworkTableMessageEnvelopeTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code NetworkTableMessageEnvelopeTest}
-     * class.
+     * Initializes a new instance of the {@code MessageEnvelopeTest} class.
      */
-    public NetworkTableMessageEnvelopeTest()
+    public MessageEnvelopeTest()
     {
         super();
     }
@@ -82,7 +81,7 @@ public final class NetworkTableMessageEnvelopeTest
     public void setUp()
         throws Exception
     {
-        messageEnvelope_ = new NetworkTableMessageEnvelope( DEFAULT_ID, DEFAULT_TAG, DEFAULT_BODY );
+        messageEnvelope_ = new MessageEnvelope( DEFAULT_ID, DEFAULT_TAG, DEFAULT_BODY );
     }
 
     /**
@@ -105,7 +104,7 @@ public final class NetworkTableMessageEnvelopeTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Body_Illegal_LengthGreaterThanMaxLength()
     {
-        new NetworkTableMessageEnvelope( DEFAULT_ID, DEFAULT_TAG, new byte[ NetworkTableMessageEnvelope.MAX_BODY_LENGTH + 1 ] );
+        new MessageEnvelope( DEFAULT_ID, DEFAULT_TAG, new byte[ MessageEnvelope.MAX_BODY_LENGTH + 1 ] );
     }
 
     /**
@@ -115,7 +114,7 @@ public final class NetworkTableMessageEnvelopeTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_Body_Null()
     {
-        new NetworkTableMessageEnvelope( DEFAULT_ID, DEFAULT_TAG, null );
+        new MessageEnvelope( DEFAULT_ID, DEFAULT_TAG, null );
     }
 
     /**
@@ -125,7 +124,7 @@ public final class NetworkTableMessageEnvelopeTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Tag_Illegal_GreaterThanMaxTag()
     {
-        new NetworkTableMessageEnvelope( DEFAULT_ID, AbstractNetworkTableMessage.MAX_TAG + 1, DEFAULT_BODY );
+        new MessageEnvelope( DEFAULT_ID, AbstractMessage.MAX_TAG + 1, DEFAULT_BODY );
     }
 
     /**
@@ -135,7 +134,7 @@ public final class NetworkTableMessageEnvelopeTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Tag_Illegal_LessThanZero()
     {
-        new NetworkTableMessageEnvelope( DEFAULT_ID, -1, DEFAULT_BODY );
+        new MessageEnvelope( DEFAULT_ID, -1, DEFAULT_BODY );
     }
 
     /**
@@ -151,7 +150,7 @@ public final class NetworkTableMessageEnvelopeTest
         buffer.put( DEFAULT_BODY );
         buffer.flip();
 
-        final NetworkTableMessageEnvelope messageEnvelope = NetworkTableMessageEnvelope.fromByteBuffer( buffer );
+        final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteBuffer( buffer );
 
         assertEquals( DEFAULT_ID, messageEnvelope.getId() );
         assertEquals( DEFAULT_TAG, messageEnvelope.getTag() );
@@ -174,7 +173,7 @@ public final class NetworkTableMessageEnvelopeTest
         buffer.put( DEFAULT_BODY, 0, 1 );
         buffer.flip();
 
-        assertNull( NetworkTableMessageEnvelope.fromByteBuffer( buffer ) );
+        assertNull( MessageEnvelope.fromByteBuffer( buffer ) );
     }
 
     /**
@@ -188,7 +187,7 @@ public final class NetworkTableMessageEnvelopeTest
         buffer.putInt( DEFAULT_ID );
         buffer.flip();
 
-        assertNull( NetworkTableMessageEnvelope.fromByteBuffer( buffer ) );
+        assertNull( MessageEnvelope.fromByteBuffer( buffer ) );
     }
 
     /**
@@ -198,7 +197,7 @@ public final class NetworkTableMessageEnvelopeTest
     @Test( expected = NullPointerException.class )
     public void testFromByteBuffer_Buffer_Null()
     {
-        NetworkTableMessageEnvelope.fromByteBuffer( null );
+        MessageEnvelope.fromByteBuffer( null );
     }
 
     /**
@@ -212,11 +211,11 @@ public final class NetworkTableMessageEnvelopeTest
     public void testFromMessage()
         throws Exception
     {
-        final AbstractNetworkTableMessage expectedValue = new FakeMessage();
+        final AbstractMessage expectedValue = new FakeMessage();
         expectedValue.setTag( FakeMessage.MAX_TAG );
 
-        final NetworkTableMessageEnvelope messageEnvelope = NetworkTableMessageEnvelope.fromMessage( expectedValue );
-        final AbstractNetworkTableMessage actualValue = messageEnvelope.getBodyAsMessage();
+        final MessageEnvelope messageEnvelope = MessageEnvelope.fromMessage( expectedValue );
+        final AbstractMessage actualValue = messageEnvelope.getBodyAsMessage();
 
         assertEquals( expectedValue.getId(), messageEnvelope.getId() );
         assertEquals( expectedValue.getTag(), messageEnvelope.getTag() );
@@ -235,7 +234,7 @@ public final class NetworkTableMessageEnvelopeTest
     public void testFromMessage_Message_Null()
         throws Exception
     {
-        NetworkTableMessageEnvelope.fromMessage( null );
+        MessageEnvelope.fromMessage( null );
     }
 
     /**

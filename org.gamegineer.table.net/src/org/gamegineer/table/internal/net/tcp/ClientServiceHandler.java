@@ -23,8 +23,8 @@ package org.gamegineer.table.internal.net.tcp;
 
 import java.io.IOException;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.AbstractNetworkTableMessage;
-import org.gamegineer.table.internal.net.NetworkTableMessageEnvelope;
+import org.gamegineer.table.internal.net.AbstractMessage;
+import org.gamegineer.table.internal.net.MessageEnvelope;
 import org.gamegineer.table.internal.net.messages.EchoRequestMessage;
 import org.gamegineer.table.internal.net.messages.EchoResponseMessage;
 
@@ -72,7 +72,7 @@ final class ClientServiceHandler
             {
                 try
                 {
-                    int nextTag = AbstractNetworkTableMessage.MIN_TAG;
+                    int nextTag = AbstractMessage.MIN_TAG;
 
                     while( true )
                     {
@@ -81,11 +81,11 @@ final class ClientServiceHandler
                         final EchoRequestMessage message = new EchoRequestMessage();
                         message.setTag( nextTag );
                         message.setContent( "a message" ); //$NON-NLS-1$
-                        getOutputQueue().enqueueMessageEnvelope( NetworkTableMessageEnvelope.fromMessage( message ) );
+                        getOutputQueue().enqueueMessageEnvelope( MessageEnvelope.fromMessage( message ) );
 
-                        if( ++nextTag > AbstractNetworkTableMessage.MAX_TAG )
+                        if( ++nextTag > AbstractMessage.MAX_TAG )
                         {
-                            nextTag = AbstractNetworkTableMessage.MIN_TAG;
+                            nextTag = AbstractMessage.MIN_TAG;
                         }
                     }
                 }
@@ -109,19 +109,19 @@ final class ClientServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleMessageEnvelope(org.gamegineer.table.internal.net.NetworkTableMessageEnvelope)
+     * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleMessageEnvelope(org.gamegineer.table.internal.net.MessageEnvelope)
      */
     @Override
     @SuppressWarnings( "boxing" )
     void handleMessageEnvelope(
-        final NetworkTableMessageEnvelope messageEnvelope )
+        final MessageEnvelope messageEnvelope )
     {
         assert messageEnvelope != null;
         assert Thread.holdsLock( getLock() );
 
         // TODO: Temporary protocol
 
-        final AbstractNetworkTableMessage message;
+        final AbstractMessage message;
         try
         {
             message = messageEnvelope.getBodyAsMessage();

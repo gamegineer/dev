@@ -1,5 +1,5 @@
 /*
- * AbstractNetworkTableMessageTest.java
+ * AbstractMessageTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -27,16 +27,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.AbstractNetworkTableMessage} class.
+ * {@link org.gamegineer.table.internal.net.AbstractMessage} class.
  */
-public final class AbstractNetworkTableMessageTest
+public final class AbstractMessageTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The message under test in the fixture. */
-    private AbstractNetworkTableMessage message_;
+    private AbstractMessage message_;
 
 
     // ======================================================================
@@ -44,10 +44,9 @@ public final class AbstractNetworkTableMessageTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractNetworkTableMessageTest}
-     * class.
+     * Initializes a new instance of the {@code AbstractMessageTest} class.
      */
-    public AbstractNetworkTableMessageTest()
+    public AbstractMessageTest()
     {
         super();
     }
@@ -67,7 +66,7 @@ public final class AbstractNetworkTableMessageTest
     public void setUp()
         throws Exception
     {
-        message_ = new AbstractNetworkTableMessage( 0 )
+        message_ = new AbstractMessage( 0 )
         {
             private static final long serialVersionUID = 1L;
         };
@@ -93,7 +92,7 @@ public final class AbstractNetworkTableMessageTest
     @Test( expected = IllegalArgumentException.class )
     public void testSetTag_Tag_Illegal_GreaterThanMaxTag()
     {
-        message_.setTag( AbstractNetworkTableMessage.MAX_TAG + 1 );
+        message_.setTag( AbstractMessage.MAX_TAG + 1 );
     }
 
     /**

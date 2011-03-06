@@ -31,7 +31,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Loggers;
-import org.gamegineer.table.internal.net.NetworkTableMessageEnvelope;
+import org.gamegineer.table.internal.net.MessageEnvelope;
 
 /**
  * A service handler in the TCP network interface Acceptor-Connector pattern
@@ -316,7 +316,7 @@ abstract class AbstractServiceHandler
     @GuardedBy( "getLock()" )
     abstract void handleMessageEnvelope(
         /* @NonNull */
-        NetworkTableMessageEnvelope messageEnvelope );
+        MessageEnvelope messageEnvelope );
 
     /**
      * Modifies the channel operations in which the handler is interested.
@@ -412,7 +412,7 @@ abstract class AbstractServiceHandler
 
                 if( inputQueueState_ != InputQueueState.SHUT_DOWN )
                 {
-                    NetworkTableMessageEnvelope messageEnvelope = null;
+                    MessageEnvelope messageEnvelope = null;
                     while( (messageEnvelope = inputQueue_.dequeueMessageEnvelope()) != null )
                     {
                         handleMessageEnvelope( messageEnvelope );

@@ -28,7 +28,7 @@ import net.jcip.annotations.NotThreadSafe;
  */
 @NotThreadSafe
 public final class FakeMessage
-    extends AbstractNetworkTableMessage
+    extends AbstractMessage
 {
     // ======================================================================
     // Fields
