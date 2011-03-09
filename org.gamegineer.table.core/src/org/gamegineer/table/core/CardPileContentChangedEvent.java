@@ -1,6 +1,6 @@
 /*
  * CardPileContentChangedEvent.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,18 +21,18 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * Superclass for all event objects used to notify listeners that the content of
- * a card pile has changed.
+ * An event used to notify listeners that the content of a card pile has
+ * changed.
  * 
  * @noextend This class is not intended to be subclassed by clients.
  */
 @ThreadSafe
-public abstract class CardPileContentChangedEvent
+public class CardPileContentChangedEvent
     extends CardPileEvent
-    implements ICardPileContentChangedEvent
 {
     // ======================================================================
     // Fields
@@ -40,6 +40,9 @@ public abstract class CardPileContentChangedEvent
 
     /** Serializable class version number. */
     private static final long serialVersionUID = -2958345168587653231L;
+
+    /** The card associated with the event. */
+    private final ICard card_;
 
 
     // ======================================================================
@@ -52,15 +55,41 @@ public abstract class CardPileContentChangedEvent
      * 
      * @param source
      *        The card pile that fired the event; must not be {@code null}.
+     * @param card
+     *        The card associated with the event; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code source} is {@code null}.
+     * @throws java.lang.NullPointerException
+     *         If {@code card} is {@code null}.
      */
-    protected CardPileContentChangedEvent(
+    public CardPileContentChangedEvent(
         /* @NonNull */
         @SuppressWarnings( "hiding" )
-        final ICardPile source )
+        final ICardPile source,
+        /* @NonNull */
+        final ICard card )
     {
         super( source );
+
+        assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
+
+        card_ = card;
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Gets the card associated with the event.
+     * 
+     * @return The card associated with the event; never {@code null}.
+     */
+    /* @NonNull */
+    public final ICard getCard()
+    {
+        return card_;
     }
 }

@@ -1,6 +1,6 @@
 /*
  * CardPileEvent.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,14 +25,13 @@ import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * Superclass for all event objects fired by a table.
+ * An event fired by a card pile.
  * 
  * @noextend This class is not intended to be subclassed by clients.
  */
 @ThreadSafe
-public abstract class CardPileEvent
+public class CardPileEvent
     extends EventObject
-    implements ICardPileEvent
 {
     // ======================================================================
     // Fields
@@ -55,11 +54,27 @@ public abstract class CardPileEvent
      * @throws java.lang.IllegalArgumentException
      *         If {@code source} is {@code null}.
      */
-    protected CardPileEvent(
+    public CardPileEvent(
         /* @NonNull */
         @SuppressWarnings( "hiding" )
         final ICardPile source )
     {
         super( source );
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Gets the card pile that fired the event.
+     * 
+     * @return The card pile that fired the event; never {@code null}.
+     */
+    /* @NonNull */
+    public final ICardPile getCardPile()
+    {
+        return (ICardPile)getSource();
     }
 }

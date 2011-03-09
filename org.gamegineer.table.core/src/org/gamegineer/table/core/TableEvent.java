@@ -1,6 +1,6 @@
 /*
  * TableEvent.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,14 +25,13 @@ import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * Superclass for all event objects fired by a table.
+ * An event fired by a table.
  * 
  * @noextend This class is not intended to be subclassed by clients.
  */
 @ThreadSafe
-public abstract class TableEvent
+public class TableEvent
     extends EventObject
-    implements ITableEvent
 {
     // ======================================================================
     // Fields
@@ -55,11 +54,27 @@ public abstract class TableEvent
      * @throws java.lang.IllegalArgumentException
      *         If {@code source} is {@code null}.
      */
-    protected TableEvent(
+    public TableEvent(
         /* @NonNull */
         @SuppressWarnings( "hiding" )
         final ITable source )
     {
         super( source );
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Gets the table that fired the event.
+     * 
+     * @return The table that fired the event; never {@code null}.
+     */
+    /* @NonNull */
+    public final ITable getTable()
+    {
+        return (ITable)getSource();
     }
 }

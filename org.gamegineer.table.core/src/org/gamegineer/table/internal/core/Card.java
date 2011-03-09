@@ -1,6 +1,6 @@
 /*
  * Card.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -146,7 +146,7 @@ public final class Card
      */
     private void fireCardLocationChanged()
     {
-        final CardEvent event = InternalCardEvent.createCardEvent( this );
+        final CardEvent event = new CardEvent( this );
         for( final ICardListener listener : listeners_ )
         {
             try
@@ -165,7 +165,7 @@ public final class Card
      */
     private void fireCardOrientationChanged()
     {
-        final CardEvent event = InternalCardEvent.createCardEvent( this );
+        final CardEvent event = new CardEvent( this );
         for( final ICardListener listener : listeners_ )
         {
             try

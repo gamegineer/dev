@@ -1,6 +1,6 @@
 /*
  * CardEvent.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,14 +25,13 @@ import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * Superclass for all event objects fired by a card.
+ * An event fired by a card.
  * 
  * @noextend This class is not intended to be subclassed by clients.
  */
 @ThreadSafe
-public abstract class CardEvent
+public class CardEvent
     extends EventObject
-    implements ICardEvent
 {
     // ======================================================================
     // Fields
@@ -55,11 +54,27 @@ public abstract class CardEvent
      * @throws java.lang.IllegalArgumentException
      *         If {@code source} is {@code null}.
      */
-    protected CardEvent(
+    public CardEvent(
         /* @NonNull */
         @SuppressWarnings( "hiding" )
         final ICard source )
     {
         super( source );
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Gets the card that fired the event.
+     * 
+     * @return The card that fired the event; never {@code null}.
+     */
+    /* @NonNull */
+    public final ICard getCard()
+    {
+        return (ICard)getSource();
     }
 }

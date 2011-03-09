@@ -1,6 +1,6 @@
 /*
- * AbstractAbstractTableEventTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * CardPileEventTest.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,32 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 16, 2009 at 10:47:38 PM.
+ * Created on Mar 8, 2011 at 8:24:49 PM.
  */
 
 package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that extend the
- * {@link org.gamegineer.table.core.TableEvent} class.
- * 
- * @param <T>
- *        The type of the table event.
+ * A fixture for testing the {@link org.gamegineer.table.core.CardPileEvent}
+ * class.
  */
-public abstract class AbstractAbstractTableEventTestCase<T extends TableEvent>
+public final class CardPileEventTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table event under test in the fixture. */
-    private T event_;
+    /** The card pile event under test in the fixture. */
+    private CardPileEvent event_;
 
 
     // ======================================================================
@@ -49,10 +47,9 @@ public abstract class AbstractAbstractTableEventTestCase<T extends TableEvent>
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractAbstractTableEventTestCase} class.
+     * Initializes a new instance of the {@code CardPileEventTest} class.
      */
-    protected AbstractAbstractTableEventTestCase()
+    public CardPileEventTest()
     {
         super();
     }
@@ -61,30 +58,6 @@ public abstract class AbstractAbstractTableEventTestCase<T extends TableEvent>
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates the table event to be tested.
-     * 
-     * @return The table event to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    /* @NonNull */
-    protected abstract T createTableEvent()
-        throws Exception;
-
-    /**
-     * Gets the table event under test in the fixture.
-     * 
-     * @return The table event under test in the fixture; never {@code null}.
-     */
-    /* @NonNull */
-    protected final T getTableEvent()
-    {
-        assertNotNull( event_ );
-        return event_;
-    }
 
     /**
      * Sets up the test fixture.
@@ -96,8 +69,7 @@ public abstract class AbstractAbstractTableEventTestCase<T extends TableEvent>
     public void setUp()
         throws Exception
     {
-        event_ = createTableEvent();
-        assertNotNull( event_ );
+        event_ = new CardPileEvent( EasyMock.createMock( ICardPile.class ) );
     }
 
     /**
@@ -114,12 +86,31 @@ public abstract class AbstractAbstractTableEventTestCase<T extends TableEvent>
     }
 
     /**
-     * Ensures the {@code getSource} method returns the same instance as the
-     * {@code getTable} method.
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * source.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testConstructor_Source_Null()
+    {
+        new CardPileEvent( null );
+    }
+
+    /**
+     * Ensures the {@code getCardPile} method does not return {@code null}.
      */
     @Test
-    public void testGetSource_ReturnValue_SameTable()
+    public void testGetCardPile_ReturnValue_NonNull()
     {
-        assertSame( event_.getTable(), event_.getSource() );
+        assertNotNull( event_.getCardPile() );
+    }
+
+    /**
+     * Ensures the {@code getSource} method returns the same instance as the
+     * {@code getCardPile} method.
+     */
+    @Test
+    public void testGetSource_ReturnValue_SameCardPile()
+    {
+        assertSame( event_.getCardPile(), event_.getSource() );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Table.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -140,7 +140,7 @@ public final class Table
     {
         assert cardPile != null;
 
-        final TableContentChangedEvent event = InternalTableContentChangedEvent.createTableContentChangedEvent( this, cardPile );
+        final TableContentChangedEvent event = new TableContentChangedEvent( this, cardPile );
         for( final ITableListener listener : listeners_ )
         {
             try
@@ -166,7 +166,7 @@ public final class Table
     {
         assert cardPile != null;
 
-        final TableContentChangedEvent event = InternalTableContentChangedEvent.createTableContentChangedEvent( this, cardPile );
+        final TableContentChangedEvent event = new TableContentChangedEvent( this, cardPile );
         for( final ITableListener listener : listeners_ )
         {
             try

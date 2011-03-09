@@ -1,6 +1,6 @@
 /*
- * AbstractTableEventTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * TableContentChangedEventTest.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,31 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 16, 2009 at 10:19:52 PM.
+ * Created on Mar 8, 2011 at 8:41:29 PM.
  */
 
 package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertNotNull;
+import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.core.ITableEvent} interface.
- * 
- * @param <T>
- *        The type of the table event.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.core.TableContentChangedEvent} class.
  */
-public abstract class AbstractTableEventTestCase<T extends ITableEvent>
+public final class TableContentChangedEventTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table event under test in the fixture. */
-    private T event_;
+    /** The table content changed event under test in the fixture. */
+    private TableContentChangedEvent event_;
 
 
     // ======================================================================
@@ -48,10 +46,10 @@ public abstract class AbstractTableEventTestCase<T extends ITableEvent>
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractTableEventTestCase}
+     * Initializes a new instance of the {@code TableContentChangedEventTest}
      * class.
      */
-    protected AbstractTableEventTestCase()
+    public TableContentChangedEventTest()
     {
         super();
     }
@@ -60,30 +58,6 @@ public abstract class AbstractTableEventTestCase<T extends ITableEvent>
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates the table event to be tested.
-     * 
-     * @return The table event to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    /* @NonNull */
-    protected abstract T createTableEvent()
-        throws Exception;
-
-    /**
-     * Gets the table event under test in the fixture.
-     * 
-     * @return The table event under test in the fixture; never {@code null}.
-     */
-    /* @NonNull */
-    protected final T getTableEvent()
-    {
-        assertNotNull( event_ );
-        return event_;
-    }
 
     /**
      * Sets up the test fixture.
@@ -95,8 +69,7 @@ public abstract class AbstractTableEventTestCase<T extends ITableEvent>
     public void setUp()
         throws Exception
     {
-        event_ = createTableEvent();
-        assertNotNull( event_ );
+        event_ = new TableContentChangedEvent( EasyMock.createMock( ITable.class ), EasyMock.createMock( ICardPile.class ) );
     }
 
     /**
@@ -113,11 +86,31 @@ public abstract class AbstractTableEventTestCase<T extends ITableEvent>
     }
 
     /**
-     * Ensures the {@code getTable} method does not return {@code null}.
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * card pile.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_CardPile_Null()
+    {
+        new TableContentChangedEvent( EasyMock.createMock( ITable.class ), null );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * source.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testConstructor_Source_Null()
+    {
+        new TableContentChangedEvent( null, EasyMock.createMock( ICardPile.class ) );
+    }
+
+    /**
+     * Ensures the {@code getCardPile} method does not return {@code null}.
      */
     @Test
-    public void testGetTable_ReturnValue_NonNull()
+    public void testGetCardPile_ReturnValue_NonNull()
     {
-        assertNotNull( event_.getTable() );
+        assertNotNull( event_.getCardPile() );
     }
 }

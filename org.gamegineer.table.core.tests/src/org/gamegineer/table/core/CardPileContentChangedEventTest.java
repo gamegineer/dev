@@ -1,6 +1,6 @@
 /*
- * AbstractAbstractCardEventTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * CardPileContentChangedEventTest.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,32 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 24, 2009 at 9:34:01 PM.
+ * Created on Mar 8, 2011 at 8:29:21 PM.
  */
 
 package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that extend the
- * {@link org.gamegineer.table.core.CardEvent} class.
- * 
- * @param <T>
- *        The type of the card event.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.core.CardPileContentChangedEvent} class.
  */
-public abstract class AbstractAbstractCardEventTestCase<T extends CardEvent>
+public final class CardPileContentChangedEventTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The card event under test in the fixture. */
-    private T event_;
+    /** The card pile content changed event under test in the fixture. */
+    private CardPileContentChangedEvent event_;
 
 
     // ======================================================================
@@ -49,10 +46,10 @@ public abstract class AbstractAbstractCardEventTestCase<T extends CardEvent>
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractAbstractCardEventTestCase} class.
+     * Initializes a new instance of the {@code CardPileContentChangedEventTest}
+     * class.
      */
-    protected AbstractAbstractCardEventTestCase()
+    public CardPileContentChangedEventTest()
     {
         super();
     }
@@ -61,30 +58,6 @@ public abstract class AbstractAbstractCardEventTestCase<T extends CardEvent>
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates the card event to be tested.
-     * 
-     * @return The card event to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    /* @NonNull */
-    protected abstract T createCardEvent()
-        throws Exception;
-
-    /**
-     * Gets the card event under test in the fixture.
-     * 
-     * @return The card event under test in the fixture; never {@code null}.
-     */
-    /* @NonNull */
-    protected final T getCardEvent()
-    {
-        assertNotNull( event_ );
-        return event_;
-    }
 
     /**
      * Sets up the test fixture.
@@ -96,8 +69,7 @@ public abstract class AbstractAbstractCardEventTestCase<T extends CardEvent>
     public void setUp()
         throws Exception
     {
-        event_ = createCardEvent();
-        assertNotNull( event_ );
+        event_ = new CardPileContentChangedEvent( EasyMock.createMock( ICardPile.class ), EasyMock.createMock( ICard.class ) );
     }
 
     /**
@@ -114,12 +86,31 @@ public abstract class AbstractAbstractCardEventTestCase<T extends CardEvent>
     }
 
     /**
-     * Ensures the {@code getSource} method returns the same instance as the
-     * {@code getCard} method.
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * card.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_Card_Null()
+    {
+        new CardPileContentChangedEvent( EasyMock.createMock( ICardPile.class ), null );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * source.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testConstructor_Source_Null()
+    {
+        new CardPileContentChangedEvent( null, EasyMock.createMock( ICard.class ) );
+    }
+
+    /**
+     * Ensures the {@code getCard} method does not return {@code null}.
      */
     @Test
-    public void testGetSource_ReturnValue_SameCard()
+    public void testGetCard_ReturnValue_NonNull()
     {
-        assertSame( event_.getCard(), event_.getSource() );
+        assertNotNull( event_.getCard() );
     }
 }

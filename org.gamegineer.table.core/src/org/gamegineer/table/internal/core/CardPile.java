@@ -1,6 +1,6 @@
 /*
  * CardPile.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -222,7 +222,7 @@ public final class CardPile
     {
         assert card != null;
 
-        final CardPileContentChangedEvent event = InternalCardPileContentChangedEvent.createCardPileContentChangedEvent( this, card );
+        final CardPileContentChangedEvent event = new CardPileContentChangedEvent( this, card );
         for( final ICardPileListener listener : listeners_ )
         {
             try
@@ -241,7 +241,7 @@ public final class CardPile
      */
     private void fireCardPileBoundsChanged()
     {
-        final CardPileEvent event = InternalCardPileEvent.createCardPileEvent( this );
+        final CardPileEvent event = new CardPileEvent( this );
         for( final ICardPileListener listener : listeners_ )
         {
             try
@@ -267,7 +267,7 @@ public final class CardPile
     {
         assert card != null;
 
-        final CardPileContentChangedEvent event = InternalCardPileContentChangedEvent.createCardPileContentChangedEvent( this, card );
+        final CardPileContentChangedEvent event = new CardPileContentChangedEvent( this, card );
         for( final ICardPileListener listener : listeners_ )
         {
             try
