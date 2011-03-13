@@ -27,9 +27,11 @@ import java.net.SocketException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.util.Random;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.net.AbstractMessage;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.MessageEnvelope;
 
@@ -76,6 +78,10 @@ abstract class AbstractServiceHandler
     /** The network interface associated with the service handler. */
     private final AbstractNetworkInterface networkInterface_;
 
+    /** The next available message tag. */
+    @GuardedBy( "getLock()" )
+    private int nextTag_;
+
     /** The output handler associated with the service handler. */
     private final OutputQueue outputQueue_;
 
@@ -111,6 +117,7 @@ abstract class AbstractServiceHandler
         isRegistered_ = false;
         isRunning_ = false;
         networkInterface_ = networkInterface;
+        nextTag_ = getInitialMessageTag();
         outputQueue_ = new OutputQueue( networkInterface.getDispatcher().getByteBufferPool(), this );
         readyOperations_ = 0;
     }
@@ -159,16 +166,6 @@ abstract class AbstractServiceHandler
         {
             serviceHandlerClosed();
         }
-    }
-
-    /**
-     * Invoked when the service handler has been opened.
-     * 
-     * TODO: Remove
-     */
-    void doOpen()
-    {
-        // do nothing
     }
 
     /**
@@ -246,6 +243,17 @@ abstract class AbstractServiceHandler
     }
 
     /**
+     * Gets the initial message tag for the service handler.
+     * 
+     * @return The initial message tag for the service handler.
+     */
+    private static int getInitialMessageTag()
+    {
+        final Random rng = new Random( System.currentTimeMillis() );
+        return AbstractMessage.MIN_TAG + rng.nextInt( AbstractMessage.MAX_TAG - AbstractMessage.MIN_TAG );
+    }
+
+    /**
      * Gets the input queue associated with the service handler.
      * 
      * @return The input queue associated with the service handler; never
@@ -279,6 +287,25 @@ abstract class AbstractServiceHandler
     final AbstractNetworkInterface getNetworkInterface()
     {
         return networkInterface_;
+    }
+
+    /**
+     * Gets the next available message tag for the service handler.
+     * 
+     * @return The next available message tag for the service handler.
+     */
+    final int getNextMessageTag()
+    {
+        synchronized( getLock() )
+        {
+            final int tag = nextTag_;
+            if( ++nextTag_ > AbstractMessage.MAX_TAG )
+            {
+                nextTag_ = AbstractMessage.MIN_TAG;
+            }
+
+            return tag;
+        }
     }
 
     /**
@@ -378,8 +405,7 @@ abstract class AbstractServiceHandler
                 throw e;
             }
 
-            // TODO: Remove
-            doOpen();
+            serviceHandlerOpened();
         }
     }
 
@@ -447,6 +473,24 @@ abstract class AbstractServiceHandler
      * </p>
      */
     abstract void serviceHandlerClosed();
+
+    /**
+     * Template method invoked after the service handler has been opened.
+     * 
+     * <p>
+     * This method is invoked while the instance lock is held. Subclasses may
+     * override to perform processing required immediately after the service
+     * handler is opened, such as sending a message to the peer.
+     * </p>
+     * 
+     * <p>
+     * This implementation does nothing.
+     * </p>
+     */
+    void serviceHandlerOpened()
+    {
+        assert Thread.holdsLock( getLock() );
+    }
 
 
     // ======================================================================

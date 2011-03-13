@@ -23,6 +23,8 @@ package org.gamegineer.table.internal.net.tcp;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
+import org.gamegineer.table.internal.net.AbstractMessage;
+import org.gamegineer.table.internal.net.MessageEnvelope;
 
 /**
  * A utility class to manage localized messages for the package.
@@ -61,6 +63,17 @@ final class Messages
 
     /** An I/O error occurred while opening the network interface. */
     public static String ClientNetworkInterface_open_ioError;
+
+    // --- ClientServiceHandler ---------------------------------------------
+
+    /** An error occurred while deserializing a message. */
+    public static String ClientServiceHandler_handleMessageEnvelope_deserializationError;
+
+    /** The handler received an unknown message. */
+    public static String ClientServiceHandler_handleMessageEnvelope_unknownMessage;
+
+    /** An I/O error occurred while sending a message. */
+    public static String ClientServiceHandler_sendMessage_ioError;
 
     // --- Connector --------------------------------------------------------
 
@@ -101,6 +114,17 @@ final class Messages
     /** An I/O error occurred while opening the network interface. */
     public static String ServerNetworkInterface_open_ioError;
 
+    // --- ServerServiceHandler ---------------------------------------------
+
+    /** An error occurred while deserializing a message. */
+    public static String ServerServiceHandler_handleMessageEnvelope_deserializationError;
+
+    /** The handler received an unknown message. */
+    public static String ServerServiceHandler_handleMessageEnvelope_unknownMessage;
+
+    /** An I/O error occurred while sending a message. */
+    public static String ServerServiceHandler_sendMessage_ioError;
+
 
     // ======================================================================
     // Constructors
@@ -120,5 +144,128 @@ final class Messages
     private Messages()
     {
         super();
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    // --- ClientServiceHandler ---------------------------------------------
+
+    /**
+     * Gets the formatted message indicating an error occurred while
+     * deserializing a message.
+     * 
+     * @param messageEnvelope
+     *        The message envelope; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while
+     *         deserializing a message; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    static String ClientServiceHandler_handleMessageEnvelope_deserializationError(
+        /* @NonNull */
+        final MessageEnvelope messageEnvelope )
+    {
+        return bind( ClientServiceHandler_handleMessageEnvelope_deserializationError, messageEnvelope.getId(), messageEnvelope.getTag() );
+    }
+
+    /**
+     * Gets the formatted message indicating the handler received an unknown
+     * message.
+     * 
+     * @param messageEnvelope
+     *        The message envelope; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the handler received an unknown
+     *         message; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    static String ClientServiceHandler_handleMessageEnvelope_unknownMessage(
+        /* @NonNull */
+        final MessageEnvelope messageEnvelope )
+    {
+        return bind( ClientServiceHandler_handleMessageEnvelope_unknownMessage, messageEnvelope.getId(), messageEnvelope.getTag() );
+    }
+
+    /**
+     * Gets the formatted message indicating an error occurred while sending a
+     * message.
+     * 
+     * @param message
+     *        The message; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while sending
+     *         a message; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    static String ClientServiceHandler_sendMessage_ioError(
+        /* @NonNull */
+        final AbstractMessage message )
+    {
+        return bind( ClientServiceHandler_sendMessage_ioError, message.getId(), message.getTag() );
+    }
+
+    // --- ServerServiceHandler ---------------------------------------------
+
+    /**
+     * Gets the formatted message indicating an error occurred while
+     * deserializing a message.
+     * 
+     * @param messageEnvelope
+     *        The message envelope; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while
+     *         deserializing a message; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    static String ServerServiceHandler_handleMessageEnvelope_deserializationError(
+        /* @NonNull */
+        final MessageEnvelope messageEnvelope )
+    {
+        return bind( ServerServiceHandler_handleMessageEnvelope_deserializationError, messageEnvelope.getId(), messageEnvelope.getTag() );
+    }
+
+    /**
+     * Gets the formatted message indicating the handler received an unknown
+     * message.
+     * 
+     * @param messageEnvelope
+     *        The message envelope; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the handler received an unknown
+     *         message; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    static String ServerServiceHandler_handleMessageEnvelope_unknownMessage(
+        /* @NonNull */
+        final MessageEnvelope messageEnvelope )
+    {
+        return bind( ServerServiceHandler_handleMessageEnvelope_unknownMessage, messageEnvelope.getId(), messageEnvelope.getTag() );
+    }
+
+    /**
+     * Gets the formatted message indicating an error occurred while sending a
+     * message.
+     * 
+     * @param message
+     *        The message; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while sending
+     *         a message; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    static String ServerServiceHandler_sendMessage_ioError(
+        /* @NonNull */
+        final AbstractMessage message )
+    {
+        return bind( ServerServiceHandler_sendMessage_ioError, message.getId(), message.getTag() );
     }
 }

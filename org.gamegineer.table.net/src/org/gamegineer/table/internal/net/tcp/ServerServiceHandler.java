@@ -23,12 +23,16 @@ package org.gamegineer.table.internal.net.tcp;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.AbstractMessage;
+import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.MessageEnvelope;
-import org.gamegineer.table.internal.net.messages.EchoRequestMessage;
-import org.gamegineer.table.internal.net.messages.EchoResponseMessage;
+import org.gamegineer.table.internal.net.ProtocolVersions;
+import org.gamegineer.table.internal.net.messages.HelloRequestMessage;
+import org.gamegineer.table.internal.net.messages.HelloResponseMessage;
+import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * A service handler that represents the server half of a network table
@@ -107,8 +111,6 @@ final class ServerServiceHandler
         assert messageEnvelope != null;
         assert Thread.holdsLock( getLock() );
 
-        // TODO: Temporary protocol
-
         if( !isConnected_ )
         {
             // TODO: Player ID will be obtained via protocol.
@@ -124,35 +126,54 @@ final class ServerServiceHandler
         }
         catch( final IOException e )
         {
-            System.out.println( String.format( "ServerServiceHandler : failed to deserialize a message (id=%d, tag=%d): ", messageEnvelope.getId(), messageEnvelope.getTag() ) + e ); //$NON-NLS-1$
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerServiceHandler_handleMessageEnvelope_deserializationError( messageEnvelope ), e );
             return;
         }
         catch( final ClassNotFoundException e )
         {
-            System.out.println( String.format( "ServerServiceHandler : failed to deserialize a message (id=%d, tag=%d): ", messageEnvelope.getId(), messageEnvelope.getTag() ) + e ); //$NON-NLS-1$
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerServiceHandler_handleMessageEnvelope_deserializationError( messageEnvelope ), e );
             return;
         }
 
-        if( message instanceof EchoRequestMessage )
+        if( message instanceof HelloRequestMessage )
         {
-            final EchoRequestMessage request = (EchoRequestMessage)message;
-            System.out.println( String.format( "ServerServiceHandler : received echo request (tag=%d) '%s'", request.getTag(), request.getContent() ) ); //$NON-NLS-1$
+            final HelloRequestMessage request = (HelloRequestMessage)message;
+            System.out.println( String.format( "ServerServiceHandler : received hello request (tag=%d) with supported version '%d'", request.getTag(), request.getSupportedProtocolVersion() ) ); //$NON-NLS-1$
 
-            final EchoResponseMessage response = new EchoResponseMessage();
+            final HelloResponseMessage response = new HelloResponseMessage();
             response.setTag( request.getTag() );
-            response.setContent( request.getContent() );
+            if( request.getSupportedProtocolVersion() >= ProtocolVersions.VERSION_1 )
+            {
+                response.setChosenProtocolVersion( ProtocolVersions.VERSION_1 );
+            }
+            else
+            {
+                response.setException( new NetworkTableException( "unsupported protocol version" ) ); //$NON-NLS-1$
+            }
+
             try
             {
                 getOutputQueue().enqueueMessageEnvelope( MessageEnvelope.fromMessage( response ) );
             }
             catch( final IOException e )
             {
-                System.out.println( "ServerServiceHandler : failed to send echo response: " + e ); //$NON-NLS-1$
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerServiceHandler_sendMessage_ioError( message ), e );
+                close();
+                return;
+            }
+
+            if( response.getException() != null )
+            {
+                System.out.println( String.format( "ServerServiceHandler : received hello request (tag=%d) with an unsupported version", request.getTag() ) ); //$NON-NLS-1$
+                // TODO: Cannot call close() here because the response will never be sent.
+                // Need a mechanism for signaling this handler is dead and should be removed
+                // as soon as its output queue is clear.
+                //close();
             }
         }
         else
         {
-            System.out.println( String.format( "ServerServiceHandler : received unknown message (id=%d, tag=%d)", message.getId(), message.getTag() ) ); //$NON-NLS-1$
+            Loggers.getDefaultLogger().warning( Messages.ServerServiceHandler_handleMessageEnvelope_unknownMessage( messageEnvelope ) );
         }
     }
 
