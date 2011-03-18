@@ -164,11 +164,8 @@ final class ServerServiceHandler
 
             if( response.getException() != null )
             {
-                System.out.println( String.format( "ServerServiceHandler : received hello request (tag=%d) with an unsupported version", request.getTag() ) ); //$NON-NLS-1$
-                // TODO: Cannot call close() here because the response will never be sent.
-                // Need a mechanism for signaling this handler is dead and should be removed
-                // as soon as its output queue is clear.
-                //close();
+                System.out.println( String.format( "ServerServiceHandler : received hello request (tag=%d) but the requested version is unsupported", request.getTag() ) ); //$NON-NLS-1$
+                shutDownOutputQueue();
             }
         }
         else

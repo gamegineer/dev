@@ -61,7 +61,7 @@ abstract class AbstractServiceHandler
 
     /** The state of the input queue. */
     @GuardedBy( "getLock()" )
-    private InputQueueState inputQueueState_;
+    private QueueState inputQueueState_;
 
     /** The channel operations in which the handler is interested. */
     @GuardedBy( "getLock()" )
@@ -84,6 +84,10 @@ abstract class AbstractServiceHandler
 
     /** The output handler associated with the service handler. */
     private final OutputQueue outputQueue_;
+
+    /** The state of the output queue. */
+    @GuardedBy( "getLock()" )
+    private QueueState outputQueueState_;
 
     /**
      * A snapshot of the channel operations that are ready immediately before
@@ -112,13 +116,14 @@ abstract class AbstractServiceHandler
 
         channel_ = null;
         inputQueue_ = new InputQueue( networkInterface.getDispatcher().getByteBufferPool() );
-        inputQueueState_ = InputQueueState.OPEN;
+        inputQueueState_ = QueueState.OPEN;
         interestOperations_ = SelectionKey.OP_READ;
         isRegistered_ = false;
         isRunning_ = false;
         networkInterface_ = networkInterface;
         nextTag_ = getInitialMessageTag();
         outputQueue_ = new OutputQueue( networkInterface.getDispatcher().getByteBufferPool(), this );
+        outputQueueState_ = QueueState.OPEN;
         readyOperations_ = 0;
     }
 
@@ -180,6 +185,11 @@ abstract class AbstractServiceHandler
     {
         assert Thread.holdsLock( getLock() );
 
+        if( outputQueueState_ == QueueState.SHUT_DOWN )
+        {
+            return;
+        }
+
         if( ((readyOperations_ & SelectionKey.OP_WRITE) != 0) && !outputQueue_.isEmpty() )
         {
             outputQueue_.drainTo( channel_ );
@@ -203,7 +213,7 @@ abstract class AbstractServiceHandler
     {
         assert Thread.holdsLock( getLock() );
 
-        if( inputQueueState_ != InputQueueState.OPEN )
+        if( inputQueueState_ != QueueState.OPEN )
         {
             return;
         }
@@ -225,7 +235,7 @@ abstract class AbstractServiceHandler
                 }
             }
 
-            inputQueueState_ = InputQueueState.SHUTTING_DOWN;
+            inputQueueState_ = QueueState.SHUTTING_DOWN;
             modifyInterestOperations( SelectionKey.OP_WRITE, 0 );
         }
     }
@@ -346,6 +356,23 @@ abstract class AbstractServiceHandler
         MessageEnvelope messageEnvelope );
 
     /**
+     * Invoked when the output stream is shut down.
+     * 
+     * <p>
+     * This method is invoked while the instance lock is held.
+     * </p>
+     * 
+     * <p>
+     * This implementation closes the service handler.
+     * </p>
+     */
+    @GuardedBy( "getLock()" )
+    void handleOutputShutDown()
+    {
+        close();
+    }
+
+    /**
      * Modifies the channel operations in which the handler is interested.
      * 
      * @param operationsToSet
@@ -436,7 +463,7 @@ abstract class AbstractServiceHandler
                 drainOutput();
                 fillInput();
 
-                if( inputQueueState_ != InputQueueState.SHUT_DOWN )
+                if( inputQueueState_ != QueueState.SHUT_DOWN )
                 {
                     MessageEnvelope messageEnvelope = null;
                     while( (messageEnvelope = inputQueue_.dequeueMessageEnvelope()) != null )
@@ -444,10 +471,16 @@ abstract class AbstractServiceHandler
                         handleMessageEnvelope( messageEnvelope );
                     }
 
-                    if( inputQueueState_ == InputQueueState.SHUTTING_DOWN )
+                    if( inputQueueState_ == QueueState.SHUTTING_DOWN )
                     {
-                        inputQueueState_ = InputQueueState.SHUT_DOWN;
+                        inputQueueState_ = QueueState.SHUT_DOWN;
                         handleInputShutDown();
+                    }
+
+                    if( (outputQueueState_ == QueueState.SHUTTING_DOWN) && outputQueue_.isEmpty() )
+                    {
+                        outputQueueState_ = QueueState.SHUT_DOWN;
+                        handleOutputShutDown();
                     }
                 }
             }
@@ -492,28 +525,55 @@ abstract class AbstractServiceHandler
         assert Thread.holdsLock( getLock() );
     }
 
+    /**
+     * Shuts down the service handler output queue.
+     * 
+     * <p>
+     * The service handler will be closed once the output queue has been
+     * drained.
+     * </p>
+     */
+    final void shutDownOutputQueue()
+    {
+        synchronized( getLock() )
+        {
+            if( outputQueueState_ == QueueState.OPEN )
+            {
+                outputQueueState_ = QueueState.SHUTTING_DOWN;
+            }
+        }
+    }
+
 
     // ======================================================================
     // Nested Types
     // ======================================================================
 
     /**
-     * The possible states of the service handler input queue.
+     * The possible states of a service handler queue.
      */
-    private enum InputQueueState
+    private enum QueueState
     {
-        /** The input queue is open. */
+        /** The queue is open. */
         OPEN,
 
         /**
-         * The input queue is shutting down. The underlying input stream has
-         * been shut down but there may still be unprocessed data in the queue.
+         * The queue is shutting down.
+         * 
+         * <p>
+         * There may be unprocessed data in the queue. For input queues, the
+         * underlying stream has been closed. For output queues, the underlying
+         * stream will not be closed until the queue has been emptied.
+         * </p>
          */
         SHUTTING_DOWN,
 
         /**
-         * The input queue is shut down. No more data remains in the queue to be
-         * processed.
+         * The queue is shut down.
+         * 
+         * <p>
+         * No more data remains in the queue to be processed.
+         * </p>
          */
         SHUT_DOWN;
     }
