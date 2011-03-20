@@ -1,6 +1,6 @@
 /*
  * SecureStringTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -120,13 +120,23 @@ public final class SecureStringTest
     }
 
     /**
+     * Ensures the {@code SecureString(SecureString)} constructor throws an
+     * exception when passed a {@code null} secure string.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructorFromSecureString_SecureString_Null()
+    {
+        new SecureString( (SecureString)null );
+    }
+
+    /**
      * Ensures the {@code SecureString(char[])} constructor throws an exception
      * when passed a {@code null} value.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructorFromValue_Value_Null()
     {
-        new SecureString( null );
+        new SecureString( (char[])null );
     }
 
     /**

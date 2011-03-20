@@ -1,6 +1,6 @@
 /*
  * SecureString.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -111,6 +111,24 @@ public final class SecureString
     {
         value_ = new char[ length ];
         System.arraycopy( value, offset, value_, 0, length );
+    }
+
+    /**
+     * Initializes a new instance of the {@code SecureString} class from the
+     * specified secure string.
+     * 
+     * @param secureString
+     *        The secure string whose value will be used as the initial value of
+     *        the string; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code secureString} is {@code null}.
+     */
+    public SecureString(
+        /* @NonNull */
+        final SecureString secureString )
+    {
+        value_ = secureString.toCharArray();
     }
 
 
