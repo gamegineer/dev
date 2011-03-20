@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
+import org.gamegineer.common.core.security.SecureString;
+
 /**
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.net.tcp.ClientServiceHandler} class to
@@ -55,6 +57,6 @@ public final class ClientServiceHandlerAsServiceHandlerTest
     protected AbstractServiceHandler createServiceHandler(
         final AbstractNetworkInterface networkInterface )
     {
-        return new ClientServiceHandler( networkInterface );
+        return new ClientServiceHandler( networkInterface, "playerName", new SecureString() ); //$NON-NLS-1$
     }
 }

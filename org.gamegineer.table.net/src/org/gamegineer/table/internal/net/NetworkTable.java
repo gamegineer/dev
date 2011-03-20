@@ -270,12 +270,12 @@ public final class NetworkTable
      */
     @Override
     public void playerConnected(
-        final String playerId )
+        final String playerName )
     {
-        assertArgumentNotNull( playerId, "playerId" ); //$NON-NLS-1$
+        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
 
         // TODO
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has connected", playerId ) ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has connected", playerName ) ); //$NON-NLS-1$
     }
 
     /*
@@ -283,12 +283,12 @@ public final class NetworkTable
      */
     @Override
     public void playerDisconnected(
-        final String playerId )
+        final String playerName )
     {
-        assertArgumentNotNull( playerId, "playerId" ); //$NON-NLS-1$
+        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
 
         // TODO
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has disconnected", playerId ) ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has disconnected", playerName ) ); //$NON-NLS-1$
     }
 
     /*

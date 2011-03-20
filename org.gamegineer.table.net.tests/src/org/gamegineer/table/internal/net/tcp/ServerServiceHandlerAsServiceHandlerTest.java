@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
+import org.gamegineer.common.core.security.SecureString;
+
 /**
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.net.tcp.ServerServiceHandler} class to
@@ -55,6 +57,6 @@ public final class ServerServiceHandlerAsServiceHandlerTest
     protected AbstractServiceHandler createServiceHandler(
         final AbstractNetworkInterface networkInterface )
     {
-        return new ServerServiceHandler( networkInterface );
+        return new ServerServiceHandler( networkInterface, new SecureString() );
     }
 }

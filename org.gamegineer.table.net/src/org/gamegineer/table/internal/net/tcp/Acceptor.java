@@ -31,6 +31,7 @@ import java.nio.channels.SocketChannel;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 
@@ -58,6 +59,10 @@ final class Acceptor
     /** The network interface associated with the acceptor. */
     private final AbstractNetworkInterface networkInterface_;
 
+    /** The network table password. */
+    @GuardedBy( "getLock()" )
+    private SecureString password_;
+
     /** The server socket channel on which incoming connections are accepted. */
     @GuardedBy( "getLock()" )
     private ServerSocketChannel serverChannel_;
@@ -82,6 +87,7 @@ final class Acceptor
 
         isRegistered_ = false;
         networkInterface_ = networkInterface;
+        password_ = null;
         serverChannel_ = null;
     }
 
@@ -109,7 +115,7 @@ final class Acceptor
 
             clientChannel.configureBlocking( false );
 
-            final AbstractServiceHandler serviceHandler = new ServerServiceHandler( networkInterface_ );
+            final AbstractServiceHandler serviceHandler = new ServerServiceHandler( networkInterface_, password_ );
             serviceHandler.open( clientChannel );
         }
         catch( final IOException e )
@@ -150,6 +156,7 @@ final class Acceptor
                 serverChannel_ = createServerSocketChannel( configuration );
                 setState( State.OPEN );
 
+                password_ = new SecureString( configuration.getPassword() );
                 networkInterface_.getDispatcher().registerEventHandler( this );
                 isRegistered_ = true;
             }
@@ -177,6 +184,12 @@ final class Acceptor
                 {
                     isRegistered_ = false;
                     networkInterface_.getDispatcher().unregisterEventHandler( this );
+                }
+
+                if( password_ != null )
+                {
+                    password_.dispose();
+                    password_ = null;
                 }
 
                 try

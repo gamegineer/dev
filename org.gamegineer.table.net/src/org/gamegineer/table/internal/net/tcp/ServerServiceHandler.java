@@ -22,14 +22,18 @@
 package org.gamegineer.table.internal.net.tcp;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Arrays;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.AbstractMessage;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.MessageEnvelope;
 import org.gamegineer.table.internal.net.ProtocolVersions;
+import org.gamegineer.table.internal.net.messages.BeginAuthenticationRequestMessage;
+import org.gamegineer.table.internal.net.messages.BeginAuthenticationResponseMessage;
+import org.gamegineer.table.internal.net.messages.EndAuthenticationMessage;
 import org.gamegineer.table.internal.net.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.messages.HelloResponseMessage;
 import org.gamegineer.table.net.NetworkTableException;
@@ -46,19 +50,19 @@ final class ServerServiceHandler
     // Fields
     // ======================================================================
 
-    /** The next available player identifier. */
-    private static final AtomicInteger nextPlayerId_ = new AtomicInteger( 0 );
-
     /** Indicates the remote player is connected. */
     @GuardedBy( "getLock()" )
     private boolean isConnected_;
 
+    /** The network table password. */
+    private final SecureString password_;
+
     /**
-     * The identifier of the remote player or {@code null} if the player
-     * identity has not yet been established.
+     * The name of the remote player or {@code null} if the player has not yet
+     * been authenticated.
      */
     @GuardedBy( "getLock()" )
-    private String playerId_;
+    private String playerName_;
 
 
     // ======================================================================
@@ -71,21 +75,136 @@ final class ServerServiceHandler
      * @param networkInterface
      *        The network interface associated with the service handler; must
      *        not be {@code null}.
+     * @param password
+     *        The network table password; must not be {@code null}.
      */
     ServerServiceHandler(
         /* @NonNull */
-        final AbstractNetworkInterface networkInterface )
+        final AbstractNetworkInterface networkInterface,
+        /* @NonNull */
+        final SecureString password )
     {
         super( networkInterface );
 
+        assert password != null;
+
         isConnected_ = false;
-        playerId_ = null;
+        password_ = new SecureString( password );
+        playerName_ = null;
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Handles a Begin Authentication Response message.
+     * 
+     * @param message
+     *        The message; must not be {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    @SuppressWarnings( "boxing" )
+    private void handleBeginAuthenticationResponseMessage(
+        /* @NonNull */
+        final BeginAuthenticationResponseMessage message )
+    {
+        assert message != null;
+        assert Thread.holdsLock( getLock() );
+
+        final EndAuthenticationMessage endAuthenticationMessage = new EndAuthenticationMessage();
+        endAuthenticationMessage.setTag( AbstractMessage.NO_TAG );
+
+        // TODO: need to verify challenge response
+        if( Arrays.equals( message.getResponse(), new byte[] {
+            7, 6, 5, 4, 3, 2, 1, 0
+        } ) )
+        {
+            System.out.println( String.format( "ServerServiceHandler : client authenticated (tag=%d)", message.getTag() ) ); //$NON-NLS-1$
+            isConnected_ = true;
+            playerName_ = message.getPlayerName();
+            // TODO: this method has to be atomic with respect to allowing the network table
+            // to throw an exception if the player name is already taken
+            getNetworkInterface().getListener().playerConnected( playerName_ );
+        }
+        else
+        {
+            System.out.println( String.format( "ServerServiceHandler : client failed authentication (tag=%d)", message.getTag() ) ); //$NON-NLS-1$
+            endAuthenticationMessage.setException( new NetworkTableException( "failed authentication" ) ); //$NON-NLS-1$
+        }
+
+        if( sendMessage( endAuthenticationMessage ) )
+        {
+            if( endAuthenticationMessage.getException() != null )
+            {
+                shutDownOutputQueue();
+            }
+        }
+        else
+        {
+            close();
+        }
+    }
+
+    /**
+     * Handles a Hello Request message.
+     * 
+     * @param message
+     *        The message; must not be {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    @SuppressWarnings( "boxing" )
+    private void handleHelloRequestMessage(
+        /* @NonNull */
+        final HelloRequestMessage message )
+    {
+        assert message != null;
+        assert Thread.holdsLock( getLock() );
+
+        System.out.println( String.format( "ServerServiceHandler : received hello request (tag=%d) with supported version '%d'", message.getTag(), message.getSupportedProtocolVersion() ) ); //$NON-NLS-1$
+
+        final HelloResponseMessage response = new HelloResponseMessage();
+        response.setTag( message.getTag() );
+        if( message.getSupportedProtocolVersion() >= ProtocolVersions.VERSION_1 )
+        {
+            response.setChosenProtocolVersion( ProtocolVersions.VERSION_1 );
+        }
+        else
+        {
+            response.setException( new NetworkTableException( "unsupported protocol version" ) ); //$NON-NLS-1$
+        }
+
+        if( !sendMessage( response ) )
+        {
+            close();
+            return;
+        }
+
+        if( response.getException() == null )
+        {
+            final BeginAuthenticationRequestMessage beginAuthenticationRequest = new BeginAuthenticationRequestMessage();
+            // TODO: generate cryptographically strong random data
+            beginAuthenticationRequest.setTag( getNextMessageTag() );
+            beginAuthenticationRequest.setChallenge( new byte[] {
+                0, 1, 2, 3, 4, 5, 6, 7
+            } );
+            beginAuthenticationRequest.setSalt( new byte[] {
+                8, 9, 10, 11, 12, 13, 14, 15
+            } );
+            beginAuthenticationRequest.setIterationCount( 1000 );
+
+            if( !sendMessage( beginAuthenticationRequest ) )
+            {
+                close();
+            }
+        }
+        else
+        {
+            System.out.println( String.format( "ServerServiceHandler : received hello request (tag=%d) but the requested version is unsupported", message.getTag() ) ); //$NON-NLS-1$
+            shutDownOutputQueue();
+        }
+    }
 
     /*
      * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleInputShutDown()
@@ -96,7 +215,7 @@ final class ServerServiceHandler
         if( isConnected_ )
         {
             isConnected_ = false;
-            getNetworkInterface().getListener().playerDisconnected( playerId_ );
+            getNetworkInterface().getListener().playerDisconnected( playerName_ );
         }
     }
 
@@ -104,20 +223,11 @@ final class ServerServiceHandler
      * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleMessageEnvelope(org.gamegineer.table.internal.net.MessageEnvelope)
      */
     @Override
-    @SuppressWarnings( "boxing" )
     void handleMessageEnvelope(
         final MessageEnvelope messageEnvelope )
     {
         assert messageEnvelope != null;
         assert Thread.holdsLock( getLock() );
-
-        if( !isConnected_ )
-        {
-            // TODO: Player ID will be obtained via protocol.
-            isConnected_ = true;
-            playerId_ = String.format( "player-%d", new Integer( nextPlayerId_.incrementAndGet() ) ); //$NON-NLS-1$
-            getNetworkInterface().getListener().playerConnected( playerId_ );
-        }
 
         final AbstractMessage message;
         try
@@ -135,38 +245,15 @@ final class ServerServiceHandler
             return;
         }
 
+        // TODO: need to correlate all response message tags
+
         if( message instanceof HelloRequestMessage )
         {
-            final HelloRequestMessage request = (HelloRequestMessage)message;
-            System.out.println( String.format( "ServerServiceHandler : received hello request (tag=%d) with supported version '%d'", request.getTag(), request.getSupportedProtocolVersion() ) ); //$NON-NLS-1$
-
-            final HelloResponseMessage response = new HelloResponseMessage();
-            response.setTag( request.getTag() );
-            if( request.getSupportedProtocolVersion() >= ProtocolVersions.VERSION_1 )
-            {
-                response.setChosenProtocolVersion( ProtocolVersions.VERSION_1 );
-            }
-            else
-            {
-                response.setException( new NetworkTableException( "unsupported protocol version" ) ); //$NON-NLS-1$
-            }
-
-            try
-            {
-                getOutputQueue().enqueueMessageEnvelope( MessageEnvelope.fromMessage( response ) );
-            }
-            catch( final IOException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerServiceHandler_sendMessage_ioError( message ), e );
-                close();
-                return;
-            }
-
-            if( response.getException() != null )
-            {
-                System.out.println( String.format( "ServerServiceHandler : received hello request (tag=%d) but the requested version is unsupported", request.getTag() ) ); //$NON-NLS-1$
-                shutDownOutputQueue();
-            }
+            handleHelloRequestMessage( (HelloRequestMessage)message );
+        }
+        else if( message instanceof BeginAuthenticationResponseMessage )
+        {
+            handleBeginAuthenticationResponseMessage( (BeginAuthenticationResponseMessage)message );
         }
         else
         {
@@ -185,8 +272,10 @@ final class ServerServiceHandler
             if( isConnected_ )
             {
                 isConnected_ = false;
-                getNetworkInterface().getListener().playerDisconnected( playerId_ );
+                getNetworkInterface().getListener().playerDisconnected( playerName_ );
             }
         }
+
+        password_.dispose();
     }
 }

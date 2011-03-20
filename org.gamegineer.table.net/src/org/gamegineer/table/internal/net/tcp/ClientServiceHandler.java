@@ -23,11 +23,16 @@ package org.gamegineer.table.internal.net.tcp;
 
 import java.io.IOException;
 import java.util.logging.Level;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.AbstractMessage;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.MessageEnvelope;
 import org.gamegineer.table.internal.net.ProtocolVersions;
+import org.gamegineer.table.internal.net.messages.BeginAuthenticationRequestMessage;
+import org.gamegineer.table.internal.net.messages.BeginAuthenticationResponseMessage;
+import org.gamegineer.table.internal.net.messages.EndAuthenticationMessage;
 import org.gamegineer.table.internal.net.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.messages.HelloResponseMessage;
 
@@ -40,6 +45,17 @@ final class ClientServiceHandler
     extends AbstractServiceHandler
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The network table password. */
+    private final SecureString password_;
+
+    /** The player name. */
+    private final String playerName_;
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
@@ -49,18 +65,112 @@ final class ClientServiceHandler
      * @param networkInterface
      *        The network interface associated with the service handler; must
      *        not be {@code null}.
+     * @param playerName
+     *        The player name; must not be {@code null}.
+     * @param password
+     *        The network table password; must not be {@code null}.
      */
     ClientServiceHandler(
         /* @NonNull */
-        final AbstractNetworkInterface networkInterface )
+        final AbstractNetworkInterface networkInterface,
+        /* @NonNull */
+        final String playerName,
+        /* @NonNull */
+        final SecureString password )
     {
         super( networkInterface );
+
+        assert playerName != null;
+        assert password != null;
+
+        password_ = new SecureString( password );
+        playerName_ = playerName;
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Handles a Begin Authentication Request message.
+     * 
+     * @param message
+     *        The message; must not be {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    private void handleBeginAuthenticationRequestMessage(
+        /* @NonNull */
+        final BeginAuthenticationRequestMessage message )
+    {
+        assert message != null;
+        assert Thread.holdsLock( getLock() );
+
+        final BeginAuthenticationResponseMessage response = new BeginAuthenticationResponseMessage();
+        response.setTag( message.getTag() );
+        response.setPlayerName( playerName_ );
+        // TODO: calculate HMAC using password, challenge, salt, and iterationCount
+        response.setResponse( new byte[] {
+            7, 6, 5, 4, 3, 2, 1, 0
+        } );
+
+        if( !sendMessage( response ) )
+        {
+            close();
+        }
+    }
+
+    /**
+     * Handles an End Authentication message.
+     * 
+     * @param message
+     *        The message; must not be {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    @SuppressWarnings( "boxing" )
+    private void handleEndAuthenticationMessage(
+        /* @NonNull */
+        final EndAuthenticationMessage message )
+    {
+        assert message != null;
+        assert Thread.holdsLock( getLock() );
+
+        if( message.getException() != null )
+        {
+            System.out.println( String.format( "ClientServiceHandler : failed authentication (tag=%d) with exception: ", message.getTag() ) + message.getException() ); //$NON-NLS-1$
+            close();
+        }
+        else
+        {
+            System.out.println( String.format( "ClientServiceHandler : completed authentication successfully (tag=%d): ", message.getTag() ) ); //$NON-NLS-1$
+        }
+    }
+
+    /**
+     * Handles a Hello Response message.
+     * 
+     * @param message
+     *        The message; must not be {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    @SuppressWarnings( "boxing" )
+    private void handleHelloResponseMessage(
+        /* @NonNull */
+        final HelloResponseMessage message )
+    {
+        assert message != null;
+        assert Thread.holdsLock( getLock() );
+
+        if( message.getException() != null )
+        {
+            System.out.println( String.format( "ClientServiceHandler : received hello response (tag=%d) with exception: ", message.getTag() ) + message.getException() ); //$NON-NLS-1$
+            close();
+        }
+        else
+        {
+            System.out.println( String.format( "ClientServiceHandler : received hello response (tag=%d) with chosen version '%d'", message.getTag(), message.getChosenProtocolVersion() ) ); //$NON-NLS-1$
+        }
+    }
 
     /*
      * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleInputShutDown()
@@ -75,7 +185,6 @@ final class ClientServiceHandler
      * @see org.gamegineer.table.internal.net.tcp.AbstractServiceHandler#handleMessageEnvelope(org.gamegineer.table.internal.net.MessageEnvelope)
      */
     @Override
-    @SuppressWarnings( "boxing" )
     void handleMessageEnvelope(
         final MessageEnvelope messageEnvelope )
     {
@@ -98,18 +207,19 @@ final class ClientServiceHandler
             return;
         }
 
+        // TODO: need to correlate all response message tags
+
         if( message instanceof HelloResponseMessage )
         {
-            final HelloResponseMessage response = (HelloResponseMessage)message;
-            if( response.getException() != null )
-            {
-                System.out.println( String.format( "ClientServiceHandler : received hello response (tag=%d) with exception: ", message.getTag() ) + response.getException() ); //$NON-NLS-1$
-                close();
-            }
-            else
-            {
-                System.out.println( String.format( "ClientServiceHandler : received hello response (tag=%d) with chosen version '%d'", response.getTag(), response.getChosenProtocolVersion() ) ); //$NON-NLS-1$
-            }
+            handleHelloResponseMessage( (HelloResponseMessage)message );
+        }
+        else if( message instanceof BeginAuthenticationRequestMessage )
+        {
+            handleBeginAuthenticationRequestMessage( (BeginAuthenticationRequestMessage)message );
+        }
+        else if( message instanceof EndAuthenticationMessage )
+        {
+            handleEndAuthenticationMessage( (EndAuthenticationMessage)message );
         }
         else
         {
@@ -124,6 +234,8 @@ final class ClientServiceHandler
     void serviceHandlerClosed()
     {
         getNetworkInterface().getListener().networkInterfaceDisconnected();
+
+        password_.dispose();
     }
 
     /*
@@ -137,14 +249,8 @@ final class ClientServiceHandler
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setTag( getNextMessageTag() );
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
-
-        try
+        if( !sendMessage( message ) )
         {
-            getOutputQueue().enqueueMessageEnvelope( MessageEnvelope.fromMessage( message ) );
-        }
-        catch( final IOException e )
-        {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ClientServiceHandler_sendMessage_ioError( message ), e );
             close();
         }
     }

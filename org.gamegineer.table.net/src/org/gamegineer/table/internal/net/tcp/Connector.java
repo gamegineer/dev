@@ -118,7 +118,7 @@ final class Connector
             {
                 final SocketChannel channel = createSocketChannel( configuration );
 
-                final AbstractServiceHandler serviceHandler = new ClientServiceHandler( networkInterface_ );
+                final AbstractServiceHandler serviceHandler = new ClientServiceHandler( networkInterface_, configuration.getLocalPlayerName(), configuration.getPassword() );
                 serviceHandler.open( channel );
             }
             finally

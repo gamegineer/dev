@@ -498,6 +498,33 @@ abstract class AbstractServiceHandler
     }
 
     /**
+     * Sends the specified message.
+     * 
+     * @param message
+     *        The message; must not be {@code null}.
+     * 
+     * @return {@code true} if the message was sent successfully; otherwise
+     *         {@code false}.
+     */
+    final boolean sendMessage(
+        /* @NonNull */
+        final AbstractMessage message )
+    {
+        assert message != null;
+
+        try
+        {
+            getOutputQueue().enqueueMessageEnvelope( MessageEnvelope.fromMessage( message ) );
+            return true;
+        }
+        catch( final IOException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractServiceHandler_sendMessage_ioError( message ), e );
+            return false;
+        }
+    }
+
+    /**
      * Template method invoked after the service handler has been closed.
      * 
      * <p>

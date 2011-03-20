@@ -45,6 +45,9 @@ final class Messages
     /** An error occurred while running the event handler. */
     public static String AbstractServiceHandler_run_error;
 
+    /** An I/O error occurred while sending a message. */
+    public static String AbstractServiceHandler_sendMessage_ioError;
+
     /** The client service handler state is not pristine. */
     public static String AbstractServiceHandler_state_notPristine;
 
@@ -71,9 +74,6 @@ final class Messages
 
     /** The handler received an unknown message. */
     public static String ClientServiceHandler_handleMessageEnvelope_unknownMessage;
-
-    /** An I/O error occurred while sending a message. */
-    public static String ClientServiceHandler_sendMessage_ioError;
 
     // --- Connector --------------------------------------------------------
 
@@ -122,9 +122,6 @@ final class Messages
     /** The handler received an unknown message. */
     public static String ServerServiceHandler_handleMessageEnvelope_unknownMessage;
 
-    /** An I/O error occurred while sending a message. */
-    public static String ServerServiceHandler_sendMessage_ioError;
-
 
     // ======================================================================
     // Constructors
@@ -150,6 +147,27 @@ final class Messages
     // ======================================================================
     // Methods
     // ======================================================================
+
+    // --- AbstractServiceHandler -------------------------------------------
+
+    /**
+     * Gets the formatted message indicating an error occurred while sending a
+     * message.
+     * 
+     * @param message
+     *        The message; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while sending
+     *         a message; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    static String AbstractServiceHandler_sendMessage_ioError(
+        /* @NonNull */
+        final AbstractMessage message )
+    {
+        return bind( AbstractServiceHandler_sendMessage_ioError, message.getId(), message.getTag() );
+    }
 
     // --- ClientServiceHandler ---------------------------------------------
 
@@ -191,25 +209,6 @@ final class Messages
         return bind( ClientServiceHandler_handleMessageEnvelope_unknownMessage, messageEnvelope.getId(), messageEnvelope.getTag() );
     }
 
-    /**
-     * Gets the formatted message indicating an error occurred while sending a
-     * message.
-     * 
-     * @param message
-     *        The message; must not be {@code null}.
-     * 
-     * @return The formatted message indicating an error occurred while sending
-     *         a message; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    static String ClientServiceHandler_sendMessage_ioError(
-        /* @NonNull */
-        final AbstractMessage message )
-    {
-        return bind( ClientServiceHandler_sendMessage_ioError, message.getId(), message.getTag() );
-    }
-
     // --- ServerServiceHandler ---------------------------------------------
 
     /**
@@ -248,24 +247,5 @@ final class Messages
         final MessageEnvelope messageEnvelope )
     {
         return bind( ServerServiceHandler_handleMessageEnvelope_unknownMessage, messageEnvelope.getId(), messageEnvelope.getTag() );
-    }
-
-    /**
-     * Gets the formatted message indicating an error occurred while sending a
-     * message.
-     * 
-     * @param message
-     *        The message; must not be {@code null}.
-     * 
-     * @return The formatted message indicating an error occurred while sending
-     *         a message; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    static String ServerServiceHandler_sendMessage_ioError(
-        /* @NonNull */
-        final AbstractMessage message )
-    {
-        return bind( ServerServiceHandler_sendMessage_ioError, message.getId(), message.getTag() );
     }
 }

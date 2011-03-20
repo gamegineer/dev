@@ -49,22 +49,22 @@ public interface INetworkInterfaceListener
     /**
      * Invoked by the network interface when a remote player has connected.
      * 
-     * @param playerId
-     *        The identifier of the remote player that has connected; must not
-     *        be {@code null}.
+     * @param playerName
+     *        The name of the remote player that has connected; must not be
+     *        {@code null}.
      */
     public void playerConnected(
         /* @NonNull */
-        String playerId );
+        String playerName );
 
     /**
      * Invoked by the network interface when a remote player has disconnected.
      * 
-     * @param playerId
-     *        The identifier of the remote player that has disconnected; must
-     *        not be {@code null}.
+     * @param playerName
+     *        The name of the remote player that has disconnected; must not be
+     *        {@code null}.
      */
     public void playerDisconnected(
         /* @NonNull */
-        String playerId );
+        String playerName );
 }
