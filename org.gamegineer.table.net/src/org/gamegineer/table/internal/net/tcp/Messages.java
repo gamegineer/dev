@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.net.tcp;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.internal.net.AbstractMessage;
-import org.gamegineer.table.internal.net.MessageEnvelope;
 
 /**
  * A utility class to manage localized messages for the package.
@@ -36,20 +35,6 @@ final class Messages
     // ======================================================================
     // Fields
     // ======================================================================
-
-    // --- AbstractServiceHandler -------------------------------------------
-
-    /** An I/O error occurred while closing the socket channel. */
-    public static String AbstractServiceHandler_close_ioError;
-
-    /** An error occurred while running the event handler. */
-    public static String AbstractServiceHandler_run_error;
-
-    /** An I/O error occurred while sending a message. */
-    public static String AbstractServiceHandler_sendMessage_ioError;
-
-    /** The client service handler state is not pristine. */
-    public static String AbstractServiceHandler_state_notPristine;
 
     // --- Acceptor ---------------------------------------------------------
 
@@ -66,14 +51,6 @@ final class Messages
 
     /** An I/O error occurred while opening the network interface. */
     public static String ClientNetworkInterface_open_ioError;
-
-    // --- ClientServiceHandler ---------------------------------------------
-
-    /** An error occurred while deserializing a message. */
-    public static String ClientServiceHandler_handleMessageEnvelope_deserializationError;
-
-    /** The handler received an unknown message. */
-    public static String ClientServiceHandler_handleMessageEnvelope_unknownMessage;
 
     // --- Connector --------------------------------------------------------
 
@@ -114,13 +91,19 @@ final class Messages
     /** An I/O error occurred while opening the network interface. */
     public static String ServerNetworkInterface_open_ioError;
 
-    // --- ServerServiceHandler ---------------------------------------------
+    // --- ServiceHandlerAdapter --------------------------------------------
 
-    /** An error occurred while deserializing a message. */
-    public static String ServerServiceHandler_handleMessageEnvelope_deserializationError;
+    /** An I/O error occurred while closing the socket channel. */
+    public static String ServiceHandlerAdapter_close_ioError;
 
-    /** The handler received an unknown message. */
-    public static String ServerServiceHandler_handleMessageEnvelope_unknownMessage;
+    /** An error occurred while running the event handler. */
+    public static String ServiceHandlerAdapter_run_error;
+
+    /** An I/O error occurred while sending a message. */
+    public static String ServiceHandlerAdapter_sendMessage_ioError;
+
+    /** The client service handler state is not pristine. */
+    public static String ServiceHandlerAdapter_state_notPristine;
 
 
     // ======================================================================
@@ -148,7 +131,7 @@ final class Messages
     // Methods
     // ======================================================================
 
-    // --- AbstractServiceHandler -------------------------------------------
+    // --- ServiceHandlerAdapter --------------------------------------------
 
     /**
      * Gets the formatted message indicating an error occurred while sending a
@@ -162,90 +145,10 @@ final class Messages
      */
     /* @NonNull */
     @SuppressWarnings( "boxing" )
-    static String AbstractServiceHandler_sendMessage_ioError(
+    static String ServiceHandlerAdapter_sendMessage_ioError(
         /* @NonNull */
         final AbstractMessage message )
     {
-        return bind( AbstractServiceHandler_sendMessage_ioError, message.getId(), message.getTag() );
-    }
-
-    // --- ClientServiceHandler ---------------------------------------------
-
-    /**
-     * Gets the formatted message indicating an error occurred while
-     * deserializing a message.
-     * 
-     * @param messageEnvelope
-     *        The message envelope; must not be {@code null}.
-     * 
-     * @return The formatted message indicating an error occurred while
-     *         deserializing a message; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    static String ClientServiceHandler_handleMessageEnvelope_deserializationError(
-        /* @NonNull */
-        final MessageEnvelope messageEnvelope )
-    {
-        return bind( ClientServiceHandler_handleMessageEnvelope_deserializationError, messageEnvelope.getId(), messageEnvelope.getTag() );
-    }
-
-    /**
-     * Gets the formatted message indicating the handler received an unknown
-     * message.
-     * 
-     * @param messageEnvelope
-     *        The message envelope; must not be {@code null}.
-     * 
-     * @return The formatted message indicating the handler received an unknown
-     *         message; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    static String ClientServiceHandler_handleMessageEnvelope_unknownMessage(
-        /* @NonNull */
-        final MessageEnvelope messageEnvelope )
-    {
-        return bind( ClientServiceHandler_handleMessageEnvelope_unknownMessage, messageEnvelope.getId(), messageEnvelope.getTag() );
-    }
-
-    // --- ServerServiceHandler ---------------------------------------------
-
-    /**
-     * Gets the formatted message indicating an error occurred while
-     * deserializing a message.
-     * 
-     * @param messageEnvelope
-     *        The message envelope; must not be {@code null}.
-     * 
-     * @return The formatted message indicating an error occurred while
-     *         deserializing a message; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    static String ServerServiceHandler_handleMessageEnvelope_deserializationError(
-        /* @NonNull */
-        final MessageEnvelope messageEnvelope )
-    {
-        return bind( ServerServiceHandler_handleMessageEnvelope_deserializationError, messageEnvelope.getId(), messageEnvelope.getTag() );
-    }
-
-    /**
-     * Gets the formatted message indicating the handler received an unknown
-     * message.
-     * 
-     * @param messageEnvelope
-     *        The message envelope; must not be {@code null}.
-     * 
-     * @return The formatted message indicating the handler received an unknown
-     *         message; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    static String ServerServiceHandler_handleMessageEnvelope_unknownMessage(
-        /* @NonNull */
-        final MessageEnvelope messageEnvelope )
-    {
-        return bind( ServerServiceHandler_handleMessageEnvelope_unknownMessage, messageEnvelope.getId(), messageEnvelope.getTag() );
+        return bind( ServiceHandlerAdapter_sendMessage_ioError, message.getId(), message.getTag() );
     }
 }

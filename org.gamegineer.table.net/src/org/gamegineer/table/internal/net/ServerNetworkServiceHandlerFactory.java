@@ -1,5 +1,5 @@
 /*
- * ClientServiceHandlerAsServiceHandlerTest.java
+ * ServerNetworkServiceHandlerFactory.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,33 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 13, 2011 at 11:27:59 PM.
+ * Created on Mar 29, 2011 at 8:09:27 PM.
  */
 
-package org.gamegineer.table.internal.net.tcp;
+package org.gamegineer.table.internal.net;
 
-import org.gamegineer.common.core.security.SecureString;
+import net.jcip.annotations.Immutable;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.tcp.ClientServiceHandler} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.tcp.AbstractServiceHandler} class.
+ * A factory for creating service handlers that represent the server half of the
+ * network table protocol.
  */
-public final class ClientServiceHandlerAsServiceHandlerTest
-    extends AbstractAbstractServiceHandlerTestCase
+@Immutable
+final class ServerNetworkServiceHandlerFactory
+    extends AbstractNetworkServiceHandlerFactory
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * ClientServiceHandlerAsServiceHandlerTest} class.
+     * Initializes a new instance of the {@code ServerNetworkServiceHandlerFactory}
+     * class.
+     * 
+     * @param networkTable
+     *        The network table associated with the service handlers created by
+     *        the factory; must not be {@code null}.
      */
-    public ClientServiceHandlerAsServiceHandlerTest()
+    ServerNetworkServiceHandlerFactory(
+        /* @NonNull */
+        final NetworkTable networkTable )
     {
-        super();
+        super( networkTable );
     }
 
 
@@ -51,12 +56,14 @@ public final class ClientServiceHandlerAsServiceHandlerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractAbstractServiceHandlerTestCase#createServiceHandler(org.gamegineer.table.internal.net.tcp.AbstractNetworkInterface)
+     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandlerFactory#createNetworkServiceHandler(org.gamegineer.table.internal.net.NetworkTable)
      */
     @Override
-    protected AbstractServiceHandler createServiceHandler(
-        final AbstractNetworkInterface networkInterface )
+    INetworkServiceHandler createNetworkServiceHandler(
+        final NetworkTable networkTable )
     {
-        return new ClientServiceHandler( networkInterface, "playerName", new SecureString() ); //$NON-NLS-1$
+        assert networkTable != null;
+
+        return new ServerNetworkServiceHandler( networkTable );
     }
 }

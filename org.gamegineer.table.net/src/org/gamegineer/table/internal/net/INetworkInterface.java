@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net;
 
-import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
@@ -55,18 +54,26 @@ public interface INetworkInterface
      * occurs.
      * </p>
      * 
-     * @param configuration
-     *        The network table configuration; must not be {@code null}.
+     * @param hostName
+     *        The host name; must not be {@code null}. For a server, this value
+     *        is the host name to which the server will be bound. For a client,
+     *        this value is the host name of the remote peer.
+     * @param port
+     *        The port. For a server, this value is the port to which the server
+     *        will be bound. For a client, this value is the port of the remote
+     *        peer.
+     * 
      * 
      * @throws java.lang.IllegalStateException
      *         If the network interface has already been opened or is closed.
      * @throws java.lang.NullPointerException
-     *         If {@code configuration} is {@code null}.
+     *         If {@code hostName} is {@code null}.
      * @throws org.gamegineer.table.net.NetworkTableException
      *         If an error occurs.
      */
     public void open(
         /* @NonNull */
-        INetworkTableConfiguration configuration )
+        String hostName,
+        int port )
         throws NetworkTableException;
 }

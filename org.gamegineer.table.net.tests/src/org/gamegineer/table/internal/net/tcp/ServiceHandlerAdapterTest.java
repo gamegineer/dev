@@ -1,5 +1,5 @@
 /*
- * AbstractAbstractServiceHandlerTestCase.java
+ * ServiceHandlerAdapterTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -21,17 +21,18 @@
 
 package org.gamegineer.table.internal.net.tcp;
 
-import static org.junit.Assert.assertNotNull;
 import java.nio.channels.SocketChannel;
+import org.gamegineer.table.internal.net.FakeNetworkServiceHandler;
+import org.gamegineer.table.net.NetworkTableConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that extend the
- * {@link org.gamegineer.table.internal.net.tcp.AbstractServiceHandler} class.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.net.tcp.ServiceHandlerAdapter} class.
  */
-public abstract class AbstractAbstractServiceHandlerTestCase
+public final class ServiceHandlerAdapterTest
 {
     // ======================================================================
     // Fields
@@ -40,8 +41,8 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     /** The network interface for use in the fixture. */
     private AbstractNetworkInterface networkInterface_;
 
-    /** The service handler under test in the fixture. */
-    private AbstractServiceHandler serviceHandler_;
+    /** The service handler adapter under test in the fixture. */
+    private ServiceHandlerAdapter serviceHandlerAdapter_;
 
 
     // ======================================================================
@@ -49,10 +50,10 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractAbstractServiceHandlerTestCase} class.
+     * Initializes a new instance of the {@code ServiceHandlerAdapterTest}
+     * class.
      */
-    protected AbstractAbstractServiceHandlerTestCase()
+    public ServiceHandlerAdapterTest()
     {
         super();
     }
@@ -61,26 +62,6 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates the service handler to be tested.
-     * 
-     * @param networkInterface
-     *        The network interface for use in the fixture; must not be {@code
-     *        null}.
-     * 
-     * @return The service handler to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     * @throws java.lang.NullPointerException
-     *         If {@code networkInterface} is {@code null}.
-     */
-    /* @NonNull */
-    protected abstract AbstractServiceHandler createServiceHandler(
-        /* @NonNull */
-        AbstractNetworkInterface networkInterface )
-        throws Exception;
 
     /**
      * Sets up the test fixture.
@@ -93,9 +74,8 @@ public abstract class AbstractAbstractServiceHandlerTestCase
         throws Exception
     {
         networkInterface_ = new FakeNetworkInterface();
-        networkInterface_.open( TestUtils.createNetworkTableConfiguration() );
-        serviceHandler_ = createServiceHandler( networkInterface_ );
-        assertNotNull( serviceHandler_ );
+        networkInterface_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+        serviceHandlerAdapter_ = new ServiceHandlerAdapter( networkInterface_, new FakeNetworkServiceHandler() );
     }
 
     /**
@@ -108,8 +88,8 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     public void tearDown()
         throws Exception
     {
-        serviceHandler_.close();
-        serviceHandler_ = null;
+        serviceHandlerAdapter_.close();
+        serviceHandlerAdapter_ = null;
         networkInterface_.close();
         networkInterface_ = null;
     }
@@ -125,9 +105,9 @@ public abstract class AbstractAbstractServiceHandlerTestCase
     public void testOpen_AfterClose()
         throws Exception
     {
-        serviceHandler_.close();
+        serviceHandlerAdapter_.close();
 
-        serviceHandler_.open( new FakeSocketChannel() );
+        serviceHandlerAdapter_.open( new FakeSocketChannel() );
     }
 
     /**
@@ -142,8 +122,8 @@ public abstract class AbstractAbstractServiceHandlerTestCase
         throws Exception
     {
         final SocketChannel channel = new FakeSocketChannel();
-        serviceHandler_.open( channel );
+        serviceHandlerAdapter_.open( channel );
 
-        serviceHandler_.open( channel );
+        serviceHandlerAdapter_.open( channel );
     }
 }

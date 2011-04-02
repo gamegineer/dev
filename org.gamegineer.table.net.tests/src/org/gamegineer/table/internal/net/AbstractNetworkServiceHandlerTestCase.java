@@ -1,5 +1,5 @@
 /*
- * AbstractNetworkInterfaceTestCase.java
+ * AbstractNetworkServiceHandlerTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,30 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 18, 2011 at 8:50:02 PM.
+ * Created on Apr 1, 2011 at 9:27:25 PM.
  */
 
 package org.gamegineer.table.internal.net;
 
 import static org.junit.Assert.assertNotNull;
-import org.gamegineer.table.net.NetworkTableConstants;
-import org.gamegineer.table.net.NetworkTableException;
+import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.INetworkInterface} interface.
+ * {@link org.gamegineer.table.internal.net.INetworkServiceHandler} interface.
  */
-public abstract class AbstractNetworkInterfaceTestCase
+public abstract class AbstractNetworkServiceHandlerTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The network interface under test in the fixture. */
-    private INetworkInterface networkInterface_;
+    /** The network service handler under test in the fixture. */
+    private INetworkServiceHandler networkServiceHandler_;
 
 
     // ======================================================================
@@ -48,9 +47,9 @@ public abstract class AbstractNetworkInterfaceTestCase
 
     /**
      * Initializes a new instance of the {@code
-     * AbstractNetworkInterfaceTestCase} class.
+     * AbstractNetworkServiceHandlerTestCase} class.
      */
-    protected AbstractNetworkInterfaceTestCase()
+    protected AbstractNetworkServiceHandlerTestCase()
     {
         super();
     }
@@ -61,15 +60,15 @@ public abstract class AbstractNetworkInterfaceTestCase
     // ======================================================================
 
     /**
-     * Creates the network interface to be tested.
+     * Creates the network service handler to be tested.
      * 
-     * @return The network interface to be tested; never {@code null}.
+     * @return The network service handler to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract INetworkInterface createNetworkInterface()
+    protected abstract INetworkServiceHandler createNetworkServiceHandler()
         throws Exception;
 
     /**
@@ -82,8 +81,8 @@ public abstract class AbstractNetworkInterfaceTestCase
     public void setUp()
         throws Exception
     {
-        networkInterface_ = createNetworkInterface();
-        assertNotNull( networkInterface_ );
+        networkServiceHandler_ = createNetworkServiceHandler();
+        assertNotNull( networkServiceHandler_ );
     }
 
     /**
@@ -96,60 +95,56 @@ public abstract class AbstractNetworkInterfaceTestCase
     public void tearDown()
         throws Exception
     {
-        networkInterface_.close();
-        networkInterface_ = null;
+        networkServiceHandler_ = null;
     }
 
     /**
-     * Ensures the {@code open} method throws an exception if the network
-     * interface has been closed.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = IllegalStateException.class )
-    public void testOpen_AfterClose()
-        throws Exception
-    {
-        networkInterface_.close();
-
-        networkInterface_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code open} method throws an exception when passed a {@code
-     * null} host name.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * Ensures the {@code messageReceived} method throws an exception when
+     * passed a {@code null} context.
      */
     @Test( expected = NullPointerException.class )
-    public void testOpen_HostName_Null()
-        throws Exception
+    public void testMessageReceived_Context_Null()
     {
-        networkInterface_.open( null, NetworkTableConstants.DEFAULT_PORT );
+        networkServiceHandler_.messageReceived( null, new MessageEnvelope( 0, 0, new byte[ 0 ] ) );
     }
 
     /**
-     * Ensures the {@code open} method throws an exception when attempting to
-     * open the network interface more than once.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * Ensures the {@code messageReceived} method throws an exception when
+     * passed a {@code null} message envelope.
      */
-    @Test( expected = IllegalStateException.class )
-    public void testOpen_MultipleInvocations()
-        throws Exception
+    @Test( expected = NullPointerException.class )
+    public void testMessageReceived_MessageEnvelope_Null()
     {
-        try
-        {
-            networkInterface_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
-        }
-        catch( final NetworkTableException e )
-        {
-            // ignore network errors
-        }
+        networkServiceHandler_.messageReceived( EasyMock.createMock( INetworkServiceContext.class ), null );
+    }
 
-        networkInterface_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+    /**
+     * Ensures the {@code peerStopped} method throws an exception when passed a
+     * {@code null} context.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testPeerStopped_Context_Null()
+    {
+        networkServiceHandler_.peerStopped( null );
+    }
+
+    /**
+     * Ensures the {@code started} method throws an exception when passed a
+     * {@code null} context.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testStarted_Context_Null()
+    {
+        networkServiceHandler_.started( null );
+    }
+
+    /**
+     * Ensures the {@code stopped} method throws an exception when passed a
+     * {@code null} context.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testStopped_Context_Null()
+    {
+        networkServiceHandler_.stopped( null );
     }
 }

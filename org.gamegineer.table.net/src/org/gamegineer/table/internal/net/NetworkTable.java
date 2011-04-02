@@ -46,6 +46,12 @@ public final class NetworkTable
     // Fields
     // ======================================================================
 
+    /**
+     * A reference to the active configuration or {@code null} if the network is
+     * not connected.
+     */
+    private final AtomicReference<INetworkTableConfiguration> configurationRef_;
+
     /** A reference to the connection state. */
     private final AtomicReference<ConnectionState> connectionStateRef_;
 
@@ -109,6 +115,7 @@ public final class NetworkTable
         assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
         assert networkInterfaceFactory != null;
 
+        configurationRef_ = new AtomicReference<INetworkTableConfiguration>( null );
         connectionStateRef_ = new AtomicReference<ConnectionState>( ConnectionState.DISCONNECTED );
         listeners_ = new CopyOnWriteArrayList<INetworkTableListener>();
         networkInterfaceRef_ = new AtomicReference<INetworkInterface>( null );
@@ -157,7 +164,8 @@ public final class NetworkTable
 
         if( connectionStateRef_.compareAndSet( ConnectionState.DISCONNECTED, ConnectionState.CONNECTING ) )
         {
-            networkInterface.open( configuration );
+            configurationRef_.set( configuration );
+            networkInterface.open( configuration.getHostName(), configuration.getPort() );
             networkInterfaceRef_.set( networkInterface );
             connectionStateRef_.set( ConnectionState.CONNECTED );
             fireNetworkConnected();
@@ -179,6 +187,7 @@ public final class NetworkTable
             final INetworkInterface networkInterface = networkInterfaceRef_.getAndSet( null );
             networkInterface.close();
             connectionStateRef_.set( ConnectionState.DISCONNECTED );
+            configurationRef_.set( null );
             fireNetworkDisconnected();
         }
     }
@@ -221,6 +230,18 @@ public final class NetworkTable
         }
     }
 
+    /**
+     * Gets the active configuration.
+     * 
+     * @return The active configuration or {@code null} if the network is not
+     *         connected.
+     */
+    /* @Nullable */
+    INetworkTableConfiguration getConfiguration()
+    {
+        return configurationRef_.get();
+    }
+
     /*
      * @see org.gamegineer.table.net.INetworkTable#host(org.gamegineer.table.net.INetworkTableConfiguration)
      */
@@ -231,7 +252,7 @@ public final class NetworkTable
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, networkInterfaceFactory_.createServerNetworkInterface( this ) );
+        connect( configuration, networkInterfaceFactory_.createServerNetworkInterface( this, new ServerNetworkServiceHandlerFactory( this ) ) );
     }
 
     /*
@@ -253,7 +274,7 @@ public final class NetworkTable
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, networkInterfaceFactory_.createClientNetworkInterface( this ) );
+        connect( configuration, networkInterfaceFactory_.createClientNetworkInterface( this, new ClientNetworkServiceHandlerFactory( this ) ) );
     }
 
     /*
@@ -265,27 +286,35 @@ public final class NetworkTable
         disconnect();
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceListener#playerConnected(java.lang.String)
+    /**
+     * Invoked when a remote player has connected.
+     * 
+     * @param playerName
+     *        The name of the remote player that has connected; must not be
+     *        {@code null}.
      */
-    @Override
-    public void playerConnected(
+    void playerConnected(
+        /* @NonNull */
         final String playerName )
     {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
+        assert playerName != null;
 
         // TODO
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has connected", playerName ) ); //$NON-NLS-1$
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceListener#playerDisconnected(java.lang.String)
+    /**
+     * Invoked when a remote player has disconnected.
+     * 
+     * @param playerName
+     *        The name of the remote player that has disconnected; must not be
+     *        {@code null}.
      */
-    @Override
-    public void playerDisconnected(
+    void playerDisconnected(
+        /* @NonNull */
         final String playerName )
     {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
+        assert playerName != null;
 
         // TODO
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has disconnected", playerName ) ); //$NON-NLS-1$

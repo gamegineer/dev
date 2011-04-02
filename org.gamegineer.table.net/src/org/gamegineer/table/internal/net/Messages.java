@@ -35,6 +35,14 @@ final class Messages
     // Fields
     // ======================================================================
 
+    // --- AbstractNetworkServiceHandler ------------------------------------
+
+    /** An error occurred while deserializing a message. */
+    public static String AbstractNetworkServiceHandler_messageReceived_deserializationError;
+
+    /** The handler received an unknown message. */
+    public static String AbstractNetworkServiceHandler_messageReceived_unknownMessage;
+
     // --- NetworkTable -----------------------------------------------------
 
     /** The network table listener is already registered. */
@@ -77,5 +85,50 @@ final class Messages
     private Messages()
     {
         super();
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    // --- AbstractNetworkServiceHandler ------------------------------------
+
+    /**
+     * Gets the formatted message indicating an error occurred while
+     * deserializing a message.
+     * 
+     * @param messageEnvelope
+     *        The message envelope; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while
+     *         deserializing a message; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    static String AbstractNetworkServiceHandler_messageReceived_deserializationError(
+        /* @NonNull */
+        final MessageEnvelope messageEnvelope )
+    {
+        return bind( AbstractNetworkServiceHandler_messageReceived_deserializationError, messageEnvelope.getId(), messageEnvelope.getTag() );
+    }
+
+    /**
+     * Gets the formatted message indicating the handler received an unknown
+     * message.
+     * 
+     * @param messageEnvelope
+     *        The message envelope; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the handler received an unknown
+     *         message; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    static String AbstractNetworkServiceHandler_messageReceived_unknownMessage(
+        /* @NonNull */
+        final MessageEnvelope messageEnvelope )
+    {
+        return bind( AbstractNetworkServiceHandler_messageReceived_unknownMessage, messageEnvelope.getId(), messageEnvelope.getTag() );
     }
 }

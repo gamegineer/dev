@@ -25,7 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.INetworkInterfaceListener;
-import org.gamegineer.table.net.INetworkTableConfiguration;
+import org.gamegineer.table.internal.net.INetworkServiceHandlerFactory;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
@@ -61,7 +61,7 @@ final class FakeNetworkInterface
         /* @NonNull */
         final Dispatcher dispatcher )
     {
-        super( EasyMock.createMock( INetworkInterfaceListener.class ), dispatcher );
+        super( EasyMock.createMock( INetworkInterfaceListener.class ), EasyMock.createMock( INetworkServiceHandlerFactory.class ), dispatcher );
     }
 
 
@@ -70,14 +70,16 @@ final class FakeNetworkInterface
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterface#open(org.gamegineer.table.net.INetworkTableConfiguration)
+     * @see org.gamegineer.table.internal.net.INetworkInterface#open(java.lang.String, int)
      */
     @Override
     public void open(
-        final INetworkTableConfiguration configuration )
+        final String hostName,
+        @SuppressWarnings( "unused" )
+        final int port )
         throws NetworkTableException
     {
-        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
+        assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
 
         getDispatcher().open();
     }

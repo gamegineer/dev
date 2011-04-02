@@ -27,7 +27,6 @@ import java.net.InetSocketAddress;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SocketChannel;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.net.INetworkTableConfiguration;
 
 /**
  * A connector in the TCP network interface Acceptor-Connector pattern
@@ -95,8 +94,10 @@ final class Connector
      * occurs.
      * </p>
      * 
-     * @param configuration
-     *        The network table configuration; must not be {@code null}.
+     * @param hostName
+     *        The host name of the remote peer; must not be {@code null}.
+     * @param port
+     *        The port of the remote peer.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs
@@ -105,10 +106,11 @@ final class Connector
      */
     void connect(
         /* @NonNull */
-        final INetworkTableConfiguration configuration )
+        final String hostName,
+        final int port )
         throws IOException
     {
-        assert configuration != null;
+        assert hostName != null;
 
         synchronized( getLock() )
         {
@@ -116,10 +118,10 @@ final class Connector
 
             try
             {
-                final SocketChannel channel = createSocketChannel( configuration );
+                final SocketChannel channel = createSocketChannel( hostName, port );
 
-                final AbstractServiceHandler serviceHandler = new ClientServiceHandler( networkInterface_, configuration.getLocalPlayerName(), configuration.getPassword() );
-                serviceHandler.open( channel );
+                final ServiceHandlerAdapter serviceHandlerAdapter = new ServiceHandlerAdapter( networkInterface_, networkInterface_.createServiceHandler() );
+                serviceHandlerAdapter.open( channel );
             }
             finally
             {
@@ -131,9 +133,10 @@ final class Connector
     /**
      * Creates and connects a new socket channel.
      * 
-     * @param configuration
-     *        The network table configuration used to initialize the socket
-     *        channel; must not be {@code null}.
+     * @param hostName
+     *        The host name of the remote peer; must not be {@code null}.
+     * @param port
+     *        The port of the remote peer.
      * 
      * @return A new socket channel; never {@code null}.
      * 
@@ -143,12 +146,13 @@ final class Connector
     /* @NonNull */
     private static SocketChannel createSocketChannel(
         /* @NonNull */
-        final INetworkTableConfiguration configuration )
+        final String hostName,
+        final int port )
         throws IOException
     {
-        assert configuration != null;
+        assert hostName != null;
 
-        final InetSocketAddress address = new InetSocketAddress( configuration.getHostName(), configuration.getPort() );
+        final InetSocketAddress address = new InetSocketAddress( hostName, port );
         if( address.isUnresolved() )
         {
             throw new IOException( Messages.Connector_createSocketChannel_addressUnresolved );

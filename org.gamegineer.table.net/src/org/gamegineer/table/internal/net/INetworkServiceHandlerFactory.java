@@ -1,5 +1,5 @@
 /*
- * INetworkInterfaceListener.java
+ * INetworkServiceHandlerFactory.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,33 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Feb 12, 2011 at 10:06:15 PM.
+ * Created on Mar 29, 2011 at 8:04:42 PM.
  */
 
 package org.gamegineer.table.internal.net;
 
-import java.util.EventListener;
+// XXX: may replace both INetworkInterfaceListener and INetworkServiceHandlerFactory
+// with INetworkInterfaceContext, which will have several methods including...
+//     createClientNetworkServiceHandler,
+//     createServerNetworkServiceHandler,
+//     networkInterfaceDisconnected    
 
 /**
- * The listener interface for use by clients to be notified of changes to the
- * network interface state.
- * 
- * @noextend This interface is not intended to be extended by clients.
+ * A network service handler factory.
  */
-public interface INetworkInterfaceListener
-    extends EventListener
+public interface INetworkServiceHandlerFactory
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Invoked by the network interface when it has been disconnected.
+     * Creates a new network service handler.
      * 
-     * <p>
-     * Clients must still explicitly close the network interface to clean up
-     * resources even after it has been disconnected.
-     * </p>
+     * @return A new network service handler; never {@code null}.
      */
-    public void networkInterfaceDisconnected();
+    /* @NonNull */
+    public INetworkServiceHandler createNetworkServiceHandler();
 }

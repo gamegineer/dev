@@ -1,5 +1,5 @@
 /*
- * AbstractServiceHandler.java
+ * AbstractNetworkServiceHandler.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -27,26 +27,23 @@ import java.net.SocketException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import java.util.Random;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.AbstractMessage;
+import org.gamegineer.table.internal.net.INetworkServiceContext;
+import org.gamegineer.table.internal.net.INetworkServiceHandler;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.MessageEnvelope;
 
 /**
- * A service handler in the TCP network interface Acceptor-Connector pattern
- * implementation.
- * 
- * <p>
- * A service handler implements one half of an end-to-end protocol in a
- * networked application.
- * </p>
+ * Adapts instances of {@link INetworkServiceHandler} as a service handler in
+ * the TCP network interface Acceptor-Connector pattern implementation.
  */
 @ThreadSafe
-abstract class AbstractServiceHandler
+final class ServiceHandlerAdapter
     extends AbstractEventHandler
+    implements INetworkServiceContext
 {
     // ======================================================================
     // Fields
@@ -78,10 +75,6 @@ abstract class AbstractServiceHandler
     /** The network interface associated with the service handler. */
     private final AbstractNetworkInterface networkInterface_;
 
-    /** The next available message tag. */
-    @GuardedBy( "getLock()" )
-    private int nextTag_;
-
     /** The output handler associated with the service handler. */
     private final OutputQueue outputQueue_;
 
@@ -96,23 +89,32 @@ abstract class AbstractServiceHandler
     @GuardedBy( "getLock()" )
     private int readyOperations_;
 
+    /** The service handler to adapt. */
+    private final INetworkServiceHandler serviceHandler_;
+
 
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractServiceHandler} class.
+     * Initializes a new instance of the {@code AbstractNetworkServiceHandler}
+     * class.
      * 
      * @param networkInterface
      *        The network interface associated with the service handler; must
      *        not be {@code null}.
+     * @param serviceHandler
+     *        The service handler to adapt; must not be {@code null}.
      */
-    AbstractServiceHandler(
+    ServiceHandlerAdapter(
         /* @NonNull */
-        final AbstractNetworkInterface networkInterface )
+        final AbstractNetworkInterface networkInterface,
+        /* @NonNull */
+        final INetworkServiceHandler serviceHandler )
     {
         assert networkInterface != null;
+        assert serviceHandler != null;
 
         channel_ = null;
         inputQueue_ = new InputQueue( networkInterface.getDispatcher().getByteBufferPool() );
@@ -121,10 +123,10 @@ abstract class AbstractServiceHandler
         isRegistered_ = false;
         isRunning_ = false;
         networkInterface_ = networkInterface;
-        nextTag_ = getInitialMessageTag();
         outputQueue_ = new OutputQueue( networkInterface.getDispatcher().getByteBufferPool(), this );
         outputQueueState_ = QueueState.OPEN;
         readyOperations_ = 0;
+        serviceHandler_ = serviceHandler;
     }
 
 
@@ -136,7 +138,7 @@ abstract class AbstractServiceHandler
      * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#close()
      */
     @Override
-    final void close()
+    void close()
     {
         final State state;
 
@@ -156,7 +158,7 @@ abstract class AbstractServiceHandler
                 }
                 catch( final IOException e )
                 {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractServiceHandler_close_ioError, e );
+                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServiceHandlerAdapter_close_ioError, e );
                 }
                 finally
                 {
@@ -169,7 +171,7 @@ abstract class AbstractServiceHandler
 
         if( state == State.OPEN )
         {
-            serviceHandlerClosed();
+            serviceHandler_.stopped( this );
         }
     }
 
@@ -244,7 +246,7 @@ abstract class AbstractServiceHandler
      * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getChannel()
      */
     @Override
-    final SelectableChannel getChannel()
+    SelectableChannel getChannel()
     {
         synchronized( getLock() )
         {
@@ -252,124 +254,16 @@ abstract class AbstractServiceHandler
         }
     }
 
-    /**
-     * Gets the initial message tag for the service handler.
-     * 
-     * @return The initial message tag for the service handler.
-     */
-    private static int getInitialMessageTag()
-    {
-        final Random rng = new Random( System.currentTimeMillis() );
-        return AbstractMessage.MIN_TAG + rng.nextInt( AbstractMessage.MAX_TAG - AbstractMessage.MIN_TAG );
-    }
-
-    /**
-     * Gets the input queue associated with the service handler.
-     * 
-     * @return The input queue associated with the service handler; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    final InputQueue getInputQueue()
-    {
-        return inputQueue_;
-    }
-
     /*
      * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getInterestOperations()
      */
     @Override
-    final int getInterestOperations()
+    int getInterestOperations()
     {
         synchronized( getLock() )
         {
             return interestOperations_;
         }
-    }
-
-    /**
-     * Gets the network interface associated with the service handler.
-     * 
-     * @return The network interface associated with the service handler; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    final AbstractNetworkInterface getNetworkInterface()
-    {
-        return networkInterface_;
-    }
-
-    /**
-     * Gets the next available message tag for the service handler.
-     * 
-     * @return The next available message tag for the service handler.
-     */
-    final int getNextMessageTag()
-    {
-        synchronized( getLock() )
-        {
-            final int tag = nextTag_;
-            if( ++nextTag_ > AbstractMessage.MAX_TAG )
-            {
-                nextTag_ = AbstractMessage.MIN_TAG;
-            }
-
-            return tag;
-        }
-    }
-
-    /**
-     * Gets the output queue associated with the service handler.
-     * 
-     * @return The output queue associated with the service handler; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    final OutputQueue getOutputQueue()
-    {
-        return outputQueue_;
-    }
-
-    /**
-     * Invoked when the input stream is shut down.
-     * 
-     * <p>
-     * This method is invoked while the instance lock is held.
-     * </p>
-     */
-    @GuardedBy( "getLock()" )
-    abstract void handleInputShutDown();
-
-    /**
-     * Invoked to handle the specified message envelope.
-     * 
-     * <p>
-     * This method is invoked while the instance lock is held.
-     * </p>
-     * 
-     * @param messageEnvelope
-     *        The message envelope; must not be {@code null}.
-     */
-    @GuardedBy( "getLock()" )
-    abstract void handleMessageEnvelope(
-        /* @NonNull */
-        MessageEnvelope messageEnvelope );
-
-    /**
-     * Invoked when the output stream is shut down.
-     * 
-     * <p>
-     * This method is invoked while the instance lock is held.
-     * </p>
-     * 
-     * <p>
-     * This implementation closes the service handler.
-     * </p>
-     */
-    @GuardedBy( "getLock()" )
-    void handleOutputShutDown()
-    {
-        close();
     }
 
     /**
@@ -382,7 +276,7 @@ abstract class AbstractServiceHandler
      *        A bit mask of channel operations to remove from the handler
      *        interest set.
      */
-    final void modifyInterestOperations(
+    void modifyInterestOperations(
         final int operationsToSet,
         final int operationsToReset )
     {
@@ -407,7 +301,7 @@ abstract class AbstractServiceHandler
      * @throws java.io.IOException
      *         If an I/O error occurs
      */
-    final void open(
+    void open(
         /* @NonNull */
         final SocketChannel channel )
         throws IOException
@@ -416,7 +310,7 @@ abstract class AbstractServiceHandler
 
         synchronized( getLock() )
         {
-            assertStateLegal( getState() == State.PRISTINE, Messages.AbstractServiceHandler_state_notPristine );
+            assertStateLegal( getState() == State.PRISTINE, Messages.ServiceHandlerAdapter_state_notPristine );
 
             channel_ = channel;
             setState( State.OPEN );
@@ -432,7 +326,7 @@ abstract class AbstractServiceHandler
                 throw e;
             }
 
-            serviceHandlerOpened();
+            serviceHandler_.started( this );
         }
     }
 
@@ -440,7 +334,7 @@ abstract class AbstractServiceHandler
      * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#prepareToRun()
      */
     @Override
-    final void prepareToRun()
+    void prepareToRun()
     {
         synchronized( getLock() )
         {
@@ -454,7 +348,7 @@ abstract class AbstractServiceHandler
      * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#run()
      */
     @Override
-    final void run()
+    void run()
     {
         synchronized( getLock() )
         {
@@ -468,25 +362,25 @@ abstract class AbstractServiceHandler
                     MessageEnvelope messageEnvelope = null;
                     while( (messageEnvelope = inputQueue_.dequeueMessageEnvelope()) != null )
                     {
-                        handleMessageEnvelope( messageEnvelope );
+                        serviceHandler_.messageReceived( this, messageEnvelope );
                     }
 
                     if( inputQueueState_ == QueueState.SHUTTING_DOWN )
                     {
                         inputQueueState_ = QueueState.SHUT_DOWN;
-                        handleInputShutDown();
+                        serviceHandler_.peerStopped( this );
                     }
 
                     if( (outputQueueState_ == QueueState.SHUTTING_DOWN) && outputQueue_.isEmpty() )
                     {
                         outputQueueState_ = QueueState.SHUT_DOWN;
-                        handleOutputShutDown();
+                        close();
                     }
                 }
             }
             catch( final Exception e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractServiceHandler_run_error, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServiceHandlerAdapter_run_error, e );
                 close();
             }
             finally
@@ -497,70 +391,35 @@ abstract class AbstractServiceHandler
         }
     }
 
-    /**
-     * Sends the specified message.
-     * 
-     * @param message
-     *        The message; must not be {@code null}.
-     * 
-     * @return {@code true} if the message was sent successfully; otherwise
-     *         {@code false}.
+    /*
+     * @see org.gamegineer.table.internal.net.INetworkServiceContext#sendMessage(org.gamegineer.table.internal.net.AbstractMessage)
      */
-    final boolean sendMessage(
+    public boolean sendMessage(
         /* @NonNull */
         final AbstractMessage message )
     {
         assert message != null;
 
-        try
+        synchronized( getLock() )
         {
-            getOutputQueue().enqueueMessageEnvelope( MessageEnvelope.fromMessage( message ) );
-            return true;
-        }
-        catch( final IOException e )
-        {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractServiceHandler_sendMessage_ioError( message ), e );
-            return false;
+            try
+            {
+                outputQueue_.enqueueMessageEnvelope( MessageEnvelope.fromMessage( message ) );
+                return true;
+            }
+            catch( final IOException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServiceHandlerAdapter_sendMessage_ioError( message ), e );
+                return false;
+            }
         }
     }
 
-    /**
-     * Template method invoked after the service handler has been closed.
-     * 
-     * <p>
-     * This method is NOT invoked while the instance lock is held. Subclasses
-     * may override to notify the network interface in an appropriate manner.
-     * </p>
+    /*
+     * @see org.gamegineer.table.internal.net.INetworkServiceContext#stopService()
      */
-    abstract void serviceHandlerClosed();
-
-    /**
-     * Template method invoked after the service handler has been opened.
-     * 
-     * <p>
-     * This method is invoked while the instance lock is held. Subclasses may
-     * override to perform processing required immediately after the service
-     * handler is opened, such as sending a message to the peer.
-     * </p>
-     * 
-     * <p>
-     * This implementation does nothing.
-     * </p>
-     */
-    void serviceHandlerOpened()
-    {
-        assert Thread.holdsLock( getLock() );
-    }
-
-    /**
-     * Shuts down the service handler output queue.
-     * 
-     * <p>
-     * The service handler will be closed once the output queue has been
-     * drained.
-     * </p>
-     */
-    final void shutDownOutputQueue()
+    @Override
+    public void stopService()
     {
         synchronized( getLock() )
         {

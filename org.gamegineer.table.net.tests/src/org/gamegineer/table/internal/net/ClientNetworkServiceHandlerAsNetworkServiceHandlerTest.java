@@ -1,5 +1,5 @@
 /*
- * TestUtils.java
+ * ClientNetworkServiceHandlerAsNetworkServiceHandlerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,31 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 15, 2011 at 10:51:31 PM.
+ * Created on Apr 1, 2011 at 9:34:29 PM.
  */
 
-package org.gamegineer.table.internal.net.tcp;
+package org.gamegineer.table.internal.net;
 
-import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.net.INetworkTableConfiguration;
-import org.gamegineer.table.net.NetworkTableConfigurationBuilder;
-import org.gamegineer.table.net.NetworkTableConstants;
+import org.easymock.EasyMock;
+import org.gamegineer.table.core.ITable;
 
 /**
- * A collection of useful methods for testing the TCP network interface
- * implementation.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.net.ClientNetworkServiceHandler} class
+ * to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.INetworkServiceHandler} interface.
  */
-@ThreadSafe
-final class TestUtils
+public final class ClientNetworkServiceHandlerAsNetworkServiceHandlerTest
+    extends AbstractNetworkServiceHandlerTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TestUtils} class.
+     * Initializes a new instance of the {@code
+     * ClientNetworkServiceHandlerAsNetworkServiceHandlerTest} class.
      */
-    private TestUtils()
+    public ClientNetworkServiceHandlerAsNetworkServiceHandlerTest()
     {
         super();
     }
@@ -50,17 +51,12 @@ final class TestUtils
     // Methods
     // ======================================================================
 
-    /**
-     * Creates a new network table configuration suitable for testing.
-     * 
-     * @return A new network table configuration suitable for testing; never
-     *         {@code null}.
+    /*
+     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandlerTestCase#createNetworkServiceHandler()
      */
-    /* @NonNull */
-    static INetworkTableConfiguration createNetworkTableConfiguration()
+    @Override
+    protected INetworkServiceHandler createNetworkServiceHandler()
     {
-        final NetworkTableConfigurationBuilder builder = new NetworkTableConfigurationBuilder();
-        builder.setLocalPlayerName( "playerName" ).setHostName( "localhost" ).setPort( NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$ //$NON-NLS-2$
-        return builder.toNetworkTableConfiguration();
+        return new ClientNetworkServiceHandler( new NetworkTable( EasyMock.createMock( ITable.class ), EasyMock.createMock( INetworkInterfaceFactory.class ) ) );
     }
 }

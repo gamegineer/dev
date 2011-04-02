@@ -1,5 +1,5 @@
 /*
- * ClientNetworkInterface.java
+ * ClientNetworkServiceHandlerFactory.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,34 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 16, 2011 at 5:19:25 PM.
+ * Created on Mar 29, 2011 at 8:06:43 PM.
  */
 
-package org.gamegineer.table.internal.net.fake;
+package org.gamegineer.table.internal.net;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.INetworkInterface;
 
 /**
- * Fake implementation of
- * {@link org.gamegineer.table.internal.net.INetworkInterface} for the client
- * role.
+ * A factory for creating service handlers that represent the client half of the
+ * network table protocol.
  */
 @Immutable
-final class ClientNetworkInterface
-    implements INetworkInterface
+final class ClientNetworkServiceHandlerFactory
+    extends AbstractNetworkServiceHandlerFactory
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ClientNetworkInterface} class.
+     * Initializes a new instance of the {@code ClientNetworkServiceHandlerFactory}
+     * class.
+     * 
+     * @param networkTable
+     *        The network table associated with the service handlers created by
+     *        the factory; must not be {@code null}.
      */
-    ClientNetworkInterface()
+    ClientNetworkServiceHandlerFactory(
+        /* @NonNull */
+        final NetworkTable networkTable )
     {
-        super();
+        super( networkTable );
     }
 
 
@@ -52,23 +56,14 @@ final class ClientNetworkInterface
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterface#close()
+     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandlerFactory#createNetworkServiceHandler(org.gamegineer.table.internal.net.NetworkTable)
      */
     @Override
-    public void close()
+    INetworkServiceHandler createNetworkServiceHandler(
+        final NetworkTable networkTable )
     {
-        // do nothing
-    }
+        assert networkTable != null;
 
-    /*
-     * @see org.gamegineer.table.internal.net.INetworkInterface#open(java.lang.String, int)
-     */
-    @Override
-    public void open(
-        final String hostName,
-        @SuppressWarnings( "unused" )
-        final int port )
-    {
-        assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
+        return new ClientNetworkServiceHandler( networkTable );
     }
 }

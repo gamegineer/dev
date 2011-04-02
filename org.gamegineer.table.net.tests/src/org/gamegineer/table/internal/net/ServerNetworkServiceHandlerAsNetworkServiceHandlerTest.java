@@ -1,5 +1,5 @@
 /*
- * ServerServiceHandlerAsServiceHandlerTest.java
+ * ServerNetworkServiceHandlerAsNetworkServiceHandlerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,21 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 13, 2011 at 11:28:12 PM.
+ * Created on Apr 1, 2011 at 9:34:49 PM.
  */
 
-package org.gamegineer.table.internal.net.tcp;
+package org.gamegineer.table.internal.net;
 
-import org.gamegineer.common.core.security.SecureString;
+import org.easymock.EasyMock;
+import org.gamegineer.table.core.ITable;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.tcp.ServerServiceHandler} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.tcp.AbstractServiceHandler} class.
+ * {@link org.gamegineer.table.internal.net.ServerNetworkServiceHandler} class
+ * to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.INetworkServiceHandler} interface.
  */
-public final class ServerServiceHandlerAsServiceHandlerTest
-    extends AbstractAbstractServiceHandlerTestCase
+public final class ServerNetworkServiceHandlerAsNetworkServiceHandlerTest
+    extends AbstractNetworkServiceHandlerTestCase
 {
     // ======================================================================
     // Constructors
@@ -38,9 +39,9 @@ public final class ServerServiceHandlerAsServiceHandlerTest
 
     /**
      * Initializes a new instance of the {@code
-     * ServerServiceHandlerAsServiceHandlerTest} class.
+     * ServerNetworkServiceHandlerAsNetworkServiceHandlerTest} class.
      */
-    public ServerServiceHandlerAsServiceHandlerTest()
+    public ServerNetworkServiceHandlerAsNetworkServiceHandlerTest()
     {
         super();
     }
@@ -51,12 +52,11 @@ public final class ServerServiceHandlerAsServiceHandlerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractAbstractServiceHandlerTestCase#createServiceHandler(org.gamegineer.table.internal.net.tcp.AbstractNetworkInterface)
+     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandlerTestCase#createNetworkServiceHandler()
      */
     @Override
-    protected AbstractServiceHandler createServiceHandler(
-        final AbstractNetworkInterface networkInterface )
+    protected INetworkServiceHandler createNetworkServiceHandler()
     {
-        return new ServerServiceHandler( networkInterface, new SecureString() );
+        return new ServerNetworkServiceHandler( new NetworkTable( EasyMock.createMock( ITable.class ), EasyMock.createMock( INetworkInterfaceFactory.class ) ) );
     }
 }

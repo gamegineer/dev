@@ -121,7 +121,13 @@ public abstract class AbstractNetworkTableTestCase
         table_ = TableFactory.createTable();
         networkTable_ = createNetworkTable( table_ );
         assertNotNull( networkTable_ );
-        networkTableConfiguration_ = mocksControl_.createMock( INetworkTableConfiguration.class );
+
+        final NetworkTableConfigurationBuilder networkTableConfigurationBuilder = new NetworkTableConfigurationBuilder();
+        networkTableConfiguration_ = networkTableConfigurationBuilder //
+            .setHostName( "hostName" ) //$NON-NLS-1$
+            .setLocalPlayerName( "playerName" ) //$NON-NLS-1$
+            .setPort( NetworkTableConstants.DEFAULT_PORT ) //
+            .toNetworkTableConfiguration();
     }
 
     /**

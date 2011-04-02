@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.net.tcp;
 
 import java.io.IOException;
-import org.gamegineer.table.net.INetworkTableConfiguration;
+import org.gamegineer.table.net.NetworkTableConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,7 +72,7 @@ public final class AcceptorTest
         throws Exception
     {
         networkInterface_ = new FakeNetworkInterface();
-        networkInterface_.open( TestUtils.createNetworkTableConfiguration() );
+        networkInterface_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
         acceptor_ = new Acceptor( networkInterface_ );
     }
 
@@ -105,7 +105,7 @@ public final class AcceptorTest
     {
         acceptor_.close();
 
-        acceptor_.bind( TestUtils.createNetworkTableConfiguration() );
+        acceptor_.bind( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
     }
 
     /**
@@ -119,16 +119,15 @@ public final class AcceptorTest
     public void testBind_MultipleInvocations()
         throws Exception
     {
-        final INetworkTableConfiguration configuration = TestUtils.createNetworkTableConfiguration();
         try
         {
-            acceptor_.bind( configuration );
+            acceptor_.bind( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
         }
         catch( final IOException e )
         {
             // ignore I/O errors
         }
 
-        acceptor_.bind( configuration );
+        acceptor_.bind( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
     }
 }

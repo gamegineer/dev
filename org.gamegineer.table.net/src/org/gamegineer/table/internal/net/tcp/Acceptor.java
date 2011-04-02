@@ -31,9 +31,7 @@ import java.nio.channels.SocketChannel;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.Loggers;
-import org.gamegineer.table.net.INetworkTableConfiguration;
 
 /**
  * An acceptor in the TCP network interface Acceptor-Connector pattern
@@ -59,10 +57,6 @@ final class Acceptor
     /** The network interface associated with the acceptor. */
     private final AbstractNetworkInterface networkInterface_;
 
-    /** The network table password. */
-    @GuardedBy( "getLock()" )
-    private SecureString password_;
-
     /** The server socket channel on which incoming connections are accepted. */
     @GuardedBy( "getLock()" )
     private ServerSocketChannel serverChannel_;
@@ -87,7 +81,6 @@ final class Acceptor
 
         isRegistered_ = false;
         networkInterface_ = networkInterface;
-        password_ = null;
         serverChannel_ = null;
     }
 
@@ -115,8 +108,8 @@ final class Acceptor
 
             clientChannel.configureBlocking( false );
 
-            final AbstractServiceHandler serviceHandler = new ServerServiceHandler( networkInterface_, password_ );
-            serviceHandler.open( clientChannel );
+            final ServiceHandlerAdapter serviceHandlerAdapter = new ServiceHandlerAdapter( networkInterface_, networkInterface_.createServiceHandler() );
+            serviceHandlerAdapter.open( clientChannel );
         }
         catch( final IOException e )
         {
@@ -132,8 +125,11 @@ final class Acceptor
      * occurs.
      * </p>
      * 
-     * @param configuration
-     *        The network table configuration; must not be {@code null}.
+     * @param hostName
+     *        The host name to which the acceptor will be bound; must not be
+     *        {@code null}.
+     * @param port
+     *        The port to which the acceptor will be bound.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs
@@ -142,10 +138,11 @@ final class Acceptor
      */
     void bind(
         /* @NonNull */
-        final INetworkTableConfiguration configuration )
+        final String hostName,
+        final int port )
         throws IOException
     {
-        assert configuration != null;
+        assert hostName != null;
 
         synchronized( getLock() )
         {
@@ -153,10 +150,9 @@ final class Acceptor
 
             try
             {
-                serverChannel_ = createServerSocketChannel( configuration );
+                serverChannel_ = createServerSocketChannel( hostName, port );
                 setState( State.OPEN );
 
-                password_ = new SecureString( configuration.getPassword() );
                 networkInterface_.getDispatcher().registerEventHandler( this );
                 isRegistered_ = true;
             }
@@ -186,12 +182,6 @@ final class Acceptor
                     networkInterface_.getDispatcher().unregisterEventHandler( this );
                 }
 
-                if( password_ != null )
-                {
-                    password_.dispose();
-                    password_ = null;
-                }
-
                 try
                 {
                     serverChannel_.close();
@@ -211,6 +201,7 @@ final class Acceptor
 
         if( state == State.OPEN )
         {
+            // TODO: call a method on the network interface instead
             networkInterface_.getListener().networkInterfaceDisconnected();
         }
     }
@@ -218,9 +209,11 @@ final class Acceptor
     /**
      * Creates and initializes a new server socket channel.
      * 
-     * @param configuration
-     *        The network table configuration used to initialize the server
-     *        socket channel; must not be {@code null}.
+     * @param hostName
+     *        The host name to which the acceptor will be bound; must not be
+     *        {@code null}.
+     * @param port
+     *        The port to which the acceptor will be bound.
      * 
      * @return A new server socket channel; never {@code null}.
      * 
@@ -230,14 +223,15 @@ final class Acceptor
     /* @NonNull */
     private static ServerSocketChannel createServerSocketChannel(
         /* @NonNull */
-        final INetworkTableConfiguration configuration )
+        final String hostName,
+        final int port )
         throws IOException
     {
-        assert configuration != null;
+        assert hostName != null;
 
         final ServerSocketChannel channel = ServerSocketChannel.open();
         channel.configureBlocking( false );
-        channel.socket().bind( new InetSocketAddress( configuration.getHostName(), configuration.getPort() ) );
+        channel.socket().bind( new InetSocketAddress( hostName, port ) );
         return channel;
     }
 

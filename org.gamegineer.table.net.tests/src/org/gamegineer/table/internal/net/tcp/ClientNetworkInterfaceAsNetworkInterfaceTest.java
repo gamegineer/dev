@@ -25,6 +25,7 @@ import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.AbstractNetworkInterfaceTestCase;
 import org.gamegineer.table.internal.net.INetworkInterface;
 import org.gamegineer.table.internal.net.INetworkInterfaceListener;
+import org.gamegineer.table.internal.net.INetworkServiceHandlerFactory;
 
 /**
  * A fixture for testing the
@@ -59,6 +60,6 @@ public final class ClientNetworkInterfaceAsNetworkInterfaceTest
     @Override
     protected INetworkInterface createNetworkInterface()
     {
-        return new ClientNetworkInterface( EasyMock.createMock( INetworkInterfaceListener.class ) );
+        return new ClientNetworkInterface( EasyMock.createMock( INetworkInterfaceListener.class ), EasyMock.createMock( INetworkServiceHandlerFactory.class ) );
     }
 }

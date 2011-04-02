@@ -24,6 +24,8 @@ package org.gamegineer.table.internal.net.tcp;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.INetworkInterface;
 import org.gamegineer.table.internal.net.INetworkInterfaceListener;
+import org.gamegineer.table.internal.net.INetworkServiceHandler;
+import org.gamegineer.table.internal.net.INetworkServiceHandlerFactory;
 
 /**
  * Superclass for all implementations of
@@ -44,6 +46,9 @@ abstract class AbstractNetworkInterface
     /** The network interface listener. */
     private final INetworkInterfaceListener listener_;
 
+    /** The network service handler factory. */
+    private final INetworkServiceHandlerFactory serviceHandlerFactory_;
+
 
     // ======================================================================
     // Constructors
@@ -54,6 +59,8 @@ abstract class AbstractNetworkInterface
      * 
      * @param listener
      *        The network interface listener; must not be {@code null}.
+     * @param serviceHandlerFactory
+     *        The network service handler factory; must not be {@code null}.
      * @param dispatcher
      *        The dispatcher associated with the network interface; must not be
      *        {@code null}.
@@ -62,13 +69,17 @@ abstract class AbstractNetworkInterface
         /* @NonNull */
         final INetworkInterfaceListener listener,
         /* @NonNull */
+        final INetworkServiceHandlerFactory serviceHandlerFactory,
+        /* @NonNull */
         final Dispatcher dispatcher )
     {
         assert listener != null;
+        assert serviceHandlerFactory != null;
         assert dispatcher != null;
 
         dispatcher_ = dispatcher;
         listener_ = listener;
+        serviceHandlerFactory_ = serviceHandlerFactory;
     }
 
 
@@ -83,6 +94,17 @@ abstract class AbstractNetworkInterface
     public void close()
     {
         dispatcher_.close();
+    }
+
+    /**
+     * Creates a new network service handler.
+     * 
+     * @return A new network service handler; never {@code null}.
+     */
+    /* @NonNull */
+    final INetworkServiceHandler createServiceHandler()
+    {
+        return serviceHandlerFactory_.createNetworkServiceHandler();
     }
 
     /**

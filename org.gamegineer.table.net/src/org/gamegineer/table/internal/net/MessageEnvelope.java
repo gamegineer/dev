@@ -72,8 +72,9 @@ public final class MessageEnvelope
      *        The message body; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code tag} is less than zero or greater than
-     *         {@link AbstractMessage#MAX_TAG}; if the length of {@code body} is
+     *         If {@code tag} is less than {@link AbstractMessage#MAX_TAG} or
+     *         greater than {@link AbstractMessage#MAX_TAG} or not equal to
+     *         {@link AbstractMessage#NO_TAG}; if the length of {@code body} is
      *         greater than {@link #MAX_BODY_LENGTH}.
      * @throws java.lang.NullPointerException
      *         If {@code body} is {@code null}.
@@ -84,7 +85,7 @@ public final class MessageEnvelope
         /* @NonNull */
         final byte[] body )
     {
-        assertArgumentLegal( (tag >= 0) && (tag <= AbstractMessage.MAX_TAG), "tag" ); //$NON-NLS-1$
+        assertArgumentLegal( (tag == AbstractMessage.NO_TAG) || (tag >= AbstractMessage.MIN_TAG) && (tag <= AbstractMessage.MAX_TAG), "tag" ); //$NON-NLS-1$
         assertArgumentNotNull( body, "body" ); //$NON-NLS-1$
         assertArgumentLegal( body.length <= MAX_BODY_LENGTH, "body" ); //$NON-NLS-1$
 

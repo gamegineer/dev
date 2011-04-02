@@ -1,5 +1,5 @@
 /*
- * INetworkInterfaceListener.java
+ * INetworkServiceContext.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,33 +16,48 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Feb 12, 2011 at 10:06:15 PM.
+ * Created on Mar 25, 2011 at 10:40:39 PM.
  */
 
 package org.gamegineer.table.internal.net;
 
-import java.util.EventListener;
-
 /**
- * The listener interface for use by clients to be notified of changes to the
- * network interface state.
+ * The execution context for a network service handler.
  * 
- * @noextend This interface is not intended to be extended by clients.
+ * <p>
+ * Provides operations that allow a network service handler to interact and
+ * control its associated network interface.
+ * </p>
  */
-public interface INetworkInterfaceListener
-    extends EventListener
+public interface INetworkServiceContext
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Invoked by the network interface when it has been disconnected.
+     * Sends the specified message to the service handler peer.
+     * 
+     * @param message
+     *        The message; must not be {@code null}.
+     * 
+     * @return {@code true} if the message was sent successfully; otherwise
+     *         {@code false}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code message} is {@code null}.
+     */
+    public boolean sendMessage(
+        /* @NonNull */
+        AbstractMessage message );
+
+    /**
+     * Stops the network service.
      * 
      * <p>
-     * Clients must still explicitly close the network interface to clean up
-     * resources even after it has been disconnected.
+     * Any pending messages are guaranteed to be sent to the peer before the
+     * network service is stopped.
      * </p>
      */
-    public void networkInterfaceDisconnected();
+    public void stopService();
 }

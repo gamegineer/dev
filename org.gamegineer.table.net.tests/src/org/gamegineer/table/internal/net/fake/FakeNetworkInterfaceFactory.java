@@ -26,6 +26,7 @@ import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.INetworkInterface;
 import org.gamegineer.table.internal.net.INetworkInterfaceFactory;
 import org.gamegineer.table.internal.net.INetworkInterfaceListener;
+import org.gamegineer.table.internal.net.INetworkServiceHandlerFactory;
 
 /**
  * Fake implementation of
@@ -54,25 +55,29 @@ public final class FakeNetworkInterfaceFactory
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createClientNetworkInterface(org.gamegineer.table.internal.net.INetworkInterfaceListener)
+     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createClientNetworkInterface(org.gamegineer.table.internal.net.INetworkInterfaceListener, org.gamegineer.table.internal.net.INetworkServiceHandlerFactory)
      */
     @Override
     public INetworkInterface createClientNetworkInterface(
-        final INetworkInterfaceListener listener )
+        final INetworkInterfaceListener listener,
+        final INetworkServiceHandlerFactory serviceHandlerFactory )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentNotNull( serviceHandlerFactory, "serviceHandlerFactory" ); //$NON-NLS-1$
 
         return new ClientNetworkInterface();
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createServerNetworkInterface(org.gamegineer.table.internal.net.INetworkInterfaceListener)
+     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createServerNetworkInterface(org.gamegineer.table.internal.net.INetworkInterfaceListener, org.gamegineer.table.internal.net.INetworkServiceHandlerFactory)
      */
     @Override
     public INetworkInterface createServerNetworkInterface(
-        final INetworkInterfaceListener listener )
+        final INetworkInterfaceListener listener,
+        final INetworkServiceHandlerFactory serviceHandlerFactory )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentNotNull( serviceHandlerFactory, "serviceHandlerFactory" ); //$NON-NLS-1$
 
         return new ServerNetworkInterface();
     }

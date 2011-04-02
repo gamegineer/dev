@@ -25,7 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.INetworkInterfaceListener;
-import org.gamegineer.table.net.INetworkTableConfiguration;
+import org.gamegineer.table.internal.net.INetworkServiceHandlerFactory;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
@@ -45,12 +45,16 @@ final class ServerNetworkInterface
      * 
      * @param listener
      *        The network interface listener; must not be {@code null}.
+     * @param serviceHandlerFactory
+     *        The network service handler factory; must not be {@code null}.
      */
     ServerNetworkInterface(
         /* @NonNull */
-        final INetworkInterfaceListener listener )
+        final INetworkInterfaceListener listener,
+        /* @NonNull */
+        final INetworkServiceHandlerFactory serviceHandlerFactory )
     {
-        super( listener, new Dispatcher() );
+        super( listener, serviceHandlerFactory, new Dispatcher() );
     }
 
 
@@ -59,21 +63,22 @@ final class ServerNetworkInterface
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterface#open(org.gamegineer.table.net.INetworkTableConfiguration)
+     * @see org.gamegineer.table.internal.net.INetworkInterface#open(java.lang.String, int)
      */
     @Override
     public void open(
-        final INetworkTableConfiguration configuration )
+        final String hostName,
+        final int port )
         throws NetworkTableException
     {
-        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
+        assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
 
         getDispatcher().open();
 
         final Acceptor acceptor = new Acceptor( this );
         try
         {
-            acceptor.bind( configuration );
+            acceptor.bind( hostName, port );
         }
         catch( final IOException e )
         {
