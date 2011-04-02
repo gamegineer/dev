@@ -108,7 +108,7 @@ final class Acceptor
 
             clientChannel.configureBlocking( false );
 
-            final ServiceHandlerAdapter serviceHandlerAdapter = new ServiceHandlerAdapter( networkInterface_, networkInterface_.createServiceHandler() );
+            final ServiceHandlerAdapter serviceHandlerAdapter = new ServiceHandlerAdapter( networkInterface_, networkInterface_.createNetworkServiceHandler() );
             serviceHandlerAdapter.open( clientChannel );
         }
         catch( final IOException e )
@@ -201,8 +201,7 @@ final class Acceptor
 
         if( state == State.OPEN )
         {
-            // TODO: call a method on the network interface instead
-            networkInterface_.getListener().networkInterfaceDisconnected();
+            networkInterface_.disconnected();
         }
     }
 

@@ -24,8 +24,8 @@ package org.gamegineer.table.internal.net.tcp;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.INetworkInterfaceListener;
-import org.gamegineer.table.internal.net.INetworkServiceHandlerFactory;
+import org.gamegineer.table.internal.net.INetworkInterfaceContext;
+import org.gamegineer.table.internal.net.INetworkServiceHandler;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
@@ -43,24 +43,29 @@ final class ServerNetworkInterface
     /**
      * Initializes a new instance of the {@code ServerNetworkInterface} class.
      * 
-     * @param listener
-     *        The network interface listener; must not be {@code null}.
-     * @param serviceHandlerFactory
-     *        The network service handler factory; must not be {@code null}.
+     * @param context
+     *        The network interface context; must not be {@code null}.
      */
     ServerNetworkInterface(
         /* @NonNull */
-        final INetworkInterfaceListener listener,
-        /* @NonNull */
-        final INetworkServiceHandlerFactory serviceHandlerFactory )
+        final INetworkInterfaceContext context )
     {
-        super( listener, serviceHandlerFactory, new Dispatcher() );
+        super( context, new Dispatcher() );
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.internal.net.tcp.AbstractNetworkInterface#createNetworkServiceHandler()
+     */
+    @Override
+    INetworkServiceHandler createNetworkServiceHandler()
+    {
+        return getContext().createServerNetworkServiceHandler();
+    }
 
     /*
      * @see org.gamegineer.table.internal.net.INetworkInterface#open(java.lang.String, int)

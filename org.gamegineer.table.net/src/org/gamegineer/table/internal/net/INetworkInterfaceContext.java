@@ -1,5 +1,5 @@
 /*
- * INetworkInterfaceListener.java
+ * INetworkInterfaceContext.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,32 +16,47 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Feb 12, 2011 at 10:06:15 PM.
+ * Created on Apr 1, 2011 at 10:45:38 PM.
  */
 
 package org.gamegineer.table.internal.net;
 
-import java.util.EventListener;
-
 /**
- * The listener interface for use by clients to be notified of changes to the
- * network interface state.
+ * The execution context for a network interface.
  * 
- * @noextend This interface is not intended to be extended by clients.
+ * <p>
+ * Provides operations that allow a network interface to interact with its
+ * associated network table.
+ * </p>
  */
-public interface INetworkInterfaceListener
-    extends EventListener
+public interface INetworkInterfaceContext
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
+     * Creates a new client network service handler.
+     * 
+     * @return A new client network service handler; never {@code null}.
+     */
+    /* @NonNull */
+    public INetworkServiceHandler createClientNetworkServiceHandler();
+
+    /**
+     * Creates a new server network service handler.
+     * 
+     * @return A new server network service handler; never {@code null}.
+     */
+    /* @NonNull */
+    public INetworkServiceHandler createServerNetworkServiceHandler();
+
+    /**
      * Invoked by the network interface when it has been disconnected.
      * 
      * <p>
-     * Clients must still explicitly close the network interface to clean up
-     * resources even after it has been disconnected.
+     * Network tables must still explicitly close the network interface to clean
+     * up resources even after it has been disconnected.
      * </p>
      */
     public void networkInterfaceDisconnected();

@@ -120,7 +120,7 @@ final class Connector
             {
                 final SocketChannel channel = createSocketChannel( hostName, port );
 
-                final ServiceHandlerAdapter serviceHandlerAdapter = new ServiceHandlerAdapter( networkInterface_, networkInterface_.createServiceHandler() );
+                final ServiceHandlerAdapter serviceHandlerAdapter = new ServiceHandlerAdapter( networkInterface_, networkInterface_.createNetworkServiceHandler() );
                 serviceHandlerAdapter.open( channel );
             }
             finally

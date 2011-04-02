@@ -34,42 +34,32 @@ public interface INetworkInterfaceFactory
     /**
      * Creates a new client network interface.
      * 
-     * @param listener
-     *        The network interface listener; must not be {@code null}.
-     * @param serviceHandlerFactory
-     *        The network service handler factory; must not be {@code null}.
+     * @param context
+     *        The network interface context; must not be {@code null}.
      * 
      * @return A new client network interface; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code listener} or {@code serviceHandlerFactory} is {@code
-     *         null}.
+     *         If {@code context} is {@code null}.
      */
     /* @NonNull */
     public INetworkInterface createClientNetworkInterface(
         /* @NonNull */
-        INetworkInterfaceListener listener,
-        /* @NonNull */
-        INetworkServiceHandlerFactory serviceHandlerFactory );
+        INetworkInterfaceContext context );
 
     /**
      * Creates a new server network interface.
      * 
-     * @param listener
-     *        The network interface listener; must not be {@code null}.
-     * @param serviceHandlerFactory
-     *        The network service handler factory; must not be {@code null}.
+     * @param context
+     *        The network interface context; must not be {@code null}.
      * 
      * @return A new server network interface; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code listener} or {@code serviceHandlerFactory} is {@code
-     *         null}.
+     *         If {@code context} is {@code null}.
      */
     /* @NonNull */
     public INetworkInterface createServerNetworkInterface(
         /* @NonNull */
-        INetworkInterfaceListener listener,
-        /* @NonNull */
-        INetworkServiceHandlerFactory serviceHandlerFactory );
+        INetworkInterfaceContext context );
 }

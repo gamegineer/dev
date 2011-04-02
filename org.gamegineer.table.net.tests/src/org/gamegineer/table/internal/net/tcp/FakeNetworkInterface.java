@@ -24,8 +24,8 @@ package org.gamegineer.table.internal.net.tcp;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.INetworkInterfaceListener;
-import org.gamegineer.table.internal.net.INetworkServiceHandlerFactory;
+import org.gamegineer.table.internal.net.INetworkInterfaceContext;
+import org.gamegineer.table.internal.net.INetworkServiceHandler;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
@@ -61,13 +61,22 @@ final class FakeNetworkInterface
         /* @NonNull */
         final Dispatcher dispatcher )
     {
-        super( EasyMock.createMock( INetworkInterfaceListener.class ), EasyMock.createMock( INetworkServiceHandlerFactory.class ), dispatcher );
+        super( EasyMock.createMock( INetworkInterfaceContext.class ), dispatcher );
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.internal.net.tcp.AbstractNetworkInterface#createNetworkServiceHandler()
+     */
+    @Override
+    INetworkServiceHandler createNetworkServiceHandler()
+    {
+        return EasyMock.createMock( INetworkServiceHandler.class );
+    }
 
     /*
      * @see org.gamegineer.table.internal.net.INetworkInterface#open(java.lang.String, int)

@@ -23,9 +23,8 @@ package org.gamegineer.table.internal.net.tcp;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.INetworkInterface;
-import org.gamegineer.table.internal.net.INetworkInterfaceListener;
+import org.gamegineer.table.internal.net.INetworkInterfaceContext;
 import org.gamegineer.table.internal.net.INetworkServiceHandler;
-import org.gamegineer.table.internal.net.INetworkServiceHandlerFactory;
 
 /**
  * Superclass for all implementations of
@@ -40,14 +39,11 @@ abstract class AbstractNetworkInterface
     // Fields
     // ======================================================================
 
+    /** The network interface context. */
+    private final INetworkInterfaceContext context_;
+
     /** The dispatcher associated with the network interface. */
     private final Dispatcher dispatcher_;
-
-    /** The network interface listener. */
-    private final INetworkInterfaceListener listener_;
-
-    /** The network service handler factory. */
-    private final INetworkServiceHandlerFactory serviceHandlerFactory_;
 
 
     // ======================================================================
@@ -57,29 +53,23 @@ abstract class AbstractNetworkInterface
     /**
      * Initializes a new instance of the {@code AbstractNetworkInterface} class.
      * 
-     * @param listener
-     *        The network interface listener; must not be {@code null}.
-     * @param serviceHandlerFactory
-     *        The network service handler factory; must not be {@code null}.
+     * @param context
+     *        The network interface context; must not be {@code null}.
      * @param dispatcher
      *        The dispatcher associated with the network interface; must not be
      *        {@code null}.
      */
     AbstractNetworkInterface(
         /* @NonNull */
-        final INetworkInterfaceListener listener,
-        /* @NonNull */
-        final INetworkServiceHandlerFactory serviceHandlerFactory,
+        final INetworkInterfaceContext context,
         /* @NonNull */
         final Dispatcher dispatcher )
     {
-        assert listener != null;
-        assert serviceHandlerFactory != null;
+        assert context != null;
         assert dispatcher != null;
 
+        context_ = context;
         dispatcher_ = dispatcher;
-        listener_ = listener;
-        serviceHandlerFactory_ = serviceHandlerFactory;
     }
 
 
@@ -102,9 +92,25 @@ abstract class AbstractNetworkInterface
      * @return A new network service handler; never {@code null}.
      */
     /* @NonNull */
-    final INetworkServiceHandler createServiceHandler()
+    abstract INetworkServiceHandler createNetworkServiceHandler();
+
+    /**
+     * Invoked when the network interface has been disconnected.
+     */
+    final void disconnected()
     {
-        return serviceHandlerFactory_.createNetworkServiceHandler();
+        context_.networkInterfaceDisconnected();
+    }
+
+    /**
+     * Gets the network interface context.
+     * 
+     * @return The network interface context; never {@code null}.
+     */
+    /* @NonNull */
+    final INetworkInterfaceContext getContext()
+    {
+        return context_;
     }
 
     /**
@@ -117,16 +123,5 @@ abstract class AbstractNetworkInterface
     final Dispatcher getDispatcher()
     {
         return dispatcher_;
-    }
-
-    /**
-     * Gets the network interface listener.
-     * 
-     * @return The network interface listener; never {@code null}.
-     */
-    /* @NonNull */
-    final INetworkInterfaceListener getListener()
-    {
-        return listener_;
     }
 }

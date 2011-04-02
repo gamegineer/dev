@@ -24,9 +24,8 @@ package org.gamegineer.table.internal.net.tcp;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.INetworkInterface;
+import org.gamegineer.table.internal.net.INetworkInterfaceContext;
 import org.gamegineer.table.internal.net.INetworkInterfaceFactory;
-import org.gamegineer.table.internal.net.INetworkInterfaceListener;
-import org.gamegineer.table.internal.net.INetworkServiceHandlerFactory;
 
 /**
  * Implementation of
@@ -55,30 +54,26 @@ public final class TcpNetworkInterfaceFactory
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createClientNetworkInterface(org.gamegineer.table.internal.net.INetworkInterfaceListener, org.gamegineer.table.internal.net.INetworkServiceHandlerFactory)
+     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createClientNetworkInterface(org.gamegineer.table.internal.net.INetworkInterfaceContext)
      */
     @Override
     public INetworkInterface createClientNetworkInterface(
-        final INetworkInterfaceListener listener,
-        final INetworkServiceHandlerFactory serviceHandlerFactory )
+        final INetworkInterfaceContext context )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentNotNull( serviceHandlerFactory, "serviceHandlerFactory" ); //$NON-NLS-1$
+        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        return new ClientNetworkInterface( listener, serviceHandlerFactory );
+        return new ClientNetworkInterface( context );
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createServerNetworkInterface(org.gamegineer.table.internal.net.INetworkInterfaceListener, org.gamegineer.table.internal.net.INetworkServiceHandlerFactory)
+     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createServerNetworkInterface(org.gamegineer.table.internal.net.INetworkInterfaceContext)
      */
     @Override
     public INetworkInterface createServerNetworkInterface(
-        final INetworkInterfaceListener listener,
-        final INetworkServiceHandlerFactory serviceHandlerFactory )
+        final INetworkInterfaceContext context )
     {
-        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentNotNull( serviceHandlerFactory, "serviceHandlerFactory" ); //$NON-NLS-1$
+        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        return new ServerNetworkInterface( listener, serviceHandlerFactory );
+        return new ServerNetworkInterface( context );
     }
 }

@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net;
 
 import static org.junit.Assert.assertNotNull;
-import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -100,41 +99,21 @@ public abstract class AbstractNetworkInterfaceFactoryTestCase
 
     /**
      * Ensures the {@code createClientNetworkInterface} method throws an
-     * exception when passed a {@code null} listener.
+     * exception when passed a {@code null} context.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateClientNetworkInterface_Listener_Null()
+    public void testCreateClientNetworkInterface_Context_Null()
     {
-        networkInterfaceFactory_.createClientNetworkInterface( null, EasyMock.createMock( INetworkServiceHandlerFactory.class ) );
-    }
-
-    /**
-     * Ensures the {@code createClientNetworkInterface} method throws an
-     * exception when passed a {@code null} service handler factory.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateClientNetworkInterface_ServiceHandlerFactory_Null()
-    {
-        networkInterfaceFactory_.createClientNetworkInterface( EasyMock.createMock( INetworkInterfaceListener.class ), null );
+        networkInterfaceFactory_.createClientNetworkInterface( null );
     }
 
     /**
      * Ensures the {@code createServerNetworkInterface} method throws an
-     * exception when passed a {@code null} listener.
+     * exception when passed a {@code null} context.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateServerNetworkInterface_Listener_Null()
+    public void testCreateServerNetworkInterface_Context_Null()
     {
-        networkInterfaceFactory_.createServerNetworkInterface( null, EasyMock.createMock( INetworkServiceHandlerFactory.class ) );
-    }
-
-    /**
-     * Ensures the {@code createServerNetworkInterface} method throws an
-     * exception when passed a {@code null} service handler factory.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateServerNetworkInterface_ServiceHandlerFactory_Null()
-    {
-        networkInterfaceFactory_.createServerNetworkInterface( EasyMock.createMock( INetworkInterfaceListener.class ), null );
+        networkInterfaceFactory_.createServerNetworkInterface( null );
     }
 }

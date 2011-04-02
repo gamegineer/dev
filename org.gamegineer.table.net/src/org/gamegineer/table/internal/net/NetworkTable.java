@@ -40,7 +40,7 @@ import org.gamegineer.table.net.NetworkTableException;
  */
 @ThreadSafe
 public final class NetworkTable
-    implements INetworkTable, INetworkInterfaceListener
+    implements INetworkTable, INetworkInterfaceContext
 {
     // ======================================================================
     // Fields
@@ -177,6 +177,24 @@ public final class NetworkTable
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.INetworkInterfaceContext#createClientNetworkServiceHandler()
+     */
+    @Override
+    public INetworkServiceHandler createClientNetworkServiceHandler()
+    {
+        return new ClientNetworkServiceHandler( this );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.INetworkInterfaceContext#createServerNetworkServiceHandler()
+     */
+    @Override
+    public INetworkServiceHandler createServerNetworkServiceHandler()
+    {
+        return new ServerNetworkServiceHandler( this );
+    }
+
+    /*
      * @see org.gamegineer.table.net.INetworkTable#disconnect()
      */
     @Override
@@ -252,7 +270,7 @@ public final class NetworkTable
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, networkInterfaceFactory_.createServerNetworkInterface( this, new ServerNetworkServiceHandlerFactory( this ) ) );
+        connect( configuration, networkInterfaceFactory_.createServerNetworkInterface( this ) );
     }
 
     /*
@@ -274,11 +292,11 @@ public final class NetworkTable
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, networkInterfaceFactory_.createClientNetworkInterface( this, new ClientNetworkServiceHandlerFactory( this ) ) );
+        connect( configuration, networkInterfaceFactory_.createClientNetworkInterface( this ) );
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceListener#networkInterfaceDisconnected()
+     * @see org.gamegineer.table.internal.net.INetworkInterfaceContext#networkInterfaceDisconnected()
      */
     @Override
     public void networkInterfaceDisconnected()
