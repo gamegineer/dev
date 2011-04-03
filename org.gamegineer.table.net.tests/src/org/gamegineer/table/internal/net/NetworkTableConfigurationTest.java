@@ -1,6 +1,6 @@
 /*
  * NetworkTableConfigurationTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net;
 
+import static org.junit.Assert.assertArrayEquals;
 import org.gamegineer.common.core.security.SecureString;
 import org.junit.Test;
 
@@ -69,6 +70,22 @@ public final class NetworkTableConfigurationTest
     }
 
     /**
+     * Ensures the constructor makes a copy of the password.
+     */
+    @Test
+    public void testConstructor_Password_Copy()
+    {
+        final char[] expectedPassword = "password".toCharArray(); //$NON-NLS-1$
+        final SecureString password = new SecureString( expectedPassword );
+        final NetworkTableConfiguration configuration = new NetworkTableConfiguration( "hostName", 0, password, "localPlayerName" ); //$NON-NLS-1$ //$NON-NLS-2$
+        password.dispose();
+
+        final char[] actualPassword = configuration.getPassword().toCharArray();
+
+        assertArrayEquals( expectedPassword, actualPassword );
+    }
+
+    /**
      * Ensures the constructor throws an exception when passed a {@code null}
      * password.
      */
@@ -76,5 +93,21 @@ public final class NetworkTableConfigurationTest
     public void testConstructor_Password_Null()
     {
         new NetworkTableConfiguration( "hostName", 0, null, "localPlayerName" ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Ensures the {@code getPassword} method returns a copy of the password.
+     */
+    @Test
+    public void testGetPassword_ReturnValue_Copy()
+    {
+        final char[] expectedPassword = "password".toCharArray(); //$NON-NLS-1$
+        final NetworkTableConfiguration configuration = new NetworkTableConfiguration( "hostName", 0, new SecureString( expectedPassword ), "localPlayerName" ); //$NON-NLS-1$ //$NON-NLS-2$
+        final SecureString password = configuration.getPassword();
+        password.dispose();
+
+        final char[] actualPassword = configuration.getPassword().toCharArray();
+
+        assertArrayEquals( expectedPassword, actualPassword );
     }
 }

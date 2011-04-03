@@ -1,6 +1,6 @@
 /*
  * NetworkTableConfiguration.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -87,7 +87,7 @@ public final class NetworkTableConfiguration
 
         hostName_ = hostName;
         localPlayerName_ = localPlayerName;
-        password_ = password;
+        password_ = new SecureString( password );
         port_ = port;
     }
 
@@ -120,7 +120,7 @@ public final class NetworkTableConfiguration
     @Override
     public SecureString getPassword()
     {
-        return password_;
+        return new SecureString( password_ );
     }
 
     /*
