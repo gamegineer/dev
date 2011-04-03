@@ -52,13 +52,6 @@ public final class BeginAuthenticationRequestMessage
     private byte[] challenge_;
 
     /**
-     * The iteration count used to generate the shared secret key.
-     * 
-     * @serial The iteration count used to generate the shared secret key.
-     */
-    private int iterationCount_;
-
-    /**
      * The salt used to generate the shared secret key.
      * 
      * @serial The salt used to generate the shared secret key.
@@ -79,7 +72,6 @@ public final class BeginAuthenticationRequestMessage
         super( ID );
 
         challenge_ = new byte[ 1 ];
-        iterationCount_ = 0;
         salt_ = new byte[ 1 ];
     }
 
@@ -98,16 +90,6 @@ public final class BeginAuthenticationRequestMessage
     public byte[] getChallenge()
     {
         return challenge_;
-    }
-
-    /**
-     * Gets the iteration count used to generate the shared secret key.
-     * 
-     * @return The iteration count used to generate the shared secret key.
-     */
-    public int getIterationCount()
-    {
-        return iterationCount_;
     }
 
     /**
@@ -143,23 +125,6 @@ public final class BeginAuthenticationRequestMessage
         assertArgumentLegal( challenge.length != 0, "challenge", Messages.BeginAuthenticationRequestMessage_setChallenge_empty ); //$NON-NLS-1$
 
         challenge_ = challenge;
-    }
-
-    /**
-     * Sets the iteration count used to generate the shared secret key.
-     * 
-     * @param iterationCount
-     *        The iteration count used to generate the shared secret key.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code iterationCount} is negative.
-     */
-    public void setIterationCount(
-        final int iterationCount )
-    {
-        assertArgumentLegal( iterationCount >= 0, "iterationCount", Messages.BeginAuthenticationRequestMessage_setIterationCount_negative ); //$NON-NLS-1$
-
-        iterationCount_ = iterationCount;
     }
 
     /**

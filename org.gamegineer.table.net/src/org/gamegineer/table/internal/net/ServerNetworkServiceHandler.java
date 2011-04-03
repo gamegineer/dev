@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.net;
 import java.util.Arrays;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.messages.EndAuthenticationMessage;
@@ -44,11 +45,25 @@ final class ServerNetworkServiceHandler
     // ======================================================================
 
     /**
+     * The most-recent challenge used to authenticate the client or {@code null}
+     * if an authentication request has not yet been sent.
+     */
+    @GuardedBy( "getLock()" )
+    private byte[] challenge_;
+
+    /**
      * The name of the remote player or {@code null} if the player has not yet
      * been authenticated.
      */
     @GuardedBy( "getLock()" )
     private String playerName_;
+
+    /**
+     * The most-recent salt used to authenticate the client or {@code null} if
+     * an authentication request has not yet been sent.
+     */
+    @GuardedBy( "getLock()" )
+    private byte[] salt_;
 
 
     // ======================================================================
@@ -69,7 +84,9 @@ final class ServerNetworkServiceHandler
     {
         super( networkTable );
 
+        challenge_ = null;
         playerName_ = null;
+        salt_ = null;
     }
 
 
@@ -100,21 +117,32 @@ final class ServerNetworkServiceHandler
         final EndAuthenticationMessage endAuthenticationMessage = new EndAuthenticationMessage();
         endAuthenticationMessage.setTag( AbstractMessage.NO_TAG );
 
-        // TODO: need to verify challenge response
-        if( Arrays.equals( message.getResponse(), new byte[] {
-            7, 6, 5, 4, 3, 2, 1, 0
-        } ) )
+        final SecureString password = getNetworkTable().getPassword();
+        try
         {
-            System.out.println( String.format( "ServerNetworkServiceHandler : client authenticated (tag=%d)", message.getTag() ) ); //$NON-NLS-1$
-            playerName_ = message.getPlayerName();
-            // TODO: this method has to be atomic with respect to allowing the network table
-            // to throw an exception if the player name is already taken
-            getNetworkTable().playerConnected( playerName_ );
+            final Authenticator authenticator = new Authenticator();
+            final byte[] expectedResponse = authenticator.createResponse( challenge_, password, salt_ );
+            if( Arrays.equals( expectedResponse, message.getResponse() ) )
+            {
+                System.out.println( String.format( "ServerNetworkServiceHandler : client authenticated (tag=%d)", message.getTag() ) ); //$NON-NLS-1$
+                playerName_ = message.getPlayerName();
+                // TODO: this method has to be atomic with respect to allowing the network table
+                // to throw an exception if the player name is already taken
+                getNetworkTable().playerConnected( playerName_ );
+            }
+            else
+            {
+                System.out.println( String.format( "ServerNetworkServiceHandler : client failed authentication (tag=%d)", message.getTag() ) ); //$NON-NLS-1$
+                throw new NetworkTableException( "failed authentication" ); //$NON-NLS-1$
+            }
         }
-        else
+        catch( final NetworkTableException e )
         {
-            System.out.println( String.format( "ServerNetworkServiceHandler : client failed authentication (tag=%d)", message.getTag() ) ); //$NON-NLS-1$
-            endAuthenticationMessage.setException( new NetworkTableException( "failed authentication" ) ); //$NON-NLS-1$
+            endAuthenticationMessage.setException( e );
+        }
+        finally
+        {
+            password.dispose();
         }
 
         if( context.sendMessage( endAuthenticationMessage ) )
@@ -171,19 +199,24 @@ final class ServerNetworkServiceHandler
 
         if( response.getException() == null )
         {
-            final BeginAuthenticationRequestMessage beginAuthenticationRequest = new BeginAuthenticationRequestMessage();
-            // TODO: generate cryptographically strong random data
-            beginAuthenticationRequest.setTag( getNextMessageTag() );
-            beginAuthenticationRequest.setChallenge( new byte[] {
-                0, 1, 2, 3, 4, 5, 6, 7
-            } );
-            beginAuthenticationRequest.setSalt( new byte[] {
-                8, 9, 10, 11, 12, 13, 14, 15
-            } );
-            beginAuthenticationRequest.setIterationCount( 1000 );
-
-            if( !context.sendMessage( beginAuthenticationRequest ) )
+            try
             {
+                final Authenticator authenticator = new Authenticator();
+                final BeginAuthenticationRequestMessage beginAuthenticationRequest = new BeginAuthenticationRequestMessage();
+                beginAuthenticationRequest.setTag( getNextMessageTag() );
+                challenge_ = authenticator.createChallenge();
+                beginAuthenticationRequest.setChallenge( challenge_ );
+                salt_ = authenticator.createSalt();
+                beginAuthenticationRequest.setSalt( salt_ );
+
+                if( !context.sendMessage( beginAuthenticationRequest ) )
+                {
+                    context.stopService();
+                }
+            }
+            catch( final NetworkTableException e )
+            {
+                System.out.println( "ServerNetworkServiceHandler : failed to generate begin authentication request with exception: " + e ); //$NON-NLS-1$
                 context.stopService();
             }
         }

@@ -105,16 +105,6 @@ public final class BeginAuthenticationRequestMessageTest
     }
 
     /**
-     * Ensures the {@code setIterationCount} method throws an exception when
-     * passed an illegal iteration count that is negative.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testSetIterationCount_IterationCount_Illegal_Negative()
-    {
-        message_.setIterationCount( -1 );
-    }
-
-    /**
      * Ensures the {@code setSalt} method throws an exception when passed an
      * illegal salt that is empty.
      */

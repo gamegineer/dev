@@ -27,6 +27,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.tcp.TcpNetworkInterfaceFactory;
 import org.gamegineer.table.net.INetworkTable;
@@ -46,17 +47,17 @@ public final class NetworkTable
     // Fields
     // ======================================================================
 
-    /**
-     * A reference to the active configuration or {@code null} if the network is
-     * not connected.
-     */
-    private final AtomicReference<INetworkTableConfiguration> configurationRef_;
-
     /** A reference to the connection state. */
     private final AtomicReference<ConnectionState> connectionStateRef_;
 
     /** The collection of network table listeners. */
     private final CopyOnWriteArrayList<INetworkTableListener> listeners_;
+
+    /**
+     * A reference to the local player name or {@code null} if the network is
+     * not connected.
+     */
+    private final AtomicReference<String> localPlayerNameRef_;
 
     /**
      * A reference to the active network interface or {@code null} if the
@@ -66,6 +67,12 @@ public final class NetworkTable
 
     /** The network table network interface factory. */
     private final INetworkInterfaceFactory networkInterfaceFactory_;
+
+    /**
+     * A reference to the server password or {@code null} if the network is not
+     * connected.
+     */
+    private final AtomicReference<SecureString> passwordRef_;
 
     /** The table to be attached to the network. */
     @SuppressWarnings( "unused" )
@@ -115,11 +122,12 @@ public final class NetworkTable
         assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
         assert networkInterfaceFactory != null;
 
-        configurationRef_ = new AtomicReference<INetworkTableConfiguration>( null );
         connectionStateRef_ = new AtomicReference<ConnectionState>( ConnectionState.DISCONNECTED );
         listeners_ = new CopyOnWriteArrayList<INetworkTableListener>();
+        localPlayerNameRef_ = new AtomicReference<String>( null );
         networkInterfaceRef_ = new AtomicReference<INetworkInterface>( null );
         networkInterfaceFactory_ = networkInterfaceFactory;
+        passwordRef_ = new AtomicReference<SecureString>( null );
         table_ = table;
     }
 
@@ -164,7 +172,8 @@ public final class NetworkTable
 
         if( connectionStateRef_.compareAndSet( ConnectionState.DISCONNECTED, ConnectionState.CONNECTING ) )
         {
-            configurationRef_.set( configuration );
+            localPlayerNameRef_.set( configuration.getLocalPlayerName() );
+            passwordRef_.set( configuration.getPassword() );
             networkInterface.open( configuration.getHostName(), configuration.getPort() );
             networkInterfaceRef_.set( networkInterface );
             connectionStateRef_.set( ConnectionState.CONNECTED );
@@ -205,7 +214,9 @@ public final class NetworkTable
             final INetworkInterface networkInterface = networkInterfaceRef_.getAndSet( null );
             networkInterface.close();
             connectionStateRef_.set( ConnectionState.DISCONNECTED );
-            configurationRef_.set( null );
+            final SecureString password = passwordRef_.getAndSet( null );
+            password.dispose();
+            localPlayerNameRef_.set( null );
             fireNetworkDisconnected();
         }
     }
@@ -249,15 +260,28 @@ public final class NetworkTable
     }
 
     /**
-     * Gets the active configuration.
+     * Gets the local player name.
      * 
-     * @return The active configuration or {@code null} if the network is not
+     * @return The local player name or {@code null} if the network is not
      *         connected.
      */
     /* @Nullable */
-    INetworkTableConfiguration getConfiguration()
+    String getLocalPlayerName()
     {
-        return configurationRef_.get();
+        return localPlayerNameRef_.get();
+    }
+
+    /**
+     * Gets the server password.
+     * 
+     * @return The server password or {@code null} if the network is not
+     *         connected.
+     */
+    /* @Nullable */
+    SecureString getPassword()
+    {
+        final SecureString password = passwordRef_.get();
+        return (password != null) ? new SecureString( password ) : null;
     }
 
     /*

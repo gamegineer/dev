@@ -43,6 +43,17 @@ final class Messages
     /** The handler received an unknown message. */
     public static String AbstractNetworkServiceHandler_messageReceived_unknownMessage;
 
+    // --- Authenticator ----------------------------------------------------
+
+    /** Failed to create an authentication response. */
+    public static String Authenticator_createResponse_failed;
+
+    /** Failed to create a secret key. */
+    public static String Authenticator_createSecretKey_failed;
+
+    /** Failed to create a secure random byte buffer. */
+    public static String Authenticator_createSecureRandomBytes_failed;
+
     // --- NetworkTable -----------------------------------------------------
 
     /** The network table listener is already registered. */

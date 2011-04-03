@@ -23,11 +23,13 @@ package org.gamegineer.table.internal.net;
 
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.messages.EndAuthenticationMessage;
 import org.gamegineer.table.internal.net.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.messages.HelloResponseMessage;
+import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * A service handler that represents the client half of the network table
@@ -82,15 +84,32 @@ final class ClientNetworkServiceHandler
 
         final BeginAuthenticationResponseMessage response = new BeginAuthenticationResponseMessage();
         response.setTag( message.getTag() );
-        response.setPlayerName( getNetworkTable().getConfiguration().getLocalPlayerName() );
-        // TODO: calculate HMAC using password, challenge, salt, and iterationCount
-        response.setResponse( new byte[] {
-            7, 6, 5, 4, 3, 2, 1, 0
-        } );
+        response.setPlayerName( getNetworkTable().getLocalPlayerName() );
 
-        if( !context.sendMessage( response ) )
+        final SecureString password = getNetworkTable().getPassword();
+        try
         {
+            final Authenticator authenticator = new Authenticator();
+            final byte[] authResponse = authenticator.createResponse( message.getChallenge(), password, message.getSalt() );
+            response.setResponse( authResponse );
+
+            if( !context.sendMessage( response ) )
+            {
+                context.stopService();
+            }
+        }
+        catch( final NetworkTableException e )
+        {
+            // TODO: in this case, and probably elsewhere, need to communicate the error
+            // to the network table so it can eventually be reported to the local user via the UI
+            // --> may not serialize exceptions in messages, but rather use an enum to force
+            // specification of error.  actual exception should be logged locally.
+            System.out.println( "ClientNetworkServiceHandler : failed to generate authentication response with exception: " + e ); //$NON-NLS-1$
             context.stopService();
+        }
+        finally
+        {
+            password.dispose();
         }
     }
 

@@ -40,9 +40,6 @@ final class Messages
     /** The challenge length must be greater than zero. */
     public static String BeginAuthenticationRequestMessage_setChallenge_empty;
 
-    /** The iteration count must be non-negative. */
-    public static String BeginAuthenticationRequestMessage_setIterationCount_negative;
-
     /** The salt length must be greater than zero. */
     public static String BeginAuthenticationRequestMessage_setSalt_empty;
 
