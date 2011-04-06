@@ -74,6 +74,15 @@ final class Messages
      */
     public static String NetworkTable_networkDisconnected_unexpectedException;
 
+    /** The player has connected. */
+    public static String NetworkTable_playerConnected_playerConnected;
+
+    /** The player is already registered. */
+    public static String NetworkTable_playerConnected_playerRegistered;
+
+    /** The player has disconnected. */
+    public static String NetworkTable_playerDisconnected_playerDisconnected;
+
     /** The network table listener is not registered. */
     public static String NetworkTable_removeNetworkTableListener_listener_notRegistered;
 
@@ -141,5 +150,43 @@ final class Messages
         final MessageEnvelope messageEnvelope )
     {
         return bind( AbstractNetworkServiceHandler_messageReceived_unknownMessage, messageEnvelope.getId(), messageEnvelope.getTag() );
+    }
+
+    // --- NetworkTable -----------------------------------------------------
+
+    /**
+     * Gets the formatted message indicating the player has connected.
+     * 
+     * @param playerName
+     *        The name of the player that has connected; must not be {@code
+     *        null}.
+     * 
+     * @return The formatted message indicating the player has connected; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    static String NetworkTable_playerConnected_playerConnected(
+        /* @NonNull */
+        final String playerName )
+    {
+        return bind( NetworkTable_playerConnected_playerConnected, playerName );
+    }
+
+    /**
+     * Gets the formatted message indicating the player has disconnected.
+     * 
+     * @param playerName
+     *        The name of the player that has disconnected; must not be {@code
+     *        null}.
+     * 
+     * @return The formatted message indicating the player has disconnected;
+     *         never {@code null}.
+     */
+    /* @NonNull */
+    static String NetworkTable_playerDisconnected_playerDisconnected(
+        /* @NonNull */
+        final String playerName )
+    {
+        return bind( NetworkTable_playerDisconnected_playerDisconnected, playerName );
     }
 }

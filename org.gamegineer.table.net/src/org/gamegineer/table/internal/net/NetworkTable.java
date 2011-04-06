@@ -23,6 +23,8 @@ package org.gamegineer.table.internal.net;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
@@ -73,6 +75,13 @@ public final class NetworkTable
      * connected.
      */
     private final AtomicReference<SecureString> passwordRef_;
+
+    /**
+     * The collection of service handlers associated with each player. The key
+     * is the player name; the value is the service handler associated with the
+     * player.
+     */
+    private final ConcurrentMap<String, INetworkServiceHandler> serviceHandlers_;
 
     /** The table to be attached to the network. */
     @SuppressWarnings( "unused" )
@@ -128,6 +137,7 @@ public final class NetworkTable
         networkInterfaceRef_ = new AtomicReference<INetworkInterface>( null );
         networkInterfaceFactory_ = networkInterfaceFactory;
         passwordRef_ = new AtomicReference<SecureString>( null );
+        serviceHandlers_ = new ConcurrentHashMap<String, INetworkServiceHandler>();
         table_ = table;
     }
 
@@ -172,6 +182,7 @@ public final class NetworkTable
 
         if( connectionStateRef_.compareAndSet( ConnectionState.DISCONNECTED, ConnectionState.CONNECTING ) )
         {
+            playerConnected( configuration.getLocalPlayerName(), new LocalNetworkServiceHandler() );
             localPlayerNameRef_.set( configuration.getLocalPlayerName() );
             passwordRef_.set( configuration.getPassword() );
             networkInterface.open( configuration.getHostName(), configuration.getPort() );
@@ -216,7 +227,9 @@ public final class NetworkTable
             connectionStateRef_.set( ConnectionState.DISCONNECTED );
             final SecureString password = passwordRef_.getAndSet( null );
             password.dispose();
-            localPlayerNameRef_.set( null );
+            // TODO: need to gracefully shut down all remote clients
+            playerDisconnected( localPlayerNameRef_.getAndSet( null ) );
+            serviceHandlers_.clear();
             fireNetworkDisconnected();
         }
     }
@@ -334,15 +347,31 @@ public final class NetworkTable
      * @param playerName
      *        The name of the remote player that has connected; must not be
      *        {@code null}.
+     * @param serviceHandler
+     *        The service handler associated with the remote player; must not be
+     *        {@code null}.
+     * 
+     * @throws org.gamegineer.table.net.NetworkTableException
+     *         If an error occurs.
      */
     void playerConnected(
         /* @NonNull */
-        final String playerName )
+        final String playerName,
+        /* @NonNull */
+        final INetworkServiceHandler serviceHandler )
+        throws NetworkTableException
     {
         assert playerName != null;
+        assert serviceHandler != null;
 
-        // TODO
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has connected", playerName ) ); //$NON-NLS-1$
+        if( serviceHandlers_.putIfAbsent( playerName, serviceHandler ) == null )
+        {
+            Loggers.getDefaultLogger().info( Messages.NetworkTable_playerConnected_playerConnected( playerName ) );
+        }
+        else
+        {
+            throw new NetworkTableException( Messages.NetworkTable_playerConnected_playerRegistered );
+        }
     }
 
     /**
@@ -358,8 +387,10 @@ public final class NetworkTable
     {
         assert playerName != null;
 
-        // TODO
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has disconnected", playerName ) ); //$NON-NLS-1$
+        if( serviceHandlers_.remove( playerName ) != null )
+        {
+            Loggers.getDefaultLogger().info( Messages.NetworkTable_playerDisconnected_playerDisconnected( playerName ) );
+        }
     }
 
     /*

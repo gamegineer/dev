@@ -125,10 +125,8 @@ final class ServerNetworkServiceHandler
             if( Arrays.equals( expectedResponse, message.getResponse() ) )
             {
                 System.out.println( String.format( "ServerNetworkServiceHandler : client authenticated (tag=%d)", message.getTag() ) ); //$NON-NLS-1$
+                getNetworkTable().playerConnected( message.getPlayerName(), this );
                 playerName_ = message.getPlayerName();
-                // TODO: this method has to be atomic with respect to allowing the network table
-                // to throw an exception if the player name is already taken
-                getNetworkTable().playerConnected( playerName_ );
             }
             else
             {
