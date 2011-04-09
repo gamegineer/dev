@@ -75,7 +75,7 @@ class FakeEventHandler
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#close()
+     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler#close()
      */
     @Override
     void close()
@@ -84,7 +84,7 @@ class FakeEventHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getChannel()
+     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler#getChannel()
      */
     @Override
     SelectableChannel getChannel()
@@ -93,7 +93,7 @@ class FakeEventHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#getInterestOperations()
+     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler#getInterestOperations()
      */
     @Override
     int getInterestOperations()
@@ -102,7 +102,7 @@ class FakeEventHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractEventHandler#run()
+     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler#run()
      */
     @Override
     void run()

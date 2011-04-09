@@ -71,7 +71,7 @@ final class FakeNetworkInterface
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.tcp.AbstractNetworkInterface#createNetworkServiceHandler()
+     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractNetworkInterface#createNetworkServiceHandler()
      */
     @Override
     INetworkServiceHandler createNetworkServiceHandler()
@@ -80,7 +80,7 @@ final class FakeNetworkInterface
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterface#open(java.lang.String, int)
+     * @see org.gamegineer.table.internal.net.transport.INetworkInterface#open(java.lang.String, int)
      */
     @Override
     public void open(

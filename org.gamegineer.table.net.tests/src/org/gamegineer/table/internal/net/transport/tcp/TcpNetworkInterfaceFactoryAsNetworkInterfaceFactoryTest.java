@@ -53,7 +53,7 @@ public final class TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkInterfaceFactoryTestCase#createNetworkInterfaceFactory()
+     * @see org.gamegineer.table.internal.net.transport.AbstractNetworkInterfaceFactoryTestCase#createNetworkInterfaceFactory()
      */
     @Override
     protected INetworkInterfaceFactory createNetworkInterfaceFactory()

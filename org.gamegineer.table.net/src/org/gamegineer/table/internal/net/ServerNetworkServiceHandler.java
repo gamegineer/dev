@@ -254,7 +254,7 @@ final class ServerNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#peerStoppedInternal(org.gamegineer.table.internal.net.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#peerStoppedInternal(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
      */
     @Override
     void peerStoppedInternal(
@@ -271,7 +271,7 @@ final class ServerNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#stoppedInternal(org.gamegineer.table.internal.net.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#stoppedInternal(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
      */
     @Override
     void stoppedInternal(

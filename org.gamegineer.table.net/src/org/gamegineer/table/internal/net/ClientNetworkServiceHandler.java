@@ -209,7 +209,7 @@ final class ClientNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#peerStoppedInternal(org.gamegineer.table.internal.net.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#peerStoppedInternal(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
      */
     @Override
     void peerStoppedInternal(
@@ -222,7 +222,7 @@ final class ClientNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#startedInternal(org.gamegineer.table.internal.net.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#startedInternal(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
      */
     @Override
     void startedInternal(
@@ -241,7 +241,7 @@ final class ClientNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#stoppedInternal(org.gamegineer.table.internal.net.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#stoppedInternal(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
      */
     @Override
     void stoppedInternal(

@@ -51,7 +51,7 @@ public class FakeNetworkServiceHandler
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkServiceHandler#messageReceived(org.gamegineer.table.internal.net.INetworkServiceContext, org.gamegineer.table.internal.net.MessageEnvelope)
+     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#messageReceived(org.gamegineer.table.internal.net.transport.INetworkServiceContext, org.gamegineer.table.internal.net.transport.MessageEnvelope)
      */
     @Override
     public void messageReceived(
@@ -63,7 +63,7 @@ public class FakeNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkServiceHandler#peerStopped(org.gamegineer.table.internal.net.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#peerStopped(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
      */
     @Override
     public void peerStopped(
@@ -73,7 +73,7 @@ public class FakeNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkServiceHandler#started(org.gamegineer.table.internal.net.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#started(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
      */
     @Override
     public void started(
@@ -83,7 +83,7 @@ public class FakeNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkServiceHandler#stopped(org.gamegineer.table.internal.net.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#stopped(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
      */
     @Override
     public void stopped(

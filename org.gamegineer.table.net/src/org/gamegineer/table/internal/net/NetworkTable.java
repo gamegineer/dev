@@ -201,7 +201,7 @@ public final class NetworkTable
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceContext#createClientNetworkServiceHandler()
+     * @see org.gamegineer.table.internal.net.transport.INetworkInterfaceContext#createClientNetworkServiceHandler()
      */
     @Override
     public INetworkServiceHandler createClientNetworkServiceHandler()
@@ -210,7 +210,7 @@ public final class NetworkTable
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceContext#createServerNetworkServiceHandler()
+     * @see org.gamegineer.table.internal.net.transport.INetworkInterfaceContext#createServerNetworkServiceHandler()
      */
     @Override
     public INetworkServiceHandler createServerNetworkServiceHandler()
@@ -337,7 +337,7 @@ public final class NetworkTable
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceContext#networkInterfaceDisconnected()
+     * @see org.gamegineer.table.internal.net.transport.INetworkInterfaceContext#networkInterfaceDisconnected()
      */
     @Override
     public void networkInterfaceDisconnected()

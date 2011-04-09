@@ -55,7 +55,7 @@ public final class FakeNetworkInterfaceFactory
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createClientNetworkInterface(org.gamegineer.table.internal.net.INetworkInterfaceContext)
+     * @see org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory#createClientNetworkInterface(org.gamegineer.table.internal.net.transport.INetworkInterfaceContext)
      */
     @Override
     public INetworkInterface createClientNetworkInterface(
@@ -67,7 +67,7 @@ public final class FakeNetworkInterfaceFactory
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterfaceFactory#createServerNetworkInterface(org.gamegineer.table.internal.net.INetworkInterfaceContext)
+     * @see org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory#createServerNetworkInterface(org.gamegineer.table.internal.net.transport.INetworkInterfaceContext)
      */
     @Override
     public INetworkInterface createServerNetworkInterface(

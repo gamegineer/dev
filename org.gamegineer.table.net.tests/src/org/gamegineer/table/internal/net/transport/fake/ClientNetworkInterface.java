@@ -52,7 +52,7 @@ final class ClientNetworkInterface
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterface#close()
+     * @see org.gamegineer.table.internal.net.transport.INetworkInterface#close()
      */
     @Override
     public void close()
@@ -61,7 +61,7 @@ final class ClientNetworkInterface
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterface#open(java.lang.String, int)
+     * @see org.gamegineer.table.internal.net.transport.INetworkInterface#open(java.lang.String, int)
      */
     @Override
     public void open(

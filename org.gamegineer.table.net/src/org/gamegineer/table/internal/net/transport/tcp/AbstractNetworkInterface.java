@@ -78,7 +78,7 @@ abstract class AbstractNetworkInterface
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkInterface#close()
+     * @see org.gamegineer.table.internal.net.transport.INetworkInterface#close()
      */
     @Override
     public void close()

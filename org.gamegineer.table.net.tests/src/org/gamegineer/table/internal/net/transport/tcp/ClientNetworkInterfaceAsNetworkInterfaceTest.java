@@ -55,7 +55,7 @@ public final class ClientNetworkInterfaceAsNetworkInterfaceTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkInterfaceTestCase#createNetworkInterface()
+     * @see org.gamegineer.table.internal.net.transport.AbstractNetworkInterfaceTestCase#createNetworkInterface()
      */
     @Override
     protected INetworkInterface createNetworkInterface()
