@@ -1,5 +1,5 @@
 /*
- * EndAuthenticationMessage.java
+ * AbstractMessage.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,39 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 12, 2011 at 9:09:22 PM.
+ * Created on Feb 24, 2011 at 8:09:45 PM.
  */
 
 package org.gamegineer.table.internal.net.transport.messages;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.net.NetworkTableException;
+import org.gamegineer.table.internal.net.transport.IMessage;
 
 /**
- * A message sent by a server to a client to complete an authentication
- * handshake.
+ * Superclass for all implementations of {@link IMessage}.
  */
 @NotThreadSafe
-public final class EndAuthenticationMessage
-    extends AbstractMessage
+public abstract class AbstractMessage
+    implements IMessage
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = -3711359984148117329L;
+    private static final long serialVersionUID = 5994031588875266119L;
 
     /** The message identifier. */
-    public static final int ID = 0x0000000A;
+    private int id_;
 
-    /**
-     * The exception that occurred during authentication or {@code null} if no
-     * error occurred.
-     * 
-     * @serial The exception that occurred during authentication.
-     */
-    private NetworkTableException exception_;
+    /** The message tag. */
+    private int tag_;
 
 
     // ======================================================================
@@ -56,13 +51,16 @@ public final class EndAuthenticationMessage
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code EndAuthenticationMessage} class.
+     * Initializes a new instance of the {@code AbstractMessage} class.
+     * 
+     * @param id
+     *        The message identifier.
      */
-    public EndAuthenticationMessage()
+    protected AbstractMessage(
+        final int id )
     {
-        super( ID );
-
-        exception_ = null;
+        id_ = id;
+        tag_ = NO_TAG;
     }
 
 
@@ -70,29 +68,30 @@ public final class EndAuthenticationMessage
     // Methods
     // ======================================================================
 
-    /**
-     * Gets the exception that occurred during authentication.
-     * 
-     * @return The exception that occurred during authentication or {@code null}
-     *         if no error occurred.
+    /*
+     * @see org.gamegineer.table.internal.net.transport.IMessage#getId()
      */
-    /* @Nullable */
-    public NetworkTableException getException()
+    public final int getId()
     {
-        return exception_;
+        return id_;
     }
 
-    /**
-     * Sets the exception that occurred during authentication.
-     * 
-     * @param exception
-     *        The exception that occurred during authentication or {@code null}
-     *        if no error occurred.
+    /*
+     * @see org.gamegineer.table.internal.net.transport.IMessage#getTag()
      */
-    public void setException(
-        /* @Nullable */
-        final NetworkTableException exception )
+    public final int getTag()
     {
-        exception_ = exception;
+        return tag_;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.transport.IMessage#setTag(int)
+     */
+    public final void setTag(
+        final int tag )
+    {
+        assertArgumentLegal( (tag == NO_TAG) || (tag >= MIN_TAG) && (tag <= MAX_TAG), "tag" ); //$NON-NLS-1$
+
+        tag_ = tag;
     }
 }

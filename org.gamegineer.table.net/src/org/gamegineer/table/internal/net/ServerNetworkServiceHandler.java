@@ -25,7 +25,7 @@ import java.util.Arrays;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.internal.net.transport.AbstractMessage;
+import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.INetworkServiceContext;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationResponseMessage;
@@ -117,7 +117,7 @@ final class ServerNetworkServiceHandler
         assert Thread.holdsLock( getLock() );
 
         final EndAuthenticationMessage endAuthenticationMessage = new EndAuthenticationMessage();
-        endAuthenticationMessage.setTag( AbstractMessage.NO_TAG );
+        endAuthenticationMessage.setTag( IMessage.NO_TAG );
 
         final SecureString password = getNetworkTable().getPassword();
         try
@@ -228,12 +228,12 @@ final class ServerNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#messageReceivedInternal(org.gamegineer.table.internal.net.INetworkServiceContext, org.gamegineer.table.internal.net.AbstractMessage)
+     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#messageReceivedInternal(org.gamegineer.table.internal.net.transport.INetworkServiceContext, org.gamegineer.table.internal.net.transport.IMessage)
      */
     @Override
     boolean messageReceivedInternal(
         final INetworkServiceContext context,
-        final AbstractMessage message )
+        final IMessage message )
     {
         assert context != null;
         assert message != null;

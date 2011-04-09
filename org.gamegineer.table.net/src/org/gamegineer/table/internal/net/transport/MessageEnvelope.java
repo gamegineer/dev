@@ -72,10 +72,10 @@ public final class MessageEnvelope
      *        The message body; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code tag} is less than {@link AbstractMessage#MAX_TAG} or
-     *         greater than {@link AbstractMessage#MAX_TAG} or not equal to
-     *         {@link AbstractMessage#NO_TAG}; if the length of {@code body} is
-     *         greater than {@link #MAX_BODY_LENGTH}.
+     *         If {@code tag} is less than {@link IMessage#MAX_TAG} or greater
+     *         than {@link IMessage#MAX_TAG} or not equal to
+     *         {@link IMessage#NO_TAG}; if the length of {@code body} is greater
+     *         than {@link #MAX_BODY_LENGTH}.
      * @throws java.lang.NullPointerException
      *         If {@code body} is {@code null}.
      */
@@ -85,7 +85,7 @@ public final class MessageEnvelope
         /* @NonNull */
         final byte[] body )
     {
-        assertArgumentLegal( (tag == AbstractMessage.NO_TAG) || (tag >= AbstractMessage.MIN_TAG) && (tag <= AbstractMessage.MAX_TAG), "tag" ); //$NON-NLS-1$
+        assertArgumentLegal( (tag == IMessage.NO_TAG) || (tag >= IMessage.MIN_TAG) && (tag <= IMessage.MAX_TAG), "tag" ); //$NON-NLS-1$
         assertArgumentNotNull( body, "body" ); //$NON-NLS-1$
         assertArgumentLegal( body.length <= MAX_BODY_LENGTH, "body" ); //$NON-NLS-1$
 
@@ -175,7 +175,7 @@ public final class MessageEnvelope
      *         If the class of the serialized message cannot be found.
      */
     /* @NonNull */
-    private static AbstractMessage deserializeMessage(
+    private static IMessage deserializeMessage(
         /* @NonNull */
         final byte[] body )
         throws IOException, ClassNotFoundException
@@ -185,7 +185,7 @@ public final class MessageEnvelope
         final ObjectInputStream stream = new ObjectInputStream( new ByteArrayInputStream( body ) );
         try
         {
-            return (AbstractMessage)stream.readObject();
+            return (IMessage)stream.readObject();
         }
         finally
         {
@@ -244,7 +244,7 @@ public final class MessageEnvelope
     /* @NonNull */
     public static MessageEnvelope fromMessage(
         /* @NonNull */
-        final AbstractMessage message )
+        final IMessage message )
         throws IOException
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
@@ -278,7 +278,7 @@ public final class MessageEnvelope
      *         If the class of the message cannot be found.
      */
     /* @NonNull */
-    public AbstractMessage getBodyAsMessage()
+    public IMessage getBodyAsMessage()
         throws IOException, ClassNotFoundException
     {
         final ByteBuffer buffer = getBody();
@@ -323,7 +323,7 @@ public final class MessageEnvelope
     /* @NonNull */
     private static byte[] serializeMessage(
         /* @NonNull */
-        final AbstractMessage message )
+        final IMessage message )
         throws IOException
     {
         assert message != null;

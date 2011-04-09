@@ -31,7 +31,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Loggers;
-import org.gamegineer.table.internal.net.transport.AbstractMessage;
+import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.INetworkServiceContext;
 import org.gamegineer.table.internal.net.transport.INetworkServiceHandler;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
@@ -392,11 +392,11 @@ final class ServiceHandlerAdapter
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkServiceContext#sendMessage(org.gamegineer.table.internal.net.AbstractMessage)
+     * @see org.gamegineer.table.internal.net.transport.INetworkServiceContext#sendMessage(org.gamegineer.table.internal.net.transport.IMessage)
      */
     public boolean sendMessage(
         /* @NonNull */
-        final AbstractMessage message )
+        final IMessage message )
     {
         assert message != null;
 

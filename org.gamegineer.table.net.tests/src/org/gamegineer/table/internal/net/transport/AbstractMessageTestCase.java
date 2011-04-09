@@ -1,5 +1,5 @@
 /*
- * AbstractMessageTest.java
+ * AbstractMessageTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -21,22 +21,24 @@
 
 package org.gamegineer.table.internal.net.transport;
 
+import static org.junit.Assert.assertNotNull;
+import org.gamegineer.table.internal.net.transport.messages.AbstractMessage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.transport.AbstractMessage} class.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.internal.net.transport.IMessage} interface.
  */
-public final class AbstractMessageTest
+public abstract class AbstractMessageTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The message under test in the fixture. */
-    private AbstractMessage message_;
+    private IMessage message_;
 
 
     // ======================================================================
@@ -44,9 +46,9 @@ public final class AbstractMessageTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractMessageTest} class.
+     * Initializes a new instance of the {@code AbstractMessageTestCase} class.
      */
-    public AbstractMessageTest()
+    protected AbstractMessageTestCase()
     {
         super();
     }
@@ -55,6 +57,18 @@ public final class AbstractMessageTest
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates the message to be tested.
+     * 
+     * @return The message to be tested; never {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    /* @NonNull */
+    protected abstract IMessage createMessage()
+        throws Exception;
 
     /**
      * Sets up the test fixture.
@@ -66,10 +80,8 @@ public final class AbstractMessageTest
     public void setUp()
         throws Exception
     {
-        message_ = new AbstractMessage( 0 )
-        {
-            private static final long serialVersionUID = 1L;
-        };
+        message_ = createMessage();
+        assertNotNull( message_ );
     }
 
     /**

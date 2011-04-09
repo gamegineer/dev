@@ -1,5 +1,5 @@
 /*
- * AbstractMessage.java
+ * IMessage.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,61 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Feb 24, 2011 at 8:09:45 PM.
+ * Created on Apr 8, 2011 at 9:57:53 PM.
  */
 
 package org.gamegineer.table.internal.net.transport;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import java.io.Serializable;
-import net.jcip.annotations.NotThreadSafe;
 
 /**
  * A network table protocol message.
+ * 
+ * @noextend This interface is not intended to be extended by clients.
  */
-@NotThreadSafe
-public abstract class AbstractMessage
-    implements Serializable
+public interface IMessage
+    extends Serializable
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** Serializable class version number. */
-    private static final long serialVersionUID = 5994031588875266119L;
-
     /** The maximum message tag value. */
-    public static final int MAX_TAG = 0x3FF;
+    public final int MAX_TAG = 0x3FF;
 
     /** The minimum message tag value. */
-    public static final int MIN_TAG = 0x001;
+    public final int MIN_TAG = 0x001;
 
     /** The message tag used to indicate no tag is present. */
-    public static final int NO_TAG = 0;
-
-    /** The message identifier. */
-    private int id_;
-
-    /** The message tag. */
-    private int tag_;
-
-
-    // ======================================================================
-    // Constructors
-    // ======================================================================
-
-    /**
-     * Initializes a new instance of the {@code AbstractMessage} class.
-     * 
-     * @param id
-     *        The message identifier.
-     */
-    protected AbstractMessage(
-        final int id )
-    {
-        id_ = id;
-        tag_ = NO_TAG;
-    }
+    public final int NO_TAG = 0;
 
 
     // ======================================================================
@@ -82,20 +54,14 @@ public abstract class AbstractMessage
      * 
      * @return The message identifier.
      */
-    public final int getId()
-    {
-        return id_;
-    }
+    public int getId();
 
     /**
      * Gets the message tag.
      * 
      * @return The message tag.
      */
-    public final int getTag()
-    {
-        return tag_;
-    }
+    public int getTag();
 
     /**
      * Sets the message tag.
@@ -104,14 +70,9 @@ public abstract class AbstractMessage
      *        The message tag.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code tag} is less than zero or greater than {@link #MAX_TAG}
-     *         .
+     *         If {@code tag} is less than {@link #MIN_TAG} or greater than
+     *         {@link #MAX_TAG} or not equal to {@link #NO_TAG}.
      */
-    public final void setTag(
-        final int tag )
-    {
-        assertArgumentLegal( (tag >= 0) && (tag <= MAX_TAG), "tag" ); //$NON-NLS-1$
-
-        tag_ = tag;
-    }
+    public void setTag(
+        int tag );
 }

@@ -49,7 +49,7 @@ public interface INetworkServiceContext
      */
     public boolean sendMessage(
         /* @NonNull */
-        AbstractMessage message );
+        IMessage message );
 
     /**
      * Stops the network service.

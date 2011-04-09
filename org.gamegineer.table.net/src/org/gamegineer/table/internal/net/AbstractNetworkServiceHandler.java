@@ -27,7 +27,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.transport.AbstractMessage;
+import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.INetworkServiceContext;
 import org.gamegineer.table.internal.net.transport.INetworkServiceHandler;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
@@ -90,7 +90,7 @@ abstract class AbstractNetworkServiceHandler
     private static int getInitialMessageTag()
     {
         final Random rng = new Random( System.currentTimeMillis() );
-        return AbstractMessage.MIN_TAG + rng.nextInt( AbstractMessage.MAX_TAG - AbstractMessage.MIN_TAG );
+        return IMessage.MIN_TAG + rng.nextInt( IMessage.MAX_TAG - IMessage.MIN_TAG );
     }
 
     /**
@@ -127,9 +127,9 @@ abstract class AbstractNetworkServiceHandler
         assert Thread.holdsLock( getLock() );
 
         final int tag = nextTag_;
-        if( ++nextTag_ > AbstractMessage.MAX_TAG )
+        if( ++nextTag_ > IMessage.MAX_TAG )
         {
-            nextTag_ = AbstractMessage.MIN_TAG;
+            nextTag_ = IMessage.MIN_TAG;
         }
 
         return tag;
@@ -150,7 +150,7 @@ abstract class AbstractNetworkServiceHandler
 
         try
         {
-            final AbstractMessage message = messageEnvelope.getBodyAsMessage();
+            final IMessage message = messageEnvelope.getBodyAsMessage();
             synchronized( getLock() )
             {
                 if( !messageReceivedInternal( context, message ) )
@@ -193,7 +193,7 @@ abstract class AbstractNetworkServiceHandler
         /* @NonNull */
         final INetworkServiceContext context,
         /* @NonNull */
-        final AbstractMessage message )
+        final IMessage message )
     {
         assert context != null;
         assert message != null;

@@ -124,7 +124,7 @@ public final class MessageEnvelopeTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Tag_Illegal_GreaterThanMaxTag()
     {
-        new MessageEnvelope( DEFAULT_ID, AbstractMessage.MAX_TAG + 1, DEFAULT_BODY );
+        new MessageEnvelope( DEFAULT_ID, IMessage.MAX_TAG + 1, DEFAULT_BODY );
     }
 
     /**
@@ -211,11 +211,11 @@ public final class MessageEnvelopeTest
     public void testFromMessage()
         throws Exception
     {
-        final AbstractMessage expectedValue = new FakeMessage();
-        expectedValue.setTag( FakeMessage.MAX_TAG );
+        final IMessage expectedValue = new FakeMessage();
+        expectedValue.setTag( IMessage.MAX_TAG );
 
         final MessageEnvelope messageEnvelope = MessageEnvelope.fromMessage( expectedValue );
-        final AbstractMessage actualValue = messageEnvelope.getBodyAsMessage();
+        final IMessage actualValue = messageEnvelope.getBodyAsMessage();
 
         assertEquals( expectedValue.getId(), messageEnvelope.getId() );
         assertEquals( expectedValue.getTag(), messageEnvelope.getTag() );

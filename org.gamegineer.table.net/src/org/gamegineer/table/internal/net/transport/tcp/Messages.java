@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.net.transport.tcp;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
-import org.gamegineer.table.internal.net.transport.AbstractMessage;
+import org.gamegineer.table.internal.net.transport.IMessage;
 
 /**
  * A utility class to manage localized messages for the package.
@@ -147,7 +147,7 @@ final class Messages
     @SuppressWarnings( "boxing" )
     static String ServiceHandlerAdapter_sendMessage_ioError(
         /* @NonNull */
-        final AbstractMessage message )
+        final IMessage message )
     {
         return bind( ServiceHandlerAdapter_sendMessage_ioError, message.getId(), message.getTag() );
     }
