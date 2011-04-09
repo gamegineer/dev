@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
+import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 
 /**
  * A utility class to manage localized messages for the package.

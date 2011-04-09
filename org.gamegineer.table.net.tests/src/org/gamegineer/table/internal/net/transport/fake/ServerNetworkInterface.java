@@ -1,5 +1,5 @@
 /*
- * NetworkTableAsNetworkTableTest.java
+ * ServerNetworkInterface.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,34 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 9, 2010 at 10:58:36 PM.
+ * Created on Jan 18, 2011 at 8:31:02 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.transport.fake;
 
-import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.transport.fake.FakeNetworkInterfaceFactory;
-import org.gamegineer.table.net.AbstractNetworkTableTestCase;
-import org.gamegineer.table.net.INetworkTable;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.transport.INetworkInterface;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.NetworkTable} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.net.INetworkTable} interface.
+ * Fake implementation of
+ * {@link org.gamegineer.table.internal.net.transport.INetworkInterface} for the
+ * server role.
  */
-public final class NetworkTableAsNetworkTableTest
-    extends AbstractNetworkTableTestCase
+@Immutable
+final class ServerNetworkInterface
+    implements INetworkInterface
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code NetworkTableAsNetworkTableTest}
-     * class.
+     * Initializes a new instance of the {@code ServerNetworkInterface} class.
      */
-    public NetworkTableAsNetworkTableTest()
+    ServerNetworkInterface()
     {
         super();
     }
@@ -54,12 +52,23 @@ public final class NetworkTableAsNetworkTableTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.net.AbstractNetworkTableTestCase#createNetworkTable(org.gamegineer.table.core.ITable)
+     * @see org.gamegineer.table.internal.net.INetworkInterface#close()
      */
     @Override
-    protected INetworkTable createNetworkTable(
-        final ITable table )
+    public void close()
     {
-        return new NetworkTable( table, new FakeNetworkInterfaceFactory() );
+        // do nothing
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.INetworkInterface#open(java.lang.String, int)
+     */
+    @Override
+    public void open(
+        final String hostName,
+        @SuppressWarnings( "unused" )
+        final int port )
+    {
+        assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
     }
 }

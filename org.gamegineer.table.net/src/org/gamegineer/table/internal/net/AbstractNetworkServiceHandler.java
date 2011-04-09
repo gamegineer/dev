@@ -27,6 +27,10 @@ import java.util.Random;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.net.transport.AbstractMessage;
+import org.gamegineer.table.internal.net.transport.INetworkServiceContext;
+import org.gamegineer.table.internal.net.transport.INetworkServiceHandler;
+import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 
 /**
  * Superclass for all implementations of {@link INetworkServiceHandler}.

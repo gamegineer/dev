@@ -1,5 +1,5 @@
 /*
- * LocalNetworkServiceHandler.java
+ * FakeNetworkServiceHandler.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,24 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 5, 2011 at 8:19:02 PM.
+ * Created on Mar 31, 2011 at 10:42:08 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.transport;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.transport.INetworkServiceContext;
-import org.gamegineer.table.internal.net.transport.INetworkServiceHandler;
-import org.gamegineer.table.internal.net.transport.MessageEnvelope;
+import net.jcip.annotations.NotThreadSafe;
 
 /**
- * An adapter that allows interaction with a local table through the
- * {@link INetworkServiceHandler} interface in order to make local and remote
- * players look identical to the network table.
+ * Fake implementation of
+ * {@link org.gamegineer.table.internal.net.transport.INetworkServiceHandler}.
  */
-@Immutable
-final class LocalNetworkServiceHandler
+@NotThreadSafe
+public class FakeNetworkServiceHandler
     implements INetworkServiceHandler
 {
     // ======================================================================
@@ -41,10 +37,10 @@ final class LocalNetworkServiceHandler
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code LocalNetworkServiceHandler}
+     * Initializes a new instance of the {@code FakeNetworkServiceHandler}
      * class.
      */
-    LocalNetworkServiceHandler()
+    public FakeNetworkServiceHandler()
     {
         super();
     }

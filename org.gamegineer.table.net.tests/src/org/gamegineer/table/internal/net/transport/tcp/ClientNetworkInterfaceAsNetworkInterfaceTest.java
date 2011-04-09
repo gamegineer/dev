@@ -1,5 +1,5 @@
 /*
- * NetworkTableAsNetworkTableTest.java
+ * ClientNetworkInterfaceAsNetworkInterfaceTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,34 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 9, 2010 at 10:58:36 PM.
+ * Created on Jan 18, 2011 at 9:00:54 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.transport.tcp;
 
-import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.transport.fake.FakeNetworkInterfaceFactory;
-import org.gamegineer.table.net.AbstractNetworkTableTestCase;
-import org.gamegineer.table.net.INetworkTable;
+import org.easymock.EasyMock;
+import org.gamegineer.table.internal.net.transport.AbstractNetworkInterfaceTestCase;
+import org.gamegineer.table.internal.net.transport.INetworkInterface;
+import org.gamegineer.table.internal.net.transport.INetworkInterfaceContext;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.NetworkTable} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.net.INetworkTable} interface.
+ * {@link org.gamegineer.table.internal.net.transport.tcp.ClientNetworkInterface}
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.transport.INetworkInterface}
+ * interface.
  */
-public final class NetworkTableAsNetworkTableTest
-    extends AbstractNetworkTableTestCase
+public final class ClientNetworkInterfaceAsNetworkInterfaceTest
+    extends AbstractNetworkInterfaceTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code NetworkTableAsNetworkTableTest}
-     * class.
+     * Initializes a new instance of the {@code
+     * ClientNetworkInterfaceAsNetworkInterfaceTest} class.
      */
-    public NetworkTableAsNetworkTableTest()
+    public ClientNetworkInterfaceAsNetworkInterfaceTest()
     {
         super();
     }
@@ -54,12 +55,11 @@ public final class NetworkTableAsNetworkTableTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.net.AbstractNetworkTableTestCase#createNetworkTable(org.gamegineer.table.core.ITable)
+     * @see org.gamegineer.table.internal.net.AbstractNetworkInterfaceTestCase#createNetworkInterface()
      */
     @Override
-    protected INetworkTable createNetworkTable(
-        final ITable table )
+    protected INetworkInterface createNetworkInterface()
     {
-        return new NetworkTable( table, new FakeNetworkInterfaceFactory() );
+        return new ClientNetworkInterface( EasyMock.createMock( INetworkInterfaceContext.class ) );
     }
 }

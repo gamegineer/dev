@@ -24,11 +24,13 @@ package org.gamegineer.table.internal.net;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.internal.net.messages.BeginAuthenticationRequestMessage;
-import org.gamegineer.table.internal.net.messages.BeginAuthenticationResponseMessage;
-import org.gamegineer.table.internal.net.messages.EndAuthenticationMessage;
-import org.gamegineer.table.internal.net.messages.HelloRequestMessage;
-import org.gamegineer.table.internal.net.messages.HelloResponseMessage;
+import org.gamegineer.table.internal.net.transport.AbstractMessage;
+import org.gamegineer.table.internal.net.transport.INetworkServiceContext;
+import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationRequestMessage;
+import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationResponseMessage;
+import org.gamegineer.table.internal.net.transport.messages.EndAuthenticationMessage;
+import org.gamegineer.table.internal.net.transport.messages.HelloRequestMessage;
+import org.gamegineer.table.internal.net.transport.messages.HelloResponseMessage;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**

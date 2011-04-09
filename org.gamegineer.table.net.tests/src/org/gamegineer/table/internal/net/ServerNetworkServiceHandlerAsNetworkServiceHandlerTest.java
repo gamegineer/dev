@@ -23,12 +23,16 @@ package org.gamegineer.table.internal.net;
 
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.internal.net.transport.AbstractNetworkServiceHandlerTestCase;
+import org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory;
+import org.gamegineer.table.internal.net.transport.INetworkServiceHandler;
 
 /**
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.net.ServerNetworkServiceHandler} class
  * to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.INetworkServiceHandler} interface.
+ * {@link org.gamegineer.table.internal.net.transport.INetworkServiceHandler}
+ * interface.
  */
 public final class ServerNetworkServiceHandlerAsNetworkServiceHandlerTest
     extends AbstractNetworkServiceHandlerTestCase
