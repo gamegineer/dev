@@ -31,11 +31,11 @@ import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.transport.INetworkInterface;
-import org.gamegineer.table.internal.net.transport.INetworkInterfaceContext;
-import org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory;
-import org.gamegineer.table.internal.net.transport.INetworkServiceHandler;
-import org.gamegineer.table.internal.net.transport.tcp.TcpNetworkInterfaceFactory;
+import org.gamegineer.table.internal.net.transport.IService;
+import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
+import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
+import org.gamegineer.table.internal.net.transport.tcp.TcpTransportLayerFactory;
 import org.gamegineer.table.net.INetworkTable;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.INetworkTableListener;
@@ -47,7 +47,7 @@ import org.gamegineer.table.net.NetworkTableException;
  */
 @ThreadSafe
 public final class NetworkTable
-    implements INetworkTable, INetworkInterfaceContext
+    implements INetworkTable
 {
     // ======================================================================
     // Fields
@@ -66,15 +66,6 @@ public final class NetworkTable
     private final AtomicReference<String> localPlayerNameRef_;
 
     /**
-     * A reference to the active network interface or {@code null} if the
-     * network is not connected.
-     */
-    private final AtomicReference<INetworkInterface> networkInterfaceRef_;
-
-    /** The network table network interface factory. */
-    private final INetworkInterfaceFactory networkInterfaceFactory_;
-
-    /**
      * A reference to the server password or {@code null} if the network is not
      * connected.
      */
@@ -85,11 +76,20 @@ public final class NetworkTable
      * is the player name; the value is the service handler associated with the
      * player.
      */
-    private final ConcurrentMap<String, INetworkServiceHandler> serviceHandlers_;
+    private final ConcurrentMap<String, IService> serviceHandlers_;
 
     /** The table to be attached to the network. */
     @SuppressWarnings( "unused" )
     private final ITable table_;
+
+    /**
+     * A reference to the active transport layer or {@code null} if the network
+     * is not connected.
+     */
+    private final AtomicReference<ITransportLayer> transportLayerRef_;
+
+    /** The network table transport layer factory. */
+    private final ITransportLayerFactory transportLayerFactory_;
 
 
     // ======================================================================
@@ -98,7 +98,7 @@ public final class NetworkTable
 
     /**
      * Initializes a new instance of the {@code NetworkTable} class using the
-     * default strategy factory.
+     * default transport layer factory.
      * 
      * @param table
      *        The table to be attached to the network; must not be {@code null}.
@@ -110,17 +110,17 @@ public final class NetworkTable
         /* @NonNull */
         final ITable table )
     {
-        this( table, new TcpNetworkInterfaceFactory() );
+        this( table, new TcpTransportLayerFactory() );
     }
 
     /**
      * Initializes a new instance of the {@code NetworkTable} class using the
-     * specified network interface factory.
+     * specified transport layer factory.
      * 
      * @param table
      *        The table to be attached to the network; must not be {@code null}.
-     * @param networkInterfaceFactory
-     *        The network table network interface factory; must not be {@code
+     * @param transportLayerFactory
+     *        The network table transport layer factory; must not be {@code
      *        null}.
      * 
      * @throws java.lang.NullPointerException
@@ -130,19 +130,19 @@ public final class NetworkTable
         /* @NonNull */
         final ITable table,
         /* @NonNull */
-        final INetworkInterfaceFactory networkInterfaceFactory )
+        final ITransportLayerFactory transportLayerFactory )
     {
         assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
-        assert networkInterfaceFactory != null;
+        assert transportLayerFactory != null;
 
         connectionStateRef_ = new AtomicReference<ConnectionState>( ConnectionState.DISCONNECTED );
         listeners_ = new CopyOnWriteArrayList<INetworkTableListener>();
         localPlayerNameRef_ = new AtomicReference<String>( null );
-        networkInterfaceRef_ = new AtomicReference<INetworkInterface>( null );
-        networkInterfaceFactory_ = networkInterfaceFactory;
         passwordRef_ = new AtomicReference<SecureString>( null );
-        serviceHandlers_ = new ConcurrentHashMap<String, INetworkServiceHandler>();
+        serviceHandlers_ = new ConcurrentHashMap<String, IService>();
         table_ = table;
+        transportLayerRef_ = new AtomicReference<ITransportLayer>( null );
+        transportLayerFactory_ = transportLayerFactory;
     }
 
 
@@ -162,13 +162,13 @@ public final class NetworkTable
     }
 
     /**
-     * Connects the network table using the specified network interface.
+     * Connects the network table using the specified transport layer.
      * 
      * @param configuration
      *        The network table configuration; must not be {@code null}.
-     * @param networkInterface
-     *        The network interface used to establish the connection; must not
-     *        be {@code null}.
+     * @param transportLayer
+     *        The transport layer used to establish the connection; must not be
+     *        {@code null}.
      * 
      * @throws org.gamegineer.table.net.NetworkTableException
      *         If the connection cannot be established or the network is already
@@ -178,19 +178,19 @@ public final class NetworkTable
         /* @NonNull */
         final INetworkTableConfiguration configuration,
         /* @NonNull */
-        final INetworkInterface networkInterface )
+        final ITransportLayer transportLayer )
         throws NetworkTableException
     {
         assert configuration != null;
-        assert networkInterface != null;
+        assert transportLayer != null;
 
         if( connectionStateRef_.compareAndSet( ConnectionState.DISCONNECTED, ConnectionState.CONNECTING ) )
         {
-            playerConnected( configuration.getLocalPlayerName(), new LocalNetworkServiceHandler() );
+            playerConnected( configuration.getLocalPlayerName(), new LocalService() );
             localPlayerNameRef_.set( configuration.getLocalPlayerName() );
             passwordRef_.set( configuration.getPassword() );
-            networkInterface.open( configuration.getHostName(), configuration.getPort() );
-            networkInterfaceRef_.set( networkInterface );
+            transportLayer.open( configuration.getHostName(), configuration.getPort() );
+            transportLayerRef_.set( transportLayer );
             connectionStateRef_.set( ConnectionState.CONNECTED );
             fireNetworkConnected();
         }
@@ -201,24 +201,6 @@ public final class NetworkTable
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkInterfaceContext#createClientNetworkServiceHandler()
-     */
-    @Override
-    public INetworkServiceHandler createClientNetworkServiceHandler()
-    {
-        return new ClientNetworkServiceHandler( this );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkInterfaceContext#createServerNetworkServiceHandler()
-     */
-    @Override
-    public INetworkServiceHandler createServerNetworkServiceHandler()
-    {
-        return new ServerNetworkServiceHandler( this );
-    }
-
-    /*
      * @see org.gamegineer.table.net.INetworkTable#disconnect()
      */
     @Override
@@ -226,8 +208,8 @@ public final class NetworkTable
     {
         if( connectionStateRef_.compareAndSet( ConnectionState.CONNECTED, ConnectionState.DISCONNECTING ) )
         {
-            final INetworkInterface networkInterface = networkInterfaceRef_.getAndSet( null );
-            networkInterface.close();
+            final ITransportLayer transportLayer = transportLayerRef_.getAndSet( null );
+            transportLayer.close();
             connectionStateRef_.set( ConnectionState.DISCONNECTED );
             final SecureString password = passwordRef_.getAndSet( null );
             password.dispose();
@@ -311,7 +293,20 @@ public final class NetworkTable
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, networkInterfaceFactory_.createServerNetworkInterface( this ) );
+        connect( configuration, transportLayerFactory_.createPassiveTransportLayer( new ITransportLayerContext()
+        {
+            @Override
+            public IService createService()
+            {
+                return new ServerService( NetworkTable.this );
+            }
+
+            @Override
+            public void transportLayerDisconnected()
+            {
+                disconnect();
+            }
+        } ) );
     }
 
     /*
@@ -333,16 +328,20 @@ public final class NetworkTable
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, networkInterfaceFactory_.createClientNetworkInterface( this ) );
-    }
+        connect( configuration, transportLayerFactory_.createActiveTransportLayer( new ITransportLayerContext()
+        {
+            @Override
+            public IService createService()
+            {
+                return new ClientService( NetworkTable.this );
+            }
 
-    /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkInterfaceContext#networkInterfaceDisconnected()
-     */
-    @Override
-    public void networkInterfaceDisconnected()
-    {
-        disconnect();
+            @Override
+            public void transportLayerDisconnected()
+            {
+                disconnect();
+            }
+        } ) );
     }
 
     /**
@@ -362,7 +361,7 @@ public final class NetworkTable
         /* @NonNull */
         final String playerName,
         /* @NonNull */
-        final INetworkServiceHandler serviceHandler )
+        final IService serviceHandler )
         throws NetworkTableException
     {
         assert playerName != null;

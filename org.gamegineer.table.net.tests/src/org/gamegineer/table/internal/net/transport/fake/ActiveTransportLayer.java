@@ -1,5 +1,5 @@
 /*
- * FakeNetworkInterfaceFactory.java
+ * ActiveTransportLayer.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,35 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 8, 2011 at 8:37:36 PM.
+ * Created on Jan 16, 2011 at 5:19:25 PM.
  */
 
 package org.gamegineer.table.internal.net.transport.fake;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.transport.INetworkInterface;
-import org.gamegineer.table.internal.net.transport.INetworkInterfaceContext;
-import org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory;
+import org.gamegineer.table.internal.net.transport.ITransportLayer;
 
 /**
  * Fake implementation of
- * {@link org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory}
- * .
+ * {@link org.gamegineer.table.internal.net.transport.ITransportLayer} for an
+ * active connection.
  */
 @Immutable
-public final class FakeNetworkInterfaceFactory
-    implements INetworkInterfaceFactory
+final class ActiveTransportLayer
+    implements ITransportLayer
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code FakeNetworkInterfaceFactory}
-     * class.
+     * Initializes a new instance of the {@code ActiveTransportLayer} class.
      */
-    public FakeNetworkInterfaceFactory()
+    ActiveTransportLayer()
     {
         super();
     }
@@ -55,26 +52,23 @@ public final class FakeNetworkInterfaceFactory
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory#createClientNetworkInterface(org.gamegineer.table.internal.net.transport.INetworkInterfaceContext)
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#close()
      */
     @Override
-    public INetworkInterface createClientNetworkInterface(
-        final INetworkInterfaceContext context )
+    public void close()
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
-
-        return new ClientNetworkInterface();
+        // do nothing
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory#createServerNetworkInterface(org.gamegineer.table.internal.net.transport.INetworkInterfaceContext)
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#open(java.lang.String, int)
      */
     @Override
-    public INetworkInterface createServerNetworkInterface(
-        final INetworkInterfaceContext context )
+    public void open(
+        final String hostName,
+        @SuppressWarnings( "unused" )
+        final int port )
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
-
-        return new ServerNetworkInterface();
+        assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
     }
 }

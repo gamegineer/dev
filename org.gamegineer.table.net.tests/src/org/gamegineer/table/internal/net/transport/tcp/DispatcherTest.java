@@ -102,7 +102,7 @@ public final class DispatcherTest
         throws Exception
     {
         dispatcher_.open();
-        final Acceptor acceptor = new Acceptor( new FakeNetworkInterface( dispatcher_ ) );
+        final Acceptor acceptor = new Acceptor( new FakeTransportLayer( dispatcher_ ) );
         acceptor.bind( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
         assertEquals( State.OPEN, acceptor.getState() );
 

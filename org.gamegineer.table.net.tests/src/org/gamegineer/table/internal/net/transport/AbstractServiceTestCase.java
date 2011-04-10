@@ -1,5 +1,5 @@
 /*
- * AbstractNetworkServiceHandlerTestCase.java
+ * AbstractServiceTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -29,17 +29,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.transport.INetworkServiceHandler}
- * interface.
+ * {@link org.gamegineer.table.internal.net.transport.IService} interface.
  */
-public abstract class AbstractNetworkServiceHandlerTestCase
+public abstract class AbstractServiceTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The network service handler under test in the fixture. */
-    private INetworkServiceHandler networkServiceHandler_;
+    /** The service under test in the fixture. */
+    private IService service_;
 
 
     // ======================================================================
@@ -47,10 +46,9 @@ public abstract class AbstractNetworkServiceHandlerTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractNetworkServiceHandlerTestCase} class.
+     * Initializes a new instance of the {@code AbstractServiceTestCase} class.
      */
-    protected AbstractNetworkServiceHandlerTestCase()
+    protected AbstractServiceTestCase()
     {
         super();
     }
@@ -61,15 +59,15 @@ public abstract class AbstractNetworkServiceHandlerTestCase
     // ======================================================================
 
     /**
-     * Creates the network service handler to be tested.
+     * Creates the service to be tested.
      * 
-     * @return The network service handler to be tested; never {@code null}.
+     * @return The service to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract INetworkServiceHandler createNetworkServiceHandler()
+    protected abstract IService createService()
         throws Exception;
 
     /**
@@ -82,8 +80,8 @@ public abstract class AbstractNetworkServiceHandlerTestCase
     public void setUp()
         throws Exception
     {
-        networkServiceHandler_ = createNetworkServiceHandler();
-        assertNotNull( networkServiceHandler_ );
+        service_ = createService();
+        assertNotNull( service_ );
     }
 
     /**
@@ -96,7 +94,7 @@ public abstract class AbstractNetworkServiceHandlerTestCase
     public void tearDown()
         throws Exception
     {
-        networkServiceHandler_ = null;
+        service_ = null;
     }
 
     /**
@@ -106,7 +104,7 @@ public abstract class AbstractNetworkServiceHandlerTestCase
     @Test( expected = NullPointerException.class )
     public void testMessageReceived_Context_Null()
     {
-        networkServiceHandler_.messageReceived( null, new MessageEnvelope( 0, 0, new byte[ 0 ] ) );
+        service_.messageReceived( null, new MessageEnvelope( 0, 0, new byte[ 0 ] ) );
     }
 
     /**
@@ -116,7 +114,7 @@ public abstract class AbstractNetworkServiceHandlerTestCase
     @Test( expected = NullPointerException.class )
     public void testMessageReceived_MessageEnvelope_Null()
     {
-        networkServiceHandler_.messageReceived( EasyMock.createMock( INetworkServiceContext.class ), null );
+        service_.messageReceived( EasyMock.createMock( IServiceContext.class ), null );
     }
 
     /**
@@ -126,7 +124,7 @@ public abstract class AbstractNetworkServiceHandlerTestCase
     @Test( expected = NullPointerException.class )
     public void testPeerStopped_Context_Null()
     {
-        networkServiceHandler_.peerStopped( null );
+        service_.peerStopped( null );
     }
 
     /**
@@ -136,7 +134,7 @@ public abstract class AbstractNetworkServiceHandlerTestCase
     @Test( expected = NullPointerException.class )
     public void testStarted_Context_Null()
     {
-        networkServiceHandler_.started( null );
+        service_.started( null );
     }
 
     /**
@@ -146,6 +144,6 @@ public abstract class AbstractNetworkServiceHandlerTestCase
     @Test( expected = NullPointerException.class )
     public void testStopped_Context_Null()
     {
-        networkServiceHandler_.stopped( null );
+        service_.stopped( null );
     }
 }

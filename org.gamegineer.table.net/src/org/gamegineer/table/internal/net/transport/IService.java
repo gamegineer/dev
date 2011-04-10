@@ -1,5 +1,5 @@
 /*
- * INetworkServiceHandler.java
+ * IService.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -21,25 +21,26 @@
 
 package org.gamegineer.table.internal.net.transport;
 
-
 /**
- * A network service handler
+ * A network service.
  * 
  * <p>
- * A network service handler implements one half of the network table protocol.
+ * A service implements one half of a network protocol.
  * </p>
+ * 
+ * @noextend This interface is not intended to be extended by clients.
  */
-public interface INetworkServiceHandler
+public interface IService
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Invoked when a message has been received from the peer service handler.
+     * Invoked when a message has been received from the peer service.
      * 
      * @param context
-     *        The network service context; must not be {@code null}.
+     *        The service context; must not be {@code null}.
      * @param messageEnvelope
      *        The message envelope; must not be {@code null}.
      * 
@@ -48,46 +49,46 @@ public interface INetworkServiceHandler
      */
     public void messageReceived(
         /* @NonNull */
-        INetworkServiceContext context,
+        IServiceContext context,
         /* @NonNull */
         MessageEnvelope messageEnvelope );
 
     /**
-     * Invoked when the peer service handler has stopped.
+     * Invoked when the peer service has stopped.
      * 
      * @param context
-     *        The network service context; must not be {@code null}.
+     *        The service context; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code context} is {@code null}.
      */
     public void peerStopped(
         /* @NonNull */
-        INetworkServiceContext context );
+        IServiceContext context );
 
     /**
-     * Invoked when the service handler has started.
+     * Invoked when the service has started.
      * 
      * @param context
-     *        The network service context; must not be {@code null}.
+     *        The service context; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code context} is {@code null}.
      */
     public void started(
         /* @NonNull */
-        INetworkServiceContext context );
+        IServiceContext context );
 
     /**
-     * Invoked when the service handler has stopped.
+     * Invoked when the service has stopped.
      * 
      * @param context
-     *        The network service context; must not be {@code null}.
+     *        The service context; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code context} is {@code null}.
      */
     public void stopped(
         /* @NonNull */
-        INetworkServiceContext context );
+        IServiceContext context );
 }

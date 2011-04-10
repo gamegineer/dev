@@ -1,5 +1,5 @@
 /*
- * ClientNetworkInterface.java
+ * PassiveTransportLayer.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,32 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 16, 2011 at 5:19:25 PM.
+ * Created on Jan 18, 2011 at 8:31:02 PM.
  */
 
 package org.gamegineer.table.internal.net.transport.fake;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.transport.INetworkInterface;
+import org.gamegineer.table.internal.net.transport.ITransportLayer;
 
 /**
  * Fake implementation of
- * {@link org.gamegineer.table.internal.net.transport.INetworkInterface} for the
- * client role.
+ * {@link org.gamegineer.table.internal.net.transport.ITransportLayer} for a
+ * passive connection.
  */
 @Immutable
-final class ClientNetworkInterface
-    implements INetworkInterface
+final class PassiveTransportLayer
+    implements ITransportLayer
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ClientNetworkInterface} class.
+     * Initializes a new instance of the {@code PassiveTransportLayer} class.
      */
-    ClientNetworkInterface()
+    PassiveTransportLayer()
     {
         super();
     }
@@ -52,7 +52,7 @@ final class ClientNetworkInterface
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkInterface#close()
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#close()
      */
     @Override
     public void close()
@@ -61,7 +61,7 @@ final class ClientNetworkInterface
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkInterface#open(java.lang.String, int)
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#open(java.lang.String, int)
      */
     @Override
     public void open(

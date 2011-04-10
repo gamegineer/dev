@@ -1,5 +1,5 @@
 /*
- * FakeNetworkServiceHandler.java
+ * FakeService.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -26,21 +26,20 @@ import net.jcip.annotations.NotThreadSafe;
 
 /**
  * Fake implementation of
- * {@link org.gamegineer.table.internal.net.transport.INetworkServiceHandler}.
+ * {@link org.gamegineer.table.internal.net.transport.IService}.
  */
 @NotThreadSafe
-public class FakeNetworkServiceHandler
-    implements INetworkServiceHandler
+public class FakeService
+    implements IService
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code FakeNetworkServiceHandler}
-     * class.
+     * Initializes a new instance of the {@code FakeService} class.
      */
-    public FakeNetworkServiceHandler()
+    public FakeService()
     {
         super();
     }
@@ -51,11 +50,11 @@ public class FakeNetworkServiceHandler
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#messageReceived(org.gamegineer.table.internal.net.transport.INetworkServiceContext, org.gamegineer.table.internal.net.transport.MessageEnvelope)
+     * @see org.gamegineer.table.internal.net.transport.IService#messageReceived(org.gamegineer.table.internal.net.transport.IServiceContext, org.gamegineer.table.internal.net.transport.MessageEnvelope)
      */
     @Override
     public void messageReceived(
-        final INetworkServiceContext context,
+        final IServiceContext context,
         final MessageEnvelope messageEnvelope )
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
@@ -63,31 +62,31 @@ public class FakeNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#peerStopped(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.IService#peerStopped(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
     public void peerStopped(
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#started(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.IService#started(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
     public void started(
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#stopped(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.IService#stopped(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
     public void stopped(
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
     }

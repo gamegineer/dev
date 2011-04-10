@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.net.transport;
 import java.io.Serializable;
 
 /**
- * A network table protocol message.
+ * A network protocol message.
  * 
  * @noextend This interface is not intended to be extended by clients.
  */

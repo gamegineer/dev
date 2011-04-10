@@ -1,5 +1,5 @@
 /*
- * ServerNetworkInterfaceAsNetworkInterfaceTest.java
+ * ActiveTransportLayerAsTransportLayerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,25 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 18, 2011 at 9:01:05 PM.
+ * Created on Jan 18, 2011 at 9:00:54 PM.
  */
 
 package org.gamegineer.table.internal.net.transport.tcp;
 
 import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.transport.AbstractNetworkInterfaceTestCase;
-import org.gamegineer.table.internal.net.transport.INetworkInterface;
-import org.gamegineer.table.internal.net.transport.INetworkInterfaceContext;
+import org.gamegineer.table.internal.net.transport.AbstractTransportLayerTestCase;
+import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.transport.tcp.ServerNetworkInterface}
+ * {@link org.gamegineer.table.internal.net.transport.tcp.ActiveTransportLayer}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.transport.INetworkInterface}
+ * {@link org.gamegineer.table.internal.net.transport.ITransportLayer}
  * interface.
  */
-public final class ServerNetworkInterfaceAsNetworkInterfaceTest
-    extends AbstractNetworkInterfaceTestCase
+public final class ActiveTransportLayerAsTransportLayerTest
+    extends AbstractTransportLayerTestCase
 {
     // ======================================================================
     // Constructors
@@ -42,9 +42,9 @@ public final class ServerNetworkInterfaceAsNetworkInterfaceTest
 
     /**
      * Initializes a new instance of the {@code
-     * ServerNetworkInterfaceAsNetworkInterfaceTest} class.
+     * ActiveTransportLayerAsTransportLayerTest} class.
      */
-    public ServerNetworkInterfaceAsNetworkInterfaceTest()
+    public ActiveTransportLayerAsTransportLayerTest()
     {
         super();
     }
@@ -55,11 +55,11 @@ public final class ServerNetworkInterfaceAsNetworkInterfaceTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.AbstractNetworkInterfaceTestCase#createNetworkInterface()
+     * @see org.gamegineer.table.internal.net.transport.AbstractTransportLayerTestCase#createTransportLayer()
      */
     @Override
-    protected INetworkInterface createNetworkInterface()
+    protected ITransportLayer createTransportLayer()
     {
-        return new ServerNetworkInterface( EasyMock.createMock( INetworkInterfaceContext.class ) );
+        return new ActiveTransportLayer( EasyMock.createMock( ITransportLayerContext.class ) );
     }
 }

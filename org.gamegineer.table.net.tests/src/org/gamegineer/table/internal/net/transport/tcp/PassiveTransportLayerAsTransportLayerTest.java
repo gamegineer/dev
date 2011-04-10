@@ -1,5 +1,5 @@
 /*
- * ServerNetworkServiceHandlerAsNetworkServiceHandlerTest.java
+ * PassiveTransportLayerAsTransportLayerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,26 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 1, 2011 at 9:34:49 PM.
+ * Created on Jan 18, 2011 at 9:01:05 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.transport.tcp;
 
 import org.easymock.EasyMock;
-import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.transport.AbstractNetworkServiceHandlerTestCase;
-import org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory;
-import org.gamegineer.table.internal.net.transport.INetworkServiceHandler;
+import org.gamegineer.table.internal.net.transport.AbstractTransportLayerTestCase;
+import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.ServerNetworkServiceHandler} class
- * to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.transport.INetworkServiceHandler}
+ * {@link org.gamegineer.table.internal.net.transport.tcp.PassiveTransportLayer}
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.transport.ITransportLayer}
  * interface.
  */
-public final class ServerNetworkServiceHandlerAsNetworkServiceHandlerTest
-    extends AbstractNetworkServiceHandlerTestCase
+public final class PassiveTransportLayerAsTransportLayerTest
+    extends AbstractTransportLayerTestCase
 {
     // ======================================================================
     // Constructors
@@ -43,9 +42,9 @@ public final class ServerNetworkServiceHandlerAsNetworkServiceHandlerTest
 
     /**
      * Initializes a new instance of the {@code
-     * ServerNetworkServiceHandlerAsNetworkServiceHandlerTest} class.
+     * PassiveTransportLayerAsTransportLayerTest} class.
      */
-    public ServerNetworkServiceHandlerAsNetworkServiceHandlerTest()
+    public PassiveTransportLayerAsTransportLayerTest()
     {
         super();
     }
@@ -56,11 +55,11 @@ public final class ServerNetworkServiceHandlerAsNetworkServiceHandlerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandlerTestCase#createNetworkServiceHandler()
+     * @see org.gamegineer.table.internal.net.transport.AbstractTransportLayerTestCase#createTransportLayer()
      */
     @Override
-    protected INetworkServiceHandler createNetworkServiceHandler()
+    protected ITransportLayer createTransportLayer()
     {
-        return new ServerNetworkServiceHandler( new NetworkTable( EasyMock.createMock( ITable.class ), EasyMock.createMock( INetworkInterfaceFactory.class ) ) );
+        return new PassiveTransportLayer( EasyMock.createMock( ITransportLayerContext.class ) );
     }
 }

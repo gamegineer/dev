@@ -1,5 +1,5 @@
 /*
- * ServerNetworkInterface.java
+ * PassiveTransportLayer.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -24,32 +24,31 @@ package org.gamegineer.table.internal.net.transport.tcp;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.transport.INetworkInterfaceContext;
-import org.gamegineer.table.internal.net.transport.INetworkServiceHandler;
+import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * Implementation of
- * {@link org.gamegineer.table.internal.net.transport.INetworkInterface} for the
- * server role over a TCP connection.
+ * {@link org.gamegineer.table.internal.net.transport.ITransportLayer} for
+ * passive TCP connections.
  */
 @Immutable
-final class ServerNetworkInterface
-    extends AbstractNetworkInterface
+final class PassiveTransportLayer
+    extends AbstractTransportLayer
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ServerNetworkInterface} class.
+     * Initializes a new instance of the {@code PassiveTransportLayer} class.
      * 
      * @param context
-     *        The network interface context; must not be {@code null}.
+     *        The transport layer context; must not be {@code null}.
      */
-    ServerNetworkInterface(
+    PassiveTransportLayer(
         /* @NonNull */
-        final INetworkInterfaceContext context )
+        final ITransportLayerContext context )
     {
         super( context, new Dispatcher() );
     }
@@ -60,16 +59,7 @@ final class ServerNetworkInterface
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractNetworkInterface#createNetworkServiceHandler()
-     */
-    @Override
-    INetworkServiceHandler createNetworkServiceHandler()
-    {
-        return getContext().createServerNetworkServiceHandler();
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkInterface#open(java.lang.String, int)
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#open(java.lang.String, int)
      */
     @Override
     public void open(
@@ -89,7 +79,7 @@ final class ServerNetworkInterface
         catch( final IOException e )
         {
             close();
-            throw new NetworkTableException( Messages.ServerNetworkInterface_open_ioError, e );
+            throw new NetworkTableException( Messages.PassiveTransportLayer_open_ioError, e );
         }
     }
 }

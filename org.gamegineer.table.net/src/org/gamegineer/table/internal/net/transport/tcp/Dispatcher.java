@@ -45,7 +45,7 @@ import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
- * An event dispatcher in the TCP network interface Acceptor-Connector pattern
+ * An event dispatcher in the TCP transport layer Acceptor-Connector pattern
  * implementation.
  * 
  * <p>

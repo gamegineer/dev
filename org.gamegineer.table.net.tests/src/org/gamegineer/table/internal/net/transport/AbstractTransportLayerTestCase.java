@@ -1,5 +1,5 @@
 /*
- * ServiceHandlerAdapterTest.java
+ * AbstractTransportLayerTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,34 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 13, 2011 at 11:26:20 PM.
+ * Created on Jan 18, 2011 at 8:50:02 PM.
  */
 
-package org.gamegineer.table.internal.net.transport.tcp;
+package org.gamegineer.table.internal.net.transport;
 
-import java.nio.channels.SocketChannel;
-import org.gamegineer.table.internal.net.transport.FakeNetworkServiceHandler;
+import static org.junit.Assert.assertNotNull;
 import org.gamegineer.table.net.NetworkTableConstants;
+import org.gamegineer.table.net.NetworkTableException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.transport.tcp.ServiceHandlerAdapter}
- * class.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.internal.net.transport.ITransportLayer}
+ * interface.
  */
-public final class ServiceHandlerAdapterTest
+public abstract class AbstractTransportLayerTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The network interface for use in the fixture. */
-    private AbstractNetworkInterface networkInterface_;
-
-    /** The service handler adapter under test in the fixture. */
-    private ServiceHandlerAdapter serviceHandlerAdapter_;
+    /** The transport layer under test in the fixture. */
+    private ITransportLayer transportLayer_;
 
 
     // ======================================================================
@@ -51,10 +48,10 @@ public final class ServiceHandlerAdapterTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ServiceHandlerAdapterTest}
+     * Initializes a new instance of the {@code AbstractTransportLayerTestCase}
      * class.
      */
-    public ServiceHandlerAdapterTest()
+    protected AbstractTransportLayerTestCase()
     {
         super();
     }
@@ -63,6 +60,18 @@ public final class ServiceHandlerAdapterTest
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates the transport layer to be tested.
+     * 
+     * @return The transport layer to be tested; never {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    /* @NonNull */
+    protected abstract ITransportLayer createTransportLayer()
+        throws Exception;
 
     /**
      * Sets up the test fixture.
@@ -74,9 +83,8 @@ public final class ServiceHandlerAdapterTest
     public void setUp()
         throws Exception
     {
-        networkInterface_ = new FakeNetworkInterface();
-        networkInterface_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
-        serviceHandlerAdapter_ = new ServiceHandlerAdapter( networkInterface_, new FakeNetworkServiceHandler() );
+        transportLayer_ = createTransportLayer();
+        assertNotNull( transportLayer_ );
     }
 
     /**
@@ -89,15 +97,13 @@ public final class ServiceHandlerAdapterTest
     public void tearDown()
         throws Exception
     {
-        serviceHandlerAdapter_.close();
-        serviceHandlerAdapter_ = null;
-        networkInterface_.close();
-        networkInterface_ = null;
+        transportLayer_.close();
+        transportLayer_ = null;
     }
 
     /**
-     * Ensures the {@code open} method throws an exception if the service
-     * handler has been closed.
+     * Ensures the {@code open} method throws an exception if the transport
+     * layer has been closed.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -106,14 +112,28 @@ public final class ServiceHandlerAdapterTest
     public void testOpen_AfterClose()
         throws Exception
     {
-        serviceHandlerAdapter_.close();
+        transportLayer_.close();
 
-        serviceHandlerAdapter_.open( new FakeSocketChannel() );
+        transportLayer_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+    }
+
+    /**
+     * Ensures the {@code open} method throws an exception when passed a {@code
+     * null} host name.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testOpen_HostName_Null()
+        throws Exception
+    {
+        transportLayer_.open( null, NetworkTableConstants.DEFAULT_PORT );
     }
 
     /**
      * Ensures the {@code open} method throws an exception when attempting to
-     * open the service handler more than once.
+     * open the transport layer more than once.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -122,9 +142,15 @@ public final class ServiceHandlerAdapterTest
     public void testOpen_MultipleInvocations()
         throws Exception
     {
-        final SocketChannel channel = new FakeSocketChannel();
-        serviceHandlerAdapter_.open( channel );
+        try
+        {
+            transportLayer_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+        }
+        catch( final NetworkTableException e )
+        {
+            // ignore network errors
+        }
 
-        serviceHandlerAdapter_.open( channel );
+        transportLayer_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
     }
 }

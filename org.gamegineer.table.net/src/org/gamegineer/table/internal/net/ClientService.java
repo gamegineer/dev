@@ -1,5 +1,5 @@
 /*
- * ClientNetworkServiceHandler.java
+ * ClientService.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -25,7 +25,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.internal.net.transport.INetworkServiceContext;
+import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.transport.messages.EndAuthenticationMessage;
@@ -34,26 +34,24 @@ import org.gamegineer.table.internal.net.transport.messages.HelloResponseMessage
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
- * A service handler that represents the client half of the network table
- * protocol.
+ * A service that represents the client half of the network table protocol.
  */
 @ThreadSafe
-final class ClientNetworkServiceHandler
-    extends AbstractNetworkServiceHandler
+final class ClientService
+    extends AbstractService
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ClientNetworkServiceHandler}
-     * class.
+     * Initializes a new instance of the {@code ClientService} class.
      * 
      * @param networkTable
-     *        The network table associated with the service handler; must not be
-     *        {@code null}.
+     *        The network table associated with the service; must not be {@code
+     *        null}.
      */
-    ClientNetworkServiceHandler(
+    ClientService(
         /* @NonNull */
         final NetworkTable networkTable )
     {
@@ -69,14 +67,14 @@ final class ClientNetworkServiceHandler
      * Handles a Begin Authentication Request message.
      * 
      * @param context
-     *        The network service context; must not be {@code null}.
+     *        The service context; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
     @GuardedBy( "getLock()" )
     private void handleBeginAuthenticationRequestMessage(
         /* @NonNull */
-        final INetworkServiceContext context,
+        final IServiceContext context,
         /* @NonNull */
         final BeginAuthenticationRequestMessage message )
     {
@@ -106,7 +104,7 @@ final class ClientNetworkServiceHandler
             // to the network table so it can eventually be reported to the local user via the UI
             // --> may not serialize exceptions in messages, but rather use an enum to force
             // specification of error.  actual exception should be logged locally.
-            System.out.println( "ClientNetworkServiceHandler : failed to generate authentication response with exception: " + e ); //$NON-NLS-1$
+            System.out.println( "ClientService : failed to generate authentication response with exception: " + e ); //$NON-NLS-1$
             context.stopService();
         }
         finally
@@ -119,7 +117,7 @@ final class ClientNetworkServiceHandler
      * Handles an End Authentication message.
      * 
      * @param context
-     *        The network service context; must not be {@code null}.
+     *        The service context; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
@@ -127,7 +125,7 @@ final class ClientNetworkServiceHandler
     @SuppressWarnings( "boxing" )
     private void handleEndAuthenticationMessage(
         /* @NonNull */
-        final INetworkServiceContext context,
+        final IServiceContext context,
         /* @NonNull */
         final EndAuthenticationMessage message )
     {
@@ -137,12 +135,12 @@ final class ClientNetworkServiceHandler
 
         if( message.getException() != null )
         {
-            System.out.println( String.format( "ClientNetworkServiceHandler : failed authentication (tag=%d) with exception: ", message.getTag() ) + message.getException() ); //$NON-NLS-1$
+            System.out.println( String.format( "ClientService : failed authentication (tag=%d) with exception: ", message.getTag() ) + message.getException() ); //$NON-NLS-1$
             context.stopService();
         }
         else
         {
-            System.out.println( String.format( "ClientNetworkServiceHandler : completed authentication successfully (tag=%d): ", message.getTag() ) ); //$NON-NLS-1$
+            System.out.println( String.format( "ClientService : completed authentication successfully (tag=%d): ", message.getTag() ) ); //$NON-NLS-1$
         }
     }
 
@@ -150,7 +148,7 @@ final class ClientNetworkServiceHandler
      * Handles a Hello Response message.
      * 
      * @param context
-     *        The network service context; must not be {@code null}.
+     *        The service context; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
@@ -158,7 +156,7 @@ final class ClientNetworkServiceHandler
     @SuppressWarnings( "boxing" )
     private void handleHelloResponseMessage(
         /* @NonNull */
-        final INetworkServiceContext context,
+        final IServiceContext context,
         /* @NonNull */
         final HelloResponseMessage message )
     {
@@ -168,21 +166,21 @@ final class ClientNetworkServiceHandler
 
         if( message.getException() != null )
         {
-            System.out.println( String.format( "ClientNetworkServiceHandler : received hello response (tag=%d) with exception: ", message.getTag() ) + message.getException() ); //$NON-NLS-1$
+            System.out.println( String.format( "ClientService : received hello response (tag=%d) with exception: ", message.getTag() ) + message.getException() ); //$NON-NLS-1$
             context.stopService();
         }
         else
         {
-            System.out.println( String.format( "ClientNetworkServiceHandler : received hello response (tag=%d) with chosen version '%d'", message.getTag(), message.getChosenProtocolVersion() ) ); //$NON-NLS-1$
+            System.out.println( String.format( "ClientService : received hello response (tag=%d) with chosen version '%d'", message.getTag(), message.getChosenProtocolVersion() ) ); //$NON-NLS-1$
         }
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#messageReceivedInternal(org.gamegineer.table.internal.net.transport.INetworkServiceContext, org.gamegineer.table.internal.net.transport.IMessage)
+     * @see org.gamegineer.table.internal.net.AbstractService#messageReceivedInternal(org.gamegineer.table.internal.net.transport.IServiceContext, org.gamegineer.table.internal.net.transport.IMessage)
      */
     @Override
     boolean messageReceivedInternal(
-        final INetworkServiceContext context,
+        final IServiceContext context,
         final IMessage message )
     {
         assert context != null;
@@ -209,11 +207,11 @@ final class ClientNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#peerStoppedInternal(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.AbstractService#peerStoppedInternal(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
     void peerStoppedInternal(
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assert context != null;
         assert Thread.holdsLock( getLock() );
@@ -222,11 +220,11 @@ final class ClientNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#startedInternal(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.AbstractService#startedInternal(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
     void startedInternal(
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assert context != null;
         assert Thread.holdsLock( getLock() );
@@ -241,11 +239,11 @@ final class ClientNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#stoppedInternal(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.AbstractService#stoppedInternal(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
     void stoppedInternal(
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assert context != null;
         assert Thread.holdsLock( getLock() );

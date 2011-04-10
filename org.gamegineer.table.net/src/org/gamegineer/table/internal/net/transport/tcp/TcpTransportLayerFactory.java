@@ -1,5 +1,5 @@
 /*
- * TcpNetworkInterfaceFactory.java
+ * TcpTransportLayerFactory.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -23,27 +23,27 @@ package org.gamegineer.table.internal.net.transport.tcp;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.transport.INetworkInterface;
-import org.gamegineer.table.internal.net.transport.INetworkInterfaceContext;
-import org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory;
+import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
+import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 
 /**
  * Implementation of
- * {@link org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory}
+ * {@link org.gamegineer.table.internal.net.transport.ITransportLayerFactory}
  * for TCP connections.
  */
 @Immutable
-public final class TcpNetworkInterfaceFactory
-    implements INetworkInterfaceFactory
+public final class TcpTransportLayerFactory
+    implements ITransportLayerFactory
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TcpNetworkInterfaceFactory}.
+     * Initializes a new instance of the {@code TcpTransportLayerFactory}.
      */
-    public TcpNetworkInterfaceFactory()
+    public TcpTransportLayerFactory()
     {
         super();
     }
@@ -54,26 +54,26 @@ public final class TcpNetworkInterfaceFactory
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory#createClientNetworkInterface(org.gamegineer.table.internal.net.transport.INetworkInterfaceContext)
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayerFactory#createActiveTransportLayer(org.gamegineer.table.internal.net.transport.ITransportLayerContext)
      */
     @Override
-    public INetworkInterface createClientNetworkInterface(
-        final INetworkInterfaceContext context )
+    public ITransportLayer createActiveTransportLayer(
+        final ITransportLayerContext context )
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        return new ClientNetworkInterface( context );
+        return new ActiveTransportLayer( context );
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory#createServerNetworkInterface(org.gamegineer.table.internal.net.transport.INetworkInterfaceContext)
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayerFactory#createPassiveTransportLayer(org.gamegineer.table.internal.net.transport.ITransportLayerContext)
      */
     @Override
-    public INetworkInterface createServerNetworkInterface(
-        final INetworkInterfaceContext context )
+    public ITransportLayer createPassiveTransportLayer(
+        final ITransportLayerContext context )
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        return new ServerNetworkInterface( context );
+        return new PassiveTransportLayer( context );
     }
 }

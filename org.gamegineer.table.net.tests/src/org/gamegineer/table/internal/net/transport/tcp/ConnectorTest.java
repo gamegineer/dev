@@ -40,8 +40,8 @@ public final class ConnectorTest
     /** The connector under test in the fixture. */
     private Connector connector_;
 
-    /** The network interface for use in the fixture. */
-    private AbstractNetworkInterface networkInterface_;
+    /** The transport layer for use in the fixture. */
+    private AbstractTransportLayer transportLayer_;
 
 
     // ======================================================================
@@ -71,9 +71,9 @@ public final class ConnectorTest
     public void setUp()
         throws Exception
     {
-        networkInterface_ = new FakeNetworkInterface();
-        networkInterface_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
-        connector_ = new Connector( networkInterface_ );
+        transportLayer_ = new FakeTransportLayer();
+        transportLayer_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+        connector_ = new Connector( transportLayer_ );
     }
 
     /**
@@ -88,8 +88,8 @@ public final class ConnectorTest
     {
         connector_.close();
         connector_ = null;
-        networkInterface_.close();
-        networkInterface_ = null;
+        transportLayer_.close();
+        transportLayer_ = null;
     }
 
     /**

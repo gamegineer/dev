@@ -1,5 +1,5 @@
 /*
- * AbstractNetworkServiceHandler.java
+ * AbstractService.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -32,18 +32,18 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.internal.net.transport.INetworkServiceContext;
-import org.gamegineer.table.internal.net.transport.INetworkServiceHandler;
+import org.gamegineer.table.internal.net.transport.IService;
+import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 
 /**
- * Adapts instances of {@link INetworkServiceHandler} as a service handler in
- * the TCP network interface Acceptor-Connector pattern implementation.
+ * A service handler in the TCP transport layer Acceptor-Connector pattern
+ * implementation.
  */
 @ThreadSafe
-final class ServiceHandlerAdapter
+final class ServiceHandler
     extends AbstractEventHandler
-    implements INetworkServiceContext
+    implements IServiceContext
 {
     // ======================================================================
     // Fields
@@ -72,9 +72,6 @@ final class ServiceHandlerAdapter
     @GuardedBy( "getLock()" )
     private boolean isRunning_;
 
-    /** The network interface associated with the service handler. */
-    private final AbstractNetworkInterface networkInterface_;
-
     /** The output handler associated with the service handler. */
     private final OutputQueue outputQueue_;
 
@@ -89,8 +86,11 @@ final class ServiceHandlerAdapter
     @GuardedBy( "getLock()" )
     private int readyOperations_;
 
-    /** The service handler to adapt. */
-    private final INetworkServiceHandler serviceHandler_;
+    /** The service. */
+    private final IService service_;
+
+    /** The transport layer associated with the service handler. */
+    private final AbstractTransportLayer transportLayer_;
 
 
     // ======================================================================
@@ -98,35 +98,34 @@ final class ServiceHandlerAdapter
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractNetworkServiceHandler}
-     * class.
+     * Initializes a new instance of the {@code AbstractService} class.
      * 
-     * @param networkInterface
-     *        The network interface associated with the service handler; must
-     *        not be {@code null}.
-     * @param serviceHandler
-     *        The service handler to adapt; must not be {@code null}.
+     * @param transportLayer
+     *        The transport layer associated with the service handler; must not
+     *        be {@code null}.
+     * @param service
+     *        The service; must not be {@code null}.
      */
-    ServiceHandlerAdapter(
+    ServiceHandler(
         /* @NonNull */
-        final AbstractNetworkInterface networkInterface,
+        final AbstractTransportLayer transportLayer,
         /* @NonNull */
-        final INetworkServiceHandler serviceHandler )
+        final IService service )
     {
-        assert networkInterface != null;
-        assert serviceHandler != null;
+        assert transportLayer != null;
+        assert service != null;
 
         channel_ = null;
-        inputQueue_ = new InputQueue( networkInterface.getDispatcher().getByteBufferPool() );
+        inputQueue_ = new InputQueue( transportLayer.getDispatcher().getByteBufferPool() );
         inputQueueState_ = QueueState.OPEN;
         interestOperations_ = SelectionKey.OP_READ;
         isRegistered_ = false;
         isRunning_ = false;
-        networkInterface_ = networkInterface;
-        outputQueue_ = new OutputQueue( networkInterface.getDispatcher().getByteBufferPool(), this );
+        outputQueue_ = new OutputQueue( transportLayer.getDispatcher().getByteBufferPool(), this );
         outputQueueState_ = QueueState.OPEN;
         readyOperations_ = 0;
-        serviceHandler_ = serviceHandler;
+        service_ = service;
+        transportLayer_ = transportLayer;
     }
 
 
@@ -149,7 +148,7 @@ final class ServiceHandlerAdapter
                 if( isRegistered_ )
                 {
                     isRegistered_ = false;
-                    networkInterface_.getDispatcher().unregisterEventHandler( this );
+                    transportLayer_.getDispatcher().unregisterEventHandler( this );
                 }
 
                 try
@@ -158,7 +157,7 @@ final class ServiceHandlerAdapter
                 }
                 catch( final IOException e )
                 {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServiceHandlerAdapter_close_ioError, e );
+                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServiceHandler_close_ioError, e );
                 }
                 finally
                 {
@@ -171,7 +170,7 @@ final class ServiceHandlerAdapter
 
         if( state == State.OPEN )
         {
-            serviceHandler_.stopped( this );
+            service_.stopped( this );
         }
     }
 
@@ -286,7 +285,7 @@ final class ServiceHandlerAdapter
 
             if( !isRunning_ )
             {
-                networkInterface_.getDispatcher().enqueueStatusChange( this );
+                transportLayer_.getDispatcher().enqueueStatusChange( this );
             }
         }
     }
@@ -310,14 +309,14 @@ final class ServiceHandlerAdapter
 
         synchronized( getLock() )
         {
-            assertStateLegal( getState() == State.PRISTINE, Messages.ServiceHandlerAdapter_state_notPristine );
+            assertStateLegal( getState() == State.PRISTINE, Messages.ServiceHandler_state_notPristine );
 
             channel_ = channel;
             setState( State.OPEN );
 
             try
             {
-                networkInterface_.getDispatcher().registerEventHandler( this );
+                transportLayer_.getDispatcher().registerEventHandler( this );
                 isRegistered_ = true;
             }
             catch( final IOException e )
@@ -326,7 +325,7 @@ final class ServiceHandlerAdapter
                 throw e;
             }
 
-            serviceHandler_.started( this );
+            service_.started( this );
         }
     }
 
@@ -362,13 +361,13 @@ final class ServiceHandlerAdapter
                     MessageEnvelope messageEnvelope = null;
                     while( (messageEnvelope = inputQueue_.dequeueMessageEnvelope()) != null )
                     {
-                        serviceHandler_.messageReceived( this, messageEnvelope );
+                        service_.messageReceived( this, messageEnvelope );
                     }
 
                     if( inputQueueState_ == QueueState.SHUTTING_DOWN )
                     {
                         inputQueueState_ = QueueState.SHUT_DOWN;
-                        serviceHandler_.peerStopped( this );
+                        service_.peerStopped( this );
                     }
 
                     if( (outputQueueState_ == QueueState.SHUTTING_DOWN) && outputQueue_.isEmpty() )
@@ -380,7 +379,7 @@ final class ServiceHandlerAdapter
             }
             catch( final Exception e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServiceHandlerAdapter_run_error, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServiceHandler_run_error, e );
                 close();
             }
             finally
@@ -392,7 +391,7 @@ final class ServiceHandlerAdapter
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkServiceContext#sendMessage(org.gamegineer.table.internal.net.transport.IMessage)
+     * @see org.gamegineer.table.internal.net.transport.IServiceContext#sendMessage(org.gamegineer.table.internal.net.transport.IMessage)
      */
     public boolean sendMessage(
         /* @NonNull */
@@ -409,14 +408,14 @@ final class ServiceHandlerAdapter
             }
             catch( final IOException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServiceHandlerAdapter_sendMessage_ioError( message ), e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServiceHandler_sendMessage_ioError( message ), e );
                 return false;
             }
         }
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkServiceContext#stopService()
+     * @see org.gamegineer.table.internal.net.transport.IServiceContext#stopService()
      */
     @Override
     public void stopService()

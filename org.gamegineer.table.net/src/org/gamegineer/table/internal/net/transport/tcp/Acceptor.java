@@ -34,12 +34,12 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Loggers;
 
 /**
- * An acceptor in the TCP network interface Acceptor-Connector pattern
+ * An acceptor in the TCP transport layer Acceptor-Connector pattern
  * implementation.
  * 
  * <p>
  * An acceptor is responsible for passively connecting and initializing a
- * server-side service handler.
+ * service.
  * </p>
  */
 @ThreadSafe
@@ -54,12 +54,12 @@ final class Acceptor
     @GuardedBy( "getLock()" )
     private boolean isRegistered_;
 
-    /** The network interface associated with the acceptor. */
-    private final AbstractNetworkInterface networkInterface_;
-
     /** The server socket channel on which incoming connections are accepted. */
     @GuardedBy( "getLock()" )
     private ServerSocketChannel serverChannel_;
+
+    /** The transport layer associated with the acceptor. */
+    private final AbstractTransportLayer transportLayer_;
 
 
     // ======================================================================
@@ -69,19 +69,19 @@ final class Acceptor
     /**
      * Initializes a new instance of the {@code Acceptor} class.
      * 
-     * @param networkInterface
-     *        The network interface associated with the acceptor; must not be
+     * @param transportLayer
+     *        The transport layer associated with the acceptor; must not be
      *        {@code null}.
      */
     Acceptor(
         /* @NonNull */
-        final AbstractNetworkInterface networkInterface )
+        final AbstractTransportLayer transportLayer )
     {
-        assert networkInterface != null;
+        assert transportLayer != null;
 
         isRegistered_ = false;
-        networkInterface_ = networkInterface;
         serverChannel_ = null;
+        transportLayer_ = transportLayer;
     }
 
 
@@ -108,8 +108,8 @@ final class Acceptor
 
             clientChannel.configureBlocking( false );
 
-            final ServiceHandlerAdapter serviceHandlerAdapter = new ServiceHandlerAdapter( networkInterface_, networkInterface_.createNetworkServiceHandler() );
-            serviceHandlerAdapter.open( clientChannel );
+            final ServiceHandler serviceHandler = new ServiceHandler( transportLayer_, transportLayer_.getContext().createService() );
+            serviceHandler.open( clientChannel );
         }
         catch( final IOException e )
         {
@@ -153,7 +153,7 @@ final class Acceptor
                 serverChannel_ = createServerSocketChannel( hostName, port );
                 setState( State.OPEN );
 
-                networkInterface_.getDispatcher().registerEventHandler( this );
+                transportLayer_.getDispatcher().registerEventHandler( this );
                 isRegistered_ = true;
             }
             catch( final IOException e )
@@ -179,7 +179,7 @@ final class Acceptor
                 if( isRegistered_ )
                 {
                     isRegistered_ = false;
-                    networkInterface_.getDispatcher().unregisterEventHandler( this );
+                    transportLayer_.getDispatcher().unregisterEventHandler( this );
                 }
 
                 try
@@ -201,7 +201,7 @@ final class Acceptor
 
         if( state == State.OPEN )
         {
-            networkInterface_.disconnected();
+            transportLayer_.disconnected();
         }
     }
 

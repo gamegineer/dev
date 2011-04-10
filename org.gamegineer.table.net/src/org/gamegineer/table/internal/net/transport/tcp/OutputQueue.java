@@ -56,7 +56,7 @@ final class OutputQueue
     private final Object lock_;
 
     /** The service handler adapter that owns the queue. */
-    private final ServiceHandlerAdapter serviceHandlerAdapter_;
+    private final ServiceHandler serviceHandler_;
 
 
     // ======================================================================
@@ -69,7 +69,7 @@ final class OutputQueue
      * @param bufferPool
      *        The buffer pool associated with the queue; must not be {@code
      *        null}.
-     * @param serviceHandlerAdapter
+     * @param serviceHandler
      *        The service handler adapter that owns the queue; must not be
      *        {@code null}.
      */
@@ -77,16 +77,16 @@ final class OutputQueue
         /* @NonNull */
         final ByteBufferPool bufferPool,
         /* @NonNull */
-        final ServiceHandlerAdapter serviceHandlerAdapter )
+        final ServiceHandler serviceHandler )
     {
         assert bufferPool != null;
-        assert serviceHandlerAdapter != null;
+        assert serviceHandler != null;
 
         buffer_ = null;
         bufferPool_ = bufferPool;
         bufferQueue_ = new LinkedList<ByteBuffer>();
         lock_ = new Object();
-        serviceHandlerAdapter_ = serviceHandlerAdapter;
+        serviceHandler_ = serviceHandler;
     }
 
 
@@ -189,7 +189,7 @@ final class OutputQueue
             }
         }
 
-        serviceHandlerAdapter_.modifyInterestOperations( SelectionKey.OP_WRITE, 0 );
+        serviceHandler_.modifyInterestOperations( SelectionKey.OP_WRITE, 0 );
 
         return true;
     }

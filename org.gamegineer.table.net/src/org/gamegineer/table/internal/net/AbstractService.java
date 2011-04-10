@@ -1,5 +1,5 @@
 /*
- * AbstractNetworkServiceHandler.java
+ * AbstractService.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -28,16 +28,16 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.internal.net.transport.INetworkServiceContext;
-import org.gamegineer.table.internal.net.transport.INetworkServiceHandler;
+import org.gamegineer.table.internal.net.transport.IService;
+import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 
 /**
- * Superclass for all implementations of {@link INetworkServiceHandler}.
+ * Superclass for all implementations of {@link IService}.
  */
 @ThreadSafe
-abstract class AbstractNetworkServiceHandler
-    implements INetworkServiceHandler
+abstract class AbstractService
+    implements IService
 {
     // ======================================================================
     // Fields
@@ -46,7 +46,7 @@ abstract class AbstractNetworkServiceHandler
     /** The instance lock. */
     private final Object lock_;
 
-    /** The network table associated with the service handler. */
+    /** The network table associated with the service. */
     private final NetworkTable networkTable_;
 
     /** The next available message tag. */
@@ -59,14 +59,13 @@ abstract class AbstractNetworkServiceHandler
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractNetworkServiceHandler}
-     * class.
+     * Initializes a new instance of the {@code AbstractService} class.
      * 
      * @param networkTable
-     *        The network table associated with the service handler; must not be
-     *        {@code null}.
+     *        The network table associated with the service; must not be {@code
+     *        null}.
      */
-    AbstractNetworkServiceHandler(
+    AbstractService(
         /* @NonNull */
         final NetworkTable networkTable )
     {
@@ -83,9 +82,9 @@ abstract class AbstractNetworkServiceHandler
     // ======================================================================
 
     /**
-     * Gets the initial message tag for the service handler.
+     * Gets the initial message tag for the service.
      * 
-     * @return The initial message tag for the service handler.
+     * @return The initial message tag for the service.
      */
     private static int getInitialMessageTag()
     {
@@ -94,9 +93,9 @@ abstract class AbstractNetworkServiceHandler
     }
 
     /**
-     * Gets the instance lock for the service handler.
+     * Gets the instance lock for the service.
      * 
-     * @return The instance lock for the service handler; never {@code null}.
+     * @return The instance lock for the service; never {@code null}.
      */
     /* @NonNull */
     final Object getLock()
@@ -105,10 +104,10 @@ abstract class AbstractNetworkServiceHandler
     }
 
     /**
-     * Gets the network table associated with the service handler.
+     * Gets the network table associated with the service.
      * 
-     * @return The network table associated with the service handler; never
-     *         {@code null}.
+     * @return The network table associated with the service; never {@code null}
+     *         .
      */
     /* @NonNull */
     final NetworkTable getNetworkTable()
@@ -117,9 +116,9 @@ abstract class AbstractNetworkServiceHandler
     }
 
     /**
-     * Gets the next available message tag for the service handler.
+     * Gets the next available message tag for the service.
      * 
-     * @return The next available message tag for the service handler.
+     * @return The next available message tag for the service.
      */
     @GuardedBy( "getLock()" )
     final int getNextMessageTag()
@@ -136,11 +135,11 @@ abstract class AbstractNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#messageReceived(org.gamegineer.table.internal.net.transport.INetworkServiceContext, org.gamegineer.table.internal.net.transport.MessageEnvelope)
+     * @see org.gamegineer.table.internal.net.transport.IService#messageReceived(org.gamegineer.table.internal.net.transport.IServiceContext, org.gamegineer.table.internal.net.transport.MessageEnvelope)
      */
     @Override
     public final void messageReceived(
-        final INetworkServiceContext context,
+        final IServiceContext context,
         final MessageEnvelope messageEnvelope )
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
@@ -155,22 +154,22 @@ abstract class AbstractNetworkServiceHandler
             {
                 if( !messageReceivedInternal( context, message ) )
                 {
-                    Loggers.getDefaultLogger().warning( Messages.AbstractNetworkServiceHandler_messageReceived_unknownMessage( messageEnvelope ) );
+                    Loggers.getDefaultLogger().warning( Messages.AbstractService_messageReceived_unknownMessage( messageEnvelope ) );
                 }
             }
         }
         catch( final IOException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractNetworkServiceHandler_messageReceived_deserializationError( messageEnvelope ), e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractService_messageReceived_deserializationError( messageEnvelope ), e );
         }
         catch( final ClassNotFoundException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractNetworkServiceHandler_messageReceived_deserializationError( messageEnvelope ), e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractService_messageReceived_deserializationError( messageEnvelope ), e );
         }
     }
 
     /**
-     * Invoked when a message has been received from the peer service handler.
+     * Invoked when a message has been received from the peer service.
      * 
      * <p>
      * This method is invoked while the instance lock is held.
@@ -181,17 +180,17 @@ abstract class AbstractNetworkServiceHandler
      * </p>
      * 
      * @param context
-     *        The network service context; must not be {@code null}.
+     *        The service context; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      * 
-     * @return {@code true} if the message was handled by the service handler;
-     *         otherwise {@code false}.
+     * @return {@code true} if the message was handled by the service; otherwise
+     *         {@code false}.
      */
     @GuardedBy( "getLock()" )
     boolean messageReceivedInternal(
         /* @NonNull */
-        final INetworkServiceContext context,
+        final IServiceContext context,
         /* @NonNull */
         final IMessage message )
     {
@@ -203,11 +202,11 @@ abstract class AbstractNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#peerStopped(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.IService#peerStopped(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
     public final void peerStopped(
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
@@ -218,7 +217,7 @@ abstract class AbstractNetworkServiceHandler
     }
 
     /**
-     * Invoked when the peer service handler has stopped.
+     * Invoked when the peer service has stopped.
      * 
      * <p>
      * This method is invoked while the instance lock is held.
@@ -229,12 +228,12 @@ abstract class AbstractNetworkServiceHandler
      * </p>
      * 
      * @param context
-     *        The network service context; must not be {@code null}.
+     *        The service context; must not be {@code null}.
      */
     @GuardedBy( "getLock()" )
     void peerStoppedInternal(
         /* @NonNull */
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assert context != null;
         assert Thread.holdsLock( getLock() );
@@ -243,11 +242,11 @@ abstract class AbstractNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#started(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.IService#started(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
     public final void started(
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
@@ -258,7 +257,7 @@ abstract class AbstractNetworkServiceHandler
     }
 
     /**
-     * Invoked when the service handler has started.
+     * Invoked when the service has started.
      * 
      * <p>
      * This method is invoked while the instance lock is held.
@@ -269,12 +268,12 @@ abstract class AbstractNetworkServiceHandler
      * </p>
      * 
      * @param context
-     *        The network service context; must not be {@code null}.
+     *        The service context; must not be {@code null}.
      */
     @GuardedBy( "getLock()" )
     void startedInternal(
         /* @NonNull */
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assert context != null;
         assert Thread.holdsLock( getLock() );
@@ -283,11 +282,11 @@ abstract class AbstractNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#stopped(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.IService#stopped(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
     public final void stopped(
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
@@ -298,7 +297,7 @@ abstract class AbstractNetworkServiceHandler
     }
 
     /**
-     * Invoked when the service handler has stopped.
+     * Invoked when the service has stopped.
      * 
      * <p>
      * This method is invoked while the instance lock is held.
@@ -309,12 +308,12 @@ abstract class AbstractNetworkServiceHandler
      * </p>
      * 
      * @param context
-     *        The network service context; must not be {@code null}.
+     *        The service context; must not be {@code null}.
      */
     @GuardedBy( "getLock()" )
     void stoppedInternal(
         /* @NonNull */
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assert context != null;
         assert Thread.holdsLock( getLock() );

@@ -1,5 +1,5 @@
 /*
- * LocalNetworkServiceHandler.java
+ * LocalService.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -23,28 +23,27 @@ package org.gamegineer.table.internal.net;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.transport.INetworkServiceContext;
-import org.gamegineer.table.internal.net.transport.INetworkServiceHandler;
+import org.gamegineer.table.internal.net.transport.IService;
+import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 
 /**
  * An adapter that allows interaction with a local table through the
- * {@link INetworkServiceHandler} interface in order to make local and remote
- * players look identical to the network table.
+ * {@link IService} interface in order to make local and remote players look
+ * identical to the network table.
  */
 @Immutable
-final class LocalNetworkServiceHandler
-    implements INetworkServiceHandler
+final class LocalService
+    implements IService
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code LocalNetworkServiceHandler}
-     * class.
+     * Initializes a new instance of the {@code LocalService} class.
      */
-    LocalNetworkServiceHandler()
+    LocalService()
     {
         super();
     }
@@ -55,11 +54,11 @@ final class LocalNetworkServiceHandler
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#messageReceived(org.gamegineer.table.internal.net.transport.INetworkServiceContext, org.gamegineer.table.internal.net.transport.MessageEnvelope)
+     * @see org.gamegineer.table.internal.net.transport.IService#messageReceived(org.gamegineer.table.internal.net.transport.IServiceContext, org.gamegineer.table.internal.net.transport.MessageEnvelope)
      */
     @Override
     public void messageReceived(
-        final INetworkServiceContext context,
+        final IServiceContext context,
         final MessageEnvelope messageEnvelope )
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
@@ -67,31 +66,31 @@ final class LocalNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#peerStopped(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.IService#peerStopped(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
     public void peerStopped(
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#started(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.IService#started(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
     public void started(
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkServiceHandler#stopped(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.IService#stopped(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
     public void stopped(
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
     }

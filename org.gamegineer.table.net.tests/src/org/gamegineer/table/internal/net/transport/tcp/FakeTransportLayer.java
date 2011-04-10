@@ -1,5 +1,5 @@
 /*
- * FakeNetworkInterface.java
+ * FakeTransportLayer.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -24,45 +24,44 @@ package org.gamegineer.table.internal.net.transport.tcp;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.transport.INetworkInterfaceContext;
-import org.gamegineer.table.internal.net.transport.INetworkServiceHandler;
+import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * Fake implementation of
- * {@link org.gamegineer.table.internal.net.transport.tcp.AbstractNetworkInterface}
+ * {@link org.gamegineer.table.internal.net.transport.tcp.AbstractTransportLayer}
  * .
  */
 @Immutable
-final class FakeNetworkInterface
-    extends AbstractNetworkInterface
+final class FakeTransportLayer
+    extends AbstractTransportLayer
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code FakeNetworkInterface} class
-     * using a new dispatcher.
+     * Initializes a new instance of the {@code FakeTransportLayer} class using
+     * a new dispatcher.
      */
-    FakeNetworkInterface()
+    FakeTransportLayer()
     {
         this( new Dispatcher() );
     }
 
     /**
-     * Initializes a new instance of the {@code FakeNetworkInterface} class
-     * using the specified dispatcher.
+     * Initializes a new instance of the {@code FakeTransportLayer} class using
+     * the specified dispatcher.
      * 
      * @param dispatcher
-     *        The dispatcher associated with the network interface; must not be
+     *        The dispatcher associated with the transport layer; must not be
      *        {@code null}.
      */
-    FakeNetworkInterface(
+    FakeTransportLayer(
         /* @NonNull */
         final Dispatcher dispatcher )
     {
-        super( EasyMock.createMock( INetworkInterfaceContext.class ), dispatcher );
+        super( EasyMock.createMock( ITransportLayerContext.class ), dispatcher );
     }
 
 
@@ -71,16 +70,7 @@ final class FakeNetworkInterface
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractNetworkInterface#createNetworkServiceHandler()
-     */
-    @Override
-    INetworkServiceHandler createNetworkServiceHandler()
-    {
-        return EasyMock.createMock( INetworkServiceHandler.class );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkInterface#open(java.lang.String, int)
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#open(java.lang.String, int)
      */
     @Override
     public void open(

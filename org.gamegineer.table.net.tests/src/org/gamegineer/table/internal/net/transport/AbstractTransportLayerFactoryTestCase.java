@@ -1,5 +1,5 @@
 /*
- * AbstractNetworkInterfaceFactoryTestCase.java
+ * AbstractTransportLayerFactoryTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -28,17 +28,17 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory}
+ * {@link org.gamegineer.table.internal.net.transport.ITransportLayerFactory}
  * interface.
  */
-public abstract class AbstractNetworkInterfaceFactoryTestCase
+public abstract class AbstractTransportLayerFactoryTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The network interface factory under test in the fixture. */
-    private INetworkInterfaceFactory networkInterfaceFactory_;
+    /** The transport layer factory under test in the fixture. */
+    private ITransportLayerFactory transportLayerFactory_;
 
 
     // ======================================================================
@@ -47,9 +47,9 @@ public abstract class AbstractNetworkInterfaceFactoryTestCase
 
     /**
      * Initializes a new instance of the {@code
-     * AbstractNetworkInterfaceFactoryTestCase} class.
+     * AbstractTransportLayerFactoryTestCase} class.
      */
-    protected AbstractNetworkInterfaceFactoryTestCase()
+    protected AbstractTransportLayerFactoryTestCase()
     {
         super();
     }
@@ -60,15 +60,15 @@ public abstract class AbstractNetworkInterfaceFactoryTestCase
     // ======================================================================
 
     /**
-     * Creates the network interface factory to be tested.
+     * Creates the transport layer factory to be tested.
      * 
-     * @return The network interface factory to be tested; never {@code null}.
+     * @return The transport layer factory to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract INetworkInterfaceFactory createNetworkInterfaceFactory()
+    protected abstract ITransportLayerFactory createTransportLayerFactory()
         throws Exception;
 
     /**
@@ -81,8 +81,8 @@ public abstract class AbstractNetworkInterfaceFactoryTestCase
     public void setUp()
         throws Exception
     {
-        networkInterfaceFactory_ = createNetworkInterfaceFactory();
-        assertNotNull( networkInterfaceFactory_ );
+        transportLayerFactory_ = createTransportLayerFactory();
+        assertNotNull( transportLayerFactory_ );
     }
 
     /**
@@ -95,26 +95,26 @@ public abstract class AbstractNetworkInterfaceFactoryTestCase
     public void tearDown()
         throws Exception
     {
-        networkInterfaceFactory_ = null;
+        transportLayerFactory_ = null;
     }
 
     /**
-     * Ensures the {@code createClientNetworkInterface} method throws an
-     * exception when passed a {@code null} context.
+     * Ensures the {@code createActiveTransportLayer} method throws an exception
+     * when passed a {@code null} context.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateClientNetworkInterface_Context_Null()
+    public void testCreateActiveTransportLayer_Context_Null()
     {
-        networkInterfaceFactory_.createClientNetworkInterface( null );
+        transportLayerFactory_.createActiveTransportLayer( null );
     }
 
     /**
-     * Ensures the {@code createServerNetworkInterface} method throws an
+     * Ensures the {@code createPassiveTransportLayer} method throws an
      * exception when passed a {@code null} context.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateServerNetworkInterface_Context_Null()
+    public void testCreatePassiveTransportLayer_Context_Null()
     {
-        networkInterfaceFactory_.createServerNetworkInterface( null );
+        transportLayerFactory_.createPassiveTransportLayer( null );
     }
 }

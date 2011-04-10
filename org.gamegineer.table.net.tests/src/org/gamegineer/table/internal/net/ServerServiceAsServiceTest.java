@@ -1,5 +1,5 @@
 /*
- * ClientNetworkInterfaceAsNetworkInterfaceTest.java
+ * ServerServiceAsServiceTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,35 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 18, 2011 at 9:00:54 PM.
+ * Created on Apr 1, 2011 at 9:34:49 PM.
  */
 
-package org.gamegineer.table.internal.net.transport.tcp;
+package org.gamegineer.table.internal.net;
 
 import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.transport.AbstractNetworkInterfaceTestCase;
-import org.gamegineer.table.internal.net.transport.INetworkInterface;
-import org.gamegineer.table.internal.net.transport.INetworkInterfaceContext;
+import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.internal.net.transport.AbstractServiceTestCase;
+import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
+import org.gamegineer.table.internal.net.transport.IService;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.transport.tcp.ClientNetworkInterface}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.transport.INetworkInterface}
- * interface.
+ * {@link org.gamegineer.table.internal.net.ServerService} class to ensure it
+ * does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.transport.IService} interface.
  */
-public final class ClientNetworkInterfaceAsNetworkInterfaceTest
-    extends AbstractNetworkInterfaceTestCase
+public final class ServerServiceAsServiceTest
+    extends AbstractServiceTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * ClientNetworkInterfaceAsNetworkInterfaceTest} class.
+     * Initializes a new instance of the {@code ServerServiceAsServiceTest}
+     * class.
      */
-    public ClientNetworkInterfaceAsNetworkInterfaceTest()
+    public ServerServiceAsServiceTest()
     {
         super();
     }
@@ -55,11 +55,11 @@ public final class ClientNetworkInterfaceAsNetworkInterfaceTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.AbstractNetworkInterfaceTestCase#createNetworkInterface()
+     * @see org.gamegineer.table.internal.net.transport.AbstractServiceTestCase#createService()
      */
     @Override
-    protected INetworkInterface createNetworkInterface()
+    protected IService createService()
     {
-        return new ClientNetworkInterface( EasyMock.createMock( INetworkInterfaceContext.class ) );
+        return new ServerService( new NetworkTable( EasyMock.createMock( ITable.class ), EasyMock.createMock( ITransportLayerFactory.class ) ) );
     }
 }

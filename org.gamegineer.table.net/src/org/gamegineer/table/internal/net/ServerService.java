@@ -1,5 +1,5 @@
 /*
- * ServerNetworkServiceHandler.java
+ * ServerService.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -26,7 +26,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.internal.net.transport.INetworkServiceContext;
+import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.transport.messages.EndAuthenticationMessage;
@@ -35,12 +35,11 @@ import org.gamegineer.table.internal.net.transport.messages.HelloResponseMessage
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
- * A service handler that represents the server half of the network table
- * protocol.
+ * A service that represents the server half of the network table protocol.
  */
 @ThreadSafe
-final class ServerNetworkServiceHandler
-    extends AbstractNetworkServiceHandler
+final class ServerService
+    extends AbstractService
 {
     // ======================================================================
     // Fields
@@ -73,14 +72,13 @@ final class ServerNetworkServiceHandler
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ServerNetworkServiceHandler}
-     * class.
+     * Initializes a new instance of the {@code ServerService} class.
      * 
      * @param networkTable
-     *        The network table associated with the service handler; must not be
-     *        {@code null}.
+     *        The network table associated with the service; must not be {@code
+     *        null}.
      */
-    ServerNetworkServiceHandler(
+    ServerService(
         /* @NonNull */
         final NetworkTable networkTable )
     {
@@ -100,7 +98,7 @@ final class ServerNetworkServiceHandler
      * Handles a Begin Authentication Response message.
      * 
      * @param context
-     *        The network service context; must not be {@code null}.
+     *        The service context; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
@@ -108,7 +106,7 @@ final class ServerNetworkServiceHandler
     @SuppressWarnings( "boxing" )
     private void handleBeginAuthenticationResponseMessage(
         /* @NonNull */
-        final INetworkServiceContext context,
+        final IServiceContext context,
         /* @NonNull */
         final BeginAuthenticationResponseMessage message )
     {
@@ -126,13 +124,13 @@ final class ServerNetworkServiceHandler
             final byte[] expectedResponse = authenticator.createResponse( challenge_, password, salt_ );
             if( Arrays.equals( expectedResponse, message.getResponse() ) )
             {
-                System.out.println( String.format( "ServerNetworkServiceHandler : client authenticated (tag=%d)", message.getTag() ) ); //$NON-NLS-1$
+                System.out.println( String.format( "ServerService : client authenticated (tag=%d)", message.getTag() ) ); //$NON-NLS-1$
                 getNetworkTable().playerConnected( message.getPlayerName(), this );
                 playerName_ = message.getPlayerName();
             }
             else
             {
-                System.out.println( String.format( "ServerNetworkServiceHandler : client failed authentication (tag=%d)", message.getTag() ) ); //$NON-NLS-1$
+                System.out.println( String.format( "ServerService : client failed authentication (tag=%d)", message.getTag() ) ); //$NON-NLS-1$
                 throw new NetworkTableException( "failed authentication" ); //$NON-NLS-1$
             }
         }
@@ -162,7 +160,7 @@ final class ServerNetworkServiceHandler
      * Handles a Hello Request message.
      * 
      * @param context
-     *        The network service context; must not be {@code null}.
+     *        The service context; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
@@ -170,7 +168,7 @@ final class ServerNetworkServiceHandler
     @SuppressWarnings( "boxing" )
     private void handleHelloRequestMessage(
         /* @NonNull */
-        final INetworkServiceContext context,
+        final IServiceContext context,
         /* @NonNull */
         final HelloRequestMessage message )
     {
@@ -178,7 +176,7 @@ final class ServerNetworkServiceHandler
         assert message != null;
         assert Thread.holdsLock( getLock() );
 
-        System.out.println( String.format( "ServerNetworkServiceHandler : received hello request (tag=%d) with supported version '%d'", message.getTag(), message.getSupportedProtocolVersion() ) ); //$NON-NLS-1$
+        System.out.println( String.format( "ServerService : received hello request (tag=%d) with supported version '%d'", message.getTag(), message.getSupportedProtocolVersion() ) ); //$NON-NLS-1$
 
         final HelloResponseMessage response = new HelloResponseMessage();
         response.setTag( message.getTag() );
@@ -216,23 +214,23 @@ final class ServerNetworkServiceHandler
             }
             catch( final NetworkTableException e )
             {
-                System.out.println( "ServerNetworkServiceHandler : failed to generate begin authentication request with exception: " + e ); //$NON-NLS-1$
+                System.out.println( "ServerService : failed to generate begin authentication request with exception: " + e ); //$NON-NLS-1$
                 context.stopService();
             }
         }
         else
         {
-            System.out.println( String.format( "ServerNetworkServiceHandler : received hello request (tag=%d) but the requested version is unsupported", message.getTag() ) ); //$NON-NLS-1$
+            System.out.println( String.format( "ServerService : received hello request (tag=%d) but the requested version is unsupported", message.getTag() ) ); //$NON-NLS-1$
             context.stopService();
         }
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#messageReceivedInternal(org.gamegineer.table.internal.net.transport.INetworkServiceContext, org.gamegineer.table.internal.net.transport.IMessage)
+     * @see org.gamegineer.table.internal.net.AbstractService#messageReceivedInternal(org.gamegineer.table.internal.net.transport.IServiceContext, org.gamegineer.table.internal.net.transport.IMessage)
      */
     @Override
     boolean messageReceivedInternal(
-        final INetworkServiceContext context,
+        final IServiceContext context,
         final IMessage message )
     {
         assert context != null;
@@ -254,11 +252,11 @@ final class ServerNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#peerStoppedInternal(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.AbstractService#peerStoppedInternal(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
     void peerStoppedInternal(
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assert context != null;
         assert Thread.holdsLock( getLock() );
@@ -271,11 +269,11 @@ final class ServerNetworkServiceHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandler#stoppedInternal(org.gamegineer.table.internal.net.transport.INetworkServiceContext)
+     * @see org.gamegineer.table.internal.net.AbstractService#stoppedInternal(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
     void stoppedInternal(
-        final INetworkServiceContext context )
+        final IServiceContext context )
     {
         assert context != null;
         assert Thread.holdsLock( getLock() );

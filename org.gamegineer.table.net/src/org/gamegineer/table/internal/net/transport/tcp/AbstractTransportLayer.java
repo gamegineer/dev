@@ -1,5 +1,5 @@
 /*
- * AbstractNetworkInterface.java
+ * AbstractTransportLayer.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -22,27 +22,26 @@
 package org.gamegineer.table.internal.net.transport.tcp;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.transport.INetworkInterface;
-import org.gamegineer.table.internal.net.transport.INetworkInterfaceContext;
-import org.gamegineer.table.internal.net.transport.INetworkServiceHandler;
+import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 
 /**
  * Superclass for all implementations of
- * {@link org.gamegineer.table.internal.net.transport.INetworkInterface} that
+ * {@link org.gamegineer.table.internal.net.transport.ITransportLayer} that
  * operate over a TCP connection.
  */
 @Immutable
-abstract class AbstractNetworkInterface
-    implements INetworkInterface
+abstract class AbstractTransportLayer
+    implements ITransportLayer
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The network interface context. */
-    private final INetworkInterfaceContext context_;
+    /** The transport layer context. */
+    private final ITransportLayerContext context_;
 
-    /** The dispatcher associated with the network interface. */
+    /** The dispatcher associated with the transport layer. */
     private final Dispatcher dispatcher_;
 
 
@@ -51,17 +50,17 @@ abstract class AbstractNetworkInterface
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractNetworkInterface} class.
+     * Initializes a new instance of the {@code AbstractTransportLayer} class.
      * 
      * @param context
-     *        The network interface context; must not be {@code null}.
+     *        The transport layer context; must not be {@code null}.
      * @param dispatcher
-     *        The dispatcher associated with the network interface; must not be
+     *        The dispatcher associated with the transport layer; must not be
      *        {@code null}.
      */
-    AbstractNetworkInterface(
+    AbstractTransportLayer(
         /* @NonNull */
-        final INetworkInterfaceContext context,
+        final ITransportLayerContext context,
         /* @NonNull */
         final Dispatcher dispatcher )
     {
@@ -78,7 +77,7 @@ abstract class AbstractNetworkInterface
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.INetworkInterface#close()
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#close()
      */
     @Override
     public void close()
@@ -87,37 +86,29 @@ abstract class AbstractNetworkInterface
     }
 
     /**
-     * Creates a new network service handler.
-     * 
-     * @return A new network service handler; never {@code null}.
-     */
-    /* @NonNull */
-    abstract INetworkServiceHandler createNetworkServiceHandler();
-
-    /**
-     * Invoked when the network interface has been disconnected.
+     * Invoked when the transport layer has been disconnected.
      */
     final void disconnected()
     {
-        context_.networkInterfaceDisconnected();
+        context_.transportLayerDisconnected();
     }
 
     /**
-     * Gets the network interface context.
+     * Gets the transport layer context.
      * 
-     * @return The network interface context; never {@code null}.
+     * @return The transport layer context; never {@code null}.
      */
     /* @NonNull */
-    final INetworkInterfaceContext getContext()
+    final ITransportLayerContext getContext()
     {
         return context_;
     }
 
     /**
-     * Gets the dispatcher associated with the network interface.
+     * Gets the dispatcher associated with the transport layer.
      * 
-     * @return The dispatcher associated with the network interface; never
-     *         {@code null}.
+     * @return The dispatcher associated with the transport layer; never {@code
+     *         null}.
      */
     /* @NonNull */
     final Dispatcher getDispatcher()

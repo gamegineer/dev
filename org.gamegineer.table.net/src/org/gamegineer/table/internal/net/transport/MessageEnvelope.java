@@ -32,7 +32,7 @@ import java.nio.ByteBuffer;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
- * A network table protocol message envelope.
+ * A network protocol message envelope.
  */
 @NotThreadSafe
 public final class MessageEnvelope

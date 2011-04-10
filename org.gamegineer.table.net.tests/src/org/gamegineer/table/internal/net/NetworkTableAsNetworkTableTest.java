@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.net;
 
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.transport.fake.FakeNetworkInterfaceFactory;
+import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactory;
 import org.gamegineer.table.net.AbstractNetworkTableTestCase;
 import org.gamegineer.table.net.INetworkTable;
 
@@ -60,6 +60,6 @@ public final class NetworkTableAsNetworkTableTest
     protected INetworkTable createNetworkTable(
         final ITable table )
     {
-        return new NetworkTable( table, new FakeNetworkInterfaceFactory() );
+        return new NetworkTable( table, new FakeTransportLayerFactory() );
     }
 }

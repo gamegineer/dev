@@ -1,5 +1,5 @@
 /*
- * INetworkInterfaceContext.java
+ * ITransportLayerContext.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -22,44 +22,36 @@
 package org.gamegineer.table.internal.net.transport;
 
 /**
- * The execution context for a network interface.
+ * The execution context for a network transport layer.
  * 
  * <p>
- * Provides operations that allow a network interface to interact with its
- * associated network table.
+ * Provides operations that allow a transport layer to interact with the
+ * application.
  * </p>
+ * 
+ * @noextend This interface is not intended to be extended by clients.
  */
-public interface INetworkInterfaceContext
+public interface ITransportLayerContext
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
-    // TODO: try to collapse into a single method
-
     /**
-     * Creates a new client network service handler.
+     * Creates a new network service.
      * 
-     * @return A new client network service handler; never {@code null}.
+     * @return A new network service; never {@code null}.
      */
     /* @NonNull */
-    public INetworkServiceHandler createClientNetworkServiceHandler();
+    public IService createService();
 
     /**
-     * Creates a new server network service handler.
-     * 
-     * @return A new server network service handler; never {@code null}.
-     */
-    /* @NonNull */
-    public INetworkServiceHandler createServerNetworkServiceHandler();
-
-    /**
-     * Invoked by the network interface when it has been disconnected.
+     * Invoked by the transport layer when it has been disconnected.
      * 
      * <p>
-     * Network tables must still explicitly close the network interface to clean
+     * The application must still explicitly close the transport layer to clean
      * up resources even after it has been disconnected.
      * </p>
      */
-    public void networkInterfaceDisconnected();
+    public void transportLayerDisconnected();
 }

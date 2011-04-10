@@ -1,5 +1,5 @@
 /*
- * ClientNetworkServiceHandlerAsNetworkServiceHandlerTest.java
+ * ClientServiceAsServiceTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -23,29 +23,28 @@ package org.gamegineer.table.internal.net;
 
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.transport.AbstractNetworkServiceHandlerTestCase;
-import org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory;
-import org.gamegineer.table.internal.net.transport.INetworkServiceHandler;
+import org.gamegineer.table.internal.net.transport.AbstractServiceTestCase;
+import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
+import org.gamegineer.table.internal.net.transport.IService;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.ClientNetworkServiceHandler} class
- * to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.transport.INetworkServiceHandler}
- * interface.
+ * {@link org.gamegineer.table.internal.net.ClientService} class to ensure it
+ * does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.transport.IService} interface.
  */
-public final class ClientNetworkServiceHandlerAsNetworkServiceHandlerTest
-    extends AbstractNetworkServiceHandlerTestCase
+public final class ClientServiceAsServiceTest
+    extends AbstractServiceTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * ClientNetworkServiceHandlerAsNetworkServiceHandlerTest} class.
+     * Initializes a new instance of the {@code ClientServiceAsServiceTest}
+     * class.
      */
-    public ClientNetworkServiceHandlerAsNetworkServiceHandlerTest()
+    public ClientServiceAsServiceTest()
     {
         super();
     }
@@ -56,11 +55,11 @@ public final class ClientNetworkServiceHandlerAsNetworkServiceHandlerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkServiceHandlerTestCase#createNetworkServiceHandler()
+     * @see org.gamegineer.table.internal.net.transport.AbstractServiceTestCase#createService()
      */
     @Override
-    protected INetworkServiceHandler createNetworkServiceHandler()
+    protected IService createService()
     {
-        return new ClientNetworkServiceHandler( new NetworkTable( EasyMock.createMock( ITable.class ), EasyMock.createMock( INetworkInterfaceFactory.class ) ) );
+        return new ClientService( new NetworkTable( EasyMock.createMock( ITable.class ), EasyMock.createMock( ITransportLayerFactory.class ) ) );
     }
 }

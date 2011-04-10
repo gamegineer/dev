@@ -1,5 +1,5 @@
 /*
- * INetworkServiceContext.java
+ * IServiceContext.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -22,21 +22,23 @@
 package org.gamegineer.table.internal.net.transport;
 
 /**
- * The execution context for a network service handler.
+ * The execution context for a network service.
  * 
  * <p>
- * Provides operations that allow a network service handler to interact and
- * control its associated network interface.
+ * Provides operations that allow a service to interact with the transport
+ * layer.
  * </p>
+ * 
+ * @noextend This interface is not intended to be extended by clients.
  */
-public interface INetworkServiceContext
+public interface IServiceContext
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Sends the specified message to the service handler peer.
+     * Sends the specified message to the service peer.
      * 
      * @param message
      *        The message; must not be {@code null}.
@@ -52,11 +54,11 @@ public interface INetworkServiceContext
         IMessage message );
 
     /**
-     * Stops the network service.
+     * Stops the service.
      * 
      * <p>
      * Any pending messages are guaranteed to be sent to the peer before the
-     * network service is stopped.
+     * service is stopped.
      * </p>
      */
     public void stopService();

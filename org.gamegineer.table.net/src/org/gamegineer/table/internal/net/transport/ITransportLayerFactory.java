@@ -1,5 +1,5 @@
 /*
- * INetworkInterfaceFactory.java
+ * ITransportLayerFactory.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -22,46 +22,45 @@
 package org.gamegineer.table.internal.net.transport;
 
 /**
- * A factory for creating a network table network interface for a specific role
- * and transport implementation.
+ * A factory for creating a network transport layer.
+ * 
+ * @noextend This interface is not intended to be extended by clients.
  */
-public interface INetworkInterfaceFactory
+public interface ITransportLayerFactory
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
-    // TODO: rename to active/passive transports
-
     /**
-     * Creates a new client network interface.
+     * Creates a new active transport layer.
      * 
      * @param context
-     *        The network interface context; must not be {@code null}.
+     *        The transport layer context; must not be {@code null}.
      * 
-     * @return A new client network interface; never {@code null}.
+     * @return A new active transport layer; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code context} is {@code null}.
      */
     /* @NonNull */
-    public INetworkInterface createClientNetworkInterface(
+    public ITransportLayer createActiveTransportLayer(
         /* @NonNull */
-        INetworkInterfaceContext context );
+        ITransportLayerContext context );
 
     /**
-     * Creates a new server network interface.
+     * Creates a new passive transport layer.
      * 
      * @param context
-     *        The network interface context; must not be {@code null}.
+     *        The transport layer context; must not be {@code null}.
      * 
-     * @return A new server network interface; never {@code null}.
+     * @return A new passive transport layer; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code context} is {@code null}.
      */
     /* @NonNull */
-    public INetworkInterface createServerNetworkInterface(
+    public ITransportLayer createPassiveTransportLayer(
         /* @NonNull */
-        INetworkInterfaceContext context );
+        ITransportLayerContext context );
 }

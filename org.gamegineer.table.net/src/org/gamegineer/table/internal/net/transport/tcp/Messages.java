@@ -47,10 +47,10 @@ final class Messages
     /** The acceptor state is not pristine. */
     public static String Acceptor_state_notPristine;
 
-    // --- ClientNetworkInterface -------------------------------------------
+    // --- ActiveTransportLayer ---------------------------------------------
 
-    /** An I/O error occurred while opening the network interface. */
-    public static String ClientNetworkInterface_open_ioError;
+    /** An I/O error occurred while opening the transport layer. */
+    public static String ActiveTransportLayer_open_ioError;
 
     // --- Connector --------------------------------------------------------
 
@@ -86,24 +86,24 @@ final class Messages
     /** The event handler is not registered. */
     public static String Dispatcher_unregisterEventHandler_eventHandlerUnregistered;
 
-    // --- ServerNetworkInterface -------------------------------------------
+    // --- PassiveTransportLayer --------------------------------------------
 
-    /** An I/O error occurred while opening the network interface. */
-    public static String ServerNetworkInterface_open_ioError;
+    /** An I/O error occurred while opening the transport layer. */
+    public static String PassiveTransportLayer_open_ioError;
 
-    // --- ServiceHandlerAdapter --------------------------------------------
+    // --- ServiceHandler ---------------------------------------------------
 
     /** An I/O error occurred while closing the socket channel. */
-    public static String ServiceHandlerAdapter_close_ioError;
+    public static String ServiceHandler_close_ioError;
 
-    /** An error occurred while running the event handler. */
-    public static String ServiceHandlerAdapter_run_error;
+    /** An error occurred while running the service handler. */
+    public static String ServiceHandler_run_error;
 
     /** An I/O error occurred while sending a message. */
-    public static String ServiceHandlerAdapter_sendMessage_ioError;
+    public static String ServiceHandler_sendMessage_ioError;
 
-    /** The client service handler state is not pristine. */
-    public static String ServiceHandlerAdapter_state_notPristine;
+    /** The service handler state is not pristine. */
+    public static String ServiceHandler_state_notPristine;
 
 
     // ======================================================================
@@ -131,7 +131,7 @@ final class Messages
     // Methods
     // ======================================================================
 
-    // --- ServiceHandlerAdapter --------------------------------------------
+    // --- ServiceHandler ---------------------------------------------------
 
     /**
      * Gets the formatted message indicating an error occurred while sending a
@@ -145,10 +145,10 @@ final class Messages
      */
     /* @NonNull */
     @SuppressWarnings( "boxing" )
-    static String ServiceHandlerAdapter_sendMessage_ioError(
+    static String ServiceHandler_sendMessage_ioError(
         /* @NonNull */
         final IMessage message )
     {
-        return bind( ServiceHandlerAdapter_sendMessage_ioError, message.getId(), message.getTag() );
+        return bind( ServiceHandler_sendMessage_ioError, message.getId(), message.getTag() );
     }
 }

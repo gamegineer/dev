@@ -1,5 +1,5 @@
 /*
- * TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest.java
+ * TcpTransportLayerFactoryAsTransportLayerFactoryTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -21,18 +21,18 @@
 
 package org.gamegineer.table.internal.net.transport.tcp;
 
-import org.gamegineer.table.internal.net.transport.AbstractNetworkInterfaceFactoryTestCase;
-import org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory;
+import org.gamegineer.table.internal.net.transport.AbstractTransportLayerFactoryTestCase;
+import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.transport.tcp.TcpNetworkInterfaceFactory}
+ * {@link org.gamegineer.table.internal.net.transport.tcp.TcpTransportLayerFactory}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.transport.INetworkInterfaceFactory}
+ * {@link org.gamegineer.table.internal.net.transport.ITransportLayerFactory}
  * interface.
  */
-public final class TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest
-    extends AbstractNetworkInterfaceFactoryTestCase
+public final class TcpTransportLayerFactoryAsTransportLayerFactoryTest
+    extends AbstractTransportLayerFactoryTestCase
 {
     // ======================================================================
     // Constructors
@@ -40,9 +40,9 @@ public final class TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest
 
     /**
      * Initializes a new instance of the {@code
-     * TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest} class.
+     * TcpTransportLayerFactoryAsTransportLayerFactoryTest} class.
      */
-    public TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest()
+    public TcpTransportLayerFactoryAsTransportLayerFactoryTest()
     {
         super();
     }
@@ -53,11 +53,11 @@ public final class TcpNetworkInterfaceFactoryAsNetworkInterfaceFactoryTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.AbstractNetworkInterfaceFactoryTestCase#createNetworkInterfaceFactory()
+     * @see org.gamegineer.table.internal.net.transport.AbstractTransportLayerFactoryTestCase#createTransportLayerFactory()
      */
     @Override
-    protected INetworkInterfaceFactory createNetworkInterfaceFactory()
+    protected ITransportLayerFactory createTransportLayerFactory()
     {
-        return new TcpNetworkInterfaceFactory();
+        return new TcpTransportLayerFactory();
     }
 }

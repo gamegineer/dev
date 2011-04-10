@@ -27,7 +27,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * Superclass for all event handlers in the TCP network interface
+ * Superclass for all event handlers in the TCP transport layer
  * Acceptor-Connector pattern implementation.
  */
 @ThreadSafe

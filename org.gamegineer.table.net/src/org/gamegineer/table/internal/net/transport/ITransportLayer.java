@@ -1,5 +1,5 @@
 /*
- * INetworkInterface.java
+ * ITransportLayer.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -24,48 +24,50 @@ package org.gamegineer.table.internal.net.transport;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
- * A network interface for a specific role and transport implementation.
+ * A network transport layer.
+ * 
+ * @noextend This interface is not intended to be extended by clients.
  */
-public interface INetworkInterface
+public interface ITransportLayer
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Closes the network interface.
+     * Closes the transport layer.
      * 
      * <p>
-     * This method does nothing if the network interface is already closed.
+     * This method does nothing if the transport layer is already closed.
      * </p>
      * 
      * <p>
-     * This method blocks until the network interface is closed or an error
+     * This method blocks until the transport layer is closed or an error
      * occurs.
      * </p>
      */
     public void close();
 
     /**
-     * Opens the network interface.
+     * Opens the transport layer.
      * 
      * <p>
-     * This method blocks until the network interface is connected or an error
+     * This method blocks until the transport layer is connected or an error
      * occurs.
      * </p>
      * 
      * @param hostName
-     *        The host name; must not be {@code null}. For a server, this value
-     *        is the host name to which the server will be bound. For a client,
-     *        this value is the host name of the remote peer.
+     *        The host name; must not be {@code null}. For a passive transport
+     *        layer, this value is the host name to which all services will be
+     *        bound. For an active transport layer, this value is the host name
+     *        of the remote service.
      * @param port
-     *        The port. For a server, this value is the port to which the server
-     *        will be bound. For a client, this value is the port of the remote
-     *        peer.
-     * 
+     *        The port. For a passive transport layer, this value is the port to
+     *        which all services will be bound. For an active transport layer,
+     *        this value is the port of the remote service.
      * 
      * @throws java.lang.IllegalStateException
-     *         If the network interface has already been opened or is closed.
+     *         If the transport layer has already been opened or is closed.
      * @throws java.lang.NullPointerException
      *         If {@code hostName} is {@code null}.
      * @throws org.gamegineer.table.net.NetworkTableException

@@ -29,12 +29,12 @@ import java.nio.channels.SocketChannel;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * A connector in the TCP network interface Acceptor-Connector pattern
+ * A connector in the TCP transport layer Acceptor-Connector pattern
  * implementation.
  * 
  * <p>
  * A connector is responsible for actively connecting and initializing a
- * client-side service handler.
+ * service.
  * </p>
  */
 @ThreadSafe
@@ -45,8 +45,8 @@ final class Connector
     // Fields
     // ======================================================================
 
-    /** The network interface associated with the connector. */
-    private final AbstractNetworkInterface networkInterface_;
+    /** The transport layer associated with the connector. */
+    private final AbstractTransportLayer transportLayer_;
 
 
     // ======================================================================
@@ -56,17 +56,17 @@ final class Connector
     /**
      * Initializes a new instance of the {@code Connector} class.
      * 
-     * @param networkInterface
-     *        The network interface associated with the connector; must not be
+     * @param transportLayer
+     *        The transport layer associated with the connector; must not be
      *        {@code null}.
      */
     Connector(
         /* @NonNull */
-        final AbstractNetworkInterface networkInterface )
+        final AbstractTransportLayer transportLayer )
     {
-        assert networkInterface != null;
+        assert transportLayer != null;
 
-        networkInterface_ = networkInterface;
+        transportLayer_ = transportLayer;
     }
 
 
@@ -120,8 +120,8 @@ final class Connector
             {
                 final SocketChannel channel = createSocketChannel( hostName, port );
 
-                final ServiceHandlerAdapter serviceHandlerAdapter = new ServiceHandlerAdapter( networkInterface_, networkInterface_.createNetworkServiceHandler() );
-                serviceHandlerAdapter.open( channel );
+                final ServiceHandler serviceHandler = new ServiceHandler( transportLayer_, transportLayer_.getContext().createService() );
+                serviceHandler.open( channel );
             }
             finally
             {
