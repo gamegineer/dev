@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     run-build.xml
-    Copyright 2008-2010 Gamegineer.org
+    Copyright 2008-2011 Gamegineer.org
     All rights reserved.
 
     This program is free software: you can redistribute it and/or modify
@@ -57,7 +57,7 @@
                 maxmemory="256m">
             <jvmarg value="-DbuildDirectory=${basedir}" />
             <jvmarg value="-DforceContextQualifier=${qualifier}" />
-            <jvmarg value="-DJavaSE-1.6=${env.JAVA_HOME}/jre/lib/rt.jar" />
+            <jvmarg value="-DJavaSE-1.6=${env.JAVA_HOME}/jre/lib/rt.jar:${env.JAVA_HOME}/jre/lib/jce.jar" />
             <arg value="-application" />
             <arg value="org.eclipse.ant.core.antRunner" />
             <arg value="-buildfile" />
