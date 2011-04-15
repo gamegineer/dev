@@ -1,5 +1,5 @@
 /*
- * ProtocolVersions.java
+ * LocalClientTableGateway.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,26 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 11, 2011 at 11:44:03 PM.
+ * Created on Apr 10, 2011 at 5:34:26 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.common;
 
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.net.ITableGateway;
+
+// TODO: implement this class to act as a broker between a single ITable and
+// an ITableGatewayContext
 
 /**
- * A collection of constants that define the known network table protocol
- * versions.
+ * A gateway to a local client table.
  */
 @ThreadSafe
-public final class ProtocolVersions
+public final class LocalClientTableGateway
+    implements ITableGateway
 {
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /** The version 1.0.0 protocol. */
-    public static final int VERSION_1 = 100;
 
 
     // ======================================================================
@@ -43,10 +44,15 @@ public final class ProtocolVersions
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ProtocolVersions} class.
+     * Initializes a new instance of the {@code LocalClientTableGateway} class.
      */
-    private ProtocolVersions()
+    public LocalClientTableGateway()
     {
         super();
     }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
 }

@@ -1,5 +1,5 @@
 /*
- * ClientServiceAsServiceTest.java
+ * ClientNetworkTableStrategyTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,35 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 1, 2011 at 9:34:29 PM.
+ * Created on Apr 10, 2011 at 6:08:35 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.client;
 
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.transport.AbstractServiceTestCase;
+import org.gamegineer.table.internal.net.NetworkTable;
 import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
-import org.gamegineer.table.internal.net.transport.IService;
+import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.ClientService} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.transport.IService} interface.
+ * {@link org.gamegineer.table.internal.net.client.ClientNetworkTableStrategy}
+ * class.
  */
-public final class ClientServiceAsServiceTest
-    extends AbstractServiceTestCase
+public final class ClientNetworkTableStrategyTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ClientServiceAsServiceTest}
+     * Initializes a new instance of the {@code ClientNetworkTableStrategyTest}
      * class.
      */
-    public ClientServiceAsServiceTest()
+    public ClientNetworkTableStrategyTest()
     {
         super();
     }
@@ -54,12 +52,23 @@ public final class ClientServiceAsServiceTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.internal.net.transport.AbstractServiceTestCase#createService()
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * network table.
      */
-    @Override
-    protected IService createService()
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_NetworkTable_Null()
     {
-        return new ClientService( new NetworkTable( EasyMock.createMock( ITable.class ), EasyMock.createMock( ITransportLayerFactory.class ) ) );
+        new ClientNetworkTableStrategy( null, EasyMock.createMock( ITransportLayerFactory.class ) );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * transport layer factory.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_TransportLayerFactory_Null()
+    {
+        new ClientNetworkTableStrategy( new NetworkTable( EasyMock.createMock( ITable.class ) ), null );
     }
 }

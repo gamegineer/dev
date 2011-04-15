@@ -19,7 +19,7 @@
  * Created on Apr 2, 2011 at 9:18:45 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.common;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -32,7 +32,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.Authenticator} class.
+ * {@link org.gamegineer.table.internal.net.common.Authenticator} class.
  */
 public final class AuthenticatorTest
 {
@@ -159,5 +159,47 @@ public final class AuthenticatorTest
         throws Exception
     {
         assertTrue( authenticate( "", "" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Ensures the {@code createResponse} method throws an exception when passed
+     * a {@code null} challenge.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateResponse_Challenge_Null()
+        throws Exception
+    {
+        authenticator_.createResponse( null, new SecureString( "password".toCharArray() ), new byte[ 1 ] ); //$NON-NLS-1$
+    }
+
+    /**
+     * Ensures the {@code createResponse} method throws an exception when passed
+     * a {@code null} password.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateResponse_Password_Null()
+        throws Exception
+    {
+        authenticator_.createResponse( new byte[ 1 ], null, new byte[ 1 ] );
+    }
+
+    /**
+     * Ensures the {@code createResponse} method throws an exception when passed
+     * a {@code null} salt.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateResponse_Salt_Null()
+        throws Exception
+    {
+        authenticator_.createResponse( new byte[ 1 ], new SecureString( "password".toCharArray() ), null ); //$NON-NLS-1$
     }
 }

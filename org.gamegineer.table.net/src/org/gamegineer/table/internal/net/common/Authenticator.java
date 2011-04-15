@@ -19,8 +19,9 @@
  * Created on Apr 2, 2011 at 9:17:38 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.common;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
@@ -36,7 +37,7 @@ import org.gamegineer.table.net.NetworkTableException;
  * A network table protocol authenticator.
  */
 @Immutable
-final class Authenticator
+public final class Authenticator
 {
     // ======================================================================
     // Fields
@@ -65,7 +66,7 @@ final class Authenticator
     /**
      * Initializes a new instance of the {@code Authenticator} class.
      */
-    Authenticator()
+    public Authenticator()
     {
         super();
     }
@@ -84,7 +85,7 @@ final class Authenticator
      *         If an error occurs.
      */
     /* @NonNull */
-    byte[] createChallenge()
+    public byte[] createChallenge()
         throws NetworkTableException
     {
         return createSecureRandomBytes( CHALLENGE_LENGTH );
@@ -105,11 +106,14 @@ final class Authenticator
      * 
      * @return A new response buffer; never {@code null}.
      * 
+     * @throws java.lang.NullPointerException
+     *         If {@code challenge}, {@code password}, or {@code salt} is
+     *         {@code null}.
      * @throws org.gamegineer.table.net.NetworkTableException
      *         If an error occurs.
      */
     /* @NonNull */
-    byte[] createResponse(
+    public byte[] createResponse(
         /* @NonNull */
         final byte[] challenge,
         /* @NonNull */
@@ -118,9 +122,9 @@ final class Authenticator
         final byte[] salt )
         throws NetworkTableException
     {
-        assert challenge != null;
-        assert password != null;
-        assert salt != null;
+        assertArgumentNotNull( challenge, "challenge" ); //$NON-NLS-1$
+        assertArgumentNotNull( password, "password" ); //$NON-NLS-1$
+        assertArgumentNotNull( salt, "salt" ); //$NON-NLS-1$
 
         try
         {
@@ -146,7 +150,7 @@ final class Authenticator
      *         If an error occurs.
      */
     /* @NonNull */
-    byte[] createSalt()
+    public byte[] createSalt()
         throws NetworkTableException
     {
         return createSecureRandomBytes( SALT_LENGTH );

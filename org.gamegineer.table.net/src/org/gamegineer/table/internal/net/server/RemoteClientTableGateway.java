@@ -1,5 +1,5 @@
 /*
- * ServerService.java
+ * RemoteClientTableGateway.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,15 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 25, 2011 at 11:28:55 PM.
+ * Created on Apr 10, 2011 at 5:34:50 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.server;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Arrays;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
+import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
+import org.gamegineer.table.internal.net.common.Authenticator;
+import org.gamegineer.table.internal.net.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationRequestMessage;
@@ -35,11 +40,16 @@ import org.gamegineer.table.internal.net.transport.messages.HelloResponseMessage
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
- * A service that represents the server half of the network table protocol.
+ * A gateway to a remote client table.
+ * 
+ * <p>
+ * This gateway provides a network service that represents the server half of
+ * the network table protocol.
+ * </p>
  */
 @ThreadSafe
-final class ServerService
-    extends AbstractService
+final class RemoteClientTableGateway
+    extends AbstractRemoteTableGateway
 {
     // ======================================================================
     // Fields
@@ -72,17 +82,19 @@ final class ServerService
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ServerService} class.
+     * Initializes a new instance of the {@code RemoteClientTableGateway} class.
      * 
-     * @param networkTable
-     *        The network table associated with the service; must not be {@code
-     *        null}.
+     * @param context
+     *        The table gateway context; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code context} is {@code null}.
      */
-    ServerService(
+    RemoteClientTableGateway(
         /* @NonNull */
-        final NetworkTable networkTable )
+        final ITableGatewayContext context )
     {
-        super( networkTable );
+        super( context );
 
         challenge_ = null;
         playerName_ = null;
@@ -117,7 +129,7 @@ final class ServerService
         final EndAuthenticationMessage endAuthenticationMessage = new EndAuthenticationMessage();
         endAuthenticationMessage.setTag( IMessage.NO_TAG );
 
-        final SecureString password = getNetworkTable().getPassword();
+        final SecureString password = getTableGatewayContext().getPassword();
         try
         {
             final Authenticator authenticator = new Authenticator();
@@ -125,7 +137,7 @@ final class ServerService
             if( Arrays.equals( expectedResponse, message.getResponse() ) )
             {
                 System.out.println( String.format( "ServerService : client authenticated (tag=%d)", message.getTag() ) ); //$NON-NLS-1$
-                getNetworkTable().playerConnected( message.getPlayerName(), this );
+                getTableGatewayContext().playerConnected( message.getPlayerName(), this );
                 playerName_ = message.getPlayerName();
             }
             else
@@ -226,15 +238,15 @@ final class ServerService
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractService#messageReceivedInternal(org.gamegineer.table.internal.net.transport.IServiceContext, org.gamegineer.table.internal.net.transport.IMessage)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#messageReceivedInternal(org.gamegineer.table.internal.net.transport.IServiceContext, org.gamegineer.table.internal.net.transport.IMessage)
      */
     @Override
-    boolean messageReceivedInternal(
+    protected boolean messageReceivedInternal(
         final IServiceContext context,
         final IMessage message )
     {
-        assert context != null;
-        assert message != null;
+        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
+        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         if( message instanceof HelloRequestMessage )
@@ -252,35 +264,35 @@ final class ServerService
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractService#peerStoppedInternal(org.gamegineer.table.internal.net.transport.IServiceContext)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#peerStoppedInternal(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
-    void peerStoppedInternal(
+    protected void peerStoppedInternal(
         final IServiceContext context )
     {
-        assert context != null;
+        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         if( playerName_ != null )
         {
-            getNetworkTable().playerDisconnected( playerName_ );
+            getTableGatewayContext().playerDisconnected( playerName_ );
             playerName_ = null;
         }
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractService#stoppedInternal(org.gamegineer.table.internal.net.transport.IServiceContext)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#stoppedInternal(org.gamegineer.table.internal.net.transport.IServiceContext)
      */
     @Override
-    void stoppedInternal(
+    protected void stoppedInternal(
         final IServiceContext context )
     {
-        assert context != null;
+        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         if( playerName_ != null )
         {
-            getNetworkTable().playerDisconnected( playerName_ );
+            getTableGatewayContext().playerDisconnected( playerName_ );
             playerName_ = null;
         }
     }

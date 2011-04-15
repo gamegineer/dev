@@ -1,6 +1,6 @@
 /*
  * NetworkTableTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,9 @@
 
 package org.gamegineer.table.internal.net;
 
+import org.easymock.EasyMock;
+import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 import org.junit.Test;
 
 /**
@@ -47,12 +50,33 @@ public final class NetworkTableTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * table.
+     * Ensures the {@code NetworkTable(ITable)} constructor throws an exception
+     * when passed a {@code null} table.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_Table_Null()
+    public void testConstructorFromTable_Table_Null()
     {
         new NetworkTable( null );
+    }
+
+    /**
+     * Ensures the {@code NetworkTable(ITable, ITransportLayerFactory)}
+     * constructor throws an exception when passed a {@code null} table.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructorFromTableAndTransportLayerFactory_Table_Null()
+    {
+        new NetworkTable( null, EasyMock.createMock( ITransportLayerFactory.class ) );
+    }
+
+    /**
+     * Ensures the {@code NetworkTable(ITable, ITransportLayerFactory)}
+     * constructor throws an exception when passed a {@code null} transport
+     * layer factory.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructorFromTableAndTransportLayerFactory_TransportLayerFactory_Null()
+    {
+        new NetworkTable( EasyMock.createMock( ITable.class ), null );
     }
 }

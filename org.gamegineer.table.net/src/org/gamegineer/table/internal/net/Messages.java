@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.net;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
-import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 
 /**
  * A utility class to manage localized messages for the package.
@@ -35,25 +34,6 @@ final class Messages
     // ======================================================================
     // Fields
     // ======================================================================
-
-    // --- AbstractService --------------------------------------------------
-
-    /** An error occurred while deserializing a message. */
-    public static String AbstractService_messageReceived_deserializationError;
-
-    /** The service received an unknown message. */
-    public static String AbstractService_messageReceived_unknownMessage;
-
-    // --- Authenticator ----------------------------------------------------
-
-    /** Failed to create an authentication response. */
-    public static String Authenticator_createResponse_failed;
-
-    /** Failed to create a secret key. */
-    public static String Authenticator_createSecretKey_failed;
-
-    /** Failed to create a secure random byte buffer. */
-    public static String Authenticator_createSecureRandomBytes_failed;
 
     // --- NetworkTable -----------------------------------------------------
 
@@ -74,15 +54,6 @@ final class Messages
      * INetworkTableListener.networkDisconnected().
      */
     public static String NetworkTable_networkDisconnected_unexpectedException;
-
-    /** The player has connected. */
-    public static String NetworkTable_playerConnected_playerConnected;
-
-    /** The player is already registered. */
-    public static String NetworkTable_playerConnected_playerRegistered;
-
-    /** The player has disconnected. */
-    public static String NetworkTable_playerDisconnected_playerDisconnected;
 
     /** The network table listener is not registered. */
     public static String NetworkTable_removeNetworkTableListener_listener_notRegistered;
@@ -106,88 +77,5 @@ final class Messages
     private Messages()
     {
         super();
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    // --- AbstractService --------------------------------------------------
-
-    /**
-     * Gets the formatted message indicating an error occurred while
-     * deserializing a message.
-     * 
-     * @param messageEnvelope
-     *        The message envelope; must not be {@code null}.
-     * 
-     * @return The formatted message indicating an error occurred while
-     *         deserializing a message; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    static String AbstractService_messageReceived_deserializationError(
-        /* @NonNull */
-        final MessageEnvelope messageEnvelope )
-    {
-        return bind( AbstractService_messageReceived_deserializationError, messageEnvelope.getId(), messageEnvelope.getTag() );
-    }
-
-    /**
-     * Gets the formatted message indicating the service received an unknown
-     * message.
-     * 
-     * @param messageEnvelope
-     *        The message envelope; must not be {@code null}.
-     * 
-     * @return The formatted message indicating the service received an unknown
-     *         message; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    static String AbstractService_messageReceived_unknownMessage(
-        /* @NonNull */
-        final MessageEnvelope messageEnvelope )
-    {
-        return bind( AbstractService_messageReceived_unknownMessage, messageEnvelope.getId(), messageEnvelope.getTag() );
-    }
-
-    // --- NetworkTable -----------------------------------------------------
-
-    /**
-     * Gets the formatted message indicating the player has connected.
-     * 
-     * @param playerName
-     *        The name of the player that has connected; must not be {@code
-     *        null}.
-     * 
-     * @return The formatted message indicating the player has connected; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    static String NetworkTable_playerConnected_playerConnected(
-        /* @NonNull */
-        final String playerName )
-    {
-        return bind( NetworkTable_playerConnected_playerConnected, playerName );
-    }
-
-    /**
-     * Gets the formatted message indicating the player has disconnected.
-     * 
-     * @param playerName
-     *        The name of the player that has disconnected; must not be {@code
-     *        null}.
-     * 
-     * @return The formatted message indicating the player has disconnected;
-     *         never {@code null}.
-     */
-    /* @NonNull */
-    static String NetworkTable_playerDisconnected_playerDisconnected(
-        /* @NonNull */
-        final String playerName )
-    {
-        return bind( NetworkTable_playerDisconnected_playerDisconnected, playerName );
     }
 }

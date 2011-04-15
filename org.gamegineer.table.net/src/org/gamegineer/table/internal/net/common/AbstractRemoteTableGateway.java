@@ -1,5 +1,5 @@
 /*
- * AbstractService.java
+ * AbstractRemoteTableGateway.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 25, 2011 at 11:33:11 PM.
+ * Created on Apr 14, 2011 at 10:43:19 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.common;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
@@ -27,17 +27,21 @@ import java.util.Random;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.net.ITableGateway;
+import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 
 /**
- * Superclass for all implementations of {@link IService}.
+ * Superclass for all implementations of {@ink
+ * org.gamegineer.table.internal.net.ITableGateway}.
  */
 @ThreadSafe
-abstract class AbstractService
-    implements IService
+public abstract class AbstractRemoteTableGateway
+    implements ITableGateway, IService
 {
     // ======================================================================
     // Fields
@@ -46,12 +50,12 @@ abstract class AbstractService
     /** The instance lock. */
     private final Object lock_;
 
-    /** The network table associated with the service. */
-    private final NetworkTable networkTable_;
-
     /** The next available message tag. */
     @GuardedBy( "getLock()" )
     private int nextTag_;
+
+    /** The table gateway context. */
+    private final ITableGatewayContext tableGatewayContext_;
 
 
     // ======================================================================
@@ -59,21 +63,24 @@ abstract class AbstractService
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractService} class.
+     * Initializes a new instance of the {@code AbstractRemoteTableGateway}
+     * class.
      * 
-     * @param networkTable
-     *        The network table associated with the service; must not be {@code
-     *        null}.
+     * @param tableGatewayContext
+     *        The table gateway context; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableGatewayContext} is {@code null}.
      */
-    AbstractService(
+    protected AbstractRemoteTableGateway(
         /* @NonNull */
-        final NetworkTable networkTable )
+        final ITableGatewayContext tableGatewayContext )
     {
-        assert networkTable != null;
+        assertArgumentNotNull( tableGatewayContext, "tableGatewayContext" ); //$NON-NLS-1$
 
         lock_ = new Object();
-        networkTable_ = networkTable;
         nextTag_ = getInitialMessageTag();
+        tableGatewayContext_ = tableGatewayContext;
     }
 
 
@@ -82,9 +89,9 @@ abstract class AbstractService
     // ======================================================================
 
     /**
-     * Gets the initial message tag for the service.
+     * Gets the initial message tag.
      * 
-     * @return The initial message tag for the service.
+     * @return The initial message tag.
      */
     private static int getInitialMessageTag()
     {
@@ -93,35 +100,23 @@ abstract class AbstractService
     }
 
     /**
-     * Gets the instance lock for the service.
+     * Gets the instance lock for the object.
      * 
-     * @return The instance lock for the service; never {@code null}.
+     * @return The instance lock for the object; never {@code null}.
      */
     /* @NonNull */
-    final Object getLock()
+    protected final Object getLock()
     {
         return lock_;
     }
 
     /**
-     * Gets the network table associated with the service.
+     * Gets the next available message tag.
      * 
-     * @return The network table associated with the service; never {@code null}
-     *         .
-     */
-    /* @NonNull */
-    final NetworkTable getNetworkTable()
-    {
-        return networkTable_;
-    }
-
-    /**
-     * Gets the next available message tag for the service.
-     * 
-     * @return The next available message tag for the service.
+     * @return The next available message tag.
      */
     @GuardedBy( "getLock()" )
-    final int getNextMessageTag()
+    protected final int getNextMessageTag()
     {
         assert Thread.holdsLock( getLock() );
 
@@ -132,6 +127,17 @@ abstract class AbstractService
         }
 
         return tag;
+    }
+
+    /**
+     * Gets the table gateway context.
+     * 
+     * @return The table gateway context; never {@code null}.
+     */
+    /* @NonNull */
+    protected final ITableGatewayContext getTableGatewayContext()
+    {
+        return tableGatewayContext_;
     }
 
     /*
@@ -145,7 +151,7 @@ abstract class AbstractService
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertArgumentNotNull( messageEnvelope, "messageEnvelope" ); //$NON-NLS-1$
 
-        // TODO: should handle correlation of all response message tags in base class
+        // TODO: should handle correlation of all response message tags in this (base) class
 
         try
         {
@@ -154,17 +160,17 @@ abstract class AbstractService
             {
                 if( !messageReceivedInternal( context, message ) )
                 {
-                    Loggers.getDefaultLogger().warning( Messages.AbstractService_messageReceived_unknownMessage( messageEnvelope ) );
+                    Loggers.getDefaultLogger().warning( Messages.AbstractRemoteTableGateway_messageReceived_unknownMessage( messageEnvelope ) );
                 }
             }
         }
         catch( final IOException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractService_messageReceived_deserializationError( messageEnvelope ), e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableGateway_messageReceived_deserializationError( messageEnvelope ), e );
         }
         catch( final ClassNotFoundException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractService_messageReceived_deserializationError( messageEnvelope ), e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableGateway_messageReceived_deserializationError( messageEnvelope ), e );
         }
     }
 
@@ -186,16 +192,19 @@ abstract class AbstractService
      * 
      * @return {@code true} if the message was handled by the service; otherwise
      *         {@code false}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code context} or {@code message} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    boolean messageReceivedInternal(
+    protected boolean messageReceivedInternal(
         /* @NonNull */
         final IServiceContext context,
         /* @NonNull */
         final IMessage message )
     {
-        assert context != null;
-        assert message != null;
+        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
+        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         return false;
@@ -229,13 +238,16 @@ abstract class AbstractService
      * 
      * @param context
      *        The service context; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code context} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    void peerStoppedInternal(
+    protected void peerStoppedInternal(
         /* @NonNull */
         final IServiceContext context )
     {
-        assert context != null;
+        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         // do nothing
@@ -269,13 +281,16 @@ abstract class AbstractService
      * 
      * @param context
      *        The service context; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code context} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    void startedInternal(
+    protected void startedInternal(
         /* @NonNull */
         final IServiceContext context )
     {
-        assert context != null;
+        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         // do nothing
@@ -309,13 +324,16 @@ abstract class AbstractService
      * 
      * @param context
      *        The service context; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code context} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    void stoppedInternal(
+    protected void stoppedInternal(
         /* @NonNull */
         final IServiceContext context )
     {
-        assert context != null;
+        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         // do nothing

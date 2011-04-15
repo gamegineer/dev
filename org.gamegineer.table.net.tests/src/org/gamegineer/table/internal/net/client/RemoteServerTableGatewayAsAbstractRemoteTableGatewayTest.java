@@ -1,5 +1,5 @@
 /*
- * ServerServiceAsServiceTest.java
+ * RemoteServerTableGatewayAsAbstractRemoteTableGatewayTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,35 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 1, 2011 at 9:34:49 PM.
+ * Created on Apr 15, 2011 at 12:02:09 AM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.client;
 
 import org.easymock.EasyMock;
-import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.transport.AbstractServiceTestCase;
-import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
-import org.gamegineer.table.internal.net.transport.IService;
+import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.common.AbstractAbstractRemoteTableGatewayTestCase;
+import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.ServerService} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.transport.IService} interface.
+ * {@link org.gamegineer.table.internal.net.client.RemoteServerTableGateway}
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway}
+ * class.
  */
-public final class ServerServiceAsServiceTest
-    extends AbstractServiceTestCase
+public final class RemoteServerTableGatewayAsAbstractRemoteTableGatewayTest
+    extends AbstractAbstractRemoteTableGatewayTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ServerServiceAsServiceTest}
-     * class.
+     * Initializes a new instance of the {@code
+     * RemoteServerTableGatewayAsAbstractRemoteTableGatewayTest} class.
      */
-    public ServerServiceAsServiceTest()
+    public RemoteServerTableGatewayAsAbstractRemoteTableGatewayTest()
     {
         super();
     }
@@ -55,11 +55,11 @@ public final class ServerServiceAsServiceTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.AbstractServiceTestCase#createService()
+     * @see org.gamegineer.table.internal.net.common.AbstractAbstractRemoteTableGatewayTestCase#createRemoteTableGateway()
      */
     @Override
-    protected IService createService()
+    protected AbstractRemoteTableGateway createRemoteTableGateway()
     {
-        return new ServerService( new NetworkTable( EasyMock.createMock( ITable.class ), EasyMock.createMock( ITransportLayerFactory.class ) ) );
+        return new RemoteServerTableGateway( EasyMock.createMock( ITableGatewayContext.class ) );
     }
 }

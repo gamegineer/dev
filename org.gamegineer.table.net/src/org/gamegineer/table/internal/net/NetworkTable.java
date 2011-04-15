@@ -23,17 +23,13 @@ package org.gamegineer.table.internal.net;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.transport.IService;
-import org.gamegineer.table.internal.net.transport.ITransportLayer;
-import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
+import org.gamegineer.table.internal.net.client.ClientNetworkTableStrategy;
+import org.gamegineer.table.internal.net.server.ServerNetworkTableStrategy;
 import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 import org.gamegineer.table.internal.net.transport.tcp.TcpTransportLayerFactory;
 import org.gamegineer.table.net.INetworkTable;
@@ -60,33 +56,14 @@ public final class NetworkTable
     private final CopyOnWriteArrayList<INetworkTableListener> listeners_;
 
     /**
-     * A reference to the local player name or {@code null} if the network is
-     * not connected.
+     * A reference to the active network table strategy or {@code null} if the
+     * network is not connected.
      */
-    private final AtomicReference<String> localPlayerNameRef_;
-
-    /**
-     * A reference to the server password or {@code null} if the network is not
-     * connected.
-     */
-    private final AtomicReference<SecureString> passwordRef_;
-
-    /**
-     * The collection of service handlers associated with each player. The key
-     * is the player name; the value is the service handler associated with the
-     * player.
-     */
-    private final ConcurrentMap<String, IService> serviceHandlers_;
+    private final AtomicReference<INetworkTableStrategy> strategyRef_;
 
     /** The table to be attached to the network. */
     @SuppressWarnings( "unused" )
     private final ITable table_;
-
-    /**
-     * A reference to the active transport layer or {@code null} if the network
-     * is not connected.
-     */
-    private final AtomicReference<ITransportLayer> transportLayerRef_;
 
     /** The network table transport layer factory. */
     private final ITransportLayerFactory transportLayerFactory_;
@@ -124,24 +101,22 @@ public final class NetworkTable
      *        null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code table} is {@code null}.
+     *         If {@code table} or {@code transportLayerFactory} is {@code null}
+     *         .
      */
-    NetworkTable(
+    public NetworkTable(
         /* @NonNull */
         final ITable table,
         /* @NonNull */
         final ITransportLayerFactory transportLayerFactory )
     {
         assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
-        assert transportLayerFactory != null;
+        assertArgumentNotNull( transportLayerFactory, "transportLayerFactory" ); //$NON-NLS-1$
 
         connectionStateRef_ = new AtomicReference<ConnectionState>( ConnectionState.DISCONNECTED );
         listeners_ = new CopyOnWriteArrayList<INetworkTableListener>();
-        localPlayerNameRef_ = new AtomicReference<String>( null );
-        passwordRef_ = new AtomicReference<SecureString>( null );
-        serviceHandlers_ = new ConcurrentHashMap<String, IService>();
+        strategyRef_ = new AtomicReference<INetworkTableStrategy>( null );
         table_ = table;
-        transportLayerRef_ = new AtomicReference<ITransportLayer>( null );
         transportLayerFactory_ = transportLayerFactory;
     }
 
@@ -166,9 +141,8 @@ public final class NetworkTable
      * 
      * @param configuration
      *        The network table configuration; must not be {@code null}.
-     * @param transportLayer
-     *        The transport layer used to establish the connection; must not be
-     *        {@code null}.
+     * @param strategy
+     *        The network table strategy; must not be {@code null}.
      * 
      * @throws org.gamegineer.table.net.NetworkTableException
      *         If the connection cannot be established or the network is already
@@ -178,19 +152,16 @@ public final class NetworkTable
         /* @NonNull */
         final INetworkTableConfiguration configuration,
         /* @NonNull */
-        final ITransportLayer transportLayer )
+        final INetworkTableStrategy strategy )
         throws NetworkTableException
     {
         assert configuration != null;
-        assert transportLayer != null;
+        assert strategy != null;
 
         if( connectionStateRef_.compareAndSet( ConnectionState.DISCONNECTED, ConnectionState.CONNECTING ) )
         {
-            playerConnected( configuration.getLocalPlayerName(), new LocalService() );
-            localPlayerNameRef_.set( configuration.getLocalPlayerName() );
-            passwordRef_.set( configuration.getPassword() );
-            transportLayer.open( configuration.getHostName(), configuration.getPort() );
-            transportLayerRef_.set( transportLayer );
+            strategy.connect( configuration );
+            strategyRef_.set( strategy );
             connectionStateRef_.set( ConnectionState.CONNECTED );
             fireNetworkConnected();
         }
@@ -208,14 +179,9 @@ public final class NetworkTable
     {
         if( connectionStateRef_.compareAndSet( ConnectionState.CONNECTED, ConnectionState.DISCONNECTING ) )
         {
-            final ITransportLayer transportLayer = transportLayerRef_.getAndSet( null );
-            transportLayer.close();
+            final INetworkTableStrategy strategy = strategyRef_.getAndSet( null );
+            strategy.disconnect();
             connectionStateRef_.set( ConnectionState.DISCONNECTED );
-            final SecureString password = passwordRef_.getAndSet( null );
-            password.dispose();
-            // TODO: need to gracefully shut down all remote clients
-            playerDisconnected( localPlayerNameRef_.getAndSet( null ) );
-            serviceHandlers_.clear();
             fireNetworkDisconnected();
         }
     }
@@ -258,31 +224,6 @@ public final class NetworkTable
         }
     }
 
-    /**
-     * Gets the local player name.
-     * 
-     * @return The local player name or {@code null} if the network is not
-     *         connected.
-     */
-    /* @Nullable */
-    String getLocalPlayerName()
-    {
-        return localPlayerNameRef_.get();
-    }
-
-    /**
-     * Gets the server password.
-     * 
-     * @return The server password or {@code null} if the network is not
-     *         connected.
-     */
-    /* @Nullable */
-    SecureString getPassword()
-    {
-        final SecureString password = passwordRef_.get();
-        return (password != null) ? new SecureString( password ) : null;
-    }
-
     /*
      * @see org.gamegineer.table.net.INetworkTable#host(org.gamegineer.table.net.INetworkTableConfiguration)
      */
@@ -293,20 +234,7 @@ public final class NetworkTable
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, transportLayerFactory_.createPassiveTransportLayer( new ITransportLayerContext()
-        {
-            @Override
-            public IService createService()
-            {
-                return new ServerService( NetworkTable.this );
-            }
-
-            @Override
-            public void transportLayerDisconnected()
-            {
-                disconnect();
-            }
-        } ) );
+        connect( configuration, new ServerNetworkTableStrategy( this, transportLayerFactory_ ) );
     }
 
     /*
@@ -328,72 +256,7 @@ public final class NetworkTable
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, transportLayerFactory_.createActiveTransportLayer( new ITransportLayerContext()
-        {
-            @Override
-            public IService createService()
-            {
-                return new ClientService( NetworkTable.this );
-            }
-
-            @Override
-            public void transportLayerDisconnected()
-            {
-                disconnect();
-            }
-        } ) );
-    }
-
-    /**
-     * Invoked when a remote player has connected.
-     * 
-     * @param playerName
-     *        The name of the remote player that has connected; must not be
-     *        {@code null}.
-     * @param serviceHandler
-     *        The service handler associated with the remote player; must not be
-     *        {@code null}.
-     * 
-     * @throws org.gamegineer.table.net.NetworkTableException
-     *         If an error occurs.
-     */
-    void playerConnected(
-        /* @NonNull */
-        final String playerName,
-        /* @NonNull */
-        final IService serviceHandler )
-        throws NetworkTableException
-    {
-        assert playerName != null;
-        assert serviceHandler != null;
-
-        if( serviceHandlers_.putIfAbsent( playerName, serviceHandler ) == null )
-        {
-            Loggers.getDefaultLogger().info( Messages.NetworkTable_playerConnected_playerConnected( playerName ) );
-        }
-        else
-        {
-            throw new NetworkTableException( Messages.NetworkTable_playerConnected_playerRegistered );
-        }
-    }
-
-    /**
-     * Invoked when a remote player has disconnected.
-     * 
-     * @param playerName
-     *        The name of the remote player that has disconnected; must not be
-     *        {@code null}.
-     */
-    void playerDisconnected(
-        /* @NonNull */
-        final String playerName )
-    {
-        assert playerName != null;
-
-        if( serviceHandlers_.remove( playerName ) != null )
-        {
-            Loggers.getDefaultLogger().info( Messages.NetworkTable_playerDisconnected_playerDisconnected( playerName ) );
-        }
+        connect( configuration, new ClientNetworkTableStrategy( this, transportLayerFactory_ ) );
     }
 
     /*
