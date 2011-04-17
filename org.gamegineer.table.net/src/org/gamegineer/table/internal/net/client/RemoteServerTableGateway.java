@@ -22,10 +22,13 @@
 package org.gamegineer.table.internal.net.client;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
@@ -51,6 +54,18 @@ final class RemoteServerTableGateway
     extends AbstractRemoteTableGateway
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /**
+     * The name of the remote server or {@code null} if the client has not yet
+     * been authenticated.
+     */
+    @GuardedBy( "getLock()" )
+    private String playerName_;
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
@@ -68,12 +83,30 @@ final class RemoteServerTableGateway
         final ITableGatewayContext context )
     {
         super( context );
+
+        playerName_ = null;
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * @throws java.lang.IllegalStateException
+     *         If the client has not yet been authenticated.
+     * 
+     * @see org.gamegineer.table.internal.net.ITableGateway#getPlayerName()
+     */
+    @Override
+    public String getPlayerName()
+    {
+        synchronized( getLock() )
+        {
+            assertStateLegal( playerName_ != null, Messages.RemoteServerTableGateway_playerNotAuthenticated );
+            return playerName_;
+        }
+    }
 
     /**
      * Handles a Begin Authentication Request message.
@@ -153,6 +186,18 @@ final class RemoteServerTableGateway
         else
         {
             System.out.println( String.format( "ClientService : completed authentication successfully (tag=%d): ", message.getTag() ) ); //$NON-NLS-1$
+
+            try
+            {
+                playerName_ = "<<server>>"; //$NON-NLS-1$
+                getTableGatewayContext().addTableGateway( this );
+            }
+            catch( final NetworkTableException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.RemoteServerTableGateway_serverTableGatewayNotRegistered, e );
+                playerName_ = null;
+                context.stopService();
+            }
         }
     }
 
@@ -228,7 +273,28 @@ final class RemoteServerTableGateway
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
+        if( playerName_ != null )
+        {
+            getTableGatewayContext().removeTableGateway( this );
+            playerName_ = null;
+        }
+
         getTableGatewayContext().disconnectNetworkTable();
+    }
+
+    /**
+     * Sets the name of the remote player.
+     * 
+     * <p>
+     * This method is only intended to support testing.
+     * </p>
+     */
+    void setPlayerName()
+    {
+        synchronized( getLock() )
+        {
+            playerName_ = "<<server>>"; //$NON-NLS-1$
+        }
     }
 
     /*
@@ -259,6 +325,12 @@ final class RemoteServerTableGateway
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
+
+        if( playerName_ != null )
+        {
+            getTableGatewayContext().removeTableGateway( this );
+            playerName_ = null;
+        }
 
         getTableGatewayContext().disconnectNetworkTable();
     }

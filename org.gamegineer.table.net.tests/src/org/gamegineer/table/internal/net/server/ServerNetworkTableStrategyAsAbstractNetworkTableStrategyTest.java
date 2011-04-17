@@ -1,5 +1,5 @@
 /*
- * RemoteClientTableGatewayAsAbstractRemoteTableGatewayTest.java
+ * ServerNetworkTableStrategyAsAbstractNetworkTableStrategyTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,25 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 15, 2011 at 12:04:12 AM.
+ * Created on Apr 10, 2011 at 6:20:52 PM.
  */
 
 package org.gamegineer.table.internal.net.server;
 
 import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.ITableGatewayContext;
-import org.gamegineer.table.internal.net.common.AbstractAbstractRemoteTableGatewayTestCase;
-import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
+import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.internal.net.NetworkTable;
+import org.gamegineer.table.internal.net.common.AbstractAbstractNetworkTableStrategyTestCase;
+import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
+import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactory;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.server.RemoteClientTableGateway}
+ * {@link org.gamegineer.table.internal.net.server.ServerNetworkTableStrategy}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway}
+ * {@link org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy}
  * class.
  */
-public final class RemoteClientTableGatewayAsAbstractRemoteTableGatewayTest
-    extends AbstractAbstractRemoteTableGatewayTestCase
+public final class ServerNetworkTableStrategyAsAbstractNetworkTableStrategyTest
+    extends AbstractAbstractNetworkTableStrategyTestCase<ServerNetworkTableStrategy>
 {
     // ======================================================================
     // Constructors
@@ -42,9 +44,9 @@ public final class RemoteClientTableGatewayAsAbstractRemoteTableGatewayTest
 
     /**
      * Initializes a new instance of the {@code
-     * RemoteClientTableGatewayAsAbstractRemoteTableGatewayTest} class.
+     * ServerNetworkTableStrategyAsAbstractNetworkTableStrategyTest} class.
      */
-    public RemoteClientTableGatewayAsAbstractRemoteTableGatewayTest()
+    public ServerNetworkTableStrategyAsAbstractNetworkTableStrategyTest()
     {
         super();
     }
@@ -55,13 +57,13 @@ public final class RemoteClientTableGatewayAsAbstractRemoteTableGatewayTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractTableGatewayTestCase#createTableGateway()
+     * @see org.gamegineer.table.internal.net.AbstractNetworkTableStrategyTestCase#createNetworkTableStrategy()
      */
     @Override
-    protected AbstractRemoteTableGateway createTableGateway()
+    protected ServerNetworkTableStrategy createNetworkTableStrategy()
     {
-        final RemoteClientTableGateway tableGateway = new RemoteClientTableGateway( EasyMock.createMock( ITableGatewayContext.class ) );
-        tableGateway.setPlayerName( "playerName" ); //$NON-NLS-1$
-        return tableGateway;
+        final ITransportLayerFactory transportLayerFactory = new FakeTransportLayerFactory();
+        final NetworkTable networkTable = new NetworkTable( EasyMock.createMock( ITable.class ), transportLayerFactory );
+        return new ServerNetworkTableStrategy( networkTable, transportLayerFactory );
     }
 }

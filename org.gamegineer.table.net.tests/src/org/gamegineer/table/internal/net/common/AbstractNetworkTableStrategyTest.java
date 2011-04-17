@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.internal.net.common;
 
+import static org.junit.Assert.assertEquals;
+import java.util.Collection;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.ITableGateway;
@@ -100,24 +102,6 @@ public final class AbstractNetworkTableStrategyTest
             {
                 return null;
             }
-
-            @Override
-            public void playerConnected(
-                @SuppressWarnings( "unused" )
-                final String playerName,
-                @SuppressWarnings( "unused" )
-                final ITableGateway tableGateway )
-            {
-                // do nothing
-            }
-
-            @Override
-            public void playerDisconnected(
-                @SuppressWarnings( "unused" )
-                final String playerName )
-            {
-                // do nothing
-            }
         };
     }
 
@@ -185,5 +169,21 @@ public final class AbstractNetworkTableStrategyTest
     public void testGetPassword_Disconnected()
     {
         networkTableStrategy_.getPassword();
+    }
+
+    /**
+     * Ensures the {@code getTableGateways} method returns a copy of the
+     * registered table gateways collection.
+     */
+    @Test
+    public void testGetTableGateways_ReturnValue_Copy()
+    {
+        final Collection<ITableGateway> tableGateways = networkTableStrategy_.getTableGateways();
+        final int expectedTableGatewaysSize = tableGateways.size();
+        tableGateways.add( EasyMock.createMock( ITableGateway.class ) );
+
+        final int actualTableGatewaysSize = networkTableStrategy_.getTableGateways().size();
+
+        assertEquals( expectedTableGatewaysSize, actualTableGatewaysSize );
     }
 }

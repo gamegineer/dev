@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.server;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.util.Arrays;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -63,7 +64,7 @@ final class RemoteClientTableGateway
     private byte[] challenge_;
 
     /**
-     * The name of the remote player or {@code null} if the player has not yet
+     * The name of the remote player or {@code null} if the client has not yet
      * been authenticated.
      */
     @GuardedBy( "getLock()" )
@@ -107,6 +108,22 @@ final class RemoteClientTableGateway
     // ======================================================================
 
     /**
+     * @throws java.lang.IllegalStateException
+     *         If the client has not yet been authenticated.
+     * 
+     * @see org.gamegineer.table.internal.net.ITableGateway#getPlayerName()
+     */
+    @Override
+    public String getPlayerName()
+    {
+        synchronized( getLock() )
+        {
+            assertStateLegal( playerName_ != null, Messages.RemoteClientTableGateway_playerNotAuthenticated );
+            return playerName_;
+        }
+    }
+
+    /**
      * Handles a Begin Authentication Response message.
      * 
      * @param context
@@ -137,8 +154,17 @@ final class RemoteClientTableGateway
             if( Arrays.equals( expectedResponse, message.getResponse() ) )
             {
                 System.out.println( String.format( "ServerService : client authenticated (tag=%d)", message.getTag() ) ); //$NON-NLS-1$
-                getTableGatewayContext().playerConnected( message.getPlayerName(), this );
                 playerName_ = message.getPlayerName();
+                try
+                {
+                    getTableGatewayContext().addTableGateway( this );
+                }
+                catch( final NetworkTableException e )
+                {
+                    System.out.println( "ServerService: a player with the same name is already registered" ); //$NON-NLS-1$
+                    playerName_ = null;
+                    throw e;
+                }
             }
             else
             {
@@ -275,8 +301,29 @@ final class RemoteClientTableGateway
 
         if( playerName_ != null )
         {
-            getTableGatewayContext().playerDisconnected( playerName_ );
+            getTableGatewayContext().removeTableGateway( this );
             playerName_ = null;
+        }
+    }
+
+    /**
+     * Sets the name of the remote player.
+     * 
+     * <p>
+     * This method is only intended to support testing.
+     * </p>
+     * 
+     * @param playerName
+     *        The name of the remote player or {@code null} if the client has
+     *        not yet been authenticated.
+     */
+    void setPlayerName(
+        /* @Nullable */
+        final String playerName )
+    {
+        synchronized( getLock() )
+        {
+            playerName_ = playerName;
         }
     }
 
@@ -292,7 +339,7 @@ final class RemoteClientTableGateway
 
         if( playerName_ != null )
         {
-            getTableGatewayContext().playerDisconnected( playerName_ );
+            getTableGatewayContext().removeTableGateway( this );
             playerName_ = null;
         }
     }

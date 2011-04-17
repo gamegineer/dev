@@ -22,9 +22,13 @@
 package org.gamegineer.table.internal.net;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
 import org.gamegineer.common.core.security.SecureString;
+import org.gamegineer.table.net.NetworkTableException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +42,9 @@ public abstract class AbstractTableGatewayContextTestCase
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The mocks control for use in the fixture. */
+    private IMocksControl mocksControl_;
 
     /** The table gateway context under test in the fixture. */
     private ITableGatewayContext tableGatewayContext_;
@@ -62,6 +69,29 @@ public abstract class AbstractTableGatewayContextTestCase
     // ======================================================================
 
     /**
+     * Indicates the specified table gateway context contains the specified
+     * table gateway.
+     * 
+     * @param tableGatewayContext
+     *        The table gateway context under test in the fixture; must not be
+     *        {@code null}.
+     * @param tableGateway
+     *        The table gateway; must not be {@code null}.
+     * 
+     * @return {@code true} if the specified table gateway context contains the
+     *         specified table gateway; otherwise {@code false}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableGatewayContext} or {@code tableGateway} is {@code
+     *         null}.
+     */
+    protected abstract boolean containsTableGateway(
+        /* @NonNull */
+        ITableGatewayContext tableGatewayContext,
+        /* @NonNull */
+        ITableGateway tableGateway );
+
+    /**
      * Creates the table gateway context to be tested.
      * 
      * @return The table gateway context to be tested; never {@code null}.
@@ -83,6 +113,7 @@ public abstract class AbstractTableGatewayContextTestCase
     public void setUp()
         throws Exception
     {
+        mocksControl_ = EasyMock.createControl();
         tableGatewayContext_ = createTableGatewayContext();
         assertNotNull( tableGatewayContext_ );
     }
@@ -98,6 +129,72 @@ public abstract class AbstractTableGatewayContextTestCase
         throws Exception
     {
         tableGatewayContext_ = null;
+        mocksControl_ = null;
+    }
+
+    /**
+     * Ensures the {@code addTableGateway} method adds the table gateway when
+     * the table gateway is absent from the registered table gateways
+     * collection.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testAddTableGateway_TableGateway_Absent()
+        throws Exception
+    {
+        final ITableGateway tableGateway = mocksControl_.createMock( ITableGateway.class );
+        EasyMock.expect( tableGateway.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+        mocksControl_.replay();
+        assertFalse( containsTableGateway( tableGatewayContext_, tableGateway ) );
+
+        tableGatewayContext_.addTableGateway( tableGateway );
+
+        assertTrue( containsTableGateway( tableGatewayContext_, tableGateway ) );
+    }
+
+    /**
+     * Ensures the {@code addTableGateway} method throws an exception when
+     * passed a {@code null} table gateway.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testAddTableGateway_TableGateway_Null()
+        throws Exception
+    {
+        tableGatewayContext_.addTableGateway( null );
+    }
+
+    /**
+     * Ensures the {@code addTableGateway} method throws an exception when the
+     * table gateway is present in the registered table gateways collection.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NetworkTableException.class )
+    public void testAddTableGateway_TableGateway_Present()
+        throws Exception
+    {
+        final ITableGateway tableGateway = mocksControl_.createMock( ITableGateway.class );
+        EasyMock.expect( tableGateway.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+        mocksControl_.replay();
+        tableGatewayContext_.addTableGateway( tableGateway );
+
+        tableGatewayContext_.addTableGateway( tableGateway );
+    }
+
+    /**
+     * Ensures the {@code getLocalPlayerName} method does not return {@code
+     * null}.
+     */
+    @Test
+    public void testGetLocalPlayerName_ReturnValue_NonNull()
+    {
+        assertNotNull( tableGatewayContext_.getLocalPlayerName() );
     }
 
     /**
@@ -116,40 +213,63 @@ public abstract class AbstractTableGatewayContextTestCase
     }
 
     /**
-     * Ensures the {@code playerConnected} method throws an exception when
-     * passed a {@code null} player name.
+     * Ensures the {@code getPassword} method does not return {@code null}.
+     */
+    @Test
+    public void testGetPassword_ReturnValue_NonNull()
+    {
+        assertNotNull( tableGatewayContext_.getPassword() );
+    }
+
+    /**
+     * Ensures the {@code removeTableGateway} method throws an exception when
+     * the table gateway is absent from the registered table gateways
+     * collection.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( expected = NullPointerException.class )
-    public void testPlayerConnected_PlayerName_Null()
+    @Test( expected = IllegalArgumentException.class )
+    public void testRemoveTableGateway_TableGateway_Absent()
         throws Exception
     {
-        tableGatewayContext_.playerConnected( null, EasyMock.createMock( ITableGateway.class ) );
+        final ITableGateway tableGateway = mocksControl_.createMock( ITableGateway.class );
+        EasyMock.expect( tableGateway.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+        mocksControl_.replay();
+
+        tableGatewayContext_.removeTableGateway( tableGateway );
     }
 
     /**
-     * Ensures the {@code playerConnected} method throws an exception when
+     * Ensures the {@code removeTableGateway} method throws an exception when
      * passed a {@code null} table gateway.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testRemoveTableGateway_TableGateway_Null()
+    {
+        tableGatewayContext_.removeTableGateway( null );
+    }
+
+    /**
+     * Ensures the {@code removeTableGateway} method removes the table gateway
+     * when the table gateway is present in the registered table gateways
+     * collection.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( expected = NullPointerException.class )
-    public void testPlayerConnected_TableGateway_Null()
+    @Test
+    public void testRemoveTableGateway_TableGateway_Present()
         throws Exception
     {
-        tableGatewayContext_.playerConnected( "playerName", null ); //$NON-NLS-1$
-    }
+        final ITableGateway tableGateway = mocksControl_.createMock( ITableGateway.class );
+        EasyMock.expect( tableGateway.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+        mocksControl_.replay();
+        tableGatewayContext_.addTableGateway( tableGateway );
+        assertTrue( containsTableGateway( tableGatewayContext_, tableGateway ) );
 
-    /**
-     * Ensures the {@code playerDisconnected} method throws an exception when
-     * passed a {@code null} player name.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testPlayerDisconnected_PlayerName_Null()
-    {
-        tableGatewayContext_.playerDisconnected( null );
+        tableGatewayContext_.removeTableGateway( tableGateway );
+
+        assertFalse( containsTableGateway( tableGatewayContext_, tableGateway ) );
     }
 }

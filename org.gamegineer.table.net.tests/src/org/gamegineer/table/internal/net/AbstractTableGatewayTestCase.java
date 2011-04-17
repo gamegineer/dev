@@ -1,5 +1,5 @@
 /*
- * RemoteClientTableGatewayTest.java
+ * AbstractTableGatewayTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,30 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 14, 2011 at 11:10:47 PM.
+ * Created on Apr 16, 2011 at 11:04:26 PM.
  */
 
-package org.gamegineer.table.internal.net.server;
+package org.gamegineer.table.internal.net;
 
-import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.ITableGatewayContext;
+import static org.junit.Assert.assertNotNull;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.server.RemoteClientTableGateway}
- * class.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.internal.net.ITableGateway} interface.
+ * 
+ * @param <T>
+ *        The type of the table gateway.
  */
-public final class RemoteClientTableGatewayTest
+public abstract class AbstractTableGatewayTestCase<T extends ITableGateway>
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The remote client table gateway under test in the fixture. */
-    private RemoteClientTableGateway remoteClientTableGateway_;
+    /** The table gateway under test in the fixture. */
+    private T tableGateway_;
 
 
     // ======================================================================
@@ -47,10 +48,10 @@ public final class RemoteClientTableGatewayTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code RemoteClientTableGatewayTest}
+     * Initializes a new instance of the {@code AbstractTableGatewayTestCase}
      * class.
      */
-    public RemoteClientTableGatewayTest()
+    protected AbstractTableGatewayTestCase()
     {
         super();
     }
@@ -59,6 +60,30 @@ public final class RemoteClientTableGatewayTest
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates the table gateway to be tested.
+     * 
+     * @return The table gateway to be tested; never {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    /* @NonNull */
+    protected abstract T createTableGateway()
+        throws Exception;
+
+    /**
+     * Gets the table gateway under test in the fixture.
+     * 
+     * @return The table gateway under test in the fixture; never {@code null}.
+     */
+    /* @NonNull */
+    protected final T getTableGateway()
+    {
+        assertNotNull( tableGateway_ );
+        return tableGateway_;
+    }
 
     /**
      * Sets up the test fixture.
@@ -70,7 +95,8 @@ public final class RemoteClientTableGatewayTest
     public void setUp()
         throws Exception
     {
-        remoteClientTableGateway_ = new RemoteClientTableGateway( EasyMock.createMock( ITableGatewayContext.class ) );
+        tableGateway_ = createTableGateway();
+        assertNotNull( tableGateway_ );
     }
 
     /**
@@ -83,16 +109,15 @@ public final class RemoteClientTableGatewayTest
     public void tearDown()
         throws Exception
     {
-        remoteClientTableGateway_ = null;
+        tableGateway_ = null;
     }
 
     /**
-     * Ensures the {@code getPlayerName} method throws an exception when the
-     * client has not yet authenticated.
+     * Ensures the {@code getPlayerName} method does not return {@code null}.
      */
-    @Test( expected = IllegalStateException.class )
-    public void testGetPlayerName_NotAuthenticated()
+    @Test
+    public void testGetPlayerName_ReturnValue_NonNull()
     {
-        remoteClientTableGateway_.getPlayerName();
+        assertNotNull( tableGateway_.getPlayerName() );
     }
 }

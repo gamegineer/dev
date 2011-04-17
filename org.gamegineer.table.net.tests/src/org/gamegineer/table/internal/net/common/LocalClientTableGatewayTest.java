@@ -1,5 +1,5 @@
 /*
- * AbstractRemoteTableGatewayTest.java
+ * LocalClientTableGatewayTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 14, 2011 at 11:03:54 PM.
+ * Created on Apr 16, 2011 at 11:17:19 PM.
  */
 
 package org.gamegineer.table.internal.net.common;
@@ -25,20 +25,20 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway}
+ * {@link org.gamegineer.table.internal.net.common.LocalClientTableGateway}
  * class.
  */
-public final class AbstractRemoteTableGatewayTest
+public final class LocalClientTableGatewayTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractRemoteTableGatewayTest}
+     * Initializes a new instance of the {@code LocalClientTableGatewayTest}
      * class.
      */
-    public AbstractRemoteTableGatewayTest()
+    public LocalClientTableGatewayTest()
     {
         super();
     }
@@ -50,18 +50,11 @@ public final class AbstractRemoteTableGatewayTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * table gateway context.
+     * player name.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_TableGatewayContext_Null()
+    public void testConstructor_PlayerName_Null()
     {
-        new AbstractRemoteTableGateway( null )
-        {
-            @Override
-            public String getPlayerName()
-            {
-                throw new AssertionError( "not implemented" ); //$NON-NLS-1$
-            }
-        };
+        new LocalClientTableGateway( null );
     }
 }

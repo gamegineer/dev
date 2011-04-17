@@ -31,15 +31,18 @@ import org.junit.Test;
 /**
  * A fixture for testing the basic aspects of classes that implement the
  * {@link org.gamegineer.table.internal.net.INetworkTableStrategy} interface.
+ * 
+ * @param <T>
+ *        The type of the network table strategy.
  */
-public abstract class AbstractNetworkTableStrategyTestCase
+public abstract class AbstractNetworkTableStrategyTestCase<T extends INetworkTableStrategy>
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The network table strategy under test in the fixture. */
-    private INetworkTableStrategy networkTableStrategy_;
+    private T networkTableStrategy_;
 
 
     // ======================================================================
@@ -69,8 +72,21 @@ public abstract class AbstractNetworkTableStrategyTestCase
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract INetworkTableStrategy createNetworkTableStrategy()
+    protected abstract T createNetworkTableStrategy()
         throws Exception;
+
+    /**
+     * Gets the network table strategy under test in the fixture.
+     * 
+     * @return The network table strategy under test in the fixture; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    protected final T getNetworkTableStrategy()
+    {
+        assertNotNull( networkTableStrategy_ );
+        return networkTableStrategy_;
+    }
 
     /**
      * Sets up the test fixture.

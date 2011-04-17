@@ -22,20 +22,15 @@
 package org.gamegineer.table.internal.net.server;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.util.HashSet;
-import java.util.Set;
-import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.NetworkTable;
 import org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy;
-import org.gamegineer.table.internal.net.common.LocalClientTableGateway;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
-import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * Implementation of
@@ -46,15 +41,6 @@ import org.gamegineer.table.net.NetworkTableException;
 public final class ServerNetworkTableStrategy
     extends AbstractNetworkTableStrategy
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The collection of connected player names. */
-    @GuardedBy( "getLock()" )
-    private final Set<String> connectedPlayerNames_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -81,28 +67,12 @@ public final class ServerNetworkTableStrategy
         final ITransportLayerFactory transportLayerFactory )
     {
         super( networkTable, transportLayerFactory );
-
-        connectedPlayerNames_ = new HashSet<String>();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy#connecting()
-     */
-    @Override
-    protected void connecting()
-        throws NetworkTableException
-    {
-        assert Thread.holdsLock( getLock() );
-
-        super.connecting();
-
-        playerConnected( getLocalPlayerName(), new LocalClientTableGateway() );
-    }
 
     /*
      * @see org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy#createTransportLayer(org.gamegineer.table.internal.net.transport.ITransportLayerFactory)
@@ -132,19 +102,6 @@ public final class ServerNetworkTableStrategy
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy#disconnected()
-     */
-    @Override
-    protected void disconnected()
-    {
-        assert Thread.holdsLock( getLock() );
-
-        super.disconnected();
-
-        playerDisconnected( getLocalPlayerName() );
-    }
-
-    /*
      * @see org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy#disconnecting()
      */
     @Override
@@ -158,72 +115,32 @@ public final class ServerNetworkTableStrategy
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy#dispose()
+     * @see org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy#tableGatewayAdded(org.gamegineer.table.internal.net.ITableGateway)
      */
     @Override
-    protected void dispose()
+    protected void tableGatewayAdded(
+        final ITableGateway tableGateway )
     {
+        assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        connectedPlayerNames_.clear();
+        super.tableGatewayAdded( tableGateway );
 
-        super.dispose();
-    }
-
-    /**
-     * Gets the collection of connected player names.
-     * 
-     * @return The collection of connected player names; never {@code null}.
-     */
-    /* @NonNull */
-    Set<String> getConnectedPlayerNames()
-    {
-        synchronized( getLock() )
-        {
-            return new HashSet<String>( connectedPlayerNames_ );
-        }
+        Loggers.getDefaultLogger().info( Messages.ServerNetworkTableStrategy_playerConnected_playerConnected( tableGateway.getPlayerName() ) );
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableGatewayContext#playerConnected(java.lang.String, org.gamegineer.table.internal.net.ITableGateway)
+     * @see org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy#tableGatewayRemoved(org.gamegineer.table.internal.net.ITableGateway)
      */
     @Override
-    public void playerConnected(
-        final String playerName,
+    protected void tableGatewayRemoved(
         final ITableGateway tableGateway )
-        throws NetworkTableException
     {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
         assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
 
-        synchronized( getLock() )
-        {
-            if( connectedPlayerNames_.add( playerName ) )
-            {
-                Loggers.getDefaultLogger().info( Messages.ServerNetworkTableStrategy_playerConnected_playerConnected( playerName ) );
-            }
-            else
-            {
-                throw new NetworkTableException( Messages.ServerNetworkTableStrategy_playerConnected_playerRegistered );
-            }
-        }
-    }
+        super.tableGatewayRemoved( tableGateway );
 
-    /*
-     * @see org.gamegineer.table.internal.net.ITableGatewayContext#playerDisconnected(java.lang.String)
-     */
-    @Override
-    public void playerDisconnected(
-        final String playerName )
-    {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
-
-        synchronized( getLock() )
-        {
-            if( connectedPlayerNames_.remove( playerName ) )
-            {
-                Loggers.getDefaultLogger().info( Messages.ServerNetworkTableStrategy_playerDisconnected_playerDisconnected( playerName ) );
-            }
-        }
+        Loggers.getDefaultLogger().info( Messages.ServerNetworkTableStrategy_playerDisconnected_playerDisconnected( tableGateway.getPlayerName() ) );
     }
 }

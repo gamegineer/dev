@@ -41,4 +41,13 @@ public interface ITableGateway
     //   network table over the network to the remote table
     // - for local tables, responsible for communicating events sent by the
     //   network table to the local table
+
+    /**
+     * Gets the name of the player associated with the table gateway.
+     * 
+     * @return The name of the player associated with the table gateway; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public String getPlayerName();
 }

@@ -1,5 +1,5 @@
 /*
- * RemoteClientTableGatewayAsAbstractRemoteTableGatewayTest.java
+ * LocalClientTableGatewayAsTableGatewayTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,25 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 15, 2011 at 12:04:12 AM.
+ * Created on Apr 16, 2011 at 11:13:25 PM.
  */
 
-package org.gamegineer.table.internal.net.server;
+package org.gamegineer.table.internal.net.common;
 
-import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.ITableGatewayContext;
-import org.gamegineer.table.internal.net.common.AbstractAbstractRemoteTableGatewayTestCase;
-import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
+import org.gamegineer.table.internal.net.AbstractTableGatewayTestCase;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.server.RemoteClientTableGateway}
+ * {@link org.gamegineer.table.internal.net.common.LocalClientTableGateway}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway}
- * class.
+ * {@link org.gamegineer.table.internal.net.ITableGateway} interface.
  */
-public final class RemoteClientTableGatewayAsAbstractRemoteTableGatewayTest
-    extends AbstractAbstractRemoteTableGatewayTestCase
+public final class LocalClientTableGatewayAsTableGatewayTest
+    extends AbstractTableGatewayTestCase<LocalClientTableGateway>
 {
     // ======================================================================
     // Constructors
@@ -42,9 +38,9 @@ public final class RemoteClientTableGatewayAsAbstractRemoteTableGatewayTest
 
     /**
      * Initializes a new instance of the {@code
-     * RemoteClientTableGatewayAsAbstractRemoteTableGatewayTest} class.
+     * LocalClientTableGatewayAsTableGatewayTest} class.
      */
-    public RemoteClientTableGatewayAsAbstractRemoteTableGatewayTest()
+    public LocalClientTableGatewayAsTableGatewayTest()
     {
         super();
     }
@@ -58,10 +54,8 @@ public final class RemoteClientTableGatewayAsAbstractRemoteTableGatewayTest
      * @see org.gamegineer.table.internal.net.AbstractTableGatewayTestCase#createTableGateway()
      */
     @Override
-    protected AbstractRemoteTableGateway createTableGateway()
+    protected LocalClientTableGateway createTableGateway()
     {
-        final RemoteClientTableGateway tableGateway = new RemoteClientTableGateway( EasyMock.createMock( ITableGatewayContext.class ) );
-        tableGateway.setPlayerName( "playerName" ); //$NON-NLS-1$
-        return tableGateway;
+        return new LocalClientTableGateway( "playerName" ); //$NON-NLS-1$
     }
 }

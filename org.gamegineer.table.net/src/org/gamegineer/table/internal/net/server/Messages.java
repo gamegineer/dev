@@ -35,13 +35,15 @@ final class Messages
     // Fields
     // ======================================================================
 
+    // --- RemoteClientTableGateway -----------------------------------------
+
+    /** The player has not been authenticated. */
+    public static String RemoteClientTableGateway_playerNotAuthenticated;
+
     // --- ServerNetworkTableStrategy ---------------------------------------
 
     /** The player has connected. */
     public static String ServerNetworkTableStrategy_playerConnected_playerConnected;
-
-    /** The player is already registered. */
-    public static String ServerNetworkTableStrategy_playerConnected_playerRegistered;
 
     /** The player has disconnected. */
     public static String ServerNetworkTableStrategy_playerDisconnected_playerDisconnected;

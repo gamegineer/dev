@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.net.client;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.NetworkTable;
 import org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy;
 import org.gamegineer.table.internal.net.transport.IService;
@@ -98,31 +97,5 @@ public final class ClientNetworkTableStrategy
                 getNetworkTable().disconnect();
             }
         } );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.ITableGatewayContext#playerConnected(java.lang.String, org.gamegineer.table.internal.net.ITableGateway)
-     */
-    @Override
-    public void playerConnected(
-        final String playerName,
-        final ITableGateway tableGateway )
-    {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
-        assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
-
-        throw new AssertionError( "not implemented" ); //$NON-NLS-1$
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.ITableGatewayContext#playerDisconnected(java.lang.String)
-     */
-    @Override
-    public void playerDisconnected(
-        final String playerName )
-    {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
-
-        throw new AssertionError( "not implemented" ); //$NON-NLS-1$
     }
 }

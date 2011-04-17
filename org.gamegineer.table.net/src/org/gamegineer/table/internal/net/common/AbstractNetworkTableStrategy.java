@@ -21,12 +21,19 @@
 
 package org.gamegineer.table.internal.net.common;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
+import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.INetworkTableStrategy;
+import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.NetworkTable;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -50,6 +57,13 @@ public abstract class AbstractNetworkTableStrategy
     // Fields
     // ======================================================================
 
+    /**
+     * The local client table gateway or {@code null} if the network is not
+     * connected.
+     */
+    @GuardedBy( "getLock()" )
+    private ITableGateway localClientTableGateway_;
+
     /** The local player name or {@code null} if the network is not connected. */
     @GuardedBy( "getLock()" )
     private String localPlayerName_;
@@ -63,6 +77,10 @@ public abstract class AbstractNetworkTableStrategy
     /** The network password or {@code null} if the network is not connected. */
     @GuardedBy( "getLock()" )
     private SecureString password_;
+
+    /** The collection of registered table gateways. */
+    @GuardedBy( "getLock()" )
+    private final Map<String, ITableGateway> tableGateways_;
 
     /** The transport layer or {@code null} if the network is not connected. */
     @GuardedBy( "getLock()" )
@@ -100,10 +118,12 @@ public abstract class AbstractNetworkTableStrategy
         assertArgumentNotNull( networkTable, "networkTable" ); //$NON-NLS-1$
         assertArgumentNotNull( transportLayerFactory, "transportLayerFactory" ); //$NON-NLS-1$
 
+        localClientTableGateway_ = null;
         localPlayerName_ = null;
         lock_ = new Object();
         networkTable_ = networkTable;
         password_ = null;
+        tableGateways_ = new HashMap<String, ITableGateway>();
         transportLayer_ = null;
         transportLayerFactory_ = transportLayerFactory;
     }
@@ -112,6 +132,29 @@ public abstract class AbstractNetworkTableStrategy
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.internal.net.ITableGatewayContext#addTableGateway(org.gamegineer.table.internal.net.ITableGateway)
+     */
+    @Override
+    public final void addTableGateway(
+        final ITableGateway tableGateway )
+        throws NetworkTableException
+    {
+        assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
+
+        synchronized( getLock() )
+        {
+            if( tableGateways_.containsKey( tableGateway.getPlayerName() ) )
+            {
+                throw new NetworkTableException( Messages.AbstractNetworkTableStrategy_addTableGateway_tableGatewayRegistered );
+            }
+
+            tableGateways_.put( tableGateway.getPlayerName(), tableGateway );
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table gateway registered for player '%s'.", tableGateway.getPlayerName() ) ); //$NON-NLS-1$
+            tableGatewayAdded( tableGateway );
+        }
+    }
 
     /*
      * @see org.gamegineer.table.internal.net.INetworkTableStrategy#connect(org.gamegineer.table.net.INetworkTableConfiguration)
@@ -132,6 +175,8 @@ public abstract class AbstractNetworkTableStrategy
 
             localPlayerName_ = configuration.getLocalPlayerName();
             password_ = configuration.getPassword();
+            localClientTableGateway_ = new LocalClientTableGateway( localPlayerName_ );
+            addTableGateway( localClientTableGateway_ );
             connecting();
 
             final ITransportLayer transportLayer = createTransportLayer( transportLayerFactory_ );
@@ -232,6 +277,8 @@ public abstract class AbstractNetworkTableStrategy
 
                 transportLayer_.close();
 
+                removeTableGateway( localClientTableGateway_ );
+                localClientTableGateway_ = null;
                 disconnected();
                 dispose();
             }
@@ -302,6 +349,8 @@ public abstract class AbstractNetworkTableStrategy
     {
         assert Thread.holdsLock( getLock() );
 
+        tableGateways_.clear();
+        localClientTableGateway_ = null;
         localPlayerName_ = null;
         password_.dispose();
         password_ = null;
@@ -359,5 +408,97 @@ public abstract class AbstractNetworkTableStrategy
             assertStateLegal( password_ != null, Messages.AbstractNetworkTableStrategy_networkDisconnected );
             return new SecureString( password_ );
         }
+    }
+
+    /**
+     * Gets the collection of registered table gateways.
+     * 
+     * @return The collection of registered table gateways; never {@code null}.
+     */
+    /* @NonNull */
+    protected final Collection<ITableGateway> getTableGateways()
+    {
+        synchronized( getLock() )
+        {
+            return new ArrayList<ITableGateway>( tableGateways_.values() );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.ITableGatewayContext#removeTableGateway(org.gamegineer.table.internal.net.ITableGateway)
+     */
+    @Override
+    public final void removeTableGateway(
+        final ITableGateway tableGateway )
+    {
+        assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
+
+        synchronized( getLock() )
+        {
+            assertArgumentLegal( tableGateways_.remove( tableGateway.getPlayerName() ) != null, "tableGateway", Messages.AbstractNetworkTableStrategy_removeTableGateway_tableGatewayNotRegistered ); //$NON-NLS-1$
+
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table gateway unregistered for player '%s'.", tableGateway.getPlayerName() ) ); //$NON-NLS-1$
+            tableGatewayRemoved( tableGateway );
+        }
+    }
+
+    /**
+     * Template method invoked when a table gateway has been added to the
+     * network table.
+     * 
+     * <p>
+     * This method is invoked while the instance lock is held. Subclasses must
+     * always invoke the superclass method.
+     * </p>
+     * 
+     * <p>
+     * This implementation does nothing.
+     * </p>
+     * 
+     * @param tableGateway
+     *        The table gateway that was added; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableGateway} is {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    protected void tableGatewayAdded(
+        /* @NonNull */
+        final ITableGateway tableGateway )
+    {
+        assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        // do nothing
+    }
+
+    /**
+     * Template method invoked when a table gateway has been removed from the
+     * network table.
+     * 
+     * <p>
+     * This method is invoked while the instance lock is held. Subclasses must
+     * always invoke the superclass method.
+     * </p>
+     * 
+     * <p>
+     * This implementation does nothing.
+     * </p>
+     * 
+     * @param tableGateway
+     *        The table gateway that was removed; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableGateway} is {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    protected void tableGatewayRemoved(
+        /* @NonNull */
+        final ITableGateway tableGateway )
+    {
+        assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        // do nothing
     }
 }

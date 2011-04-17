@@ -23,10 +23,10 @@ package org.gamegineer.table.internal.net.server;
 
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.AbstractTableGatewayContextTestCase;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.NetworkTable;
 import org.gamegineer.table.internal.net.NetworkTableConfigurations;
+import org.gamegineer.table.internal.net.common.AbstractAbstractNetworkTableStrategyAsTableGatewayContextTestCase;
 import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactory;
 
@@ -37,7 +37,7 @@ import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactor
  * {@link org.gamegineer.table.internal.net.ITableGatewayContext} interface.
  */
 public final class ServerNetworkTableStrategyAsTableGatewayContextTest
-    extends AbstractTableGatewayContextTestCase
+    extends AbstractAbstractNetworkTableStrategyAsTableGatewayContextTestCase
 {
     // ======================================================================
     // Constructors

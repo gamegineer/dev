@@ -55,11 +55,13 @@ public final class RemoteServerTableGatewayAsAbstractRemoteTableGatewayTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractAbstractRemoteTableGatewayTestCase#createRemoteTableGateway()
+     * @see org.gamegineer.table.internal.net.AbstractTableGatewayTestCase#createTableGateway()
      */
     @Override
-    protected AbstractRemoteTableGateway createRemoteTableGateway()
+    protected AbstractRemoteTableGateway createTableGateway()
     {
-        return new RemoteServerTableGateway( EasyMock.createMock( ITableGatewayContext.class ) );
+        final RemoteServerTableGateway tableGateway = new RemoteServerTableGateway( EasyMock.createMock( ITableGatewayContext.class ) );
+        tableGateway.setPlayerName();
+        return tableGateway;
     }
 }

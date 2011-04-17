@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.common;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableGateway;
 
@@ -38,6 +39,9 @@ public final class LocalClientTableGateway
     // Fields
     // ======================================================================
 
+    /** The name of the player associated with the table gateway. */
+    private final String playerName_;
+
 
     // ======================================================================
     // Constructors
@@ -45,14 +49,34 @@ public final class LocalClientTableGateway
 
     /**
      * Initializes a new instance of the {@code LocalClientTableGateway} class.
+     * 
+     * @param playerName
+     *        The name of the player associated with the table gateway; must not
+     *        be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code playerName} is {@code null}.
      */
-    public LocalClientTableGateway()
+    public LocalClientTableGateway(
+        /* @NonNull */
+        final String playerName )
     {
-        super();
+        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
+
+        playerName_ = playerName;
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.internal.net.ITableGateway#getPlayerName()
+     */
+    @Override
+    public String getPlayerName()
+    {
+        return playerName_;
+    }
 }

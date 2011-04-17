@@ -21,12 +21,10 @@
 
 package org.gamegineer.table.internal.net.common;
 
-import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
+import org.gamegineer.table.internal.net.AbstractTableGatewayTestCase;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.IServiceContext;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -35,15 +33,8 @@ import org.junit.Test;
  * class.
  */
 public abstract class AbstractAbstractRemoteTableGatewayTestCase
+    extends AbstractTableGatewayTestCase<AbstractRemoteTableGateway>
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The remote table gateway under test in the fixture. */
-    private AbstractRemoteTableGateway remoteTableGateway_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -63,52 +54,13 @@ public abstract class AbstractAbstractRemoteTableGatewayTestCase
     // ======================================================================
 
     /**
-     * Creates the remote table gateway to be tested.
-     * 
-     * @return The remote table gateway to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    /* @NonNull */
-    protected abstract AbstractRemoteTableGateway createRemoteTableGateway()
-        throws Exception;
-
-    /**
-     * Sets up the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Before
-    public void setUp()
-        throws Exception
-    {
-        remoteTableGateway_ = createRemoteTableGateway();
-        assertNotNull( remoteTableGateway_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        remoteTableGateway_ = null;
-    }
-
-    /**
      * Ensures the {@code messageReceivedInternal} method throws an exception
      * when passed a {@code null} context.
      */
     @Test( expected = NullPointerException.class )
     public void testMessageReceivedInternal_Context_Null()
     {
-        remoteTableGateway_.messageReceivedInternal( null, EasyMock.createMock( IMessage.class ) );
+        getTableGateway().messageReceivedInternal( null, EasyMock.createMock( IMessage.class ) );
     }
 
     /**
@@ -118,7 +70,7 @@ public abstract class AbstractAbstractRemoteTableGatewayTestCase
     @Test( expected = NullPointerException.class )
     public void testMessageReceivedInternal_Message_Null()
     {
-        remoteTableGateway_.messageReceivedInternal( EasyMock.createMock( IServiceContext.class ), null );
+        getTableGateway().messageReceivedInternal( EasyMock.createMock( IServiceContext.class ), null );
     }
 
     /**
@@ -128,7 +80,7 @@ public abstract class AbstractAbstractRemoteTableGatewayTestCase
     @Test( expected = NullPointerException.class )
     public void testPeerStoppedInternal_Context_Null()
     {
-        remoteTableGateway_.peerStoppedInternal( null );
+        getTableGateway().peerStoppedInternal( null );
     }
 
     /**
@@ -138,7 +90,7 @@ public abstract class AbstractAbstractRemoteTableGatewayTestCase
     @Test( expected = NullPointerException.class )
     public void testStartedInternal_Context_Null()
     {
-        remoteTableGateway_.startedInternal( null );
+        getTableGateway().startedInternal( null );
     }
 
     /**
@@ -148,6 +100,6 @@ public abstract class AbstractAbstractRemoteTableGatewayTestCase
     @Test( expected = NullPointerException.class )
     public void testStoppedInternal_Context_Null()
     {
-        remoteTableGateway_.stoppedInternal( null );
+        getTableGateway().stoppedInternal( null );
     }
 }

@@ -41,6 +41,23 @@ public interface ITableGatewayContext
     // ======================================================================
 
     /**
+     * Adds the specified table gateway to the execution context.
+     * 
+     * @param tableGateway
+     *        The table gateway; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableGateway} is {@code null}.
+     * @throws org.gamegineer.table.net.NetworkTableException
+     *         If {@code tableGateway} is already associated with the execution
+     *         context.
+     */
+    public void addTableGateway(
+        /* @NonNull */
+        ITableGateway tableGateway )
+        throws NetworkTableException;
+
+    /**
      * Disconnects the network table.
      */
     public void disconnectNetworkTable();
@@ -65,44 +82,18 @@ public interface ITableGatewayContext
     /* @NonNull */
     public SecureString getPassword();
 
-    // TODO: functionality needed for both client and server, but signature
-    // doesn't need to be the same between both.  this is the server signature.
-
     /**
-     * Invoked when a player has connected to the network table.
+     * Removes the specified table gateway from the execution context.
      * 
-     * @param playerName
-     *        The player name; must not be {@code null}.
      * @param tableGateway
-     *        The table gateway associated with the player; must not be {@code
-     *        null}.
+     *        The table gateway; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code tableGateway} is not a registered table gateway.
      * @throws java.lang.NullPointerException
-     *         If {@code playerName} or {@code tableGateway} is {@code null}.
-     * @throws org.gamegineer.table.net.NetworkTableException
-     *         If a player with the same name has already connected to the
-     *         network table.
+     *         If {@code tableGateway} is {@code null}.
      */
-    public void playerConnected(
+    public void removeTableGateway(
         /* @NonNull */
-        String playerName,
-        /* @NonNull */
-        ITableGateway tableGateway )
-        throws NetworkTableException;
-
-    // TODO: behaves differently depending on strategy -- or do we refactor to a
-    // more specialized interface, like IServerTableGatewayContext/IClientTableGatewayContext?
-
-    /**
-     * Invoked when a player has disconnected from the network table.
-     * 
-     * @param playerName
-     *        The player name; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code playerName} is {@code null}.
-     */
-    public void playerDisconnected(
-        /* @NonNull */
-        String playerName );
+        ITableGateway tableGateway );
 }

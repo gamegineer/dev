@@ -1,5 +1,5 @@
 /*
- * ServerNetworkTableStrategyAsNetworkTableStrategyTest.java
+ * RemoteClientTableGatewayAsServiceTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,27 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 10, 2011 at 6:20:52 PM.
+ * Created on Apr 14, 2011 at 11:10:47 PM.
  */
 
 package org.gamegineer.table.internal.net.server;
 
 import org.easymock.EasyMock;
-import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.AbstractNetworkTableStrategyTestCase;
-import org.gamegineer.table.internal.net.INetworkTableStrategy;
-import org.gamegineer.table.internal.net.NetworkTable;
-import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
-import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactory;
+import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.transport.AbstractServiceTestCase;
+import org.gamegineer.table.internal.net.transport.IService;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.server.ServerNetworkTableStrategy}
+ * {@link org.gamegineer.table.internal.net.server.RemoteClientTableGateway}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.INetworkTableStrategy} interface.
+ * {@link org.gamegineer.table.internal.net.transport.IService} interface.
  */
-public final class ServerNetworkTableStrategyAsNetworkTableStrategyTest
-    extends AbstractNetworkTableStrategyTestCase
+public final class RemoteClientTableGatewayAsServiceTest
+    extends AbstractServiceTestCase
 {
     // ======================================================================
     // Constructors
@@ -44,9 +41,9 @@ public final class ServerNetworkTableStrategyAsNetworkTableStrategyTest
 
     /**
      * Initializes a new instance of the {@code
-     * ServerNetworkTableStrategyAsNetworkTableStrategyTest} class.
+     * RemoteClientTableGatewayAsServiceTest} class.
      */
-    public ServerNetworkTableStrategyAsNetworkTableStrategyTest()
+    public RemoteClientTableGatewayAsServiceTest()
     {
         super();
     }
@@ -57,13 +54,11 @@ public final class ServerNetworkTableStrategyAsNetworkTableStrategyTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNetworkTableStrategyTestCase#createNetworkTableStrategy()
+     * @see org.gamegineer.table.internal.net.transport.AbstractServiceTestCase#createService()
      */
     @Override
-    protected INetworkTableStrategy createNetworkTableStrategy()
+    protected IService createService()
     {
-        final ITransportLayerFactory transportLayerFactory = new FakeTransportLayerFactory();
-        final NetworkTable networkTable = new NetworkTable( EasyMock.createMock( ITable.class ), transportLayerFactory );
-        return new ServerNetworkTableStrategy( networkTable, transportLayerFactory );
+        return new RemoteClientTableGateway( EasyMock.createMock( ITableGatewayContext.class ) );
     }
 }

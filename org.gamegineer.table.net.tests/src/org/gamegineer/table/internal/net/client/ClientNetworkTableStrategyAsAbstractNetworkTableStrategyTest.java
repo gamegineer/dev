@@ -1,5 +1,5 @@
 /*
- * ClientNetworkTableStrategyAsNetworkTableStrategyTest.java
+ * ClientNetworkTableStrategyAsAbstractNetworkTableStrategyTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -23,9 +23,8 @@ package org.gamegineer.table.internal.net.client;
 
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.AbstractNetworkTableStrategyTestCase;
-import org.gamegineer.table.internal.net.INetworkTableStrategy;
 import org.gamegineer.table.internal.net.NetworkTable;
+import org.gamegineer.table.internal.net.common.AbstractAbstractNetworkTableStrategyTestCase;
 import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactory;
 
@@ -33,10 +32,11 @@ import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactor
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.net.client.ClientNetworkTableStrategy}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.INetworkTableStrategy} interface.
+ * {@link org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy}
+ * class.
  */
-public final class ClientNetworkTableStrategyAsNetworkTableStrategyTest
-    extends AbstractNetworkTableStrategyTestCase
+public final class ClientNetworkTableStrategyAsAbstractNetworkTableStrategyTest
+    extends AbstractAbstractNetworkTableStrategyTestCase<ClientNetworkTableStrategy>
 {
     // ======================================================================
     // Constructors
@@ -44,9 +44,9 @@ public final class ClientNetworkTableStrategyAsNetworkTableStrategyTest
 
     /**
      * Initializes a new instance of the {@code
-     * ClientNetworkTableStrategyAsNetworkTableStrategyTest} class.
+     * ClientNetworkTableStrategyAsAbstractNetworkTableStrategyTest} class.
      */
-    public ClientNetworkTableStrategyAsNetworkTableStrategyTest()
+    public ClientNetworkTableStrategyAsAbstractNetworkTableStrategyTest()
     {
         super();
     }
@@ -60,7 +60,7 @@ public final class ClientNetworkTableStrategyAsNetworkTableStrategyTest
      * @see org.gamegineer.table.internal.net.AbstractNetworkTableStrategyTestCase#createNetworkTableStrategy()
      */
     @Override
-    protected INetworkTableStrategy createNetworkTableStrategy()
+    protected ClientNetworkTableStrategy createNetworkTableStrategy()
     {
         final ITransportLayerFactory transportLayerFactory = new FakeTransportLayerFactory();
         final NetworkTable networkTable = new NetworkTable( EasyMock.createMock( ITable.class ), transportLayerFactory );

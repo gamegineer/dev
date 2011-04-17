@@ -1,5 +1,5 @@
 /*
- * RemoteClientTableGatewayTest.java
+ * RemoteServerTableGatewayTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 14, 2011 at 11:10:47 PM.
+ * Created on Apr 17, 2011 at 7:13:56 PM.
  */
 
-package org.gamegineer.table.internal.net.server;
+package org.gamegineer.table.internal.net.client;
 
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
@@ -29,17 +29,17 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.server.RemoteClientTableGateway}
+ * {@link org.gamegineer.table.internal.net.client.RemoteServerTableGateway}
  * class.
  */
-public final class RemoteClientTableGatewayTest
+public final class RemoteServerTableGatewayTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The remote client table gateway under test in the fixture. */
-    private RemoteClientTableGateway remoteClientTableGateway_;
+    /** The remote server table gateway under test in the fixture. */
+    private RemoteServerTableGateway remoteServerTableGateway_;
 
 
     // ======================================================================
@@ -47,10 +47,10 @@ public final class RemoteClientTableGatewayTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code RemoteClientTableGatewayTest}
+     * Initializes a new instance of the {@code RemoteServerTableGatewayTest}
      * class.
      */
-    public RemoteClientTableGatewayTest()
+    public RemoteServerTableGatewayTest()
     {
         super();
     }
@@ -70,7 +70,7 @@ public final class RemoteClientTableGatewayTest
     public void setUp()
         throws Exception
     {
-        remoteClientTableGateway_ = new RemoteClientTableGateway( EasyMock.createMock( ITableGatewayContext.class ) );
+        remoteServerTableGateway_ = new RemoteServerTableGateway( EasyMock.createMock( ITableGatewayContext.class ) );
     }
 
     /**
@@ -83,7 +83,7 @@ public final class RemoteClientTableGatewayTest
     public void tearDown()
         throws Exception
     {
-        remoteClientTableGateway_ = null;
+        remoteServerTableGateway_ = null;
     }
 
     /**
@@ -93,6 +93,6 @@ public final class RemoteClientTableGatewayTest
     @Test( expected = IllegalStateException.class )
     public void testGetPlayerName_NotAuthenticated()
     {
-        remoteClientTableGateway_.getPlayerName();
+        remoteServerTableGateway_.getPlayerName();
     }
 }
