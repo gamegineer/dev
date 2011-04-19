@@ -21,12 +21,8 @@
 
 package org.gamegineer.table.internal.net.client;
 
-import org.easymock.EasyMock;
-import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.NetworkTable;
+import org.gamegineer.table.internal.net.NetworkTableStrategyContexts;
 import org.gamegineer.table.internal.net.common.AbstractAbstractNetworkTableStrategyTestCase;
-import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
-import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactory;
 
 /**
  * A fixture for testing the
@@ -62,8 +58,6 @@ public final class ClientNetworkTableStrategyAsAbstractNetworkTableStrategyTest
     @Override
     protected ClientNetworkTableStrategy createNetworkTableStrategy()
     {
-        final ITransportLayerFactory transportLayerFactory = new FakeTransportLayerFactory();
-        final NetworkTable networkTable = new NetworkTable( EasyMock.createMock( ITable.class ), transportLayerFactory );
-        return new ClientNetworkTableStrategy( networkTable, transportLayerFactory );
+        return new ClientNetworkTableStrategy( NetworkTableStrategyContexts.createFakeNetworkTableStrategyContext() );
     }
 }

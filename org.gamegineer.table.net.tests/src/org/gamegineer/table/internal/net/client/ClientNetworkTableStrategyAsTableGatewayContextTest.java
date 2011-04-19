@@ -21,14 +21,10 @@
 
 package org.gamegineer.table.internal.net.client;
 
-import org.easymock.EasyMock;
-import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
-import org.gamegineer.table.internal.net.NetworkTable;
 import org.gamegineer.table.internal.net.NetworkTableConfigurations;
+import org.gamegineer.table.internal.net.NetworkTableStrategyContexts;
 import org.gamegineer.table.internal.net.common.AbstractAbstractNetworkTableStrategyAsTableGatewayContextTestCase;
-import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
-import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactory;
 
 /**
  * A fixture for testing the
@@ -64,9 +60,7 @@ public final class ClientNetworkTableStrategyAsTableGatewayContextTest
     protected ITableGatewayContext createTableGatewayContext()
         throws Exception
     {
-        final ITransportLayerFactory transportLayerFactory = new FakeTransportLayerFactory();
-        final NetworkTable networkTable = new NetworkTable( EasyMock.createMock( ITable.class ), transportLayerFactory );
-        final ClientNetworkTableStrategy strategy = new ClientNetworkTableStrategy( networkTable, transportLayerFactory );
+        final ClientNetworkTableStrategy strategy = new ClientNetworkTableStrategy( NetworkTableStrategyContexts.createFakeNetworkTableStrategyContext() );
         strategy.connect( NetworkTableConfigurations.createDefaultNetworkTableConfiguration() );
         return strategy;
     }

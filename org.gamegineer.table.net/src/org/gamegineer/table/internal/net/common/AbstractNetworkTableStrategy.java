@@ -33,11 +33,10 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.INetworkTableStrategy;
+import org.gamegineer.table.internal.net.INetworkTableStrategyContext;
 import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
-import org.gamegineer.table.internal.net.NetworkTable;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
-import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.NetworkTableException;
 
@@ -57,6 +56,9 @@ public abstract class AbstractNetworkTableStrategy
     // Fields
     // ======================================================================
 
+    /** The network table strategy context. */
+    private final INetworkTableStrategyContext context_;
+
     /**
      * The local client table gateway or {@code null} if the network is not
      * connected.
@@ -71,9 +73,6 @@ public abstract class AbstractNetworkTableStrategy
     /** The instance lock. */
     private final Object lock_;
 
-    /** The network table that hosts the strategy. */
-    private final NetworkTable networkTable_;
-
     /** The network password or {@code null} if the network is not connected. */
     @GuardedBy( "getLock()" )
     private SecureString password_;
@@ -86,9 +85,6 @@ public abstract class AbstractNetworkTableStrategy
     @GuardedBy( "getLock()" )
     private ITransportLayer transportLayer_;
 
-    /** The transport layer factory used by the strategy. */
-    private final ITransportLayerFactory transportLayerFactory_;
-
 
     // ======================================================================
     // Constructors
@@ -98,34 +94,25 @@ public abstract class AbstractNetworkTableStrategy
      * Initializes a new instance of the {@code AbstractNetworkTableStrategy}
      * class.
      * 
-     * @param networkTable
-     *        The network table that hosts the strategy; must not be {@code
-     *        null}.
-     * @param transportLayerFactory
-     *        The transport layer factory used by the strategy; must not be
-     *        {@code null}.
+     * @param context
+     *        The network table strategy context; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code networkTable} or {@code transportLayerFactory} is
-     *         {@code null}.
+     *         If {@code context} is {@code null}.
      */
     protected AbstractNetworkTableStrategy(
         /* @NonNull */
-        final NetworkTable networkTable,
-        /* @NonNull */
-        final ITransportLayerFactory transportLayerFactory )
+        final INetworkTableStrategyContext context )
     {
-        assertArgumentNotNull( networkTable, "networkTable" ); //$NON-NLS-1$
-        assertArgumentNotNull( transportLayerFactory, "transportLayerFactory" ); //$NON-NLS-1$
+        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
+        context_ = context;
         localClientTableGateway_ = null;
         localPlayerName_ = null;
         lock_ = new Object();
-        networkTable_ = networkTable;
         password_ = null;
         tableGateways_ = new HashMap<String, ITableGateway>();
         transportLayer_ = null;
-        transportLayerFactory_ = transportLayerFactory;
     }
 
 
@@ -179,7 +166,7 @@ public abstract class AbstractNetworkTableStrategy
             addTableGateway( localClientTableGateway_ );
             connecting();
 
-            final ITransportLayer transportLayer = createTransportLayer( transportLayerFactory_ );
+            final ITransportLayer transportLayer = createTransportLayer();
             try
             {
                 transportLayer.open( configuration.getHostName(), configuration.getPort() );
@@ -242,26 +229,18 @@ public abstract class AbstractNetworkTableStrategy
     }
 
     /**
-     * Creates the transport layer for this strategy using the specified
-     * transport layer factory.
+     * Template method invoked to create the transport layer for this strategy
+     * using the context transport layer factory.
      * 
      * <p>
      * This method is invoked while the instance lock is held.
      * </p>
      * 
-     * @param transportLayerFactory
-     *        The transport layer factory; must not be {@code null}.
-     * 
      * @return The transport layer for this strategy; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code transportLayerFactory} is {@code null}.
      */
     @GuardedBy( "getLock()" )
     /* @NonNull */
-    protected abstract ITransportLayer createTransportLayer(
-        /* @NonNull */
-        ITransportLayerFactory transportLayerFactory );
+    protected abstract ITransportLayer createTransportLayer();
 
     /*
      * @see org.gamegineer.table.internal.net.INetworkTableStrategy#disconnect()
@@ -289,9 +268,9 @@ public abstract class AbstractNetworkTableStrategy
      * @see org.gamegineer.table.internal.net.ITableGatewayContext#disconnectNetworkTable()
      */
     @Override
-    public void disconnectNetworkTable()
+    public final void disconnectNetworkTable()
     {
-        getNetworkTable().disconnect();
+        context_.disconnectNetworkTable();
     }
 
     /**
@@ -357,6 +336,17 @@ public abstract class AbstractNetworkTableStrategy
     }
 
     /**
+     * Gets the network table strategy context.
+     * 
+     * @return The network table strategy context; never {@code null}.
+     */
+    /* @NonNull */
+    protected final INetworkTableStrategyContext getContext()
+    {
+        return context_;
+    }
+
+    /**
      * @throws java.lang.IllegalStateException
      *         If the network is not connected.
      * 
@@ -381,17 +371,6 @@ public abstract class AbstractNetworkTableStrategy
     protected final Object getLock()
     {
         return lock_;
-    }
-
-    /**
-     * Gets the network table that hosts the strategy.
-     * 
-     * @return The network table that hosts the strategy; never {@code null}.
-     */
-    /* @NonNull */
-    protected final NetworkTable getNetworkTable()
-    {
-        return networkTable_;
     }
 
     /**

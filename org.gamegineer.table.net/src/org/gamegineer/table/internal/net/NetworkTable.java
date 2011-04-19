@@ -43,7 +43,7 @@ import org.gamegineer.table.net.NetworkTableException;
  */
 @ThreadSafe
 public final class NetworkTable
-    implements INetworkTable
+    implements INetworkTable, INetworkTableStrategyContext
 {
     // ======================================================================
     // Fields
@@ -186,6 +186,15 @@ public final class NetworkTable
         }
     }
 
+    /*
+     * @see org.gamegineer.table.internal.net.INetworkTableStrategyContext#disconnectNetworkTable()
+     */
+    @Override
+    public void disconnectNetworkTable()
+    {
+        disconnect();
+    }
+
     /**
      * Fires a network connected event.
      */
@@ -225,6 +234,15 @@ public final class NetworkTable
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.INetworkTableStrategyContext#getTransportLayerFactory()
+     */
+    @Override
+    public ITransportLayerFactory getTransportLayerFactory()
+    {
+        return transportLayerFactory_;
+    }
+
+    /*
      * @see org.gamegineer.table.net.INetworkTable#host(org.gamegineer.table.net.INetworkTableConfiguration)
      */
     @Override
@@ -234,7 +252,7 @@ public final class NetworkTable
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, new ServerNetworkTableStrategy( this, transportLayerFactory_ ) );
+        connect( configuration, new ServerNetworkTableStrategy( this ) );
     }
 
     /*
@@ -256,7 +274,7 @@ public final class NetworkTable
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, new ClientNetworkTableStrategy( this, transportLayerFactory_ ) );
+        connect( configuration, new ClientNetworkTableStrategy( this ) );
     }
 
     /*

@@ -146,45 +146,13 @@ public abstract class AbstractNetworkTableStrategyTestCase<T extends INetworkTab
         networkTableStrategy_.connect( networkTableConfiguration );
     }
 
-    // TODO: implement the following commented out tests when we replace NetworkTable
-    // with INetworkTableStrategyContext
-
     /**
-     * Ensures the {@code connect} method fires a network connected event when
-     * the network is disconnected.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * Ensures the {@code disconnect} method does nothing when the network is
+     * disconnected.
      */
-    //@Test
-    //public void testConnect_Disconnected_FiresNetworkConnectedEvent()
-    //    throws Exception
-    //{
-    //}
-
-    /**
-     * Ensures the {@code disconnect} method fires a network disconnected event
-     * when the network is connected.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    //@Test
-    //public void testDisconnect_Connected_FiresNetworkDisconnectedEvent()
-    //    throws Exception
-    //{
-    //}
-
-    /**
-     * Ensures the {@code disconnect} method does not fire a network
-     * disconnected event when the network is disconnected.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    //@Test
-    //public void testDisconnect_Disconnected_DoesNotFireNetworkConnectionStateChangedEvent()
-    //    throws Exception
-    //{
-    //}
+    @Test
+    public void testDisconnect_Disconnected_DoesNothing()
+    {
+        networkTableStrategy_.disconnect();
+    }
 }

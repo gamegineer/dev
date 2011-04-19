@@ -1,5 +1,5 @@
 /*
- * ServerNetworkTableStrategyTest.java
+ * NetworkTableStrategyContexts.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 10, 2011 at 6:11:21 PM.
+ * Created on Apr 18, 2011 at 8:17:49 PM.
  */
 
-package org.gamegineer.table.internal.net.server;
+package org.gamegineer.table.internal.net;
 
-import org.junit.Test;
+import net.jcip.annotations.ThreadSafe;
+import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
+import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactory;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.server.ServerNetworkTableStrategy}
- * class.
+ * A collection of useful methods for working with network table strategy
+ * contexts.
  */
-public final class ServerNetworkTableStrategyTest
+@ThreadSafe
+public final class NetworkTableStrategyContexts
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ServerNetworkTableStrategyTest}
+     * Initializes a new instance of the {@code NetworkTableStrategyContexts}
      * class.
      */
-    public ServerNetworkTableStrategyTest()
+    private NetworkTableStrategyContexts()
     {
         super();
     }
@@ -49,12 +52,17 @@ public final class ServerNetworkTableStrategyTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * context.
+     * Creates a new fake network table strategy context.
+     * 
+     * @return A new fake network table strategy context; never {@code null}.
      */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Context_Null()
+    /* @NonNull */
+    public static INetworkTableStrategyContext createFakeNetworkTableStrategyContext()
     {
-        new ServerNetworkTableStrategy( null );
+        final IMocksControl mocksControl = EasyMock.createControl();
+        final INetworkTableStrategyContext context = mocksControl.createMock( INetworkTableStrategyContext.class );
+        EasyMock.expect( context.getTransportLayerFactory() ).andReturn( new FakeTransportLayerFactory() ).anyTimes();
+        mocksControl.replay();
+        return context;
     }
 }

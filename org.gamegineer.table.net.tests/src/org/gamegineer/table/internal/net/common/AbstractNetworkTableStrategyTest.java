@@ -24,11 +24,9 @@ package org.gamegineer.table.internal.net.common;
 import static org.junit.Assert.assertEquals;
 import java.util.Collection;
 import org.easymock.EasyMock;
-import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.internal.net.INetworkTableStrategyContext;
 import org.gamegineer.table.internal.net.ITableGateway;
-import org.gamegineer.table.internal.net.NetworkTable;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
-import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -70,35 +68,24 @@ public final class AbstractNetworkTableStrategyTest
      * Creates a new instance of the {@code AbstractNetworkTableStrategy} class
      * with stubbed implementations of all abstract methods.
      * 
-     * @param networkTable
-     *        The network table that hosts the strategy; must not be {@code
-     *        null}.
-     * @param transportLayerFactory
-     *        The transport layer factory used by the strategy; must not be
-     *        {@code null}.
+     * @param context
+     *        The network table strategy context; must not be {@code null}.
      * 
      * @return A new instance of the {@code AbstractNetworkTableStrategy} class;
      *         never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code networkTable} or {@code transportLayerFactory} is
-     *         {@code null}.
+     *         If {@code context} is {@code null}.
      */
     /* @NonNull */
     private static AbstractNetworkTableStrategy createNetworkTableStrategy(
         /* @NonNull */
-        final NetworkTable networkTable,
-        /* @NonNull */
-        final ITransportLayerFactory transportLayerFactory )
+        final INetworkTableStrategyContext context )
     {
-        return new AbstractNetworkTableStrategy( networkTable, transportLayerFactory )
+        return new AbstractNetworkTableStrategy( context )
         {
             @Override
-            protected ITransportLayer createTransportLayer(
-                @SuppressWarnings( {
-                    "hiding", "unused"
-                } )
-                final ITransportLayerFactory transportLayerFactory )
+            protected ITransportLayer createTransportLayer()
             {
                 return null;
             }
@@ -115,7 +102,7 @@ public final class AbstractNetworkTableStrategyTest
     public void setUp()
         throws Exception
     {
-        networkTableStrategy_ = createNetworkTableStrategy( new NetworkTable( EasyMock.createMock( ITable.class ) ), EasyMock.createMock( ITransportLayerFactory.class ) );
+        networkTableStrategy_ = createNetworkTableStrategy( EasyMock.createMock( INetworkTableStrategyContext.class ) );
     }
 
     /**
@@ -133,22 +120,12 @@ public final class AbstractNetworkTableStrategyTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * network table.
+     * context.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_NetworkTable_Null()
+    public void testConstructor_Context_Null()
     {
-        createNetworkTableStrategy( null, EasyMock.createMock( ITransportLayerFactory.class ) );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * transport layer factory.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_TransportLayerFactory_Null()
-    {
-        createNetworkTableStrategy( new NetworkTable( EasyMock.createMock( ITable.class ) ), null );
+        createNetworkTableStrategy( null );
     }
 
     /**

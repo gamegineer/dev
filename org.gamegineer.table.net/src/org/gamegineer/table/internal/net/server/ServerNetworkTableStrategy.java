@@ -23,14 +23,13 @@ package org.gamegineer.table.internal.net.server;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.net.INetworkTableStrategyContext;
 import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.Loggers;
-import org.gamegineer.table.internal.net.NetworkTable;
 import org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
-import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 
 /**
  * Implementation of
@@ -49,24 +48,17 @@ public final class ServerNetworkTableStrategy
      * Initializes a new instance of the {@code ServerNetworkTableStrategy}
      * class.
      * 
-     * @param networkTable
-     *        The network table that hosts the strategy; must not be {@code
-     *        null}.
-     * @param transportLayerFactory
-     *        The transport layer factory used by the strategy; must not be
-     *        {@code null}.
+     * @param context
+     *        The network table strategy context; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code networkTable} or {@code transportLayerFactory} is
-     *         {@code null}.
+     *         If {@code context} is {@code null}.
      */
     public ServerNetworkTableStrategy(
         /* @NonNull */
-        final NetworkTable networkTable,
-        /* @NonNull */
-        final ITransportLayerFactory transportLayerFactory )
+        final INetworkTableStrategyContext context )
     {
-        super( networkTable, transportLayerFactory );
+        super( context );
     }
 
 
@@ -75,16 +67,14 @@ public final class ServerNetworkTableStrategy
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy#createTransportLayer(org.gamegineer.table.internal.net.transport.ITransportLayerFactory)
+     * @see org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy#createTransportLayer()
      */
     @Override
-    protected ITransportLayer createTransportLayer(
-        final ITransportLayerFactory transportLayerFactory )
+    protected ITransportLayer createTransportLayer()
     {
-        assertArgumentNotNull( transportLayerFactory, "transportLayerFactory" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        return transportLayerFactory.createPassiveTransportLayer( new ITransportLayerContext()
+        return getContext().getTransportLayerFactory().createPassiveTransportLayer( new ITransportLayerContext()
         {
             @Override
             public IService createService()
@@ -96,7 +86,7 @@ public final class ServerNetworkTableStrategy
             @SuppressWarnings( "synthetic-access" )
             public void transportLayerDisconnected()
             {
-                getNetworkTable().disconnect();
+                getContext().disconnectNetworkTable();
             }
         } );
     }

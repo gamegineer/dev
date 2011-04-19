@@ -21,10 +21,6 @@
 
 package org.gamegineer.table.internal.net.client;
 
-import org.easymock.EasyMock;
-import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.NetworkTable;
-import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 import org.junit.Test;
 
 /**
@@ -54,21 +50,11 @@ public final class ClientNetworkTableStrategyTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * network table.
+     * context.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_NetworkTable_Null()
+    public void testConstructor_Context_Null()
     {
-        new ClientNetworkTableStrategy( null, EasyMock.createMock( ITransportLayerFactory.class ) );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * transport layer factory.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_TransportLayerFactory_Null()
-    {
-        new ClientNetworkTableStrategy( new NetworkTable( EasyMock.createMock( ITable.class ) ), null );
+        new ClientNetworkTableStrategy( null );
     }
 }
