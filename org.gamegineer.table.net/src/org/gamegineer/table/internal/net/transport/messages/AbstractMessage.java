@@ -90,7 +90,7 @@ public abstract class AbstractMessage
     public final void setTag(
         final int tag )
     {
-        assertArgumentLegal( (tag == NO_TAG) || (tag >= MIN_TAG) && (tag <= MAX_TAG), "tag" ); //$NON-NLS-1$
+        assertArgumentLegal( (tag == NO_TAG) || (tag >= MINIMUM_TAG) && (tag <= MAXIMUM_TAG), "tag" ); //$NON-NLS-1$
 
         tag_ = tag;
     }

@@ -104,7 +104,7 @@ public final class MessageEnvelopeTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Body_Illegal_LengthGreaterThanMaxLength()
     {
-        new MessageEnvelope( DEFAULT_ID, DEFAULT_TAG, new byte[ MessageEnvelope.MAX_BODY_LENGTH + 1 ] );
+        new MessageEnvelope( DEFAULT_ID, DEFAULT_TAG, new byte[ MessageEnvelope.MAXIMUM_BODY_LENGTH + 1 ] );
     }
 
     /**
@@ -124,7 +124,7 @@ public final class MessageEnvelopeTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Tag_Illegal_GreaterThanMaxTag()
     {
-        new MessageEnvelope( DEFAULT_ID, IMessage.MAX_TAG + 1, DEFAULT_BODY );
+        new MessageEnvelope( DEFAULT_ID, IMessage.MAXIMUM_TAG + 1, DEFAULT_BODY );
     }
 
     /**
@@ -212,7 +212,7 @@ public final class MessageEnvelopeTest
         throws Exception
     {
         final IMessage expectedValue = new FakeMessage();
-        expectedValue.setTag( IMessage.MAX_TAG );
+        expectedValue.setTag( IMessage.MAXIMUM_TAG );
 
         final MessageEnvelope messageEnvelope = MessageEnvelope.fromMessage( expectedValue );
         final IMessage actualValue = messageEnvelope.getBodyAsMessage();

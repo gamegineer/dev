@@ -96,7 +96,7 @@ public abstract class AbstractRemoteTableGateway
     private static int getInitialMessageTag()
     {
         final Random rng = new Random( System.currentTimeMillis() );
-        return IMessage.MIN_TAG + rng.nextInt( IMessage.MAX_TAG - IMessage.MIN_TAG );
+        return IMessage.MINIMUM_TAG + rng.nextInt( IMessage.MAXIMUM_TAG - IMessage.MINIMUM_TAG );
     }
 
     /**
@@ -121,9 +121,9 @@ public abstract class AbstractRemoteTableGateway
         assert Thread.holdsLock( getLock() );
 
         final int tag = nextTag_;
-        if( ++nextTag_ > IMessage.MAX_TAG )
+        if( ++nextTag_ > IMessage.MAXIMUM_TAG )
         {
-            nextTag_ = IMessage.MIN_TAG;
+            nextTag_ = IMessage.MINIMUM_TAG;
         }
 
         return tag;

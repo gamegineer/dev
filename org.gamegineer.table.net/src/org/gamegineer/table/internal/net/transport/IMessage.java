@@ -26,6 +26,38 @@ import java.io.Serializable;
 /**
  * A network protocol message.
  * 
+ * <p>
+ * Messages are divided into three classes:
+ * </p>
+ * 
+ * <ol>
+ * <li>
+ * Events
+ * <p>
+ * An event is an unsolicited message sent without any expectation of a
+ * response. The most-significant bit of their identifier is clear, indicating
+ * they are unsolicited. Their tag is set to {@link #NO_TAG}.
+ * </p>
+ * </li>
+ * <li>
+ * Requests
+ * <p>
+ * A request is an unsolicited message sent with the expectation of a response.
+ * The most-significant bit of their identifier is clear, indicating they are
+ * unsolicited. Their tag is set to any value from {@link #MINIMUM_TAG} to
+ * {@link #MAXIMUM_TAG}, inclusive.
+ * </p>
+ * </li>
+ * <li>
+ * Responses
+ * <p>
+ * A response is a solicited message sent in reply to a request. The
+ * most-significant bit of their identifier is set, indicating they are
+ * solicited. Their tag is set to the tag of their corresponding request.
+ * </p>
+ * </li>
+ * </ol>
+ * 
  * @noextend This interface is not intended to be extended by clients.
  */
 public interface IMessage
@@ -36,13 +68,16 @@ public interface IMessage
     // ======================================================================
 
     /** The maximum message tag value. */
-    public final int MAX_TAG = 0x3FF;
+    public final int MAXIMUM_TAG = 0x3FF;
 
     /** The minimum message tag value. */
-    public final int MIN_TAG = 0x001;
+    public final int MINIMUM_TAG = 0x001;
 
     /** The message tag used to indicate no tag is present. */
     public final int NO_TAG = 0;
+
+    /** The message identifier mask used to indicate the message is solicited. */
+    public final int SOLICITED_MASK = 0x80000000;
 
 
     // ======================================================================
@@ -70,8 +105,8 @@ public interface IMessage
      *        The message tag.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code tag} is less than {@link #MIN_TAG} or greater than
-     *         {@link #MAX_TAG} or not equal to {@link #NO_TAG}.
+     *         If {@code tag} is less than {@link #MINIMUM_TAG} or greater than
+     *         {@link #MAXIMUM_TAG} or not equal to {@link #NO_TAG}.
      */
     public void setTag(
         int tag );

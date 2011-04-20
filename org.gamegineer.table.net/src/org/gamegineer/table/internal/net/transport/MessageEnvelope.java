@@ -51,7 +51,7 @@ public final class MessageEnvelope
     private static final int HEADER_TAG_AND_LENGTH_OFFSET = 4;
 
     /** The maximum message body length in bytes. */
-    public static final int MAX_BODY_LENGTH = 0x003FFFFF;
+    public static final int MAXIMUM_BODY_LENGTH = 0x003FFFFF;
 
     /** The network representation of the message envelope. */
     private final ByteBuffer buffer_;
@@ -72,10 +72,10 @@ public final class MessageEnvelope
      *        The message body; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code tag} is less than {@link IMessage#MAX_TAG} or greater
-     *         than {@link IMessage#MAX_TAG} or not equal to
+     *         If {@code tag} is less than {@link IMessage#MAXIMUM_TAG} or
+     *         greater than {@link IMessage#MAXIMUM_TAG} or not equal to
      *         {@link IMessage#NO_TAG}; if the length of {@code body} is greater
-     *         than {@link #MAX_BODY_LENGTH}.
+     *         than {@link #MAXIMUM_BODY_LENGTH}.
      * @throws java.lang.NullPointerException
      *         If {@code body} is {@code null}.
      */
@@ -85,9 +85,9 @@ public final class MessageEnvelope
         /* @NonNull */
         final byte[] body )
     {
-        assertArgumentLegal( (tag == IMessage.NO_TAG) || (tag >= IMessage.MIN_TAG) && (tag <= IMessage.MAX_TAG), "tag" ); //$NON-NLS-1$
+        assertArgumentLegal( (tag == IMessage.NO_TAG) || (tag >= IMessage.MINIMUM_TAG) && (tag <= IMessage.MAXIMUM_TAG), "tag" ); //$NON-NLS-1$
         assertArgumentNotNull( body, "body" ); //$NON-NLS-1$
-        assertArgumentLegal( body.length <= MAX_BODY_LENGTH, "body" ); //$NON-NLS-1$
+        assertArgumentLegal( body.length <= MAXIMUM_BODY_LENGTH, "body" ); //$NON-NLS-1$
 
         buffer_ = ByteBuffer.allocate( HEADER_LENGTH + body.length );
         buffer_.putInt( id );

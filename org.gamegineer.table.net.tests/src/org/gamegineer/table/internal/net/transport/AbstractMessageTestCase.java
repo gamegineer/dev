@@ -104,7 +104,7 @@ public abstract class AbstractMessageTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testSetTag_Tag_Illegal_GreaterThanMaxTag()
     {
-        message_.setTag( AbstractMessage.MAX_TAG + 1 );
+        message_.setTag( AbstractMessage.MAXIMUM_TAG + 1 );
     }
 
     /**
