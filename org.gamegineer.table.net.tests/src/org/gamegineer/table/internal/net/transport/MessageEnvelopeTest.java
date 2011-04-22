@@ -44,11 +44,11 @@ public final class MessageEnvelopeTest
         0x09, 0x01, 0x25
     };
 
-    /** The default message identifier for use in the fixture. */
-    private static final int DEFAULT_ID = 2112;
+    /** The default message correlation identifier for use in the fixture. */
+    private static final int DEFAULT_CORRELATION_ID = 42;
 
-    /** The default message tag for use in the fixture. */
-    private static final int DEFAULT_TAG = 42;
+    /** The default message identifier for use in the fixture. */
+    private static final int DEFAULT_ID = 212;
 
     /** The message envelope under test in the fixture. */
     private MessageEnvelope messageEnvelope_;
@@ -81,7 +81,7 @@ public final class MessageEnvelopeTest
     public void setUp()
         throws Exception
     {
-        messageEnvelope_ = new MessageEnvelope( DEFAULT_ID, DEFAULT_TAG, DEFAULT_BODY );
+        messageEnvelope_ = new MessageEnvelope( DEFAULT_ID, DEFAULT_CORRELATION_ID, DEFAULT_BODY );
     }
 
     /**
@@ -104,7 +104,7 @@ public final class MessageEnvelopeTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Body_Illegal_LengthGreaterThanMaxLength()
     {
-        new MessageEnvelope( DEFAULT_ID, DEFAULT_TAG, new byte[ MessageEnvelope.MAXIMUM_BODY_LENGTH + 1 ] );
+        new MessageEnvelope( DEFAULT_ID, DEFAULT_CORRELATION_ID, new byte[ MessageEnvelope.MAXIMUM_BODY_LENGTH + 1 ] );
     }
 
     /**
@@ -114,27 +114,47 @@ public final class MessageEnvelopeTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_Body_Null()
     {
-        new MessageEnvelope( DEFAULT_ID, DEFAULT_TAG, null );
+        new MessageEnvelope( DEFAULT_ID, DEFAULT_CORRELATION_ID, null );
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a tag that is
-     * greater than the maximum tag.
+     * Ensures the constructor throws an exception when passed a correlation
+     * identifier that is greater than the maximum correlation identifier.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_Tag_Illegal_GreaterThanMaxTag()
+    public void testConstructor_CorrelationId_Illegal_GreaterThanMaxCorrelationId()
     {
-        new MessageEnvelope( DEFAULT_ID, IMessage.MAXIMUM_TAG + 1, DEFAULT_BODY );
+        new MessageEnvelope( DEFAULT_ID, IMessage.MAXIMUM_ID + 1, DEFAULT_BODY );
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a tag that is
-     * less than zero.
+     * Ensures the constructor throws an exception when passed a correlation
+     * identifier that is less than the minimum correlation identifier.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_Tag_Illegal_LessThanZero()
+    public void testConstructor_CorrelationId_Illegal_LessThanMinCorrelationId()
     {
-        new MessageEnvelope( DEFAULT_ID, -1, DEFAULT_BODY );
+        new MessageEnvelope( DEFAULT_ID, IMessage.NULL_CORRELATION_ID - 1, DEFAULT_BODY );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed an identifier
+     * that is greater than the maximum identifier.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testConstructor_Id_Illegal_GreaterThanMaxId()
+    {
+        new MessageEnvelope( IMessage.MAXIMUM_ID + 1, DEFAULT_CORRELATION_ID, DEFAULT_BODY );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed an identifier
+     * that is less than the minimum identifier.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testConstructor_Id_Illegal_LessThanMinId()
+    {
+        new MessageEnvelope( IMessage.MINIMUM_ID - 1, DEFAULT_CORRELATION_ID, DEFAULT_BODY );
     }
 
     /**
@@ -145,15 +165,14 @@ public final class MessageEnvelopeTest
     public void testFromByteBuffer_Buffer_Complete()
     {
         final ByteBuffer buffer = ByteBuffer.allocate( 128 );
-        buffer.putInt( DEFAULT_ID );
-        buffer.putInt( ((DEFAULT_TAG << 22) & 0xFFC00000) | (DEFAULT_BODY.length & 0x003FFFFF) );
+        buffer.putInt( ((DEFAULT_ID << 24) & 0xFF000000) | ((DEFAULT_CORRELATION_ID << 16) & 0x00FF0000) | (DEFAULT_BODY.length & 0x0000FFFF) );
         buffer.put( DEFAULT_BODY );
         buffer.flip();
 
         final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteBuffer( buffer );
 
         assertEquals( DEFAULT_ID, messageEnvelope.getId() );
-        assertEquals( DEFAULT_TAG, messageEnvelope.getTag() );
+        assertEquals( DEFAULT_CORRELATION_ID, messageEnvelope.getCorrelationId() );
         final ByteBuffer bodyBuffer = messageEnvelope_.getBody();
         final byte[] body = new byte[ bodyBuffer.remaining() ];
         bodyBuffer.get( body );
@@ -168,8 +187,7 @@ public final class MessageEnvelopeTest
     public void testFromByteBuffer_Buffer_IncompleteBody()
     {
         final ByteBuffer buffer = ByteBuffer.allocate( 128 );
-        buffer.putInt( DEFAULT_ID );
-        buffer.putInt( ((DEFAULT_TAG << 22) & 0xFFC00000) | (DEFAULT_BODY.length & 0x003FFFFF) );
+        buffer.putInt( ((DEFAULT_ID << 24) & 0xFF000000) | ((DEFAULT_CORRELATION_ID << 16) & 0x00FF0000) | (DEFAULT_BODY.length & 0x0000FFFF) );
         buffer.put( DEFAULT_BODY, 0, 1 );
         buffer.flip();
 
@@ -212,15 +230,16 @@ public final class MessageEnvelopeTest
         throws Exception
     {
         final IMessage expectedValue = new FakeMessage();
-        expectedValue.setTag( IMessage.MAXIMUM_TAG );
+        expectedValue.setId( IMessage.MAXIMUM_ID );
+        expectedValue.setCorrelationId( IMessage.MAXIMUM_ID );
 
         final MessageEnvelope messageEnvelope = MessageEnvelope.fromMessage( expectedValue );
         final IMessage actualValue = messageEnvelope.getBodyAsMessage();
 
         assertEquals( expectedValue.getId(), messageEnvelope.getId() );
-        assertEquals( expectedValue.getTag(), messageEnvelope.getTag() );
+        assertEquals( expectedValue.getCorrelationId(), messageEnvelope.getCorrelationId() );
         assertEquals( expectedValue.getId(), actualValue.getId() );
-        assertEquals( expectedValue.getTag(), actualValue.getTag() );
+        assertEquals( expectedValue.getCorrelationId(), actualValue.getCorrelationId() );
     }
 
     /**
@@ -251,20 +270,21 @@ public final class MessageEnvelopeTest
     }
 
     /**
+     * Ensures the {@code getCorrelationId} method returns the message
+     * correlation identifier.
+     */
+    @Test
+    public void testGetCorrelationId()
+    {
+        assertEquals( DEFAULT_CORRELATION_ID, messageEnvelope_.getCorrelationId() );
+    }
+
+    /**
      * Ensures the {@code getId} method returns the message identifier.
      */
     @Test
     public void testGetId()
     {
         assertEquals( DEFAULT_ID, messageEnvelope_.getId() );
-    }
-
-    /**
-     * Ensures the {@code getId} method returns the message tag.
-     */
-    @Test
-    public void testGetTag()
-    {
-        assertEquals( DEFAULT_TAG, messageEnvelope_.getTag() );
     }
 }

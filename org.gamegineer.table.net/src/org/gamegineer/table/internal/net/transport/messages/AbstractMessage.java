@@ -39,11 +39,11 @@ public abstract class AbstractMessage
     /** Serializable class version number. */
     private static final long serialVersionUID = 5994031588875266119L;
 
+    /** The message correlation identifier. */
+    private int correlationId_;
+
     /** The message identifier. */
     private int id_;
-
-    /** The message tag. */
-    private int tag_;
 
 
     // ======================================================================
@@ -52,21 +52,26 @@ public abstract class AbstractMessage
 
     /**
      * Initializes a new instance of the {@code AbstractMessage} class.
-     * 
-     * @param id
-     *        The message identifier.
      */
-    protected AbstractMessage(
-        final int id )
+    protected AbstractMessage()
     {
-        id_ = id;
-        tag_ = NO_TAG;
+        correlationId_ = NULL_CORRELATION_ID;
+        id_ = MINIMUM_ID;
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.internal.net.transport.IMessage#getCorrelationId()
+     */
+    @Override
+    public final int getCorrelationId()
+    {
+        return correlationId_;
+    }
 
     /*
      * @see org.gamegineer.table.internal.net.transport.IMessage#getId()
@@ -77,21 +82,26 @@ public abstract class AbstractMessage
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.IMessage#getTag()
+     * @see org.gamegineer.table.internal.net.transport.IMessage#setCorrelationId(int)
      */
-    public final int getTag()
+    @Override
+    public final void setCorrelationId(
+        final int correlationId )
     {
-        return tag_;
+        assertArgumentLegal( (correlationId == NULL_CORRELATION_ID) || ((correlationId >= MINIMUM_ID) && (correlationId <= MAXIMUM_ID)), "correlationId" ); //$NON-NLS-1$
+
+        correlationId_ = correlationId;
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.IMessage#setTag(int)
+     * @see org.gamegineer.table.internal.net.transport.IMessage#setId(int)
      */
-    public final void setTag(
-        final int tag )
+    @Override
+    public final void setId(
+        final int id )
     {
-        assertArgumentLegal( (tag == NO_TAG) || (tag >= MINIMUM_TAG) && (tag <= MAXIMUM_TAG), "tag" ); //$NON-NLS-1$
+        assertArgumentLegal( (id >= MINIMUM_ID) && (id <= MAXIMUM_ID), "id" ); //$NON-NLS-1$
 
-        tag_ = tag;
+        id_ = id;
     }
 }

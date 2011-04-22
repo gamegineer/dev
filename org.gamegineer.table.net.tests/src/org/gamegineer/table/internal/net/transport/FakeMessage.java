@@ -48,6 +48,6 @@ public final class FakeMessage
      */
     public FakeMessage()
     {
-        super( 0xFFFFFFFF );
+        super();
     }
 }

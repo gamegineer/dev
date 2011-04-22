@@ -144,7 +144,8 @@ final class RemoteClientTableGateway
         assert Thread.holdsLock( getLock() );
 
         final EndAuthenticationMessage endAuthenticationMessage = new EndAuthenticationMessage();
-        endAuthenticationMessage.setTag( IMessage.NO_TAG );
+        endAuthenticationMessage.setId( getNextMessageId() ); // TODO: move to sendMessage
+        // TODO: set correlation ID in response to response?
 
         final SecureString password = getTableGatewayContext().getPassword();
         try
@@ -153,7 +154,7 @@ final class RemoteClientTableGateway
             final byte[] expectedResponse = authenticator.createResponse( challenge_, password, salt_ );
             if( Arrays.equals( expectedResponse, message.getResponse() ) )
             {
-                System.out.println( String.format( "ServerService : client authenticated (tag=%d)", message.getTag() ) ); //$NON-NLS-1$
+                System.out.println( String.format( "ServerService : client authenticated (id=%d, correlation-id=%d)", message.getId(), message.getCorrelationId() ) ); //$NON-NLS-1$
                 playerName_ = message.getPlayerName();
                 try
                 {
@@ -168,7 +169,7 @@ final class RemoteClientTableGateway
             }
             else
             {
-                System.out.println( String.format( "ServerService : client failed authentication (tag=%d)", message.getTag() ) ); //$NON-NLS-1$
+                System.out.println( String.format( "ServerService : client failed authentication (id=%d, correlation-id=%d)", message.getId(), message.getCorrelationId() ) ); //$NON-NLS-1$
                 throw new NetworkTableException( "failed authentication" ); //$NON-NLS-1$
             }
         }
@@ -214,10 +215,11 @@ final class RemoteClientTableGateway
         assert message != null;
         assert Thread.holdsLock( getLock() );
 
-        System.out.println( String.format( "ServerService : received hello request (tag=%d) with supported version '%d'", message.getTag(), message.getSupportedProtocolVersion() ) ); //$NON-NLS-1$
+        System.out.println( String.format( "ServerService : received hello request (id=%d, correlation-id=%d) with supported version '%d'", message.getId(), message.getCorrelationId(), message.getSupportedProtocolVersion() ) ); //$NON-NLS-1$
 
         final HelloResponseMessage response = new HelloResponseMessage();
-        response.setTag( message.getTag() );
+        response.setId( getNextMessageId() ); // TODO: move to sendMessage
+        response.setCorrelationId( message.getId() );
         if( message.getSupportedProtocolVersion() >= ProtocolVersions.VERSION_1 )
         {
             response.setChosenProtocolVersion( ProtocolVersions.VERSION_1 );
@@ -239,7 +241,7 @@ final class RemoteClientTableGateway
             {
                 final Authenticator authenticator = new Authenticator();
                 final BeginAuthenticationRequestMessage beginAuthenticationRequest = new BeginAuthenticationRequestMessage();
-                beginAuthenticationRequest.setTag( getNextMessageTag() );
+                beginAuthenticationRequest.setId( getNextMessageId() ); // TODO: move to sendMessage
                 challenge_ = authenticator.createChallenge();
                 beginAuthenticationRequest.setChallenge( challenge_ );
                 salt_ = authenticator.createSalt();
@@ -258,7 +260,7 @@ final class RemoteClientTableGateway
         }
         else
         {
-            System.out.println( String.format( "ServerService : received hello request (tag=%d) but the requested version is unsupported", message.getTag() ) ); //$NON-NLS-1$
+            System.out.println( String.format( "ServerService : received hello request (id=%d, correlation-id=%d) but the requested version is unsupported", message.getId(), message.getCorrelationId() ) ); //$NON-NLS-1$
             context.stopService();
         }
     }

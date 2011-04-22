@@ -39,9 +39,6 @@ public final class HelloRequestMessage
     /** Serializable class version number. */
     private static final long serialVersionUID = 5756672104592548380L;
 
-    /** The message identifier. */
-    public static final int ID = 0x00000006;
-
     /**
      * The highest protocol version supported by the client.
      * 
@@ -59,8 +56,6 @@ public final class HelloRequestMessage
      */
     public HelloRequestMessage()
     {
-        super( ID );
-
         supportedProtocolVersion_ = 0;
     }
 

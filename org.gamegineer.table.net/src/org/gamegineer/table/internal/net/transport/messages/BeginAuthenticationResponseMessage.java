@@ -40,9 +40,6 @@ public final class BeginAuthenticationResponseMessage
     /** Serializable class version number. */
     private static final long serialVersionUID = -8921398762357752322L;
 
-    /** The message identifier. */
-    public static final int ID = 0x00000009;
-
     /**
      * The player name.
      * 
@@ -68,8 +65,6 @@ public final class BeginAuthenticationResponseMessage
      */
     public BeginAuthenticationResponseMessage()
     {
-        super( ID );
-
         playerName_ = ""; //$NON-NLS-1$
         response_ = new byte[ 1 ];
     }

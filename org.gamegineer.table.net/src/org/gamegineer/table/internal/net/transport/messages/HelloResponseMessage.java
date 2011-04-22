@@ -40,9 +40,6 @@ public final class HelloResponseMessage
     /** Serializable class version number. */
     private static final long serialVersionUID = -2723602157514908503L;
 
-    /** The message identifier. */
-    public static final int ID = 0x00000007;
-
     /**
      * The protocol version chosen by the server.
      * 
@@ -68,8 +65,6 @@ public final class HelloResponseMessage
      */
     public HelloResponseMessage()
     {
-        super( ID );
-
         chosenProtocolVersion_ = 0;
         exception_ = null;
     }

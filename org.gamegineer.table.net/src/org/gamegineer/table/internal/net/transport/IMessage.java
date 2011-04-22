@@ -26,38 +26,6 @@ import java.io.Serializable;
 /**
  * A network protocol message.
  * 
- * <p>
- * Messages are divided into three classes:
- * </p>
- * 
- * <ol>
- * <li>
- * Events
- * <p>
- * An event is an unsolicited message sent without any expectation of a
- * response. The most-significant bit of their identifier is clear, indicating
- * they are unsolicited. Their tag is set to {@link #NO_TAG}.
- * </p>
- * </li>
- * <li>
- * Requests
- * <p>
- * A request is an unsolicited message sent with the expectation of a response.
- * The most-significant bit of their identifier is clear, indicating they are
- * unsolicited. Their tag is set to any value from {@link #MINIMUM_TAG} to
- * {@link #MAXIMUM_TAG}, inclusive.
- * </p>
- * </li>
- * <li>
- * Responses
- * <p>
- * A response is a solicited message sent in reply to a request. The
- * most-significant bit of their identifier is set, indicating they are
- * solicited. Their tag is set to the tag of their corresponding request.
- * </p>
- * </li>
- * </ol>
- * 
  * @noextend This interface is not intended to be extended by clients.
  */
 public interface IMessage
@@ -67,22 +35,31 @@ public interface IMessage
     // Fields
     // ======================================================================
 
-    /** The maximum message tag value. */
-    public final int MAXIMUM_TAG = 0x3FF;
+    /** The maximum message identifier. */
+    public final int MAXIMUM_ID = 0xFF;
 
-    /** The minimum message tag value. */
-    public final int MINIMUM_TAG = 0x001;
+    /** The minimum message identifier value. */
+    public final int MINIMUM_ID = 0x01;
 
-    /** The message tag used to indicate no tag is present. */
-    public final int NO_TAG = 0;
-
-    /** The message identifier mask used to indicate the message is solicited. */
-    public final int SOLICITED_MASK = 0x80000000;
+    /**
+     * The null message correlation identifier used to indicate a message was
+     * not sent in reply to any other message.
+     */
+    public final int NULL_CORRELATION_ID = 0x00;
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the message correlation identifier.
+     * 
+     * @return The message correlation identifier or
+     *         {@link #NULL_CORRELATION_ID} if this message was not sent in
+     *         reply to another message.
+     */
+    public int getCorrelationId();
 
     /**
      * Gets the message identifier.
@@ -92,22 +69,29 @@ public interface IMessage
     public int getId();
 
     /**
-     * Gets the message tag.
+     * Sets the message correlation identifier.
      * 
-     * @return The message tag.
-     */
-    public int getTag();
-
-    /**
-     * Sets the message tag.
-     * 
-     * @param tag
-     *        The message tag.
+     * @param correlationId
+     *        The message correlation identifier.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code tag} is less than {@link #MINIMUM_TAG} or greater than
-     *         {@link #MAXIMUM_TAG} or not equal to {@link #NO_TAG}.
+     *         If {@code correlationId} is less than {@link #MINIMUM_ID} or
+     *         greater than {@link #MAXIMUM_ID} or not equal to
+     *         {@link #NULL_CORRELATION_ID} .
      */
-    public void setTag(
-        int tag );
+    public void setCorrelationId(
+        int correlationId );
+
+    /**
+     * Sets the message identifier.
+     * 
+     * @param id
+     *        The message identifier.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code id} is less than {@link #MINIMUM_ID} or greater than
+     *         {@link #MAXIMUM_ID}.
+     */
+    public void setId(
+        int id );
 }

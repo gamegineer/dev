@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.transport;
 
 import static org.junit.Assert.assertNotNull;
-import org.gamegineer.table.internal.net.transport.messages.AbstractMessage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -98,22 +97,44 @@ public abstract class AbstractMessageTestCase
     }
 
     /**
-     * Ensures the {@code setTag} method throws an exception when passed a tag
-     * greater than the maximum tag.
+     * Ensures the {@code setCorrelationId} method throws an exception when
+     * passed a correlation identifier greater than the maximum correlation
+     * identifier.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testSetTag_Tag_Illegal_GreaterThanMaxTag()
+    public void testSetCorrelationId_CorrelationId_Illegal_GreaterThanMaxCorrelationId()
     {
-        message_.setTag( AbstractMessage.MAXIMUM_TAG + 1 );
+        message_.setCorrelationId( IMessage.MAXIMUM_ID + 1 );
     }
 
     /**
-     * Ensures the {@code setTag} method throws an exception when passed a tag
-     * less than zero.
+     * Ensures the {@code setCorrelationId} method throws an exception when
+     * passed a correlation identifier less than the minimum correlation
+     * identifier.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testSetTag_Tag_Illegal_LessThanZero()
+    public void testSetCorrelationId_CorrelationId_Illegal_LessThanMinCorrelationId()
     {
-        message_.setTag( -1 );
+        message_.setCorrelationId( IMessage.NULL_CORRELATION_ID - 1 );
+    }
+
+    /**
+     * Ensures the {@code setId} method throws an exception when passed an
+     * identifier greater than the maximum identifier.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testSetId_Id_Illegal_GreaterThanMaxId()
+    {
+        message_.setId( IMessage.MAXIMUM_ID + 1 );
+    }
+
+    /**
+     * Ensures the {@code setId} method throws an exception when passed an
+     * identifier less than the minimum identifier.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testSetId_Id_Illegal_LessThanMinId()
+    {
+        message_.setId( IMessage.MINIMUM_ID - 1 );
     }
 }

@@ -41,17 +41,11 @@ public final class MessageEnvelope
     // Fields
     // ======================================================================
 
-    /** The offset to the message identifier in the header in bytes. */
-    private static final int HEADER_ID_OFFSET = 0;
-
     /** The header length in bytes. */
-    private static final int HEADER_LENGTH = 8;
-
-    /** The offset to the message tag and length in the header in bytes. */
-    private static final int HEADER_TAG_AND_LENGTH_OFFSET = 4;
+    private static final int HEADER_LENGTH = 4;
 
     /** The maximum message body length in bytes. */
-    public static final int MAXIMUM_BODY_LENGTH = 0x003FFFFF;
+    public static final int MAXIMUM_BODY_LENGTH = 0xFFFF;
 
     /** The network representation of the message envelope. */
     private final ByteBuffer buffer_;
@@ -66,33 +60,37 @@ public final class MessageEnvelope
      * 
      * @param id
      *        The message identifier.
-     * @param tag
-     *        The message tag.
+     * @param correlationId
+     *        The message correlation identifier.
      * @param body
      *        The message body; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code tag} is less than {@link IMessage#MAXIMUM_TAG} or
-     *         greater than {@link IMessage#MAXIMUM_TAG} or not equal to
-     *         {@link IMessage#NO_TAG}; if the length of {@code body} is greater
-     *         than {@link #MAXIMUM_BODY_LENGTH}.
+     *         If {@code id} is less than {@link IMessage#MINIMUM_ID} or greater
+     *         than {@link IMessage#MAXIMUM_ID}; if {@code correlationId} is
+     *         less than {@link IMessage#MINIMUM_ID} or greater than
+     *         {@link IMessage#MAXIMUM_ID} or not equal to
+     *         {@link IMessage#NULL_CORRELATION_ID}; if the length of {@code
+     *         body} is greater than {@link #MAXIMUM_BODY_LENGTH}.
      * @throws java.lang.NullPointerException
      *         If {@code body} is {@code null}.
      */
     public MessageEnvelope(
         final int id,
-        final int tag,
+        final int correlationId,
         /* @NonNull */
         final byte[] body )
     {
-        assertArgumentLegal( (tag == IMessage.NO_TAG) || (tag >= IMessage.MINIMUM_TAG) && (tag <= IMessage.MAXIMUM_TAG), "tag" ); //$NON-NLS-1$
+        assertArgumentLegal( (id >= IMessage.MINIMUM_ID) && (id <= IMessage.MAXIMUM_ID), "id" ); //$NON-NLS-1$
+        assertArgumentLegal( (correlationId == IMessage.NULL_CORRELATION_ID) || ((correlationId >= IMessage.MINIMUM_ID) && (correlationId <= IMessage.MAXIMUM_ID)), "correlationId" ); //$NON-NLS-1$
         assertArgumentNotNull( body, "body" ); //$NON-NLS-1$
         assertArgumentLegal( body.length <= MAXIMUM_BODY_LENGTH, "body" ); //$NON-NLS-1$
 
         buffer_ = ByteBuffer.allocate( HEADER_LENGTH + body.length );
-        buffer_.putInt( id );
-        final int tagAndLength = ((tag << 22) & 0xFFC00000) | (body.length & 0x003FFFFF);
-        buffer_.putInt( tagAndLength );
+        final int header = ((id << 24) & 0xFF000000) //
+            | ((correlationId << 16) & 0x00FF0000) //
+            | (body.length & 0x0000FFFF);
+        buffer_.putInt( header );
         buffer_.put( body );
         buffer_.flip();
     }
@@ -122,8 +120,8 @@ public final class MessageEnvelope
             return false;
         }
 
-        final int tagAndLength = buffer.getInt( HEADER_TAG_AND_LENGTH_OFFSET );
-        final int bodyLength = decodeMessageLength( tagAndLength );
+        final int header = buffer.getInt( 0 );
+        final int bodyLength = decodeMessageLength( header );
         if( buffer.remaining() < (HEADER_LENGTH + bodyLength) )
         {
             return false;
@@ -133,31 +131,46 @@ public final class MessageEnvelope
     }
 
     /**
-     * Decodes the message length from the specified encoded value.
+     * Decodes the message correlation identifier from the specified encoded
+     * header value.
      * 
-     * @param tagAndLength
-     *        The encoded message tag and length.
+     * @param header
+     *        The encoded message header.
+     * 
+     * @return The message correlation identifier.
+     */
+    private static int decodeMessageCorrelationId(
+        final int header )
+    {
+        return (header >>> 16) & 0x000000FF;
+    }
+
+    /**
+     * Decodes the message length from the specified encoded header value.
+     * 
+     * @param header
+     *        The encoded message header.
      * 
      * @return The message length.
      */
     private static int decodeMessageLength(
-        final int tagAndLength )
+        final int header )
     {
-        return tagAndLength & 0x003FFFFF;
+        return header & 0x0000FFFF;
     }
 
     /**
-     * Decodes the message tag from the specified encoded value.
+     * Decodes the message identifier from the specified encoded header value.
      * 
-     * @param tagAndLength
-     *        The encoded message tag and length.
+     * @param header
+     *        The encoded message header.
      * 
-     * @return The message tag.
+     * @return The message identifier.
      */
-    private static int decodeMessageTag(
-        final int tagAndLength )
+    private static int decodeMessageId(
+        final int header )
     {
-        return (tagAndLength >>> 22) & 0x000003FF;
+        return (header >>> 24) & 0x000000FF;
     }
 
     /**
@@ -217,14 +230,14 @@ public final class MessageEnvelope
             return null;
         }
 
-        final int id = buffer.getInt();
-        final int tagAndLength = buffer.getInt();
-        final int tag = decodeMessageTag( tagAndLength );
-        final int bodyLength = decodeMessageLength( tagAndLength );
+        final int header = buffer.getInt();
+        final int id = decodeMessageId( header );
+        final int correlationId = decodeMessageCorrelationId( header );
+        final int bodyLength = decodeMessageLength( header );
         final byte[] body = new byte[ bodyLength ];
         buffer.get( body );
 
-        return new MessageEnvelope( id, tag, body );
+        return new MessageEnvelope( id, correlationId, body );
     }
 
     /**
@@ -249,7 +262,7 @@ public final class MessageEnvelope
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
 
-        return new MessageEnvelope( message.getId(), message.getTag(), serializeMessage( message ) );
+        return new MessageEnvelope( message.getId(), message.getCorrelationId(), serializeMessage( message ) );
     }
 
     /**
@@ -288,24 +301,23 @@ public final class MessageEnvelope
     }
 
     /**
+     * Gets the message correlation identifier.
+     * 
+     * @return The message correlation identifier.
+     */
+    public int getCorrelationId()
+    {
+        return decodeMessageCorrelationId( buffer_.getInt( 0 ) );
+    }
+
+    /**
      * Gets the message identifier.
      * 
      * @return The message identifier.
      */
     public int getId()
     {
-        return buffer_.getInt( HEADER_ID_OFFSET );
-    }
-
-    /**
-     * Gets the message tag.
-     * 
-     * @return The message tag.
-     */
-    public int getTag()
-    {
-        final int tagAndLength = buffer_.getInt( HEADER_TAG_AND_LENGTH_OFFSET );
-        return decodeMessageTag( tagAndLength );
+        return decodeMessageId( buffer_.getInt( 0 ) );
     }
 
     /**

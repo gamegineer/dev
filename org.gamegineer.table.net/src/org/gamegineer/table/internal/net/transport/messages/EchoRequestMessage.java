@@ -38,9 +38,6 @@ public final class EchoRequestMessage
     /** Serializable class version number. */
     private static final long serialVersionUID = -720159066415394954L;
 
-    /** The message identifier. */
-    public static final int ID = 0x00000004;
-
     /**
      * The message content.
      * 
@@ -58,8 +55,6 @@ public final class EchoRequestMessage
      */
     public EchoRequestMessage()
     {
-        super( ID );
-
         content_ = ""; //$NON-NLS-1$
     }
 

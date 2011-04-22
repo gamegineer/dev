@@ -50,9 +50,9 @@ public abstract class AbstractRemoteTableGateway
     /** The instance lock. */
     private final Object lock_;
 
-    /** The next available message tag. */
+    /** The next available message identifier. */
     @GuardedBy( "getLock()" )
-    private int nextTag_;
+    private int nextId_;
 
     /** The table gateway context. */
     private final ITableGatewayContext tableGatewayContext_;
@@ -79,7 +79,7 @@ public abstract class AbstractRemoteTableGateway
         assertArgumentNotNull( tableGatewayContext, "tableGatewayContext" ); //$NON-NLS-1$
 
         lock_ = new Object();
-        nextTag_ = getInitialMessageTag();
+        nextId_ = getInitialMessageId();
         tableGatewayContext_ = tableGatewayContext;
     }
 
@@ -89,14 +89,14 @@ public abstract class AbstractRemoteTableGateway
     // ======================================================================
 
     /**
-     * Gets the initial message tag.
+     * Gets the initial message identifier.
      * 
-     * @return The initial message tag.
+     * @return The initial message identifier.
      */
-    private static int getInitialMessageTag()
+    private static int getInitialMessageId()
     {
         final Random rng = new Random( System.currentTimeMillis() );
-        return IMessage.MINIMUM_TAG + rng.nextInt( IMessage.MAXIMUM_TAG - IMessage.MINIMUM_TAG );
+        return IMessage.MINIMUM_ID + rng.nextInt( IMessage.MAXIMUM_ID - IMessage.MINIMUM_ID );
     }
 
     /**
@@ -111,22 +111,22 @@ public abstract class AbstractRemoteTableGateway
     }
 
     /**
-     * Gets the next available message tag.
+     * Gets the next available message identifier.
      * 
-     * @return The next available message tag.
+     * @return The next available message identifier.
      */
     @GuardedBy( "getLock()" )
-    protected final int getNextMessageTag()
+    protected final int getNextMessageId()
     {
         assert Thread.holdsLock( getLock() );
 
-        final int tag = nextTag_;
-        if( ++nextTag_ > IMessage.MAXIMUM_TAG )
+        final int id = nextId_;
+        if( ++nextId_ > IMessage.MAXIMUM_ID )
         {
-            nextTag_ = IMessage.MINIMUM_TAG;
+            nextId_ = IMessage.MINIMUM_ID;
         }
 
-        return tag;
+        return id;
     }
 
     /**

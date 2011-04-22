@@ -128,7 +128,8 @@ final class RemoteServerTableGateway
         assert Thread.holdsLock( getLock() );
 
         final BeginAuthenticationResponseMessage response = new BeginAuthenticationResponseMessage();
-        response.setTag( message.getTag() );
+        response.setId( getNextMessageId() ); // TODO: move to sendMessage
+        response.setCorrelationId( message.getId() );
         response.setPlayerName( getTableGatewayContext().getLocalPlayerName() );
 
         final SecureString password = getTableGatewayContext().getPassword();
@@ -180,12 +181,12 @@ final class RemoteServerTableGateway
 
         if( message.getException() != null )
         {
-            System.out.println( String.format( "ClientService : failed authentication (tag=%d) with exception: ", message.getTag() ) + message.getException() ); //$NON-NLS-1$
+            System.out.println( String.format( "ClientService : failed authentication (id=%d, correlation-id=%d) with exception: ", message.getId(), message.getCorrelationId() ) + message.getException() ); //$NON-NLS-1$
             context.stopService();
         }
         else
         {
-            System.out.println( String.format( "ClientService : completed authentication successfully (tag=%d): ", message.getTag() ) ); //$NON-NLS-1$
+            System.out.println( String.format( "ClientService : completed authentication successfully (id=%d, correlation-id=%d): ", message.getId(), message.getCorrelationId() ) ); //$NON-NLS-1$
 
             try
             {
@@ -223,12 +224,12 @@ final class RemoteServerTableGateway
 
         if( message.getException() != null )
         {
-            System.out.println( String.format( "ClientService : received hello response (tag=%d) with exception: ", message.getTag() ) + message.getException() ); //$NON-NLS-1$
+            System.out.println( String.format( "ClientService : received hello response (id=%d, correlation-id=%d) with exception: ", message.getId(), message.getCorrelationId() ) + message.getException() ); //$NON-NLS-1$
             context.stopService();
         }
         else
         {
-            System.out.println( String.format( "ClientService : received hello response (tag=%d) with chosen version '%d'", message.getTag(), message.getChosenProtocolVersion() ) ); //$NON-NLS-1$
+            System.out.println( String.format( "ClientService : received hello response (id=%d, correlation-id=%d) with chosen version '%d'", message.getId(), message.getCorrelationId(), message.getChosenProtocolVersion() ) ); //$NON-NLS-1$
         }
     }
 
@@ -308,7 +309,7 @@ final class RemoteServerTableGateway
         assert Thread.holdsLock( getLock() );
 
         final HelloRequestMessage message = new HelloRequestMessage();
-        message.setTag( getNextMessageTag() );
+        message.setId( getNextMessageId() ); // TODO: move to sendMessage
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
         if( !context.sendMessage( message ) )
         {

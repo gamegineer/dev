@@ -40,9 +40,6 @@ public final class BeginAuthenticationRequestMessage
     /** Serializable class version number. */
     private static final long serialVersionUID = -3655289502300758295L;
 
-    /** The message identifier. */
-    public static final int ID = 0x00000008;
-
     /**
      * The challenge.
      * 
@@ -68,8 +65,6 @@ public final class BeginAuthenticationRequestMessage
      */
     public BeginAuthenticationRequestMessage()
     {
-        super( ID );
-
         challenge_ = new byte[ 1 ];
         salt_ = new byte[ 1 ];
     }

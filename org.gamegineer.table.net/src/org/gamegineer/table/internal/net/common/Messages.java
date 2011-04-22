@@ -114,7 +114,7 @@ final class Messages
         /* @NonNull */
         final MessageEnvelope messageEnvelope )
     {
-        return bind( AbstractRemoteTableGateway_messageReceived_deserializationError, messageEnvelope.getId(), messageEnvelope.getTag() );
+        return bind( AbstractRemoteTableGateway_messageReceived_deserializationError, messageEnvelope.getId(), messageEnvelope.getCorrelationId() );
     }
 
     /**
@@ -133,6 +133,6 @@ final class Messages
         /* @NonNull */
         final MessageEnvelope messageEnvelope )
     {
-        return bind( AbstractRemoteTableGateway_messageReceived_unknownMessage, messageEnvelope.getId(), messageEnvelope.getTag() );
+        return bind( AbstractRemoteTableGateway_messageReceived_unknownMessage, messageEnvelope.getId(), messageEnvelope.getCorrelationId() );
     }
 }

@@ -39,9 +39,6 @@ public final class EndAuthenticationMessage
     /** Serializable class version number. */
     private static final long serialVersionUID = -3711359984148117329L;
 
-    /** The message identifier. */
-    public static final int ID = 0x0000000A;
-
     /**
      * The exception that occurred during authentication or {@code null} if no
      * error occurred.
@@ -60,8 +57,6 @@ public final class EndAuthenticationMessage
      */
     public EndAuthenticationMessage()
     {
-        super( ID );
-
         exception_ = null;
     }
 

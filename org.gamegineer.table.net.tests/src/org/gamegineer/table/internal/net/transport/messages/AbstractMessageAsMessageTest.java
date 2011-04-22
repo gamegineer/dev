@@ -57,7 +57,7 @@ public final class AbstractMessageAsMessageTest
     @Override
     protected IMessage createMessage()
     {
-        return new AbstractMessage( 0 )
+        return new AbstractMessage()
         {
             private static final long serialVersionUID = 1L;
         };

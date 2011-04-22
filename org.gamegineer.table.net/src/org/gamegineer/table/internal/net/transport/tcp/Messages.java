@@ -149,6 +149,6 @@ final class Messages
         /* @NonNull */
         final IMessage message )
     {
-        return bind( ServiceHandler_sendMessage_ioError, message.getId(), message.getTag() );
+        return bind( ServiceHandler_sendMessage_ioError, message.getId(), message.getCorrelationId() );
     }
 }

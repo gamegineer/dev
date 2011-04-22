@@ -104,7 +104,7 @@ public abstract class AbstractServiceTestCase
     @Test( expected = NullPointerException.class )
     public void testMessageReceived_Context_Null()
     {
-        service_.messageReceived( null, new MessageEnvelope( 0, 0, new byte[ 0 ] ) );
+        service_.messageReceived( null, new MessageEnvelope( IMessage.MINIMUM_ID, IMessage.MINIMUM_ID, new byte[ 0 ] ) );
     }
 
     /**
