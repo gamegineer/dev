@@ -144,8 +144,7 @@ final class RemoteClientTableGateway
         assert Thread.holdsLock( getLock() );
 
         final EndAuthenticationMessage endAuthenticationMessage = new EndAuthenticationMessage();
-        endAuthenticationMessage.setId( getNextMessageId() ); // TODO: move to sendMessage
-        // TODO: set correlation ID in response to response?
+        endAuthenticationMessage.setCorrelationId( message.getId() );
 
         final SecureString password = getTableGatewayContext().getPassword();
         try
@@ -182,7 +181,7 @@ final class RemoteClientTableGateway
             password.dispose();
         }
 
-        if( context.sendMessage( endAuthenticationMessage ) )
+        if( sendMessage( context, endAuthenticationMessage ) )
         {
             if( endAuthenticationMessage.getException() != null )
             {
@@ -218,7 +217,6 @@ final class RemoteClientTableGateway
         System.out.println( String.format( "ServerService : received hello request (id=%d, correlation-id=%d) with supported version '%d'", message.getId(), message.getCorrelationId(), message.getSupportedProtocolVersion() ) ); //$NON-NLS-1$
 
         final HelloResponseMessage response = new HelloResponseMessage();
-        response.setId( getNextMessageId() ); // TODO: move to sendMessage
         response.setCorrelationId( message.getId() );
         if( message.getSupportedProtocolVersion() >= ProtocolVersions.VERSION_1 )
         {
@@ -229,7 +227,7 @@ final class RemoteClientTableGateway
             response.setException( new NetworkTableException( "unsupported protocol version" ) ); //$NON-NLS-1$
         }
 
-        if( !context.sendMessage( response ) )
+        if( !sendMessage( context, response ) )
         {
             context.stopService();
             return;
@@ -241,13 +239,12 @@ final class RemoteClientTableGateway
             {
                 final Authenticator authenticator = new Authenticator();
                 final BeginAuthenticationRequestMessage beginAuthenticationRequest = new BeginAuthenticationRequestMessage();
-                beginAuthenticationRequest.setId( getNextMessageId() ); // TODO: move to sendMessage
                 challenge_ = authenticator.createChallenge();
                 beginAuthenticationRequest.setChallenge( challenge_ );
                 salt_ = authenticator.createSalt();
                 beginAuthenticationRequest.setSalt( salt_ );
 
-                if( !context.sendMessage( beginAuthenticationRequest ) )
+                if( !sendMessage( context, beginAuthenticationRequest ) )
                 {
                     context.stopService();
                 }

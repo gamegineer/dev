@@ -116,7 +116,7 @@ public abstract class AbstractRemoteTableGateway
      * @return The next available message identifier.
      */
     @GuardedBy( "getLock()" )
-    protected final int getNextMessageId()
+    private int getNextMessageId()
     {
         assert Thread.holdsLock( getLock() );
 
@@ -251,6 +251,35 @@ public abstract class AbstractRemoteTableGateway
         assert Thread.holdsLock( getLock() );
 
         // do nothing
+    }
+
+    /**
+     * Sends the specified message to the service peer.
+     * 
+     * @param context
+     *        The service context; must not be {@code null}.
+     * @param message
+     *        The message; must not be {@code null}.
+     * 
+     * @return {@code true} if the message was sent successfully; otherwise
+     *         {@code false}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code context} or {@code message} is {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    protected final boolean sendMessage(
+        /* @NonNull */
+        final IServiceContext context,
+        /* @NonNull */
+        final IMessage message )
+    {
+        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
+        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        message.setId( getNextMessageId() );
+        return context.sendMessage( message );
     }
 
     /*

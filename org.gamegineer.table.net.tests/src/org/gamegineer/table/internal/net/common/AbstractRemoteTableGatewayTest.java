@@ -21,6 +21,12 @@
 
 package org.gamegineer.table.internal.net.common;
 
+import org.easymock.EasyMock;
+import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.transport.IMessage;
+import org.gamegineer.table.internal.net.transport.IServiceContext;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -30,6 +36,14 @@ import org.junit.Test;
  */
 public final class AbstractRemoteTableGatewayTest
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The remote table gateway under test in the fixture. */
+    private AbstractRemoteTableGateway remoteTableGateway_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -49,13 +63,23 @@ public final class AbstractRemoteTableGatewayTest
     // ======================================================================
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * table gateway context.
+     * Creates a new instance of the {@code AbstractRemoteTableGateway} class.
+     * 
+     * @param tableGatewayContext
+     *        The table gateway context; must not be {@code null}.
+     * 
+     * @return A new instance of the {@code AbstractRemoteTableGateway} class;
+     *         never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableGatewayContext} is {@code null}.
      */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_TableGatewayContext_Null()
+    /* @NonNull */
+    private static AbstractRemoteTableGateway createRemoteTableGateway(
+        /* @NonNull */
+        final ITableGatewayContext tableGatewayContext )
     {
-        new AbstractRemoteTableGateway( null )
+        return new AbstractRemoteTableGateway( tableGatewayContext )
         {
             @Override
             public String getPlayerName()
@@ -63,5 +87,61 @@ public final class AbstractRemoteTableGatewayTest
                 throw new AssertionError( "not implemented" ); //$NON-NLS-1$
             }
         };
+    }
+
+    /**
+     * Sets up the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Before
+    public void setUp()
+        throws Exception
+    {
+        remoteTableGateway_ = createRemoteTableGateway( EasyMock.createMock( ITableGatewayContext.class ) );
+    }
+
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        remoteTableGateway_ = null;
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * table gateway context.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_TableGatewayContext_Null()
+    {
+        createRemoteTableGateway( null );
+    }
+
+    /**
+     * Ensures the {@code sendMessage} method throws an exception when passed a
+     * {@code null} context.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSendMessage_Context_Null()
+    {
+        remoteTableGateway_.sendMessage( null, EasyMock.createMock( IMessage.class ) );
+    }
+
+    /**
+     * Ensures the {@code sendMessage} method throws an exception when passed a
+     * {@code null} message.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSendMessage_Message_Null()
+    {
+        remoteTableGateway_.sendMessage( EasyMock.createMock( IServiceContext.class ), null );
     }
 }

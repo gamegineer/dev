@@ -128,7 +128,6 @@ final class RemoteServerTableGateway
         assert Thread.holdsLock( getLock() );
 
         final BeginAuthenticationResponseMessage response = new BeginAuthenticationResponseMessage();
-        response.setId( getNextMessageId() ); // TODO: move to sendMessage
         response.setCorrelationId( message.getId() );
         response.setPlayerName( getTableGatewayContext().getLocalPlayerName() );
 
@@ -139,7 +138,7 @@ final class RemoteServerTableGateway
             final byte[] authResponse = authenticator.createResponse( message.getChallenge(), password, message.getSalt() );
             response.setResponse( authResponse );
 
-            if( !context.sendMessage( response ) )
+            if( !sendMessage( context, response ) )
             {
                 context.stopService();
             }
@@ -309,9 +308,8 @@ final class RemoteServerTableGateway
         assert Thread.holdsLock( getLock() );
 
         final HelloRequestMessage message = new HelloRequestMessage();
-        message.setId( getNextMessageId() ); // TODO: move to sendMessage
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
-        if( !context.sendMessage( message ) )
+        if( !sendMessage( context, message ) )
         {
             context.stopService();
         }
