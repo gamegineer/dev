@@ -50,25 +50,22 @@ public class FakeService
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.IService#messageReceived(org.gamegineer.table.internal.net.transport.IServiceContext, org.gamegineer.table.internal.net.transport.MessageEnvelope)
+     * @see org.gamegineer.table.internal.net.transport.IService#messageReceived(org.gamegineer.table.internal.net.transport.MessageEnvelope)
      */
     @Override
     public void messageReceived(
-        final IServiceContext context,
         final MessageEnvelope messageEnvelope )
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertArgumentNotNull( messageEnvelope, "messageEnvelope" ); //$NON-NLS-1$
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.IService#peerStopped(org.gamegineer.table.internal.net.transport.IServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.IService#peerStopped()
      */
     @Override
-    public void peerStopped(
-        final IServiceContext context )
+    public void peerStopped()
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
+        // do nothing
     }
 
     /*
@@ -82,12 +79,11 @@ public class FakeService
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.IService#stopped(org.gamegineer.table.internal.net.transport.IServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.IService#stopped()
      */
     @Override
-    public void stopped(
-        final IServiceContext context )
+    public void stopped()
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
+        // do nothing
     }
 }

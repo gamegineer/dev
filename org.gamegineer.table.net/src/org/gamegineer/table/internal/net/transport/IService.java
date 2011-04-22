@@ -39,32 +39,20 @@ public interface IService
     /**
      * Invoked when a message has been received from the peer service.
      * 
-     * @param context
-     *        The service context; must not be {@code null}.
      * @param messageEnvelope
      *        The message envelope; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code context} or {@code messageEnvelope} is {@code null}.
+     *         If {@code messageEnvelope} is {@code null}.
      */
     public void messageReceived(
-        /* @NonNull */
-        IServiceContext context,
         /* @NonNull */
         MessageEnvelope messageEnvelope );
 
     /**
      * Invoked when the peer service has stopped.
-     * 
-     * @param context
-     *        The service context; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
      */
-    public void peerStopped(
-        /* @NonNull */
-        IServiceContext context );
+    public void peerStopped();
 
     /**
      * Invoked when the service has started.
@@ -81,14 +69,6 @@ public interface IService
 
     /**
      * Invoked when the service has stopped.
-     * 
-     * @param context
-     *        The service context; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
      */
-    public void stopped(
-        /* @NonNull */
-        IServiceContext context );
+    public void stopped();
 }

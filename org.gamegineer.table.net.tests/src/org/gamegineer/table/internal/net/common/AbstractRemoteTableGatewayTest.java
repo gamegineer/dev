@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.net.common;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -126,13 +125,26 @@ public final class AbstractRemoteTableGatewayTest
     }
 
     /**
-     * Ensures the {@code sendMessage} method throws an exception when passed a
-     * {@code null} context.
+     * Ensures the {@code getServiceContext} method throws an exception when the
+     * network is disconnected.
      */
-    @Test( expected = NullPointerException.class )
-    public void testSendMessage_Context_Null()
+    @Test( expected = IllegalStateException.class )
+    public void testGetServiceContext_Disconnected()
     {
-        remoteTableGateway_.sendMessage( null, EasyMock.createMock( IMessage.class ) );
+        remoteTableGateway_.getServiceContext();
+    }
+
+    /**
+     * Ensures the {@code sendMessage} method throws an exception when the
+     * network is disconnected.
+     */
+    @Test( expected = IllegalStateException.class )
+    public void testSendMessage_Disconnected()
+    {
+        synchronized( remoteTableGateway_.getLock() )
+        {
+            remoteTableGateway_.sendMessage( EasyMock.createMock( IMessage.class ) );
+        }
     }
 
     /**
@@ -142,6 +154,19 @@ public final class AbstractRemoteTableGatewayTest
     @Test( expected = NullPointerException.class )
     public void testSendMessage_Message_Null()
     {
-        remoteTableGateway_.sendMessage( EasyMock.createMock( IServiceContext.class ), null );
+        remoteTableGateway_.sendMessage( null );
+    }
+
+    /**
+     * Ensures the {@code stop} method throws an exception when the network is
+     * disconnected.
+     */
+    @Test( expected = IllegalStateException.class )
+    public void testStop_Disconnected()
+    {
+        synchronized( remoteTableGateway_.getLock() )
+        {
+            remoteTableGateway_.stop();
+        }
     }
 }

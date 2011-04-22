@@ -50,7 +50,6 @@ final class Messages
     /** The table gateway is not registered. */
     public static String AbstractNetworkTableStrategy_removeTableGateway_tableGatewayNotRegistered;
 
-
     // --- AbstractRemoteTableGateway ---------------------------------------
 
     /** An error occurred while deserializing a message. */
@@ -58,6 +57,9 @@ final class Messages
 
     /** The service received an unknown message. */
     public static String AbstractRemoteTableGateway_messageReceived_unknownMessage;
+
+    /** The network is disconnected. */
+    public static String AbstractRemoteTableGateway_networkDisconnected;
 
     // --- Authenticator ----------------------------------------------------
 

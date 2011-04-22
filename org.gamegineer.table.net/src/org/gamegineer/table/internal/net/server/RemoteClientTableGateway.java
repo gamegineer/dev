@@ -32,7 +32,6 @@ import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.transport.messages.EndAuthenticationMessage;
@@ -126,8 +125,6 @@ final class RemoteClientTableGateway
     /**
      * Handles a Begin Authentication Response message.
      * 
-     * @param context
-     *        The service context; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
@@ -135,11 +132,8 @@ final class RemoteClientTableGateway
     @SuppressWarnings( "boxing" )
     private void handleBeginAuthenticationResponseMessage(
         /* @NonNull */
-        final IServiceContext context,
-        /* @NonNull */
         final BeginAuthenticationResponseMessage message )
     {
-        assert context != null;
         assert message != null;
         assert Thread.holdsLock( getLock() );
 
@@ -181,24 +175,22 @@ final class RemoteClientTableGateway
             password.dispose();
         }
 
-        if( sendMessage( context, endAuthenticationMessage ) )
+        if( sendMessage( endAuthenticationMessage ) )
         {
             if( endAuthenticationMessage.getException() != null )
             {
-                context.stopService();
+                stop();
             }
         }
         else
         {
-            context.stopService();
+            stop();
         }
     }
 
     /**
      * Handles a Hello Request message.
      * 
-     * @param context
-     *        The service context; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
@@ -206,11 +198,8 @@ final class RemoteClientTableGateway
     @SuppressWarnings( "boxing" )
     private void handleHelloRequestMessage(
         /* @NonNull */
-        final IServiceContext context,
-        /* @NonNull */
         final HelloRequestMessage message )
     {
-        assert context != null;
         assert message != null;
         assert Thread.holdsLock( getLock() );
 
@@ -227,9 +216,9 @@ final class RemoteClientTableGateway
             response.setException( new NetworkTableException( "unsupported protocol version" ) ); //$NON-NLS-1$
         }
 
-        if( !sendMessage( context, response ) )
+        if( !sendMessage( response ) )
         {
-            context.stopService();
+            stop();
             return;
         }
 
@@ -244,44 +233,42 @@ final class RemoteClientTableGateway
                 salt_ = authenticator.createSalt();
                 beginAuthenticationRequest.setSalt( salt_ );
 
-                if( !sendMessage( context, beginAuthenticationRequest ) )
+                if( !sendMessage( beginAuthenticationRequest ) )
                 {
-                    context.stopService();
+                    stop();
                 }
             }
             catch( final NetworkTableException e )
             {
                 System.out.println( "ServerService : failed to generate begin authentication request with exception: " + e ); //$NON-NLS-1$
-                context.stopService();
+                stop();
             }
         }
         else
         {
             System.out.println( String.format( "ServerService : received hello request (id=%d, correlation-id=%d) but the requested version is unsupported", message.getId(), message.getCorrelationId() ) ); //$NON-NLS-1$
-            context.stopService();
+            stop();
         }
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#messageReceivedInternal(org.gamegineer.table.internal.net.transport.IServiceContext, org.gamegineer.table.internal.net.transport.IMessage)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#messageReceivedInternal(org.gamegineer.table.internal.net.transport.IMessage)
      */
     @Override
     protected boolean messageReceivedInternal(
-        final IServiceContext context,
         final IMessage message )
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         if( message instanceof HelloRequestMessage )
         {
-            handleHelloRequestMessage( context, (HelloRequestMessage)message );
+            handleHelloRequestMessage( (HelloRequestMessage)message );
             return true;
         }
         else if( message instanceof BeginAuthenticationResponseMessage )
         {
-            handleBeginAuthenticationResponseMessage( context, (BeginAuthenticationResponseMessage)message );
+            handleBeginAuthenticationResponseMessage( (BeginAuthenticationResponseMessage)message );
             return true;
         }
 
@@ -289,13 +276,11 @@ final class RemoteClientTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#peerStoppedInternal(org.gamegineer.table.internal.net.transport.IServiceContext)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#peerStoppedInternal()
      */
     @Override
-    protected void peerStoppedInternal(
-        final IServiceContext context )
+    protected void peerStoppedInternal()
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         if( playerName_ != null )
@@ -327,13 +312,11 @@ final class RemoteClientTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#stoppedInternal(org.gamegineer.table.internal.net.transport.IServiceContext)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#stoppedInternal()
      */
     @Override
-    protected void stoppedInternal(
-        final IServiceContext context )
+    protected void stoppedInternal()
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         if( playerName_ != null )

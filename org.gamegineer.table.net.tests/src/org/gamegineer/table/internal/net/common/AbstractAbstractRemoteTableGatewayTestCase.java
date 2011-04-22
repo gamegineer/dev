@@ -21,10 +21,7 @@
 
 package org.gamegineer.table.internal.net.common;
 
-import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.AbstractTableGatewayTestCase;
-import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.junit.Test;
 
 /**
@@ -55,51 +52,11 @@ public abstract class AbstractAbstractRemoteTableGatewayTestCase
 
     /**
      * Ensures the {@code messageReceivedInternal} method throws an exception
-     * when passed a {@code null} context.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testMessageReceivedInternal_Context_Null()
-    {
-        getTableGateway().messageReceivedInternal( null, EasyMock.createMock( IMessage.class ) );
-    }
-
-    /**
-     * Ensures the {@code messageReceivedInternal} method throws an exception
      * when passed a {@code null} message.
      */
     @Test( expected = NullPointerException.class )
     public void testMessageReceivedInternal_Message_Null()
     {
-        getTableGateway().messageReceivedInternal( EasyMock.createMock( IServiceContext.class ), null );
-    }
-
-    /**
-     * Ensures the {@code peerStoppedInternal} method throws an exception when
-     * passed a {@code null} context.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testPeerStoppedInternal_Context_Null()
-    {
-        getTableGateway().peerStoppedInternal( null );
-    }
-
-    /**
-     * Ensures the {@code startedInternal} method throws an exception when
-     * passed a {@code null} context.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testStartedInternal_Context_Null()
-    {
-        getTableGateway().startedInternal( null );
-    }
-
-    /**
-     * Ensures the {@code stoppedInternal} method throws an exception when
-     * passed a {@code null} context.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testStoppedInternal_Context_Null()
-    {
-        getTableGateway().stoppedInternal( null );
+        getTableGateway().messageReceivedInternal( null );
     }
 }

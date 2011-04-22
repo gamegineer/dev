@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.transport;
 
 import static org.junit.Assert.assertNotNull;
-import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -99,32 +98,12 @@ public abstract class AbstractServiceTestCase
 
     /**
      * Ensures the {@code messageReceived} method throws an exception when
-     * passed a {@code null} context.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testMessageReceived_Context_Null()
-    {
-        service_.messageReceived( null, new MessageEnvelope( IMessage.MINIMUM_ID, IMessage.MINIMUM_ID, new byte[ 0 ] ) );
-    }
-
-    /**
-     * Ensures the {@code messageReceived} method throws an exception when
      * passed a {@code null} message envelope.
      */
     @Test( expected = NullPointerException.class )
     public void testMessageReceived_MessageEnvelope_Null()
     {
-        service_.messageReceived( EasyMock.createMock( IServiceContext.class ), null );
-    }
-
-    /**
-     * Ensures the {@code peerStopped} method throws an exception when passed a
-     * {@code null} context.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testPeerStopped_Context_Null()
-    {
-        service_.peerStopped( null );
+        service_.messageReceived( null );
     }
 
     /**
@@ -135,15 +114,5 @@ public abstract class AbstractServiceTestCase
     public void testStarted_Context_Null()
     {
         service_.started( null );
-    }
-
-    /**
-     * Ensures the {@code stopped} method throws an exception when passed a
-     * {@code null} context.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testStopped_Context_Null()
-    {
-        service_.stopped( null );
     }
 }

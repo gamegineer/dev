@@ -170,7 +170,7 @@ final class ServiceHandler
 
         if( state == State.OPEN )
         {
-            service_.stopped( this );
+            service_.stopped();
         }
     }
 
@@ -361,13 +361,13 @@ final class ServiceHandler
                     MessageEnvelope messageEnvelope = null;
                     while( (messageEnvelope = inputQueue_.dequeueMessageEnvelope()) != null )
                     {
-                        service_.messageReceived( this, messageEnvelope );
+                        service_.messageReceived( messageEnvelope );
                     }
 
                     if( inputQueueState_ == QueueState.SHUTTING_DOWN )
                     {
                         inputQueueState_ = QueueState.SHUT_DOWN;
-                        service_.peerStopped( this );
+                        service_.peerStopped();
                     }
 
                     if( (outputQueueState_ == QueueState.SHUTTING_DOWN) && outputQueue_.isEmpty() )

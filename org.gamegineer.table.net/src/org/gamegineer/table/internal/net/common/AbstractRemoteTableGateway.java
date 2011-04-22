@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.common;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.util.Random;
 import java.util.logging.Level;
@@ -54,6 +55,13 @@ public abstract class AbstractRemoteTableGateway
     @GuardedBy( "getLock()" )
     private int nextId_;
 
+    /**
+     * The network service context or {@code null} if the network is not
+     * connected.
+     */
+    @GuardedBy( "getLock()" )
+    private IServiceContext serviceContext_;
+
     /** The table gateway context. */
     private final ITableGatewayContext tableGatewayContext_;
 
@@ -80,6 +88,7 @@ public abstract class AbstractRemoteTableGateway
 
         lock_ = new Object();
         nextId_ = getInitialMessageId();
+        serviceContext_ = null;
         tableGatewayContext_ = tableGatewayContext;
     }
 
@@ -130,6 +139,24 @@ public abstract class AbstractRemoteTableGateway
     }
 
     /**
+     * Gets the network service context.
+     * 
+     * @return The network service context; never {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If the network is not connected.
+     */
+    @GuardedBy( "getLock()" )
+    /* @NonNull */
+    protected final IServiceContext getServiceContext()
+    {
+        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableGateway_networkDisconnected );
+        assert Thread.holdsLock( getLock() );
+
+        return serviceContext_;
+    }
+
+    /**
      * Gets the table gateway context.
      * 
      * @return The table gateway context; never {@code null}.
@@ -141,14 +168,12 @@ public abstract class AbstractRemoteTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.IService#messageReceived(org.gamegineer.table.internal.net.transport.IServiceContext, org.gamegineer.table.internal.net.transport.MessageEnvelope)
+     * @see org.gamegineer.table.internal.net.transport.IService#messageReceived(org.gamegineer.table.internal.net.transport.MessageEnvelope)
      */
     @Override
     public final void messageReceived(
-        final IServiceContext context,
         final MessageEnvelope messageEnvelope )
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertArgumentNotNull( messageEnvelope, "messageEnvelope" ); //$NON-NLS-1$
 
         // TODO: should handle correlation of all response message tags in this (base) class
@@ -158,7 +183,7 @@ public abstract class AbstractRemoteTableGateway
             final IMessage message = messageEnvelope.getBodyAsMessage();
             synchronized( getLock() )
             {
-                if( !messageReceivedInternal( context, message ) )
+                if( !messageReceivedInternal( message ) )
                 {
                     Loggers.getDefaultLogger().warning( Messages.AbstractRemoteTableGateway_messageReceived_unknownMessage( messageEnvelope ) );
                 }
@@ -185,8 +210,6 @@ public abstract class AbstractRemoteTableGateway
      * This implementation does nothing and always returns {@code false}.
      * </p>
      * 
-     * @param context
-     *        The service context; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      * 
@@ -194,16 +217,13 @@ public abstract class AbstractRemoteTableGateway
      *         {@code false}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code context} or {@code message} is {@code null}.
+     *         If {@code message} is {@code null}.
      */
     @GuardedBy( "getLock()" )
     protected boolean messageReceivedInternal(
         /* @NonNull */
-        final IServiceContext context,
-        /* @NonNull */
         final IMessage message )
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
@@ -211,17 +231,14 @@ public abstract class AbstractRemoteTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.IService#peerStopped(org.gamegineer.table.internal.net.transport.IServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.IService#peerStopped()
      */
     @Override
-    public final void peerStopped(
-        final IServiceContext context )
+    public final void peerStopped()
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
-
         synchronized( getLock() )
         {
-            peerStoppedInternal( context );
+            peerStoppedInternal();
         }
     }
 
@@ -235,19 +252,10 @@ public abstract class AbstractRemoteTableGateway
      * <p>
      * This implementation does nothing.
      * </p>
-     * 
-     * @param context
-     *        The service context; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    protected void peerStoppedInternal(
-        /* @NonNull */
-        final IServiceContext context )
+    protected void peerStoppedInternal()
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         // do nothing
@@ -256,30 +264,27 @@ public abstract class AbstractRemoteTableGateway
     /**
      * Sends the specified message to the service peer.
      * 
-     * @param context
-     *        The service context; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      * 
      * @return {@code true} if the message was sent successfully; otherwise
      *         {@code false}.
      * 
+     * @throws java.lang.IllegalStateException
+     *         If the network is not connected.
      * @throws java.lang.NullPointerException
-     *         If {@code context} or {@code message} is {@code null}.
+     *         If {@code message} is {@code null}.
      */
     @GuardedBy( "getLock()" )
     protected final boolean sendMessage(
         /* @NonNull */
-        final IServiceContext context,
-        /* @NonNull */
         final IMessage message )
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         message.setId( getNextMessageId() );
-        return context.sendMessage( message );
+        return getServiceContext().sendMessage( message );
     }
 
     /*
@@ -293,7 +298,8 @@ public abstract class AbstractRemoteTableGateway
 
         synchronized( getLock() )
         {
-            startedInternal( context );
+            serviceContext_ = context;
+            startedInternal();
         }
     }
 
@@ -307,36 +313,39 @@ public abstract class AbstractRemoteTableGateway
      * <p>
      * This implementation does nothing.
      * </p>
-     * 
-     * @param context
-     *        The service context; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    protected void startedInternal(
-        /* @NonNull */
-        final IServiceContext context )
+    protected void startedInternal()
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         // do nothing
     }
 
+    /**
+     * Stops the network service.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If the network is not connected.
+     */
+    @GuardedBy( "getLock()" )
+    protected final void stop()
+    {
+        assert Thread.holdsLock( getLock() );
+
+        getServiceContext().stopService();
+    }
+
     /*
-     * @see org.gamegineer.table.internal.net.transport.IService#stopped(org.gamegineer.table.internal.net.transport.IServiceContext)
+     * @see org.gamegineer.table.internal.net.transport.IService#stopped()
      */
     @Override
-    public final void stopped(
-        final IServiceContext context )
+    public final void stopped()
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
-
         synchronized( getLock() )
         {
-            stoppedInternal( context );
+            stoppedInternal();
+            serviceContext_ = null;
         }
     }
 
@@ -350,19 +359,10 @@ public abstract class AbstractRemoteTableGateway
      * <p>
      * This implementation does nothing.
      * </p>
-     * 
-     * @param context
-     *        The service context; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    protected void stoppedInternal(
-        /* @NonNull */
-        final IServiceContext context )
+    protected void stoppedInternal()
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         // do nothing

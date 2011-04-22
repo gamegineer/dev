@@ -33,7 +33,6 @@ import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.transport.messages.EndAuthenticationMessage;
@@ -111,19 +110,14 @@ final class RemoteServerTableGateway
     /**
      * Handles a Begin Authentication Request message.
      * 
-     * @param context
-     *        The service context; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
     @GuardedBy( "getLock()" )
     private void handleBeginAuthenticationRequestMessage(
         /* @NonNull */
-        final IServiceContext context,
-        /* @NonNull */
         final BeginAuthenticationRequestMessage message )
     {
-        assert context != null;
         assert message != null;
         assert Thread.holdsLock( getLock() );
 
@@ -138,9 +132,9 @@ final class RemoteServerTableGateway
             final byte[] authResponse = authenticator.createResponse( message.getChallenge(), password, message.getSalt() );
             response.setResponse( authResponse );
 
-            if( !sendMessage( context, response ) )
+            if( !sendMessage( response ) )
             {
-                context.stopService();
+                stop();
             }
         }
         catch( final NetworkTableException e )
@@ -150,7 +144,7 @@ final class RemoteServerTableGateway
             // --> may not serialize exceptions in messages, but rather use an enum to force
             // specification of error.  actual exception should be logged locally.
             System.out.println( "ClientService : failed to generate authentication response with exception: " + e ); //$NON-NLS-1$
-            context.stopService();
+            stop();
         }
         finally
         {
@@ -161,8 +155,6 @@ final class RemoteServerTableGateway
     /**
      * Handles an End Authentication message.
      * 
-     * @param context
-     *        The service context; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
@@ -170,18 +162,15 @@ final class RemoteServerTableGateway
     @SuppressWarnings( "boxing" )
     private void handleEndAuthenticationMessage(
         /* @NonNull */
-        final IServiceContext context,
-        /* @NonNull */
         final EndAuthenticationMessage message )
     {
-        assert context != null;
         assert message != null;
         assert Thread.holdsLock( getLock() );
 
         if( message.getException() != null )
         {
             System.out.println( String.format( "ClientService : failed authentication (id=%d, correlation-id=%d) with exception: ", message.getId(), message.getCorrelationId() ) + message.getException() ); //$NON-NLS-1$
-            context.stopService();
+            stop();
         }
         else
         {
@@ -196,7 +185,7 @@ final class RemoteServerTableGateway
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, Messages.RemoteServerTableGateway_serverTableGatewayNotRegistered, e );
                 playerName_ = null;
-                context.stopService();
+                stop();
             }
         }
     }
@@ -204,8 +193,6 @@ final class RemoteServerTableGateway
     /**
      * Handles a Hello Response message.
      * 
-     * @param context
-     *        The service context; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
@@ -213,18 +200,15 @@ final class RemoteServerTableGateway
     @SuppressWarnings( "boxing" )
     private void handleHelloResponseMessage(
         /* @NonNull */
-        final IServiceContext context,
-        /* @NonNull */
         final HelloResponseMessage message )
     {
-        assert context != null;
         assert message != null;
         assert Thread.holdsLock( getLock() );
 
         if( message.getException() != null )
         {
             System.out.println( String.format( "ClientService : received hello response (id=%d, correlation-id=%d) with exception: ", message.getId(), message.getCorrelationId() ) + message.getException() ); //$NON-NLS-1$
-            context.stopService();
+            stop();
         }
         else
         {
@@ -233,30 +217,28 @@ final class RemoteServerTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#messageReceivedInternal(org.gamegineer.table.internal.net.transport.IServiceContext, org.gamegineer.table.internal.net.transport.IMessage)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#messageReceivedInternal(org.gamegineer.table.internal.net.transport.IMessage)
      */
     @Override
     protected boolean messageReceivedInternal(
-        final IServiceContext context,
         final IMessage message )
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         if( message instanceof HelloResponseMessage )
         {
-            handleHelloResponseMessage( context, (HelloResponseMessage)message );
+            handleHelloResponseMessage( (HelloResponseMessage)message );
             return true;
         }
         else if( message instanceof BeginAuthenticationRequestMessage )
         {
-            handleBeginAuthenticationRequestMessage( context, (BeginAuthenticationRequestMessage)message );
+            handleBeginAuthenticationRequestMessage( (BeginAuthenticationRequestMessage)message );
             return true;
         }
         else if( message instanceof EndAuthenticationMessage )
         {
-            handleEndAuthenticationMessage( context, (EndAuthenticationMessage)message );
+            handleEndAuthenticationMessage( (EndAuthenticationMessage)message );
             return true;
         }
 
@@ -264,13 +246,11 @@ final class RemoteServerTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#peerStoppedInternal(org.gamegineer.table.internal.net.transport.IServiceContext)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#peerStoppedInternal()
      */
     @Override
-    protected void peerStoppedInternal(
-        final IServiceContext context )
+    protected void peerStoppedInternal()
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         if( playerName_ != null )
@@ -298,31 +278,27 @@ final class RemoteServerTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#startedInternal(org.gamegineer.table.internal.net.transport.IServiceContext)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#startedInternal()
      */
     @Override
-    protected void startedInternal(
-        final IServiceContext context )
+    protected void startedInternal()
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
-        if( !sendMessage( context, message ) )
+        if( !sendMessage( message ) )
         {
-            context.stopService();
+            stop();
         }
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#stoppedInternal(org.gamegineer.table.internal.net.transport.IServiceContext)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#stoppedInternal()
      */
     @Override
-    protected void stoppedInternal(
-        final IServiceContext context )
+    protected void stoppedInternal()
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         if( playerName_ != null )
