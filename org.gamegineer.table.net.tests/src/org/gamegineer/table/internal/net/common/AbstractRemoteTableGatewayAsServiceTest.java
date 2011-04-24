@@ -1,5 +1,5 @@
 /*
- * AbstractAbstractRemoteTableGatewayTestCase.java
+ * AbstractRemoteTableGatewayAsServiceTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,21 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 14, 2011 at 11:58:10 PM.
+ * Created on Apr 23, 2011 at 9:40:52 PM.
  */
 
 package org.gamegineer.table.internal.net.common;
 
-import org.gamegineer.table.internal.net.AbstractTableGatewayTestCase;
-import org.junit.Test;
+import org.easymock.EasyMock;
+import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.transport.AbstractServiceTestCase;
+import org.gamegineer.table.internal.net.transport.IService;
 
 /**
- * A fixture for testing the basic aspects of classes that extend the
+ * A fixture for testing the
  * {@link org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway}
- * class.
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.transport.IService} interface.
  */
-public abstract class AbstractAbstractRemoteTableGatewayTestCase
-    extends AbstractTableGatewayTestCase<AbstractRemoteTableGateway>
+public final class AbstractRemoteTableGatewayAsServiceTest
+    extends AbstractServiceTestCase
 {
     // ======================================================================
     // Constructors
@@ -38,9 +41,9 @@ public abstract class AbstractAbstractRemoteTableGatewayTestCase
 
     /**
      * Initializes a new instance of the {@code
-     * AbstractAbstractRemoteTableGatewayTestCase} class.
+     * AbstractRemoteTableGatewayAsServiceTest} class.
      */
-    protected AbstractAbstractRemoteTableGatewayTestCase()
+    public AbstractRemoteTableGatewayAsServiceTest()
     {
         super();
     }
@@ -50,13 +53,15 @@ public abstract class AbstractAbstractRemoteTableGatewayTestCase
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the {@code messageReceivedInternal} method throws an exception
-     * when passed a {@code null} message.
+    /*
+     * @see org.gamegineer.table.internal.net.transport.AbstractServiceTestCase#createService()
      */
-    @Test( expected = NullPointerException.class )
-    public void testMessageReceivedInternal_Message_Null()
+    @Override
+    protected IService createService()
     {
-        getTableGateway().messageReceivedInternal( null );
+        return new AbstractRemoteTableGateway( EasyMock.createMock( ITableGatewayContext.class ) )
+        {
+            // no overrides
+        };
     }
 }

@@ -21,14 +21,16 @@
 
 package org.gamegineer.table.internal.net.common;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.transport.IMessage;
@@ -42,7 +44,7 @@ import org.gamegineer.table.internal.net.transport.MessageEnvelope;
  */
 @ThreadSafe
 public abstract class AbstractRemoteTableGateway
-    implements ITableGateway, IService
+    implements IRemoteTableGateway, IService
 {
     // ======================================================================
     // Fields
@@ -51,9 +53,23 @@ public abstract class AbstractRemoteTableGateway
     /** The instance lock. */
     private final Object lock_;
 
+    /**
+     * The collection of message handlers for unsolicited messages. The key is
+     * the message type. The value is the message handler.
+     */
+    @GuardedBy( "getLock()" )
+    private final Map<Class<? extends IMessage>, IMessageHandler<?, ?>> messageHandlers_;
+
     /** The next available message identifier. */
     @GuardedBy( "getLock()" )
     private int nextId_;
+
+    /**
+     * The name of the remote player or {@code null} if the player has not yet
+     * been authenticated.
+     */
+    @GuardedBy( "getLock()" )
+    private String playerName_;
 
     /**
      * The network service context or {@code null} if the network is not
@@ -87,7 +103,9 @@ public abstract class AbstractRemoteTableGateway
         assertArgumentNotNull( tableGatewayContext, "tableGatewayContext" ); //$NON-NLS-1$
 
         lock_ = new Object();
+        messageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler<?, ?>>();
         nextId_ = getInitialMessageId();
+        playerName_ = null;
         serviceContext_ = null;
         tableGatewayContext_ = tableGatewayContext;
     }
@@ -96,6 +114,49 @@ public abstract class AbstractRemoteTableGateway
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#close()
+     */
+    @Override
+    public final void close()
+    {
+        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableGateway_networkDisconnected );
+        assert Thread.holdsLock( getLock() );
+
+        serviceContext_.stopService();
+    }
+
+    /**
+     * Invoked when the table gateway has been closed.
+     * 
+     * <p>
+     * This method is invoked while the instance lock is held.
+     * </p>
+     * 
+     * <p>
+     * Subclasses may override but the superclass version must be called.
+     * </p>
+     */
+    @GuardedBy( "getLock()" )
+    protected void closed()
+    {
+        assert Thread.holdsLock( getLock() );
+
+        if( playerName_ != null )
+        {
+            tableGatewayContext_.removeTableGateway( this );
+            playerName_ = null;
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#getContext()
+     */
+    public final ITableGatewayContext getContext()
+    {
+        return tableGatewayContext_;
+    }
 
     /**
      * Gets the initial message identifier.
@@ -108,13 +169,10 @@ public abstract class AbstractRemoteTableGateway
         return IMessage.MINIMUM_ID + rng.nextInt( IMessage.MAXIMUM_ID - IMessage.MINIMUM_ID );
     }
 
-    /**
-     * Gets the instance lock for the object.
-     * 
-     * @return The instance lock for the object; never {@code null}.
+    /*
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#getLock()
      */
-    /* @NonNull */
-    protected final Object getLock()
+    public final Object getLock()
     {
         return lock_;
     }
@@ -138,39 +196,24 @@ public abstract class AbstractRemoteTableGateway
         return id;
     }
 
-    /**
-     * Gets the network service context.
-     * 
-     * @return The network service context; never {@code null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If the network is not connected.
+    /*
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#getPlayerName()
      */
-    @GuardedBy( "getLock()" )
-    /* @NonNull */
-    protected final IServiceContext getServiceContext()
+    @Override
+    public final String getPlayerName()
     {
-        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableGateway_networkDisconnected );
-        assert Thread.holdsLock( getLock() );
-
-        return serviceContext_;
-    }
-
-    /**
-     * Gets the table gateway context.
-     * 
-     * @return The table gateway context; never {@code null}.
-     */
-    /* @NonNull */
-    protected final ITableGatewayContext getTableGatewayContext()
-    {
-        return tableGatewayContext_;
+        synchronized( getLock() )
+        {
+            assertStateLegal( playerName_ != null, Messages.AbstractRemoteTableGateway_playerNotAuthenticated );
+            return playerName_;
+        }
     }
 
     /*
      * @see org.gamegineer.table.internal.net.transport.IService#messageReceived(org.gamegineer.table.internal.net.transport.MessageEnvelope)
      */
     @Override
+    @SuppressWarnings( "unchecked" )
     public final void messageReceived(
         final MessageEnvelope messageEnvelope )
     {
@@ -183,7 +226,12 @@ public abstract class AbstractRemoteTableGateway
             final IMessage message = messageEnvelope.getBodyAsMessage();
             synchronized( getLock() )
             {
-                if( !messageReceivedInternal( message ) )
+                final IMessageHandler messageHandler = messageHandlers_.get( message.getClass() );
+                if( messageHandler != null )
+                {
+                    messageHandler.handleMessage( this, message );
+                }
+                else
                 {
                     Loggers.getDefaultLogger().warning( Messages.AbstractRemoteTableGateway_messageReceived_unknownMessage( messageEnvelope ) );
                 }
@@ -200,34 +248,22 @@ public abstract class AbstractRemoteTableGateway
     }
 
     /**
-     * Invoked when a message has been received from the peer service.
+     * Invoked when the table gateway has been opened.
      * 
      * <p>
      * This method is invoked while the instance lock is held.
      * </p>
      * 
      * <p>
-     * This implementation does nothing and always returns {@code false}.
+     * Subclasses may override but the superclass version must be called.
      * </p>
-     * 
-     * @param message
-     *        The message; must not be {@code null}.
-     * 
-     * @return {@code true} if the message was handled by the service; otherwise
-     *         {@code false}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code message} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    protected boolean messageReceivedInternal(
-        /* @NonNull */
-        final IMessage message )
+    protected void opened()
     {
-        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        return false;
+        // do nothing
     }
 
     /*
@@ -238,53 +274,70 @@ public abstract class AbstractRemoteTableGateway
     {
         synchronized( getLock() )
         {
-            peerStoppedInternal();
+            closed();
         }
     }
 
     /**
-     * Invoked when the peer service has stopped.
+     * Registers the specified message handler to handle unsolicited messages of
+     * the specified type.
      * 
-     * <p>
-     * This method is invoked while the instance lock is held.
-     * </p>
+     * @param <MessageType>
+     *        The type of the message handled by the message handler.
      * 
-     * <p>
-     * This implementation does nothing.
-     * </p>
+     * @param type
+     *        The message type; must not be {@code null}.
+     * @param messageHandler
+     *        The message handler; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If a message handler is already registered for the specified
+     *         message type.
+     * @throws java.lang.NullPointerException
+     *         If {@code type} or {@code messageHandler} is {@code null}.
      */
-    @GuardedBy( "getLock()" )
-    protected void peerStoppedInternal()
+    protected final <MessageType extends IMessage> void registerMessageHandler(
+        /* @NonNull */
+        final Class<MessageType> type,
+        /* @NonNull */
+        final IMessageHandler<?, MessageType> messageHandler )
     {
-        assert Thread.holdsLock( getLock() );
+        assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
+        assertArgumentNotNull( messageHandler, "messageHandler" ); //$NON-NLS-1$
 
-        // do nothing
+        synchronized( getLock() )
+        {
+            assertArgumentLegal( !messageHandlers_.containsKey( type ), "type", Messages.AbstractRemoteTableGateway_registerMessageHandler_messageTypeRegistered ); //$NON-NLS-1$
+            messageHandlers_.put( type, messageHandler );
+        }
     }
 
-    /**
-     * Sends the specified message to the service peer.
-     * 
-     * @param message
-     *        The message; must not be {@code null}.
-     * 
-     * @return {@code true} if the message was sent successfully; otherwise
-     *         {@code false}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If the network is not connected.
-     * @throws java.lang.NullPointerException
-     *         If {@code message} is {@code null}.
+    /*
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#sendMessage(org.gamegineer.table.internal.net.transport.IMessage)
      */
-    @GuardedBy( "getLock()" )
-    protected final boolean sendMessage(
+    @Override
+    public final boolean sendMessage(
         /* @NonNull */
         final IMessage message )
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
+        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableGateway_networkDisconnected );
         assert Thread.holdsLock( getLock() );
 
         message.setId( getNextMessageId() );
-        return getServiceContext().sendMessage( message );
+        return serviceContext_.sendMessage( message );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#setPlayerName(java.lang.String)
+     */
+    @Override
+    public final void setPlayerName(
+        final String playerName )
+    {
+        assert Thread.holdsLock( getLock() );
+
+        playerName_ = playerName;
     }
 
     /*
@@ -299,41 +352,8 @@ public abstract class AbstractRemoteTableGateway
         synchronized( getLock() )
         {
             serviceContext_ = context;
-            startedInternal();
+            opened();
         }
-    }
-
-    /**
-     * Invoked when the service has started.
-     * 
-     * <p>
-     * This method is invoked while the instance lock is held.
-     * </p>
-     * 
-     * <p>
-     * This implementation does nothing.
-     * </p>
-     */
-    @GuardedBy( "getLock()" )
-    protected void startedInternal()
-    {
-        assert Thread.holdsLock( getLock() );
-
-        // do nothing
-    }
-
-    /**
-     * Stops the network service.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If the network is not connected.
-     */
-    @GuardedBy( "getLock()" )
-    protected final void stop()
-    {
-        assert Thread.holdsLock( getLock() );
-
-        getServiceContext().stopService();
     }
 
     /*
@@ -344,27 +364,8 @@ public abstract class AbstractRemoteTableGateway
     {
         synchronized( getLock() )
         {
-            stoppedInternal();
+            closed();
             serviceContext_ = null;
         }
-    }
-
-    /**
-     * Invoked when the service has stopped.
-     * 
-     * <p>
-     * This method is invoked while the instance lock is held.
-     * </p>
-     * 
-     * <p>
-     * This implementation does nothing.
-     * </p>
-     */
-    @GuardedBy( "getLock()" )
-    protected void stoppedInternal()
-    {
-        assert Thread.holdsLock( getLock() );
-
-        // do nothing
     }
 }

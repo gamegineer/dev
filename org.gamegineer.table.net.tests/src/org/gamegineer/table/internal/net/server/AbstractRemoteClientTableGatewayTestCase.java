@@ -1,5 +1,5 @@
 /*
- * Messages.java
+ * AbstractRemoteClientTableGatewayTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,47 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 17, 2011 at 6:49:29 PM.
+ * Created on Apr 23, 2011 at 9:23:06 PM.
  */
 
-package org.gamegineer.table.internal.net.client;
+package org.gamegineer.table.internal.net.server;
 
-import net.jcip.annotations.ThreadSafe;
-import org.eclipse.osgi.util.NLS;
+import org.gamegineer.table.internal.net.common.AbstractRemoteTableGatewayTestCase;
 
 /**
- * A utility class to manage localized messages for the package.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.internal.net.server.IRemoteClientTableGateway}
+ * interface.
+ * 
+ * @param <T>
+ *        The type of the remote client table gateway.
  */
-@ThreadSafe
-final class Messages
-    extends NLS
+public abstract class AbstractRemoteClientTableGatewayTestCase<T extends IRemoteClientTableGateway>
+    extends AbstractRemoteTableGatewayTestCase<T>
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    // --- RemoteServerTableGateway -----------------------------------------
-
-    /** Failed to register the server table gateway. */
-    public static String RemoteServerTableGateway_serverTableGatewayNotRegistered;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes the {@code Messages} class.
+     * Initializes a new instance of the {@code
+     * AbstractRemoteClientTableGatewayTestCase} class.
      */
-    static
-    {
-        NLS.initializeMessages( Messages.class.getName(), Messages.class );
-    }
-
-    /**
-     * Initializes a new instance of the {@code Messages} class.
-     */
-    private Messages()
+    protected AbstractRemoteClientTableGatewayTestCase()
     {
         super();
     }

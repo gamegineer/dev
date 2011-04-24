@@ -61,6 +61,12 @@ final class Messages
     /** The network is disconnected. */
     public static String AbstractRemoteTableGateway_networkDisconnected;
 
+    /** The player has not been authenticated. */
+    public static String AbstractRemoteTableGateway_playerNotAuthenticated;
+
+    /** The message type is already registered. */
+    public static String AbstractRemoteTableGateway_registerMessageHandler_messageTypeRegistered;
+
     // --- Authenticator ----------------------------------------------------
 
     /** Failed to create an authentication response. */

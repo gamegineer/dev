@@ -62,6 +62,18 @@ public final class AbstractRemoteTableGatewayTest
     // ======================================================================
 
     /**
+     * Creates a new stub message handler.
+     * 
+     * @return A new stub message handler; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "unchecked" )
+    private static IRemoteTableGateway.IMessageHandler<?, IMessage> createStubMessageHandler()
+    {
+        return EasyMock.createMock( IRemoteTableGateway.IMessageHandler.class );
+    }
+
+    /**
      * Creates a new instance of the {@code AbstractRemoteTableGateway} class.
      * 
      * @param tableGatewayContext
@@ -80,11 +92,7 @@ public final class AbstractRemoteTableGatewayTest
     {
         return new AbstractRemoteTableGateway( tableGatewayContext )
         {
-            @Override
-            public String getPlayerName()
-            {
-                throw new AssertionError( "not implemented" ); //$NON-NLS-1$
-            }
+            // no overrides
         };
     }
 
@@ -125,48 +133,35 @@ public final class AbstractRemoteTableGatewayTest
     }
 
     /**
-     * Ensures the {@code getServiceContext} method throws an exception when the
-     * network is disconnected.
-     */
-    @Test( expected = IllegalStateException.class )
-    public void testGetServiceContext_Disconnected()
-    {
-        remoteTableGateway_.getServiceContext();
-    }
-
-    /**
-     * Ensures the {@code sendMessage} method throws an exception when the
-     * network is disconnected.
-     */
-    @Test( expected = IllegalStateException.class )
-    public void testSendMessage_Disconnected()
-    {
-        synchronized( remoteTableGateway_.getLock() )
-        {
-            remoteTableGateway_.sendMessage( EasyMock.createMock( IMessage.class ) );
-        }
-    }
-
-    /**
-     * Ensures the {@code sendMessage} method throws an exception when passed a
-     * {@code null} message.
+     * Ensures the {@code registerMessageHandler} method throws an exception
+     * when passed a {@code null} message handler.
      */
     @Test( expected = NullPointerException.class )
-    public void testSendMessage_Message_Null()
+    public void testRegisterMessageHandler_MessageHandler_Null()
     {
-        remoteTableGateway_.sendMessage( null );
+        remoteTableGateway_.registerMessageHandler( IMessage.class, null );
     }
 
     /**
-     * Ensures the {@code stop} method throws an exception when the network is
-     * disconnected.
+     * Ensures the {@code registerMessageHandler} method throws an exception
+     * when passed a {@code null} message type.
      */
-    @Test( expected = IllegalStateException.class )
-    public void testStop_Disconnected()
+    @Test( expected = NullPointerException.class )
+    public void testRegisterMessageHandler_Type_Null()
     {
-        synchronized( remoteTableGateway_.getLock() )
-        {
-            remoteTableGateway_.stop();
-        }
+        remoteTableGateway_.registerMessageHandler( null, createStubMessageHandler() );
+    }
+
+    /**
+     * Ensures the {@code registerMessageHandler} method throws an exception
+     * when passed a message type that is present in the message handler
+     * collection.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testRegisterMessageHandler_Type_Present()
+    {
+        remoteTableGateway_.registerMessageHandler( IMessage.class, createStubMessageHandler() );
+
+        remoteTableGateway_.registerMessageHandler( IMessage.class, createStubMessageHandler() );
     }
 }
