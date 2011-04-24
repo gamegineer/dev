@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -174,8 +173,7 @@ public abstract class AbstractRemoteTableGateway
      */
     private static int getInitialMessageId()
     {
-        final Random rng = new Random( System.currentTimeMillis() );
-        return IMessage.MINIMUM_ID + rng.nextInt( IMessage.MAXIMUM_ID - IMessage.MINIMUM_ID );
+        return IMessage.MINIMUM_ID + (int)(Math.random() * (IMessage.MAXIMUM_ID - IMessage.MINIMUM_ID));
     }
 
     /*
