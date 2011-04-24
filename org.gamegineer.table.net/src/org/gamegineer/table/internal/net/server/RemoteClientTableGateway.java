@@ -25,7 +25,6 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
-import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.transport.messages.HelloRequestMessage;
 
 /**
@@ -82,8 +81,6 @@ final class RemoteClientTableGateway
         challenge_ = null;
         salt_ = null;
 
-        // TODO: only register handlers for uncorrelated messages
-        registerUncorrelatedMessageHandler( BeginAuthenticationResponseMessage.class, new BeginAuthenticationResponseMessageHandler() );
         registerUncorrelatedMessageHandler( HelloRequestMessage.class, new HelloRequestMessageHandler() );
     }
 

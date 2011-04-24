@@ -79,6 +79,9 @@ public interface IRemoteTableGateway
      * 
      * @param message
      *        The message; must not be {@code null}.
+     * @param messageHandler
+     *        The message handler to be invoked for any response to the
+     *        specified message or {@code null} if no response is expected.
      * 
      * @return {@code true} if the message was sent successfully; otherwise
      *         {@code false}.
@@ -91,7 +94,9 @@ public interface IRemoteTableGateway
     @GuardedBy( "getLock()" )
     public boolean sendMessage(
         /* @NonNull */
-        IMessage message );
+        IMessage message,
+        /* @Nullable */
+        IMessageHandler<?, ?> messageHandler );
 
     /**
      * Sets the name of the player associated with the remote table gateway.

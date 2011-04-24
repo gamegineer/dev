@@ -81,7 +81,7 @@ final class HelloRequestMessageHandler
             response.setException( new NetworkTableException( "unsupported protocol version" ) ); //$NON-NLS-1$
         }
 
-        if( !remoteTableGateway.sendMessage( response ) )
+        if( !remoteTableGateway.sendMessage( response, null ) )
         {
             remoteTableGateway.close();
             return;
@@ -100,7 +100,7 @@ final class HelloRequestMessageHandler
                 remoteTableGateway.setSalt( salt );
                 beginAuthenticationRequest.setSalt( salt );
 
-                if( !remoteTableGateway.sendMessage( beginAuthenticationRequest ) )
+                if( !remoteTableGateway.sendMessage( beginAuthenticationRequest, new BeginAuthenticationResponseMessageHandler() ) )
                 {
                     remoteTableGateway.close();
                 }

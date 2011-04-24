@@ -28,6 +28,7 @@ import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler;
+import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.transport.messages.EndAuthenticationMessage;
 import org.gamegineer.table.net.NetworkTableException;
@@ -37,7 +38,7 @@ import org.gamegineer.table.net.NetworkTableException;
  */
 @Immutable
 final class BeginAuthenticationResponseMessageHandler
-    implements IMessageHandler<IRemoteClientTableGateway, BeginAuthenticationResponseMessage>
+    implements IMessageHandler<IRemoteClientTableGateway, IMessage>
 {
     // ======================================================================
     // Constructors
@@ -57,17 +58,24 @@ final class BeginAuthenticationResponseMessageHandler
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.internal.net.common.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.common.IRemoteTableGateway, org.gamegineer.table.internal.net.transport.IMessage)
+    /**
+     * Handles a {@code BeginAuthenticationResponseMessage} message.
+     * 
+     * @param remoteTableGateway
+     *        The remote table gateway that received the message; must not be
+     *        {@code null}.
+     * @param message
+     *        The message; must not be {@code null}.
      */
-    @Override
     @SuppressWarnings( "boxing" )
-    public void handleMessage(
+    private void handleBeginAuthenticationResponseMessage(
+        /* @NonNull */
         final IRemoteClientTableGateway remoteTableGateway,
+        /* @NonNull */
         final BeginAuthenticationResponseMessage message )
     {
-        assertArgumentNotNull( remoteTableGateway, "remoteTableGateway" ); //$NON-NLS-1$
-        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
+        assert remoteTableGateway != null;
+        assert message != null;
 
         final EndAuthenticationMessage endAuthenticationMessage = new EndAuthenticationMessage();
         endAuthenticationMessage.setCorrelationId( message.getId() );
@@ -108,7 +116,7 @@ final class BeginAuthenticationResponseMessageHandler
             password.dispose();
         }
 
-        if( remoteTableGateway.sendMessage( endAuthenticationMessage ) )
+        if( remoteTableGateway.sendMessage( endAuthenticationMessage, null ) )
         {
             if( endAuthenticationMessage.getException() != null )
             {
@@ -117,6 +125,29 @@ final class BeginAuthenticationResponseMessageHandler
         }
         else
         {
+            remoteTableGateway.close();
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.common.IRemoteTableGateway, org.gamegineer.table.internal.net.transport.IMessage)
+     */
+    @Override
+    public void handleMessage(
+        final IRemoteClientTableGateway remoteTableGateway,
+        final IMessage message )
+    {
+        assertArgumentNotNull( remoteTableGateway, "remoteTableGateway" ); //$NON-NLS-1$
+        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
+
+        if( message instanceof BeginAuthenticationResponseMessage )
+        {
+            handleBeginAuthenticationResponseMessage( remoteTableGateway, (BeginAuthenticationResponseMessage)message );
+        }
+        else
+        {
+            // TODO: send correlated error message
+            System.out.println( "ClientService : received unknown response to HelloResponseMessage" ); //$NON-NLS-1$
             remoteTableGateway.close();
         }
     }

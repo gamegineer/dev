@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler;
+import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.messages.EndAuthenticationMessage;
 import org.gamegineer.table.net.NetworkTableException;
 
@@ -34,7 +35,7 @@ import org.gamegineer.table.net.NetworkTableException;
  */
 @Immutable
 final class EndAuthenticationMessageHandler
-    implements IMessageHandler<IRemoteServerTableGateway, EndAuthenticationMessage>
+    implements IMessageHandler<IRemoteServerTableGateway, IMessage>
 {
     // ======================================================================
     // Constructors
@@ -54,17 +55,24 @@ final class EndAuthenticationMessageHandler
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.internal.net.common.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.common.IRemoteTableGateway, org.gamegineer.table.internal.net.transport.IMessage)
+    /**
+     * Handles an {@code EndAuthenticationMessage} message.
+     * 
+     * @param remoteTableGateway
+     *        The remote table gateway that received the message; must not be
+     *        {@code null}.
+     * @param message
+     *        The message; must not be {@code null}.
      */
-    @Override
     @SuppressWarnings( "boxing" )
-    public void handleMessage(
+    private void handleEndAuthenticationMessage(
+        /* @NonNull */
         final IRemoteServerTableGateway remoteTableGateway,
+        /* @NonNull */
         final EndAuthenticationMessage message )
     {
-        assertArgumentNotNull( remoteTableGateway, "remoteTableGateway" ); //$NON-NLS-1$
-        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
+        assert remoteTableGateway != null;
+        assert message != null;
 
         if( message.getException() != null )
         {
@@ -85,6 +93,29 @@ final class EndAuthenticationMessageHandler
                 remoteTableGateway.setPlayerName( null );
                 remoteTableGateway.close();
             }
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.common.IRemoteTableGateway, org.gamegineer.table.internal.net.transport.IMessage)
+     */
+    @Override
+    public void handleMessage(
+        final IRemoteServerTableGateway remoteTableGateway,
+        final IMessage message )
+    {
+        assertArgumentNotNull( remoteTableGateway, "remoteTableGateway" ); //$NON-NLS-1$
+        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
+
+        if( message instanceof EndAuthenticationMessage )
+        {
+            handleEndAuthenticationMessage( remoteTableGateway, (EndAuthenticationMessage)message );
+        }
+        else
+        {
+            // TODO: send correlated error message
+            System.out.println( "ClientService : received unknown response to BeginAuthenticationResponseMessage" ); //$NON-NLS-1$
+            remoteTableGateway.close();
         }
     }
 }

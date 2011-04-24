@@ -79,7 +79,7 @@ final class BeginAuthenticationRequestMessageHandler
             final byte[] authResponse = authenticator.createResponse( message.getChallenge(), password, message.getSalt() );
             response.setResponse( authResponse );
 
-            if( !remoteTableGateway.sendMessage( response ) )
+            if( !remoteTableGateway.sendMessage( response, new EndAuthenticationMessageHandler() ) )
             {
                 remoteTableGateway.close();
             }

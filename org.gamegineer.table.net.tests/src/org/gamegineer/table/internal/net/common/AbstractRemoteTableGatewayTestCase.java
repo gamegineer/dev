@@ -175,7 +175,7 @@ public abstract class AbstractRemoteTableGatewayTestCase<T extends IRemoteTableG
     {
         synchronized( remoteTableGateway_.getLock() )
         {
-            remoteTableGateway_.sendMessage( EasyMock.createMock( IMessage.class ) );
+            remoteTableGateway_.sendMessage( EasyMock.createMock( IMessage.class ), EasyMock.createMock( IRemoteTableGateway.IMessageHandler.class ) );
         }
     }
 
@@ -188,7 +188,7 @@ public abstract class AbstractRemoteTableGatewayTestCase<T extends IRemoteTableG
     {
         synchronized( remoteTableGateway_.getLock() )
         {
-            remoteTableGateway_.sendMessage( null );
+            remoteTableGateway_.sendMessage( null, EasyMock.createMock( IRemoteTableGateway.IMessageHandler.class ) );
         }
     }
 }

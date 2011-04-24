@@ -26,9 +26,7 @@ import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationRequestMessage;
-import org.gamegineer.table.internal.net.transport.messages.EndAuthenticationMessage;
 import org.gamegineer.table.internal.net.transport.messages.HelloRequestMessage;
-import org.gamegineer.table.internal.net.transport.messages.HelloResponseMessage;
 
 /**
  * A gateway to a remote server table.
@@ -62,10 +60,7 @@ final class RemoteServerTableGateway
     {
         super( context );
 
-        // TODO: only register handlers for uncorrelated messages
         registerUncorrelatedMessageHandler( BeginAuthenticationRequestMessage.class, new BeginAuthenticationRequestMessageHandler() );
-        registerUncorrelatedMessageHandler( EndAuthenticationMessage.class, new EndAuthenticationMessageHandler() );
-        registerUncorrelatedMessageHandler( HelloResponseMessage.class, new HelloResponseMessageHandler() );
     }
 
 
@@ -98,7 +93,7 @@ final class RemoteServerTableGateway
 
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
-        if( !sendMessage( message ) )
+        if( !sendMessage( message, new HelloResponseMessageHandler() ) )
         {
             close();
         }

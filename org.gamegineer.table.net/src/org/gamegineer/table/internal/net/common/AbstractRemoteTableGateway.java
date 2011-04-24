@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Random;
@@ -49,6 +50,13 @@ public abstract class AbstractRemoteTableGateway
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /**
+     * The collection of message handlers for correlated messages. The key is
+     * the message (request) identifier. The value is the message handler.
+     */
+    @GuardedBy( "getLock()" )
+    private final Map<Integer, IMessageHandler<?, ?>> correlatedMessageHandlers_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -102,6 +110,7 @@ public abstract class AbstractRemoteTableGateway
     {
         assertArgumentNotNull( tableGatewayContext, "tableGatewayContext" ); //$NON-NLS-1$
 
+        correlatedMessageHandlers_ = new HashMap<Integer, IMessageHandler<?, ?>>();
         lock_ = new Object();
         nextId_ = getInitialMessageId();
         playerName_ = null;
@@ -213,26 +222,38 @@ public abstract class AbstractRemoteTableGateway
      * @see org.gamegineer.table.internal.net.transport.IService#messageReceived(org.gamegineer.table.internal.net.transport.MessageEnvelope)
      */
     @Override
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings( {
+        "boxing", "unchecked"
+    } )
     public final void messageReceived(
         final MessageEnvelope messageEnvelope )
     {
         assertArgumentNotNull( messageEnvelope, "messageEnvelope" ); //$NON-NLS-1$
-
-        // TODO: should handle correlation of all response message tags in this (base) class
 
         try
         {
             final IMessage message = messageEnvelope.getBodyAsMessage();
             synchronized( getLock() )
             {
-                final IMessageHandler messageHandler = uncorrelatedMessageHandlers_.get( message.getClass() );
+                final IMessageHandler messageHandler;
+                if( message.getCorrelationId() != IMessage.NULL_CORRELATION_ID )
+                {
+                    messageHandler = correlatedMessageHandlers_.remove( message.getCorrelationId() );
+                }
+                else
+                {
+                    messageHandler = uncorrelatedMessageHandlers_.get( message.getClass() );
+                }
+
                 if( messageHandler != null )
                 {
                     messageHandler.handleMessage( this, message );
                 }
                 else
                 {
+                    // TODO: Add support for default message handlers. For example, may send back
+                    // an error message correlated to the unknown message to indicate to the peer
+                    // that message is not supported...
                     Loggers.getDefaultLogger().warning( Messages.AbstractRemoteTableGateway_messageReceived_unknownMessage( messageEnvelope ) );
                 }
             }
@@ -313,19 +334,26 @@ public abstract class AbstractRemoteTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#sendMessage(org.gamegineer.table.internal.net.transport.IMessage)
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#sendMessage(org.gamegineer.table.internal.net.transport.IMessage, org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler)
      */
     @Override
+    @SuppressWarnings( "boxing" )
     public final boolean sendMessage(
-        /* @NonNull */
-        final IMessage message )
+        final IMessage message,
+        final IMessageHandler<?, ?> messageHandler )
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
         assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableGateway_networkDisconnected );
         assert Thread.holdsLock( getLock() );
 
         message.setId( getNextMessageId() );
-        return serviceContext_.sendMessage( message );
+        final boolean wasSent = serviceContext_.sendMessage( message );
+        if( wasSent && (messageHandler != null) )
+        {
+            correlatedMessageHandlers_.put( message.getId(), messageHandler );
+        }
+
+        return wasSent;
     }
 
     /*
