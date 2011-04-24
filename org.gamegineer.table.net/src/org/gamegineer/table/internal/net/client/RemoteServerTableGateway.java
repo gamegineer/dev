@@ -62,10 +62,10 @@ final class RemoteServerTableGateway
     {
         super( context );
 
-        // TODO: only register handlers for unsolicited messages
-        registerMessageHandler( BeginAuthenticationRequestMessage.class, new BeginAuthenticationRequestMessageHandler() );
-        registerMessageHandler( EndAuthenticationMessage.class, new EndAuthenticationMessageHandler() );
-        registerMessageHandler( HelloResponseMessage.class, new HelloResponseMessageHandler() );
+        // TODO: only register handlers for uncorrelated messages
+        registerUncorrelatedMessageHandler( BeginAuthenticationRequestMessage.class, new BeginAuthenticationRequestMessageHandler() );
+        registerUncorrelatedMessageHandler( EndAuthenticationMessage.class, new EndAuthenticationMessageHandler() );
+        registerUncorrelatedMessageHandler( HelloResponseMessage.class, new HelloResponseMessageHandler() );
     }
 
 

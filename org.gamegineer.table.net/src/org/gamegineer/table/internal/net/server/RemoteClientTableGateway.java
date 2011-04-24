@@ -82,9 +82,9 @@ final class RemoteClientTableGateway
         challenge_ = null;
         salt_ = null;
 
-        // TODO: only register handlers for unsolicited messages
-        registerMessageHandler( BeginAuthenticationResponseMessage.class, new BeginAuthenticationResponseMessageHandler() );
-        registerMessageHandler( HelloRequestMessage.class, new HelloRequestMessageHandler() );
+        // TODO: only register handlers for uncorrelated messages
+        registerUncorrelatedMessageHandler( BeginAuthenticationResponseMessage.class, new BeginAuthenticationResponseMessageHandler() );
+        registerUncorrelatedMessageHandler( HelloRequestMessage.class, new HelloRequestMessageHandler() );
     }
 
 

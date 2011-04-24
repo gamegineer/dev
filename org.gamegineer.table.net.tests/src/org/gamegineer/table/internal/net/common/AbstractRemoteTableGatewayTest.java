@@ -133,35 +133,35 @@ public final class AbstractRemoteTableGatewayTest
     }
 
     /**
-     * Ensures the {@code registerMessageHandler} method throws an exception
-     * when passed a {@code null} message handler.
+     * Ensures the {@code registerUncorrelatedMessageHandler} method throws an
+     * exception when passed a {@code null} message handler.
      */
     @Test( expected = NullPointerException.class )
-    public void testRegisterMessageHandler_MessageHandler_Null()
+    public void testRegisterUncorrelatedMessageHandler_MessageHandler_Null()
     {
-        remoteTableGateway_.registerMessageHandler( IMessage.class, null );
+        remoteTableGateway_.registerUncorrelatedMessageHandler( IMessage.class, null );
     }
 
     /**
-     * Ensures the {@code registerMessageHandler} method throws an exception
-     * when passed a {@code null} message type.
+     * Ensures the {@code registerUncorrelatedMessageHandler} method throws an
+     * exception when passed a {@code null} message type.
      */
     @Test( expected = NullPointerException.class )
-    public void testRegisterMessageHandler_Type_Null()
+    public void testRegisterUncorrelatedMessageHandler_Type_Null()
     {
-        remoteTableGateway_.registerMessageHandler( null, createStubMessageHandler() );
+        remoteTableGateway_.registerUncorrelatedMessageHandler( null, createStubMessageHandler() );
     }
 
     /**
-     * Ensures the {@code registerMessageHandler} method throws an exception
-     * when passed a message type that is present in the message handler
-     * collection.
+     * Ensures the {@code registerUncorrelatedMessageHandler} method throws an
+     * exception when passed a message type that is present in the message
+     * handler collection.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testRegisterMessageHandler_Type_Present()
+    public void testRegisterUncorrelatedMessageHandler_Type_Present()
     {
-        remoteTableGateway_.registerMessageHandler( IMessage.class, createStubMessageHandler() );
+        remoteTableGateway_.registerUncorrelatedMessageHandler( IMessage.class, createStubMessageHandler() );
 
-        remoteTableGateway_.registerMessageHandler( IMessage.class, createStubMessageHandler() );
+        remoteTableGateway_.registerUncorrelatedMessageHandler( IMessage.class, createStubMessageHandler() );
     }
 }

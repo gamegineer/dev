@@ -53,13 +53,6 @@ public abstract class AbstractRemoteTableGateway
     /** The instance lock. */
     private final Object lock_;
 
-    /**
-     * The collection of message handlers for unsolicited messages. The key is
-     * the message type. The value is the message handler.
-     */
-    @GuardedBy( "getLock()" )
-    private final Map<Class<? extends IMessage>, IMessageHandler<?, ?>> messageHandlers_;
-
     /** The next available message identifier. */
     @GuardedBy( "getLock()" )
     private int nextId_;
@@ -80,6 +73,13 @@ public abstract class AbstractRemoteTableGateway
 
     /** The table gateway context. */
     private final ITableGatewayContext tableGatewayContext_;
+
+    /**
+     * The collection of message handlers for uncorrelated messages. The key is
+     * the message type. The value is the message handler.
+     */
+    @GuardedBy( "getLock()" )
+    private final Map<Class<? extends IMessage>, IMessageHandler<?, ?>> uncorrelatedMessageHandlers_;
 
 
     // ======================================================================
@@ -103,11 +103,11 @@ public abstract class AbstractRemoteTableGateway
         assertArgumentNotNull( tableGatewayContext, "tableGatewayContext" ); //$NON-NLS-1$
 
         lock_ = new Object();
-        messageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler<?, ?>>();
         nextId_ = getInitialMessageId();
         playerName_ = null;
         serviceContext_ = null;
         tableGatewayContext_ = tableGatewayContext;
+        uncorrelatedMessageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler<?, ?>>();
     }
 
 
@@ -226,7 +226,7 @@ public abstract class AbstractRemoteTableGateway
             final IMessage message = messageEnvelope.getBodyAsMessage();
             synchronized( getLock() )
             {
-                final IMessageHandler messageHandler = messageHandlers_.get( message.getClass() );
+                final IMessageHandler messageHandler = uncorrelatedMessageHandlers_.get( message.getClass() );
                 if( messageHandler != null )
                 {
                     messageHandler.handleMessage( this, message );
@@ -279,8 +279,8 @@ public abstract class AbstractRemoteTableGateway
     }
 
     /**
-     * Registers the specified message handler to handle unsolicited messages of
-     * the specified type.
+     * Registers the specified message handler to handle uncorrelated messages
+     * of the specified type.
      * 
      * @param <MessageType>
      *        The type of the message handled by the message handler.
@@ -291,12 +291,12 @@ public abstract class AbstractRemoteTableGateway
      *        The message handler; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If a message handler is already registered for the specified
-     *         message type.
+     *         If an uncorrelated message handler is already registered for the
+     *         specified message type.
      * @throws java.lang.NullPointerException
      *         If {@code type} or {@code messageHandler} is {@code null}.
      */
-    protected final <MessageType extends IMessage> void registerMessageHandler(
+    protected final <MessageType extends IMessage> void registerUncorrelatedMessageHandler(
         /* @NonNull */
         final Class<MessageType> type,
         /* @NonNull */
@@ -307,8 +307,8 @@ public abstract class AbstractRemoteTableGateway
 
         synchronized( getLock() )
         {
-            assertArgumentLegal( !messageHandlers_.containsKey( type ), "type", Messages.AbstractRemoteTableGateway_registerMessageHandler_messageTypeRegistered ); //$NON-NLS-1$
-            messageHandlers_.put( type, messageHandler );
+            assertArgumentLegal( !uncorrelatedMessageHandlers_.containsKey( type ), "type", Messages.AbstractRemoteTableGateway_registerUncorrelatedMessageHandler_messageTypeRegistered ); //$NON-NLS-1$
+            uncorrelatedMessageHandlers_.put( type, messageHandler );
         }
     }
 

@@ -65,7 +65,7 @@ final class Messages
     public static String AbstractRemoteTableGateway_playerNotAuthenticated;
 
     /** The message type is already registered. */
-    public static String AbstractRemoteTableGateway_registerMessageHandler_messageTypeRegistered;
+    public static String AbstractRemoteTableGateway_registerUncorrelatedMessageHandler_messageTypeRegistered;
 
     // --- Authenticator ----------------------------------------------------
 
