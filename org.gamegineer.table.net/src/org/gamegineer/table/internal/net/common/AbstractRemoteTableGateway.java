@@ -55,7 +55,7 @@ public abstract class AbstractRemoteTableGateway
      * the message (request) identifier. The value is the message handler.
      */
     @GuardedBy( "getLock()" )
-    private final Map<Integer, IMessageHandler<?, ?>> correlatedMessageHandlers_;
+    private final Map<Integer, IMessageHandler<?>> correlatedMessageHandlers_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -86,7 +86,7 @@ public abstract class AbstractRemoteTableGateway
      * the message type. The value is the message handler.
      */
     @GuardedBy( "getLock()" )
-    private final Map<Class<? extends IMessage>, IMessageHandler<?, ?>> uncorrelatedMessageHandlers_;
+    private final Map<Class<? extends IMessage>, IMessageHandler<?>> uncorrelatedMessageHandlers_;
 
 
     // ======================================================================
@@ -109,13 +109,13 @@ public abstract class AbstractRemoteTableGateway
     {
         assertArgumentNotNull( tableGatewayContext, "tableGatewayContext" ); //$NON-NLS-1$
 
-        correlatedMessageHandlers_ = new HashMap<Integer, IMessageHandler<?, ?>>();
+        correlatedMessageHandlers_ = new HashMap<Integer, IMessageHandler<?>>();
         lock_ = new Object();
         nextId_ = getInitialMessageId();
         playerName_ = null;
         serviceContext_ = null;
         tableGatewayContext_ = tableGatewayContext;
-        uncorrelatedMessageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler<?, ?>>();
+        uncorrelatedMessageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler<?>>();
     }
 
 
@@ -301,9 +301,6 @@ public abstract class AbstractRemoteTableGateway
      * Registers the specified message handler to handle uncorrelated messages
      * of the specified type.
      * 
-     * @param <MessageType>
-     *        The type of the message handled by the message handler.
-     * 
      * @param type
      *        The message type; must not be {@code null}.
      * @param messageHandler
@@ -315,11 +312,11 @@ public abstract class AbstractRemoteTableGateway
      * @throws java.lang.NullPointerException
      *         If {@code type} or {@code messageHandler} is {@code null}.
      */
-    protected final <MessageType extends IMessage> void registerUncorrelatedMessageHandler(
+    protected final void registerUncorrelatedMessageHandler(
         /* @NonNull */
-        final Class<MessageType> type,
+        final Class<? extends IMessage> type,
         /* @NonNull */
-        final IMessageHandler<?, MessageType> messageHandler )
+        final IMessageHandler<?> messageHandler )
     {
         assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
         assertArgumentNotNull( messageHandler, "messageHandler" ); //$NON-NLS-1$
@@ -338,7 +335,7 @@ public abstract class AbstractRemoteTableGateway
     @SuppressWarnings( "boxing" )
     public final boolean sendMessage(
         final IMessage message,
-        final IMessageHandler<?, ?> messageHandler )
+        final IMessageHandler<?> messageHandler )
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
         assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableGateway_networkDisconnected );

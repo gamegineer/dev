@@ -62,18 +62,6 @@ public final class AbstractRemoteTableGatewayTest
     // ======================================================================
 
     /**
-     * Creates a new stub message handler.
-     * 
-     * @return A new stub message handler; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "unchecked" )
-    private static IRemoteTableGateway.IMessageHandler<?, IMessage> createStubMessageHandler()
-    {
-        return EasyMock.createMock( IRemoteTableGateway.IMessageHandler.class );
-    }
-
-    /**
      * Creates a new instance of the {@code AbstractRemoteTableGateway} class.
      * 
      * @param tableGatewayContext
@@ -149,7 +137,7 @@ public final class AbstractRemoteTableGatewayTest
     @Test( expected = NullPointerException.class )
     public void testRegisterUncorrelatedMessageHandler_Type_Null()
     {
-        remoteTableGateway_.registerUncorrelatedMessageHandler( null, createStubMessageHandler() );
+        remoteTableGateway_.registerUncorrelatedMessageHandler( null, EasyMock.createMock( IRemoteTableGateway.IMessageHandler.class ) );
     }
 
     /**
@@ -160,8 +148,8 @@ public final class AbstractRemoteTableGatewayTest
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterUncorrelatedMessageHandler_Type_Present()
     {
-        remoteTableGateway_.registerUncorrelatedMessageHandler( IMessage.class, createStubMessageHandler() );
+        remoteTableGateway_.registerUncorrelatedMessageHandler( IMessage.class, EasyMock.createMock( IRemoteTableGateway.IMessageHandler.class ) );
 
-        remoteTableGateway_.registerUncorrelatedMessageHandler( IMessage.class, createStubMessageHandler() );
+        remoteTableGateway_.registerUncorrelatedMessageHandler( IMessage.class, EasyMock.createMock( IRemoteTableGateway.IMessageHandler.class ) );
     }
 }

@@ -32,7 +32,7 @@ import org.gamegineer.table.internal.net.transport.messages.HelloResponseMessage
  */
 @Immutable
 final class HelloResponseMessageHandler
-    implements IMessageHandler<IRemoteServerTableGateway, IMessage>
+    implements IMessageHandler<IRemoteServerTableGateway>
 {
     // ======================================================================
     // Constructors

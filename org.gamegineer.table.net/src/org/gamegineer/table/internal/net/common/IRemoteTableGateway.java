@@ -96,7 +96,7 @@ public interface IRemoteTableGateway
         /* @NonNull */
         IMessage message,
         /* @Nullable */
-        IMessageHandler<?, ?> messageHandler );
+        IMessageHandler<?> messageHandler );
 
     /**
      * Sets the name of the player associated with the remote table gateway.
@@ -121,12 +121,10 @@ public interface IRemoteTableGateway
      * @param <RemoteTableGatewayType>
      *        The type of the remote table gateway associated with the message
      *        handler.
-     * @param <MessageType>
-     *        The type of the message handled by the message handler.
      * 
      * @noextend This interface is not intended to be extended by clients.
      */
-    public interface IMessageHandler<RemoteTableGatewayType extends IRemoteTableGateway, MessageType extends IMessage>
+    public interface IMessageHandler<RemoteTableGatewayType extends IRemoteTableGateway>
     {
         // ==================================================================
         // Methods
@@ -156,6 +154,6 @@ public interface IRemoteTableGateway
             /* @NonNull */
             RemoteTableGatewayType remoteTableGateway,
             /* @NonNull */
-            MessageType message );
+            IMessage message );
     }
 }

@@ -38,7 +38,7 @@ import org.gamegineer.table.net.NetworkTableException;
  */
 @Immutable
 final class BeginAuthenticationResponseMessageHandler
-    implements IMessageHandler<IRemoteClientTableGateway, IMessage>
+    implements IMessageHandler<IRemoteClientTableGateway>
 {
     // ======================================================================
     // Constructors

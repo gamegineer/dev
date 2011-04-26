@@ -27,6 +27,7 @@ import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler;
+import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.net.NetworkTableException;
@@ -36,7 +37,7 @@ import org.gamegineer.table.net.NetworkTableException;
  */
 @Immutable
 final class BeginAuthenticationRequestMessageHandler
-    implements IMessageHandler<IRemoteServerTableGateway, BeginAuthenticationRequestMessage>
+    implements IMessageHandler<IRemoteServerTableGateway>
 {
     // ======================================================================
     // Constructors
@@ -56,16 +57,23 @@ final class BeginAuthenticationRequestMessageHandler
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.internal.net.common.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.common.IRemoteTableGateway, org.gamegineer.table.internal.net.transport.IMessage)
+    /**
+     * Handles a {@code BeginAuthenticationRequestMessage} message.
+     * 
+     * @param remoteTableGateway
+     *        The remote table gateway that received the message; must not be
+     *        {@code null}.
+     * @param message
+     *        The message; must not be {@code null}.
      */
-    @Override
-    public void handleMessage(
+    private void handleBeginAuthenticationRequestMessage(
+        /* @NonNull */
         final IRemoteServerTableGateway remoteTableGateway,
+        /* @NonNull */
         final BeginAuthenticationRequestMessage message )
     {
-        assertArgumentNotNull( remoteTableGateway, "remoteTableGateway" ); //$NON-NLS-1$
-        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
+        assert remoteTableGateway != null;
+        assert message != null;
 
         final ITableGatewayContext context = remoteTableGateway.getContext();
         final BeginAuthenticationResponseMessage response = new BeginAuthenticationResponseMessage();
@@ -97,5 +105,20 @@ final class BeginAuthenticationRequestMessageHandler
         {
             password.dispose();
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.common.IRemoteTableGateway, org.gamegineer.table.internal.net.transport.IMessage)
+     */
+    @Override
+    public void handleMessage(
+        final IRemoteServerTableGateway remoteTableGateway,
+        final IMessage message )
+    {
+        assertArgumentNotNull( remoteTableGateway, "remoteTableGateway" ); //$NON-NLS-1$
+        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
+        assert message instanceof BeginAuthenticationRequestMessage;
+
+        handleBeginAuthenticationRequestMessage( remoteTableGateway, (BeginAuthenticationRequestMessage)message );
     }
 }
