@@ -30,6 +30,7 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.Loggers;
@@ -40,7 +41,7 @@ import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 
 /**
  * Superclass for all implementations of {@ink
- * org.gamegineer.table.internal.net.ITableGateway}.
+ * org.gamegineer.table.internal.net.common.IRemoteTableGateway}.
  */
 @ThreadSafe
 public abstract class AbstractRemoteTableGateway
@@ -55,7 +56,7 @@ public abstract class AbstractRemoteTableGateway
      * the message (request) identifier. The value is the message handler.
      */
     @GuardedBy( "getLock()" )
-    private final Map<Integer, IMessageHandler<?>> correlatedMessageHandlers_;
+    private final Map<Integer, IMessageHandler> correlatedMessageHandlers_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -86,7 +87,7 @@ public abstract class AbstractRemoteTableGateway
      * the message type. The value is the message handler.
      */
     @GuardedBy( "getLock()" )
-    private final Map<Class<? extends IMessage>, IMessageHandler<?>> uncorrelatedMessageHandlers_;
+    private final Map<Class<? extends IMessage>, IMessageHandler> uncorrelatedMessageHandlers_;
 
 
     // ======================================================================
@@ -109,13 +110,13 @@ public abstract class AbstractRemoteTableGateway
     {
         assertArgumentNotNull( tableGatewayContext, "tableGatewayContext" ); //$NON-NLS-1$
 
-        correlatedMessageHandlers_ = new HashMap<Integer, IMessageHandler<?>>();
+        correlatedMessageHandlers_ = new HashMap<Integer, IMessageHandler>();
         lock_ = new Object();
         nextId_ = getInitialMessageId();
         playerName_ = null;
         serviceContext_ = null;
         tableGatewayContext_ = tableGatewayContext;
-        uncorrelatedMessageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler<?>>();
+        uncorrelatedMessageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler>();
     }
 
 
@@ -220,9 +221,7 @@ public abstract class AbstractRemoteTableGateway
      * @see org.gamegineer.table.internal.net.transport.IService#messageReceived(org.gamegineer.table.internal.net.transport.MessageEnvelope)
      */
     @Override
-    @SuppressWarnings( {
-        "boxing", "unchecked"
-    } )
+    @SuppressWarnings( "boxing" )
     public final void messageReceived(
         final MessageEnvelope messageEnvelope )
     {
@@ -245,7 +244,7 @@ public abstract class AbstractRemoteTableGateway
 
                 if( messageHandler != null )
                 {
-                    messageHandler.handleMessage( this, message );
+                    messageHandler.handleMessage( message );
                 }
                 else
                 {
@@ -316,7 +315,7 @@ public abstract class AbstractRemoteTableGateway
         /* @NonNull */
         final Class<? extends IMessage> type,
         /* @NonNull */
-        final IMessageHandler<?> messageHandler )
+        final IMessageHandler messageHandler )
     {
         assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
         assertArgumentNotNull( messageHandler, "messageHandler" ); //$NON-NLS-1$
@@ -335,7 +334,7 @@ public abstract class AbstractRemoteTableGateway
     @SuppressWarnings( "boxing" )
     public final boolean sendMessage(
         final IMessage message,
-        final IMessageHandler<?> messageHandler )
+        final IMessageHandler messageHandler )
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
         assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableGateway_networkDisconnected );
@@ -389,6 +388,72 @@ public abstract class AbstractRemoteTableGateway
         {
             closed();
             serviceContext_ = null;
+        }
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * Superclass for all implementations of {@ink
+     * org.gamegineer.table.internal.net.common.IRemoteTableGateway.
+     * IMessageHandler}.
+     * 
+     * @param <T>
+     *        The type of the remote table gateway.
+     */
+    @Immutable
+    public static abstract class AbstractMessageHandler<T extends IRemoteTableGateway>
+        implements IMessageHandler
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The remote table gateway associated with the message handler. */
+        private final T remoteTableGateway_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code AbstractMessageHandler}
+         * class.
+         * 
+         * @param remoteTableGateway
+         *        The remote table gateway associated with the message handler;
+         *        must not be {@code null}.
+         * 
+         * @throws java.lang.NullPointerException
+         *         If {@code remoteTableGateway} is {@code null}.
+         */
+        protected AbstractMessageHandler(
+            /* @NonNull */
+            final T remoteTableGateway )
+        {
+            assertArgumentNotNull( remoteTableGateway, "remoteTableGateway" ); //$NON-NLS-1$
+
+            remoteTableGateway_ = remoteTableGateway;
+        }
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Gets the remote table gateway associated with the message handler.
+         * 
+         * @return The remote table gateway associated with the message handler.
+         */
+        /* @NonNull */
+        protected final T getRemoteTableGateway()
+        {
+            return remoteTableGateway_;
         }
     }
 }

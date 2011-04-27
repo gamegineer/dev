@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.server;
 
 import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
@@ -81,7 +82,7 @@ final class RemoteClientTableGateway
         challenge_ = null;
         salt_ = null;
 
-        registerUncorrelatedMessageHandler( HelloRequestMessage.class, new HelloRequestMessageHandler() );
+        registerUncorrelatedMessageHandler( HelloRequestMessage.class, new HelloRequestMessageHandler( this ) );
     }
 
 
@@ -136,6 +137,42 @@ final class RemoteClientTableGateway
         synchronized( getLock() )
         {
             salt_ = salt;
+        }
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * Superclass for all message handlers associated with a remote client table
+     * gateway.
+     */
+    @Immutable
+    static abstract class AbstractMessageHandler
+        extends AbstractRemoteTableGateway.AbstractMessageHandler<IRemoteClientTableGateway>
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code AbstractMessageHandler}
+         * class.
+         * 
+         * @param remoteTableGateway
+         *        The remote table gateway associated with the message handler;
+         *        must not be {@code null}.
+         * 
+         * @throws java.lang.NullPointerException
+         *         If {@code remoteTableGateway} is {@code null}.
+         */
+        AbstractMessageHandler(
+            /* @NonNull */
+            final IRemoteClientTableGateway remoteTableGateway )
+        {
+            super( remoteTableGateway );
         }
     }
 }

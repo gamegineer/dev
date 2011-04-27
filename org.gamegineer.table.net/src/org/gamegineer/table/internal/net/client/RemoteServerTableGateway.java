@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.client;
 
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
@@ -60,7 +61,7 @@ final class RemoteServerTableGateway
     {
         super( context );
 
-        registerUncorrelatedMessageHandler( BeginAuthenticationRequestMessage.class, new BeginAuthenticationRequestMessageHandler() );
+        registerUncorrelatedMessageHandler( BeginAuthenticationRequestMessage.class, new BeginAuthenticationRequestMessageHandler( this ) );
     }
 
 
@@ -93,9 +94,45 @@ final class RemoteServerTableGateway
 
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
-        if( !sendMessage( message, new HelloResponseMessageHandler() ) )
+        if( !sendMessage( message, new HelloResponseMessageHandler( this ) ) )
         {
             close();
+        }
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * Superclass for all message handlers associated with a remote server table
+     * gateway.
+     */
+    @Immutable
+    static abstract class AbstractMessageHandler
+        extends AbstractRemoteTableGateway.AbstractMessageHandler<IRemoteServerTableGateway>
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code AbstractMessageHandler}
+         * class.
+         * 
+         * @param remoteTableGateway
+         *        The remote table gateway associated with the message handler;
+         *        must not be {@code null}.
+         * 
+         * @throws java.lang.NullPointerException
+         *         If {@code remoteTableGateway} is {@code null}.
+         */
+        AbstractMessageHandler(
+            /* @NonNull */
+            final IRemoteServerTableGateway remoteTableGateway )
+        {
+            super( remoteTableGateway );
         }
     }
 }

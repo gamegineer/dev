@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.net.client;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.messages.HelloResponseMessage;
 
@@ -32,7 +31,7 @@ import org.gamegineer.table.internal.net.transport.messages.HelloResponseMessage
  */
 @Immutable
 final class HelloResponseMessageHandler
-    implements IMessageHandler<IRemoteServerTableGateway>
+    extends RemoteServerTableGateway.AbstractMessageHandler
 {
     // ======================================================================
     // Constructors
@@ -41,10 +40,19 @@ final class HelloResponseMessageHandler
     /**
      * Initializes a new instance of the {@code HelloResponseMessageHandler}
      * class.
+     * 
+     * @param remoteTableGateway
+     *        The remote table gateway associated with the message handler; must
+     *        not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code remoteTableGateway} is {@code null}.
      */
-    HelloResponseMessageHandler()
+    HelloResponseMessageHandler(
+        /* @NonNull */
+        final IRemoteServerTableGateway remoteTableGateway )
     {
-        super();
+        super( remoteTableGateway );
     }
 
 
@@ -55,26 +63,20 @@ final class HelloResponseMessageHandler
     /**
      * Handles a {@code HelloResponseMessage} message.
      * 
-     * @param remoteTableGateway
-     *        The remote table gateway that received the message; must not be
-     *        {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
     @SuppressWarnings( "boxing" )
     private void handleHelloResponseMessage(
         /* @NonNull */
-        final IRemoteServerTableGateway remoteTableGateway,
-        /* @NonNull */
         final HelloResponseMessage message )
     {
-        assert remoteTableGateway != null;
         assert message != null;
 
         if( message.getException() != null )
         {
             System.out.println( String.format( "ClientService : received hello response (id=%d, correlation-id=%d) with exception: ", message.getId(), message.getCorrelationId() ) + message.getException() ); //$NON-NLS-1$
-            remoteTableGateway.close();
+            getRemoteTableGateway().close();
         }
         else
         {
@@ -83,25 +85,23 @@ final class HelloResponseMessageHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.common.IRemoteTableGateway, org.gamegineer.table.internal.net.transport.IMessage)
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.transport.IMessage)
      */
     @Override
     public void handleMessage(
-        final IRemoteServerTableGateway remoteTableGateway,
         final IMessage message )
     {
-        assertArgumentNotNull( remoteTableGateway, "remoteTableGateway" ); //$NON-NLS-1$
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
 
         if( message instanceof HelloResponseMessage )
         {
-            handleHelloResponseMessage( remoteTableGateway, (HelloResponseMessage)message );
+            handleHelloResponseMessage( (HelloResponseMessage)message );
         }
         else
         {
             // TODO: send correlated error message
             System.out.println( "ClientService : received unknown response to HelloResponseMessage" ); //$NON-NLS-1$
-            remoteTableGateway.close();
+            getRemoteTableGateway().close();
         }
     }
 }

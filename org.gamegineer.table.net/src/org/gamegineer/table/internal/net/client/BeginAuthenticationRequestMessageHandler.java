@@ -26,7 +26,6 @@ import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.common.Authenticator;
-import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationResponseMessage;
@@ -37,7 +36,7 @@ import org.gamegineer.table.net.NetworkTableException;
  */
 @Immutable
 final class BeginAuthenticationRequestMessageHandler
-    implements IMessageHandler<IRemoteServerTableGateway>
+    extends RemoteServerTableGateway.AbstractMessageHandler
 {
     // ======================================================================
     // Constructors
@@ -46,10 +45,19 @@ final class BeginAuthenticationRequestMessageHandler
     /**
      * Initializes a new instance of the {@code
      * BeginAuthenticationRequestMessageHandler} class.
+     * 
+     * @param remoteTableGateway
+     *        The remote table gateway associated with the message handler; must
+     *        not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code remoteTableGateway} is {@code null}.
      */
-    BeginAuthenticationRequestMessageHandler()
+    BeginAuthenticationRequestMessageHandler(
+        /* @NonNull */
+        final IRemoteServerTableGateway remoteTableGateway )
     {
-        super();
+        super( remoteTableGateway );
     }
 
 
@@ -60,21 +68,16 @@ final class BeginAuthenticationRequestMessageHandler
     /**
      * Handles a {@code BeginAuthenticationRequestMessage} message.
      * 
-     * @param remoteTableGateway
-     *        The remote table gateway that received the message; must not be
-     *        {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
     private void handleBeginAuthenticationRequestMessage(
         /* @NonNull */
-        final IRemoteServerTableGateway remoteTableGateway,
-        /* @NonNull */
         final BeginAuthenticationRequestMessage message )
     {
-        assert remoteTableGateway != null;
         assert message != null;
 
+        final IRemoteServerTableGateway remoteTableGateway = getRemoteTableGateway();
         final ITableGatewayContext context = remoteTableGateway.getContext();
         final BeginAuthenticationResponseMessage response = new BeginAuthenticationResponseMessage();
         response.setCorrelationId( message.getId() );
@@ -87,7 +90,7 @@ final class BeginAuthenticationRequestMessageHandler
             final byte[] authResponse = authenticator.createResponse( message.getChallenge(), password, message.getSalt() );
             response.setResponse( authResponse );
 
-            if( !remoteTableGateway.sendMessage( response, new EndAuthenticationMessageHandler() ) )
+            if( !remoteTableGateway.sendMessage( response, new EndAuthenticationMessageHandler( remoteTableGateway ) ) )
             {
                 remoteTableGateway.close();
             }
@@ -108,17 +111,15 @@ final class BeginAuthenticationRequestMessageHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.common.IRemoteTableGateway, org.gamegineer.table.internal.net.transport.IMessage)
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.transport.IMessage)
      */
     @Override
     public void handleMessage(
-        final IRemoteServerTableGateway remoteTableGateway,
         final IMessage message )
     {
-        assertArgumentNotNull( remoteTableGateway, "remoteTableGateway" ); //$NON-NLS-1$
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
         assert message instanceof BeginAuthenticationRequestMessage;
 
-        handleBeginAuthenticationRequestMessage( remoteTableGateway, (BeginAuthenticationRequestMessage)message );
+        handleBeginAuthenticationRequestMessage( (BeginAuthenticationRequestMessage)message );
     }
 }

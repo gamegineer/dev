@@ -25,7 +25,6 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
-import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.transport.messages.HelloRequestMessage;
@@ -37,7 +36,7 @@ import org.gamegineer.table.net.NetworkTableException;
  */
 @Immutable
 final class HelloRequestMessageHandler
-    implements IMessageHandler<IRemoteClientTableGateway>
+    extends RemoteClientTableGateway.AbstractMessageHandler
 {
     // ======================================================================
     // Constructors
@@ -46,10 +45,19 @@ final class HelloRequestMessageHandler
     /**
      * Initializes a new instance of the {@code HelloRequestMessageHandler}
      * class.
+     * 
+     * @param remoteTableGateway
+     *        The remote table gateway associated with the message handler; must
+     *        not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code remoteTableGateway} is {@code null}.
      */
-    HelloRequestMessageHandler()
+    HelloRequestMessageHandler(
+        /* @NonNull */
+        final IRemoteClientTableGateway remoteTableGateway )
     {
-        super();
+        super( remoteTableGateway );
     }
 
 
@@ -60,21 +68,17 @@ final class HelloRequestMessageHandler
     /**
      * Handles a {@code HelloRequestMessage} message.
      * 
-     * @param remoteTableGateway
-     *        The remote table gateway that received the message; must not be
-     *        {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
     @SuppressWarnings( "boxing" )
     private void handleHelloRequestMessage(
         /* @NonNull */
-        final IRemoteClientTableGateway remoteTableGateway,
-        /* @NonNull */
         final HelloRequestMessage message )
     {
-        assert remoteTableGateway != null;
         assert message != null;
+
+        final IRemoteClientTableGateway remoteTableGateway = getRemoteTableGateway();
 
         System.out.println( String.format( "ServerService : received hello request (id=%d, correlation-id=%d) with supported version '%d'", message.getId(), message.getCorrelationId(), message.getSupportedProtocolVersion() ) ); //$NON-NLS-1$
 
@@ -108,7 +112,7 @@ final class HelloRequestMessageHandler
                 remoteTableGateway.setSalt( salt );
                 beginAuthenticationRequest.setSalt( salt );
 
-                if( !remoteTableGateway.sendMessage( beginAuthenticationRequest, new BeginAuthenticationResponseMessageHandler() ) )
+                if( !remoteTableGateway.sendMessage( beginAuthenticationRequest, new BeginAuthenticationResponseMessageHandler( remoteTableGateway ) ) )
                 {
                     remoteTableGateway.close();
                 }
@@ -127,17 +131,15 @@ final class HelloRequestMessageHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.common.IRemoteTableGateway, org.gamegineer.table.internal.net.transport.IMessage)
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.transport.IMessage)
      */
     @Override
     public void handleMessage(
-        final IRemoteClientTableGateway remoteTableGateway,
         final IMessage message )
     {
-        assertArgumentNotNull( remoteTableGateway, "remoteTableGateway" ); //$NON-NLS-1$
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
         assert message instanceof HelloRequestMessage;
 
-        handleHelloRequestMessage( remoteTableGateway, (HelloRequestMessage)message );
+        handleHelloRequestMessage( (HelloRequestMessage)message );
     }
 }

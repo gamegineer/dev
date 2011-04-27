@@ -27,7 +27,6 @@ import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.common.Authenticator;
-import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.transport.messages.EndAuthenticationMessage;
@@ -38,7 +37,7 @@ import org.gamegineer.table.net.NetworkTableException;
  */
 @Immutable
 final class BeginAuthenticationResponseMessageHandler
-    implements IMessageHandler<IRemoteClientTableGateway>
+    extends RemoteClientTableGateway.AbstractMessageHandler
 {
     // ======================================================================
     // Constructors
@@ -47,10 +46,19 @@ final class BeginAuthenticationResponseMessageHandler
     /**
      * Initializes a new instance of the {@code
      * BeginAuthenticationResponseMessageHandler} class.
+     * 
+     * @param remoteTableGateway
+     *        The remote table gateway associated with the message handler; must
+     *        not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code remoteTableGateway} is {@code null}.
      */
-    BeginAuthenticationResponseMessageHandler()
+    BeginAuthenticationResponseMessageHandler(
+        /* @NonNull */
+        final IRemoteClientTableGateway remoteTableGateway )
     {
-        super();
+        super( remoteTableGateway );
     }
 
 
@@ -61,26 +69,22 @@ final class BeginAuthenticationResponseMessageHandler
     /**
      * Handles a {@code BeginAuthenticationResponseMessage} message.
      * 
-     * @param remoteTableGateway
-     *        The remote table gateway that received the message; must not be
-     *        {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
     @SuppressWarnings( "boxing" )
     private void handleBeginAuthenticationResponseMessage(
         /* @NonNull */
-        final IRemoteClientTableGateway remoteTableGateway,
-        /* @NonNull */
         final BeginAuthenticationResponseMessage message )
     {
-        assert remoteTableGateway != null;
         assert message != null;
+
+        final IRemoteClientTableGateway remoteTableGateway = getRemoteTableGateway();
+        final ITableGatewayContext context = remoteTableGateway.getContext();
 
         final EndAuthenticationMessage endAuthenticationMessage = new EndAuthenticationMessage();
         endAuthenticationMessage.setCorrelationId( message.getId() );
 
-        final ITableGatewayContext context = remoteTableGateway.getContext();
         final SecureString password = context.getPassword();
         try
         {
@@ -130,25 +134,23 @@ final class BeginAuthenticationResponseMessageHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.common.IRemoteTableGateway, org.gamegineer.table.internal.net.transport.IMessage)
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.transport.IMessage)
      */
     @Override
     public void handleMessage(
-        final IRemoteClientTableGateway remoteTableGateway,
         final IMessage message )
     {
-        assertArgumentNotNull( remoteTableGateway, "remoteTableGateway" ); //$NON-NLS-1$
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
 
         if( message instanceof BeginAuthenticationResponseMessage )
         {
-            handleBeginAuthenticationResponseMessage( remoteTableGateway, (BeginAuthenticationResponseMessage)message );
+            handleBeginAuthenticationResponseMessage( (BeginAuthenticationResponseMessage)message );
         }
         else
         {
             // TODO: send correlated error message
             System.out.println( "ClientService : received unknown response to HelloResponseMessage" ); //$NON-NLS-1$
-            remoteTableGateway.close();
+            getRemoteTableGateway().close();
         }
     }
 }

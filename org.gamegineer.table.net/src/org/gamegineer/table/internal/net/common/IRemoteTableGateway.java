@@ -96,7 +96,7 @@ public interface IRemoteTableGateway
         /* @NonNull */
         IMessage message,
         /* @Nullable */
-        IMessageHandler<?> messageHandler );
+        IMessageHandler messageHandler );
 
     /**
      * Sets the name of the player associated with the remote table gateway.
@@ -118,20 +118,17 @@ public interface IRemoteTableGateway
     /**
      * A remote table gateway message handler.
      * 
-     * @param <RemoteTableGatewayType>
-     *        The type of the remote table gateway associated with the message
-     *        handler.
-     * 
      * @noextend This interface is not intended to be extended by clients.
      */
-    public interface IMessageHandler<RemoteTableGatewayType extends IRemoteTableGateway>
+    public interface IMessageHandler
     {
         // ==================================================================
         // Methods
         // ==================================================================
 
         /**
-         * Handles the specified message for the specified remote table gateway.
+         * Handles the specified message for the associated remote table
+         * gateway.
          * 
          * <p>
          * This method will be invoked by the remote table gateway while its
@@ -140,19 +137,13 @@ public interface IRemoteTableGateway
          * atomic.
          * </p>
          * 
-         * @param remoteTableGateway
-         *        The remote table gateway that received the message; must not
-         *        be {@code null}.
          * @param message
          *        The message; must not be {@code null}.
          * 
          * @throws java.lang.NullPointerException
-         *         If {@code remoteTableGateway} or {@code message} is {@code
-         *         null}.
+         *         If {@code message} is {@code null}.
          */
         public void handleMessage(
-            /* @NonNull */
-            RemoteTableGatewayType remoteTableGateway,
             /* @NonNull */
             IMessage message );
     }
