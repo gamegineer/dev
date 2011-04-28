@@ -21,12 +21,10 @@
 
 package org.gamegineer.table.internal.net.client;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.common.Authenticator;
-import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.net.NetworkTableException;
@@ -71,7 +69,8 @@ final class BeginAuthenticationRequestMessageHandler
      * @param message
      *        The message; must not be {@code null}.
      */
-    private void handleBeginAuthenticationRequestMessage(
+    @SuppressWarnings( "unused" )
+    private void handleMessage(
         /* @NonNull */
         final BeginAuthenticationRequestMessage message )
     {
@@ -108,18 +107,5 @@ final class BeginAuthenticationRequestMessageHandler
         {
             password.dispose();
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.transport.IMessage)
-     */
-    @Override
-    public void handleMessage(
-        final IMessage message )
-    {
-        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
-        assert message instanceof BeginAuthenticationRequestMessage;
-
-        handleBeginAuthenticationRequestMessage( (BeginAuthenticationRequestMessage)message );
     }
 }

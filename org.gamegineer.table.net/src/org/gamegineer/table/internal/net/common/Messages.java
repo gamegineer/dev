@@ -52,11 +52,14 @@ final class Messages
 
     // --- AbstractRemoteTableGateway ---------------------------------------
 
+    /** An unexpected error occurred while handling a message. */
+    public static String AbstractRemoteTableGateway_handleMessage_unexpectedError;
+
     /** An error occurred while deserializing a message. */
     public static String AbstractRemoteTableGateway_messageReceived_deserializationError;
 
-    /** The service received an unknown message. */
-    public static String AbstractRemoteTableGateway_messageReceived_unknownMessage;
+    /** The service received an unsupported message. */
+    public static String AbstractRemoteTableGateway_messageReceived_unsupportedMessage;
 
     /** The network is disconnected. */
     public static String AbstractRemoteTableGateway_networkDisconnected;
@@ -126,21 +129,21 @@ final class Messages
     }
 
     /**
-     * Gets the formatted message indicating the service received an unknown
+     * Gets the formatted message indicating the service received an unsupported
      * message.
      * 
      * @param messageEnvelope
      *        The message envelope; must not be {@code null}.
      * 
-     * @return The formatted message indicating the service received an unknown
-     *         message; never {@code null}.
+     * @return The formatted message indicating the service received an
+     *         unsupported message; never {@code null}.
      */
     /* @NonNull */
     @SuppressWarnings( "boxing" )
-    static String AbstractRemoteTableGateway_messageReceived_unknownMessage(
+    static String AbstractRemoteTableGateway_messageReceived_unsupportedMessage(
         /* @NonNull */
         final MessageEnvelope messageEnvelope )
     {
-        return bind( AbstractRemoteTableGateway_messageReceived_unknownMessage, messageEnvelope.getId(), messageEnvelope.getCorrelationId() );
+        return bind( AbstractRemoteTableGateway_messageReceived_unsupportedMessage, messageEnvelope.getId(), messageEnvelope.getCorrelationId() );
     }
 }

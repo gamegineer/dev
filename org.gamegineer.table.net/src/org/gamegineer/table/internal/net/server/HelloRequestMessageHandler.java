@@ -21,11 +21,9 @@
 
 package org.gamegineer.table.internal.net.server;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
-import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.transport.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.transport.messages.HelloResponseMessage;
@@ -71,8 +69,10 @@ final class HelloRequestMessageHandler
      * @param message
      *        The message; must not be {@code null}.
      */
-    @SuppressWarnings( "boxing" )
-    private void handleHelloRequestMessage(
+    @SuppressWarnings( {
+        "boxing", "unused"
+    } )
+    private void handleMessage(
         /* @NonNull */
         final HelloRequestMessage message )
     {
@@ -128,18 +128,5 @@ final class HelloRequestMessageHandler
             System.out.println( String.format( "ServerService : received hello request (id=%d, correlation-id=%d) but the requested version is unsupported", message.getId(), message.getCorrelationId() ) ); //$NON-NLS-1$
             remoteTableGateway.close();
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.transport.IMessage)
-     */
-    @Override
-    public void handleMessage(
-        final IMessage message )
-    {
-        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
-        assert message instanceof HelloRequestMessage;
-
-        handleHelloRequestMessage( (HelloRequestMessage)message );
     }
 }

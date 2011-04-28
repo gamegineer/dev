@@ -21,13 +21,11 @@
 
 package org.gamegineer.table.internal.net.server;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Arrays;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.common.Authenticator;
-import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.transport.messages.EndAuthenticationMessage;
 import org.gamegineer.table.net.NetworkTableException;
@@ -72,8 +70,10 @@ final class BeginAuthenticationResponseMessageHandler
      * @param message
      *        The message; must not be {@code null}.
      */
-    @SuppressWarnings( "boxing" )
-    private void handleBeginAuthenticationResponseMessage(
+    @SuppressWarnings( {
+        "boxing", "unused"
+    } )
+    private void handleMessage(
         /* @NonNull */
         final BeginAuthenticationResponseMessage message )
     {
@@ -134,23 +134,13 @@ final class BeginAuthenticationResponseMessageHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.transport.IMessage)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway.AbstractMessageHandler#handleUnsupportedMessage()
      */
     @Override
-    public void handleMessage(
-        final IMessage message )
+    protected void handleUnsupportedMessage()
     {
-        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
-
-        if( message instanceof BeginAuthenticationResponseMessage )
-        {
-            handleBeginAuthenticationResponseMessage( (BeginAuthenticationResponseMessage)message );
-        }
-        else
-        {
-            // TODO: send correlated error message
-            System.out.println( "ClientService : received unknown response to HelloResponseMessage" ); //$NON-NLS-1$
-            getRemoteTableGateway().close();
-        }
+        System.out.println( "ServerService : received unknown response to HelloResponseMessage" ); //$NON-NLS-1$
+        getRemoteTableGateway().close();
     }
+
 }

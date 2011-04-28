@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -251,7 +252,7 @@ public abstract class AbstractRemoteTableGateway
                     // TODO: Add support for default message handlers. For example, may send back
                     // an error message correlated to the unknown message to indicate to the peer
                     // that message is not supported...
-                    Loggers.getDefaultLogger().warning( Messages.AbstractRemoteTableGateway_messageReceived_unknownMessage( messageEnvelope ) );
+                    Loggers.getDefaultLogger().warning( Messages.AbstractRemoteTableGateway_messageReceived_unsupportedMessage( messageEnvelope ) );
                 }
             }
         }
@@ -454,6 +455,60 @@ public abstract class AbstractRemoteTableGateway
         protected final T getRemoteTableGateway()
         {
             return remoteTableGateway_;
+        }
+
+        /**
+         * This method dispatches the incoming message via reflection. It
+         * searches for a method with the following signature:
+         * 
+         * <p>
+         * <code>void handleMessage(<i>&lt;concrete message type&gt;</i>)</code>
+         * </p>
+         * 
+         * <p>
+         * If such a method is not found, an error message will be sent to the
+         * peer gateway indicating the message is unsupported.
+         * </p>
+         * 
+         * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.transport.IMessage)
+         */
+        @Override
+        public final void handleMessage(
+            final IMessage message )
+        {
+            assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
+
+            try
+            {
+                final Method method = getClass().getDeclaredMethod( "handleMessage", message.getClass() ); //$NON-NLS-1$
+                try
+                {
+                    method.setAccessible( true );
+                    method.invoke( this, message );
+                }
+                catch( final Exception e )
+                {
+                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableGateway_handleMessage_unexpectedError, e );
+                }
+            }
+            catch( final NoSuchMethodException e )
+            {
+                // TODO: log unsupported message
+                // TODO: send error response before invoking template method
+                handleUnsupportedMessage();
+            }
+        }
+
+        /**
+         * Invoked when the handler receives an unsupported message.
+         * 
+         * <p>
+         * This implementation does nothing.
+         * </p>
+         */
+        protected void handleUnsupportedMessage()
+        {
+            // do nothing
         }
     }
 }

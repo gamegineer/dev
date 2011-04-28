@@ -21,11 +21,9 @@
 
 package org.gamegineer.table.internal.net.client;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.Loggers;
-import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.messages.EndAuthenticationMessage;
 import org.gamegineer.table.net.NetworkTableException;
 
@@ -69,8 +67,10 @@ final class EndAuthenticationMessageHandler
      * @param message
      *        The message; must not be {@code null}.
      */
-    @SuppressWarnings( "boxing" )
-    private void handleEndAuthenticationMessage(
+    @SuppressWarnings( {
+        "boxing", "unused"
+    } )
+    private void handleMessage(
         /* @NonNull */
         final EndAuthenticationMessage message )
     {
@@ -101,23 +101,12 @@ final class EndAuthenticationMessageHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.transport.IMessage)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway.AbstractMessageHandler#handleUnsupportedMessage()
      */
     @Override
-    public void handleMessage(
-        final IMessage message )
+    protected void handleUnsupportedMessage()
     {
-        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
-
-        if( message instanceof EndAuthenticationMessage )
-        {
-            handleEndAuthenticationMessage( (EndAuthenticationMessage)message );
-        }
-        else
-        {
-            // TODO: send correlated error message
-            System.out.println( "ClientService : received unknown response to BeginAuthenticationResponseMessage" ); //$NON-NLS-1$
-            getRemoteTableGateway().close();
-        }
+        System.out.println( "ClientService : received unknown response to BeginAuthenticationResponseMessage" ); //$NON-NLS-1$
+        getRemoteTableGateway().close();
     }
 }
