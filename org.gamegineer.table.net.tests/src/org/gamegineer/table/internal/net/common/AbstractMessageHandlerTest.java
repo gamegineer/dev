@@ -144,10 +144,10 @@ public final class AbstractMessageHandlerTest
 
         messageHandler.handleMessage( message );
 
+        mocksControl_.verify();
         assertEquals( 1, messageHandler.getHandleUnexpectedMessageCallCount() );
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
         assertEquals( NetworkTableError.UNEXPECTED_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
-        mocksControl_.verify();
     }
 
 

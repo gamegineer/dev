@@ -21,9 +21,17 @@
 
 package org.gamegineer.table.internal.net.common;
 
+import static org.junit.Assert.assertEquals;
+import org.easymock.Capture;
 import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
+import org.gamegineer.table.internal.net.transport.FakeMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
+import org.gamegineer.table.internal.net.transport.IServiceContext;
+import org.gamegineer.table.internal.net.transport.MessageEnvelope;
+import org.gamegineer.table.net.NetworkTableError;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +46,9 @@ public final class AbstractRemoteTableGatewayTest
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The mocks control for use in the fixture. */
+    private IMocksControl mocksControl_;
 
     /** The remote table gateway under test in the fixture. */
     private AbstractRemoteTableGateway remoteTableGateway_;
@@ -94,6 +105,7 @@ public final class AbstractRemoteTableGatewayTest
     public void setUp()
         throws Exception
     {
+        mocksControl_ = EasyMock.createControl();
         remoteTableGateway_ = createRemoteTableGateway( EasyMock.createMock( ITableGatewayContext.class ) );
     }
 
@@ -108,6 +120,7 @@ public final class AbstractRemoteTableGatewayTest
         throws Exception
     {
         remoteTableGateway_ = null;
+        mocksControl_ = null;
     }
 
     /**
@@ -118,6 +131,88 @@ public final class AbstractRemoteTableGatewayTest
     public void testConstructor_TableGatewayContext_Null()
     {
         createRemoteTableGateway( null );
+    }
+
+    /**
+     * Ensures the {@code messageReceived} method sends an error message in
+     * response to a message envelope that contains an unhandled message with a
+     * non-null correlation identifier.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @SuppressWarnings( "boxing" )
+    @Test
+    public void testMessageReceived_MessageEnvelope_UnhandledMessage_Correlated()
+        throws Exception
+    {
+        final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
+        final Capture<IMessage> messageCapture = new Capture<IMessage>();
+        EasyMock.expect( serviceContext.sendMessage( EasyMock.capture( messageCapture ) ) ).andReturn( true );
+        final FakeMessage message = new FakeMessage();
+        message.setId( IMessage.MINIMUM_ID );
+        message.setCorrelationId( IMessage.MAXIMUM_ID );
+        final MessageEnvelope messageEnvelope = MessageEnvelope.fromMessage( message );
+        mocksControl_.replay();
+        remoteTableGateway_.started( serviceContext );
+
+        remoteTableGateway_.messageReceived( messageEnvelope );
+
+        mocksControl_.verify();
+        assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
+        assertEquals( NetworkTableError.UNHANDLED_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
+    }
+
+    /**
+     * Ensures the {@code messageReceived} method sends an error message in
+     * response to a message envelope that contains an unhandled message with a
+     * null correlation identifier.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @SuppressWarnings( "boxing" )
+    @Test
+    public void testMessageReceived_MessageEnvelope_UnhandledMessage_Uncorrelated()
+        throws Exception
+    {
+        final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
+        final Capture<IMessage> messageCapture = new Capture<IMessage>();
+        EasyMock.expect( serviceContext.sendMessage( EasyMock.capture( messageCapture ) ) ).andReturn( true );
+        final FakeMessage message = new FakeMessage();
+        message.setId( IMessage.MINIMUM_ID );
+        message.setCorrelationId( IMessage.NULL_CORRELATION_ID );
+        final MessageEnvelope messageEnvelope = MessageEnvelope.fromMessage( message );
+        mocksControl_.replay();
+        remoteTableGateway_.started( serviceContext );
+
+        remoteTableGateway_.messageReceived( messageEnvelope );
+
+        mocksControl_.verify();
+        assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
+        assertEquals( NetworkTableError.UNHANDLED_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
+    }
+
+    /**
+     * Ensures the {@code messageReceived} method sends an error message in
+     * response to a message envelope that contains an unknown message.
+     */
+    @SuppressWarnings( "boxing" )
+    @Test
+    public void testMessageReceived_MessageEnvelope_UnknownMessage()
+    {
+        final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
+        final Capture<IMessage> messageCapture = new Capture<IMessage>();
+        EasyMock.expect( serviceContext.sendMessage( EasyMock.capture( messageCapture ) ) ).andReturn( true );
+        final MessageEnvelope messageEnvelope = new MessageEnvelope( IMessage.MINIMUM_ID, IMessage.NULL_CORRELATION_ID, new byte[ 0 ] );
+        mocksControl_.replay();
+        remoteTableGateway_.started( serviceContext );
+
+        remoteTableGateway_.messageReceived( messageEnvelope );
+
+        mocksControl_.verify();
+        assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
+        assertEquals( NetworkTableError.UNKNOWN_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
     }
 
     /**

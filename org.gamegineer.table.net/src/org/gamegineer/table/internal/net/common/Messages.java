@@ -53,14 +53,14 @@ final class Messages
 
     // --- AbstractRemoteTableGateway ---------------------------------------
 
+    /** An error occurred while deserializing a message. */
+    public static String AbstractRemoteTableGateway_extractMessage_deserializationError;
+
     /** An unexpected error occurred while handling a message. */
     public static String AbstractRemoteTableGateway_handleMessage_unexpectedError;
 
-    /** An error occurred while deserializing a message. */
-    public static String AbstractRemoteTableGateway_messageReceived_deserializationError;
-
-    /** The service received an unsupported message. */
-    public static String AbstractRemoteTableGateway_messageReceived_unsupportedMessage;
+    /** The service received an unhandled message. */
+    public static String AbstractRemoteTableGateway_messageReceived_unhandledMessage;
 
     /** The network is disconnected. */
     public static String AbstractRemoteTableGateway_networkDisconnected;
@@ -127,30 +127,34 @@ final class Messages
      */
     /* @NonNull */
     @SuppressWarnings( "boxing" )
-    static String AbstractRemoteTableGateway_messageReceived_deserializationError(
+    static String AbstractRemoteTableGateway_extractMessage_deserializationError(
         /* @NonNull */
         final MessageEnvelope messageEnvelope )
     {
-        return bind( AbstractRemoteTableGateway_messageReceived_deserializationError, messageEnvelope.getId(), messageEnvelope.getCorrelationId() );
+        return bind( AbstractRemoteTableGateway_extractMessage_deserializationError, messageEnvelope.getId(), messageEnvelope.getCorrelationId() );
     }
 
     /**
-     * Gets the formatted message indicating the service received an unsupported
+     * Gets the formatted message indicating the service received an unhandled
      * message.
      * 
-     * @param messageEnvelope
-     *        The message envelope; must not be {@code null}.
+     * @param message
+     *        The message; must not be {@code null}.
      * 
      * @return The formatted message indicating the service received an
-     *         unsupported message; never {@code null}.
+     *         unhandled message; never {@code null}.
      */
     /* @NonNull */
     @SuppressWarnings( "boxing" )
-    static String AbstractRemoteTableGateway_messageReceived_unsupportedMessage(
+    static String AbstractRemoteTableGateway_messageReceived_unhandledMessage(
         /* @NonNull */
-        final MessageEnvelope messageEnvelope )
+        final IMessage message )
     {
-        return bind( AbstractRemoteTableGateway_messageReceived_unsupportedMessage, messageEnvelope.getId(), messageEnvelope.getCorrelationId() );
+        return bind( AbstractRemoteTableGateway_messageReceived_unhandledMessage, new Object[] {
+            message.getClass().getSimpleName(), //
+            message.getId(), //
+            message.getCorrelationId()
+        } );
     }
 
     // --- AbstractRemoteTableGateway.AbstractMessageHandler ----------------

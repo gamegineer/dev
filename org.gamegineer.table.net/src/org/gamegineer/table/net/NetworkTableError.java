@@ -36,6 +36,12 @@ public enum NetworkTableError
     /** An unknown error occurred. */
     UNKNOWN_ERROR,
 
-    /** The received message was not expected at this time. */
+    /** The received message is unknown. */
+    UNKNOWN_MESSAGE,
+
+    /** The received message has no registered handler. */
+    UNHANDLED_MESSAGE,
+
+    /** The received message is not expected at this time. */
     UNEXPECTED_MESSAGE;
 }

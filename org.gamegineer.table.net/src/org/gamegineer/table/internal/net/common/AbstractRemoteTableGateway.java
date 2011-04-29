@@ -162,6 +162,38 @@ public abstract class AbstractRemoteTableGateway
         }
     }
 
+    /**
+     * Extracts the message from the specified message envelope.
+     * 
+     * @param messageEnvelope
+     *        The message envelope; must not be {@code null}.
+     * 
+     * @return The message extracted from the specified message envelope or
+     *         {@code null} if the message envelope contains an unknown message.
+     */
+    /* @Nullable */
+    private static IMessage extractMessage(
+        /* @NonNull */
+        final MessageEnvelope messageEnvelope )
+    {
+        assert messageEnvelope != null;
+
+        try
+        {
+            return messageEnvelope.getBodyAsMessage();
+        }
+        catch( final IOException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableGateway_extractMessage_deserializationError( messageEnvelope ), e );
+            return null;
+        }
+        catch( final ClassNotFoundException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableGateway_extractMessage_deserializationError( messageEnvelope ), e );
+            return null;
+        }
+    }
+
     /*
      * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#getContext()
      */
@@ -230,10 +262,10 @@ public abstract class AbstractRemoteTableGateway
     {
         assertArgumentNotNull( messageEnvelope, "messageEnvelope" ); //$NON-NLS-1$
 
-        try
+        synchronized( getLock() )
         {
-            final IMessage message = messageEnvelope.getBodyAsMessage();
-            synchronized( getLock() )
+            final IMessage message = extractMessage( messageEnvelope );
+            if( message != null )
             {
                 final IMessageHandler messageHandler;
                 if( message.getCorrelationId() != IMessage.NULL_CORRELATION_ID )
@@ -251,24 +283,14 @@ public abstract class AbstractRemoteTableGateway
                 }
                 else
                 {
-                    // TODO: Add support for default message handlers. For example, may send back
-                    // an error message correlated to the unknown message to indicate to the peer
-                    // that message is not supported...
-
-                    // TODO: pass message instead of envelope
-                    Loggers.getDefaultLogger().warning( Messages.AbstractRemoteTableGateway_messageReceived_unsupportedMessage( messageEnvelope ) );
+                    Loggers.getDefaultLogger().warning( Messages.AbstractRemoteTableGateway_messageReceived_unhandledMessage( message ) );
+                    sendErrorMessage( NetworkTableError.UNHANDLED_MESSAGE, message.getId() );
                 }
             }
-        }
-        catch( final IOException e )
-        {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableGateway_messageReceived_deserializationError( messageEnvelope ), e );
-            // TODO: send error response
-        }
-        catch( final ClassNotFoundException e )
-        {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableGateway_messageReceived_deserializationError( messageEnvelope ), e );
-            // TODO: send error response
+            else
+            {
+                sendErrorMessage( NetworkTableError.UNKNOWN_MESSAGE, messageEnvelope.getId() );
+            }
         }
     }
 
@@ -332,6 +354,34 @@ public abstract class AbstractRemoteTableGateway
             assertArgumentLegal( !uncorrelatedMessageHandlers_.containsKey( type ), "type", Messages.AbstractRemoteTableGateway_registerUncorrelatedMessageHandler_messageTypeRegistered ); //$NON-NLS-1$
             uncorrelatedMessageHandlers_.put( type, messageHandler );
         }
+    }
+
+    /**
+     * Sends an error message to the remote peer with the specified attributes.
+     * 
+     * @param error
+     *        The error that occurred; must not be {@code null}.
+     * @param correlationId
+     *        The message correlation identifier.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code correlationId} is less than {@link IMessage#MINIMUM_ID}
+     *         or greater than {@link IMessage#MAXIMUM_ID} or not equal to
+     *         {@link IMessage#NULL_CORRELATION_ID} .
+     */
+    @GuardedBy( "getLock()" )
+    private void sendErrorMessage(
+        /* @NonNull */
+        final NetworkTableError error,
+        final int correlationId )
+    {
+        assert error != null;
+        assert Thread.holdsLock( getLock() );
+
+        final ErrorMessage message = new ErrorMessage();
+        message.setCorrelationId( correlationId );
+        message.setError( error );
+        sendMessage( message, null );
     }
 
     /*
