@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.transport.messages;
 
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.internal.net.transport.AbstractMessage;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**

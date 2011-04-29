@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.transport;
 
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.internal.net.transport.messages.AbstractMessage;
 
 /**
  * A fake network table message.

@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net.transport.messages;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.internal.net.transport.AbstractMessage;
 
 /**
  * A message sent by a client to a server to request begin the handshake

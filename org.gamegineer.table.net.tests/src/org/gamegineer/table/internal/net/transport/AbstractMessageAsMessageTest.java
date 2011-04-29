@@ -19,15 +19,12 @@
  * Created on Apr 8, 2011 at 10:11:52 PM.
  */
 
-package org.gamegineer.table.internal.net.transport.messages;
-
-import org.gamegineer.table.internal.net.transport.AbstractMessageTestCase;
-import org.gamegineer.table.internal.net.transport.IMessage;
+package org.gamegineer.table.internal.net.transport;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.transport.messages.AbstractMessage}
- * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.transport.AbstractMessage} class to
+ * ensure it does not violate the contract of the
  * {@link org.gamegineer.table.internal.net.transport.IMessage} interface.
  */
 public final class AbstractMessageAsMessageTest

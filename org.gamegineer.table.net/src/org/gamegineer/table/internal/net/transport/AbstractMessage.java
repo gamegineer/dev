@@ -19,11 +19,10 @@
  * Created on Feb 24, 2011 at 8:09:45 PM.
  */
 
-package org.gamegineer.table.internal.net.transport.messages;
+package org.gamegineer.table.internal.net.transport;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.internal.net.transport.IMessage;
 
 /**
  * Superclass for all implementations of {@link IMessage}.

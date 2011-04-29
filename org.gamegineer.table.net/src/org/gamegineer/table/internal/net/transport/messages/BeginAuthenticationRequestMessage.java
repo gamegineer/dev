@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.net.transport.messages;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.internal.net.transport.AbstractMessage;
 
 /**
  * A message sent by a server to a client to request an authentication
