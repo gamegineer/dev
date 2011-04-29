@@ -19,7 +19,7 @@
  * Created on Mar 11, 2011 at 10:16:05 PM.
  */
 
-package org.gamegineer.table.internal.net.transport.messages;
+package org.gamegineer.table.internal.net.common.messages;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import net.jcip.annotations.NotThreadSafe;

@@ -27,4 +27,4 @@
  * {@code org.gamegineer.table} project.
  * </p>
  */
-package org.gamegineer.table.internal.net.transport.messages;
+package org.gamegineer.table.internal.net.common.messages;

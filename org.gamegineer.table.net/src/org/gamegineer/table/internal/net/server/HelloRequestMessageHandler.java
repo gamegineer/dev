@@ -24,9 +24,9 @@ package org.gamegineer.table.internal.net.server;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
-import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationRequestMessage;
-import org.gamegineer.table.internal.net.transport.messages.HelloRequestMessage;
-import org.gamegineer.table.internal.net.transport.messages.HelloResponseMessage;
+import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
+import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
+import org.gamegineer.table.internal.net.common.messages.HelloResponseMessage;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**

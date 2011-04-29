@@ -1,5 +1,5 @@
 /*
- * EchoResponseMessage.java
+ * HelloRequestMessage.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,20 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 3, 2011 at 10:43:31 PM.
+ * Created on Mar 11, 2011 at 10:15:55 PM.
  */
 
-package org.gamegineer.table.internal.net.transport.messages;
+package org.gamegineer.table.internal.net.common.messages;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.transport.AbstractMessage;
 
 /**
- * A response to an echo request.
+ * A message sent by a client to a server to request begin the handshake
+ * necessary to connect to the server.
  */
 @NotThreadSafe
-public final class EchoResponseMessage
+public final class HelloRequestMessage
     extends AbstractMessage
 {
     // ======================================================================
@@ -37,14 +38,14 @@ public final class EchoResponseMessage
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = 4079243186486929978L;
+    private static final long serialVersionUID = 5756672104592548380L;
 
     /**
-     * The message content.
+     * The highest protocol version supported by the client.
      * 
-     * @serial The message content.
+     * @serial The highest protocol version supported by the client.
      */
-    private String content_;
+    private int supportedProtocolVersion_;
 
 
     // ======================================================================
@@ -52,11 +53,11 @@ public final class EchoResponseMessage
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code EchoResponseMessage} class.
+     * Initializes a new instance of the {@code HelloRequestMessage} class.
      */
-    public EchoResponseMessage()
+    public HelloRequestMessage()
     {
-        content_ = ""; //$NON-NLS-1$
+        supportedProtocolVersion_ = 0;
     }
 
 
@@ -65,31 +66,29 @@ public final class EchoResponseMessage
     // ======================================================================
 
     /**
-     * Gets the message content.
+     * Gets the highest protocol version supported by the client.
      * 
-     * @return The message content; never {@code null}.
+     * @return The highest protocol version supported by the client.
      */
-    /* @NonNull */
-    public String getContent()
+    public int getSupportedProtocolVersion()
     {
-        return content_;
+        return supportedProtocolVersion_;
     }
 
     /**
-     * Sets the message content.
+     * Sets the highest protocol version supported by the client.
      * 
-     * @param content
-     *        The message content; must not be {@code null}.
+     * @param supportedProtocolVersion
+     *        The highest protocol version supported by the client.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code content} is {@code null}.
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code supportedProtocolVersion} is negative.
      */
-    public void setContent(
-        /* @NonNull */
-        final String content )
+    public void setSupportedProtocolVersion(
+        final int supportedProtocolVersion )
     {
-        assertArgumentNotNull( content, "content" ); //$NON-NLS-1$
+        assertArgumentLegal( supportedProtocolVersion >= 0, "supportedProtocolVersion" ); //$NON-NLS-1$
 
-        content_ = content;
+        supportedProtocolVersion_ = supportedProtocolVersion;
     }
 }

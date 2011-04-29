@@ -26,8 +26,8 @@ import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.common.Authenticator;
-import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationResponseMessage;
-import org.gamegineer.table.internal.net.transport.messages.EndAuthenticationMessage;
+import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationResponseMessage;
+import org.gamegineer.table.internal.net.common.messages.EndAuthenticationMessage;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**

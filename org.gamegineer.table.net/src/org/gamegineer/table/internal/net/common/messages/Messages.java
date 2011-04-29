@@ -19,7 +19,7 @@
  * Created on Mar 19, 2011 at 9:35:08 PM.
  */
 
-package org.gamegineer.table.internal.net.transport.messages;
+package org.gamegineer.table.internal.net.common.messages;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;

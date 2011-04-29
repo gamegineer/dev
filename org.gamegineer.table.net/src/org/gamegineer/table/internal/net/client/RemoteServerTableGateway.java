@@ -26,8 +26,8 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
-import org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationRequestMessage;
-import org.gamegineer.table.internal.net.transport.messages.HelloRequestMessage;
+import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
+import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
 
 /**
  * A gateway to a remote server table.

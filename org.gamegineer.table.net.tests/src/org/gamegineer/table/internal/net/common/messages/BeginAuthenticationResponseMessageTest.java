@@ -1,5 +1,5 @@
 /*
- * EchoRequestMessageTest.java
+ * BeginAuthenticationResponseMessageTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 5, 2011 at 10:33:55 PM.
+ * Created on Mar 18, 2011 at 9:52:48 PM.
  */
 
-package org.gamegineer.table.internal.net.transport.messages;
+package org.gamegineer.table.internal.net.common.messages;
 
 import org.junit.After;
 import org.junit.Before;
@@ -27,17 +27,17 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.transport.messages.EchoRequestMessage}
+ * {@link org.gamegineer.table.internal.net.common.messages.BeginAuthenticationResponseMessage}
  * class.
  */
-public final class EchoRequestMessageTest
+public final class BeginAuthenticationResponseMessageTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The echo request message under test in the fixture. */
-    private EchoRequestMessage message_;
+    /** The begin authentication response message under test in the fixture. */
+    private BeginAuthenticationResponseMessage message_;
 
 
     // ======================================================================
@@ -45,9 +45,10 @@ public final class EchoRequestMessageTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code EchoRequestMessageTest} class.
+     * Initializes a new instance of the {@code
+     * BeginAuthenticationResponseMessageTest} class.
      */
-    public EchoRequestMessageTest()
+    public BeginAuthenticationResponseMessageTest()
     {
         super();
     }
@@ -67,7 +68,7 @@ public final class EchoRequestMessageTest
     public void setUp()
         throws Exception
     {
-        message_ = new EchoRequestMessage();
+        message_ = new BeginAuthenticationResponseMessage();
     }
 
     /**
@@ -84,12 +85,32 @@ public final class EchoRequestMessageTest
     }
 
     /**
-     * Ensures the {@code setContent} method throws an exception when passed a
-     * {@code null} content.
+     * Ensures the {@code setPlayerName} method throws an exception when passed
+     * a {@code null} player name.
      */
     @Test( expected = NullPointerException.class )
-    public void testSetContent_Content_Null()
+    public void testSetPlayerName_PlayerName_Null()
     {
-        message_.setContent( null );
+        message_.setPlayerName( null );
+    }
+
+    /**
+     * Ensures the {@code setResponse} method throws an exception when passed an
+     * illegal response that is empty.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testSetResponse_Response_Illegal_Empty()
+    {
+        message_.setResponse( new byte[ 0 ] );
+    }
+
+    /**
+     * Ensures the {@code setResponse} method throws an exception when passed a
+     * {@code null} response.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetResponse_Response_Null()
+    {
+        message_.setResponse( null );
     }
 }

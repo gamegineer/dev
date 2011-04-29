@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.net.client;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.transport.messages.HelloResponseMessage;
+import org.gamegineer.table.internal.net.common.messages.HelloResponseMessage;
 
 /**
  * A message handler for the {@link HelloResponseMessage} message.

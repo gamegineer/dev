@@ -19,7 +19,7 @@
  * Created on Mar 5, 2011 at 10:40:11 PM.
  */
 
-package org.gamegineer.table.internal.net.transport.messages;
+package org.gamegineer.table.internal.net.common.messages;
 
 import org.junit.After;
 import org.junit.Before;
@@ -27,7 +27,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.transport.messages.EchoResponseMessage}
+ * {@link org.gamegineer.table.internal.net.common.messages.EchoResponseMessage}
  * class.
  */
 public final class EchoResponseMessageTest

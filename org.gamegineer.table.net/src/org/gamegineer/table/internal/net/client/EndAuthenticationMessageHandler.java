@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.net.client;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.Loggers;
-import org.gamegineer.table.internal.net.transport.messages.EndAuthenticationMessage;
+import org.gamegineer.table.internal.net.common.messages.EndAuthenticationMessage;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**

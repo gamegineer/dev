@@ -1,5 +1,5 @@
 /*
- * HelloResponseMessageTest.java
+ * EchoResponseMessage.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,28 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 12, 2011 at 9:11:42 PM.
+ * Created on Mar 3, 2011 at 10:43:31 PM.
  */
 
-package org.gamegineer.table.internal.net.transport.messages;
+package org.gamegineer.table.internal.net.common.messages;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.internal.net.transport.AbstractMessage;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.transport.messages.HelloResponseMessage}
- * class.
+ * A response to an echo request.
  */
-public final class HelloResponseMessageTest
+@NotThreadSafe
+public final class EchoResponseMessage
+    extends AbstractMessage
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The hello response message under test in the fixture. */
-    private HelloResponseMessage message_;
+    /** Serializable class version number. */
+    private static final long serialVersionUID = 4079243186486929978L;
+
+    /**
+     * The message content.
+     * 
+     * @serial The message content.
+     */
+    private String content_;
 
 
     // ======================================================================
@@ -45,11 +52,11 @@ public final class HelloResponseMessageTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code HelloResponseMessageTest} class.
+     * Initializes a new instance of the {@code EchoResponseMessage} class.
      */
-    public HelloResponseMessageTest()
+    public EchoResponseMessage()
     {
-        super();
+        content_ = ""; //$NON-NLS-1$
     }
 
 
@@ -58,38 +65,31 @@ public final class HelloResponseMessageTest
     // ======================================================================
 
     /**
-     * Sets up the test fixture.
+     * Gets the message content.
      * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * @return The message content; never {@code null}.
      */
-    @Before
-    public void setUp()
-        throws Exception
+    /* @NonNull */
+    public String getContent()
     {
-        message_ = new HelloResponseMessage();
+        return content_;
     }
 
     /**
-     * Tears down the test fixture.
+     * Sets the message content.
      * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * @param content
+     *        The message content; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code content} is {@code null}.
      */
-    @After
-    public void tearDown()
-        throws Exception
+    public void setContent(
+        /* @NonNull */
+        final String content )
     {
-        message_ = null;
-    }
+        assertArgumentNotNull( content, "content" ); //$NON-NLS-1$
 
-    /**
-     * Ensures the {@code setChosenProtocolVersion} method throws an exception
-     * when passed a negative version.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testSetChosenProtocolVersion_Version_Illegal_Negative()
-    {
-        message_.setChosenProtocolVersion( -1 );
+        content_ = content;
     }
 }

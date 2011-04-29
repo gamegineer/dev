@@ -1,5 +1,5 @@
 /*
- * BeginAuthenticationResponseMessageTest.java
+ * HelloResponseMessageTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 18, 2011 at 9:52:48 PM.
+ * Created on Mar 12, 2011 at 9:11:42 PM.
  */
 
-package org.gamegineer.table.internal.net.transport.messages;
+package org.gamegineer.table.internal.net.common.messages;
 
 import org.junit.After;
 import org.junit.Before;
@@ -27,17 +27,17 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.transport.messages.BeginAuthenticationResponseMessage}
+ * {@link org.gamegineer.table.internal.net.common.messages.HelloResponseMessage}
  * class.
  */
-public final class BeginAuthenticationResponseMessageTest
+public final class HelloResponseMessageTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The begin authentication response message under test in the fixture. */
-    private BeginAuthenticationResponseMessage message_;
+    /** The hello response message under test in the fixture. */
+    private HelloResponseMessage message_;
 
 
     // ======================================================================
@@ -45,10 +45,9 @@ public final class BeginAuthenticationResponseMessageTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * BeginAuthenticationResponseMessageTest} class.
+     * Initializes a new instance of the {@code HelloResponseMessageTest} class.
      */
-    public BeginAuthenticationResponseMessageTest()
+    public HelloResponseMessageTest()
     {
         super();
     }
@@ -68,7 +67,7 @@ public final class BeginAuthenticationResponseMessageTest
     public void setUp()
         throws Exception
     {
-        message_ = new BeginAuthenticationResponseMessage();
+        message_ = new HelloResponseMessage();
     }
 
     /**
@@ -85,32 +84,12 @@ public final class BeginAuthenticationResponseMessageTest
     }
 
     /**
-     * Ensures the {@code setPlayerName} method throws an exception when passed
-     * a {@code null} player name.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetPlayerName_PlayerName_Null()
-    {
-        message_.setPlayerName( null );
-    }
-
-    /**
-     * Ensures the {@code setResponse} method throws an exception when passed an
-     * illegal response that is empty.
+     * Ensures the {@code setChosenProtocolVersion} method throws an exception
+     * when passed a negative version.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testSetResponse_Response_Illegal_Empty()
+    public void testSetChosenProtocolVersion_Version_Illegal_Negative()
     {
-        message_.setResponse( new byte[ 0 ] );
-    }
-
-    /**
-     * Ensures the {@code setResponse} method throws an exception when passed a
-     * {@code null} response.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetResponse_Response_Null()
-    {
-        message_.setResponse( null );
+        message_.setChosenProtocolVersion( -1 );
     }
 }
