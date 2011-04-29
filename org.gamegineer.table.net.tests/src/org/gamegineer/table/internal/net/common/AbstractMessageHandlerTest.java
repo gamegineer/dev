@@ -24,10 +24,14 @@ package org.gamegineer.table.internal.net.common;
 import static org.junit.Assert.assertEquals;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler;
+import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.AbstractMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
+import org.gamegineer.table.net.NetworkTableError;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -125,20 +129,25 @@ public final class AbstractMessageHandlerTest
      * Ensures the {@code handleMessage} method correctly handles an unsupported
      * message.
      */
+    @SuppressWarnings( "boxing" )
     @Test
     public void testHandleMessage_Message_Unsupported()
     {
         final IRemoteTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteTableGateway.class );
+        final Capture<IMessage> messageCapture = new Capture<IMessage>();
+        EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
         final IMessage message = mocksControl_.createMock( IMessage.class );
+        EasyMock.expect( message.getId() ).andReturn( IMessage.MINIMUM_ID ).anyTimes();
+        EasyMock.expect( message.getCorrelationId() ).andReturn( IMessage.MAXIMUM_ID ).anyTimes();
         final MockMessageHandler messageHandler = new MockMessageHandler( remoteTableGateway );
         mocksControl_.replay();
 
         messageHandler.handleMessage( message );
 
-        assertEquals( 1, messageHandler.getHandleUnsupportedMessageCallCount() );
-
-        // TODO: Eventually assert that handler sends an error response via
-        // the remote table gateway.
+        assertEquals( 1, messageHandler.getHandleUnexpectedMessageCallCount() );
+        assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
+        assertEquals( NetworkTableError.UNEXPECTED_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
+        mocksControl_.verify();
     }
 
 
@@ -192,10 +201,10 @@ public final class AbstractMessageHandlerTest
         private int handleFakeMessageCallCount_;
 
         /**
-         * The count of calls made to the {@link #handleUnsupportedMessage()}
+         * The count of calls made to the {@link #handleUnexpectedMessage()}
          * method.
          */
-        private int handleUnsupportedMessageCallCount_;
+        private int handleUnexpectedMessageCallCount_;
 
 
         // ==================================================================
@@ -219,7 +228,7 @@ public final class AbstractMessageHandlerTest
             super( remoteTableGateway );
 
             handleFakeMessageCallCount_ = 0;
-            handleUnsupportedMessageCallCount_ = 0;
+            handleUnexpectedMessageCallCount_ = 0;
         }
 
 
@@ -241,14 +250,14 @@ public final class AbstractMessageHandlerTest
 
         /**
          * Gets the count of calls made to the
-         * {@link #handleUnsupportedMessage()} method.
+         * {@link #handleUnexpectedMessage()} method.
          * 
          * @return The count of calls made to the
-         *         {@link #handleUnsupportedMessage()} method.
+         *         {@link #handleUnexpectedMessage()} method.
          */
-        int getHandleUnsupportedMessageCallCount()
+        int getHandleUnexpectedMessageCallCount()
         {
-            return handleUnsupportedMessageCallCount_;
+            return handleUnexpectedMessageCallCount_;
         }
 
         /**
@@ -268,12 +277,12 @@ public final class AbstractMessageHandlerTest
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway.AbstractMessageHandler#handleUnsupportedMessage()
+         * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway.AbstractMessageHandler#handleUnexpectedMessage()
          */
         @Override
-        protected void handleUnsupportedMessage()
+        protected void handleUnexpectedMessage()
         {
-            ++handleUnsupportedMessageCallCount_;
+            ++handleUnexpectedMessageCallCount_;
         }
     }
 }

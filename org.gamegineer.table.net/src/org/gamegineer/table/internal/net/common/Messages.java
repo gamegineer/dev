@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net.common;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
+import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 
 /**
@@ -69,6 +70,11 @@ final class Messages
 
     /** The message type is already registered. */
     public static String AbstractRemoteTableGateway_registerUncorrelatedMessageHandler_messageTypeRegistered;
+
+    // --- AbstractRemoteTableGateway.AbstractMessageHandler ----------------
+
+    /** The message handler received an unexpected message. */
+    public static String AbstractMessageHandler_messageReceived_unexpectedMessage;
 
     // --- Authenticator ----------------------------------------------------
 
@@ -145,5 +151,35 @@ final class Messages
         final MessageEnvelope messageEnvelope )
     {
         return bind( AbstractRemoteTableGateway_messageReceived_unsupportedMessage, messageEnvelope.getId(), messageEnvelope.getCorrelationId() );
+    }
+
+    // --- AbstractRemoteTableGateway.AbstractMessageHandler ----------------
+
+    /**
+     * Gets the formatted message indicating the message handler received an
+     * unexpected message.
+     * 
+     * @param messageHandler
+     *        The message handler; must not be {@code null}.
+     * @param message
+     *        The message; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the message handler received an
+     *         unexpected message; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    static String AbstractMessageHandler_messageReceived_unexpectedMessage(
+        /* @NonNull */
+        final IRemoteTableGateway.IMessageHandler messageHandler,
+        /* @NonNull */
+        final IMessage message )
+    {
+        return bind( AbstractMessageHandler_messageReceived_unexpectedMessage, new Object[] {
+            messageHandler.getClass().getSimpleName(), //
+            message.getClass().getSimpleName(), //
+            message.getId(), //
+            message.getCorrelationId()
+        } );
     }
 }

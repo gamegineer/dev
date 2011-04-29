@@ -35,10 +35,12 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.Loggers;
+import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
+import org.gamegineer.table.net.NetworkTableError;
 
 /**
  * Superclass for all implementations of {@ink
@@ -252,6 +254,8 @@ public abstract class AbstractRemoteTableGateway
                     // TODO: Add support for default message handlers. For example, may send back
                     // an error message correlated to the unknown message to indicate to the peer
                     // that message is not supported...
+
+                    // TODO: pass message instead of envelope
                     Loggers.getDefaultLogger().warning( Messages.AbstractRemoteTableGateway_messageReceived_unsupportedMessage( messageEnvelope ) );
                 }
             }
@@ -259,10 +263,12 @@ public abstract class AbstractRemoteTableGateway
         catch( final IOException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableGateway_messageReceived_deserializationError( messageEnvelope ), e );
+            // TODO: send error response
         }
         catch( final ClassNotFoundException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableGateway_messageReceived_deserializationError( messageEnvelope ), e );
+            // TODO: send error response
         }
     }
 
@@ -493,20 +499,25 @@ public abstract class AbstractRemoteTableGateway
             }
             catch( final NoSuchMethodException e )
             {
-                // TODO: log unsupported message
-                // TODO: send error response before invoking template method
-                handleUnsupportedMessage();
+                Loggers.getDefaultLogger().severe( Messages.AbstractMessageHandler_messageReceived_unexpectedMessage( this, message ) );
+
+                final ErrorMessage errorMessage = new ErrorMessage();
+                errorMessage.setCorrelationId( message.getId() );
+                errorMessage.setError( NetworkTableError.UNEXPECTED_MESSAGE );
+                getRemoteTableGateway().sendMessage( errorMessage, null );
+
+                handleUnexpectedMessage();
             }
         }
 
         /**
-         * Invoked when the handler receives an unsupported message.
+         * Invoked when the handler receives an unexpected message.
          * 
          * <p>
          * This implementation does nothing.
          * </p>
          */
-        protected void handleUnsupportedMessage()
+        protected void handleUnexpectedMessage()
         {
             // do nothing
         }

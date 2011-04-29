@@ -134,13 +134,12 @@ final class BeginAuthenticationResponseMessageHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway.AbstractMessageHandler#handleUnsupportedMessage()
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway.AbstractMessageHandler#handleUnexpectedMessage()
      */
     @Override
-    protected void handleUnsupportedMessage()
+    protected void handleUnexpectedMessage()
     {
         System.out.println( "ServerService : received unknown response to HelloResponseMessage" ); //$NON-NLS-1$
         getRemoteTableGateway().close();
     }
-
 }
