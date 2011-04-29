@@ -293,7 +293,7 @@ public abstract class AbstractRemoteTableGateway
     {
         synchronized( getLock() )
         {
-            closed();
+            close();
         }
     }
 
