@@ -23,7 +23,6 @@ package org.gamegineer.common.internal.core.logging;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
-import java.lang.ref.SoftReference;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,9 +53,12 @@ public final class LoggingService
     /** The instance lock. */
     private final Object lock_;
 
-    /** The collection of managed loggers. The key is the logger name. */
+    /**
+     * The collection of managed loggers. The key is the logger name. The value
+     * is the logger.
+     */
     @GuardedBy( "lock_" )
-    private final Map<String, SoftReference<Logger>> loggers_;
+    private final Map<String, Logger> loggers_;
 
 
     // ======================================================================
@@ -69,7 +71,7 @@ public final class LoggingService
     public LoggingService()
     {
         lock_ = new Object();
-        loggers_ = new HashMap<String, SoftReference<Logger>>();
+        loggers_ = new HashMap<String, Logger>();
     }
 
 
@@ -125,11 +127,10 @@ public final class LoggingService
 
         for( final String ancestorLoggerName : LoggingProperties.getAncestorLoggerNames( properties, loggerName ) )
         {
-            final SoftReference<Logger> loggerRef = loggers_.get( ancestorLoggerName );
-            if( (loggerRef == null) || (loggerRef.get() == null) )
+            if( !loggers_.containsKey( ancestorLoggerName ) )
             {
                 final Logger logger = Logger.getLogger( ancestorLoggerName );
-                loggers_.put( ancestorLoggerName, new SoftReference<Logger>( logger ) );
+                loggers_.put( ancestorLoggerName, logger );
                 configureLogger( logger, new LoggerConfiguration( ancestorLoggerName, properties ) );
             }
         }
@@ -189,18 +190,14 @@ public final class LoggingService
 
         synchronized( lock_ )
         {
-            final SoftReference<Logger> loggerRef = loggers_.get( loggerName );
-            if( loggerRef != null )
+            logger = loggers_.get( loggerName );
+            if( logger != null )
             {
-                logger = loggerRef.get();
-                if( logger != null )
-                {
-                    return logger;
-                }
+                return logger;
             }
 
             logger = Logger.getLogger( loggerName );
-            loggers_.put( loggerName, new SoftReference<Logger>( logger ) );
+            loggers_.put( loggerName, logger );
 
             final Map<String, String> properties = getLoggingProperties( bundle );
             if( properties != null )
