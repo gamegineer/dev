@@ -82,9 +82,9 @@ final class HelloRequestMessageHandler
         assert message != null;
 
         System.out.println( String.format( "ServerService : received hello request with supported version '%d' (id=%d, correlation-id=%d)", //$NON-NLS-1$
+            Integer.valueOf( message.getSupportedProtocolVersion() ), //
             Integer.valueOf( message.getId() ), //
-            Integer.valueOf( message.getCorrelationId() ), //
-            Integer.valueOf( message.getSupportedProtocolVersion() ) ) );
+            Integer.valueOf( message.getCorrelationId() ) ) );
 
         final IRemoteClientTableGateway remoteTableGateway = getRemoteTableGateway();
 
