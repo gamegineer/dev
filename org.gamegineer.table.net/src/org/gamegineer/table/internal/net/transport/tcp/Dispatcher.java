@@ -42,8 +42,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Activator;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.Loggers;
-import org.gamegineer.table.net.NetworkTableError;
-import org.gamegineer.table.net.NetworkTableException;
+import org.gamegineer.table.internal.net.transport.TransportException;
 
 /**
  * An event dispatcher in the TCP transport layer Acceptor-Connector pattern
@@ -308,11 +307,11 @@ final class Dispatcher
      * 
      * @throws java.lang.IllegalStateException
      *         If the dispatcher has already been opened or is closed.
-     * @throws org.gamegineer.table.net.NetworkTableException
+     * @throws org.gamegineer.table.internal.net.transport.TransportException
      *         If an error occurs.
      */
     void open()
-        throws NetworkTableException
+        throws TransportException
     {
         synchronized( lock_ )
         {
@@ -326,7 +325,7 @@ final class Dispatcher
             catch( final IOException e )
             {
                 state_ = State.CLOSED;
-                throw new NetworkTableException( NetworkTableError.UNSPECIFIED_ERROR, Messages.Dispatcher_open_ioError, e );
+                throw new TransportException( Messages.Dispatcher_open_ioError, e );
             }
 
             state_ = State.OPEN;

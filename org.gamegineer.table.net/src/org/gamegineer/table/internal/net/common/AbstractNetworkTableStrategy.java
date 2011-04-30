@@ -37,6 +37,7 @@ import org.gamegineer.table.internal.net.INetworkTableStrategyContext;
 import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.internal.net.transport.TransportException;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.NetworkTableError;
 import org.gamegineer.table.net.NetworkTableException;
@@ -172,10 +173,10 @@ public abstract class AbstractNetworkTableStrategy
             {
                 transportLayer.open( configuration.getHostName(), configuration.getPort() );
             }
-            catch( final NetworkTableException e )
+            catch( final TransportException e )
             {
                 dispose();
-                throw e;
+                throw new NetworkTableException( NetworkTableError.TRANSPORT_ERROR, e );
             }
 
             transportLayer_ = transportLayer;

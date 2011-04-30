@@ -21,8 +21,6 @@
 
 package org.gamegineer.table.internal.net.transport;
 
-import org.gamegineer.table.net.NetworkTableException;
-
 /**
  * A network transport layer.
  * 
@@ -70,12 +68,12 @@ public interface ITransportLayer
      *         If the transport layer has already been opened or is closed.
      * @throws java.lang.NullPointerException
      *         If {@code hostName} is {@code null}.
-     * @throws org.gamegineer.table.net.NetworkTableException
+     * @throws org.gamegineer.table.internal.net.transport.TransportException
      *         If an error occurs.
      */
     public void open(
         /* @NonNull */
         String hostName,
         int port )
-        throws NetworkTableException;
+        throws TransportException;
 }

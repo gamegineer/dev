@@ -30,8 +30,8 @@ import org.gamegineer.table.internal.net.INetworkTableStrategyContext;
 import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.NetworkTableConfigurations;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.internal.net.transport.TransportException;
 import org.gamegineer.table.net.INetworkTableConfiguration;
-import org.gamegineer.table.net.NetworkTableError;
 import org.gamegineer.table.net.NetworkTableException;
 import org.junit.Test;
 
@@ -86,9 +86,9 @@ public abstract class AbstractAbstractNetworkTableStrategyTestCase<T extends Abs
                 final String hostName,
                 @SuppressWarnings( "unused" )
                 final int port )
-                throws NetworkTableException
+                throws TransportException
             {
-                throw new NetworkTableException( NetworkTableError.UNSPECIFIED_ERROR );
+                throw new TransportException();
             }
         };
     }

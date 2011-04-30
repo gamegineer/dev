@@ -25,8 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
-import org.gamegineer.table.net.NetworkTableError;
-import org.gamegineer.table.net.NetworkTableException;
+import org.gamegineer.table.internal.net.transport.TransportException;
 
 /**
  * Implementation of
@@ -66,7 +65,7 @@ final class ActiveTransportLayer
     public void open(
         final String hostName,
         final int port )
-        throws NetworkTableException
+        throws TransportException
     {
         assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
 
@@ -80,7 +79,7 @@ final class ActiveTransportLayer
         catch( final IOException e )
         {
             close();
-            throw new NetworkTableException( NetworkTableError.UNSPECIFIED_ERROR, Messages.ActiveTransportLayer_open_ioError, e );
+            throw new TransportException( Messages.ActiveTransportLayer_open_ioError, e );
         }
         finally
         {

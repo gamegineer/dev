@@ -46,6 +46,9 @@ public enum NetworkTableError
      */
     ILLEGAL_CONNECTION_STATE,
 
+    /** An error occurred in the transport layer. */
+    TRANSPORT_ERROR,
+
     /** The received message is not expected at this time. */
     UNEXPECTED_MESSAGE,
 

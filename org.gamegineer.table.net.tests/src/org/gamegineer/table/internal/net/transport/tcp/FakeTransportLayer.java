@@ -25,7 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
-import org.gamegineer.table.net.NetworkTableException;
+import org.gamegineer.table.internal.net.transport.TransportException;
 
 /**
  * Fake implementation of
@@ -77,7 +77,7 @@ final class FakeTransportLayer
         final String hostName,
         @SuppressWarnings( "unused" )
         final int port )
-        throws NetworkTableException
+        throws TransportException
     {
         assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
 

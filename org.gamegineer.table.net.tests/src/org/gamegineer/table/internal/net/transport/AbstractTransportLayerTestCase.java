@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.net.transport;
 
 import static org.junit.Assert.assertNotNull;
 import org.gamegineer.table.net.NetworkTableConstants;
-import org.gamegineer.table.net.NetworkTableException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -146,9 +145,9 @@ public abstract class AbstractTransportLayerTestCase
         {
             transportLayer_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
         }
-        catch( final NetworkTableException e )
+        catch( final TransportException e )
         {
-            // ignore network errors
+            // ignore transport layer errors
         }
 
         transportLayer_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
