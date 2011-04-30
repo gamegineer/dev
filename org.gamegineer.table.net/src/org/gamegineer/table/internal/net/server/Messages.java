@@ -35,6 +35,16 @@ final class Messages
     // Fields
     // ======================================================================
 
+    // --- BeginAuthenticationResponseMessageHandler ------------------------
+
+    /** Authentication failed. */
+    public static String BeginAuthenticationResponseMessageHandler_authenticationFailed;
+
+    // --- HelloRequestMessageHandler ---------------------------------------
+
+    /** Failed to create the begin authentication request. */
+    public static String HelloRequestMessageHandler_beginAuthenticationRequestFailed;
+
     // --- ServerNetworkTableStrategy ---------------------------------------
 
     /** The player has connected. */

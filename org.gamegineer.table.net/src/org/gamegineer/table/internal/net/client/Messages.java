@@ -35,6 +35,11 @@ final class Messages
     // Fields
     // ======================================================================
 
+    // --- BeginAuthenticationRequestMessageHandler -------------------------
+
+    /** Failed to create the begin authentication response. */
+    public static String BeginAuthenticationRequestMessageHandler_beginAuthenticationResponseFailed;
+
     // --- RemoteServerTableGateway -----------------------------------------
 
     /** Failed to register the server table gateway. */

@@ -22,9 +22,11 @@
 package org.gamegineer.table.internal.net.server;
 
 import java.util.Arrays;
+import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.common.messages.EndAuthenticationMessage;
@@ -106,14 +108,12 @@ final class BeginAuthenticationResponseMessageHandler
                 }
                 catch( final NetworkTableException e )
                 {
-                    System.out.println( "ServerService: a player with the same name is already registered" ); //$NON-NLS-1$
                     remoteTableGateway.setPlayerName( null );
                     throw e;
                 }
             }
             else
             {
-                System.out.println( "ServerService : client failed authentication" ); //$NON-NLS-1$
                 throw new NetworkTableException( NetworkTableError.AUTHENTICATION_FAILED );
             }
         }
@@ -150,6 +150,7 @@ final class BeginAuthenticationResponseMessageHandler
         }
         catch( final NetworkTableException e )
         {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.BeginAuthenticationResponseMessageHandler_authenticationFailed, e );
             final ErrorMessage errorMessage = new ErrorMessage();
             errorMessage.setError( e.getError() );
             responseMessage = errorMessage;

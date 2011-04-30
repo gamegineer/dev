@@ -21,9 +21,11 @@
 
 package org.gamegineer.table.internal.net.client;
 
+import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationResponseMessage;
@@ -86,9 +88,7 @@ final class BeginAuthenticationRequestMessageHandler
         try
         {
             final Authenticator authenticator = new Authenticator();
-            final byte[] authResponse = authenticator.createResponse( message.getChallenge(), password, message.getSalt() );
-            response.setResponse( authResponse );
-
+            response.setResponse( authenticator.createResponse( message.getChallenge(), password, message.getSalt() ) );
             if( !remoteTableGateway.sendMessage( response, new EndAuthenticationMessageHandler( remoteTableGateway ) ) )
             {
                 remoteTableGateway.close();
@@ -98,9 +98,8 @@ final class BeginAuthenticationRequestMessageHandler
         {
             // TODO: in this case, and probably elsewhere, need to communicate the error
             // to the network table so it can eventually be reported to the local user via the UI
-            // --> may not serialize exceptions in messages, but rather use an enum to force
-            // specification of error.  actual exception should be logged locally.
-            System.out.println( "ClientService : failed to generate authentication response with exception: " + e ); //$NON-NLS-1$
+
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.BeginAuthenticationRequestMessageHandler_beginAuthenticationResponseFailed, e );
             remoteTableGateway.close();
         }
         finally

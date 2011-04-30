@@ -21,7 +21,9 @@
 
 package org.gamegineer.table.internal.net.server;
 
+import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
@@ -132,7 +134,7 @@ final class HelloRequestMessageHandler
         }
         catch( final NetworkTableException e )
         {
-            System.out.println( "ServerService : failed to send begin authentication request with exception: " + e ); //$NON-NLS-1$
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.HelloRequestMessageHandler_beginAuthenticationRequestFailed, e );
             remoteTableGateway.close();
         }
     }
