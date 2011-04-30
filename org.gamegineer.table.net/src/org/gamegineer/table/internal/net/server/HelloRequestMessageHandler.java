@@ -25,8 +25,11 @@ import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
+import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloResponseMessage;
+import org.gamegineer.table.internal.net.transport.IMessage;
+import org.gamegineer.table.net.NetworkTableError;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
@@ -69,63 +72,67 @@ final class HelloRequestMessageHandler
      * @param message
      *        The message; must not be {@code null}.
      */
-    @SuppressWarnings( {
-        "boxing", "unused"
-    } )
+    @SuppressWarnings( "unused" )
     private void handleMessage(
         /* @NonNull */
         final HelloRequestMessage message )
     {
         assert message != null;
 
+        System.out.println( String.format( "ServerService : received hello request with supported version '%d' (id=%d, correlation-id=%d)", //$NON-NLS-1$
+            Integer.valueOf( message.getId() ), //
+            Integer.valueOf( message.getCorrelationId() ), //
+            Integer.valueOf( message.getSupportedProtocolVersion() ) ) );
+
         final IRemoteClientTableGateway remoteTableGateway = getRemoteTableGateway();
 
-        System.out.println( String.format( "ServerService : received hello request (id=%d, correlation-id=%d) with supported version '%d'", message.getId(), message.getCorrelationId(), message.getSupportedProtocolVersion() ) ); //$NON-NLS-1$
-
-        final HelloResponseMessage response = new HelloResponseMessage();
-        response.setCorrelationId( message.getId() );
+        final IMessage responseMessage;
         if( message.getSupportedProtocolVersion() >= ProtocolVersions.VERSION_1 )
         {
-            response.setChosenProtocolVersion( ProtocolVersions.VERSION_1 );
+            final HelloResponseMessage helloResponseMessage = new HelloResponseMessage();
+            helloResponseMessage.setChosenProtocolVersion( ProtocolVersions.VERSION_1 );
+            responseMessage = helloResponseMessage;
         }
         else
         {
-            response.setException( new NetworkTableException( "unsupported protocol version" ) ); //$NON-NLS-1$
+            final ErrorMessage errorMessage = new ErrorMessage();
+            errorMessage.setError( NetworkTableError.UNSUPPORTED_PROTOCOL_VERSION );
+            responseMessage = errorMessage;
         }
 
-        if( !remoteTableGateway.sendMessage( response, null ) )
+        responseMessage.setCorrelationId( message.getId() );
+        if( !remoteTableGateway.sendMessage( responseMessage, null ) )
         {
             remoteTableGateway.close();
             return;
         }
 
-        if( response.getException() == null )
+        if( responseMessage instanceof ErrorMessage )
         {
-            try
-            {
-                final Authenticator authenticator = new Authenticator();
-                final BeginAuthenticationRequestMessage beginAuthenticationRequest = new BeginAuthenticationRequestMessage();
-                final byte[] challenge = authenticator.createChallenge();
-                remoteTableGateway.setChallenge( challenge );
-                beginAuthenticationRequest.setChallenge( challenge );
-                final byte[] salt = authenticator.createSalt();
-                remoteTableGateway.setSalt( salt );
-                beginAuthenticationRequest.setSalt( salt );
+            System.out.println( "ServerService : server does not support client protocol version" ); //$NON-NLS-1$
+            remoteTableGateway.close();
+            return;
+        }
 
-                if( !remoteTableGateway.sendMessage( beginAuthenticationRequest, new BeginAuthenticationResponseMessageHandler( remoteTableGateway ) ) )
-                {
-                    remoteTableGateway.close();
-                }
-            }
-            catch( final NetworkTableException e )
+        try
+        {
+            final Authenticator authenticator = new Authenticator();
+            final BeginAuthenticationRequestMessage beginAuthenticationRequest = new BeginAuthenticationRequestMessage();
+            final byte[] challenge = authenticator.createChallenge();
+            remoteTableGateway.setChallenge( challenge );
+            beginAuthenticationRequest.setChallenge( challenge );
+            final byte[] salt = authenticator.createSalt();
+            remoteTableGateway.setSalt( salt );
+            beginAuthenticationRequest.setSalt( salt );
+
+            if( !remoteTableGateway.sendMessage( beginAuthenticationRequest, new BeginAuthenticationResponseMessageHandler( remoteTableGateway ) ) )
             {
-                System.out.println( "ServerService : failed to generate begin authentication request with exception: " + e ); //$NON-NLS-1$
                 remoteTableGateway.close();
             }
         }
-        else
+        catch( final NetworkTableException e )
         {
-            System.out.println( String.format( "ServerService : received hello request (id=%d, correlation-id=%d) but the requested version is unsupported", message.getId(), message.getCorrelationId() ) ); //$NON-NLS-1$
+            System.out.println( "ServerService : failed to send begin authentication request with exception: " + e ); //$NON-NLS-1$
             remoteTableGateway.close();
         }
     }

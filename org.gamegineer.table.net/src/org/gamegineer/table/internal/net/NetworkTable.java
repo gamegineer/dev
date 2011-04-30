@@ -35,6 +35,7 @@ import org.gamegineer.table.internal.net.transport.tcp.TcpTransportLayerFactory;
 import org.gamegineer.table.net.INetworkTable;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.INetworkTableListener;
+import org.gamegineer.table.net.NetworkTableError;
 import org.gamegineer.table.net.NetworkTableEvent;
 import org.gamegineer.table.net.NetworkTableException;
 
@@ -167,7 +168,7 @@ public final class NetworkTable
         }
         else
         {
-            throw new NetworkTableException( Messages.NetworkTable_connect_networkConnected );
+            throw new NetworkTableException( NetworkTableError.ILLEGAL_CONNECTION_STATE );
         }
     }
 

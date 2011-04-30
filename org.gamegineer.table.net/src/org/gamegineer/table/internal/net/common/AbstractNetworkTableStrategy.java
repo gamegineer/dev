@@ -38,6 +38,7 @@ import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.net.INetworkTableConfiguration;
+import org.gamegineer.table.net.NetworkTableError;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
@@ -134,7 +135,7 @@ public abstract class AbstractNetworkTableStrategy
         {
             if( tableGateways_.containsKey( tableGateway.getPlayerName() ) )
             {
-                throw new NetworkTableException( Messages.AbstractNetworkTableStrategy_addTableGateway_tableGatewayRegistered );
+                throw new NetworkTableException( NetworkTableError.DUPLICATE_PLAYER_NAME );
             }
 
             tableGateways_.put( tableGateway.getPlayerName(), tableGateway );
@@ -157,7 +158,7 @@ public abstract class AbstractNetworkTableStrategy
         {
             if( transportLayer_ != null )
             {
-                throw new NetworkTableException( Messages.AbstractNetworkTableStrategy_connect_networkConnected );
+                throw new NetworkTableException( NetworkTableError.ILLEGAL_CONNECTION_STATE );
             }
 
             localPlayerName_ = configuration.getLocalPlayerName();

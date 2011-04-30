@@ -31,6 +31,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
+import org.gamegineer.table.net.NetworkTableError;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
@@ -135,7 +136,7 @@ public final class Authenticator
         }
         catch( final GeneralSecurityException e )
         {
-            throw new NetworkTableException( Messages.Authenticator_createResponse_failed, e );
+            throw new NetworkTableException( NetworkTableError.UNSPECIFIED_ERROR, Messages.Authenticator_createResponse_failed, e );
         }
     }
 
@@ -191,7 +192,7 @@ public final class Authenticator
         }
         catch( final GeneralSecurityException e )
         {
-            throw new NetworkTableException( Messages.Authenticator_createSecretKey_failed, e );
+            throw new NetworkTableException( NetworkTableError.UNSPECIFIED_ERROR, Messages.Authenticator_createSecretKey_failed, e );
         }
         finally
         {
@@ -227,7 +228,7 @@ public final class Authenticator
         }
         catch( final GeneralSecurityException e )
         {
-            throw new NetworkTableException( Messages.Authenticator_createSecureRandomBytes_failed, e );
+            throw new NetworkTableException( NetworkTableError.UNSPECIFIED_ERROR, Messages.Authenticator_createSecureRandomBytes_failed, e );
         }
     }
 

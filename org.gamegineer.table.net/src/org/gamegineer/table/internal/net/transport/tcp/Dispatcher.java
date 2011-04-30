@@ -42,6 +42,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Activator;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.Loggers;
+import org.gamegineer.table.net.NetworkTableError;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
@@ -325,7 +326,7 @@ final class Dispatcher
             catch( final IOException e )
             {
                 state_ = State.CLOSED;
-                throw new NetworkTableException( Messages.Dispatcher_open_ioError, e );
+                throw new NetworkTableException( NetworkTableError.UNSPECIFIED_ERROR, Messages.Dispatcher_open_ioError, e );
             }
 
             state_ = State.OPEN;

@@ -30,18 +30,34 @@ public enum NetworkTableError
     // Enum Constants
     // ======================================================================
 
-    /** No error occurred. */
-    NO_ERROR,
+    /** Authentication failed. */
+    AUTHENTICATION_FAILED,
 
-    /** An unknown error occurred. */
-    UNKNOWN_ERROR,
+    /** The player name is already registered. */
+    DUPLICATE_PLAYER_NAME,
 
-    /** The received message is unknown. */
-    UNKNOWN_MESSAGE,
+    /**
+     * The network connection state is illegal for the requested operation.
+     * 
+     * <p>
+     * For example, a connection request was made, but the network is already
+     * connected.
+     * </p>
+     */
+    ILLEGAL_CONNECTION_STATE,
+
+    /** The received message is not expected at this time. */
+    UNEXPECTED_MESSAGE,
 
     /** The received message has no registered handler. */
     UNHANDLED_MESSAGE,
 
-    /** The received message is not expected at this time. */
-    UNEXPECTED_MESSAGE;
+    /** An unspecified error occurred. */
+    UNSPECIFIED_ERROR,
+
+    /** The received message is unknown. */
+    UNKNOWN_MESSAGE,
+
+    /** The server does not support the client protocol version. */
+    UNSUPPORTED_PROTOCOL_VERSION;
 }

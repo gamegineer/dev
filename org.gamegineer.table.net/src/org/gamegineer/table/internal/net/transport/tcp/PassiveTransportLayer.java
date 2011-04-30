@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
+import org.gamegineer.table.net.NetworkTableError;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
@@ -79,7 +80,7 @@ final class PassiveTransportLayer
         catch( final IOException e )
         {
             close();
-            throw new NetworkTableException( Messages.PassiveTransportLayer_open_ioError, e );
+            throw new NetworkTableException( NetworkTableError.UNSPECIFIED_ERROR, Messages.PassiveTransportLayer_open_ioError, e );
         }
     }
 }

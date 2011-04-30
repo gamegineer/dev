@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.client;
 
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloResponseMessage;
 
 /**
@@ -59,29 +60,42 @@ final class HelloResponseMessageHandler
     // ======================================================================
 
     /**
+     * Handles an {@code ErrorMessage} message.
+     * 
+     * @param message
+     *        The message; must not be {@code null}.
+     */
+    @SuppressWarnings( "unused" )
+    private void handleMessage(
+        /* @NonNull */
+        final ErrorMessage message )
+    {
+        assert message != null;
+
+        System.out.println( String.format( "ClientService : received error '%s' in response to hello request (id=%d, correlation-id=%d)", //$NON-NLS-1$
+            message.getError(), //
+            Integer.valueOf( message.getId() ), //
+            Integer.valueOf( message.getCorrelationId() ) ) );
+        getRemoteTableGateway().close();
+    }
+
+    /**
      * Handles a {@code HelloResponseMessage} message.
      * 
      * @param message
      *        The message; must not be {@code null}.
      */
-    @SuppressWarnings( {
-        "boxing", "unused"
-    } )
+    @SuppressWarnings( "unused" )
     private void handleMessage(
         /* @NonNull */
         final HelloResponseMessage message )
     {
         assert message != null;
 
-        if( message.getException() != null )
-        {
-            System.out.println( String.format( "ClientService : received hello response (id=%d, correlation-id=%d) with exception: ", message.getId(), message.getCorrelationId() ) + message.getException() ); //$NON-NLS-1$
-            getRemoteTableGateway().close();
-        }
-        else
-        {
-            System.out.println( String.format( "ClientService : received hello response (id=%d, correlation-id=%d) with chosen version '%d'", message.getId(), message.getCorrelationId(), message.getChosenProtocolVersion() ) ); //$NON-NLS-1$
-        }
+        System.out.println( String.format( "ClientService : received hello response with chosen version '%d' (id=%d, correlation-id=%d)", //$NON-NLS-1$
+            Integer.valueOf( message.getChosenProtocolVersion() ), //
+            Integer.valueOf( message.getId() ), //
+            Integer.valueOf( message.getCorrelationId() ) ) );
     }
 
     /*
@@ -90,7 +104,7 @@ final class HelloResponseMessageHandler
     @Override
     protected void handleUnexpectedMessage()
     {
-        System.out.println( "ClientService : received unknown response to HelloResponseMessage" ); //$NON-NLS-1$
+        System.out.println( "ClientService : received unexpected message in response to hello request" ); //$NON-NLS-1$
         getRemoteTableGateway().close();
     }
 }

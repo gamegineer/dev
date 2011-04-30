@@ -39,12 +39,6 @@ final class Messages
 
     // --- AbstractNetworkTableStrategy -------------------------------------
 
-    /** The table gateway is already registered. */
-    public static String AbstractNetworkTableStrategy_addTableGateway_tableGatewayRegistered;
-
-    /** The network is already connected. */
-    public static String AbstractNetworkTableStrategy_connect_networkConnected;
-
     /** The network is disconnected. */
     public static String AbstractNetworkTableStrategy_networkDisconnected;
 

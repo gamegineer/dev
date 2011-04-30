@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.net.common.messages;
 
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.transport.AbstractMessage;
-import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * A message sent by a server to a client to complete an authentication
@@ -40,14 +39,6 @@ public final class EndAuthenticationMessage
     /** Serializable class version number. */
     private static final long serialVersionUID = -3711359984148117329L;
 
-    /**
-     * The exception that occurred during authentication or {@code null} if no
-     * error occurred.
-     * 
-     * @serial The exception that occurred during authentication.
-     */
-    private NetworkTableException exception_;
-
 
     // ======================================================================
     // Constructors
@@ -58,37 +49,6 @@ public final class EndAuthenticationMessage
      */
     public EndAuthenticationMessage()
     {
-        exception_ = null;
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /**
-     * Gets the exception that occurred during authentication.
-     * 
-     * @return The exception that occurred during authentication or {@code null}
-     *         if no error occurred.
-     */
-    /* @Nullable */
-    public NetworkTableException getException()
-    {
-        return exception_;
-    }
-
-    /**
-     * Sets the exception that occurred during authentication.
-     * 
-     * @param exception
-     *        The exception that occurred during authentication or {@code null}
-     *        if no error occurred.
-     */
-    public void setException(
-        /* @Nullable */
-        final NetworkTableException exception )
-    {
-        exception_ = exception;
+        super();
     }
 }

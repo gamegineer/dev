@@ -1,6 +1,6 @@
 /*
  * NetworkTableException.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,13 @@
 
 package org.gamegineer.table.net;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import net.jcip.annotations.ThreadSafe;
+
 /**
  * A checked exception that indicates an error occurred within a network table.
  */
+@ThreadSafe
 public final class NetworkTableException
     extends Exception
 {
@@ -34,6 +38,9 @@ public final class NetworkTableException
     /** Serializable class version number. */
     private static final long serialVersionUID = -8623337465480942177L;
 
+    /** The network table error associated with the exception. */
+    private final NetworkTableError error_;
+
 
     // ======================================================================
     // Constructors
@@ -41,56 +48,110 @@ public final class NetworkTableException
 
     /**
      * Initializes a new instance of the {@code NetworkTableException} class
-     * with no detail message and no cause.
+     * with the specified error, no detail message, and no cause.
+     * 
+     * @param error
+     *        The network table error associated with the exception; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code error} is {@code null}.
      */
-    public NetworkTableException()
+    public NetworkTableException(
+        /* @NonNull */
+        final NetworkTableError error )
     {
-        super();
+        this( error, null, null );
     }
 
     /**
      * Initializes a new instance of the {@code NetworkTableException} class
-     * with the specified detail message and no cause.
+     * with the specified error, the specified detail message, and no cause.
      * 
+     * @param error
+     *        The network table error associated with the exception; must not be
+     *        {@code null}.
      * @param message
      *        The detail message; may be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code error} is {@code null}.
      */
     public NetworkTableException(
+        /* @NonNull */
+        final NetworkTableError error,
         /* @Nullable */
         final String message )
     {
-        super( message );
+        this( error, message, null );
     }
 
     /**
      * Initializes a new instance of the {@code NetworkTableException} class
-     * with no detail message and the specified cause.
+     * with the specified error, no detail message, and the specified cause.
      * 
+     * @param error
+     *        The network table error associated with the exception; must not be
+     *        {@code null}.
      * @param cause
      *        The cause; may be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code error} is {@code null}.
      */
     public NetworkTableException(
+        /* @NonNull */
+        final NetworkTableError error,
         /* @Nullable */
         final Throwable cause )
     {
-        super( cause );
+        this( error, null, cause );
     }
 
     /**
      * Initializes a new instance of the {@code NetworkTableException} class
-     * with the specified detail message and cause.
+     * with the specified error, detail message, and cause.
      * 
+     * @param error
+     *        The network table error associated with the exception; must not be
+     *        {@code null}.
      * @param message
      *        The detail message; may be {@code null}.
      * @param cause
      *        The cause; may be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code error} is {@code null}.
      */
     public NetworkTableException(
+        /* @NonNull */
+        final NetworkTableError error,
         /* @Nullable */
         final String message,
         /* @Nullable */
         final Throwable cause )
     {
         super( message, cause );
+
+        assertArgumentNotNull( error, "error" ); //$NON-NLS-1$
+
+        error_ = error;
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Gets the network table error associated with the exception.
+     * 
+     * @return The network table error associated with the exception; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public NetworkTableError getError()
+    {
+        return error_;
     }
 }

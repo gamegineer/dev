@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.messages.EndAuthenticationMessage;
+import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
@@ -67,37 +68,48 @@ final class EndAuthenticationMessageHandler
      * @param message
      *        The message; must not be {@code null}.
      */
-    @SuppressWarnings( {
-        "boxing", "unused"
-    } )
+    @SuppressWarnings( "unused" )
     private void handleMessage(
         /* @NonNull */
         final EndAuthenticationMessage message )
     {
         assert message != null;
 
+        System.out.println( String.format( "ClientService : received authentication confirmation (id=%d, correlation-id=%d)", //$NON-NLS-1$
+            Integer.valueOf( message.getId() ), //
+            Integer.valueOf( message.getCorrelationId() ) ) );
         final IRemoteServerTableGateway remoteTableGateway = getRemoteTableGateway();
-
-        if( message.getException() != null )
+        remoteTableGateway.setPlayerName( "<<server>>" ); //$NON-NLS-1$
+        try
         {
-            System.out.println( String.format( "ClientService : failed authentication (id=%d, correlation-id=%d) with exception: ", message.getId(), message.getCorrelationId() ) + message.getException() ); //$NON-NLS-1$
+            remoteTableGateway.getContext().addTableGateway( remoteTableGateway );
+        }
+        catch( final NetworkTableException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.RemoteServerTableGateway_serverTableGatewayNotRegistered, e );
+            remoteTableGateway.setPlayerName( null );
             remoteTableGateway.close();
         }
-        else
-        {
-            System.out.println( String.format( "ClientService : completed authentication successfully (id=%d, correlation-id=%d): ", message.getId(), message.getCorrelationId() ) ); //$NON-NLS-1$
-            remoteTableGateway.setPlayerName( "<<server>>" ); //$NON-NLS-1$
-            try
-            {
-                remoteTableGateway.getContext().addTableGateway( remoteTableGateway );
-            }
-            catch( final NetworkTableException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.RemoteServerTableGateway_serverTableGatewayNotRegistered, e );
-                remoteTableGateway.setPlayerName( null );
-                remoteTableGateway.close();
-            }
-        }
+    }
+
+    /**
+     * Handles an {@code ErrorMessage} message.
+     * 
+     * @param message
+     *        The message; must not be {@code null}.
+     */
+    @SuppressWarnings( "unused" )
+    private void handleMessage(
+        /* @NonNull */
+        final ErrorMessage message )
+    {
+        assert message != null;
+
+        System.out.println( String.format( "ClientService : received error '%s' in response to begin authentication response (id=%d, correlation-id=%d)", //$NON-NLS-1$
+            message.getError(), //
+            Integer.valueOf( message.getId() ), //
+            Integer.valueOf( message.getCorrelationId() ) ) );
+        getRemoteTableGateway().close();
     }
 
     /*
@@ -106,7 +118,7 @@ final class EndAuthenticationMessageHandler
     @Override
     protected void handleUnexpectedMessage()
     {
-        System.out.println( "ClientService : received unknown response to BeginAuthenticationResponseMessage" ); //$NON-NLS-1$
+        System.out.println( "ClientService : received unknown message in response to begin authentication response" ); //$NON-NLS-1$
         getRemoteTableGateway().close();
     }
 }

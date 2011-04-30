@@ -40,9 +40,6 @@ final class Messages
     /** The network table listener is already registered. */
     public static String NetworkTable_addNetworkTableListener_listener_registered;
 
-    /** The network is already connected. */
-    public static String NetworkTable_connect_networkConnected;
-
     /**
      * An unexpected exception was thrown from
      * INetworkTableListener.networkConnected().

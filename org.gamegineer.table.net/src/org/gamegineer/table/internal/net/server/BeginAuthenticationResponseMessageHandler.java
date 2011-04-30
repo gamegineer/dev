@@ -28,6 +28,9 @@ import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.common.messages.EndAuthenticationMessage;
+import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
+import org.gamegineer.table.internal.net.transport.IMessage;
+import org.gamegineer.table.net.NetworkTableError;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
@@ -65,35 +68,38 @@ final class BeginAuthenticationResponseMessageHandler
     // ======================================================================
 
     /**
-     * Handles a {@code BeginAuthenticationResponseMessage} message.
+     * Authenticates the specified remote player.
      * 
-     * @param message
-     *        The message; must not be {@code null}.
+     * @param playerName
+     *        The remote player name; must not be {@code null}.
+     * @param response
+     *        The challenge response submitted by the remote player; must not be
+     *        {@code null}.
+     * 
+     * @throws org.gamegineer.table.net.NetworkTableException
+     *         If the remote player cannot be authenticated.
      */
-    @SuppressWarnings( {
-        "boxing", "unused"
-    } )
-    private void handleMessage(
+    private void authenticate(
         /* @NonNull */
-        final BeginAuthenticationResponseMessage message )
+        final String playerName,
+        /* @NonNull */
+        final byte[] response )
+        throws NetworkTableException
     {
-        assert message != null;
+        assert playerName != null;
+        assert response != null;
 
         final IRemoteClientTableGateway remoteTableGateway = getRemoteTableGateway();
         final ITableGatewayContext context = remoteTableGateway.getContext();
-
-        final EndAuthenticationMessage endAuthenticationMessage = new EndAuthenticationMessage();
-        endAuthenticationMessage.setCorrelationId( message.getId() );
-
         final SecureString password = context.getPassword();
         try
         {
             final Authenticator authenticator = new Authenticator();
             final byte[] expectedResponse = authenticator.createResponse( remoteTableGateway.getChallenge(), password, remoteTableGateway.getSalt() );
-            if( Arrays.equals( expectedResponse, message.getResponse() ) )
+            if( Arrays.equals( expectedResponse, response ) )
             {
-                System.out.println( String.format( "ServerService : client authenticated (id=%d, correlation-id=%d)", message.getId(), message.getCorrelationId() ) ); //$NON-NLS-1$
-                remoteTableGateway.setPlayerName( message.getPlayerName() );
+                System.out.println( "ServerService : client authenticated" ); //$NON-NLS-1$
+                remoteTableGateway.setPlayerName( playerName );
                 try
                 {
                     context.addTableGateway( remoteTableGateway );
@@ -107,22 +113,52 @@ final class BeginAuthenticationResponseMessageHandler
             }
             else
             {
-                System.out.println( String.format( "ServerService : client failed authentication (id=%d, correlation-id=%d)", message.getId(), message.getCorrelationId() ) ); //$NON-NLS-1$
-                throw new NetworkTableException( "failed authentication" ); //$NON-NLS-1$
+                System.out.println( "ServerService : client failed authentication" ); //$NON-NLS-1$
+                throw new NetworkTableException( NetworkTableError.AUTHENTICATION_FAILED );
             }
-        }
-        catch( final NetworkTableException e )
-        {
-            endAuthenticationMessage.setException( e );
         }
         finally
         {
             password.dispose();
         }
+    }
 
-        if( remoteTableGateway.sendMessage( endAuthenticationMessage, null ) )
+    /**
+     * Handles a {@code BeginAuthenticationResponseMessage} message.
+     * 
+     * @param message
+     *        The message; must not be {@code null}.
+     */
+    @SuppressWarnings( "unused" )
+    private void handleMessage(
+        /* @NonNull */
+        final BeginAuthenticationResponseMessage message )
+    {
+        assert message != null;
+
+        System.out.println( String.format( "ServerService : received begin authentication response (id=%d, correlation-id=%d)", //$NON-NLS-1$
+            Integer.valueOf( message.getId() ), //
+            Integer.valueOf( message.getCorrelationId() ) ) );
+
+        IMessage responseMessage;
+        final IRemoteClientTableGateway remoteTableGateway = getRemoteTableGateway();
+        try
         {
-            if( endAuthenticationMessage.getException() != null )
+            authenticate( message.getPlayerName(), message.getResponse() );
+            final EndAuthenticationMessage endAuthenticationMessage = new EndAuthenticationMessage();
+            responseMessage = endAuthenticationMessage;
+        }
+        catch( final NetworkTableException e )
+        {
+            final ErrorMessage errorMessage = new ErrorMessage();
+            errorMessage.setError( e.getError() );
+            responseMessage = errorMessage;
+        }
+
+        responseMessage.setCorrelationId( message.getId() );
+        if( remoteTableGateway.sendMessage( responseMessage, null ) )
+        {
+            if( responseMessage instanceof ErrorMessage )
             {
                 remoteTableGateway.close();
             }
@@ -139,7 +175,7 @@ final class BeginAuthenticationResponseMessageHandler
     @Override
     protected void handleUnexpectedMessage()
     {
-        System.out.println( "ServerService : received unknown response to HelloResponseMessage" ); //$NON-NLS-1$
+        System.out.println( "ServerService : received unknown message in response to begin authentication request" ); //$NON-NLS-1$
         getRemoteTableGateway().close();
     }
 }

@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.net.common.messages;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.transport.AbstractMessage;
-import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * A message sent by a server to a client in response to a client's request to
@@ -48,14 +47,6 @@ public final class HelloResponseMessage
      */
     private int chosenProtocolVersion_;
 
-    /**
-     * The exception that occurred while handling the request or {@code null} if
-     * no error occurred.
-     * 
-     * @serial The exception that occurred while handling the request.
-     */
-    private NetworkTableException exception_;
-
 
     // ======================================================================
     // Constructors
@@ -67,7 +58,6 @@ public final class HelloResponseMessage
     public HelloResponseMessage()
     {
         chosenProtocolVersion_ = 0;
-        exception_ = null;
     }
 
 
@@ -86,18 +76,6 @@ public final class HelloResponseMessage
     }
 
     /**
-     * Gets the exception that occurred while handling the request.
-     * 
-     * @return The exception that occurred while handling the request or {@code
-     *         null} if no error occurred.
-     */
-    /* @Nullable */
-    public NetworkTableException getException()
-    {
-        return exception_;
-    }
-
-    /**
      * Sets the protocol version chosen by the server.
      * 
      * @param chosenProtocolVersion
@@ -112,19 +90,5 @@ public final class HelloResponseMessage
         assertArgumentLegal( chosenProtocolVersion >= 0, "chosenProtocolVersion" ); //$NON-NLS-1$
 
         chosenProtocolVersion_ = chosenProtocolVersion;
-    }
-
-    /**
-     * Sets the exception that occurred while handling the request.
-     * 
-     * @param exception
-     *        The exception that occurred while handling the request or {@code
-     *        null} if no error occurred.
-     */
-    public void setException(
-        /* @Nullable */
-        final NetworkTableException exception )
-    {
-        exception_ = exception;
     }
 }

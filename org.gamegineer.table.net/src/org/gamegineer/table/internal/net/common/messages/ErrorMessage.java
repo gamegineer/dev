@@ -57,7 +57,7 @@ public final class ErrorMessage
      */
     public ErrorMessage()
     {
-        error_ = NetworkTableError.NO_ERROR;
+        error_ = NetworkTableError.UNSPECIFIED_ERROR;
     }
 
 
