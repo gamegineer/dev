@@ -28,6 +28,7 @@ import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
+import org.gamegineer.table.net.NetworkTableError;
 
 /**
  * A gateway to a remote server table.
@@ -79,7 +80,7 @@ final class RemoteServerTableGateway
 
         super.closed();
 
-        getContext().disconnectNetworkTable();
+        getContext().disconnectNetworkTable( getCloseError() );
     }
 
     /*
@@ -96,7 +97,7 @@ final class RemoteServerTableGateway
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
         if( !sendMessage( message, new HelloResponseMessageHandler( this ) ) )
         {
-            close();
+            close( NetworkTableError.TRANSPORT_ERROR );
         }
     }
 

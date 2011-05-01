@@ -47,6 +47,7 @@ import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.net.INetworkTable;
 import org.gamegineer.table.net.INetworkTableListener;
+import org.gamegineer.table.net.NetworkTableDisconnectedEvent;
 import org.gamegineer.table.net.NetworkTableEvent;
 import org.gamegineer.table.net.NetworkTableFactory;
 
@@ -558,11 +559,11 @@ public final class TableModel
     }
 
     /*
-     * @see org.gamegineer.table.net.INetworkTableListener#networkDisconnected(org.gamegineer.table.net.NetworkTableEvent)
+     * @see org.gamegineer.table.net.INetworkTableListener#networkDisconnected(org.gamegineer.table.net.NetworkTableDisconnectedEvent)
      */
     @Override
     public void networkDisconnected(
-        final NetworkTableEvent event )
+        final NetworkTableDisconnectedEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 

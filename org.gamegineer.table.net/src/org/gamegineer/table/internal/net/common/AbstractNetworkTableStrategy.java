@@ -267,12 +267,13 @@ public abstract class AbstractNetworkTableStrategy
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableGatewayContext#disconnectNetworkTable()
+     * @see org.gamegineer.table.internal.net.ITableGatewayContext#disconnectNetworkTable(org.gamegineer.table.net.NetworkTableError)
      */
     @Override
-    public final void disconnectNetworkTable()
+    public final void disconnectNetworkTable(
+        final NetworkTableError error )
     {
-        context_.disconnectNetworkTable();
+        context_.disconnectNetworkTable( error );
     }
 
     /**

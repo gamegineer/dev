@@ -138,7 +138,7 @@ public final class EndAuthenticationMessageHandlerTest
         tableGatewayContext.addTableGateway( remoteTableGateway );
         EasyMock.expectLastCall().andThrow( new NetworkTableException( NetworkTableError.UNSPECIFIED_ERROR ) );
         remoteTableGateway.setPlayerName( null );
-        remoteTableGateway.close();
+        remoteTableGateway.close( NetworkTableError.UNSPECIFIED_ERROR );
         mocksControl_.replay();
 
         final EndAuthenticationMessage message = new EndAuthenticationMessage();
@@ -156,10 +156,11 @@ public final class EndAuthenticationMessageHandlerTest
     public void testHandleMessage_ErrorMessage()
     {
         final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
-        remoteTableGateway.close();
+        remoteTableGateway.close( NetworkTableError.UNSPECIFIED_ERROR );
         mocksControl_.replay();
 
         final ErrorMessage message = new ErrorMessage();
+        message.setError( NetworkTableError.UNSPECIFIED_ERROR );
         final EndAuthenticationMessageHandler messageHandler = new EndAuthenticationMessageHandler( remoteTableGateway );
         messageHandler.handleMessage( message );
 
@@ -176,7 +177,7 @@ public final class EndAuthenticationMessageHandlerTest
     {
         final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        remoteTableGateway.close();
+        remoteTableGateway.close( NetworkTableError.UNEXPECTED_MESSAGE );
         mocksControl_.replay();
 
         final FakeMessage message = new FakeMessage();

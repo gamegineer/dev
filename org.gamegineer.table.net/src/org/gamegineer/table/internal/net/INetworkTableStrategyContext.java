@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net;
 
 import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
+import org.gamegineer.table.net.NetworkTableError;
 
 /**
  * The execution context for a network table strategy.
@@ -40,9 +41,16 @@ public interface INetworkTableStrategyContext
     // ======================================================================
 
     /**
-     * Disconnects the network table.
+     * Disconnects the network table for the specified cause.
+     * 
+     * @param error
+     *        The error that caused the network table to be disconnected from
+     *        the network or {@code null} if the network table was disconnected
+     *        normally.
      */
-    public void disconnectNetworkTable();
+    public void disconnectNetworkTable(
+        /* @Nullable */
+        NetworkTableError error );
 
     /**
      * Gets the network table transport layer factory

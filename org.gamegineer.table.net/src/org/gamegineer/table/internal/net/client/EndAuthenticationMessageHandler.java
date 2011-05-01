@@ -26,6 +26,7 @@ import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.messages.EndAuthenticationMessage;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
+import org.gamegineer.table.net.NetworkTableError;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
@@ -88,7 +89,7 @@ final class EndAuthenticationMessageHandler
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.RemoteServerTableGateway_serverTableGatewayNotRegistered, e );
             remoteTableGateway.setPlayerName( null );
-            remoteTableGateway.close();
+            remoteTableGateway.close( e.getError() );
         }
     }
 
@@ -109,7 +110,7 @@ final class EndAuthenticationMessageHandler
             message.getError(), //
             Integer.valueOf( message.getId() ), //
             Integer.valueOf( message.getCorrelationId() ) ) );
-        getRemoteTableGateway().close();
+        getRemoteTableGateway().close( message.getError() );
     }
 
     /*
@@ -119,6 +120,6 @@ final class EndAuthenticationMessageHandler
     protected void handleUnexpectedMessage()
     {
         System.out.println( "ClientService : received unknown message in response to begin authentication response" ); //$NON-NLS-1$
-        getRemoteTableGateway().close();
+        getRemoteTableGateway().close( NetworkTableError.UNEXPECTED_MESSAGE );
     }
 }

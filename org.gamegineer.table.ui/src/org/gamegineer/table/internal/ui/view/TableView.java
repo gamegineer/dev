@@ -84,6 +84,10 @@ import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
 import org.gamegineer.table.internal.ui.wizards.hostnetworktable.HostNetworkTableWizard;
 import org.gamegineer.table.internal.ui.wizards.joinnetworktable.JoinNetworkTableWizard;
+import org.gamegineer.table.net.INetworkTableListener;
+import org.gamegineer.table.net.NetworkTableDisconnectedEvent;
+import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.NetworkTableEvent;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry;
 
@@ -93,7 +97,7 @@ import org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry;
 @NotThreadSafe
 final class TableView
     extends JPanel
-    implements ITableListener, ITableModelListener
+    implements INetworkTableListener, ITableListener, ITableModelListener
 {
     // ======================================================================
     // Fields
@@ -232,6 +236,7 @@ final class TableView
         bindActions();
         model_.addTableModelListener( this );
         model_.getTable().addTableListener( this );
+        model_.getNetworkTable().addNetworkTableListener( this );
         addKeyListener( keyListener_ );
         addMouseListener( mouseInputListener_ );
         addMouseMotionListener( mouseInputListener_ );
@@ -1070,6 +1075,41 @@ final class TableView
     }
 
     /*
+     * @see org.gamegineer.table.net.INetworkTableListener#networkConnected(org.gamegineer.table.net.NetworkTableEvent)
+     */
+    @Override
+    public void networkConnected(
+        final NetworkTableEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing
+    }
+
+    /*
+     * @see org.gamegineer.table.net.INetworkTableListener#networkDisconnected(org.gamegineer.table.net.NetworkTableDisconnectedEvent)
+     */
+    @Override
+    public void networkDisconnected(
+        final NetworkTableDisconnectedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        final NetworkTableError error = event.getError();
+        if( error != null )
+        {
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    OptionDialogs.showErrorMessageDialog( TableView.this, Messages.TableView_networkDisconnected_error( error ) );
+                }
+            } );
+        }
+    }
+
+    /*
      * @see javax.swing.JComponent#paintChildren(java.awt.Graphics)
      */
     @Override
@@ -1160,6 +1200,7 @@ final class TableView
         removeMouseMotionListener( mouseInputListener_ );
         removeMouseListener( mouseInputListener_ );
         removeKeyListener( keyListener_ );
+        model_.getNetworkTable().removeNetworkTableListener( this );
         model_.getTable().removeTableListener( this );
         model_.removeTableModelListener( this );
         actionMediator_.unbindAll();

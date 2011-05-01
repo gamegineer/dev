@@ -35,6 +35,7 @@ import org.gamegineer.table.internal.net.transport.tcp.TcpTransportLayerFactory;
 import org.gamegineer.table.net.INetworkTable;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.INetworkTableListener;
+import org.gamegineer.table.net.NetworkTableDisconnectedEvent;
 import org.gamegineer.table.net.NetworkTableError;
 import org.gamegineer.table.net.NetworkTableEvent;
 import org.gamegineer.table.net.NetworkTableException;
@@ -178,22 +179,38 @@ public final class NetworkTable
     @Override
     public void disconnect()
     {
+        disconnect( null );
+    }
+
+    /**
+     * Disconnects from the network for the specified cause.
+     * 
+     * @param error
+     *        The error that caused the network table to be disconnected from
+     *        the network or {@code null} if the network table was disconnected
+     *        normally.
+     */
+    public void disconnect(
+        /* @Nullable */
+        final NetworkTableError error )
+    {
         if( connectionStateRef_.compareAndSet( ConnectionState.CONNECTED, ConnectionState.DISCONNECTING ) )
         {
             final INetworkTableStrategy strategy = strategyRef_.getAndSet( null );
             strategy.disconnect();
             connectionStateRef_.set( ConnectionState.DISCONNECTED );
-            fireNetworkDisconnected();
+            fireNetworkDisconnected( error );
         }
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INetworkTableStrategyContext#disconnectNetworkTable()
+     * @see org.gamegineer.table.internal.net.INetworkTableStrategyContext#disconnectNetworkTable(org.gamegineer.table.net.NetworkTableError)
      */
     @Override
-    public void disconnectNetworkTable()
+    public void disconnectNetworkTable(
+        final NetworkTableError error )
     {
-        disconnect();
+        disconnect( error );
     }
 
     /**
@@ -217,10 +234,16 @@ public final class NetworkTable
 
     /**
      * Fires a network disconnected event.
+     * 
+     * @param error
+     *        The error that caused the network table to be disconnected or
+     *        {@code null} if the network table was disconnected normally.
      */
-    private void fireNetworkDisconnected()
+    private void fireNetworkDisconnected(
+        /* @Nullable */
+        final NetworkTableError error )
     {
-        final NetworkTableEvent event = new NetworkTableEvent( this );
+        final NetworkTableDisconnectedEvent event = new NetworkTableDisconnectedEvent( this, error );
         for( final INetworkTableListener listener : listeners_ )
         {
             try

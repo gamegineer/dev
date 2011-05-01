@@ -29,6 +29,7 @@ import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationResponseMessage;
+import org.gamegineer.table.net.NetworkTableError;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
@@ -91,16 +92,13 @@ final class BeginAuthenticationRequestMessageHandler
             response.setResponse( authenticator.createResponse( message.getChallenge(), password, message.getSalt() ) );
             if( !remoteTableGateway.sendMessage( response, new EndAuthenticationMessageHandler( remoteTableGateway ) ) )
             {
-                remoteTableGateway.close();
+                remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
             }
         }
         catch( final NetworkTableException e )
         {
-            // TODO: in this case, and probably elsewhere, need to communicate the error
-            // to the network table so it can eventually be reported to the local user via the UI
-
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.BeginAuthenticationRequestMessageHandler_beginAuthenticationResponseFailed, e );
-            remoteTableGateway.close();
+            remoteTableGateway.close( e.getError() );
         }
         finally
         {

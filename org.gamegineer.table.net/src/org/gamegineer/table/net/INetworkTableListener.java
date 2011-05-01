@@ -60,5 +60,5 @@ public interface INetworkTableListener
      */
     public void networkDisconnected(
         /* @NonNull */
-        NetworkTableEvent event );
+        NetworkTableDisconnectedEvent event );
 }

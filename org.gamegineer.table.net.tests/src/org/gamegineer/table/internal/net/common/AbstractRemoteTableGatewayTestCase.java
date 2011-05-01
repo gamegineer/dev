@@ -143,7 +143,7 @@ public abstract class AbstractRemoteTableGatewayTestCase<T extends IRemoteTableG
     {
         synchronized( remoteTableGateway_.getLock() )
         {
-            remoteTableGateway_.close();
+            remoteTableGateway_.close( null );
         }
     }
 

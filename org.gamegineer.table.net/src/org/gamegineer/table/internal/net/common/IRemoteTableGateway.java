@@ -25,6 +25,7 @@ import net.jcip.annotations.GuardedBy;
 import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.transport.IMessage;
+import org.gamegineer.table.net.NetworkTableError;
 
 /**
  * A gateway to a remote table that is connected to the network table.
@@ -39,13 +40,19 @@ public interface IRemoteTableGateway
     // ======================================================================
 
     /**
-     * Closes the remote table gateway.
+     * Closes the remote table gateway for the specified cause.
+     * 
+     * @param error
+     *        The error that caused the remote table gateway to be closed or
+     *        {@code null} if the remote table gateway was closed normally.
      * 
      * @throws java.lang.IllegalStateException
      *         If the network is not connected.
      */
     @GuardedBy( "getLock()" )
-    public void close();
+    public void close(
+        /* @Nullable */
+        NetworkTableError error );
 
     /**
      * Gets the context associated with the remote table gateway.

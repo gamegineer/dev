@@ -83,7 +83,10 @@ public final class ClientNetworkTableStrategy
             @SuppressWarnings( "synthetic-access" )
             public void transportLayerDisconnected()
             {
-                getContext().disconnectNetworkTable();
+                // TODO: Investigate whether a non-null error must be specified here.
+                // Apparently, this method gets called in the case where the server
+                // simply drops off the network (i.e. without explicitly disconnecting).
+                getContext().disconnectNetworkTable( null );
             }
         } );
     }

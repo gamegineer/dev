@@ -1,6 +1,6 @@
 /*
  * Messages.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui.view;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.internal.ui.util.CommonMessages;
+import org.gamegineer.table.net.NetworkTableError;
 import org.osgi.framework.Version;
 
 /**
@@ -862,6 +863,18 @@ final class Messages
     /** An error occurred while importing the table. */
     public static String TableView_importTable_error_nonNls;
 
+    /** The network was disconnected due to an authentication failure. */
+    public static String TableView_networkDisconnected_error_authenticationFailed;
+
+    /** The network was disconnected due to a duplicate player name. */
+    public static String TableView_networkDisconnected_error_duplicatePlayerName;
+
+    /** The network was disconnected due to a generic error. */
+    public static String TableView_networkDisconnected_error_generic;
+
+    /** The network was disconnected due to an unexpected peer termination. */
+    public static String TableView_networkDisconnected_error_unexpectedPeerTermination;
+
 
     // ======================================================================
     // Constructors
@@ -959,5 +972,38 @@ final class Messages
         final String tableName )
     {
         return bind( MainFrame_title, tableName, CommonMessages.Common_application_name );
+    }
+
+    // --- TableView --------------------------------------------------------
+
+    /**
+     * Gets the formatted message for the network disconnected message.
+     * 
+     * @param error
+     *        The error that caused the network disconnect; must not be {@code
+     *        null}.
+     * 
+     * @return The formatted message for the network disconnected message; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    static String TableView_networkDisconnected_error(
+        /* @NonNull */
+        final NetworkTableError error )
+    {
+        switch( error )
+        {
+            case AUTHENTICATION_FAILED:
+                return TableView_networkDisconnected_error_authenticationFailed;
+
+            case DUPLICATE_PLAYER_NAME:
+                return TableView_networkDisconnected_error_duplicatePlayerName;
+
+            case UNEXPECTED_PEER_TERMINATION:
+                return TableView_networkDisconnected_error_unexpectedPeerTermination;
+
+            default:
+                return bind( TableView_networkDisconnected_error_generic, error );
+        }
     }
 }

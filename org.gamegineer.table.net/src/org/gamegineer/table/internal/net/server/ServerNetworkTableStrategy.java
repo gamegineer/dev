@@ -86,7 +86,7 @@ public final class ServerNetworkTableStrategy
             @SuppressWarnings( "synthetic-access" )
             public void transportLayerDisconnected()
             {
-                getContext().disconnectNetworkTable();
+                getContext().disconnectNetworkTable( null );
             }
         } );
     }
@@ -101,7 +101,7 @@ public final class ServerNetworkTableStrategy
 
         super.disconnecting();
 
-        // TODO: need to gracefully shut down all remote clients
+        // TODO: need to gracefully shut down all remote clients : GoodbyeMessage
     }
 
     /*

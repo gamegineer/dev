@@ -33,6 +33,7 @@ import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHand
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
+import org.gamegineer.table.net.NetworkTableError;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -97,45 +98,15 @@ public final class BeginAuthenticationRequestMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles the case when
-     * the attempt to send the response message fails.
-     */
-    @SuppressWarnings( "boxing" )
-    @Test
-    public void testHandleMessage_SendResponseMessageFails()
-    {
-        final ITableGatewayContext tableGatewayContext = mocksControl_.createMock( ITableGatewayContext.class );
-        EasyMock.expect( tableGatewayContext.getLocalPlayerName() ).andReturn( "playerName" ); //$NON-NLS-1$
-        EasyMock.expect( tableGatewayContext.getPassword() ).andReturn( new SecureString( "password".toCharArray() ) ); //$NON-NLS-1$
-        final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
-        EasyMock.expect( remoteTableGateway.getContext() ).andReturn( tableGatewayContext ).anyTimes();
-        EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( false );
-        remoteTableGateway.close();
-        mocksControl_.replay();
-
-        final BeginAuthenticationRequestMessage message = new BeginAuthenticationRequestMessage();
-        message.setChallenge( new byte[] {
-            1, 2, 3, 4
-        } );
-        message.setSalt( new byte[] {
-            5, 6, 7, 8
-        } );
-        final BeginAuthenticationRequestMessageHandler messageHandler = new BeginAuthenticationRequestMessageHandler( remoteTableGateway );
-        messageHandler.handleMessage( message );
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code handleMessage} method correctly sends a begin
-     * authentication response.
+     * Ensures the {@code handleMessage} method correctly handles a begin
+     * authentication request message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @SuppressWarnings( "boxing" )
     @Test
-    public void testHandleMessage_SendsResponse()
+    public void testHandleMessage_BeginAuthenticationRequestMessage()
         throws Exception
     {
         final String playerName = "playerName"; //$NON-NLS-1$
@@ -168,5 +139,36 @@ public final class BeginAuthenticationRequestMessageHandlerTest
         assertEquals( playerName, responseMessage.getPlayerName() );
         final Authenticator authenticator = new Authenticator();
         assertArrayEquals( authenticator.createResponse( challenge, password, salt ), responseMessage.getResponse() );
+    }
+
+    /**
+     * Ensures the {@code handleMessage} method correctly handles a begin
+     * authentication request message in the case when the attempt to send the
+     * response message fails.
+     */
+    @SuppressWarnings( "boxing" )
+    @Test
+    public void testHandleMessage_BeginAuthenticationRequestMessage_SendResponseMessageFails()
+    {
+        final ITableGatewayContext tableGatewayContext = mocksControl_.createMock( ITableGatewayContext.class );
+        EasyMock.expect( tableGatewayContext.getLocalPlayerName() ).andReturn( "playerName" ); //$NON-NLS-1$
+        EasyMock.expect( tableGatewayContext.getPassword() ).andReturn( new SecureString( "password".toCharArray() ) ); //$NON-NLS-1$
+        final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
+        EasyMock.expect( remoteTableGateway.getContext() ).andReturn( tableGatewayContext ).anyTimes();
+        EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( false );
+        remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
+        mocksControl_.replay();
+
+        final BeginAuthenticationRequestMessage message = new BeginAuthenticationRequestMessage();
+        message.setChallenge( new byte[] {
+            1, 2, 3, 4
+        } );
+        message.setSalt( new byte[] {
+            5, 6, 7, 8
+        } );
+        final BeginAuthenticationRequestMessageHandler messageHandler = new BeginAuthenticationRequestMessageHandler( remoteTableGateway );
+        messageHandler.handleMessage( message );
+
+        mocksControl_.verify();
     }
 }

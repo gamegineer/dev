@@ -183,7 +183,7 @@ public abstract class AbstractNetworkTableTestCase
     {
         connectNetworkTable();
         final INetworkTableListener listener = mocksControl_.createMock( INetworkTableListener.class );
-        listener.networkDisconnected( EasyMock.notNull( NetworkTableEvent.class ) );
+        listener.networkDisconnected( EasyMock.notNull( NetworkTableDisconnectedEvent.class ) );
         mocksControl_.replay();
         networkTable_.addNetworkTableListener( listener );
 
@@ -352,10 +352,10 @@ public abstract class AbstractNetworkTableTestCase
     {
         connectNetworkTable();
         final INetworkTableListener listener1 = mocksControl_.createMock( INetworkTableListener.class );
-        listener1.networkDisconnected( EasyMock.notNull( NetworkTableEvent.class ) );
+        listener1.networkDisconnected( EasyMock.notNull( NetworkTableDisconnectedEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         final INetworkTableListener listener2 = mocksControl_.createMock( INetworkTableListener.class );
-        listener2.networkDisconnected( EasyMock.notNull( NetworkTableEvent.class ) );
+        listener2.networkDisconnected( EasyMock.notNull( NetworkTableDisconnectedEvent.class ) );
         mocksControl_.replay();
         networkTable_.addNetworkTableListener( listener1 );
         networkTable_.addNetworkTableListener( listener2 );

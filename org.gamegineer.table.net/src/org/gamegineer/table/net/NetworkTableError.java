@@ -52,6 +52,9 @@ public enum NetworkTableError
     /** The received message is not expected at this time. */
     UNEXPECTED_MESSAGE,
 
+    /** The peer unexpectedly terminated the connection. */
+    UNEXPECTED_PEER_TERMINATION,
+
     /** The received message has no registered handler. */
     UNHANDLED_MESSAGE,
 

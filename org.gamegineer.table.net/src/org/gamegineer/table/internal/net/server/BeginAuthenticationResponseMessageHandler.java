@@ -161,12 +161,12 @@ final class BeginAuthenticationResponseMessageHandler
         {
             if( responseMessage instanceof ErrorMessage )
             {
-                remoteTableGateway.close();
+                remoteTableGateway.close( ((ErrorMessage)responseMessage).getError() );
             }
         }
         else
         {
-            remoteTableGateway.close();
+            remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
         }
     }
 
@@ -177,6 +177,6 @@ final class BeginAuthenticationResponseMessageHandler
     protected void handleUnexpectedMessage()
     {
         System.out.println( "ServerService : received unknown message in response to begin authentication request" ); //$NON-NLS-1$
-        getRemoteTableGateway().close();
+        getRemoteTableGateway().close( NetworkTableError.UNEXPECTED_MESSAGE );
     }
 }

@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.net.client;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloResponseMessage;
+import org.gamegineer.table.net.NetworkTableError;
 
 /**
  * A message handler for the {@link HelloResponseMessage} message.
@@ -76,7 +77,7 @@ final class HelloResponseMessageHandler
             message.getError(), //
             Integer.valueOf( message.getId() ), //
             Integer.valueOf( message.getCorrelationId() ) ) );
-        getRemoteTableGateway().close();
+        getRemoteTableGateway().close( message.getError() );
     }
 
     /**
@@ -105,6 +106,6 @@ final class HelloResponseMessageHandler
     protected void handleUnexpectedMessage()
     {
         System.out.println( "ClientService : received unexpected message in response to hello request" ); //$NON-NLS-1$
-        getRemoteTableGateway().close();
+        getRemoteTableGateway().close( NetworkTableError.UNEXPECTED_MESSAGE );
     }
 }

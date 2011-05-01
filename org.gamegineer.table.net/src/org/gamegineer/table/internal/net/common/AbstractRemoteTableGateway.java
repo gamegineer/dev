@@ -55,6 +55,13 @@ public abstract class AbstractRemoteTableGateway
     // ======================================================================
 
     /**
+     * The error that caused the remote table gateway to be closed or {@code
+     * null} if the remote table gateway was closed normally.
+     */
+    @GuardedBy( "getLock()" )
+    private NetworkTableError closeError_;
+
+    /**
      * The collection of message handlers for correlated messages. The key is
      * the message (request) identifier. The value is the message handler.
      */
@@ -113,6 +120,7 @@ public abstract class AbstractRemoteTableGateway
     {
         assertArgumentNotNull( tableGatewayContext, "tableGatewayContext" ); //$NON-NLS-1$
 
+        closeError_ = null;
         correlatedMessageHandlers_ = new HashMap<Integer, IMessageHandler>();
         lock_ = new Object();
         nextId_ = getInitialMessageId();
@@ -128,14 +136,16 @@ public abstract class AbstractRemoteTableGateway
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#close()
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#close(org.gamegineer.table.net.NetworkTableError)
      */
     @Override
-    public final void close()
+    public final void close(
+        final NetworkTableError error )
     {
         assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableGateway_networkDisconnected );
         assert Thread.holdsLock( getLock() );
 
+        closeError_ = error;
         serviceContext_.stopService();
     }
 
@@ -192,6 +202,21 @@ public abstract class AbstractRemoteTableGateway
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableGateway_extractMessage_deserializationError( messageEnvelope ), e );
             return null;
         }
+    }
+
+    /**
+     * Gets the error that caused the remote table gateway to be closed.
+     * 
+     * @return The error that caused the remote table gateway to be closed or
+     *         {@code null} if the remote table gateway was closed normally.
+     */
+    @GuardedBy( "getLock()" )
+    /* @Nullable */
+    protected final NetworkTableError getCloseError()
+    {
+        assert Thread.holdsLock( getLock() );
+
+        return closeError_;
     }
 
     /*
@@ -321,7 +346,7 @@ public abstract class AbstractRemoteTableGateway
     {
         synchronized( getLock() )
         {
-            close();
+            close( NetworkTableError.UNEXPECTED_PEER_TERMINATION );
         }
     }
 

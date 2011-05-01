@@ -105,14 +105,14 @@ final class HelloRequestMessageHandler
         responseMessage.setCorrelationId( message.getId() );
         if( !remoteTableGateway.sendMessage( responseMessage, null ) )
         {
-            remoteTableGateway.close();
+            remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
             return;
         }
 
         if( responseMessage instanceof ErrorMessage )
         {
             System.out.println( "ServerService : server does not support client protocol version" ); //$NON-NLS-1$
-            remoteTableGateway.close();
+            remoteTableGateway.close( ((ErrorMessage)responseMessage).getError() );
             return;
         }
 
@@ -129,13 +129,13 @@ final class HelloRequestMessageHandler
 
             if( !remoteTableGateway.sendMessage( beginAuthenticationRequest, new BeginAuthenticationResponseMessageHandler( remoteTableGateway ) ) )
             {
-                remoteTableGateway.close();
+                remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
             }
         }
         catch( final NetworkTableException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.HelloRequestMessageHandler_beginAuthenticationRequestFailed, e );
-            remoteTableGateway.close();
+            remoteTableGateway.close( e.getError() );
         }
     }
 }

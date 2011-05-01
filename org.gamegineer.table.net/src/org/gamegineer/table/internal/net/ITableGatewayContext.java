@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net;
 
 import org.gamegineer.common.core.security.SecureString;
+import org.gamegineer.table.net.NetworkTableError;
 import org.gamegineer.table.net.NetworkTableException;
 
 /**
@@ -58,12 +59,16 @@ public interface ITableGatewayContext
         throws NetworkTableException;
 
     /**
-     * Disconnects the network table.
+     * Disconnects the network table for the specified cause.
+     * 
+     * @param error
+     *        The error that caused the network table to be disconnected from
+     *        the network or {@code null} if the network table was disconnected
+     *        normally.
      */
-    public void disconnectNetworkTable();
-
-    // TODO: rename to disconnect(), but will require introducing inner classes
-    // to avoid name collision with INetworkTableStrategy.disconnect()
+    public void disconnectNetworkTable(
+        /* @Nullable */
+        NetworkTableError error );
 
     /**
      * Gets the local player name.

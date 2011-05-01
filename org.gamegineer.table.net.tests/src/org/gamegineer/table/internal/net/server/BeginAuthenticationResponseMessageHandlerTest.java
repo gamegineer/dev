@@ -175,7 +175,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         EasyMock.expect( remoteTableGateway.getSalt() ).andReturn( salt ).anyTimes();
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        remoteTableGateway.close();
+        remoteTableGateway.close( NetworkTableError.AUTHENTICATION_FAILED );
         mocksControl_.replay();
 
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
@@ -225,7 +225,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         remoteTableGateway.setPlayerName( null );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        remoteTableGateway.close();
+        remoteTableGateway.close( NetworkTableError.DUPLICATE_PLAYER_NAME );
         mocksControl_.replay();
 
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
@@ -273,7 +273,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         tableGatewayContext.addTableGateway( remoteTableGateway );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( false );
-        remoteTableGateway.close();
+        remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
         mocksControl_.replay();
 
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
@@ -295,7 +295,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
     {
         final IRemoteClientTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteClientTableGateway.class );
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        remoteTableGateway.close();
+        remoteTableGateway.close( NetworkTableError.UNEXPECTED_MESSAGE );
         mocksControl_.replay();
 
         final FakeMessage message = new FakeMessage();
