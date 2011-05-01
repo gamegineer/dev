@@ -114,16 +114,37 @@ public final class HelloResponseMessageHandlerTest
 
     /**
      * Ensures the {@code handleMessage} method correctly handles a hello
-     * response message.
+     * response message in the case the server sends a supported chosen protocol
+     * version.
      */
     @Test
-    public void testHandleMessage_HelloResponseMessage()
+    public void testHandleMessage_HelloResponseMessage_SupportedChosenProtocolVersion()
     {
         final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
         mocksControl_.replay();
 
         final HelloResponseMessage message = new HelloResponseMessage();
         message.setChosenProtocolVersion( ProtocolVersions.VERSION_1 );
+        final HelloResponseMessageHandler messageHandler = new HelloResponseMessageHandler( remoteTableGateway );
+        messageHandler.handleMessage( message );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code handleMessage} method correctly handles a hello
+     * response message in the case the server sends an unsupported chosen
+     * protocol version.
+     */
+    @Test
+    public void testHandleMessage_HelloResponseMessage_UnsupportedChosenProtocolVersion()
+    {
+        final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
+        remoteTableGateway.close( NetworkTableError.UNSUPPORTED_PROTOCOL_VERSION );
+        mocksControl_.replay();
+
+        final HelloResponseMessage message = new HelloResponseMessage();
+        message.setChosenProtocolVersion( 0 );
         final HelloResponseMessageHandler messageHandler = new HelloResponseMessageHandler( remoteTableGateway );
         messageHandler.handleMessage( message );
 

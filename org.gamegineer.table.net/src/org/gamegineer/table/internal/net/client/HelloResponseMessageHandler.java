@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.client;
 
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloResponseMessage;
 import org.gamegineer.table.net.NetworkTableError;
@@ -97,6 +98,12 @@ final class HelloResponseMessageHandler
             Integer.valueOf( message.getChosenProtocolVersion() ), //
             Integer.valueOf( message.getId() ), //
             Integer.valueOf( message.getCorrelationId() ) ) );
+
+        if( message.getChosenProtocolVersion() != ProtocolVersions.VERSION_1 )
+        {
+            System.out.println( "ClientService : received unsupported chosen protocol version" ); //$NON-NLS-1$
+            getRemoteTableGateway().close( NetworkTableError.UNSUPPORTED_PROTOCOL_VERSION );
+        }
     }
 
     /*
