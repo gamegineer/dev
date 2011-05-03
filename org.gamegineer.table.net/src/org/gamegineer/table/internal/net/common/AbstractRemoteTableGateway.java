@@ -55,8 +55,8 @@ public abstract class AbstractRemoteTableGateway
     // ======================================================================
 
     /**
-     * The error that caused the remote table gateway to be closed or {@code
-     * null} if the remote table gateway was closed normally.
+     * The error that caused the table gateway to be closed or {@code null} if
+     * the table gateway was closed normally.
      */
     @GuardedBy( "getLock()" )
     private NetworkTableError closeError_;
@@ -159,9 +159,15 @@ public abstract class AbstractRemoteTableGateway
      * <p>
      * Subclasses may override but the superclass version must be called.
      * </p>
+     * 
+     * @param error
+     *        The error that caused the table gateway to be closed or {@code
+     *        null} if the table gateway was closed normally.
      */
     @GuardedBy( "getLock()" )
-    protected void closed()
+    protected void closed(
+        /* @Nullable */
+        final NetworkTableError error )
     {
         assert Thread.holdsLock( getLock() );
 
@@ -202,21 +208,6 @@ public abstract class AbstractRemoteTableGateway
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableGateway_extractMessage_deserializationError( messageEnvelope ), e );
             return null;
         }
-    }
-
-    /**
-     * Gets the error that caused the remote table gateway to be closed.
-     * 
-     * @return The error that caused the remote table gateway to be closed or
-     *         {@code null} if the remote table gateway was closed normally.
-     */
-    @GuardedBy( "getLock()" )
-    /* @Nullable */
-    protected final NetworkTableError getCloseError()
-    {
-        assert Thread.holdsLock( getLock() );
-
-        return closeError_;
     }
 
     /*
@@ -461,14 +452,21 @@ public abstract class AbstractRemoteTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.IService#stopped()
+     * @see org.gamegineer.table.internal.net.transport.IService#stopped(java.lang.Exception)
      */
     @Override
-    public final void stopped()
+    public final void stopped(
+        final Exception exception )
     {
         synchronized( getLock() )
         {
-            closed();
+            // Do not overwrite the original error that caused the table gateway to be closed
+            if( (exception != null) && (closeError_ == null) )
+            {
+                closeError_ = NetworkTableError.TRANSPORT_ERROR;
+            }
+
+            closed( closeError_ );
             serviceContext_ = null;
         }
     }

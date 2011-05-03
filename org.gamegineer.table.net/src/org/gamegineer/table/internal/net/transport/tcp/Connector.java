@@ -75,11 +75,14 @@ final class Connector
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler#close()
+     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler#close(java.lang.Exception)
      */
     @Override
-    void close()
+    void close(
+        final Exception exception )
     {
+        assert exception == null : "asynchronous connection not supported"; //$NON-NLS-1$
+
         synchronized( getLock() )
         {
             setState( State.CLOSED );
@@ -125,7 +128,7 @@ final class Connector
             }
             finally
             {
-                close();
+                close( null );
             }
         }
     }

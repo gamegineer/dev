@@ -75,10 +75,12 @@ class FakeEventHandler
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler#close()
+     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler#close(java.lang.Exception)
      */
     @Override
-    void close()
+    void close(
+        @SuppressWarnings( "unused" )
+        final Exception exception )
     {
         // do nothing
     }

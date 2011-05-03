@@ -79,10 +79,12 @@ public class FakeService
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.IService#stopped()
+     * @see org.gamegineer.table.internal.net.transport.IService#stopped(java.lang.Exception)
      */
     @Override
-    public void stopped()
+    public void stopped(
+        @SuppressWarnings( "unused" )
+        final Exception exception )
     {
         // do nothing
     }

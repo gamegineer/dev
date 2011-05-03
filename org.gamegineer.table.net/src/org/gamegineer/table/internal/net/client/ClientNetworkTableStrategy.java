@@ -26,7 +26,6 @@ import org.gamegineer.table.internal.net.INetworkTableStrategyContext;
 import org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
-import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 
 /**
  * Implementation of
@@ -71,19 +70,12 @@ public final class ClientNetworkTableStrategy
     {
         assert Thread.holdsLock( getLock() );
 
-        return getContext().getTransportLayerFactory().createActiveTransportLayer( new ITransportLayerContext()
+        return getContext().getTransportLayerFactory().createActiveTransportLayer( new AbstractTransportLayerContext()
         {
             @Override
             public IService createService()
             {
                 return new RemoteServerTableGateway( ClientNetworkTableStrategy.this );
-            }
-
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void transportLayerDisconnected()
-            {
-                getContext().disconnectNetworkTable( null );
             }
         } );
     }

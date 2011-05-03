@@ -69,6 +69,12 @@ public interface IService
 
     /**
      * Invoked when the service has stopped.
+     * 
+     * @param exception
+     *        The exception that caused the service to be stopped or {@code
+     *        null} if the service was stopped normally.
      */
-    public void stopped();
+    public void stopped(
+        /* @Nullable */
+        Exception exception );
 }

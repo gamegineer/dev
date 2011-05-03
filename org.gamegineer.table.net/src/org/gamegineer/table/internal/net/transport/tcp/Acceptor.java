@@ -158,17 +158,18 @@ final class Acceptor
             }
             catch( final IOException e )
             {
-                close();
+                close( e );
                 throw e;
             }
         }
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler#close()
+     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler#close(java.lang.Exception)
      */
     @Override
-    void close()
+    void close(
+        final Exception exception )
     {
         final State state;
 
@@ -201,7 +202,7 @@ final class Acceptor
 
         if( state == State.OPEN )
         {
-            transportLayer_.disconnected();
+            transportLayer_.disconnected( exception );
         }
     }
 

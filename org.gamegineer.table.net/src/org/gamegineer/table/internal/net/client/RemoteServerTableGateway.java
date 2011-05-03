@@ -71,16 +71,17 @@ final class RemoteServerTableGateway
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#closed()
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#closed(org.gamegineer.table.net.NetworkTableError)
      */
     @Override
-    protected void closed()
+    protected void closed(
+        final NetworkTableError error )
     {
         assert Thread.holdsLock( getLock() );
 
-        super.closed();
+        super.closed( error );
 
-        getContext().disconnectNetworkTable( getCloseError() );
+        getContext().disconnectNetworkTable( error );
     }
 
     /*

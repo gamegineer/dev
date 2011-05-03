@@ -74,8 +74,14 @@ abstract class AbstractEventHandler
 
     /**
      * Closes the event handler.
+     * 
+     * @param exception
+     *        The exception that caused the event handler to be closed or
+     *        {@code null} if the event handler was closed normally.
      */
-    abstract void close();
+    abstract void close(
+        /* @Nullable */
+        Exception exception );
 
     /**
      * Gets the channel associated with the event handler.

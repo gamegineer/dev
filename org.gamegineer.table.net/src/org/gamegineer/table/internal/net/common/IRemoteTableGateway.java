@@ -40,11 +40,11 @@ public interface IRemoteTableGateway
     // ======================================================================
 
     /**
-     * Closes the remote table gateway for the specified cause.
+     * Closes the table gateway.
      * 
      * @param error
-     *        The error that caused the remote table gateway to be closed or
-     *        {@code null} if the remote table gateway was closed normally.
+     *        The error that caused the table gateway to be closed or {@code
+     *        null} if the table gateway was closed normally.
      * 
      * @throws java.lang.IllegalStateException
      *         If the network is not connected.
@@ -55,19 +55,18 @@ public interface IRemoteTableGateway
         NetworkTableError error );
 
     /**
-     * Gets the context associated with the remote table gateway.
+     * Gets the context associated with the table gateway.
      * 
-     * @return The context associated with the remote table gateway; never
-     *         {@code null}.
+     * @return The context associated with the table gateway; never {@code null}
+     *         .
      */
     /* @NonNull */
     public ITableGatewayContext getContext();
 
     /**
-     * Gets the instance lock for the remote table gateway.
+     * Gets the instance lock for the table gateway.
      * 
-     * @return The instance lock for the remote table gateway; never {@code
-     *         null}.
+     * @return The instance lock for the table gateway; never {@code null}.
      */
     /* @NonNull */
     public Object getLock();
@@ -82,7 +81,7 @@ public interface IRemoteTableGateway
     public String getPlayerName();
 
     /**
-     * Sends the specified message to the remote table gateway peer.
+     * Sends the specified message to the table gateway peer.
      * 
      * @param message
      *        The message; must not be {@code null}.
@@ -106,10 +105,10 @@ public interface IRemoteTableGateway
         IMessageHandler messageHandler );
 
     /**
-     * Sets the name of the player associated with the remote table gateway.
+     * Sets the name of the player associated with the table gateway.
      * 
      * @param playerName
-     *        The name of the player associated with the remote table gateway or
+     *        The name of the player associated with the table gateway or
      *        {@code null} if the network is not connected.
      */
     @GuardedBy( "getLock()" )
@@ -138,10 +137,9 @@ public interface IRemoteTableGateway
          * gateway.
          * 
          * <p>
-         * This method will be invoked by the remote table gateway while its
-         * instance lock is held. Thus, message handlers may assume any methods
-         * they invoke on the remote table gateway will be thread-safe and
-         * atomic.
+         * This method will be invoked by the table gateway while its instance
+         * lock is held. Thus, message handlers may assume any methods they
+         * invoke on the table gateway will be thread-safe and atomic.
          * </p>
          * 
          * @param message

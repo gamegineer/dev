@@ -87,10 +87,16 @@ abstract class AbstractTransportLayer
 
     /**
      * Invoked when the transport layer has been disconnected.
+     * 
+     * @param exception
+     *        The exception that caused the transport layer to be disconnected
+     *        or {@code null} if the transport layer was disconnected normally.
      */
-    final void disconnected()
+    final void disconnected(
+        /* @Nullable */
+        final Exception exception )
     {
-        context_.transportLayerDisconnected();
+        context_.transportLayerDisconnected( exception );
     }
 
     /**

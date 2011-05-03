@@ -134,10 +134,11 @@ final class ServiceHandler
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler#close()
+     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler#close(java.lang.Exception)
      */
     @Override
-    void close()
+    void close(
+        final Exception exception )
     {
         final State state;
 
@@ -170,7 +171,7 @@ final class ServiceHandler
 
         if( state == State.OPEN )
         {
-            service_.stopped();
+            service_.stopped( exception );
         }
     }
 
@@ -321,7 +322,7 @@ final class ServiceHandler
             }
             catch( final IOException e )
             {
-                close();
+                close( e );
                 throw e;
             }
 
@@ -373,14 +374,14 @@ final class ServiceHandler
                     if( (outputQueueState_ == QueueState.SHUTTING_DOWN) && outputQueue_.isEmpty() )
                     {
                         outputQueueState_ = QueueState.SHUT_DOWN;
-                        close();
+                        close( null );
                     }
                 }
             }
             catch( final Exception e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServiceHandler_run_error, e );
-                close();
+                close( e );
             }
             finally
             {

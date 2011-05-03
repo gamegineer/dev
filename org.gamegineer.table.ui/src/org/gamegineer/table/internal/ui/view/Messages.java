@@ -872,6 +872,9 @@ final class Messages
     /** The network was disconnected due to a generic error. */
     public static String TableView_networkDisconnected_error_generic;
 
+    /** The network was disconnected due to a transport error. */
+    public static String TableView_networkDisconnected_error_transportError;
+
     /** The network was disconnected due to an unexpected peer termination. */
     public static String TableView_networkDisconnected_error_unexpectedPeerTermination;
 
@@ -998,6 +1001,9 @@ final class Messages
 
             case DUPLICATE_PLAYER_NAME:
                 return TableView_networkDisconnected_error_duplicatePlayerName;
+
+            case TRANSPORT_ERROR:
+                return TableView_networkDisconnected_error_transportError;
 
             case UNEXPECTED_PEER_TERMINATION:
                 return TableView_networkDisconnected_error_unexpectedPeerTermination;

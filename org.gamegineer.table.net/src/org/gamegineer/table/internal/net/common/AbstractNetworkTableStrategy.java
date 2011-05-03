@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.Debug;
@@ -37,6 +38,7 @@ import org.gamegineer.table.internal.net.INetworkTableStrategyContext;
 import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 import org.gamegineer.table.internal.net.transport.TransportException;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.NetworkTableError;
@@ -482,5 +484,47 @@ public abstract class AbstractNetworkTableStrategy
         assert Thread.holdsLock( getLock() );
 
         // do nothing
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * Superclass for implementations of the {@link ITransportLayerContext}
+     * associated with a network table strategy.
+     */
+    @Immutable
+    protected abstract class AbstractTransportLayerContext
+        implements ITransportLayerContext
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code
+         * AbstractTransportLayerContext} class.
+         */
+        protected AbstractTransportLayerContext()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.net.transport.ITransportLayerContext#transportLayerDisconnected(java.lang.Exception)
+         */
+        @Override
+        public final void transportLayerDisconnected(
+            final Exception exception )
+        {
+            getContext().disconnectNetworkTable( (exception != null) ? NetworkTableError.TRANSPORT_ERROR : null );
+        }
     }
 }

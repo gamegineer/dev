@@ -52,6 +52,12 @@ public interface ITransportLayerContext
      * The application must still explicitly close the transport layer to clean
      * up resources even after it has been disconnected.
      * </p>
+     * 
+     * @param exception
+     *        The exception that caused the transport layer to be disconnected
+     *        or {@code null} if the transport layer was disconnected normally.
      */
-    public void transportLayerDisconnected();
+    public void transportLayerDisconnected(
+        /* @Nullable */
+        Exception exception );
 }

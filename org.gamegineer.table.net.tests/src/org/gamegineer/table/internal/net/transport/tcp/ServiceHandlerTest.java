@@ -87,7 +87,7 @@ public final class ServiceHandlerTest
     public void tearDown()
         throws Exception
     {
-        serviceHandler_.close();
+        serviceHandler_.close( null );
         serviceHandler_ = null;
         transportLayer_.close();
         transportLayer_ = null;
@@ -104,7 +104,7 @@ public final class ServiceHandlerTest
     public void testOpen_AfterClose()
         throws Exception
     {
-        serviceHandler_.close();
+        serviceHandler_.close( null );
 
         serviceHandler_.open( new FakeSocketChannel() );
     }

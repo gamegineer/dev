@@ -148,7 +148,7 @@ final class Dispatcher
                 for( final AbstractEventHandler eventHandler : eventHandlers )
                 {
                     Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Closing orphaned event handler '%s'", eventHandler ) ); //$NON-NLS-1$
-                    eventHandler.close();
+                    eventHandler.close( null );
                 }
 
                 eventDispatchTask_.cancel( true );
