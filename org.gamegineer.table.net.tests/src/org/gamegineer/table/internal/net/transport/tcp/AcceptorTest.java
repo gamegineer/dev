@@ -86,7 +86,7 @@ public final class AcceptorTest
     public void tearDown()
         throws Exception
     {
-        acceptor_.close( null );
+        acceptor_.close();
         acceptor_ = null;
         transportLayer_.close();
         transportLayer_ = null;
@@ -103,7 +103,7 @@ public final class AcceptorTest
     public void testBind_AfterClose()
         throws Exception
     {
-        acceptor_.close( null );
+        acceptor_.close();
 
         acceptor_.bind( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
     }

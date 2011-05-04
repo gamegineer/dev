@@ -374,7 +374,7 @@ final class ServiceHandler
                     if( (outputQueueState_ == QueueState.SHUTTING_DOWN) && outputQueue_.isEmpty() )
                     {
                         outputQueueState_ = QueueState.SHUT_DOWN;
-                        close( null );
+                        close();
                     }
                 }
             }

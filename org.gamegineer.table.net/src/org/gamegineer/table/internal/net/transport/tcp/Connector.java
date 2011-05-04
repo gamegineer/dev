@@ -128,7 +128,7 @@ final class Connector
             }
             finally
             {
-                close( null );
+                close();
             }
         }
     }

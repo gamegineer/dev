@@ -83,7 +83,7 @@ final class ActiveTransportLayer
         }
         finally
         {
-            connector.close( null );
+            connector.close();
         }
     }
 }

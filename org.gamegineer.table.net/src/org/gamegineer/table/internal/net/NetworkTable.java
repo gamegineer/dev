@@ -183,7 +183,7 @@ public final class NetworkTable
     }
 
     /**
-     * Disconnects from the network for the specified cause.
+     * Disconnects from the network due to the specified error.
      * 
      * @param error
      *        The error that caused the network table to be disconnected from

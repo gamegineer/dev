@@ -86,7 +86,7 @@ public final class ConnectorTest
     public void tearDown()
         throws Exception
     {
-        connector_.close( null );
+        connector_.close();
         connector_ = null;
         transportLayer_.close();
         transportLayer_ = null;
@@ -103,7 +103,7 @@ public final class ConnectorTest
     public void testConnect_AfterClose()
         throws Exception
     {
-        connector_.close( null );
+        connector_.close();
 
         connector_.connect( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
     }

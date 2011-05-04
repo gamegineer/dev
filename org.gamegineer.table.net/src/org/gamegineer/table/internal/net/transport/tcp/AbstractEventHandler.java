@@ -73,7 +73,15 @@ abstract class AbstractEventHandler
     // ======================================================================
 
     /**
-     * Closes the event handler.
+     * Closes the event handler normally.
+     */
+    final void close()
+    {
+        close( null );
+    }
+
+    /**
+     * Closes the event handler due to the specified exception.
      * 
      * @param exception
      *        The exception that caused the event handler to be closed or
