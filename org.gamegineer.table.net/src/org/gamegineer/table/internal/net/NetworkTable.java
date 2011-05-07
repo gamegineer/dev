@@ -162,10 +162,18 @@ public final class NetworkTable
 
         if( connectionStateRef_.compareAndSet( ConnectionState.DISCONNECTED, ConnectionState.CONNECTING ) )
         {
-            strategy.connect( configuration );
-            strategyRef_.set( strategy );
-            connectionStateRef_.set( ConnectionState.CONNECTED );
-            fireNetworkConnected();
+            try
+            {
+                strategy.connect( configuration );
+                strategyRef_.set( strategy );
+                connectionStateRef_.set( ConnectionState.CONNECTED );
+                fireNetworkConnected();
+            }
+            catch( final NetworkTableException e )
+            {
+                connectionStateRef_.set( ConnectionState.DISCONNECTED );
+                throw e;
+            }
         }
         else
         {
