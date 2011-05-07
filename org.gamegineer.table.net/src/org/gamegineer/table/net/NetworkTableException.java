@@ -61,7 +61,7 @@ public final class NetworkTableException
         /* @NonNull */
         final NetworkTableError error )
     {
-        this( error, null, null );
+        this( error, error.toString(), null );
     }
 
     /**
@@ -105,7 +105,7 @@ public final class NetworkTableException
         /* @Nullable */
         final Throwable cause )
     {
-        this( error, null, cause );
+        this( error, error.toString(), cause );
     }
 
     /**
