@@ -278,14 +278,7 @@ public abstract class AbstractNetworkTableStrategy
         }
     }
 
-    /**
-     * This method is <b>not</b> invoked while the instance lock is held.
-     * Subclasses must always invoke the superclass method.
-     * 
-     * <p>
-     * This implementation disconnects the network table.
-     * </p>
-     * 
+    /*
      * @see org.gamegineer.table.internal.net.ITableGatewayContext#disconnectNetworkTable(org.gamegineer.table.net.NetworkTableError)
      */
     @Override
