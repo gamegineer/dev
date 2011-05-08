@@ -182,7 +182,16 @@ public abstract class AbstractNetworkTableStrategy
             }
 
             transportLayer_ = transportLayer;
+        }
+
+        try
+        {
             connected();
+        }
+        catch( final NetworkTableException e )
+        {
+            disconnect();
+            throw e;
         }
     }
 
@@ -191,19 +200,20 @@ public abstract class AbstractNetworkTableStrategy
      * network.
      * 
      * <p>
-     * This method is invoked while the instance lock is held. Subclasses must
-     * always invoke the superclass method.
+     * This method is <b>not</b> invoked while the instance lock is held.
+     * Subclasses must always invoke the superclass method.
      * </p>
      * 
      * <p>
      * This implementation does nothing.
      * </p>
+     * 
+     * @throws org.gamegineer.table.net.NetworkTableException
+     *         If an error occurs.
      */
-    @GuardedBy( "getLock()" )
     protected void connected()
+        throws NetworkTableException
     {
-        assert Thread.holdsLock( getLock() );
-
         // do nothing
     }
 
@@ -268,11 +278,18 @@ public abstract class AbstractNetworkTableStrategy
         }
     }
 
-    /*
+    /**
+     * This method is <b>not</b> invoked while the instance lock is held.
+     * Subclasses must always invoke the superclass method.
+     * 
+     * <p>
+     * This implementation disconnects the network table.
+     * </p>
+     * 
      * @see org.gamegineer.table.internal.net.ITableGatewayContext#disconnectNetworkTable(org.gamegineer.table.net.NetworkTableError)
      */
     @Override
-    public final void disconnectNetworkTable(
+    public void disconnectNetworkTable(
         final NetworkTableError error )
     {
         context_.disconnectNetworkTable( error );

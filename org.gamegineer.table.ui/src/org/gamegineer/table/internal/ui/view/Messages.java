@@ -863,12 +863,6 @@ final class Messages
     /** An error occurred while importing the table. */
     public static String TableView_importTable_error_nonNls;
 
-    /** The network was disconnected due to an authentication failure. */
-    public static String TableView_networkDisconnected_error_authenticationFailed;
-
-    /** The network was disconnected due to a duplicate player name. */
-    public static String TableView_networkDisconnected_error_duplicatePlayerName;
-
     /** The network was disconnected due to a generic error. */
     public static String TableView_networkDisconnected_error_generic;
 
@@ -996,12 +990,6 @@ final class Messages
     {
         switch( error )
         {
-            case AUTHENTICATION_FAILED:
-                return TableView_networkDisconnected_error_authenticationFailed;
-
-            case DUPLICATE_PLAYER_NAME:
-                return TableView_networkDisconnected_error_duplicatePlayerName;
-
             case TRANSPORT_ERROR:
                 return TableView_networkDisconnected_error_transportError;
 

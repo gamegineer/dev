@@ -58,6 +58,6 @@ public final class ClientNetworkTableStrategyAsAbstractNetworkTableStrategyTest
     @Override
     protected ClientNetworkTableStrategy createNetworkTableStrategy()
     {
-        return new ClientNetworkTableStrategy( NetworkTableStrategyContexts.createFakeNetworkTableStrategyContext() );
+        return new ClientNetworkTableStrategy( NetworkTableStrategyContexts.createFakeNetworkTableStrategyContext(), false );
     }
 }

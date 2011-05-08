@@ -21,11 +21,20 @@
 
 package org.gamegineer.table.internal.net.client;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.INetworkTableStrategyContext;
+import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * Implementation of
@@ -36,6 +45,28 @@ import org.gamegineer.table.internal.net.transport.ITransportLayer;
 public final class ClientNetworkTableStrategy
     extends AbstractNetworkTableStrategy
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The condition variable used to signal when the handshake is complete. */
+    private final Condition handshakeCondition_;
+
+    /**
+     * The error that occurred during the handshake or {@code null} if no error
+     * occurred.
+     */
+    @GuardedBy( "handshakeLock_" )
+    private NetworkTableError handshakeError_;
+
+    /** The handshake lock. */
+    private final Lock handshakeLock_;
+
+    /** Indicates the handshake is complete. */
+    @GuardedBy( "handshakeLock_" )
+    private boolean isHandshakeComplete_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -54,13 +85,84 @@ public final class ClientNetworkTableStrategy
         /* @NonNull */
         final INetworkTableStrategyContext context )
     {
+        this( context, true );
+    }
+
+    /**
+     * Initializes a new instance of the {@code ClientNetworkTableStrategy}
+     * class and indicates whether or not the strategy should wait for handshake
+     * completion.
+     * 
+     * <p>
+     * This constructor is only intended to support testing.
+     * </p>
+     * 
+     * @param context
+     *        The network table strategy context; must not be {@code null}.
+     * @param waitForHandshakeCompletion
+     *        {@code true} if the strategy should wait for the handshake to
+     *        complete before indicating the connection has been established;
+     *        otherwise {@code false}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code context} is {@code null}.
+     */
+    public ClientNetworkTableStrategy(
+        /* @NonNull */
+        final INetworkTableStrategyContext context,
+        final boolean waitForHandshakeCompletion )
+    {
         super( context );
+
+        handshakeLock_ = new ReentrantLock();
+        handshakeCondition_ = handshakeLock_.newCondition();
+        handshakeError_ = null;
+        isHandshakeComplete_ = waitForHandshakeCompletion ? false : true;
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy#connected()
+     */
+    @Override
+    protected void connected()
+        throws NetworkTableException
+    {
+        super.connected();
+
+        handshakeLock_.lock();
+        try
+        {
+            while( !isHandshakeComplete_ )
+            {
+                try
+                {
+                    if( !handshakeCondition_.await( 30L, TimeUnit.SECONDS ) )
+                    {
+                        throw new NetworkTableException( NetworkTableError.TIME_OUT, Messages.ClientNetworkTableStrategy_handshake_timedOut );
+                    }
+                }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
+                    throw new NetworkTableException( NetworkTableError.INTERRUPTED, Messages.ClientNetworkTableStrategy_handshake_interrupted, e );
+                }
+            }
+
+            if( handshakeError_ != null )
+            {
+                throw new NetworkTableException( handshakeError_ );
+            }
+        }
+        finally
+        {
+            handshakeLock_.unlock();
+        }
+    }
 
     /*
      * @see org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy#createTransportLayer()
@@ -78,5 +180,62 @@ public final class ClientNetworkTableStrategy
                 return new RemoteServerTableGateway( ClientNetworkTableStrategy.this );
             }
         } );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy#disconnectNetworkTable(org.gamegineer.table.net.NetworkTableError)
+     */
+    @Override
+    public void disconnectNetworkTable(
+        final NetworkTableError error )
+    {
+        setHandshakeComplete( error );
+
+        super.disconnectNetworkTable( error );
+    }
+
+    /**
+     * Sets the condition that indicates the handshake is complete.
+     * 
+     * @param error
+     *        The error that caused the handshake to fail or {@code null} if the
+     *        handshake completed successfully.
+     */
+    private void setHandshakeComplete(
+        /* @Nullable */
+        final NetworkTableError error )
+    {
+        handshakeLock_.lock();
+        try
+        {
+            if( !isHandshakeComplete_ )
+            {
+                isHandshakeComplete_ = true;
+                handshakeError_ = error;
+                handshakeCondition_.signalAll();
+            }
+        }
+        finally
+        {
+            handshakeLock_.unlock();
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy#tableGatewayAdded(org.gamegineer.table.internal.net.ITableGateway)
+     */
+    @Override
+    protected void tableGatewayAdded(
+        final ITableGateway tableGateway )
+    {
+        assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        super.tableGatewayAdded( tableGateway );
+
+        if( tableGateway instanceof RemoteServerTableGateway )
+        {
+            setHandshakeComplete( null );
+        }
     }
 }

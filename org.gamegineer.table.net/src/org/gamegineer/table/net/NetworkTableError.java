@@ -46,6 +46,12 @@ public enum NetworkTableError
      */
     ILLEGAL_CONNECTION_STATE,
 
+    /** An operation was interrupted waiting for completion. */
+    INTERRUPTED,
+
+    /** An operation timed out waiting for completion. */
+    TIME_OUT,
+
     /** An error occurred in the transport layer. */
     TRANSPORT_ERROR,
 

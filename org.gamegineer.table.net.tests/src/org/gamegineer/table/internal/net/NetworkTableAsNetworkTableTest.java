@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net;
 
 import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.internal.net.client.ClientNetworkTableStrategy;
 import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactory;
 import org.gamegineer.table.net.AbstractNetworkTableTestCase;
 import org.gamegineer.table.net.INetworkTable;
@@ -60,6 +61,17 @@ public final class NetworkTableAsNetworkTableTest
     protected INetworkTable createNetworkTable(
         final ITable table )
     {
-        return new NetworkTable( table, new FakeTransportLayerFactory() );
+        return new NetworkTable( //
+            table, //
+            new DefaultNetworkTableStrategyFactory()
+            {
+                @Override
+                public INetworkTableStrategy createClientNetworkTableStrategy(
+                    final INetworkTableStrategyContext context )
+                {
+                    return new ClientNetworkTableStrategy( context, false );
+                }
+            }, //
+            new FakeTransportLayerFactory() );
     }
 }

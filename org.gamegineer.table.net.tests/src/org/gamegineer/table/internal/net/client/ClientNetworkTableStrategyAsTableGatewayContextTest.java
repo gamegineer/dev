@@ -60,7 +60,7 @@ public final class ClientNetworkTableStrategyAsTableGatewayContextTest
     protected ITableGatewayContext createTableGatewayContext()
         throws Exception
     {
-        final ClientNetworkTableStrategy strategy = new ClientNetworkTableStrategy( NetworkTableStrategyContexts.createFakeNetworkTableStrategyContext() );
+        final ClientNetworkTableStrategy strategy = new ClientNetworkTableStrategy( NetworkTableStrategyContexts.createFakeNetworkTableStrategyContext(), false );
         strategy.connect( NetworkTableConfigurations.createDefaultNetworkTableConfiguration() );
         return strategy;
     }

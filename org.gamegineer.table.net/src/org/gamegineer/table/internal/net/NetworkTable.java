@@ -28,8 +28,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.client.ClientNetworkTableStrategy;
-import org.gamegineer.table.internal.net.server.ServerNetworkTableStrategy;
 import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 import org.gamegineer.table.internal.net.transport.tcp.TcpTransportLayerFactory;
 import org.gamegineer.table.net.INetworkTable;
@@ -57,6 +55,9 @@ public final class NetworkTable
     /** The collection of network table listeners. */
     private final CopyOnWriteArrayList<INetworkTableListener> listeners_;
 
+    /** The network table strategy factory. */
+    private final INetworkTableStrategyFactory strategyFactory_;
+
     /**
      * A reference to the active network table strategy or {@code null} if the
      * network is not connected.
@@ -76,8 +77,7 @@ public final class NetworkTable
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code NetworkTable} class using the
-     * default transport layer factory.
+     * Initializes a new instance of the {@code NetworkTable} class.
      * 
      * @param table
      *        The table to be attached to the network; must not be {@code null}.
@@ -89,34 +89,44 @@ public final class NetworkTable
         /* @NonNull */
         final ITable table )
     {
-        this( table, new TcpTransportLayerFactory() );
+        this( table, new DefaultNetworkTableStrategyFactory(), new TcpTransportLayerFactory() );
     }
 
     /**
      * Initializes a new instance of the {@code NetworkTable} class using the
-     * specified transport layer factory.
+     * specified strategy factory and transport layer factory.
+     * 
+     * <p>
+     * This constructor is only intended to support testing.
+     * </p>
      * 
      * @param table
      *        The table to be attached to the network; must not be {@code null}.
+     * @param strategyFactory
+     *        The network table strategy factory; must not be {@code null}.
      * @param transportLayerFactory
      *        The network table transport layer factory; must not be {@code
      *        null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code table} or {@code transportLayerFactory} is {@code null}
-     *         .
+     *         If {@code table}, {@code strategyFactory}, or {@code
+     *         transportLayerFactory} is {@code null}.
      */
     public NetworkTable(
         /* @NonNull */
         final ITable table,
         /* @NonNull */
+        final INetworkTableStrategyFactory strategyFactory,
+        /* @NonNull */
         final ITransportLayerFactory transportLayerFactory )
     {
         assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
+        assertArgumentNotNull( strategyFactory, "strategyFactory" ); //$NON-NLS-1$
         assertArgumentNotNull( transportLayerFactory, "transportLayerFactory" ); //$NON-NLS-1$
 
         connectionStateRef_ = new AtomicReference<ConnectionState>( ConnectionState.DISCONNECTED );
         listeners_ = new CopyOnWriteArrayList<INetworkTableListener>();
+        strategyFactory_ = strategyFactory;
         strategyRef_ = new AtomicReference<INetworkTableStrategy>( null );
         table_ = table;
         transportLayerFactory_ = transportLayerFactory;
@@ -284,7 +294,7 @@ public final class NetworkTable
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, new ServerNetworkTableStrategy( this ) );
+        connect( configuration, strategyFactory_.createServerNetworkTableStrategy( this ) );
     }
 
     /*
@@ -306,7 +316,7 @@ public final class NetworkTable
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, new ClientNetworkTableStrategy( this ) );
+        connect( configuration, strategyFactory_.createClientNetworkTableStrategy( this ) );
     }
 
     /*

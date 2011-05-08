@@ -1,6 +1,6 @@
 /*
  * Messages.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.wizards.hostnetworktable;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
+import org.gamegineer.table.net.NetworkTableError;
 
 /**
  * A utility class to manage localized messages for the package.
@@ -40,11 +41,14 @@ final class Messages
     /** The connecting task description. */
     public static String HostNetworkTableWizard_description_connecting;
 
-    /** An error occurred while executing the finish task. */
-    public static String HostNetworkTableWizard_finish_error;
+    /** Could not connect due to a generic error. */
+    public static String HostNetworkTableWizard_finish_error_generic;
 
     /** An error occurred while executing the finish task. */
     public static String HostNetworkTableWizard_finish_error_nonNls;
+
+    /** Could not connect due to a transport error. */
+    public static String HostNetworkTableWizard_finish_error_transportError;
 
     /** Interrupted while waiting for the finish task to complete. */
     public static String HostNetworkTableWizard_finish_interrupted;
@@ -120,5 +124,37 @@ final class Messages
     private Messages()
     {
         super();
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    // --- HostNetworkTableWizard -------------------------------------------
+
+    /**
+     * Gets the formatted message for the finish task execution error message.
+     * 
+     * @param error
+     *        The error that caused the finish task execution error; must not be
+     *        {@code null}.
+     * 
+     * @return The formatted message for the finish task execution error
+     *         message; never {@code null}.
+     */
+    /* @NonNull */
+    static String HostNetworkTableWizard_finish_error(
+        /* @NonNull */
+        final NetworkTableError error )
+    {
+        switch( error )
+        {
+            case TRANSPORT_ERROR:
+                return HostNetworkTableWizard_finish_error_transportError;
+
+            default:
+                return bind( HostNetworkTableWizard_finish_error_generic, error );
+        }
     }
 }

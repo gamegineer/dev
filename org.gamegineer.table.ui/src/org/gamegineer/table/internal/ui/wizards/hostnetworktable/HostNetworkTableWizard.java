@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.common.ui.operation.RunnableTask;
 import org.gamegineer.common.ui.wizard.AbstractWizard;
 import org.gamegineer.table.internal.ui.Loggers;
@@ -35,6 +36,7 @@ import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.net.INetworkTable;
 import org.gamegineer.table.net.INetworkTableConfiguration;
 import org.gamegineer.table.net.NetworkTableConfigurationBuilder;
+import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * The host network table wizard.
@@ -156,10 +158,8 @@ public final class HostNetworkTableWizard
                 {
                     setDescription( Messages.HostNetworkTableWizard_description_connecting );
                     setProgressIndeterminate( true );
-
                     networkTable.host( configuration );
-
-                    return networkTable.isConnected() ? ConnectionState.CONNECTED : ConnectionState.DISCONNECTED;
+                    return ConnectionState.CONNECTED;
                 }
 
                 @Override
@@ -182,7 +182,15 @@ public final class HostNetworkTableWizard
                     catch( final ExecutionException e )
                     {
                         Loggers.getDefaultLogger().log( Level.SEVERE, Messages.HostNetworkTableWizard_finish_error_nonNls, e );
-                        showErrorMessageDialogLater( Messages.HostNetworkTableWizard_finish_error );
+                        final Throwable cause = e.getCause();
+                        if( cause instanceof NetworkTableException )
+                        {
+                            showErrorMessageDialogLater( Messages.HostNetworkTableWizard_finish_error( ((NetworkTableException)cause).getError() ) );
+                        }
+                        else
+                        {
+                            throw TaskUtils.launderThrowable( cause );
+                        }
                     }
                     catch( final InterruptedException e )
                     {

@@ -387,6 +387,7 @@ public abstract class AbstractAbstractNetworkTableStrategyTestCase<T extends Abs
          */
         @Override
         protected void connected()
+            throws NetworkTableException
         {
             super.connected();
 
