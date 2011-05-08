@@ -183,15 +183,15 @@ public final class ClientNetworkTableStrategy
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy#disconnectNetworkTable(org.gamegineer.table.net.NetworkTableError)
+     * @see org.gamegineer.table.internal.net.common.AbstractNetworkTableStrategy#networkTableDisconnecting(org.gamegineer.table.net.NetworkTableError)
      */
     @Override
-    public void disconnectNetworkTable(
+    protected void networkTableDisconnecting(
         final NetworkTableError error )
     {
-        setHandshakeComplete( error );
+        super.networkTableDisconnecting( error );
 
-        super.disconnectNetworkTable( error );
+        setHandshakeComplete( error );
     }
 
     /**
