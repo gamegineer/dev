@@ -285,8 +285,32 @@ public abstract class AbstractNetworkTableStrategy
     public final void disconnectNetworkTable(
         final NetworkTableError error )
     {
-        networkTableDisconnecting( error );
+        disconnectingNetworkTable( error );
         context_.disconnectNetworkTable( error );
+    }
+
+    /**
+     * Template method invoked when the network table is disconnecting from the
+     * network.
+     * 
+     * <p>
+     * This method is <b>not</b> invoked while the instance lock is held.
+     * Subclasses must always invoke the superclass method.
+     * </p>
+     * 
+     * <p>
+     * This implementation does nothing.
+     * </p>
+     * 
+     * @param error
+     *        The error that caused the network table to be disconnected from
+     *        the network or {@code null} if the network table was disconnected
+     *        normally.
+     */
+    protected void disconnectingNetworkTable(
+        final NetworkTableError error )
+    {
+        // do nothing
     }
 
     /**
@@ -417,30 +441,6 @@ public abstract class AbstractNetworkTableStrategy
         {
             return new ArrayList<ITableGateway>( tableGateways_.values() );
         }
-    }
-
-    /**
-     * Template method invoked when the network table is disconnecting from the
-     * network.
-     * 
-     * <p>
-     * This method is <b>not</b> invoked while the instance lock is held.
-     * Subclasses must always invoke the superclass method.
-     * </p>
-     * 
-     * <p>
-     * This implementation does nothing.
-     * </p>
-     * 
-     * @param error
-     *        The error that caused the network table to be disconnected from
-     *        the network or {@code null} if the network table was disconnected
-     *        normally.
-     */
-    protected void networkTableDisconnecting(
-        final NetworkTableError error )
-    {
-        // do nothing
     }
 
     /*
