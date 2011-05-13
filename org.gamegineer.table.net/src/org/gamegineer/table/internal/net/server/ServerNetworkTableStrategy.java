@@ -109,6 +109,11 @@ public final class ServerNetworkTableStrategy
         super.tableGatewayAdded( tableGateway );
 
         Loggers.getDefaultLogger().info( Messages.ServerNetworkTableStrategy_playerConnected_playerConnected( tableGateway.getPlayerName() ) );
+
+        // TODO
+        //
+        // - send PlayerConnected message to all other gateways other than "tableGateway"
+        // - send PlayerList message to "tableGateway"
     }
 
     /*

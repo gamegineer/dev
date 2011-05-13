@@ -48,11 +48,6 @@ final class Messages
     /** The protocol handshake timed out waiting for completion. */
     public static String ClientNetworkTableStrategy_handshake_timedOut;
 
-    // --- RemoteServerTableGateway -----------------------------------------
-
-    /** Failed to register the server table gateway. */
-    public static String RemoteServerTableGateway_serverTableGatewayNotRegistered;
-
 
     // ======================================================================
     // Constructors

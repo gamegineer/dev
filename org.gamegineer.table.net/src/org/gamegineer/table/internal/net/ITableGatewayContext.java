@@ -21,9 +21,9 @@
 
 package org.gamegineer.table.internal.net;
 
+import net.jcip.annotations.GuardedBy;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.net.NetworkTableError;
-import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * The execution context for a table gateway.
@@ -47,16 +47,15 @@ public interface ITableGatewayContext
      * @param tableGateway
      *        The table gateway; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code tableGateway} is already a registered table gateway.
      * @throws java.lang.NullPointerException
      *         If {@code tableGateway} is {@code null}.
-     * @throws org.gamegineer.table.net.NetworkTableException
-     *         If {@code tableGateway} is already associated with the execution
-     *         context.
      */
+    @GuardedBy( "getLock()" )
     public void addTableGateway(
         /* @NonNull */
-        ITableGateway tableGateway )
-        throws NetworkTableException;
+        ITableGateway tableGateway );
 
     /**
      * Disconnects the network table for the specified cause.
@@ -75,8 +74,17 @@ public interface ITableGatewayContext
      * 
      * @return The local player name; never {@code null}.
      */
+    @GuardedBy( "getLock()" )
     /* @NonNull */
     public String getLocalPlayerName();
+
+    /**
+     * Gets the instance lock for the execution context.
+     * 
+     * @return The instance lock for the execution context; never {@code null}.
+     */
+    /* @NonNull */
+    public Object getLock();
 
     /**
      * Gets the network password.
@@ -84,8 +92,28 @@ public interface ITableGatewayContext
      * @return The network password; never {@code null}. The returned value is a
      *         copy and must be disposed when it is no longer needed.
      */
+    @GuardedBy( "getLock()" )
     /* @NonNull */
     public SecureString getPassword();
+
+    /**
+     * Indicates a table gateway has been registered for the specified player
+     * name.
+     * 
+     * @param playerName
+     *        The name of the player associated with the table gateway; must not
+     *        be {@code null}.
+     * 
+     * @return {@code true} if a table gateway has been registered for the
+     *         specified player name; otherwise {@code false}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code playerName} is {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    public boolean isTableGatewayPresent(
+        /* @NonNull */
+        String playerName );
 
     /**
      * Removes the specified table gateway from the execution context.
@@ -98,6 +126,7 @@ public interface ITableGatewayContext
      * @throws java.lang.NullPointerException
      *         If {@code tableGateway} is {@code null}.
      */
+    @GuardedBy( "getLock()" )
     public void removeTableGateway(
         /* @NonNull */
         ITableGateway tableGateway );

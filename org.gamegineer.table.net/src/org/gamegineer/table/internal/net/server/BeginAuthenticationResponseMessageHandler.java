@@ -101,20 +101,15 @@ final class BeginAuthenticationResponseMessageHandler
             if( Arrays.equals( expectedResponse, response ) )
             {
                 System.out.println( "ServerService : client authenticated" ); //$NON-NLS-1$
-                remoteTableGateway.setPlayerName( playerName );
-                try
-                {
-                    context.addTableGateway( remoteTableGateway );
-                }
-                catch( final NetworkTableException e )
-                {
-                    remoteTableGateway.setPlayerName( null );
-                    throw e;
-                }
             }
             else
             {
                 throw new NetworkTableException( NetworkTableError.AUTHENTICATION_FAILED );
+            }
+
+            if( context.isTableGatewayPresent( playerName ) )
+            {
+                throw new NetworkTableException( NetworkTableError.DUPLICATE_PLAYER_NAME );
             }
         }
         finally
@@ -163,10 +158,17 @@ final class BeginAuthenticationResponseMessageHandler
             {
                 remoteTableGateway.close( ((ErrorMessage)responseMessage).getError() );
             }
+            else
+            {
+                remoteTableGateway.setPlayerName( message.getPlayerName() );
+                remoteTableGateway.getContext().addTableGateway( remoteTableGateway );
+            }
         }
         else
         {
             remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
+            // TODO: all these close() calls smell bad; may just allow handleMessage() to throw
+            // an exception that will force the gateway to close.
         }
     }
 

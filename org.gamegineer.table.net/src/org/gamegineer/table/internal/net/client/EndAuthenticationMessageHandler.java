@@ -21,13 +21,10 @@
 
 package org.gamegineer.table.internal.net.client;
 
-import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.messages.EndAuthenticationMessage;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.net.NetworkTableError;
-import org.gamegineer.table.net.NetworkTableException;
 
 /**
  * A message handler for the {@link EndAuthenticationMessage} message.
@@ -81,16 +78,7 @@ final class EndAuthenticationMessageHandler
             Integer.valueOf( message.getCorrelationId() ) ) );
         final IRemoteServerTableGateway remoteTableGateway = getRemoteTableGateway();
         remoteTableGateway.setPlayerName( "<<server>>" ); //$NON-NLS-1$
-        try
-        {
-            remoteTableGateway.getContext().addTableGateway( remoteTableGateway );
-        }
-        catch( final NetworkTableException e )
-        {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.RemoteServerTableGateway_serverTableGatewayNotRegistered, e );
-            remoteTableGateway.setPlayerName( null );
-            remoteTableGateway.close( e.getError() );
-        }
+        remoteTableGateway.getContext().addTableGateway( remoteTableGateway );
     }
 
     /**

@@ -30,7 +30,6 @@ import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.FakeMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.net.NetworkTableError;
-import org.gamegineer.table.net.NetworkTableException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -110,35 +109,6 @@ public final class EndAuthenticationMessageHandlerTest
         EasyMock.expect( remoteTableGateway.getContext() ).andReturn( tableGatewayContext ).anyTimes();
         remoteTableGateway.setPlayerName( EasyMock.notNull( String.class ) );
         tableGatewayContext.addTableGateway( remoteTableGateway );
-        mocksControl_.replay();
-
-        final EndAuthenticationMessage message = new EndAuthenticationMessage();
-        final EndAuthenticationMessageHandler messageHandler = new EndAuthenticationMessageHandler( remoteTableGateway );
-        messageHandler.handleMessage( message );
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code handleMessage} method correctly handles an end
-     * authentication message when adding the table gateway to the context
-     * fails.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testHandleMessage_EndAuthenticationMessage_AddTableGatewayFails()
-        throws Exception
-    {
-        final ITableGatewayContext tableGatewayContext = mocksControl_.createMock( ITableGatewayContext.class );
-        final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
-        EasyMock.expect( remoteTableGateway.getContext() ).andReturn( tableGatewayContext ).anyTimes();
-        remoteTableGateway.setPlayerName( EasyMock.notNull( String.class ) );
-        tableGatewayContext.addTableGateway( remoteTableGateway );
-        EasyMock.expectLastCall().andThrow( new NetworkTableException( NetworkTableError.UNSPECIFIED_ERROR ) );
-        remoteTableGateway.setPlayerName( null );
-        remoteTableGateway.close( NetworkTableError.UNSPECIFIED_ERROR );
         mocksControl_.replay();
 
         final EndAuthenticationMessage message = new EndAuthenticationMessage();

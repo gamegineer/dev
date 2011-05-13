@@ -130,21 +130,15 @@ public abstract class AbstractNetworkTableStrategy
     @Override
     public final void addTableGateway(
         final ITableGateway tableGateway )
-        throws NetworkTableException
     {
         assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
 
-        synchronized( getLock() )
-        {
-            if( tableGateways_.containsKey( tableGateway.getPlayerName() ) )
-            {
-                throw new NetworkTableException( NetworkTableError.DUPLICATE_PLAYER_NAME );
-            }
+        assertArgumentLegal( !tableGateways_.containsKey( tableGateway.getPlayerName() ), "tableGateway", Messages.AbstractNetworkTableStrategy_addTableGateway_tableGatewayRegistered ); //$NON-NLS-1$ 
 
-            tableGateways_.put( tableGateway.getPlayerName(), tableGateway );
-            Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table gateway registered for player '%s'.", tableGateway.getPlayerName() ) ); //$NON-NLS-1$
-            tableGatewayAdded( tableGateway );
-        }
+        tableGateways_.put( tableGateway.getPlayerName(), tableGateway );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table gateway registered for player '%s'.", tableGateway.getPlayerName() ) ); //$NON-NLS-1$
+        tableGatewayAdded( tableGateway );
     }
 
     /*
@@ -395,20 +389,17 @@ public abstract class AbstractNetworkTableStrategy
     @Override
     public final String getLocalPlayerName()
     {
-        synchronized( getLock() )
-        {
-            assertStateLegal( localPlayerName_ != null, Messages.AbstractNetworkTableStrategy_networkDisconnected );
-            return localPlayerName_;
-        }
+        assert Thread.holdsLock( getLock() );
+
+        assertStateLegal( localPlayerName_ != null, Messages.AbstractNetworkTableStrategy_networkDisconnected );
+        return localPlayerName_;
     }
 
-    /**
-     * Gets the instance lock.
-     * 
-     * @return The instance lock; never {@code null}.
+    /*
+     * @see org.gamegineer.table.internal.net.ITableGatewayContext#getLock()
      */
-    /* @NonNull */
-    protected final Object getLock()
+    @Override
+    public final Object getLock()
     {
         return lock_;
     }
@@ -422,11 +413,10 @@ public abstract class AbstractNetworkTableStrategy
     @Override
     public final SecureString getPassword()
     {
-        synchronized( getLock() )
-        {
-            assertStateLegal( password_ != null, Messages.AbstractNetworkTableStrategy_networkDisconnected );
-            return new SecureString( password_ );
-        }
+        assert Thread.holdsLock( getLock() );
+
+        assertStateLegal( password_ != null, Messages.AbstractNetworkTableStrategy_networkDisconnected );
+        return new SecureString( password_ );
     }
 
     /**
@@ -444,6 +434,19 @@ public abstract class AbstractNetworkTableStrategy
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.ITableGatewayContext#isTableGatewayPresent(java.lang.String)
+     */
+    @Override
+    public final boolean isTableGatewayPresent(
+        final String playerName )
+    {
+        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        return tableGateways_.containsKey( playerName );
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.ITableGatewayContext#removeTableGateway(org.gamegineer.table.internal.net.ITableGateway)
      */
     @Override
@@ -451,14 +454,12 @@ public abstract class AbstractNetworkTableStrategy
         final ITableGateway tableGateway )
     {
         assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
 
-        synchronized( getLock() )
-        {
-            assertArgumentLegal( tableGateways_.remove( tableGateway.getPlayerName() ) != null, "tableGateway", Messages.AbstractNetworkTableStrategy_removeTableGateway_tableGatewayNotRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( tableGateways_.remove( tableGateway.getPlayerName() ) != null, "tableGateway", Messages.AbstractNetworkTableStrategy_removeTableGateway_tableGatewayNotRegistered ); //$NON-NLS-1$
 
-            Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table gateway unregistered for player '%s'.", tableGateway.getPlayerName() ) ); //$NON-NLS-1$
-            tableGatewayRemoved( tableGateway );
-        }
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table gateway unregistered for player '%s'.", tableGateway.getPlayerName() ) ); //$NON-NLS-1$
+        tableGatewayRemoved( tableGateway );
     }
 
     /**

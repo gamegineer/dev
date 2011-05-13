@@ -21,10 +21,10 @@
 
 package org.gamegineer.table.internal.net.client;
 
+import org.gamegineer.table.internal.net.AbstractTableGatewayContextTestCase;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.NetworkTableConfigurations;
 import org.gamegineer.table.internal.net.NetworkTableStrategyContexts;
-import org.gamegineer.table.internal.net.common.AbstractAbstractNetworkTableStrategyAsTableGatewayContextTestCase;
 
 /**
  * A fixture for testing the
@@ -33,7 +33,7 @@ import org.gamegineer.table.internal.net.common.AbstractAbstractNetworkTableStra
  * {@link org.gamegineer.table.internal.net.ITableGatewayContext} interface.
  */
 public final class ClientNetworkTableStrategyAsTableGatewayContextTest
-    extends AbstractAbstractNetworkTableStrategyAsTableGatewayContextTestCase
+    extends AbstractTableGatewayContextTestCase
 {
     // ======================================================================
     // Constructors

@@ -135,7 +135,10 @@ public final class AbstractNetworkTableStrategyTest
     @Test( expected = IllegalStateException.class )
     public void testGetLocalPlayerName_Disconnected()
     {
-        networkTableStrategy_.getLocalPlayerName();
+        synchronized( networkTableStrategy_.getLock() )
+        {
+            networkTableStrategy_.getLocalPlayerName();
+        }
     }
 
     /**
@@ -145,7 +148,10 @@ public final class AbstractNetworkTableStrategyTest
     @Test( expected = IllegalStateException.class )
     public void testGetPassword_Disconnected()
     {
-        networkTableStrategy_.getPassword();
+        synchronized( networkTableStrategy_.getLock() )
+        {
+            networkTableStrategy_.getPassword();
+        }
     }
 
     /**

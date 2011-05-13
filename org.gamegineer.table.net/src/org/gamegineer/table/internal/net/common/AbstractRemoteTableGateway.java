@@ -173,7 +173,11 @@ public abstract class AbstractRemoteTableGateway
 
         if( playerName_ != null )
         {
-            tableGatewayContext_.removeTableGateway( this );
+            synchronized( tableGatewayContext_.getLock() )
+            {
+                tableGatewayContext_.removeTableGateway( this );
+            }
+
             playerName_ = null;
         }
     }
@@ -295,7 +299,10 @@ public abstract class AbstractRemoteTableGateway
 
                 if( messageHandler != null )
                 {
-                    messageHandler.handleMessage( message );
+                    synchronized( tableGatewayContext_.getLock() )
+                    {
+                        messageHandler.handleMessage( message );
+                    }
                 }
                 else
                 {

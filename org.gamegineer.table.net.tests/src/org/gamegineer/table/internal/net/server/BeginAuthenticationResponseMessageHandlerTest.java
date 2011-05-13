@@ -35,7 +35,6 @@ import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.FakeMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.net.NetworkTableError;
-import org.gamegineer.table.net.NetworkTableException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -127,10 +126,11 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         EasyMock.expect( remoteTableGateway.getContext() ).andReturn( tableGatewayContext ).anyTimes();
         EasyMock.expect( remoteTableGateway.getChallenge() ).andReturn( challenge ).anyTimes();
         EasyMock.expect( remoteTableGateway.getSalt() ).andReturn( salt ).anyTimes();
-        remoteTableGateway.setPlayerName( playerName );
-        tableGatewayContext.addTableGateway( remoteTableGateway );
+        EasyMock.expect( tableGatewayContext.isTableGatewayPresent( playerName ) ).andReturn( false );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        remoteTableGateway.setPlayerName( playerName );
+        tableGatewayContext.addTableGateway( remoteTableGateway );
         mocksControl_.replay();
 
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
@@ -219,10 +219,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         EasyMock.expect( remoteTableGateway.getContext() ).andReturn( tableGatewayContext ).anyTimes();
         EasyMock.expect( remoteTableGateway.getChallenge() ).andReturn( challenge ).anyTimes();
         EasyMock.expect( remoteTableGateway.getSalt() ).andReturn( salt ).anyTimes();
-        remoteTableGateway.setPlayerName( playerName );
-        tableGatewayContext.addTableGateway( remoteTableGateway );
-        EasyMock.expectLastCall().andThrow( new NetworkTableException( NetworkTableError.DUPLICATE_PLAYER_NAME ) );
-        remoteTableGateway.setPlayerName( null );
+        EasyMock.expect( tableGatewayContext.isTableGatewayPresent( playerName ) ).andReturn( true );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
         remoteTableGateway.close( NetworkTableError.DUPLICATE_PLAYER_NAME );
@@ -269,8 +266,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         EasyMock.expect( remoteTableGateway.getContext() ).andReturn( tableGatewayContext ).anyTimes();
         EasyMock.expect( remoteTableGateway.getChallenge() ).andReturn( challenge ).anyTimes();
         EasyMock.expect( remoteTableGateway.getSalt() ).andReturn( salt ).anyTimes();
-        remoteTableGateway.setPlayerName( playerName );
-        tableGatewayContext.addTableGateway( remoteTableGateway );
+        EasyMock.expect( tableGatewayContext.isTableGatewayPresent( playerName ) ).andReturn( false );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( false );
         remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
