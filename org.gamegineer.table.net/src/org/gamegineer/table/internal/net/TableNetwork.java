@@ -43,7 +43,7 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @ThreadSafe
 public final class TableNetwork
-    implements ITableNetwork, ITableNetworkStrategyContext
+    implements ITableNetwork, ITableNetworkController
 {
     // ======================================================================
     // Fields
@@ -200,15 +200,11 @@ public final class TableNetwork
         disconnect( null );
     }
 
-    /**
-     * Disconnects the table network due to the specified error.
-     * 
-     * @param error
-     *        The error that caused the table network to be disconnected or
-     *        {@code null} if the table network was disconnected normally.
+    /*
+     * @see org.gamegineer.table.internal.net.ITableNetworkController#disconnect(org.gamegineer.table.net.TableNetworkError)
      */
+    @Override
     public void disconnect(
-        /* @Nullable */
         final TableNetworkError error )
     {
         if( connectionStateRef_.compareAndSet( ConnectionState.CONNECTED, ConnectionState.DISCONNECTING ) )
@@ -218,16 +214,6 @@ public final class TableNetwork
             connectionStateRef_.set( ConnectionState.DISCONNECTED );
             fireTableNetworkDisconnected( error );
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkStrategyContext#disconnectTableNetwork(org.gamegineer.table.net.TableNetworkError)
-     */
-    @Override
-    public void disconnectTableNetwork(
-        final TableNetworkError error )
-    {
-        disconnect( error );
     }
 
     /**
@@ -275,7 +261,7 @@ public final class TableNetwork
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkStrategyContext#getTransportLayerFactory()
+     * @see org.gamegineer.table.internal.net.ITableNetworkController#getTransportLayerFactory()
      */
     @Override
     public ITransportLayerFactory getTransportLayerFactory()

@@ -35,32 +35,32 @@ public interface ITableNetworkStrategyFactory
     /**
      * Creates a new client table network strategy.
      * 
-     * @param context
-     *        The table network strategy context; must not be {@code null}.
+     * @param tableNetworkController
+     *        The table network controller; must not be {@code null}.
      * 
      * @return The client table network strategy; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
+     *         If {@code tableNetworkController} is {@code null}.
      */
     /* @NonNull */
     public ITableNetworkStrategy createClientTableNetworkStrategy(
         /* @NonNull */
-        ITableNetworkStrategyContext context );
+        ITableNetworkController tableNetworkController );
 
     /**
      * Creates a new server table network strategy.
      * 
-     * @param context
-     *        The table network strategy context; must not be {@code null}.
+     * @param tableNetworkController
+     *        The table network controller; must not be {@code null}.
      * 
      * @return The server table network strategy; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
+     *         If {@code tableNetworkController} is {@code null}.
      */
     /* @NonNull */
     public ITableNetworkStrategy createServerTableNetworkStrategy(
         /* @NonNull */
-        ITableNetworkStrategyContext context );
+        ITableNetworkController tableNetworkController );
 }

@@ -55,25 +55,25 @@ public class DefaultTableNetworkStrategyFactory
      * This implementation creates an instance of
      * {@link ClientTableNetworkStrategy}.
      * 
-     * @see org.gamegineer.table.internal.net.ITableNetworkStrategyFactory#createClientTableNetworkStrategy(org.gamegineer.table.internal.net.ITableNetworkStrategyContext)
+     * @see org.gamegineer.table.internal.net.ITableNetworkStrategyFactory#createClientTableNetworkStrategy(org.gamegineer.table.internal.net.ITableNetworkController)
      */
     @Override
     public ITableNetworkStrategy createClientTableNetworkStrategy(
-        final ITableNetworkStrategyContext context )
+        final ITableNetworkController tableNetworkController )
     {
-        return new ClientTableNetworkStrategy( context );
+        return new ClientTableNetworkStrategy( tableNetworkController );
     }
 
     /**
      * This implementation creates an instance of
      * {@link ServerTableNetworkStrategy}.
      * 
-     * @see org.gamegineer.table.internal.net.ITableNetworkStrategyFactory#createServerTableNetworkStrategy(org.gamegineer.table.internal.net.ITableNetworkStrategyContext)
+     * @see org.gamegineer.table.internal.net.ITableNetworkStrategyFactory#createServerTableNetworkStrategy(org.gamegineer.table.internal.net.ITableNetworkController)
      */
     @Override
     public ITableNetworkStrategy createServerTableNetworkStrategy(
-        final ITableNetworkStrategyContext context )
+        final ITableNetworkController tableNetworkController )
     {
-        return new ServerTableNetworkStrategy( context );
+        return new ServerTableNetworkStrategy( tableNetworkController );
     }
 }

@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.net.server;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableGateway;
-import org.gamegineer.table.internal.net.ITableNetworkStrategyContext;
+import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy;
 import org.gamegineer.table.internal.net.transport.IService;
@@ -47,17 +47,17 @@ public final class ServerTableNetworkStrategy
      * Initializes a new instance of the {@code ServerTableNetworkStrategy}
      * class.
      * 
-     * @param context
-     *        The table network strategy context; must not be {@code null}.
+     * @param tableNetworkController
+     *        The table network controller; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
+     *         If {@code tableNetworkController} is {@code null}.
      */
     public ServerTableNetworkStrategy(
         /* @NonNull */
-        final ITableNetworkStrategyContext context )
+        final ITableNetworkController tableNetworkController )
     {
-        super( context );
+        super( tableNetworkController );
     }
 
 
@@ -73,7 +73,7 @@ public final class ServerTableNetworkStrategy
     {
         assert Thread.holdsLock( getLock() );
 
-        return getContext().getTransportLayerFactory().createPassiveTransportLayer( new AbstractTransportLayerContext()
+        return getTableNetworkController().getTransportLayerFactory().createPassiveTransportLayer( new AbstractTransportLayerContext()
         {
             @Override
             public IService createService()

@@ -1,5 +1,5 @@
 /*
- * TableNetworkStrategyContexts.java
+ * DefaultTableNetworkStrategyFactoryAsTableNetworkStrategyFactoryTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,32 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 18, 2011 at 8:17:49 PM.
+ * Created on May 14, 2011 at 1:35:21 PM.
  */
 
 package org.gamegineer.table.internal.net;
 
-import net.jcip.annotations.ThreadSafe;
-import org.easymock.EasyMock;
-import org.easymock.IMocksControl;
-import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactory;
-
 /**
- * A collection of useful methods for working with table network strategy
- * contexts.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.net.DefaultTableNetworkStrategyFactory}
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.ITableNetworkStrategyFactory}
+ * interface.
  */
-@ThreadSafe
-public final class TableNetworkStrategyContexts
+public final class DefaultTableNetworkStrategyFactoryAsTableNetworkStrategyFactoryTest
+    extends AbstractTableNetworkStrategyFactoryTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableNetworkStrategyContexts}
+     * Initializes a new instance of the {@code
+     * DefaultTableNetworkStrategyFactoryAsTableNetworkStrategyFactoryTest}
      * class.
      */
-    private TableNetworkStrategyContexts()
+    public DefaultTableNetworkStrategyFactoryAsTableNetworkStrategyFactoryTest()
     {
         super();
     }
@@ -51,18 +50,12 @@ public final class TableNetworkStrategyContexts
     // Methods
     // ======================================================================
 
-    /**
-     * Creates a new fake table network strategy context.
-     * 
-     * @return A new fake table network strategy context; never {@code null}.
+    /*
+     * @see org.gamegineer.table.internal.net.AbstractTableNetworkStrategyFactoryTestCase#createTableNetworkStrategyFactory()
      */
-    /* @NonNull */
-    public static ITableNetworkStrategyContext createFakeTableNetworkStrategyContext()
+    @Override
+    protected ITableNetworkStrategyFactory createTableNetworkStrategyFactory()
     {
-        final IMocksControl mocksControl = EasyMock.createControl();
-        final ITableNetworkStrategyContext context = mocksControl.createMock( ITableNetworkStrategyContext.class );
-        EasyMock.expect( context.getTransportLayerFactory() ).andReturn( new FakeTransportLayerFactory() ).anyTimes();
-        mocksControl.replay();
-        return context;
+        return new DefaultTableNetworkStrategyFactory();
     }
 }

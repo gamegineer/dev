@@ -1,5 +1,5 @@
 /*
- * ITableNetworkStrategyContext.java
+ * ITableNetworkController.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -25,16 +25,11 @@ import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 import org.gamegineer.table.net.TableNetworkError;
 
 /**
- * The execution context for a table network strategy.
- * 
- * <p>
- * Provides operations that allow a table network strategy to interact with the
- * table network.
- * </p>
+ * The control interface for a table network.
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface ITableNetworkStrategyContext
+public interface ITableNetworkController
 {
     // ======================================================================
     // Methods
@@ -47,7 +42,7 @@ public interface ITableNetworkStrategyContext
      *        The error that caused the table network to be disconnected or
      *        {@code null} if the table network was disconnected normally.
      */
-    public void disconnectTableNetwork(
+    public void disconnect(
         /* @Nullable */
         TableNetworkError error );
 

@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.net.client;
 import org.gamegineer.table.internal.net.AbstractTableGatewayContextTestCase;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
-import org.gamegineer.table.internal.net.TableNetworkStrategyContexts;
+import org.gamegineer.table.internal.net.TableNetworkControllers;
 
 /**
  * A fixture for testing the
@@ -60,7 +60,7 @@ public final class ClientTableNetworkStrategyAsTableGatewayContextTest
     protected ITableGatewayContext createTableGatewayContext()
         throws Exception
     {
-        final ClientTableNetworkStrategy strategy = new ClientTableNetworkStrategy( TableNetworkStrategyContexts.createFakeTableNetworkStrategyContext(), false );
+        final ClientTableNetworkStrategy strategy = new ClientTableNetworkStrategy( TableNetworkControllers.createFakeTableNetworkController(), false );
         strategy.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
         return strategy;
     }

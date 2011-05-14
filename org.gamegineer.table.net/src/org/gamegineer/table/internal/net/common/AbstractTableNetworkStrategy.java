@@ -35,8 +35,8 @@ import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.ITableNetworkStrategy;
-import org.gamegineer.table.internal.net.ITableNetworkStrategyContext;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 import org.gamegineer.table.internal.net.transport.TransportException;
@@ -60,9 +60,6 @@ public abstract class AbstractTableNetworkStrategy
     // Fields
     // ======================================================================
 
-    /** The table network strategy context. */
-    private final ITableNetworkStrategyContext context_;
-
     /**
      * The local client table gateway or {@code null} if the network is not
      * connected.
@@ -85,6 +82,9 @@ public abstract class AbstractTableNetworkStrategy
     @GuardedBy( "getLock()" )
     private final Map<String, ITableGateway> tableGateways_;
 
+    /** The table network controller. */
+    private final ITableNetworkController tableNetworkController_;
+
     /** The transport layer or {@code null} if the network is not connected. */
     @GuardedBy( "getLock()" )
     private ITransportLayer transportLayer_;
@@ -98,24 +98,24 @@ public abstract class AbstractTableNetworkStrategy
      * Initializes a new instance of the {@code AbstractTableNetworkStrategy}
      * class.
      * 
-     * @param context
-     *        The table network strategy context; must not be {@code null}.
+     * @param tableNetworkController
+     *        The table network controller; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
+     *         If {@code tableNetworkController} is {@code null}.
      */
     protected AbstractTableNetworkStrategy(
         /* @NonNull */
-        final ITableNetworkStrategyContext context )
+        final ITableNetworkController tableNetworkController )
     {
-        assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
+        assertArgumentNotNull( tableNetworkController, "tableNetworkController" ); //$NON-NLS-1$
 
-        context_ = context;
         localClientTableGateway_ = null;
         localPlayerName_ = null;
         lock_ = new Object();
         password_ = null;
         tableGateways_ = new HashMap<String, ITableGateway>();
+        tableNetworkController_ = tableNetworkController;
         transportLayer_ = null;
     }
 
@@ -278,7 +278,7 @@ public abstract class AbstractTableNetworkStrategy
         final TableNetworkError error )
     {
         disconnectingTableNetwork( error );
-        context_.disconnectTableNetwork( error );
+        tableNetworkController_.disconnect( error );
     }
 
     /**
@@ -364,17 +364,6 @@ public abstract class AbstractTableNetworkStrategy
     }
 
     /**
-     * Gets the table network strategy context.
-     * 
-     * @return The table network strategy context; never {@code null}.
-     */
-    /* @NonNull */
-    protected final ITableNetworkStrategyContext getContext()
-    {
-        return context_;
-    }
-
-    /**
      * @throws java.lang.IllegalStateException
      *         If the network is not connected.
      * 
@@ -425,6 +414,17 @@ public abstract class AbstractTableNetworkStrategy
         {
             return new ArrayList<ITableGateway>( tableGateways_.values() );
         }
+    }
+
+    /**
+     * Gets the table network controller.
+     * 
+     * @return The table network controller; never {@code null}.
+     */
+    /* @NonNull */
+    protected final ITableNetworkController getTableNetworkController()
+    {
+        return tableNetworkController_;
     }
 
     /*
@@ -554,7 +554,7 @@ public abstract class AbstractTableNetworkStrategy
         public final void transportLayerDisconnected(
             final Exception exception )
         {
-            getContext().disconnectTableNetwork( (exception != null) ? TableNetworkError.TRANSPORT_ERROR : null );
+            getTableNetworkController().disconnect( (exception != null) ? TableNetworkError.TRANSPORT_ERROR : null );
         }
     }
 }

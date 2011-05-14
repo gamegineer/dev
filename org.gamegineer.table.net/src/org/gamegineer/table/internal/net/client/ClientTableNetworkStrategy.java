@@ -29,7 +29,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableGateway;
-import org.gamegineer.table.internal.net.ITableNetworkStrategyContext;
+import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -75,17 +75,17 @@ public final class ClientTableNetworkStrategy
      * Initializes a new instance of the {@code ClientTableNetworkStrategy}
      * class.
      * 
-     * @param context
-     *        The table network strategy context; must not be {@code null}.
+     * @param tableNetworkController
+     *        The table network controller; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
+     *         If {@code tableNetworkController} is {@code null}.
      */
     public ClientTableNetworkStrategy(
         /* @NonNull */
-        final ITableNetworkStrategyContext context )
+        final ITableNetworkController tableNetworkController )
     {
-        this( context, true );
+        this( tableNetworkController, true );
     }
 
     /**
@@ -97,22 +97,22 @@ public final class ClientTableNetworkStrategy
      * This constructor is only intended to support testing.
      * </p>
      * 
-     * @param context
-     *        The table network strategy context; must not be {@code null}.
+     * @param tableNetworkController
+     *        The table network controller; must not be {@code null}.
      * @param waitForHandshakeCompletion
      *        {@code true} if the strategy should wait for the handshake to
      *        complete before indicating the connection has been established;
      *        otherwise {@code false}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
+     *         If {@code tableNetworkController} is {@code null}.
      */
     public ClientTableNetworkStrategy(
         /* @NonNull */
-        final ITableNetworkStrategyContext context,
+        final ITableNetworkController tableNetworkController,
         final boolean waitForHandshakeCompletion )
     {
-        super( context );
+        super( tableNetworkController );
 
         handshakeLock_ = new ReentrantLock();
         handshakeCondition_ = handshakeLock_.newCondition();
@@ -172,7 +172,7 @@ public final class ClientTableNetworkStrategy
     {
         assert Thread.holdsLock( getLock() );
 
-        return getContext().getTransportLayerFactory().createActiveTransportLayer( new AbstractTransportLayerContext()
+        return getTableNetworkController().getTransportLayerFactory().createActiveTransportLayer( new AbstractTransportLayerContext()
         {
             @Override
             public IService createService()

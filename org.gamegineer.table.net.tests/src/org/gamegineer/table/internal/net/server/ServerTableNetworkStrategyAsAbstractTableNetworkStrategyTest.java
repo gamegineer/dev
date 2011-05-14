@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.net.server;
 
-import org.gamegineer.table.internal.net.TableNetworkStrategyContexts;
+import org.gamegineer.table.internal.net.TableNetworkControllers;
 import org.gamegineer.table.internal.net.common.AbstractAbstractTableNetworkStrategyTestCase;
 
 /**
@@ -58,6 +58,6 @@ public final class ServerTableNetworkStrategyAsAbstractTableNetworkStrategyTest
     @Override
     protected ServerTableNetworkStrategy createTableNetworkStrategy()
     {
-        return new ServerTableNetworkStrategy( TableNetworkStrategyContexts.createFakeTableNetworkStrategyContext() );
+        return new ServerTableNetworkStrategy( TableNetworkControllers.createFakeTableNetworkController() );
     }
 }

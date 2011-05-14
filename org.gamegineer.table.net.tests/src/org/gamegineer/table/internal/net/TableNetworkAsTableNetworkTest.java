@@ -67,9 +67,9 @@ public final class TableNetworkAsTableNetworkTest
             {
                 @Override
                 public ITableNetworkStrategy createClientTableNetworkStrategy(
-                    final ITableNetworkStrategyContext context )
+                    final ITableNetworkController tableNetworkController )
                 {
-                    return new ClientTableNetworkStrategy( context, false );
+                    return new ClientTableNetworkStrategy( tableNetworkController, false );
                 }
             }, //
             new FakeTransportLayerFactory() );

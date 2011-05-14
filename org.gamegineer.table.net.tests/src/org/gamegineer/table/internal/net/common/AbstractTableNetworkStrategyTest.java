@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Collection;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.ITableGateway;
-import org.gamegineer.table.internal.net.ITableNetworkStrategyContext;
+import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.junit.After;
 import org.junit.Before;
@@ -68,21 +68,21 @@ public final class AbstractTableNetworkStrategyTest
      * Creates a new instance of the {@code AbstractTableNetworkStrategy} class
      * with stubbed implementations of all abstract methods.
      * 
-     * @param context
-     *        The table network strategy context; must not be {@code null}.
+     * @param tableNetworkController
+     *        The table network controller; must not be {@code null}.
      * 
      * @return A new instance of the {@code AbstractTableNetworkStrategy} class;
      *         never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
+     *         If {@code tableNetworkController} is {@code null}.
      */
     /* @NonNull */
     private static AbstractTableNetworkStrategy createTableNetworkStrategy(
         /* @NonNull */
-        final ITableNetworkStrategyContext context )
+        final ITableNetworkController tableNetworkController )
     {
-        return new AbstractTableNetworkStrategy( context )
+        return new AbstractTableNetworkStrategy( tableNetworkController )
         {
             @Override
             protected ITransportLayer createTransportLayer()
@@ -102,7 +102,7 @@ public final class AbstractTableNetworkStrategyTest
     public void setUp()
         throws Exception
     {
-        strategy_ = createTableNetworkStrategy( EasyMock.createMock( ITableNetworkStrategyContext.class ) );
+        strategy_ = createTableNetworkStrategy( EasyMock.createMock( ITableNetworkController.class ) );
     }
 
     /**
@@ -120,10 +120,10 @@ public final class AbstractTableNetworkStrategyTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * context.
+     * table network controller.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_Context_Null()
+    public void testConstructor_TableNetworkController_Null()
     {
         createTableNetworkStrategy( null );
     }

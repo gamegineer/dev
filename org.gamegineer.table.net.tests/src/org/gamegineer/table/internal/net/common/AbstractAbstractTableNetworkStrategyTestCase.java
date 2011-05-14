@@ -27,7 +27,7 @@ import net.jcip.annotations.NotThreadSafe;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.AbstractTableNetworkStrategyTestCase;
 import org.gamegineer.table.internal.net.ITableGateway;
-import org.gamegineer.table.internal.net.ITableNetworkStrategyContext;
+import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.TransportException;
@@ -365,7 +365,7 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
             /* @NonNull */
             final ITransportLayer transportLayer )
         {
-            super( EasyMock.createMock( ITableNetworkStrategyContext.class ) );
+            super( EasyMock.createMock( ITableNetworkController.class ) );
 
             assert transportLayer != null;
 
