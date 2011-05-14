@@ -37,17 +37,6 @@ final class Messages
     // Fields
     // ======================================================================
 
-    // --- AbstractTableNetworkStrategy -------------------------------------
-
-    /** The table gateway is already registered. */
-    public static String AbstractTableNetworkStrategy_addTableGateway_tableGatewayRegistered;
-
-    /** The network is disconnected. */
-    public static String AbstractTableNetworkStrategy_networkDisconnected;
-
-    /** The table gateway is not registered. */
-    public static String AbstractTableNetworkStrategy_removeTableGateway_tableGatewayNotRegistered;
-
     // --- AbstractRemoteTableGateway ---------------------------------------
 
     /** An error occurred while deserializing a message. */
@@ -72,6 +61,17 @@ final class Messages
 
     /** The message handler received an unexpected message. */
     public static String AbstractMessageHandler_messageReceived_unexpectedMessage;
+
+    // --- AbstractTableNetworkNode -----------------------------------------
+
+    /** The table gateway is already registered. */
+    public static String AbstractTableNetworkNode_addTableGateway_tableGatewayRegistered;
+
+    /** The network is disconnected. */
+    public static String AbstractTableNetworkNode_networkDisconnected;
+
+    /** The table gateway is not registered. */
+    public static String AbstractTableNetworkNode_removeTableGateway_tableGatewayNotRegistered;
 
     // --- Authenticator ----------------------------------------------------
 

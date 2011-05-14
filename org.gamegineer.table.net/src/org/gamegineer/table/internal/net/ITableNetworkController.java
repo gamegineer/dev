@@ -27,6 +27,12 @@ import org.gamegineer.table.net.TableNetworkError;
 /**
  * The control interface for a table network.
  * 
+ * <p>
+ * This interface provides operations that allow a table network node controller
+ * to control the local table network. It is only intended for use by an
+ * implementation of {@link ITableNetworkNodeController}.
+ * </p>
+ * 
  * @noextend This interface is not intended to be extended by clients.
  */
 public interface ITableNetworkController
@@ -47,7 +53,7 @@ public interface ITableNetworkController
         TableNetworkError error );
 
     /**
-     * Gets the table network transport layer factory
+     * Gets the table network transport layer factory.
      * 
      * @return The table network transport layer factory; never {@code null}.
      */

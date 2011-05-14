@@ -1,5 +1,5 @@
 /*
- * AbstractTableNetworkStrategyTestCase.java
+ * AbstractTableNetworkNodeControllerTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -30,19 +30,20 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.ITableNetworkStrategy} interface.
+ * {@link org.gamegineer.table.internal.net.ITableNetworkNodeController}
+ * interface.
  * 
  * @param <T>
- *        The type of the table network strategy.
+ *        The type of the table network node controller.
  */
-public abstract class AbstractTableNetworkStrategyTestCase<T extends ITableNetworkStrategy>
+public abstract class AbstractTableNetworkNodeControllerTestCase<T extends ITableNetworkNodeController>
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table network strategy under test in the fixture. */
-    private T strategy_;
+    /** The table network node controller under test in the fixture. */
+    private T controller_;
 
 
     // ======================================================================
@@ -51,9 +52,9 @@ public abstract class AbstractTableNetworkStrategyTestCase<T extends ITableNetwo
 
     /**
      * Initializes a new instance of the {@code
-     * AbstractTableNetworkStrategyTestCase} class.
+     * AbstractTableNetworkNodeControllerTestCase} class.
      */
-    protected AbstractTableNetworkStrategyTestCase()
+    protected AbstractTableNetworkNodeControllerTestCase()
     {
         super();
     }
@@ -64,28 +65,29 @@ public abstract class AbstractTableNetworkStrategyTestCase<T extends ITableNetwo
     // ======================================================================
 
     /**
-     * Creates the table network strategy to be tested.
+     * Creates the table network node controller to be tested.
      * 
-     * @return The table network strategy to be tested; never {@code null}.
+     * @return The table network node controller to be tested; never {@code
+     *         null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract T createTableNetworkStrategy()
+    protected abstract T createTableNetworkNodeController()
         throws Exception;
 
     /**
-     * Gets the table network strategy under test in the fixture.
+     * Gets the table network node controller under test in the fixture.
      * 
-     * @return The table network strategy under test in the fixture; never
-     *         {@code null}.
+     * @return The table network node controller under test in the fixture;
+     *         never {@code null}.
      */
     /* @NonNull */
-    protected final T getTableNetworkStrategy()
+    protected final T getTableNetworkNodeController()
     {
-        assertNotNull( strategy_ );
-        return strategy_;
+        assertNotNull( controller_ );
+        return controller_;
     }
 
     /**
@@ -98,8 +100,8 @@ public abstract class AbstractTableNetworkStrategyTestCase<T extends ITableNetwo
     public void setUp()
         throws Exception
     {
-        strategy_ = createTableNetworkStrategy();
-        assertNotNull( strategy_ );
+        controller_ = createTableNetworkNodeController();
+        assertNotNull( controller_ );
     }
 
     /**
@@ -112,7 +114,7 @@ public abstract class AbstractTableNetworkStrategyTestCase<T extends ITableNetwo
     public void tearDown()
         throws Exception
     {
-        strategy_ = null;
+        controller_ = null;
     }
 
     /**
@@ -126,12 +128,12 @@ public abstract class AbstractTableNetworkStrategyTestCase<T extends ITableNetwo
     public void testConnect_Configuration_Null()
         throws Exception
     {
-        strategy_.connect( null );
+        controller_.connect( null );
     }
 
     /**
      * Ensures the {@code connect} method throws an exception when the table
-     * network is connected.
+     * network node is connected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -140,19 +142,19 @@ public abstract class AbstractTableNetworkStrategyTestCase<T extends ITableNetwo
     public void testConnect_Connected_ThrowsException()
         throws Exception
     {
-        final ITableNetworkConfiguration tableNetworkConfiguration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
-        strategy_.connect( tableNetworkConfiguration );
+        final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
+        controller_.connect( configuration );
 
-        strategy_.connect( tableNetworkConfiguration );
+        controller_.connect( configuration );
     }
 
     /**
      * Ensures the {@code disconnect} method does nothing when the table network
-     * is disconnected.
+     * node is disconnected.
      */
     @Test
     public void testDisconnect_Disconnected_DoesNothing()
     {
-        strategy_.disconnect();
+        controller_.disconnect();
     }
 }

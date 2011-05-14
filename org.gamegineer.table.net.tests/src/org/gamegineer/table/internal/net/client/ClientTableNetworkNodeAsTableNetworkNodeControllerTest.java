@@ -1,5 +1,5 @@
 /*
- * ClientTableNetworkStrategyTest.java
+ * ClientTableNetworkNodeAsTableNetworkNodeControllerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 10, 2011 at 6:08:35 PM.
+ * Created on Apr 10, 2011 at 6:20:20 PM.
  */
 
 package org.gamegineer.table.internal.net.client;
 
-import org.junit.Test;
+import org.gamegineer.table.internal.net.TableNetworkControllers;
+import org.gamegineer.table.internal.net.common.AbstractAbstractTableNetworkNodeAsTableNetworkNodeControllerTestCase;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.client.ClientTableNetworkStrategy}
- * class.
+ * {@link org.gamegineer.table.internal.net.client.ClientTableNetworkNode} class
+ * to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.ITableNetworkNodeController}
+ * interface.
  */
-public final class ClientTableNetworkStrategyTest
+public final class ClientTableNetworkNodeAsTableNetworkNodeControllerTest
+    extends AbstractAbstractTableNetworkNodeAsTableNetworkNodeControllerTestCase<ClientTableNetworkNode>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ClientTableNetworkStrategyTest}
-     * class.
+     * Initializes a new instance of the {@code
+     * ClientTableNetworkNodeAsTableNetworkNodeControllerTest} class.
      */
-    public ClientTableNetworkStrategyTest()
+    public ClientTableNetworkNodeAsTableNetworkNodeControllerTest()
     {
         super();
     }
@@ -48,13 +52,12 @@ public final class ClientTableNetworkStrategyTest
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * context.
+    /*
+     * @see org.gamegineer.table.internal.net.AbstractTableNetworkNodeControllerTestCase#createTableNetworkNodeController()
      */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Context_Null()
+    @Override
+    protected ClientTableNetworkNode createTableNetworkNodeController()
     {
-        new ClientTableNetworkStrategy( null );
+        return new ClientTableNetworkNode( TableNetworkControllers.createFakeTableNetworkController(), false );
     }
 }

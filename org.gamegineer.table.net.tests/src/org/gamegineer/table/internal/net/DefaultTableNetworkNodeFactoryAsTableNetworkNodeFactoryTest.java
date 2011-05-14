@@ -1,5 +1,5 @@
 /*
- * ClientTableNetworkStrategyAsAbstractTableNetworkStrategyTest.java
+ * DefaultTableNetworkNodeFactoryAsTableNetworkNodeFactoryTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,23 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 10, 2011 at 6:20:20 PM.
+ * Created on May 14, 2011 at 1:35:21 PM.
  */
 
-package org.gamegineer.table.internal.net.client;
-
-import org.gamegineer.table.internal.net.TableNetworkControllers;
-import org.gamegineer.table.internal.net.common.AbstractAbstractTableNetworkStrategyTestCase;
+package org.gamegineer.table.internal.net;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.client.ClientTableNetworkStrategy}
+ * {@link org.gamegineer.table.internal.net.DefaultTableNetworkNodeFactory}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy}
- * class.
+ * {@link org.gamegineer.table.internal.net.ITableNetworkNodeFactory} interface.
  */
-public final class ClientTableNetworkStrategyAsAbstractTableNetworkStrategyTest
-    extends AbstractAbstractTableNetworkStrategyTestCase<ClientTableNetworkStrategy>
+public final class DefaultTableNetworkNodeFactoryAsTableNetworkNodeFactoryTest
+    extends AbstractTableNetworkNodeFactoryTestCase
 {
     // ======================================================================
     // Constructors
@@ -40,9 +36,9 @@ public final class ClientTableNetworkStrategyAsAbstractTableNetworkStrategyTest
 
     /**
      * Initializes a new instance of the {@code
-     * ClientTableNetworkStrategyAsAbstractTableNetworkStrategyTest} class.
+     * DefaultTableNetworkNodeFactoryAsTableNetworkNodeFactoryTest} class.
      */
-    public ClientTableNetworkStrategyAsAbstractTableNetworkStrategyTest()
+    public DefaultTableNetworkNodeFactoryAsTableNetworkNodeFactoryTest()
     {
         super();
     }
@@ -53,11 +49,11 @@ public final class ClientTableNetworkStrategyAsAbstractTableNetworkStrategyTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractTableNetworkStrategyTestCase#createTableNetworkStrategy()
+     * @see org.gamegineer.table.internal.net.AbstractTableNetworkNodeFactoryTestCase#createTableNetworkNodeFactory()
      */
     @Override
-    protected ClientTableNetworkStrategy createTableNetworkStrategy()
+    protected ITableNetworkNodeFactory createTableNetworkNodeFactory()
     {
-        return new ClientTableNetworkStrategy( TableNetworkControllers.createFakeTableNetworkController(), false );
+        return new DefaultTableNetworkNodeFactory();
     }
 }

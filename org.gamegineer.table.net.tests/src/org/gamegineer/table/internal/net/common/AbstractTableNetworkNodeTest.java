@@ -1,5 +1,5 @@
 /*
- * AbstractTableNetworkStrategyTest.java
+ * AbstractTableNetworkNodeTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -33,17 +33,17 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy}
+ * {@link org.gamegineer.table.internal.net.common.AbstractTableNetworkNode}
  * class.
  */
-public final class AbstractTableNetworkStrategyTest
+public final class AbstractTableNetworkNodeTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table network strategy under test in the fixture. */
-    private AbstractTableNetworkStrategy strategy_;
+    /** The table network node under test in the fixture. */
+    private AbstractTableNetworkNode node_;
 
 
     // ======================================================================
@@ -51,10 +51,10 @@ public final class AbstractTableNetworkStrategyTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractTableNetworkStrategyTest} class.
+     * Initializes a new instance of the {@code AbstractTableNetworkNodeTest}
+     * class.
      */
-    public AbstractTableNetworkStrategyTest()
+    public AbstractTableNetworkNodeTest()
     {
         super();
     }
@@ -65,24 +65,24 @@ public final class AbstractTableNetworkStrategyTest
     // ======================================================================
 
     /**
-     * Creates a new instance of the {@code AbstractTableNetworkStrategy} class
-     * with stubbed implementations of all abstract methods.
+     * Creates a new instance of the {@code AbstractTableNetworkNode} class with
+     * stubbed implementations of all abstract methods.
      * 
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
      * 
-     * @return A new instance of the {@code AbstractTableNetworkStrategy} class;
+     * @return A new instance of the {@code AbstractTableNetworkNode} class;
      *         never {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.
      */
     /* @NonNull */
-    private static AbstractTableNetworkStrategy createTableNetworkStrategy(
+    private static AbstractTableNetworkNode createTableNetworkNode(
         /* @NonNull */
         final ITableNetworkController tableNetworkController )
     {
-        return new AbstractTableNetworkStrategy( tableNetworkController )
+        return new AbstractTableNetworkNode( tableNetworkController )
         {
             @Override
             protected ITransportLayer createTransportLayer()
@@ -102,7 +102,7 @@ public final class AbstractTableNetworkStrategyTest
     public void setUp()
         throws Exception
     {
-        strategy_ = createTableNetworkStrategy( EasyMock.createMock( ITableNetworkController.class ) );
+        node_ = createTableNetworkNode( EasyMock.createMock( ITableNetworkController.class ) );
     }
 
     /**
@@ -115,7 +115,7 @@ public final class AbstractTableNetworkStrategyTest
     public void tearDown()
         throws Exception
     {
-        strategy_ = null;
+        node_ = null;
     }
 
     /**
@@ -125,32 +125,32 @@ public final class AbstractTableNetworkStrategyTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_TableNetworkController_Null()
     {
-        createTableNetworkStrategy( null );
+        createTableNetworkNode( null );
     }
 
     /**
      * Ensures the {@code getLocalPlayerName} method throws an exception when
-     * the table network strategy is disconnected.
+     * the table network node is disconnected.
      */
     @Test( expected = IllegalStateException.class )
     public void testGetLocalPlayerName_Disconnected()
     {
-        synchronized( strategy_.getLock() )
+        synchronized( node_.getLock() )
         {
-            strategy_.getLocalPlayerName();
+            node_.getLocalPlayerName();
         }
     }
 
     /**
      * Ensures the {@code getPassword} method throws an exception when the table
-     * network strategy is disconnected.
+     * network node is disconnected.
      */
     @Test( expected = IllegalStateException.class )
     public void testGetPassword_Disconnected()
     {
-        synchronized( strategy_.getLock() )
+        synchronized( node_.getLock() )
         {
-            strategy_.getPassword();
+            node_.getPassword();
         }
     }
 
@@ -161,11 +161,11 @@ public final class AbstractTableNetworkStrategyTest
     @Test
     public void testGetTableGateways_ReturnValue_Copy()
     {
-        final Collection<ITableGateway> tableGateways = strategy_.getTableGateways();
+        final Collection<ITableGateway> tableGateways = node_.getTableGateways();
         final int expectedTableGatewaysSize = tableGateways.size();
         tableGateways.add( EasyMock.createMock( ITableGateway.class ) );
 
-        final int actualTableGatewaysSize = strategy_.getTableGateways().size();
+        final int actualTableGatewaysSize = node_.getTableGateways().size();
 
         assertEquals( expectedTableGatewaysSize, actualTableGatewaysSize );
     }

@@ -1,5 +1,5 @@
 /*
- * AbstractTableNetworkStrategy.java
+ * AbstractTableNetworkNode.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -36,7 +36,7 @@ import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.ITableNetworkController;
-import org.gamegineer.table.internal.net.ITableNetworkStrategy;
+import org.gamegineer.table.internal.net.ITableNetworkNodeController;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 import org.gamegineer.table.internal.net.transport.TransportException;
@@ -45,16 +45,15 @@ import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkException;
 
 /**
- * Superclass for all implementations of
- * {@link org.gamegineer.table.internal.net.ITableNetworkStrategy}.
+ * Superclass for all table network nodes.
  * 
  * <p>
  * Implementations of this class should not be reused for multiple connections.
  * </p>
  */
 @ThreadSafe
-public abstract class AbstractTableNetworkStrategy
-    implements ITableNetworkStrategy, ITableGatewayContext
+public abstract class AbstractTableNetworkNode
+    implements ITableGatewayContext, ITableNetworkNodeController
 {
     // ======================================================================
     // Fields
@@ -95,8 +94,7 @@ public abstract class AbstractTableNetworkStrategy
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractTableNetworkStrategy}
-     * class.
+     * Initializes a new instance of the {@code AbstractTableNetworkNode} class.
      * 
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
@@ -104,7 +102,7 @@ public abstract class AbstractTableNetworkStrategy
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.
      */
-    protected AbstractTableNetworkStrategy(
+    protected AbstractTableNetworkNode(
         /* @NonNull */
         final ITableNetworkController tableNetworkController )
     {
@@ -134,7 +132,7 @@ public abstract class AbstractTableNetworkStrategy
         assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        assertArgumentLegal( !tableGateways_.containsKey( tableGateway.getPlayerName() ), "tableGateway", Messages.AbstractTableNetworkStrategy_addTableGateway_tableGatewayRegistered ); //$NON-NLS-1$ 
+        assertArgumentLegal( !tableGateways_.containsKey( tableGateway.getPlayerName() ), "tableGateway", Messages.AbstractTableNetworkNode_addTableGateway_tableGatewayRegistered ); //$NON-NLS-1$ 
 
         tableGateways_.put( tableGateway.getPlayerName(), tableGateway );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table gateway registered for player '%s'.", tableGateway.getPlayerName() ) ); //$NON-NLS-1$
@@ -142,7 +140,7 @@ public abstract class AbstractTableNetworkStrategy
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkStrategy#connect(org.gamegineer.table.net.ITableNetworkConfiguration)
+     * @see org.gamegineer.table.internal.net.ITableNetworkNodeController#connect(org.gamegineer.table.net.ITableNetworkConfiguration)
      */
     @Override
     public final void connect(
@@ -235,21 +233,21 @@ public abstract class AbstractTableNetworkStrategy
     }
 
     /**
-     * Template method invoked to create the transport layer for this strategy
-     * using the context transport layer factory.
+     * Template method invoked to create the transport layer for this node using
+     * the table network transport layer factory.
      * 
      * <p>
      * This method is invoked while the instance lock is held.
      * </p>
      * 
-     * @return The transport layer for this strategy; never {@code null}.
+     * @return The transport layer for this node; never {@code null}.
      */
     @GuardedBy( "getLock()" )
     /* @NonNull */
     protected abstract ITransportLayer createTransportLayer();
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkStrategy#disconnect()
+     * @see org.gamegineer.table.internal.net.ITableNetworkNodeController#disconnect()
      */
     @Override
     public final void disconnect()
@@ -344,7 +342,7 @@ public abstract class AbstractTableNetworkStrategy
     }
 
     /**
-     * Disposes of the resources managed by the strategy.
+     * Disposes of the resources managed by the node.
      * 
      * <p>
      * This method is invoked while the instance lock is held. Subclasses must
@@ -374,7 +372,7 @@ public abstract class AbstractTableNetworkStrategy
     {
         assert Thread.holdsLock( getLock() );
 
-        assertStateLegal( localPlayerName_ != null, Messages.AbstractTableNetworkStrategy_networkDisconnected );
+        assertStateLegal( localPlayerName_ != null, Messages.AbstractTableNetworkNode_networkDisconnected );
         return localPlayerName_;
     }
 
@@ -398,7 +396,7 @@ public abstract class AbstractTableNetworkStrategy
     {
         assert Thread.holdsLock( getLock() );
 
-        assertStateLegal( password_ != null, Messages.AbstractTableNetworkStrategy_networkDisconnected );
+        assertStateLegal( password_ != null, Messages.AbstractTableNetworkNode_networkDisconnected );
         return new SecureString( password_ );
     }
 
@@ -450,7 +448,7 @@ public abstract class AbstractTableNetworkStrategy
         assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        assertArgumentLegal( tableGateways_.remove( tableGateway.getPlayerName() ) != null, "tableGateway", Messages.AbstractTableNetworkStrategy_removeTableGateway_tableGatewayNotRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( tableGateways_.remove( tableGateway.getPlayerName() ) != null, "tableGateway", Messages.AbstractTableNetworkNode_removeTableGateway_tableGatewayNotRegistered ); //$NON-NLS-1$
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table gateway unregistered for player '%s'.", tableGateway.getPlayerName() ) ); //$NON-NLS-1$
         tableGatewayRemoved( tableGateway );
@@ -523,7 +521,7 @@ public abstract class AbstractTableNetworkStrategy
 
     /**
      * Superclass for implementations of the {@link ITransportLayerContext}
-     * associated with a table network strategy.
+     * associated with a table network node.
      */
     @Immutable
     protected abstract class AbstractTransportLayerContext

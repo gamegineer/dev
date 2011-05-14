@@ -55,14 +55,14 @@ public final class TableNetwork
     /** The collection of table network listeners. */
     private final CopyOnWriteArrayList<ITableNetworkListener> listeners_;
 
-    /** The table network strategy factory. */
-    private final ITableNetworkStrategyFactory strategyFactory_;
-
     /**
-     * A reference to the active table network strategy or {@code null} if the
-     * table network is not connected.
+     * A reference to the local table network node controller or {@code null} if
+     * the table network is not connected.
      */
-    private final AtomicReference<ITableNetworkStrategy> strategyRef_;
+    private final AtomicReference<ITableNetworkNodeController> nodeControllerRef_;
+
+    /** The table network node factory. */
+    private final ITableNetworkNodeFactory nodeFactory_;
 
     /** The table to be attached to the network. */
     @SuppressWarnings( "unused" )
@@ -89,12 +89,12 @@ public final class TableNetwork
         /* @NonNull */
         final ITable table )
     {
-        this( table, new DefaultTableNetworkStrategyFactory(), new TcpTransportLayerFactory() );
+        this( table, new DefaultTableNetworkNodeFactory(), new TcpTransportLayerFactory() );
     }
 
     /**
      * Initializes a new instance of the {@code TableNetwork} class using the
-     * specified strategy factory and transport layer factory.
+     * specified node factory and transport layer factory.
      * 
      * <p>
      * This constructor is only intended to support testing.
@@ -102,32 +102,32 @@ public final class TableNetwork
      * 
      * @param table
      *        The table to be attached to the network; must not be {@code null}.
-     * @param strategyFactory
-     *        The table network strategy factory; must not be {@code null}.
+     * @param nodeFactory
+     *        The table network node factory; must not be {@code null}.
      * @param transportLayerFactory
      *        The table network transport layer factory; must not be {@code
      *        null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code table}, {@code strategyFactory}, or {@code
+     *         If {@code table}, {@code nodeFactory}, or {@code
      *         transportLayerFactory} is {@code null}.
      */
     public TableNetwork(
         /* @NonNull */
         final ITable table,
         /* @NonNull */
-        final ITableNetworkStrategyFactory strategyFactory,
+        final ITableNetworkNodeFactory nodeFactory,
         /* @NonNull */
         final ITransportLayerFactory transportLayerFactory )
     {
         assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
-        assertArgumentNotNull( strategyFactory, "strategyFactory" ); //$NON-NLS-1$
+        assertArgumentNotNull( nodeFactory, "nodeFactory" ); //$NON-NLS-1$
         assertArgumentNotNull( transportLayerFactory, "transportLayerFactory" ); //$NON-NLS-1$
 
         connectionStateRef_ = new AtomicReference<ConnectionState>( ConnectionState.DISCONNECTED );
         listeners_ = new CopyOnWriteArrayList<ITableNetworkListener>();
-        strategyFactory_ = strategyFactory;
-        strategyRef_ = new AtomicReference<ITableNetworkStrategy>( null );
+        nodeControllerRef_ = new AtomicReference<ITableNetworkNodeController>( null );
+        nodeFactory_ = nodeFactory;
         table_ = table;
         transportLayerFactory_ = transportLayerFactory;
     }
@@ -149,12 +149,14 @@ public final class TableNetwork
     }
 
     /**
-     * Connects the table network using the specified transport layer.
+     * Connects the specified table network node to the table network defined by
+     * the specified configuration.
      * 
      * @param configuration
      *        The table network configuration; must not be {@code null}.
-     * @param strategy
-     *        The table network strategy; must not be {@code null}.
+     * @param nodeController
+     *        The control interface of the table network node; must not be
+     *        {@code null}.
      * 
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If the connection cannot be established or the table network is
@@ -164,18 +166,18 @@ public final class TableNetwork
         /* @NonNull */
         final ITableNetworkConfiguration configuration,
         /* @NonNull */
-        final ITableNetworkStrategy strategy )
+        final ITableNetworkNodeController nodeController )
         throws TableNetworkException
     {
         assert configuration != null;
-        assert strategy != null;
+        assert nodeController != null;
 
         if( connectionStateRef_.compareAndSet( ConnectionState.DISCONNECTED, ConnectionState.CONNECTING ) )
         {
             try
             {
-                strategy.connect( configuration );
-                strategyRef_.set( strategy );
+                nodeController.connect( configuration );
+                nodeControllerRef_.set( nodeController );
                 connectionStateRef_.set( ConnectionState.CONNECTED );
                 fireTableNetworkConnected();
             }
@@ -209,8 +211,8 @@ public final class TableNetwork
     {
         if( connectionStateRef_.compareAndSet( ConnectionState.CONNECTED, ConnectionState.DISCONNECTING ) )
         {
-            final ITableNetworkStrategy strategy = strategyRef_.getAndSet( null );
-            strategy.disconnect();
+            final ITableNetworkNodeController nodeController = nodeControllerRef_.getAndSet( null );
+            nodeController.disconnect();
             connectionStateRef_.set( ConnectionState.DISCONNECTED );
             fireTableNetworkDisconnected( error );
         }
@@ -279,7 +281,7 @@ public final class TableNetwork
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, strategyFactory_.createServerTableNetworkStrategy( this ) );
+        connect( configuration, nodeFactory_.createServerTableNetworkNode( this ) );
     }
 
     /*
@@ -301,7 +303,7 @@ public final class TableNetwork
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, strategyFactory_.createClientTableNetworkStrategy( this ) );
+        connect( configuration, nodeFactory_.createClientTableNetworkNode( this ) );
     }
 
     /*

@@ -1,5 +1,5 @@
 /*
- * DefaultTableNetworkStrategyFactory.java
+ * DefaultTableNetworkNodeFactory.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -22,26 +22,26 @@
 package org.gamegineer.table.internal.net;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.client.ClientTableNetworkStrategy;
-import org.gamegineer.table.internal.net.server.ServerTableNetworkStrategy;
+import org.gamegineer.table.internal.net.client.ClientTableNetworkNode;
+import org.gamegineer.table.internal.net.server.ServerTableNetworkNode;
 
 /**
  * Default implementation of
- * {@link org.gamegineer.table.internal.net.ITableNetworkStrategyFactory}.
+ * {@link org.gamegineer.table.internal.net.ITableNetworkNodeFactory}.
  */
 @Immutable
-public class DefaultTableNetworkStrategyFactory
-    implements ITableNetworkStrategyFactory
+public class DefaultTableNetworkNodeFactory
+    implements ITableNetworkNodeFactory
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * DefaultTableNetworkStrategyFactory} class.
+     * Initializes a new instance of the {@code DefaultTableNetworkNodeFactory}
+     * class.
      */
-    public DefaultTableNetworkStrategyFactory()
+    public DefaultTableNetworkNodeFactory()
     {
         super();
     }
@@ -52,28 +52,28 @@ public class DefaultTableNetworkStrategyFactory
     // ======================================================================
 
     /**
-     * This implementation creates an instance of
-     * {@link ClientTableNetworkStrategy}.
+     * This implementation creates an instance of {@link ClientTableNetworkNode}
+     * .
      * 
-     * @see org.gamegineer.table.internal.net.ITableNetworkStrategyFactory#createClientTableNetworkStrategy(org.gamegineer.table.internal.net.ITableNetworkController)
+     * @see org.gamegineer.table.internal.net.ITableNetworkNodeFactory#createClientTableNetworkNode(org.gamegineer.table.internal.net.ITableNetworkController)
      */
     @Override
-    public ITableNetworkStrategy createClientTableNetworkStrategy(
+    public ITableNetworkNodeController createClientTableNetworkNode(
         final ITableNetworkController tableNetworkController )
     {
-        return new ClientTableNetworkStrategy( tableNetworkController );
+        return new ClientTableNetworkNode( tableNetworkController );
     }
 
     /**
-     * This implementation creates an instance of
-     * {@link ServerTableNetworkStrategy}.
+     * This implementation creates an instance of {@link ServerTableNetworkNode}
+     * .
      * 
-     * @see org.gamegineer.table.internal.net.ITableNetworkStrategyFactory#createServerTableNetworkStrategy(org.gamegineer.table.internal.net.ITableNetworkController)
+     * @see org.gamegineer.table.internal.net.ITableNetworkNodeFactory#createServerTableNetworkNode(org.gamegineer.table.internal.net.ITableNetworkController)
      */
     @Override
-    public ITableNetworkStrategy createServerTableNetworkStrategy(
+    public ITableNetworkNodeController createServerTableNetworkNode(
         final ITableNetworkController tableNetworkController )
     {
-        return new ServerTableNetworkStrategy( tableNetworkController );
+        return new ServerTableNetworkNode( tableNetworkController );
     }
 }

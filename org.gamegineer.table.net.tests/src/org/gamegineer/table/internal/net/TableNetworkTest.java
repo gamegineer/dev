@@ -60,35 +60,35 @@ public final class TableNetworkTest
     }
 
     /**
-     * Ensures the {@code TableNetwork(ITable, ITableNetworkStrategyFactory,
+     * Ensures the {@code TableNetwork(ITable, ITableNetworkNodeFactory,
      * ITransportLayerFactory)} constructor throws an exception when passed a
-     * {@code null} strategy factory.
+     * {@code null} node factory.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructorFromTableAndStrategyFactoryAndTransportLayerFactory_StrategyFactory_Null()
+    public void testConstructorFromTableAndNodeFactoryAndTransportLayerFactory_NodeFactory_Null()
     {
         new TableNetwork( EasyMock.createMock( ITable.class ), null, EasyMock.createMock( ITransportLayerFactory.class ) );
     }
 
     /**
-     * Ensures the {@code TableNetwork(ITable, ITableNetworkStrategyFactory,
+     * Ensures the {@code TableNetwork(ITable, ITableNetworkNodeFactory,
      * ITransportLayerFactory)} constructor throws an exception when passed a
      * {@code null} table.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructorFromTableAndStrategyFactoryAndTransportLayerFactory_Table_Null()
+    public void testConstructorFromTableAndNodeFactoryAndTransportLayerFactory_Table_Null()
     {
-        new TableNetwork( null, EasyMock.createMock( ITableNetworkStrategyFactory.class ), EasyMock.createMock( ITransportLayerFactory.class ) );
+        new TableNetwork( null, EasyMock.createMock( ITableNetworkNodeFactory.class ), EasyMock.createMock( ITransportLayerFactory.class ) );
     }
 
     /**
-     * Ensures the {@code TableNetwork(ITable, ITableNetworkStrategyFactory,
+     * Ensures the {@code TableNetwork(ITable, ITableNetworkNodeFactory,
      * ITransportLayerFactory)} constructor throws an exception when passed a
      * {@code null} transport layer factory.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructorFromTableAndStrategyFactoryAndTransportLayerFactory_TransportLayerFactory_Null()
+    public void testConstructorFromTableAndNodeFactoryAndTransportLayerFactory_TransportLayerFactory_Null()
     {
-        new TableNetwork( EasyMock.createMock( ITable.class ), EasyMock.createMock( ITableNetworkStrategyFactory.class ), null );
+        new TableNetwork( EasyMock.createMock( ITable.class ), EasyMock.createMock( ITableNetworkNodeFactory.class ), null );
     }
 }

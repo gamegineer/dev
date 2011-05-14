@@ -1,5 +1,5 @@
 /*
- * ServerTableNetworkStrategyTest.java
+ * ServerTableNetworkNodeTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -25,20 +25,20 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.server.ServerTableNetworkStrategy}
+ * {@link org.gamegineer.table.internal.net.server.ServerTableNetworkNode}
  * class.
  */
-public final class ServerTableNetworkStrategyTest
+public final class ServerTableNetworkNodeTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ServerTableNetworkStrategyTest}
+     * Initializes a new instance of the {@code ServerTableNetworkNodeTest}
      * class.
      */
-    public ServerTableNetworkStrategyTest()
+    public ServerTableNetworkNodeTest()
     {
         super();
     }
@@ -50,11 +50,11 @@ public final class ServerTableNetworkStrategyTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * context.
+     * table network controller.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_Context_Null()
+    public void testConstructor_TableNetworkController_Null()
     {
-        new ServerTableNetworkStrategy( null );
+        new ServerTableNetworkNode( null );
     }
 }

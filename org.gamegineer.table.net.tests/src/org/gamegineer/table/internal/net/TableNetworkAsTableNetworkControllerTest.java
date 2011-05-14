@@ -1,5 +1,5 @@
 /*
- * DefaultTableNetworkStrategyFactoryAsTableNetworkStrategyFactoryTest.java
+ * TableNetworkAsTableNetworkControllerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,20 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 14, 2011 at 1:35:21 PM.
+ * Created on May 14, 2011 at 2:43:52 PM.
  */
 
 package org.gamegineer.table.internal.net;
 
+import org.easymock.EasyMock;
+import org.gamegineer.table.core.ITable;
+
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.DefaultTableNetworkStrategyFactory}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.ITableNetworkStrategyFactory}
- * interface.
+ * {@link org.gamegineer.table.internal.net.TableNetwork} class to ensure it
+ * does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.ITableNetworkController} interface.
  */
-public final class DefaultTableNetworkStrategyFactoryAsTableNetworkStrategyFactoryTest
-    extends AbstractTableNetworkStrategyFactoryTestCase
+public final class TableNetworkAsTableNetworkControllerTest
+    extends AbstractTableNetworkControllerTestCase
 {
     // ======================================================================
     // Constructors
@@ -37,10 +39,9 @@ public final class DefaultTableNetworkStrategyFactoryAsTableNetworkStrategyFacto
 
     /**
      * Initializes a new instance of the {@code
-     * DefaultTableNetworkStrategyFactoryAsTableNetworkStrategyFactoryTest}
-     * class.
+     * TableNetworkAsTableNetworkControllerTest} class.
      */
-    public DefaultTableNetworkStrategyFactoryAsTableNetworkStrategyFactoryTest()
+    public TableNetworkAsTableNetworkControllerTest()
     {
         super();
     }
@@ -51,11 +52,11 @@ public final class DefaultTableNetworkStrategyFactoryAsTableNetworkStrategyFacto
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractTableNetworkStrategyFactoryTestCase#createTableNetworkStrategyFactory()
+     * @see org.gamegineer.table.internal.net.AbstractTableNetworkControllerTestCase#createTableNetworkController()
      */
     @Override
-    protected ITableNetworkStrategyFactory createTableNetworkStrategyFactory()
+    protected ITableNetworkController createTableNetworkController()
     {
-        return new DefaultTableNetworkStrategyFactory();
+        return new TableNetwork( EasyMock.createMock( ITable.class ) );
     }
 }

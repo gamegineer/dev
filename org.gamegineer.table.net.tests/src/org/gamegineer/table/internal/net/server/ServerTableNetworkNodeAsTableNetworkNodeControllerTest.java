@@ -1,5 +1,5 @@
 /*
- * ServerTableNetworkStrategyAsAbstractTableNetworkStrategyTest.java
+ * ServerTableNetworkNodeAsTableNetworkNodeControllerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -22,17 +22,17 @@
 package org.gamegineer.table.internal.net.server;
 
 import org.gamegineer.table.internal.net.TableNetworkControllers;
-import org.gamegineer.table.internal.net.common.AbstractAbstractTableNetworkStrategyTestCase;
+import org.gamegineer.table.internal.net.common.AbstractAbstractTableNetworkNodeAsTableNetworkNodeControllerTestCase;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.server.ServerTableNetworkStrategy}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy}
- * class.
+ * {@link org.gamegineer.table.internal.net.server.ServerTableNetworkNode} class
+ * to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.ITableNetworkNodeController}
+ * interface.
  */
-public final class ServerTableNetworkStrategyAsAbstractTableNetworkStrategyTest
-    extends AbstractAbstractTableNetworkStrategyTestCase<ServerTableNetworkStrategy>
+public final class ServerTableNetworkNodeAsTableNetworkNodeControllerTest
+    extends AbstractAbstractTableNetworkNodeAsTableNetworkNodeControllerTestCase<ServerTableNetworkNode>
 {
     // ======================================================================
     // Constructors
@@ -40,9 +40,9 @@ public final class ServerTableNetworkStrategyAsAbstractTableNetworkStrategyTest
 
     /**
      * Initializes a new instance of the {@code
-     * ServerTableNetworkStrategyAsAbstractTableNetworkStrategyTest} class.
+     * ServerTableNetworkNodeAsTableNetworkNodeControllerTest} class.
      */
-    public ServerTableNetworkStrategyAsAbstractTableNetworkStrategyTest()
+    public ServerTableNetworkNodeAsTableNetworkNodeControllerTest()
     {
         super();
     }
@@ -53,11 +53,11 @@ public final class ServerTableNetworkStrategyAsAbstractTableNetworkStrategyTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractTableNetworkStrategyTestCase#createTableNetworkStrategy()
+     * @see org.gamegineer.table.internal.net.AbstractTableNetworkNodeControllerTestCase#createTableNetworkNodeController()
      */
     @Override
-    protected ServerTableNetworkStrategy createTableNetworkStrategy()
+    protected ServerTableNetworkNode createTableNetworkNodeController()
     {
-        return new ServerTableNetworkStrategy( TableNetworkControllers.createFakeTableNetworkController() );
+        return new ServerTableNetworkNode( TableNetworkControllers.createFakeTableNetworkController() );
     }
 }

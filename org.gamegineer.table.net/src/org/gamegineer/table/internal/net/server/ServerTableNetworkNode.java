@@ -1,5 +1,5 @@
 /*
- * ServerTableNetworkStrategy.java
+ * ServerTableNetworkNode.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -26,26 +26,23 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.Loggers;
-import org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy;
+import org.gamegineer.table.internal.net.common.AbstractTableNetworkNode;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 
 /**
- * Implementation of
- * {@link org.gamegineer.table.internal.net.ITableNetworkStrategy} for server
- * table networks.
+ * A server node in a table network.
  */
 @ThreadSafe
-public final class ServerTableNetworkStrategy
-    extends AbstractTableNetworkStrategy
+public final class ServerTableNetworkNode
+    extends AbstractTableNetworkNode
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ServerTableNetworkStrategy}
-     * class.
+     * Initializes a new instance of the {@code ServerTableNetworkNode} class.
      * 
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
@@ -53,7 +50,7 @@ public final class ServerTableNetworkStrategy
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.
      */
-    public ServerTableNetworkStrategy(
+    public ServerTableNetworkNode(
         /* @NonNull */
         final ITableNetworkController tableNetworkController )
     {
@@ -66,7 +63,7 @@ public final class ServerTableNetworkStrategy
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy#createTransportLayer()
+     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#createTransportLayer()
      */
     @Override
     protected ITransportLayer createTransportLayer()
@@ -78,13 +75,13 @@ public final class ServerTableNetworkStrategy
             @Override
             public IService createService()
             {
-                return new RemoteClientTableGateway( ServerTableNetworkStrategy.this );
+                return new RemoteClientTableGateway( ServerTableNetworkNode.this );
             }
         } );
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy#disconnecting()
+     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#disconnecting()
      */
     @Override
     protected void disconnecting()
@@ -97,7 +94,7 @@ public final class ServerTableNetworkStrategy
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy#tableGatewayAdded(org.gamegineer.table.internal.net.ITableGateway)
+     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#tableGatewayAdded(org.gamegineer.table.internal.net.ITableGateway)
      */
     @Override
     protected void tableGatewayAdded(
@@ -108,7 +105,7 @@ public final class ServerTableNetworkStrategy
 
         super.tableGatewayAdded( tableGateway );
 
-        Loggers.getDefaultLogger().info( Messages.ServerTableNetworkStrategy_playerConnected_playerConnected( tableGateway.getPlayerName() ) );
+        Loggers.getDefaultLogger().info( Messages.ServerTableNetworkNode_playerConnected_playerConnected( tableGateway.getPlayerName() ) );
 
         // TODO
         //
@@ -117,7 +114,7 @@ public final class ServerTableNetworkStrategy
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy#tableGatewayRemoved(org.gamegineer.table.internal.net.ITableGateway)
+     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#tableGatewayRemoved(org.gamegineer.table.internal.net.ITableGateway)
      */
     @Override
     protected void tableGatewayRemoved(
@@ -128,6 +125,6 @@ public final class ServerTableNetworkStrategy
 
         super.tableGatewayRemoved( tableGateway );
 
-        Loggers.getDefaultLogger().info( Messages.ServerTableNetworkStrategy_playerDisconnected_playerDisconnected( tableGateway.getPlayerName() ) );
+        Loggers.getDefaultLogger().info( Messages.ServerTableNetworkNode_playerDisconnected_playerDisconnected( tableGateway.getPlayerName() ) );
     }
 }

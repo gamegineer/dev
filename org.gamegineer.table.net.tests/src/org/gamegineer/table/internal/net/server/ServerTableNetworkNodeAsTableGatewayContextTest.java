@@ -1,5 +1,5 @@
 /*
- * ClientTableNetworkStrategyAsTableGatewayContextTest.java
+ * ServerTableNetworkNodeAsTableGatewayContextTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 14, 2011 at 11:29:02 PM.
+ * Created on Apr 14, 2011 at 11:29:24 PM.
  */
 
-package org.gamegineer.table.internal.net.client;
+package org.gamegineer.table.internal.net.server;
 
 import org.gamegineer.table.internal.net.AbstractTableGatewayContextTestCase;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
@@ -28,11 +28,11 @@ import org.gamegineer.table.internal.net.TableNetworkControllers;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.client.ClientTableNetworkStrategy}
- * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.server.ServerTableNetworkNode} class
+ * to ensure it does not violate the contract of the
  * {@link org.gamegineer.table.internal.net.ITableGatewayContext} interface.
  */
-public final class ClientTableNetworkStrategyAsTableGatewayContextTest
+public final class ServerTableNetworkNodeAsTableGatewayContextTest
     extends AbstractTableGatewayContextTestCase
 {
     // ======================================================================
@@ -41,9 +41,9 @@ public final class ClientTableNetworkStrategyAsTableGatewayContextTest
 
     /**
      * Initializes a new instance of the {@code
-     * ClientTableNetworkStrategyAsTableGatewayContextTest} class.
+     * ServerTableNetworkNodeAsTableGatewayContextTest} class.
      */
-    public ClientTableNetworkStrategyAsTableGatewayContextTest()
+    public ServerTableNetworkNodeAsTableGatewayContextTest()
     {
         super();
     }
@@ -60,8 +60,8 @@ public final class ClientTableNetworkStrategyAsTableGatewayContextTest
     protected ITableGatewayContext createTableGatewayContext()
         throws Exception
     {
-        final ClientTableNetworkStrategy strategy = new ClientTableNetworkStrategy( TableNetworkControllers.createFakeTableNetworkController(), false );
-        strategy.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
-        return strategy;
+        final ServerTableNetworkNode node = new ServerTableNetworkNode( TableNetworkControllers.createFakeTableNetworkController() );
+        node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+        return node;
     }
 }

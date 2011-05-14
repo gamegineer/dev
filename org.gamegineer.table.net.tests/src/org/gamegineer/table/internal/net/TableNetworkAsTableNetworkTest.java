@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.net;
 
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.internal.net.client.ClientTableNetworkStrategy;
+import org.gamegineer.table.internal.net.client.ClientTableNetworkNode;
 import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactory;
 import org.gamegineer.table.net.AbstractTableNetworkTestCase;
 import org.gamegineer.table.net.ITableNetwork;
@@ -63,13 +63,13 @@ public final class TableNetworkAsTableNetworkTest
     {
         return new TableNetwork( //
             table, //
-            new DefaultTableNetworkStrategyFactory()
+            new DefaultTableNetworkNodeFactory()
             {
                 @Override
-                public ITableNetworkStrategy createClientTableNetworkStrategy(
+                public ITableNetworkNodeController createClientTableNetworkNode(
                     final ITableNetworkController tableNetworkController )
                 {
-                    return new ClientTableNetworkStrategy( tableNetworkController, false );
+                    return new ClientTableNetworkNode( tableNetworkController, false );
                 }
             }, //
             new FakeTransportLayerFactory() );

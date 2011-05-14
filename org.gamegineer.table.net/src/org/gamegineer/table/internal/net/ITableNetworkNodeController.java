@@ -1,5 +1,5 @@
 /*
- * ITableNetworkStrategy.java
+ * ITableNetworkNodeController.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -25,21 +25,28 @@ import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
 
 /**
- * A strategy for the behavior of a table network.
+ * The control interface for a table network node.
+ * 
+ * <p>
+ * This interface provides operations that allow a table network controller to
+ * control the local table network node. It is only intended for use by an
+ * implementation of {@link ITableNetworkController}.
+ * </p>
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface ITableNetworkStrategy
+public interface ITableNetworkNodeController
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Connects the table network using the specified configuration.
+     * Connects the table network node to the table network using the specified
+     * configuration.
      * 
      * <p>
-     * This method blocks until the table network is connected.
+     * This method blocks until the table network node is connected.
      * </p>
      * 
      * @param configuration
@@ -48,8 +55,8 @@ public interface ITableNetworkStrategy
      * @throws java.lang.NullPointerException
      *         If {@code configuration} is {@code null}.
      * @throws org.gamegineer.table.net.TableNetworkException
-     *         If the connection cannot be established or the table network is
-     *         already connected.
+     *         If the connection cannot be established or the table network node
+     *         is already connected.
      */
     public void connect(
         /* @NonNull */
@@ -57,11 +64,11 @@ public interface ITableNetworkStrategy
         throws TableNetworkException;
 
     /**
-     * Disconnects the table network.
+     * Disconnects the table network node from the table network.
      * 
      * <p>
-     * This method blocks until the table network is disconnected. This method
-     * does nothing if the table network is not connected.
+     * This method blocks until the table network node is disconnected. This
+     * method does nothing if the table network node is not connected.
      * </p>
      */
     public void disconnect();

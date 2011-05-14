@@ -1,5 +1,5 @@
 /*
- * AbstractTableNetworkStrategyFactoryTestCase.java
+ * AbstractTableNetworkNodeFactoryTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -28,17 +28,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.ITableNetworkStrategyFactory}
- * interface.
+ * {@link org.gamegineer.table.internal.net.ITableNetworkNodeFactory} interface.
  */
-public abstract class AbstractTableNetworkStrategyFactoryTestCase
+public abstract class AbstractTableNetworkNodeFactoryTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table network strategy factory under test in the fixture. */
-    private ITableNetworkStrategyFactory factory_;
+    /** The table network node factory under test in the fixture. */
+    private ITableNetworkNodeFactory factory_;
 
 
     // ======================================================================
@@ -47,9 +46,9 @@ public abstract class AbstractTableNetworkStrategyFactoryTestCase
 
     /**
      * Initializes a new instance of the {@code
-     * AbstractTableNetworkStrategyFactoryTestCase} class.
+     * AbstractTableNetworkNodeFactoryTestCase} class.
      */
-    protected AbstractTableNetworkStrategyFactoryTestCase()
+    protected AbstractTableNetworkNodeFactoryTestCase()
     {
         super();
     }
@@ -60,16 +59,15 @@ public abstract class AbstractTableNetworkStrategyFactoryTestCase
     // ======================================================================
 
     /**
-     * Creates the table network strategy factory to be tested.
+     * Creates the table network node factory to be tested.
      * 
-     * @return The table network strategy factory to be tested; never {@code
-     *         null}.
+     * @return The table network node factory to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract ITableNetworkStrategyFactory createTableNetworkStrategyFactory()
+    protected abstract ITableNetworkNodeFactory createTableNetworkNodeFactory()
         throws Exception;
 
     /**
@@ -82,7 +80,7 @@ public abstract class AbstractTableNetworkStrategyFactoryTestCase
     public void setUp()
         throws Exception
     {
-        factory_ = createTableNetworkStrategyFactory();
+        factory_ = createTableNetworkNodeFactory();
         assertNotNull( factory_ );
     }
 
@@ -100,22 +98,22 @@ public abstract class AbstractTableNetworkStrategyFactoryTestCase
     }
 
     /**
-     * Ensures the {@code createClientTableNetworkStrategy} method throws an
+     * Ensures the {@code createClientTableNetworkNode} method throws an
      * exception when passed a {@code null} table network controller.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateClientTableNetworkStrategy_TableNetworkController_Null()
+    public void testCreateClientTableNetworkNode_TableNetworkController_Null()
     {
-        factory_.createClientTableNetworkStrategy( null );
+        factory_.createClientTableNetworkNode( null );
     }
 
     /**
-     * Ensures the {@code createServerTableNetworkStrategy} method throws an
+     * Ensures the {@code createServerTableNetworkNode} method throws an
      * exception when passed a {@code null} table network controller.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateServerTableNetworkStrategy_TableNetworkController_Null()
+    public void testCreateServerTableNetworkNode_TableNetworkController_Null()
     {
-        factory_.createServerTableNetworkStrategy( null );
+        factory_.createServerTableNetworkNode( null );
     }
 }

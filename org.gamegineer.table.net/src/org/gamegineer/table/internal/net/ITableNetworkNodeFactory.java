@@ -1,5 +1,5 @@
 /*
- * ITableNetworkStrategyFactory.java
+ * ITableNetworkNodeFactory.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -22,45 +22,47 @@
 package org.gamegineer.table.internal.net;
 
 /**
- * A factory for creating table network strategies.
+ * A factory for creating table network nodes.
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface ITableNetworkStrategyFactory
+public interface ITableNetworkNodeFactory
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Creates a new client table network strategy.
+     * Creates a new client table network node.
      * 
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
      * 
-     * @return The client table network strategy; never {@code null}.
+     * @return The control interface for the new client table network node;
+     *         never {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.
      */
     /* @NonNull */
-    public ITableNetworkStrategy createClientTableNetworkStrategy(
+    public ITableNetworkNodeController createClientTableNetworkNode(
         /* @NonNull */
         ITableNetworkController tableNetworkController );
 
     /**
-     * Creates a new server table network strategy.
+     * Creates a new server table network node.
      * 
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
      * 
-     * @return The server table network strategy; never {@code null}.
+     * @return The control interface for the new server table network node;
+     *         never {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.
      */
     /* @NonNull */
-    public ITableNetworkStrategy createServerTableNetworkStrategy(
+    public ITableNetworkNodeController createServerTableNetworkNode(
         /* @NonNull */
         ITableNetworkController tableNetworkController );
 }

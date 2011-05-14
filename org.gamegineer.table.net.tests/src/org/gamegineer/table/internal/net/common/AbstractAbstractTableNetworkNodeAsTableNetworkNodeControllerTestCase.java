@@ -1,5 +1,5 @@
 /*
- * AbstractAbstractTableNetworkStrategyTestCase.java
+ * AbstractAbstractTableNetworkNodeAsTableNetworkNodeControllerTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import net.jcip.annotations.NotThreadSafe;
 import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.AbstractTableNetworkStrategyTestCase;
+import org.gamegineer.table.internal.net.AbstractTableNetworkNodeControllerTestCase;
 import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
@@ -36,15 +36,17 @@ import org.gamegineer.table.net.TableNetworkException;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that extend the
- * {@link org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy}
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.internal.net.ITableNetworkNodeController}
+ * interface via extension of the
+ * {@link org.gamegineer.table.internal.net.common.AbstractTableNetworkNode}
  * class.
  * 
  * @param <T>
- *        The type of the table network strategy.
+ *        The type of the table network node.
  */
-public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends AbstractTableNetworkStrategy>
-    extends AbstractTableNetworkStrategyTestCase<T>
+public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControllerTestCase<T extends AbstractTableNetworkNode>
+    extends AbstractTableNetworkNodeControllerTestCase<T>
 {
     // ======================================================================
     // Constructors
@@ -52,9 +54,10 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
 
     /**
      * Initializes a new instance of the {@code
-     * AbstractAbstractTableNetworkStrategyTestCase} class.
+     * AbstractAbstractTableNetworkNodeAsTableNetworkNodeControllerTestCase}
+     * class.
      */
-    public AbstractAbstractTableNetworkStrategyTestCase()
+    public AbstractAbstractTableNetworkNodeAsTableNetworkNodeControllerTestCase()
     {
         super();
     }
@@ -134,10 +137,10 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
         throws Exception
     {
         final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
-        getTableNetworkStrategy().connect( configuration );
+        getTableNetworkNodeController().connect( configuration );
 
         boolean localTableGatewayFound = false;
-        for( final ITableGateway tableGateway : getTableNetworkStrategy().getTableGateways() )
+        for( final ITableGateway tableGateway : getTableNetworkNodeController().getTableGateways() )
         {
             if( tableGateway.getPlayerName().equals( configuration.getLocalPlayerName() ) )
             {
@@ -160,15 +163,15 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
     public void testConnect_TransportLayerOpenFailure_DoesNotInvokeConnected()
         throws Exception
     {
-        final MockTableNetworkStrategy networkTableStrategy = new MockTableNetworkStrategy( createFailingTransportLayer() );
+        final MockTableNetworkNode node = new MockTableNetworkNode( createFailingTransportLayer() );
 
         try
         {
-            networkTableStrategy.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+            node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
         }
         finally
         {
-            assertEquals( 0, networkTableStrategy.getConnectedCallCount() );
+            assertEquals( 0, node.getConnectedCallCount() );
         }
     }
 
@@ -183,15 +186,15 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
     public void testConnect_TransportLayerOpenFailure_InvokesConnecting()
         throws Exception
     {
-        final MockTableNetworkStrategy networkTableStrategy = new MockTableNetworkStrategy( createFailingTransportLayer() );
+        final MockTableNetworkNode node = new MockTableNetworkNode( createFailingTransportLayer() );
 
         try
         {
-            networkTableStrategy.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+            node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
         }
         finally
         {
-            assertEquals( 1, networkTableStrategy.getConnectingCallCount() );
+            assertEquals( 1, node.getConnectingCallCount() );
         }
     }
 
@@ -206,15 +209,15 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
     public void testConnect_TransportLayerOpenFailure_InvokesDispose()
         throws Exception
     {
-        final MockTableNetworkStrategy networkTableStrategy = new MockTableNetworkStrategy( createFailingTransportLayer() );
+        final MockTableNetworkNode node = new MockTableNetworkNode( createFailingTransportLayer() );
 
         try
         {
-            networkTableStrategy.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+            node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
         }
         finally
         {
-            assertEquals( 1, networkTableStrategy.getDisposeCallCount() );
+            assertEquals( 1, node.getDisposeCallCount() );
         }
     }
 
@@ -229,11 +232,11 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
     public void testConnect_TransportLayerOpenSuccess_InvokesConnected()
         throws Exception
     {
-        final MockTableNetworkStrategy networkTableStrategy = new MockTableNetworkStrategy( createSuccessfulTransportLayer() );
+        final MockTableNetworkNode node = new MockTableNetworkNode( createSuccessfulTransportLayer() );
 
-        networkTableStrategy.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+        node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
 
-        assertEquals( 1, networkTableStrategy.getConnectedCallCount() );
+        assertEquals( 1, node.getConnectedCallCount() );
     }
 
     /**
@@ -247,11 +250,11 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
     public void testConnect_TransportLayerOpenSuccess_InvokesConnecting()
         throws Exception
     {
-        final MockTableNetworkStrategy networkTableStrategy = new MockTableNetworkStrategy( createSuccessfulTransportLayer() );
+        final MockTableNetworkNode node = new MockTableNetworkNode( createSuccessfulTransportLayer() );
 
-        networkTableStrategy.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+        node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
 
-        assertEquals( 1, networkTableStrategy.getConnectingCallCount() );
+        assertEquals( 1, node.getConnectingCallCount() );
     }
 
     /**
@@ -265,12 +268,12 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
     public void testDisconnect_TransportLayerOpen_InvokesDisconnected()
         throws Exception
     {
-        final MockTableNetworkStrategy networkTableStrategy = new MockTableNetworkStrategy( createSuccessfulTransportLayer() );
-        networkTableStrategy.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+        final MockTableNetworkNode node = new MockTableNetworkNode( createSuccessfulTransportLayer() );
+        node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
 
-        networkTableStrategy.disconnect();
+        node.disconnect();
 
-        assertEquals( 1, networkTableStrategy.getDisconnectedCallCount() );
+        assertEquals( 1, node.getDisconnectedCallCount() );
     }
 
     /**
@@ -284,12 +287,12 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
     public void testDisconnect_TransportLayerOpen_InvokesDisconnecting()
         throws Exception
     {
-        final MockTableNetworkStrategy networkTableStrategy = new MockTableNetworkStrategy( createSuccessfulTransportLayer() );
-        networkTableStrategy.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+        final MockTableNetworkNode node = new MockTableNetworkNode( createSuccessfulTransportLayer() );
+        node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
 
-        networkTableStrategy.disconnect();
+        node.disconnect();
 
-        assertEquals( 1, networkTableStrategy.getDisconnectingCallCount() );
+        assertEquals( 1, node.getDisconnectingCallCount() );
     }
 
     /**
@@ -299,7 +302,7 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
     @Test( expected = NullPointerException.class )
     public void testTableGatewayAdded_TableGateway_Null()
     {
-        getTableNetworkStrategy().tableGatewayAdded( null );
+        getTableNetworkNodeController().tableGatewayAdded( null );
     }
 
     /**
@@ -309,7 +312,7 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
     @Test( expected = NullPointerException.class )
     public void testTableGatewayRemoved_TableGateway_Null()
     {
-        getTableNetworkStrategy().tableGatewayRemoved( null );
+        getTableNetworkNodeController().tableGatewayRemoved( null );
     }
 
 
@@ -319,12 +322,12 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
 
     /**
      * Mock implementation of
-     * {@link org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy}
+     * {@link org.gamegineer.table.internal.net.common.AbstractTableNetworkNode}
      * .
      */
     @NotThreadSafe
-    private static final class MockTableNetworkStrategy
-        extends AbstractTableNetworkStrategy
+    private static final class MockTableNetworkNode
+        extends AbstractTableNetworkNode
     {
         // ==================================================================
         // Fields
@@ -345,7 +348,7 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
         /** The count of calls made to the {@link #dispose()} method. */
         private int disposeCallCount_;
 
-        /** The transport layer used by the strategy. */
+        /** The transport layer used by the node. */
         private final ITransportLayer transportLayer_;
 
 
@@ -354,14 +357,13 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code MockTableNetworkStrategy}
-         * class.
+         * Initializes a new instance of the {@code MockTableNetworkNode} class.
          * 
          * @param transportLayer
-         *        The transport layer used by the strategy; must not be {@code
-         *        null}.
+         *        The transport layer used by the node; must not be {@code null}
+         *        .
          */
-        MockTableNetworkStrategy(
+        MockTableNetworkNode(
             /* @NonNull */
             final ITransportLayer transportLayer )
         {
@@ -383,7 +385,7 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy#connected()
+         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#connected()
          */
         @Override
         protected void connected()
@@ -395,7 +397,7 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy#connecting()
+         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#connecting()
          */
         @Override
         protected void connecting()
@@ -407,7 +409,7 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy#createTransportLayer()
+         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#createTransportLayer()
          */
         @Override
         protected ITransportLayer createTransportLayer()
@@ -416,7 +418,7 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy#disconnected()
+         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#disconnected()
          */
         @Override
         protected void disconnected()
@@ -427,7 +429,7 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy#disconnecting()
+         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#disconnecting()
          */
         @Override
         protected void disconnecting()
@@ -438,7 +440,7 @@ public abstract class AbstractAbstractTableNetworkStrategyTestCase<T extends Abs
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy#dispose()
+         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#dispose()
          */
         @Override
         protected void dispose()

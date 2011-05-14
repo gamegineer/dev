@@ -1,5 +1,5 @@
 /*
- * ClientTableNetworkStrategy.java
+ * ClientTableNetworkNode.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -30,20 +30,18 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableNetworkController;
-import org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy;
+import org.gamegineer.table.internal.net.common.AbstractTableNetworkNode;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkException;
 
 /**
- * Implementation of
- * {@link org.gamegineer.table.internal.net.ITableNetworkStrategy} for client
- * table networks.
+ * A client node in a table network.
  */
 @ThreadSafe
-public final class ClientTableNetworkStrategy
-    extends AbstractTableNetworkStrategy
+public final class ClientTableNetworkNode
+    extends AbstractTableNetworkNode
 {
     // ======================================================================
     // Fields
@@ -72,8 +70,7 @@ public final class ClientTableNetworkStrategy
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ClientTableNetworkStrategy}
-     * class.
+     * Initializes a new instance of the {@code ClientTableNetworkNode} class.
      * 
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
@@ -81,7 +78,7 @@ public final class ClientTableNetworkStrategy
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.
      */
-    public ClientTableNetworkStrategy(
+    public ClientTableNetworkNode(
         /* @NonNull */
         final ITableNetworkController tableNetworkController )
     {
@@ -89,9 +86,9 @@ public final class ClientTableNetworkStrategy
     }
 
     /**
-     * Initializes a new instance of the {@code ClientTableNetworkStrategy}
-     * class and indicates whether or not the strategy should wait for handshake
-     * completion.
+     * Initializes a new instance of the {@code ClientTableNetworkNode} class
+     * and indicates whether or not the node should wait for handshake to
+     * complete before indicating the connection has been established.
      * 
      * <p>
      * This constructor is only intended to support testing.
@@ -100,14 +97,14 @@ public final class ClientTableNetworkStrategy
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
      * @param waitForHandshakeCompletion
-     *        {@code true} if the strategy should wait for the handshake to
-     *        complete before indicating the connection has been established;
-     *        otherwise {@code false}.
+     *        {@code true} if the node should wait for the handshake to complete
+     *        before indicating the connection has been established; otherwise
+     *        {@code false}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.
      */
-    public ClientTableNetworkStrategy(
+    public ClientTableNetworkNode(
         /* @NonNull */
         final ITableNetworkController tableNetworkController,
         final boolean waitForHandshakeCompletion )
@@ -126,7 +123,7 @@ public final class ClientTableNetworkStrategy
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy#connected()
+     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#connected()
      */
     @Override
     protected void connected()
@@ -143,13 +140,13 @@ public final class ClientTableNetworkStrategy
                 {
                     if( !handshakeCondition_.await( 30L, TimeUnit.SECONDS ) )
                     {
-                        throw new TableNetworkException( TableNetworkError.TIME_OUT, Messages.ClientTableNetworkStrategy_handshake_timedOut );
+                        throw new TableNetworkException( TableNetworkError.TIME_OUT, Messages.ClientTableNetworkNode_handshake_timedOut );
                     }
                 }
                 catch( final InterruptedException e )
                 {
                     Thread.currentThread().interrupt();
-                    throw new TableNetworkException( TableNetworkError.INTERRUPTED, Messages.ClientTableNetworkStrategy_handshake_interrupted, e );
+                    throw new TableNetworkException( TableNetworkError.INTERRUPTED, Messages.ClientTableNetworkNode_handshake_interrupted, e );
                 }
             }
 
@@ -165,7 +162,7 @@ public final class ClientTableNetworkStrategy
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy#createTransportLayer()
+     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#createTransportLayer()
      */
     @Override
     protected ITransportLayer createTransportLayer()
@@ -177,13 +174,13 @@ public final class ClientTableNetworkStrategy
             @Override
             public IService createService()
             {
-                return new RemoteServerTableGateway( ClientTableNetworkStrategy.this );
+                return new RemoteServerTableGateway( ClientTableNetworkNode.this );
             }
         } );
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy#disconnectingTableNetwork(org.gamegineer.table.net.TableNetworkError)
+     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#disconnectingTableNetwork(org.gamegineer.table.net.TableNetworkError)
      */
     @Override
     protected void disconnectingTableNetwork(
@@ -222,7 +219,7 @@ public final class ClientTableNetworkStrategy
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkStrategy#tableGatewayAdded(org.gamegineer.table.internal.net.ITableGateway)
+     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#tableGatewayAdded(org.gamegineer.table.internal.net.ITableGateway)
      */
     @Override
     protected void tableGatewayAdded(
