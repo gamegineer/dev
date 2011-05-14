@@ -29,8 +29,8 @@ import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationResponseMessage;
-import org.gamegineer.table.net.NetworkTableError;
-import org.gamegineer.table.net.NetworkTableException;
+import org.gamegineer.table.net.TableNetworkError;
+import org.gamegineer.table.net.TableNetworkException;
 
 /**
  * A message handler for the {@link BeginAuthenticationRequestMessage} message.
@@ -92,10 +92,10 @@ final class BeginAuthenticationRequestMessageHandler
             response.setResponse( authenticator.createResponse( message.getChallenge(), password, message.getSalt() ) );
             if( !remoteTableGateway.sendMessage( response, new EndAuthenticationMessageHandler( remoteTableGateway ) ) )
             {
-                remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
+                remoteTableGateway.close( TableNetworkError.TRANSPORT_ERROR );
             }
         }
-        catch( final NetworkTableException e )
+        catch( final TableNetworkException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.BeginAuthenticationRequestMessageHandler_beginAuthenticationResponseFailed, e );
             remoteTableGateway.close( e.getError() );

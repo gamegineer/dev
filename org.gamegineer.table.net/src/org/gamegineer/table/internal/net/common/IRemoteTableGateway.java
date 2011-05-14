@@ -25,10 +25,10 @@ import net.jcip.annotations.GuardedBy;
 import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.TableNetworkError;
 
 /**
- * A gateway to a remote table that is connected to the network table.
+ * A gateway to a remote table that is connected to the table network.
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
@@ -52,7 +52,7 @@ public interface IRemoteTableGateway
     @GuardedBy( "getLock()" )
     public void close(
         /* @Nullable */
-        NetworkTableError error );
+        TableNetworkError error );
 
     /**
      * Gets the context associated with the table gateway.

@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.transport;
 
 import static org.junit.Assert.assertNotNull;
-import org.gamegineer.table.net.NetworkTableConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -113,7 +112,7 @@ public abstract class AbstractTransportLayerTestCase
     {
         transportLayer_.close();
 
-        transportLayer_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+        transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
     }
 
     /**
@@ -127,7 +126,7 @@ public abstract class AbstractTransportLayerTestCase
     public void testOpen_HostName_Null()
         throws Exception
     {
-        transportLayer_.open( null, NetworkTableConstants.DEFAULT_PORT );
+        transportLayer_.open( null, 8888 );
     }
 
     /**
@@ -143,13 +142,13 @@ public abstract class AbstractTransportLayerTestCase
     {
         try
         {
-            transportLayer_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+            transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
         }
         catch( final TransportException e )
         {
             // ignore transport layer errors
         }
 
-        transportLayer_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+        transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
     }
 }

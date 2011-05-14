@@ -35,25 +35,25 @@ final class Messages
     // Fields
     // ======================================================================
 
-    // --- NetworkTable -----------------------------------------------------
+    // --- TableNetwork -----------------------------------------------------
 
-    /** The network table listener is already registered. */
-    public static String NetworkTable_addNetworkTableListener_listener_registered;
+    /** The table network listener is already registered. */
+    public static String TableNetwork_addTableNetworkListener_listener_registered;
 
-    /**
-     * An unexpected exception was thrown from
-     * INetworkTableListener.networkConnected().
-     */
-    public static String NetworkTable_networkConnected_unexpectedException;
+    /** The table network listener is not registered. */
+    public static String TableNetwork_removeTableNetworkListener_listener_notRegistered;
 
     /**
      * An unexpected exception was thrown from
-     * INetworkTableListener.networkDisconnected().
+     * ITableNetworkListener.tableNetworkConnected().
      */
-    public static String NetworkTable_networkDisconnected_unexpectedException;
+    public static String TableNetwork_tableNetworkConnected_unexpectedException;
 
-    /** The network table listener is not registered. */
-    public static String NetworkTable_removeNetworkTableListener_listener_notRegistered;
+    /**
+     * An unexpected exception was thrown from
+     * ITableNetworkListener.tableNetworkDisconnected().
+     */
+    public static String TableNetwork_tableNetworkDisconnected_unexpectedException;
 
 
     // ======================================================================

@@ -25,7 +25,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.net.NetworkTableException;
+import org.gamegineer.table.net.TableNetworkException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,7 +73,7 @@ public final class AuthenticatorTest
      * @return {@code true} if authentication is successful; otherwise {@code
      *         false}.
      * 
-     * @throws org.gamegineer.table.net.NetworkTableException
+     * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
     private boolean authenticate(
@@ -81,7 +81,7 @@ public final class AuthenticatorTest
         final String expectedPassword,
         /* @NonNull */
         final String actualPassword )
-        throws NetworkTableException
+        throws TableNetworkException
     {
         assert expectedPassword != null;
         assert actualPassword != null;

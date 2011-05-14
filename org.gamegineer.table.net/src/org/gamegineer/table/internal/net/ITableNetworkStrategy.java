@@ -1,0 +1,68 @@
+/*
+ * ITableNetworkStrategy.java
+ * Copyright 2008-2011 Gamegineer.org
+ * All rights reserved.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Created on Apr 8, 2011 at 9:16:16 PM.
+ */
+
+package org.gamegineer.table.internal.net;
+
+import org.gamegineer.table.net.ITableNetworkConfiguration;
+import org.gamegineer.table.net.TableNetworkException;
+
+/**
+ * A strategy for the behavior of a table network.
+ * 
+ * @noextend This interface is not intended to be extended by clients.
+ */
+public interface ITableNetworkStrategy
+{
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Connects the table network using the specified configuration.
+     * 
+     * <p>
+     * This method blocks until the table network is connected.
+     * </p>
+     * 
+     * @param configuration
+     *        The table network configuration; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code configuration} is {@code null}.
+     * @throws org.gamegineer.table.net.TableNetworkException
+     *         If the connection cannot be established or the table network is
+     *         already connected.
+     */
+    public void connect(
+        /* @NonNull */
+        ITableNetworkConfiguration configuration )
+        throws TableNetworkException;
+
+    /**
+     * Disconnects the table network.
+     * 
+     * <p>
+     * This method blocks until the table network is disconnected. This method
+     * does nothing if the table network is not connected.
+     * </p>
+     */
+    public void disconnect();
+}

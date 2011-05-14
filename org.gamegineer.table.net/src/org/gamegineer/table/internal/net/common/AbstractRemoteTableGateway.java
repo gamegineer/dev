@@ -40,7 +40,7 @@ import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
-import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.TableNetworkError;
 
 /**
  * Superclass for all implementations of {@ink
@@ -59,7 +59,7 @@ public abstract class AbstractRemoteTableGateway
      * the table gateway was closed normally.
      */
     @GuardedBy( "getLock()" )
-    private NetworkTableError closeError_;
+    private TableNetworkError closeError_;
 
     /**
      * The collection of message handlers for correlated messages. The key is
@@ -136,11 +136,11 @@ public abstract class AbstractRemoteTableGateway
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#close(org.gamegineer.table.net.NetworkTableError)
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#close(org.gamegineer.table.net.TableNetworkError)
      */
     @Override
     public final void close(
-        final NetworkTableError error )
+        final TableNetworkError error )
     {
         assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableGateway_networkDisconnected );
         assert Thread.holdsLock( getLock() );
@@ -167,7 +167,7 @@ public abstract class AbstractRemoteTableGateway
     @GuardedBy( "getLock()" )
     protected void closed(
         /* @Nullable */
-        final NetworkTableError error )
+        final TableNetworkError error )
     {
         assert Thread.holdsLock( getLock() );
 
@@ -307,12 +307,12 @@ public abstract class AbstractRemoteTableGateway
                 else
                 {
                     Loggers.getDefaultLogger().warning( Messages.AbstractRemoteTableGateway_messageReceived_unhandledMessage( message ) );
-                    sendErrorMessage( NetworkTableError.UNHANDLED_MESSAGE, message.getId() );
+                    sendErrorMessage( TableNetworkError.UNHANDLED_MESSAGE, message.getId() );
                 }
             }
             else
             {
-                sendErrorMessage( NetworkTableError.UNKNOWN_MESSAGE, messageEnvelope.getId() );
+                sendErrorMessage( TableNetworkError.UNKNOWN_MESSAGE, messageEnvelope.getId() );
             }
         }
     }
@@ -344,7 +344,7 @@ public abstract class AbstractRemoteTableGateway
     {
         synchronized( getLock() )
         {
-            close( NetworkTableError.UNEXPECTED_PEER_TERMINATION );
+            close( TableNetworkError.UNEXPECTED_PEER_TERMINATION );
         }
     }
 
@@ -395,7 +395,7 @@ public abstract class AbstractRemoteTableGateway
     @GuardedBy( "getLock()" )
     private void sendErrorMessage(
         /* @NonNull */
-        final NetworkTableError error,
+        final TableNetworkError error,
         final int correlationId )
     {
         assert error != null;
@@ -470,7 +470,7 @@ public abstract class AbstractRemoteTableGateway
             // Do not overwrite the original error that caused the table gateway to be closed
             if( (exception != null) && (closeError_ == null) )
             {
-                closeError_ = NetworkTableError.TRANSPORT_ERROR;
+                closeError_ = TableNetworkError.TRANSPORT_ERROR;
             }
 
             closed( closeError_ );
@@ -583,7 +583,7 @@ public abstract class AbstractRemoteTableGateway
 
                 final ErrorMessage errorMessage = new ErrorMessage();
                 errorMessage.setCorrelationId( message.getId() );
-                errorMessage.setError( NetworkTableError.UNEXPECTED_MESSAGE );
+                errorMessage.setError( TableNetworkError.UNEXPECTED_MESSAGE );
                 getRemoteTableGateway().sendMessage( errorMessage, null );
 
                 handleUnexpectedMessage();

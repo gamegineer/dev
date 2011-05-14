@@ -1,6 +1,6 @@
 /*
  * MenuBarView.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -287,9 +287,9 @@ final class MenuBarView
     {
         final JMenu menu = new JMenu( Messages.MenuBarView_network_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_network_mnemonic ).getKeyCode() );
-        menu.add( Actions.getHostNetworkTableAction() );
-        menu.add( Actions.getJoinNetworkTableAction() );
-        menu.add( Actions.getDisconnectNetworkTableAction() );
+        menu.add( Actions.getHostTableNetworkAction() );
+        menu.add( Actions.getJoinTableNetworkAction() );
+        menu.add( Actions.getDisconnectTableNetworkAction() );
         return menu;
     }
 

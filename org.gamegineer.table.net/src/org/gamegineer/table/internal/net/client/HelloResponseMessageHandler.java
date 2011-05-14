@@ -25,7 +25,7 @@ import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloResponseMessage;
-import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.TableNetworkError;
 
 /**
  * A message handler for the {@link HelloResponseMessage} message.
@@ -102,7 +102,7 @@ final class HelloResponseMessageHandler
         if( message.getChosenProtocolVersion() != ProtocolVersions.VERSION_1 )
         {
             System.out.println( "ClientService : received unsupported chosen protocol version" ); //$NON-NLS-1$
-            getRemoteTableGateway().close( NetworkTableError.UNSUPPORTED_PROTOCOL_VERSION );
+            getRemoteTableGateway().close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
         }
     }
 
@@ -113,6 +113,6 @@ final class HelloResponseMessageHandler
     protected void handleUnexpectedMessage()
     {
         System.out.println( "ClientService : received unexpected message in response to hello request" ); //$NON-NLS-1$
-        getRemoteTableGateway().close( NetworkTableError.UNEXPECTED_MESSAGE );
+        getRemoteTableGateway().close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

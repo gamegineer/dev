@@ -28,14 +28,14 @@ import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
-import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.TableNetworkError;
 
 /**
  * A gateway to a remote server table.
  * 
  * <p>
  * This gateway provides a network service that represents the client half of
- * the network table protocol.
+ * the table network protocol.
  * </p>
  */
 @ThreadSafe
@@ -71,17 +71,17 @@ final class RemoteServerTableGateway
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#closed(org.gamegineer.table.net.NetworkTableError)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway#closed(org.gamegineer.table.net.TableNetworkError)
      */
     @Override
     protected void closed(
-        final NetworkTableError error )
+        final TableNetworkError error )
     {
         assert Thread.holdsLock( getLock() );
 
         super.closed( error );
 
-        getContext().disconnectNetworkTable( error );
+        getContext().disconnectTableNetwork( error );
     }
 
     /*
@@ -98,7 +98,7 @@ final class RemoteServerTableGateway
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
         if( !sendMessage( message, new HelloResponseMessageHandler( this ) ) )
         {
-            close( NetworkTableError.TRANSPORT_ERROR );
+            close( TableNetworkError.TRANSPORT_ERROR );
         }
     }
 

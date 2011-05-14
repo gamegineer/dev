@@ -33,7 +33,7 @@ import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloResponseMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.TableNetworkError;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -112,7 +112,7 @@ public final class HelloRequestMessageHandlerTest
         remoteTableGateway.setChallenge( EasyMock.notNull( byte[].class ) );
         remoteTableGateway.setSalt( EasyMock.notNull( byte[].class ) );
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.capture( messageCapture ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( false );
-        remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
+        remoteTableGateway.close( TableNetworkError.TRANSPORT_ERROR );
         mocksControl_.replay();
 
         final HelloRequestMessage message = new HelloRequestMessage();
@@ -134,7 +134,7 @@ public final class HelloRequestMessageHandlerTest
     {
         final IRemoteClientTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteClientTableGateway.class );
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( false );
-        remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
+        remoteTableGateway.close( TableNetworkError.TRANSPORT_ERROR );
         mocksControl_.replay();
 
         final HelloRequestMessage message = new HelloRequestMessage();
@@ -190,7 +190,7 @@ public final class HelloRequestMessageHandlerTest
         final IRemoteClientTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteClientTableGateway.class );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        remoteTableGateway.close( NetworkTableError.UNSUPPORTED_PROTOCOL_VERSION );
+        remoteTableGateway.close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
         mocksControl_.replay();
 
         final HelloRequestMessage message = new HelloRequestMessage();
@@ -201,6 +201,6 @@ public final class HelloRequestMessageHandlerTest
         mocksControl_.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
         assertEquals( message.getId(), messageCapture.getValue().getCorrelationId() );
-        assertEquals( NetworkTableError.UNSUPPORTED_PROTOCOL_VERSION, ((ErrorMessage)messageCapture.getValue()).getError() );
+        assertEquals( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION, ((ErrorMessage)messageCapture.getValue()).getError() );
     }
 }

@@ -34,7 +34,7 @@ import org.gamegineer.table.internal.net.common.messages.EndAuthenticationMessag
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.FakeMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.TableNetworkError;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -175,7 +175,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         EasyMock.expect( remoteTableGateway.getSalt() ).andReturn( salt ).anyTimes();
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        remoteTableGateway.close( NetworkTableError.AUTHENTICATION_FAILED );
+        remoteTableGateway.close( TableNetworkError.AUTHENTICATION_FAILED );
         mocksControl_.replay();
 
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
@@ -187,7 +187,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         mocksControl_.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
         assertEquals( message.getId(), messageCapture.getValue().getCorrelationId() );
-        assertEquals( NetworkTableError.AUTHENTICATION_FAILED, ((ErrorMessage)messageCapture.getValue()).getError() );
+        assertEquals( TableNetworkError.AUTHENTICATION_FAILED, ((ErrorMessage)messageCapture.getValue()).getError() );
     }
 
     /**
@@ -222,7 +222,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         EasyMock.expect( tableGatewayContext.isTableGatewayPresent( playerName ) ).andReturn( true );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        remoteTableGateway.close( NetworkTableError.DUPLICATE_PLAYER_NAME );
+        remoteTableGateway.close( TableNetworkError.DUPLICATE_PLAYER_NAME );
         mocksControl_.replay();
 
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
@@ -234,7 +234,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         mocksControl_.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
         assertEquals( message.getId(), messageCapture.getValue().getCorrelationId() );
-        assertEquals( NetworkTableError.DUPLICATE_PLAYER_NAME, ((ErrorMessage)messageCapture.getValue()).getError() );
+        assertEquals( TableNetworkError.DUPLICATE_PLAYER_NAME, ((ErrorMessage)messageCapture.getValue()).getError() );
     }
 
     /**
@@ -269,7 +269,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         EasyMock.expect( tableGatewayContext.isTableGatewayPresent( playerName ) ).andReturn( false );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( false );
-        remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
+        remoteTableGateway.close( TableNetworkError.TRANSPORT_ERROR );
         mocksControl_.replay();
 
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
@@ -291,7 +291,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
     {
         final IRemoteClientTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteClientTableGateway.class );
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        remoteTableGateway.close( NetworkTableError.UNEXPECTED_MESSAGE );
+        remoteTableGateway.close( TableNetworkError.UNEXPECTED_MESSAGE );
         mocksControl_.replay();
 
         final FakeMessage message = new FakeMessage();

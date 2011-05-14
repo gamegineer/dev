@@ -29,7 +29,7 @@ import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloResponseMessage;
 import org.gamegineer.table.internal.net.transport.FakeMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.TableNetworkError;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -101,11 +101,11 @@ public final class HelloResponseMessageHandlerTest
     public void testHandleMessage_ErrorMessage()
     {
         final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
-        remoteTableGateway.close( NetworkTableError.UNSPECIFIED_ERROR );
+        remoteTableGateway.close( TableNetworkError.UNSPECIFIED_ERROR );
         mocksControl_.replay();
 
         final ErrorMessage message = new ErrorMessage();
-        message.setError( NetworkTableError.UNSPECIFIED_ERROR );
+        message.setError( TableNetworkError.UNSPECIFIED_ERROR );
         final HelloResponseMessageHandler messageHandler = new HelloResponseMessageHandler( remoteTableGateway );
         messageHandler.handleMessage( message );
 
@@ -140,7 +140,7 @@ public final class HelloResponseMessageHandlerTest
     public void testHandleMessage_HelloResponseMessage_UnsupportedChosenProtocolVersion()
     {
         final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
-        remoteTableGateway.close( NetworkTableError.UNSUPPORTED_PROTOCOL_VERSION );
+        remoteTableGateway.close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
         mocksControl_.replay();
 
         final HelloResponseMessage message = new HelloResponseMessage();
@@ -161,7 +161,7 @@ public final class HelloResponseMessageHandlerTest
     {
         final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        remoteTableGateway.close( NetworkTableError.UNEXPECTED_MESSAGE );
+        remoteTableGateway.close( TableNetworkError.UNEXPECTED_MESSAGE );
         mocksControl_.replay();
 
         final FakeMessage message = new FakeMessage();

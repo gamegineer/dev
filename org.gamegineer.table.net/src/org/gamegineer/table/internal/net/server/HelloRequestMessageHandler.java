@@ -31,8 +31,8 @@ import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloResponseMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.net.NetworkTableError;
-import org.gamegineer.table.net.NetworkTableException;
+import org.gamegineer.table.net.TableNetworkError;
+import org.gamegineer.table.net.TableNetworkException;
 
 /**
  * A message handler for the {@link HelloRequestMessage} message.
@@ -98,14 +98,14 @@ final class HelloRequestMessageHandler
         else
         {
             final ErrorMessage errorMessage = new ErrorMessage();
-            errorMessage.setError( NetworkTableError.UNSUPPORTED_PROTOCOL_VERSION );
+            errorMessage.setError( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
             responseMessage = errorMessage;
         }
 
         responseMessage.setCorrelationId( message.getId() );
         if( !remoteTableGateway.sendMessage( responseMessage, null ) )
         {
-            remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
+            remoteTableGateway.close( TableNetworkError.TRANSPORT_ERROR );
             return;
         }
 
@@ -129,10 +129,10 @@ final class HelloRequestMessageHandler
 
             if( !remoteTableGateway.sendMessage( beginAuthenticationRequest, new BeginAuthenticationResponseMessageHandler( remoteTableGateway ) ) )
             {
-                remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
+                remoteTableGateway.close( TableNetworkError.TRANSPORT_ERROR );
             }
         }
-        catch( final NetworkTableException e )
+        catch( final TableNetworkException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.HelloRequestMessageHandler_beginAuthenticationRequestFailed, e );
             remoteTableGateway.close( e.getError() );

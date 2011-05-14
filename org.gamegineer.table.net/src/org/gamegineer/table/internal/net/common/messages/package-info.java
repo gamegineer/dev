@@ -20,7 +20,7 @@
  */
 
 /**
- * Provides classes that define the network table protocol messages.
+ * Provides classes that define the table network protocol messages.
  * 
  * <p>
  * This package is only intended for use by members of the

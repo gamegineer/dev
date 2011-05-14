@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.ui.view;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.internal.ui.util.CommonMessages;
-import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.TableNetworkError;
 import org.osgi.framework.Version;
 
 /**
@@ -555,13 +555,13 @@ final class Messages
     /** The name of the hand cursor. */
     public static String Cursors_hand_name;
 
-    // --- DisconnectNetworkTableAction -------------------------------------
+    // --- DisconnectTableNetworkAction -------------------------------------
 
-    /** The disconnect network table action mnemonic. */
-    public static String DisconnectNetworkTableAction_mnemonic;
+    /** The disconnect table network action mnemonic. */
+    public static String DisconnectTableNetworkAction_mnemonic;
 
-    /** The disconnect network table action text. */
-    public static String DisconnectNetworkTableAction_text;
+    /** The disconnect table network action text. */
+    public static String DisconnectTableNetworkAction_text;
 
     // --- ExitAction -------------------------------------------------------
 
@@ -587,13 +587,13 @@ final class Messages
     /** The flip card action text. */
     public static String FlipCardAction_text;
 
-    // --- HostNetworkTableAction -------------------------------------------
+    // --- HostTableNetworkAction -------------------------------------------
 
-    /** The host network table action mnemonic. */
-    public static String HostNetworkTableAction_mnemonic;
+    /** The host table network action mnemonic. */
+    public static String HostTableNetworkAction_mnemonic;
 
-    /** The host network table action text. */
-    public static String HostNetworkTableAction_text;
+    /** The host table network action text. */
+    public static String HostTableNetworkAction_text;
 
     // --- ImportTableAction ------------------------------------------------
 
@@ -603,13 +603,13 @@ final class Messages
     /** The import table action text. */
     public static String ImportTableAction_text;
 
-    // --- JoinNetworkTableAction -------------------------------------------
+    // --- JoinTableNetworkAction -------------------------------------------
 
-    /** The join network table action mnemonic. */
-    public static String JoinNetworkTableAction_mnemonic;
+    /** The join table network action mnemonic. */
+    public static String JoinTableNetworkAction_mnemonic;
 
-    /** The join network table action text. */
-    public static String JoinNetworkTableAction_text;
+    /** The join table network action text. */
+    public static String JoinTableNetworkAction_text;
 
     // --- MainFrame --------------------------------------------------------
 
@@ -863,14 +863,16 @@ final class Messages
     /** An error occurred while importing the table. */
     public static String TableView_importTable_error_nonNls;
 
-    /** The network was disconnected due to a generic error. */
-    public static String TableView_networkDisconnected_error_generic;
+    /** The table network was disconnected due to a generic error. */
+    public static String TableView_tableNetworkDisconnected_error_generic;
 
-    /** The network was disconnected due to a transport error. */
-    public static String TableView_networkDisconnected_error_transportError;
+    /** The table network was disconnected due to a transport error. */
+    public static String TableView_tableNetworkDisconnected_error_transportError;
 
-    /** The network was disconnected due to an unexpected peer termination. */
-    public static String TableView_networkDisconnected_error_unexpectedPeerTermination;
+    /**
+     * The table network was disconnected due to an unexpected peer termination.
+     */
+    public static String TableView_tableNetworkDisconnected_error_unexpectedPeerTermination;
 
 
     // ======================================================================
@@ -974,30 +976,30 @@ final class Messages
     // --- TableView --------------------------------------------------------
 
     /**
-     * Gets the formatted message for the network disconnected message.
+     * Gets the formatted message for the table network disconnected message.
      * 
      * @param error
-     *        The error that caused the network disconnect; must not be {@code
-     *        null}.
+     *        The error that caused the table network disconnect; must not be
+     *        {@code null}.
      * 
-     * @return The formatted message for the network disconnected message; never
-     *         {@code null}.
+     * @return The formatted message for the table network disconnected message;
+     *         never {@code null}.
      */
     /* @NonNull */
-    static String TableView_networkDisconnected_error(
+    static String TableView_tableNetworkDisconnected_error(
         /* @NonNull */
-        final NetworkTableError error )
+        final TableNetworkError error )
     {
         switch( error )
         {
             case TRANSPORT_ERROR:
-                return TableView_networkDisconnected_error_transportError;
+                return TableView_tableNetworkDisconnected_error_transportError;
 
             case UNEXPECTED_PEER_TERMINATION:
-                return TableView_networkDisconnected_error_unexpectedPeerTermination;
+                return TableView_tableNetworkDisconnected_error_unexpectedPeerTermination;
 
             default:
-                return bind( TableView_networkDisconnected_error_generic, error );
+                return bind( TableView_tableNetworkDisconnected_error_generic, error );
         }
     }
 }

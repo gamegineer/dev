@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.net.transport.tcp;
 
 import java.nio.channels.SocketChannel;
 import org.gamegineer.table.internal.net.transport.FakeService;
-import org.gamegineer.table.net.NetworkTableConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,7 +72,7 @@ public final class ServiceHandlerTest
         throws Exception
     {
         transportLayer_ = new FakeTransportLayer();
-        transportLayer_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+        transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
         serviceHandler_ = new ServiceHandler( transportLayer_, new FakeService() );
     }
 

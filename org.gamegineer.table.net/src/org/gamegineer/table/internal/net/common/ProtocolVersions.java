@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.net.common;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * A collection of constants that define the known network table protocol
+ * A collection of constants that define the known table network protocol
  * versions.
  */
 @ThreadSafe

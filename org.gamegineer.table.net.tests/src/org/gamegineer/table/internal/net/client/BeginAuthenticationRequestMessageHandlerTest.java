@@ -33,7 +33,7 @@ import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHand
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.TableNetworkError;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -156,7 +156,7 @@ public final class BeginAuthenticationRequestMessageHandlerTest
         final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
         EasyMock.expect( remoteTableGateway.getContext() ).andReturn( tableGatewayContext ).anyTimes();
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( false );
-        remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
+        remoteTableGateway.close( TableNetworkError.TRANSPORT_ERROR );
         mocksControl_.replay();
 
         final BeginAuthenticationRequestMessage message = new BeginAuthenticationRequestMessage();

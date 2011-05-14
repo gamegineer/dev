@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.net;
 
 import net.jcip.annotations.GuardedBy;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.TableNetworkError;
 
 /**
  * The execution context for a table gateway.
@@ -58,16 +58,15 @@ public interface ITableGatewayContext
         ITableGateway tableGateway );
 
     /**
-     * Disconnects the network table for the specified cause.
+     * Disconnects the table network for the specified cause.
      * 
      * @param error
-     *        The error that caused the network table to be disconnected from
-     *        the network or {@code null} if the network table was disconnected
-     *        normally.
+     *        The error that caused the table network to be disconnected or
+     *        {@code null} if the table network was disconnected normally.
      */
-    public void disconnectNetworkTable(
+    public void disconnectTableNetwork(
         /* @Nullable */
-        NetworkTableError error );
+        TableNetworkError error );
 
     /**
      * Gets the local player name.

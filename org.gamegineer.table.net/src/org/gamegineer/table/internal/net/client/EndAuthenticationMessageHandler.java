@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.net.client;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.common.messages.EndAuthenticationMessage;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
-import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.TableNetworkError;
 
 /**
  * A message handler for the {@link EndAuthenticationMessage} message.
@@ -108,6 +108,6 @@ final class EndAuthenticationMessageHandler
     protected void handleUnexpectedMessage()
     {
         System.out.println( "ClientService : received unknown message in response to begin authentication response" ); //$NON-NLS-1$
-        getRemoteTableGateway().close( NetworkTableError.UNEXPECTED_MESSAGE );
+        getRemoteTableGateway().close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

@@ -31,11 +31,11 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.net.NetworkTableError;
-import org.gamegineer.table.net.NetworkTableException;
+import org.gamegineer.table.net.TableNetworkError;
+import org.gamegineer.table.net.TableNetworkException;
 
 /**
- * A network table protocol authenticator.
+ * A table network protocol authenticator.
  */
 @Immutable
 public final class Authenticator
@@ -82,12 +82,12 @@ public final class Authenticator
      * 
      * @return A new challenge buffer; never {@code null}.
      * 
-     * @throws org.gamegineer.table.net.NetworkTableException
+     * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
     /* @NonNull */
     public byte[] createChallenge()
-        throws NetworkTableException
+        throws TableNetworkException
     {
         return createSecureRandomBytes( CHALLENGE_LENGTH );
     }
@@ -110,7 +110,7 @@ public final class Authenticator
      * @throws java.lang.NullPointerException
      *         If {@code challenge}, {@code password}, or {@code salt} is
      *         {@code null}.
-     * @throws org.gamegineer.table.net.NetworkTableException
+     * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
     /* @NonNull */
@@ -121,7 +121,7 @@ public final class Authenticator
         final SecureString password,
         /* @NonNull */
         final byte[] salt )
-        throws NetworkTableException
+        throws TableNetworkException
     {
         assertArgumentNotNull( challenge, "challenge" ); //$NON-NLS-1$
         assertArgumentNotNull( password, "password" ); //$NON-NLS-1$
@@ -136,7 +136,7 @@ public final class Authenticator
         }
         catch( final GeneralSecurityException e )
         {
-            throw new NetworkTableException( NetworkTableError.UNSPECIFIED_ERROR, Messages.Authenticator_createResponse_failed, e );
+            throw new TableNetworkException( TableNetworkError.UNSPECIFIED_ERROR, Messages.Authenticator_createResponse_failed, e );
         }
     }
 
@@ -147,12 +147,12 @@ public final class Authenticator
      * @return A new salt buffer used to generate a secret key from a plain-text
      *         password; never {@code null}.
      * 
-     * @throws org.gamegineer.table.net.NetworkTableException
+     * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
     /* @NonNull */
     public byte[] createSalt()
-        throws NetworkTableException
+        throws TableNetworkException
     {
         return createSecureRandomBytes( SALT_LENGTH );
     }
@@ -169,7 +169,7 @@ public final class Authenticator
      * 
      * @return The secret key; never {@code null}.
      * 
-     * @throws org.gamegineer.table.net.NetworkTableException
+     * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
     /* @NonNull */
@@ -178,7 +178,7 @@ public final class Authenticator
         final SecureString password,
         /* @NonNull */
         final byte[] salt )
-        throws NetworkTableException
+        throws TableNetworkException
     {
         assert password != null;
         assert salt != null;
@@ -192,7 +192,7 @@ public final class Authenticator
         }
         catch( final GeneralSecurityException e )
         {
-            throw new NetworkTableException( NetworkTableError.UNSPECIFIED_ERROR, Messages.Authenticator_createSecretKey_failed, e );
+            throw new TableNetworkException( TableNetworkError.UNSPECIFIED_ERROR, Messages.Authenticator_createSecretKey_failed, e );
         }
         finally
         {
@@ -209,13 +209,13 @@ public final class Authenticator
      * @return A buffer filled with securely-generated random bytes; never
      *         {@code null}.
      * 
-     * @throws org.gamegineer.table.net.NetworkTableException
+     * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
     /* @NonNull */
     private static byte[] createSecureRandomBytes(
         final int length )
-        throws NetworkTableException
+        throws TableNetworkException
     {
         assert length >= 0;
 
@@ -228,7 +228,7 @@ public final class Authenticator
         }
         catch( final GeneralSecurityException e )
         {
-            throw new NetworkTableException( NetworkTableError.UNSPECIFIED_ERROR, Messages.Authenticator_createSecureRandomBytes_failed, e );
+            throw new TableNetworkException( TableNetworkError.UNSPECIFIED_ERROR, Messages.Authenticator_createSecureRandomBytes_failed, e );
         }
     }
 

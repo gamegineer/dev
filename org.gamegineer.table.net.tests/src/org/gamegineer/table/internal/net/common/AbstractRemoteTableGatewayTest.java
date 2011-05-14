@@ -31,7 +31,7 @@ import org.gamegineer.table.internal.net.transport.FakeMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
-import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.TableNetworkError;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -160,7 +160,7 @@ public final class AbstractRemoteTableGatewayTest
 
         mocksControl_.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
-        assertEquals( NetworkTableError.UNHANDLED_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
+        assertEquals( TableNetworkError.UNHANDLED_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
     }
 
     /**
@@ -190,7 +190,7 @@ public final class AbstractRemoteTableGatewayTest
 
         mocksControl_.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
-        assertEquals( NetworkTableError.UNHANDLED_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
+        assertEquals( TableNetworkError.UNHANDLED_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
     }
 
     /**
@@ -212,7 +212,7 @@ public final class AbstractRemoteTableGatewayTest
 
         mocksControl_.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
-        assertEquals( NetworkTableError.UNKNOWN_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
+        assertEquals( TableNetworkError.UNKNOWN_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
     }
 
     /**

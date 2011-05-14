@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.net.common.messages;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.transport.AbstractMessage;
-import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.TableNetworkError;
 
 /**
  * A message sent by one peer to another to indicate an error occurred.
@@ -45,7 +45,7 @@ public final class ErrorMessage
      * 
      * @serial The error that occurred.
      */
-    private NetworkTableError error_;
+    private TableNetworkError error_;
 
 
     // ======================================================================
@@ -57,7 +57,7 @@ public final class ErrorMessage
      */
     public ErrorMessage()
     {
-        error_ = NetworkTableError.UNSPECIFIED_ERROR;
+        error_ = TableNetworkError.UNSPECIFIED_ERROR;
     }
 
 
@@ -71,7 +71,7 @@ public final class ErrorMessage
      * @return The error that occurred; never {@code null}.
      */
     /* @NonNull */
-    public NetworkTableError getError()
+    public TableNetworkError getError()
     {
         return error_;
     }
@@ -87,7 +87,7 @@ public final class ErrorMessage
      */
     public void setError(
         /* @NonNull */
-        final NetworkTableError error )
+        final TableNetworkError error )
     {
         assertArgumentNotNull( error, "error" ); //$NON-NLS-1$
 

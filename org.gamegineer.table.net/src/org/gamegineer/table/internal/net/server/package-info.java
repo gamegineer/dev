@@ -20,7 +20,7 @@
  */
 
 /**
- * Provides classes that define the server network table strategy.
+ * Provides classes that define the server table network strategy.
  * 
  * <p>
  * This package is only intended for use by members of the

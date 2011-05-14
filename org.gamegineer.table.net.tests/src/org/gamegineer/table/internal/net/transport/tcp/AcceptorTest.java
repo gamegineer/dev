@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.transport.tcp;
 
 import java.io.IOException;
-import org.gamegineer.table.net.NetworkTableConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,7 +71,7 @@ public final class AcceptorTest
         throws Exception
     {
         transportLayer_ = new FakeTransportLayer();
-        transportLayer_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+        transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
         acceptor_ = new Acceptor( transportLayer_ );
     }
 
@@ -105,7 +104,7 @@ public final class AcceptorTest
     {
         acceptor_.close();
 
-        acceptor_.bind( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+        acceptor_.bind( "localhost", 8888 ); //$NON-NLS-1$
     }
 
     /**
@@ -121,13 +120,13 @@ public final class AcceptorTest
     {
         try
         {
-            acceptor_.bind( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+            acceptor_.bind( "localhost", 8888 ); //$NON-NLS-1$
         }
         catch( final IOException e )
         {
             // ignore I/O errors
         }
 
-        acceptor_.bind( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+        acceptor_.bind( "localhost", 8888 ); //$NON-NLS-1$
     }
 }

@@ -27,7 +27,6 @@ import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler.State;
-import org.gamegineer.table.net.NetworkTableConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -103,7 +102,7 @@ public final class DispatcherTest
     {
         dispatcher_.open();
         final Acceptor acceptor = new Acceptor( new FakeTransportLayer( dispatcher_ ) );
-        acceptor.bind( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+        acceptor.bind( "localhost", 8888 ); //$NON-NLS-1$
         assertEquals( State.OPEN, acceptor.getState() );
 
         dispatcher_.close();

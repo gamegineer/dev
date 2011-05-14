@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.net;
 
 /**
- * A gateway to a table that is connected to the network table.
+ * A gateway to a table that is connected to the table network.
  * 
  * @noextend This interface is not intended to be extended by clients.
  */

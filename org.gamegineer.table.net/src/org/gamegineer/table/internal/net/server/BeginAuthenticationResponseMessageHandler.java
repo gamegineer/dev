@@ -32,8 +32,8 @@ import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationResp
 import org.gamegineer.table.internal.net.common.messages.EndAuthenticationMessage;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.net.NetworkTableError;
-import org.gamegineer.table.net.NetworkTableException;
+import org.gamegineer.table.net.TableNetworkError;
+import org.gamegineer.table.net.TableNetworkException;
 
 /**
  * A message handler for the {@link BeginAuthenticationResponseMessage} message.
@@ -78,7 +78,7 @@ final class BeginAuthenticationResponseMessageHandler
      *        The challenge response submitted by the remote player; must not be
      *        {@code null}.
      * 
-     * @throws org.gamegineer.table.net.NetworkTableException
+     * @throws org.gamegineer.table.net.TableNetworkException
      *         If the remote player cannot be authenticated.
      */
     private void authenticate(
@@ -86,7 +86,7 @@ final class BeginAuthenticationResponseMessageHandler
         final String playerName,
         /* @NonNull */
         final byte[] response )
-        throws NetworkTableException
+        throws TableNetworkException
     {
         assert playerName != null;
         assert response != null;
@@ -104,12 +104,12 @@ final class BeginAuthenticationResponseMessageHandler
             }
             else
             {
-                throw new NetworkTableException( NetworkTableError.AUTHENTICATION_FAILED );
+                throw new TableNetworkException( TableNetworkError.AUTHENTICATION_FAILED );
             }
 
             if( context.isTableGatewayPresent( playerName ) )
             {
-                throw new NetworkTableException( NetworkTableError.DUPLICATE_PLAYER_NAME );
+                throw new TableNetworkException( TableNetworkError.DUPLICATE_PLAYER_NAME );
             }
         }
         finally
@@ -143,7 +143,7 @@ final class BeginAuthenticationResponseMessageHandler
             final EndAuthenticationMessage endAuthenticationMessage = new EndAuthenticationMessage();
             responseMessage = endAuthenticationMessage;
         }
-        catch( final NetworkTableException e )
+        catch( final TableNetworkException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.BeginAuthenticationResponseMessageHandler_authenticationFailed, e );
             final ErrorMessage errorMessage = new ErrorMessage();
@@ -166,7 +166,7 @@ final class BeginAuthenticationResponseMessageHandler
         }
         else
         {
-            remoteTableGateway.close( NetworkTableError.TRANSPORT_ERROR );
+            remoteTableGateway.close( TableNetworkError.TRANSPORT_ERROR );
             // TODO: all these close() calls smell bad; may just allow handleMessage() to throw
             // an exception that will force the gateway to close.
         }
@@ -179,6 +179,6 @@ final class BeginAuthenticationResponseMessageHandler
     protected void handleUnexpectedMessage()
     {
         System.out.println( "ServerService : received unknown message in response to begin authentication request" ); //$NON-NLS-1$
-        getRemoteTableGateway().close( NetworkTableError.UNEXPECTED_MESSAGE );
+        getRemoteTableGateway().close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

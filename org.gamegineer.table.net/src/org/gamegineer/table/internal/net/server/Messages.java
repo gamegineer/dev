@@ -45,13 +45,13 @@ final class Messages
     /** Failed to create the begin authentication request. */
     public static String HelloRequestMessageHandler_beginAuthenticationRequestFailed;
 
-    // --- ServerNetworkTableStrategy ---------------------------------------
+    // --- ServerTableNetworkStrategy ---------------------------------------
 
     /** The player has connected. */
-    public static String ServerNetworkTableStrategy_playerConnected_playerConnected;
+    public static String ServerTableNetworkStrategy_playerConnected_playerConnected;
 
     /** The player has disconnected. */
-    public static String ServerNetworkTableStrategy_playerDisconnected_playerDisconnected;
+    public static String ServerTableNetworkStrategy_playerDisconnected_playerDisconnected;
 
 
     // ======================================================================
@@ -79,7 +79,7 @@ final class Messages
     // Methods
     // ======================================================================
 
-    // --- ServerNetworkTableStrategy ---------------------------------------
+    // --- ServerTableNetworkStrategy ---------------------------------------
 
     /**
      * Gets the formatted message indicating the player has connected.
@@ -92,11 +92,11 @@ final class Messages
      *         {@code null}.
      */
     /* @NonNull */
-    static String ServerNetworkTableStrategy_playerConnected_playerConnected(
+    static String ServerTableNetworkStrategy_playerConnected_playerConnected(
         /* @NonNull */
         final String playerName )
     {
-        return bind( ServerNetworkTableStrategy_playerConnected_playerConnected, playerName );
+        return bind( ServerTableNetworkStrategy_playerConnected_playerConnected, playerName );
     }
 
     /**
@@ -110,10 +110,10 @@ final class Messages
      *         never {@code null}.
      */
     /* @NonNull */
-    static String ServerNetworkTableStrategy_playerDisconnected_playerDisconnected(
+    static String ServerTableNetworkStrategy_playerDisconnected_playerDisconnected(
         /* @NonNull */
         final String playerName )
     {
-        return bind( ServerNetworkTableStrategy_playerDisconnected_playerDisconnected, playerName );
+        return bind( ServerTableNetworkStrategy_playerDisconnected_playerDisconnected, playerName );
     }
 }

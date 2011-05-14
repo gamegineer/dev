@@ -31,7 +31,7 @@ import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHand
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.AbstractMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.net.NetworkTableError;
+import org.gamegineer.table.net.TableNetworkError;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -147,7 +147,7 @@ public final class AbstractMessageHandlerTest
         mocksControl_.verify();
         assertEquals( 1, messageHandler.getHandleUnexpectedMessageCallCount() );
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
-        assertEquals( NetworkTableError.UNEXPECTED_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
+        assertEquals( TableNetworkError.UNEXPECTED_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
     }
 
 

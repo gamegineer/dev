@@ -37,16 +37,16 @@ final class Messages
     // Fields
     // ======================================================================
 
-    // --- AbstractNetworkTableStrategy -------------------------------------
+    // --- AbstractTableNetworkStrategy -------------------------------------
 
     /** The table gateway is already registered. */
-    public static String AbstractNetworkTableStrategy_addTableGateway_tableGatewayRegistered;
+    public static String AbstractTableNetworkStrategy_addTableGateway_tableGatewayRegistered;
 
     /** The network is disconnected. */
-    public static String AbstractNetworkTableStrategy_networkDisconnected;
+    public static String AbstractTableNetworkStrategy_networkDisconnected;
 
     /** The table gateway is not registered. */
-    public static String AbstractNetworkTableStrategy_removeTableGateway_tableGatewayNotRegistered;
+    public static String AbstractTableNetworkStrategy_removeTableGateway_tableGatewayNotRegistered;
 
     // --- AbstractRemoteTableGateway ---------------------------------------
 

@@ -1,6 +1,6 @@
 /*
  * package-info.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,6 +20,6 @@
  */
 
 /**
- * Provides interfaces and classes that define the network table model.
+ * Provides interfaces and classes that define the table network model.
  */
 package org.gamegineer.table.net;

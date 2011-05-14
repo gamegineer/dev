@@ -20,7 +20,7 @@
  */
 
 /**
- * Provides classes that support both the client and server network table
+ * Provides classes that support both the client and server table network
  * strategies.
  * 
  * <p>

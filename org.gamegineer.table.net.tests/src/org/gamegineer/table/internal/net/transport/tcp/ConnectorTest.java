@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.transport.tcp;
 
 import java.io.IOException;
-import org.gamegineer.table.net.NetworkTableConstants;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -72,7 +71,7 @@ public final class ConnectorTest
         throws Exception
     {
         transportLayer_ = new FakeTransportLayer();
-        transportLayer_.open( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+        transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
         connector_ = new Connector( transportLayer_ );
     }
 
@@ -105,7 +104,7 @@ public final class ConnectorTest
     {
         connector_.close();
 
-        connector_.connect( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+        connector_.connect( "localhost", 8888 ); //$NON-NLS-1$
     }
 
     /**
@@ -121,13 +120,13 @@ public final class ConnectorTest
     {
         try
         {
-            connector_.connect( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+            connector_.connect( "localhost", 8888 ); //$NON-NLS-1$
         }
         catch( final IOException e )
         {
             // ignore I/O errors
         }
 
-        connector_.connect( "localhost", NetworkTableConstants.DEFAULT_PORT ); //$NON-NLS-1$
+        connector_.connect( "localhost", 8888 ); //$NON-NLS-1$
     }
 }

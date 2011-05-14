@@ -33,7 +33,7 @@ import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
  * 
  * <p>
  * This gateway provides a network service that represents the server half of
- * the network table protocol.
+ * the table network protocol.
  * </p>
  */
 @ThreadSafe
