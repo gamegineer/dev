@@ -34,8 +34,8 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableGateway;
-import org.gamegineer.table.internal.net.ITableGatewayContext;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.internal.net.ITableNetworkNode;
 import org.gamegineer.table.internal.net.ITableNetworkNodeController;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
@@ -53,7 +53,7 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @ThreadSafe
 public abstract class AbstractTableNetworkNode
-    implements ITableGatewayContext, ITableNetworkNodeController
+    implements ITableNetworkNode, ITableNetworkNodeController
 {
     // ======================================================================
     // Fields
@@ -123,7 +123,7 @@ public abstract class AbstractTableNetworkNode
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableGatewayContext#addTableGateway(org.gamegineer.table.internal.net.ITableGateway)
+     * @see org.gamegineer.table.internal.net.ITableNetworkNode#addTableGateway(org.gamegineer.table.internal.net.ITableGateway)
      */
     @Override
     public final void addTableGateway(
@@ -188,7 +188,7 @@ public abstract class AbstractTableNetworkNode
     }
 
     /**
-     * Template method invoked when the table network has connected.
+     * Template method invoked when the table network node has connected.
      * 
      * <p>
      * This method is <b>not</b> invoked while the instance lock is held.
@@ -209,7 +209,7 @@ public abstract class AbstractTableNetworkNode
     }
 
     /**
-     * Template method invoked when the table network is connecting.
+     * Template method invoked when the table network node is connecting.
      * 
      * <p>
      * This method is invoked while the instance lock is held. Subclasses must
@@ -269,40 +269,18 @@ public abstract class AbstractTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableGatewayContext#disconnectTableNetwork(org.gamegineer.table.net.TableNetworkError)
+     * @see org.gamegineer.table.internal.net.ITableNetworkNode#disconnect(org.gamegineer.table.net.TableNetworkError)
      */
     @Override
-    public final void disconnectTableNetwork(
+    public final void disconnect(
         final TableNetworkError error )
     {
-        disconnectingTableNetwork( error );
+        disconnecting( error );
         tableNetworkController_.disconnect( error );
     }
 
     /**
-     * Template method invoked when the table network is disconnecting.
-     * 
-     * <p>
-     * This method is <b>not</b> invoked while the instance lock is held.
-     * Subclasses must always invoke the superclass method.
-     * </p>
-     * 
-     * <p>
-     * This implementation does nothing.
-     * </p>
-     * 
-     * @param error
-     *        The error that caused the table network to be disconnected or
-     *        {@code null} if the table network was disconnected normally.
-     */
-    protected void disconnectingTableNetwork(
-        final TableNetworkError error )
-    {
-        // do nothing
-    }
-
-    /**
-     * Template method invoked when the table network has disconnected.
+     * Template method invoked when the table network node has disconnected.
      * 
      * <p>
      * This method is invoked while the instance lock is held. Subclasses must
@@ -322,7 +300,7 @@ public abstract class AbstractTableNetworkNode
     }
 
     /**
-     * Template method invoked when the table network is disconnecting.
+     * Template method invoked when the table network node is disconnecting.
      * 
      * <p>
      * This method is invoked while the instance lock is held. Subclasses must
@@ -338,6 +316,29 @@ public abstract class AbstractTableNetworkNode
     {
         assert Thread.holdsLock( getLock() );
 
+        // do nothing
+    }
+
+    /**
+     * Template method invoked when the table network node is disconnecting for
+     * the specified cause.
+     * 
+     * <p>
+     * This method is <b>not</b> invoked while the instance lock is held.
+     * Subclasses must always invoke the superclass method.
+     * </p>
+     * 
+     * <p>
+     * This implementation does nothing.
+     * </p>
+     * 
+     * @param error
+     *        The error that caused the table network node to be disconnected or
+     *        {@code null} if the table network node was disconnected normally.
+     */
+    protected void disconnecting(
+        final TableNetworkError error )
+    {
         // do nothing
     }
 
@@ -365,7 +366,7 @@ public abstract class AbstractTableNetworkNode
      * @throws java.lang.IllegalStateException
      *         If the network is not connected.
      * 
-     * @see org.gamegineer.table.internal.net.ITableGatewayContext#getLocalPlayerName()
+     * @see org.gamegineer.table.internal.net.ITableNetworkNode#getLocalPlayerName()
      */
     @Override
     public final String getLocalPlayerName()
@@ -377,7 +378,7 @@ public abstract class AbstractTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableGatewayContext#getLock()
+     * @see org.gamegineer.table.internal.net.ITableNetworkNode#getLock()
      */
     @Override
     public final Object getLock()
@@ -389,7 +390,7 @@ public abstract class AbstractTableNetworkNode
      * @throws java.lang.IllegalStateException
      *         If the network is not connected.
      * 
-     * @see org.gamegineer.table.internal.net.ITableGatewayContext#getPassword()
+     * @see org.gamegineer.table.internal.net.ITableNetworkNode#getPassword()
      */
     @Override
     public final SecureString getPassword()
@@ -426,7 +427,7 @@ public abstract class AbstractTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableGatewayContext#isTableGatewayPresent(java.lang.String)
+     * @see org.gamegineer.table.internal.net.ITableNetworkNode#isTableGatewayPresent(java.lang.String)
      */
     @Override
     public final boolean isTableGatewayPresent(
@@ -439,7 +440,7 @@ public abstract class AbstractTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableGatewayContext#removeTableGateway(org.gamegineer.table.internal.net.ITableGateway)
+     * @see org.gamegineer.table.internal.net.ITableNetworkNode#removeTableGateway(org.gamegineer.table.internal.net.ITableGateway)
      */
     @Override
     public final void removeTableGateway(

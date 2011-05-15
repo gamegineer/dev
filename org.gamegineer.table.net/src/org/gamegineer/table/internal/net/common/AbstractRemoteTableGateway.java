@@ -33,7 +33,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.ITableNetworkNode;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
@@ -75,6 +75,9 @@ public abstract class AbstractRemoteTableGateway
     @GuardedBy( "getLock()" )
     private int nextId_;
 
+    /** The local table network node. */
+    private final ITableNetworkNode node_;
+
     /**
      * The name of the remote player or {@code null} if the player has not yet
      * been authenticated.
@@ -88,9 +91,6 @@ public abstract class AbstractRemoteTableGateway
      */
     @GuardedBy( "getLock()" )
     private IServiceContext serviceContext_;
-
-    /** The table gateway context. */
-    private final ITableGatewayContext tableGatewayContext_;
 
     /**
      * The collection of message handlers for uncorrelated messages. The key is
@@ -108,25 +108,25 @@ public abstract class AbstractRemoteTableGateway
      * Initializes a new instance of the {@code AbstractRemoteTableGateway}
      * class.
      * 
-     * @param tableGatewayContext
-     *        The table gateway context; must not be {@code null}.
+     * @param node
+     *        The local table network node; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code tableGatewayContext} is {@code null}.
+     *         If {@code node} is {@code null}.
      */
     protected AbstractRemoteTableGateway(
         /* @NonNull */
-        final ITableGatewayContext tableGatewayContext )
+        final ITableNetworkNode node )
     {
-        assertArgumentNotNull( tableGatewayContext, "tableGatewayContext" ); //$NON-NLS-1$
+        assertArgumentNotNull( node, "node" ); //$NON-NLS-1$
 
         closeError_ = null;
         correlatedMessageHandlers_ = new HashMap<Integer, IMessageHandler>();
         lock_ = new Object();
         nextId_ = getInitialMessageId();
+        node_ = node;
         playerName_ = null;
         serviceContext_ = null;
-        tableGatewayContext_ = tableGatewayContext;
         uncorrelatedMessageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler>();
     }
 
@@ -173,9 +173,9 @@ public abstract class AbstractRemoteTableGateway
 
         if( playerName_ != null )
         {
-            synchronized( tableGatewayContext_.getLock() )
+            synchronized( node_.getLock() )
             {
-                tableGatewayContext_.removeTableGateway( this );
+                node_.removeTableGateway( this );
             }
 
             playerName_ = null;
@@ -214,14 +214,6 @@ public abstract class AbstractRemoteTableGateway
         }
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#getContext()
-     */
-    public final ITableGatewayContext getContext()
-    {
-        return tableGatewayContext_;
-    }
-
     /**
      * Gets the initial message identifier.
      * 
@@ -230,6 +222,14 @@ public abstract class AbstractRemoteTableGateway
     private static int getInitialMessageId()
     {
         return IMessage.MINIMUM_ID + (int)(Math.random() * (IMessage.MAXIMUM_ID - IMessage.MINIMUM_ID));
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#getLocalNode()
+     */
+    public final ITableNetworkNode getLocalNode()
+    {
+        return node_;
     }
 
     /*
@@ -299,7 +299,7 @@ public abstract class AbstractRemoteTableGateway
 
                 if( messageHandler != null )
                 {
-                    synchronized( tableGatewayContext_.getLock() )
+                    synchronized( node_.getLock() )
                     {
                         messageHandler.handleMessage( message );
                     }

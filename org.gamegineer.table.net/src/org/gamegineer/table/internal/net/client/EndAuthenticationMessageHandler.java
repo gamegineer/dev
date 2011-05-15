@@ -78,7 +78,7 @@ final class EndAuthenticationMessageHandler
             Integer.valueOf( message.getCorrelationId() ) ) );
         final IRemoteServerTableGateway remoteTableGateway = getRemoteTableGateway();
         remoteTableGateway.setPlayerName( "<<server>>" ); //$NON-NLS-1$
-        remoteTableGateway.getContext().addTableGateway( remoteTableGateway );
+        remoteTableGateway.getLocalNode().addTableGateway( remoteTableGateway );
     }
 
     /**

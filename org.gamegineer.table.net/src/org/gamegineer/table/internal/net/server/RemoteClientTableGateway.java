@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.net.server;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.ITableNetworkNode;
 import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
 import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
 
@@ -67,17 +67,17 @@ final class RemoteClientTableGateway
     /**
      * Initializes a new instance of the {@code RemoteClientTableGateway} class.
      * 
-     * @param context
-     *        The table gateway context; must not be {@code null}.
+     * @param node
+     *        The local table network node; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
+     *         If {@code node} is {@code null}.
      */
     RemoteClientTableGateway(
         /* @NonNull */
-        final ITableGatewayContext context )
+        final ITableNetworkNode node )
     {
-        super( context );
+        super( node );
 
         challenge_ = null;
         salt_ = null;

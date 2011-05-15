@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.net.common;
 
 import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.ITableNetworkNode;
 import org.gamegineer.table.internal.net.transport.AbstractServiceTestCase;
 import org.gamegineer.table.internal.net.transport.IService;
 
@@ -59,7 +59,7 @@ public final class AbstractRemoteTableGatewayAsServiceTest
     @Override
     protected IService createService()
     {
-        return new AbstractRemoteTableGateway( EasyMock.createMock( ITableGatewayContext.class ) )
+        return new AbstractRemoteTableGateway( EasyMock.createMock( ITableNetworkNode.class ) )
         {
             // no overrides
         };

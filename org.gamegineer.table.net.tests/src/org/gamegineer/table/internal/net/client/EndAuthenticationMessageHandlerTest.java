@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.net.client;
 
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.ITableNetworkNode;
 import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler;
 import org.gamegineer.table.internal.net.common.messages.EndAuthenticationMessage;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
@@ -104,11 +104,11 @@ public final class EndAuthenticationMessageHandlerTest
     public void testHandleMessage_EndAuthenticationMessage()
         throws Exception
     {
-        final ITableGatewayContext tableGatewayContext = mocksControl_.createMock( ITableGatewayContext.class );
+        final ITableNetworkNode node = mocksControl_.createMock( ITableNetworkNode.class );
         final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
-        EasyMock.expect( remoteTableGateway.getContext() ).andReturn( tableGatewayContext ).anyTimes();
+        EasyMock.expect( remoteTableGateway.getLocalNode() ).andReturn( node ).anyTimes();
         remoteTableGateway.setPlayerName( EasyMock.notNull( String.class ) );
-        tableGatewayContext.addTableGateway( remoteTableGateway );
+        node.addTableGateway( remoteTableGateway );
         mocksControl_.replay();
 
         final EndAuthenticationMessage message = new EndAuthenticationMessage();

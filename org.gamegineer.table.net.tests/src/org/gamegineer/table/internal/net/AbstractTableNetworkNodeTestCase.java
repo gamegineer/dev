@@ -1,5 +1,5 @@
 /*
- * AbstractTableGatewayContextTestCase.java
+ * AbstractTableNetworkNodeTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -34,9 +34,9 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.ITableGatewayContext} interface.
+ * {@link org.gamegineer.table.internal.net.ITableNetworkNode} interface.
  */
-public abstract class AbstractTableGatewayContextTestCase
+public abstract class AbstractTableNetworkNodeTestCase
 {
     // ======================================================================
     // Fields
@@ -45,8 +45,8 @@ public abstract class AbstractTableGatewayContextTestCase
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
 
-    /** The table gateway context under test in the fixture. */
-    private ITableGatewayContext tableGatewayContext_;
+    /** The table network node under test in the fixture. */
+    private ITableNetworkNode node_;
 
 
     // ======================================================================
@@ -55,9 +55,9 @@ public abstract class AbstractTableGatewayContextTestCase
 
     /**
      * Initializes a new instance of the {@code
-     * AbstractTableGatewayContextTestCase} class.
+     * AbstractTableNetworkNodeTestCase} class.
      */
-    protected AbstractTableGatewayContextTestCase()
+    protected AbstractTableNetworkNodeTestCase()
     {
         super();
     }
@@ -68,15 +68,15 @@ public abstract class AbstractTableGatewayContextTestCase
     // ======================================================================
 
     /**
-     * Creates the table gateway context to be tested.
+     * Creates the table network node to be tested.
      * 
-     * @return The table gateway context to be tested; never {@code null}.
+     * @return The table network node to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract ITableGatewayContext createTableGatewayContext()
+    protected abstract ITableNetworkNode createTableNetworkNode()
         throws Exception;
 
     /**
@@ -90,8 +90,8 @@ public abstract class AbstractTableGatewayContextTestCase
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        tableGatewayContext_ = createTableGatewayContext();
-        assertNotNull( tableGatewayContext_ );
+        node_ = createTableNetworkNode();
+        assertNotNull( node_ );
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class AbstractTableGatewayContextTestCase
     public void tearDown()
         throws Exception
     {
-        tableGatewayContext_ = null;
+        node_ = null;
         mocksControl_ = null;
     }
 
@@ -116,16 +116,16 @@ public abstract class AbstractTableGatewayContextTestCase
     @Test
     public void testAddTableGateway_TableGateway_Absent()
     {
-        synchronized( tableGatewayContext_.getLock() )
+        synchronized( node_.getLock() )
         {
             final ITableGateway tableGateway = mocksControl_.createMock( ITableGateway.class );
             EasyMock.expect( tableGateway.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
             mocksControl_.replay();
-            assertFalse( tableGatewayContext_.isTableGatewayPresent( tableGateway.getPlayerName() ) );
+            assertFalse( node_.isTableGatewayPresent( tableGateway.getPlayerName() ) );
 
-            tableGatewayContext_.addTableGateway( tableGateway );
+            node_.addTableGateway( tableGateway );
 
-            assertTrue( tableGatewayContext_.isTableGatewayPresent( tableGateway.getPlayerName() ) );
+            assertTrue( node_.isTableGatewayPresent( tableGateway.getPlayerName() ) );
         }
     }
 
@@ -136,9 +136,9 @@ public abstract class AbstractTableGatewayContextTestCase
     @Test( expected = NullPointerException.class )
     public void testAddTableGateway_TableGateway_Null()
     {
-        synchronized( tableGatewayContext_.getLock() )
+        synchronized( node_.getLock() )
         {
-            tableGatewayContext_.addTableGateway( null );
+            node_.addTableGateway( null );
         }
     }
 
@@ -149,14 +149,14 @@ public abstract class AbstractTableGatewayContextTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testAddTableGateway_TableGateway_Present()
     {
-        synchronized( tableGatewayContext_.getLock() )
+        synchronized( node_.getLock() )
         {
             final ITableGateway tableGateway = mocksControl_.createMock( ITableGateway.class );
             EasyMock.expect( tableGateway.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
             mocksControl_.replay();
-            tableGatewayContext_.addTableGateway( tableGateway );
+            node_.addTableGateway( tableGateway );
 
-            tableGatewayContext_.addTableGateway( tableGateway );
+            node_.addTableGateway( tableGateway );
         }
     }
 
@@ -167,9 +167,9 @@ public abstract class AbstractTableGatewayContextTestCase
     @Test
     public void testGetLocalPlayerName_ReturnValue_NonNull()
     {
-        synchronized( tableGatewayContext_.getLock() )
+        synchronized( node_.getLock() )
         {
-            assertNotNull( tableGatewayContext_.getLocalPlayerName() );
+            assertNotNull( node_.getLocalPlayerName() );
         }
     }
 
@@ -179,13 +179,13 @@ public abstract class AbstractTableGatewayContextTestCase
     @Test
     public void testGetPassword_ReturnValue_Copy()
     {
-        synchronized( tableGatewayContext_.getLock() )
+        synchronized( node_.getLock() )
         {
-            final SecureString password = tableGatewayContext_.getPassword();
+            final SecureString password = node_.getPassword();
             final SecureString expectedValue = new SecureString( password );
             password.dispose();
 
-            final SecureString actualValue = tableGatewayContext_.getPassword();
+            final SecureString actualValue = node_.getPassword();
 
             assertEquals( expectedValue, actualValue );
         }
@@ -197,9 +197,9 @@ public abstract class AbstractTableGatewayContextTestCase
     @Test
     public void testGetPassword_ReturnValue_NonNull()
     {
-        synchronized( tableGatewayContext_.getLock() )
+        synchronized( node_.getLock() )
         {
-            assertNotNull( tableGatewayContext_.getPassword() );
+            assertNotNull( node_.getPassword() );
         }
     }
 
@@ -210,9 +210,9 @@ public abstract class AbstractTableGatewayContextTestCase
     @Test( expected = NullPointerException.class )
     public void testIsTableGatewayPresent_PlayerName_Null()
     {
-        synchronized( tableGatewayContext_.getLock() )
+        synchronized( node_.getLock() )
         {
-            tableGatewayContext_.isTableGatewayPresent( null );
+            node_.isTableGatewayPresent( null );
         }
     }
 
@@ -228,13 +228,13 @@ public abstract class AbstractTableGatewayContextTestCase
     public void testRemoveTableGateway_TableGateway_Absent()
         throws Exception
     {
-        synchronized( tableGatewayContext_.getLock() )
+        synchronized( node_.getLock() )
         {
             final ITableGateway tableGateway = mocksControl_.createMock( ITableGateway.class );
             EasyMock.expect( tableGateway.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
             mocksControl_.replay();
 
-            tableGatewayContext_.removeTableGateway( tableGateway );
+            node_.removeTableGateway( tableGateway );
         }
     }
 
@@ -245,9 +245,9 @@ public abstract class AbstractTableGatewayContextTestCase
     @Test( expected = NullPointerException.class )
     public void testRemoveTableGateway_TableGateway_Null()
     {
-        synchronized( tableGatewayContext_.getLock() )
+        synchronized( node_.getLock() )
         {
-            tableGatewayContext_.removeTableGateway( null );
+            node_.removeTableGateway( null );
         }
     }
 
@@ -263,17 +263,17 @@ public abstract class AbstractTableGatewayContextTestCase
     public void testRemoveTableGateway_TableGateway_Present()
         throws Exception
     {
-        synchronized( tableGatewayContext_.getLock() )
+        synchronized( node_.getLock() )
         {
             final ITableGateway tableGateway = mocksControl_.createMock( ITableGateway.class );
             EasyMock.expect( tableGateway.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
             mocksControl_.replay();
-            tableGatewayContext_.addTableGateway( tableGateway );
-            assertTrue( tableGatewayContext_.isTableGatewayPresent( tableGateway.getPlayerName() ) );
+            node_.addTableGateway( tableGateway );
+            assertTrue( node_.isTableGatewayPresent( tableGateway.getPlayerName() ) );
 
-            tableGatewayContext_.removeTableGateway( tableGateway );
+            node_.removeTableGateway( tableGateway );
 
-            assertFalse( tableGatewayContext_.isTableGatewayPresent( tableGateway.getPlayerName() ) );
+            assertFalse( node_.isTableGatewayPresent( tableGateway.getPlayerName() ) );
         }
     }
 }

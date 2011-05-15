@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.ITableNetworkNode;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationResponseMessage;
@@ -92,8 +92,8 @@ final class BeginAuthenticationResponseMessageHandler
         assert response != null;
 
         final IRemoteClientTableGateway remoteTableGateway = getRemoteTableGateway();
-        final ITableGatewayContext context = remoteTableGateway.getContext();
-        final SecureString password = context.getPassword();
+        final ITableNetworkNode node = remoteTableGateway.getLocalNode();
+        final SecureString password = node.getPassword();
         try
         {
             final Authenticator authenticator = new Authenticator();
@@ -107,7 +107,7 @@ final class BeginAuthenticationResponseMessageHandler
                 throw new TableNetworkException( TableNetworkError.AUTHENTICATION_FAILED );
             }
 
-            if( context.isTableGatewayPresent( playerName ) )
+            if( node.isTableGatewayPresent( playerName ) )
             {
                 throw new TableNetworkException( TableNetworkError.DUPLICATE_PLAYER_NAME );
             }
@@ -161,7 +161,7 @@ final class BeginAuthenticationResponseMessageHandler
             else
             {
                 remoteTableGateway.setPlayerName( message.getPlayerName() );
-                remoteTableGateway.getContext().addTableGateway( remoteTableGateway );
+                remoteTableGateway.getLocalNode().addTableGateway( remoteTableGateway );
             }
         }
         else

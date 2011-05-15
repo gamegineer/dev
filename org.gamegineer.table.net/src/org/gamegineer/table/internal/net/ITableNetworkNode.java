@@ -1,5 +1,5 @@
 /*
- * ITableGatewayContext.java
+ * ITableNetworkNode.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -26,23 +26,23 @@ import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.net.TableNetworkError;
 
 /**
- * The execution context for a table gateway.
+ * A node in a table network.
  * 
  * <p>
- * Provides operations that allow a table gateway to interact with the network
- * table.
+ * Provides operations that allow the local table to interact with the remote
+ * tables in a table network.
  * </p>
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface ITableGatewayContext
+public interface ITableNetworkNode
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Adds the specified table gateway to the execution context.
+     * Adds the specified table gateway to the table network node.
      * 
      * @param tableGateway
      *        The table gateway; must not be {@code null}.
@@ -58,13 +58,13 @@ public interface ITableGatewayContext
         ITableGateway tableGateway );
 
     /**
-     * Disconnects the table network for the specified cause.
+     * Disconnects the table network node for the specified cause.
      * 
      * @param error
-     *        The error that caused the table network to be disconnected or
-     *        {@code null} if the table network was disconnected normally.
+     *        The error that caused the table network node to be disconnected or
+     *        {@code null} if the table network node was disconnected normally.
      */
-    public void disconnectTableNetwork(
+    public void disconnect(
         /* @Nullable */
         TableNetworkError error );
 
@@ -78,33 +78,34 @@ public interface ITableGatewayContext
     public String getLocalPlayerName();
 
     /**
-     * Gets the instance lock for the execution context.
+     * Gets the instance lock for the table network node.
      * 
-     * @return The instance lock for the execution context; never {@code null}.
+     * @return The instance lock for the table network node; never {@code null}.
      */
     /* @NonNull */
     public Object getLock();
 
     /**
-     * Gets the network password.
+     * Gets the table network password.
      * 
-     * @return The network password; never {@code null}. The returned value is a
-     *         copy and must be disposed when it is no longer needed.
+     * @return The table network password; never {@code null}. The returned
+     *         value is a copy and must be disposed when it is no longer needed.
      */
     @GuardedBy( "getLock()" )
     /* @NonNull */
     public SecureString getPassword();
 
     /**
-     * Indicates a table gateway has been registered for the specified player
-     * name.
+     * Indicates a table gateway has been registered with the table network node
+     * for the specified player name.
      * 
      * @param playerName
      *        The name of the player associated with the table gateway; must not
      *        be {@code null}.
      * 
-     * @return {@code true} if a table gateway has been registered for the
-     *         specified player name; otherwise {@code false}.
+     * @return {@code true} if a table gateway has been registered with the
+     *         table network node for the specified player name; otherwise
+     *         {@code false}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code playerName} is {@code null}.
@@ -115,7 +116,7 @@ public interface ITableGatewayContext
         String playerName );
 
     /**
-     * Removes the specified table gateway from the execution context.
+     * Removes the specified table gateway from the table network node.
      * 
      * @param tableGateway
      *        The table gateway; must not be {@code null}.

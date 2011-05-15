@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.net.client;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.ITableNetworkNode;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
@@ -80,12 +80,12 @@ final class BeginAuthenticationRequestMessageHandler
         assert message != null;
 
         final IRemoteServerTableGateway remoteTableGateway = getRemoteTableGateway();
-        final ITableGatewayContext context = remoteTableGateway.getContext();
+        final ITableNetworkNode node = remoteTableGateway.getLocalNode();
         final BeginAuthenticationResponseMessage response = new BeginAuthenticationResponseMessage();
         response.setCorrelationId( message.getId() );
-        response.setPlayerName( context.getLocalPlayerName() );
+        response.setPlayerName( node.getLocalPlayerName() );
 
-        final SecureString password = context.getPassword();
+        final SecureString password = node.getPassword();
         try
         {
             final Authenticator authenticator = new Authenticator();

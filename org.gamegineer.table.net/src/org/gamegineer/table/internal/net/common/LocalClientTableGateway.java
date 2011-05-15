@@ -26,7 +26,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableGateway;
 
 // TODO: implement this class to act as a broker between a single ITable and
-// an ITableGatewayContext
+// an ITableNetworkNode
 
 /**
  * A gateway to a local client table.

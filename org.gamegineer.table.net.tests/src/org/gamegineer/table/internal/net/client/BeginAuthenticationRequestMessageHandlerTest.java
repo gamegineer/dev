@@ -27,7 +27,7 @@ import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.ITableNetworkNode;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
@@ -111,11 +111,11 @@ public final class BeginAuthenticationRequestMessageHandlerTest
     {
         final String playerName = "playerName"; //$NON-NLS-1$
         final SecureString password = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
-        final ITableGatewayContext tableGatewayContext = mocksControl_.createMock( ITableGatewayContext.class );
-        EasyMock.expect( tableGatewayContext.getLocalPlayerName() ).andReturn( playerName );
-        EasyMock.expect( tableGatewayContext.getPassword() ).andReturn( new SecureString( password ) );
+        final ITableNetworkNode node = mocksControl_.createMock( ITableNetworkNode.class );
+        EasyMock.expect( node.getLocalPlayerName() ).andReturn( playerName );
+        EasyMock.expect( node.getPassword() ).andReturn( new SecureString( password ) );
         final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
-        EasyMock.expect( remoteTableGateway.getContext() ).andReturn( tableGatewayContext ).anyTimes();
+        EasyMock.expect( remoteTableGateway.getLocalNode() ).andReturn( node ).anyTimes();
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.capture( messageCapture ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( true );
         mocksControl_.replay();
@@ -150,11 +150,11 @@ public final class BeginAuthenticationRequestMessageHandlerTest
     @Test
     public void testHandleMessage_BeginAuthenticationRequestMessage_SendResponseMessageFails()
     {
-        final ITableGatewayContext tableGatewayContext = mocksControl_.createMock( ITableGatewayContext.class );
-        EasyMock.expect( tableGatewayContext.getLocalPlayerName() ).andReturn( "playerName" ); //$NON-NLS-1$
-        EasyMock.expect( tableGatewayContext.getPassword() ).andReturn( new SecureString( "password".toCharArray() ) ); //$NON-NLS-1$
+        final ITableNetworkNode node = mocksControl_.createMock( ITableNetworkNode.class );
+        EasyMock.expect( node.getLocalPlayerName() ).andReturn( "playerName" ); //$NON-NLS-1$
+        EasyMock.expect( node.getPassword() ).andReturn( new SecureString( "password".toCharArray() ) ); //$NON-NLS-1$
         final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
-        EasyMock.expect( remoteTableGateway.getContext() ).andReturn( tableGatewayContext ).anyTimes();
+        EasyMock.expect( remoteTableGateway.getLocalNode() ).andReturn( node ).anyTimes();
         EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( false );
         remoteTableGateway.close( TableNetworkError.TRANSPORT_ERROR );
         mocksControl_.replay();

@@ -180,13 +180,13 @@ public final class ClientTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#disconnectingTableNetwork(org.gamegineer.table.net.TableNetworkError)
+     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#disconnecting(org.gamegineer.table.net.TableNetworkError)
      */
     @Override
-    protected void disconnectingTableNetwork(
+    protected void disconnecting(
         final TableNetworkError error )
     {
-        super.disconnectingTableNetwork( error );
+        super.disconnecting( error );
 
         setHandshakeComplete( error );
     }

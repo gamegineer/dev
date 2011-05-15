@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.net.client;
 
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.ITableNetworkNode;
 import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
@@ -50,17 +50,17 @@ final class RemoteServerTableGateway
     /**
      * Initializes a new instance of the {@code RemoteServerTableGateway} class.
      * 
-     * @param context
-     *        The table gateway context; must not be {@code null}.
+     * @param node
+     *        The local table network node; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code context} is {@code null}.
+     *         If {@code node} is {@code null}.
      */
     RemoteServerTableGateway(
         /* @NonNull */
-        final ITableGatewayContext context )
+        final ITableNetworkNode node )
     {
-        super( context );
+        super( node );
 
         registerUncorrelatedMessageHandler( BeginAuthenticationRequestMessage.class, new BeginAuthenticationRequestMessageHandler( this ) );
     }
@@ -81,7 +81,7 @@ final class RemoteServerTableGateway
 
         super.closed( error );
 
-        getContext().disconnectTableNetwork( error );
+        getLocalNode().disconnect( error );
     }
 
     /*

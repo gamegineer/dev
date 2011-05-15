@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.ITableNetworkNode;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.FakeMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
@@ -75,21 +75,21 @@ public final class AbstractRemoteTableGatewayTest
     /**
      * Creates a new instance of the {@code AbstractRemoteTableGateway} class.
      * 
-     * @param tableGatewayContext
-     *        The table gateway context; must not be {@code null}.
+     * @param node
+     *        The local table network node; must not be {@code null}.
      * 
      * @return A new instance of the {@code AbstractRemoteTableGateway} class;
      *         never {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code tableGatewayContext} is {@code null}.
+     *         If {@code node} is {@code null}.
      */
     /* @NonNull */
     private static AbstractRemoteTableGateway createRemoteTableGateway(
         /* @NonNull */
-        final ITableGatewayContext tableGatewayContext )
+        final ITableNetworkNode node )
     {
-        return new AbstractRemoteTableGateway( tableGatewayContext )
+        return new AbstractRemoteTableGateway( node )
         {
             // no overrides
         };
@@ -106,7 +106,7 @@ public final class AbstractRemoteTableGatewayTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        remoteTableGateway_ = createRemoteTableGateway( EasyMock.createMock( ITableGatewayContext.class ) );
+        remoteTableGateway_ = createRemoteTableGateway( EasyMock.createMock( ITableNetworkNode.class ) );
     }
 
     /**
@@ -125,10 +125,10 @@ public final class AbstractRemoteTableGatewayTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * table gateway context.
+     * table network node.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_TableGatewayContext_Null()
+    public void testConstructor_TableNetworkNode_Null()
     {
         createRemoteTableGateway( null );
     }

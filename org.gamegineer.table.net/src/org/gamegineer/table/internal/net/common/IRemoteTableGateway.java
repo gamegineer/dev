@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.net.common;
 
 import net.jcip.annotations.GuardedBy;
 import org.gamegineer.table.internal.net.ITableGateway;
-import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.ITableNetworkNode;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.net.TableNetworkError;
 
@@ -55,13 +55,12 @@ public interface IRemoteTableGateway
         TableNetworkError error );
 
     /**
-     * Gets the context associated with the table gateway.
+     * Gets the local table network node.
      * 
-     * @return The context associated with the table gateway; never {@code null}
-     *         .
+     * @return The local table network node; never {@code null}.
      */
     /* @NonNull */
-    public ITableGatewayContext getContext();
+    public ITableNetworkNode getLocalNode();
 
     /**
      * Gets the instance lock for the table gateway.

@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.net.server;
 
 import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.ITableGatewayContext;
+import org.gamegineer.table.internal.net.ITableNetworkNode;
 
 /**
  * A fixture for testing the
@@ -58,6 +58,6 @@ public final class RemoteClientTableGatewayAsRemoteClientTableGatewayTest
     @Override
     protected RemoteClientTableGateway createRemoteTableGateway()
     {
-        return new RemoteClientTableGateway( EasyMock.createMock( ITableGatewayContext.class ) );
+        return new RemoteClientTableGateway( EasyMock.createMock( ITableNetworkNode.class ) );
     }
 }

@@ -148,12 +148,12 @@ public abstract class AbstractRemoteTableGatewayTestCase<T extends IRemoteTableG
     }
 
     /**
-     * Ensures the {@code getContext} method does not return {@code null}.
+     * Ensures the {@code getLocalNode} method does not return {@code null}.
      */
     @Test
-    public void testGetContext_ReturnValue_NonNull()
+    public void testGetLocalNode_ReturnValue_NonNull()
     {
-        assertNotNull( remoteTableGateway_.getContext() );
+        assertNotNull( remoteTableGateway_.getLocalNode() );
     }
 
     /**
