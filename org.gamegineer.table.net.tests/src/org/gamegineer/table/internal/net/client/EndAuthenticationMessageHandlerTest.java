@@ -24,7 +24,8 @@ package org.gamegineer.table.internal.net.client;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.ITableNetworkNode;
-import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler;
+import org.gamegineer.table.internal.net.ITableProxy;
+import org.gamegineer.table.internal.net.common.IRemoteTableProxyController.IMessageHandler;
 import org.gamegineer.table.internal.net.common.messages.EndAuthenticationMessage;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.FakeMessage;
@@ -105,14 +106,16 @@ public final class EndAuthenticationMessageHandlerTest
         throws Exception
     {
         final ITableNetworkNode node = mocksControl_.createMock( ITableNetworkNode.class );
-        final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
-        EasyMock.expect( remoteTableGateway.getLocalNode() ).andReturn( node ).anyTimes();
-        remoteTableGateway.setPlayerName( EasyMock.notNull( String.class ) );
-        node.addTableGateway( remoteTableGateway );
+        final ITableProxy tableProxy = mocksControl_.createMock( ITableProxy.class );
+        final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
+        EasyMock.expect( controller.getProxy() ).andReturn( tableProxy ).anyTimes();
+        EasyMock.expect( controller.getLocalNode() ).andReturn( node ).anyTimes();
+        controller.setPlayerName( EasyMock.notNull( String.class ) );
+        node.addTableProxy( tableProxy );
         mocksControl_.replay();
 
         final EndAuthenticationMessage message = new EndAuthenticationMessage();
-        final EndAuthenticationMessageHandler messageHandler = new EndAuthenticationMessageHandler( remoteTableGateway );
+        final EndAuthenticationMessageHandler messageHandler = new EndAuthenticationMessageHandler( controller );
         messageHandler.handleMessage( message );
 
         mocksControl_.verify();
@@ -125,13 +128,13 @@ public final class EndAuthenticationMessageHandlerTest
     @Test
     public void testHandleMessage_ErrorMessage()
     {
-        final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
-        remoteTableGateway.close( TableNetworkError.UNSPECIFIED_ERROR );
+        final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
+        controller.close( TableNetworkError.UNSPECIFIED_ERROR );
         mocksControl_.replay();
 
         final ErrorMessage message = new ErrorMessage();
         message.setError( TableNetworkError.UNSPECIFIED_ERROR );
-        final EndAuthenticationMessageHandler messageHandler = new EndAuthenticationMessageHandler( remoteTableGateway );
+        final EndAuthenticationMessageHandler messageHandler = new EndAuthenticationMessageHandler( controller );
         messageHandler.handleMessage( message );
 
         mocksControl_.verify();
@@ -145,13 +148,13 @@ public final class EndAuthenticationMessageHandlerTest
     @Test
     public void testHandleMessage_UnexpectedMessage()
     {
-        final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
-        EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        remoteTableGateway.close( TableNetworkError.UNEXPECTED_MESSAGE );
+        final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
+        EasyMock.expect( controller.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        controller.close( TableNetworkError.UNEXPECTED_MESSAGE );
         mocksControl_.replay();
 
         final FakeMessage message = new FakeMessage();
-        final EndAuthenticationMessageHandler messageHandler = new EndAuthenticationMessageHandler( remoteTableGateway );
+        final EndAuthenticationMessageHandler messageHandler = new EndAuthenticationMessageHandler( controller );
         messageHandler.handleMessage( message );
 
         mocksControl_.verify();

@@ -37,7 +37,7 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @Immutable
 final class BeginAuthenticationRequestMessageHandler
-    extends RemoteServerTableGateway.AbstractMessageHandler
+    extends RemoteServerTableProxy.AbstractMessageHandler
 {
     // ======================================================================
     // Constructors
@@ -47,18 +47,18 @@ final class BeginAuthenticationRequestMessageHandler
      * Initializes a new instance of the {@code
      * BeginAuthenticationRequestMessageHandler} class.
      * 
-     * @param remoteTableGateway
-     *        The remote table gateway associated with the message handler; must
-     *        not be {@code null}.
+     * @param remoteTableProxyController
+     *        The control interface for the remote table proxy associated with
+     *        the message handler; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code remoteTableGateway} is {@code null}.
+     *         If {@code remoteTableProxyController} is {@code null}.
      */
     BeginAuthenticationRequestMessageHandler(
         /* @NonNull */
-        final IRemoteServerTableGateway remoteTableGateway )
+        final IRemoteServerTableProxyController remoteTableProxyController )
     {
-        super( remoteTableGateway );
+        super( remoteTableProxyController );
     }
 
 
@@ -79,8 +79,8 @@ final class BeginAuthenticationRequestMessageHandler
     {
         assert message != null;
 
-        final IRemoteServerTableGateway remoteTableGateway = getRemoteTableGateway();
-        final ITableNetworkNode node = remoteTableGateway.getLocalNode();
+        final IRemoteServerTableProxyController controller = getRemoteTableProxyController();
+        final ITableNetworkNode node = controller.getLocalNode();
         final BeginAuthenticationResponseMessage response = new BeginAuthenticationResponseMessage();
         response.setCorrelationId( message.getId() );
         response.setPlayerName( node.getLocalPlayerName() );
@@ -90,15 +90,15 @@ final class BeginAuthenticationRequestMessageHandler
         {
             final Authenticator authenticator = new Authenticator();
             response.setResponse( authenticator.createResponse( message.getChallenge(), password, message.getSalt() ) );
-            if( !remoteTableGateway.sendMessage( response, new EndAuthenticationMessageHandler( remoteTableGateway ) ) )
+            if( !controller.sendMessage( response, new EndAuthenticationMessageHandler( controller ) ) )
             {
-                remoteTableGateway.close( TableNetworkError.TRANSPORT_ERROR );
+                controller.close( TableNetworkError.TRANSPORT_ERROR );
             }
         }
         catch( final TableNetworkException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.BeginAuthenticationRequestMessageHandler_beginAuthenticationResponseFailed, e );
-            remoteTableGateway.close( e.getError() );
+            controller.close( e.getError() );
         }
         finally
         {

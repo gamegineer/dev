@@ -109,54 +109,53 @@ public abstract class AbstractTableNetworkNodeTestCase
     }
 
     /**
-     * Ensures the {@code addTableGateway} method adds the table gateway when
-     * the table gateway is absent from the registered table gateways
-     * collection.
+     * Ensures the {@code addTableProxy} method adds the table proxy when the
+     * table proxy is absent from the registered table proxies collection.
      */
     @Test
-    public void testAddTableGateway_TableGateway_Absent()
+    public void testAddTableProxy_TableProxy_Absent()
     {
         synchronized( node_.getLock() )
         {
-            final ITableGateway tableGateway = mocksControl_.createMock( ITableGateway.class );
-            EasyMock.expect( tableGateway.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+            final ITableProxy tableProxy = mocksControl_.createMock( ITableProxy.class );
+            EasyMock.expect( tableProxy.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
             mocksControl_.replay();
-            assertFalse( node_.isTableGatewayPresent( tableGateway.getPlayerName() ) );
+            assertFalse( node_.isTableProxyPresent( tableProxy.getPlayerName() ) );
 
-            node_.addTableGateway( tableGateway );
+            node_.addTableProxy( tableProxy );
 
-            assertTrue( node_.isTableGatewayPresent( tableGateway.getPlayerName() ) );
+            assertTrue( node_.isTableProxyPresent( tableProxy.getPlayerName() ) );
         }
     }
 
     /**
-     * Ensures the {@code addTableGateway} method throws an exception when
-     * passed a {@code null} table gateway.
+     * Ensures the {@code addTableProxy} method throws an exception when passed
+     * a {@code null} table proxy.
      */
     @Test( expected = NullPointerException.class )
-    public void testAddTableGateway_TableGateway_Null()
+    public void testAddTableProxy_TableProxy_Null()
     {
         synchronized( node_.getLock() )
         {
-            node_.addTableGateway( null );
+            node_.addTableProxy( null );
         }
     }
 
     /**
-     * Ensures the {@code addTableGateway} method throws an exception when the
-     * table gateway is present in the registered table gateways collection.
+     * Ensures the {@code addTableProxy} method throws an exception when the
+     * table proxy is present in the registered table proxies collection.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testAddTableGateway_TableGateway_Present()
+    public void testAddTableProxy_TableProxy_Present()
     {
         synchronized( node_.getLock() )
         {
-            final ITableGateway tableGateway = mocksControl_.createMock( ITableGateway.class );
-            EasyMock.expect( tableGateway.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+            final ITableProxy tableProxy = mocksControl_.createMock( ITableProxy.class );
+            EasyMock.expect( tableProxy.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
             mocksControl_.replay();
-            node_.addTableGateway( tableGateway );
+            node_.addTableProxy( tableProxy );
 
-            node_.addTableGateway( tableGateway );
+            node_.addTableProxy( tableProxy );
         }
     }
 
@@ -204,76 +203,74 @@ public abstract class AbstractTableNetworkNodeTestCase
     }
 
     /**
-     * Ensures the {@code isTableGatewayPresent} method throws an exception when
+     * Ensures the {@code isTableProxyPresent} method throws an exception when
      * passed a {@code null} player name.
      */
     @Test( expected = NullPointerException.class )
-    public void testIsTableGatewayPresent_PlayerName_Null()
+    public void testIsTableProxyPresent_PlayerName_Null()
     {
         synchronized( node_.getLock() )
         {
-            node_.isTableGatewayPresent( null );
+            node_.isTableProxyPresent( null );
         }
     }
 
     /**
-     * Ensures the {@code removeTableGateway} method throws an exception when
-     * the table gateway is absent from the registered table gateways
-     * collection.
+     * Ensures the {@code removeTableProxy} method throws an exception when the
+     * table proxy is absent from the registered table proxies collection.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testRemoveTableGateway_TableGateway_Absent()
+    public void testRemoveTableProxy_TableProxy_Absent()
         throws Exception
     {
         synchronized( node_.getLock() )
         {
-            final ITableGateway tableGateway = mocksControl_.createMock( ITableGateway.class );
-            EasyMock.expect( tableGateway.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+            final ITableProxy tableProxy = mocksControl_.createMock( ITableProxy.class );
+            EasyMock.expect( tableProxy.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
             mocksControl_.replay();
 
-            node_.removeTableGateway( tableGateway );
+            node_.removeTableProxy( tableProxy );
         }
     }
 
     /**
-     * Ensures the {@code removeTableGateway} method throws an exception when
-     * passed a {@code null} table gateway.
+     * Ensures the {@code removeTableProxy} method throws an exception when
+     * passed a {@code null} table proxy.
      */
     @Test( expected = NullPointerException.class )
-    public void testRemoveTableGateway_TableGateway_Null()
+    public void testRemoveTableProxy_TableProxy_Null()
     {
         synchronized( node_.getLock() )
         {
-            node_.removeTableGateway( null );
+            node_.removeTableProxy( null );
         }
     }
 
     /**
-     * Ensures the {@code removeTableGateway} method removes the table gateway
-     * when the table gateway is present in the registered table gateways
-     * collection.
+     * Ensures the {@code removeTableProxy} method removes the table proxy when
+     * the table proxy is present in the registered table proxies collection.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test
-    public void testRemoveTableGateway_TableGateway_Present()
+    public void testRemoveTableProxy_TableProxy_Present()
         throws Exception
     {
         synchronized( node_.getLock() )
         {
-            final ITableGateway tableGateway = mocksControl_.createMock( ITableGateway.class );
-            EasyMock.expect( tableGateway.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+            final ITableProxy tableProxy = mocksControl_.createMock( ITableProxy.class );
+            EasyMock.expect( tableProxy.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
             mocksControl_.replay();
-            node_.addTableGateway( tableGateway );
-            assertTrue( node_.isTableGatewayPresent( tableGateway.getPlayerName() ) );
+            node_.addTableProxy( tableProxy );
+            assertTrue( node_.isTableProxyPresent( tableProxy.getPlayerName() ) );
 
-            node_.removeTableGateway( tableGateway );
+            node_.removeTableProxy( tableProxy );
 
-            assertFalse( node_.isTableGatewayPresent( tableGateway.getPlayerName() ) );
+            assertFalse( node_.isTableProxyPresent( tableProxy.getPlayerName() ) );
         }
     }
 }

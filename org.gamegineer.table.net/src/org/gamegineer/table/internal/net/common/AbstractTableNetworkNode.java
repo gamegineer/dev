@@ -33,10 +33,10 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.Debug;
-import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.ITableNetworkNode;
 import org.gamegineer.table.internal.net.ITableNetworkNodeController;
+import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 import org.gamegineer.table.internal.net.transport.TransportException;
@@ -60,11 +60,11 @@ public abstract class AbstractTableNetworkNode
     // ======================================================================
 
     /**
-     * The local client table gateway or {@code null} if the network is not
+     * The local client table proxy or {@code null} if the network is not
      * connected.
      */
     @GuardedBy( "getLock()" )
-    private ITableGateway localClientTableGateway_;
+    private ITableProxy localClientTableProxy_;
 
     /** The local player name or {@code null} if the network is not connected. */
     @GuardedBy( "getLock()" )
@@ -77,12 +77,12 @@ public abstract class AbstractTableNetworkNode
     @GuardedBy( "getLock()" )
     private SecureString password_;
 
-    /** The collection of registered table gateways. */
-    @GuardedBy( "getLock()" )
-    private final Map<String, ITableGateway> tableGateways_;
-
     /** The table network controller. */
     private final ITableNetworkController tableNetworkController_;
+
+    /** The collection of registered table proxies. */
+    @GuardedBy( "getLock()" )
+    private final Map<String, ITableProxy> tableProxies_;
 
     /** The transport layer or {@code null} if the network is not connected. */
     @GuardedBy( "getLock()" )
@@ -108,12 +108,12 @@ public abstract class AbstractTableNetworkNode
     {
         assertArgumentNotNull( tableNetworkController, "tableNetworkController" ); //$NON-NLS-1$
 
-        localClientTableGateway_ = null;
+        localClientTableProxy_ = null;
         localPlayerName_ = null;
         lock_ = new Object();
         password_ = null;
-        tableGateways_ = new HashMap<String, ITableGateway>();
         tableNetworkController_ = tableNetworkController;
+        tableProxies_ = new HashMap<String, ITableProxy>();
         transportLayer_ = null;
     }
 
@@ -123,20 +123,20 @@ public abstract class AbstractTableNetworkNode
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkNode#addTableGateway(org.gamegineer.table.internal.net.ITableGateway)
+     * @see org.gamegineer.table.internal.net.ITableNetworkNode#addTableProxy(org.gamegineer.table.internal.net.ITableProxy)
      */
     @Override
-    public final void addTableGateway(
-        final ITableGateway tableGateway )
+    public final void addTableProxy(
+        final ITableProxy tableProxy )
     {
-        assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
+        assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        assertArgumentLegal( !tableGateways_.containsKey( tableGateway.getPlayerName() ), "tableGateway", Messages.AbstractTableNetworkNode_addTableGateway_tableGatewayRegistered ); //$NON-NLS-1$ 
+        assertArgumentLegal( !tableProxies_.containsKey( tableProxy.getPlayerName() ), "tableProxy", Messages.AbstractTableNetworkNode_addTableProxy_tableProxyRegistered ); //$NON-NLS-1$ 
 
-        tableGateways_.put( tableGateway.getPlayerName(), tableGateway );
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table gateway registered for player '%s'.", tableGateway.getPlayerName() ) ); //$NON-NLS-1$
-        tableGatewayAdded( tableGateway );
+        tableProxies_.put( tableProxy.getPlayerName(), tableProxy );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table proxy registered for player '%s'.", tableProxy.getPlayerName() ) ); //$NON-NLS-1$
+        tableProxyAdded( tableProxy );
     }
 
     /*
@@ -158,8 +158,8 @@ public abstract class AbstractTableNetworkNode
 
             localPlayerName_ = configuration.getLocalPlayerName();
             password_ = configuration.getPassword();
-            localClientTableGateway_ = new LocalClientTableGateway( localPlayerName_ );
-            addTableGateway( localClientTableGateway_ );
+            localClientTableProxy_ = new LocalClientTableProxy( localPlayerName_ );
+            addTableProxy( localClientTableProxy_ );
             connecting();
 
             final ITransportLayer transportLayer = createTransportLayer();
@@ -260,8 +260,8 @@ public abstract class AbstractTableNetworkNode
 
                 transportLayer_.close();
 
-                removeTableGateway( localClientTableGateway_ );
-                localClientTableGateway_ = null;
+                removeTableProxy( localClientTableProxy_ );
+                localClientTableProxy_ = null;
                 disconnected();
                 dispose();
             }
@@ -355,8 +355,8 @@ public abstract class AbstractTableNetworkNode
     {
         assert Thread.holdsLock( getLock() );
 
-        tableGateways_.clear();
-        localClientTableGateway_ = null;
+        tableProxies_.clear();
+        localClientTableProxy_ = null;
         localPlayerName_ = null;
         password_.dispose();
         password_ = null;
@@ -402,20 +402,6 @@ public abstract class AbstractTableNetworkNode
     }
 
     /**
-     * Gets the collection of registered table gateways.
-     * 
-     * @return The collection of registered table gateways; never {@code null}.
-     */
-    /* @NonNull */
-    protected final Collection<ITableGateway> getTableGateways()
-    {
-        synchronized( getLock() )
-        {
-            return new ArrayList<ITableGateway>( tableGateways_.values() );
-        }
-    }
-
-    /**
      * Gets the table network controller.
      * 
      * @return The table network controller; never {@code null}.
@@ -426,38 +412,52 @@ public abstract class AbstractTableNetworkNode
         return tableNetworkController_;
     }
 
+    /**
+     * Gets the collection of registered table proxies.
+     * 
+     * @return The collection of registered table proxies; never {@code null}.
+     */
+    /* @NonNull */
+    protected final Collection<ITableProxy> getTableProxies()
+    {
+        synchronized( getLock() )
+        {
+            return new ArrayList<ITableProxy>( tableProxies_.values() );
+        }
+    }
+
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkNode#isTableGatewayPresent(java.lang.String)
+     * @see org.gamegineer.table.internal.net.ITableNetworkNode#isTableProxyPresent(java.lang.String)
      */
     @Override
-    public final boolean isTableGatewayPresent(
+    public final boolean isTableProxyPresent(
         final String playerName )
     {
         assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        return tableGateways_.containsKey( playerName );
+        return tableProxies_.containsKey( playerName );
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkNode#removeTableGateway(org.gamegineer.table.internal.net.ITableGateway)
+     * @see org.gamegineer.table.internal.net.ITableNetworkNode#removeTableProxy(org.gamegineer.table.internal.net.ITableProxy)
      */
     @Override
-    public final void removeTableGateway(
-        final ITableGateway tableGateway )
+    public final void removeTableProxy(
+        final ITableProxy tableProxy )
     {
-        assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
+        assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        assertArgumentLegal( tableGateways_.remove( tableGateway.getPlayerName() ) != null, "tableGateway", Messages.AbstractTableNetworkNode_removeTableGateway_tableGatewayNotRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( tableProxies_.remove( tableProxy.getPlayerName() ) != null, "tableProxy", Messages.AbstractTableNetworkNode_removeTableProxy_tableProxyNotRegistered ); //$NON-NLS-1$
 
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table gateway unregistered for player '%s'.", tableGateway.getPlayerName() ) ); //$NON-NLS-1$
-        tableGatewayRemoved( tableGateway );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table proxy unregistered for player '%s'.", tableProxy.getPlayerName() ) ); //$NON-NLS-1$
+        tableProxyRemoved( tableProxy );
     }
 
     /**
-     * Template method invoked when a table gateway has been added to the table
-     * network.
+     * Template method invoked when a table proxy has been added to the table
+     * network node.
      * 
      * <p>
      * This method is invoked while the instance lock is held. Subclasses must
@@ -468,26 +468,26 @@ public abstract class AbstractTableNetworkNode
      * This implementation does nothing.
      * </p>
      * 
-     * @param tableGateway
-     *        The table gateway that was added; must not be {@code null}.
+     * @param tableProxy
+     *        The table proxy that was added; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code tableGateway} is {@code null}.
+     *         If {@code tableProxy} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    protected void tableGatewayAdded(
+    protected void tableProxyAdded(
         /* @NonNull */
-        final ITableGateway tableGateway )
+        final ITableProxy tableProxy )
     {
-        assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
+        assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         // do nothing
     }
 
     /**
-     * Template method invoked when a table gateway has been removed from the
-     * table network.
+     * Template method invoked when a table proxy has been removed from the
+     * table network node.
      * 
      * <p>
      * This method is invoked while the instance lock is held. Subclasses must
@@ -498,18 +498,18 @@ public abstract class AbstractTableNetworkNode
      * This implementation does nothing.
      * </p>
      * 
-     * @param tableGateway
-     *        The table gateway that was removed; must not be {@code null}.
+     * @param tableProxy
+     *        The table proxy that was removed; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code tableGateway} is {@code null}.
+     *         If {@code tableProxy} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    protected void tableGatewayRemoved(
+    protected void tableProxyRemoved(
         /* @NonNull */
-        final ITableGateway tableGateway )
+        final ITableProxy tableProxy )
     {
-        assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
+        assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         // do nothing

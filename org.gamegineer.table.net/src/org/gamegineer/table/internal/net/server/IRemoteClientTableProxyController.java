@@ -1,5 +1,5 @@
 /*
- * IRemoteClientTableGateway.java
+ * IRemoteClientTableProxyController.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -21,15 +21,15 @@
 
 package org.gamegineer.table.internal.net.server;
 
-import org.gamegineer.table.internal.net.common.IRemoteTableGateway;
+import org.gamegineer.table.internal.net.common.IRemoteTableProxyController;
 
 /**
- * A gateway to a remote client table.
+ * The control interface for a proxy for a remote client table.
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-interface IRemoteClientTableGateway
-    extends IRemoteTableGateway
+interface IRemoteClientTableProxyController
+    extends IRemoteTableProxyController
 {
     // ======================================================================
     // Methods

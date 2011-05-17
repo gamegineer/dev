@@ -1,5 +1,5 @@
 /*
- * LocalClientTableGatewayTest.java
+ * RemoteServerTableProxyAsRemoteServerTableProxyControllerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 16, 2011 at 11:17:19 PM.
+ * Created on Apr 23, 2011 at 9:16:57 PM.
  */
 
-package org.gamegineer.table.internal.net.common;
+package org.gamegineer.table.internal.net.client;
 
-import org.junit.Test;
+import org.easymock.EasyMock;
+import org.gamegineer.table.internal.net.ITableNetworkNode;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.common.LocalClientTableGateway}
- * class.
+ * {@link org.gamegineer.table.internal.net.client.RemoteServerTableProxy} class
+ * to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.client.IRemoteServerTableProxyController}
+ * interface.
  */
-public final class LocalClientTableGatewayTest
+public final class RemoteServerTableProxyAsRemoteServerTableProxyControllerTest
+    extends AbstractRemoteServerTableProxyControllerTestCase<RemoteServerTableProxy>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code LocalClientTableGatewayTest}
-     * class.
+     * Initializes a new instance of the {@code
+     * RemoteServerTableProxyAsRemoteServerTableProxyControllerTest} class.
      */
-    public LocalClientTableGatewayTest()
+    public RemoteServerTableProxyAsRemoteServerTableProxyControllerTest()
     {
         super();
     }
@@ -48,13 +52,12 @@ public final class LocalClientTableGatewayTest
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * player name.
+    /*
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableProxyControllerTestCase#createRemoteTableProxyController()
      */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_PlayerName_Null()
+    @Override
+    protected RemoteServerTableProxy createRemoteTableProxyController()
     {
-        new LocalClientTableGateway( null );
+        return new RemoteServerTableProxy( EasyMock.createMock( ITableNetworkNode.class ) );
     }
 }

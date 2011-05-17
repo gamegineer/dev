@@ -1,5 +1,5 @@
 /*
- * RemoteClientTableGateway.java
+ * RemoteClientTableProxy.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -25,21 +25,21 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableNetworkNode;
-import org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway;
+import org.gamegineer.table.internal.net.common.AbstractRemoteTableProxy;
 import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
 
 /**
- * A gateway to a remote client table.
+ * A proxy for a remote client table.
  * 
  * <p>
- * This gateway provides a network service that represents the server half of
- * the table network protocol.
+ * This proxy provides a network service that represents the server half of the
+ * table network protocol.
  * </p>
  */
 @ThreadSafe
-final class RemoteClientTableGateway
-    extends AbstractRemoteTableGateway
-    implements IRemoteClientTableGateway
+final class RemoteClientTableProxy
+    extends AbstractRemoteTableProxy
+    implements IRemoteClientTableProxyController
 {
     // ======================================================================
     // Fields
@@ -65,7 +65,7 @@ final class RemoteClientTableGateway
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code RemoteClientTableGateway} class.
+     * Initializes a new instance of the {@code RemoteClientTableProxy} class.
      * 
      * @param node
      *        The local table network node; must not be {@code null}.
@@ -73,7 +73,7 @@ final class RemoteClientTableGateway
      * @throws java.lang.NullPointerException
      *         If {@code node} is {@code null}.
      */
-    RemoteClientTableGateway(
+    RemoteClientTableProxy(
         /* @NonNull */
         final ITableNetworkNode node )
     {
@@ -91,7 +91,7 @@ final class RemoteClientTableGateway
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.server.IRemoteClientTableGateway#getChallenge()
+     * @see org.gamegineer.table.internal.net.server.IRemoteClientTableProxyController#getChallenge()
      */
     @Override
     public byte[] getChallenge()
@@ -103,7 +103,7 @@ final class RemoteClientTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.server.IRemoteClientTableGateway#getSalt()
+     * @see org.gamegineer.table.internal.net.server.IRemoteClientTableProxyController#getSalt()
      */
     @Override
     public byte[] getSalt()
@@ -115,7 +115,7 @@ final class RemoteClientTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.server.IRemoteClientTableGateway#setChallenge(byte[])
+     * @see org.gamegineer.table.internal.net.server.IRemoteClientTableProxyController#setChallenge(byte[])
      */
     @Override
     public void setChallenge(
@@ -128,7 +128,7 @@ final class RemoteClientTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.server.IRemoteClientTableGateway#setSalt(byte[])
+     * @see org.gamegineer.table.internal.net.server.IRemoteClientTableProxyController#setSalt(byte[])
      */
     @Override
     public void setSalt(
@@ -147,11 +147,11 @@ final class RemoteClientTableGateway
 
     /**
      * Superclass for all message handlers associated with a remote client table
-     * gateway.
+     * proxy.
      */
     @Immutable
     static abstract class AbstractMessageHandler
-        extends AbstractRemoteTableGateway.AbstractMessageHandler<IRemoteClientTableGateway>
+        extends AbstractRemoteTableProxy.AbstractMessageHandler<IRemoteClientTableProxyController>
     {
         // ==================================================================
         // Constructors
@@ -161,18 +161,18 @@ final class RemoteClientTableGateway
          * Initializes a new instance of the {@code AbstractMessageHandler}
          * class.
          * 
-         * @param remoteTableGateway
-         *        The remote table gateway associated with the message handler;
-         *        must not be {@code null}.
+         * @param remoteTableProxyController
+         *        The control interface for the remote table proxy associated
+         *        with the message handler; must not be {@code null}.
          * 
          * @throws java.lang.NullPointerException
-         *         If {@code remoteTableGateway} is {@code null}.
+         *         If {@code remoteTableProxyController} is {@code null}.
          */
         AbstractMessageHandler(
             /* @NonNull */
-            final IRemoteClientTableGateway remoteTableGateway )
+            final IRemoteClientTableProxyController remoteTableProxyController )
         {
-            super( remoteTableGateway );
+            super( remoteTableProxyController );
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * IRemoteServerTableGateway.java
+ * AbstractRemoteServerTableProxyControllerTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,22 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 23, 2011 at 8:44:12 PM.
+ * Created on Apr 23, 2011 at 9:18:27 PM.
  */
 
 package org.gamegineer.table.internal.net.client;
 
-import org.gamegineer.table.internal.net.common.IRemoteTableGateway;
+import org.gamegineer.table.internal.net.common.AbstractRemoteTableProxyControllerTestCase;
 
 /**
- * A gateway to a remote server table.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.internal.net.client.IRemoteServerTableProxyController}
+ * interface.
  * 
- * @noextend This interface is not intended to be extended by clients.
+ * @param <T>
+ *        The type of the remote server table proxy controller.
  */
-interface IRemoteServerTableGateway
-    extends IRemoteTableGateway
+public abstract class AbstractRemoteServerTableProxyControllerTestCase<T extends IRemoteServerTableProxyController>
+    extends AbstractRemoteTableProxyControllerTestCase<T>
 {
     // ======================================================================
-    // Methods
+    // Constructors
     // ======================================================================
+
+    /**
+     * Initializes a new instance of the {@code
+     * AbstractRemoteServerTableProxyControllerTestCase} class.
+     */
+    protected AbstractRemoteServerTableProxyControllerTestCase()
+    {
+        super();
+    }
 }

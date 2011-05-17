@@ -39,7 +39,7 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @Immutable
 final class HelloRequestMessageHandler
-    extends RemoteClientTableGateway.AbstractMessageHandler
+    extends RemoteClientTableProxy.AbstractMessageHandler
 {
     // ======================================================================
     // Constructors
@@ -49,18 +49,18 @@ final class HelloRequestMessageHandler
      * Initializes a new instance of the {@code HelloRequestMessageHandler}
      * class.
      * 
-     * @param remoteTableGateway
-     *        The remote table gateway associated with the message handler; must
-     *        not be {@code null}.
+     * @param remoteTableProxyController
+     *        The control interface for the remote table proxy associated with
+     *        the message handler; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code remoteTableGateway} is {@code null}.
+     *         If {@code remoteTableProxyController} is {@code null}.
      */
     HelloRequestMessageHandler(
         /* @NonNull */
-        final IRemoteClientTableGateway remoteTableGateway )
+        final IRemoteClientTableProxyController remoteTableProxyController )
     {
-        super( remoteTableGateway );
+        super( remoteTableProxyController );
     }
 
 
@@ -86,7 +86,7 @@ final class HelloRequestMessageHandler
             Integer.valueOf( message.getId() ), //
             Integer.valueOf( message.getCorrelationId() ) ) );
 
-        final IRemoteClientTableGateway remoteTableGateway = getRemoteTableGateway();
+        final IRemoteClientTableProxyController controller = getRemoteTableProxyController();
 
         final IMessage responseMessage;
         if( message.getSupportedProtocolVersion() >= ProtocolVersions.VERSION_1 )
@@ -103,16 +103,16 @@ final class HelloRequestMessageHandler
         }
 
         responseMessage.setCorrelationId( message.getId() );
-        if( !remoteTableGateway.sendMessage( responseMessage, null ) )
+        if( !controller.sendMessage( responseMessage, null ) )
         {
-            remoteTableGateway.close( TableNetworkError.TRANSPORT_ERROR );
+            controller.close( TableNetworkError.TRANSPORT_ERROR );
             return;
         }
 
         if( responseMessage instanceof ErrorMessage )
         {
             System.out.println( "ServerService : server does not support client protocol version" ); //$NON-NLS-1$
-            remoteTableGateway.close( ((ErrorMessage)responseMessage).getError() );
+            controller.close( ((ErrorMessage)responseMessage).getError() );
             return;
         }
 
@@ -121,21 +121,21 @@ final class HelloRequestMessageHandler
             final Authenticator authenticator = new Authenticator();
             final BeginAuthenticationRequestMessage beginAuthenticationRequest = new BeginAuthenticationRequestMessage();
             final byte[] challenge = authenticator.createChallenge();
-            remoteTableGateway.setChallenge( challenge );
+            controller.setChallenge( challenge );
             beginAuthenticationRequest.setChallenge( challenge );
             final byte[] salt = authenticator.createSalt();
-            remoteTableGateway.setSalt( salt );
+            controller.setSalt( salt );
             beginAuthenticationRequest.setSalt( salt );
 
-            if( !remoteTableGateway.sendMessage( beginAuthenticationRequest, new BeginAuthenticationResponseMessageHandler( remoteTableGateway ) ) )
+            if( !controller.sendMessage( beginAuthenticationRequest, new BeginAuthenticationResponseMessageHandler( controller ) ) )
             {
-                remoteTableGateway.close( TableNetworkError.TRANSPORT_ERROR );
+                controller.close( TableNetworkError.TRANSPORT_ERROR );
             }
         }
         catch( final TableNetworkException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.HelloRequestMessageHandler_beginAuthenticationRequestFailed, e );
-            remoteTableGateway.close( e.getError() );
+            controller.close( e.getError() );
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * AbstractRemoteTableGatewayTestCase.java
+ * AbstractRemoteTableProxyControllerTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.net.common;
 
 import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.AbstractTableGatewayTestCase;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.junit.After;
 import org.junit.Before;
@@ -31,21 +30,20 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.common.IRemoteTableGateway}
+ * {@link org.gamegineer.table.internal.net.common.IRemoteTableProxyController}
  * interface.
  * 
  * @param <T>
- *        The type of the remote table gateway.
+ *        The type of the remote table proxy controller.
  */
-public abstract class AbstractRemoteTableGatewayTestCase<T extends IRemoteTableGateway>
-    extends AbstractTableGatewayTestCase<T>
+public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemoteTableProxyController>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
-    /** The remote table gateway under test in the fixture. */
-    private T remoteTableGateway_;
+    /** The remote table proxy controller under test in the fixture. */
+    private T controller_;
 
 
     // ======================================================================
@@ -54,9 +52,9 @@ public abstract class AbstractRemoteTableGatewayTestCase<T extends IRemoteTableG
 
     /**
      * Initializes a new instance of the {@code
-     * AbstractRemoteTableGatewayTestCase} class.
+     * AbstractRemoteTableProxyControllerTestCase} class.
      */
-    protected AbstractRemoteTableGatewayTestCase()
+    protected AbstractRemoteTableProxyControllerTestCase()
     {
         super();
     }
@@ -67,71 +65,57 @@ public abstract class AbstractRemoteTableGatewayTestCase<T extends IRemoteTableG
     // ======================================================================
 
     /**
-     * Creates the remote table gateway to be tested.
+     * Creates the remote table proxy controller to be tested.
      * 
-     * @return The remote table gateway to be tested; never {@code null}. The
-     *         returned remote table gateway should be in a disconnected state.
+     * @return The remote table proxy controller to be tested; never {@code
+     *         null}. The remote table proxy associated with the returned
+     *         controller should be in a disconnected state.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract T createRemoteTableGateway()
+    protected abstract T createRemoteTableProxyController()
         throws Exception;
 
-    /*
-     * @see org.gamegineer.table.internal.net.AbstractTableGatewayTestCase#createTableGateway()
+    /**
+     * Gets the remote table proxy controller under test in the fixture.
+     * 
+     * @return The remote table proxy controller under test in the fixture;
+     *         never {@code null}.
      */
-    @Override
-    protected final T createTableGateway()
-        throws Exception
+    /* @NonNull */
+    protected final T getRemoteTableProxyController()
     {
-        final T remoteTableGateway = createRemoteTableGateway();
-        synchronized( remoteTableGateway.getLock() )
-        {
-            remoteTableGateway.setPlayerName( "playerName" ); //$NON-NLS-1$
-        }
-        return remoteTableGateway;
+        assertNotNull( controller_ );
+        return controller_;
     }
 
     /**
-     * Gets the remote table gateway under test in the fixture.
+     * Sets up the test fixture.
      * 
-     * @return The remote table gateway under test in the fixture; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    protected final T getRemoteTableGateway()
-    {
-        assertNotNull( remoteTableGateway_ );
-        return remoteTableGateway_;
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.AbstractTableGatewayTestCase#setUp()
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Before
-    @Override
     public void setUp()
         throws Exception
     {
-        remoteTableGateway_ = createRemoteTableGateway();
-        assertNotNull( remoteTableGateway_ );
-
-        super.setUp();
+        controller_ = createRemoteTableProxyController();
+        assertNotNull( controller_ );
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.AbstractTableGatewayTestCase#tearDown()
+    /**
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @After
-    @Override
     public void tearDown()
         throws Exception
     {
-        super.tearDown();
-
-        remoteTableGateway_ = null;
+        controller_ = null;
     }
 
     /**
@@ -141,9 +125,9 @@ public abstract class AbstractRemoteTableGatewayTestCase<T extends IRemoteTableG
     @Test( expected = IllegalStateException.class )
     public void testClose_Disconnected()
     {
-        synchronized( remoteTableGateway_.getLock() )
+        synchronized( controller_.getLock() )
         {
-            remoteTableGateway_.close( null );
+            controller_.close( null );
         }
     }
 
@@ -153,7 +137,7 @@ public abstract class AbstractRemoteTableGatewayTestCase<T extends IRemoteTableG
     @Test
     public void testGetLocalNode_ReturnValue_NonNull()
     {
-        assertNotNull( remoteTableGateway_.getLocalNode() );
+        assertNotNull( controller_.getLocalNode() );
     }
 
     /**
@@ -163,7 +147,7 @@ public abstract class AbstractRemoteTableGatewayTestCase<T extends IRemoteTableG
     @Test( expected = IllegalStateException.class )
     public void testGetPlayerName_Disconnected()
     {
-        remoteTableGateway_.getPlayerName();
+        controller_.getPlayerName();
     }
 
     /**
@@ -173,9 +157,9 @@ public abstract class AbstractRemoteTableGatewayTestCase<T extends IRemoteTableG
     @Test( expected = IllegalStateException.class )
     public void testSendMessage_Disconnected()
     {
-        synchronized( remoteTableGateway_.getLock() )
+        synchronized( controller_.getLock() )
         {
-            remoteTableGateway_.sendMessage( EasyMock.createMock( IMessage.class ), EasyMock.createMock( IRemoteTableGateway.IMessageHandler.class ) );
+            controller_.sendMessage( EasyMock.createMock( IMessage.class ), EasyMock.createMock( IRemoteTableProxyController.IMessageHandler.class ) );
         }
     }
 
@@ -186,9 +170,9 @@ public abstract class AbstractRemoteTableGatewayTestCase<T extends IRemoteTableG
     @Test( expected = NullPointerException.class )
     public void testSendMessage_Message_Null()
     {
-        synchronized( remoteTableGateway_.getLock() )
+        synchronized( controller_.getLock() )
         {
-            remoteTableGateway_.sendMessage( null, EasyMock.createMock( IRemoteTableGateway.IMessageHandler.class ) );
+            controller_.sendMessage( null, EasyMock.createMock( IRemoteTableProxyController.IMessageHandler.class ) );
         }
     }
 }

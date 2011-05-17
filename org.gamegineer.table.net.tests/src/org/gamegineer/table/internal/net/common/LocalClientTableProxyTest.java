@@ -1,5 +1,5 @@
 /*
- * ITableGateway.java
+ * LocalClientTableProxyTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,28 +16,44 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 8, 2011 at 9:19:53 PM.
+ * Created on Apr 16, 2011 at 11:17:19 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.common;
+
+import org.junit.Test;
 
 /**
- * A gateway to a table that is connected to the table network.
- * 
- * @noextend This interface is not intended to be extended by clients.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.net.common.LocalClientTableProxy} class.
  */
-public interface ITableGateway
+public final class LocalClientTableProxyTest
 {
+    // ======================================================================
+    // Constructors
+    // ======================================================================
+
+    /**
+     * Initializes a new instance of the {@code LocalClientTableProxyTest}
+     * class.
+     */
+    public LocalClientTableProxyTest()
+    {
+        super();
+    }
+
+
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Gets the name of the player associated with the table gateway.
-     * 
-     * @return The name of the player associated with the table gateway; never
-     *         {@code null}.
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * player name.
      */
-    /* @NonNull */
-    public String getPlayerName();
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_PlayerName_Null()
+    {
+        new LocalClientTableProxy( null );
+    }
 }

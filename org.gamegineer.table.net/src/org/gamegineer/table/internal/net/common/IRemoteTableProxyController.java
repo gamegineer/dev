@@ -1,5 +1,5 @@
 /*
- * IRemoteTableGateway.java
+ * IRemoteTableProxyController.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -22,29 +22,29 @@
 package org.gamegineer.table.internal.net.common;
 
 import net.jcip.annotations.GuardedBy;
-import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableNetworkNode;
+import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.net.TableNetworkError;
 
 /**
- * A gateway to a remote table that is connected to the table network.
+ * The control interface for a proxy for a remote table connected to the table
+ * network.
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface IRemoteTableGateway
-    extends ITableGateway
+public interface IRemoteTableProxyController
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Closes the table gateway.
+     * Closes the remote table proxy.
      * 
      * @param error
-     *        The error that caused the table gateway to be closed or {@code
-     *        null} if the table gateway was closed normally.
+     *        The error that caused the remote table proxy to be closed or
+     *        {@code null} if the remote table proxy was closed normally.
      * 
      * @throws java.lang.IllegalStateException
      *         If the network is not connected.
@@ -63,24 +63,36 @@ public interface IRemoteTableGateway
     public ITableNetworkNode getLocalNode();
 
     /**
-     * Gets the instance lock for the table gateway.
+     * Gets the instance lock for the remote table proxy.
      * 
-     * @return The instance lock for the table gateway; never {@code null}.
+     * @return The instance lock for the remote table proxy; never {@code null}.
      */
     /* @NonNull */
     public Object getLock();
 
     /**
+     * Gets the name of the player associated with the table.
+     * 
+     * @return The name of the player associated with the table; never {@code
+     *         null}.
+     * 
      * @throws java.lang.IllegalStateException
      *         If the player has not been authenticated.
-     * 
-     * @see org.gamegineer.table.internal.net.ITableGateway#getPlayerName()
      */
-    @Override
+    /* @NonNull */
     public String getPlayerName();
 
     /**
-     * Sends the specified message to the table gateway peer.
+     * Gets the table proxy under the control of this object.
+     * 
+     * @return The table proxy under the control of this object; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    public ITableProxy getProxy();
+
+    /**
+     * Sends the specified message to the remote table proxy peer.
      * 
      * @param message
      *        The message; must not be {@code null}.
@@ -104,11 +116,11 @@ public interface IRemoteTableGateway
         IMessageHandler messageHandler );
 
     /**
-     * Sets the name of the player associated with the table gateway.
+     * Sets the name of the player associated with the table.
      * 
      * @param playerName
-     *        The name of the player associated with the table gateway or
-     *        {@code null} if the network is not connected.
+     *        The name of the player associated with the table or {@code null}
+     *        if the network is not connected.
      */
     @GuardedBy( "getLock()" )
     public void setPlayerName(
@@ -121,7 +133,7 @@ public interface IRemoteTableGateway
     // ======================================================================
 
     /**
-     * A remote table gateway message handler.
+     * A remote table proxy message handler.
      * 
      * @noextend This interface is not intended to be extended by clients.
      */
@@ -132,13 +144,12 @@ public interface IRemoteTableGateway
         // ==================================================================
 
         /**
-         * Handles the specified message for the associated remote table
-         * gateway.
+         * Handles the specified message for the associated remote table proxy.
          * 
          * <p>
-         * This method will be invoked by the table gateway while its instance
-         * lock is held. Thus, message handlers may assume any methods they
-         * invoke on the table gateway will be thread-safe and atomic.
+         * This method will be invoked by the remote table proxy while its
+         * instance lock is held. Thus, message handlers may assume any methods
+         * they invoke on the remote table proxy will be thread-safe and atomic.
          * </p>
          * 
          * @param message

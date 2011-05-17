@@ -27,7 +27,7 @@ import net.jcip.annotations.NotThreadSafe;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler;
+import org.gamegineer.table.internal.net.common.IRemoteTableProxyController.IMessageHandler;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.AbstractMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
@@ -38,7 +38,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway.AbstractMessageHandler}
+ * {@link org.gamegineer.table.internal.net.common.AbstractRemoteTableProxy.AbstractMessageHandler}
  * class.
  */
 public final class AbstractMessageHandlerTest
@@ -97,12 +97,12 @@ public final class AbstractMessageHandlerTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * remote table gateway.
+     * remote table proxy controller.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_RemoteTableGateway_Null()
+    public void testConstructor_RemoteTableProxyController_Null()
     {
-        new AbstractRemoteTableGateway.AbstractMessageHandler<IRemoteTableGateway>( null )
+        new AbstractRemoteTableProxy.AbstractMessageHandler<IRemoteTableProxyController>( null )
         {
             // no overrides
         };
@@ -115,9 +115,9 @@ public final class AbstractMessageHandlerTest
     @Test
     public void testHandleMessage_Message_Supported()
     {
-        final IRemoteTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteTableGateway.class );
+        final IRemoteTableProxyController controller = mocksControl_.createMock( IRemoteTableProxyController.class );
         final IMessage message = new FakeMessage();
-        final MockMessageHandler messageHandler = new MockMessageHandler( remoteTableGateway );
+        final MockMessageHandler messageHandler = new MockMessageHandler( controller );
         mocksControl_.replay();
 
         messageHandler.handleMessage( message );
@@ -133,13 +133,13 @@ public final class AbstractMessageHandlerTest
     @Test
     public void testHandleMessage_Message_Unsupported()
     {
-        final IRemoteTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteTableGateway.class );
+        final IRemoteTableProxyController controller = mocksControl_.createMock( IRemoteTableProxyController.class );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
-        EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
         final IMessage message = mocksControl_.createMock( IMessage.class );
         EasyMock.expect( message.getId() ).andReturn( IMessage.MINIMUM_ID ).anyTimes();
         EasyMock.expect( message.getCorrelationId() ).andReturn( IMessage.MAXIMUM_ID ).anyTimes();
-        final MockMessageHandler messageHandler = new MockMessageHandler( remoteTableGateway );
+        final MockMessageHandler messageHandler = new MockMessageHandler( controller );
         mocksControl_.replay();
 
         messageHandler.handleMessage( message );
@@ -188,7 +188,7 @@ public final class AbstractMessageHandlerTest
      */
     @NotThreadSafe
     private static final class MockMessageHandler
-        extends AbstractRemoteTableGateway.AbstractMessageHandler<IRemoteTableGateway>
+        extends AbstractRemoteTableProxy.AbstractMessageHandler<IRemoteTableProxyController>
     {
         // ==================================================================
         // Fields
@@ -214,18 +214,18 @@ public final class AbstractMessageHandlerTest
         /**
          * Initializes a new instance of the {@code MockMessageHandler} class.
          * 
-         * @param remoteTableGateway
-         *        The remote table gateway associated with the message handler;
-         *        must not be {@code null}.
+         * @param remoteTableProxyController
+         *        The remote table proxy controller associated with the message
+         *        handler; must not be {@code null}.
          * 
          * @throws java.lang.NullPointerException
-         *         If {@code remoteTableGateway} is {@code null}.
+         *         If {@code remoteTableProxyController} is {@code null}.
          */
         MockMessageHandler(
             /* @NonNull */
-            final IRemoteTableGateway remoteTableGateway )
+            final IRemoteTableProxyController remoteTableProxyController )
         {
-            super( remoteTableGateway );
+            super( remoteTableProxyController );
 
             handleFakeMessageCallCount_ = 0;
             handleUnexpectedMessageCallCount_ = 0;
@@ -277,7 +277,7 @@ public final class AbstractMessageHandlerTest
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway.AbstractMessageHandler#handleUnexpectedMessage()
+         * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableProxy.AbstractMessageHandler#handleUnexpectedMessage()
          */
         @Override
         protected void handleUnexpectedMessage()

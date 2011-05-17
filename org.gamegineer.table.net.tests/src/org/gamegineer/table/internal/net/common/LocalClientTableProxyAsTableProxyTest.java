@@ -1,5 +1,5 @@
 /*
- * AbstractRemoteTableGatewayAsServiceTest.java
+ * LocalClientTableProxyAsTableProxyTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,24 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 23, 2011 at 9:40:52 PM.
+ * Created on Apr 16, 2011 at 11:13:25 PM.
  */
 
 package org.gamegineer.table.internal.net.common;
 
-import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.ITableNetworkNode;
-import org.gamegineer.table.internal.net.transport.AbstractServiceTestCase;
-import org.gamegineer.table.internal.net.transport.IService;
+import org.gamegineer.table.internal.net.AbstractTableProxyTestCase;
+import org.gamegineer.table.internal.net.ITableProxy;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.transport.IService} interface.
+ * {@link org.gamegineer.table.internal.net.common.LocalClientTableProxy} class
+ * to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.ITableProxy} interface.
  */
-public final class AbstractRemoteTableGatewayAsServiceTest
-    extends AbstractServiceTestCase
+public final class LocalClientTableProxyAsTableProxyTest
+    extends AbstractTableProxyTestCase
 {
     // ======================================================================
     // Constructors
@@ -41,9 +39,9 @@ public final class AbstractRemoteTableGatewayAsServiceTest
 
     /**
      * Initializes a new instance of the {@code
-     * AbstractRemoteTableGatewayAsServiceTest} class.
+     * LocalClientTableProxyAsTableProxyTest} class.
      */
-    public AbstractRemoteTableGatewayAsServiceTest()
+    public LocalClientTableProxyAsTableProxyTest()
     {
         super();
     }
@@ -54,14 +52,11 @@ public final class AbstractRemoteTableGatewayAsServiceTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.AbstractServiceTestCase#createService()
+     * @see org.gamegineer.table.internal.net.AbstractTableProxyTestCase#createTableProxy()
      */
     @Override
-    protected IService createService()
+    protected ITableProxy createTableProxy()
     {
-        return new AbstractRemoteTableGateway( EasyMock.createMock( ITableNetworkNode.class ) )
-        {
-            // no overrides
-        };
+        return new LocalClientTableProxy( "playerName" ); //$NON-NLS-1$
     }
 }

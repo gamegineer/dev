@@ -40,7 +40,7 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @Immutable
 final class BeginAuthenticationResponseMessageHandler
-    extends RemoteClientTableGateway.AbstractMessageHandler
+    extends RemoteClientTableProxy.AbstractMessageHandler
 {
     // ======================================================================
     // Constructors
@@ -50,18 +50,18 @@ final class BeginAuthenticationResponseMessageHandler
      * Initializes a new instance of the {@code
      * BeginAuthenticationResponseMessageHandler} class.
      * 
-     * @param remoteTableGateway
-     *        The remote table gateway associated with the message handler; must
-     *        not be {@code null}.
+     * @param remoteTableProxyController
+     *        The control interface for the remote table proxy associated with
+     *        the message handler; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code remoteTableGateway} is {@code null}.
+     *         If {@code remoteTableProxyController} is {@code null}.
      */
     BeginAuthenticationResponseMessageHandler(
         /* @NonNull */
-        final IRemoteClientTableGateway remoteTableGateway )
+        final IRemoteClientTableProxyController remoteTableProxyController )
     {
-        super( remoteTableGateway );
+        super( remoteTableProxyController );
     }
 
 
@@ -91,13 +91,13 @@ final class BeginAuthenticationResponseMessageHandler
         assert playerName != null;
         assert response != null;
 
-        final IRemoteClientTableGateway remoteTableGateway = getRemoteTableGateway();
-        final ITableNetworkNode node = remoteTableGateway.getLocalNode();
+        final IRemoteClientTableProxyController controller = getRemoteTableProxyController();
+        final ITableNetworkNode node = controller.getLocalNode();
         final SecureString password = node.getPassword();
         try
         {
             final Authenticator authenticator = new Authenticator();
-            final byte[] expectedResponse = authenticator.createResponse( remoteTableGateway.getChallenge(), password, remoteTableGateway.getSalt() );
+            final byte[] expectedResponse = authenticator.createResponse( controller.getChallenge(), password, controller.getSalt() );
             if( Arrays.equals( expectedResponse, response ) )
             {
                 System.out.println( "ServerService : client authenticated" ); //$NON-NLS-1$
@@ -107,7 +107,7 @@ final class BeginAuthenticationResponseMessageHandler
                 throw new TableNetworkException( TableNetworkError.AUTHENTICATION_FAILED );
             }
 
-            if( node.isTableGatewayPresent( playerName ) )
+            if( node.isTableProxyPresent( playerName ) )
             {
                 throw new TableNetworkException( TableNetworkError.DUPLICATE_PLAYER_NAME );
             }
@@ -136,7 +136,7 @@ final class BeginAuthenticationResponseMessageHandler
             Integer.valueOf( message.getCorrelationId() ) ) );
 
         IMessage responseMessage;
-        final IRemoteClientTableGateway remoteTableGateway = getRemoteTableGateway();
+        final IRemoteClientTableProxyController controller = getRemoteTableProxyController();
         try
         {
             authenticate( message.getPlayerName(), message.getResponse() );
@@ -152,33 +152,33 @@ final class BeginAuthenticationResponseMessageHandler
         }
 
         responseMessage.setCorrelationId( message.getId() );
-        if( remoteTableGateway.sendMessage( responseMessage, null ) )
+        if( controller.sendMessage( responseMessage, null ) )
         {
             if( responseMessage instanceof ErrorMessage )
             {
-                remoteTableGateway.close( ((ErrorMessage)responseMessage).getError() );
+                controller.close( ((ErrorMessage)responseMessage).getError() );
             }
             else
             {
-                remoteTableGateway.setPlayerName( message.getPlayerName() );
-                remoteTableGateway.getLocalNode().addTableGateway( remoteTableGateway );
+                controller.setPlayerName( message.getPlayerName() );
+                controller.getLocalNode().addTableProxy( controller.getProxy() );
             }
         }
         else
         {
-            remoteTableGateway.close( TableNetworkError.TRANSPORT_ERROR );
+            controller.close( TableNetworkError.TRANSPORT_ERROR );
             // TODO: all these close() calls smell bad; may just allow handleMessage() to throw
-            // an exception that will force the gateway to close.
+            // an exception that will force the remote table proxy to close.
         }
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway.AbstractMessageHandler#handleUnexpectedMessage()
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableProxy.AbstractMessageHandler#handleUnexpectedMessage()
      */
     @Override
     protected void handleUnexpectedMessage()
     {
         System.out.println( "ServerService : received unknown message in response to begin authentication request" ); //$NON-NLS-1$
-        getRemoteTableGateway().close( TableNetworkError.UNEXPECTED_MESSAGE );
+        getRemoteTableProxyController().close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

@@ -1,5 +1,5 @@
 /*
- * AbstractRemoteClientTableGatewayTestCase.java
+ * ITableProxy.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,34 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 23, 2011 at 9:23:06 PM.
+ * Created on Apr 8, 2011 at 9:19:53 PM.
  */
 
-package org.gamegineer.table.internal.net.server;
-
-import org.gamegineer.table.internal.net.common.AbstractRemoteTableGatewayTestCase;
+package org.gamegineer.table.internal.net;
 
 /**
- * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.server.IRemoteClientTableGateway}
- * interface.
+ * A proxy for a table connected to the table network.
  * 
- * @param <T>
- *        The type of the remote client table gateway.
+ * @noextend This interface is not intended to be extended by clients.
  */
-public abstract class AbstractRemoteClientTableGatewayTestCase<T extends IRemoteClientTableGateway>
-    extends AbstractRemoteTableGatewayTestCase<T>
+public interface ITableProxy
 {
     // ======================================================================
-    // Constructors
+    // Methods
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractRemoteClientTableGatewayTestCase} class.
+     * Gets the name of the player associated with the table.
+     * 
+     * @return The name of the player associated with the table; never {@code
+     *         null}.
      */
-    protected AbstractRemoteClientTableGatewayTestCase()
-    {
-        super();
-    }
+    /* @NonNull */
+    public String getPlayerName();
 }

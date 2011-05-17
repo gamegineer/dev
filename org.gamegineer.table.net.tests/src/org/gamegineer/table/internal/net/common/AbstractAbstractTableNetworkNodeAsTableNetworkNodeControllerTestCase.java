@@ -26,8 +26,8 @@ import static org.junit.Assert.assertTrue;
 import net.jcip.annotations.NotThreadSafe;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.AbstractTableNetworkNodeControllerTestCase;
-import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.TransportException;
@@ -126,30 +126,30 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
     }
 
     /**
-     * Ensures the {@code connect} method adds a table gateway for the local
+     * Ensures the {@code connect} method adds a table proxy for the local
      * player.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test
-    public void testConnect_AddsLocalTableGateway()
+    public void testConnect_AddsLocalTableProxy()
         throws Exception
     {
         final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
         getTableNetworkNodeController().connect( configuration );
 
-        boolean localTableGatewayFound = false;
-        for( final ITableGateway tableGateway : getTableNetworkNodeController().getTableGateways() )
+        boolean localTableProxyFound = false;
+        for( final ITableProxy tableProxy : getTableNetworkNodeController().getTableProxies() )
         {
-            if( tableGateway.getPlayerName().equals( configuration.getLocalPlayerName() ) )
+            if( tableProxy.getPlayerName().equals( configuration.getLocalPlayerName() ) )
             {
-                localTableGatewayFound = true;
+                localTableProxyFound = true;
                 break;
             }
         }
 
-        assertTrue( localTableGatewayFound );
+        assertTrue( localTableProxyFound );
     }
 
     /**
@@ -296,23 +296,23 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
     }
 
     /**
-     * Ensures the {@code tableGatewayAdded} method throws an exception when
-     * passed a {@code null} table gateway.
+     * Ensures the {@code tableProxyAdded} method throws an exception when
+     * passed a {@code null} table proxy.
      */
     @Test( expected = NullPointerException.class )
-    public void testTableGatewayAdded_TableGateway_Null()
+    public void testTableProxyAdded_TableProxy_Null()
     {
-        getTableNetworkNodeController().tableGatewayAdded( null );
+        getTableNetworkNodeController().tableProxyAdded( null );
     }
 
     /**
-     * Ensures the {@code tableGatewayRemoved} method throws an exception when
-     * passed a {@code null} table gateway.
+     * Ensures the {@code tableProxyRemoved} method throws an exception when
+     * passed a {@code null} table proxy.
      */
     @Test( expected = NullPointerException.class )
-    public void testTableGatewayRemoved_TableGateway_Null()
+    public void testTableProxyRemoved_TableProxy_Null()
     {
-        getTableNetworkNodeController().tableGatewayRemoved( null );
+        getTableNetworkNodeController().tableProxyRemoved( null );
     }
 
 

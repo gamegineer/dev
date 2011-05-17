@@ -42,20 +42,20 @@ public interface ITableNetworkNode
     // ======================================================================
 
     /**
-     * Adds the specified table gateway to the table network node.
+     * Adds the specified table proxy to the table network node.
      * 
-     * @param tableGateway
-     *        The table gateway; must not be {@code null}.
+     * @param tableProxy
+     *        The table proxy; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code tableGateway} is already a registered table gateway.
+     *         If {@code tableProxy} is already a registered table proxy.
      * @throws java.lang.NullPointerException
-     *         If {@code tableGateway} is {@code null}.
+     *         If {@code tableProxy} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    public void addTableGateway(
+    public void addTableProxy(
         /* @NonNull */
-        ITableGateway tableGateway );
+        ITableProxy tableProxy );
 
     /**
      * Disconnects the table network node for the specified cause.
@@ -96,38 +96,38 @@ public interface ITableNetworkNode
     public SecureString getPassword();
 
     /**
-     * Indicates a table gateway has been registered with the table network node
+     * Indicates a table proxy has been registered with the table network node
      * for the specified player name.
      * 
      * @param playerName
-     *        The name of the player associated with the table gateway; must not
+     *        The name of the player associated with the table proxy; must not
      *        be {@code null}.
      * 
-     * @return {@code true} if a table gateway has been registered with the
-     *         table network node for the specified player name; otherwise
-     *         {@code false}.
+     * @return {@code true} if a table proxy has been registered with the table
+     *         network node for the specified player name; otherwise {@code
+     *         false}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code playerName} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    public boolean isTableGatewayPresent(
+    public boolean isTableProxyPresent(
         /* @NonNull */
         String playerName );
 
     /**
-     * Removes the specified table gateway from the table network node.
+     * Removes the specified table proxy from the table network node.
      * 
-     * @param tableGateway
-     *        The table gateway; must not be {@code null}.
+     * @param tableProxy
+     *        The table proxy; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code tableGateway} is not a registered table gateway.
+     *         If {@code tableProxy} is not a registered table proxy.
      * @throws java.lang.NullPointerException
-     *         If {@code tableGateway} is {@code null}.
+     *         If {@code tableProxy} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    public void removeTableGateway(
+    public void removeTableProxy(
         /* @NonNull */
-        ITableGateway tableGateway );
+        ITableProxy tableProxy );
 }

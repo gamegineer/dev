@@ -1,5 +1,5 @@
 /*
- * AbstractRemoteTableGateway.java
+ * AbstractRemoteTableProxy.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -34,6 +34,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableNetworkNode;
+import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
@@ -43,20 +44,19 @@ import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 import org.gamegineer.table.net.TableNetworkError;
 
 /**
- * Superclass for all implementations of {@ink
- * org.gamegineer.table.internal.net.common.IRemoteTableGateway}.
+ * Superclass for all remote table proxies.
  */
 @ThreadSafe
-public abstract class AbstractRemoteTableGateway
-    implements IRemoteTableGateway, IService
+public abstract class AbstractRemoteTableProxy
+    implements IRemoteTableProxyController, IService, ITableProxy
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /**
-     * The error that caused the table gateway to be closed or {@code null} if
-     * the table gateway was closed normally.
+     * The error that caused the remote table proxy to be closed or {@code null}
+     * if the remote table proxy was closed normally.
      */
     @GuardedBy( "getLock()" )
     private TableNetworkError closeError_;
@@ -105,8 +105,7 @@ public abstract class AbstractRemoteTableGateway
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractRemoteTableGateway}
-     * class.
+     * Initializes a new instance of the {@code AbstractRemoteTableProxy} class.
      * 
      * @param node
      *        The local table network node; must not be {@code null}.
@@ -114,7 +113,7 @@ public abstract class AbstractRemoteTableGateway
      * @throws java.lang.NullPointerException
      *         If {@code node} is {@code null}.
      */
-    protected AbstractRemoteTableGateway(
+    protected AbstractRemoteTableProxy(
         /* @NonNull */
         final ITableNetworkNode node )
     {
@@ -136,13 +135,13 @@ public abstract class AbstractRemoteTableGateway
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#close(org.gamegineer.table.net.TableNetworkError)
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#close(org.gamegineer.table.net.TableNetworkError)
      */
     @Override
     public final void close(
         final TableNetworkError error )
     {
-        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableGateway_networkDisconnected );
+        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableProxy_networkDisconnected );
         assert Thread.holdsLock( getLock() );
 
         closeError_ = error;
@@ -150,7 +149,7 @@ public abstract class AbstractRemoteTableGateway
     }
 
     /**
-     * Invoked when the table gateway has been closed.
+     * Invoked when the remote table proxy has been closed.
      * 
      * <p>
      * This method is invoked while the instance lock is held.
@@ -161,8 +160,8 @@ public abstract class AbstractRemoteTableGateway
      * </p>
      * 
      * @param error
-     *        The error that caused the table gateway to be closed or {@code
-     *        null} if the table gateway was closed normally.
+     *        The error that caused the remote table proxy to be closed or
+     *        {@code null} if the remote table proxy was closed normally.
      */
     @GuardedBy( "getLock()" )
     protected void closed(
@@ -175,7 +174,7 @@ public abstract class AbstractRemoteTableGateway
         {
             synchronized( node_.getLock() )
             {
-                node_.removeTableGateway( this );
+                node_.removeTableProxy( this );
             }
 
             playerName_ = null;
@@ -204,12 +203,12 @@ public abstract class AbstractRemoteTableGateway
         }
         catch( final IOException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableGateway_extractMessage_deserializationError( messageEnvelope ), e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableProxy_extractMessage_deserializationError( messageEnvelope ), e );
             return null;
         }
         catch( final ClassNotFoundException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableGateway_extractMessage_deserializationError( messageEnvelope ), e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableProxy_extractMessage_deserializationError( messageEnvelope ), e );
             return null;
         }
     }
@@ -225,7 +224,7 @@ public abstract class AbstractRemoteTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#getLocalNode()
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#getLocalNode()
      */
     public final ITableNetworkNode getLocalNode()
     {
@@ -233,7 +232,7 @@ public abstract class AbstractRemoteTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#getLock()
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#getLock()
      */
     public final Object getLock()
     {
@@ -260,16 +259,25 @@ public abstract class AbstractRemoteTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#getPlayerName()
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#getPlayerName()
      */
     @Override
     public final String getPlayerName()
     {
         synchronized( getLock() )
         {
-            assertStateLegal( playerName_ != null, Messages.AbstractRemoteTableGateway_playerNotAuthenticated );
+            assertStateLegal( playerName_ != null, Messages.AbstractRemoteTableProxy_playerNotAuthenticated );
             return playerName_;
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#getProxy()
+     */
+    @Override
+    public final ITableProxy getProxy()
+    {
+        return this;
     }
 
     /*
@@ -306,7 +314,7 @@ public abstract class AbstractRemoteTableGateway
                 }
                 else
                 {
-                    Loggers.getDefaultLogger().warning( Messages.AbstractRemoteTableGateway_messageReceived_unhandledMessage( message ) );
+                    Loggers.getDefaultLogger().warning( Messages.AbstractRemoteTableProxy_messageReceived_unhandledMessage( message ) );
                     sendErrorMessage( TableNetworkError.UNHANDLED_MESSAGE, message.getId() );
                 }
             }
@@ -318,7 +326,7 @@ public abstract class AbstractRemoteTableGateway
     }
 
     /**
-     * Invoked when the table gateway has been opened.
+     * Invoked when the remote table proxy has been opened.
      * 
      * <p>
      * This method is invoked while the instance lock is held.
@@ -374,7 +382,7 @@ public abstract class AbstractRemoteTableGateway
 
         synchronized( getLock() )
         {
-            assertArgumentLegal( !uncorrelatedMessageHandlers_.containsKey( type ), "type", Messages.AbstractRemoteTableGateway_registerUncorrelatedMessageHandler_messageTypeRegistered ); //$NON-NLS-1$
+            assertArgumentLegal( !uncorrelatedMessageHandlers_.containsKey( type ), "type", Messages.AbstractRemoteTableProxy_registerUncorrelatedMessageHandler_messageTypeRegistered ); //$NON-NLS-1$
             uncorrelatedMessageHandlers_.put( type, messageHandler );
         }
     }
@@ -408,7 +416,7 @@ public abstract class AbstractRemoteTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#sendMessage(org.gamegineer.table.internal.net.transport.IMessage, org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler)
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#sendMessage(org.gamegineer.table.internal.net.transport.IMessage, org.gamegineer.table.internal.net.common.IRemoteTableProxyController.IMessageHandler)
      */
     @Override
     @SuppressWarnings( "boxing" )
@@ -417,7 +425,7 @@ public abstract class AbstractRemoteTableGateway
         final IMessageHandler messageHandler )
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
-        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableGateway_networkDisconnected );
+        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableProxy_networkDisconnected );
         assert Thread.holdsLock( getLock() );
 
         message.setId( getNextMessageId() );
@@ -431,7 +439,7 @@ public abstract class AbstractRemoteTableGateway
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway#setPlayerName(java.lang.String)
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#setPlayerName(java.lang.String)
      */
     @Override
     public final void setPlayerName(
@@ -467,7 +475,7 @@ public abstract class AbstractRemoteTableGateway
     {
         synchronized( getLock() )
         {
-            // Do not overwrite the original error that caused the table gateway to be closed
+            // Do not overwrite the original error that caused the remote table proxy to be closed
             if( (exception != null) && (closeError_ == null) )
             {
                 closeError_ = TableNetworkError.TRANSPORT_ERROR;
@@ -485,22 +493,25 @@ public abstract class AbstractRemoteTableGateway
 
     /**
      * Superclass for all implementations of {@ink
-     * org.gamegineer.table.internal.net.common.IRemoteTableGateway.
+     * org.gamegineer.table.internal.net.common.IRemoteTableProxyController.
      * IMessageHandler}.
      * 
      * @param <T>
-     *        The type of the remote table gateway.
+     *        The type of the remote table proxy control interface.
      */
     @Immutable
-    public static abstract class AbstractMessageHandler<T extends IRemoteTableGateway>
+    public static abstract class AbstractMessageHandler<T extends IRemoteTableProxyController>
         implements IMessageHandler
     {
         // ==================================================================
         // Fields
         // ==================================================================
 
-        /** The remote table gateway associated with the message handler. */
-        private final T remoteTableGateway_;
+        /**
+         * The control interface for the remote table proxy associated with the
+         * message handler.
+         */
+        private final T remoteTableProxyController_;
 
 
         // ==================================================================
@@ -511,20 +522,20 @@ public abstract class AbstractRemoteTableGateway
          * Initializes a new instance of the {@code AbstractMessageHandler}
          * class.
          * 
-         * @param remoteTableGateway
-         *        The remote table gateway associated with the message handler;
-         *        must not be {@code null}.
+         * @param remoteTableProxyController
+         *        The control interface for the remote table proxy associated
+         *        with the message handler; must not be {@code null}.
          * 
          * @throws java.lang.NullPointerException
-         *         If {@code remoteTableGateway} is {@code null}.
+         *         If {@code remoteTableProxyController} is {@code null}.
          */
         protected AbstractMessageHandler(
             /* @NonNull */
-            final T remoteTableGateway )
+            final T remoteTableProxyController )
         {
-            assertArgumentNotNull( remoteTableGateway, "remoteTableGateway" ); //$NON-NLS-1$
+            assertArgumentNotNull( remoteTableProxyController, "remoteTableProxyController" ); //$NON-NLS-1$
 
-            remoteTableGateway_ = remoteTableGateway;
+            remoteTableProxyController_ = remoteTableProxyController;
         }
 
 
@@ -533,14 +544,16 @@ public abstract class AbstractRemoteTableGateway
         // ==================================================================
 
         /**
-         * Gets the remote table gateway associated with the message handler.
+         * Gets the control interface for the remote table proxy associated with
+         * the message handler.
          * 
-         * @return The remote table gateway associated with the message handler.
+         * @return The control interface for the remote table proxy associated
+         *         with the message handler.
          */
         /* @NonNull */
-        protected final T getRemoteTableGateway()
+        protected final T getRemoteTableProxyController()
         {
-            return remoteTableGateway_;
+            return remoteTableProxyController_;
         }
 
         /**
@@ -553,10 +566,10 @@ public abstract class AbstractRemoteTableGateway
          * 
          * <p>
          * If such a method is not found, an error message will be sent to the
-         * peer gateway indicating the message is unsupported.
+         * peer remote table proxy indicating the message is unsupported.
          * </p>
          * 
-         * @see org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.transport.IMessage)
+         * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.transport.IMessage)
          */
         @Override
         public final void handleMessage(
@@ -574,7 +587,7 @@ public abstract class AbstractRemoteTableGateway
                 }
                 catch( final Exception e )
                 {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableGateway_handleMessage_unexpectedError, e );
+                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableProxy_handleMessage_unexpectedError, e );
                 }
             }
             catch( final NoSuchMethodException e )
@@ -584,7 +597,7 @@ public abstract class AbstractRemoteTableGateway
                 final ErrorMessage errorMessage = new ErrorMessage();
                 errorMessage.setCorrelationId( message.getId() );
                 errorMessage.setError( TableNetworkError.UNEXPECTED_MESSAGE );
-                getRemoteTableGateway().sendMessage( errorMessage, null );
+                getRemoteTableProxyController().sendMessage( errorMessage, null );
 
                 handleUnexpectedMessage();
             }

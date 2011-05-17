@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.net.client;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
-import org.gamegineer.table.internal.net.common.IRemoteTableGateway.IMessageHandler;
+import org.gamegineer.table.internal.net.common.IRemoteTableProxyController.IMessageHandler;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloResponseMessage;
 import org.gamegineer.table.internal.net.transport.FakeMessage;
@@ -100,13 +100,13 @@ public final class HelloResponseMessageHandlerTest
     @Test
     public void testHandleMessage_ErrorMessage()
     {
-        final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
-        remoteTableGateway.close( TableNetworkError.UNSPECIFIED_ERROR );
+        final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
+        controller.close( TableNetworkError.UNSPECIFIED_ERROR );
         mocksControl_.replay();
 
         final ErrorMessage message = new ErrorMessage();
         message.setError( TableNetworkError.UNSPECIFIED_ERROR );
-        final HelloResponseMessageHandler messageHandler = new HelloResponseMessageHandler( remoteTableGateway );
+        final HelloResponseMessageHandler messageHandler = new HelloResponseMessageHandler( controller );
         messageHandler.handleMessage( message );
 
         mocksControl_.verify();
@@ -120,12 +120,12 @@ public final class HelloResponseMessageHandlerTest
     @Test
     public void testHandleMessage_HelloResponseMessage_SupportedChosenProtocolVersion()
     {
-        final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
+        final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
         mocksControl_.replay();
 
         final HelloResponseMessage message = new HelloResponseMessage();
         message.setChosenProtocolVersion( ProtocolVersions.VERSION_1 );
-        final HelloResponseMessageHandler messageHandler = new HelloResponseMessageHandler( remoteTableGateway );
+        final HelloResponseMessageHandler messageHandler = new HelloResponseMessageHandler( controller );
         messageHandler.handleMessage( message );
 
         mocksControl_.verify();
@@ -139,13 +139,13 @@ public final class HelloResponseMessageHandlerTest
     @Test
     public void testHandleMessage_HelloResponseMessage_UnsupportedChosenProtocolVersion()
     {
-        final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
-        remoteTableGateway.close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
+        final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
+        controller.close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
         mocksControl_.replay();
 
         final HelloResponseMessage message = new HelloResponseMessage();
         message.setChosenProtocolVersion( 0 );
-        final HelloResponseMessageHandler messageHandler = new HelloResponseMessageHandler( remoteTableGateway );
+        final HelloResponseMessageHandler messageHandler = new HelloResponseMessageHandler( controller );
         messageHandler.handleMessage( message );
 
         mocksControl_.verify();
@@ -159,13 +159,13 @@ public final class HelloResponseMessageHandlerTest
     @Test
     public void testHandleMessage_UnexpectedMessage()
     {
-        final IRemoteServerTableGateway remoteTableGateway = mocksControl_.createMock( IRemoteServerTableGateway.class );
-        EasyMock.expect( remoteTableGateway.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        remoteTableGateway.close( TableNetworkError.UNEXPECTED_MESSAGE );
+        final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
+        EasyMock.expect( controller.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        controller.close( TableNetworkError.UNEXPECTED_MESSAGE );
         mocksControl_.replay();
 
         final FakeMessage message = new FakeMessage();
-        final HelloResponseMessageHandler messageHandler = new HelloResponseMessageHandler( remoteTableGateway );
+        final HelloResponseMessageHandler messageHandler = new HelloResponseMessageHandler( controller );
         messageHandler.handleMessage( message );
 
         mocksControl_.verify();

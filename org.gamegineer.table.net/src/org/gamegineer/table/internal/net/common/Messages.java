@@ -37,41 +37,41 @@ final class Messages
     // Fields
     // ======================================================================
 
-    // --- AbstractRemoteTableGateway ---------------------------------------
+    // --- AbstractRemoteTableProxy -----------------------------------------
 
     /** An error occurred while deserializing a message. */
-    public static String AbstractRemoteTableGateway_extractMessage_deserializationError;
+    public static String AbstractRemoteTableProxy_extractMessage_deserializationError;
 
     /** An unexpected error occurred while handling a message. */
-    public static String AbstractRemoteTableGateway_handleMessage_unexpectedError;
+    public static String AbstractRemoteTableProxy_handleMessage_unexpectedError;
 
     /** The service received an unhandled message. */
-    public static String AbstractRemoteTableGateway_messageReceived_unhandledMessage;
+    public static String AbstractRemoteTableProxy_messageReceived_unhandledMessage;
 
     /** The network is disconnected. */
-    public static String AbstractRemoteTableGateway_networkDisconnected;
+    public static String AbstractRemoteTableProxy_networkDisconnected;
 
     /** The player has not been authenticated. */
-    public static String AbstractRemoteTableGateway_playerNotAuthenticated;
+    public static String AbstractRemoteTableProxy_playerNotAuthenticated;
 
     /** The message type is already registered. */
-    public static String AbstractRemoteTableGateway_registerUncorrelatedMessageHandler_messageTypeRegistered;
+    public static String AbstractRemoteTableProxy_registerUncorrelatedMessageHandler_messageTypeRegistered;
 
-    // --- AbstractRemoteTableGateway.AbstractMessageHandler ----------------
+    // --- AbstractRemoteTableProxy.AbstractMessageHandler ------------------
 
     /** The message handler received an unexpected message. */
     public static String AbstractMessageHandler_messageReceived_unexpectedMessage;
 
     // --- AbstractTableNetworkNode -----------------------------------------
 
-    /** The table gateway is already registered. */
-    public static String AbstractTableNetworkNode_addTableGateway_tableGatewayRegistered;
+    /** The table proxy is already registered. */
+    public static String AbstractTableNetworkNode_addTableProxy_tableProxyRegistered;
 
     /** The network is disconnected. */
     public static String AbstractTableNetworkNode_networkDisconnected;
 
-    /** The table gateway is not registered. */
-    public static String AbstractTableNetworkNode_removeTableGateway_tableGatewayNotRegistered;
+    /** The table proxy is not registered. */
+    public static String AbstractTableNetworkNode_removeTableProxy_tableProxyNotRegistered;
 
     // --- Authenticator ----------------------------------------------------
 
@@ -110,7 +110,7 @@ final class Messages
     // Methods
     // ======================================================================
 
-    // --- AbstractRemoteTableGateway ---------------------------------------
+    // --- AbstractRemoteTableProxy -----------------------------------------
 
     /**
      * Gets the formatted message indicating an error occurred while
@@ -124,11 +124,11 @@ final class Messages
      */
     /* @NonNull */
     @SuppressWarnings( "boxing" )
-    static String AbstractRemoteTableGateway_extractMessage_deserializationError(
+    static String AbstractRemoteTableProxy_extractMessage_deserializationError(
         /* @NonNull */
         final MessageEnvelope messageEnvelope )
     {
-        return bind( AbstractRemoteTableGateway_extractMessage_deserializationError, messageEnvelope.getId(), messageEnvelope.getCorrelationId() );
+        return bind( AbstractRemoteTableProxy_extractMessage_deserializationError, messageEnvelope.getId(), messageEnvelope.getCorrelationId() );
     }
 
     /**
@@ -143,18 +143,18 @@ final class Messages
      */
     /* @NonNull */
     @SuppressWarnings( "boxing" )
-    static String AbstractRemoteTableGateway_messageReceived_unhandledMessage(
+    static String AbstractRemoteTableProxy_messageReceived_unhandledMessage(
         /* @NonNull */
         final IMessage message )
     {
-        return bind( AbstractRemoteTableGateway_messageReceived_unhandledMessage, new Object[] {
+        return bind( AbstractRemoteTableProxy_messageReceived_unhandledMessage, new Object[] {
             message.getClass().getSimpleName(), //
             message.getId(), //
             message.getCorrelationId()
         } );
     }
 
-    // --- AbstractRemoteTableGateway.AbstractMessageHandler ----------------
+    // --- AbstractRemoteTableProxy.AbstractMessageHandler ------------------
 
     /**
      * Gets the formatted message indicating the message handler received an
@@ -172,7 +172,7 @@ final class Messages
     @SuppressWarnings( "boxing" )
     static String AbstractMessageHandler_messageReceived_unexpectedMessage(
         /* @NonNull */
-        final IRemoteTableGateway.IMessageHandler messageHandler,
+        final IRemoteTableProxyController.IMessageHandler messageHandler,
         /* @NonNull */
         final IMessage message )
     {

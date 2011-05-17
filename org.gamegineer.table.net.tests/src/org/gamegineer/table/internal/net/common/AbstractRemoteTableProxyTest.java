@@ -1,5 +1,5 @@
 /*
- * AbstractRemoteTableGatewayTest.java
+ * AbstractRemoteTableProxyTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -38,10 +38,10 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.common.AbstractRemoteTableGateway}
+ * {@link org.gamegineer.table.internal.net.common.AbstractRemoteTableProxy}
  * class.
  */
-public final class AbstractRemoteTableGatewayTest
+public final class AbstractRemoteTableProxyTest
 {
     // ======================================================================
     // Fields
@@ -50,8 +50,8 @@ public final class AbstractRemoteTableGatewayTest
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
 
-    /** The remote table gateway under test in the fixture. */
-    private AbstractRemoteTableGateway remoteTableGateway_;
+    /** The remote table proxy under test in the fixture. */
+    private AbstractRemoteTableProxy remoteTableProxy_;
 
 
     // ======================================================================
@@ -59,10 +59,10 @@ public final class AbstractRemoteTableGatewayTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractRemoteTableGatewayTest}
+     * Initializes a new instance of the {@code AbstractRemoteTableProxyTest}
      * class.
      */
-    public AbstractRemoteTableGatewayTest()
+    public AbstractRemoteTableProxyTest()
     {
         super();
     }
@@ -73,23 +73,23 @@ public final class AbstractRemoteTableGatewayTest
     // ======================================================================
 
     /**
-     * Creates a new instance of the {@code AbstractRemoteTableGateway} class.
+     * Creates a new instance of the {@code AbstractRemoteTableProxy} class.
      * 
      * @param node
      *        The local table network node; must not be {@code null}.
      * 
-     * @return A new instance of the {@code AbstractRemoteTableGateway} class;
+     * @return A new instance of the {@code AbstractRemoteTableProxy} class;
      *         never {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code node} is {@code null}.
      */
     /* @NonNull */
-    private static AbstractRemoteTableGateway createRemoteTableGateway(
+    private static AbstractRemoteTableProxy createRemoteTableProxy(
         /* @NonNull */
         final ITableNetworkNode node )
     {
-        return new AbstractRemoteTableGateway( node )
+        return new AbstractRemoteTableProxy( node )
         {
             // no overrides
         };
@@ -106,7 +106,7 @@ public final class AbstractRemoteTableGatewayTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        remoteTableGateway_ = createRemoteTableGateway( EasyMock.createMock( ITableNetworkNode.class ) );
+        remoteTableProxy_ = createRemoteTableProxy( EasyMock.createMock( ITableNetworkNode.class ) );
     }
 
     /**
@@ -119,7 +119,7 @@ public final class AbstractRemoteTableGatewayTest
     public void tearDown()
         throws Exception
     {
-        remoteTableGateway_ = null;
+        remoteTableProxy_ = null;
         mocksControl_ = null;
     }
 
@@ -130,7 +130,7 @@ public final class AbstractRemoteTableGatewayTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_TableNetworkNode_Null()
     {
-        createRemoteTableGateway( null );
+        createRemoteTableProxy( null );
     }
 
     /**
@@ -154,9 +154,9 @@ public final class AbstractRemoteTableGatewayTest
         message.setCorrelationId( IMessage.MAXIMUM_ID );
         final MessageEnvelope messageEnvelope = MessageEnvelope.fromMessage( message );
         mocksControl_.replay();
-        remoteTableGateway_.started( serviceContext );
+        remoteTableProxy_.started( serviceContext );
 
-        remoteTableGateway_.messageReceived( messageEnvelope );
+        remoteTableProxy_.messageReceived( messageEnvelope );
 
         mocksControl_.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
@@ -184,9 +184,9 @@ public final class AbstractRemoteTableGatewayTest
         message.setCorrelationId( IMessage.NULL_CORRELATION_ID );
         final MessageEnvelope messageEnvelope = MessageEnvelope.fromMessage( message );
         mocksControl_.replay();
-        remoteTableGateway_.started( serviceContext );
+        remoteTableProxy_.started( serviceContext );
 
-        remoteTableGateway_.messageReceived( messageEnvelope );
+        remoteTableProxy_.messageReceived( messageEnvelope );
 
         mocksControl_.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
@@ -206,9 +206,9 @@ public final class AbstractRemoteTableGatewayTest
         EasyMock.expect( serviceContext.sendMessage( EasyMock.capture( messageCapture ) ) ).andReturn( true );
         final MessageEnvelope messageEnvelope = new MessageEnvelope( IMessage.MINIMUM_ID, IMessage.NULL_CORRELATION_ID, new byte[ 0 ] );
         mocksControl_.replay();
-        remoteTableGateway_.started( serviceContext );
+        remoteTableProxy_.started( serviceContext );
 
-        remoteTableGateway_.messageReceived( messageEnvelope );
+        remoteTableProxy_.messageReceived( messageEnvelope );
 
         mocksControl_.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
@@ -222,7 +222,7 @@ public final class AbstractRemoteTableGatewayTest
     @Test( expected = NullPointerException.class )
     public void testRegisterUncorrelatedMessageHandler_MessageHandler_Null()
     {
-        remoteTableGateway_.registerUncorrelatedMessageHandler( IMessage.class, null );
+        remoteTableProxy_.registerUncorrelatedMessageHandler( IMessage.class, null );
     }
 
     /**
@@ -232,7 +232,7 @@ public final class AbstractRemoteTableGatewayTest
     @Test( expected = NullPointerException.class )
     public void testRegisterUncorrelatedMessageHandler_Type_Null()
     {
-        remoteTableGateway_.registerUncorrelatedMessageHandler( null, EasyMock.createMock( IRemoteTableGateway.IMessageHandler.class ) );
+        remoteTableProxy_.registerUncorrelatedMessageHandler( null, EasyMock.createMock( IRemoteTableProxyController.IMessageHandler.class ) );
     }
 
     /**
@@ -243,8 +243,8 @@ public final class AbstractRemoteTableGatewayTest
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterUncorrelatedMessageHandler_Type_Present()
     {
-        remoteTableGateway_.registerUncorrelatedMessageHandler( IMessage.class, EasyMock.createMock( IRemoteTableGateway.IMessageHandler.class ) );
+        remoteTableProxy_.registerUncorrelatedMessageHandler( IMessage.class, EasyMock.createMock( IRemoteTableProxyController.IMessageHandler.class ) );
 
-        remoteTableGateway_.registerUncorrelatedMessageHandler( IMessage.class, EasyMock.createMock( IRemoteTableGateway.IMessageHandler.class ) );
+        remoteTableProxy_.registerUncorrelatedMessageHandler( IMessage.class, EasyMock.createMock( IRemoteTableProxyController.IMessageHandler.class ) );
     }
 }

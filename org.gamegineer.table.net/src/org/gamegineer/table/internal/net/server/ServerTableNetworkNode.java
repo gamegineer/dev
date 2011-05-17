@@ -23,8 +23,8 @@ package org.gamegineer.table.internal.net.server;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.AbstractTableNetworkNode;
 import org.gamegineer.table.internal.net.transport.IService;
@@ -75,7 +75,7 @@ public final class ServerTableNetworkNode
             @Override
             public IService createService()
             {
-                return new RemoteClientTableGateway( ServerTableNetworkNode.this );
+                return new RemoteClientTableProxy( ServerTableNetworkNode.this );
             }
         } );
     }
@@ -94,37 +94,37 @@ public final class ServerTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#tableGatewayAdded(org.gamegineer.table.internal.net.ITableGateway)
+     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#tableProxyAdded(org.gamegineer.table.internal.net.ITableProxy)
      */
     @Override
-    protected void tableGatewayAdded(
-        final ITableGateway tableGateway )
+    protected void tableProxyAdded(
+        final ITableProxy tableProxy )
     {
-        assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
+        assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        super.tableGatewayAdded( tableGateway );
+        super.tableProxyAdded( tableProxy );
 
-        Loggers.getDefaultLogger().info( Messages.ServerTableNetworkNode_playerConnected_playerConnected( tableGateway.getPlayerName() ) );
+        Loggers.getDefaultLogger().info( Messages.ServerTableNetworkNode_playerConnected_playerConnected( tableProxy.getPlayerName() ) );
 
         // TODO
         //
-        // - send PlayerConnected message to all other gateways other than "tableGateway"
-        // - send PlayerList message to "tableGateway"
+        // - send PlayerConnected message to all other proxies other than "tableProxy"
+        // - send PlayerList message to "tableProxy"
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#tableGatewayRemoved(org.gamegineer.table.internal.net.ITableGateway)
+     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#tableProxyRemoved(org.gamegineer.table.internal.net.ITableProxy)
      */
     @Override
-    protected void tableGatewayRemoved(
-        final ITableGateway tableGateway )
+    protected void tableProxyRemoved(
+        final ITableProxy tableProxy )
     {
-        assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
+        assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        super.tableGatewayRemoved( tableGateway );
+        super.tableProxyRemoved( tableProxy );
 
-        Loggers.getDefaultLogger().info( Messages.ServerTableNetworkNode_playerDisconnected_playerDisconnected( tableGateway.getPlayerName() ) );
+        Loggers.getDefaultLogger().info( Messages.ServerTableNetworkNode_playerDisconnected_playerDisconnected( tableProxy.getPlayerName() ) );
     }
 }

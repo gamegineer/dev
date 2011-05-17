@@ -24,8 +24,8 @@ package org.gamegineer.table.internal.net.common;
 import static org.junit.Assert.assertEquals;
 import java.util.Collection;
 import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.junit.After;
 import org.junit.Before;
@@ -155,18 +155,18 @@ public final class AbstractTableNetworkNodeTest
     }
 
     /**
-     * Ensures the {@code getTableGateways} method returns a copy of the
-     * registered table gateways collection.
+     * Ensures the {@code getTableProxies} method returns a copy of the
+     * registered table proxies collection.
      */
     @Test
-    public void testGetTableGateways_ReturnValue_Copy()
+    public void testGetTableProxies_ReturnValue_Copy()
     {
-        final Collection<ITableGateway> tableGateways = node_.getTableGateways();
-        final int expectedTableGatewaysSize = tableGateways.size();
-        tableGateways.add( EasyMock.createMock( ITableGateway.class ) );
+        final Collection<ITableProxy> tableProxies = node_.getTableProxies();
+        final int expectedTableProxiesSize = tableProxies.size();
+        tableProxies.add( EasyMock.createMock( ITableProxy.class ) );
 
-        final int actualTableGatewaysSize = node_.getTableGateways().size();
+        final int actualTableProxiesSize = node_.getTableProxies().size();
 
-        assertEquals( expectedTableGatewaysSize, actualTableGatewaysSize );
+        assertEquals( expectedTableProxiesSize, actualTableProxiesSize );
     }
 }

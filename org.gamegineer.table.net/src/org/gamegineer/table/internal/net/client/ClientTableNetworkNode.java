@@ -28,8 +28,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.ITableGateway;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.common.AbstractTableNetworkNode;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -174,7 +174,7 @@ public final class ClientTableNetworkNode
             @Override
             public IService createService()
             {
-                return new RemoteServerTableGateway( ClientTableNetworkNode.this );
+                return new RemoteServerTableProxy( ClientTableNetworkNode.this );
             }
         } );
     }
@@ -219,18 +219,18 @@ public final class ClientTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#tableGatewayAdded(org.gamegineer.table.internal.net.ITableGateway)
+     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#tableProxyAdded(org.gamegineer.table.internal.net.ITableProxy)
      */
     @Override
-    protected void tableGatewayAdded(
-        final ITableGateway tableGateway )
+    protected void tableProxyAdded(
+        final ITableProxy tableProxy )
     {
-        assertArgumentNotNull( tableGateway, "tableGateway" ); //$NON-NLS-1$
+        assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        super.tableGatewayAdded( tableGateway );
+        super.tableProxyAdded( tableProxy );
 
-        if( tableGateway instanceof RemoteServerTableGateway )
+        if( tableProxy instanceof RemoteServerTableProxy )
         {
             setHandshakeComplete( null );
         }

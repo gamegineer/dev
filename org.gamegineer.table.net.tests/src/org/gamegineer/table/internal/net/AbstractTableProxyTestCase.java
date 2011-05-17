@@ -1,5 +1,5 @@
 /*
- * AbstractTableGatewayTestCase.java
+ * AbstractTableProxyTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -28,19 +28,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.ITableGateway} interface.
- * 
- * @param <T>
- *        The type of the table gateway.
+ * {@link org.gamegineer.table.internal.net.ITableProxy} interface.
  */
-public abstract class AbstractTableGatewayTestCase<T extends ITableGateway>
+public abstract class AbstractTableProxyTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table gateway under test in the fixture. */
-    private T tableGateway_;
+    /** The table proxy under test in the fixture. */
+    private ITableProxy tableProxy_;
 
 
     // ======================================================================
@@ -48,10 +45,10 @@ public abstract class AbstractTableGatewayTestCase<T extends ITableGateway>
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractTableGatewayTestCase}
+     * Initializes a new instance of the {@code AbstractTableProxyTestCase}
      * class.
      */
-    protected AbstractTableGatewayTestCase()
+    protected AbstractTableProxyTestCase()
     {
         super();
     }
@@ -62,28 +59,16 @@ public abstract class AbstractTableGatewayTestCase<T extends ITableGateway>
     // ======================================================================
 
     /**
-     * Creates the table gateway to be tested.
+     * Creates the table proxy to be tested.
      * 
-     * @return The table gateway to be tested; never {@code null}.
+     * @return The table proxy to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract T createTableGateway()
+    protected abstract ITableProxy createTableProxy()
         throws Exception;
-
-    /**
-     * Gets the table gateway under test in the fixture.
-     * 
-     * @return The table gateway under test in the fixture; never {@code null}.
-     */
-    /* @NonNull */
-    protected final T getTableGateway()
-    {
-        assertNotNull( tableGateway_ );
-        return tableGateway_;
-    }
 
     /**
      * Sets up the test fixture.
@@ -95,8 +80,8 @@ public abstract class AbstractTableGatewayTestCase<T extends ITableGateway>
     public void setUp()
         throws Exception
     {
-        tableGateway_ = createTableGateway();
-        assertNotNull( tableGateway_ );
+        tableProxy_ = createTableProxy();
+        assertNotNull( tableProxy_ );
     }
 
     /**
@@ -109,7 +94,7 @@ public abstract class AbstractTableGatewayTestCase<T extends ITableGateway>
     public void tearDown()
         throws Exception
     {
-        tableGateway_ = null;
+        tableProxy_ = null;
     }
 
     /**
@@ -118,6 +103,6 @@ public abstract class AbstractTableGatewayTestCase<T extends ITableGateway>
     @Test
     public void testGetPlayerName_ReturnValue_NonNull()
     {
-        assertNotNull( tableGateway_.getPlayerName() );
+        assertNotNull( tableProxy_.getPlayerName() );
     }
 }
