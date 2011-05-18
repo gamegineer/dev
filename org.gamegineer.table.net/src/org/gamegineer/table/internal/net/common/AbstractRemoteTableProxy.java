@@ -135,13 +135,29 @@ public abstract class AbstractRemoteTableProxy
     // ======================================================================
 
     /*
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#bind(java.lang.String)
+     */
+    @Override
+    public final void bind(
+        final String playerName )
+    {
+        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
+        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableProxy_closed );
+        assertStateLegal( playerName_ == null, Messages.AbstractRemoteTableProxy_bound );
+        assert Thread.holdsLock( getLock() );
+
+        playerName_ = playerName;
+        node_.addTableProxy( this );
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#close(org.gamegineer.table.net.TableNetworkError)
      */
     @Override
     public final void close(
         final TableNetworkError error )
     {
-        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableProxy_networkDisconnected );
+        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableProxy_closed );
         assert Thread.holdsLock( getLock() );
 
         closeError_ = error;
@@ -224,14 +240,6 @@ public abstract class AbstractRemoteTableProxy
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#getLocalNode()
-     */
-    public final ITableNetworkNode getLocalNode()
-    {
-        return node_;
-    }
-
-    /*
      * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#getLock()
      */
     public final Object getLock()
@@ -259,6 +267,14 @@ public abstract class AbstractRemoteTableProxy
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#getNode()
+     */
+    public final ITableNetworkNode getNode()
+    {
+        return node_;
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#getPlayerName()
      */
     @Override
@@ -269,15 +285,6 @@ public abstract class AbstractRemoteTableProxy
             assertStateLegal( playerName_ != null, Messages.AbstractRemoteTableProxy_playerNotAuthenticated );
             return playerName_;
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#getProxy()
-     */
-    @Override
-    public final ITableProxy getProxy()
-    {
-        return this;
     }
 
     /*
@@ -425,7 +432,7 @@ public abstract class AbstractRemoteTableProxy
         final IMessageHandler messageHandler )
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
-        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableProxy_networkDisconnected );
+        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteTableProxy_closed );
         assert Thread.holdsLock( getLock() );
 
         message.setId( getNextMessageId() );
@@ -436,18 +443,6 @@ public abstract class AbstractRemoteTableProxy
         }
 
         return wasSent;
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#setPlayerName(java.lang.String)
-     */
-    @Override
-    public final void setPlayerName(
-        final String playerName )
-    {
-        assert Thread.holdsLock( getLock() );
-
-        playerName_ = playerName;
     }
 
     /*

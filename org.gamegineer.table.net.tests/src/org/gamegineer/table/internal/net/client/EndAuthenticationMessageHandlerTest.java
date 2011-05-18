@@ -23,8 +23,6 @@ package org.gamegineer.table.internal.net.client;
 
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.internal.net.ITableNetworkNode;
-import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.common.IRemoteTableProxyController.IMessageHandler;
 import org.gamegineer.table.internal.net.common.messages.EndAuthenticationMessage;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
@@ -105,13 +103,8 @@ public final class EndAuthenticationMessageHandlerTest
     public void testHandleMessage_EndAuthenticationMessage()
         throws Exception
     {
-        final ITableNetworkNode node = mocksControl_.createMock( ITableNetworkNode.class );
-        final ITableProxy tableProxy = mocksControl_.createMock( ITableProxy.class );
         final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
-        EasyMock.expect( controller.getProxy() ).andReturn( tableProxy ).anyTimes();
-        EasyMock.expect( controller.getLocalNode() ).andReturn( node ).anyTimes();
-        controller.setPlayerName( EasyMock.notNull( String.class ) );
-        node.addTableProxy( tableProxy );
+        controller.bind( EasyMock.notNull( String.class ) );
         mocksControl_.replay();
 
         final EndAuthenticationMessage message = new EndAuthenticationMessage();

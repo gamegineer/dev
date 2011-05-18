@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.net.common;
 
 import net.jcip.annotations.GuardedBy;
 import org.gamegineer.table.internal.net.ITableNetworkNode;
-import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.net.TableNetworkError;
 
@@ -40,6 +39,27 @@ public interface IRemoteTableProxyController
     // ======================================================================
 
     /**
+     * Binds the table represented by the remote table proxy to the local node
+     * for the specified player name.
+     * 
+     * @param playerName
+     *        The name of the player associated with the table; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If a table with the same player name has already been bound to
+     *         the local node.
+     * @throws java.lang.IllegalStateException
+     *         If the remote table proxy is closed or is already bound.
+     * @throws java.lang.NullPointerException
+     *         If {@code playerName} is {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    public void bind(
+        /* @NonNull */
+        String playerName );
+
+    /**
      * Closes the remote table proxy.
      * 
      * @param error
@@ -47,20 +67,12 @@ public interface IRemoteTableProxyController
      *        {@code null} if the remote table proxy was closed normally.
      * 
      * @throws java.lang.IllegalStateException
-     *         If the network is not connected.
+     *         If the remote table proxy is closed.
      */
     @GuardedBy( "getLock()" )
     public void close(
         /* @Nullable */
         TableNetworkError error );
-
-    /**
-     * Gets the local table network node.
-     * 
-     * @return The local table network node; never {@code null}.
-     */
-    /* @NonNull */
-    public ITableNetworkNode getLocalNode();
 
     /**
      * Gets the instance lock for the remote table proxy.
@@ -71,25 +83,12 @@ public interface IRemoteTableProxyController
     public Object getLock();
 
     /**
-     * Gets the name of the player associated with the table.
+     * Gets the local table network node.
      * 
-     * @return The name of the player associated with the table; never {@code
-     *         null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If the player has not been authenticated.
+     * @return The local table network node; never {@code null}.
      */
     /* @NonNull */
-    public String getPlayerName();
-
-    /**
-     * Gets the table proxy under the control of this object.
-     * 
-     * @return The table proxy under the control of this object; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    public ITableProxy getProxy();
+    public ITableNetworkNode getNode();
 
     /**
      * Sends the specified message to the remote table proxy peer.
@@ -104,7 +103,7 @@ public interface IRemoteTableProxyController
      *         {@code false}.
      * 
      * @throws java.lang.IllegalStateException
-     *         If the network is not connected.
+     *         If the remote table proxy is closed.
      * @throws java.lang.NullPointerException
      *         If {@code message} is {@code null}.
      */
@@ -114,18 +113,6 @@ public interface IRemoteTableProxyController
         IMessage message,
         /* @Nullable */
         IMessageHandler messageHandler );
-
-    /**
-     * Sets the name of the player associated with the table.
-     * 
-     * @param playerName
-     *        The name of the player associated with the table or {@code null}
-     *        if the network is not connected.
-     */
-    @GuardedBy( "getLock()" )
-    public void setPlayerName(
-        /* @Nullable */
-        String playerName );
 
 
     // ======================================================================

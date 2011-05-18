@@ -25,6 +25,7 @@ import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.AbstractTableProxyTestCase;
 import org.gamegineer.table.internal.net.ITableNetworkNode;
 import org.gamegineer.table.internal.net.ITableProxy;
+import org.gamegineer.table.internal.net.transport.FakeServiceContext;
 
 /**
  * A fixture for testing the
@@ -62,7 +63,8 @@ public final class RemoteClientTableProxyAsTableProxyTest
         final RemoteClientTableProxy tableProxy = new RemoteClientTableProxy( EasyMock.createMock( ITableNetworkNode.class ) );
         synchronized( tableProxy.getLock() )
         {
-            tableProxy.setPlayerName( "playerName" ); //$NON-NLS-1$
+            tableProxy.started( new FakeServiceContext() );
+            tableProxy.bind( "playerName" ); //$NON-NLS-1$
         }
         return tableProxy;
     }

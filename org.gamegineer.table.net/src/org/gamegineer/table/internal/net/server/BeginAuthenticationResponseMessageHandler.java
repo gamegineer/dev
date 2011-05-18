@@ -92,7 +92,7 @@ final class BeginAuthenticationResponseMessageHandler
         assert response != null;
 
         final IRemoteClientTableProxyController controller = getRemoteTableProxyController();
-        final ITableNetworkNode node = controller.getLocalNode();
+        final ITableNetworkNode node = controller.getNode();
         final SecureString password = node.getPassword();
         try
         {
@@ -160,8 +160,7 @@ final class BeginAuthenticationResponseMessageHandler
             }
             else
             {
-                controller.setPlayerName( message.getPlayerName() );
-                controller.getLocalNode().addTableProxy( controller.getProxy() );
+                controller.bind( message.getPlayerName() );
             }
         }
         else

@@ -77,8 +77,7 @@ final class EndAuthenticationMessageHandler
             Integer.valueOf( message.getId() ), //
             Integer.valueOf( message.getCorrelationId() ) ) );
         final IRemoteServerTableProxyController controller = getRemoteTableProxyController();
-        controller.setPlayerName( "<<server>>" ); //$NON-NLS-1$
-        controller.getLocalNode().addTableProxy( controller.getProxy() );
+        controller.bind( "<<server>>" ); //$NON-NLS-1$
     }
 
     /**

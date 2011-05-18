@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.internal.net.client;
 
-import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.ITableNetworkNode;
+import org.gamegineer.table.internal.net.transport.FakeServiceContext;
 
 /**
  * A fixture for testing the
@@ -53,11 +53,22 @@ public final class RemoteServerTableProxyAsRemoteServerTableProxyControllerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableProxyControllerTestCase#createRemoteTableProxyController()
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableProxyControllerTestCase#createRemoteTableProxyController(org.gamegineer.table.internal.net.ITableNetworkNode)
      */
     @Override
-    protected RemoteServerTableProxy createRemoteTableProxyController()
+    protected RemoteServerTableProxy createRemoteTableProxyController(
+        final ITableNetworkNode node )
     {
-        return new RemoteServerTableProxy( EasyMock.createMock( ITableNetworkNode.class ) );
+        return new RemoteServerTableProxy( node );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableProxyControllerTestCase#openRemoteTableProxy(org.gamegineer.table.internal.net.common.IRemoteTableProxyController)
+     */
+    @Override
+    protected void openRemoteTableProxy(
+        final RemoteServerTableProxy controller )
+    {
+        controller.started( new FakeServiceContext() );
     }
 }

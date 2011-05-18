@@ -39,6 +39,12 @@ final class Messages
 
     // --- AbstractRemoteTableProxy -----------------------------------------
 
+    /** The remote table proxy is already bound. */
+    public static String AbstractRemoteTableProxy_bound;
+
+    /** The remote table proxy is closed. */
+    public static String AbstractRemoteTableProxy_closed;
+
     /** An error occurred while deserializing a message. */
     public static String AbstractRemoteTableProxy_extractMessage_deserializationError;
 
@@ -47,9 +53,6 @@ final class Messages
 
     /** The service received an unhandled message. */
     public static String AbstractRemoteTableProxy_messageReceived_unhandledMessage;
-
-    /** The network is disconnected. */
-    public static String AbstractRemoteTableProxy_networkDisconnected;
 
     /** The player has not been authenticated. */
     public static String AbstractRemoteTableProxy_playerNotAuthenticated;

@@ -80,7 +80,7 @@ final class BeginAuthenticationRequestMessageHandler
         assert message != null;
 
         final IRemoteServerTableProxyController controller = getRemoteTableProxyController();
-        final ITableNetworkNode node = controller.getLocalNode();
+        final ITableNetworkNode node = controller.getNode();
         final BeginAuthenticationResponseMessage response = new BeginAuthenticationResponseMessage();
         response.setCorrelationId( message.getId() );
         response.setPlayerName( node.getLocalPlayerName() );

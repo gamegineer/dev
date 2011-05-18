@@ -23,6 +23,9 @@ package org.gamegineer.table.internal.net.common;
 
 import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
+import org.gamegineer.table.internal.net.ITableNetworkNode;
+import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.junit.After;
 import org.junit.Before;
@@ -44,6 +47,12 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
 
     /** The remote table proxy controller under test in the fixture. */
     private T controller_;
+
+    /** The mocks control for use in the fixture. */
+    private IMocksControl mocksControl_;
+
+    /** The table network node for use in the fixture. */
+    private ITableNetworkNode node_;
 
 
     // ======================================================================
@@ -67,15 +76,22 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
     /**
      * Creates the remote table proxy controller to be tested.
      * 
+     * @param node
+     *        local table network node; must not be {@code null}.
+     * 
      * @return The remote table proxy controller to be tested; never {@code
      *         null}. The remote table proxy associated with the returned
-     *         controller should be in a disconnected state.
+     *         controller should be in the closed state.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
+     * @throws java.lang.NullPointerException
+     *         If {@code node} is {@code null}.
      */
     /* @NonNull */
-    protected abstract T createRemoteTableProxyController()
+    protected abstract T createRemoteTableProxyController(
+        /* @NonNull */
+        ITableNetworkNode node )
         throws Exception;
 
     /**
@@ -92,6 +108,19 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
     }
 
     /**
+     * Opens the remote table proxy associated with the specified controller.
+     * 
+     * @param controller
+     *        The remote table proxy controller; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code controller} is {@code null}.
+     */
+    protected abstract void openRemoteTableProxy(
+        /* @NonNull */
+        T controller );
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -101,7 +130,9 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
     public void setUp()
         throws Exception
     {
-        controller_ = createRemoteTableProxyController();
+        mocksControl_ = EasyMock.createControl();
+        node_ = mocksControl_.createMock( ITableNetworkNode.class );
+        controller_ = createRemoteTableProxyController( node_ );
         assertNotNull( controller_ );
     }
 
@@ -116,14 +147,79 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
         throws Exception
     {
         controller_ = null;
+        node_ = null;
+        mocksControl_ = null;
     }
 
     /**
-     * Ensures the {@code close} method throws an exception when the network is
-     * not connected.
+     * Ensures the {@code bind} method throws an exception when the remote table
+     * proxy is already bound.
      */
     @Test( expected = IllegalStateException.class )
-    public void testClose_Disconnected()
+    public void testBind_Bound()
+    {
+        synchronized( controller_.getLock() )
+        {
+            openRemoteTableProxy( controller_ );
+            controller_.bind( "playerName" ); //$NON-NLS-1$
+
+            controller_.bind( "playerName" ); //$NON-NLS-1$
+        }
+    }
+
+    /**
+     * Ensures the {@code bind} method throws an exception when the remote table
+     * proxy is closed.
+     */
+    @Test( expected = IllegalStateException.class )
+    public void testBind_Closed()
+    {
+        synchronized( controller_.getLock() )
+        {
+            controller_.bind( "playerName" ); //$NON-NLS-1$
+        }
+    }
+
+    /**
+     * Ensures the {@code bind} method throws an exception when passed a player
+     * name that is associated with a table that is already bound to the local
+     * node.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testBind_PlayerName_Bound()
+    {
+        final String playerName = "playerName"; //$NON-NLS-1$
+        node_.addTableProxy( EasyMock.notNull( ITableProxy.class ) );
+        EasyMock.expectLastCall().andThrow( new IllegalArgumentException() );
+        mocksControl_.replay();
+
+        synchronized( controller_.getLock() )
+        {
+            openRemoteTableProxy( controller_ );
+
+            controller_.bind( playerName );
+        }
+    }
+
+    /**
+     * Ensures the {@code bind} method throws an exception when passed a {@code
+     * null} player name.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testBind_PlayerName_Null()
+    {
+        synchronized( controller_.getLock() )
+        {
+            controller_.bind( null );
+        }
+    }
+
+    /**
+     * Ensures the {@code close} method throws an exception when the remote
+     * table proxy is closed.
+     */
+    @Test( expected = IllegalStateException.class )
+    public void testClose_Closed()
     {
         synchronized( controller_.getLock() )
         {
@@ -132,30 +228,20 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
     }
 
     /**
-     * Ensures the {@code getLocalNode} method does not return {@code null}.
+     * Ensures the {@code getNode} method does not return {@code null}.
      */
     @Test
-    public void testGetLocalNode_ReturnValue_NonNull()
+    public void testGetNode_ReturnValue_NonNull()
     {
-        assertNotNull( controller_.getLocalNode() );
-    }
-
-    /**
-     * Ensures the {@code getPlayerName} method throws an exception when the
-     * network is not connected.
-     */
-    @Test( expected = IllegalStateException.class )
-    public void testGetPlayerName_Disconnected()
-    {
-        controller_.getPlayerName();
+        assertNotNull( controller_.getNode() );
     }
 
     /**
      * Ensures the {@code sendMessage} method throws an exception when the
-     * network is not connected.
+     * remote table proxy is closed.
      */
     @Test( expected = IllegalStateException.class )
-    public void testSendMessage_Disconnected()
+    public void testSendMessage_Closed()
     {
         synchronized( controller_.getLock() )
         {

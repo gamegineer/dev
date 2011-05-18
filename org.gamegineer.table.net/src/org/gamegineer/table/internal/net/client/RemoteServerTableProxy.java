@@ -81,7 +81,7 @@ final class RemoteServerTableProxy
 
         super.closed( error );
 
-        getLocalNode().disconnect( error );
+        getNode().disconnect( error );
     }
 
     /*
