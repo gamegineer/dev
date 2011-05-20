@@ -34,7 +34,7 @@ public final class TableNetworkConstants
     // ======================================================================
 
     /** The default table network port. */
-    public static final int DEFAULT_PORT = 21112;
+    public static final int DEFAULT_PORT = 52112;
 
 
     // ======================================================================
