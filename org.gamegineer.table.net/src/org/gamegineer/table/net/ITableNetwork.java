@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.net;
 
+import java.util.Collection;
+
 /**
  * A network of virtual game tables.
  * 
@@ -59,6 +61,15 @@ public interface ITableNetwork
      * </p>
      */
     public void disconnect();
+
+    /**
+     * Gets the collection of players connected to the table network.
+     * 
+     * @return The collection of players connected to the table network; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public Collection<String> getPlayers();
 
     /**
      * Hosts a new table network.

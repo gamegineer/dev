@@ -89,6 +89,20 @@ public final class AbstractTableNetworkNodeTest
             {
                 return null;
             }
+
+            @Override
+            public Collection<String> getPlayers()
+            {
+                return null;
+            }
+
+            @Override
+            public void setPlayers(
+                @SuppressWarnings( "unused" )
+                final Collection<String> players )
+            {
+                // do nothing
+            }
         };
     }
 

@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.common;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.Collection;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableProxy;
 
@@ -77,5 +78,17 @@ public final class LocalClientTableProxy
     public String getPlayerName()
     {
         return playerName_;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.ITableProxy#setPlayers(java.util.Collection)
+     */
+    @Override
+    public void setPlayers(
+        final Collection<String> players )
+    {
+        assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
+
+        // do nothing
     }
 }

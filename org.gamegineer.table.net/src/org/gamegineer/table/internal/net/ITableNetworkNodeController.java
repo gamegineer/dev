@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net;
 
+import java.util.Collection;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
 
@@ -72,4 +73,13 @@ public interface ITableNetworkNodeController
      * </p>
      */
     public void disconnect();
+
+    /**
+     * Gets the collection of players connected to the table network.
+     * 
+     * @return The collection of players connected to the table network; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public Collection<String> getPlayers();
 }

@@ -23,6 +23,8 @@ package org.gamegineer.table.internal.net;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
@@ -262,6 +264,40 @@ public final class TableNetwork
         }
     }
 
+    /**
+     * Fires a table network players updated event.
+     */
+    void fireTableNetworkPlayersUpdated()
+    {
+        final TableNetworkEvent event = new TableNetworkEvent( this );
+        for( final ITableNetworkListener listener : listeners_ )
+        {
+            try
+            {
+                listener.tableNetworkPlayersUpdated( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableNetwork_tableNetworkPlayersUpdated_unexpectedException, e );
+            }
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.net.ITableNetwork#getPlayers()
+     */
+    @Override
+    public Collection<String> getPlayers()
+    {
+        final ITableNetworkNodeController nodeController = nodeControllerRef_.get();
+        if( nodeController != null )
+        {
+            return nodeController.getPlayers();
+        }
+
+        return new ArrayList<String>();
+    }
+
     /*
      * @see org.gamegineer.table.internal.net.ITableNetworkController#getTransportLayerFactory()
      */
@@ -315,6 +351,18 @@ public final class TableNetwork
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.TableNetwork_removeTableNetworkListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.ITableNetworkController#playersUpdated()
+     */
+    @Override
+    public void playersUpdated()
+    {
+        if( isConnected() )
+        {
+            fireTableNetworkPlayersUpdated();
+        }
     }
 
 

@@ -22,10 +22,12 @@
 package org.gamegineer.table.internal.net.server;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.ITableProxy;
-import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.AbstractTableNetworkNode;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -94,6 +96,35 @@ public final class ServerTableNetworkNode
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.ITableNetworkNode#getPlayers()
+     * @see org.gamegineer.table.internal.net.ITableNetworkNodeController#getPlayers()
+     */
+    @Override
+    public Collection<String> getPlayers()
+    {
+        final Collection<ITableProxy> tableProxies = getTableProxies();
+        final Collection<String> players = new ArrayList<String>( tableProxies.size() );
+        for( final ITableProxy tableProxy : tableProxies )
+        {
+            players.add( tableProxy.getPlayerName() );
+        }
+        return players;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.ITableNetworkNode#setPlayers(java.util.Collection)
+     */
+    @Override
+    public void setPlayers(
+        final Collection<String> players )
+    {
+        assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        throw new AssertionError( "should never be called on a server node" ); //$NON-NLS-1$
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#tableProxyAdded(org.gamegineer.table.internal.net.ITableProxy)
      */
     @Override
@@ -105,12 +136,13 @@ public final class ServerTableNetworkNode
 
         super.tableProxyAdded( tableProxy );
 
-        Loggers.getDefaultLogger().info( Messages.ServerTableNetworkNode_playerConnected_playerConnected( tableProxy.getPlayerName() ) );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "player '%s' has connected", tableProxy.getPlayerName() ) ); //$NON-NLS-1$
 
-        // TODO
-        //
-        // - send PlayerConnected message to all other proxies other than "tableProxy"
-        // - send PlayerList message to "tableProxy"
+        final Collection<String> players = getPlayers();
+        for( final ITableProxy otherTableProxy : getTableProxies() )
+        {
+            otherTableProxy.setPlayers( players );
+        }
     }
 
     /*
@@ -125,6 +157,6 @@ public final class ServerTableNetworkNode
 
         super.tableProxyRemoved( tableProxy );
 
-        Loggers.getDefaultLogger().info( Messages.ServerTableNetworkNode_playerDisconnected_playerDisconnected( tableProxy.getPlayerName() ) );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "player '%s' has disconnected", tableProxy.getPlayerName() ) ); //$NON-NLS-1$
     }
 }

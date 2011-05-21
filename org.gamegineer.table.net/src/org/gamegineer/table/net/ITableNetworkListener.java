@@ -61,4 +61,18 @@ public interface ITableNetworkListener
     public void tableNetworkDisconnected(
         /* @NonNull */
         TableNetworkDisconnectedEvent event );
+
+    /**
+     * Invoked when the collection of players connected to the table network has
+     * been updated.
+     * 
+     * @param event
+     *        The event describing the table network; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void tableNetworkPlayersUpdated(
+        /* @NonNull */
+        TableNetworkEvent event );
 }

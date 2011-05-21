@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.common;
 
+import java.util.Collection;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.ITableNetworkNode;
 import org.gamegineer.table.internal.net.transport.AbstractServiceTestCase;
@@ -61,7 +62,13 @@ public final class AbstractRemoteTableProxyAsServiceTest
     {
         return new AbstractRemoteTableProxy( EasyMock.createMock( ITableNetworkNode.class ) )
         {
-            // no overrides
+            @Override
+            public void setPlayers(
+                @SuppressWarnings( "unused" )
+                final Collection<String> players )
+            {
+                // do nothing
+            }
         };
     }
 }

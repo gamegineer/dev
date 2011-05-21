@@ -22,6 +22,8 @@
 package org.gamegineer.table.internal.net.client;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -63,6 +65,10 @@ public final class ClientTableNetworkNode
     /** Indicates the handshake is complete. */
     @GuardedBy( "handshakeLock_" )
     private boolean isHandshakeComplete_;
+
+    /** The collection of players connected to the table network. */
+    @GuardedBy( "getLock()" )
+    private final Collection<String> players_;
 
 
     // ======================================================================
@@ -115,6 +121,7 @@ public final class ClientTableNetworkNode
         handshakeCondition_ = handshakeLock_.newCondition();
         handshakeError_ = null;
         isHandshakeComplete_ = waitForHandshakeCompletion ? false : true;
+        players_ = new ArrayList<String>();
     }
 
 
@@ -191,6 +198,19 @@ public final class ClientTableNetworkNode
         setHandshakeComplete( error );
     }
 
+    /*
+     * @see org.gamegineer.table.internal.net.ITableNetworkNode#getPlayers()
+     * @see org.gamegineer.table.internal.net.ITableNetworkNodeController#getPlayers()
+     */
+    @Override
+    public Collection<String> getPlayers()
+    {
+        synchronized( getLock() )
+        {
+            return new ArrayList<String>( players_ );
+        }
+    }
+
     /**
      * Sets the condition that indicates the handshake is complete.
      * 
@@ -216,6 +236,21 @@ public final class ClientTableNetworkNode
         {
             handshakeLock_.unlock();
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.ITableNetworkNode#setPlayers(java.util.Collection)
+     */
+    @Override
+    public void setPlayers(
+        final Collection<String> players )
+    {
+        assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        players_.clear();
+        players_.addAll( players );
+        getTableNetworkController().playersUpdated();
     }
 
     /*

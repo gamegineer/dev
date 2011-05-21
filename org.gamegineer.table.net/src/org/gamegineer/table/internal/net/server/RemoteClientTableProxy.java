@@ -21,12 +21,15 @@
 
 package org.gamegineer.table.internal.net.server;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.Collection;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableNetworkNode;
 import org.gamegineer.table.internal.net.common.AbstractRemoteTableProxy;
 import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
+import org.gamegineer.table.internal.net.common.messages.PlayersMessage;
 
 /**
  * A proxy for a remote client table.
@@ -125,6 +128,20 @@ final class RemoteClientTableProxy
         {
             challenge_ = challenge;
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.ITableProxy#setPlayers(java.util.Collection)
+     */
+    @Override
+    public void setPlayers(
+        final Collection<String> players )
+    {
+        assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
+
+        final PlayersMessage message = new PlayersMessage();
+        message.setPlayers( getNode().getPlayers() );
+        sendMessage( message, null );
     }
 
     /*

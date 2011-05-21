@@ -21,7 +21,10 @@
 
 package org.gamegineer.table.net;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.ITable;
@@ -107,6 +110,20 @@ public abstract class AbstractTableNetworkTestCase
         throws Exception;
 
     /**
+     * Fires the table network players updated event for the specified table
+     * network.
+     * 
+     * @param tableNetwork
+     *        The table network; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableNetwork} is {@code null}.
+     */
+    protected abstract void fireTableNetworkPlayersUpdatedEvent(
+        /* @NonNull */
+        ITableNetwork tableNetwork );
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -170,14 +187,14 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code disconnect} method fires a network disconnected event
-     * when the network is connected.
+     * Ensures the {@code disconnect} method fires a disconnected event when the
+     * network is connected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test
-    public void testDisconnect_Connected_FiresNetworkDisconnectedEvent()
+    public void testDisconnect_Connected_FiresDisconnectedEvent()
         throws Exception
     {
         connectTableNetwork();
@@ -192,14 +209,14 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code disconnect} method does not fire a network
-     * disconnected event when the network is disconnected.
+     * Ensures the {@code disconnect} method does not fire a disconnected event
+     * when the network is disconnected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test
-    public void testDisconnect_Disconnected_DoesNotFireNetworkConnectionStateChangedEvent()
+    public void testDisconnect_Disconnected_DoesNotFireDisconnectedEvent()
         throws Exception
     {
         final ITableNetworkListener listener = mocksControl_.createMock( ITableNetworkListener.class );
@@ -209,6 +226,31 @@ public abstract class AbstractTableNetworkTestCase
         tableNetwork_.disconnect();
 
         mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code getPlayers} method returns a copy of the player
+     * collection.
+     */
+    @Test
+    public void testGetPlayers_ReturnValue_Copy()
+    {
+        final Collection<String> players = tableNetwork_.getPlayers();
+        final Collection<String> expectedValue = new ArrayList<String>( players );
+
+        players.add( "newPlayerName" ); //$NON-NLS-1$
+        final Collection<String> actualValue = tableNetwork_.getPlayers();
+
+        assertEquals( expectedValue, actualValue );
+    }
+
+    /**
+     * Ensures the {@code getPlayers} method does not return {@code null}.
+     */
+    @Test
+    public void testGetPlayers_ReturnValue_NonNull()
+    {
+        assertNotNull( tableNetwork_.getPlayers() );
     }
 
     /**
@@ -242,14 +284,14 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code host} method fires a network connected event when the
-     * network is disconnected.
+     * Ensures the {@code host} method fires a connected event when the network
+     * is disconnected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test
-    public void testHost_Disconnected_FiresNetworkConnectedEvent()
+    public void testHost_Disconnected_FiresConnectedEvent()
         throws Exception
     {
         final ITableNetworkListener listener = mocksControl_.createMock( ITableNetworkListener.class );
@@ -293,14 +335,14 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code join} method fires a network connected event when the
-     * network is disconnected.
+     * Ensures the {@code join} method fires a connected event when the network
+     * is disconnected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test
-    public void testJoin_Disconnected_FiresNetworkConnectedEvent()
+    public void testJoin_Disconnected_FiresConnectedEvent()
         throws Exception
     {
         final ITableNetworkListener listener = mocksControl_.createMock( ITableNetworkListener.class );
@@ -405,6 +447,32 @@ public abstract class AbstractTableNetworkTestCase
         tableNetwork_.addTableNetworkListener( listener2 );
 
         tableNetwork_.disconnect();
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the table network players updated event catches any exception
+     * thrown by the {@code tableNetworkPlayersUpdated} method of a table
+     * network listener.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testTableNetworkPlayersUpdated_CatchesListenerException()
+        throws Exception
+    {
+        final ITableNetworkListener listener1 = mocksControl_.createMock( ITableNetworkListener.class );
+        listener1.tableNetworkPlayersUpdated( EasyMock.notNull( TableNetworkEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ITableNetworkListener listener2 = mocksControl_.createMock( ITableNetworkListener.class );
+        listener2.tableNetworkPlayersUpdated( EasyMock.notNull( TableNetworkEvent.class ) );
+        mocksControl_.replay();
+        tableNetwork_.addTableNetworkListener( listener1 );
+        tableNetwork_.addTableNetworkListener( listener2 );
+
+        fireTableNetworkPlayersUpdatedEvent( tableNetwork_ );
 
         mocksControl_.verify();
     }

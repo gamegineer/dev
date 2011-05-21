@@ -74,4 +74,14 @@ public final class TableNetworkAsTableNetworkTest
             }, //
             new FakeTransportLayerFactory() );
     }
+
+    /*
+     * @see org.gamegineer.table.net.AbstractTableNetworkTestCase#fireTableNetworkPlayersUpdatedEvent(org.gamegineer.table.net.ITableNetwork)
+     */
+    @Override
+    protected void fireTableNetworkPlayersUpdatedEvent(
+        final ITableNetwork tableNetwork )
+    {
+        ((TableNetwork)tableNetwork).fireTableNetworkPlayersUpdated();
+    }
 }

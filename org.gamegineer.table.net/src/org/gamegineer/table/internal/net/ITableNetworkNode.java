@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net;
 
+import java.util.Collection;
 import net.jcip.annotations.GuardedBy;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.net.TableNetworkError;
@@ -96,6 +97,15 @@ public interface ITableNetworkNode
     public SecureString getPassword();
 
     /**
+     * Gets the collection of players connected to the table network.
+     * 
+     * @return The collection of players connected to the table network; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public Collection<String> getPlayers();
+
+    /**
      * Indicates a table proxy has been registered with the table network node
      * for the specified player name.
      * 
@@ -130,4 +140,19 @@ public interface ITableNetworkNode
     public void removeTableProxy(
         /* @NonNull */
         ITableProxy tableProxy );
+
+    /**
+     * Sets the collection of players connected to the table network.
+     * 
+     * @param players
+     *        The collection of players connected to the table network; must not
+     *        be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code players} is {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    public void setPlayers(
+        /* @NonNull */
+        Collection<String> players );
 }

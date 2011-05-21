@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.common;
 
 import static org.junit.Assert.assertEquals;
+import java.util.Collection;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
@@ -91,7 +92,13 @@ public final class AbstractRemoteTableProxyTest
     {
         return new AbstractRemoteTableProxy( node )
         {
-            // no overrides
+            @Override
+            public void setPlayers(
+                @SuppressWarnings( "unused" )
+                final Collection<String> players )
+            {
+                // do nothing
+            }
         };
     }
 

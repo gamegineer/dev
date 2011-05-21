@@ -759,6 +759,18 @@ public final class TableModel
         fireTableModelStateChanged();
     }
 
+    /*
+     * @see org.gamegineer.table.net.ITableNetworkListener#tableNetworkPlayersUpdated(org.gamegineer.table.net.TableNetworkEvent)
+     */
+    @Override
+    public void tableNetworkPlayersUpdated(
+        final TableNetworkEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        fireTableModelStateChanged();
+    }
+
     /**
      * Writes the specified table to the specified file.
      * 

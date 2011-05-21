@@ -21,7 +21,10 @@
 
 package org.gamegineer.table.internal.net;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import java.util.ArrayList;
+import java.util.Collection;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
 import org.junit.After;
@@ -156,5 +159,30 @@ public abstract class AbstractTableNetworkNodeControllerTestCase<T extends ITabl
     public void testDisconnect_Disconnected_DoesNothing()
     {
         controller_.disconnect();
+    }
+
+    /**
+     * Ensures the {@code getPlayers} method returns a copy of the player
+     * collection.
+     */
+    @Test
+    public void testGetPlayers_ReturnValue_Copy()
+    {
+        final Collection<String> players = controller_.getPlayers();
+        final Collection<String> expectedValue = new ArrayList<String>( players );
+
+        players.add( "newPlayerName" ); //$NON-NLS-1$
+        final Collection<String> actualValue = controller_.getPlayers();
+
+        assertEquals( expectedValue, actualValue );
+    }
+
+    /**
+     * Ensures the {@code getPlayers} method does not return {@code null}.
+     */
+    @Test
+    public void testGetPlayers_ReturnValue_NonNull()
+    {
+        assertNotNull( controller_.getPlayers() );
     }
 }

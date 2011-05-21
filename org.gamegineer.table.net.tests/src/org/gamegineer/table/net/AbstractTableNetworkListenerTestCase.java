@@ -116,4 +116,14 @@ public abstract class AbstractTableNetworkListenerTestCase
     {
         listener_.tableNetworkDisconnected( null );
     }
+
+    /**
+     * Ensures the {@code tableNetworkPlayersUpdated} method throws an exception
+     * when passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testTableNetworkPlayersUpdated_Event_Null()
+    {
+        listener_.tableNetworkPlayersUpdated( null );
+    }
 }

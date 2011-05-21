@@ -1,5 +1,5 @@
 /*
- * AbstractTableProxyTestCase.java
+ * PlayersMessageTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,28 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 16, 2011 at 11:04:26 PM.
+ * Created on May 20, 2011 at 9:03:28 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.common.messages;
 
-import static org.junit.Assert.assertNotNull;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.ITableProxy} interface.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.net.common.messages.PlayersMessage}
+ * class.
  */
-public abstract class AbstractTableProxyTestCase
+public final class PlayersMessageTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table proxy under test in the fixture. */
-    private ITableProxy tableProxy_;
+    /** The players message under test in the fixture. */
+    private PlayersMessage message_;
 
 
     // ======================================================================
@@ -45,10 +45,9 @@ public abstract class AbstractTableProxyTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractTableProxyTestCase}
-     * class.
+     * Initializes a new instance of the {@code PlayersMessageTest} class.
      */
-    protected AbstractTableProxyTestCase()
+    public PlayersMessageTest()
     {
         super();
     }
@@ -57,18 +56,6 @@ public abstract class AbstractTableProxyTestCase
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates the table proxy to be tested.
-     * 
-     * @return The table proxy to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    /* @NonNull */
-    protected abstract ITableProxy createTableProxy()
-        throws Exception;
 
     /**
      * Sets up the test fixture.
@@ -80,8 +67,7 @@ public abstract class AbstractTableProxyTestCase
     public void setUp()
         throws Exception
     {
-        tableProxy_ = createTableProxy();
-        assertNotNull( tableProxy_ );
+        message_ = new PlayersMessage();
     }
 
     /**
@@ -94,16 +80,7 @@ public abstract class AbstractTableProxyTestCase
     public void tearDown()
         throws Exception
     {
-        tableProxy_ = null;
-    }
-
-    /**
-     * Ensures the {@code getPlayerName} method does not return {@code null}.
-     */
-    @Test
-    public void testGetPlayerName_ReturnValue_NonNull()
-    {
-        assertNotNull( tableProxy_.getPlayerName() );
+        message_ = null;
     }
 
     /**
@@ -113,6 +90,6 @@ public abstract class AbstractTableProxyTestCase
     @Test( expected = NullPointerException.class )
     public void testSetPlayers_Players_Null()
     {
-        tableProxy_.setPlayers( null );
+        message_.setPlayers( null );
     }
 }

@@ -57,7 +57,7 @@ public final class TableNetworkControllers
     /* @NonNull */
     public static ITableNetworkController createFakeTableNetworkController()
     {
-        final IMocksControl mocksControl = EasyMock.createControl();
+        final IMocksControl mocksControl = EasyMock.createNiceControl();
         final ITableNetworkController controller = mocksControl.createMock( ITableNetworkController.class );
         EasyMock.expect( controller.getTransportLayerFactory() ).andReturn( new FakeTransportLayerFactory() ).anyTimes();
         mocksControl.replay();

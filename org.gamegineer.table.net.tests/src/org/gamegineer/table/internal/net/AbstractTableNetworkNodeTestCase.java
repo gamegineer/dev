@@ -25,6 +25,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import java.util.ArrayList;
+import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.security.SecureString;
@@ -112,6 +114,7 @@ public abstract class AbstractTableNetworkNodeTestCase
      * Ensures the {@code addTableProxy} method adds the table proxy when the
      * table proxy is absent from the registered table proxies collection.
      */
+    @SuppressWarnings( "unchecked" )
     @Test
     public void testAddTableProxy_TableProxy_Absent()
     {
@@ -119,6 +122,7 @@ public abstract class AbstractTableNetworkNodeTestCase
         {
             final ITableProxy tableProxy = mocksControl_.createMock( ITableProxy.class );
             EasyMock.expect( tableProxy.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+            tableProxy.setPlayers( EasyMock.notNull( Collection.class ) );
             mocksControl_.replay();
             assertFalse( node_.isTableProxyPresent( tableProxy.getPlayerName() ) );
 
@@ -145,6 +149,7 @@ public abstract class AbstractTableNetworkNodeTestCase
      * Ensures the {@code addTableProxy} method throws an exception when the
      * table proxy is present in the registered table proxies collection.
      */
+    @SuppressWarnings( "unchecked" )
     @Test( expected = IllegalArgumentException.class )
     public void testAddTableProxy_TableProxy_Present()
     {
@@ -152,6 +157,7 @@ public abstract class AbstractTableNetworkNodeTestCase
         {
             final ITableProxy tableProxy = mocksControl_.createMock( ITableProxy.class );
             EasyMock.expect( tableProxy.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+            tableProxy.setPlayers( EasyMock.notNull( Collection.class ) );
             mocksControl_.replay();
             node_.addTableProxy( tableProxy );
 
@@ -200,6 +206,31 @@ public abstract class AbstractTableNetworkNodeTestCase
         {
             assertNotNull( node_.getPassword() );
         }
+    }
+
+    /**
+     * Ensures the {@code getPlayers} method returns a copy of the player
+     * collection.
+     */
+    @Test
+    public void testGetPlayers_ReturnValue_Copy()
+    {
+        final Collection<String> players = node_.getPlayers();
+        final Collection<String> expectedValue = new ArrayList<String>( players );
+
+        players.add( "newPlayerName" ); //$NON-NLS-1$
+        final Collection<String> actualValue = node_.getPlayers();
+
+        assertEquals( expectedValue, actualValue );
+    }
+
+    /**
+     * Ensures the {@code getPlayers} method does not return {@code null}.
+     */
+    @Test
+    public void testGetPlayers_ReturnValue_NonNull()
+    {
+        assertNotNull( node_.getPlayers() );
     }
 
     /**
@@ -256,6 +287,7 @@ public abstract class AbstractTableNetworkNodeTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
+    @SuppressWarnings( "unchecked" )
     @Test
     public void testRemoveTableProxy_TableProxy_Present()
         throws Exception
@@ -264,6 +296,7 @@ public abstract class AbstractTableNetworkNodeTestCase
         {
             final ITableProxy tableProxy = mocksControl_.createMock( ITableProxy.class );
             EasyMock.expect( tableProxy.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+            tableProxy.setPlayers( EasyMock.notNull( Collection.class ) );
             mocksControl_.replay();
             node_.addTableProxy( tableProxy );
             assertTrue( node_.isTableProxyPresent( tableProxy.getPlayerName() ) );
@@ -271,6 +304,19 @@ public abstract class AbstractTableNetworkNodeTestCase
             node_.removeTableProxy( tableProxy );
 
             assertFalse( node_.isTableProxyPresent( tableProxy.getPlayerName() ) );
+        }
+    }
+
+    /**
+     * Ensures the {@code setPlayers} method throws an exception when passed a
+     * {@code null} players collection.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetPlayers_Players_Null()
+    {
+        synchronized( node_.getLock() )
+        {
+            node_.setPlayers( null );
         }
     }
 }

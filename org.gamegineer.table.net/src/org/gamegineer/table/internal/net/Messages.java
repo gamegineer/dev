@@ -55,6 +55,12 @@ final class Messages
      */
     public static String TableNetwork_tableNetworkDisconnected_unexpectedException;
 
+    /**
+     * An unexpected exception was thrown from
+     * ITableNetworkListener.tableNetworkPlayersUpdated().
+     */
+    public static String TableNetwork_tableNetworkPlayersUpdated_unexpectedException;
+
 
     // ======================================================================
     // Constructors

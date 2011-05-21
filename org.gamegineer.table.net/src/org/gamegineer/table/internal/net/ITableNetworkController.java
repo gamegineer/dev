@@ -59,4 +59,10 @@ public interface ITableNetworkController
      */
     /* @NonNull */
     public ITransportLayerFactory getTransportLayerFactory();
+
+    /**
+     * Invoked by the local table network node when the collection of players
+     * connected to the table network has been updated.
+     */
+    public void playersUpdated();
 }

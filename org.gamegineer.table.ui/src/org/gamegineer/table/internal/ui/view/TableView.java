@@ -1313,6 +1313,23 @@ final class TableView
     }
 
     /*
+     * @see org.gamegineer.table.net.ITableNetworkListener#tableNetworkPlayersUpdated(org.gamegineer.table.net.TableNetworkEvent)
+     */
+    @Override
+    public void tableNetworkPlayersUpdated(
+        final TableNetworkEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // TODO: display player list in a separate view
+        System.out.println( "---------- Network Player List:" ); //$NON-NLS-1$
+        for( final String playerName : model_.getTableNetwork().getPlayers() )
+        {
+            System.out.println( "\t" + playerName ); //$NON-NLS-1$
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
     @Override

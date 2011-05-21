@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net.common;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import java.util.Collection;
 import net.jcip.annotations.NotThreadSafe;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.AbstractTableNetworkNodeControllerTestCase;
@@ -500,6 +501,26 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
         int getDisposeCallCount()
         {
             return disposeCallCount_;
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.ITableNetworkNodeController#getPlayers()
+         */
+        @Override
+        public Collection<String> getPlayers()
+        {
+            throw new AssertionError( "not implemented" ); //$NON-NLS-1$
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.ITableNetworkNode#setPlayers(java.util.Collection)
+         */
+        @Override
+        public void setPlayers(
+            @SuppressWarnings( "unused" )
+            final Collection<String> players )
+        {
+            throw new AssertionError( "not implemented" ); //$NON-NLS-1$
         }
     }
 }

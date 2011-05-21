@@ -1,5 +1,5 @@
 /*
- * AbstractTableProxyTestCase.java
+ * PlayersMessageHandlerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,28 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 16, 2011 at 11:04:26 PM.
+ * Created on May 20, 2011 at 9:45:12 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.client;
 
-import static org.junit.Assert.assertNotNull;
+import java.util.Arrays;
+import java.util.Collection;
+import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
+import org.gamegineer.table.internal.net.ITableNetworkNode;
+import org.gamegineer.table.internal.net.common.messages.PlayersMessage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.ITableProxy} interface.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.net.client.PlayersMessageHandler} class.
  */
-public abstract class AbstractTableProxyTestCase
+public final class PlayersMessageHandlerTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table proxy under test in the fixture. */
-    private ITableProxy tableProxy_;
+    /** The mocks control for use in the fixture. */
+    private IMocksControl mocksControl_;
 
 
     // ======================================================================
@@ -45,10 +50,10 @@ public abstract class AbstractTableProxyTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractTableProxyTestCase}
+     * Initializes a new instance of the {@code PlayersMessageHandlerTest}
      * class.
      */
-    protected AbstractTableProxyTestCase()
+    public PlayersMessageHandlerTest()
     {
         super();
     }
@@ -57,18 +62,6 @@ public abstract class AbstractTableProxyTestCase
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates the table proxy to be tested.
-     * 
-     * @return The table proxy to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    /* @NonNull */
-    protected abstract ITableProxy createTableProxy()
-        throws Exception;
 
     /**
      * Sets up the test fixture.
@@ -80,8 +73,7 @@ public abstract class AbstractTableProxyTestCase
     public void setUp()
         throws Exception
     {
-        tableProxy_ = createTableProxy();
-        assertNotNull( tableProxy_ );
+        mocksControl_ = EasyMock.createControl();
     }
 
     /**
@@ -94,25 +86,32 @@ public abstract class AbstractTableProxyTestCase
     public void tearDown()
         throws Exception
     {
-        tableProxy_ = null;
+        mocksControl_ = null;
     }
 
     /**
-     * Ensures the {@code getPlayerName} method does not return {@code null}.
+     * Ensures the {@code handleMessage} method correctly handles a players
+     * message.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
-    public void testGetPlayerName_ReturnValue_NonNull()
+    public void testHandleMessage_PlayersMessage()
+        throws Exception
     {
-        assertNotNull( tableProxy_.getPlayerName() );
-    }
+        final Collection<String> players = Arrays.asList( "player1", "player2", "player3" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        final ITableNetworkNode node = mocksControl_.createMock( ITableNetworkNode.class );
+        node.setPlayers( players );
+        final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
+        EasyMock.expect( controller.getNode() ).andReturn( node ).anyTimes();
+        mocksControl_.replay();
 
-    /**
-     * Ensures the {@code setPlayers} method throws an exception when passed a
-     * {@code null} players collection.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetPlayers_Players_Null()
-    {
-        tableProxy_.setPlayers( null );
+        final PlayersMessage message = new PlayersMessage();
+        message.setPlayers( players );
+        final PlayersMessageHandler messageHandler = new PlayersMessageHandler( controller );
+        messageHandler.handleMessage( message );
+
+        mocksControl_.verify();
     }
 }

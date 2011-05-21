@@ -45,14 +45,6 @@ final class Messages
     /** Failed to create the begin authentication request. */
     public static String HelloRequestMessageHandler_beginAuthenticationRequestFailed;
 
-    // --- ServerTableNetworkNode -------------------------------------------
-
-    /** The player has connected. */
-    public static String ServerTableNetworkNode_playerConnected_playerConnected;
-
-    /** The player has disconnected. */
-    public static String ServerTableNetworkNode_playerDisconnected_playerDisconnected;
-
 
     // ======================================================================
     // Constructors
@@ -72,48 +64,5 @@ final class Messages
     private Messages()
     {
         super();
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    // --- ServerTableNetworkNode -------------------------------------------
-
-    /**
-     * Gets the formatted message indicating the player has connected.
-     * 
-     * @param playerName
-     *        The name of the player that has connected; must not be {@code
-     *        null}.
-     * 
-     * @return The formatted message indicating the player has connected; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    static String ServerTableNetworkNode_playerConnected_playerConnected(
-        /* @NonNull */
-        final String playerName )
-    {
-        return bind( ServerTableNetworkNode_playerConnected_playerConnected, playerName );
-    }
-
-    /**
-     * Gets the formatted message indicating the player has disconnected.
-     * 
-     * @param playerName
-     *        The name of the player that has disconnected; must not be {@code
-     *        null}.
-     * 
-     * @return The formatted message indicating the player has disconnected;
-     *         never {@code null}.
-     */
-    /* @NonNull */
-    static String ServerTableNetworkNode_playerDisconnected_playerDisconnected(
-        /* @NonNull */
-        final String playerName )
-    {
-        return bind( ServerTableNetworkNode_playerDisconnected_playerDisconnected, playerName );
     }
 }
