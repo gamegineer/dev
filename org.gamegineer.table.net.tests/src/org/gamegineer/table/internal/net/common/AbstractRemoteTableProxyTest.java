@@ -113,7 +113,9 @@ public final class AbstractRemoteTableProxyTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        remoteTableProxy_ = createRemoteTableProxy( EasyMock.createMock( ITableNetworkNode.class ) );
+        final ITableNetworkNode node = mocksControl_.createMock( ITableNetworkNode.class );
+        EasyMock.expect( node.getLock() ).andReturn( new Object() ).anyTimes();
+        remoteTableProxy_ = createRemoteTableProxy( node );
     }
 
     /**
@@ -141,16 +143,68 @@ public final class AbstractRemoteTableProxyTest
     }
 
     /**
+     * Ensures the {@code messageReceived} method does nothing in response to a
+     * message envelope that contains an error message with a null correlation
+     * identifier.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testMessageReceived_MessageEnvelope_ErrorMessage_Uncorrelated()
+        throws Exception
+    {
+        final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
+        final ErrorMessage message = new ErrorMessage();
+        message.setId( IMessage.MINIMUM_ID );
+        message.setCorrelationId( IMessage.NULL_CORRELATION_ID );
+        message.setError( TableNetworkError.UNSPECIFIED_ERROR );
+        final MessageEnvelope messageEnvelope = MessageEnvelope.fromMessage( message );
+        mocksControl_.replay();
+        remoteTableProxy_.started( serviceContext );
+
+        remoteTableProxy_.messageReceived( messageEnvelope );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code messageReceived} method does nothing in response to a
+     * message envelope that contains an unhandled error message with a non-null
+     * correlation identifier.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testMessageReceived_MessageEnvelope_UnhandledMessage_Correlated_Error()
+        throws Exception
+    {
+        final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
+        final ErrorMessage message = new ErrorMessage();
+        message.setId( IMessage.MINIMUM_ID );
+        message.setCorrelationId( IMessage.MINIMUM_ID );
+        message.setError( TableNetworkError.UNSPECIFIED_ERROR );
+        final MessageEnvelope messageEnvelope = MessageEnvelope.fromMessage( message );
+        mocksControl_.replay();
+        remoteTableProxy_.started( serviceContext );
+
+        remoteTableProxy_.messageReceived( messageEnvelope );
+
+        mocksControl_.verify();
+    }
+
+    /**
      * Ensures the {@code messageReceived} method sends an error message in
-     * response to a message envelope that contains an unhandled message with a
-     * non-null correlation identifier.
+     * response to a message envelope that contains an unhandled non-error
+     * message with a non-null correlation identifier.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @SuppressWarnings( "boxing" )
     @Test
-    public void testMessageReceived_MessageEnvelope_UnhandledMessage_Correlated()
+    public void testMessageReceived_MessageEnvelope_UnhandledMessage_Correlated_NonError()
         throws Exception
     {
         final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );

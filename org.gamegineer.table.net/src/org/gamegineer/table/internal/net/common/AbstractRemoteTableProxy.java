@@ -127,8 +127,9 @@ public abstract class AbstractRemoteTableProxy
         playerName_ = null;
         serviceContext_ = null;
         uncorrelatedMessageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler>();
-    }
 
+        registerUncorrelatedMessageHandler( ErrorMessage.class, new ErrorMessageHandler( this ) );
+    }
 
     // ======================================================================
     // Methods
@@ -322,7 +323,10 @@ public abstract class AbstractRemoteTableProxy
                 else
                 {
                     Loggers.getDefaultLogger().warning( Messages.AbstractRemoteTableProxy_messageReceived_unhandledMessage( message ) );
-                    sendErrorMessage( TableNetworkError.UNHANDLED_MESSAGE, message.getId() );
+                    if( !(message instanceof ErrorMessage) )
+                    {
+                        sendErrorMessage( TableNetworkError.UNHANDLED_MESSAGE, message.getId() );
+                    }
                 }
             }
             else
@@ -535,7 +539,7 @@ public abstract class AbstractRemoteTableProxy
 
 
         // ==================================================================
-        // Constructors
+        // Methods
         // ==================================================================
 
         /**
@@ -582,7 +586,7 @@ public abstract class AbstractRemoteTableProxy
                 }
                 catch( final Exception e )
                 {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteTableProxy_handleMessage_unexpectedError, e );
+                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractMessageHandler_handleMessage_unexpectedError, e );
                 }
             }
             catch( final NoSuchMethodException e )
@@ -608,6 +612,56 @@ public abstract class AbstractRemoteTableProxy
         protected void handleUnexpectedMessage()
         {
             // do nothing
+        }
+    }
+
+    /**
+     * A message handler for the {@link ErrorMessage} class.
+     */
+    @Immutable
+    private static final class ErrorMessageHandler
+        extends AbstractMessageHandler<IRemoteTableProxyController>
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ErrorMessageHandler} class.
+         * 
+         * @param remoteTableProxyController
+         *        The control interface for the remote table proxy associated
+         *        with the message handler; must not be {@code null}.
+         * 
+         * @throws java.lang.NullPointerException
+         *         If {@code remoteTableProxyController} is {@code null}.
+         */
+        ErrorMessageHandler(
+            /* @NonNull */
+            final IRemoteTableProxyController remoteTableProxyController )
+        {
+            super( remoteTableProxyController );
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Handles an {@code ErrorMessage} message.
+         * 
+         * @param message
+         *        The message; must not be {@code null}.
+         */
+        @SuppressWarnings( "unused" )
+        private void handleMessage(
+            /* @NonNull */
+            final ErrorMessage message )
+        {
+            assert message != null;
+
+            Loggers.getDefaultLogger().warning( Messages.ErrorMessageHandler_handleMessage_errorReceived( message.getError() ) );
         }
     }
 }

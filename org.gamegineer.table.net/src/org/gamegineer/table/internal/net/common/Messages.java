@@ -25,6 +25,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
+import org.gamegineer.table.net.TableNetworkError;
 
 /**
  * A utility class to manage localized messages for the package.
@@ -48,9 +49,6 @@ final class Messages
     /** An error occurred while deserializing a message. */
     public static String AbstractRemoteTableProxy_extractMessage_deserializationError;
 
-    /** An unexpected error occurred while handling a message. */
-    public static String AbstractRemoteTableProxy_handleMessage_unexpectedError;
-
     /** The service received an unhandled message. */
     public static String AbstractRemoteTableProxy_messageReceived_unhandledMessage;
 
@@ -62,8 +60,16 @@ final class Messages
 
     // --- AbstractRemoteTableProxy.AbstractMessageHandler ------------------
 
+    /** An unexpected error occurred while handling a message. */
+    public static String AbstractMessageHandler_handleMessage_unexpectedError;
+
     /** The message handler received an unexpected message. */
     public static String AbstractMessageHandler_messageReceived_unexpectedMessage;
+
+    // --- AbstractRemoteTableProxy.ErrorMessageHandler ---------------------
+
+    /** An uncorrelated error message was received. */
+    public static String ErrorMessageHandler_handleMessage_errorReceived;
 
     // --- AbstractTableNetworkNode -----------------------------------------
 
@@ -185,5 +191,26 @@ final class Messages
             message.getId(), //
             message.getCorrelationId()
         } );
+    }
+
+    // --- AbstractRemoteTableProxy.ErrorMessageHandler ---------------------
+
+    /**
+     * Gets the formatted message indicating an uncorrelated error message was
+     * received.
+     * 
+     * @param error
+     *        The table network error that was received; must not be {@code
+     *        null}.
+     * 
+     * @return The formatted message indicating an uncorrelated error message
+     *         was received; never {@code null}.
+     */
+    /* @NonNull */
+    static String ErrorMessageHandler_handleMessage_errorReceived(
+        /* @NonNull */
+        final TableNetworkError error )
+    {
+        return bind( ErrorMessageHandler_handleMessage_errorReceived, error );
     }
 }
