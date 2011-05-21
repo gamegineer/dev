@@ -143,6 +143,8 @@ public final class ServerTableNetworkNode
         {
             otherTableProxy.setPlayers( players );
         }
+
+        getTableNetworkController().playersUpdated();
     }
 
     /*
@@ -158,5 +160,7 @@ public final class ServerTableNetworkNode
         super.tableProxyRemoved( tableProxy );
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "player '%s' has disconnected", tableProxy.getPlayerName() ) ); //$NON-NLS-1$
+
+        getTableNetworkController().playersUpdated();
     }
 }

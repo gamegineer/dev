@@ -199,6 +199,19 @@ public final class ClientTableNetworkNode
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#dispose()
+     */
+    @Override
+    protected void dispose()
+    {
+        assert Thread.holdsLock( getLock() );
+
+        super.dispose();
+
+        players_.clear();
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.ITableNetworkNode#getPlayers()
      * @see org.gamegineer.table.internal.net.ITableNetworkNodeController#getPlayers()
      */

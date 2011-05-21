@@ -137,7 +137,6 @@ public abstract class AbstractTableNetworkNode
         tableProxies_.put( tableProxy.getPlayerName(), tableProxy );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table proxy registered for player '%s'.", tableProxy.getPlayerName() ) ); //$NON-NLS-1$
         tableProxyAdded( tableProxy );
-        tableNetworkController_.playersUpdated();
     }
 
     /*
@@ -455,7 +454,6 @@ public abstract class AbstractTableNetworkNode
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table proxy unregistered for player '%s'.", tableProxy.getPlayerName() ) ); //$NON-NLS-1$
         tableProxyRemoved( tableProxy );
-        tableNetworkController_.playersUpdated();
     }
 
     /**
