@@ -161,6 +161,12 @@ public final class ServerTableNetworkNode
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "player '%s' has disconnected", tableProxy.getPlayerName() ) ); //$NON-NLS-1$
 
+        final Collection<String> players = getPlayers();
+        for( final ITableProxy otherTableProxy : getTableProxies() )
+        {
+            otherTableProxy.setPlayers( players );
+        }
+
         getTableNetworkController().playersUpdated();
     }
 }
