@@ -141,7 +141,10 @@ final class RemoteClientTableProxy
 
         final PlayersMessage message = new PlayersMessage();
         message.setPlayers( getNode().getPlayers() );
-        sendMessage( message, null );
+        synchronized( getLock() )
+        {
+            sendMessage( message, null );
+        }
     }
 
     /*
