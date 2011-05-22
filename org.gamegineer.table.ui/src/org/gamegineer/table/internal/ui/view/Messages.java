@@ -631,6 +631,19 @@ final class Messages
     /** The name of an untitled table. */
     public static String MainFrame_untitledTable;
 
+    // --- MainView ---------------------------------------------------------
+
+    /** The table network was disconnected due to a generic error. */
+    public static String MainView_tableNetworkDisconnected_error_generic;
+
+    /** The table network was disconnected due to a transport error. */
+    public static String MainView_tableNetworkDisconnected_error_transportError;
+
+    /**
+     * The table network was disconnected due to an unexpected peer termination.
+     */
+    public static String MainView_tableNetworkDisconnected_error_unexpectedPeerTermination;
+
     // --- MenuBarView ------------------------------------------------------
 
     /** The Add Card menu mnemonic. */
@@ -852,6 +865,11 @@ final class Messages
     /** The set stacked card pile layout action text. */
     public static String SetStackedCardPileLayoutAction_text;
 
+    // --- TableNetworkPlayerView -------------------------------------------
+
+    /** The text for the players label. */
+    public static String TableNetworkPlayerView_playersLabel_text;
+
     // --- TableView --------------------------------------------------------
 
     /** An error occurred while reading the background image. */
@@ -862,17 +880,6 @@ final class Messages
 
     /** An error occurred while importing the table. */
     public static String TableView_importTable_error_nonNls;
-
-    /** The table network was disconnected due to a generic error. */
-    public static String TableView_tableNetworkDisconnected_error_generic;
-
-    /** The table network was disconnected due to a transport error. */
-    public static String TableView_tableNetworkDisconnected_error_transportError;
-
-    /**
-     * The table network was disconnected due to an unexpected peer termination.
-     */
-    public static String TableView_tableNetworkDisconnected_error_unexpectedPeerTermination;
 
 
     // ======================================================================
@@ -973,7 +980,7 @@ final class Messages
         return bind( MainFrame_title, tableName, CommonMessages.Common_application_name );
     }
 
-    // --- TableView --------------------------------------------------------
+    // --- MainView ---------------------------------------------------------
 
     /**
      * Gets the formatted message for the table network disconnected message.
@@ -986,20 +993,20 @@ final class Messages
      *         never {@code null}.
      */
     /* @NonNull */
-    static String TableView_tableNetworkDisconnected_error(
+    static String MainView_tableNetworkDisconnected_error(
         /* @NonNull */
         final TableNetworkError error )
     {
         switch( error )
         {
             case TRANSPORT_ERROR:
-                return TableView_tableNetworkDisconnected_error_transportError;
+                return MainView_tableNetworkDisconnected_error_transportError;
 
             case UNEXPECTED_PEER_TERMINATION:
-                return TableView_tableNetworkDisconnected_error_unexpectedPeerTermination;
+                return MainView_tableNetworkDisconnected_error_unexpectedPeerTermination;
 
             default:
-                return bind( TableView_tableNetworkDisconnected_error_generic, error );
+                return bind( MainView_tableNetworkDisconnected_error_generic, error );
         }
     }
 }

@@ -84,10 +84,6 @@ import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
 import org.gamegineer.table.internal.ui.wizards.hosttablenetwork.HostTableNetworkWizard;
 import org.gamegineer.table.internal.ui.wizards.jointablenetwork.JoinTableNetworkWizard;
-import org.gamegineer.table.net.ITableNetworkListener;
-import org.gamegineer.table.net.TableNetworkDisconnectedEvent;
-import org.gamegineer.table.net.TableNetworkError;
-import org.gamegineer.table.net.TableNetworkEvent;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry;
 
@@ -97,7 +93,7 @@ import org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry;
 @NotThreadSafe
 final class TableView
     extends JPanel
-    implements ITableListener, ITableModelListener, ITableNetworkListener
+    implements ITableListener, ITableModelListener
 {
     // ======================================================================
     // Fields
@@ -236,7 +232,6 @@ final class TableView
         bindActions();
         model_.addTableModelListener( this );
         model_.getTable().addTableListener( this );
-        model_.getTableNetwork().addTableNetworkListener( this );
         addKeyListener( keyListener_ );
         addMouseListener( mouseInputListener_ );
         addMouseMotionListener( mouseInputListener_ );
@@ -1165,7 +1160,6 @@ final class TableView
         removeMouseMotionListener( mouseInputListener_ );
         removeMouseListener( mouseInputListener_ );
         removeKeyListener( keyListener_ );
-        model_.getTableNetwork().removeTableNetworkListener( this );
         model_.getTable().removeTableListener( this );
         model_.removeTableModelListener( this );
         actionMediator_.unbindAll();
@@ -1275,58 +1269,6 @@ final class TableView
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
         // do nothing
-    }
-
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkListener#tableNetworkConnected(org.gamegineer.table.net.TableNetworkEvent)
-     */
-    @Override
-    public void tableNetworkConnected(
-        final TableNetworkEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
-    }
-
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkListener#tableNetworkDisconnected(org.gamegineer.table.net.TableNetworkDisconnectedEvent)
-     */
-    @Override
-    public void tableNetworkDisconnected(
-        final TableNetworkDisconnectedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        final TableNetworkError error = event.getError();
-        if( error != null )
-        {
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    OptionDialogs.showErrorMessageDialog( TableView.this, Messages.TableView_tableNetworkDisconnected_error( error ) );
-                }
-            } );
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkListener#tableNetworkPlayersUpdated(org.gamegineer.table.net.TableNetworkEvent)
-     */
-    @Override
-    public void tableNetworkPlayersUpdated(
-        final TableNetworkEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // TODO: display player list in a separate view
-        System.out.println( "---------- Network Player List:" ); //$NON-NLS-1$
-        for( final String playerName : model_.getTableNetwork().getPlayers() )
-        {
-            System.out.println( "\t" + playerName ); //$NON-NLS-1$
-        }
     }
 
     /*
