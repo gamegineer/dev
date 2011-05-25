@@ -1,5 +1,5 @@
 /*
- * AbstractTableNetworkNodeTestCase.java
+ * AbstractNodeTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -36,9 +36,9 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.ITableNetworkNode} interface.
+ * {@link org.gamegineer.table.internal.net.INode} interface.
  */
-public abstract class AbstractTableNetworkNodeTestCase
+public abstract class AbstractNodeTestCase
 {
     // ======================================================================
     // Fields
@@ -48,7 +48,7 @@ public abstract class AbstractTableNetworkNodeTestCase
     private IMocksControl mocksControl_;
 
     /** The table network node under test in the fixture. */
-    private ITableNetworkNode node_;
+    private INode node_;
 
 
     // ======================================================================
@@ -56,10 +56,9 @@ public abstract class AbstractTableNetworkNodeTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractTableNetworkNodeTestCase} class.
+     * Initializes a new instance of the {@code AbstractNodeTestCase} class.
      */
-    protected AbstractTableNetworkNodeTestCase()
+    protected AbstractNodeTestCase()
     {
         super();
     }
@@ -78,7 +77,7 @@ public abstract class AbstractTableNetworkNodeTestCase
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract ITableNetworkNode createTableNetworkNode()
+    protected abstract INode createNode()
         throws Exception;
 
     /**
@@ -92,7 +91,7 @@ public abstract class AbstractTableNetworkNodeTestCase
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        node_ = createTableNetworkNode();
+        node_ = createNode();
         assertNotNull( node_ );
     }
 

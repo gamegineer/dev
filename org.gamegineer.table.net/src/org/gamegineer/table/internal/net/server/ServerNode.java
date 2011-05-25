@@ -1,5 +1,5 @@
 /*
- * ServerTableNetworkNode.java
+ * ServerNode.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -28,7 +28,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.ITableProxy;
-import org.gamegineer.table.internal.net.common.AbstractTableNetworkNode;
+import org.gamegineer.table.internal.net.common.AbstractNode;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 
@@ -36,15 +36,15 @@ import org.gamegineer.table.internal.net.transport.ITransportLayer;
  * A server node in a table network.
  */
 @ThreadSafe
-public final class ServerTableNetworkNode
-    extends AbstractTableNetworkNode
+public final class ServerNode
+    extends AbstractNode
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ServerTableNetworkNode} class.
+     * Initializes a new instance of the {@code ServerNode} class.
      * 
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
@@ -52,7 +52,7 @@ public final class ServerTableNetworkNode
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.
      */
-    public ServerTableNetworkNode(
+    public ServerNode(
         /* @NonNull */
         final ITableNetworkController tableNetworkController )
     {
@@ -65,7 +65,7 @@ public final class ServerTableNetworkNode
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#createTransportLayer()
+     * @see org.gamegineer.table.internal.net.common.AbstractNode#createTransportLayer()
      */
     @Override
     protected ITransportLayer createTransportLayer()
@@ -77,13 +77,13 @@ public final class ServerTableNetworkNode
             @Override
             public IService createService()
             {
-                return new RemoteClientTableProxy( ServerTableNetworkNode.this );
+                return new RemoteClientTableProxy( ServerNode.this );
             }
         } );
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#disconnecting()
+     * @see org.gamegineer.table.internal.net.common.AbstractNode#disconnecting()
      */
     @Override
     protected void disconnecting()
@@ -96,8 +96,8 @@ public final class ServerTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkNode#getPlayers()
-     * @see org.gamegineer.table.internal.net.ITableNetworkNodeController#getPlayers()
+     * @see org.gamegineer.table.internal.net.INode#getPlayers()
+     * @see org.gamegineer.table.internal.net.INodeController#getPlayers()
      */
     @Override
     public Collection<String> getPlayers()
@@ -112,7 +112,7 @@ public final class ServerTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkNode#setPlayers(java.util.Collection)
+     * @see org.gamegineer.table.internal.net.INode#setPlayers(java.util.Collection)
      */
     @Override
     public void setPlayers(
@@ -125,7 +125,7 @@ public final class ServerTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#tableProxyAdded(org.gamegineer.table.internal.net.ITableProxy)
+     * @see org.gamegineer.table.internal.net.common.AbstractNode#tableProxyAdded(org.gamegineer.table.internal.net.ITableProxy)
      */
     @Override
     protected void tableProxyAdded(
@@ -148,7 +148,7 @@ public final class ServerTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#tableProxyRemoved(org.gamegineer.table.internal.net.ITableProxy)
+     * @see org.gamegineer.table.internal.net.common.AbstractNode#tableProxyRemoved(org.gamegineer.table.internal.net.ITableProxy)
      */
     @Override
     protected void tableProxyRemoved(

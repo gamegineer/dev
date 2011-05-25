@@ -1,5 +1,5 @@
 /*
- * ServerTableNetworkNodeAsTableNetworkNodeTest.java
+ * ClientNodeAsNodeControllerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,34 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 14, 2011 at 11:29:24 PM.
+ * Created on Apr 10, 2011 at 6:20:20 PM.
  */
 
-package org.gamegineer.table.internal.net.server;
+package org.gamegineer.table.internal.net.client;
 
-import org.gamegineer.table.internal.net.AbstractTableNetworkNodeTestCase;
-import org.gamegineer.table.internal.net.ITableNetworkNode;
-import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.TableNetworkControllers;
+import org.gamegineer.table.internal.net.common.AbstractAbstractNodeAsNodeControllerTestCase;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.server.ServerTableNetworkNode} class
- * to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.ITableNetworkNode} interface.
+ * {@link org.gamegineer.table.internal.net.client.ClientNode} class to ensure
+ * it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.INodeController} interface.
  */
-public final class ServerTableNetworkNodeAsTableNetworkNodeTest
-    extends AbstractTableNetworkNodeTestCase
+public final class ClientNodeAsNodeControllerTest
+    extends AbstractAbstractNodeAsNodeControllerTestCase<ClientNode>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * ServerTableNetworkNodeAsTableNetworkNodeTest} class.
+     * Initializes a new instance of the {@code ClientNodeAsNodeControllerTest}
+     * class.
      */
-    public ServerTableNetworkNodeAsTableNetworkNodeTest()
+    public ClientNodeAsNodeControllerTest()
     {
         super();
     }
@@ -54,14 +52,11 @@ public final class ServerTableNetworkNodeAsTableNetworkNodeTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractTableNetworkNodeTestCase#createTableNetworkNode()
+     * @see org.gamegineer.table.internal.net.AbstractNodeControllerTestCase#createNodeController()
      */
     @Override
-    protected ITableNetworkNode createTableNetworkNode()
-        throws Exception
+    protected ClientNode createNodeController()
     {
-        final ServerTableNetworkNode node = new ServerTableNetworkNode( TableNetworkControllers.createFakeTableNetworkController() );
-        node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
-        return node;
+        return new ClientNode( TableNetworkControllers.createFakeTableNetworkController(), false );
     }
 }

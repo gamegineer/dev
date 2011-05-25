@@ -33,7 +33,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.ITableNetworkNode;
+import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
@@ -76,7 +76,7 @@ public abstract class AbstractRemoteTableProxy
     private int nextId_;
 
     /** The local table network node. */
-    private final ITableNetworkNode node_;
+    private final INode node_;
 
     /**
      * The name of the remote player or {@code null} if the player has not yet
@@ -115,7 +115,7 @@ public abstract class AbstractRemoteTableProxy
      */
     protected AbstractRemoteTableProxy(
         /* @NonNull */
-        final ITableNetworkNode node )
+        final INode node )
     {
         assertArgumentNotNull( node, "node" ); //$NON-NLS-1$
 
@@ -270,7 +270,7 @@ public abstract class AbstractRemoteTableProxy
     /*
      * @see org.gamegineer.table.internal.net.common.IRemoteTableProxyController#getNode()
      */
-    public final ITableNetworkNode getNode()
+    public final INode getNode()
     {
         return node_;
     }

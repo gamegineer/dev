@@ -1,5 +1,5 @@
 /*
- * DefaultTableNetworkNodeFactoryAsTableNetworkNodeFactoryTest.java
+ * ClientNodeTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 14, 2011 at 1:35:21 PM.
+ * Created on Apr 10, 2011 at 6:08:35 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.client;
+
+import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.DefaultTableNetworkNodeFactory}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.ITableNetworkNodeFactory} interface.
+ * {@link org.gamegineer.table.internal.net.client.ClientNode} class.
  */
-public final class DefaultTableNetworkNodeFactoryAsTableNetworkNodeFactoryTest
-    extends AbstractTableNetworkNodeFactoryTestCase
+public final class ClientNodeTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * DefaultTableNetworkNodeFactoryAsTableNetworkNodeFactoryTest} class.
+     * Initializes a new instance of the {@code ClientNodeTest} class.
      */
-    public DefaultTableNetworkNodeFactoryAsTableNetworkNodeFactoryTest()
+    public ClientNodeTest()
     {
         super();
     }
@@ -48,12 +46,13 @@ public final class DefaultTableNetworkNodeFactoryAsTableNetworkNodeFactoryTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.internal.net.AbstractTableNetworkNodeFactoryTestCase#createTableNetworkNodeFactory()
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * table network controller.
      */
-    @Override
-    protected ITableNetworkNodeFactory createTableNetworkNodeFactory()
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_TableNetworkController_Null()
     {
-        return new DefaultTableNetworkNodeFactory();
+        new ClientNode( null );
     }
 }

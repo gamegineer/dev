@@ -1,5 +1,5 @@
 /*
- * ITableNetworkNodeController.java
+ * INodeController.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -36,7 +36,7 @@ import org.gamegineer.table.net.TableNetworkException;
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface ITableNetworkNodeController
+public interface INodeController
 {
     // ======================================================================
     // Methods

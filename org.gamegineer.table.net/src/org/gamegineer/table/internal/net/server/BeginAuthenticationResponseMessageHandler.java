@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.internal.net.ITableNetworkNode;
+import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationResponseMessage;
@@ -92,7 +92,7 @@ final class BeginAuthenticationResponseMessageHandler
         assert response != null;
 
         final IRemoteClientTableProxyController controller = getRemoteTableProxyController();
-        final ITableNetworkNode node = controller.getNode();
+        final INode node = controller.getNode();
         final SecureString password = node.getPassword();
         try
         {

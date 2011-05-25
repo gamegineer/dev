@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.internal.net.ITableNetworkNode;
+import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.common.messages.PlayersMessage;
 import org.junit.After;
 import org.junit.Before;
@@ -101,7 +101,7 @@ public final class PlayersMessageHandlerTest
         throws Exception
     {
         final Collection<String> players = Arrays.asList( "player1", "player2", "player3" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        final ITableNetworkNode node = mocksControl_.createMock( ITableNetworkNode.class );
+        final INode node = mocksControl_.createMock( INode.class );
         node.setPlayers( players );
         final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
         EasyMock.expect( controller.getNode() ).andReturn( node ).anyTimes();

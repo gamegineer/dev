@@ -1,5 +1,5 @@
 /*
- * AbstractAbstractTableNetworkNodeAsTableNetworkNodeControllerTestCase.java
+ * AbstractAbstractNodeAsNodeControllerTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import net.jcip.annotations.NotThreadSafe;
 import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.AbstractTableNetworkNodeControllerTestCase;
+import org.gamegineer.table.internal.net.AbstractNodeControllerTestCase;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
@@ -38,16 +38,15 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.ITableNetworkNodeController}
- * interface via extension of the
- * {@link org.gamegineer.table.internal.net.common.AbstractTableNetworkNode}
- * class.
+ * {@link org.gamegineer.table.internal.net.INodeController} interface via
+ * extension of the
+ * {@link org.gamegineer.table.internal.net.common.AbstractNode} class.
  * 
  * @param <T>
  *        The type of the table network node.
  */
-public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControllerTestCase<T extends AbstractTableNetworkNode>
-    extends AbstractTableNetworkNodeControllerTestCase<T>
+public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends AbstractNode>
+    extends AbstractNodeControllerTestCase<T>
 {
     // ======================================================================
     // Constructors
@@ -55,10 +54,9 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
 
     /**
      * Initializes a new instance of the {@code
-     * AbstractAbstractTableNetworkNodeAsTableNetworkNodeControllerTestCase}
-     * class.
+     * AbstractAbstractNodeAsNodeControllerTestCase} class.
      */
-    public AbstractAbstractTableNetworkNodeAsTableNetworkNodeControllerTestCase()
+    public AbstractAbstractNodeAsNodeControllerTestCase()
     {
         super();
     }
@@ -138,10 +136,10 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
         throws Exception
     {
         final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
-        getTableNetworkNodeController().connect( configuration );
+        getNodeController().connect( configuration );
 
         boolean localTableProxyFound = false;
-        for( final ITableProxy tableProxy : getTableNetworkNodeController().getTableProxies() )
+        for( final ITableProxy tableProxy : getNodeController().getTableProxies() )
         {
             if( tableProxy.getPlayerName().equals( configuration.getLocalPlayerName() ) )
             {
@@ -164,7 +162,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
     public void testConnect_TransportLayerOpenFailure_DoesNotInvokeConnected()
         throws Exception
     {
-        final MockTableNetworkNode node = new MockTableNetworkNode( createFailingTransportLayer() );
+        final MockNode node = new MockNode( createFailingTransportLayer() );
 
         try
         {
@@ -187,7 +185,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
     public void testConnect_TransportLayerOpenFailure_InvokesConnecting()
         throws Exception
     {
-        final MockTableNetworkNode node = new MockTableNetworkNode( createFailingTransportLayer() );
+        final MockNode node = new MockNode( createFailingTransportLayer() );
 
         try
         {
@@ -210,7 +208,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
     public void testConnect_TransportLayerOpenFailure_InvokesDispose()
         throws Exception
     {
-        final MockTableNetworkNode node = new MockTableNetworkNode( createFailingTransportLayer() );
+        final MockNode node = new MockNode( createFailingTransportLayer() );
 
         try
         {
@@ -233,7 +231,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
     public void testConnect_TransportLayerOpenSuccess_InvokesConnected()
         throws Exception
     {
-        final MockTableNetworkNode node = new MockTableNetworkNode( createSuccessfulTransportLayer() );
+        final MockNode node = new MockNode( createSuccessfulTransportLayer() );
 
         node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
 
@@ -251,7 +249,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
     public void testConnect_TransportLayerOpenSuccess_InvokesConnecting()
         throws Exception
     {
-        final MockTableNetworkNode node = new MockTableNetworkNode( createSuccessfulTransportLayer() );
+        final MockNode node = new MockNode( createSuccessfulTransportLayer() );
 
         node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
 
@@ -269,7 +267,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
     public void testDisconnect_TransportLayerOpen_InvokesDisconnected()
         throws Exception
     {
-        final MockTableNetworkNode node = new MockTableNetworkNode( createSuccessfulTransportLayer() );
+        final MockNode node = new MockNode( createSuccessfulTransportLayer() );
         node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
 
         node.disconnect();
@@ -288,7 +286,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
     public void testDisconnect_TransportLayerOpen_InvokesDisconnecting()
         throws Exception
     {
-        final MockTableNetworkNode node = new MockTableNetworkNode( createSuccessfulTransportLayer() );
+        final MockNode node = new MockNode( createSuccessfulTransportLayer() );
         node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
 
         node.disconnect();
@@ -303,7 +301,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
     @Test( expected = NullPointerException.class )
     public void testTableProxyAdded_TableProxy_Null()
     {
-        getTableNetworkNodeController().tableProxyAdded( null );
+        getNodeController().tableProxyAdded( null );
     }
 
     /**
@@ -313,7 +311,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
     @Test( expected = NullPointerException.class )
     public void testTableProxyRemoved_TableProxy_Null()
     {
-        getTableNetworkNodeController().tableProxyRemoved( null );
+        getNodeController().tableProxyRemoved( null );
     }
 
 
@@ -323,12 +321,11 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
 
     /**
      * Mock implementation of
-     * {@link org.gamegineer.table.internal.net.common.AbstractTableNetworkNode}
-     * .
+     * {@link org.gamegineer.table.internal.net.common.AbstractNode} .
      */
     @NotThreadSafe
-    private static final class MockTableNetworkNode
-        extends AbstractTableNetworkNode
+    private static final class MockNode
+        extends AbstractNode
     {
         // ==================================================================
         // Fields
@@ -358,13 +355,13 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code MockTableNetworkNode} class.
+         * Initializes a new instance of the {@code MockNode} class.
          * 
          * @param transportLayer
          *        The transport layer used by the node; must not be {@code null}
          *        .
          */
-        MockTableNetworkNode(
+        MockNode(
             /* @NonNull */
             final ITransportLayer transportLayer )
         {
@@ -386,7 +383,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#connected()
+         * @see org.gamegineer.table.internal.net.common.AbstractNode#connected()
          */
         @Override
         protected void connected()
@@ -398,7 +395,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#connecting()
+         * @see org.gamegineer.table.internal.net.common.AbstractNode#connecting()
          */
         @Override
         protected void connecting()
@@ -410,7 +407,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#createTransportLayer()
+         * @see org.gamegineer.table.internal.net.common.AbstractNode#createTransportLayer()
          */
         @Override
         protected ITransportLayer createTransportLayer()
@@ -419,7 +416,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#disconnected()
+         * @see org.gamegineer.table.internal.net.common.AbstractNode#disconnected()
          */
         @Override
         protected void disconnected()
@@ -430,7 +427,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#disconnecting()
+         * @see org.gamegineer.table.internal.net.common.AbstractNode#disconnecting()
          */
         @Override
         protected void disconnecting()
@@ -441,7 +438,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#dispose()
+         * @see org.gamegineer.table.internal.net.common.AbstractNode#dispose()
          */
         @Override
         protected void dispose()
@@ -504,7 +501,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.ITableNetworkNodeController#getPlayers()
+         * @see org.gamegineer.table.internal.net.INodeController#getPlayers()
          */
         @Override
         public Collection<String> getPlayers()
@@ -513,7 +510,7 @@ public abstract class AbstractAbstractTableNetworkNodeAsTableNetworkNodeControll
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.ITableNetworkNode#setPlayers(java.util.Collection)
+         * @see org.gamegineer.table.internal.net.INode#setPlayers(java.util.Collection)
          */
         @Override
         public void setPlayers(

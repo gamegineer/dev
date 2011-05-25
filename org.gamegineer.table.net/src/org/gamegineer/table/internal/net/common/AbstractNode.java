@@ -1,5 +1,5 @@
 /*
- * AbstractTableNetworkNode.java
+ * AbstractNode.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -33,9 +33,9 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.Debug;
+import org.gamegineer.table.internal.net.INode;
+import org.gamegineer.table.internal.net.INodeController;
 import org.gamegineer.table.internal.net.ITableNetworkController;
-import org.gamegineer.table.internal.net.ITableNetworkNode;
-import org.gamegineer.table.internal.net.ITableNetworkNodeController;
 import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
@@ -52,8 +52,8 @@ import org.gamegineer.table.net.TableNetworkException;
  * </p>
  */
 @ThreadSafe
-public abstract class AbstractTableNetworkNode
-    implements ITableNetworkNode, ITableNetworkNodeController
+public abstract class AbstractNode
+    implements INode, INodeController
 {
     // ======================================================================
     // Fields
@@ -94,7 +94,7 @@ public abstract class AbstractTableNetworkNode
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractTableNetworkNode} class.
+     * Initializes a new instance of the {@code AbstractNode} class.
      * 
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
@@ -102,7 +102,7 @@ public abstract class AbstractTableNetworkNode
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.
      */
-    protected AbstractTableNetworkNode(
+    protected AbstractNode(
         /* @NonNull */
         final ITableNetworkController tableNetworkController )
     {
@@ -123,7 +123,7 @@ public abstract class AbstractTableNetworkNode
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkNode#addTableProxy(org.gamegineer.table.internal.net.ITableProxy)
+     * @see org.gamegineer.table.internal.net.INode#addTableProxy(org.gamegineer.table.internal.net.ITableProxy)
      */
     @Override
     public final void addTableProxy(
@@ -132,7 +132,7 @@ public abstract class AbstractTableNetworkNode
         assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        assertArgumentLegal( !tableProxies_.containsKey( tableProxy.getPlayerName() ), "tableProxy", Messages.AbstractTableNetworkNode_addTableProxy_tableProxyRegistered ); //$NON-NLS-1$ 
+        assertArgumentLegal( !tableProxies_.containsKey( tableProxy.getPlayerName() ), "tableProxy", Messages.AbstractNode_addTableProxy_tableProxyRegistered ); //$NON-NLS-1$ 
 
         tableProxies_.put( tableProxy.getPlayerName(), tableProxy );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table proxy registered for player '%s'.", tableProxy.getPlayerName() ) ); //$NON-NLS-1$
@@ -140,7 +140,7 @@ public abstract class AbstractTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkNodeController#connect(org.gamegineer.table.net.ITableNetworkConfiguration)
+     * @see org.gamegineer.table.internal.net.INodeController#connect(org.gamegineer.table.net.ITableNetworkConfiguration)
      */
     @Override
     public final void connect(
@@ -247,7 +247,7 @@ public abstract class AbstractTableNetworkNode
     protected abstract ITransportLayer createTransportLayer();
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkNodeController#disconnect()
+     * @see org.gamegineer.table.internal.net.INodeController#disconnect()
      */
     @Override
     public final void disconnect()
@@ -270,7 +270,7 @@ public abstract class AbstractTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkNode#disconnect(org.gamegineer.table.net.TableNetworkError)
+     * @see org.gamegineer.table.internal.net.INode#disconnect(org.gamegineer.table.net.TableNetworkError)
      */
     @Override
     public final void disconnect(
@@ -367,19 +367,19 @@ public abstract class AbstractTableNetworkNode
      * @throws java.lang.IllegalStateException
      *         If the network is not connected.
      * 
-     * @see org.gamegineer.table.internal.net.ITableNetworkNode#getLocalPlayerName()
+     * @see org.gamegineer.table.internal.net.INode#getLocalPlayerName()
      */
     @Override
     public final String getLocalPlayerName()
     {
         assert Thread.holdsLock( getLock() );
 
-        assertStateLegal( localPlayerName_ != null, Messages.AbstractTableNetworkNode_networkDisconnected );
+        assertStateLegal( localPlayerName_ != null, Messages.AbstractNode_networkDisconnected );
         return localPlayerName_;
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkNode#getLock()
+     * @see org.gamegineer.table.internal.net.INode#getLock()
      */
     @Override
     public final Object getLock()
@@ -391,14 +391,14 @@ public abstract class AbstractTableNetworkNode
      * @throws java.lang.IllegalStateException
      *         If the network is not connected.
      * 
-     * @see org.gamegineer.table.internal.net.ITableNetworkNode#getPassword()
+     * @see org.gamegineer.table.internal.net.INode#getPassword()
      */
     @Override
     public final SecureString getPassword()
     {
         assert Thread.holdsLock( getLock() );
 
-        assertStateLegal( password_ != null, Messages.AbstractTableNetworkNode_networkDisconnected );
+        assertStateLegal( password_ != null, Messages.AbstractNode_networkDisconnected );
         return new SecureString( password_ );
     }
 
@@ -428,7 +428,7 @@ public abstract class AbstractTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkNode#isTableProxyPresent(java.lang.String)
+     * @see org.gamegineer.table.internal.net.INode#isTableProxyPresent(java.lang.String)
      */
     @Override
     public final boolean isTableProxyPresent(
@@ -441,7 +441,7 @@ public abstract class AbstractTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkNode#removeTableProxy(org.gamegineer.table.internal.net.ITableProxy)
+     * @see org.gamegineer.table.internal.net.INode#removeTableProxy(org.gamegineer.table.internal.net.ITableProxy)
      */
     @Override
     public final void removeTableProxy(
@@ -450,7 +450,7 @@ public abstract class AbstractTableNetworkNode
         assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        assertArgumentLegal( tableProxies_.remove( tableProxy.getPlayerName() ) != null, "tableProxy", Messages.AbstractTableNetworkNode_removeTableProxy_tableProxyNotRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( tableProxies_.remove( tableProxy.getPlayerName() ) != null, "tableProxy", Messages.AbstractNode_removeTableProxy_tableProxyNotRegistered ); //$NON-NLS-1$
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table proxy unregistered for player '%s'.", tableProxy.getPlayerName() ) ); //$NON-NLS-1$
         tableProxyRemoved( tableProxy );

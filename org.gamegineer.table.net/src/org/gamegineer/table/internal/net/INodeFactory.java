@@ -1,5 +1,5 @@
 /*
- * ITableNetworkNodeFactory.java
+ * INodeFactory.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -26,7 +26,7 @@ package org.gamegineer.table.internal.net;
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface ITableNetworkNodeFactory
+public interface INodeFactory
 {
     // ======================================================================
     // Methods
@@ -45,7 +45,7 @@ public interface ITableNetworkNodeFactory
      *         If {@code tableNetworkController} is {@code null}.
      */
     /* @NonNull */
-    public ITableNetworkNodeController createClientTableNetworkNode(
+    public INodeController createClientNode(
         /* @NonNull */
         ITableNetworkController tableNetworkController );
 
@@ -62,7 +62,7 @@ public interface ITableNetworkNodeFactory
      *         If {@code tableNetworkController} is {@code null}.
      */
     /* @NonNull */
-    public ITableNetworkNodeController createServerTableNetworkNode(
+    public INodeController createServerNode(
         /* @NonNull */
         ITableNetworkController tableNetworkController );
 }

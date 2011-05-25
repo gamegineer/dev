@@ -26,7 +26,7 @@ import java.util.Collection;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.ITableNetworkNode;
+import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.common.AbstractRemoteTableProxy;
 import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.PlayersMessage;
@@ -78,7 +78,7 @@ final class RemoteClientTableProxy
      */
     RemoteClientTableProxy(
         /* @NonNull */
-        final ITableNetworkNode node )
+        final INode node )
     {
         super( node );
 

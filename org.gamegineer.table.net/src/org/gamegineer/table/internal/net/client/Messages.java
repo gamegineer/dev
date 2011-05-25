@@ -40,13 +40,13 @@ final class Messages
     /** Failed to create the begin authentication response. */
     public static String BeginAuthenticationRequestMessageHandler_beginAuthenticationResponseFailed;
 
-    // --- ClientTableNetworkNode -------------------------------------------
+    // --- ClientNode -------------------------------------------------------
 
     /** The protocol handshake was interrupted waiting for completion. */
-    public static String ClientTableNetworkNode_handshake_interrupted;
+    public static String ClientNode_handshake_interrupted;
 
     /** The protocol handshake timed out waiting for completion. */
-    public static String ClientTableNetworkNode_handshake_timedOut;
+    public static String ClientNode_handshake_timedOut;
 
 
     // ======================================================================

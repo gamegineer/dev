@@ -26,7 +26,7 @@ import java.util.Collection;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.internal.net.ITableNetworkNode;
+import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.FakeMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
@@ -88,7 +88,7 @@ public final class AbstractRemoteTableProxyTest
     /* @NonNull */
     private static AbstractRemoteTableProxy createRemoteTableProxy(
         /* @NonNull */
-        final ITableNetworkNode node )
+        final INode node )
     {
         return new AbstractRemoteTableProxy( node )
         {
@@ -113,7 +113,7 @@ public final class AbstractRemoteTableProxyTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        final ITableNetworkNode node = mocksControl_.createMock( ITableNetworkNode.class );
+        final INode node = mocksControl_.createMock( INode.class );
         EasyMock.expect( node.getLock() ).andReturn( new Object() ).anyTimes();
         remoteTableProxy_ = createRemoteTableProxy( node );
     }
@@ -137,7 +137,7 @@ public final class AbstractRemoteTableProxyTest
      * table network node.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_TableNetworkNode_Null()
+    public void testConstructor_Node_Null()
     {
         createRemoteTableProxy( null );
     }

@@ -1,5 +1,5 @@
 /*
- * ITableNetworkNode.java
+ * INode.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -30,13 +30,13 @@ import org.gamegineer.table.net.TableNetworkError;
  * A node in a table network.
  * 
  * <p>
- * Provides operations that allow the local table to interact with the remote
- * tables in a table network.
+ * A node is responsible for managing the local table and its interaction with
+ * the other remote nodes on the network and their associated tables.
  * </p>
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface ITableNetworkNode
+public interface INode
 {
     // ======================================================================
     // Methods

@@ -1,5 +1,5 @@
 /*
- * AbstractTableNetworkNodeControllerTestCase.java
+ * AbstractNodeControllerTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -33,20 +33,19 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.ITableNetworkNodeController}
- * interface.
+ * {@link org.gamegineer.table.internal.net.INodeController} interface.
  * 
  * @param <T>
  *        The type of the table network node controller.
  */
-public abstract class AbstractTableNetworkNodeControllerTestCase<T extends ITableNetworkNodeController>
+public abstract class AbstractNodeControllerTestCase<T extends INodeController>
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The table network node controller under test in the fixture. */
-    private T controller_;
+    private T nodeController_;
 
 
     // ======================================================================
@@ -54,10 +53,10 @@ public abstract class AbstractTableNetworkNodeControllerTestCase<T extends ITabl
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractTableNetworkNodeControllerTestCase} class.
+     * Initializes a new instance of the {@code AbstractNodeControllerTestCase}
+     * class.
      */
-    protected AbstractTableNetworkNodeControllerTestCase()
+    protected AbstractNodeControllerTestCase()
     {
         super();
     }
@@ -77,7 +76,7 @@ public abstract class AbstractTableNetworkNodeControllerTestCase<T extends ITabl
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract T createTableNetworkNodeController()
+    protected abstract T createNodeController()
         throws Exception;
 
     /**
@@ -87,10 +86,10 @@ public abstract class AbstractTableNetworkNodeControllerTestCase<T extends ITabl
      *         never {@code null}.
      */
     /* @NonNull */
-    protected final T getTableNetworkNodeController()
+    protected final T getNodeController()
     {
-        assertNotNull( controller_ );
-        return controller_;
+        assertNotNull( nodeController_ );
+        return nodeController_;
     }
 
     /**
@@ -103,8 +102,8 @@ public abstract class AbstractTableNetworkNodeControllerTestCase<T extends ITabl
     public void setUp()
         throws Exception
     {
-        controller_ = createTableNetworkNodeController();
-        assertNotNull( controller_ );
+        nodeController_ = createNodeController();
+        assertNotNull( nodeController_ );
     }
 
     /**
@@ -117,7 +116,7 @@ public abstract class AbstractTableNetworkNodeControllerTestCase<T extends ITabl
     public void tearDown()
         throws Exception
     {
-        controller_ = null;
+        nodeController_ = null;
     }
 
     /**
@@ -131,7 +130,7 @@ public abstract class AbstractTableNetworkNodeControllerTestCase<T extends ITabl
     public void testConnect_Configuration_Null()
         throws Exception
     {
-        controller_.connect( null );
+        nodeController_.connect( null );
     }
 
     /**
@@ -146,9 +145,9 @@ public abstract class AbstractTableNetworkNodeControllerTestCase<T extends ITabl
         throws Exception
     {
         final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
-        controller_.connect( configuration );
+        nodeController_.connect( configuration );
 
-        controller_.connect( configuration );
+        nodeController_.connect( configuration );
     }
 
     /**
@@ -158,7 +157,7 @@ public abstract class AbstractTableNetworkNodeControllerTestCase<T extends ITabl
     @Test
     public void testDisconnect_Disconnected_DoesNothing()
     {
-        controller_.disconnect();
+        nodeController_.disconnect();
     }
 
     /**
@@ -168,11 +167,11 @@ public abstract class AbstractTableNetworkNodeControllerTestCase<T extends ITabl
     @Test
     public void testGetPlayers_ReturnValue_Copy()
     {
-        final Collection<String> players = controller_.getPlayers();
+        final Collection<String> players = nodeController_.getPlayers();
         final Collection<String> expectedValue = new ArrayList<String>( players );
 
         players.add( "newPlayerName" ); //$NON-NLS-1$
-        final Collection<String> actualValue = controller_.getPlayers();
+        final Collection<String> actualValue = nodeController_.getPlayers();
 
         assertEquals( expectedValue, actualValue );
     }
@@ -183,6 +182,6 @@ public abstract class AbstractTableNetworkNodeControllerTestCase<T extends ITabl
     @Test
     public void testGetPlayers_ReturnValue_NonNull()
     {
-        assertNotNull( controller_.getPlayers() );
+        assertNotNull( nodeController_.getPlayers() );
     }
 }

@@ -1,5 +1,5 @@
 /*
- * AbstractTableNetworkNodeTest.java
+ * AbstractNodeTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -33,17 +33,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.common.AbstractTableNetworkNode}
- * class.
+ * {@link org.gamegineer.table.internal.net.common.AbstractNode} class.
  */
-public final class AbstractTableNetworkNodeTest
+public final class AbstractNodeTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The table network node under test in the fixture. */
-    private AbstractTableNetworkNode node_;
+    private AbstractNode node_;
 
 
     // ======================================================================
@@ -51,10 +50,9 @@ public final class AbstractTableNetworkNodeTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractTableNetworkNodeTest}
-     * class.
+     * Initializes a new instance of the {@code AbstractNodeTest} class.
      */
-    public AbstractTableNetworkNodeTest()
+    public AbstractNodeTest()
     {
         super();
     }
@@ -65,24 +63,24 @@ public final class AbstractTableNetworkNodeTest
     // ======================================================================
 
     /**
-     * Creates a new instance of the {@code AbstractTableNetworkNode} class with
-     * stubbed implementations of all abstract methods.
+     * Creates a new instance of the {@code AbstractNode} class with stubbed
+     * implementations of all abstract methods.
      * 
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
      * 
-     * @return A new instance of the {@code AbstractTableNetworkNode} class;
-     *         never {@code null}.
+     * @return A new instance of the {@code AbstractNode} class; never {@code
+     *         null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.
      */
     /* @NonNull */
-    private static AbstractTableNetworkNode createTableNetworkNode(
+    private static AbstractNode createNode(
         /* @NonNull */
         final ITableNetworkController tableNetworkController )
     {
-        return new AbstractTableNetworkNode( tableNetworkController )
+        return new AbstractNode( tableNetworkController )
         {
             @Override
             protected ITransportLayer createTransportLayer()
@@ -116,7 +114,7 @@ public final class AbstractTableNetworkNodeTest
     public void setUp()
         throws Exception
     {
-        node_ = createTableNetworkNode( EasyMock.createMock( ITableNetworkController.class ) );
+        node_ = createNode( EasyMock.createMock( ITableNetworkController.class ) );
     }
 
     /**
@@ -139,7 +137,7 @@ public final class AbstractTableNetworkNodeTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_TableNetworkController_Null()
     {
-        createTableNetworkNode( null );
+        createNode( null );
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * AbstractTableNetworkNodeFactoryTestCase.java
+ * AbstractNodeFactoryTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -28,16 +28,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.ITableNetworkNodeFactory} interface.
+ * {@link org.gamegineer.table.internal.net.INodeFactory} interface.
  */
-public abstract class AbstractTableNetworkNodeFactoryTestCase
+public abstract class AbstractNodeFactoryTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The table network node factory under test in the fixture. */
-    private ITableNetworkNodeFactory factory_;
+    private INodeFactory nodeFactory_;
 
 
     // ======================================================================
@@ -45,10 +45,10 @@ public abstract class AbstractTableNetworkNodeFactoryTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractTableNetworkNodeFactoryTestCase} class.
+     * Initializes a new instance of the {@code AbstractNodeFactoryTestCase}
+     * class.
      */
-    protected AbstractTableNetworkNodeFactoryTestCase()
+    protected AbstractNodeFactoryTestCase()
     {
         super();
     }
@@ -67,7 +67,7 @@ public abstract class AbstractTableNetworkNodeFactoryTestCase
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract ITableNetworkNodeFactory createTableNetworkNodeFactory()
+    protected abstract INodeFactory createNodeFactory()
         throws Exception;
 
     /**
@@ -80,8 +80,8 @@ public abstract class AbstractTableNetworkNodeFactoryTestCase
     public void setUp()
         throws Exception
     {
-        factory_ = createTableNetworkNodeFactory();
-        assertNotNull( factory_ );
+        nodeFactory_ = createNodeFactory();
+        assertNotNull( nodeFactory_ );
     }
 
     /**
@@ -94,26 +94,26 @@ public abstract class AbstractTableNetworkNodeFactoryTestCase
     public void tearDown()
         throws Exception
     {
-        factory_ = null;
+        nodeFactory_ = null;
     }
 
     /**
-     * Ensures the {@code createClientTableNetworkNode} method throws an
-     * exception when passed a {@code null} table network controller.
+     * Ensures the {@code createClientNode} method throws an exception when
+     * passed a {@code null} table network controller.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateClientTableNetworkNode_TableNetworkController_Null()
+    public void testCreateClientNode_TableNetworkController_Null()
     {
-        factory_.createClientTableNetworkNode( null );
+        nodeFactory_.createClientNode( null );
     }
 
     /**
-     * Ensures the {@code createServerTableNetworkNode} method throws an
-     * exception when passed a {@code null} table network controller.
+     * Ensures the {@code createServerNode} method throws an exception when
+     * passed a {@code null} table network controller.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateServerTableNetworkNode_TableNetworkController_Null()
+    public void testCreateServerNode_TableNetworkController_Null()
     {
-        factory_.createServerTableNetworkNode( null );
+        nodeFactory_.createServerNode( null );
     }
 }

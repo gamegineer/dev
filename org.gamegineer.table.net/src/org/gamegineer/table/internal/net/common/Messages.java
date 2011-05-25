@@ -38,6 +38,17 @@ final class Messages
     // Fields
     // ======================================================================
 
+    // --- AbstractNode -----------------------------------------------------
+
+    /** The table proxy is already registered. */
+    public static String AbstractNode_addTableProxy_tableProxyRegistered;
+
+    /** The network is disconnected. */
+    public static String AbstractNode_networkDisconnected;
+
+    /** The table proxy is not registered. */
+    public static String AbstractNode_removeTableProxy_tableProxyNotRegistered;
+
     // --- AbstractRemoteTableProxy -----------------------------------------
 
     /** The remote table proxy is already bound. */
@@ -70,17 +81,6 @@ final class Messages
 
     /** An uncorrelated error message was received. */
     public static String ErrorMessageHandler_handleMessage_errorReceived;
-
-    // --- AbstractTableNetworkNode -----------------------------------------
-
-    /** The table proxy is already registered. */
-    public static String AbstractTableNetworkNode_addTableProxy_tableProxyRegistered;
-
-    /** The network is disconnected. */
-    public static String AbstractTableNetworkNode_networkDisconnected;
-
-    /** The table proxy is not registered. */
-    public static String AbstractTableNetworkNode_removeTableProxy_tableProxyNotRegistered;
 
     // --- Authenticator ----------------------------------------------------
 

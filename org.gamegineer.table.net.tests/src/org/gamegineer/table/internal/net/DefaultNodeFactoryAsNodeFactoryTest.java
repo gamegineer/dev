@@ -1,5 +1,5 @@
 /*
- * ClientTableNetworkNodeAsTableNetworkNodeControllerTest.java
+ * DefaultNodeFactoryAsNodeFactoryTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,23 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 10, 2011 at 6:20:20 PM.
+ * Created on May 14, 2011 at 1:35:21 PM.
  */
 
-package org.gamegineer.table.internal.net.client;
-
-import org.gamegineer.table.internal.net.TableNetworkControllers;
-import org.gamegineer.table.internal.net.common.AbstractAbstractTableNetworkNodeAsTableNetworkNodeControllerTestCase;
+package org.gamegineer.table.internal.net;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.client.ClientTableNetworkNode} class
- * to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.ITableNetworkNodeController}
- * interface.
+ * {@link org.gamegineer.table.internal.net.DefaultNodeFactory} class to ensure
+ * it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.INodeFactory} interface.
  */
-public final class ClientTableNetworkNodeAsTableNetworkNodeControllerTest
-    extends AbstractAbstractTableNetworkNodeAsTableNetworkNodeControllerTestCase<ClientTableNetworkNode>
+public final class DefaultNodeFactoryAsNodeFactoryTest
+    extends AbstractNodeFactoryTestCase
 {
     // ======================================================================
     // Constructors
@@ -40,9 +36,9 @@ public final class ClientTableNetworkNodeAsTableNetworkNodeControllerTest
 
     /**
      * Initializes a new instance of the {@code
-     * ClientTableNetworkNodeAsTableNetworkNodeControllerTest} class.
+     * DefaultNodeFactoryAsNodeFactoryTest} class.
      */
-    public ClientTableNetworkNodeAsTableNetworkNodeControllerTest()
+    public DefaultNodeFactoryAsNodeFactoryTest()
     {
         super();
     }
@@ -53,11 +49,11 @@ public final class ClientTableNetworkNodeAsTableNetworkNodeControllerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractTableNetworkNodeControllerTestCase#createTableNetworkNodeController()
+     * @see org.gamegineer.table.internal.net.AbstractNodeFactoryTestCase#createNodeFactory()
      */
     @Override
-    protected ClientTableNetworkNode createTableNetworkNodeController()
+    protected INodeFactory createNodeFactory()
     {
-        return new ClientTableNetworkNode( TableNetworkControllers.createFakeTableNetworkController(), false );
+        return new DefaultNodeFactory();
     }
 }

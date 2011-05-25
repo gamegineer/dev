@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.net.client;
 
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.AbstractTableProxyTestCase;
-import org.gamegineer.table.internal.net.ITableNetworkNode;
+import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.transport.FakeServiceContext;
 
@@ -60,7 +60,7 @@ public final class RemoteServerTableProxyAsTableProxyTest
     @Override
     protected ITableProxy createTableProxy()
     {
-        final RemoteServerTableProxy tableProxy = new RemoteServerTableProxy( EasyMock.createMock( ITableNetworkNode.class ) );
+        final RemoteServerTableProxy tableProxy = new RemoteServerTableProxy( EasyMock.createMock( INode.class ) );
         synchronized( tableProxy.getLock() )
         {
             tableProxy.started( new FakeServiceContext() );

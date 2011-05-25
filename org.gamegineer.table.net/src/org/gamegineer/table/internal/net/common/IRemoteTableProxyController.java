@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.net.common;
 
 import net.jcip.annotations.GuardedBy;
-import org.gamegineer.table.internal.net.ITableNetworkNode;
+import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.net.TableNetworkError;
 
@@ -88,7 +88,7 @@ public interface IRemoteTableProxyController
      * @return The local table network node; never {@code null}.
      */
     /* @NonNull */
-    public ITableNetworkNode getNode();
+    public INode getNode();
 
     /**
      * Sends the specified message to the remote table proxy peer.

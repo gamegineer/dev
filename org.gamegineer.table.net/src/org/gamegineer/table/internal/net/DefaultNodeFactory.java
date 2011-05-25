@@ -1,5 +1,5 @@
 /*
- * DefaultTableNetworkNodeFactory.java
+ * DefaultNodeFactory.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -22,26 +22,25 @@
 package org.gamegineer.table.internal.net;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.client.ClientTableNetworkNode;
-import org.gamegineer.table.internal.net.server.ServerTableNetworkNode;
+import org.gamegineer.table.internal.net.client.ClientNode;
+import org.gamegineer.table.internal.net.server.ServerNode;
 
 /**
  * Default implementation of
- * {@link org.gamegineer.table.internal.net.ITableNetworkNodeFactory}.
+ * {@link org.gamegineer.table.internal.net.INodeFactory}.
  */
 @Immutable
-public class DefaultTableNetworkNodeFactory
-    implements ITableNetworkNodeFactory
+public class DefaultNodeFactory
+    implements INodeFactory
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code DefaultTableNetworkNodeFactory}
-     * class.
+     * Initializes a new instance of the {@code DefaultNodeFactory} class.
      */
-    public DefaultTableNetworkNodeFactory()
+    public DefaultNodeFactory()
     {
         super();
     }
@@ -52,28 +51,26 @@ public class DefaultTableNetworkNodeFactory
     // ======================================================================
 
     /**
-     * This implementation creates an instance of {@link ClientTableNetworkNode}
-     * .
+     * This implementation creates an instance of {@link ClientNode}.
      * 
-     * @see org.gamegineer.table.internal.net.ITableNetworkNodeFactory#createClientTableNetworkNode(org.gamegineer.table.internal.net.ITableNetworkController)
+     * @see org.gamegineer.table.internal.net.INodeFactory#createClientNode(org.gamegineer.table.internal.net.ITableNetworkController)
      */
     @Override
-    public ITableNetworkNodeController createClientTableNetworkNode(
+    public INodeController createClientNode(
         final ITableNetworkController tableNetworkController )
     {
-        return new ClientTableNetworkNode( tableNetworkController );
+        return new ClientNode( tableNetworkController );
     }
 
     /**
-     * This implementation creates an instance of {@link ServerTableNetworkNode}
-     * .
+     * This implementation creates an instance of {@link ServerNode}.
      * 
-     * @see org.gamegineer.table.internal.net.ITableNetworkNodeFactory#createServerTableNetworkNode(org.gamegineer.table.internal.net.ITableNetworkController)
+     * @see org.gamegineer.table.internal.net.INodeFactory#createServerNode(org.gamegineer.table.internal.net.ITableNetworkController)
      */
     @Override
-    public ITableNetworkNodeController createServerTableNetworkNode(
+    public INodeController createServerNode(
         final ITableNetworkController tableNetworkController )
     {
-        return new ServerTableNetworkNode( tableNetworkController );
+        return new ServerNode( tableNetworkController );
     }
 }

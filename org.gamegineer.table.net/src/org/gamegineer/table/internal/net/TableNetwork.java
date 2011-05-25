@@ -61,10 +61,10 @@ public final class TableNetwork
      * A reference to the local table network node controller or {@code null} if
      * the table network is not connected.
      */
-    private final AtomicReference<ITableNetworkNodeController> nodeControllerRef_;
+    private final AtomicReference<INodeController> nodeControllerRef_;
 
     /** The table network node factory. */
-    private final ITableNetworkNodeFactory nodeFactory_;
+    private final INodeFactory nodeFactory_;
 
     /** The table to be attached to the network. */
     @SuppressWarnings( "unused" )
@@ -91,7 +91,7 @@ public final class TableNetwork
         /* @NonNull */
         final ITable table )
     {
-        this( table, new DefaultTableNetworkNodeFactory(), new TcpTransportLayerFactory() );
+        this( table, new DefaultNodeFactory(), new TcpTransportLayerFactory() );
     }
 
     /**
@@ -118,7 +118,7 @@ public final class TableNetwork
         /* @NonNull */
         final ITable table,
         /* @NonNull */
-        final ITableNetworkNodeFactory nodeFactory,
+        final INodeFactory nodeFactory,
         /* @NonNull */
         final ITransportLayerFactory transportLayerFactory )
     {
@@ -128,7 +128,7 @@ public final class TableNetwork
 
         connectionStateRef_ = new AtomicReference<ConnectionState>( ConnectionState.DISCONNECTED );
         listeners_ = new CopyOnWriteArrayList<ITableNetworkListener>();
-        nodeControllerRef_ = new AtomicReference<ITableNetworkNodeController>( null );
+        nodeControllerRef_ = new AtomicReference<INodeController>( null );
         nodeFactory_ = nodeFactory;
         table_ = table;
         transportLayerFactory_ = transportLayerFactory;
@@ -168,7 +168,7 @@ public final class TableNetwork
         /* @NonNull */
         final ITableNetworkConfiguration configuration,
         /* @NonNull */
-        final ITableNetworkNodeController nodeController )
+        final INodeController nodeController )
         throws TableNetworkException
     {
         assert configuration != null;
@@ -213,7 +213,7 @@ public final class TableNetwork
     {
         if( connectionStateRef_.compareAndSet( ConnectionState.CONNECTED, ConnectionState.DISCONNECTING ) )
         {
-            final ITableNetworkNodeController nodeController = nodeControllerRef_.getAndSet( null );
+            final INodeController nodeController = nodeControllerRef_.getAndSet( null );
             nodeController.disconnect();
             connectionStateRef_.set( ConnectionState.DISCONNECTED );
             fireTableNetworkDisconnected( error );
@@ -289,7 +289,7 @@ public final class TableNetwork
     @Override
     public Collection<String> getPlayers()
     {
-        final ITableNetworkNodeController nodeController = nodeControllerRef_.get();
+        final INodeController nodeController = nodeControllerRef_.get();
         if( nodeController != null )
         {
             return nodeController.getPlayers();
@@ -317,7 +317,7 @@ public final class TableNetwork
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, nodeFactory_.createServerTableNetworkNode( this ) );
+        connect( configuration, nodeFactory_.createServerNode( this ) );
     }
 
     /*
@@ -339,7 +339,7 @@ public final class TableNetwork
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        connect( configuration, nodeFactory_.createClientTableNetworkNode( this ) );
+        connect( configuration, nodeFactory_.createClientNode( this ) );
     }
 
     /*

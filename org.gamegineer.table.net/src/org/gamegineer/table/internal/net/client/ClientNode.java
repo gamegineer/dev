@@ -1,5 +1,5 @@
 /*
- * ClientTableNetworkNode.java
+ * ClientNode.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -32,7 +32,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.ITableProxy;
-import org.gamegineer.table.internal.net.common.AbstractTableNetworkNode;
+import org.gamegineer.table.internal.net.common.AbstractNode;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.net.TableNetworkError;
@@ -42,8 +42,8 @@ import org.gamegineer.table.net.TableNetworkException;
  * A client node in a table network.
  */
 @ThreadSafe
-public final class ClientTableNetworkNode
-    extends AbstractTableNetworkNode
+public final class ClientNode
+    extends AbstractNode
 {
     // ======================================================================
     // Fields
@@ -76,7 +76,7 @@ public final class ClientTableNetworkNode
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ClientTableNetworkNode} class.
+     * Initializes a new instance of the {@code ClientNode} class.
      * 
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
@@ -84,7 +84,7 @@ public final class ClientTableNetworkNode
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.
      */
-    public ClientTableNetworkNode(
+    public ClientNode(
         /* @NonNull */
         final ITableNetworkController tableNetworkController )
     {
@@ -92,9 +92,9 @@ public final class ClientTableNetworkNode
     }
 
     /**
-     * Initializes a new instance of the {@code ClientTableNetworkNode} class
-     * and indicates whether or not the node should wait for handshake to
-     * complete before indicating the connection has been established.
+     * Initializes a new instance of the {@code ClientNode} class and indicates
+     * whether or not the node should wait for handshake to complete before
+     * indicating the connection has been established.
      * 
      * <p>
      * This constructor is only intended to support testing.
@@ -110,7 +110,7 @@ public final class ClientTableNetworkNode
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.
      */
-    public ClientTableNetworkNode(
+    public ClientNode(
         /* @NonNull */
         final ITableNetworkController tableNetworkController,
         final boolean waitForHandshakeCompletion )
@@ -130,7 +130,7 @@ public final class ClientTableNetworkNode
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#connected()
+     * @see org.gamegineer.table.internal.net.common.AbstractNode#connected()
      */
     @Override
     protected void connected()
@@ -147,13 +147,13 @@ public final class ClientTableNetworkNode
                 {
                     if( !handshakeCondition_.await( 30L, TimeUnit.SECONDS ) )
                     {
-                        throw new TableNetworkException( TableNetworkError.TIME_OUT, Messages.ClientTableNetworkNode_handshake_timedOut );
+                        throw new TableNetworkException( TableNetworkError.TIME_OUT, Messages.ClientNode_handshake_timedOut );
                     }
                 }
                 catch( final InterruptedException e )
                 {
                     Thread.currentThread().interrupt();
-                    throw new TableNetworkException( TableNetworkError.INTERRUPTED, Messages.ClientTableNetworkNode_handshake_interrupted, e );
+                    throw new TableNetworkException( TableNetworkError.INTERRUPTED, Messages.ClientNode_handshake_interrupted, e );
                 }
             }
 
@@ -169,7 +169,7 @@ public final class ClientTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#createTransportLayer()
+     * @see org.gamegineer.table.internal.net.common.AbstractNode#createTransportLayer()
      */
     @Override
     protected ITransportLayer createTransportLayer()
@@ -181,13 +181,13 @@ public final class ClientTableNetworkNode
             @Override
             public IService createService()
             {
-                return new RemoteServerTableProxy( ClientTableNetworkNode.this );
+                return new RemoteServerTableProxy( ClientNode.this );
             }
         } );
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#disconnecting(org.gamegineer.table.net.TableNetworkError)
+     * @see org.gamegineer.table.internal.net.common.AbstractNode#disconnecting(org.gamegineer.table.net.TableNetworkError)
      */
     @Override
     protected void disconnecting(
@@ -199,7 +199,7 @@ public final class ClientTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#dispose()
+     * @see org.gamegineer.table.internal.net.common.AbstractNode#dispose()
      */
     @Override
     protected void dispose()
@@ -212,8 +212,8 @@ public final class ClientTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkNode#getPlayers()
-     * @see org.gamegineer.table.internal.net.ITableNetworkNodeController#getPlayers()
+     * @see org.gamegineer.table.internal.net.INode#getPlayers()
+     * @see org.gamegineer.table.internal.net.INodeController#getPlayers()
      */
     @Override
     public Collection<String> getPlayers()
@@ -252,7 +252,7 @@ public final class ClientTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableNetworkNode#setPlayers(java.util.Collection)
+     * @see org.gamegineer.table.internal.net.INode#setPlayers(java.util.Collection)
      */
     @Override
     public void setPlayers(
@@ -267,7 +267,7 @@ public final class ClientTableNetworkNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractTableNetworkNode#tableProxyAdded(org.gamegineer.table.internal.net.ITableProxy)
+     * @see org.gamegineer.table.internal.net.common.AbstractNode#tableProxyAdded(org.gamegineer.table.internal.net.ITableProxy)
      */
     @Override
     protected void tableProxyAdded(

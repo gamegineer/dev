@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.net.server;
 
-import org.gamegineer.table.internal.net.ITableNetworkNode;
+import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.transport.FakeServiceContext;
 
 /**
@@ -53,11 +53,11 @@ public final class RemoteClientTableProxyAsRemoteClientTableProxyControllerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableProxyControllerTestCase#createRemoteTableProxyController(org.gamegineer.table.internal.net.ITableNetworkNode)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableProxyControllerTestCase#createRemoteTableProxyController(org.gamegineer.table.internal.net.INode)
      */
     @Override
     protected RemoteClientTableProxy createRemoteTableProxyController(
-        final ITableNetworkNode node )
+        final INode node )
     {
         return new RemoteClientTableProxy( node );
     }

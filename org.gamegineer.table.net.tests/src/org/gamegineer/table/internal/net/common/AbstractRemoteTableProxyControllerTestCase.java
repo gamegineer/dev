@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.net.common;
 import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.internal.net.ITableNetworkNode;
+import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.junit.After;
@@ -52,7 +52,7 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
     private IMocksControl mocksControl_;
 
     /** The table network node for use in the fixture. */
-    private ITableNetworkNode node_;
+    private INode node_;
 
 
     // ======================================================================
@@ -91,7 +91,7 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
     /* @NonNull */
     protected abstract T createRemoteTableProxyController(
         /* @NonNull */
-        ITableNetworkNode node )
+        INode node )
         throws Exception;
 
     /**
@@ -131,7 +131,7 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        node_ = mocksControl_.createMock( ITableNetworkNode.class );
+        node_ = mocksControl_.createMock( INode.class );
         controller_ = createRemoteTableProxyController( node_ );
         assertNotNull( controller_ );
     }
