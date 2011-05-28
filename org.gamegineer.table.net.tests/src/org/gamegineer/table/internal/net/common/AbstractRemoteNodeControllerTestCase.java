@@ -1,5 +1,5 @@
 /*
- * AbstractRemoteTableProxyControllerTestCase.java
+ * AbstractRemoteNodeControllerTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -25,7 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.INode;
-import org.gamegineer.table.internal.net.ITableProxy;
+import org.gamegineer.table.internal.net.IRemoteNode;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.junit.After;
 import org.junit.Before;
@@ -33,19 +33,19 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.common.IRemoteTableProxyController}
+ * {@link org.gamegineer.table.internal.net.common.IRemoteNodeController}
  * interface.
  * 
  * @param <T>
- *        The type of the remote table proxy controller.
+ *        The type of the remote node controller.
  */
-public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemoteTableProxyController>
+public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNodeController>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
-    /** The remote table proxy controller under test in the fixture. */
+    /** The remote node controller under test in the fixture. */
     private T controller_;
 
     /** The mocks control for use in the fixture. */
@@ -61,9 +61,9 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
 
     /**
      * Initializes a new instance of the {@code
-     * AbstractRemoteTableProxyControllerTestCase} class.
+     * AbstractRemoteNodeControllerTestCase} class.
      */
-    protected AbstractRemoteTableProxyControllerTestCase()
+    protected AbstractRemoteNodeControllerTestCase()
     {
         super();
     }
@@ -74,14 +74,14 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
     // ======================================================================
 
     /**
-     * Creates the remote table proxy controller to be tested.
+     * Creates the remote node controller to be tested.
      * 
      * @param node
-     *        local table network node; must not be {@code null}.
+     *        The local table network node; must not be {@code null}.
      * 
-     * @return The remote table proxy controller to be tested; never {@code
-     *         null}. The remote table proxy associated with the returned
-     *         controller should be in the closed state.
+     * @return The remote node controller to be tested; never {@code null}. The
+     *         remote node associated with the returned controller should be in
+     *         the closed state.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -89,34 +89,34 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
      *         If {@code node} is {@code null}.
      */
     /* @NonNull */
-    protected abstract T createRemoteTableProxyController(
+    protected abstract T createRemoteNodeController(
         /* @NonNull */
         INode node )
         throws Exception;
 
     /**
-     * Gets the remote table proxy controller under test in the fixture.
+     * Gets the remote node controller under test in the fixture.
      * 
-     * @return The remote table proxy controller under test in the fixture;
-     *         never {@code null}.
+     * @return The remote node controller under test in the fixture; never
+     *         {@code null}.
      */
     /* @NonNull */
-    protected final T getRemoteTableProxyController()
+    protected final T getRemoteNodeController()
     {
         assertNotNull( controller_ );
         return controller_;
     }
 
     /**
-     * Opens the remote table proxy associated with the specified controller.
+     * Opens the remote node associated with the specified controller.
      * 
      * @param controller
-     *        The remote table proxy controller; must not be {@code null}.
+     *        The remote node controller; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code controller} is {@code null}.
      */
-    protected abstract void openRemoteTableProxy(
+    protected abstract void openRemoteNode(
         /* @NonNull */
         T controller );
 
@@ -132,7 +132,7 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
     {
         mocksControl_ = EasyMock.createControl();
         node_ = mocksControl_.createMock( INode.class );
-        controller_ = createRemoteTableProxyController( node_ );
+        controller_ = createRemoteNodeController( node_ );
         assertNotNull( controller_ );
     }
 
@@ -152,15 +152,15 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
     }
 
     /**
-     * Ensures the {@code bind} method throws an exception when the remote table
-     * proxy is already bound.
+     * Ensures the {@code bind} method throws an exception when the remote node
+     * is already bound.
      */
     @Test( expected = IllegalStateException.class )
     public void testBind_Bound()
     {
         synchronized( controller_.getLock() )
         {
-            openRemoteTableProxy( controller_ );
+            openRemoteNode( controller_ );
             controller_.bind( "playerName" ); //$NON-NLS-1$
 
             controller_.bind( "playerName" ); //$NON-NLS-1$
@@ -168,8 +168,8 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
     }
 
     /**
-     * Ensures the {@code bind} method throws an exception when the remote table
-     * proxy is closed.
+     * Ensures the {@code bind} method throws an exception when the remote node
+     * is closed.
      */
     @Test( expected = IllegalStateException.class )
     public void testBind_Closed()
@@ -188,16 +188,15 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
     @Test( expected = IllegalArgumentException.class )
     public void testBind_PlayerName_Bound()
     {
-        final String playerName = "playerName"; //$NON-NLS-1$
-        node_.addTableProxy( EasyMock.notNull( ITableProxy.class ) );
+        node_.bindRemoteNode( EasyMock.notNull( IRemoteNode.class ) );
         EasyMock.expectLastCall().andThrow( new IllegalArgumentException() );
         mocksControl_.replay();
 
         synchronized( controller_.getLock() )
         {
-            openRemoteTableProxy( controller_ );
+            openRemoteNode( controller_ );
 
-            controller_.bind( playerName );
+            controller_.bind( "playerName" ); //$NON-NLS-1$
         }
     }
 
@@ -215,8 +214,8 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
     }
 
     /**
-     * Ensures the {@code close} method throws an exception when the remote
-     * table proxy is closed.
+     * Ensures the {@code close} method throws an exception when the remote node
+     * is closed.
      */
     @Test( expected = IllegalStateException.class )
     public void testClose_Closed()
@@ -228,24 +227,24 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
     }
 
     /**
-     * Ensures the {@code getNode} method does not return {@code null}.
+     * Ensures the {@code getLocalNode} method does not return {@code null}.
      */
     @Test
-    public void testGetNode_ReturnValue_NonNull()
+    public void testGetLocalNode_ReturnValue_NonNull()
     {
-        assertNotNull( controller_.getNode() );
+        assertNotNull( controller_.getLocalNode() );
     }
 
     /**
      * Ensures the {@code sendMessage} method throws an exception when the
-     * remote table proxy is closed.
+     * remote node is closed.
      */
     @Test( expected = IllegalStateException.class )
     public void testSendMessage_Closed()
     {
         synchronized( controller_.getLock() )
         {
-            controller_.sendMessage( EasyMock.createMock( IMessage.class ), EasyMock.createMock( IRemoteTableProxyController.IMessageHandler.class ) );
+            controller_.sendMessage( EasyMock.createMock( IMessage.class ), EasyMock.createMock( IRemoteNodeController.IMessageHandler.class ) );
         }
     }
 
@@ -258,7 +257,7 @@ public abstract class AbstractRemoteTableProxyControllerTestCase<T extends IRemo
     {
         synchronized( controller_.getLock() )
         {
-            controller_.sendMessage( null, EasyMock.createMock( IRemoteTableProxyController.IMessageHandler.class ) );
+            controller_.sendMessage( null, EasyMock.createMock( IRemoteNodeController.IMessageHandler.class ) );
         }
     }
 }

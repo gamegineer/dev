@@ -29,7 +29,7 @@ import org.gamegineer.table.internal.net.common.messages.PlayersMessage;
  */
 @Immutable
 final class PlayersMessageHandler
-    extends RemoteServerTableProxy.AbstractMessageHandler
+    extends RemoteServerNode.AbstractMessageHandler
 {
     // ======================================================================
     // Constructors
@@ -38,18 +38,18 @@ final class PlayersMessageHandler
     /**
      * Initializes a new instance of the {@code PlayersMessageHandler} class.
      * 
-     * @param remoteTableProxyController
-     *        The control interface for the remote table proxy associated with
-     *        the message handler; must not be {@code null}.
+     * @param remoteNodeController
+     *        The control interface for the remote node associated with the
+     *        message handler; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code remoteTableProxyController} is {@code null}.
+     *         If {@code remoteNodeController} is {@code null}.
      */
     PlayersMessageHandler(
         /* @NonNull */
-        final IRemoteServerTableProxyController remoteTableProxyController )
+        final IRemoteServerNodeController remoteNodeController )
     {
-        super( remoteTableProxyController );
+        super( remoteNodeController );
     }
 
 
@@ -70,6 +70,6 @@ final class PlayersMessageHandler
     {
         assert message != null;
 
-        getRemoteTableProxyController().getNode().setPlayers( message.getPlayers() );
+        getRemoteNodeController().getLocalNode().setPlayers( message.getPlayers() );
     }
 }

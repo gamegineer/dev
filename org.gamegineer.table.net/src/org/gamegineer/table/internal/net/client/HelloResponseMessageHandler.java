@@ -32,7 +32,7 @@ import org.gamegineer.table.net.TableNetworkError;
  */
 @Immutable
 final class HelloResponseMessageHandler
-    extends RemoteServerTableProxy.AbstractMessageHandler
+    extends RemoteServerNode.AbstractMessageHandler
 {
     // ======================================================================
     // Constructors
@@ -42,18 +42,18 @@ final class HelloResponseMessageHandler
      * Initializes a new instance of the {@code HelloResponseMessageHandler}
      * class.
      * 
-     * @param remoteTableProxyController
-     *        The control interface for the remote table proxy associated with
-     *        the message handler; must not be {@code null}.
+     * @param remoteNodeController
+     *        The control interface for the remote node associated with the
+     *        message handler; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code remoteTableProxyController} is {@code null}.
+     *         If {@code remoteNodeController} is {@code null}.
      */
     HelloResponseMessageHandler(
         /* @NonNull */
-        final IRemoteServerTableProxyController remoteTableProxyController )
+        final IRemoteServerNodeController remoteNodeController )
     {
-        super( remoteTableProxyController );
+        super( remoteNodeController );
     }
 
 
@@ -78,7 +78,7 @@ final class HelloResponseMessageHandler
             message.getError(), //
             Integer.valueOf( message.getId() ), //
             Integer.valueOf( message.getCorrelationId() ) ) );
-        getRemoteTableProxyController().close( message.getError() );
+        getRemoteNodeController().close( message.getError() );
     }
 
     /**
@@ -102,17 +102,17 @@ final class HelloResponseMessageHandler
         if( message.getChosenProtocolVersion() != ProtocolVersions.VERSION_1 )
         {
             System.out.println( "ClientService : received unsupported chosen protocol version" ); //$NON-NLS-1$
-            getRemoteTableProxyController().close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
+            getRemoteNodeController().close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
         }
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableProxy.AbstractMessageHandler#handleUnexpectedMessage()
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteNode.AbstractMessageHandler#handleUnexpectedMessage()
      */
     @Override
     protected void handleUnexpectedMessage()
     {
         System.out.println( "ClientService : received unexpected message in response to hello request" ); //$NON-NLS-1$
-        getRemoteTableProxyController().close( TableNetworkError.UNEXPECTED_MESSAGE );
+        getRemoteNodeController().close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

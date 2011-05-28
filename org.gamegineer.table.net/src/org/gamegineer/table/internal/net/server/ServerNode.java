@@ -24,13 +24,15 @@ package org.gamegineer.table.internal.net.server;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Debug;
+import org.gamegineer.table.internal.net.IRemoteNode;
 import org.gamegineer.table.internal.net.ITableNetworkController;
-import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.common.AbstractNode;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.net.TableNetworkException;
 
 /**
  * A server node in a table network.
@@ -39,6 +41,15 @@ import org.gamegineer.table.internal.net.transport.ITransportLayer;
 public final class ServerNode
     extends AbstractNode
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The collection of players connected to the network. */
+    @GuardedBy( "getLock()" )
+    private final Collection<String> players_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -57,12 +68,56 @@ public final class ServerNode
         final ITableNetworkController tableNetworkController )
     {
         super( tableNetworkController );
+
+        players_ = new ArrayList<String>();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Binds the specified player to the table network.
+     * 
+     * @param playerName
+     *        The name of the player to bind to the table network; must not be
+     *        {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    private void bindPlayer(
+        /* @NonNull */
+        final String playerName )
+    {
+        assert playerName != null;
+        assert Thread.holdsLock( getLock() );
+
+        assert !players_.contains( playerName );
+        players_.add( playerName );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "player '%s' has connected", playerName ) ); //$NON-NLS-1$
+
+        final Collection<String> players = getPlayers();
+        for( final IRemoteNode remoteNode : getRemoteNodes() )
+        {
+            remoteNode.setPlayers( players );
+        }
+
+        getTableNetworkController().playersUpdated();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.AbstractNode#connecting()
+     */
+    @Override
+    protected void connecting()
+        throws TableNetworkException
+    {
+        assert Thread.holdsLock( getLock() );
+
+        super.connecting();
+
+        bindPlayer( getPlayerName() );
+    }
 
     /*
      * @see org.gamegineer.table.internal.net.common.AbstractNode#createTransportLayer()
@@ -77,9 +132,22 @@ public final class ServerNode
             @Override
             public IService createService()
             {
-                return new RemoteClientTableProxy( ServerNode.this );
+                return new RemoteClientNode( ServerNode.this );
             }
         } );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.AbstractNode#disconnected()
+     */
+    @Override
+    protected void disconnected()
+    {
+        assert Thread.holdsLock( getLock() );
+
+        super.disconnected();
+
+        unbindPlayer( getPlayerName() );
     }
 
     /*
@@ -96,19 +164,72 @@ public final class ServerNode
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.common.AbstractNode#dispose()
+     */
+    @Override
+    protected void dispose()
+    {
+        assert Thread.holdsLock( getLock() );
+
+        players_.clear();
+
+        super.dispose();
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.INode#getPlayers()
      * @see org.gamegineer.table.internal.net.INodeController#getPlayers()
      */
     @Override
     public Collection<String> getPlayers()
     {
-        final Collection<ITableProxy> tableProxies = getTableProxies();
-        final Collection<String> players = new ArrayList<String>( tableProxies.size() );
-        for( final ITableProxy tableProxy : tableProxies )
+        synchronized( getLock() )
         {
-            players.add( tableProxy.getPlayerName() );
+            return new ArrayList<String>( players_ );
         }
-        return players;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.INode#isPlayerConnected(java.lang.String)
+     */
+    @Override
+    public boolean isPlayerConnected(
+        final String playerName )
+    {
+        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        return players_.contains( playerName );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.AbstractNode#remoteNodeBound(org.gamegineer.table.internal.net.IRemoteNode)
+     */
+    @Override
+    protected void remoteNodeBound(
+        final IRemoteNode remoteNode )
+    {
+        assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        super.remoteNodeBound( remoteNode );
+
+        bindPlayer( remoteNode.getPlayerName() );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.AbstractNode#remoteNodeUnbound(org.gamegineer.table.internal.net.IRemoteNode)
+     */
+    @Override
+    protected void remoteNodeUnbound(
+        final IRemoteNode remoteNode )
+    {
+        assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        super.remoteNodeUnbound( remoteNode );
+
+        unbindPlayer( remoteNode.getPlayerName() );
     }
 
     /*
@@ -121,50 +242,33 @@ public final class ServerNode
         assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        throw new AssertionError( "should never be called on a server node" ); //$NON-NLS-1$
+        // TODO: Move setPlayers() to IClientNode
+        throw new AssertionError( "this method should never be called on a server node" ); //$NON-NLS-1$
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.common.AbstractNode#tableProxyAdded(org.gamegineer.table.internal.net.ITableProxy)
+    /**
+     * Unbinds the specified player from the table network.
+     * 
+     * @param playerName
+     *        The name of the player to unbind from the table network; must not
+     *        be {@code null}.
      */
-    @Override
-    protected void tableProxyAdded(
-        final ITableProxy tableProxy )
+    @GuardedBy( "getLock()" )
+    private void unbindPlayer(
+        /* @NonNull */
+        final String playerName )
     {
-        assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
+        assert playerName != null;
         assert Thread.holdsLock( getLock() );
 
-        super.tableProxyAdded( tableProxy );
-
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "player '%s' has connected", tableProxy.getPlayerName() ) ); //$NON-NLS-1$
-
-        final Collection<String> players = getPlayers();
-        for( final ITableProxy otherTableProxy : getTableProxies() )
-        {
-            otherTableProxy.setPlayers( players );
-        }
-
-        getTableNetworkController().playersUpdated();
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.common.AbstractNode#tableProxyRemoved(org.gamegineer.table.internal.net.ITableProxy)
-     */
-    @Override
-    protected void tableProxyRemoved(
-        final ITableProxy tableProxy )
-    {
-        assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
-
-        super.tableProxyRemoved( tableProxy );
-
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "player '%s' has disconnected", tableProxy.getPlayerName() ) ); //$NON-NLS-1$
+        assert players_.contains( playerName );
+        players_.remove( playerName );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "player '%s' has disconnected", playerName ) ); //$NON-NLS-1$
 
         final Collection<String> players = getPlayers();
-        for( final ITableProxy otherTableProxy : getTableProxies() )
+        for( final IRemoteNode remoteNode : getRemoteNodes() )
         {
-            otherTableProxy.setPlayers( players );
+            remoteNode.setPlayers( players );
         }
 
         getTableNetworkController().playersUpdated();

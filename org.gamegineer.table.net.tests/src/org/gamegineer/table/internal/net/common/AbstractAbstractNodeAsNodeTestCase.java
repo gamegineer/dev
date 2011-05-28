@@ -1,5 +1,5 @@
 /*
- * LocalClientTableProxyAsTableProxyTest.java
+ * AbstractAbstractNodeAsNodeTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,22 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 16, 2011 at 11:13:25 PM.
+ * Created on May 27, 2011 at 9:02:14 PM.
  */
 
 package org.gamegineer.table.internal.net.common;
 
-import org.gamegineer.table.internal.net.AbstractTableProxyTestCase;
-import org.gamegineer.table.internal.net.ITableProxy;
+import org.gamegineer.table.internal.net.AbstractNodeTestCase;
+import org.gamegineer.table.internal.net.INode;
+import org.gamegineer.table.internal.net.IRemoteNode;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.common.LocalClientTableProxy} class
- * to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.ITableProxy} interface.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.internal.net.INode} interface via extension of
+ * the {@link org.gamegineer.table.internal.net.common.AbstractNode} class.
  */
-public final class LocalClientTableProxyAsTableProxyTest
-    extends AbstractTableProxyTestCase
+public abstract class AbstractAbstractNodeAsNodeTestCase
+    extends AbstractNodeTestCase
 {
     // ======================================================================
     // Constructors
@@ -39,9 +39,9 @@ public final class LocalClientTableProxyAsTableProxyTest
 
     /**
      * Initializes a new instance of the {@code
-     * LocalClientTableProxyAsTableProxyTest} class.
+     * AbstractAbstractNodeAsNodeTestCase} class.
      */
-    public LocalClientTableProxyAsTableProxyTest()
+    protected AbstractAbstractNodeAsNodeTestCase()
     {
         super();
     }
@@ -52,11 +52,21 @@ public final class LocalClientTableProxyAsTableProxyTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractTableProxyTestCase#createTableProxy()
+     * @see org.gamegineer.table.internal.net.AbstractNodeTestCase#isRemoteNodeBound(org.gamegineer.table.internal.net.INode, java.lang.String)
      */
     @Override
-    protected ITableProxy createTableProxy()
+    protected final boolean isRemoteNodeBound(
+        final INode node,
+        final String playerName )
     {
-        return new LocalClientTableProxy( "playerName" ); //$NON-NLS-1$
+        for( final IRemoteNode remoteNode : ((AbstractNode)node).getRemoteNodes() )
+        {
+            if( playerName.equals( remoteNode.getPlayerName() ) )
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

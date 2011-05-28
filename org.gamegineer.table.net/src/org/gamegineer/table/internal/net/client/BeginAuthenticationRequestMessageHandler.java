@@ -37,7 +37,7 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @Immutable
 final class BeginAuthenticationRequestMessageHandler
-    extends RemoteServerTableProxy.AbstractMessageHandler
+    extends RemoteServerNode.AbstractMessageHandler
 {
     // ======================================================================
     // Constructors
@@ -47,18 +47,18 @@ final class BeginAuthenticationRequestMessageHandler
      * Initializes a new instance of the {@code
      * BeginAuthenticationRequestMessageHandler} class.
      * 
-     * @param remoteTableProxyController
-     *        The control interface for the remote table proxy associated with
-     *        the message handler; must not be {@code null}.
+     * @param remoteNodeController
+     *        The control interface for the remote node associated with the
+     *        message handler; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code remoteTableProxyController} is {@code null}.
+     *         If {@code remoteNodeController} is {@code null}.
      */
     BeginAuthenticationRequestMessageHandler(
         /* @NonNull */
-        final IRemoteServerTableProxyController remoteTableProxyController )
+        final IRemoteServerNodeController remoteNodeController )
     {
-        super( remoteTableProxyController );
+        super( remoteNodeController );
     }
 
 
@@ -79,13 +79,13 @@ final class BeginAuthenticationRequestMessageHandler
     {
         assert message != null;
 
-        final IRemoteServerTableProxyController controller = getRemoteTableProxyController();
-        final INode node = controller.getNode();
+        final IRemoteServerNodeController controller = getRemoteNodeController();
+        final INode localNode = controller.getLocalNode();
         final BeginAuthenticationResponseMessage response = new BeginAuthenticationResponseMessage();
         response.setCorrelationId( message.getId() );
-        response.setPlayerName( node.getLocalPlayerName() );
+        response.setPlayerName( localNode.getPlayerName() );
 
-        final SecureString password = node.getPassword();
+        final SecureString password = localNode.getPassword();
         try
         {
             final Authenticator authenticator = new Authenticator();

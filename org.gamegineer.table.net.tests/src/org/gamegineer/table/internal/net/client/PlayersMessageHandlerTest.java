@@ -101,10 +101,10 @@ public final class PlayersMessageHandlerTest
         throws Exception
     {
         final Collection<String> players = Arrays.asList( "player1", "player2", "player3" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        final INode node = mocksControl_.createMock( INode.class );
-        node.setPlayers( players );
-        final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
-        EasyMock.expect( controller.getNode() ).andReturn( node ).anyTimes();
+        final INode localNode = mocksControl_.createMock( INode.class );
+        localNode.setPlayers( players );
+        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
+        EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();
         mocksControl_.replay();
 
         final PlayersMessage message = new PlayersMessage();

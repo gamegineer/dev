@@ -40,36 +40,36 @@ final class Messages
 
     // --- AbstractNode -----------------------------------------------------
 
-    /** The table proxy is already registered. */
-    public static String AbstractNode_addTableProxy_tableProxyRegistered;
+    /** The remote node is already bound. */
+    public static String AbstractNode_bindRemoteNode_remoteNodeBound;
 
     /** The network is disconnected. */
     public static String AbstractNode_networkDisconnected;
 
-    /** The table proxy is not registered. */
-    public static String AbstractNode_removeTableProxy_tableProxyNotRegistered;
+    /** The remote node is not bound. */
+    public static String AbstractNode_unbindRemoteNode_remoteNodeNotBound;
 
-    // --- AbstractRemoteTableProxy -----------------------------------------
+    // --- AbstractRemoteNode -----------------------------------------------
 
-    /** The remote table proxy is already bound. */
-    public static String AbstractRemoteTableProxy_bound;
+    /** The remote node is already bound. */
+    public static String AbstractRemoteNode_bound;
 
-    /** The remote table proxy is closed. */
-    public static String AbstractRemoteTableProxy_closed;
+    /** The remote node is closed. */
+    public static String AbstractRemoteNode_closed;
 
     /** An error occurred while deserializing a message. */
-    public static String AbstractRemoteTableProxy_extractMessage_deserializationError;
+    public static String AbstractRemoteNode_extractMessage_deserializationError;
 
     /** The service received an unhandled message. */
-    public static String AbstractRemoteTableProxy_messageReceived_unhandledMessage;
+    public static String AbstractRemoteNode_messageReceived_unhandledMessage;
 
     /** The player has not been authenticated. */
-    public static String AbstractRemoteTableProxy_playerNotAuthenticated;
+    public static String AbstractRemoteNode_playerNotAuthenticated;
 
     /** The message type is already registered. */
-    public static String AbstractRemoteTableProxy_registerUncorrelatedMessageHandler_messageTypeRegistered;
+    public static String AbstractRemoteNode_registerUncorrelatedMessageHandler_messageTypeRegistered;
 
-    // --- AbstractRemoteTableProxy.AbstractMessageHandler ------------------
+    // --- AbstractRemoteNode.AbstractMessageHandler ------------------------
 
     /** An unexpected error occurred while handling a message. */
     public static String AbstractMessageHandler_handleMessage_unexpectedError;
@@ -77,7 +77,7 @@ final class Messages
     /** The message handler received an unexpected message. */
     public static String AbstractMessageHandler_messageReceived_unexpectedMessage;
 
-    // --- AbstractRemoteTableProxy.ErrorMessageHandler ---------------------
+    // --- AbstractRemoteNode.ErrorMessageHandler ---------------------------
 
     /** An uncorrelated error message was received. */
     public static String ErrorMessageHandler_handleMessage_errorReceived;
@@ -119,7 +119,7 @@ final class Messages
     // Methods
     // ======================================================================
 
-    // --- AbstractRemoteTableProxy -----------------------------------------
+    // --- AbstractRemoteNode -----------------------------------------------
 
     /**
      * Gets the formatted message indicating an error occurred while
@@ -133,11 +133,11 @@ final class Messages
      */
     /* @NonNull */
     @SuppressWarnings( "boxing" )
-    static String AbstractRemoteTableProxy_extractMessage_deserializationError(
+    static String AbstractRemoteNode_extractMessage_deserializationError(
         /* @NonNull */
         final MessageEnvelope messageEnvelope )
     {
-        return bind( AbstractRemoteTableProxy_extractMessage_deserializationError, messageEnvelope.getId(), messageEnvelope.getCorrelationId() );
+        return bind( AbstractRemoteNode_extractMessage_deserializationError, messageEnvelope.getId(), messageEnvelope.getCorrelationId() );
     }
 
     /**
@@ -152,18 +152,18 @@ final class Messages
      */
     /* @NonNull */
     @SuppressWarnings( "boxing" )
-    static String AbstractRemoteTableProxy_messageReceived_unhandledMessage(
+    static String AbstractRemoteNode_messageReceived_unhandledMessage(
         /* @NonNull */
         final IMessage message )
     {
-        return bind( AbstractRemoteTableProxy_messageReceived_unhandledMessage, new Object[] {
+        return bind( AbstractRemoteNode_messageReceived_unhandledMessage, new Object[] {
             message.getClass().getSimpleName(), //
             message.getId(), //
             message.getCorrelationId()
         } );
     }
 
-    // --- AbstractRemoteTableProxy.AbstractMessageHandler ------------------
+    // --- AbstractRemoteNode.AbstractMessageHandler ------------------------
 
     /**
      * Gets the formatted message indicating the message handler received an
@@ -181,7 +181,7 @@ final class Messages
     @SuppressWarnings( "boxing" )
     static String AbstractMessageHandler_messageReceived_unexpectedMessage(
         /* @NonNull */
-        final IRemoteTableProxyController.IMessageHandler messageHandler,
+        final IRemoteNodeController.IMessageHandler messageHandler,
         /* @NonNull */
         final IMessage message )
     {
@@ -193,7 +193,7 @@ final class Messages
         } );
     }
 
-    // --- AbstractRemoteTableProxy.ErrorMessageHandler ---------------------
+    // --- AbstractRemoteNode.ErrorMessageHandler ---------------------------
 
     /**
      * Gets the formatted message indicating an uncorrelated error message was

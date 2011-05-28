@@ -35,8 +35,8 @@ import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.INodeController;
+import org.gamegineer.table.internal.net.IRemoteNode;
 import org.gamegineer.table.internal.net.ITableNetworkController;
-import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 import org.gamegineer.table.internal.net.transport.TransportException;
@@ -60,31 +60,36 @@ public abstract class AbstractNode
     // ======================================================================
 
     /**
-     * The local client table proxy or {@code null} if the network is not
+     * The local player name or {@code null} if the table network is not
      * connected.
      */
-    @GuardedBy( "getLock()" )
-    private ITableProxy localClientTableProxy_;
-
-    /** The local player name or {@code null} if the network is not connected. */
     @GuardedBy( "getLock()" )
     private String localPlayerName_;
 
     /** The instance lock. */
     private final Object lock_;
 
-    /** The network password or {@code null} if the network is not connected. */
+    /**
+     * The table network password or {@code null} if the table network is not
+     * connected.
+     */
     @GuardedBy( "getLock()" )
     private SecureString password_;
+
+    /**
+     * The collection of bound remote nodes. The key is the name of the player
+     * associated with the remote node. The value is the remote node.
+     */
+    @GuardedBy( "getLock()" )
+    private final Map<String, IRemoteNode> remoteNodes_;
 
     /** The table network controller. */
     private final ITableNetworkController tableNetworkController_;
 
-    /** The collection of registered table proxies. */
-    @GuardedBy( "getLock()" )
-    private final Map<String, ITableProxy> tableProxies_;
-
-    /** The transport layer or {@code null} if the network is not connected. */
+    /**
+     * The transport layer or {@code null} if the table network is not
+     * connected.
+     */
     @GuardedBy( "getLock()" )
     private ITransportLayer transportLayer_;
 
@@ -108,12 +113,11 @@ public abstract class AbstractNode
     {
         assertArgumentNotNull( tableNetworkController, "tableNetworkController" ); //$NON-NLS-1$
 
-        localClientTableProxy_ = null;
         localPlayerName_ = null;
         lock_ = new Object();
         password_ = null;
+        remoteNodes_ = new HashMap<String, IRemoteNode>();
         tableNetworkController_ = tableNetworkController;
-        tableProxies_ = new HashMap<String, ITableProxy>();
         transportLayer_ = null;
     }
 
@@ -123,20 +127,19 @@ public abstract class AbstractNode
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.INode#addTableProxy(org.gamegineer.table.internal.net.ITableProxy)
+     * @see org.gamegineer.table.internal.net.INode#bindRemoteNode(org.gamegineer.table.internal.net.IRemoteNode)
      */
     @Override
-    public final void addTableProxy(
-        final ITableProxy tableProxy )
+    public final void bindRemoteNode(
+        final IRemoteNode remoteNode )
     {
-        assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
+        assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        assertArgumentLegal( !tableProxies_.containsKey( tableProxy.getPlayerName() ), "tableProxy", Messages.AbstractNode_addTableProxy_tableProxyRegistered ); //$NON-NLS-1$ 
-
-        tableProxies_.put( tableProxy.getPlayerName(), tableProxy );
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table proxy registered for player '%s'.", tableProxy.getPlayerName() ) ); //$NON-NLS-1$
-        tableProxyAdded( tableProxy );
+        assertArgumentLegal( !remoteNodes_.containsKey( remoteNode.getPlayerName() ), "remoteNode", Messages.AbstractNode_bindRemoteNode_remoteNodeBound ); //$NON-NLS-1$ 
+        remoteNodes_.put( remoteNode.getPlayerName(), remoteNode );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Remote node bound for player '%s'.", remoteNode.getPlayerName() ) ); //$NON-NLS-1$
+        remoteNodeBound( remoteNode );
     }
 
     /*
@@ -158,8 +161,7 @@ public abstract class AbstractNode
 
             localPlayerName_ = configuration.getLocalPlayerName();
             password_ = configuration.getPassword();
-            localClientTableProxy_ = new LocalClientTableProxy( localPlayerName_ );
-            addTableProxy( localClientTableProxy_ );
+            // TODO: add local table to table proxy collection
             connecting();
 
             final ITransportLayer transportLayer = createTransportLayer();
@@ -261,8 +263,7 @@ public abstract class AbstractNode
                 transportLayer_.close();
                 transportLayer_ = null;
 
-                removeTableProxy( localClientTableProxy_ );
-                localClientTableProxy_ = null;
+                // TODO: remove local table from table proxy collection
                 disconnected();
                 dispose();
             }
@@ -356,26 +357,10 @@ public abstract class AbstractNode
     {
         assert Thread.holdsLock( getLock() );
 
-        tableProxies_.clear();
-        localClientTableProxy_ = null;
         localPlayerName_ = null;
         password_.dispose();
         password_ = null;
-    }
-
-    /**
-     * @throws java.lang.IllegalStateException
-     *         If the network is not connected.
-     * 
-     * @see org.gamegineer.table.internal.net.INode#getLocalPlayerName()
-     */
-    @Override
-    public final String getLocalPlayerName()
-    {
-        assert Thread.holdsLock( getLock() );
-
-        assertStateLegal( localPlayerName_ != null, Messages.AbstractNode_networkDisconnected );
-        return localPlayerName_;
+        remoteNodes_.clear();
     }
 
     /*
@@ -402,6 +387,32 @@ public abstract class AbstractNode
         return new SecureString( password_ );
     }
 
+    /*
+     * @see org.gamegineer.table.internal.net.INode#getPlayerName()
+     */
+    @Override
+    public final String getPlayerName()
+    {
+        assert Thread.holdsLock( getLock() );
+
+        assertStateLegal( localPlayerName_ != null, Messages.AbstractNode_networkDisconnected );
+        return localPlayerName_;
+    }
+
+    /**
+     * Gets the collection of bound remote nodes.
+     * 
+     * @return The collection of bound remote nodes; never {@code null}.
+     */
+    /* @NonNull */
+    protected final Collection<IRemoteNode> getRemoteNodes()
+    {
+        synchronized( getLock() )
+        {
+            return new ArrayList<IRemoteNode>( remoteNodes_.values() );
+        }
+    }
+
     /**
      * Gets the table network controller.
      * 
@@ -414,80 +425,7 @@ public abstract class AbstractNode
     }
 
     /**
-     * Gets the collection of registered table proxies.
-     * 
-     * @return The collection of registered table proxies; never {@code null}.
-     */
-    /* @NonNull */
-    protected final Collection<ITableProxy> getTableProxies()
-    {
-        synchronized( getLock() )
-        {
-            return new ArrayList<ITableProxy>( tableProxies_.values() );
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.INode#isTableProxyPresent(java.lang.String)
-     */
-    @Override
-    public final boolean isTableProxyPresent(
-        final String playerName )
-    {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
-
-        return tableProxies_.containsKey( playerName );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.INode#removeTableProxy(org.gamegineer.table.internal.net.ITableProxy)
-     */
-    @Override
-    public final void removeTableProxy(
-        final ITableProxy tableProxy )
-    {
-        assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
-
-        assertArgumentLegal( tableProxies_.remove( tableProxy.getPlayerName() ) != null, "tableProxy", Messages.AbstractNode_removeTableProxy_tableProxyNotRegistered ); //$NON-NLS-1$
-
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Table proxy unregistered for player '%s'.", tableProxy.getPlayerName() ) ); //$NON-NLS-1$
-        tableProxyRemoved( tableProxy );
-    }
-
-    /**
-     * Template method invoked when a table proxy has been added to the table
-     * network node.
-     * 
-     * <p>
-     * This method is invoked while the instance lock is held. Subclasses must
-     * always invoke the superclass method.
-     * </p>
-     * 
-     * <p>
-     * This implementation does nothing.
-     * </p>
-     * 
-     * @param tableProxy
-     *        The table proxy that was added; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableProxy} is {@code null}.
-     */
-    @GuardedBy( "getLock()" )
-    protected void tableProxyAdded(
-        /* @NonNull */
-        final ITableProxy tableProxy )
-    {
-        assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
-
-        // do nothing
-    }
-
-    /**
-     * Template method invoked when a table proxy has been removed from the
+     * Template method invoked when a remote node has been bound to the local
      * table network node.
      * 
      * <p>
@@ -499,21 +437,66 @@ public abstract class AbstractNode
      * This implementation does nothing.
      * </p>
      * 
-     * @param tableProxy
-     *        The table proxy that was removed; must not be {@code null}.
+     * @param remoteNode
+     *        The remote node that was bound; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code tableProxy} is {@code null}.
+     *         If {@code remoteNode} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    protected void tableProxyRemoved(
+    protected void remoteNodeBound(
         /* @NonNull */
-        final ITableProxy tableProxy )
+        final IRemoteNode remoteNode )
     {
-        assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
+        assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         // do nothing
+    }
+
+    /**
+     * Template method invoked when a remote node has been unbound from the
+     * local table network node.
+     * 
+     * <p>
+     * This method is invoked while the instance lock is held. Subclasses must
+     * always invoke the superclass method.
+     * </p>
+     * 
+     * <p>
+     * This implementation does nothing.
+     * </p>
+     * 
+     * @param remoteNode
+     *        The remote node that was unbound; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code remoteNode} is {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    protected void remoteNodeUnbound(
+        /* @NonNull */
+        final IRemoteNode remoteNode )
+    {
+        assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        // do nothing
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.INode#unbindRemoteNode(org.gamegineer.table.internal.net.IRemoteNode)
+     */
+    @Override
+    public final void unbindRemoteNode(
+        final IRemoteNode remoteNode )
+    {
+        assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        assertArgumentLegal( remoteNodes_.remove( remoteNode.getPlayerName() ) != null, "remoteNode", Messages.AbstractNode_unbindRemoteNode_remoteNodeNotBound ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Remote node unbound for player '%s'.", remoteNode.getPlayerName() ) ); //$NON-NLS-1$
+        remoteNodeUnbound( remoteNode );
     }
 
 

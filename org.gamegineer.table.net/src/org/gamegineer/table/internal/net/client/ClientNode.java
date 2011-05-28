@@ -30,8 +30,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.net.IRemoteNode;
 import org.gamegineer.table.internal.net.ITableNetworkController;
-import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.common.AbstractNode;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -66,7 +66,7 @@ public final class ClientNode
     @GuardedBy( "handshakeLock_" )
     private boolean isHandshakeComplete_;
 
-    /** The collection of players connected to the table network. */
+    /** The collection of players connected to the network. */
     @GuardedBy( "getLock()" )
     private final Collection<String> players_;
 
@@ -181,7 +181,7 @@ public final class ClientNode
             @Override
             public IService createService()
             {
-                return new RemoteServerTableProxy( ClientNode.this );
+                return new RemoteServerNode( ClientNode.this );
             }
         } );
     }
@@ -206,9 +206,9 @@ public final class ClientNode
     {
         assert Thread.holdsLock( getLock() );
 
-        super.dispose();
-
         players_.clear();
+
+        super.dispose();
     }
 
     /*
@@ -222,6 +222,34 @@ public final class ClientNode
         {
             return new ArrayList<String>( players_ );
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.INode#isPlayerConnected(java.lang.String)
+     */
+    @Override
+    public boolean isPlayerConnected(
+        final String playerName )
+    {
+        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        return players_.contains( playerName );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.common.AbstractNode#remoteNodeBound(org.gamegineer.table.internal.net.IRemoteNode)
+     */
+    @Override
+    protected void remoteNodeBound(
+        final IRemoteNode remoteNode )
+    {
+        assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        super.remoteNodeBound( remoteNode );
+
+        setHandshakeComplete( null );
     }
 
     /**
@@ -264,23 +292,5 @@ public final class ClientNode
         players_.clear();
         players_.addAll( players );
         getTableNetworkController().playersUpdated();
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.common.AbstractNode#tableProxyAdded(org.gamegineer.table.internal.net.ITableProxy)
-     */
-    @Override
-    protected void tableProxyAdded(
-        final ITableProxy tableProxy )
-    {
-        assertArgumentNotNull( tableProxy, "tableProxy" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
-
-        super.tableProxyAdded( tableProxy );
-
-        if( tableProxy instanceof RemoteServerTableProxy )
-        {
-            setHandshakeComplete( null );
-        }
     }
 }

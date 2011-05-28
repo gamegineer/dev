@@ -29,7 +29,7 @@ import org.easymock.IMocksControl;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.common.Authenticator;
-import org.gamegineer.table.internal.net.common.IRemoteTableProxyController.IMessageHandler;
+import org.gamegineer.table.internal.net.common.IRemoteNodeController.IMessageHandler;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
@@ -111,11 +111,11 @@ public final class BeginAuthenticationRequestMessageHandlerTest
     {
         final String playerName = "playerName"; //$NON-NLS-1$
         final SecureString password = new SecureString( "password".toCharArray() ); //$NON-NLS-1$
-        final INode node = mocksControl_.createMock( INode.class );
-        EasyMock.expect( node.getLocalPlayerName() ).andReturn( playerName );
-        EasyMock.expect( node.getPassword() ).andReturn( new SecureString( password ) );
-        final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
-        EasyMock.expect( controller.getNode() ).andReturn( node ).anyTimes();
+        final INode localNode = mocksControl_.createMock( INode.class );
+        EasyMock.expect( localNode.getPlayerName() ).andReturn( playerName );
+        EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );
+        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
+        EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
         EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( true );
         mocksControl_.replay();
@@ -150,11 +150,11 @@ public final class BeginAuthenticationRequestMessageHandlerTest
     @Test
     public void testHandleMessage_BeginAuthenticationRequestMessage_SendResponseMessageFails()
     {
-        final INode node = mocksControl_.createMock( INode.class );
-        EasyMock.expect( node.getLocalPlayerName() ).andReturn( "playerName" ); //$NON-NLS-1$
-        EasyMock.expect( node.getPassword() ).andReturn( new SecureString( "password".toCharArray() ) ); //$NON-NLS-1$
-        final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
-        EasyMock.expect( controller.getNode() ).andReturn( node ).anyTimes();
+        final INode localNode = mocksControl_.createMock( INode.class );
+        EasyMock.expect( localNode.getPlayerName() ).andReturn( "playerName" ); //$NON-NLS-1$
+        EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( "password".toCharArray() ) ); //$NON-NLS-1$
+        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
+        EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();
         EasyMock.expect( controller.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( false );
         controller.close( TableNetworkError.TRANSPORT_ERROR );
         mocksControl_.replay();

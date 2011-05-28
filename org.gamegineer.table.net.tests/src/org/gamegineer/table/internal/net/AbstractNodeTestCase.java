@@ -25,7 +25,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import java.util.ArrayList;
 import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
@@ -81,6 +80,29 @@ public abstract class AbstractNodeTestCase
         throws Exception;
 
     /**
+     * Indicates a remote node for the specified player is bound to the
+     * specified table network node.
+     * 
+     * @param node
+     *        The table network node under test in the fixture; must not be
+     *        {@code null}.
+     * @param playerName
+     *        The name of the player associated with the remote node; must not
+     *        be {@code null}.
+     * 
+     * @return {@code true} if a remote node for the specified player is bound
+     *         to the specified table network node; otherwise {@code false}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code node} or {@code playerName} is {@code null}.
+     */
+    protected abstract boolean isRemoteNodeBound(
+        /* @NonNull */
+        final INode node,
+        /* @NonNull */
+        final String playerName );
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -110,70 +132,57 @@ public abstract class AbstractNodeTestCase
     }
 
     /**
-     * Ensures the {@code addTableProxy} method adds the table proxy when the
-     * table proxy is absent from the registered table proxies collection.
+     * Ensures the {@code bindRemoteNode} method adds the remote node when the
+     * remote node is absent from the bound remote nodes collection.
      */
     @SuppressWarnings( "unchecked" )
     @Test
-    public void testAddTableProxy_TableProxy_Absent()
+    public void testBindRemoteNode_RemoteNode_Absent()
     {
         synchronized( node_.getLock() )
         {
-            final ITableProxy tableProxy = mocksControl_.createMock( ITableProxy.class );
-            EasyMock.expect( tableProxy.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
-            tableProxy.setPlayers( EasyMock.notNull( Collection.class ) );
+            final IRemoteNode remoteNode = mocksControl_.createMock( IRemoteNode.class );
+            EasyMock.expect( remoteNode.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+            remoteNode.setPlayers( EasyMock.notNull( Collection.class ) );
             mocksControl_.replay();
-            assertFalse( node_.isTableProxyPresent( tableProxy.getPlayerName() ) );
+            assertFalse( isRemoteNodeBound( node_, remoteNode.getPlayerName() ) );
 
-            node_.addTableProxy( tableProxy );
+            node_.bindRemoteNode( remoteNode );
 
-            assertTrue( node_.isTableProxyPresent( tableProxy.getPlayerName() ) );
+            assertTrue( isRemoteNodeBound( node_, remoteNode.getPlayerName() ) );
         }
     }
 
     /**
-     * Ensures the {@code addTableProxy} method throws an exception when passed
-     * a {@code null} table proxy.
+     * Ensures the {@code bindRemoteNode} method throws an exception when passed
+     * a {@code null} remote node.
      */
     @Test( expected = NullPointerException.class )
-    public void testAddTableProxy_TableProxy_Null()
+    public void testBindRemoteNode_RemoteNode_Null()
     {
         synchronized( node_.getLock() )
         {
-            node_.addTableProxy( null );
+            node_.bindRemoteNode( null );
         }
     }
 
     /**
-     * Ensures the {@code addTableProxy} method throws an exception when the
-     * table proxy is present in the registered table proxies collection.
+     * Ensures the {@code bindRemoteNode} method throws an exception when the
+     * remote node is present in the bound remote nodes collection.
      */
     @SuppressWarnings( "unchecked" )
     @Test( expected = IllegalArgumentException.class )
-    public void testAddTableProxy_TableProxy_Present()
+    public void testBindRemoteNode_RemoteNode_Present()
     {
         synchronized( node_.getLock() )
         {
-            final ITableProxy tableProxy = mocksControl_.createMock( ITableProxy.class );
-            EasyMock.expect( tableProxy.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
-            tableProxy.setPlayers( EasyMock.notNull( Collection.class ) );
+            final IRemoteNode remoteNode = mocksControl_.createMock( IRemoteNode.class );
+            EasyMock.expect( remoteNode.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+            remoteNode.setPlayers( EasyMock.notNull( Collection.class ) );
             mocksControl_.replay();
-            node_.addTableProxy( tableProxy );
+            node_.bindRemoteNode( remoteNode );
 
-            node_.addTableProxy( tableProxy );
-        }
-    }
-
-    /**
-     * Ensures the {@code getLocalPlayerName} method does not return {@code
-     * null}.
-     */
-    @Test
-    public void testGetLocalPlayerName_ReturnValue_NonNull()
-    {
-        synchronized( node_.getLock() )
-        {
-            assertNotNull( node_.getLocalPlayerName() );
+            node_.bindRemoteNode( remoteNode );
         }
     }
 
@@ -208,101 +217,27 @@ public abstract class AbstractNodeTestCase
     }
 
     /**
-     * Ensures the {@code getPlayers} method returns a copy of the player
-     * collection.
+     * Ensures the {@code getPlayerName} method does not return {@code null}.
      */
     @Test
-    public void testGetPlayers_ReturnValue_Copy()
+    public void testGetPlayerName_ReturnValue_NonNull()
     {
-        final Collection<String> players = node_.getPlayers();
-        final Collection<String> expectedValue = new ArrayList<String>( players );
-
-        players.add( "newPlayerName" ); //$NON-NLS-1$
-        final Collection<String> actualValue = node_.getPlayers();
-
-        assertEquals( expectedValue, actualValue );
+        synchronized( node_.getLock() )
+        {
+            assertNotNull( node_.getPlayerName() );
+        }
     }
 
     /**
-     * Ensures the {@code getPlayers} method does not return {@code null}.
-     */
-    @Test
-    public void testGetPlayers_ReturnValue_NonNull()
-    {
-        assertNotNull( node_.getPlayers() );
-    }
-
-    /**
-     * Ensures the {@code isTableProxyPresent} method throws an exception when
+     * Ensures the {@code isPlayerConnected} method throws an exception when
      * passed a {@code null} player name.
      */
     @Test( expected = NullPointerException.class )
-    public void testIsTableProxyPresent_PlayerName_Null()
+    public void testIsPlayerConnected_PlayerName_Null()
     {
         synchronized( node_.getLock() )
         {
-            node_.isTableProxyPresent( null );
-        }
-    }
-
-    /**
-     * Ensures the {@code removeTableProxy} method throws an exception when the
-     * table proxy is absent from the registered table proxies collection.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testRemoveTableProxy_TableProxy_Absent()
-        throws Exception
-    {
-        synchronized( node_.getLock() )
-        {
-            final ITableProxy tableProxy = mocksControl_.createMock( ITableProxy.class );
-            EasyMock.expect( tableProxy.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
-            mocksControl_.replay();
-
-            node_.removeTableProxy( tableProxy );
-        }
-    }
-
-    /**
-     * Ensures the {@code removeTableProxy} method throws an exception when
-     * passed a {@code null} table proxy.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRemoveTableProxy_TableProxy_Null()
-    {
-        synchronized( node_.getLock() )
-        {
-            node_.removeTableProxy( null );
-        }
-    }
-
-    /**
-     * Ensures the {@code removeTableProxy} method removes the table proxy when
-     * the table proxy is present in the registered table proxies collection.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @SuppressWarnings( "unchecked" )
-    @Test
-    public void testRemoveTableProxy_TableProxy_Present()
-        throws Exception
-    {
-        synchronized( node_.getLock() )
-        {
-            final ITableProxy tableProxy = mocksControl_.createMock( ITableProxy.class );
-            EasyMock.expect( tableProxy.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
-            tableProxy.setPlayers( EasyMock.notNull( Collection.class ) );
-            mocksControl_.replay();
-            node_.addTableProxy( tableProxy );
-            assertTrue( node_.isTableProxyPresent( tableProxy.getPlayerName() ) );
-
-            node_.removeTableProxy( tableProxy );
-
-            assertFalse( node_.isTableProxyPresent( tableProxy.getPlayerName() ) );
+            node_.isPlayerConnected( null );
         }
     }
 
@@ -316,6 +251,67 @@ public abstract class AbstractNodeTestCase
         synchronized( node_.getLock() )
         {
             node_.setPlayers( null );
+        }
+    }
+
+    /**
+     * Ensures the {@code unbindRemoteNode} method throws an exception when the
+     * remote node is absent from the bound remote nodes collection.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testUnbindRemoteNode_RemoteNode_Absent()
+        throws Exception
+    {
+        synchronized( node_.getLock() )
+        {
+            final IRemoteNode remoteNode = mocksControl_.createMock( IRemoteNode.class );
+            EasyMock.expect( remoteNode.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+            mocksControl_.replay();
+
+            node_.unbindRemoteNode( remoteNode );
+        }
+    }
+
+    /**
+     * Ensures the {@code unbindRemoteNode} method throws an exception when
+     * passed a {@code null} remote node.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testUnbindRemoteNode_RemoteNode_Null()
+    {
+        synchronized( node_.getLock() )
+        {
+            node_.unbindRemoteNode( null );
+        }
+    }
+
+    /**
+     * Ensures the {@code unbindRemoteNode} method removes the remote node when
+     * the remote node is present in the bound remote nodes collection.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @SuppressWarnings( "unchecked" )
+    @Test
+    public void testUnbindRemoteNode_RemoteNode_Present()
+        throws Exception
+    {
+        synchronized( node_.getLock() )
+        {
+            final IRemoteNode remoteNode = mocksControl_.createMock( IRemoteNode.class );
+            EasyMock.expect( remoteNode.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+            remoteNode.setPlayers( EasyMock.notNull( Collection.class ) );
+            mocksControl_.replay();
+            node_.bindRemoteNode( remoteNode );
+            assertTrue( isRemoteNodeBound( node_, remoteNode.getPlayerName() ) );
+
+            node_.unbindRemoteNode( remoteNode );
+
+            assertFalse( isRemoteNodeBound( node_, remoteNode.getPlayerName() ) );
         }
     }
 }

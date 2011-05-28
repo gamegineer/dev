@@ -27,7 +27,7 @@ import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.net.TableNetworkError;
 
 /**
- * A node in a table network.
+ * A local node in a table network.
  * 
  * <p>
  * A node is responsible for managing the local table and its interaction with
@@ -43,45 +43,40 @@ public interface INode
     // ======================================================================
 
     /**
-     * Adds the specified table proxy to the table network node.
+     * Binds the specified remote node to the local table network node.
      * 
-     * @param tableProxy
-     *        The table proxy; must not be {@code null}.
+     * @param remoteNode
+     *        The remote node; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code tableProxy} is already a registered table proxy.
+     *         If {@code remoteNode} is already bound to the local table network
+     *         node.
      * @throws java.lang.NullPointerException
-     *         If {@code tableProxy} is {@code null}.
+     *         If {@code remoteNode} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    public void addTableProxy(
+    public void bindRemoteNode(
         /* @NonNull */
-        ITableProxy tableProxy );
+        IRemoteNode remoteNode );
 
     /**
-     * Disconnects the table network node for the specified cause.
+     * Disconnects the local table network node for the specified cause.
      * 
      * @param error
-     *        The error that caused the table network node to be disconnected or
-     *        {@code null} if the table network node was disconnected normally.
+     *        The error that caused the local table network node to be
+     *        disconnected or {@code null} if the local table network node was
+     *        disconnected normally.
      */
+    // TODO: Move to IClientNode
     public void disconnect(
         /* @Nullable */
         TableNetworkError error );
 
     /**
-     * Gets the local player name.
+     * Gets the instance lock for the local table network node.
      * 
-     * @return The local player name; never {@code null}.
-     */
-    @GuardedBy( "getLock()" )
-    /* @NonNull */
-    public String getLocalPlayerName();
-
-    /**
-     * Gets the instance lock for the table network node.
-     * 
-     * @return The instance lock for the table network node; never {@code null}.
+     * @return The instance lock for the local table network node; never {@code
+     *         null}.
      */
     /* @NonNull */
     public Object getLock();
@@ -91,55 +86,45 @@ public interface INode
      * 
      * @return The table network password; never {@code null}. The returned
      *         value is a copy and must be disposed when it is no longer needed.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If the table network is not connected.
      */
     @GuardedBy( "getLock()" )
     /* @NonNull */
     public SecureString getPassword();
 
     /**
-     * Gets the collection of players connected to the table network.
+     * Gets the name of the player associated with the local table network node.
      * 
-     * @return The collection of players connected to the table network; never
-     *         {@code null}.
+     * @return The name of the player associated with the local table network
+     *         node; never {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If the table network is not connected.
      */
+    @GuardedBy( "getLock()" )
     /* @NonNull */
-    public Collection<String> getPlayers();
+    public String getPlayerName();
 
     /**
-     * Indicates a table proxy has been registered with the table network node
-     * for the specified player name.
+     * Indicates the player with the specified name is connected to the table
+     * network.
      * 
      * @param playerName
-     *        The name of the player associated with the table proxy; must not
-     *        be {@code null}.
+     *        The player name; must not be {@code null}.
      * 
-     * @return {@code true} if a table proxy has been registered with the table
-     *         network node for the specified player name; otherwise {@code
-     *         false}.
+     * @return {@code true} if a player with the specified name is connected to
+     *         the table network; otherwise {@code false}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code playerName} is {@code null}.
      */
+    // TODO: Move to IServerNode
     @GuardedBy( "getLock()" )
-    public boolean isTableProxyPresent(
+    public boolean isPlayerConnected(
         /* @NonNull */
         String playerName );
-
-    /**
-     * Removes the specified table proxy from the table network node.
-     * 
-     * @param tableProxy
-     *        The table proxy; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code tableProxy} is not a registered table proxy.
-     * @throws java.lang.NullPointerException
-     *         If {@code tableProxy} is {@code null}.
-     */
-    @GuardedBy( "getLock()" )
-    public void removeTableProxy(
-        /* @NonNull */
-        ITableProxy tableProxy );
 
     /**
      * Sets the collection of players connected to the table network.
@@ -151,8 +136,26 @@ public interface INode
      * @throws java.lang.NullPointerException
      *         If {@code players} is {@code null}.
      */
+    // TODO: Move to IClientNode
     @GuardedBy( "getLock()" )
     public void setPlayers(
         /* @NonNull */
         Collection<String> players );
+
+    /**
+     * Unbinds the specified remote node from the local table network node.
+     * 
+     * @param remoteNode
+     *        The remote node; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code remoteNode} is not bound to the local table network
+     *         node.
+     * @throws java.lang.NullPointerException
+     *         If {@code remoteNode} is {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    public void unbindRemoteNode(
+        /* @NonNull */
+        IRemoteNode remoteNode );
 }

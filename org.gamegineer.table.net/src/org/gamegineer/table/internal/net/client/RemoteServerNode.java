@@ -1,5 +1,5 @@
 /*
- * RemoteServerTableProxy.java
+ * RemoteServerNode.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -26,7 +26,7 @@ import java.util.Collection;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.INode;
-import org.gamegineer.table.internal.net.common.AbstractRemoteTableProxy;
+import org.gamegineer.table.internal.net.common.AbstractRemoteNode;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
@@ -34,36 +34,36 @@ import org.gamegineer.table.internal.net.common.messages.PlayersMessage;
 import org.gamegineer.table.net.TableNetworkError;
 
 /**
- * A proxy for a remote server table.
+ * A remote server node.
  * 
  * <p>
- * This proxy provides a network service that represents the client half of the
- * table network protocol.
+ * This remote node provides a network service that represents the client half
+ * of the table network protocol.
  * </p>
  */
 @ThreadSafe
-final class RemoteServerTableProxy
-    extends AbstractRemoteTableProxy
-    implements IRemoteServerTableProxyController
+final class RemoteServerNode
+    extends AbstractRemoteNode
+    implements IRemoteServerNodeController
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code RemoteServerTableProxy} class.
+     * Initializes a new instance of the {@code RemoteServerNode} class.
      * 
-     * @param node
+     * @param localNode
      *        The local table network node; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code node} is {@code null}.
+     *         If {@code localNode} is {@code null}.
      */
-    RemoteServerTableProxy(
+    RemoteServerNode(
         /* @NonNull */
-        final INode node )
+        final INode localNode )
     {
-        super( node );
+        super( localNode );
 
         registerUncorrelatedMessageHandler( BeginAuthenticationRequestMessage.class, new BeginAuthenticationRequestMessageHandler( this ) );
         registerUncorrelatedMessageHandler( PlayersMessage.class, new PlayersMessageHandler( this ) );
@@ -75,7 +75,7 @@ final class RemoteServerTableProxy
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableProxy#closed(org.gamegineer.table.net.TableNetworkError)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteNode#closed(org.gamegineer.table.net.TableNetworkError)
      */
     @Override
     protected void closed(
@@ -85,11 +85,11 @@ final class RemoteServerTableProxy
 
         super.closed( error );
 
-        getNode().disconnect( error );
+        getLocalNode().disconnect( error );
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableProxy#opened()
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteNode#opened()
      */
     @Override
     protected void opened()
@@ -107,7 +107,7 @@ final class RemoteServerTableProxy
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableProxy#setPlayers(java.util.Collection)
+     * @see org.gamegineer.table.internal.net.IRemoteNode#setPlayers(java.util.Collection)
      */
     @Override
     public void setPlayers(
@@ -115,7 +115,7 @@ final class RemoteServerTableProxy
     {
         assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
 
-        throw new AssertionError( "should never be called on a client node" ); //$NON-NLS-1$
+        throw new AssertionError( "should never be called on a remote server node (local client node)" ); //$NON-NLS-1$
     }
 
 
@@ -124,12 +124,11 @@ final class RemoteServerTableProxy
     // ======================================================================
 
     /**
-     * Superclass for all message handlers associated with a remote server table
-     * proxy.
+     * Superclass for all message handlers associated with a remote server node.
      */
     @Immutable
     static abstract class AbstractMessageHandler
-        extends AbstractRemoteTableProxy.AbstractMessageHandler<IRemoteServerTableProxyController>
+        extends AbstractRemoteNode.AbstractMessageHandler<IRemoteServerNodeController>
     {
         // ==================================================================
         // Constructors
@@ -139,18 +138,18 @@ final class RemoteServerTableProxy
          * Initializes a new instance of the {@code AbstractMessageHandler}
          * class.
          * 
-         * @param remoteTableProxyController
-         *        The control interface for the remote table proxy associated
-         *        with the message handler; must not be {@code null}.
+         * @param remoteNodeController
+         *        The control interface for the remote node associated with the
+         *        message handler; must not be {@code null}.
          * 
          * @throws java.lang.NullPointerException
-         *         If {@code remoteTableProxyController} is {@code null}.
+         *         If {@code remoteNodeController} is {@code null}.
          */
         AbstractMessageHandler(
             /* @NonNull */
-            final IRemoteServerTableProxyController remoteTableProxyController )
+            final IRemoteServerNodeController remoteNodeController )
         {
-            super( remoteTableProxyController );
+            super( remoteNodeController );
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * LocalClientTableProxyTest.java
+ * AbstractRemoteServerNodeControllerTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,44 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 16, 2011 at 11:17:19 PM.
+ * Created on Apr 23, 2011 at 9:18:27 PM.
  */
 
-package org.gamegineer.table.internal.net.common;
+package org.gamegineer.table.internal.net.client;
 
-import org.junit.Test;
+import org.gamegineer.table.internal.net.common.AbstractRemoteNodeControllerTestCase;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.common.LocalClientTableProxy} class.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.internal.net.client.IRemoteServerNodeController}
+ * interface.
+ * 
+ * @param <T>
+ *        The type of the remote server node controller.
  */
-public final class LocalClientTableProxyTest
+public abstract class AbstractRemoteServerNodeControllerTestCase<T extends IRemoteServerNodeController>
+    extends AbstractRemoteNodeControllerTestCase<T>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code LocalClientTableProxyTest}
-     * class.
+     * Initializes a new instance of the {@code
+     * AbstractRemoteServerNodeControllerTestCase} class.
      */
-    public LocalClientTableProxyTest()
+    protected AbstractRemoteServerNodeControllerTestCase()
     {
         super();
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * player name.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_PlayerName_Null()
-    {
-        new LocalClientTableProxy( null );
     }
 }

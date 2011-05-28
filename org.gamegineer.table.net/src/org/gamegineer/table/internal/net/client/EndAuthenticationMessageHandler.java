@@ -31,7 +31,7 @@ import org.gamegineer.table.net.TableNetworkError;
  */
 @Immutable
 final class EndAuthenticationMessageHandler
-    extends RemoteServerTableProxy.AbstractMessageHandler
+    extends RemoteServerNode.AbstractMessageHandler
 {
     // ======================================================================
     // Constructors
@@ -41,18 +41,18 @@ final class EndAuthenticationMessageHandler
      * Initializes a new instance of the {@code EndAuthenticationMessageHandler}
      * class.
      * 
-     * @param remoteTableProxyController
-     *        The control interface for the remote table proxy associated with
-     *        the message handler; must not be {@code null}.
+     * @param remoteNodeController
+     *        The control interface for the remote node associated with the
+     *        message handler; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code remoteTableProxyController} is {@code null}.
+     *         If {@code remoteNodeController} is {@code null}.
      */
     EndAuthenticationMessageHandler(
         /* @NonNull */
-        final IRemoteServerTableProxyController remoteTableProxyController )
+        final IRemoteServerNodeController remoteNodeController )
     {
-        super( remoteTableProxyController );
+        super( remoteNodeController );
     }
 
 
@@ -76,7 +76,7 @@ final class EndAuthenticationMessageHandler
         System.out.println( String.format( "ClientService : received authentication confirmation (id=%d, correlation-id=%d)", //$NON-NLS-1$
             Integer.valueOf( message.getId() ), //
             Integer.valueOf( message.getCorrelationId() ) ) );
-        final IRemoteServerTableProxyController controller = getRemoteTableProxyController();
+        final IRemoteServerNodeController controller = getRemoteNodeController();
         controller.bind( "<<server>>" ); //$NON-NLS-1$
     }
 
@@ -97,16 +97,16 @@ final class EndAuthenticationMessageHandler
             message.getError(), //
             Integer.valueOf( message.getId() ), //
             Integer.valueOf( message.getCorrelationId() ) ) );
-        getRemoteTableProxyController().close( message.getError() );
+        getRemoteNodeController().close( message.getError() );
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableProxy.AbstractMessageHandler#handleUnexpectedMessage()
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteNode.AbstractMessageHandler#handleUnexpectedMessage()
      */
     @Override
     protected void handleUnexpectedMessage()
     {
         System.out.println( "ClientService : received unknown message in response to begin authentication response" ); //$NON-NLS-1$
-        getRemoteTableProxyController().close( TableNetworkError.UNEXPECTED_MESSAGE );
+        getRemoteNodeController().close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

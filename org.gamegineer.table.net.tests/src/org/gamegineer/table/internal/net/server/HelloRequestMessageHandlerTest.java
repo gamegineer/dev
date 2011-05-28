@@ -27,7 +27,7 @@ import org.easymock.CaptureType;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
-import org.gamegineer.table.internal.net.common.IRemoteTableProxyController.IMessageHandler;
+import org.gamegineer.table.internal.net.common.IRemoteNodeController.IMessageHandler;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
@@ -106,7 +106,7 @@ public final class HelloRequestMessageHandlerTest
     @Test
     public void testHandleMessage_HelloRequestMessage_SendBeginAuthenticationRequestMessageFails()
     {
-        final IRemoteClientTableProxyController controller = mocksControl_.createMock( IRemoteClientTableProxyController.class );
+        final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<IMessage>( CaptureType.ALL );
         EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
         controller.setChallenge( EasyMock.notNull( byte[].class ) );
@@ -132,7 +132,7 @@ public final class HelloRequestMessageHandlerTest
     @Test
     public void testHandleMessage_HelloRequestMessage_SendResponseMessageFails()
     {
-        final IRemoteClientTableProxyController controller = mocksControl_.createMock( IRemoteClientTableProxyController.class );
+        final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
         EasyMock.expect( controller.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( false );
         controller.close( TableNetworkError.TRANSPORT_ERROR );
         mocksControl_.replay();
@@ -154,7 +154,7 @@ public final class HelloRequestMessageHandlerTest
     @Test
     public void testHandleMessage_HelloRequestMessage_SupportedProtocolVersion()
     {
-        final IRemoteClientTableProxyController controller = mocksControl_.createMock( IRemoteClientTableProxyController.class );
+        final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<IMessage>( CaptureType.ALL );
         EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
         controller.setChallenge( EasyMock.notNull( byte[].class ) );
@@ -187,7 +187,7 @@ public final class HelloRequestMessageHandlerTest
     @Test
     public void testHandleMessage_HelloRequestMessage_UnsupportedProtocolVersion()
     {
-        final IRemoteClientTableProxyController controller = mocksControl_.createMock( IRemoteClientTableProxyController.class );
+        final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
         EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
         controller.close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );

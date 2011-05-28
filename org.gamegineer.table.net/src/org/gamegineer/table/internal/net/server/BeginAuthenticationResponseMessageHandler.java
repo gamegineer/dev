@@ -40,7 +40,7 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @Immutable
 final class BeginAuthenticationResponseMessageHandler
-    extends RemoteClientTableProxy.AbstractMessageHandler
+    extends RemoteClientNode.AbstractMessageHandler
 {
     // ======================================================================
     // Constructors
@@ -50,18 +50,18 @@ final class BeginAuthenticationResponseMessageHandler
      * Initializes a new instance of the {@code
      * BeginAuthenticationResponseMessageHandler} class.
      * 
-     * @param remoteTableProxyController
-     *        The control interface for the remote table proxy associated with
-     *        the message handler; must not be {@code null}.
+     * @param remoteNodeController
+     *        The control interface for the remote node associated with the
+     *        message handler; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code remoteTableProxyController} is {@code null}.
+     *         If {@code remoteNodeController} is {@code null}.
      */
     BeginAuthenticationResponseMessageHandler(
         /* @NonNull */
-        final IRemoteClientTableProxyController remoteTableProxyController )
+        final IRemoteClientNodeController remoteNodeController )
     {
-        super( remoteTableProxyController );
+        super( remoteNodeController );
     }
 
 
@@ -91,9 +91,9 @@ final class BeginAuthenticationResponseMessageHandler
         assert playerName != null;
         assert response != null;
 
-        final IRemoteClientTableProxyController controller = getRemoteTableProxyController();
-        final INode node = controller.getNode();
-        final SecureString password = node.getPassword();
+        final IRemoteClientNodeController controller = getRemoteNodeController();
+        final INode localNode = controller.getLocalNode();
+        final SecureString password = localNode.getPassword();
         try
         {
             final Authenticator authenticator = new Authenticator();
@@ -107,7 +107,7 @@ final class BeginAuthenticationResponseMessageHandler
                 throw new TableNetworkException( TableNetworkError.AUTHENTICATION_FAILED );
             }
 
-            if( node.isTableProxyPresent( playerName ) )
+            if( localNode.isPlayerConnected( playerName ) )
             {
                 throw new TableNetworkException( TableNetworkError.DUPLICATE_PLAYER_NAME );
             }
@@ -136,7 +136,7 @@ final class BeginAuthenticationResponseMessageHandler
             Integer.valueOf( message.getCorrelationId() ) ) );
 
         IMessage responseMessage;
-        final IRemoteClientTableProxyController controller = getRemoteTableProxyController();
+        final IRemoteClientNodeController controller = getRemoteNodeController();
         try
         {
             authenticate( message.getPlayerName(), message.getResponse() );
@@ -166,18 +166,18 @@ final class BeginAuthenticationResponseMessageHandler
         else
         {
             controller.close( TableNetworkError.TRANSPORT_ERROR );
-            // TODO: all these close() calls smell bad; may just allow handleMessage() to throw
-            // an exception that will force the remote table proxy to close.
+            // TODO: all these close() calls smell bad; may just allow handleMessage()
+            // to throw an exception that will force the remote node to close.
         }
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteTableProxy.AbstractMessageHandler#handleUnexpectedMessage()
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteNode.AbstractMessageHandler#handleUnexpectedMessage()
      */
     @Override
     protected void handleUnexpectedMessage()
     {
         System.out.println( "ServerService : received unknown message in response to begin authentication request" ); //$NON-NLS-1$
-        getRemoteTableProxyController().close( TableNetworkError.UNEXPECTED_MESSAGE );
+        getRemoteNodeController().close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

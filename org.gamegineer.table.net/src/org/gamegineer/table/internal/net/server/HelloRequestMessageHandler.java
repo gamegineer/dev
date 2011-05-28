@@ -39,7 +39,7 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @Immutable
 final class HelloRequestMessageHandler
-    extends RemoteClientTableProxy.AbstractMessageHandler
+    extends RemoteClientNode.AbstractMessageHandler
 {
     // ======================================================================
     // Constructors
@@ -49,18 +49,18 @@ final class HelloRequestMessageHandler
      * Initializes a new instance of the {@code HelloRequestMessageHandler}
      * class.
      * 
-     * @param remoteTableProxyController
-     *        The control interface for the remote table proxy associated with
-     *        the message handler; must not be {@code null}.
+     * @param remoteNodeController
+     *        The control interface for the remote node associated with the
+     *        message handler; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code remoteTableProxyController} is {@code null}.
+     *         If {@code remoteNodeController} is {@code null}.
      */
     HelloRequestMessageHandler(
         /* @NonNull */
-        final IRemoteClientTableProxyController remoteTableProxyController )
+        final IRemoteClientNodeController remoteNodeController )
     {
-        super( remoteTableProxyController );
+        super( remoteNodeController );
     }
 
 
@@ -86,7 +86,7 @@ final class HelloRequestMessageHandler
             Integer.valueOf( message.getId() ), //
             Integer.valueOf( message.getCorrelationId() ) ) );
 
-        final IRemoteClientTableProxyController controller = getRemoteTableProxyController();
+        final IRemoteClientNodeController controller = getRemoteNodeController();
 
         final IMessage responseMessage;
         if( message.getSupportedProtocolVersion() >= ProtocolVersions.VERSION_1 )

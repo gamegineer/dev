@@ -1,5 +1,5 @@
 /*
- * AbstractRemoteTableProxyAsServiceTest.java
+ * RemoteClientNodeAsRemoteNodeTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,25 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 23, 2011 at 9:40:52 PM.
+ * Created on May 15, 2011 at 6:59:02 PM.
  */
 
-package org.gamegineer.table.internal.net.common;
+package org.gamegineer.table.internal.net.server;
 
-import java.util.Collection;
 import org.easymock.EasyMock;
+import org.gamegineer.table.internal.net.AbstractRemoteNodeTestCase;
 import org.gamegineer.table.internal.net.INode;
-import org.gamegineer.table.internal.net.transport.AbstractServiceTestCase;
-import org.gamegineer.table.internal.net.transport.IService;
+import org.gamegineer.table.internal.net.IRemoteNode;
+import org.gamegineer.table.internal.net.transport.FakeServiceContext;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.common.AbstractRemoteTableProxy}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.transport.IService} interface.
+ * {@link org.gamegineer.table.internal.net.server.RemoteClientNode} class to
+ * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.IRemoteNode} interface.
  */
-public final class AbstractRemoteTableProxyAsServiceTest
-    extends AbstractServiceTestCase
+public final class RemoteClientNodeAsRemoteNodeTest
+    extends AbstractRemoteNodeTestCase
 {
     // ======================================================================
     // Constructors
@@ -42,9 +42,9 @@ public final class AbstractRemoteTableProxyAsServiceTest
 
     /**
      * Initializes a new instance of the {@code
-     * AbstractRemoteTableProxyAsServiceTest} class.
+     * RemoteClientNodeAsRemoteNodeTest} class.
      */
-    public AbstractRemoteTableProxyAsServiceTest()
+    public RemoteClientNodeAsRemoteNodeTest()
     {
         super();
     }
@@ -55,20 +55,17 @@ public final class AbstractRemoteTableProxyAsServiceTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.AbstractServiceTestCase#createService()
+     * @see org.gamegineer.table.internal.net.AbstractRemoteNodeTestCase#createRemoteNode()
      */
     @Override
-    protected IService createService()
+    protected IRemoteNode createRemoteNode()
     {
-        return new AbstractRemoteTableProxy( EasyMock.createMock( INode.class ) )
+        final RemoteClientNode remoteNode = new RemoteClientNode( EasyMock.createMock( INode.class ) );
+        synchronized( remoteNode.getLock() )
         {
-            @Override
-            public void setPlayers(
-                @SuppressWarnings( "unused" )
-                final Collection<String> players )
-            {
-                // do nothing
-            }
-        };
+            remoteNode.started( new FakeServiceContext() );
+            remoteNode.bind( "playerName" ); //$NON-NLS-1$
+        }
+        return remoteNode;
     }
 }

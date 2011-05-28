@@ -1,5 +1,5 @@
 /*
- * IRemoteTableProxyController.java
+ * IRemoteNodeController.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -27,30 +27,34 @@ import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.net.TableNetworkError;
 
 /**
- * The control interface for a proxy for a remote table connected to the table
- * network.
+ * The control interface for a remote node.
+ * 
+ * <p>
+ * This interface provides operations that allow a message handler to control
+ * its associated remote node. It is only intended for use by an implementation
+ * of {@link IMessageHandler}.
+ * </p>
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface IRemoteTableProxyController
+public interface IRemoteNodeController
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Binds the table represented by the remote table proxy to the local node
-     * for the specified player name.
+     * Binds the remote node to the local node for the specified player name.
      * 
      * @param playerName
-     *        The name of the player associated with the table; must not be
-     *        {@code null}.
+     *        The name of the player associated with the remote node; must not
+     *        be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If a table with the same player name has already been bound to
-     *         the local node.
+     *         If a remote node with the same player name has already been bound
+     *         to the local node.
      * @throws java.lang.IllegalStateException
-     *         If the remote table proxy is closed or is already bound.
+     *         If the remote node is closed or is already bound.
      * @throws java.lang.NullPointerException
      *         If {@code playerName} is {@code null}.
      */
@@ -60,14 +64,14 @@ public interface IRemoteTableProxyController
         String playerName );
 
     /**
-     * Closes the remote table proxy.
+     * Closes the remote node.
      * 
      * @param error
-     *        The error that caused the remote table proxy to be closed or
-     *        {@code null} if the remote table proxy was closed normally.
+     *        The error that caused the remote node to be closed or {@code null}
+     *        if the remote node was closed normally.
      * 
      * @throws java.lang.IllegalStateException
-     *         If the remote table proxy is closed.
+     *         If the remote node is closed.
      */
     @GuardedBy( "getLock()" )
     public void close(
@@ -75,23 +79,23 @@ public interface IRemoteTableProxyController
         TableNetworkError error );
 
     /**
-     * Gets the instance lock for the remote table proxy.
-     * 
-     * @return The instance lock for the remote table proxy; never {@code null}.
-     */
-    /* @NonNull */
-    public Object getLock();
-
-    /**
      * Gets the local table network node.
      * 
      * @return The local table network node; never {@code null}.
      */
     /* @NonNull */
-    public INode getNode();
+    public INode getLocalNode();
 
     /**
-     * Sends the specified message to the remote table proxy peer.
+     * Gets the instance lock for the remote node.
+     * 
+     * @return The instance lock for the remote node; never {@code null}.
+     */
+    /* @NonNull */
+    public Object getLock();
+
+    /**
+     * Sends the specified message to the remote node peer.
      * 
      * @param message
      *        The message; must not be {@code null}.
@@ -103,7 +107,7 @@ public interface IRemoteTableProxyController
      *         {@code false}.
      * 
      * @throws java.lang.IllegalStateException
-     *         If the remote table proxy is closed.
+     *         If the remote node is closed.
      * @throws java.lang.NullPointerException
      *         If {@code message} is {@code null}.
      */
@@ -120,7 +124,7 @@ public interface IRemoteTableProxyController
     // ======================================================================
 
     /**
-     * A remote table proxy message handler.
+     * A remote node message handler.
      * 
      * @noextend This interface is not intended to be extended by clients.
      */
@@ -131,12 +135,12 @@ public interface IRemoteTableProxyController
         // ==================================================================
 
         /**
-         * Handles the specified message for the associated remote table proxy.
+         * Handles the specified message for the associated remote node.
          * 
          * <p>
-         * This method will be invoked by the remote table proxy while its
-         * instance lock is held. Thus, message handlers may assume any methods
-         * they invoke on the remote table proxy will be thread-safe and atomic.
+         * This method will be invoked by the remote node while its instance
+         * lock is held. Thus, message handlers may assume any methods they
+         * invoke on the remote node will be thread-safe and atomic.
          * </p>
          * 
          * @param message

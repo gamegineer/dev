@@ -24,8 +24,8 @@ package org.gamegineer.table.internal.net.common;
 import static org.junit.Assert.assertEquals;
 import java.util.Collection;
 import org.easymock.EasyMock;
+import org.gamegineer.table.internal.net.IRemoteNode;
 import org.gamegineer.table.internal.net.ITableNetworkController;
-import org.gamegineer.table.internal.net.ITableProxy;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.junit.After;
 import org.junit.Before;
@@ -95,6 +95,14 @@ public final class AbstractNodeTest
             }
 
             @Override
+            public boolean isPlayerConnected(
+                @SuppressWarnings( "unused" )
+                final String playerName )
+            {
+                return false;
+            }
+
+            @Override
             public void setPlayers(
                 @SuppressWarnings( "unused" )
                 final Collection<String> players )
@@ -141,22 +149,11 @@ public final class AbstractNodeTest
     }
 
     /**
-     * Ensures the {@code getLocalPlayerName} method throws an exception when
-     * the table network node is disconnected.
-     */
-    @Test( expected = IllegalStateException.class )
-    public void testGetLocalPlayerName_Disconnected()
-    {
-        synchronized( node_.getLock() )
-        {
-            node_.getLocalPlayerName();
-        }
-    }
-
-    /**
      * Ensures the {@code getPassword} method throws an exception when the table
      * network node is disconnected.
      */
+    // TODO: Move to AbstractNodeTestCase once we modify test fixture to test both
+    // connected and disconnected nodes.
     @Test( expected = IllegalStateException.class )
     public void testGetPassword_Disconnected()
     {
@@ -167,18 +164,33 @@ public final class AbstractNodeTest
     }
 
     /**
-     * Ensures the {@code getTableProxies} method returns a copy of the
-     * registered table proxies collection.
+     * Ensures the {@code getPlayerName} method throws an exception when the
+     * table network node is disconnected.
+     */
+    // TODO: Move to AbstractNodeTestCase once we modify test fixture to test both
+    // connected and disconnected nodes.
+    @Test( expected = IllegalStateException.class )
+    public void testGetPlayerName_Disconnected()
+    {
+        synchronized( node_.getLock() )
+        {
+            node_.getPlayerName();
+        }
+    }
+
+    /**
+     * Ensures the {@code getRemoteNodes} method returns a copy of the bound
+     * remote nodes collection.
      */
     @Test
-    public void testGetTableProxies_ReturnValue_Copy()
+    public void testGetRemoteNodes_ReturnValue_Copy()
     {
-        final Collection<ITableProxy> tableProxies = node_.getTableProxies();
-        final int expectedTableProxiesSize = tableProxies.size();
-        tableProxies.add( EasyMock.createMock( ITableProxy.class ) );
+        final Collection<IRemoteNode> remoteNodes = node_.getRemoteNodes();
+        final int expectedRemoteNodesSize = remoteNodes.size();
+        remoteNodes.add( EasyMock.createMock( IRemoteNode.class ) );
 
-        final int actualTableProxiesSize = node_.getTableProxies().size();
+        final int actualRemoteNodesSize = node_.getRemoteNodes().size();
 
-        assertEquals( expectedTableProxiesSize, actualTableProxiesSize );
+        assertEquals( expectedRemoteNodesSize, actualRemoteNodesSize );
     }
 }

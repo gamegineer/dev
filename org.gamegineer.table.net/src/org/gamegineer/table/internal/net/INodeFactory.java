@@ -22,7 +22,7 @@
 package org.gamegineer.table.internal.net;
 
 /**
- * A factory for creating table network nodes.
+ * A factory for creating local table network nodes.
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
@@ -33,13 +33,13 @@ public interface INodeFactory
     // ======================================================================
 
     /**
-     * Creates a new client table network node.
+     * Creates a new local client table network node.
      * 
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
      * 
-     * @return The control interface for the new client table network node;
-     *         never {@code null}.
+     * @return The control interface for the new local client table network
+     *         node; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.
@@ -50,13 +50,13 @@ public interface INodeFactory
         ITableNetworkController tableNetworkController );
 
     /**
-     * Creates a new server table network node.
+     * Creates a new local server table network node.
      * 
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
      * 
-     * @return The control interface for the new server table network node;
-     *         never {@code null}.
+     * @return The control interface for the new local server table network
+     *         node; never {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.

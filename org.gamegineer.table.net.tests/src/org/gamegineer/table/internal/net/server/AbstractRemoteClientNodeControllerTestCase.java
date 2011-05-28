@@ -1,5 +1,5 @@
 /*
- * AbstractRemoteServerTableProxyControllerTestCase.java
+ * AbstractRemoteClientNodeControllerTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,23 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 23, 2011 at 9:18:27 PM.
+ * Created on Apr 23, 2011 at 9:23:06 PM.
  */
 
-package org.gamegineer.table.internal.net.client;
+package org.gamegineer.table.internal.net.server;
 
-import org.gamegineer.table.internal.net.common.AbstractRemoteTableProxyControllerTestCase;
+import org.gamegineer.table.internal.net.common.AbstractRemoteNodeControllerTestCase;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.client.IRemoteServerTableProxyController}
+ * {@link org.gamegineer.table.internal.net.server.IRemoteClientNodeController}
  * interface.
  * 
  * @param <T>
- *        The type of the remote server table proxy controller.
+ *        The type of the remote client node controller.
  */
-public abstract class AbstractRemoteServerTableProxyControllerTestCase<T extends IRemoteServerTableProxyController>
-    extends AbstractRemoteTableProxyControllerTestCase<T>
+public abstract class AbstractRemoteClientNodeControllerTestCase<T extends IRemoteClientNodeController>
+    extends AbstractRemoteNodeControllerTestCase<T>
 {
     // ======================================================================
     // Constructors
@@ -40,9 +40,9 @@ public abstract class AbstractRemoteServerTableProxyControllerTestCase<T extends
 
     /**
      * Initializes a new instance of the {@code
-     * AbstractRemoteServerTableProxyControllerTestCase} class.
+     * AbstractRemoteClientNodeControllerTestCase} class.
      */
-    protected AbstractRemoteServerTableProxyControllerTestCase()
+    protected AbstractRemoteClientNodeControllerTestCase()
     {
         super();
     }

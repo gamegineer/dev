@@ -26,7 +26,7 @@ import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
 
 /**
- * The control interface for a table network node.
+ * The control interface for a local table network node.
  * 
  * <p>
  * This interface provides operations that allow a table network controller to

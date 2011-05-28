@@ -21,10 +21,10 @@
 
 package org.gamegineer.table.internal.net.server;
 
-import org.gamegineer.table.internal.net.AbstractNodeTestCase;
 import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.TableNetworkControllers;
+import org.gamegineer.table.internal.net.common.AbstractAbstractNodeAsNodeTestCase;
 
 /**
  * A fixture for testing the
@@ -33,7 +33,7 @@ import org.gamegineer.table.internal.net.TableNetworkControllers;
  * {@link org.gamegineer.table.internal.net.INode} interface.
  */
 public final class ServerNodeAsNodeTest
-    extends AbstractNodeTestCase
+    extends AbstractAbstractNodeAsNodeTestCase
 {
     // ======================================================================
     // Constructors

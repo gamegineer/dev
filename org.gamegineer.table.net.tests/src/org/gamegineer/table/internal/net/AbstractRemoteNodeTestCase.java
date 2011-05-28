@@ -1,5 +1,5 @@
 /*
- * AbstractTableProxyTestCase.java
+ * AbstractRemoteNodeTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -28,16 +28,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.ITableProxy} interface.
+ * {@link org.gamegineer.table.internal.net.IRemoteNode} interface.
  */
-public abstract class AbstractTableProxyTestCase
+public abstract class AbstractRemoteNodeTestCase
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The table proxy under test in the fixture. */
-    private ITableProxy tableProxy_;
+    /** The remote node under test in the fixture. */
+    private IRemoteNode remoteNode_;
 
 
     // ======================================================================
@@ -45,10 +45,10 @@ public abstract class AbstractTableProxyTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractTableProxyTestCase}
+     * Initializes a new instance of the {@code AbstractRemoteNodeTestCase}
      * class.
      */
-    protected AbstractTableProxyTestCase()
+    protected AbstractRemoteNodeTestCase()
     {
         super();
     }
@@ -59,15 +59,15 @@ public abstract class AbstractTableProxyTestCase
     // ======================================================================
 
     /**
-     * Creates the table proxy to be tested.
+     * Creates the remote node to be tested.
      * 
-     * @return The table proxy to be tested; never {@code null}.
+     * @return The remote node to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract ITableProxy createTableProxy()
+    protected abstract IRemoteNode createRemoteNode()
         throws Exception;
 
     /**
@@ -80,8 +80,8 @@ public abstract class AbstractTableProxyTestCase
     public void setUp()
         throws Exception
     {
-        tableProxy_ = createTableProxy();
-        assertNotNull( tableProxy_ );
+        remoteNode_ = createRemoteNode();
+        assertNotNull( remoteNode_ );
     }
 
     /**
@@ -94,7 +94,7 @@ public abstract class AbstractTableProxyTestCase
     public void tearDown()
         throws Exception
     {
-        tableProxy_ = null;
+        remoteNode_ = null;
     }
 
     /**
@@ -103,7 +103,7 @@ public abstract class AbstractTableProxyTestCase
     @Test
     public void testGetPlayerName_ReturnValue_NonNull()
     {
-        assertNotNull( tableProxy_.getPlayerName() );
+        assertNotNull( remoteNode_.getPlayerName() );
     }
 
     /**
@@ -113,6 +113,6 @@ public abstract class AbstractTableProxyTestCase
     @Test( expected = NullPointerException.class )
     public void testSetPlayers_Players_Null()
     {
-        tableProxy_.setPlayers( null );
+        remoteNode_.setPlayers( null );
     }
 }

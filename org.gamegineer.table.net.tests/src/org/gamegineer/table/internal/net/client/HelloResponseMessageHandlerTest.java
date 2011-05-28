@@ -24,7 +24,7 @@ package org.gamegineer.table.internal.net.client;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
-import org.gamegineer.table.internal.net.common.IRemoteTableProxyController.IMessageHandler;
+import org.gamegineer.table.internal.net.common.IRemoteNodeController.IMessageHandler;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.common.messages.HelloResponseMessage;
 import org.gamegineer.table.internal.net.transport.FakeMessage;
@@ -100,7 +100,7 @@ public final class HelloResponseMessageHandlerTest
     @Test
     public void testHandleMessage_ErrorMessage()
     {
-        final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
+        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
         controller.close( TableNetworkError.UNSPECIFIED_ERROR );
         mocksControl_.replay();
 
@@ -120,7 +120,7 @@ public final class HelloResponseMessageHandlerTest
     @Test
     public void testHandleMessage_HelloResponseMessage_SupportedChosenProtocolVersion()
     {
-        final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
+        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
         mocksControl_.replay();
 
         final HelloResponseMessage message = new HelloResponseMessage();
@@ -139,7 +139,7 @@ public final class HelloResponseMessageHandlerTest
     @Test
     public void testHandleMessage_HelloResponseMessage_UnsupportedChosenProtocolVersion()
     {
-        final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
+        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
         controller.close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
         mocksControl_.replay();
 
@@ -159,7 +159,7 @@ public final class HelloResponseMessageHandlerTest
     @Test
     public void testHandleMessage_UnexpectedMessage()
     {
-        final IRemoteServerTableProxyController controller = mocksControl_.createMock( IRemoteServerTableProxyController.class );
+        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
         EasyMock.expect( controller.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
         controller.close( TableNetworkError.UNEXPECTED_MESSAGE );
         mocksControl_.replay();

@@ -1,5 +1,5 @@
 /*
- * ClientNodeAsNodeTest.java
+ * AbstractRemoteNodeAsServiceTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,33 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 14, 2011 at 11:29:02 PM.
+ * Created on Apr 23, 2011 at 9:40:52 PM.
  */
 
-package org.gamegineer.table.internal.net.client;
+package org.gamegineer.table.internal.net.common;
 
+import java.util.Collection;
+import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.INode;
-import org.gamegineer.table.internal.net.TableNetworkConfigurations;
-import org.gamegineer.table.internal.net.TableNetworkControllers;
-import org.gamegineer.table.internal.net.common.AbstractAbstractNodeAsNodeTestCase;
+import org.gamegineer.table.internal.net.transport.AbstractServiceTestCase;
+import org.gamegineer.table.internal.net.transport.IService;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.client.ClientNode} class to ensure
- * it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.INode} interface.
+ * {@link org.gamegineer.table.internal.net.common.AbstractRemoteNode} class to
+ * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.transport.IService} interface.
  */
-public final class ClientNodeAsNodeTest
-    extends AbstractAbstractNodeAsNodeTestCase
+public final class AbstractRemoteNodeAsServiceTest
+    extends AbstractServiceTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ClientNodeAsNodeTest} class.
+     * Initializes a new instance of the {@code AbstractRemoteNodeAsServiceTest}
+     * class.
      */
-    public ClientNodeAsNodeTest()
+    public AbstractRemoteNodeAsServiceTest()
     {
         super();
     }
@@ -53,14 +55,20 @@ public final class ClientNodeAsNodeTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNodeTestCase#createNode()
+     * @see org.gamegineer.table.internal.net.transport.AbstractServiceTestCase#createService()
      */
     @Override
-    protected INode createNode()
-        throws Exception
+    protected IService createService()
     {
-        final ClientNode node = new ClientNode( TableNetworkControllers.createFakeTableNetworkController(), false );
-        node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
-        return node;
+        return new AbstractRemoteNode( EasyMock.createMock( INode.class ) )
+        {
+            @Override
+            public void setPlayers(
+                @SuppressWarnings( "unused" )
+                final Collection<String> players )
+            {
+                // do nothing
+            }
+        };
     }
 }

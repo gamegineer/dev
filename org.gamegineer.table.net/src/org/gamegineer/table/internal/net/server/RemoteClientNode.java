@@ -1,5 +1,5 @@
 /*
- * RemoteClientTableProxy.java
+ * RemoteClientNode.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -27,22 +27,22 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.INode;
-import org.gamegineer.table.internal.net.common.AbstractRemoteTableProxy;
+import org.gamegineer.table.internal.net.common.AbstractRemoteNode;
 import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.PlayersMessage;
 
 /**
- * A proxy for a remote client table.
+ * A remote client node.
  * 
  * <p>
- * This proxy provides a network service that represents the server half of the
- * table network protocol.
+ * This remote node provides a network service that represents the server half
+ * of the table network protocol.
  * </p>
  */
 @ThreadSafe
-final class RemoteClientTableProxy
-    extends AbstractRemoteTableProxy
-    implements IRemoteClientTableProxyController
+final class RemoteClientNode
+    extends AbstractRemoteNode
+    implements IRemoteClientNodeController
 {
     // ======================================================================
     // Fields
@@ -68,19 +68,19 @@ final class RemoteClientTableProxy
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code RemoteClientTableProxy} class.
+     * Initializes a new instance of the {@code RemoteClientNode} class.
      * 
-     * @param node
+     * @param localNode
      *        The local table network node; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code node} is {@code null}.
+     *         If {@code localNode} is {@code null}.
      */
-    RemoteClientTableProxy(
+    RemoteClientNode(
         /* @NonNull */
-        final INode node )
+        final INode localNode )
     {
-        super( node );
+        super( localNode );
 
         challenge_ = null;
         salt_ = null;
@@ -94,7 +94,7 @@ final class RemoteClientTableProxy
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.server.IRemoteClientTableProxyController#getChallenge()
+     * @see org.gamegineer.table.internal.net.server.IRemoteClientNodeController#getChallenge()
      */
     @Override
     public byte[] getChallenge()
@@ -106,7 +106,7 @@ final class RemoteClientTableProxy
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.server.IRemoteClientTableProxyController#getSalt()
+     * @see org.gamegineer.table.internal.net.server.IRemoteClientNodeController#getSalt()
      */
     @Override
     public byte[] getSalt()
@@ -118,7 +118,7 @@ final class RemoteClientTableProxy
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.server.IRemoteClientTableProxyController#setChallenge(byte[])
+     * @see org.gamegineer.table.internal.net.server.IRemoteClientNodeController#setChallenge(byte[])
      */
     @Override
     public void setChallenge(
@@ -131,7 +131,7 @@ final class RemoteClientTableProxy
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.ITableProxy#setPlayers(java.util.Collection)
+     * @see org.gamegineer.table.internal.net.IRemoteNode#setPlayers(java.util.Collection)
      */
     @Override
     public void setPlayers(
@@ -140,7 +140,7 @@ final class RemoteClientTableProxy
         assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
 
         final PlayersMessage message = new PlayersMessage();
-        message.setPlayers( getNode().getPlayers() );
+        message.setPlayers( players );
         synchronized( getLock() )
         {
             sendMessage( message, null );
@@ -148,7 +148,7 @@ final class RemoteClientTableProxy
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.server.IRemoteClientTableProxyController#setSalt(byte[])
+     * @see org.gamegineer.table.internal.net.server.IRemoteClientNodeController#setSalt(byte[])
      */
     @Override
     public void setSalt(
@@ -166,12 +166,11 @@ final class RemoteClientTableProxy
     // ======================================================================
 
     /**
-     * Superclass for all message handlers associated with a remote client table
-     * proxy.
+     * Superclass for all message handlers associated with a remote client node.
      */
     @Immutable
     static abstract class AbstractMessageHandler
-        extends AbstractRemoteTableProxy.AbstractMessageHandler<IRemoteClientTableProxyController>
+        extends AbstractRemoteNode.AbstractMessageHandler<IRemoteClientNodeController>
     {
         // ==================================================================
         // Constructors
@@ -181,18 +180,18 @@ final class RemoteClientTableProxy
          * Initializes a new instance of the {@code AbstractMessageHandler}
          * class.
          * 
-         * @param remoteTableProxyController
-         *        The control interface for the remote table proxy associated
-         *        with the message handler; must not be {@code null}.
+         * @param remoteNodeController
+         *        The control interface for the remote node associated with the
+         *        message handler; must not be {@code null}.
          * 
          * @throws java.lang.NullPointerException
-         *         If {@code remoteTableProxyController} is {@code null}.
+         *         If {@code remoteNodeController} is {@code null}.
          */
         AbstractMessageHandler(
             /* @NonNull */
-            final IRemoteClientTableProxyController remoteTableProxyController )
+            final IRemoteClientNodeController remoteNodeController )
         {
-            super( remoteTableProxyController );
+            super( remoteNodeController );
         }
     }
 }

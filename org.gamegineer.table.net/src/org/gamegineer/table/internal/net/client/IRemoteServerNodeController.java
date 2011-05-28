@@ -1,5 +1,5 @@
 /*
- * ITableProxy.java
+ * IRemoteServerNodeController.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,44 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 8, 2011 at 9:19:53 PM.
+ * Created on Apr 23, 2011 at 8:44:12 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.client;
 
-import java.util.Collection;
+import org.gamegineer.table.internal.net.common.IRemoteNodeController;
 
 /**
- * A proxy for a table connected to the table network.
+ * The control interface for a remote server node.
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface ITableProxy
+interface IRemoteServerNodeController
+    extends IRemoteNodeController
 {
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Gets the name of the player associated with the table.
-     * 
-     * @return The name of the player associated with the table; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    public String getPlayerName();
-
-    /**
-     * Sets the collection of players connected to the table network.
-     * 
-     * @param players
-     *        The collection of players connected to the table network; must not
-     *        be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code players} is {@code null}.
-     */
-    public void setPlayers(
-        /* @NonNull */
-        Collection<String> players );
 }
