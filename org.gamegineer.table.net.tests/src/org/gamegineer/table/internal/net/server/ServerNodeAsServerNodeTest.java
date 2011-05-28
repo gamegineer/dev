@@ -1,5 +1,5 @@
 /*
- * AbstractAbstractNodeAsNodeTestCase.java
+ * ServerNodeAsServerNodeTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,32 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 27, 2011 at 9:02:14 PM.
+ * Created on Apr 14, 2011 at 11:29:24 PM.
  */
 
-package org.gamegineer.table.internal.net.common;
+package org.gamegineer.table.internal.net.server;
 
-import org.gamegineer.table.internal.net.AbstractNodeTestCase;
-import org.gamegineer.table.internal.net.INode;
-import org.gamegineer.table.internal.net.IRemoteNode;
+import org.gamegineer.table.internal.net.TableNetworkConfigurations;
+import org.gamegineer.table.internal.net.TableNetworkControllers;
+import org.gamegineer.table.internal.net.common.AbstractNodeUtils;
 
 /**
- * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.INode} interface via extension of
- * the {@link org.gamegineer.table.internal.net.common.AbstractNode} class.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.net.server.ServerNode} class to ensure
+ * it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.server.IServerNode} interface.
  */
-public abstract class AbstractAbstractNodeAsNodeTestCase
-    extends AbstractNodeTestCase
+public final class ServerNodeAsServerNodeTest
+    extends AbstractServerNodeTestCase<ServerNode>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractAbstractNodeAsNodeTestCase} class.
+     * Initializes a new instance of the {@code ServerNodeAsServerNodeTest}
+     * class.
      */
-    protected AbstractAbstractNodeAsNodeTestCase()
+    public ServerNodeAsServerNodeTest()
     {
         super();
     }
@@ -52,21 +53,25 @@ public abstract class AbstractAbstractNodeAsNodeTestCase
     // ======================================================================
 
     /*
+     * @see org.gamegineer.table.internal.net.AbstractNodeTestCase#createNode()
+     */
+    @Override
+    protected ServerNode createNode()
+        throws Exception
+    {
+        final ServerNode node = new ServerNode( TableNetworkControllers.createFakeTableNetworkController() );
+        node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+        return node;
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.AbstractNodeTestCase#isRemoteNodeBound(org.gamegineer.table.internal.net.INode, java.lang.String)
      */
     @Override
-    protected final boolean isRemoteNodeBound(
-        final INode node,
+    protected boolean isRemoteNodeBound(
+        final ServerNode node,
         final String playerName )
     {
-        for( final IRemoteNode remoteNode : ((AbstractNode)node).getRemoteNodes() )
-        {
-            if( playerName.equals( remoteNode.getPlayerName() ) )
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return AbstractNodeUtils.isRemoteNodeBound( node, playerName );
     }
 }

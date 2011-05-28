@@ -1,5 +1,5 @@
 /*
- * ServerNodeAsNodeTest.java
+ * AbstractServerNodeTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,33 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 14, 2011 at 11:29:24 PM.
+ * Created on May 27, 2011 at 10:17:56 PM.
  */
 
 package org.gamegineer.table.internal.net.server;
 
-import org.gamegineer.table.internal.net.INode;
-import org.gamegineer.table.internal.net.TableNetworkConfigurations;
-import org.gamegineer.table.internal.net.TableNetworkControllers;
-import org.gamegineer.table.internal.net.common.AbstractAbstractNodeAsNodeTestCase;
+import org.gamegineer.table.internal.net.AbstractNodeTestCase;
+import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.server.ServerNode} class to ensure
- * it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.INode} interface.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.internal.net.server.IServerNode} interface.
+ * 
+ * @param <T>
+ *        The type of the server node.
  */
-public final class ServerNodeAsNodeTest
-    extends AbstractAbstractNodeAsNodeTestCase
+public abstract class AbstractServerNodeTestCase<T extends IServerNode>
+    extends AbstractNodeTestCase<T>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ServerNodeAsNodeTest} class.
+     * Initializes a new instance of the {@code AbstractServerNodeTestCase}
+     * class.
      */
-    public ServerNodeAsNodeTest()
+    protected AbstractServerNodeTestCase()
     {
         super();
     }
@@ -52,15 +52,16 @@ public final class ServerNodeAsNodeTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.internal.net.AbstractNodeTestCase#createNode()
+    /**
+     * Ensures the {@code isPlayerConnected} method throws an exception when
+     * passed a {@code null} player name.
      */
-    @Override
-    protected INode createNode()
-        throws Exception
+    @Test( expected = NullPointerException.class )
+    public void testIsPlayerConnected_PlayerName_Null()
     {
-        final ServerNode node = new ServerNode( TableNetworkControllers.createFakeTableNetworkController() );
-        node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
-        return node;
+        synchronized( getNode().getLock() )
+        {
+            getNode().isPlayerConnected( null );
+        }
     }
 }

@@ -513,27 +513,5 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         {
             return null;
         }
-
-        /*
-         * @see org.gamegineer.table.internal.net.INode#isPlayerConnected(java.lang.String)
-         */
-        @Override
-        public boolean isPlayerConnected(
-            @SuppressWarnings( "unused" )
-            final String playerName )
-        {
-            return false;
-        }
-
-        /*
-         * @see org.gamegineer.table.internal.net.INode#setPlayers(java.util.Collection)
-         */
-        @Override
-        public void setPlayers(
-            @SuppressWarnings( "unused" )
-            final Collection<String> players )
-        {
-            // do nothing
-        }
     }
 }

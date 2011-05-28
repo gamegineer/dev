@@ -35,9 +35,12 @@ import org.gamegineer.table.net.TableNetworkError;
  * of {@link IMessageHandler}.
  * </p>
  * 
+ * @param <LocalNodeType>
+ *        The type of the local table network node.
+ * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface IRemoteNodeController
+public interface IRemoteNodeController<LocalNodeType extends INode>
 {
     // ======================================================================
     // Methods
@@ -84,7 +87,7 @@ public interface IRemoteNodeController
      * @return The local table network node; never {@code null}.
      */
     /* @NonNull */
-    public INode getLocalNode();
+    public LocalNodeType getLocalNode();
 
     /**
      * Gets the instance lock for the remote node.

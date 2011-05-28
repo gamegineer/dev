@@ -25,7 +25,6 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collection;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.common.AbstractRemoteNode;
 import org.gamegineer.table.internal.net.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
@@ -43,7 +42,7 @@ import org.gamegineer.table.net.TableNetworkError;
  */
 @ThreadSafe
 final class RemoteServerNode
-    extends AbstractRemoteNode
+    extends AbstractRemoteNode<IClientNode>
     implements IRemoteServerNodeController
 {
     // ======================================================================
@@ -61,7 +60,7 @@ final class RemoteServerNode
      */
     RemoteServerNode(
         /* @NonNull */
-        final INode localNode )
+        final IClientNode localNode )
     {
         super( localNode );
 

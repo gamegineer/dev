@@ -36,8 +36,11 @@ import org.junit.Test;
 /**
  * A fixture for testing the basic aspects of classes that implement the
  * {@link org.gamegineer.table.internal.net.INode} interface.
+ * 
+ * @param <T>
+ *        The type of the node.
  */
-public abstract class AbstractNodeTestCase
+public abstract class AbstractNodeTestCase<T extends INode>
 {
     // ======================================================================
     // Fields
@@ -47,7 +50,7 @@ public abstract class AbstractNodeTestCase
     private IMocksControl mocksControl_;
 
     /** The table network node under test in the fixture. */
-    private INode node_;
+    private T node_;
 
 
     // ======================================================================
@@ -76,8 +79,21 @@ public abstract class AbstractNodeTestCase
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract INode createNode()
+    protected abstract T createNode()
         throws Exception;
+
+    /**
+     * Gets the table network node under test in the fixture.
+     * 
+     * @return The table network node under test in the fixture; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    protected final T getNode()
+    {
+        assertNotNull( node_ );
+        return node_;
+    }
 
     /**
      * Indicates a remote node for the specified player is bound to the
@@ -98,7 +114,7 @@ public abstract class AbstractNodeTestCase
      */
     protected abstract boolean isRemoteNodeBound(
         /* @NonNull */
-        final INode node,
+        final T node,
         /* @NonNull */
         final String playerName );
 
@@ -225,32 +241,6 @@ public abstract class AbstractNodeTestCase
         synchronized( node_.getLock() )
         {
             assertNotNull( node_.getPlayerName() );
-        }
-    }
-
-    /**
-     * Ensures the {@code isPlayerConnected} method throws an exception when
-     * passed a {@code null} player name.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testIsPlayerConnected_PlayerName_Null()
-    {
-        synchronized( node_.getLock() )
-        {
-            node_.isPlayerConnected( null );
-        }
-    }
-
-    /**
-     * Ensures the {@code setPlayers} method throws an exception when passed a
-     * {@code null} players collection.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetPlayers_Players_Null()
-    {
-        synchronized( node_.getLock() )
-        {
-            node_.setPlayers( null );
         }
     }
 

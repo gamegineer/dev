@@ -60,7 +60,7 @@ public final class AbstractRemoteNodeAsServiceTest
     @Override
     protected IService createService()
     {
-        return new AbstractRemoteNode( EasyMock.createMock( INode.class ) )
+        return new AbstractRemoteNode<INode>( EasyMock.createMock( INode.class ) )
         {
             @Override
             public void setPlayers(

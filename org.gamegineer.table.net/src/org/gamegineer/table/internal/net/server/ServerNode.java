@@ -40,6 +40,7 @@ import org.gamegineer.table.net.TableNetworkException;
 @ThreadSafe
 public final class ServerNode
     extends AbstractNode
+    implements IServerNode
 {
     // ======================================================================
     // Fields
@@ -177,7 +178,6 @@ public final class ServerNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INode#getPlayers()
      * @see org.gamegineer.table.internal.net.INodeController#getPlayers()
      */
     @Override
@@ -190,7 +190,7 @@ public final class ServerNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INode#isPlayerConnected(java.lang.String)
+     * @see org.gamegineer.table.internal.net.server.IServerNode#isPlayerConnected(java.lang.String)
      */
     @Override
     public boolean isPlayerConnected(
@@ -230,20 +230,6 @@ public final class ServerNode
         super.remoteNodeUnbound( remoteNode );
 
         unbindPlayer( remoteNode.getPlayerName() );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.INode#setPlayers(java.util.Collection)
-     */
-    @Override
-    public void setPlayers(
-        final Collection<String> players )
-    {
-        assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
-
-        // TODO: Move setPlayers() to IClientNode
-        throw new AssertionError( "this method should never be called on a server node" ); //$NON-NLS-1$
     }
 
     /**

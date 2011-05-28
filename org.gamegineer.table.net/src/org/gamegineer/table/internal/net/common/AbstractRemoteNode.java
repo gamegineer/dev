@@ -45,10 +45,13 @@ import org.gamegineer.table.net.TableNetworkError;
 
 /**
  * Superclass for all remote nodes.
+ * 
+ * @param <LocalNodeType>
+ *        The type of the local table network node.
  */
 @ThreadSafe
-public abstract class AbstractRemoteNode
-    implements IRemoteNodeController, IService, IRemoteNode
+public abstract class AbstractRemoteNode<LocalNodeType extends INode>
+    implements IRemoteNodeController<LocalNodeType>, IService, IRemoteNode
 {
     // ======================================================================
     // Fields
@@ -69,7 +72,7 @@ public abstract class AbstractRemoteNode
     private final Map<Integer, IMessageHandler> correlatedMessageHandlers_;
 
     /** The local table network node. */
-    private final INode localNode_;
+    private final LocalNodeType localNode_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -115,7 +118,7 @@ public abstract class AbstractRemoteNode
      */
     protected AbstractRemoteNode(
         /* @NonNull */
-        final INode node )
+        final LocalNodeType node )
     {
         assertArgumentNotNull( node, "node" ); //$NON-NLS-1$
 
@@ -243,7 +246,7 @@ public abstract class AbstractRemoteNode
     /*
      * @see org.gamegineer.table.internal.net.common.IRemoteNodeController#getLocalNode()
      */
-    public final INode getLocalNode()
+    public final LocalNodeType getLocalNode()
     {
         return localNode_;
     }
@@ -495,11 +498,11 @@ public abstract class AbstractRemoteNode
      * org.gamegineer.table.internal.net.common.IRemoteNodeController.
      * IMessageHandler}.
      * 
-     * @param <T>
+     * @param <RemoteNodeControllerType>
      *        The type of the remote node control interface.
      */
     @Immutable
-    public static abstract class AbstractMessageHandler<T extends IRemoteNodeController>
+    public static abstract class AbstractMessageHandler<RemoteNodeControllerType extends IRemoteNodeController<?>>
         implements IMessageHandler
     {
         // ==================================================================
@@ -510,7 +513,7 @@ public abstract class AbstractRemoteNode
          * The control interface for the remote node associated with the message
          * handler.
          */
-        private final T remoteNodeController_;
+        private final RemoteNodeControllerType remoteNodeController_;
 
 
         // ==================================================================
@@ -530,7 +533,7 @@ public abstract class AbstractRemoteNode
          */
         protected AbstractMessageHandler(
             /* @NonNull */
-            final T remoteNodeController )
+            final RemoteNodeControllerType remoteNodeController )
         {
             assertArgumentNotNull( remoteNodeController, "remoteNodeController" ); //$NON-NLS-1$
 
@@ -550,7 +553,7 @@ public abstract class AbstractRemoteNode
          *         message handler.
          */
         /* @NonNull */
-        protected final T getRemoteNodeController()
+        protected final RemoteNodeControllerType getRemoteNodeController()
         {
             return remoteNodeController_;
         }
@@ -620,7 +623,7 @@ public abstract class AbstractRemoteNode
      */
     @Immutable
     private static final class ErrorMessageHandler
-        extends AbstractMessageHandler<IRemoteNodeController>
+        extends AbstractMessageHandler<IRemoteNodeController<?>>
     {
         // ==================================================================
         // Constructors
@@ -638,7 +641,7 @@ public abstract class AbstractRemoteNode
          */
         ErrorMessageHandler(
             /* @NonNull */
-            final IRemoteNodeController remoteNodeController )
+            final IRemoteNodeController<?> remoteNodeController )
         {
             super( remoteNodeController );
         }

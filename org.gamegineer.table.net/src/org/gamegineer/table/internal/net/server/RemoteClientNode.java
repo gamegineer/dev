@@ -26,7 +26,6 @@ import java.util.Collection;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.common.AbstractRemoteNode;
 import org.gamegineer.table.internal.net.common.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.common.messages.PlayersMessage;
@@ -41,7 +40,7 @@ import org.gamegineer.table.internal.net.common.messages.PlayersMessage;
  */
 @ThreadSafe
 final class RemoteClientNode
-    extends AbstractRemoteNode
+    extends AbstractRemoteNode<IServerNode>
     implements IRemoteClientNodeController
 {
     // ======================================================================
@@ -78,7 +77,7 @@ final class RemoteClientNode
      */
     RemoteClientNode(
         /* @NonNull */
-        final INode localNode )
+        final IServerNode localNode )
     {
         super( localNode );
 

@@ -93,22 +93,6 @@ public final class AbstractNodeTest
             {
                 return null;
             }
-
-            @Override
-            public boolean isPlayerConnected(
-                @SuppressWarnings( "unused" )
-                final String playerName )
-            {
-                return false;
-            }
-
-            @Override
-            public void setPlayers(
-                @SuppressWarnings( "unused" )
-                final Collection<String> players )
-            {
-                // do nothing
-            }
         };
     }
 

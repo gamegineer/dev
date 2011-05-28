@@ -38,8 +38,10 @@ import org.junit.Test;
  * 
  * @param <T>
  *        The type of the remote node controller.
+ * @param <LocalNodeType>
+ *        The type of the local table network node.
  */
-public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNodeController>
+public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNodeController<LocalNodeType>, LocalNodeType extends INode>
 {
     // ======================================================================
     // Constructors
@@ -52,7 +54,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     private IMocksControl mocksControl_;
 
     /** The table network node for use in the fixture. */
-    private INode node_;
+    private LocalNodeType node_;
 
 
     // ======================================================================
@@ -74,6 +76,28 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     // ======================================================================
 
     /**
+     * Creates a local table network node for the remote node controller under
+     * test in the fixture.
+     * 
+     * @param mocksControl
+     *        The mocks control for use in the fixture; must not be {@code null}
+     *        .
+     * 
+     * @return The local table network node for the remote node controller under
+     *         test in the fixture; never {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     * @throws java.lang.NullPointerException
+     *         If {@code mocksControl} is {@code null}.
+     */
+    /* @NonNull */
+    protected abstract LocalNodeType createLocalNode(
+        /* @NonNull */
+        IMocksControl mocksControl )
+        throws Exception;
+
+    /**
      * Creates the remote node controller to be tested.
      * 
      * @param node
@@ -91,7 +115,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     /* @NonNull */
     protected abstract T createRemoteNodeController(
         /* @NonNull */
-        INode node )
+        LocalNodeType node )
         throws Exception;
 
     /**
@@ -131,7 +155,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        node_ = mocksControl_.createMock( INode.class );
+        node_ = createLocalNode( mocksControl_ );
         controller_ = createRemoteNodeController( node_ );
         assertNotNull( controller_ );
     }

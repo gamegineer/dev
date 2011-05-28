@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.server;
 
-import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.transport.FakeServiceContext;
 
 /**
@@ -57,7 +56,7 @@ public final class RemoteClientNodeAsRemoteClientNodeControllerTest
      */
     @Override
     protected RemoteClientNode createRemoteNodeController(
-        final INode node )
+        final IServerNode node )
     {
         return new RemoteClientNode( node );
     }

@@ -1,5 +1,5 @@
 /*
- * ClientNodeAsNodeTest.java
+ * ClientNodeAsClientNodeTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -21,28 +21,28 @@
 
 package org.gamegineer.table.internal.net.client;
 
-import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.TableNetworkControllers;
-import org.gamegineer.table.internal.net.common.AbstractAbstractNodeAsNodeTestCase;
+import org.gamegineer.table.internal.net.common.AbstractNodeUtils;
 
 /**
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.net.client.ClientNode} class to ensure
  * it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.INode} interface.
+ * {@link org.gamegineer.table.internal.net.client.IClientNode} interface.
  */
-public final class ClientNodeAsNodeTest
-    extends AbstractAbstractNodeAsNodeTestCase
+public final class ClientNodeAsClientNodeTest
+    extends AbstractClientNodeTestCase<ClientNode>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ClientNodeAsNodeTest} class.
+     * Initializes a new instance of the {@code ClientNodeAsClientNodeTest}
+     * class.
      */
-    public ClientNodeAsNodeTest()
+    public ClientNodeAsClientNodeTest()
     {
         super();
     }
@@ -56,11 +56,22 @@ public final class ClientNodeAsNodeTest
      * @see org.gamegineer.table.internal.net.AbstractNodeTestCase#createNode()
      */
     @Override
-    protected INode createNode()
+    protected ClientNode createNode()
         throws Exception
     {
         final ClientNode node = new ClientNode( TableNetworkControllers.createFakeTableNetworkController(), false );
         node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
         return node;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.AbstractNodeTestCase#isRemoteNodeBound(org.gamegineer.table.internal.net.INode, java.lang.String)
+     */
+    @Override
+    protected boolean isRemoteNodeBound(
+        final ClientNode node,
+        final String playerName )
+    {
+        return AbstractNodeUtils.isRemoteNodeBound( node, playerName );
     }
 }

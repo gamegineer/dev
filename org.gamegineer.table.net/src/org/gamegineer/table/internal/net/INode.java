@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net;
 
-import java.util.Collection;
 import net.jcip.annotations.GuardedBy;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.net.TableNetworkError;
@@ -67,7 +66,6 @@ public interface INode
      *        disconnected or {@code null} if the local table network node was
      *        disconnected normally.
      */
-    // TODO: Move to IClientNode
     public void disconnect(
         /* @Nullable */
         TableNetworkError error );
@@ -106,41 +104,6 @@ public interface INode
     @GuardedBy( "getLock()" )
     /* @NonNull */
     public String getPlayerName();
-
-    /**
-     * Indicates the player with the specified name is connected to the table
-     * network.
-     * 
-     * @param playerName
-     *        The player name; must not be {@code null}.
-     * 
-     * @return {@code true} if a player with the specified name is connected to
-     *         the table network; otherwise {@code false}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code playerName} is {@code null}.
-     */
-    // TODO: Move to IServerNode
-    @GuardedBy( "getLock()" )
-    public boolean isPlayerConnected(
-        /* @NonNull */
-        String playerName );
-
-    /**
-     * Sets the collection of players connected to the table network.
-     * 
-     * @param players
-     *        The collection of players connected to the table network; must not
-     *        be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code players} is {@code null}.
-     */
-    // TODO: Move to IClientNode
-    @GuardedBy( "getLock()" )
-    public void setPlayers(
-        /* @NonNull */
-        Collection<String> players );
 
     /**
      * Unbinds the specified remote node from the local table network node.

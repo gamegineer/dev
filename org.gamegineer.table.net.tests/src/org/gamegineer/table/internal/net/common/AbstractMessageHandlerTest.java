@@ -102,7 +102,7 @@ public final class AbstractMessageHandlerTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_RemoteNodeController_Null()
     {
-        new AbstractRemoteNode.AbstractMessageHandler<IRemoteNodeController>( null )
+        new AbstractRemoteNode.AbstractMessageHandler<IRemoteNodeController<?>>( null )
         {
             // no overrides
         };
@@ -115,7 +115,7 @@ public final class AbstractMessageHandlerTest
     @Test
     public void testHandleMessage_Message_Supported()
     {
-        final IRemoteNodeController controller = mocksControl_.createMock( IRemoteNodeController.class );
+        final IRemoteNodeController<?> controller = mocksControl_.createMock( IRemoteNodeController.class );
         final IMessage message = new FakeMessage();
         final MockMessageHandler messageHandler = new MockMessageHandler( controller );
         mocksControl_.replay();
@@ -133,7 +133,7 @@ public final class AbstractMessageHandlerTest
     @Test
     public void testHandleMessage_Message_Unsupported()
     {
-        final IRemoteNodeController controller = mocksControl_.createMock( IRemoteNodeController.class );
+        final IRemoteNodeController<?> controller = mocksControl_.createMock( IRemoteNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
         EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
         final IMessage message = mocksControl_.createMock( IMessage.class );
@@ -188,7 +188,7 @@ public final class AbstractMessageHandlerTest
      */
     @NotThreadSafe
     private static final class MockMessageHandler
-        extends AbstractRemoteNode.AbstractMessageHandler<IRemoteNodeController>
+        extends AbstractRemoteNode.AbstractMessageHandler<IRemoteNodeController<?>>
     {
         // ==================================================================
         // Fields
@@ -223,7 +223,7 @@ public final class AbstractMessageHandlerTest
          */
         MockMessageHandler(
             /* @NonNull */
-            final IRemoteNodeController remoteNodeController )
+            final IRemoteNodeController<?> remoteNodeController )
         {
             super( remoteNodeController );
 

@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.net.server;
 
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.AbstractRemoteNodeTestCase;
-import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.IRemoteNode;
 import org.gamegineer.table.internal.net.transport.FakeServiceContext;
 
@@ -60,7 +59,7 @@ public final class RemoteClientNodeAsRemoteNodeTest
     @Override
     protected IRemoteNode createRemoteNode()
     {
-        final RemoteClientNode remoteNode = new RemoteClientNode( EasyMock.createMock( INode.class ) );
+        final RemoteClientNode remoteNode = new RemoteClientNode( EasyMock.createMock( IServerNode.class ) );
         synchronized( remoteNode.getLock() )
         {
             remoteNode.started( new FakeServiceContext() );

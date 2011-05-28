@@ -1,5 +1,5 @@
 /*
- * AbstractRemoteClientNodeControllerTestCase.java
+ * AbstractClientNodeTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,34 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 23, 2011 at 9:23:06 PM.
+ * Created on May 27, 2011 at 10:06:08 PM.
  */
 
-package org.gamegineer.table.internal.net.server;
+package org.gamegineer.table.internal.net.client;
 
-import org.easymock.IMocksControl;
-import org.gamegineer.table.internal.net.common.AbstractRemoteNodeControllerTestCase;
+import org.gamegineer.table.internal.net.AbstractNodeTestCase;
+import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.server.IRemoteClientNodeController}
- * interface.
+ * {@link org.gamegineer.table.internal.net.client.IClientNode} interface.
  * 
  * @param <T>
- *        The type of the remote client node controller.
+ *        The type of the client node.
  */
-public abstract class AbstractRemoteClientNodeControllerTestCase<T extends IRemoteClientNodeController>
-    extends AbstractRemoteNodeControllerTestCase<T, IServerNode>
+public abstract class AbstractClientNodeTestCase<T extends IClientNode>
+    extends AbstractNodeTestCase<T>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractRemoteClientNodeControllerTestCase} class.
+     * Initializes a new instance of the {@code AbstractClientNodeTestCase}
+     * class.
      */
-    protected AbstractRemoteClientNodeControllerTestCase()
+    protected AbstractClientNodeTestCase()
     {
         super();
     }
@@ -53,13 +52,16 @@ public abstract class AbstractRemoteClientNodeControllerTestCase<T extends IRemo
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteNodeControllerTestCase#createLocalNode(org.easymock.IMocksControl)
+    /**
+     * Ensures the {@code setPlayers} method throws an exception when passed a
+     * {@code null} players collection.
      */
-    @Override
-    protected final IServerNode createLocalNode(
-        final IMocksControl mocksControl )
+    @Test( expected = NullPointerException.class )
+    public void testSetPlayers_Players_Null()
     {
-        return mocksControl.createMock( IServerNode.class );
+        synchronized( getNode().getLock() )
+        {
+            getNode().setPlayers( null );
+        }
     }
 }

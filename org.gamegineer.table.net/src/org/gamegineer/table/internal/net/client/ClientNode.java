@@ -44,6 +44,7 @@ import org.gamegineer.table.net.TableNetworkException;
 @ThreadSafe
 public final class ClientNode
     extends AbstractNode
+    implements IClientNode
 {
     // ======================================================================
     // Fields
@@ -212,7 +213,6 @@ public final class ClientNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INode#getPlayers()
      * @see org.gamegineer.table.internal.net.INodeController#getPlayers()
      */
     @Override
@@ -222,19 +222,6 @@ public final class ClientNode
         {
             return new ArrayList<String>( players_ );
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.INode#isPlayerConnected(java.lang.String)
-     */
-    @Override
-    public boolean isPlayerConnected(
-        final String playerName )
-    {
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
-
-        return players_.contains( playerName );
     }
 
     /*
@@ -280,7 +267,7 @@ public final class ClientNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.INode#setPlayers(java.util.Collection)
+     * @see org.gamegineer.table.internal.net.client.IClientNode#setPlayers(java.util.Collection)
      */
     @Override
     public void setPlayers(

@@ -26,7 +26,6 @@ import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.IRemoteNodeController.IMessageHandler;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationResponseMessage;
@@ -120,7 +119,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         };
         final Authenticator authenticator = new Authenticator();
         final byte[] response = authenticator.createResponse( challenge, password, salt );
-        final INode localNode = mocksControl_.createMock( INode.class );
+        final IServerNode localNode = mocksControl_.createMock( IServerNode.class );
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );
         final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
         EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();
@@ -166,7 +165,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         final byte[] response = new byte[] {
             9, 10, 11, 12
         };
-        final INode localNode = mocksControl_.createMock( INode.class );
+        final IServerNode localNode = mocksControl_.createMock( IServerNode.class );
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );
         final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
         EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();
@@ -212,7 +211,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         };
         final Authenticator authenticator = new Authenticator();
         final byte[] response = authenticator.createResponse( challenge, password, salt );
-        final INode localNode = mocksControl_.createMock( INode.class );
+        final IServerNode localNode = mocksControl_.createMock( IServerNode.class );
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );
         final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
         EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();
@@ -259,7 +258,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         };
         final Authenticator authenticator = new Authenticator();
         final byte[] response = authenticator.createResponse( challenge, password, salt );
-        final INode localNode = mocksControl_.createMock( INode.class );
+        final IServerNode localNode = mocksControl_.createMock( IServerNode.class );
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );
         final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
         EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();

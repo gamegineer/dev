@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.net.client;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationRequestMessage;
@@ -80,7 +79,7 @@ final class BeginAuthenticationRequestMessageHandler
         assert message != null;
 
         final IRemoteServerNodeController controller = getRemoteNodeController();
-        final INode localNode = controller.getLocalNode();
+        final IClientNode localNode = controller.getLocalNode();
         final BeginAuthenticationResponseMessage response = new BeginAuthenticationResponseMessage();
         response.setCorrelationId( message.getId() );
         response.setPlayerName( localNode.getPlayerName() );

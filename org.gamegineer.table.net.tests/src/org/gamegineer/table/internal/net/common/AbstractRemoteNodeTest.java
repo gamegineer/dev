@@ -51,7 +51,7 @@ public final class AbstractRemoteNodeTest
     private IMocksControl mocksControl_;
 
     /** The remote node under test in the fixture. */
-    private AbstractRemoteNode remoteNode_;
+    private AbstractRemoteNode<?> remoteNode_;
 
 
     // ======================================================================
@@ -84,11 +84,11 @@ public final class AbstractRemoteNodeTest
      *         If {@code node} is {@code null}.
      */
     /* @NonNull */
-    private static AbstractRemoteNode createRemoteNode(
+    private static AbstractRemoteNode<?> createRemoteNode(
         /* @NonNull */
         final INode node )
     {
-        return new AbstractRemoteNode( node )
+        return new AbstractRemoteNode<INode>( node )
         {
             @Override
             public void setPlayers(

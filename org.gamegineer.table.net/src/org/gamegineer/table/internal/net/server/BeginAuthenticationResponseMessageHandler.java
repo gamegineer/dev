@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.common.Authenticator;
 import org.gamegineer.table.internal.net.common.messages.BeginAuthenticationResponseMessage;
@@ -92,7 +91,7 @@ final class BeginAuthenticationResponseMessageHandler
         assert response != null;
 
         final IRemoteClientNodeController controller = getRemoteNodeController();
-        final INode localNode = controller.getLocalNode();
+        final IServerNode localNode = controller.getLocalNode();
         final SecureString password = localNode.getPassword();
         try
         {
