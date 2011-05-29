@@ -151,7 +151,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         remoteNodes_.put( remoteNode.getPlayerName(), remoteNode );
         assert !tableProxies_.containsKey( remoteNode.getPlayerName() );
         tableProxies_.put( remoteNode.getPlayerName(), remoteNode.getTableProxy() );
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Remote node bound for player '%s'.", remoteNode.getPlayerName() ) ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Remote node bound for player '%s'", remoteNode.getPlayerName() ) ); //$NON-NLS-1$
         remoteNodeBound( remoteNode );
     }
 
@@ -526,7 +526,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assertArgumentLegal( remoteNodes_.remove( remoteNode.getPlayerName() ) != null, "remoteNode", Messages.AbstractNode_unbindRemoteNode_remoteNodeNotBound ); //$NON-NLS-1$
         assert tableProxies_.containsKey( remoteNode.getPlayerName() );
         tableProxies_.remove( remoteNode.getPlayerName() );
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Remote node unbound for player '%s'.", remoteNode.getPlayerName() ) ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Remote node unbound for player '%s'", remoteNode.getPlayerName() ) ); //$NON-NLS-1$
         remoteNodeUnbound( remoteNode );
     }
 

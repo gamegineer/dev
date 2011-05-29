@@ -94,7 +94,7 @@ public final class ServerNode
 
         assert !players_.contains( playerName );
         players_.add( playerName );
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "player '%s' has connected", playerName ) ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has connected", playerName ) ); //$NON-NLS-1$
         notifyPlayersUpdated();
     }
 
@@ -256,7 +256,7 @@ public final class ServerNode
 
         assert players_.contains( playerName );
         players_.remove( playerName );
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "player '%s' has disconnected", playerName ) ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has disconnected", playerName ) ); //$NON-NLS-1$
         notifyPlayersUpdated();
     }
 }
