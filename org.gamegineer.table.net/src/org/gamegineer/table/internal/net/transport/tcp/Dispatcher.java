@@ -367,7 +367,6 @@ final class Dispatcher
         eventHandler.prepareToRun();
         selectionKey.interestOps( 0 );
 
-        // TODO: Eventually submit to executor to run the handler asynchronously.
         try
         {
             eventHandler.run();
