@@ -29,7 +29,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 import org.gamegineer.table.internal.net.transport.tcp.TcpTransportLayerFactory;
 import org.gamegineer.table.net.ITableNetwork;
@@ -66,10 +65,6 @@ public final class TableNetwork
     /** The table network node factory. */
     private final INodeFactory nodeFactory_;
 
-    /** The table to be attached to the network. */
-    @SuppressWarnings( "unused" )
-    private final ITable table_;
-
     /** The table network transport layer factory. */
     private final ITransportLayerFactory transportLayerFactory_;
 
@@ -80,18 +75,10 @@ public final class TableNetwork
 
     /**
      * Initializes a new instance of the {@code TableNetwork} class.
-     * 
-     * @param table
-     *        The table to be attached to the network; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code table} is {@code null}.
      */
-    public TableNetwork(
-        /* @NonNull */
-        final ITable table )
+    public TableNetwork()
     {
-        this( table, new DefaultNodeFactory(), new TcpTransportLayerFactory() );
+        this( new DefaultNodeFactory(), new TcpTransportLayerFactory() );
     }
 
     /**
@@ -102,8 +89,6 @@ public final class TableNetwork
      * This constructor is only intended to support testing.
      * </p>
      * 
-     * @param table
-     *        The table to be attached to the network; must not be {@code null}.
      * @param nodeFactory
      *        The table network node factory; must not be {@code null}.
      * @param transportLayerFactory
@@ -111,18 +96,15 @@ public final class TableNetwork
      *        null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code table}, {@code nodeFactory}, or {@code
-     *         transportLayerFactory} is {@code null}.
+     *         If {@code nodeFactory} or {@code transportLayerFactory} is
+     *         {@code null}.
      */
     public TableNetwork(
-        /* @NonNull */
-        final ITable table,
         /* @NonNull */
         final INodeFactory nodeFactory,
         /* @NonNull */
         final ITransportLayerFactory transportLayerFactory )
     {
-        assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
         assertArgumentNotNull( nodeFactory, "nodeFactory" ); //$NON-NLS-1$
         assertArgumentNotNull( transportLayerFactory, "transportLayerFactory" ); //$NON-NLS-1$
 
@@ -130,7 +112,6 @@ public final class TableNetwork
         listeners_ = new CopyOnWriteArrayList<ITableNetworkListener>();
         nodeControllerRef_ = new AtomicReference<INodeController>( null );
         nodeFactory_ = nodeFactory;
-        table_ = table;
         transportLayerFactory_ = transportLayerFactory;
     }
 

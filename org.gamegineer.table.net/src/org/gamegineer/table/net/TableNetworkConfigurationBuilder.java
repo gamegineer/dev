@@ -24,6 +24,8 @@ package org.gamegineer.table.net;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
+import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.net.TableNetworkConfiguration;
 
 /**
@@ -41,6 +43,9 @@ public final class TableNetworkConfigurationBuilder
 
     /** The name of the local player. */
     private String localPlayerName_;
+
+    /** The local table to attach to the table network. */
+    private ITable localTable_;
 
     /** The password used to authenticate connections to the table network. */
     private SecureString password_;
@@ -61,6 +66,7 @@ public final class TableNetworkConfigurationBuilder
     {
         hostName_ = "localhost"; //$NON-NLS-1$
         localPlayerName_ = "Player"; //$NON-NLS-1$
+        localTable_ = TableFactory.createTable();
         password_ = new SecureString();
         port_ = TableNetworkConstants.DEFAULT_PORT;
     }
@@ -117,6 +123,29 @@ public final class TableNetworkConfigurationBuilder
     }
 
     /**
+     * Sets the local table to attach to the table network.
+     * 
+     * @param localTable
+     *        The local table; must not be {@code null}.
+     * 
+     * @return A reference to this builder; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code localTable} is {@code null}.
+     */
+    /* @NonNull */
+    public TableNetworkConfigurationBuilder setLocalTable(
+        /* @NonNull */
+        final ITable localTable )
+    {
+        assertArgumentNotNull( localTable, "localTable" ); //$NON-NLS-1$
+
+        localTable_ = localTable;
+
+        return this;
+    }
+
+    /**
      * Sets the password used to authenticate connections to the table network.
      * 
      * @param password
@@ -165,6 +194,6 @@ public final class TableNetworkConfigurationBuilder
     /* @NonNull */
     public ITableNetworkConfiguration toTableNetworkConfiguration()
     {
-        return new TableNetworkConfiguration( hostName_, port_, password_, localPlayerName_ );
+        return new TableNetworkConfiguration( hostName_, port_, password_, localPlayerName_, localTable_ );
     }
 }

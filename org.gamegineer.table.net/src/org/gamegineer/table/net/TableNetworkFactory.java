@@ -22,7 +22,6 @@
 package org.gamegineer.table.net;
 
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.TableNetwork;
 
 /**
@@ -51,19 +50,11 @@ public final class TableNetworkFactory
     /**
      * Creates a new table network.
      * 
-     * @param table
-     *        The table to attach to the network; must not be {@code null}.
-     * 
      * @return A new table network; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code table} is {@code null}.
      */
     /* @NonNull */
-    public static ITableNetwork createTableNetwork(
-        /* @NonNull */
-        final ITable table )
+    public static ITableNetwork createTableNetwork()
     {
-        return new TableNetwork( table );
+        return new TableNetwork();
     }
 }

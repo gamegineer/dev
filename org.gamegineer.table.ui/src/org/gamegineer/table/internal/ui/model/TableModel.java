@@ -123,7 +123,7 @@ public final class TableModel
         listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
         originOffset_ = new Dimension( 0, 0 );
         table_ = table;
-        tableNetwork_ = TableNetworkFactory.createTableNetwork( table );
+        tableNetwork_ = TableNetworkFactory.createTableNetwork();
 
         table_.addTableListener( this );
         tableNetwork_.addTableNetworkListener( this );

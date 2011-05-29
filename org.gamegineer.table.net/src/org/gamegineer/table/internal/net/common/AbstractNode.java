@@ -32,6 +32,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.INodeController;
@@ -90,6 +91,12 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     private final ITableNetworkController tableNetworkController_;
 
     /**
+     * The collection of bound table proxies. The key is the name of the player
+     * associated with the table. The value is the table proxy.
+     */
+    private final Map<String, ITable> tableProxies_;
+
+    /**
      * The transport layer or {@code null} if the table network is not
      * connected.
      */
@@ -121,6 +128,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         password_ = null;
         remoteNodes_ = new HashMap<String, RemoteNodeType>();
         tableNetworkController_ = tableNetworkController;
+        tableProxies_ = new HashMap<String, ITable>();
         transportLayer_ = null;
     }
 
@@ -141,6 +149,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
         assertArgumentLegal( !remoteNodes_.containsKey( remoteNode.getPlayerName() ), "remoteNode", Messages.AbstractNode_bindRemoteNode_remoteNodeBound ); //$NON-NLS-1$ 
         remoteNodes_.put( remoteNode.getPlayerName(), remoteNode );
+        assert !tableProxies_.containsKey( remoteNode.getPlayerName() );
+        tableProxies_.put( remoteNode.getPlayerName(), remoteNode.getTableProxy() );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Remote node bound for player '%s'.", remoteNode.getPlayerName() ) ); //$NON-NLS-1$
         remoteNodeBound( remoteNode );
     }
@@ -164,7 +174,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
             localPlayerName_ = configuration.getLocalPlayerName();
             password_ = configuration.getPassword();
-            // TODO: add local table to table proxy collection
+            tableProxies_.put( localPlayerName_, configuration.getLocalTable() );
+
             connecting();
 
             final ITransportLayer transportLayer = createTransportLayer();
@@ -265,8 +276,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
                 transportLayer_.close();
                 transportLayer_ = null;
+                tableProxies_.remove( localPlayerName_ );
 
-                // TODO: remove local table from table proxy collection
                 disconnected();
                 dispose();
             }
@@ -364,6 +375,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         password_.dispose();
         password_ = null;
         remoteNodes_.clear();
+        tableProxies_.clear();
     }
 
     /*
@@ -425,6 +437,20 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     protected final ITableNetworkController getTableNetworkController()
     {
         return tableNetworkController_;
+    }
+
+    /**
+     * Gets the collection of bound table proxies.
+     * 
+     * @return The collection of bound table proxies; never {@code null}.
+     */
+    /* @NonNull */
+    protected final Collection<ITable> getTableProxies()
+    {
+        synchronized( getLock() )
+        {
+            return new ArrayList<ITable>( tableProxies_.values() );
+        }
     }
 
     /**
@@ -498,6 +524,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assert Thread.holdsLock( getLock() );
 
         assertArgumentLegal( remoteNodes_.remove( remoteNode.getPlayerName() ) != null, "remoteNode", Messages.AbstractNode_unbindRemoteNode_remoteNodeNotBound ); //$NON-NLS-1$
+        assert tableProxies_.containsKey( remoteNode.getPlayerName() );
+        tableProxies_.remove( remoteNode.getPlayerName() );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Remote node unbound for player '%s'.", remoteNode.getPlayerName() ) ); //$NON-NLS-1$
         remoteNodeUnbound( remoteNode );
     }

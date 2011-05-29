@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.net;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 
 /**
@@ -42,6 +43,9 @@ public final class TableNetworkConfiguration
 
     /** The name of the local player. */
     private final String localPlayerName_;
+
+    /** The local table to attach to the table network. */
+    private final ITable localTable_;
 
     /** The password used to authenticate connections to the table network. */
     private final SecureString password_;
@@ -67,10 +71,13 @@ public final class TableNetworkConfiguration
      *        network; must not be {@code null}.
      * @param localPlayerName
      *        The name of the local player; must not be {@code null}.
+     * @param localTable
+     *        The local table to attach to the table network; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code hostName}, {@code password}, or {@code localPlayerName}
-     *         is {@code null},
+     *         If {@code hostName}, {@code password}, {@localPlayerName}, or
+     *         {@code localTable} is {@code null},
      */
     public TableNetworkConfiguration(
         /* @NonNull */
@@ -79,14 +86,18 @@ public final class TableNetworkConfiguration
         /* @NonNull */
         final SecureString password,
         /* @NonNull */
-        final String localPlayerName )
+        final String localPlayerName,
+        /* @NonNull */
+        final ITable localTable )
     {
         assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
         assertArgumentNotNull( password, "password" ); //$NON-NLS-1$
         assertArgumentNotNull( localPlayerName, "localPlayerName" ); //$NON-NLS-1$
+        assertArgumentNotNull( localTable, "localTable" ); //$NON-NLS-1$
 
         hostName_ = hostName;
         localPlayerName_ = localPlayerName;
+        localTable_ = localTable;
         password_ = new SecureString( password );
         port_ = port;
     }
@@ -112,6 +123,15 @@ public final class TableNetworkConfiguration
     public String getLocalPlayerName()
     {
         return localPlayerName_;
+    }
+
+    /*
+     * @see org.gamegineer.table.net.ITableNetworkConfiguration#getLocalTable()
+     */
+    @Override
+    public ITable getLocalTable()
+    {
+        return localTable_;
     }
 
     /*

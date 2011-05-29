@@ -117,6 +117,15 @@ public abstract class AbstractTableNetworkConfigurationTestCase
     }
 
     /**
+     * Ensures the {@code getLocalTable} method does not return {@code null}.
+     */
+    @Test
+    public void testGetLocalTable_ReturnValue_NonNull()
+    {
+        assertNotNull( configuration_.getLocalTable() );
+    }
+
+    /**
      * Ensures the {@code getPassword} method does not return {@code null}.
      */
     @Test

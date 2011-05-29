@@ -22,11 +22,19 @@
 package org.gamegineer.table.internal.net.common;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import java.util.Collection;
+import java.util.Collections;
+import net.jcip.annotations.Immutable;
 import org.easymock.EasyMock;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.IRemoteNode;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.net.ITableNetworkConfiguration;
+import org.gamegineer.table.net.TableNetworkException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,40 +71,6 @@ public final class AbstractNodeTest
     // ======================================================================
 
     /**
-     * Creates a new instance of the {@code AbstractNode} class with stubbed
-     * implementations of all abstract methods.
-     * 
-     * @param tableNetworkController
-     *        The table network controller; must not be {@code null}.
-     * 
-     * @return A new instance of the {@code AbstractNode} class; never {@code
-     *         null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableNetworkController} is {@code null}.
-     */
-    /* @NonNull */
-    private static AbstractNode<IRemoteNode> createNode(
-        /* @NonNull */
-        final ITableNetworkController tableNetworkController )
-    {
-        return new AbstractNode<IRemoteNode>( tableNetworkController )
-        {
-            @Override
-            protected ITransportLayer createTransportLayer()
-            {
-                return null;
-            }
-
-            @Override
-            public Collection<String> getPlayers()
-            {
-                return null;
-            }
-        };
-    }
-
-    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -106,7 +80,7 @@ public final class AbstractNodeTest
     public void setUp()
         throws Exception
     {
-        node_ = createNode( EasyMock.createMock( ITableNetworkController.class ) );
+        node_ = new MockNode();
     }
 
     /**
@@ -123,13 +97,99 @@ public final class AbstractNodeTest
     }
 
     /**
+     * Ensures the {@code connect} method adds a table proxy for the local
+     * player before either the {@code connecting} or {@code connected} methods
+     * are invoked.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testConnect_AddsLocalTableProxy()
+        throws Exception
+    {
+        final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
+        final MockNode node = new MockNode()
+        {
+            @Override
+            protected void connected()
+                throws TableNetworkException
+            {
+                super.connected();
+
+                assertTrue( isTableProxyBound( configuration.getLocalTable() ) );
+            }
+
+            @Override
+            protected void connecting()
+                throws TableNetworkException
+            {
+                super.connecting();
+
+                assertTrue( isTableProxyBound( configuration.getLocalTable() ) );
+            }
+        };
+
+        node.connect( configuration );
+    }
+
+    /**
      * Ensures the constructor throws an exception when passed a {@code null}
      * table network controller.
      */
     @Test( expected = NullPointerException.class )
     public void testConstructor_TableNetworkController_Null()
     {
-        createNode( null );
+        new AbstractNode<IRemoteNode>( null )
+        {
+            @Override
+            protected ITransportLayer createTransportLayer()
+            {
+                return null;
+            }
+
+            @Override
+            public Collection<String> getPlayers()
+            {
+                return null;
+            }
+        };
+    }
+
+    /**
+     * Ensures the {@code disconnect} method removes the table proxy for the
+     * local player after the {@code disconnecting} method is invoked but before
+     * the {@code disconnected} method is invoked.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testDisconnect_RemovesLocalTableProxy()
+        throws Exception
+    {
+        final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
+        final MockNode node = new MockNode()
+        {
+            @Override
+            protected void disconnected()
+            {
+                super.disconnected();
+
+                assertFalse( isTableProxyBound( configuration.getLocalTable() ) );
+            }
+
+            @Override
+            protected void disconnecting()
+            {
+                super.disconnecting();
+
+                assertTrue( isTableProxyBound( configuration.getLocalTable() ) );
+            }
+        };
+        node.connect( configuration );
+
+        node.disconnect();
     }
 
     /**
@@ -176,5 +236,79 @@ public final class AbstractNodeTest
         final int actualRemoteNodesSize = node_.getRemoteNodes().size();
 
         assertEquals( expectedRemoteNodesSize, actualRemoteNodesSize );
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * Mock implementation of {@link AbstractNode}.
+     */
+    @Immutable
+    private static class MockNode
+        extends AbstractNode<IRemoteNode>
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code MockNode} class.
+         */
+        MockNode()
+        {
+            super( EasyMock.createNiceMock( ITableNetworkController.class ) );
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.net.common.AbstractNode#createTransportLayer()
+         */
+        @Override
+        protected ITransportLayer createTransportLayer()
+        {
+            return EasyMock.createNiceMock( ITransportLayer.class );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.INodeController#getPlayers()
+         */
+        @Override
+        public Collection<String> getPlayers()
+        {
+            return Collections.emptyList();
+        }
+
+        /**
+         * Indicates the specified table proxy is bound to this node.
+         * 
+         * @param tableProxy
+         *        The table proxy; must not be {@code null}.
+         * 
+         * @return {@code true} if the specified table proxy is bound to this
+         *         node; otherwise {@code false}.
+         */
+        final boolean isTableProxyBound(
+            /* @NonNull */
+            final ITable tableProxy )
+        {
+            assert tableProxy != null;
+
+            for( final ITable otherTableProxy : getTableProxies() )
+            {
+                if( tableProxy.equals( otherTableProxy ) )
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

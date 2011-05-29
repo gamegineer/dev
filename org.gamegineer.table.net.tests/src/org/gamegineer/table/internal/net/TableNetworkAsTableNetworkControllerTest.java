@@ -21,9 +21,6 @@
 
 package org.gamegineer.table.internal.net;
 
-import org.easymock.EasyMock;
-import org.gamegineer.table.core.ITable;
-
 /**
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.net.TableNetwork} class to ensure it
@@ -57,6 +54,6 @@ public final class TableNetworkAsTableNetworkControllerTest
     @Override
     protected ITableNetworkController createTableNetworkController()
     {
-        return new TableNetwork( EasyMock.createMock( ITable.class ) );
+        return new TableNetwork();
     }
 }

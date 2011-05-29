@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -45,9 +44,6 @@ public abstract class AbstractTableNetworkTestCase
 
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
-
-    /** The table for use in the fixture. */
-    private ITable table_;
 
     /** The table network under test in the fixture. */
     private ITableNetwork tableNetwork_;
@@ -93,20 +89,13 @@ public abstract class AbstractTableNetworkTestCase
     /**
      * Creates the table network to be tested.
      * 
-     * @param table
-     *        The table to attach to the network; must not be {@code null}.
-     * 
      * @return The table network to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
-     * @throws java.lang.NullPointerException
-     *         If {@code table} is {@code null}.
      */
     /* @NonNull */
-    protected abstract ITableNetwork createTableNetwork(
-        /* @NonNull */
-        ITable table )
+    protected abstract ITableNetwork createTableNetwork()
         throws Exception;
 
     /**
@@ -134,14 +123,14 @@ public abstract class AbstractTableNetworkTestCase
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        table_ = TableFactory.createTable();
-        tableNetwork_ = createTableNetwork( table_ );
+        tableNetwork_ = createTableNetwork();
         assertNotNull( tableNetwork_ );
 
         final TableNetworkConfigurationBuilder builder = new TableNetworkConfigurationBuilder();
         tableNetworkConfiguration_ = builder //
             .setHostName( "hostName" ) //$NON-NLS-1$
             .setLocalPlayerName( "playerName" ) //$NON-NLS-1$
+            .setLocalTable( TableFactory.createTable() ) //
             .setPort( TableNetworkConstants.DEFAULT_PORT ) //
             .toTableNetworkConfiguration();
     }
@@ -158,7 +147,6 @@ public abstract class AbstractTableNetworkTestCase
     {
         tableNetworkConfiguration_ = null;
         tableNetwork_ = null;
-        table_ = null;
         mocksControl_ = null;
     }
 

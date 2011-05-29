@@ -133,9 +133,10 @@ public final class JoinTableNetworkWizard
     {
         final TableNetworkConfigurationBuilder configurationBuilder = new TableNetworkConfigurationBuilder();
         configurationBuilder.setHostName( model_.getHostName() );
-        configurationBuilder.setPort( model_.getPort() );
         configurationBuilder.setLocalPlayerName( model_.getPlayerName() );
+        configurationBuilder.setLocalTable( tableModel_.getTable() );
         configurationBuilder.setPassword( model_.getPassword() );
+        configurationBuilder.setPort( model_.getPort() );
         return configurationBuilder.toTableNetworkConfiguration();
     }
 

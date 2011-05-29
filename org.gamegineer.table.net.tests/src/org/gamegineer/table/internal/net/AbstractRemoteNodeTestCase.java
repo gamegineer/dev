@@ -120,4 +120,13 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
     {
         assertNotNull( remoteNode_.getPlayerName() );
     }
+
+    /**
+     * Ensures the {@code getTableProxy} method does not return {@code null}.
+     */
+    @Test
+    public void testGetTableProxy_ReturnValue_NonNull()
+    {
+        assertNotNull( remoteNode_.getTableProxy() );
+    }
 }

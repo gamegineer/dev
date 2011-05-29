@@ -24,15 +24,21 @@ package org.gamegineer.table.internal.net.common;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import java.awt.Point;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.persistence.memento.IMemento;
+import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.internal.net.INode;
 import org.gamegineer.table.internal.net.IRemoteNode;
 import org.gamegineer.table.internal.net.Loggers;
@@ -282,7 +288,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.common.IRemoteNodeController#getPlayerName()
+     * @see org.gamegineer.table.internal.net.IRemoteNode#getPlayerName()
      */
     @Override
     public final String getPlayerName()
@@ -292,6 +298,75 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
             assertStateLegal( playerName_ != null, Messages.AbstractRemoteNode_playerNotAuthenticated );
             return playerName_;
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.IRemoteNode#getTableProxy()
+     */
+    @Override
+    public final ITable getTableProxy()
+    {
+        // TODO: Implement real table proxy.
+        return new ITable()
+        {
+            @Override
+            public void addCardPile(
+                @SuppressWarnings( "unused" )
+                final ICardPile cardPile )
+            {
+                // do nothing
+            }
+
+            @Override
+            public void addTableListener(
+                @SuppressWarnings( "unused" )
+                final ITableListener listener )
+            {
+                // do nothing
+            }
+
+            @Override
+            public ICardPile getCardPile(
+                @SuppressWarnings( "unused" )
+                final Point location )
+            {
+                return null;
+            }
+
+            @Override
+            public List<ICardPile> getCardPiles()
+            {
+                return null;
+            }
+
+            @Override
+            public IMemento getMemento()
+            {
+                return null;
+            }
+
+            @Override
+            public void removeAllCardPiles()
+            {
+                // do nothing
+            }
+
+            @Override
+            public void removeCardPile(
+                @SuppressWarnings( "unused" )
+                final ICardPile cardPile )
+            {
+                // do nothing
+            }
+
+            @Override
+            public void removeTableListener(
+                @SuppressWarnings( "unused" )
+                final ITableListener listener )
+            {
+                // do nothing
+            }
+        };
     }
 
     /**

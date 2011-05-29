@@ -22,8 +22,6 @@
 package org.gamegineer.table.net;
 
 import static org.junit.Assert.assertNotNull;
-import org.easymock.EasyMock;
-import org.gamegineer.table.core.ITable;
 import org.junit.Test;
 
 /**
@@ -56,16 +54,6 @@ public final class TableNetworkFactoryTest
     @Test
     public void testCreateTableNetwork_ReturnValue_NonNull()
     {
-        assertNotNull( TableNetworkFactory.createTableNetwork( EasyMock.createMock( ITable.class ) ) );
-    }
-
-    /**
-     * Ensures the {@code createTableNetwork} method throws an exception when
-     * passed a {@code null} table.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateTableNetwork_Table_Null()
-    {
-        TableNetworkFactory.createTableNetwork( null );
+        assertNotNull( TableNetworkFactory.createTableNetwork() );
     }
 }

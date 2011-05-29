@@ -104,6 +104,16 @@ public final class TableNetworkConfigurationBuilderTest
     }
 
     /**
+     * Ensures the {@code setLocalTable} method throws an exception when passed
+     * a {@code null} local table.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetLocalTable_LocalTable_Null()
+    {
+        builder_.setLocalTable( null );
+    }
+
+    /**
      * Ensures the {@code setPassword} method throws an exception when passed a
      * {@code null} password.
      */

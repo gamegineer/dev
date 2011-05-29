@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.internal.net;
 
+import org.gamegineer.table.core.ITable;
+
 /**
  * A proxy for a remote node connected to the table network.
  * 
@@ -40,4 +42,13 @@ public interface IRemoteNode
      */
     /* @NonNull */
     public String getPlayerName();
+
+    /**
+     * Gets a proxy for the table associated with the remote node.
+     * 
+     * @return A proxy for the table associated with the remote node; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public ITable getTableProxy();
 }

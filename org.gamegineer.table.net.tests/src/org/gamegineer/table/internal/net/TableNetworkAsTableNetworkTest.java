@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net;
 
-import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.client.ClientNode;
 import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactory;
 import org.gamegineer.table.net.AbstractTableNetworkTestCase;
@@ -55,14 +54,12 @@ public final class TableNetworkAsTableNetworkTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.net.AbstractTableNetworkTestCase#createTableNetwork(org.gamegineer.table.core.ITable)
+     * @see org.gamegineer.table.net.AbstractTableNetworkTestCase#createTableNetwork()
      */
     @Override
-    protected ITableNetwork createTableNetwork(
-        final ITable table )
+    protected ITableNetwork createTableNetwork()
     {
         return new TableNetwork( //
-            table, //
             new DefaultNodeFactory()
             {
                 @Override

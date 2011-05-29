@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.common;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import net.jcip.annotations.NotThreadSafe;
 import org.easymock.EasyMock;
@@ -32,9 +31,7 @@ import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.TransportException;
-import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -125,37 +122,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
                 // do nothing
             }
         };
-    }
-
-    /**
-     * Ensures the {@code connect} method adds a table proxy for the local
-     * player.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Ignore
-    @Test
-    public void testConnect_AddsLocalTableProxy()
-        throws Exception
-    {
-        // FIXME: This is a valid test, but it needs to look at the table proxies
-        // collection, which we have yet to add.
-
-        final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
-        getNodeController().connect( configuration );
-
-        boolean localTableProxyFound = false;
-        for( final IRemoteNode remoteNode : getNodeController().getRemoteNodes() )
-        {
-            if( remoteNode.getPlayerName().equals( configuration.getLocalPlayerName() ) )
-            {
-                localTableProxyFound = true;
-                break;
-            }
-        }
-
-        assertTrue( localTableProxyFound );
     }
 
     /**

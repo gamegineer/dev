@@ -22,6 +22,7 @@
 package org.gamegineer.table.net;
 
 import org.gamegineer.common.core.security.SecureString;
+import org.gamegineer.table.core.ITable;
 
 /**
  * The configuration for a table network.
@@ -63,6 +64,21 @@ public interface ITableNetworkConfiguration
      */
     /* @NonNull */
     public String getLocalPlayerName();
+
+    /**
+     * Gets the local table to attach to the table network.
+     * 
+     * <p>
+     * When hosting a table network, the return value is the table to be hosted
+     * on the table network. When joining a table network, the return value is
+     * the table to be joined to the table network.
+     * </p>
+     * 
+     * @return The local table to attach to the table network; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    public ITable getLocalTable();
 
     /**
      * Gets the password used to authenticate connections to the table network.
