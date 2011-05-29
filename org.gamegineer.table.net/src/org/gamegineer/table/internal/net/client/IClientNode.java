@@ -44,6 +44,8 @@ public interface IClientNode
      *        The collection of players connected to the table network; must not
      *        be {@code null}.
      * 
+     * @throws java.lang.IllegalStateException
+     *         If the table network is not connected.
      * @throws java.lang.NullPointerException
      *         If {@code players} is {@code null}.
      */

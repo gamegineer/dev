@@ -1,5 +1,5 @@
 /*
- * AbstractClientNodeTestCase.java
+ * AbstractConnectedClientNodeTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -23,28 +23,29 @@ package org.gamegineer.table.internal.net.client;
 
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.internal.net.AbstractNodeTestCase;
+import org.gamegineer.table.internal.net.AbstractConnectedNodeTestCase;
 import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.client.IClientNode} interface.
+ * {@link org.gamegineer.table.internal.net.client.IClientNode} interface while
+ * in the connected state.
  * 
  * @param <T>
  *        The type of the client node.
  */
-public abstract class AbstractClientNodeTestCase<T extends IClientNode>
-    extends AbstractNodeTestCase<T, IRemoteServerNode>
+public abstract class AbstractConnectedClientNodeTestCase<T extends IClientNode>
+    extends AbstractConnectedNodeTestCase<T, IRemoteServerNode>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractClientNodeTestCase}
-     * class.
+     * Initializes a new instance of the {@code
+     * AbstractConnectedClientNodeTestCase} class.
      */
-    protected AbstractClientNodeTestCase()
+    protected AbstractConnectedClientNodeTestCase()
     {
         super();
     }
@@ -55,7 +56,7 @@ public abstract class AbstractClientNodeTestCase<T extends IClientNode>
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNodeTestCase#createMockRemoteNode(org.easymock.IMocksControl)
+     * @see org.gamegineer.table.internal.net.AbstractConnectedNodeTestCase#createMockRemoteNode(org.easymock.IMocksControl)
      */
     @Override
     protected IRemoteServerNode createMockRemoteNode(

@@ -51,8 +51,10 @@ public interface INode<RemoteNodeType extends IRemoteNode>
      *        The remote node; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code remoteNode} is already bound to the local table network
-     *         node.
+     *         If the table network is connected and {@code remoteNode} is
+     *         already bound to the local table network node.
+     * @throws java.lang.IllegalStateException
+     *         If the table network is not connected.
      * @throws java.lang.NullPointerException
      *         If {@code remoteNode} is {@code null}.
      */
@@ -115,8 +117,10 @@ public interface INode<RemoteNodeType extends IRemoteNode>
      *        The remote node; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code remoteNode} is not bound to the local table network
-     *         node.
+     *         If the table network is connected and {@code remoteNode} is not
+     *         bound to the local table network node.
+     * @throws java.lang.IllegalStateException
+     *         If the table network is not connected.
      * @throws java.lang.NullPointerException
      *         If {@code remoteNode} is {@code null}.
      */

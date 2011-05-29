@@ -191,6 +191,7 @@ public final class ServerNode
         assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
+        assertConnected();
         return players_.contains( playerName );
     }
 

@@ -46,6 +46,8 @@ public interface IServerNode
      * @return {@code true} if a player with the specified name is connected to
      *         the table network; otherwise {@code false}.
      * 
+     * @throws java.lang.IllegalStateException
+     *         If the table network is not connected.
      * @throws java.lang.NullPointerException
      *         If {@code playerName} is {@code null}.
      */

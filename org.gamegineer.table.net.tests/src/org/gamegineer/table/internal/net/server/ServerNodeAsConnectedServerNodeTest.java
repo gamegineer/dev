@@ -1,5 +1,5 @@
 /*
- * ClientNodeAsClientNodeTest.java
+ * ServerNodeAsConnectedServerNodeTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 14, 2011 at 11:29:02 PM.
+ * Created on Apr 14, 2011 at 11:29:24 PM.
  */
 
-package org.gamegineer.table.internal.net.client;
+package org.gamegineer.table.internal.net.server;
 
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.TableNetworkControllers;
@@ -27,22 +27,23 @@ import org.gamegineer.table.internal.net.common.AbstractNodeUtils;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.client.ClientNode} class to ensure
+ * {@link org.gamegineer.table.internal.net.server.ServerNode} class to ensure
  * it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.client.IClientNode} interface.
+ * {@link org.gamegineer.table.internal.net.server.IServerNode} interface while
+ * in the connected state.
  */
-public final class ClientNodeAsClientNodeTest
-    extends AbstractClientNodeTestCase<ClientNode>
+public final class ServerNodeAsConnectedServerNodeTest
+    extends AbstractConnectedServerNodeTestCase<ServerNode>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ClientNodeAsClientNodeTest}
-     * class.
+     * Initializes a new instance of the {@code
+     * ServerNodeAsConnectedServerNodeTest} class.
      */
-    public ClientNodeAsClientNodeTest()
+    public ServerNodeAsConnectedServerNodeTest()
     {
         super();
     }
@@ -53,23 +54,23 @@ public final class ClientNodeAsClientNodeTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNodeTestCase#createNode()
+     * @see org.gamegineer.table.internal.net.AbstractConnectedNodeTestCase#createConnectedNode()
      */
     @Override
-    protected ClientNode createNode()
+    protected ServerNode createConnectedNode()
         throws Exception
     {
-        final ClientNode node = new ClientNode( TableNetworkControllers.createFakeTableNetworkController(), false );
+        final ServerNode node = new ServerNode( TableNetworkControllers.createFakeTableNetworkController() );
         node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
         return node;
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNodeTestCase#isRemoteNodeBound(org.gamegineer.table.internal.net.INode, java.lang.String)
+     * @see org.gamegineer.table.internal.net.AbstractConnectedNodeTestCase#isRemoteNodeBound(org.gamegineer.table.internal.net.INode, java.lang.String)
      */
     @Override
     protected boolean isRemoteNodeBound(
-        final ClientNode node,
+        final ServerNode node,
         final String playerName )
     {
         return AbstractNodeUtils.isRemoteNodeBound( node, playerName );

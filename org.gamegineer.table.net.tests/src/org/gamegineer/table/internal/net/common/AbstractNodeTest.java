@@ -193,36 +193,6 @@ public final class AbstractNodeTest
     }
 
     /**
-     * Ensures the {@code getPassword} method throws an exception when the table
-     * network node is disconnected.
-     */
-    // TODO: Move to AbstractNodeTestCase once we modify test fixture to test both
-    // connected and disconnected nodes.
-    @Test( expected = IllegalStateException.class )
-    public void testGetPassword_Disconnected()
-    {
-        synchronized( node_.getLock() )
-        {
-            node_.getPassword();
-        }
-    }
-
-    /**
-     * Ensures the {@code getPlayerName} method throws an exception when the
-     * table network node is disconnected.
-     */
-    // TODO: Move to AbstractNodeTestCase once we modify test fixture to test both
-    // connected and disconnected nodes.
-    @Test( expected = IllegalStateException.class )
-    public void testGetPlayerName_Disconnected()
-    {
-        synchronized( node_.getLock() )
-        {
-            node_.getPlayerName();
-        }
-    }
-
-    /**
      * Ensures the {@code getRemoteNodes} method returns a copy of the bound
      * remote nodes collection.
      */

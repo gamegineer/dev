@@ -1,5 +1,5 @@
 /*
- * AbstractServerNodeTestCase.java
+ * AbstractDisconnectedClientNodeTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,35 +16,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 27, 2011 at 10:17:56 PM.
+ * Created on May 29, 2011 at 5:30:53 PM.
  */
 
-package org.gamegineer.table.internal.net.server;
+package org.gamegineer.table.internal.net.client;
 
+import java.util.Collections;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.internal.net.AbstractNodeTestCase;
+import org.gamegineer.table.internal.net.AbstractDisconnectedNodeTestCase;
 import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.server.IServerNode} interface.
+ * {@link org.gamegineer.table.internal.net.client.IClientNode} interface while
+ * in the disconnected state.
  * 
  * @param <T>
- *        The type of the server node.
+ *        The type of the client node.
  */
-public abstract class AbstractServerNodeTestCase<T extends IServerNode>
-    extends AbstractNodeTestCase<T, IRemoteClientNode>
+public abstract class AbstractDisconnectedClientNodeTestCase<T extends IClientNode>
+    extends AbstractDisconnectedNodeTestCase<T, IRemoteServerNode>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractServerNodeTestCase}
-     * class.
+     * Initializes a new instance of the {@code
+     * AbstractDisconnectedClientNodeTestCase} class.
      */
-    protected AbstractServerNodeTestCase()
+    protected AbstractDisconnectedClientNodeTestCase()
     {
         super();
     }
@@ -55,27 +57,40 @@ public abstract class AbstractServerNodeTestCase<T extends IServerNode>
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNodeTestCase#createMockRemoteNode(org.easymock.IMocksControl)
+     * @see org.gamegineer.table.internal.net.AbstractConnectedNodeTestCase#createMockRemoteNode(org.easymock.IMocksControl)
      */
     @Override
-    protected IRemoteClientNode createMockRemoteNode(
+    protected IRemoteServerNode createMockRemoteNode(
         final IMocksControl mocksControl )
     {
-        final IRemoteClientNode remoteNode = mocksControl.createMock( IRemoteClientNode.class );
+        final IRemoteServerNode remoteNode = mocksControl.createMock( IRemoteServerNode.class );
         EasyMock.expect( remoteNode.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
         return remoteNode;
     }
 
     /**
-     * Ensures the {@code isPlayerConnected} method throws an exception when
-     * passed a {@code null} player name.
+     * Ensures the {@code setPlayers} method throws an exception when passed a
+     * non-{@code null} players collection.
      */
-    @Test( expected = NullPointerException.class )
-    public void testIsPlayerConnected_PlayerName_Null()
+    @Test( expected = IllegalStateException.class )
+    public void testSetPlayers_Players_NonNull()
     {
         synchronized( getNode().getLock() )
         {
-            getNode().isPlayerConnected( null );
+            getNode().setPlayers( Collections.<String>emptyList() );
+        }
+    }
+
+    /**
+     * Ensures the {@code setPlayers} method throws an exception when passed a
+     * {@code null} players collection.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetPlayers_Players_Null()
+    {
+        synchronized( getNode().getLock() )
+        {
+            getNode().setPlayers( null );
         }
     }
 }

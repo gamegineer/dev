@@ -1,5 +1,5 @@
 /*
- * AbstractNodeTestCase.java
+ * AbstractConnectedNodeTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -34,14 +34,15 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.INode} interface.
+ * {@link org.gamegineer.table.internal.net.INode} interface while in the
+ * connected state.
  * 
  * @param <T>
  *        The type of the node.
  * @param <RemoteNodeType>
  *        The type of the remote node.
  */
-public abstract class AbstractNodeTestCase<T extends INode<RemoteNodeType>, RemoteNodeType extends IRemoteNode>
+public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeType>, RemoteNodeType extends IRemoteNode>
 {
     // ======================================================================
     // Fields
@@ -59,9 +60,10 @@ public abstract class AbstractNodeTestCase<T extends INode<RemoteNodeType>, Remo
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractNodeTestCase} class.
+     * Initializes a new instance of the {@code AbstractConnectedNodeTestCase}
+     * class.
      */
-    protected AbstractNodeTestCase()
+    protected AbstractConnectedNodeTestCase()
     {
         super();
     }
@@ -90,15 +92,16 @@ public abstract class AbstractNodeTestCase<T extends INode<RemoteNodeType>, Remo
         IMocksControl mocksControl );
 
     /**
-     * Creates the table network node to be tested.
+     * Creates the table network node to be tested in the connected state.
      * 
-     * @return The table network node to be tested; never {@code null}.
+     * @return The table network node to be tested in the connected state; never
+     *         {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract T createNode()
+    protected abstract T createConnectedNode()
         throws Exception;
 
     /**
@@ -148,7 +151,7 @@ public abstract class AbstractNodeTestCase<T extends INode<RemoteNodeType>, Remo
         throws Exception
     {
         niceMocksControl_ = EasyMock.createNiceControl();
-        node_ = createNode();
+        node_ = createConnectedNode();
         assertNotNull( node_ );
     }
 

@@ -275,6 +275,7 @@ public final class ClientNode
         assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
+        assertConnected();
         players_.clear();
         players_.addAll( players );
         getTableNetworkController().playersUpdated();

@@ -94,6 +94,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * The collection of bound table proxies. The key is the name of the player
      * associated with the table. The value is the table proxy.
      */
+    @GuardedBy( "getLock()" )
     private final Map<String, ITable> tableProxies_;
 
     /**
@@ -137,6 +138,20 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     // Methods
     // ======================================================================
 
+    /**
+     * Asserts the table network node is connected to the table network.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If the table network is not connected.
+     */
+    @GuardedBy( "getLock()" )
+    protected final void assertConnected()
+    {
+        assert Thread.holdsLock( getLock() );
+
+        assertStateLegal( transportLayer_ != null, Messages.AbstractNode_networkDisconnected );
+    }
+
     /*
      * @see org.gamegineer.table.internal.net.INode#bindRemoteNode(org.gamegineer.table.internal.net.IRemoteNode)
      */
@@ -147,6 +162,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
+        assertConnected();
         assertArgumentLegal( !remoteNodes_.containsKey( remoteNode.getPlayerName() ), "remoteNode", Messages.AbstractNode_bindRemoteNode_remoteNodeBound ); //$NON-NLS-1$ 
         remoteNodes_.put( remoteNode.getPlayerName(), remoteNode );
         assert !tableProxies_.containsKey( remoteNode.getPlayerName() );
@@ -372,8 +388,11 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assert Thread.holdsLock( getLock() );
 
         localPlayerName_ = null;
-        password_.dispose();
-        password_ = null;
+        if( password_ != null )
+        {
+            password_.dispose();
+            password_ = null;
+        }
         remoteNodes_.clear();
         tableProxies_.clear();
     }
@@ -523,6 +542,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
+        assertConnected();
         assertArgumentLegal( remoteNodes_.remove( remoteNode.getPlayerName() ) != null, "remoteNode", Messages.AbstractNode_unbindRemoteNode_remoteNodeNotBound ); //$NON-NLS-1$
         assert tableProxies_.containsKey( remoteNode.getPlayerName() );
         tableProxies_.remove( remoteNode.getPlayerName() );
