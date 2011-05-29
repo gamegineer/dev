@@ -31,7 +31,7 @@ import org.gamegineer.table.internal.net.common.AbstractAbstractNodeAsNodeContro
  * {@link org.gamegineer.table.internal.net.INodeController} interface.
  */
 public final class ClientNodeAsNodeControllerTest
-    extends AbstractAbstractNodeAsNodeControllerTestCase<ClientNode>
+    extends AbstractAbstractNodeAsNodeControllerTestCase<ClientNode, IRemoteServerNode>
 {
     // ======================================================================
     // Constructors

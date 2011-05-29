@@ -1,5 +1,5 @@
 /*
- * IClientNode.java
+ * AbstractRemoteServerNodeTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,39 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 27, 2011 at 10:01:10 PM.
+ * Created on May 27, 2011 at 11:14:46 PM.
  */
 
 package org.gamegineer.table.internal.net.client;
 
-import java.util.Collection;
-import net.jcip.annotations.GuardedBy;
-import org.gamegineer.table.internal.net.INode;
+import org.gamegineer.table.internal.net.AbstractRemoteNodeTestCase;
 
 /**
- * A local client node in a table network.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.internal.net.client.IRemoteServerNode} interface.
  * 
- * @noextend This interface is not intended to be extended by clients.
+ * @param <T>
+ *        The type of the remote server node.
  */
-public interface IClientNode
-    extends INode<IRemoteServerNode>
+public abstract class AbstractRemoteServerNodeTestCase<T extends IRemoteServerNode>
+    extends AbstractRemoteNodeTestCase<T>
 {
     // ======================================================================
-    // Methods
+    // Constructors
     // ======================================================================
 
     /**
-     * Sets the collection of players connected to the table network.
-     * 
-     * @param players
-     *        The collection of players connected to the table network; must not
-     *        be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code players} is {@code null}.
+     * Initializes a new instance of the {@code
+     * AbstractRemoteServerNodeTestCase} class.
      */
-    @GuardedBy( "getLock()" )
-    public void setPlayers(
-        /* @NonNull */
-        Collection<String> players );
+    protected AbstractRemoteServerNodeTestCase()
+    {
+        super();
+    }
 }

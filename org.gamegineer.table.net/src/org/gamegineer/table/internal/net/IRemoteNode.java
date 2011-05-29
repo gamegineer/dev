@@ -21,8 +21,6 @@
 
 package org.gamegineer.table.internal.net;
 
-import java.util.Collection;
-
 /**
  * A proxy for a remote node connected to the table network.
  * 
@@ -42,19 +40,4 @@ public interface IRemoteNode
      */
     /* @NonNull */
     public String getPlayerName();
-
-    /**
-     * Sets the collection of players connected to the table network.
-     * 
-     * @param players
-     *        The collection of players connected to the table network; must not
-     *        be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code players} is {@code null}.
-     */
-    // TODO: Move to IRemoteClientNode
-    public void setPlayers(
-        /* @NonNull */
-        Collection<String> players );
 }

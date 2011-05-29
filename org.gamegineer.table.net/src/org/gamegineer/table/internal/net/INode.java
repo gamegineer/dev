@@ -33,9 +33,12 @@ import org.gamegineer.table.net.TableNetworkError;
  * the other remote nodes on the network and their associated tables.
  * </p>
  * 
+ * @param <RemoteNodeType>
+ *        The type of the remote node managed by the local table network node.
+ * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface INode
+public interface INode<RemoteNodeType extends IRemoteNode>
 {
     // ======================================================================
     // Methods
@@ -56,7 +59,7 @@ public interface INode
     @GuardedBy( "getLock()" )
     public void bindRemoteNode(
         /* @NonNull */
-        IRemoteNode remoteNode );
+        RemoteNodeType remoteNode );
 
     /**
      * Disconnects the local table network node for the specified cause.
@@ -120,5 +123,5 @@ public interface INode
     @GuardedBy( "getLock()" )
     public void unbindRemoteNode(
         /* @NonNull */
-        IRemoteNode remoteNode );
+        RemoteNodeType remoteNode );
 }

@@ -33,7 +33,7 @@ import org.gamegineer.table.internal.net.common.AbstractRemoteNodeControllerTest
  *        The type of the remote client node controller.
  */
 public abstract class AbstractRemoteClientNodeControllerTestCase<T extends IRemoteClientNodeController>
-    extends AbstractRemoteNodeControllerTestCase<T, IServerNode>
+    extends AbstractRemoteNodeControllerTestCase<T, IServerNode, IRemoteClientNode>
 {
     // ======================================================================
     // Constructors
@@ -54,10 +54,10 @@ public abstract class AbstractRemoteClientNodeControllerTestCase<T extends IRemo
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.common.AbstractRemoteNodeControllerTestCase#createLocalNode(org.easymock.IMocksControl)
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteNodeControllerTestCase#createMockLocalNode(org.easymock.IMocksControl)
      */
     @Override
-    protected final IServerNode createLocalNode(
+    protected final IServerNode createMockLocalNode(
         final IMocksControl mocksControl )
     {
         return mocksControl.createMock( IServerNode.class );

@@ -42,7 +42,7 @@ public final class AbstractNodeTest
     // ======================================================================
 
     /** The table network node under test in the fixture. */
-    private AbstractNode node_;
+    private AbstractNode<IRemoteNode> node_;
 
 
     // ======================================================================
@@ -76,11 +76,11 @@ public final class AbstractNodeTest
      *         If {@code tableNetworkController} is {@code null}.
      */
     /* @NonNull */
-    private static AbstractNode createNode(
+    private static AbstractNode<IRemoteNode> createNode(
         /* @NonNull */
         final ITableNetworkController tableNetworkController )
     {
-        return new AbstractNode( tableNetworkController )
+        return new AbstractNode<IRemoteNode>( tableNetworkController )
         {
             @Override
             protected ITransportLayer createTransportLayer()

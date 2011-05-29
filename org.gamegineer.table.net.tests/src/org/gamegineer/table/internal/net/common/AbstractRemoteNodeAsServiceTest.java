@@ -21,9 +21,9 @@
 
 package org.gamegineer.table.internal.net.common;
 
-import java.util.Collection;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.INode;
+import org.gamegineer.table.internal.net.IRemoteNode;
 import org.gamegineer.table.internal.net.transport.AbstractServiceTestCase;
 import org.gamegineer.table.internal.net.transport.IService;
 
@@ -54,20 +54,30 @@ public final class AbstractRemoteNodeAsServiceTest
     // Methods
     // ======================================================================
 
+    /**
+     * Creates a mock local node for use in the fixture.
+     * 
+     * @return A mock local node for use in the fixture; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "unchecked" )
+    private static INode<IRemoteNode> createMockLocalNode()
+    {
+        return EasyMock.createMock( INode.class );
+    }
+
     /*
      * @see org.gamegineer.table.internal.net.transport.AbstractServiceTestCase#createService()
      */
     @Override
     protected IService createService()
     {
-        return new AbstractRemoteNode<INode>( EasyMock.createMock( INode.class ) )
+        return new AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode>( createMockLocalNode() )
         {
             @Override
-            public void setPlayers(
-                @SuppressWarnings( "unused" )
-                final Collection<String> players )
+            protected IRemoteNode getThisAsRemoteNodeType()
             {
-                // do nothing
+                return this;
             }
         };
     }

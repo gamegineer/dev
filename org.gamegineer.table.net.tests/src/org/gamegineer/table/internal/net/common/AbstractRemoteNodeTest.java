@@ -22,11 +22,11 @@
 package org.gamegineer.table.internal.net.common;
 
 import static org.junit.Assert.assertEquals;
-import java.util.Collection;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.INode;
+import org.gamegineer.table.internal.net.IRemoteNode;
 import org.gamegineer.table.internal.net.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.FakeMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
@@ -51,7 +51,7 @@ public final class AbstractRemoteNodeTest
     private IMocksControl mocksControl_;
 
     /** The remote node under test in the fixture. */
-    private AbstractRemoteNode<?> remoteNode_;
+    private AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode> remoteNode_;
 
 
     // ======================================================================
@@ -72,6 +72,18 @@ public final class AbstractRemoteNodeTest
     // ======================================================================
 
     /**
+     * Creates a mock local node for use in the fixture.
+     * 
+     * @return A mock local node for use in the fixture; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "unchecked" )
+    private INode<IRemoteNode> createMockLocalNode()
+    {
+        return mocksControl_.createMock( INode.class );
+    }
+
+    /**
      * Creates a new instance of the {@code AbstractRemoteNode} class.
      * 
      * @param node
@@ -84,18 +96,16 @@ public final class AbstractRemoteNodeTest
      *         If {@code node} is {@code null}.
      */
     /* @NonNull */
-    private static AbstractRemoteNode<?> createRemoteNode(
+    private static AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode> createRemoteNode(
         /* @NonNull */
-        final INode node )
+        final INode<IRemoteNode> node )
     {
-        return new AbstractRemoteNode<INode>( node )
+        return new AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode>( node )
         {
             @Override
-            public void setPlayers(
-                @SuppressWarnings( "unused" )
-                final Collection<String> players )
+            protected IRemoteNode getThisAsRemoteNodeType()
             {
-                // do nothing
+                return this;
             }
         };
     }
@@ -111,9 +121,9 @@ public final class AbstractRemoteNodeTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        final INode node = mocksControl_.createMock( INode.class );
-        EasyMock.expect( node.getLock() ).andReturn( new Object() ).anyTimes();
-        remoteNode_ = createRemoteNode( node );
+        final INode<IRemoteNode> localNode = createMockLocalNode();
+        EasyMock.expect( localNode.getLock() ).andReturn( new Object() ).anyTimes();
+        remoteNode_ = createRemoteNode( localNode );
     }
 
     /**

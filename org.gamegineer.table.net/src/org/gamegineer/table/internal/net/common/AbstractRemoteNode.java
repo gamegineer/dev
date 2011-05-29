@@ -48,9 +48,11 @@ import org.gamegineer.table.net.TableNetworkError;
  * 
  * @param <LocalNodeType>
  *        The type of the local table network node.
+ * @param <RemoteNodeType>
+ *        The type of the remote table network node.
  */
 @ThreadSafe
-public abstract class AbstractRemoteNode<LocalNodeType extends INode>
+public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeType>, RemoteNodeType extends IRemoteNode>
     implements IRemoteNodeController<LocalNodeType>, IService, IRemoteNode
 {
     // ======================================================================
@@ -134,6 +136,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode>
         registerUncorrelatedMessageHandler( ErrorMessage.class, new ErrorMessageHandler( this ) );
     }
 
+
     // ======================================================================
     // Methods
     // ======================================================================
@@ -151,7 +154,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode>
         assert Thread.holdsLock( getLock() );
 
         playerName_ = playerName;
-        localNode_.bindRemoteNode( this );
+        localNode_.bindRemoteNode( getThisAsRemoteNodeType() );
     }
 
     /*
@@ -194,7 +197,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode>
         {
             synchronized( localNode_.getLock() )
             {
-                localNode_.unbindRemoteNode( this );
+                localNode_.unbindRemoteNode( getThisAsRemoteNodeType() );
             }
 
             playerName_ = null;
@@ -290,6 +293,16 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode>
             return playerName_;
         }
     }
+
+    /**
+     * Gets a reference to this remote node as the type of remote node expected
+     * by the local node.
+     * 
+     * @return A reference to this remote node as the type of remote node
+     *         expected by the local node; never {@code null}.
+     */
+    /* @NonNull */
+    protected abstract RemoteNodeType getThisAsRemoteNodeType();
 
     /*
      * @see org.gamegineer.table.internal.net.transport.IService#messageReceived(org.gamegineer.table.internal.net.transport.MessageEnvelope)

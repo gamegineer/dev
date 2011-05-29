@@ -1,5 +1,5 @@
 /*
- * IClientNode.java
+ * IRemoteServerNode.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,39 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 27, 2011 at 10:01:10 PM.
+ * Created on May 27, 2011 at 11:11:47 PM.
  */
 
 package org.gamegineer.table.internal.net.client;
 
-import java.util.Collection;
-import net.jcip.annotations.GuardedBy;
-import org.gamegineer.table.internal.net.INode;
+import org.gamegineer.table.internal.net.IRemoteNode;
 
 /**
- * A local client node in a table network.
+ * A proxy for a remote server node connected to the table network.
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface IClientNode
-    extends INode<IRemoteServerNode>
+public interface IRemoteServerNode
+    extends IRemoteNode
 {
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Sets the collection of players connected to the table network.
-     * 
-     * @param players
-     *        The collection of players connected to the table network; must not
-     *        be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code players} is {@code null}.
-     */
-    @GuardedBy( "getLock()" )
-    public void setPlayers(
-        /* @NonNull */
-        Collection<String> players );
 }

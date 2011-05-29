@@ -45,8 +45,10 @@ import org.junit.Test;
  * 
  * @param <T>
  *        The type of the table network node.
+ * @param <RemoteNodeType>
+ *        The type of the remote table network node.
  */
-public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends AbstractNode>
+public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends AbstractNode<RemoteNodeType>, RemoteNodeType extends IRemoteNode>
     extends AbstractNodeControllerTestCase<T>
 {
     // ======================================================================
@@ -330,7 +332,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      */
     @NotThreadSafe
     private static final class MockNode
-        extends AbstractNode
+        extends AbstractNode<IRemoteNode>
     {
         // ==================================================================
         // Fields

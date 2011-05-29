@@ -30,7 +30,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.net.IRemoteNode;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.common.AbstractNode;
 import org.gamegineer.table.internal.net.transport.IService;
@@ -43,7 +42,7 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @ThreadSafe
 public final class ClientNode
-    extends AbstractNode
+    extends AbstractNode<IRemoteServerNode>
     implements IClientNode
 {
     // ======================================================================
@@ -67,7 +66,7 @@ public final class ClientNode
     @GuardedBy( "handshakeLock_" )
     private boolean isHandshakeComplete_;
 
-    /** The collection of players connected to the network. */
+    /** The collection of players connected to the table network. */
     @GuardedBy( "getLock()" )
     private final Collection<String> players_;
 
@@ -229,7 +228,7 @@ public final class ClientNode
      */
     @Override
     protected void remoteNodeBound(
-        final IRemoteNode remoteNode )
+        final IRemoteServerNode remoteNode )
     {
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );

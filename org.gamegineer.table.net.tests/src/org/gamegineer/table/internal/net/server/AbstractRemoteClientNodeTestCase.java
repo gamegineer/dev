@@ -1,5 +1,5 @@
 /*
- * RemoteClientNodeAsRemoteNodeTest.java
+ * AbstractRemoteClientNodeTestCase.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,24 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 15, 2011 at 6:59:02 PM.
+ * Created on May 27, 2011 at 11:16:29 PM.
  */
 
 package org.gamegineer.table.internal.net.server;
 
-import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.AbstractRemoteNodeTestCase;
-import org.gamegineer.table.internal.net.IRemoteNode;
-import org.gamegineer.table.internal.net.transport.FakeServiceContext;
+import org.junit.Test;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.server.RemoteClientNode} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.IRemoteNode} interface.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.internal.net.server.IRemoteClientNode} interface.
+ * 
+ * @param <T>
+ *        The type of the remote client node.
  */
-public final class RemoteClientNodeAsRemoteNodeTest
-    extends AbstractRemoteNodeTestCase
+public abstract class AbstractRemoteClientNodeTestCase<T extends IRemoteClientNode>
+    extends AbstractRemoteNodeTestCase<T>
 {
     // ======================================================================
     // Constructors
@@ -41,9 +40,9 @@ public final class RemoteClientNodeAsRemoteNodeTest
 
     /**
      * Initializes a new instance of the {@code
-     * RemoteClientNodeAsRemoteNodeTest} class.
+     * AbstractRemoteClientNodeTestCase} class.
      */
-    public RemoteClientNodeAsRemoteNodeTest()
+    protected AbstractRemoteClientNodeTestCase()
     {
         super();
     }
@@ -53,18 +52,13 @@ public final class RemoteClientNodeAsRemoteNodeTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.internal.net.AbstractRemoteNodeTestCase#createRemoteNode()
+    /**
+     * Ensures the {@code setPlayers} method throws an exception when passed a
+     * {@code null} players collection.
      */
-    @Override
-    protected IRemoteNode createRemoteNode()
+    @Test( expected = NullPointerException.class )
+    public void testSetPlayers_Players_Null()
     {
-        final RemoteClientNode remoteNode = new RemoteClientNode( EasyMock.createMock( IServerNode.class ) );
-        synchronized( remoteNode.getLock() )
-        {
-            remoteNode.started( new FakeServiceContext() );
-            remoteNode.bind( "playerName" ); //$NON-NLS-1$
-        }
-        return remoteNode;
+        getRemoteNode().setPlayers( null );
     }
 }

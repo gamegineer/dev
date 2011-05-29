@@ -50,10 +50,13 @@ import org.gamegineer.table.net.TableNetworkException;
  * <p>
  * Implementations of this class should not be reused for multiple connections.
  * </p>
+ * 
+ * @param <RemoteNodeType>
+ *        The type of the remote node managed by the local table network node.
  */
 @ThreadSafe
-public abstract class AbstractNode
-    implements INode, INodeController
+public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
+    implements INode<RemoteNodeType>, INodeController
 {
     // ======================================================================
     // Fields
@@ -81,7 +84,7 @@ public abstract class AbstractNode
      * associated with the remote node. The value is the remote node.
      */
     @GuardedBy( "getLock()" )
-    private final Map<String, IRemoteNode> remoteNodes_;
+    private final Map<String, RemoteNodeType> remoteNodes_;
 
     /** The table network controller. */
     private final ITableNetworkController tableNetworkController_;
@@ -116,7 +119,7 @@ public abstract class AbstractNode
         localPlayerName_ = null;
         lock_ = new Object();
         password_ = null;
-        remoteNodes_ = new HashMap<String, IRemoteNode>();
+        remoteNodes_ = new HashMap<String, RemoteNodeType>();
         tableNetworkController_ = tableNetworkController;
         transportLayer_ = null;
     }
@@ -131,7 +134,7 @@ public abstract class AbstractNode
      */
     @Override
     public final void bindRemoteNode(
-        final IRemoteNode remoteNode )
+        final RemoteNodeType remoteNode )
     {
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
@@ -405,11 +408,11 @@ public abstract class AbstractNode
      * @return The collection of bound remote nodes; never {@code null}.
      */
     /* @NonNull */
-    protected final Collection<IRemoteNode> getRemoteNodes()
+    protected final Collection<RemoteNodeType> getRemoteNodes()
     {
         synchronized( getLock() )
         {
-            return new ArrayList<IRemoteNode>( remoteNodes_.values() );
+            return new ArrayList<RemoteNodeType>( remoteNodes_.values() );
         }
     }
 
@@ -446,7 +449,7 @@ public abstract class AbstractNode
     @GuardedBy( "getLock()" )
     protected void remoteNodeBound(
         /* @NonNull */
-        final IRemoteNode remoteNode )
+        final RemoteNodeType remoteNode )
     {
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
@@ -476,7 +479,7 @@ public abstract class AbstractNode
     @GuardedBy( "getLock()" )
     protected void remoteNodeUnbound(
         /* @NonNull */
-        final IRemoteNode remoteNode )
+        final RemoteNodeType remoteNode )
     {
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
@@ -489,7 +492,7 @@ public abstract class AbstractNode
      */
     @Override
     public final void unbindRemoteNode(
-        final IRemoteNode remoteNode )
+        final RemoteNodeType remoteNode )
     {
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );

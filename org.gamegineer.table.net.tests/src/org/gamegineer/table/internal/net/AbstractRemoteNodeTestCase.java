@@ -29,15 +29,18 @@ import org.junit.Test;
 /**
  * A fixture for testing the basic aspects of classes that implement the
  * {@link org.gamegineer.table.internal.net.IRemoteNode} interface.
+ * 
+ * @param <T>
+ *        The type of the remote node.
  */
-public abstract class AbstractRemoteNodeTestCase
+public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The remote node under test in the fixture. */
-    private IRemoteNode remoteNode_;
+    private T remoteNode_;
 
 
     // ======================================================================
@@ -67,8 +70,20 @@ public abstract class AbstractRemoteNodeTestCase
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract IRemoteNode createRemoteNode()
+    protected abstract T createRemoteNode()
         throws Exception;
+
+    /**
+     * Gets the remote node under test in the fixture.
+     * 
+     * @return The remote node under test in the fixture; never {@code null}.
+     */
+    /* @NonNull */
+    protected final T getRemoteNode()
+    {
+        assertNotNull( remoteNode_ );
+        return remoteNode_;
+    }
 
     /**
      * Sets up the test fixture.
@@ -104,15 +119,5 @@ public abstract class AbstractRemoteNodeTestCase
     public void testGetPlayerName_ReturnValue_NonNull()
     {
         assertNotNull( remoteNode_.getPlayerName() );
-    }
-
-    /**
-     * Ensures the {@code setPlayers} method throws an exception when passed a
-     * {@code null} players collection.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetPlayers_Players_Null()
-    {
-        remoteNode_.setPlayers( null );
     }
 }

@@ -30,7 +30,7 @@ import org.gamegineer.table.internal.net.INode;
  * @noextend This interface is not intended to be extended by clients.
  */
 public interface IServerNode
-    extends INode
+    extends INode<IRemoteClientNode>
 {
     // ======================================================================
     // Methods

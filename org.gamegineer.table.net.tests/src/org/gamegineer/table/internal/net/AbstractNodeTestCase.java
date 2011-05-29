@@ -25,7 +25,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.security.SecureString;
@@ -39,15 +38,17 @@ import org.junit.Test;
  * 
  * @param <T>
  *        The type of the node.
+ * @param <RemoteNodeType>
+ *        The type of the remote node.
  */
-public abstract class AbstractNodeTestCase<T extends INode>
+public abstract class AbstractNodeTestCase<T extends INode<RemoteNodeType>, RemoteNodeType extends IRemoteNode>
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The mocks control for use in the fixture. */
-    private IMocksControl mocksControl_;
+    /** The nice mocks control for use in the fixture. */
+    private IMocksControl niceMocksControl_;
 
     /** The table network node under test in the fixture. */
     private T node_;
@@ -69,6 +70,24 @@ public abstract class AbstractNodeTestCase<T extends INode>
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Creates a mock remote table network node for use in the fixture.
+     * 
+     * @param mocksControl
+     *        The mocks control for use in the fixture; must not be {@code null}
+     *        .
+     * 
+     * @return A mock remote table network node for use in the fixture; never
+     *         {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code mocksControl} is {@code null}.
+     */
+    /* @NonNull */
+    protected abstract RemoteNodeType createMockRemoteNode(
+        /* @NonNull */
+        IMocksControl mocksControl );
 
     /**
      * Creates the table network node to be tested.
@@ -128,7 +147,7 @@ public abstract class AbstractNodeTestCase<T extends INode>
     public void setUp()
         throws Exception
     {
-        mocksControl_ = EasyMock.createControl();
+        niceMocksControl_ = EasyMock.createNiceControl();
         node_ = createNode();
         assertNotNull( node_ );
     }
@@ -144,23 +163,20 @@ public abstract class AbstractNodeTestCase<T extends INode>
         throws Exception
     {
         node_ = null;
-        mocksControl_ = null;
+        niceMocksControl_ = null;
     }
 
     /**
      * Ensures the {@code bindRemoteNode} method adds the remote node when the
      * remote node is absent from the bound remote nodes collection.
      */
-    @SuppressWarnings( "unchecked" )
     @Test
     public void testBindRemoteNode_RemoteNode_Absent()
     {
         synchronized( node_.getLock() )
         {
-            final IRemoteNode remoteNode = mocksControl_.createMock( IRemoteNode.class );
-            EasyMock.expect( remoteNode.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
-            remoteNode.setPlayers( EasyMock.notNull( Collection.class ) );
-            mocksControl_.replay();
+            final RemoteNodeType remoteNode = createMockRemoteNode( niceMocksControl_ );
+            niceMocksControl_.replay();
             assertFalse( isRemoteNodeBound( node_, remoteNode.getPlayerName() ) );
 
             node_.bindRemoteNode( remoteNode );
@@ -186,16 +202,13 @@ public abstract class AbstractNodeTestCase<T extends INode>
      * Ensures the {@code bindRemoteNode} method throws an exception when the
      * remote node is present in the bound remote nodes collection.
      */
-    @SuppressWarnings( "unchecked" )
     @Test( expected = IllegalArgumentException.class )
     public void testBindRemoteNode_RemoteNode_Present()
     {
         synchronized( node_.getLock() )
         {
-            final IRemoteNode remoteNode = mocksControl_.createMock( IRemoteNode.class );
-            EasyMock.expect( remoteNode.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
-            remoteNode.setPlayers( EasyMock.notNull( Collection.class ) );
-            mocksControl_.replay();
+            final RemoteNodeType remoteNode = createMockRemoteNode( niceMocksControl_ );
+            niceMocksControl_.replay();
             node_.bindRemoteNode( remoteNode );
 
             node_.bindRemoteNode( remoteNode );
@@ -257,9 +270,8 @@ public abstract class AbstractNodeTestCase<T extends INode>
     {
         synchronized( node_.getLock() )
         {
-            final IRemoteNode remoteNode = mocksControl_.createMock( IRemoteNode.class );
-            EasyMock.expect( remoteNode.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
-            mocksControl_.replay();
+            final RemoteNodeType remoteNode = createMockRemoteNode( niceMocksControl_ );
+            niceMocksControl_.replay();
 
             node_.unbindRemoteNode( remoteNode );
         }
@@ -285,17 +297,14 @@ public abstract class AbstractNodeTestCase<T extends INode>
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "unchecked" )
     @Test
     public void testUnbindRemoteNode_RemoteNode_Present()
         throws Exception
     {
         synchronized( node_.getLock() )
         {
-            final IRemoteNode remoteNode = mocksControl_.createMock( IRemoteNode.class );
-            EasyMock.expect( remoteNode.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
-            remoteNode.setPlayers( EasyMock.notNull( Collection.class ) );
-            mocksControl_.replay();
+            final RemoteNodeType remoteNode = createMockRemoteNode( niceMocksControl_ );
+            niceMocksControl_.replay();
             node_.bindRemoteNode( remoteNode );
             assertTrue( isRemoteNodeBound( node_, remoteNode.getPlayerName() ) );
 

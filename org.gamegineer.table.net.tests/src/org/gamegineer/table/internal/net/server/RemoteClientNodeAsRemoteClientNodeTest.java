@@ -1,5 +1,5 @@
 /*
- * ServerNodeAsNodeControllerTest.java
+ * RemoteClientNodeAsRemoteClientNodeTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,32 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 10, 2011 at 6:20:52 PM.
+ * Created on May 15, 2011 at 6:59:02 PM.
  */
 
 package org.gamegineer.table.internal.net.server;
 
-import org.gamegineer.table.internal.net.TableNetworkControllers;
-import org.gamegineer.table.internal.net.common.AbstractAbstractNodeAsNodeControllerTestCase;
+import org.easymock.EasyMock;
+import org.gamegineer.table.internal.net.transport.FakeServiceContext;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.server.ServerNode} class to ensure
- * it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.INodeController} interface.
+ * {@link org.gamegineer.table.internal.net.server.RemoteClientNode} class to
+ * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.net.server.IRemoteClientNode} interface.
  */
-public final class ServerNodeAsNodeControllerTest
-    extends AbstractAbstractNodeAsNodeControllerTestCase<ServerNode, IRemoteClientNode>
+public final class RemoteClientNodeAsRemoteClientNodeTest
+    extends AbstractRemoteClientNodeTestCase<RemoteClientNode>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ServerNodeAsNodeControllerTest}
-     * class.
+     * Initializes a new instance of the {@code
+     * RemoteClientNodeAsRemoteClientNodeTest} class.
      */
-    public ServerNodeAsNodeControllerTest()
+    public RemoteClientNodeAsRemoteClientNodeTest()
     {
         super();
     }
@@ -52,11 +52,17 @@ public final class ServerNodeAsNodeControllerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.AbstractNodeControllerTestCase#createNodeController()
+     * @see org.gamegineer.table.internal.net.AbstractRemoteNodeTestCase#createRemoteNode()
      */
     @Override
-    protected ServerNode createNodeController()
+    protected RemoteClientNode createRemoteNode()
     {
-        return new ServerNode( TableNetworkControllers.createFakeTableNetworkController() );
+        final RemoteClientNode remoteNode = new RemoteClientNode( EasyMock.createMock( IServerNode.class ) );
+        synchronized( remoteNode.getLock() )
+        {
+            remoteNode.started( new FakeServiceContext() );
+            remoteNode.bind( "playerName" ); //$NON-NLS-1$
+        }
+        return remoteNode;
     }
 }

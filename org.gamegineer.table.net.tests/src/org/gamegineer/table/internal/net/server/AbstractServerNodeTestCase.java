@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.internal.net.server;
 
+import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.AbstractNodeTestCase;
 import org.junit.Test;
 
@@ -32,7 +34,7 @@ import org.junit.Test;
  *        The type of the server node.
  */
 public abstract class AbstractServerNodeTestCase<T extends IServerNode>
-    extends AbstractNodeTestCase<T>
+    extends AbstractNodeTestCase<T, IRemoteClientNode>
 {
     // ======================================================================
     // Constructors
@@ -51,6 +53,18 @@ public abstract class AbstractServerNodeTestCase<T extends IServerNode>
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.internal.net.AbstractNodeTestCase#createMockRemoteNode(org.easymock.IMocksControl)
+     */
+    @Override
+    protected IRemoteClientNode createMockRemoteNode(
+        final IMocksControl mocksControl )
+    {
+        final IRemoteClientNode remoteNode = mocksControl.createMock( IRemoteClientNode.class );
+        EasyMock.expect( remoteNode.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
+        return remoteNode;
+    }
 
     /**
      * Ensures the {@code isPlayerConnected} method throws an exception when

@@ -1,5 +1,5 @@
 /*
- * RemoteServerNodeAsRemoteNodeTest.java
+ * RemoteServerNodeAsRemoteServerNodeTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -22,18 +22,16 @@
 package org.gamegineer.table.internal.net.client;
 
 import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.AbstractRemoteNodeTestCase;
-import org.gamegineer.table.internal.net.IRemoteNode;
 import org.gamegineer.table.internal.net.transport.FakeServiceContext;
 
 /**
  * A fixture for testing the
  * {@link org.gamegineer.table.internal.net.client.RemoteServerNode} class to
  * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.internal.net.IRemoteNode} interface.
+ * {@link org.gamegineer.table.internal.net.client.IRemoteServerNode} interface.
  */
-public final class RemoteServerNodeAsRemoteNodeTest
-    extends AbstractRemoteNodeTestCase
+public final class RemoteServerNodeAsRemoteServerNodeTest
+    extends AbstractRemoteServerNodeTestCase<RemoteServerNode>
 {
     // ======================================================================
     // Constructors
@@ -41,9 +39,9 @@ public final class RemoteServerNodeAsRemoteNodeTest
 
     /**
      * Initializes a new instance of the {@code
-     * RemoteServerNodeAsRemoteNodeTest} class.
+     * RemoteServerNodeAsRemoteServerNodeTest} class.
      */
-    public RemoteServerNodeAsRemoteNodeTest()
+    public RemoteServerNodeAsRemoteServerNodeTest()
     {
         super();
     }
@@ -57,7 +55,7 @@ public final class RemoteServerNodeAsRemoteNodeTest
      * @see org.gamegineer.table.internal.net.AbstractRemoteNodeTestCase#createRemoteNode()
      */
     @Override
-    protected IRemoteNode createRemoteNode()
+    protected RemoteServerNode createRemoteNode()
     {
         final RemoteServerNode remoteNode = new RemoteServerNode( EasyMock.createMock( IClientNode.class ) );
         synchronized( remoteNode.getLock() )

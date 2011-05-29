@@ -21,8 +21,6 @@
 
 package org.gamegineer.table.internal.net.client;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.util.Collection;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.common.AbstractRemoteNode;
@@ -42,8 +40,8 @@ import org.gamegineer.table.net.TableNetworkError;
  */
 @ThreadSafe
 final class RemoteServerNode
-    extends AbstractRemoteNode<IClientNode>
-    implements IRemoteServerNodeController
+    extends AbstractRemoteNode<IClientNode, IRemoteServerNode>
+    implements IRemoteServerNode, IRemoteServerNodeController
 {
     // ======================================================================
     // Constructors
@@ -88,6 +86,15 @@ final class RemoteServerNode
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteNode#getThisAsRemoteNodeType()
+     */
+    @Override
+    protected IRemoteServerNode getThisAsRemoteNodeType()
+    {
+        return this;
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.common.AbstractRemoteNode#opened()
      */
     @Override
@@ -103,18 +110,6 @@ final class RemoteServerNode
         {
             close( TableNetworkError.TRANSPORT_ERROR );
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.IRemoteNode#setPlayers(java.util.Collection)
-     */
-    @Override
-    public void setPlayers(
-        final Collection<String> players )
-    {
-        assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
-
-        throw new AssertionError( "should never be called on a remote server node (local client node)" ); //$NON-NLS-1$
     }
 
 

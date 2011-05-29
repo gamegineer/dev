@@ -27,7 +27,6 @@ import java.util.Collection;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Debug;
-import org.gamegineer.table.internal.net.IRemoteNode;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.common.AbstractNode;
 import org.gamegineer.table.internal.net.transport.IService;
@@ -39,14 +38,14 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @ThreadSafe
 public final class ServerNode
-    extends AbstractNode
+    extends AbstractNode<IRemoteClientNode>
     implements IServerNode
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The collection of players connected to the network. */
+    /** The collection of players connected to the table network. */
     @GuardedBy( "getLock()" )
     private final Collection<String> players_;
 
@@ -96,14 +95,7 @@ public final class ServerNode
         assert !players_.contains( playerName );
         players_.add( playerName );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "player '%s' has connected", playerName ) ); //$NON-NLS-1$
-
-        final Collection<String> players = getPlayers();
-        for( final IRemoteNode remoteNode : getRemoteNodes() )
-        {
-            remoteNode.setPlayers( players );
-        }
-
-        getTableNetworkController().playersUpdated();
+        notifyPlayersUpdated();
     }
 
     /*
@@ -202,12 +194,27 @@ public final class ServerNode
         return players_.contains( playerName );
     }
 
+    /**
+     * Notifies all remote nodes and the local table network controller that the
+     * collection of players connected to the table network has been updated.
+     */
+    private void notifyPlayersUpdated()
+    {
+        final Collection<String> players = getPlayers();
+        for( final IRemoteClientNode remoteNode : getRemoteNodes() )
+        {
+            remoteNode.setPlayers( players );
+        }
+
+        getTableNetworkController().playersUpdated();
+    }
+
     /*
      * @see org.gamegineer.table.internal.net.common.AbstractNode#remoteNodeBound(org.gamegineer.table.internal.net.IRemoteNode)
      */
     @Override
     protected void remoteNodeBound(
-        final IRemoteNode remoteNode )
+        final IRemoteClientNode remoteNode )
     {
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
@@ -222,7 +229,7 @@ public final class ServerNode
      */
     @Override
     protected void remoteNodeUnbound(
-        final IRemoteNode remoteNode )
+        final IRemoteClientNode remoteNode )
     {
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
@@ -250,13 +257,6 @@ public final class ServerNode
         assert players_.contains( playerName );
         players_.remove( playerName );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "player '%s' has disconnected", playerName ) ); //$NON-NLS-1$
-
-        final Collection<String> players = getPlayers();
-        for( final IRemoteNode remoteNode : getRemoteNodes() )
-        {
-            remoteNode.setPlayers( players );
-        }
-
-        getTableNetworkController().playersUpdated();
+        notifyPlayersUpdated();
     }
 }

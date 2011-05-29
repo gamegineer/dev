@@ -40,8 +40,8 @@ import org.gamegineer.table.internal.net.common.messages.PlayersMessage;
  */
 @ThreadSafe
 final class RemoteClientNode
-    extends AbstractRemoteNode<IServerNode>
-    implements IRemoteClientNodeController
+    extends AbstractRemoteNode<IServerNode, IRemoteClientNode>
+    implements IRemoteClientNode, IRemoteClientNodeController
 {
     // ======================================================================
     // Fields
@@ -117,6 +117,15 @@ final class RemoteClientNode
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.common.AbstractRemoteNode#getThisAsRemoteNodeType()
+     */
+    @Override
+    protected IRemoteClientNode getThisAsRemoteNodeType()
+    {
+        return this;
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.server.IRemoteClientNodeController#setChallenge(byte[])
      */
     @Override
@@ -130,7 +139,7 @@ final class RemoteClientNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.IRemoteNode#setPlayers(java.util.Collection)
+     * @see org.gamegineer.table.internal.net.server.IRemoteClientNode#setPlayers(java.util.Collection)
      */
     @Override
     public void setPlayers(

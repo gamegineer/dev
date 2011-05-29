@@ -68,7 +68,7 @@ public final class AbstractNodeUtils
      */
     public static boolean isRemoteNodeBound(
         /* @NonNull */
-        final AbstractNode node,
+        final AbstractNode<?> node,
         /* @NonNull */
         final String playerName )
     {
