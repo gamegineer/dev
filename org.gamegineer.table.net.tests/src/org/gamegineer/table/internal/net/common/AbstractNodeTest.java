@@ -238,6 +238,22 @@ public final class AbstractNodeTest
         assertEquals( expectedRemoteNodesSize, actualRemoteNodesSize );
     }
 
+    /**
+     * Ensures the {@code getTableProxies} method returns a copy of the bound
+     * table proxies collection.
+     */
+    @Test
+    public void testGetTableProxies_ReturnValue_Copy()
+    {
+        final Collection<ITable> tableProxies = node_.getTableProxies();
+        final int expectedTableProxiesSize = tableProxies.size();
+        tableProxies.add( EasyMock.createMock( ITable.class ) );
+
+        final int actualTableProxiesSize = node_.getTableProxies().size();
+
+        assertEquals( expectedTableProxiesSize, actualTableProxiesSize );
+    }
+
 
     // ======================================================================
     // Nested Types
