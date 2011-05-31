@@ -30,7 +30,8 @@ import org.gamegineer.table.net.TableNetworkError;
  * <p>
  * This interface provides operations that allow a table network node controller
  * to control the local table network. It is only intended for use by an
- * implementation of {@link INodeController}.
+ * implementation of
+ * {@link org.gamegineer.table.internal.net.node.INodeController}.
  * </p>
  * 
  * @noextend This interface is not intended to be extended by clients.

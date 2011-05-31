@@ -1,5 +1,5 @@
 /*
- * TableNetworkTest.java
+ * ErrorMessageTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,30 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 11, 2010 at 10:47:20 PM.
+ * Created on Apr 28, 2011 at 10:27:57 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.node.common.messages;
 
-import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.node.INodeFactory;
-import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.TableNetwork} class.
+ * {@link org.gamegineer.table.internal.net.node.common.messages.ErrorMessage}
+ * class.
  */
-public final class TableNetworkTest
+public final class ErrorMessageTest
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The error message under test in the fixture. */
+    private ErrorMessage message_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableNetworkTest} class.
+     * Initializes a new instance of the {@code ErrorMessageTest} class.
      */
-    public TableNetworkTest()
+    public ErrorMessageTest()
     {
         super();
     }
@@ -50,23 +58,38 @@ public final class TableNetworkTest
     // ======================================================================
 
     /**
-     * Ensures the {@code TableNetwork(INodeFactory, ITransportLayerFactory)}
-     * constructor throws an exception when passed a {@code null} node factory.
+     * Sets up the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
-    @Test( expected = NullPointerException.class )
-    public void testConstructorFromNodeFactoryAndTransportLayerFactory_NodeFactory_Null()
+    @Before
+    public void setUp()
+        throws Exception
     {
-        new TableNetwork( null, EasyMock.createMock( ITransportLayerFactory.class ) );
+        message_ = new ErrorMessage();
     }
 
     /**
-     * Ensures the {@code TableNetwork(INodeFactory, ITransportLayerFactory)}
-     * constructor throws an exception when passed a {@code null} transport
-     * layer factory.
+     * Tears down the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @After
+    public void tearDown()
+        throws Exception
+    {
+        message_ = null;
+    }
+
+    /**
+     * Ensures the {@code setError} method throws an exception when passed a
+     * {@code null} error.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructorFromNodeFactoryAndTransportLayerFactory_TransportLayerFactory_Null()
+    public void testSetError_Error_Null()
     {
-        new TableNetwork( EasyMock.createMock( INodeFactory.class ), null );
+        message_.setError( null );
     }
 }

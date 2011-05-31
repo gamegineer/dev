@@ -21,7 +21,9 @@
 
 package org.gamegineer.table.internal.net;
 
-import org.gamegineer.table.internal.net.client.ClientNode;
+import org.gamegineer.table.internal.net.node.DefaultNodeFactory;
+import org.gamegineer.table.internal.net.node.INodeController;
+import org.gamegineer.table.internal.net.node.client.ClientNode;
 import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactory;
 import org.gamegineer.table.net.AbstractTableNetworkTestCase;
 import org.gamegineer.table.net.ITableNetwork;

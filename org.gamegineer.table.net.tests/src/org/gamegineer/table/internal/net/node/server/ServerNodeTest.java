@@ -1,5 +1,5 @@
 /*
- * TableNetworkTest.java
+ * ServerNodeTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,30 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Nov 11, 2010 at 10:47:20 PM.
+ * Created on Apr 10, 2011 at 6:11:21 PM.
  */
 
-package org.gamegineer.table.internal.net;
+package org.gamegineer.table.internal.net.node.server;
 
-import org.easymock.EasyMock;
-import org.gamegineer.table.internal.net.node.INodeFactory;
-import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.TableNetwork} class.
+ * {@link org.gamegineer.table.internal.net.node.server.ServerNode} class.
  */
-public final class TableNetworkTest
+public final class ServerNodeTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableNetworkTest} class.
+     * Initializes a new instance of the {@code ServerNodeTest} class.
      */
-    public TableNetworkTest()
+    public ServerNodeTest()
     {
         super();
     }
@@ -50,23 +47,12 @@ public final class TableNetworkTest
     // ======================================================================
 
     /**
-     * Ensures the {@code TableNetwork(INodeFactory, ITransportLayerFactory)}
-     * constructor throws an exception when passed a {@code null} node factory.
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * table network controller.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructorFromNodeFactoryAndTransportLayerFactory_NodeFactory_Null()
+    public void testConstructor_TableNetworkController_Null()
     {
-        new TableNetwork( null, EasyMock.createMock( ITransportLayerFactory.class ) );
-    }
-
-    /**
-     * Ensures the {@code TableNetwork(INodeFactory, ITransportLayerFactory)}
-     * constructor throws an exception when passed a {@code null} transport
-     * layer factory.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructorFromNodeFactoryAndTransportLayerFactory_TransportLayerFactory_Null()
-    {
-        new TableNetwork( EasyMock.createMock( INodeFactory.class ), null );
+        new ServerNode( null );
     }
 }
