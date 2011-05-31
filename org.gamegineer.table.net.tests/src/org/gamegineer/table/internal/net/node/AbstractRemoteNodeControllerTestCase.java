@@ -264,7 +264,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     {
         synchronized( controller_.getLock() )
         {
-            controller_.sendMessage( EasyMock.createMock( IMessage.class ), EasyMock.createMock( IRemoteNodeController.IMessageHandler.class ) );
+            controller_.sendMessage( EasyMock.createMock( IMessage.class ), EasyMock.createMock( IMessageHandler.class ) );
         }
     }
 
@@ -277,7 +277,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     {
         synchronized( controller_.getLock() )
         {
-            controller_.sendMessage( null, EasyMock.createMock( IRemoteNodeController.IMessageHandler.class ) );
+            controller_.sendMessage( null, EasyMock.createMock( IMessageHandler.class ) );
         }
     }
 }

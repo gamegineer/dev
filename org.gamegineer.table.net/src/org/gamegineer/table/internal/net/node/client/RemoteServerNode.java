@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.node.client;
 
-import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.node.AbstractRemoteNode;
 import org.gamegineer.table.internal.net.node.common.ProtocolVersions;
@@ -109,41 +108,6 @@ final class RemoteServerNode
         if( !sendMessage( message, new HelloResponseMessageHandler( this ) ) )
         {
             close( TableNetworkError.TRANSPORT_ERROR );
-        }
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * Superclass for all message handlers associated with a remote server node.
-     */
-    @Immutable
-    static abstract class AbstractMessageHandler
-        extends AbstractRemoteNode.AbstractMessageHandler<IRemoteServerNodeController>
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code AbstractMessageHandler}
-         * class.
-         * 
-         * @param remoteNodeController
-         *        The control interface for the remote node associated with the
-         *        message handler; must not be {@code null}.
-         * 
-         * @throws java.lang.NullPointerException
-         *         If {@code remoteNodeController} is {@code null}.
-         */
-        AbstractMessageHandler(
-            /* @NonNull */
-            final IRemoteServerNodeController remoteNodeController )
-        {
-            super( remoteNodeController );
         }
     }
 }

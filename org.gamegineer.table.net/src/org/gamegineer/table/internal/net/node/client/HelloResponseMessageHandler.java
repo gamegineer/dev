@@ -32,7 +32,7 @@ import org.gamegineer.table.net.TableNetworkError;
  */
 @Immutable
 final class HelloResponseMessageHandler
-    extends RemoteServerNode.AbstractMessageHandler
+    extends AbstractMessageHandler
 {
     // ======================================================================
     // Constructors
@@ -107,7 +107,7 @@ final class HelloResponseMessageHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.node.AbstractRemoteNode.AbstractMessageHandler#handleUnexpectedMessage()
+     * @see org.gamegineer.table.internal.net.node.AbstractMessageHandler#handleUnexpectedMessage()
      */
     @Override
     protected void handleUnexpectedMessage()

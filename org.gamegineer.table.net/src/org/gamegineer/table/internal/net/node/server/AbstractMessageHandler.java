@@ -1,5 +1,5 @@
 /*
- * PlayersMessageHandler.java
+ * AbstractMessageHandler.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,27 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 20, 2011 at 9:36:06 PM.
+ * Created on May 30, 2011 at 8:46:32 PM.
  */
 
-package org.gamegineer.table.internal.net.node.client;
+package org.gamegineer.table.internal.net.node.server;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
 
 /**
- * A message handler for the {@link PlayersMessage} message.
+ * Superclass for all message handlers associated with a remote client node.
  */
 @Immutable
-final class PlayersMessageHandler
-    extends AbstractMessageHandler
+abstract class AbstractMessageHandler
+    extends org.gamegineer.table.internal.net.node.AbstractMessageHandler<IRemoteClientNodeController>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code PlayersMessageHandler} class.
+     * Initializes a new instance of the {@code AbstractMessageHandler} class.
      * 
      * @param remoteNodeController
      *        The control interface for the remote node associated with the
@@ -45,31 +44,10 @@ final class PlayersMessageHandler
      * @throws java.lang.NullPointerException
      *         If {@code remoteNodeController} is {@code null}.
      */
-    PlayersMessageHandler(
+    AbstractMessageHandler(
         /* @NonNull */
-        final IRemoteServerNodeController remoteNodeController )
+        final IRemoteClientNodeController remoteNodeController )
     {
         super( remoteNodeController );
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /**
-     * Handles a {@code PlayersMessage} message.
-     * 
-     * @param message
-     *        The message; must not be {@code null}.
-     */
-    @SuppressWarnings( "unused" )
-    private void handleMessage(
-        /* @NonNull */
-        final PlayersMessage message )
-    {
-        assert message != null;
-
-        getRemoteNodeController().getLocalNode().setPlayers( message.getPlayers() );
     }
 }

@@ -299,7 +299,7 @@ public final class AbstractRemoteNodeTest
     @Test( expected = NullPointerException.class )
     public void testRegisterUncorrelatedMessageHandler_Type_Null()
     {
-        remoteNode_.registerUncorrelatedMessageHandler( null, EasyMock.createMock( IRemoteNodeController.IMessageHandler.class ) );
+        remoteNode_.registerUncorrelatedMessageHandler( null, EasyMock.createMock( IMessageHandler.class ) );
     }
 
     /**
@@ -310,8 +310,8 @@ public final class AbstractRemoteNodeTest
     @Test( expected = IllegalArgumentException.class )
     public void testRegisterUncorrelatedMessageHandler_Type_Present()
     {
-        remoteNode_.registerUncorrelatedMessageHandler( IMessage.class, EasyMock.createMock( IRemoteNodeController.IMessageHandler.class ) );
+        remoteNode_.registerUncorrelatedMessageHandler( IMessage.class, EasyMock.createMock( IMessageHandler.class ) );
 
-        remoteNode_.registerUncorrelatedMessageHandler( IMessage.class, EasyMock.createMock( IRemoteNodeController.IMessageHandler.class ) );
+        remoteNode_.registerUncorrelatedMessageHandler( IMessage.class, EasyMock.createMock( IMessageHandler.class ) );
     }
 }

@@ -39,7 +39,7 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @Immutable
 final class BeginAuthenticationResponseMessageHandler
-    extends RemoteClientNode.AbstractMessageHandler
+    extends AbstractMessageHandler
 {
     // ======================================================================
     // Constructors
@@ -171,7 +171,7 @@ final class BeginAuthenticationResponseMessageHandler
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.node.AbstractRemoteNode.AbstractMessageHandler#handleUnexpectedMessage()
+     * @see org.gamegineer.table.internal.net.node.AbstractMessageHandler#handleUnexpectedMessage()
      */
     @Override
     protected void handleUnexpectedMessage()

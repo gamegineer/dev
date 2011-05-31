@@ -39,7 +39,7 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @Immutable
 final class HelloRequestMessageHandler
-    extends RemoteClientNode.AbstractMessageHandler
+    extends AbstractMessageHandler
 {
     // ======================================================================
     // Constructors

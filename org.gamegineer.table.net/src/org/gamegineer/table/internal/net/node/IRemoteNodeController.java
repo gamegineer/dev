@@ -119,40 +119,4 @@ public interface IRemoteNodeController<LocalNodeType extends INode<?>>
         IMessage message,
         /* @Nullable */
         IMessageHandler messageHandler );
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * A remote node message handler.
-     * 
-     * @noextend This interface is not intended to be extended by clients.
-     */
-    public interface IMessageHandler
-    {
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /**
-         * Handles the specified message for the associated remote node.
-         * 
-         * <p>
-         * This method will be invoked by the remote node while its instance
-         * lock is held. Thus, message handlers may assume any methods they
-         * invoke on the remote node will be thread-safe and atomic.
-         * </p>
-         * 
-         * @param message
-         *        The message; must not be {@code null}.
-         * 
-         * @throws java.lang.NullPointerException
-         *         If {@code message} is {@code null}.
-         */
-        public void handleMessage(
-            /* @NonNull */
-            IMessage message );
-    }
 }

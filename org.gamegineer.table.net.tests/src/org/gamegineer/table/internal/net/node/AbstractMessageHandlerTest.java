@@ -27,7 +27,6 @@ import net.jcip.annotations.NotThreadSafe;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.internal.net.node.IRemoteNodeController.IMessageHandler;
 import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.AbstractMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
@@ -38,8 +37,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.AbstractRemoteNode.AbstractMessageHandler}
- * class.
+ * {@link org.gamegineer.table.internal.net.node.AbstractMessageHandler} class.
  */
 public final class AbstractMessageHandlerTest
 {
@@ -102,7 +100,7 @@ public final class AbstractMessageHandlerTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_RemoteNodeController_Null()
     {
-        new AbstractRemoteNode.AbstractMessageHandler<IRemoteNodeController<?>>( null )
+        new AbstractMessageHandler<IRemoteNodeController<?>>( null )
         {
             // no overrides
         };
@@ -188,7 +186,7 @@ public final class AbstractMessageHandlerTest
      */
     @NotThreadSafe
     private static final class MockMessageHandler
-        extends AbstractRemoteNode.AbstractMessageHandler<IRemoteNodeController<?>>
+        extends AbstractMessageHandler<IRemoteNodeController<?>>
     {
         // ==================================================================
         // Fields
@@ -277,7 +275,7 @@ public final class AbstractMessageHandlerTest
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.node.AbstractRemoteNode.AbstractMessageHandler#handleUnexpectedMessage()
+         * @see org.gamegineer.table.internal.net.node.AbstractMessageHandler#handleUnexpectedMessage()
          */
         @Override
         protected void handleUnexpectedMessage()

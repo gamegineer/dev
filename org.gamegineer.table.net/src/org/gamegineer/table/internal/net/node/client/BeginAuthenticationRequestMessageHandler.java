@@ -36,7 +36,7 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @Immutable
 final class BeginAuthenticationRequestMessageHandler
-    extends RemoteServerNode.AbstractMessageHandler
+    extends AbstractMessageHandler
 {
     // ======================================================================
     // Constructors

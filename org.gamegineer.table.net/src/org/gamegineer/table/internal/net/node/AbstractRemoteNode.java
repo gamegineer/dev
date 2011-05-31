@@ -26,7 +26,6 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.awt.Point;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -578,131 +577,6 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     // ======================================================================
     // Nested Types
     // ======================================================================
-
-    /**
-     * Superclass for all implementations of
-     * {@link org.gamegineer.table.internal.net.node.IRemoteNodeController.IMessageHandler}
-     * .
-     * 
-     * @param <RemoteNodeControllerType>
-     *        The type of the remote node control interface.
-     */
-    @Immutable
-    public static abstract class AbstractMessageHandler<RemoteNodeControllerType extends IRemoteNodeController<?>>
-        implements IMessageHandler
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /**
-         * The control interface for the remote node associated with the message
-         * handler.
-         */
-        private final RemoteNodeControllerType remoteNodeController_;
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code AbstractMessageHandler}
-         * class.
-         * 
-         * @param remoteNodeController
-         *        The control interface for the remote node associated with the
-         *        message handler; must not be {@code null}.
-         * 
-         * @throws java.lang.NullPointerException
-         *         If {@code remoteNodeController} is {@code null}.
-         */
-        protected AbstractMessageHandler(
-            /* @NonNull */
-            final RemoteNodeControllerType remoteNodeController )
-        {
-            assertArgumentNotNull( remoteNodeController, "remoteNodeController" ); //$NON-NLS-1$
-
-            remoteNodeController_ = remoteNodeController;
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /**
-         * Gets the control interface for the remote node associated with the
-         * message handler.
-         * 
-         * @return The control interface for the remote node associated with the
-         *         message handler.
-         */
-        /* @NonNull */
-        protected final RemoteNodeControllerType getRemoteNodeController()
-        {
-            return remoteNodeController_;
-        }
-
-        /**
-         * This method dispatches the incoming message via reflection. It
-         * searches for a method with the following signature:
-         * 
-         * <p>
-         * <code>void handleMessage(<i>&lt;concrete message type&gt;</i>)</code>
-         * </p>
-         * 
-         * <p>
-         * If such a method is not found, an error message will be sent to the
-         * peer remote node indicating the message is unsupported.
-         * </p>
-         * 
-         * @see org.gamegineer.table.internal.net.node.IRemoteNodeController.IMessageHandler#handleMessage(org.gamegineer.table.internal.net.transport.IMessage)
-         */
-        @Override
-        public final void handleMessage(
-            final IMessage message )
-        {
-            assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
-
-            try
-            {
-                final Method method = getClass().getDeclaredMethod( "handleMessage", message.getClass() ); //$NON-NLS-1$
-                try
-                {
-                    method.setAccessible( true );
-                    method.invoke( this, message );
-                }
-                catch( final Exception e )
-                {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractMessageHandler_handleMessage_unexpectedError, e );
-                }
-            }
-            catch( final NoSuchMethodException e )
-            {
-                Loggers.getDefaultLogger().severe( Messages.AbstractMessageHandler_messageReceived_unexpectedMessage( this, message ) );
-
-                final ErrorMessage errorMessage = new ErrorMessage();
-                errorMessage.setCorrelationId( message.getId() );
-                errorMessage.setError( TableNetworkError.UNEXPECTED_MESSAGE );
-                getRemoteNodeController().sendMessage( errorMessage, null );
-
-                handleUnexpectedMessage();
-            }
-        }
-
-        /**
-         * Invoked when the handler receives an unexpected message.
-         * 
-         * <p>
-         * This implementation does nothing.
-         * </p>
-         */
-        protected void handleUnexpectedMessage()
-        {
-            // do nothing
-        }
-    }
 
     /**
      * A message handler for the {@link ErrorMessage} class.

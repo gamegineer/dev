@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.net.node.server;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collection;
 import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.node.AbstractRemoteNode;
 import org.gamegineer.table.internal.net.node.common.messages.HelloRequestMessage;
@@ -165,41 +164,6 @@ final class RemoteClientNode
         synchronized( getLock() )
         {
             salt_ = salt;
-        }
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * Superclass for all message handlers associated with a remote client node.
-     */
-    @Immutable
-    static abstract class AbstractMessageHandler
-        extends AbstractRemoteNode.AbstractMessageHandler<IRemoteClientNodeController>
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code AbstractMessageHandler}
-         * class.
-         * 
-         * @param remoteNodeController
-         *        The control interface for the remote node associated with the
-         *        message handler; must not be {@code null}.
-         * 
-         * @throws java.lang.NullPointerException
-         *         If {@code remoteNodeController} is {@code null}.
-         */
-        AbstractMessageHandler(
-            /* @NonNull */
-            final IRemoteClientNodeController remoteNodeController )
-        {
-            super( remoteNodeController );
         }
     }
 }

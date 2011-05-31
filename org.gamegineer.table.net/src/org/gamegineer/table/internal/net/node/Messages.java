@@ -38,6 +38,14 @@ final class Messages
     // Fields
     // ======================================================================
 
+    // --- AbstractMessageHandler -------------------------------------------
+
+    /** An unexpected error occurred while handling a message. */
+    public static String AbstractMessageHandler_handleMessage_unexpectedError;
+
+    /** The message handler received an unexpected message. */
+    public static String AbstractMessageHandler_messageReceived_unexpectedMessage;
+
     // --- AbstractNode -----------------------------------------------------
 
     /** The remote node is already bound. */
@@ -69,14 +77,6 @@ final class Messages
     /** The message type is already registered. */
     public static String AbstractRemoteNode_registerUncorrelatedMessageHandler_messageTypeRegistered;
 
-    // --- AbstractRemoteNode.AbstractMessageHandler ------------------------
-
-    /** An unexpected error occurred while handling a message. */
-    public static String AbstractMessageHandler_handleMessage_unexpectedError;
-
-    /** The message handler received an unexpected message. */
-    public static String AbstractMessageHandler_messageReceived_unexpectedMessage;
-
     // --- AbstractRemoteNode.ErrorMessageHandler ---------------------------
 
     /** An uncorrelated error message was received. */
@@ -107,6 +107,36 @@ final class Messages
     // ======================================================================
     // Methods
     // ======================================================================
+
+    // --- AbstractMessageHandler -------------------------------------------
+
+    /**
+     * Gets the formatted message indicating the message handler received an
+     * unexpected message.
+     * 
+     * @param messageHandler
+     *        The message handler; must not be {@code null}.
+     * @param message
+     *        The message; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the message handler received an
+     *         unexpected message; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    static String AbstractMessageHandler_messageReceived_unexpectedMessage(
+        /* @NonNull */
+        final IMessageHandler messageHandler,
+        /* @NonNull */
+        final IMessage message )
+    {
+        return bind( AbstractMessageHandler_messageReceived_unexpectedMessage, new Object[] {
+            messageHandler.getClass().getSimpleName(), //
+            message.getClass().getSimpleName(), //
+            message.getId(), //
+            message.getCorrelationId()
+        } );
+    }
 
     // --- AbstractRemoteNode -----------------------------------------------
 
@@ -146,36 +176,6 @@ final class Messages
         final IMessage message )
     {
         return bind( AbstractRemoteNode_messageReceived_unhandledMessage, new Object[] {
-            message.getClass().getSimpleName(), //
-            message.getId(), //
-            message.getCorrelationId()
-        } );
-    }
-
-    // --- AbstractRemoteNode.AbstractMessageHandler ------------------------
-
-    /**
-     * Gets the formatted message indicating the message handler received an
-     * unexpected message.
-     * 
-     * @param messageHandler
-     *        The message handler; must not be {@code null}.
-     * @param message
-     *        The message; must not be {@code null}.
-     * 
-     * @return The formatted message indicating the message handler received an
-     *         unexpected message; never {@code null}.
-     */
-    /* @NonNull */
-    @SuppressWarnings( "boxing" )
-    static String AbstractMessageHandler_messageReceived_unexpectedMessage(
-        /* @NonNull */
-        final IRemoteNodeController.IMessageHandler messageHandler,
-        /* @NonNull */
-        final IMessage message )
-    {
-        return bind( AbstractMessageHandler_messageReceived_unexpectedMessage, new Object[] {
-            messageHandler.getClass().getSimpleName(), //
             message.getClass().getSimpleName(), //
             message.getId(), //
             message.getCorrelationId()
