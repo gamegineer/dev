@@ -76,7 +76,7 @@ final class HelloResponseMessageHandler
         assert message != null;
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
-            String.format( "received error '%s' in response to hello request (id=%d, correlation-id=%d)", //$NON-NLS-1$
+            String.format( "Received error '%s' in response to hello request (id=%d, correlation-id=%d)", //$NON-NLS-1$
                 message.getError(), //
                 Integer.valueOf( message.getId() ), //
                 Integer.valueOf( message.getCorrelationId() ) ) );
@@ -97,7 +97,7 @@ final class HelloResponseMessageHandler
         assert message != null;
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
-            String.format( "received hello response with chosen version '%d' (id=%d, correlation-id=%d)", //$NON-NLS-1$
+            String.format( "Received hello response with chosen version '%d' (id=%d, correlation-id=%d)", //$NON-NLS-1$
                 Integer.valueOf( message.getChosenProtocolVersion() ), //
                 Integer.valueOf( message.getId() ), //
                 Integer.valueOf( message.getCorrelationId() ) ) );
@@ -114,7 +114,7 @@ final class HelloResponseMessageHandler
     @Override
     protected void handleUnexpectedMessage()
     {
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "received unexpected message in response to hello request" ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received unexpected message in response to hello request" ); //$NON-NLS-1$
         getRemoteNodeController().close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

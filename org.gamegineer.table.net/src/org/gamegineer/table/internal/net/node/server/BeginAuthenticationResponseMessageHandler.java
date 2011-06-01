@@ -100,7 +100,7 @@ final class BeginAuthenticationResponseMessageHandler
             final byte[] expectedResponse = authenticator.createResponse( controller.getChallenge(), password, controller.getSalt() );
             if( Arrays.equals( expectedResponse, response ) )
             {
-                Debug.getDefault().trace( Debug.OPTION_DEFAULT, "client authenticated" ); //$NON-NLS-1$
+                Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Client authenticated" ); //$NON-NLS-1$
             }
             else
             {
@@ -132,7 +132,7 @@ final class BeginAuthenticationResponseMessageHandler
         assert message != null;
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
-            String.format( "received begin authentication response (id=%d, correlation-id=%d)", //$NON-NLS-1$
+            String.format( "Received begin authentication response (id=%d, correlation-id=%d)", //$NON-NLS-1$
                 Integer.valueOf( message.getId() ), //
                 Integer.valueOf( message.getCorrelationId() ) ) );
 
@@ -178,7 +178,7 @@ final class BeginAuthenticationResponseMessageHandler
     @Override
     protected void handleUnexpectedMessage()
     {
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "received unknown message in response to begin authentication request" ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received unknown message in response to begin authentication request" ); //$NON-NLS-1$
         getRemoteNodeController().close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

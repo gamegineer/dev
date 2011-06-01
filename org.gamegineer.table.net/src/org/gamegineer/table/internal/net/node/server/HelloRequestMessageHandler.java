@@ -83,7 +83,7 @@ final class HelloRequestMessageHandler
         assert message != null;
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
-            String.format( "received hello request with supported version '%d' (id=%d, correlation-id=%d)", //$NON-NLS-1$
+            String.format( "Received hello request with supported version '%d' (id=%d, correlation-id=%d)", //$NON-NLS-1$
                 Integer.valueOf( message.getSupportedProtocolVersion() ), //
                 Integer.valueOf( message.getId() ), //
                 Integer.valueOf( message.getCorrelationId() ) ) );
@@ -113,7 +113,7 @@ final class HelloRequestMessageHandler
 
         if( responseMessage instanceof ErrorMessage )
         {
-            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "server does not support client protocol version" ); //$NON-NLS-1$
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Server does not support client protocol version" ); //$NON-NLS-1$
             controller.close( ((ErrorMessage)responseMessage).getError() );
             return;
         }

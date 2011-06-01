@@ -75,7 +75,7 @@ final class EndAuthenticationMessageHandler
         assert message != null;
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
-            String.format( "received authentication confirmation (id=%d, correlation-id=%d)", //$NON-NLS-1$
+            String.format( "Received authentication confirmation (id=%d, correlation-id=%d)", //$NON-NLS-1$
                 Integer.valueOf( message.getId() ), //
                 Integer.valueOf( message.getCorrelationId() ) ) );
         getRemoteNodeController().bind( "<<server>>" ); //$NON-NLS-1$
@@ -95,7 +95,7 @@ final class EndAuthenticationMessageHandler
         assert message != null;
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
-            String.format( "received error '%s' in response to begin authentication response (id=%d, correlation-id=%d)", //$NON-NLS-1$
+            String.format( "Received error '%s' in response to begin authentication response (id=%d, correlation-id=%d)", //$NON-NLS-1$
                 message.getError(), //
                 Integer.valueOf( message.getId() ), //
                 Integer.valueOf( message.getCorrelationId() ) ) );
@@ -108,7 +108,7 @@ final class EndAuthenticationMessageHandler
     @Override
     protected void handleUnexpectedMessage()
     {
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "received unknown message in response to begin authentication response" ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received unknown message in response to begin authentication response" ); //$NON-NLS-1$
         getRemoteNodeController().close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }
