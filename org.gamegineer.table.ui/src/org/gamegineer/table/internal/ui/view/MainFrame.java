@@ -261,6 +261,17 @@ public final class MainFrame
         return false; // JOptionPane.CANCEL_OPTION
     }
 
+    /*
+     * @see java.awt.Window#dispose()
+     */
+    @Override
+    public void dispose()
+    {
+        model_.getTableModel().getTableNetwork().disconnect();
+
+        super.dispose();
+    }
+
     /**
      * Gets the collection of application icon images.
      * 
