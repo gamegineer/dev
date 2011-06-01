@@ -1,6 +1,6 @@
 /*
  * MainFrame.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -460,7 +460,7 @@ public final class MainFrame
         }
         catch( final ModelException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainFrame_openTable_error, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainFrame_openTable_error_nonNls( file ), e );
             OptionDialogs.showErrorMessageDialog( this, Messages.MainFrame_openTable_error );
         }
     }
@@ -560,7 +560,7 @@ public final class MainFrame
         }
         catch( final ModelException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainFrame_saveTable_error, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainFrame_saveTable_error_nonNls( file ), e );
             OptionDialogs.showErrorMessageDialog( this, Messages.MainFrame_saveTable_error );
             return false;
         }

@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.view;
 
+import java.io.File;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.internal.ui.util.CommonMessages;
@@ -622,8 +623,14 @@ final class Messages
     /** An error occurred while opening the table. */
     public static String MainFrame_openTable_error;
 
+    /** An error occurred while opening the table. */
+    public static String MainFrame_openTable_error_nonNls;
+
     /** An error occurred while saving the table. */
     public static String MainFrame_saveTable_error;
+
+    /** An error occurred while saving the table. */
+    public static String MainFrame_saveTable_error_nonNls;
 
     /** The frame title. */
     public static String MainFrame_title;
@@ -962,6 +969,42 @@ final class Messages
         final String imagePath )
     {
         return bind( MainFrame_getApplicationIconImages_readImageError_nonNls, imagePath );
+    }
+
+    /**
+     * Gets the formatted message that indicates an error occurred while opening
+     * the table.
+     * 
+     * @param file
+     *        The table file; must not be {@code null}.
+     * 
+     * @return The formatted message that indicates an error occurred while
+     *         opening the table; never {@code null}.
+     */
+    /* @NonNull */
+    static String MainFrame_openTable_error_nonNls(
+        /* @NonNull */
+        final File file )
+    {
+        return bind( MainFrame_openTable_error_nonNls, file.getAbsolutePath() );
+    }
+
+    /**
+     * Gets the formatted message that indicates an error occurred while saving
+     * the table.
+     * 
+     * @param file
+     *        The table file; must not be {@code null}.
+     * 
+     * @return The formatted message that indicates an error occurred while
+     *         saving the table; never {@code null}.
+     */
+    /* @NonNull */
+    static String MainFrame_saveTable_error_nonNls(
+        /* @NonNull */
+        final File file )
+    {
+        return bind( MainFrame_saveTable_error_nonNls, file.getAbsolutePath() );
     }
 
     /**
