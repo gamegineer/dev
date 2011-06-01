@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net.node.server;
 
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.node.common.Authenticator;
 import org.gamegineer.table.internal.net.node.common.ProtocolVersions;
@@ -81,10 +82,11 @@ final class HelloRequestMessageHandler
     {
         assert message != null;
 
-        System.out.println( String.format( "ServerService : received hello request with supported version '%d' (id=%d, correlation-id=%d)", //$NON-NLS-1$
-            Integer.valueOf( message.getSupportedProtocolVersion() ), //
-            Integer.valueOf( message.getId() ), //
-            Integer.valueOf( message.getCorrelationId() ) ) );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
+            String.format( "received hello request with supported version '%d' (id=%d, correlation-id=%d)", //$NON-NLS-1$
+                Integer.valueOf( message.getSupportedProtocolVersion() ), //
+                Integer.valueOf( message.getId() ), //
+                Integer.valueOf( message.getCorrelationId() ) ) );
 
         final IRemoteClientNodeController controller = getRemoteNodeController();
 
@@ -111,7 +113,7 @@ final class HelloRequestMessageHandler
 
         if( responseMessage instanceof ErrorMessage )
         {
-            System.out.println( "ServerService : server does not support client protocol version" ); //$NON-NLS-1$
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "server does not support client protocol version" ); //$NON-NLS-1$
             controller.close( ((ErrorMessage)responseMessage).getError() );
             return;
         }

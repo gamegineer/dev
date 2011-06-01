@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.node.client;
 
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.node.common.messages.EndAuthenticationMessage;
 import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
 import org.gamegineer.table.net.TableNetworkError;
@@ -73,11 +74,11 @@ final class EndAuthenticationMessageHandler
     {
         assert message != null;
 
-        System.out.println( String.format( "ClientService : received authentication confirmation (id=%d, correlation-id=%d)", //$NON-NLS-1$
-            Integer.valueOf( message.getId() ), //
-            Integer.valueOf( message.getCorrelationId() ) ) );
-        final IRemoteServerNodeController controller = getRemoteNodeController();
-        controller.bind( "<<server>>" ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
+            String.format( "received authentication confirmation (id=%d, correlation-id=%d)", //$NON-NLS-1$
+                Integer.valueOf( message.getId() ), //
+                Integer.valueOf( message.getCorrelationId() ) ) );
+        getRemoteNodeController().bind( "<<server>>" ); //$NON-NLS-1$
     }
 
     /**
@@ -93,10 +94,11 @@ final class EndAuthenticationMessageHandler
     {
         assert message != null;
 
-        System.out.println( String.format( "ClientService : received error '%s' in response to begin authentication response (id=%d, correlation-id=%d)", //$NON-NLS-1$
-            message.getError(), //
-            Integer.valueOf( message.getId() ), //
-            Integer.valueOf( message.getCorrelationId() ) ) );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
+            String.format( "received error '%s' in response to begin authentication response (id=%d, correlation-id=%d)", //$NON-NLS-1$
+                message.getError(), //
+                Integer.valueOf( message.getId() ), //
+                Integer.valueOf( message.getCorrelationId() ) ) );
         getRemoteNodeController().close( message.getError() );
     }
 
@@ -106,7 +108,7 @@ final class EndAuthenticationMessageHandler
     @Override
     protected void handleUnexpectedMessage()
     {
-        System.out.println( "ClientService : received unknown message in response to begin authentication response" ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "received unknown message in response to begin authentication response" ); //$NON-NLS-1$
         getRemoteNodeController().close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

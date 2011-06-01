@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.node.client;
 
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.node.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.node.common.messages.HelloResponseMessage;
@@ -74,10 +75,11 @@ final class HelloResponseMessageHandler
     {
         assert message != null;
 
-        System.out.println( String.format( "ClientService : received error '%s' in response to hello request (id=%d, correlation-id=%d)", //$NON-NLS-1$
-            message.getError(), //
-            Integer.valueOf( message.getId() ), //
-            Integer.valueOf( message.getCorrelationId() ) ) );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
+            String.format( "received error '%s' in response to hello request (id=%d, correlation-id=%d)", //$NON-NLS-1$
+                message.getError(), //
+                Integer.valueOf( message.getId() ), //
+                Integer.valueOf( message.getCorrelationId() ) ) );
         getRemoteNodeController().close( message.getError() );
     }
 
@@ -94,14 +96,14 @@ final class HelloResponseMessageHandler
     {
         assert message != null;
 
-        System.out.println( String.format( "ClientService : received hello response with chosen version '%d' (id=%d, correlation-id=%d)", //$NON-NLS-1$
-            Integer.valueOf( message.getChosenProtocolVersion() ), //
-            Integer.valueOf( message.getId() ), //
-            Integer.valueOf( message.getCorrelationId() ) ) );
-
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
+            String.format( "received hello response with chosen version '%d' (id=%d, correlation-id=%d)", //$NON-NLS-1$
+                Integer.valueOf( message.getChosenProtocolVersion() ), //
+                Integer.valueOf( message.getId() ), //
+                Integer.valueOf( message.getCorrelationId() ) ) );
         if( message.getChosenProtocolVersion() != ProtocolVersions.VERSION_1 )
         {
-            System.out.println( "ClientService : received unsupported chosen protocol version" ); //$NON-NLS-1$
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "received unsupported chosen protocol version" ); //$NON-NLS-1$
             getRemoteNodeController().close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
         }
     }
@@ -112,7 +114,7 @@ final class HelloResponseMessageHandler
     @Override
     protected void handleUnexpectedMessage()
     {
-        System.out.println( "ClientService : received unexpected message in response to hello request" ); //$NON-NLS-1$
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "received unexpected message in response to hello request" ); //$NON-NLS-1$
         getRemoteNodeController().close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }
