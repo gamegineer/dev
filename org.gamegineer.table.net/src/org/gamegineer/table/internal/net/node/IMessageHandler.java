@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.net.node;
 
 import org.gamegineer.table.internal.net.transport.IMessage;
 
-
 /**
  * A remote node message handler.
  * 
