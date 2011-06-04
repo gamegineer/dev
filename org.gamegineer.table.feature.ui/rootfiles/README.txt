@@ -1,6 +1,6 @@
 Gamegineer
 Version 0.6.0
-XX XX XXXX
+4 June 2011
 
 Copyright 2008-2011 Gamegineer contributors and others. 
 All rights reserved. 
@@ -34,6 +34,14 @@ Gamegineer requires a Java 6 or later runtime to be installed.  To start Gamegin
 
 All commands are available from the main menu at the top of the screen.  Context-sensitive commands are available from a popup menu that is activated using the appropriate keyboard and/or mouse trigger of your operating system (e.g. right-clicking the mouse on Windows).
 
-The table consists of a collection of card piles.  Use the Add Card Pile and Remove Card Pile commands to add/remove card piles to/from the table, respectively.  A card pile can be given the input focus by left-clicking it with the mouse.  A green border will appear around the pile to indicate it has the input focus.  Most commands will be executed in the context of the focused card pile.  Card piles can be moved by holding down the CONTROL key while left-clicking and dragging a card pile with the mouse.  The entire table can be moved by left-clicking and dragging anywhere on the green surface.  The Reset Table Origin command will reset the table origin to the window origin.
+The table consists of a collection of card piles.  Use the Add Card Pile and Remove Card Pile commands to add/remove card piles to/from the table, respectively.  Alternatively, the Remove All Card Piles command can be used to clear the entire table.  A card pile can be given the input focus by left-clicking it with the mouse.  A green border will appear around the pile to indicate it has the input focus.  Most commands will be executed in the context of the focused card pile.  Card piles can be moved by holding down the CONTROL key while left-clicking and dragging a card pile with the mouse.  The entire table can be moved by left-clicking and dragging anywhere on the green surface.  The Reset Table Origin command will reset the table origin to the window origin.
 
 A card pile consists of a collection of cards.  Use the Add Card and Remove Card commands to add/remove cards to/from a card pile, respectively.  Alternatively, the Add Deck command can be used to add an entire deck of cards to a card pile at once.  The Flip Card command will toggle the orientation (face up or face down) of the card at the top of the card pile.  The Layout command will change the arrangement of the cards in the card pile.  All of these commands are executed in the context of the focused card pile.  Cards can be moved from one card pile to another by left-clicking and dragging a card with the mouse.  When the Stacked layout is active, only the top card can be selected and moved.  When any of the Accordian layouts are active, left-clicking and dragging a card will move the selected card and all cards above it as a single unit.
+
+A new empty table can be created using the New command.  A table can be saved for later use using the Save and Save As commands.  A previously saved table can be loaded using the Open command or by selecting a previously-loaded file from the Most Recently Used file list.  Alternatively, the contents of the existing table can be replaced using the Import (Table) command.  Unlike the New command, Import will not disassociate the current table from its corresponding file, if applicable.
+
+THE NETWORK FUNCTIONALITY IS CURRENTLY EXPERIMENTAL AND NOT FULLY IMPLEMENTED.
+
+Use the Host command to host a table on the network.  Enter the name of the local network interface card and the TCP port on which to listen for connections.  Specify the name by which you wish to be known to the other players connected to the table.  You may optionally require each remote player that connects to your table to provide a password.
+
+Use the Join command to join a hosted table on the network.  Enter the name and TCP port of the host.  Specify the name by which you wish to be known to the other players connected to the table.  Enter the password required by the host to join the table or leave it blank if no password is required.
