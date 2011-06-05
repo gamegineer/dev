@@ -1,6 +1,6 @@
 /*
  * MementoPersistenceDelegate.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,13 +21,10 @@
 
 package org.gamegineer.common.internal.persistence.memento.serializable;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
-import java.io.ObjectStreamClass;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.internal.persistence.memento.Memento;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
-import org.gamegineer.common.persistence.serializable.ObjectInputStream;
 
 /**
  * A persistence delegate for the {@code Memento} class.
@@ -60,32 +57,13 @@ public final class MementoPersistenceDelegate
     @Override
     public Object replaceObject(
         final Object obj )
-    {
-        if( !(obj instanceof Memento) )
-        {
-            return super.replaceObject( obj );
-        }
-
-        return new MementoProxy( (Memento)obj );
-    }
-
-    /*
-     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#resolveClass(org.gamegineer.common.persistence.serializable.ObjectInputStream, java.io.ObjectStreamClass)
-     */
-    @Override
-    public Class<?> resolveClass(
-        final ObjectInputStream stream,
-        final ObjectStreamClass desc )
         throws IOException
     {
-        assertArgumentNotNull( stream, "stream" ); //$NON-NLS-1$
-        assertArgumentNotNull( desc, "desc" ); //$NON-NLS-1$
-
-        if( desc.getClass().getName().equals( MementoProxy.class.getName() ) )
+        if( obj instanceof Memento )
         {
-            return MementoProxy.class;
+            return new MementoProxy( (Memento)obj );
         }
 
-        return super.resolveClass( stream, desc );
+        return super.replaceObject( obj );
     }
 }

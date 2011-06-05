@@ -1,6 +1,6 @@
 /*
  * IPersistenceDelegate.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -80,11 +80,15 @@ public interface IPersistenceDelegate
      * @return The alternate object that replaces the specified object; may be
      *         {@code null}. The original object may be returned if no
      *         replacement should occur.
+     * 
+     * @throws java.io.IOException
+     *         If an I/O error occurs.
      */
     /* @Nullable */
     public Object replaceObject(
         /* @Nullable */
-        Object obj );
+        Object obj )
+        throws IOException;
 
     /**
      * Allows the persistence delegate to resolve the class associated with the
@@ -96,22 +100,22 @@ public interface IPersistenceDelegate
      *        An object stream class description; must not be {@code null}.
      * 
      * @return The class associated with the specified object stream class
-     *         descriptor or {@code null} if the persistence delegate cannot
-     *         resolve the class, in which case the caller is responsible for
-     *         resolving the class.
+     *         descriptor; never {@code null}.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs.
+     * @throws java.lang.ClassNotFoundException
+     *         If the class cannot be found.
      * @throws java.lang.NullPointerException
      *         If {@code stream} or {@code desc} is {@code null}.
      */
-    /* @Nullable */
+    /* @NonNull */
     public Class<?> resolveClass(
         /* @NonNull */
         ObjectInputStream stream,
         /* @NonNull */
         ObjectStreamClass desc )
-        throws IOException;
+        throws IOException, ClassNotFoundException;
 
     /**
      * Allows the persistence delegate to resolve the specified serializable
@@ -123,9 +127,13 @@ public interface IPersistenceDelegate
      * @return The alternate object that resolves the specified object; may be
      *         {@code null}. The original object may be returned if no
      *         resolution should occur.
+     * 
+     * @throws java.io.IOException
+     *         If an I/O error occurs.
      */
     /* @Nullable */
     public Object resolveObject(
         /* @Nullable */
-        Object obj );
+        Object obj )
+        throws IOException;
 }

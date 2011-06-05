@@ -1,6 +1,6 @@
 /*
  * CardPileBaseDesignPersistenceDelegate.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,9 @@
 
 package org.gamegineer.table.internal.core;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
-import java.io.ObjectStreamClass;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
-import org.gamegineer.common.persistence.serializable.ObjectInputStream;
 
 /**
  * A persistence delegate for the {@code CardPileBaseDesign} class.
@@ -59,32 +56,13 @@ public final class CardPileBaseDesignPersistenceDelegate
     @Override
     public Object replaceObject(
         final Object obj )
-    {
-        if( !(obj instanceof CardPileBaseDesign) )
-        {
-            return super.replaceObject( obj );
-        }
-
-        return new CardPileBaseDesignProxy( (CardPileBaseDesign)obj );
-    }
-
-    /*
-     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#resolveClass(org.gamegineer.common.persistence.serializable.ObjectInputStream, java.io.ObjectStreamClass)
-     */
-    @Override
-    public Class<?> resolveClass(
-        final ObjectInputStream stream,
-        final ObjectStreamClass desc )
         throws IOException
     {
-        assertArgumentNotNull( stream, "stream" ); //$NON-NLS-1$
-        assertArgumentNotNull( desc, "desc" ); //$NON-NLS-1$
-
-        if( desc.getName().equals( CardPileBaseDesignProxy.class.getName() ) )
+        if( obj instanceof CardPileBaseDesign )
         {
-            return CardPileBaseDesignProxy.class;
+            return new CardPileBaseDesignProxy( (CardPileBaseDesign)obj );
         }
 
-        return super.resolveClass( stream, desc );
+        return super.replaceObject( obj );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * AbstractPersistenceDelegate.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -76,15 +76,20 @@ public abstract class AbstractPersistenceDelegate
      * @see org.gamegineer.common.persistence.serializable.IPersistenceDelegate#replaceObject(java.lang.Object)
      */
     @Override
+    @SuppressWarnings( "unused" )
     public Object replaceObject(
         final Object obj )
+        throws IOException
     {
         return obj;
     }
 
     /**
-     * This implementation does not attempt to resolve the specified class and
-     * always returns {@code null}.
+     * This implementation returns the result of calling
+     * 
+     * <pre>
+     * Class.forName( typeName, false, getClass().getClassLoader() )
+     * </pre>
      * 
      * @see org.gamegineer.common.persistence.serializable.IPersistenceDelegate#resolveClass(org.gamegineer.common.persistence.serializable.ObjectInputStream,
      *      java.io.ObjectStreamClass)
@@ -94,12 +99,12 @@ public abstract class AbstractPersistenceDelegate
     public Class<?> resolveClass(
         final ObjectInputStream stream,
         final ObjectStreamClass desc )
-        throws IOException
+        throws IOException, ClassNotFoundException
     {
         assertArgumentNotNull( stream, "stream" ); //$NON-NLS-1$
         assertArgumentNotNull( desc, "desc" ); //$NON-NLS-1$
 
-        return null;
+        return Class.forName( desc.getName(), false, getClass().getClassLoader() );
     }
 
     /**
@@ -109,8 +114,10 @@ public abstract class AbstractPersistenceDelegate
      * @see org.gamegineer.common.persistence.serializable.IPersistenceDelegate#resolveObject(java.lang.Object)
      */
     @Override
+    @SuppressWarnings( "unused" )
     public Object resolveObject(
         final Object obj )
+        throws IOException
     {
         return obj;
     }

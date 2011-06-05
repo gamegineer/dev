@@ -106,11 +106,7 @@ public final class ObjectInputStream
         final IPersistenceDelegate delegate = persistenceDelegateRegistry_.getPersistenceDelegate( desc.getName() );
         if( delegate != null )
         {
-            final Class<?> serializedClass = delegate.resolveClass( this, desc );
-            if( serializedClass != null )
-            {
-                return serializedClass;
-            }
+            return delegate.resolveClass( this, desc );
         }
 
         return super.resolveClass( desc );

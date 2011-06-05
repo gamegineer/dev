@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
+import java.io.IOException;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
 
@@ -56,12 +57,13 @@ public final class CardPileBaseDesignExtensionProxyPersistenceDelegate
     @Override
     public Object replaceObject(
         final Object obj )
+        throws IOException
     {
-        if( !(obj instanceof CardPileBaseDesignExtensionProxy) )
+        if( obj instanceof CardPileBaseDesignExtensionProxy )
         {
-            return super.replaceObject( obj );
+            return ((CardPileBaseDesignExtensionProxy)obj).getDelegate();
         }
 
-        return ((CardPileBaseDesignExtensionProxy)obj).getDelegate();
+        return super.replaceObject( obj );
     }
 }

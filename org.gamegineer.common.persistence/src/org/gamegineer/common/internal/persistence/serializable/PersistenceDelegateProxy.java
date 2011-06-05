@@ -149,6 +149,7 @@ final class PersistenceDelegateProxy
     @Override
     public Object replaceObject(
         final Object obj )
+        throws IOException
     {
         return getActualPersistenceDelegate().replaceObject( obj );
     }
@@ -160,7 +161,7 @@ final class PersistenceDelegateProxy
     public Class<?> resolveClass(
         final ObjectInputStream stream,
         final ObjectStreamClass desc )
-        throws IOException
+        throws IOException, ClassNotFoundException
     {
         return getActualPersistenceDelegate().resolveClass( stream, desc );
     }
@@ -171,6 +172,7 @@ final class PersistenceDelegateProxy
     @Override
     public Object resolveObject(
         final Object obj )
+        throws IOException
     {
         return getActualPersistenceDelegate().resolveObject( obj );
     }

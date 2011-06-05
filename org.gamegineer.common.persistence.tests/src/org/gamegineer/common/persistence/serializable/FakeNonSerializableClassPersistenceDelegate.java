@@ -1,6 +1,6 @@
 /*
  * FakeNonSerializableClassPersistenceDelegate.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,7 @@
 
 package org.gamegineer.common.persistence.serializable;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
-import java.io.ObjectStreamClass;
 import net.jcip.annotations.Immutable;
 
 /**
@@ -57,32 +55,13 @@ public final class FakeNonSerializableClassPersistenceDelegate
     @Override
     public Object replaceObject(
         final Object obj )
-    {
-        if( !(obj instanceof FakeNonSerializableClass) )
-        {
-            return super.replaceObject( obj );
-        }
-
-        return new FakeNonSerializableClassProxy( (FakeNonSerializableClass)obj );
-    }
-
-    /*
-     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#resolveClass(org.gamegineer.common.persistence.serializable.ObjectInputStream, java.io.ObjectStreamClass)
-     */
-    @Override
-    public Class<?> resolveClass(
-        final ObjectInputStream stream,
-        final ObjectStreamClass desc )
         throws IOException
     {
-        assertArgumentNotNull( stream, "stream" ); //$NON-NLS-1$
-        assertArgumentNotNull( desc, "desc" ); //$NON-NLS-1$
-
-        if( desc.getName().equals( FakeNonSerializableClassProxy.class.getName() ) )
+        if( obj instanceof FakeNonSerializableClass )
         {
-            return FakeNonSerializableClassProxy.class;
+            return new FakeNonSerializableClassProxy( (FakeNonSerializableClass)obj );
         }
 
-        return super.resolveClass( stream, desc );
+        return super.replaceObject( obj );
     }
 }
