@@ -1,6 +1,6 @@
 /*
  * package-info.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,10 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 30, 2008 at 11:41:27 PM.
+ * Created on Jul 1, 2008 at 11:31:37 PM.
  */
 
 /**
- * Provides classes and interfaces that support the Memento pattern.
+ * Provides support for persisting a memento using the Java object
+ * serialization framework.
+ * 
+ * <p>
+ * This package is only intended for use by members of the
+ * {@code org.gamegineer.common} project.
+ * </p>
  */
-package org.gamegineer.common.persistence.memento;
+package org.gamegineer.common.internal.persistence.serializable.memento;

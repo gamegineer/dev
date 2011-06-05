@@ -1,6 +1,6 @@
 /*
- * MementoProxyTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * MementoPersistenceDelegate.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,28 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jul 1, 2008 at 10:45:22 PM.
+ * Created on Jul 1, 2008 at 12:34:36 AM.
  */
 
-package org.gamegineer.common.internal.persistence.memento.serializable;
+package org.gamegineer.common.internal.persistence.serializable.memento;
 
-import org.junit.Test;
+import java.io.IOException;
+import net.jcip.annotations.Immutable;
+import org.gamegineer.common.internal.core.util.memento.Memento;
+import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.common.internal.persistence.memento.serializable.MementoProxy}
- * class.
+ * A persistence delegate for the {@code Memento} class.
  */
-public final class MementoProxyTest
+@Immutable
+public final class MementoPersistenceDelegate
+    extends AbstractPersistenceDelegate
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MementoProxyTest} class.
+     * Initializes a new instance of the {@code MementoPersistenceDelegate}
+     * class.
      */
-    public MementoProxyTest()
+    public MementoPersistenceDelegate()
     {
         super();
     }
@@ -47,13 +51,19 @@ public final class MementoProxyTest
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * memento.
+    /*
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
      */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Memento_Null()
+    @Override
+    public Object replaceObject(
+        final Object obj )
+        throws IOException
     {
-        new MementoProxy( null );
+        if( obj instanceof Memento )
+        {
+            return new MementoProxy( (Memento)obj );
+        }
+
+        return super.replaceObject( obj );
     }
 }

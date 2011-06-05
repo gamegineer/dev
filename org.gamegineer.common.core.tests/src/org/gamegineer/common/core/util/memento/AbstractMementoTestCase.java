@@ -1,6 +1,6 @@
 /*
  * AbstractMementoTestCase.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Jun 30, 2008 at 11:24:30 PM.
  */
 
-package org.gamegineer.common.persistence.memento;
+package org.gamegineer.common.core.util.memento;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -35,7 +35,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.common.persistence.memento.IMemento} interface.
+ * {@link org.gamegineer.common.core.util.memento.IMemento} interface.
  */
 public abstract class AbstractMementoTestCase
 {

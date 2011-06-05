@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
 	<scr:component
-			name="org.gamegineer.common.persistence.serializable.mementoPersistenceDelegate"
+			name="org.gamegineer.common.persistence.serializable.memento.mementoPersistenceDelegate"
 			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 		<implementation
-				class="org.gamegineer.common.internal.persistence.memento.serializable.MementoPersistenceDelegate" />
+				class="org.gamegineer.common.internal.persistence.serializable.memento.MementoPersistenceDelegate" />
 		<service>
 			<provide
 					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
@@ -12,8 +12,8 @@
 		<property
 				name="delegators"
 				type="String">
-			org.gamegineer.common.internal.persistence.memento.Memento
-			org.gamegineer.common.internal.persistence.memento.serializable.MementoProxy
+			org.gamegineer.common.internal.core.util.memento.Memento
+			org.gamegineer.common.internal.persistence.serializable.memento.MementoProxy
 		</property>
 	</scr:component>
 </root>

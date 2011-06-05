@@ -1,6 +1,6 @@
 /*
  * MementoBuilder.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Jul 1, 2008 at 9:21:08 PM.
  */
 
-package org.gamegineer.common.persistence.memento;
+package org.gamegineer.common.core.util.memento;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
@@ -27,16 +27,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.common.internal.persistence.memento.Memento;
+import org.gamegineer.common.internal.core.util.memento.Memento;
 
 /**
  * A factory for building instances of
- * {@link org.gamegineer.common.persistence.memento.IMemento}.
+ * {@link org.gamegineer.common.core.util.memento.IMemento}.
  * 
  * <p>
- * The memento implementation returned by this class is guaranteed to have a
- * persistence delegate for both the JavaBeans persistence framework and the
- * Java object serialization framework.
+ * The memento implementation returned by this class is guaranteed to be
+ * persistable using the Java object serialization framework.
  * </p>
  */
 @NotThreadSafe

@@ -19,20 +19,20 @@
  * Created on Jul 1, 2008 at 11:14:02 PM.
  */
 
-package org.gamegineer.common.internal.persistence.memento.serializable;
+package org.gamegineer.common.internal.persistence.serializable.memento;
 
 import static org.junit.Assert.assertEquals;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.gamegineer.common.internal.persistence.memento.Memento;
+import org.gamegineer.common.internal.core.util.memento.Memento;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.common.internal.persistence.memento.serializable.MementoPersistenceDelegate}
+ * {@link org.gamegineer.common.internal.persistence.serializable.memento.MementoPersistenceDelegate}
  * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegate}
  * interface.

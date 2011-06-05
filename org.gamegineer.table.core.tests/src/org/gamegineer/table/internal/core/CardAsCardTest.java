@@ -1,6 +1,6 @@
 /*
  * CardAsCardTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import org.gamegineer.common.persistence.memento.IMemento;
+import org.gamegineer.common.core.util.memento.IMemento;
 import org.gamegineer.table.core.AbstractCardTestCase;
 import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
@@ -61,7 +61,7 @@ public final class CardAsCardTest
     }
 
     /*
-     * @see org.gamegineer.table.core.AbstractCardTestCase#createCard(org.gamegineer.common.persistence.memento.IMemento)
+     * @see org.gamegineer.table.core.AbstractCardTestCase#createCard(org.gamegineer.common.core.util.memento.IMemento)
      */
     @Override
     protected ICard createCard(

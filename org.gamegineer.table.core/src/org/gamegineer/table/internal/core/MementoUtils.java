@@ -1,6 +1,6 @@
 /*
  * MementoUtils.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,8 +22,8 @@
 package org.gamegineer.table.internal.core;
 
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.persistence.memento.IMemento;
-import org.gamegineer.common.persistence.memento.MalformedMementoException;
+import org.gamegineer.common.core.util.memento.IMemento;
+import org.gamegineer.common.core.util.memento.MalformedMementoException;
 
 /**
  * A collection of methods useful for working with mementos.
@@ -64,7 +64,7 @@ final class MementoUtils
      * @return The attribute value or {@code null} if the attribute is not
      *         present in the memento.
      * 
-     * @throws org.gamegineer.common.persistence.memento.MalformedMementoException
+     * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
      *         If the attribute value is {@code null}, or the attribute value is
      *         of the wrong type.
      */
@@ -120,7 +120,7 @@ final class MementoUtils
      * 
      * @return The attribute value; never {@code null}.
      * 
-     * @throws org.gamegineer.common.persistence.memento.MalformedMementoException
+     * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
      *         If the memento does not contain the attribute, the attribute
      *         value is {@code null}, or the attribute value is of the wrong
      *         type.

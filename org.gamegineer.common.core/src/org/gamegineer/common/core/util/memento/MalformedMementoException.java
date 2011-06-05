@@ -1,6 +1,6 @@
 /*
  * MalformedMementoException.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Apr 8, 2010 at 11:17:46 PM.
  */
 
-package org.gamegineer.common.persistence.memento;
+package org.gamegineer.common.core.util.memento;
 
 import net.jcip.annotations.NotThreadSafe;
 
@@ -41,7 +41,8 @@ public final class MalformedMementoException
     /**
      * The name of the attribute that caused the memento to be malformed.
      * 
-     * @serial
+     * @serial The name of the attribute that caused the memento to be
+     *         malformed.
      */
     private String attributeName_;
 

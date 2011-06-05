@@ -1,6 +1,6 @@
 /*
  * package-info.java
- * Copyright 2008 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,4 +27,4 @@
  * {@code org.gamegineer.common} project.
  * </p>
  */
-package org.gamegineer.common.internal.persistence.memento;
+package org.gamegineer.common.internal.core.util.memento;

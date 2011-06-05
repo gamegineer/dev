@@ -1,5 +1,5 @@
 /*
- * MementoPersistenceDelegate.java
+ * MementoAsMementoTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,32 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jul 1, 2008 at 12:34:36 AM.
+ * Created on Jun 30, 2008 at 11:28:42 PM.
  */
 
-package org.gamegineer.common.internal.persistence.memento.serializable;
+package org.gamegineer.common.internal.core.util.memento;
 
-import java.io.IOException;
-import net.jcip.annotations.Immutable;
-import org.gamegineer.common.internal.persistence.memento.Memento;
-import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
+import java.util.Map;
+import org.gamegineer.common.core.util.memento.AbstractMementoTestCase;
+import org.gamegineer.common.core.util.memento.IMemento;
 
 /**
- * A persistence delegate for the {@code Memento} class.
+ * A fixture for testing the
+ * {@link org.gamegineer.common.internal.core.util.memento.Memento} class to
+ * ensure it does not violate the contract of the
+ * {@link org.gamegineer.common.core.util.memento.IMemento} interface.
  */
-@Immutable
-public final class MementoPersistenceDelegate
-    extends AbstractPersistenceDelegate
+public final class MementoAsMementoTest
+    extends AbstractMementoTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MementoPersistenceDelegate}
-     * class.
+     * Initializes a new instance of the {@code MementoAsMementoTest} class.
      */
-    public MementoPersistenceDelegate()
+    public MementoAsMementoTest()
     {
         super();
     }
@@ -52,18 +52,12 @@ public final class MementoPersistenceDelegate
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoTestCase#createMemento(java.util.Map)
      */
     @Override
-    public Object replaceObject(
-        final Object obj )
-        throws IOException
+    protected IMemento createMemento(
+        final Map<String, Object> attributes )
     {
-        if( obj instanceof Memento )
-        {
-            return new MementoProxy( (Memento)obj );
-        }
-
-        return super.replaceObject( obj );
+        return new Memento( attributes );
     }
 }

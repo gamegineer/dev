@@ -1,6 +1,6 @@
 /*
  * MementoProxy.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,14 +19,14 @@
  * Created on Jul 1, 2008 at 12:35:44 AM.
  */
 
-package org.gamegineer.common.internal.persistence.memento.serializable;
+package org.gamegineer.common.internal.persistence.serializable.memento;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.common.internal.persistence.memento.Memento;
+import org.gamegineer.common.internal.core.util.memento.Memento;
 
 /**
  * A serializable proxy for the {@code Memento} class.
@@ -45,7 +45,7 @@ public final class MementoProxy
     /**
      * The attribute collection.
      * 
-     * @serial
+     * @serial The attribute collection.
      */
     private Map<String, Object> attributes_;
 

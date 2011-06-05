@@ -1,6 +1,6 @@
 /*
  * MementoBuilderTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Jul 1, 2008 at 9:27:17 PM.
  */
 
-package org.gamegineer.common.persistence.memento;
+package org.gamegineer.common.core.util.memento;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -32,7 +32,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.common.persistence.memento.MementoBuilder} class.
+ * {@link org.gamegineer.common.core.util.memento.MementoBuilder} class.
  */
 public final class MementoBuilderTest
 {

@@ -1,6 +1,6 @@
 /*
  * IMemento.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Jun 29, 2008 at 10:23:43 PM.
  */
 
-package org.gamegineer.common.persistence.memento;
+package org.gamegineer.common.core.util.memento;
 
 import java.util.Set;
 
@@ -77,9 +77,9 @@ public interface IMemento
         String name );
 
     /**
-     * Gets a set view of the attribute names contained in this memento.
+     * Gets the collection of attribute names contained in this memento.
      * 
-     * @return A set view of the attribute names contained in this memento;
+     * @return The collection of attribute names contained in this memento;
      *         never {@code null}.
      */
     /* @NonNull */

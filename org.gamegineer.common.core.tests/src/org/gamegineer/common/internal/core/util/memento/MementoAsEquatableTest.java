@@ -1,6 +1,6 @@
 /*
  * MementoAsEquatableTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on May 27, 2010 at 11:10:18 PM.
  */
 
-package org.gamegineer.common.internal.persistence.memento;
+package org.gamegineer.common.internal.core.util.memento;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +27,7 @@ import org.gamegineer.test.core.AbstractEquatableTestCase;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.common.internal.persistence.memento.Memento} class to
+ * {@link org.gamegineer.common.internal.core.util.memento.Memento} class to
  * ensure it does not violate the contract of the equatable interface.
  */
 public final class MementoAsEquatableTest

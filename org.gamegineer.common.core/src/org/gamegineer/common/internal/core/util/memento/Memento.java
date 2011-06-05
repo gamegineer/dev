@@ -1,6 +1,6 @@
 /*
  * Memento.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Jun 29, 2008 at 10:23:49 PM.
  */
 
-package org.gamegineer.common.internal.persistence.memento;
+package org.gamegineer.common.internal.core.util.memento;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
@@ -29,11 +29,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.common.persistence.memento.IMemento;
+import org.gamegineer.common.core.util.memento.IMemento;
 
 /**
  * A basic implementation of
- * {@link org.gamegineer.common.persistence.memento.IMemento}.
+ * {@link org.gamegineer.common.core.util.memento.IMemento}.
  */
 @Immutable
 public final class Memento
@@ -43,7 +43,10 @@ public final class Memento
     // Fields
     // ======================================================================
 
-    /** The attribute collection. */
+    /**
+     * The attribute collection. The key is the attribute name. The value is the
+     * attribute value.
+     */
     private final Map<String, Object> attributes_;
 
 
@@ -75,7 +78,7 @@ public final class Memento
     // ======================================================================
 
     /*
-     * @see org.gamegineer.common.persistence.memento.IMemento#containsAttribute(java.lang.String)
+     * @see org.gamegineer.common.core.util.memento.IMemento#containsAttribute(java.lang.String)
      */
     @Override
     public boolean containsAttribute(
@@ -113,7 +116,7 @@ public final class Memento
     }
 
     /*
-     * @see org.gamegineer.common.persistence.memento.IMemento#getAttribute(java.lang.String)
+     * @see org.gamegineer.common.core.util.memento.IMemento#getAttribute(java.lang.String)
      */
     @Override
     public <T> T getAttribute(
@@ -128,7 +131,7 @@ public final class Memento
     }
 
     /*
-     * @see org.gamegineer.common.persistence.memento.IMemento#getAttributeNames()
+     * @see org.gamegineer.common.core.util.memento.IMemento#getAttributeNames()
      */
     @Override
     public Set<String> getAttributeNames()

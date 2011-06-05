@@ -1,6 +1,6 @@
 /*
  * TableFactory.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,8 +24,8 @@ package org.gamegineer.table.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.persistence.memento.IMemento;
-import org.gamegineer.common.persistence.memento.MalformedMementoException;
+import org.gamegineer.common.core.util.memento.IMemento;
+import org.gamegineer.common.core.util.memento.MalformedMementoException;
 import org.gamegineer.table.internal.core.Card;
 import org.gamegineer.table.internal.core.CardPile;
 import org.gamegineer.table.internal.core.CardPileBaseDesign;
@@ -93,7 +93,7 @@ public final class TableFactory
      * 
      * @throws java.lang.NullPointerException
      *         If {@code memento} is {@code null}.
-     * @throws org.gamegineer.common.persistence.memento.MalformedMementoException
+     * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
      *         If {@code memento} is malformed.
      */
     /* @NonNull */
@@ -136,7 +136,7 @@ public final class TableFactory
      * 
      * @throws java.lang.NullPointerException
      *         If {@code memento} is {@code null}.
-     * @throws org.gamegineer.common.persistence.memento.MalformedMementoException
+     * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
      *         If {@code memento} is malformed.
      */
     /* @NonNull */
@@ -285,7 +285,7 @@ public final class TableFactory
      * 
      * @throws java.lang.NullPointerException
      *         If {@code memento} is {@code null}.
-     * @throws org.gamegineer.common.persistence.memento.MalformedMementoException
+     * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
      *         If {@code memento} is malformed.
      */
     /* @NonNull */

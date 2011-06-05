@@ -34,9 +34,9 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.persistence.memento.IMemento;
-import org.gamegineer.common.persistence.memento.MalformedMementoException;
-import org.gamegineer.common.persistence.memento.MementoBuilder;
+import org.gamegineer.common.core.util.memento.IMemento;
+import org.gamegineer.common.core.util.memento.MalformedMementoException;
+import org.gamegineer.common.core.util.memento.MementoBuilder;
 import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.CardPileLayout;
@@ -293,7 +293,7 @@ public final class CardPile
      * 
      * @throws java.lang.NullPointerException
      *         If {@code memento} is {@code null}.
-     * @throws org.gamegineer.common.persistence.memento.MalformedMementoException
+     * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
      *         If {@code memento} is malformed.
      */
     /* @NonNull */

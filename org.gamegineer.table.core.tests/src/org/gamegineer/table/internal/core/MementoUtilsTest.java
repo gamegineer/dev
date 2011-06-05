@@ -1,6 +1,6 @@
 /*
  * MementoUtilsTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,9 +23,9 @@ package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import org.gamegineer.common.persistence.memento.IMemento;
-import org.gamegineer.common.persistence.memento.MalformedMementoException;
-import org.gamegineer.common.persistence.memento.MementoBuilder;
+import org.gamegineer.common.core.util.memento.IMemento;
+import org.gamegineer.common.core.util.memento.MalformedMementoException;
+import org.gamegineer.common.core.util.memento.MementoBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

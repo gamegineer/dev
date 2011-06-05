@@ -1,6 +1,6 @@
 /*
  * TableFactoryTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@ package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
-import org.gamegineer.common.persistence.memento.IMemento;
+import org.gamegineer.common.core.util.memento.IMemento;
 import org.junit.Test;
 
 /**

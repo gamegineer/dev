@@ -1,6 +1,6 @@
 /*
  * AbstractCardPileTestCase.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.common.persistence.memento.IMemento;
+import org.gamegineer.common.core.util.memento.IMemento;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

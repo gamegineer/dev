@@ -1,6 +1,6 @@
 /*
  * MementoTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * Created on Jul 1, 2008 at 10:11:25 PM.
  */
 
-package org.gamegineer.common.internal.persistence.memento;
+package org.gamegineer.common.internal.core.util.memento;
 
 import static org.gamegineer.test.core.Assert.assertImmutableMap;
 import static org.junit.Assert.assertEquals;
@@ -34,7 +34,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.common.internal.persistence.memento.Memento} class.
+ * {@link org.gamegineer.common.internal.core.util.memento.Memento} class.
  */
 public final class MementoTest
 {

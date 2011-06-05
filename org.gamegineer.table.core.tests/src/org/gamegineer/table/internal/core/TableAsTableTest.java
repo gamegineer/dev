@@ -1,6 +1,6 @@
 /*
  * TableAsTableTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
-import org.gamegineer.common.persistence.memento.IMemento;
+import org.gamegineer.common.core.util.memento.IMemento;
 import org.gamegineer.table.core.AbstractTableTestCase;
 import org.gamegineer.table.core.ITable;
 
@@ -60,7 +60,7 @@ public final class TableAsTableTest
     }
 
     /*
-     * @see org.gamegineer.table.core.AbstractTableTestCase#createTable(org.gamegineer.common.persistence.memento.IMemento)
+     * @see org.gamegineer.table.core.AbstractTableTestCase#createTable(org.gamegineer.common.core.util.memento.IMemento)
      */
     @Override
     protected ITable createTable(

@@ -1,6 +1,6 @@
 /*
- * MementoAsMementoTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * MementoProxyTest.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,32 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 30, 2008 at 11:28:42 PM.
+ * Created on Jul 1, 2008 at 10:45:22 PM.
  */
 
-package org.gamegineer.common.internal.persistence.memento;
+package org.gamegineer.common.internal.persistence.serializable.memento;
 
-import java.util.Map;
-import org.gamegineer.common.persistence.memento.AbstractMementoTestCase;
-import org.gamegineer.common.persistence.memento.IMemento;
+import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.common.internal.persistence.memento.Memento} class to
- * ensure it does not violate the contract of the
- * {@link org.gamegineer.common.persistence.memento.IMemento} interface.
+ * {@link org.gamegineer.common.internal.persistence.serializable.memento.MementoProxy}
+ * class.
  */
-public final class MementoAsMementoTest
-    extends AbstractMementoTestCase
+public final class MementoProxyTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MementoAsMementoTest} class.
+     * Initializes a new instance of the {@code MementoProxyTest} class.
      */
-    public MementoAsMementoTest()
+    public MementoProxyTest()
     {
         super();
     }
@@ -51,13 +47,13 @@ public final class MementoAsMementoTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.common.persistence.memento.AbstractMementoTestCase#createMemento(java.util.Map)
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * memento.
      */
-    @Override
-    protected IMemento createMemento(
-        final Map<String, Object> attributes )
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_Memento_Null()
     {
-        return new Memento( attributes );
+        new MementoProxy( null );
     }
 }
