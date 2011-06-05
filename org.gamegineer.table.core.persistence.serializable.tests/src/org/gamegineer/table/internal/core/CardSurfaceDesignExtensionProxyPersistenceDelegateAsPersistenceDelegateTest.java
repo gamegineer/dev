@@ -26,6 +26,7 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IExtension;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
+import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
 import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICardSurfaceDesign;
@@ -47,7 +48,7 @@ public final class CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersisten
     /**
      * Initializes a new instance of the {@code 
      * CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest
-     * * } class.
+     * } class.
      */
     public CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest()
     {
@@ -71,6 +72,15 @@ public final class CardSurfaceDesignExtensionProxyPersistenceDelegateAsPersisten
         final ICardSurfaceDesign actualCardSurfaceDesign = (ICardSurfaceDesign)actual;
         assertEquals( expectedCardSurfaceDesign.getId(), actualCardSurfaceDesign.getId() );
         assertEquals( expectedCardSurfaceDesign.getSize(), actualCardSurfaceDesign.getSize() );
+    }
+
+    /*
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createPersistenceDelegate()
+     */
+    @Override
+    protected IPersistenceDelegate createPersistenceDelegate()
+    {
+        return new CardSurfaceDesignExtensionProxyPersistenceDelegate();
     }
 
     /*

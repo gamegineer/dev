@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.gamegineer.common.internal.persistence.memento.Memento;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
+import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
 
 /**
@@ -68,6 +69,15 @@ public final class MementoPersistenceDelegateAsPersistenceDelegateTest
         final Memento expectedMemento = (Memento)expected;
         final Memento actualMemento = (Memento)actual;
         assertEquals( expectedMemento.getAttributes(), actualMemento.getAttributes() );
+    }
+
+    /*
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createPersistenceDelegate()
+     */
+    @Override
+    protected IPersistenceDelegate createPersistenceDelegate()
+    {
+        return new MementoPersistenceDelegate();
     }
 
     /*

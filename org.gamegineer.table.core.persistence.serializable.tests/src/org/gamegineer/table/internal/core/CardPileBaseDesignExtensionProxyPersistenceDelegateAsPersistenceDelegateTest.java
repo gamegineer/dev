@@ -26,6 +26,7 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.eclipse.core.runtime.IExtension;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
+import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
 import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.core.ICardPileBaseDesign;
@@ -47,7 +48,7 @@ public final class CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersiste
     /**
      * Initializes a new instance of the {@code 
      * CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest
-     * * } class.
+     * } class.
      */
     public CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersistenceDelegateTest()
     {
@@ -71,6 +72,15 @@ public final class CardPileBaseDesignExtensionProxyPersistenceDelegateAsPersiste
         final ICardPileBaseDesign actualCardPileBaseDesign = (ICardPileBaseDesign)actual;
         assertEquals( expectedCardPileBaseDesign.getId(), actualCardPileBaseDesign.getId() );
         assertEquals( expectedCardPileBaseDesign.getSize(), actualCardPileBaseDesign.getSize() );
+    }
+
+    /*
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createPersistenceDelegate()
+     */
+    @Override
+    protected IPersistenceDelegate createPersistenceDelegate()
+    {
+        return new CardPileBaseDesignExtensionProxyPersistenceDelegate();
     }
 
     /*

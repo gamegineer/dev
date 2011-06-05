@@ -22,6 +22,7 @@
 package org.gamegineer.table.core;
 
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
+import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
 
 /**
@@ -51,6 +52,15 @@ public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createPersistenceDelegate()
+     */
+    @Override
+    protected IPersistenceDelegate createPersistenceDelegate()
+    {
+        return new CardOrientationPersistenceDelegate();
+    }
 
     /*
      * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createSubject()

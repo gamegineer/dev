@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
+import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
 import org.gamegineer.table.core.CardSurfaceDesigns;
 
@@ -66,6 +67,15 @@ public final class CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest
         final CardSurfaceDesign actualCardSurfaceDesign = (CardSurfaceDesign)actual;
         assertEquals( expectedCardSurfaceDesign.getId(), actualCardSurfaceDesign.getId() );
         assertEquals( expectedCardSurfaceDesign.getSize(), actualCardSurfaceDesign.getSize() );
+    }
+
+    /*
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createPersistenceDelegate()
+     */
+    @Override
+    protected IPersistenceDelegate createPersistenceDelegate()
+    {
+        return new CardSurfaceDesignPersistenceDelegate();
     }
 
     /*
