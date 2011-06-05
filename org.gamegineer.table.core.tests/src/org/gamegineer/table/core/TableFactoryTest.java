@@ -23,7 +23,6 @@ package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
-import org.gamegineer.common.core.util.memento.IMemento;
 import org.junit.Test;
 
 /**
@@ -234,7 +233,7 @@ public final class TableFactoryTest
     public void testCreateCardPileFromMemento_Memento_Null()
         throws Exception
     {
-        TableFactory.createCardPile( (IMemento)null );
+        TableFactory.createCardPile( (Object)null );
     }
 
     /**

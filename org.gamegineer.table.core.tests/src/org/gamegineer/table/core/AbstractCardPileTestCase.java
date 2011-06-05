@@ -35,7 +35,6 @@ import java.util.Collections;
 import java.util.List;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.common.core.util.memento.IMemento;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -102,7 +101,7 @@ public abstract class AbstractCardPileTestCase
     /* @NonNull */
     protected abstract ICardPile createCardPile(
         /* @NonNull */
-        IMemento memento )
+        Object memento )
         throws Exception;
 
     /**
@@ -720,10 +719,10 @@ public abstract class AbstractCardPileTestCase
         throws Exception
     {
         cardPile_.addCard( Cards.createUniqueCard() );
-        final IMemento expectedMemento = cardPile_.getMemento();
+        final Object expectedMemento = cardPile_.getMemento();
 
         final ICardPile actualCardPile = createCardPile( expectedMemento );
-        final IMemento actualMemento = actualCardPile.getMemento();
+        final Object actualMemento = actualCardPile.getMemento();
 
         assertEquals( expectedMemento, actualMemento );
     }

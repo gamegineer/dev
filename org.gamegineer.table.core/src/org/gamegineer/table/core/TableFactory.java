@@ -24,7 +24,6 @@ package org.gamegineer.table.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.memento.IMemento;
 import org.gamegineer.common.core.util.memento.MalformedMementoException;
 import org.gamegineer.table.internal.core.Card;
 import org.gamegineer.table.internal.core.CardPile;
@@ -99,7 +98,7 @@ public final class TableFactory
     /* @NonNull */
     public static ICard createCard(
         /* @NonNull */
-        final IMemento memento )
+        final Object memento )
         throws MalformedMementoException
     {
         return Card.fromMemento( memento );
@@ -142,7 +141,7 @@ public final class TableFactory
     /* @NonNull */
     public static ICardPile createCardPile(
         /* @NonNull */
-        final IMemento memento )
+        final Object memento )
         throws MalformedMementoException
     {
         return CardPile.fromMemento( memento );
@@ -291,7 +290,7 @@ public final class TableFactory
     /* @NonNull */
     public static ITable createTable(
         /* @NonNull */
-        final IMemento memento )
+        final Object memento )
         throws MalformedMementoException
     {
         return Table.fromMemento( memento );

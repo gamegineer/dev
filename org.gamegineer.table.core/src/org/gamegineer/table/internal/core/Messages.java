@@ -189,6 +189,20 @@ final class Messages
     /** The extension registry service is not bound. */
     public static String CardSurfaceDesignRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
 
+    // --- MementoUtils -----------------------------------------------------
+
+    /** The required attribute is absent. */
+    public static String MementoUtils_attribute_absent;
+
+    /** The attribute value is {@code null}. */
+    public static String MementoUtils_attributeValue_null;
+
+    /** The attribute value is of the wrong type. */
+    public static String MementoUtils_attributeValue_wrongType;
+
+    /** The memento is of the wrong type. */
+    public static String MementoUtils_memento_wrongType;
+
     // --- Table ------------------------------------------------------------
 
     /** The table listener is already registered. */
@@ -348,5 +362,60 @@ final class Messages
         final String cardSurfaceDesignId )
     {
         return bind( CardSurfaceDesignRegistryExtensionPointAdapter_registerCardSurfaceDesign_parseError, cardSurfaceDesignId );
+    }
+
+    // --- MementoUtils -----------------------------------------------------
+
+    /**
+     * Gets the formatted message indicating the attribute is absent.
+     * 
+     * @param attributeName
+     *        The attribute name; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the attribute is absent;
+     *         never {@code null}.
+     */
+    /* @NonNull */
+    static String MementoUtils_attribute_absent(
+        /* @NonNull */
+        final String attributeName )
+    {
+        return bind( MementoUtils_attribute_absent, attributeName );
+    }
+
+    /**
+     * Gets the formatted message indicating the attribute value is {@code null}
+     * .
+     * 
+     * @param attributeName
+     *        The attribute name; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the attribute value is {@code
+     *         null}; never {@code null}.
+     */
+    /* @NonNull */
+    static String MementoUtils_attributeValue_null(
+        /* @NonNull */
+        final String attributeName )
+    {
+        return bind( MementoUtils_attributeValue_null, attributeName );
+    }
+
+    /**
+     * Gets the formatted message indicating the attribute value is of the wrong
+     * type.
+     * 
+     * @param attributeName
+     *        The attribute name; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the attribute value is of the
+     *         wrong type; never {@code null}.
+     */
+    /* @NonNull */
+    static String MementoUtils_attributeValue_wrongType(
+        /* @NonNull */
+        final String attributeName )
+    {
+        return bind( MementoUtils_attributeValue_wrongType, attributeName );
     }
 }

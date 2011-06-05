@@ -26,13 +26,14 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.memento.IMemento;
 import org.gamegineer.common.core.util.memento.MalformedMementoException;
-import org.gamegineer.common.core.util.memento.MementoBuilder;
 import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ICard;
@@ -211,7 +212,7 @@ public final class Card
     /* @NonNull */
     public static Card fromMemento(
         /* @NonNull */
-        final IMemento memento )
+        final Object memento )
         throws MalformedMementoException
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
@@ -225,7 +226,7 @@ public final class Card
         }
         catch( final IllegalArgumentException e )
         {
-            throw new MalformedMementoException( FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, e );
+            throw new MalformedMementoException( e );
         }
 
         final Point location = MementoUtils.getOptionalAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
@@ -289,19 +290,19 @@ public final class Card
      * @see org.gamegineer.table.core.ICard#getMemento()
      */
     @Override
-    public IMemento getMemento()
+    public Object getMemento()
     {
-        final MementoBuilder mementoBuilder = new MementoBuilder();
+        final Map<String, Object> attributes = new HashMap<String, Object>();
 
         synchronized( lock_ )
         {
-            mementoBuilder.addAttribute( BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, backDesign_ );
-            mementoBuilder.addAttribute( FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, faceDesign_ );
-            mementoBuilder.addAttribute( LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( location_ ) );
-            mementoBuilder.addAttribute( ORIENTATION_MEMENTO_ATTRIBUTE_NAME, orientation_ );
+            attributes.put( BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, backDesign_ );
+            attributes.put( FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, faceDesign_ );
+            attributes.put( LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( location_ ) );
+            attributes.put( ORIENTATION_MEMENTO_ATTRIBUTE_NAME, orientation_ );
         }
 
-        return mementoBuilder.toMemento();
+        return Collections.unmodifiableMap( attributes );
     }
 
     /*

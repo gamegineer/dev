@@ -24,8 +24,7 @@ package org.gamegineer.common.core.util.memento;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
- * A checked exception that indicates a memento is malformed because it is
- * missing or has an illegal value for one or more required attributes.
+ * A checked exception that indicates a memento is malformed.
  */
 @NotThreadSafe
 public final class MalformedMementoException
@@ -38,14 +37,6 @@ public final class MalformedMementoException
     /** Serializable class version number. */
     private static final long serialVersionUID = 8398188239737456590L;
 
-    /**
-     * The name of the attribute that caused the memento to be malformed.
-     * 
-     * @serial The name of the attribute that caused the memento to be
-     *         malformed.
-     */
-    private String attributeName_;
-
 
     // ======================================================================
     // Constructors
@@ -53,107 +44,56 @@ public final class MalformedMementoException
 
     /**
      * Initializes a new instance of the {@code MalformedMementoException} class
-     * with no attribute name, no detail message, and no cause.
+     * with no detail message and no cause.
      */
     public MalformedMementoException()
     {
-        this( null );
+        super();
     }
 
     /**
      * Initializes a new instance of the {@code MalformedMementoException} class
-     * with the specified attribute name, no detail message, and no cause.
+     * with the specified detail message and no cause.
      * 
-     * @param attributeName
-     *        The name of the attribute that caused the memento to be malformed;
-     *        may be {@code null}.
-     */
-    public MalformedMementoException(
-        /* @Nullable */
-        final String attributeName )
-    {
-        this( attributeName, null, null );
-    }
-
-    /**
-     * Initializes a new instance of the {@code MalformedMementoException} class
-     * with the specified attribute name, specified detail message, and no
-     * cause.
-     * 
-     * @param attributeName
-     *        The name of the attribute that caused the memento to be malformed;
-     *        may be {@code null}.
      * @param message
      *        The detail message; may be {@code null}.
      */
     public MalformedMementoException(
-        /* @Nullable */
-        final String attributeName,
         /* @Nullable */
         final String message )
     {
-        this( attributeName, message, null );
+        super( message );
     }
 
     /**
      * Initializes a new instance of the {@code MalformedMementoException} class
-     * with the specified attribute name, no detail message, and specified
-     * cause.
+     * with no detail message and specified cause.
      * 
-     * @param attributeName
-     *        The name of the attribute that caused the memento to be malformed;
-     *        may be {@code null}.
      * @param cause
      *        The cause; may be {@code null}.
      */
     public MalformedMementoException(
         /* @Nullable */
-        final String attributeName,
-        /* @Nullable */
         final Throwable cause )
     {
-        this( attributeName, null, cause );
+        super( cause );
     }
 
     /**
      * Initializes a new instance of the {@code MalformedMementoException} class
-     * with the specified attribute name, detail message, and cause.
+     * with the specified detail message and cause.
      * 
-     * @param attributeName
-     *        The name of the attribute that caused the memento to be malformed;
-     *        may be {@code null}.
      * @param message
      *        The detail message; may be {@code null}.
      * @param cause
      *        The cause; may be {@code null}.
      */
     public MalformedMementoException(
-        /* @Nullable */
-        final String attributeName,
         /* @Nullable */
         final String message,
         /* @Nullable */
         final Throwable cause )
     {
         super( message, cause );
-
-        attributeName_ = attributeName;
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /**
-     * Gets the name of the attribute that caused the memento to be malformed.
-     * 
-     * @return The name of the attribute that caused the memento to be
-     *         malformed; may be {@code null}.
-     */
-    /* @Nullable */
-    public String getAttributeName()
-    {
-        return attributeName_;
     }
 }

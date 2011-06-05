@@ -34,7 +34,6 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.memento.IMemento;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
@@ -337,7 +336,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
             }
 
             @Override
-            public IMemento getMemento()
+            public Object getMemento()
             {
                 return null;
             }

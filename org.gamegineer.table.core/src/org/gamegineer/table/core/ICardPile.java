@@ -25,7 +25,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
-import org.gamegineer.common.core.util.memento.IMemento;
 
 /**
  * A card pile.
@@ -190,7 +189,7 @@ public interface ICardPile
      *         {@code null}.
      */
     /* @NonNull */
-    public IMemento getMemento();
+    public Object getMemento();
 
     /**
      * Gets the size of this card pile in table coordinates.

@@ -28,7 +28,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.common.core.util.memento.IMemento;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -95,7 +94,7 @@ public abstract class AbstractCardTestCase
     /* @NonNull */
     protected abstract ICard createCard(
         /* @NonNull */
-        IMemento memento )
+        Object memento )
         throws Exception;
 
     /**
@@ -345,10 +344,10 @@ public abstract class AbstractCardTestCase
     public void testGetMemento()
         throws Exception
     {
-        final IMemento expectedMemento = card_.getMemento();
+        final Object expectedMemento = card_.getMemento();
 
         final ICard actualCard = createCard( expectedMemento );
-        final IMemento actualMemento = actualCard.getMemento();
+        final Object actualMemento = actualCard.getMemento();
 
         assertEquals( expectedMemento, actualMemento );
     }

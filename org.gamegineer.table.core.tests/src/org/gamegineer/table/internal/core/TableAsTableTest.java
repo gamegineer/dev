@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.core;
 
-import org.gamegineer.common.core.util.memento.IMemento;
 import org.gamegineer.table.core.AbstractTableTestCase;
 import org.gamegineer.table.core.ITable;
 
@@ -60,11 +59,11 @@ public final class TableAsTableTest
     }
 
     /*
-     * @see org.gamegineer.table.core.AbstractTableTestCase#createTable(org.gamegineer.common.core.util.memento.IMemento)
+     * @see org.gamegineer.table.core.AbstractTableTestCase#createTable(java.lang.Object)
      */
     @Override
     protected ITable createTable(
-        final IMemento memento )
+        final Object memento )
         throws Exception
     {
         return Table.fromMemento( memento );

@@ -26,15 +26,15 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.memento.IMemento;
 import org.gamegineer.common.core.util.memento.MalformedMementoException;
-import org.gamegineer.common.core.util.memento.MementoBuilder;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
@@ -198,7 +198,7 @@ public final class Table
     /* @NonNull */
     public static Table fromMemento(
         /* @NonNull */
-        final IMemento memento )
+        final Object memento )
         throws MalformedMementoException
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
@@ -206,10 +206,10 @@ public final class Table
         final Table table = new Table();
 
         @SuppressWarnings( "unchecked" )
-        final List<IMemento> cardPileMementos = MementoUtils.getOptionalAttribute( memento, CARD_PILES_MEMENTO_ATTRIBUTE_NAME, List.class );
+        final List<Object> cardPileMementos = MementoUtils.getOptionalAttribute( memento, CARD_PILES_MEMENTO_ATTRIBUTE_NAME, List.class );
         if( cardPileMementos != null )
         {
-            for( final IMemento cardPileMemento : cardPileMementos )
+            for( final Object cardPileMemento : cardPileMementos )
             {
                 table.addCardPile( TableFactory.createCardPile( cardPileMemento ) );
             }
@@ -257,21 +257,21 @@ public final class Table
      * @see org.gamegineer.table.core.ITable#getMemento()
      */
     @Override
-    public IMemento getMemento()
+    public Object getMemento()
     {
-        final MementoBuilder builder = new MementoBuilder();
+        final Map<String, Object> attributes = new HashMap<String, Object>();
 
         synchronized( lock_ )
         {
-            final List<IMemento> cardPileMementos = new ArrayList<IMemento>( cardPiles_.size() );
+            final List<Object> cardPileMementos = new ArrayList<Object>( cardPiles_.size() );
             for( final ICardPile cardPile : cardPiles_ )
             {
                 cardPileMementos.add( cardPile.getMemento() );
             }
-            builder.addAttribute( CARD_PILES_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardPileMementos ) );
+            attributes.put( CARD_PILES_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardPileMementos ) );
         }
 
-        return builder.toMemento();
+        return Collections.unmodifiableMap( attributes );
     }
 
     /*

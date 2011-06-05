@@ -23,9 +23,9 @@ package org.gamegineer.table.internal.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import org.gamegineer.common.core.util.memento.IMemento;
+import java.util.HashMap;
+import java.util.Map;
 import org.gamegineer.common.core.util.memento.MalformedMementoException;
-import org.gamegineer.common.core.util.memento.MementoBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,7 +56,7 @@ public final class MementoUtilsTest
     private static final String PRESENT_ATTRIBUTE_VALUE = "present-Value"; //$NON-NLS-1$
 
     /** A memento for use in the fixture. */
-    private IMemento memento_;
+    private Map<String, Object> memento_;
 
 
     // ======================================================================
@@ -86,10 +86,9 @@ public final class MementoUtilsTest
     public void setUp()
         throws Exception
     {
-        final MementoBuilder mementoBuilder = new MementoBuilder();
-        mementoBuilder.addAttribute( NULL_ATTRIBUTE_NAME, null );
-        mementoBuilder.addAttribute( PRESENT_ATTRIBUTE_NAME, PRESENT_ATTRIBUTE_VALUE );
-        memento_ = mementoBuilder.toMemento();
+        memento_ = new HashMap<String, Object>();
+        memento_.put( NULL_ATTRIBUTE_NAME, null );
+        memento_.put( PRESENT_ATTRIBUTE_NAME, PRESENT_ATTRIBUTE_VALUE );
     }
 
     /**

@@ -31,7 +31,6 @@ import java.awt.Point;
 import java.util.List;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.common.core.util.memento.IMemento;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -98,7 +97,7 @@ public abstract class AbstractTableTestCase
     /* @NonNull */
     protected abstract ITable createTable(
         /* @NonNull */
-        IMemento memento )
+        Object memento )
         throws Exception;
 
     /**
@@ -367,10 +366,10 @@ public abstract class AbstractTableTestCase
         final ICardPile cardPile = CardPiles.createUniqueCardPile();
         cardPile.addCard( Cards.createUniqueCard() );
         table_.addCardPile( cardPile );
-        final IMemento expectedMemento = table_.getMemento();
+        final Object expectedMemento = table_.getMemento();
 
         final ITable actualTable = createTable( expectedMemento );
-        final IMemento actualMemento = actualTable.getMemento();
+        final Object actualMemento = actualTable.getMemento();
 
         assertEquals( expectedMemento, actualMemento );
     }

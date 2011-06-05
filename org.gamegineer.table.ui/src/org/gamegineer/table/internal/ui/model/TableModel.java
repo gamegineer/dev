@@ -36,7 +36,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.memento.IMemento;
 import org.gamegineer.common.core.util.memento.MalformedMementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
 import org.gamegineer.table.core.ICardPile;
@@ -572,7 +571,7 @@ public final class TableModel
             final ObjectInputStream inputStream = ObjectStreams.createPlatformObjectInputStream( new FileInputStream( file ) );
             try
             {
-                final IMemento memento = (IMemento)inputStream.readObject();
+                final Object memento = inputStream.readObject();
                 return TableFactory.createTable( memento );
             }
             finally

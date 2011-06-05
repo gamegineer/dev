@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.internal.core;
 
+import java.util.Map;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.memento.IMemento;
 import org.gamegineer.common.core.util.memento.MalformedMementoException;
 
 /**
@@ -65,13 +65,13 @@ final class MementoUtils
      *         present in the memento.
      * 
      * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
-     *         If the attribute value is {@code null}, or the attribute value is
-     *         of the wrong type.
+     *         If the memento is of the wrong type, the attribute value is
+     *         {@code null}, or the attribute value is of the wrong type.
      */
     /* @Nullable */
     static <T> T getOptionalAttribute(
         /* @NonNull */
-        final IMemento memento,
+        final Object memento,
         /* @NonNull */
         final String name,
         /* @NonNull */
@@ -82,7 +82,14 @@ final class MementoUtils
         assert name != null;
         assert type != null;
 
-        if( !memento.containsAttribute( name ) )
+        if( !(memento instanceof Map<?, ?>) )
+        {
+            throw new MalformedMementoException( Messages.MementoUtils_memento_wrongType );
+        }
+
+        @SuppressWarnings( "unchecked" )
+        final Map<String, Object> attributes = (Map<String, Object>)memento;
+        if( !attributes.containsKey( name ) )
         {
             return null;
         }
@@ -90,16 +97,16 @@ final class MementoUtils
         final T value;
         try
         {
-            value = type.cast( memento.getAttribute( name ) );
+            value = type.cast( attributes.get( name ) );
         }
         catch( final ClassCastException e )
         {
-            throw new MalformedMementoException( name, e );
+            throw new MalformedMementoException( Messages.MementoUtils_attributeValue_wrongType( name ), e );
         }
 
         if( value == null )
         {
-            throw new MalformedMementoException( name );
+            throw new MalformedMementoException( Messages.MementoUtils_attributeValue_null( name ) );
         }
 
         return value;
@@ -121,14 +128,14 @@ final class MementoUtils
      * @return The attribute value; never {@code null}.
      * 
      * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
-     *         If the memento does not contain the attribute, the attribute
-     *         value is {@code null}, or the attribute value is of the wrong
-     *         type.
+     *         If the memento is of the wrong type, the memento does not contain
+     *         the attribute, the attribute value is {@code null}, or the
+     *         attribute value is of the wrong type.
      */
     /* @NonNull */
     static <T> T getRequiredAttribute(
         /* @NonNull */
-        final IMemento memento,
+        final Object memento,
         /* @NonNull */
         final String name,
         /* @NonNull */
@@ -138,7 +145,7 @@ final class MementoUtils
         final T value = getOptionalAttribute( memento, name, type );
         if( value == null )
         {
-            throw new MalformedMementoException( name );
+            throw new MalformedMementoException( Messages.MementoUtils_attribute_absent( name ) );
         }
 
         return value;

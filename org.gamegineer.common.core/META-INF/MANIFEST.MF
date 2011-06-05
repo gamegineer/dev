@@ -15,8 +15,7 @@ Export-Package: org.gamegineer.common.core.logging;version="0.7.0",
  org.gamegineer.common.core.util.concurrent;version="0.7.0",
  org.gamegineer.common.core.util.concurrent.locks;version="0.7.0",
  org.gamegineer.common.core.util.memento;version="0.7.0",
- org.gamegineer.common.core.util.ref;version="0.7.0",
- org.gamegineer.common.internal.core.util.memento;version="0.7.0";x-friends:="org.gamegineer.common.persistence"
+ org.gamegineer.common.core.util.ref;version="0.7.0"
 Import-Package: net.jcip.annotations;version="[1.0.0,2.0.0)",
  org.eclipse.osgi.framework.log;version="1.0.0",
  org.eclipse.osgi.service.debug;version="1.1.0",
