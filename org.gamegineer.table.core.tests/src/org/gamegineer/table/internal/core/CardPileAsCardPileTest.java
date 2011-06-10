@@ -58,15 +58,4 @@ public final class CardPileAsCardPileTest
     {
         return new CardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
     }
-
-    /*
-     * @see org.gamegineer.table.core.AbstractCardPileTestCase#createCardPile(java.lang.Object)
-     */
-    @Override
-    protected ICardPile createCardPile(
-        final Object memento )
-        throws Exception
-    {
-        return CardPile.fromMemento( memento );
-    }
 }

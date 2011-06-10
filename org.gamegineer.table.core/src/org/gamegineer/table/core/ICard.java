@@ -93,15 +93,6 @@ public interface ICard
     public Point getLocation();
 
     /**
-     * Gets a memento that represents the state of this card.
-     * 
-     * @return A memento that represents the state of this card; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    public Object getMemento();
-
-    /**
      * Gets the orientation of this card.
      * 
      * @return The orientation of this card; never {@code null}.

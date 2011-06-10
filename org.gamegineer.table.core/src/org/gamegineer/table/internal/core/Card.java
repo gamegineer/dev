@@ -33,6 +33,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.common.core.util.memento.MalformedMementoException;
 import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
@@ -45,7 +46,7 @@ import org.gamegineer.table.core.ICardSurfaceDesign;
  */
 @ThreadSafe
 public final class Card
-    implements ICard
+    implements ICard, IMementoOriginator
 {
     // ======================================================================
     // Fields
@@ -70,10 +71,12 @@ public final class Card
     private static final String ORIENTATION_MEMENTO_ATTRIBUTE_NAME = "orientation"; //$NON-NLS-1$
 
     /** The design on the back of the card. */
-    private final ICardSurfaceDesign backDesign_;
+    @GuardedBy( "lock_" )
+    private ICardSurfaceDesign backDesign_;
 
     /** The design on the face of the card. */
-    private final ICardSurfaceDesign faceDesign_;
+    @GuardedBy( "lock_" )
+    private ICardSurfaceDesign faceDesign_;
 
     /** The collection of card listeners. */
     private final CopyOnWriteArrayList<ICardListener> listeners_;
@@ -116,14 +119,15 @@ public final class Card
     {
         assertArgumentNotNull( backDesign, "backDesign" ); //$NON-NLS-1$
         assertArgumentNotNull( faceDesign, "faceDesign" ); //$NON-NLS-1$
-        assertArgumentLegal( faceDesign.getSize().equals( backDesign.getSize() ), "faceDesign", Messages.Card_ctor_faceDesign_sizeNotEqual ); //$NON-NLS-1$
 
         lock_ = new Object();
-        backDesign_ = backDesign;
-        faceDesign_ = faceDesign;
+        backDesign_ = null;
+        faceDesign_ = null;
         listeners_ = new CopyOnWriteArrayList<ICardListener>();
         location_ = new Point( 0, 0 );
         orientation_ = CardOrientation.FACE_UP;
+
+        setSurfaceDesigns( backDesign, faceDesign );
     }
 
 
@@ -140,6 +144,25 @@ public final class Card
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.Card_addCardListener_listener_registered ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.common.core.util.memento.IMementoOriginator#createMemento()
+     */
+    @Override
+    public Object createMemento()
+    {
+        final Map<String, Object> memento = new HashMap<String, Object>();
+
+        synchronized( lock_ )
+        {
+            memento.put( BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, backDesign_ );
+            memento.put( FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, faceDesign_ );
+            memento.put( LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( location_ ) );
+            memento.put( ORIENTATION_MEMENTO_ATTRIBUTE_NAME, orientation_ );
+        }
+
+        return Collections.unmodifiableMap( memento );
     }
 
     /**
@@ -204,18 +227,18 @@ public final class Card
      * 
      * @return A new instance of the {@code Card} class; never {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code memento} is {@code null}.
      * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
      *         If {@code memento} is malformed.
      */
     /* @NonNull */
-    public static Card fromMemento(
+    static Card fromMemento(
         /* @NonNull */
         final Object memento )
         throws MalformedMementoException
     {
-        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
+        // TODO: figure out how to merge this method with setMemento
+
+        assert memento != null;
 
         final ICardSurfaceDesign backDesign = MementoUtils.getRequiredAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
         final ICardSurfaceDesign faceDesign = MementoUtils.getRequiredAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
@@ -250,7 +273,10 @@ public final class Card
     @Override
     public ICardSurfaceDesign getBackDesign()
     {
-        return backDesign_;
+        synchronized( lock_ )
+        {
+            return backDesign_;
+        }
     }
 
     /*
@@ -271,7 +297,10 @@ public final class Card
     @Override
     public ICardSurfaceDesign getFaceDesign()
     {
-        return faceDesign_;
+        synchronized( lock_ )
+        {
+            return faceDesign_;
+        }
     }
 
     /*
@@ -284,25 +313,6 @@ public final class Card
         {
             return new Point( location_ );
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ICard#getMemento()
-     */
-    @Override
-    public Object getMemento()
-    {
-        final Map<String, Object> attributes = new HashMap<String, Object>();
-
-        synchronized( lock_ )
-        {
-            attributes.put( BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, backDesign_ );
-            attributes.put( FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, faceDesign_ );
-            attributes.put( LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( location_ ) );
-            attributes.put( ORIENTATION_MEMENTO_ATTRIBUTE_NAME, orientation_ );
-        }
-
-        return Collections.unmodifiableMap( attributes );
     }
 
     /*
@@ -323,7 +333,10 @@ public final class Card
     @Override
     public Dimension getSize()
     {
-        return backDesign_.getSize();
+        synchronized( lock_ )
+        {
+            return backDesign_.getSize();
+        }
     }
 
     /*
@@ -355,6 +368,42 @@ public final class Card
     }
 
     /*
+     * @see org.gamegineer.common.core.util.memento.IMementoOriginator#setMemento(java.lang.Object)
+     */
+    @Override
+    public void setMemento(
+        final Object memento )
+        throws MalformedMementoException
+    {
+        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
+
+        // TODO: make this method atomic
+
+        final ICardSurfaceDesign backDesign = MementoUtils.getRequiredAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
+        final ICardSurfaceDesign faceDesign = MementoUtils.getRequiredAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
+        try
+        {
+            setSurfaceDesigns( backDesign, faceDesign );
+        }
+        catch( final IllegalArgumentException e )
+        {
+            throw new MalformedMementoException( e );
+        }
+
+        final Point location = MementoUtils.getOptionalAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
+        if( location != null )
+        {
+            setLocation( location );
+        }
+
+        final CardOrientation orientation = MementoUtils.getOptionalAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, CardOrientation.class );
+        if( orientation != null )
+        {
+            setOrientation( orientation );
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.ICard#setOrientation(org.gamegineer.table.core.CardOrientation)
      */
     @Override
@@ -369,6 +418,37 @@ public final class Card
         }
 
         fireCardOrientationChanged();
+    }
+
+    /**
+     * Sets the card surface designs.
+     * 
+     * @param backDesign
+     *        The design on the back of the card; must not be {@code null}.
+     * @param faceDesign
+     *        The design on the face of the card; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code backDesign} and {@code faceDesign} do not have the same
+     *         size.
+     */
+    private void setSurfaceDesigns(
+        /* @NonNull */
+        final ICardSurfaceDesign backDesign,
+        /* @NonNull */
+        final ICardSurfaceDesign faceDesign )
+    {
+        assert backDesign != null;
+        assert faceDesign != null;
+        assertArgumentLegal( faceDesign.getSize().equals( backDesign.getSize() ), "faceDesign", Messages.Card_setSurfaceDesigns_faceDesign_sizeNotEqual ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            backDesign_ = backDesign;
+            faceDesign_ = faceDesign;
+        }
+
+        // TODO: fire event
     }
 
     /*

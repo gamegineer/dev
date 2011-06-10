@@ -183,15 +183,6 @@ public interface ICardPile
     public Point getLocation();
 
     /**
-     * Gets a memento that represents the state of this card pile.
-     * 
-     * @return A memento that represents the state of this card pile; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    public Object getMemento();
-
-    /**
      * Gets the size of this card pile in table coordinates.
      * 
      * @return The size of this card pile in table coordinates; never {@code

@@ -58,15 +58,4 @@ public final class CardAsCardTest
     {
         return new Card( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
     }
-
-    /*
-     * @see org.gamegineer.table.core.AbstractCardTestCase#createCard(java.lang.Object)
-     */
-    @Override
-    protected ICard createCard(
-        final Object memento )
-        throws Exception
-    {
-        return Card.fromMemento( memento );
-    }
 }

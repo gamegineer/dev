@@ -36,6 +36,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.common.core.util.memento.MalformedMementoException;
 import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
@@ -44,14 +45,13 @@ import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.core.ICardPileListener;
-import org.gamegineer.table.core.TableFactory;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ICardPile}.
  */
 @ThreadSafe
 public final class CardPile
-    implements ICardPile
+    implements ICardPile, IMementoOriginator
 {
     // ======================================================================
     // Fields
@@ -90,7 +90,8 @@ public final class CardPile
     private static final Dimension STACK_LEVEL_OFFSET = new Dimension( 2, 1 );
 
     /** The design of the card pile base. */
-    private final ICardPileBaseDesign baseDesign_;
+    @GuardedBy( "lock_" )
+    private ICardPileBaseDesign baseDesign_;
 
     /** The location of the card pile base in table coordinates. */
     @GuardedBy( "lock_" )
@@ -210,6 +211,39 @@ public final class CardPile
         }
     }
 
+    /*
+     * @see org.gamegineer.common.core.util.memento.IMementoOriginator#createMemento()
+     */
+    @Override
+    public Object createMemento()
+    {
+        final Map<String, Object> memento = new HashMap<String, Object>();
+
+        synchronized( lock_ )
+        {
+            memento.put( BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, baseDesign_ );
+            memento.put( BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( baseLocation_ ) );
+            memento.put( LAYOUT_MEMENTO_ATTRIBUTE_NAME, layout_ );
+
+            final List<Object> cardMementos = new ArrayList<Object>( cards_.size() );
+            for( final ICard card : cards_ )
+            {
+                if( card instanceof IMementoOriginator )
+                {
+                    cardMementos.add( ((IMementoOriginator)card).createMemento() );
+                }
+                else
+                {
+                    // TODO: should createMemento throw a checked exception instead?
+                    Loggers.getDefaultLogger().warning( Messages.CardPile_createMemento_cardNotMementoOriginator( card.getClass() ) );
+                }
+            }
+            memento.put( CARDS_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardMementos ) );
+        }
+
+        return Collections.unmodifiableMap( memento );
+    }
+
     /**
      * Fires a card added event.
      * 
@@ -291,18 +325,18 @@ public final class CardPile
      * 
      * @return A new instance of the {@code CardPile} class; never {@code null}.
      * 
-     * @throws java.lang.NullPointerException
-     *         If {@code memento} is {@code null}.
      * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
      *         If {@code memento} is malformed.
      */
     /* @NonNull */
-    public static CardPile fromMemento(
+    static CardPile fromMemento(
         /* @NonNull */
         final Object memento )
         throws MalformedMementoException
     {
-        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
+        // TODO: figure out how to merge this method with setMemento
+
+        assert memento != null;
 
         final ICardPileBaseDesign baseDesign = MementoUtils.getRequiredAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardPileBaseDesign.class );
         final CardPile cardPile = new CardPile( baseDesign );
@@ -325,7 +359,7 @@ public final class CardPile
         {
             for( final Object cardMemento : cardMementos )
             {
-                cardPile.addCard( TableFactory.createCard( cardMemento ) );
+                cardPile.addCard( Card.fromMemento( cardMemento ) );
             }
         }
 
@@ -338,7 +372,10 @@ public final class CardPile
     @Override
     public ICardPileBaseDesign getBaseDesign()
     {
-        return baseDesign_;
+        synchronized( lock_ )
+        {
+            return baseDesign_;
+        }
     }
 
     /*
@@ -502,31 +539,6 @@ public final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#getMemento()
-     */
-    @Override
-    public Object getMemento()
-    {
-        final Map<String, Object> attributes = new HashMap<String, Object>();
-
-        synchronized( lock_ )
-        {
-            attributes.put( BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, baseDesign_ );
-            attributes.put( BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( baseLocation_ ) );
-            attributes.put( LAYOUT_MEMENTO_ATTRIBUTE_NAME, layout_ );
-
-            final List<Object> cardMementos = new ArrayList<Object>( cards_.size() );
-            for( final ICard card : cards_ )
-            {
-                cardMementos.add( card.getMemento() );
-            }
-            attributes.put( CARDS_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardMementos ) );
-        }
-
-        return Collections.unmodifiableMap( attributes );
-    }
-
-    /*
      * @see org.gamegineer.table.core.ICardPile#getSize()
      */
     @Override
@@ -643,6 +655,26 @@ public final class CardPile
         return removedCards;
     }
 
+    /**
+     * Sets the design of the card pile base.
+     * 
+     * @param baseDesign
+     *        The design of the card pile base; must not be {@code null}.
+     */
+    private void setBaseDesign(
+        /* @NonNull */
+        final ICardPileBaseDesign baseDesign )
+    {
+        assert baseDesign != null;
+
+        synchronized( lock_ )
+        {
+            baseDesign_ = baseDesign;
+        }
+
+        // TODO: fire event
+    }
+
     /*
      * @see org.gamegineer.table.core.ICardPile#setBaseLocation(java.awt.Point)
      */
@@ -725,6 +757,45 @@ public final class CardPile
             }
         };
         translateBaseLocation( translationOffsetStrategy );
+    }
+
+    /*
+     * @see org.gamegineer.common.core.util.memento.IMementoOriginator#setMemento(java.lang.Object)
+     */
+    @Override
+    public void setMemento(
+        final Object memento )
+        throws MalformedMementoException
+    {
+        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
+
+        // TODO: make this method atomic
+
+        final ICardPileBaseDesign baseDesign = MementoUtils.getRequiredAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardPileBaseDesign.class );
+        setBaseDesign( baseDesign );
+
+        final Point location = MementoUtils.getOptionalAttribute( memento, BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
+        if( location != null )
+        {
+            setLocation( location );
+        }
+
+        final CardPileLayout layout = MementoUtils.getOptionalAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, CardPileLayout.class );
+        if( layout != null )
+        {
+            setLayout( layout );
+        }
+
+        removeCards();
+        @SuppressWarnings( "unchecked" )
+        final List<Object> cardMementos = MementoUtils.getOptionalAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
+        if( cardMementos != null )
+        {
+            for( final Object cardMemento : cardMementos )
+            {
+                addCard( Card.fromMemento( cardMemento ) );
+            }
+        }
     }
 
     /*

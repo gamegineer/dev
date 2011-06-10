@@ -36,6 +36,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.common.core.util.memento.MalformedMementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
 import org.gamegineer.table.core.ICardPile;
@@ -263,6 +264,34 @@ public final class TableModel
         cardPileModels_.put( cardPile, cardPileModel );
         cardPileModel.addCardPileModelListener( this );
         return cardPileModel;
+    }
+
+    /**
+     * Creates a memento from the specified table.
+     * 
+     * @param table
+     *        The table from which the memento is created; must not be {@code
+     *        null}.
+     * 
+     * @return The table memento; never {@code null}.
+     * 
+     * @throws org.gamegineer.table.internal.ui.model.ModelException
+     *         If an error occurs while creating the memento.
+     */
+    /* @NonNull */
+    private static Object createTableMemento(
+        /* @NonNull */
+        final ITable table )
+        throws ModelException
+    {
+        assert table != null;
+
+        if( !(table instanceof IMementoOriginator) )
+        {
+            throw new ModelException( Messages.TableModel_createTableMemento_tableNotMementoOriginator( table.getClass() ) );
+        }
+
+        return ((IMementoOriginator)table).createMemento();
     }
 
     /**
@@ -519,16 +548,7 @@ public final class TableModel
     {
         assertArgumentNotNull( file, "file" ); //$NON-NLS-1$
 
-        final ITable table = readTable( file );
-
-        // NB: Consider encapsulating this logic because, as the table gets more and
-        // more complex, this code could get unwieldy.
-        table_.removeAllCardPiles();
-        for( final ICardPile cardPile : table.getCardPiles() )
-        {
-            table.removeCardPile( cardPile );
-            table_.addCardPile( cardPile );
-        }
+        setTableMemento( table_, file );
     }
 
     /**
@@ -566,13 +586,38 @@ public final class TableModel
     {
         assert file != null;
 
+        final ITable table = TableFactory.createTable();
+        setTableMemento( table, file );
+        return table;
+    }
+
+    /**
+     * Reads a table memento from the specified file.
+     * 
+     * @param file
+     *        The file from which the table memento will be read; must not be
+     *        {@code null}.
+     * 
+     * @return The table memento that was read from the specified file; never
+     *         {@code null}.
+     * 
+     * @throws org.gamegineer.table.internal.ui.model.ModelException
+     *         If an error occurs while reading the file.
+     */
+    /* @NonNull */
+    private static Object readTableMemento(
+        /* @NonNull */
+        final File file )
+        throws ModelException
+    {
+        assert file != null;
+
         try
         {
             final ObjectInputStream inputStream = ObjectStreams.createPlatformObjectInputStream( new FileInputStream( file ) );
             try
             {
-                final Object memento = inputStream.readObject();
-                return TableFactory.createTable( memento );
+                return inputStream.readObject();
             }
             finally
             {
@@ -581,15 +626,11 @@ public final class TableModel
         }
         catch( final ClassNotFoundException e )
         {
-            throw new ModelException( Messages.TableModel_readTable_error( file ), e );
+            throw new ModelException( Messages.TableModel_readTableMemento_error( file ), e );
         }
         catch( final IOException e )
         {
-            throw new ModelException( Messages.TableModel_readTable_error( file ), e );
-        }
-        catch( final MalformedMementoException e )
-        {
-            throw new ModelException( Messages.TableModel_readTable_error( file ), e );
+            throw new ModelException( Messages.TableModel_readTableMemento_error( file ), e );
         }
     }
 
@@ -734,6 +775,44 @@ public final class TableModel
         fireTableModelStateChanged();
     }
 
+    /**
+     * Reads a table memento from the specified file and uses it to set the
+     * state of the specified table.
+     * 
+     * @param table
+     *        The table that will receive the memento; must not be {@code null}.
+     * @param file
+     *        The file from which the table memento will be read; must not be
+     *        {@code null}.
+     * 
+     * @throws org.gamegineer.table.internal.ui.model.ModelException
+     *         If an error occurs while reading the file or setting the memento.
+     */
+    private static void setTableMemento(
+        /* @NonNull */
+        final ITable table,
+        /* @NonNull */
+        final File file )
+        throws ModelException
+    {
+        assert table != null;
+        assert file != null;
+
+        if( !(table instanceof IMementoOriginator) )
+        {
+            throw new ModelException( Messages.TableModel_setTableMemento_tableNotMementoOriginator( table.getClass() ) );
+        }
+
+        try
+        {
+            ((IMementoOriginator)table).setMemento( readTableMemento( file ) );
+        }
+        catch( final MalformedMementoException e )
+        {
+            throw new ModelException( Messages.TableModel_setTableMemento_error, e );
+        }
+    }
+
     /*
      * @see org.gamegineer.table.net.ITableNetworkListener#tableNetworkConnected(org.gamegineer.table.net.TableNetworkEvent)
      */
@@ -792,12 +871,37 @@ public final class TableModel
         assert file != null;
         assert table != null;
 
+        writeTableMemento( file, createTableMemento( table ) );
+    }
+
+    /**
+     * Writes the specified table memento to the specified file.
+     * 
+     * @param file
+     *        The file to which the table memento will be written; must not be
+     *        {@code null}.
+     * @param memento
+     *        The table memento to be written; must not be {@code null}.
+     * 
+     * @throws org.gamegineer.table.internal.ui.model.ModelException
+     *         If an error occurs while writing the file.
+     */
+    private static void writeTableMemento(
+        /* @NonNull */
+        final File file,
+        /* @NonNull */
+        final Object memento )
+        throws ModelException
+    {
+        assert file != null;
+        assert memento != null;
+
         try
         {
             final ObjectOutputStream outputStream = ObjectStreams.createPlatformObjectOutputStream( new FileOutputStream( file ) );
             try
             {
-                outputStream.writeObject( table.getMemento() );
+                outputStream.writeObject( memento );
             }
             finally
             {
@@ -806,7 +910,7 @@ public final class TableModel
         }
         catch( final IOException e )
         {
-            throw new ModelException( Messages.TableModel_writeTable_error( file ), e );
+            throw new ModelException( Messages.TableModel_writeTableMemento_error( file ), e );
         }
     }
 }

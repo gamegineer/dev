@@ -1,6 +1,6 @@
 /*
  * CardPileTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -54,19 +54,5 @@ public final class CardPileTest
     public void testConstructor_BaseDesign_Null()
     {
         new CardPile( null );
-    }
-
-    /**
-     * Ensures the {@code fromMemento} method throws an exception when passed a
-     * {@code null} memento.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testFromMemento_Memento_Null()
-        throws Exception
-    {
-        CardPile.fromMemento( null );
     }
 }

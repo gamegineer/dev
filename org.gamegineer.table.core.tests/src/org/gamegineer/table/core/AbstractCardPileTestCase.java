@@ -86,25 +86,6 @@ public abstract class AbstractCardPileTestCase
         throws Exception;
 
     /**
-     * Creates a new card pile from the specified memento.
-     * 
-     * @param memento
-     *        The memento; must not be {@code null}.
-     * 
-     * @return A new card pile; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     * @throws java.lang.NullPointerException
-     *         If {@code memento} is {@code null}.
-     */
-    /* @NonNull */
-    protected abstract ICardPile createCardPile(
-        /* @NonNull */
-        Object memento )
-        throws Exception;
-
-    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -706,34 +687,6 @@ public abstract class AbstractCardPileTestCase
         final Point actualLocation = cardPile_.getLocation();
 
         assertEquals( expectedLocation, actualLocation );
-    }
-
-    /**
-     * Ensures the {@code getMemento} method returns a well-formed memento.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testGetMemento()
-        throws Exception
-    {
-        cardPile_.addCard( Cards.createUniqueCard() );
-        final Object expectedMemento = cardPile_.getMemento();
-
-        final ICardPile actualCardPile = createCardPile( expectedMemento );
-        final Object actualMemento = actualCardPile.getMemento();
-
-        assertEquals( expectedMemento, actualMemento );
-    }
-
-    /**
-     * Ensures the {@code getMemento} method does not return {@code null}.
-     */
-    @Test
-    public void testGetMemento_ReturnValue_NonNull()
-    {
-        assertNotNull( cardPile_.getMemento() );
     }
 
     /**

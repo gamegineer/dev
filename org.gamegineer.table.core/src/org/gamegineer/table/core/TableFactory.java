@@ -24,7 +24,6 @@ package org.gamegineer.table.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.memento.MalformedMementoException;
 import org.gamegineer.table.internal.core.Card;
 import org.gamegineer.table.internal.core.CardPile;
 import org.gamegineer.table.internal.core.CardPileBaseDesign;
@@ -81,30 +80,6 @@ public final class TableFactory
     }
 
     /**
-     * Creates a new card whose state is initialized using the specified
-     * memento.
-     * 
-     * @param memento
-     *        The memento representing the initial card state; must not be
-     *        {@code null}.
-     * 
-     * @return A new card; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code memento} is {@code null}.
-     * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
-     *         If {@code memento} is malformed.
-     */
-    /* @NonNull */
-    public static ICard createCard(
-        /* @NonNull */
-        final Object memento )
-        throws MalformedMementoException
-    {
-        return Card.fromMemento( memento );
-    }
-
-    /**
      * Creates a new card pile.
      * 
      * @param baseDesign
@@ -121,30 +96,6 @@ public final class TableFactory
         final ICardPileBaseDesign baseDesign )
     {
         return new CardPile( baseDesign );
-    }
-
-    /**
-     * Creates a new card pile whose state is initialized using the specified
-     * memento.
-     * 
-     * @param memento
-     *        The memento representing the initial card pile state; must not be
-     *        {@code null}.
-     * 
-     * @return A new card pile; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code memento} is {@code null}.
-     * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
-     *         If {@code memento} is malformed.
-     */
-    /* @NonNull */
-    public static ICardPile createCardPile(
-        /* @NonNull */
-        final Object memento )
-        throws MalformedMementoException
-    {
-        return CardPile.fromMemento( memento );
     }
 
     /**
@@ -270,29 +221,5 @@ public final class TableFactory
     public static ITable createTable()
     {
         return new Table();
-    }
-
-    /**
-     * Creates a new table whose state is initialized using the specified
-     * memento.
-     * 
-     * @param memento
-     *        The memento representing the initial table state; must not be
-     *        {@code null}.
-     * 
-     * @return A new table; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code memento} is {@code null}.
-     * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
-     *         If {@code memento} is malformed.
-     */
-    /* @NonNull */
-    public static ITable createTable(
-        /* @NonNull */
-        final Object memento )
-        throws MalformedMementoException
-    {
-        return Table.fromMemento( memento );
     }
 }

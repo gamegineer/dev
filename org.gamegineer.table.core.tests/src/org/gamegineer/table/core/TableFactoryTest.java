@@ -95,20 +95,6 @@ public final class TableFactoryTest
     }
 
     /**
-     * Ensures the {@code createCard(IMemento)} method throws an exception when
-     * passed a {@code null} memento.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateCardFromMemento_Memento_Null()
-        throws Exception
-    {
-        TableFactory.createCard( null );
-    }
-
-    /**
      * Ensures the {@code createCardPileBaseDesign(CardPileBaseDesignId,
      * Dimension)} method throws an exception when passed a negative height.
      */
@@ -223,20 +209,6 @@ public final class TableFactoryTest
     }
 
     /**
-     * Ensures the {@code createCardPile(IMemento)} method throws an exception
-     * when passed a {@code null} memento.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateCardPileFromMemento_Memento_Null()
-        throws Exception
-    {
-        TableFactory.createCardPile( (Object)null );
-    }
-
-    /**
      * Ensures the {@code createCardSurfaceDesign(CardSurfaceDesignId,
      * Dimension)} method throws an exception when passed a negative height.
      */
@@ -335,19 +307,5 @@ public final class TableFactoryTest
     public void testCreateTable_ReturnValue_NonNull()
     {
         assertNotNull( TableFactory.createTable() );
-    }
-
-    /**
-     * Ensures the {@code createTable(IMemento)} method throws an exception when
-     * passed a {@code null} memento.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateTableFromMemento_Memento_Null()
-        throws Exception
-    {
-        TableFactory.createTable( null );
     }
 }

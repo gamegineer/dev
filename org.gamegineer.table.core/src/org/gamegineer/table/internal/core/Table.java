@@ -34,19 +34,19 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.common.core.util.memento.MalformedMementoException;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
-import org.gamegineer.table.core.TableFactory;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ITable}.
  */
 @ThreadSafe
 public final class Table
-    implements ITable
+    implements ITable, IMementoOriginator
 {
     // ======================================================================
     // Fields
@@ -128,6 +128,35 @@ public final class Table
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.Table_addTableListener_listener_registered ); //$NON-NLS-1$
     }
 
+    /*
+     * @see org.gamegineer.common.core.util.memento.IMementoOriginator#createMemento()
+     */
+    @Override
+    public Object createMemento()
+    {
+        final Map<String, Object> memento = new HashMap<String, Object>();
+
+        synchronized( lock_ )
+        {
+            final List<Object> cardPileMementos = new ArrayList<Object>( cardPiles_.size() );
+            for( final ICardPile cardPile : cardPiles_ )
+            {
+                if( cardPile instanceof IMementoOriginator )
+                {
+                    cardPileMementos.add( ((IMementoOriginator)cardPile).createMemento() );
+                }
+                else
+                {
+                    // TODO: should createMemento throw a checked exception instead?
+                    Loggers.getDefaultLogger().warning( Messages.Table_createMemento_cardPileNotMementoOriginator( cardPile.getClass() ) );
+                }
+            }
+            memento.put( CARD_PILES_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardPileMementos ) );
+        }
+
+        return Collections.unmodifiableMap( memento );
+    }
+
     /**
      * Fires a card pile added event.
      * 
@@ -180,44 +209,6 @@ public final class Table
         }
     }
 
-    /**
-     * Creates a new instance of the {@code Table} class from the specified
-     * memento.
-     * 
-     * @param memento
-     *        The memento representing the initial table state; must not be
-     *        {@code null}.
-     * 
-     * @return A new instance of the {@code Table} class; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code memento} is {@code null}.
-     * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
-     *         If {@code memento} is malformed.
-     */
-    /* @NonNull */
-    public static Table fromMemento(
-        /* @NonNull */
-        final Object memento )
-        throws MalformedMementoException
-    {
-        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
-
-        final Table table = new Table();
-
-        @SuppressWarnings( "unchecked" )
-        final List<Object> cardPileMementos = MementoUtils.getOptionalAttribute( memento, CARD_PILES_MEMENTO_ATTRIBUTE_NAME, List.class );
-        if( cardPileMementos != null )
-        {
-            for( final Object cardPileMemento : cardPileMementos )
-            {
-                table.addCardPile( TableFactory.createCardPile( cardPileMemento ) );
-            }
-        }
-
-        return table;
-    }
-
     /*
      * @see org.gamegineer.table.core.ITable#getCardPile(java.awt.Point)
      */
@@ -251,27 +242,6 @@ public final class Table
         {
             return new ArrayList<ICardPile>( cardPiles_ );
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITable#getMemento()
-     */
-    @Override
-    public Object getMemento()
-    {
-        final Map<String, Object> attributes = new HashMap<String, Object>();
-
-        synchronized( lock_ )
-        {
-            final List<Object> cardPileMementos = new ArrayList<Object>( cardPiles_.size() );
-            for( final ICardPile cardPile : cardPiles_ )
-            {
-                cardPileMementos.add( cardPile.getMemento() );
-            }
-            attributes.put( CARD_PILES_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardPileMementos ) );
-        }
-
-        return Collections.unmodifiableMap( attributes );
     }
 
     /*
@@ -323,5 +293,29 @@ public final class Table
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.Table_removeTableListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.common.core.util.memento.IMementoOriginator#setMemento(java.lang.Object)
+     */
+    @Override
+    public void setMemento(
+        final Object memento )
+        throws MalformedMementoException
+    {
+        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
+
+        // TODO: make this method atomic
+
+        removeAllCardPiles();
+        @SuppressWarnings( "unchecked" )
+        final List<Object> cardPileMementos = MementoUtils.getOptionalAttribute( memento, CARD_PILES_MEMENTO_ATTRIBUTE_NAME, List.class );
+        if( cardPileMementos != null )
+        {
+            for( final Object cardPileMemento : cardPileMementos )
+            {
+                addCardPile( CardPile.fromMemento( cardPileMemento ) );
+            }
+        }
     }
 }

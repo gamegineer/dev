@@ -336,12 +336,6 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
             }
 
             @Override
-            public Object getMemento()
-            {
-                return null;
-            }
-
-            @Override
             public void removeAllCardPiles()
             {
                 // do nothing

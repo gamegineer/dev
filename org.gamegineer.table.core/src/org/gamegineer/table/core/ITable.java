@@ -109,15 +109,6 @@ public interface ITable
     public List<ICardPile> getCardPiles();
 
     /**
-     * Gets a memento that represents the state of this table.
-     * 
-     * @return A memento that represents the state of this table; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    public Object getMemento();
-
-    /**
      * Removes all card piles from this table.
      */
     public void removeAllCardPiles();

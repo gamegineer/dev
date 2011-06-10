@@ -57,15 +57,4 @@ public final class TableAsTableTest
     {
         return new Table();
     }
-
-    /*
-     * @see org.gamegineer.table.core.AbstractTableTestCase#createTable(java.lang.Object)
-     */
-    @Override
-    protected ITable createTable(
-        final Object memento )
-        throws Exception
-    {
-        return Table.fromMemento( memento );
-    }
 }

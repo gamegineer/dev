@@ -54,11 +54,11 @@ final class Messages
      */
     public static String Card_cardOrientationChanged_unexpectedException;
 
-    /** The face design size is not equal to the back design size. */
-    public static String Card_ctor_faceDesign_sizeNotEqual;
-
     /** The card listener is not registered. */
     public static String Card_removeCardListener_listener_notRegistered;
+
+    /** The face design size is not equal to the back design size. */
+    public static String Card_setSurfaceDesigns_faceDesign_sizeNotEqual;
 
     // --- CardPile ---------------------------------------------------------
 
@@ -79,6 +79,9 @@ final class Messages
 
     /** An unexpected exception was thrown from ICardPileListener.cardRemoved(). */
     public static String CardPile_cardRemoved_unexpectedException;
+
+    /** The card is not a memento originator. */
+    public static String CardPile_createMemento_cardNotMementoOriginator;
 
     /** An unknown layout is active. */
     public static String CardPile_getCardOffsetAt_unknownLayout;
@@ -216,6 +219,9 @@ final class Messages
      */
     public static String Table_cardPileRemoved_unexpectedException;
 
+    /** The card pile is not a memento originator. */
+    public static String Table_createMemento_cardPileNotMementoOriginator;
+
     /** The table listener is not registered. */
     public static String Table_removeTableListener_listener_notRegistered;
 
@@ -244,6 +250,26 @@ final class Messages
     // ======================================================================
     // Methods
     // ======================================================================
+
+    // --- CardPile ---------------------------------------------------------
+
+    /**
+     * Gets the formatted message indicating the card is not a memento
+     * originator.
+     * 
+     * @param type
+     *        The card type; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the card is not a memento
+     *         originator; never {@code null}.
+     */
+    /* @NonNull */
+    static String CardPile_createMemento_cardNotMementoOriginator(
+        /* @NonNull */
+        final Class<?> type )
+    {
+        return bind( CardPile_createMemento_cardNotMementoOriginator, type.getName() );
+    }
 
     // --- CardPileBaseDesignRegistry ---------------------------------------
 
@@ -372,8 +398,8 @@ final class Messages
      * @param attributeName
      *        The attribute name; must not be {@code null}.
      * 
-     * @return The formatted message indicating the attribute is absent;
-     *         never {@code null}.
+     * @return The formatted message indicating the attribute is absent; never
+     *         {@code null}.
      */
     /* @NonNull */
     static String MementoUtils_attribute_absent(
@@ -417,5 +443,25 @@ final class Messages
         final String attributeName )
     {
         return bind( MementoUtils_attributeValue_wrongType, attributeName );
+    }
+
+    // --- Table ------------------------------------------------------------
+
+    /**
+     * Gets the formatted message indicating the card pile is not a memento
+     * originator.
+     * 
+     * @param type
+     *        The card pile type; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the card pile is not a memento
+     *         originator; never {@code null}.
+     */
+    /* @NonNull */
+    static String Table_createMemento_cardPileNotMementoOriginator(
+        /* @NonNull */
+        final Class<?> type )
+    {
+        return bind( Table_createMemento_cardPileNotMementoOriginator, type.getName() );
     }
 }

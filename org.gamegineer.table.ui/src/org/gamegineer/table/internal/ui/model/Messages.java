@@ -1,6 +1,6 @@
 /*
  * Messages.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -119,14 +119,23 @@ final class Messages
      */
     public static String TableModel_cardPileFocusChanged_unexpectedException;
 
+    /** The table is not a memento originator. */
+    public static String TableModel_createTableMemento_tableNotMementoOriginator;
+
     /** The card pile is not present in the table. */
     public static String TableModel_getCardPileModel_cardPile_absent;
 
-    /** An error occurred while reading the table. */
-    public static String TableModel_readTable_error;
+    /** An error occurred while reading the table memento. */
+    public static String TableModel_readTableMemento_error;
 
     /** The table model listener is not registered. */
     public static String TableModel_removeTableModelListener_listener_notRegistered;
+
+    /** An error occurred while setting the table memento. */
+    public static String TableModel_setTableMemento_error;
+
+    /** The table is not a memento originator. */
+    public static String TableModel_setTableMemento_tableNotMementoOriginator;
 
     /**
      * An unexpected exception was thrown from
@@ -152,8 +161,8 @@ final class Messages
      */
     public static String TableModel_tableOriginOffsetChanged_unexpectedException;
 
-    /** An error occurred while writing the table. */
-    public static String TableModel_writeTable_error;
+    /** An error occurred while writing the table memento. */
+    public static String TableModel_writeTableMemento_error;
 
 
     // ======================================================================
@@ -184,38 +193,76 @@ final class Messages
     // --- TableModel -------------------------------------------------------
 
     /**
-     * Gets the formatted message indicating an error occurred while reading the
-     * table.
+     * Gets the formatted message indicating the table is not a memento
+     * originator.
      * 
-     * @param file
-     *        The file from which the table is read; must not be {@code null}.
+     * @param type
+     *        The table type; must not be {@code null}.
      * 
-     * @return The formatted message indicating an error occurred while reading
-     *         the table; never {@code null}.
+     * @return The formatted message indicating the table is not a memento
+     *         originator; never {@code null}.
      */
     /* @NonNull */
-    static String TableModel_readTable_error(
+    static String TableModel_createTableMemento_tableNotMementoOriginator(
+        /* @NonNull */
+        final Class<?> type )
+    {
+        return bind( TableModel_createTableMemento_tableNotMementoOriginator, type.getName() );
+    }
+
+    /**
+     * Gets the formatted message indicating an error occurred while reading the
+     * table memento.
+     * 
+     * @param file
+     *        The file from which the table memento is read; must not be {@code
+     *        null}.
+     * 
+     * @return The formatted message indicating an error occurred while reading
+     *         the table memento; never {@code null}.
+     */
+    /* @NonNull */
+    static String TableModel_readTableMemento_error(
         /* @NonNull */
         final File file )
     {
-        return bind( TableModel_readTable_error, file.getAbsolutePath() );
+        return bind( TableModel_readTableMemento_error, file.getAbsolutePath() );
+    }
+
+    /**
+     * Gets the formatted message indicating the table is not a memento
+     * originator.
+     * 
+     * @param type
+     *        The table type; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the table is not a memento
+     *         originator; never {@code null}.
+     */
+    /* @NonNull */
+    static String TableModel_setTableMemento_tableNotMementoOriginator(
+        /* @NonNull */
+        final Class<?> type )
+    {
+        return bind( TableModel_setTableMemento_tableNotMementoOriginator, type.getName() );
     }
 
     /**
      * Gets the formatted message indicating an error occurred while writing the
-     * table.
+     * table memento.
      * 
      * @param file
-     *        The file to which the table is written; must not be {@code null}.
+     *        The file to which the table memento is written; must not be
+     *        {@code null}.
      * 
      * @return The formatted message indicating an error occurred while writing
-     *         the table; never {@code null}.
+     *         the table memento; never {@code null}.
      */
     /* @NonNull */
-    static String TableModel_writeTable_error(
+    static String TableModel_writeTableMemento_error(
         /* @NonNull */
         final File file )
     {
-        return bind( TableModel_writeTable_error, file.getAbsolutePath() );
+        return bind( TableModel_writeTableMemento_error, file.getAbsolutePath() );
     }
 }

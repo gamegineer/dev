@@ -79,25 +79,6 @@ public abstract class AbstractCardTestCase
         throws Exception;
 
     /**
-     * Creates a new card from the specified memento.
-     * 
-     * @param memento
-     *        The memento; must not be {@code null}.
-     * 
-     * @return A new card; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     * @throws java.lang.NullPointerException
-     *         If {@code memento} is {@code null}.
-     */
-    /* @NonNull */
-    protected abstract ICard createCard(
-        /* @NonNull */
-        Object memento )
-        throws Exception;
-
-    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -332,33 +313,6 @@ public abstract class AbstractCardTestCase
         final Point actualLocation = card_.getLocation();
 
         assertEquals( expectedLocation, actualLocation );
-    }
-
-    /**
-     * Ensures the {@code getMemento} method returns a well-formed memento.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testGetMemento()
-        throws Exception
-    {
-        final Object expectedMemento = card_.getMemento();
-
-        final ICard actualCard = createCard( expectedMemento );
-        final Object actualMemento = actualCard.getMemento();
-
-        assertEquals( expectedMemento, actualMemento );
-    }
-
-    /**
-     * Ensures the {@code getMemento} method does not return {@code null}.
-     */
-    @Test
-    public void testGetMemento_ReturnValue_NonNull()
-    {
-        assertNotNull( card_.getMemento() );
     }
 
     /**

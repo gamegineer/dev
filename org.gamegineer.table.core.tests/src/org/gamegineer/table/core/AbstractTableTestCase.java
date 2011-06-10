@@ -82,25 +82,6 @@ public abstract class AbstractTableTestCase
         throws Exception;
 
     /**
-     * Creates a new table from the specified memento.
-     * 
-     * @param memento
-     *        The memento; must not be {@code null}.
-     * 
-     * @return A new table; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     * @throws java.lang.NullPointerException
-     *         If {@code memento} is {@code null}.
-     */
-    /* @NonNull */
-    protected abstract ITable createTable(
-        /* @NonNull */
-        Object memento )
-        throws Exception;
-
-    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -351,36 +332,6 @@ public abstract class AbstractTableTestCase
     public void testGetCardPiles_ReturnValue_NonNull()
     {
         assertNotNull( table_.getCardPiles() );
-    }
-
-    /**
-     * Ensures the {@code getMemento} method returns a well-formed memento.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testGetMemento()
-        throws Exception
-    {
-        final ICardPile cardPile = CardPiles.createUniqueCardPile();
-        cardPile.addCard( Cards.createUniqueCard() );
-        table_.addCardPile( cardPile );
-        final Object expectedMemento = table_.getMemento();
-
-        final ITable actualTable = createTable( expectedMemento );
-        final Object actualMemento = actualTable.getMemento();
-
-        assertEquals( expectedMemento, actualMemento );
-    }
-
-    /**
-     * Ensures the {@code getMemento} method does not return {@code null}.
-     */
-    @Test
-    public void testGetMemento_ReturnValue_NonNull()
-    {
-        assertNotNull( table_.getMemento() );
     }
 
     /**
