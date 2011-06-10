@@ -279,6 +279,25 @@ public final class CardPile
     }
 
     /**
+     * Fires a card pile base design changed event.
+     */
+    private void fireCardPileBaseDesignChanged()
+    {
+        final CardPileEvent event = new CardPileEvent( this );
+        for( final ICardPileListener listener : listeners_ )
+        {
+            try
+            {
+                listener.cardPileBaseDesignChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPile_cardPileBaseDesignChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
      * Fires a card pile bounds changed event.
      */
     private void fireCardPileBoundsChanged()
@@ -638,17 +657,11 @@ public final class CardPile
         return removedCards;
     }
 
-    /**
-     * Sets the design of the card pile base.
-     * 
-     * @param baseDesign
-     *        The design of the card pile base; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code baseDesign} is {@code null}.
+    /*
+     * @see org.gamegineer.table.core.ICardPile#setBaseDesign(org.gamegineer.table.core.ICardPileBaseDesign)
      */
-    private void setBaseDesign(
-        /* @NonNull */
+    @Override
+    public void setBaseDesign(
         final ICardPileBaseDesign baseDesign )
     {
         assertArgumentNotNull( baseDesign, "baseDesign" ); //$NON-NLS-1$
@@ -658,7 +671,7 @@ public final class CardPile
             baseDesign_ = baseDesign;
         }
 
-        // TODO: fire event
+        fireCardPileBaseDesignChanged();
     }
 
     /*

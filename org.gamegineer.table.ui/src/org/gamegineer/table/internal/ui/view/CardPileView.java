@@ -145,6 +145,36 @@ final class CardPileView
     }
 
     /*
+     * @see org.gamegineer.table.core.ICardPileListener#cardPileBaseDesignChanged(org.gamegineer.table.core.CardPileEvent)
+     */
+    @Override
+    public void cardPileBaseDesignChanged(
+        final CardPileEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                cardPileBaseDesignChanged();
+            }
+        } );
+    }
+
+    /**
+     * Invoked after the card pile base design has changed.
+     */
+    private void cardPileBaseDesignChanged()
+    {
+        if( isInitialized() )
+        {
+            tableView_.repaintTable( getDirtyBounds() );
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.ICardPileListener#cardPileBoundsChanged(org.gamegineer.table.core.CardPileEvent)
      */
     @Override

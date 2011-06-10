@@ -243,6 +243,19 @@ public interface ICardPile
         Point location );
 
     /**
+     * Sets the design of the card pile base.
+     * 
+     * @param baseDesign
+     *        The design of the card pile base; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code baseDesign} is {@code null}.
+     */
+    public void setBaseDesign(
+        /* @NonNull */
+        ICardPileBaseDesign baseDesign );
+
+    /**
      * Sets the location of the card pile base in table coordinates.
      * 
      * @param baseLocation

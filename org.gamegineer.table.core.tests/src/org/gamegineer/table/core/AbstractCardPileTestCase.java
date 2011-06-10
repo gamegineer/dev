@@ -412,6 +412,28 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
+     * Ensures the card pile base design changed event catches any exception
+     * thrown by the {@code cardPileBaseDesignChanged} method of a card pile
+     * listener.
+     */
+    @Test
+    public void testCardPileBaseDesignChanged_CatchesListenerException()
+    {
+        final ICardPileListener listener1 = mocksControl_.createMock( ICardPileListener.class );
+        listener1.cardPileBaseDesignChanged( EasyMock.notNull( CardPileEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ICardPileListener listener2 = mocksControl_.createMock( ICardPileListener.class );
+        listener2.cardPileBaseDesignChanged( EasyMock.notNull( CardPileEvent.class ) );
+        mocksControl_.replay();
+        cardPile_.addCardPileListener( listener1 );
+        cardPile_.addCardPileListener( listener2 );
+
+        cardPile_.setBaseDesign( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
+
+        mocksControl_.verify();
+    }
+
+    /**
      * Ensures the card pile bounds changed event catches any exception thrown
      * by the {@code cardPileBoundsChanged} method of a card pile listener.
      */
@@ -1061,6 +1083,33 @@ public abstract class AbstractCardPileTestCase
     public void testRemoveCardsFromPoint_Location_Null()
     {
         cardPile_.removeCards( null );
+    }
+
+    /**
+     * Ensures the {@code setBaseDesign} method fires a card pile base design
+     * changed event.
+     */
+    @Test
+    public void testSetBaseDesign_FiresCardPileBaseDesignChangedEvent()
+    {
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        listener.cardPileBaseDesignChanged( EasyMock.notNull( CardPileEvent.class ) );
+        mocksControl_.replay();
+        cardPile_.addCardPileListener( listener );
+
+        cardPile_.setBaseDesign( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code setBaseDesign} method throws an exception when passed
+     * a {@code null} base design.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetBaseDesign_BaseDesign_Null()
+    {
+        cardPile_.setBaseDesign( null );
     }
 
     /**

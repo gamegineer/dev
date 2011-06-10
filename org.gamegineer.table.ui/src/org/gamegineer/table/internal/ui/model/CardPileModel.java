@@ -1,6 +1,6 @@
 /*
  * CardPileModel.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -147,6 +147,18 @@ public final class CardPileModel
     @Override
     public void cardModelStateChanged(
         final CardModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        fireCardPileModelStateChanged();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPileListener#cardPileBaseDesignChanged(org.gamegineer.table.core.CardPileEvent)
+     */
+    @Override
+    public void cardPileBaseDesignChanged(
+        final CardPileEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 

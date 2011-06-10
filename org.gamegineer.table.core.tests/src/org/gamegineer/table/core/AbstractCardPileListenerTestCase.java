@@ -1,6 +1,6 @@
 /*
  * AbstractCardPileListenerTestCase.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -105,6 +105,16 @@ public abstract class AbstractCardPileListenerTestCase
     public void testCardAdded_Event_Null()
     {
         listener_.cardAdded( null );
+    }
+
+    /**
+     * Ensures the {@code cardPileBaseDesignChanged} method throws an exception
+     * when passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCardPileBaseDesignChanged_Event_Null()
+    {
+        listener_.cardPileBaseDesignChanged( null );
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * ICardPileListener.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,6 +48,19 @@ public interface ICardPileListener
     public void cardAdded(
         /* @NonNull */
         CardPileContentChangedEvent event );
+
+    /**
+     * Invoked after the card pile base design has changed.
+     * 
+     * @param event
+     *        The event describing the card pile; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void cardPileBaseDesignChanged(
+        /* @NonNull */
+        CardPileEvent event );
 
     /**
      * Invoked after the card pile bounds have changed.
