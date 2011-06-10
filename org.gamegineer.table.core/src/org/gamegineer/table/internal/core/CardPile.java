@@ -118,6 +118,19 @@ public final class CardPile
 
     /**
      * Initializes a new instance of the {@code CardPile} class.
+     */
+    private CardPile()
+    {
+        baseDesign_ = null;
+        baseLocation_ = new Point( 0, 0 );
+        cards_ = new ArrayList<ICard>();
+        layout_ = CardPileLayout.STACKED;
+        listeners_ = new CopyOnWriteArrayList<ICardPileListener>();
+        lock_ = new Object();
+    }
+
+    /**
+     * Initializes a new instance of the {@code CardPile} class.
      * 
      * @param baseDesign
      *        The design of the card pile base; must not be {@code null}.
@@ -129,14 +142,9 @@ public final class CardPile
         /* @NonNull */
         final ICardPileBaseDesign baseDesign )
     {
-        assertArgumentNotNull( baseDesign, "baseDesign" ); //$NON-NLS-1$
+        this();
 
-        lock_ = new Object();
-        baseDesign_ = baseDesign;
-        baseLocation_ = new Point( 0, 0 );
-        cards_ = new ArrayList<ICard>();
-        layout_ = CardPileLayout.STACKED;
-        listeners_ = new CopyOnWriteArrayList<ICardPileListener>();
+        setBaseDesign( baseDesign );
     }
 
 
@@ -334,35 +342,10 @@ public final class CardPile
         final Object memento )
         throws MalformedMementoException
     {
-        // TODO: figure out how to merge this method with setMemento
-
         assert memento != null;
 
-        final ICardPileBaseDesign baseDesign = MementoUtils.getRequiredAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardPileBaseDesign.class );
-        final CardPile cardPile = new CardPile( baseDesign );
-
-        final Point location = MementoUtils.getOptionalAttribute( memento, BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
-        if( location != null )
-        {
-            cardPile.setLocation( location );
-        }
-
-        final CardPileLayout layout = MementoUtils.getOptionalAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, CardPileLayout.class );
-        if( layout != null )
-        {
-            cardPile.setLayout( layout );
-        }
-
-        @SuppressWarnings( "unchecked" )
-        final List<Object> cardMementos = MementoUtils.getOptionalAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
-        if( cardMementos != null )
-        {
-            for( final Object cardMemento : cardMementos )
-            {
-                cardPile.addCard( Card.fromMemento( cardMemento ) );
-            }
-        }
-
+        final CardPile cardPile = new CardPile();
+        cardPile.setMemento( memento );
         return cardPile;
     }
 
@@ -660,12 +643,15 @@ public final class CardPile
      * 
      * @param baseDesign
      *        The design of the card pile base; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code baseDesign} is {@code null}.
      */
     private void setBaseDesign(
         /* @NonNull */
         final ICardPileBaseDesign baseDesign )
     {
-        assert baseDesign != null;
+        assertArgumentNotNull( baseDesign, "baseDesign" ); //$NON-NLS-1$
 
         synchronized( lock_ )
         {

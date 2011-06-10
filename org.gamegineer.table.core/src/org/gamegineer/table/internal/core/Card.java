@@ -99,6 +99,19 @@ public final class Card
 
     /**
      * Initializes a new instance of the {@code Card} class.
+     */
+    private Card()
+    {
+        backDesign_ = null;
+        faceDesign_ = null;
+        listeners_ = new CopyOnWriteArrayList<ICardListener>();
+        location_ = new Point( 0, 0 );
+        lock_ = new Object();
+        orientation_ = CardOrientation.FACE_UP;
+    }
+
+    /**
+     * Initializes a new instance of the {@code Card} class.
      * 
      * @param backDesign
      *        The design on the back of the card; must not be {@code null}.
@@ -117,15 +130,7 @@ public final class Card
         /* @NonNull */
         final ICardSurfaceDesign faceDesign )
     {
-        assertArgumentNotNull( backDesign, "backDesign" ); //$NON-NLS-1$
-        assertArgumentNotNull( faceDesign, "faceDesign" ); //$NON-NLS-1$
-
-        lock_ = new Object();
-        backDesign_ = null;
-        faceDesign_ = null;
-        listeners_ = new CopyOnWriteArrayList<ICardListener>();
-        location_ = new Point( 0, 0 );
-        orientation_ = CardOrientation.FACE_UP;
+        this();
 
         setSurfaceDesigns( backDesign, faceDesign );
     }
@@ -236,34 +241,10 @@ public final class Card
         final Object memento )
         throws MalformedMementoException
     {
-        // TODO: figure out how to merge this method with setMemento
-
         assert memento != null;
 
-        final ICardSurfaceDesign backDesign = MementoUtils.getRequiredAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
-        final ICardSurfaceDesign faceDesign = MementoUtils.getRequiredAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
-        final Card card;
-        try
-        {
-            card = new Card( backDesign, faceDesign );
-        }
-        catch( final IllegalArgumentException e )
-        {
-            throw new MalformedMementoException( e );
-        }
-
-        final Point location = MementoUtils.getOptionalAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
-        if( location != null )
-        {
-            card.setLocation( location );
-        }
-
-        final CardOrientation orientation = MementoUtils.getOptionalAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, CardOrientation.class );
-        if( orientation != null )
-        {
-            card.setOrientation( orientation );
-        }
-
+        final Card card = new Card();
+        card.setMemento( memento );
         return card;
     }
 
@@ -431,6 +412,8 @@ public final class Card
      * @throws java.lang.IllegalArgumentException
      *         If {@code backDesign} and {@code faceDesign} do not have the same
      *         size.
+     * @throws java.lang.NullPointerException
+     *         If {@code backDesign} or {@code faceDesign} is {@code null}.
      */
     private void setSurfaceDesigns(
         /* @NonNull */
@@ -438,8 +421,8 @@ public final class Card
         /* @NonNull */
         final ICardSurfaceDesign faceDesign )
     {
-        assert backDesign != null;
-        assert faceDesign != null;
+        assertArgumentNotNull( backDesign, "backDesign" ); //$NON-NLS-1$
+        assertArgumentNotNull( faceDesign, "faceDesign" ); //$NON-NLS-1$
         assertArgumentLegal( faceDesign.getSize().equals( backDesign.getSize() ), "faceDesign", Messages.Card_setSurfaceDesigns_faceDesign_sizeNotEqual ); //$NON-NLS-1$
 
         synchronized( lock_ )
