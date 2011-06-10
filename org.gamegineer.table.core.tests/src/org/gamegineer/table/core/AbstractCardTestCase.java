@@ -173,6 +173,28 @@ public abstract class AbstractCardTestCase
     }
 
     /**
+     * Ensures the card surface designs changed event catches any exception
+     * thrown by the {@code cardSurfaceDesignsChanged} method of a card
+     * listener.
+     */
+    @Test
+    public void testCardSurfaceDesignsChanged_CatchesListenerException()
+    {
+        final ICardListener listener1 = mocksControl_.createMock( ICardListener.class );
+        listener1.cardSurfaceDesignsChanged( EasyMock.notNull( CardEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ICardListener listener2 = mocksControl_.createMock( ICardListener.class );
+        listener2.cardSurfaceDesignsChanged( EasyMock.notNull( CardEvent.class ) );
+        mocksControl_.replay();
+        card_.addCardListener( listener1 );
+        card_.addCardListener( listener2 );
+
+        card_.setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ), CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ) );
+
+        mocksControl_.verify();
+    }
+
+    /**
      * Ensures the {@code flip} method correctly changes the card orientation
      * when the card back is initially up.
      */
@@ -469,5 +491,57 @@ public abstract class AbstractCardTestCase
     public void testSetOrientation_Orientation_Null()
     {
         card_.setOrientation( null );
+    }
+
+    /**
+     * Ensures the {@code setSurfaceDesigns} method throws an exception when
+     * passed a {@code null} back design.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetSurfaceDesigns_BackDesign_Null()
+    {
+        card_.setSurfaceDesigns( null, CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
+    }
+
+    /**
+     * Ensures the {@code setSurfaceDesigns} method throws an exception when
+     * passed a {@code null} face design.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetSurfaceDesigns_FaceDesign_Null()
+    {
+        card_.setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), null );
+    }
+
+    /**
+     * Ensures the {@code setSurfaceDesigns} method throws an exception when
+     * passed a face design that has a size different from the back design.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testSetSurfaceDesigns_FaceDesign_SizeNotEqual()
+    {
+        final int width = 10;
+        final int height = 20;
+        final ICardSurfaceDesign backDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign( width, height );
+        final ICardSurfaceDesign faceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign( 2 * width, 2 * height );
+
+        card_.setSurfaceDesigns( backDesign, faceDesign );
+    }
+
+    /**
+     * Ensures the {@code setSurfaceDesigns} method fires a card surface designs
+     * changed event.
+     */
+    @Test
+    public void testSetSurfaceDesigns_FiresCardSurfaceDesignsChangedEvent()
+    {
+        final ICardListener listener = mocksControl_.createMock( ICardListener.class );
+        listener.cardSurfaceDesignsChanged( EasyMock.notNull( CardEvent.class ) );
+        mocksControl_.replay();
+        card_.addCardListener( listener );
+
+        card_.setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ), CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ) );
+
+        mocksControl_.verify();
     }
 }

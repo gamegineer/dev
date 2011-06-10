@@ -208,6 +208,25 @@ public final class Card
         }
     }
 
+    /**
+     * Fires a card surface designs changed event.
+     */
+    private void fireCardSurfaceDesignsChanged()
+    {
+        final CardEvent event = new CardEvent( this );
+        for( final ICardListener listener : listeners_ )
+        {
+            try
+            {
+                listener.cardSurfaceDesignsChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Card_cardSurfaceDesignsChanged_unexpectedException, e );
+            }
+        }
+    }
+
     /*
      * @see org.gamegineer.table.core.ICard#flip()
      */
@@ -401,21 +420,11 @@ public final class Card
         fireCardOrientationChanged();
     }
 
-    /**
-     * Sets the card surface designs.
-     * 
-     * @param backDesign
-     *        The design on the back of the card; must not be {@code null}.
-     * @param faceDesign
-     *        The design on the face of the card; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code backDesign} and {@code faceDesign} do not have the same
-     *         size.
-     * @throws java.lang.NullPointerException
-     *         If {@code backDesign} or {@code faceDesign} is {@code null}.
+    /*
+     * @see org.gamegineer.table.core.ICard#setSurfaceDesigns(org.gamegineer.table.core.ICardSurfaceDesign, org.gamegineer.table.core.ICardSurfaceDesign)
      */
-    private void setSurfaceDesigns(
+    @Override
+    public void setSurfaceDesigns(
         /* @NonNull */
         final ICardSurfaceDesign backDesign,
         /* @NonNull */
@@ -431,7 +440,7 @@ public final class Card
             faceDesign_ = faceDesign;
         }
 
-        // TODO: fire event
+        fireCardSurfaceDesignsChanged();
     }
 
     /*

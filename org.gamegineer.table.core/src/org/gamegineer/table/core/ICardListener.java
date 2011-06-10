@@ -1,6 +1,6 @@
 /*
  * ICardListener.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -59,6 +59,19 @@ public interface ICardListener
      *         If {@code event} is {@code null}.
      */
     public void cardOrientationChanged(
+        /* @NonNull */
+        CardEvent event );
+
+    /**
+     * Invoked after the card surface designs have changed.
+     * 
+     * @param event
+     *        The event describing the card; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void cardSurfaceDesignsChanged(
         /* @NonNull */
         CardEvent event );
 }

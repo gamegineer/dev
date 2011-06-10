@@ -1,6 +1,6 @@
 /*
  * CardView.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -168,6 +168,36 @@ final class CardView
      * Invoked after the card orientation has changed.
      */
     private void cardOrientationChanged()
+    {
+        if( isInitialized() )
+        {
+            tableView_.repaintTable( getBounds() );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardListener#cardSurfaceDesignsChanged(org.gamegineer.table.core.CardEvent)
+     */
+    @Override
+    public void cardSurfaceDesignsChanged(
+        final CardEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                cardSurfaceDesignsChanged();
+            }
+        } );
+    }
+
+    /**
+     * Invoked after the card surface designs have changed.
+     */
+    private void cardSurfaceDesignsChanged()
     {
         if( isInitialized() )
         {

@@ -1,6 +1,6 @@
 /*
  * AbstractCardListenerTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -115,5 +115,15 @@ public abstract class AbstractCardListenerTestCase
     public void testCardOrientationChanged_Event_Null()
     {
         listener_.cardOrientationChanged( null );
+    }
+
+    /**
+     * Ensures the {@code cardSurfaceDesignsChanged} method throws an exception
+     * when passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCardSurfaceDesignsChanged_Event_Null()
+    {
+        listener_.cardSurfaceDesignsChanged( null );
     }
 }

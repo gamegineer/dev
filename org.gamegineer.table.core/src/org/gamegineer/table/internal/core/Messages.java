@@ -54,6 +54,12 @@ final class Messages
      */
     public static String Card_cardOrientationChanged_unexpectedException;
 
+    /**
+     * An unexpected exception was thrown from
+     * ICardListener.cardSurfaceDesignsChanged().
+     */
+    public static String Card_cardSurfaceDesignsChanged_unexpectedException;
+
     /** The card listener is not registered. */
     public static String Card_removeCardListener_listener_notRegistered;
 

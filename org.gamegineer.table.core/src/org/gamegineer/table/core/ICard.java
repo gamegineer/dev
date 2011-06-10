@@ -149,4 +149,24 @@ public interface ICard
     public void setOrientation(
         /* @NonNull */
         CardOrientation orientation );
+
+    /**
+     * Sets the card surface designs.
+     * 
+     * @param backDesign
+     *        The design on the back of the card; must not be {@code null}.
+     * @param faceDesign
+     *        The design on the face of the card; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code backDesign} and {@code faceDesign} do not have the same
+     *         size.
+     * @throws java.lang.NullPointerException
+     *         If {@code backDesign} or {@code faceDesign} is {@code null}.
+     */
+    public void setSurfaceDesigns(
+        /* @NonNull */
+        ICardSurfaceDesign backDesign,
+        /* @NonNull */
+        ICardSurfaceDesign faceDesign );
 }

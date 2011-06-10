@@ -1,6 +1,6 @@
 /*
  * CardModel.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -115,6 +115,18 @@ public final class CardModel
      */
     @Override
     public void cardOrientationChanged(
+        final CardEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        fireCardModelStateChanged();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardListener#cardSurfaceDesignsChanged(org.gamegineer.table.core.CardEvent)
+     */
+    @Override
+    public void cardSurfaceDesignsChanged(
         final CardEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
