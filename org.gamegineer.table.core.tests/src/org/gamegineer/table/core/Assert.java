@@ -77,8 +77,8 @@ public final class Assert
         else
         {
             assertEquals( expected.getBackDesign(), actual.getBackDesign() );
-            assertEquals( expected.getBounds(), actual.getBounds() );
             assertEquals( expected.getFaceDesign(), actual.getFaceDesign() );
+            assertEquals( expected.getLocation(), actual.getLocation() );
             assertEquals( expected.getOrientation(), actual.getOrientation() );
         }
     }
@@ -111,7 +111,7 @@ public final class Assert
         else
         {
             assertEquals( expected.getBaseDesign(), actual.getBaseDesign() );
-            assertEquals( expected.getBounds(), actual.getBounds() );
+            assertEquals( expected.getBaseLocation(), actual.getBaseLocation() );
             assertEquals( expected.getLayout(), actual.getLayout() );
 
             final List<ICard> expectedCards = expected.getCards();
