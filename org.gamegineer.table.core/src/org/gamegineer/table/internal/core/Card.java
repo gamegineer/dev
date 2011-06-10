@@ -425,9 +425,7 @@ public final class Card
      */
     @Override
     public void setSurfaceDesigns(
-        /* @NonNull */
         final ICardSurfaceDesign backDesign,
-        /* @NonNull */
         final ICardSurfaceDesign faceDesign )
     {
         assertArgumentNotNull( backDesign, "backDesign" ); //$NON-NLS-1$
