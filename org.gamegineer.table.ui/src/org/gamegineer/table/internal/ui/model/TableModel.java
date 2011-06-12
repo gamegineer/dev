@@ -37,7 +37,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
-import org.gamegineer.common.core.util.memento.MalformedMementoException;
+import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
@@ -291,7 +291,14 @@ public final class TableModel
             throw new ModelException( Messages.TableModel_createTableMemento_tableNotMementoOriginator( table.getClass() ) );
         }
 
-        return ((IMementoOriginator)table).createMemento();
+        try
+        {
+            return ((IMementoOriginator)table).createMemento();
+        }
+        catch( final MementoException e )
+        {
+            throw new ModelException( Messages.TableModel_createTableMemento_error, e );
+        }
     }
 
     /**
@@ -807,7 +814,7 @@ public final class TableModel
         {
             ((IMementoOriginator)table).setMemento( readTableMemento( file ) );
         }
-        catch( final MalformedMementoException e )
+        catch( final MementoException e )
         {
             throw new ModelException( Messages.TableModel_setTableMemento_error, e );
         }

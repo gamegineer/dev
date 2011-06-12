@@ -34,7 +34,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
-import org.gamegineer.common.core.util.memento.MalformedMementoException;
+import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ICard;
@@ -251,14 +251,14 @@ public final class Card
      * 
      * @return A new instance of the {@code Card} class; never {@code null}.
      * 
-     * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
+     * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If {@code memento} is malformed.
      */
     /* @NonNull */
     static Card fromMemento(
         /* @NonNull */
         final Object memento )
-        throws MalformedMementoException
+        throws MementoException
     {
         assert memento != null;
 
@@ -373,7 +373,7 @@ public final class Card
     @Override
     public void setMemento(
         final Object memento )
-        throws MalformedMementoException
+        throws MementoException
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
@@ -387,7 +387,7 @@ public final class Card
         }
         catch( final IllegalArgumentException e )
         {
-            throw new MalformedMementoException( e );
+            throw new MementoException( e );
         }
 
         final Point location = MementoUtils.getOptionalAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );

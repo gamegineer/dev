@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import java.util.HashMap;
 import java.util.Map;
-import org.gamegineer.common.core.util.memento.MalformedMementoException;
+import org.gamegineer.common.core.util.memento.MementoException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -143,7 +143,7 @@ public final class MementoUtilsTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( expected = MalformedMementoException.class )
+    @Test( expected = MementoException.class )
     public void testGetOptionalAttribute_Attribute_Present_Null()
         throws Exception
     {
@@ -157,7 +157,7 @@ public final class MementoUtilsTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( expected = MalformedMementoException.class )
+    @Test( expected = MementoException.class )
     public void testGetOptionalAttribute_Attribute_Present_WrongType()
         throws Exception
     {
@@ -171,7 +171,7 @@ public final class MementoUtilsTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( expected = MalformedMementoException.class )
+    @Test( expected = MementoException.class )
     public void testGetRequiredAttribute_Attribute_Absent()
         throws Exception
     {
@@ -201,7 +201,7 @@ public final class MementoUtilsTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( expected = MalformedMementoException.class )
+    @Test( expected = MementoException.class )
     public void testGetRequiredAttribute_Attribute_Present_Null()
         throws Exception
     {
@@ -215,7 +215,7 @@ public final class MementoUtilsTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( expected = MalformedMementoException.class )
+    @Test( expected = MementoException.class )
     public void testGetRequiredAttribute_Attribute_Present_WrongType()
         throws Exception
     {

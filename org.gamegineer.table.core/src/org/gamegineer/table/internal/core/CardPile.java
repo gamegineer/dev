@@ -37,7 +37,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
-import org.gamegineer.common.core.util.memento.MalformedMementoException;
+import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.CardPileLayout;
@@ -224,6 +224,7 @@ public final class CardPile
      */
     @Override
     public Object createMemento()
+        throws MementoException
     {
         final Map<String, Object> memento = new HashMap<String, Object>();
 
@@ -242,8 +243,7 @@ public final class CardPile
                 }
                 else
                 {
-                    // TODO: should createMemento throw a checked exception instead?
-                    Loggers.getDefaultLogger().warning( Messages.CardPile_createMemento_cardNotMementoOriginator( card.getClass() ) );
+                    throw new MementoException( Messages.CardPile_createMemento_cardNotMementoOriginator( card.getClass() ) );
                 }
             }
             memento.put( CARDS_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardMementos ) );
@@ -352,14 +352,14 @@ public final class CardPile
      * 
      * @return A new instance of the {@code CardPile} class; never {@code null}.
      * 
-     * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
+     * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If {@code memento} is malformed.
      */
     /* @NonNull */
     static CardPile fromMemento(
         /* @NonNull */
         final Object memento )
-        throws MalformedMementoException
+        throws MementoException
     {
         assert memento != null;
 
@@ -764,7 +764,7 @@ public final class CardPile
     @Override
     public void setMemento(
         final Object memento )
-        throws MalformedMementoException
+        throws MementoException
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 

@@ -35,7 +35,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
-import org.gamegineer.common.core.util.memento.MalformedMementoException;
+import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
@@ -133,6 +133,7 @@ public final class Table
      */
     @Override
     public Object createMemento()
+        throws MementoException
     {
         final Map<String, Object> memento = new HashMap<String, Object>();
 
@@ -147,8 +148,7 @@ public final class Table
                 }
                 else
                 {
-                    // TODO: should createMemento throw a checked exception instead?
-                    Loggers.getDefaultLogger().warning( Messages.Table_createMemento_cardPileNotMementoOriginator( cardPile.getClass() ) );
+                    throw new MementoException( Messages.Table_createMemento_cardPileNotMementoOriginator( cardPile.getClass() ) );
                 }
             }
             memento.put( CARD_PILES_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardPileMementos ) );
@@ -301,7 +301,7 @@ public final class Table
     @Override
     public void setMemento(
         final Object memento )
-        throws MalformedMementoException
+        throws MementoException
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 

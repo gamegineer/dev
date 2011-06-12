@@ -119,6 +119,9 @@ final class Messages
      */
     public static String TableModel_cardPileFocusChanged_unexpectedException;
 
+    /** An error occurred while creating the table memento. */
+    public static String TableModel_createTableMemento_error;
+
     /** The table is not a memento originator. */
     public static String TableModel_createTableMemento_tableNotMementoOriginator;
 

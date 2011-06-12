@@ -1,5 +1,5 @@
 /*
- * MalformedMementoException.java
+ * MementoException.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -24,10 +24,11 @@ package org.gamegineer.common.core.util.memento;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
- * A checked exception that indicates a memento is malformed.
+ * A checked exception that indicates a memento could not be created or
+ * restored.
  */
 @NotThreadSafe
-public final class MalformedMementoException
+public final class MementoException
     extends Exception
 {
     // ======================================================================
@@ -43,22 +44,22 @@ public final class MalformedMementoException
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code MalformedMementoException} class
-     * with no detail message and no cause.
+     * Initializes a new instance of the {@code MementoException} class with no
+     * detail message and no cause.
      */
-    public MalformedMementoException()
+    public MementoException()
     {
         super();
     }
 
     /**
-     * Initializes a new instance of the {@code MalformedMementoException} class
-     * with the specified detail message and no cause.
+     * Initializes a new instance of the {@code MementoException} class with the
+     * specified detail message and no cause.
      * 
      * @param message
      *        The detail message; may be {@code null}.
      */
-    public MalformedMementoException(
+    public MementoException(
         /* @Nullable */
         final String message )
     {
@@ -66,13 +67,13 @@ public final class MalformedMementoException
     }
 
     /**
-     * Initializes a new instance of the {@code MalformedMementoException} class
-     * with no detail message and specified cause.
+     * Initializes a new instance of the {@code MementoException} class with no
+     * detail message and specified cause.
      * 
      * @param cause
      *        The cause; may be {@code null}.
      */
-    public MalformedMementoException(
+    public MementoException(
         /* @Nullable */
         final Throwable cause )
     {
@@ -80,15 +81,15 @@ public final class MalformedMementoException
     }
 
     /**
-     * Initializes a new instance of the {@code MalformedMementoException} class
-     * with the specified detail message and cause.
+     * Initializes a new instance of the {@code MementoException} class with the
+     * specified detail message and cause.
      * 
      * @param message
      *        The detail message; may be {@code null}.
      * @param cause
      *        The cause; may be {@code null}.
      */
-    public MalformedMementoException(
+    public MementoException(
         /* @Nullable */
         final String message,
         /* @Nullable */

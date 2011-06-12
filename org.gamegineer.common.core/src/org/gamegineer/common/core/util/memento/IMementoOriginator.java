@@ -37,9 +37,13 @@ public interface IMementoOriginator
      * 
      * @return A memento that represents the state of the originator; never
      *         {@code null}.
+     * 
+     * @throws org.gamegineer.common.core.util.memento.MementoException
+     *         If the memento cannot be created.
      */
     /* @NonNull */
-    public Object createMemento();
+    public Object createMemento()
+        throws MementoException;
 
     /**
      * Sets the state of the originator using the specified memento.
@@ -50,12 +54,12 @@ public interface IMementoOriginator
      * 
      * @throws java.lang.NullPointerException
      *         If {@code memento} is {@code null}.
-     * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
+     * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If the memento does not represent a valid state for the
      *         originator.
      */
     public void setMemento(
         /* @NonNull */
         Object memento )
-        throws MalformedMementoException;
+        throws MementoException;
 }

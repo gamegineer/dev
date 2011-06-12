@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.core;
 
 import java.util.Map;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.memento.MalformedMementoException;
+import org.gamegineer.common.core.util.memento.MementoException;
 
 /**
  * A collection of methods useful for working with mementos.
@@ -64,7 +64,7 @@ final class MementoUtils
      * @return The attribute value or {@code null} if the attribute is not
      *         present in the memento.
      * 
-     * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
+     * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If the memento is of the wrong type, the attribute value is
      *         {@code null}, or the attribute value is of the wrong type.
      */
@@ -76,7 +76,7 @@ final class MementoUtils
         final String name,
         /* @NonNull */
         final Class<T> type )
-        throws MalformedMementoException
+        throws MementoException
     {
         assert memento != null;
         assert name != null;
@@ -84,7 +84,7 @@ final class MementoUtils
 
         if( !(memento instanceof Map<?, ?>) )
         {
-            throw new MalformedMementoException( Messages.MementoUtils_memento_wrongType );
+            throw new MementoException( Messages.MementoUtils_memento_wrongType );
         }
 
         @SuppressWarnings( "unchecked" )
@@ -101,12 +101,12 @@ final class MementoUtils
         }
         catch( final ClassCastException e )
         {
-            throw new MalformedMementoException( Messages.MementoUtils_attributeValue_wrongType( name ), e );
+            throw new MementoException( Messages.MementoUtils_attributeValue_wrongType( name ), e );
         }
 
         if( value == null )
         {
-            throw new MalformedMementoException( Messages.MementoUtils_attributeValue_null( name ) );
+            throw new MementoException( Messages.MementoUtils_attributeValue_null( name ) );
         }
 
         return value;
@@ -127,7 +127,7 @@ final class MementoUtils
      * 
      * @return The attribute value; never {@code null}.
      * 
-     * @throws org.gamegineer.common.core.util.memento.MalformedMementoException
+     * @throws org.gamegineer.common.core.util.memento.MementoException
      *         If the memento is of the wrong type, the memento does not contain
      *         the attribute, the attribute value is {@code null}, or the
      *         attribute value is of the wrong type.
@@ -140,12 +140,12 @@ final class MementoUtils
         final String name,
         /* @NonNull */
         final Class<T> type )
-        throws MalformedMementoException
+        throws MementoException
     {
         final T value = getOptionalAttribute( memento, name, type );
         if( value == null )
         {
-            throw new MalformedMementoException( Messages.MementoUtils_attribute_absent( name ) );
+            throw new MementoException( Messages.MementoUtils_attribute_absent( name ) );
         }
 
         return value;
