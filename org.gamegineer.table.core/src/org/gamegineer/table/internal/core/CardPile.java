@@ -31,6 +31,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
@@ -111,6 +113,12 @@ public final class CardPile
     /** The instance lock. */
     private final Object lock_;
 
+    /**
+     * The collection of pending event notifications to be executed the next
+     * time the instance lock is released.
+     */
+    private final Queue<Runnable> pendingEventNotifications_;
+
 
     // ======================================================================
     // Constructors
@@ -127,6 +135,7 @@ public final class CardPile
         layout_ = CardPileLayout.STACKED;
         listeners_ = new CopyOnWriteArrayList<ICardPileListener>();
         lock_ = new Object();
+        pendingEventNotifications_ = new ConcurrentLinkedQueue<Runnable>();
     }
 
     /**
@@ -183,39 +192,78 @@ public final class CardPile
         final List<ICard> cards )
     {
         assertArgumentNotNull( cards, "cards" ); //$NON-NLS-1$
-        assertArgumentLegal( !cards.contains( null ), "cards", Messages.CardPile_addCards_cards_containsNullElement ); //$NON-NLS-1$
 
-        final List<ICard> addedCards = new ArrayList<ICard>();
-        final boolean cardPileBoundsChanged;
         synchronized( lock_ )
         {
-            final Rectangle oldBounds = getBounds();
+            addCardsInternal( cards );
+        }
 
-            for( final ICard card : cards )
+        firePendingEventNotifications();
+    }
+
+    /**
+     * Adds the specified collection of cards to the top of this card pile.
+     * 
+     * <p>
+     * This method does nothing if any card in the specified collection is
+     * already in the card pile.
+     * </p>
+     * 
+     * @param cards
+     *        The collection of cards to be added to this card pile; must not be
+     *        {@code null}. The cards are added to the top of this card pile in
+     *        the order they appear in the collection.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code cards} contains a {@code null} element.
+     */
+    @GuardedBy( "lock_" )
+    private void addCardsInternal(
+        /* @NonNull */
+        final List<ICard> cards )
+    {
+        assert cards != null;
+        assertArgumentLegal( !cards.contains( null ), "cards", Messages.CardPile_addCardsInternal_cards_containsNullElement ); //$NON-NLS-1$
+        assert Thread.holdsLock( lock_ );
+
+        final List<ICard> addedCards = new ArrayList<ICard>();
+        final Rectangle oldBounds = getBounds();
+
+        for( final ICard card : cards )
+        {
+            if( !cards_.contains( card ) )
             {
-                if( !cards_.contains( card ) )
-                {
-                    final Point cardLocation = new Point( baseLocation_ );
-                    final Dimension cardOffset = getCardOffsetAt( cards_.size() );
-                    cardLocation.translate( cardOffset.width, cardOffset.height );
-                    card.setLocation( cardLocation );
-                    cards_.add( card );
-                    addedCards.add( card );
-                }
+                final Point cardLocation = new Point( baseLocation_ );
+                final Dimension cardOffset = getCardOffsetAt( cards_.size() );
+                cardLocation.translate( cardOffset.width, cardOffset.height );
+                card.setLocation( cardLocation );
+                cards_.add( card );
+                addedCards.add( card );
             }
-
-            final Rectangle newBounds = getBounds();
-            cardPileBoundsChanged = !newBounds.equals( oldBounds );
         }
 
-        for( final ICard card : addedCards )
-        {
-            fireCardAdded( card );
-        }
+        final Rectangle newBounds = getBounds();
+        final boolean cardPileBoundsChanged = !newBounds.equals( oldBounds );
 
-        if( cardPileBoundsChanged )
+        if( !addedCards.isEmpty() || cardPileBoundsChanged )
         {
-            fireCardPileBoundsChanged();
+            pendingEventNotifications_.offer( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    for( final ICard card : addedCards )
+                    {
+                        fireCardAdded( card );
+                    }
+
+                    if( cardPileBoundsChanged )
+                    {
+                        fireCardPileBoundsChanged();
+                    }
+                }
+            } );
         }
     }
 
@@ -263,6 +311,7 @@ public final class CardPile
         final ICard card )
     {
         assert card != null;
+        assert !Thread.holdsLock( lock_ );
 
         final CardPileContentChangedEvent event = new CardPileContentChangedEvent( this, card );
         for( final ICardPileListener listener : listeners_ )
@@ -283,6 +332,8 @@ public final class CardPile
      */
     private void fireCardPileBaseDesignChanged()
     {
+        assert !Thread.holdsLock( lock_ );
+
         final CardPileEvent event = new CardPileEvent( this );
         for( final ICardPileListener listener : listeners_ )
         {
@@ -302,6 +353,8 @@ public final class CardPile
      */
     private void fireCardPileBoundsChanged()
     {
+        assert !Thread.holdsLock( lock_ );
+
         final CardPileEvent event = new CardPileEvent( this );
         for( final ICardPileListener listener : listeners_ )
         {
@@ -327,6 +380,7 @@ public final class CardPile
         final ICard card )
     {
         assert card != null;
+        assert !Thread.holdsLock( lock_ );
 
         final CardPileContentChangedEvent event = new CardPileContentChangedEvent( this, card );
         for( final ICardPileListener listener : listeners_ )
@@ -339,6 +393,20 @@ public final class CardPile
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPile_cardRemoved_unexpectedException, e );
             }
+        }
+    }
+
+    /**
+     * Fires all pending event notifications.
+     */
+    private void firePendingEventNotifications()
+    {
+        assert !Thread.holdsLock( lock_ );
+
+        Runnable notification = null;
+        while( (notification = pendingEventNotifications_.poll()) != null )
+        {
+            notification.run();
         }
     }
 
@@ -465,10 +533,6 @@ public final class CardPile
      * Gets the offset from the card pile base location in table coordinates of
      * the card at the specified index.
      * 
-     * <p>
-     * This method must be called while {@code lock_} is held.
-     * </p>
-     * 
      * @param index
      *        The card index; must be non-negative.
      * 
@@ -478,12 +542,13 @@ public final class CardPile
      * @throws java.lang.IllegalStateException
      *         If an unknown layout is active.
      */
+    @GuardedBy( "lock_" )
     /* @NonNull */
     private Dimension getCardOffsetAt(
         final int index )
     {
-        assert Thread.holdsLock( lock_ );
         assert index >= 0;
+        assert Thread.holdsLock( lock_ );
 
         switch( layout_ )
         {
@@ -617,7 +682,7 @@ public final class CardPile
      * @param cardRangeStrategy
      *        The strategy used to determine the range of cards to remove; must
      *        not be {@code null}. The strategy will be invoked while the card
-     *        pile is synchronized.
+     *        pile instance lock is held.
      * 
      * @return The collection of cards removed from this card pile; never
      *         {@code null}. The cards are returned in order from the card
@@ -630,28 +695,69 @@ public final class CardPile
         final CardRangeStrategy cardRangeStrategy )
     {
         assert cardRangeStrategy != null;
+        assert !Thread.holdsLock( lock_ );
 
-        final List<ICard> removedCards = new ArrayList<ICard>();
-        final boolean cardPileBoundsChanged;
+        final List<ICard> removedCards;
         synchronized( lock_ )
         {
-            final Rectangle oldBounds = getBounds();
-
-            removedCards.addAll( cards_.subList( cardRangeStrategy.getLowerIndex(), cardRangeStrategy.getUpperIndex() ) );
-            cards_.removeAll( removedCards );
-
-            final Rectangle newBounds = getBounds();
-            cardPileBoundsChanged = !newBounds.equals( oldBounds );
+            removedCards = removeCardsInternal( cardRangeStrategy );
         }
 
-        for( final ICard card : removedCards )
-        {
-            fireCardRemoved( card );
-        }
+        firePendingEventNotifications();
 
-        if( cardPileBoundsChanged )
+        return removedCards;
+    }
+
+    /**
+     * Removes all cards from this card pile in the specified range.
+     * 
+     * @param cardRangeStrategy
+     *        The strategy used to determine the range of cards to remove; must
+     *        not be {@code null}. The strategy will be invoked while the card
+     *        pile instance lock is held.
+     * 
+     * @return The collection of cards removed from this card pile; never
+     *         {@code null}. The cards are returned in order from the card
+     *         nearest the bottom of the card pile to the card nearest the top
+     *         of the card pile.
+     */
+    @GuardedBy( "lock_" )
+    /* @NonNull */
+    private List<ICard> removeCardsInternal(
+        /* @NonNull */
+        final CardRangeStrategy cardRangeStrategy )
+    {
+        assert cardRangeStrategy != null;
+        assert Thread.holdsLock( lock_ );
+
+        final List<ICard> removedCards = new ArrayList<ICard>();
+        final Rectangle oldBounds = getBounds();
+
+        removedCards.addAll( cards_.subList( cardRangeStrategy.getLowerIndex(), cardRangeStrategy.getUpperIndex() ) );
+        cards_.removeAll( removedCards );
+
+        final Rectangle newBounds = getBounds();
+        final boolean cardPileBoundsChanged = !newBounds.equals( oldBounds );
+
+        if( !removedCards.isEmpty() || cardPileBoundsChanged )
         {
-            fireCardPileBoundsChanged();
+            pendingEventNotifications_.offer( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    for( final ICard card : removedCards )
+                    {
+                        fireCardRemoved( card );
+                    }
+
+                    if( cardPileBoundsChanged )
+                    {
+                        fireCardPileBoundsChanged();
+                    }
+                }
+            } );
         }
 
         return removedCards;
@@ -668,10 +774,37 @@ public final class CardPile
 
         synchronized( lock_ )
         {
-            baseDesign_ = baseDesign;
+            setBaseDesignInternal( baseDesign );
         }
 
-        fireCardPileBaseDesignChanged();
+        firePendingEventNotifications();
+    }
+
+    /**
+     * Sets the base design of this card pile.
+     * 
+     * @param baseDesign
+     *        The base design of this card pile; must not be {@code null}.
+     */
+    @GuardedBy( "lock_" )
+    private void setBaseDesignInternal(
+        /* @NonNull */
+        final ICardPileBaseDesign baseDesign )
+    {
+        assert baseDesign != null;
+        assert Thread.holdsLock( lock_ );
+
+        baseDesign_ = baseDesign;
+
+        pendingEventNotifications_.add( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireCardPileBaseDesignChanged();
+            }
+        } );
     }
 
     /*
@@ -683,7 +816,30 @@ public final class CardPile
     {
         assertArgumentNotNull( baseLocation, "baseLocation" ); //$NON-NLS-1$
 
-        final TranslationOffsetStrategy translationOffsetStrategy = new TranslationOffsetStrategy()
+        synchronized( lock_ )
+        {
+            setBaseLocationInternal( baseLocation );
+        }
+
+        firePendingEventNotifications();
+    }
+
+    /**
+     * Sets the base location of this card pile in table coordinates.
+     * 
+     * @param baseLocation
+     *        The base location of this card pile in table coordinates; must not
+     *        be {@code null}.
+     */
+    @GuardedBy( "lock_" )
+    private void setBaseLocationInternal(
+        /* @NonNull */
+        final Point baseLocation )
+    {
+        assert baseLocation != null;
+        assert Thread.holdsLock( lock_ );
+
+        translateBaseLocation( new TranslationOffsetStrategy()
         {
             @Override
             Dimension getOffset()
@@ -691,8 +847,7 @@ public final class CardPile
                 final Point oldBaseLocation = getBaseLocation();
                 return new Dimension( baseLocation.x - oldBaseLocation.x, baseLocation.y - oldBaseLocation.y );
             }
-        };
-        translateBaseLocation( translationOffsetStrategy );
+        } );
     }
 
     /*
@@ -704,36 +859,59 @@ public final class CardPile
     {
         assertArgumentNotNull( layout, "layout" ); //$NON-NLS-1$
 
-        final boolean cardPileBoundsChanged;
         synchronized( lock_ )
         {
-            layout_ = layout;
-
-            if( cards_.isEmpty() )
-            {
-                cardPileBoundsChanged = false;
-            }
-            else
-            {
-                final Rectangle oldBounds = getBounds();
-
-                final Point cardLocation = new Point();
-                for( int index = 0, size = cards_.size(); index < size; ++index )
-                {
-                    cardLocation.setLocation( baseLocation_ );
-                    final Dimension cardOffset = getCardOffsetAt( index );
-                    cardLocation.translate( cardOffset.width, cardOffset.height );
-                    cards_.get( index ).setLocation( cardLocation );
-                }
-
-                final Rectangle newBounds = getBounds();
-                cardPileBoundsChanged = !newBounds.equals( oldBounds );
-            }
+            setLayoutInternal( layout );
         }
 
-        if( cardPileBoundsChanged )
+        firePendingEventNotifications();
+    }
+
+    /**
+     * Sets the layout of cards within this card pile.
+     * 
+     * @param layout
+     *        The layout of cards within this card pile; must not be {@code
+     *        null}.
+     */
+    @GuardedBy( "lock_" )
+    private void setLayoutInternal(
+        /* @NonNull */
+        final CardPileLayout layout )
+    {
+        assert layout != null;
+        assert Thread.holdsLock( lock_ );
+
+        layout_ = layout;
+
+        if( !cards_.isEmpty() )
         {
-            fireCardPileBoundsChanged();
+            final Rectangle oldBounds = getBounds();
+
+            final Point cardLocation = new Point();
+            for( int index = 0, size = cards_.size(); index < size; ++index )
+            {
+                cardLocation.setLocation( baseLocation_ );
+                final Dimension cardOffset = getCardOffsetAt( index );
+                cardLocation.translate( cardOffset.width, cardOffset.height );
+                cards_.get( index ).setLocation( cardLocation );
+            }
+
+            final Rectangle newBounds = getBounds();
+            final boolean cardPileBoundsChanged = !newBounds.equals( oldBounds );
+
+            if( cardPileBoundsChanged )
+            {
+                pendingEventNotifications_.offer( new Runnable()
+                {
+                    @Override
+                    @SuppressWarnings( "synthetic-access" )
+                    public void run()
+                    {
+                        fireCardPileBoundsChanged();
+                    }
+                } );
+            }
         }
     }
 
@@ -746,7 +924,30 @@ public final class CardPile
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        final TranslationOffsetStrategy translationOffsetStrategy = new TranslationOffsetStrategy()
+        synchronized( lock_ )
+        {
+            setLocationInternal( location );
+        }
+
+        firePendingEventNotifications();
+    }
+
+    /**
+     * Sets the location of this card pile in table coordinates.
+     * 
+     * @param location
+     *        The location of this card pile in table coordinates; must not be
+     *        {@code null}.
+     */
+    @GuardedBy( "lock_" )
+    private void setLocationInternal(
+        /* @NonNull */
+        final Point location )
+    {
+        assert location != null;
+        assert Thread.holdsLock( lock_ );
+
+        translateBaseLocation( new TranslationOffsetStrategy()
         {
             @Override
             Dimension getOffset()
@@ -754,8 +955,7 @@ public final class CardPile
                 final Point oldLocation = getLocation();
                 return new Dimension( location.x - oldLocation.x, location.y - oldLocation.y );
             }
-        };
-        translateBaseLocation( translationOffsetStrategy );
+        } );
     }
 
     /*
@@ -768,33 +968,38 @@ public final class CardPile
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
-        // TODO: make this method atomic
-
-        final ICardPileBaseDesign baseDesign = MementoUtils.getRequiredAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardPileBaseDesign.class );
-        setBaseDesign( baseDesign );
-
-        final Point location = MementoUtils.getOptionalAttribute( memento, BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
-        if( location != null )
+        synchronized( lock_ )
         {
-            setLocation( location );
-        }
+            final ICardPileBaseDesign baseDesign = MementoUtils.getRequiredAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardPileBaseDesign.class );
+            setBaseDesignInternal( baseDesign );
 
-        final CardPileLayout layout = MementoUtils.getOptionalAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, CardPileLayout.class );
-        if( layout != null )
-        {
-            setLayout( layout );
-        }
-
-        removeCards();
-        @SuppressWarnings( "unchecked" )
-        final List<Object> cardMementos = MementoUtils.getOptionalAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
-        if( cardMementos != null )
-        {
-            for( final Object cardMemento : cardMementos )
+            final Point location = MementoUtils.getOptionalAttribute( memento, BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
+            if( location != null )
             {
-                addCard( Card.fromMemento( cardMemento ) );
+                setLocationInternal( location );
+            }
+
+            final CardPileLayout layout = MementoUtils.getOptionalAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, CardPileLayout.class );
+            if( layout != null )
+            {
+                setLayoutInternal( layout );
+            }
+
+            removeCardsInternal( new CardRangeStrategy() );
+            @SuppressWarnings( "unchecked" )
+            final List<Object> cardMementos = MementoUtils.getOptionalAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
+            if( cardMementos != null )
+            {
+                final List<ICard> cards = new ArrayList<ICard>( cardMementos.size() );
+                for( final Object cardMemento : cardMementos )
+                {
+                    cards.add( Card.fromMemento( cardMemento ) );
+                }
+                addCardsInternal( cards );
             }
         }
+
+        firePendingEventNotifications();
     }
 
     /*
@@ -816,27 +1021,34 @@ public final class CardPile
      * @param translationOffsetStrategy
      *        The strategy used to calculate the amount to translate the base
      *        location; must not be {@code null}. The strategy will be invoked
-     *        while the card pile is synchronized.
+     *        while the card pile instance lock is held.
      */
+    @GuardedBy( "lock_" )
     private void translateBaseLocation(
         /* @NonNull */
         final TranslationOffsetStrategy translationOffsetStrategy )
     {
         assert translationOffsetStrategy != null;
+        assert Thread.holdsLock( lock_ );
 
-        synchronized( lock_ )
+        final Dimension offset = translationOffsetStrategy.getOffset();
+        baseLocation_.translate( offset.width, offset.height );
+        for( final ICard card : cards_ )
         {
-            final Dimension offset = translationOffsetStrategy.getOffset();
-            baseLocation_.translate( offset.width, offset.height );
-            for( final ICard card : cards_ )
-            {
-                final Point cardLocation = card.getLocation();
-                cardLocation.translate( offset.width, offset.height );
-                card.setLocation( cardLocation );
-            }
+            final Point cardLocation = card.getLocation();
+            cardLocation.translate( offset.width, offset.height );
+            card.setLocation( cardLocation );
         }
 
-        fireCardPileBoundsChanged();
+        pendingEventNotifications_.offer( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireCardPileBoundsChanged();
+            }
+        } );
     }
 
 

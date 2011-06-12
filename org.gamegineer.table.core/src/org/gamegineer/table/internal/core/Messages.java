@@ -64,7 +64,7 @@ final class Messages
     public static String Card_removeCardListener_listener_notRegistered;
 
     /** The face design size is not equal to the back design size. */
-    public static String Card_setSurfaceDesigns_faceDesign_sizeNotEqual;
+    public static String Card_setSurfaceDesignsInternal_faceDesign_sizeNotEqual;
 
     // --- CardPile ---------------------------------------------------------
 
@@ -72,7 +72,7 @@ final class Messages
     public static String CardPile_addCardPileListener_listener_registered;
 
     /** The card collection contains a {@code null} element. */
-    public static String CardPile_addCards_cards_containsNullElement;
+    public static String CardPile_addCardsInternal_cards_containsNullElement;
 
     /** An unexpected exception was thrown from ICardPileListener.cardAdded(). */
     public static String CardPile_cardAdded_unexpectedException;

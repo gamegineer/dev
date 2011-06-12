@@ -29,6 +29,8 @@ import java.awt.Rectangle;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
@@ -92,6 +94,12 @@ public final class Card
     @GuardedBy( "lock_" )
     private CardOrientation orientation_;
 
+    /**
+     * The collection of pending event notifications to be executed the next
+     * time the instance lock is released.
+     */
+    private final Queue<Runnable> pendingEventNotifications_;
+
 
     // ======================================================================
     // Constructors
@@ -108,6 +116,7 @@ public final class Card
         location_ = new Point( 0, 0 );
         lock_ = new Object();
         orientation_ = CardOrientation.FACE_UP;
+        pendingEventNotifications_ = new ConcurrentLinkedQueue<Runnable>();
     }
 
     /**
@@ -175,6 +184,8 @@ public final class Card
      */
     private void fireCardLocationChanged()
     {
+        assert !Thread.holdsLock( lock_ );
+
         final CardEvent event = new CardEvent( this );
         for( final ICardListener listener : listeners_ )
         {
@@ -194,6 +205,8 @@ public final class Card
      */
     private void fireCardOrientationChanged()
     {
+        assert !Thread.holdsLock( lock_ );
+
         final CardEvent event = new CardEvent( this );
         for( final ICardListener listener : listeners_ )
         {
@@ -213,6 +226,8 @@ public final class Card
      */
     private void fireCardSurfaceDesignsChanged()
     {
+        assert !Thread.holdsLock( lock_ );
+
         final CardEvent event = new CardEvent( this );
         for( final ICardListener listener : listeners_ )
         {
@@ -227,6 +242,20 @@ public final class Card
         }
     }
 
+    /**
+     * Fires all pending event notifications.
+     */
+    private void firePendingEventNotifications()
+    {
+        assert !Thread.holdsLock( lock_ );
+
+        Runnable notification = null;
+        while( (notification = pendingEventNotifications_.poll()) != null )
+        {
+            notification.run();
+        }
+    }
+
     /*
      * @see org.gamegineer.table.core.ICard#flip()
      */
@@ -235,10 +264,10 @@ public final class Card
     {
         synchronized( lock_ )
         {
-            orientation_ = orientation_.inverse();
+            setOrientationInternal( orientation_.inverse() );
         }
 
-        fireCardOrientationChanged();
+        firePendingEventNotifications();
     }
 
     /**
@@ -361,10 +390,38 @@ public final class Card
 
         synchronized( lock_ )
         {
-            location_.setLocation( location );
+            setLocationInternal( location );
         }
 
-        fireCardLocationChanged();
+        firePendingEventNotifications();
+    }
+
+    /**
+     * Sets the location of this card in table coordinates.
+     * 
+     * @param location
+     *        The location of this card in table coordinates; must not be
+     *        {@code null}.
+     */
+    @GuardedBy( "lock_" )
+    private void setLocationInternal(
+        /* @NonNull */
+        final Point location )
+    {
+        assert location != null;
+        assert Thread.holdsLock( lock_ );
+
+        location_.setLocation( location );
+
+        pendingEventNotifications_.offer( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireCardLocationChanged();
+            }
+        } );
     }
 
     /*
@@ -377,30 +434,33 @@ public final class Card
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
-        // TODO: make this method atomic
+        synchronized( lock_ )
+        {
+            final ICardSurfaceDesign backDesign = MementoUtils.getRequiredAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
+            final ICardSurfaceDesign faceDesign = MementoUtils.getRequiredAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
+            try
+            {
+                setSurfaceDesignsInternal( backDesign, faceDesign );
+            }
+            catch( final IllegalArgumentException e )
+            {
+                throw new MementoException( e );
+            }
 
-        final ICardSurfaceDesign backDesign = MementoUtils.getRequiredAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
-        final ICardSurfaceDesign faceDesign = MementoUtils.getRequiredAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
-        try
-        {
-            setSurfaceDesigns( backDesign, faceDesign );
-        }
-        catch( final IllegalArgumentException e )
-        {
-            throw new MementoException( e );
+            final Point location = MementoUtils.getOptionalAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
+            if( location != null )
+            {
+                setLocationInternal( location );
+            }
+
+            final CardOrientation orientation = MementoUtils.getOptionalAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, CardOrientation.class );
+            if( orientation != null )
+            {
+                setOrientationInternal( orientation );
+            }
         }
 
-        final Point location = MementoUtils.getOptionalAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
-        if( location != null )
-        {
-            setLocation( location );
-        }
-
-        final CardOrientation orientation = MementoUtils.getOptionalAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, CardOrientation.class );
-        if( orientation != null )
-        {
-            setOrientation( orientation );
-        }
+        firePendingEventNotifications();
     }
 
     /*
@@ -414,10 +474,37 @@ public final class Card
 
         synchronized( lock_ )
         {
-            orientation_ = orientation;
+            setOrientationInternal( orientation );
         }
 
-        fireCardOrientationChanged();
+        firePendingEventNotifications();
+    }
+
+    /**
+     * Sets the orientation of this card.
+     * 
+     * @param orientation
+     *        The orientation of this card; must not be {@code null}.
+     */
+    @GuardedBy( "lock_" )
+    private void setOrientationInternal(
+        /* @NonNull */
+        final CardOrientation orientation )
+    {
+        assert orientation != null;
+        assert Thread.holdsLock( lock_ );
+
+        orientation_ = orientation;
+
+        pendingEventNotifications_.offer( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireCardOrientationChanged();
+            }
+        } );
     }
 
     /*
@@ -430,15 +517,51 @@ public final class Card
     {
         assertArgumentNotNull( backDesign, "backDesign" ); //$NON-NLS-1$
         assertArgumentNotNull( faceDesign, "faceDesign" ); //$NON-NLS-1$
-        assertArgumentLegal( faceDesign.getSize().equals( backDesign.getSize() ), "faceDesign", Messages.Card_setSurfaceDesigns_faceDesign_sizeNotEqual ); //$NON-NLS-1$
 
         synchronized( lock_ )
         {
-            backDesign_ = backDesign;
-            faceDesign_ = faceDesign;
+            setSurfaceDesignsInternal( backDesign, faceDesign );
         }
 
-        fireCardSurfaceDesignsChanged();
+        firePendingEventNotifications();
+    }
+
+    /**
+     * Sets the surface designs of this card.
+     * 
+     * @param backDesign
+     *        The design on the back of the card; must not be {@code null}.
+     * @param faceDesign
+     *        The design on the face of the card; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code backDesign} and {@code faceDesign} do not have the same
+     *         size.
+     */
+    @GuardedBy( "lock_" )
+    private void setSurfaceDesignsInternal(
+        /* @NonNull */
+        final ICardSurfaceDesign backDesign,
+        /* @NonNull */
+        final ICardSurfaceDesign faceDesign )
+    {
+        assert backDesign != null;
+        assert faceDesign != null;
+        assertArgumentLegal( faceDesign.getSize().equals( backDesign.getSize() ), "faceDesign", Messages.Card_setSurfaceDesignsInternal_faceDesign_sizeNotEqual ); //$NON-NLS-1$
+        assert Thread.holdsLock( lock_ );
+
+        backDesign_ = backDesign;
+        faceDesign_ = faceDesign;
+
+        pendingEventNotifications_.offer( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireCardSurfaceDesignsChanged();
+            }
+        } );
     }
 
     /*
