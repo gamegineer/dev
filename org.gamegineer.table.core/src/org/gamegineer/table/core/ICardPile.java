@@ -95,17 +95,17 @@ public interface ICardPile
         List<ICard> cards );
 
     /**
-     * Gets the design of the card pile base.
+     * Gets the base design of this card pile.
      * 
-     * @return The design of the card pile base; never {@code null}.
+     * @return The base design of this card pile; never {@code null}.
      */
     /* @NonNull */
     public ICardPileBaseDesign getBaseDesign();
 
     /**
-     * Gets the location of the card pile base in table coordinates.
+     * Gets the base location of this card pile in table coordinates.
      * 
-     * @return The location of the card pile base in table coordinates; never
+     * @return The base location of this card pile in table coordinates; never
      *         {@code null}.
      */
     /* @NonNull */
@@ -243,10 +243,10 @@ public interface ICardPile
         Point location );
 
     /**
-     * Sets the design of the card pile base.
+     * Sets the base design of this card pile.
      * 
      * @param baseDesign
-     *        The design of the card pile base; must not be {@code null}.
+     *        The base design of this card pile; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code baseDesign} is {@code null}.
@@ -256,10 +256,10 @@ public interface ICardPile
         ICardPileBaseDesign baseDesign );
 
     /**
-     * Sets the location of the card pile base in table coordinates.
+     * Sets the base location of this card pile in table coordinates.
      * 
      * @param baseLocation
-     *        The location of the card pile base in table coordinates; must not
+     *        The base location of this card pile in table coordinates; must not
      *        be {@code null}.
      * 
      * @throws java.lang.NullPointerException

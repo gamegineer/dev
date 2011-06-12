@@ -151,7 +151,7 @@ public interface ICard
         CardOrientation orientation );
 
     /**
-     * Sets the card surface designs.
+     * Sets the surface designs of this card.
      * 
      * @param backDesign
      *        The design on the back of the card; must not be {@code null}.
