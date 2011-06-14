@@ -432,7 +432,23 @@ public final class CardPile
         assert memento != null;
 
         final CardPile cardPile = new CardPile();
-        cardPile.setMemento( memento );
+
+        final ICardPileBaseDesign baseDesign = MementoUtils.getAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardPileBaseDesign.class );
+        cardPile.setBaseDesign( baseDesign );
+
+        final Point location = MementoUtils.getAttribute( memento, BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
+        cardPile.setLocation( location );
+
+        final CardPileLayout layout = MementoUtils.getAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, CardPileLayout.class );
+        cardPile.setLayout( layout );
+
+        @SuppressWarnings( "unchecked" )
+        final List<Object> cardMementos = MementoUtils.getAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
+        for( final Object cardMemento : cardMementos )
+        {
+            cardPile.addCard( Card.fromMemento( cardMemento ) );
+        }
+
         return cardPile;
     }
 
@@ -968,26 +984,16 @@ public final class CardPile
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
+        final CardPile cardPile = fromMemento( memento );
+
         synchronized( lock_ )
         {
-            final ICardPileBaseDesign baseDesign = MementoUtils.getAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardPileBaseDesign.class );
-            setBaseDesignInternal( baseDesign );
-
-            final Point location = MementoUtils.getAttribute( memento, BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
-            setLocationInternal( location );
-
-            final CardPileLayout layout = MementoUtils.getAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, CardPileLayout.class );
-            setLayoutInternal( layout );
+            setBaseDesignInternal( cardPile.getBaseDesign() );
+            setBaseLocationInternal( cardPile.getBaseLocation() );
+            setLayoutInternal( cardPile.getLayout() );
 
             removeCardsInternal( new CardRangeStrategy() );
-            @SuppressWarnings( "unchecked" )
-            final List<Object> cardMementos = MementoUtils.getAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
-            final List<ICard> cards = new ArrayList<ICard>( cardMementos.size() );
-            for( final Object cardMemento : cardMementos )
-            {
-                cards.add( Card.fromMemento( cardMemento ) );
-            }
-            addCardsInternal( cards );
+            addCardsInternal( cardPile.getCards() );
         }
 
         firePendingEventNotifications();

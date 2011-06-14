@@ -292,7 +292,24 @@ public final class Card
         assert memento != null;
 
         final Card card = new Card();
-        card.setMemento( memento );
+
+        final ICardSurfaceDesign backDesign = MementoUtils.getAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
+        final ICardSurfaceDesign faceDesign = MementoUtils.getAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
+        try
+        {
+            card.setSurfaceDesigns( backDesign, faceDesign );
+        }
+        catch( final IllegalArgumentException e )
+        {
+            throw new MementoException( e );
+        }
+
+        final Point location = MementoUtils.getAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
+        card.setLocation( location );
+
+        final CardOrientation orientation = MementoUtils.getAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, CardOrientation.class );
+        card.setOrientation( orientation );
+
         return card;
     }
 
@@ -434,24 +451,13 @@ public final class Card
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
+        final Card card = fromMemento( memento );
+
         synchronized( lock_ )
         {
-            final ICardSurfaceDesign backDesign = MementoUtils.getAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
-            final ICardSurfaceDesign faceDesign = MementoUtils.getAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
-            try
-            {
-                setSurfaceDesignsInternal( backDesign, faceDesign );
-            }
-            catch( final IllegalArgumentException e )
-            {
-                throw new MementoException( e );
-            }
-
-            final Point location = MementoUtils.getAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
-            setLocationInternal( location );
-
-            final CardOrientation orientation = MementoUtils.getAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, CardOrientation.class );
-            setOrientationInternal( orientation );
+            setSurfaceDesignsInternal( card.getBackDesign(), card.getFaceDesign() );
+            setLocationInternal( card.getLocation() );
+            setOrientationInternal( card.getOrientation() );
         }
 
         firePendingEventNotifications();

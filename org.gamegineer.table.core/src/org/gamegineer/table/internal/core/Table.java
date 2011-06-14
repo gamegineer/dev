@@ -257,6 +257,39 @@ public final class Table
         }
     }
 
+    /**
+     * Creates a new instance of the {@code Table} class from the specified
+     * memento.
+     * 
+     * @param memento
+     *        The memento representing the initial table state; must not be
+     *        {@code null}.
+     * 
+     * @return A new instance of the {@code Table} class; never {@code null}.
+     * 
+     * @throws org.gamegineer.common.core.util.memento.MementoException
+     *         If {@code memento} is malformed.
+     */
+    /* @NonNull */
+    static Table fromMemento(
+        /* @NonNull */
+        final Object memento )
+        throws MementoException
+    {
+        assert memento != null;
+
+        final Table table = new Table();
+
+        @SuppressWarnings( "unchecked" )
+        final List<Object> cardPileMementos = MementoUtils.getAttribute( memento, CARD_PILES_MEMENTO_ATTRIBUTE_NAME, List.class );
+        for( final Object cardPileMemento : cardPileMementos )
+        {
+            table.addCardPile( CardPile.fromMemento( cardPileMemento ) );
+        }
+
+        return table;
+    }
+
     /*
      * @see org.gamegineer.table.core.ITable#getCardPile(java.awt.Point)
      */
@@ -404,14 +437,14 @@ public final class Table
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
+        final Table table = fromMemento( memento );
+
         synchronized( lock_ )
         {
             removeAllCardPilesInternal();
-            @SuppressWarnings( "unchecked" )
-            final List<Object> cardPileMementos = MementoUtils.getAttribute( memento, CARD_PILES_MEMENTO_ATTRIBUTE_NAME, List.class );
-            for( final Object cardPileMemento : cardPileMementos )
+            for( final ICardPile cardPile : table.getCardPiles() )
             {
-                addCardPileInternal( CardPile.fromMemento( cardPileMemento ) );
+                addCardPileInternal( cardPile );
             }
         }
 
