@@ -970,33 +970,24 @@ public final class CardPile
 
         synchronized( lock_ )
         {
-            final ICardPileBaseDesign baseDesign = MementoUtils.getRequiredAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardPileBaseDesign.class );
+            final ICardPileBaseDesign baseDesign = MementoUtils.getAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardPileBaseDesign.class );
             setBaseDesignInternal( baseDesign );
 
-            final Point location = MementoUtils.getOptionalAttribute( memento, BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
-            if( location != null )
-            {
-                setLocationInternal( location );
-            }
+            final Point location = MementoUtils.getAttribute( memento, BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
+            setLocationInternal( location );
 
-            final CardPileLayout layout = MementoUtils.getOptionalAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, CardPileLayout.class );
-            if( layout != null )
-            {
-                setLayoutInternal( layout );
-            }
+            final CardPileLayout layout = MementoUtils.getAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, CardPileLayout.class );
+            setLayoutInternal( layout );
 
             removeCardsInternal( new CardRangeStrategy() );
             @SuppressWarnings( "unchecked" )
-            final List<Object> cardMementos = MementoUtils.getOptionalAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
-            if( cardMementos != null )
+            final List<Object> cardMementos = MementoUtils.getAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
+            final List<ICard> cards = new ArrayList<ICard>( cardMementos.size() );
+            for( final Object cardMemento : cardMementos )
             {
-                final List<ICard> cards = new ArrayList<ICard>( cardMementos.size() );
-                for( final Object cardMemento : cardMementos )
-                {
-                    cards.add( Card.fromMemento( cardMemento ) );
-                }
-                addCardsInternal( cards );
+                cards.add( Card.fromMemento( cardMemento ) );
             }
+            addCardsInternal( cards );
         }
 
         firePendingEventNotifications();

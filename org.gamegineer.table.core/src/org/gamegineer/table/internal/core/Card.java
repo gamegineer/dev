@@ -436,8 +436,8 @@ public final class Card
 
         synchronized( lock_ )
         {
-            final ICardSurfaceDesign backDesign = MementoUtils.getRequiredAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
-            final ICardSurfaceDesign faceDesign = MementoUtils.getRequiredAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
+            final ICardSurfaceDesign backDesign = MementoUtils.getAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
+            final ICardSurfaceDesign faceDesign = MementoUtils.getAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
             try
             {
                 setSurfaceDesignsInternal( backDesign, faceDesign );
@@ -447,17 +447,11 @@ public final class Card
                 throw new MementoException( e );
             }
 
-            final Point location = MementoUtils.getOptionalAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
-            if( location != null )
-            {
-                setLocationInternal( location );
-            }
+            final Point location = MementoUtils.getAttribute( memento, LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
+            setLocationInternal( location );
 
-            final CardOrientation orientation = MementoUtils.getOptionalAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, CardOrientation.class );
-            if( orientation != null )
-            {
-                setOrientationInternal( orientation );
-            }
+            final CardOrientation orientation = MementoUtils.getAttribute( memento, ORIENTATION_MEMENTO_ATTRIBUTE_NAME, CardOrientation.class );
+            setOrientationInternal( orientation );
         }
 
         firePendingEventNotifications();

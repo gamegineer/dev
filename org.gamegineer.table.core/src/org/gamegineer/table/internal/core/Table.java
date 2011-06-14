@@ -408,13 +408,10 @@ public final class Table
         {
             removeAllCardPilesInternal();
             @SuppressWarnings( "unchecked" )
-            final List<Object> cardPileMementos = MementoUtils.getOptionalAttribute( memento, CARD_PILES_MEMENTO_ATTRIBUTE_NAME, List.class );
-            if( cardPileMementos != null )
+            final List<Object> cardPileMementos = MementoUtils.getAttribute( memento, CARD_PILES_MEMENTO_ATTRIBUTE_NAME, List.class );
+            for( final Object cardPileMemento : cardPileMementos )
             {
-                for( final Object cardPileMemento : cardPileMementos )
-                {
-                    addCardPileInternal( CardPile.fromMemento( cardPileMemento ) );
-                }
+                addCardPileInternal( CardPile.fromMemento( cardPileMemento ) );
             }
         }
 
