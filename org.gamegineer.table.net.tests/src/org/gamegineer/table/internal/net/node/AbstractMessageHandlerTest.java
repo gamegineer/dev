@@ -45,6 +45,9 @@ public final class AbstractMessageHandlerTest
     // Fields
     // ======================================================================
 
+    /** The message handler under test in the fixture. */
+    private MockMessageHandler messageHandler_;
+
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
 
@@ -78,6 +81,7 @@ public final class AbstractMessageHandlerTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
+        messageHandler_ = new MockMessageHandler();
     }
 
     /**
@@ -90,20 +94,31 @@ public final class AbstractMessageHandlerTest
     public void tearDown()
         throws Exception
     {
+        messageHandler_ = null;
         mocksControl_ = null;
     }
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * remote node controller.
+     * remote node controller type.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_RemoteNodeController_Null()
+    public void testConstructor_RemoteNodeControllerType_Null()
     {
         new AbstractMessageHandler<IRemoteNodeController<?>>( null )
         {
             // no overrides
         };
+    }
+
+    /**
+     * Ensures the {@code handleMessage} method throws an exception when passed
+     * a {@code null} message.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testHandleMessage_Message_Null()
+    {
+        messageHandler_.handleMessage( mocksControl_.createMock( IRemoteNodeController.class ), (IMessage)null );
     }
 
     /**
@@ -115,12 +130,11 @@ public final class AbstractMessageHandlerTest
     {
         final IRemoteNodeController<?> controller = mocksControl_.createMock( IRemoteNodeController.class );
         final IMessage message = new FakeMessage();
-        final MockMessageHandler messageHandler = new MockMessageHandler( controller );
         mocksControl_.replay();
 
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
-        assertEquals( 1, messageHandler.getHandleFakeMessageCallCount() );
+        assertEquals( 1, messageHandler_.getHandleFakeMessageCallCount() );
     }
 
     /**
@@ -137,15 +151,36 @@ public final class AbstractMessageHandlerTest
         final IMessage message = mocksControl_.createMock( IMessage.class );
         EasyMock.expect( message.getId() ).andReturn( IMessage.MINIMUM_ID ).anyTimes();
         EasyMock.expect( message.getCorrelationId() ).andReturn( IMessage.MAXIMUM_ID ).anyTimes();
-        final MockMessageHandler messageHandler = new MockMessageHandler( controller );
         mocksControl_.replay();
 
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
-        assertEquals( 1, messageHandler.getHandleUnexpectedMessageCallCount() );
+        assertEquals( 1, messageHandler_.getHandleUnexpectedMessageCallCount() );
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
         assertEquals( TableNetworkError.UNEXPECTED_MESSAGE, ((ErrorMessage)messageCapture.getValue()).getError() );
+    }
+
+    /**
+     * Ensures the {@code handleMessage} method throws an exception when passed
+     * a {@code null} remote node controller.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testHandleMessage_RemoteNodeController_Null()
+    {
+        final IMessage message = new FakeMessage();
+
+        messageHandler_.handleMessage( null, message );
+    }
+
+    /**
+     * Ensures the {@code handleUnexpectedMessage} method throws an exception
+     * when passed a {@code null} remote node controller.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testHandleUnexpectedMessage_RemoteNodeController_Null()
+    {
+        messageHandler_.handleUnexpectedMessage( null );
     }
 
 
@@ -185,22 +220,23 @@ public final class AbstractMessageHandlerTest
      * A mock message handler.
      */
     @NotThreadSafe
+    @SuppressWarnings( "unchecked" )
     private static final class MockMessageHandler
-        extends AbstractMessageHandler<IRemoteNodeController<?>>
+        extends AbstractMessageHandler<IRemoteNodeController>
     {
         // ==================================================================
         // Fields
         // ==================================================================
 
         /**
-         * The count of calls made to the {@link #handleMessage(FakeMessage)}
-         * method.
+         * The count of calls made to the
+         * {@link #handleMessage(IRemoteNodeController, FakeMessage)} method.
          */
         private int handleFakeMessageCallCount_;
 
         /**
-         * The count of calls made to the {@link #handleUnexpectedMessage()}
-         * method.
+         * The count of calls made to the
+         * {@link #handleUnexpectedMessage(IRemoteNodeController)} method.
          */
         private int handleUnexpectedMessageCallCount_;
 
@@ -211,19 +247,10 @@ public final class AbstractMessageHandlerTest
 
         /**
          * Initializes a new instance of the {@code MockMessageHandler} class.
-         * 
-         * @param remoteNodeController
-         *        The remote node controller associated with the message
-         *        handler; must not be {@code null}.
-         * 
-         * @throws java.lang.NullPointerException
-         *         If {@code remoteNodeController} is {@code null}.
          */
-        MockMessageHandler(
-            /* @NonNull */
-            final IRemoteNodeController<?> remoteNodeController )
+        MockMessageHandler()
         {
-            super( remoteNodeController );
+            super( IRemoteNodeController.class );
 
             handleFakeMessageCallCount_ = 0;
             handleUnexpectedMessageCallCount_ = 0;
@@ -236,10 +263,11 @@ public final class AbstractMessageHandlerTest
 
         /**
          * Gets the count of calls made to the
-         * {@link #handleMessage(FakeMessage)} method.
+         * {@link #handleMessage(IRemoteNodeController, FakeMessage)} method.
          * 
          * @return The count of calls made to the
-         *         {@link #handleMessage(FakeMessage)} method.
+         *         {@link #handleMessage(IRemoteNodeController, FakeMessage)}
+         *         method.
          */
         int getHandleFakeMessageCallCount()
         {
@@ -248,10 +276,11 @@ public final class AbstractMessageHandlerTest
 
         /**
          * Gets the count of calls made to the
-         * {@link #handleUnexpectedMessage()} method.
+         * {@link #handleUnexpectedMessage(IRemoteNodeController)} method.
          * 
          * @return The count of calls made to the
-         *         {@link #handleUnexpectedMessage()} method.
+         *         {@link #handleUnexpectedMessage(IRemoteNodeController)}
+         *         method.
          */
         int getHandleUnexpectedMessageCallCount()
         {
@@ -261,25 +290,34 @@ public final class AbstractMessageHandlerTest
         /**
          * Handles a {@code FakeMessage} message.
          * 
+         * @param remoteNodeController
+         *        The control interface for the remote node that received the
+         *        message; must not be {@code null}.
          * @param message
          *        The message; must not be {@code null}.
          */
         @SuppressWarnings( "unused" )
         private void handleMessage(
             /* @NonNull */
+            final IRemoteNodeController<?> remoteNodeController,
+            /* @NonNull */
             final FakeMessage message )
         {
+            assert remoteNodeController != null;
             assert message != null;
 
             ++handleFakeMessageCallCount_;
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.node.AbstractMessageHandler#handleUnexpectedMessage()
+         * @see org.gamegineer.table.internal.net.node.AbstractMessageHandler#handleUnexpectedMessage(org.gamegineer.table.internal.net.node.IRemoteNodeController)
          */
         @Override
-        protected void handleUnexpectedMessage()
+        protected void handleUnexpectedMessage(
+            final IRemoteNodeController remoteNodeController )
         {
+            super.handleUnexpectedMessage( remoteNodeController );
+
             ++handleUnexpectedMessageCallCount_;
         }
     }

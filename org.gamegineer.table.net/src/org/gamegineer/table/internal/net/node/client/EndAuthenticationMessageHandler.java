@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.node.client;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.node.common.messages.EndAuthenticationMessage;
@@ -35,25 +36,24 @@ final class EndAuthenticationMessageHandler
     extends AbstractMessageHandler
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The singleton instance of this class. */
+    static final EndAuthenticationMessageHandler INSTANCE = new EndAuthenticationMessageHandler();
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
      * Initializes a new instance of the {@code EndAuthenticationMessageHandler}
      * class.
-     * 
-     * @param remoteNodeController
-     *        The control interface for the remote node associated with the
-     *        message handler; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code remoteNodeController} is {@code null}.
      */
-    EndAuthenticationMessageHandler(
-        /* @NonNull */
-        final IRemoteServerNodeController remoteNodeController )
+    private EndAuthenticationMessageHandler()
     {
-        super( remoteNodeController );
+        super();
     }
 
 
@@ -64,34 +64,46 @@ final class EndAuthenticationMessageHandler
     /**
      * Handles an {@code EndAuthenticationMessage} message.
      * 
+     * @param remoteNodeController
+     *        The control interface for the remote node that received the
+     *        message; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
     @SuppressWarnings( "unused" )
     private void handleMessage(
         /* @NonNull */
+        final IRemoteServerNodeController remoteNodeController,
+        /* @NonNull */
         final EndAuthenticationMessage message )
     {
+        assert remoteNodeController != null;
         assert message != null;
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
             String.format( "Received authentication confirmation (id=%d, correlation-id=%d)", //$NON-NLS-1$
                 Integer.valueOf( message.getId() ), //
                 Integer.valueOf( message.getCorrelationId() ) ) );
-        getRemoteNodeController().bind( "<<server>>" ); //$NON-NLS-1$
+        remoteNodeController.bind( "<<server>>" ); //$NON-NLS-1$
     }
 
     /**
      * Handles an {@code ErrorMessage} message.
      * 
+     * @param remoteNodeController
+     *        The control interface for the remote node that received the
+     *        message; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
     @SuppressWarnings( "unused" )
     private void handleMessage(
         /* @NonNull */
+        final IRemoteServerNodeController remoteNodeController,
+        /* @NonNull */
         final ErrorMessage message )
     {
+        assert remoteNodeController != null;
         assert message != null;
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
@@ -99,16 +111,19 @@ final class EndAuthenticationMessageHandler
                 message.getError(), //
                 Integer.valueOf( message.getId() ), //
                 Integer.valueOf( message.getCorrelationId() ) ) );
-        getRemoteNodeController().close( message.getError() );
+        remoteNodeController.close( message.getError() );
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.node.AbstractMessageHandler#handleUnexpectedMessage()
+     * @see org.gamegineer.table.internal.net.node.AbstractMessageHandler#handleUnexpectedMessage(org.gamegineer.table.internal.net.node.IRemoteNodeController)
      */
     @Override
-    protected void handleUnexpectedMessage()
+    protected void handleUnexpectedMessage(
+        final IRemoteServerNodeController remoteNodeController )
     {
+        assertArgumentNotNull( remoteNodeController, "remoteNodeController" ); //$NON-NLS-1$
+
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received unknown message in response to begin authentication response" ); //$NON-NLS-1$
-        getRemoteNodeController().close( TableNetworkError.UNEXPECTED_MESSAGE );
+        remoteNodeController.close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

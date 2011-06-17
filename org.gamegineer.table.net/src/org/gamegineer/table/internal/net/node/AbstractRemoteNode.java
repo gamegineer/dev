@@ -135,7 +135,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         serviceContext_ = null;
         uncorrelatedMessageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler>();
 
-        registerUncorrelatedMessageHandler( ErrorMessage.class, new ErrorMessageHandler( this ) );
+        registerUncorrelatedMessageHandler( ErrorMessage.class, ErrorMessageHandler.INSTANCE );
     }
 
 
@@ -398,7 +398,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
                 {
                     synchronized( localNode_.getLock() )
                     {
-                        messageHandler.handleMessage( message );
+                        messageHandler.handleMessage( this, message );
                     }
                 }
                 else
@@ -575,28 +575,28 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * A message handler for the {@link ErrorMessage} class.
      */
     @Immutable
+    @SuppressWarnings( "unchecked" )
     private static final class ErrorMessageHandler
-        extends AbstractMessageHandler<IRemoteNodeController<?>>
+        extends AbstractMessageHandler<IRemoteNodeController>
     {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The singleton instance of this class. */
+        static final ErrorMessageHandler INSTANCE = new ErrorMessageHandler();
+
+
         // ==================================================================
         // Constructors
         // ==================================================================
 
         /**
          * Initializes a new instance of the {@code ErrorMessageHandler} class.
-         * 
-         * @param remoteNodeController
-         *        The control interface for the remote node associated with the
-         *        message handler; must not be {@code null}.
-         * 
-         * @throws java.lang.NullPointerException
-         *         If {@code remoteNodeController} is {@code null}.
          */
-        ErrorMessageHandler(
-            /* @NonNull */
-            final IRemoteNodeController<?> remoteNodeController )
+        private ErrorMessageHandler()
         {
-            super( remoteNodeController );
+            super( IRemoteNodeController.class );
         }
 
 
@@ -607,14 +607,20 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         /**
          * Handles an {@code ErrorMessage} message.
          * 
+         * @param remoteNodeController
+         *        The control interface for the remote node that received the
+         *        message; must not be {@code null}.
          * @param message
          *        The message; must not be {@code null}.
          */
         @SuppressWarnings( "unused" )
         private void handleMessage(
             /* @NonNull */
+            final IRemoteNodeController<?> remoteNodeController,
+            /* @NonNull */
             final ErrorMessage message )
         {
+            assert remoteNodeController != null;
             assert message != null;
 
             Loggers.getDefaultLogger().warning( Messages.ErrorMessageHandler_handleMessage_errorReceived( message.getError() ) );

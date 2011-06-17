@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.gamegineer.table.internal.net.node.IMessageHandler;
 import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
 import org.junit.After;
 import org.junit.Before;
@@ -40,6 +41,9 @@ public final class PlayersMessageHandlerTest
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The message handler under test in the fixture. */
+    private IMessageHandler messageHandler_;
 
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
@@ -74,6 +78,7 @@ public final class PlayersMessageHandlerTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
+        messageHandler_ = PlayersMessageHandler.INSTANCE;
     }
 
     /**
@@ -86,6 +91,7 @@ public final class PlayersMessageHandlerTest
     public void tearDown()
         throws Exception
     {
+        messageHandler_ = null;
         mocksControl_ = null;
     }
 
@@ -109,8 +115,7 @@ public final class PlayersMessageHandlerTest
 
         final PlayersMessage message = new PlayersMessage();
         message.setPlayers( players );
-        final PlayersMessageHandler messageHandler = new PlayersMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
     }

@@ -35,7 +35,8 @@ public interface IMessageHandler
     // ======================================================================
 
     /**
-     * Handles the specified message for the associated remote node.
+     * Handles the specified message for the remote node associated with the
+     * specified control interface.
      * 
      * <p>
      * This method will be invoked by the remote node while its instance lock is
@@ -43,13 +44,19 @@ public interface IMessageHandler
      * remote node will be thread-safe and atomic.
      * </p>
      * 
+     * @param remoteNodeController
+     *        The control interface for the remote node that received the
+     *        message; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code message} is {@code null}.
+     *         If {@code remoteNodeController} or {@code message} is {@code
+     *         null}.
      */
     public void handleMessage(
+        /* @NonNull */
+        IRemoteNodeController<?> remoteNodeController,
         /* @NonNull */
         IMessage message );
 }

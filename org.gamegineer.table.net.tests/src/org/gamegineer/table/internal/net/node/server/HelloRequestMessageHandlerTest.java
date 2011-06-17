@@ -49,6 +49,9 @@ public final class HelloRequestMessageHandlerTest
     // Fields
     // ======================================================================
 
+    /** The message handler under test in the fixture. */
+    private IMessageHandler messageHandler_;
+
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
 
@@ -82,6 +85,7 @@ public final class HelloRequestMessageHandlerTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
+        messageHandler_ = HelloRequestMessageHandler.INSTANCE;
     }
 
     /**
@@ -94,6 +98,7 @@ public final class HelloRequestMessageHandlerTest
     public void tearDown()
         throws Exception
     {
+        messageHandler_ = null;
         mocksControl_ = null;
     }
 
@@ -117,8 +122,7 @@ public final class HelloRequestMessageHandlerTest
 
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
-        final HelloRequestMessageHandler messageHandler = new HelloRequestMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
     }
@@ -139,8 +143,7 @@ public final class HelloRequestMessageHandlerTest
 
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
-        final HelloRequestMessageHandler messageHandler = new HelloRequestMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
     }
@@ -164,8 +167,7 @@ public final class HelloRequestMessageHandlerTest
 
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
-        final HelloRequestMessageHandler messageHandler = new HelloRequestMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
         assertEquals( 2, messageCapture.getValues().size() );
@@ -195,8 +197,7 @@ public final class HelloRequestMessageHandlerTest
 
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( 0 );
-        final HelloRequestMessageHandler messageHandler = new HelloRequestMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );

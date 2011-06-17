@@ -44,6 +44,9 @@ public final class EndAuthenticationMessageHandlerTest
     // Fields
     // ======================================================================
 
+    /** The message handler under test in the fixture. */
+    private IMessageHandler messageHandler_;
+
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
 
@@ -77,6 +80,7 @@ public final class EndAuthenticationMessageHandlerTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
+        messageHandler_ = EndAuthenticationMessageHandler.INSTANCE;
     }
 
     /**
@@ -89,6 +93,7 @@ public final class EndAuthenticationMessageHandlerTest
     public void tearDown()
         throws Exception
     {
+        messageHandler_ = null;
         mocksControl_ = null;
     }
 
@@ -108,8 +113,7 @@ public final class EndAuthenticationMessageHandlerTest
         mocksControl_.replay();
 
         final EndAuthenticationMessage message = new EndAuthenticationMessage();
-        final EndAuthenticationMessageHandler messageHandler = new EndAuthenticationMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
     }
@@ -127,8 +131,7 @@ public final class EndAuthenticationMessageHandlerTest
 
         final ErrorMessage message = new ErrorMessage();
         message.setError( TableNetworkError.UNSPECIFIED_ERROR );
-        final EndAuthenticationMessageHandler messageHandler = new EndAuthenticationMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
     }
@@ -147,8 +150,7 @@ public final class EndAuthenticationMessageHandlerTest
         mocksControl_.replay();
 
         final FakeMessage message = new FakeMessage();
-        final EndAuthenticationMessageHandler messageHandler = new EndAuthenticationMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
     }

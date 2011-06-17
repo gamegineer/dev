@@ -39,25 +39,24 @@ final class BeginAuthenticationRequestMessageHandler
     extends AbstractMessageHandler
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The singleton instance of this class. */
+    static final BeginAuthenticationRequestMessageHandler INSTANCE = new BeginAuthenticationRequestMessageHandler();
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
      * Initializes a new instance of the {@code
      * BeginAuthenticationRequestMessageHandler} class.
-     * 
-     * @param remoteNodeController
-     *        The control interface for the remote node associated with the
-     *        message handler; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code remoteNodeController} is {@code null}.
      */
-    BeginAuthenticationRequestMessageHandler(
-        /* @NonNull */
-        final IRemoteServerNodeController remoteNodeController )
+    private BeginAuthenticationRequestMessageHandler()
     {
-        super( remoteNodeController );
+        super();
     }
 
 
@@ -68,18 +67,23 @@ final class BeginAuthenticationRequestMessageHandler
     /**
      * Handles a {@code BeginAuthenticationRequestMessage} message.
      * 
+     * @param remoteNodeController
+     *        The control interface for the remote node that received the
+     *        message; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
     @SuppressWarnings( "unused" )
     private void handleMessage(
         /* @NonNull */
+        final IRemoteServerNodeController remoteNodeController,
+        /* @NonNull */
         final BeginAuthenticationRequestMessage message )
     {
+        assert remoteNodeController != null;
         assert message != null;
 
-        final IRemoteServerNodeController controller = getRemoteNodeController();
-        final IClientNode localNode = controller.getLocalNode();
+        final IClientNode localNode = remoteNodeController.getLocalNode();
         final BeginAuthenticationResponseMessage response = new BeginAuthenticationResponseMessage();
         response.setCorrelationId( message.getId() );
         response.setPlayerName( localNode.getPlayerName() );
@@ -89,15 +93,15 @@ final class BeginAuthenticationRequestMessageHandler
         {
             final Authenticator authenticator = new Authenticator();
             response.setResponse( authenticator.createResponse( message.getChallenge(), password, message.getSalt() ) );
-            if( !controller.sendMessage( response, new EndAuthenticationMessageHandler( controller ) ) )
+            if( !remoteNodeController.sendMessage( response, EndAuthenticationMessageHandler.INSTANCE ) )
             {
-                controller.close( TableNetworkError.TRANSPORT_ERROR );
+                remoteNodeController.close( TableNetworkError.TRANSPORT_ERROR );
             }
         }
         catch( final TableNetworkException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.BeginAuthenticationRequestMessageHandler_beginAuthenticationResponseFailed, e );
-            controller.close( e.getError() );
+            remoteNodeController.close( e.getError() );
         }
         finally
         {

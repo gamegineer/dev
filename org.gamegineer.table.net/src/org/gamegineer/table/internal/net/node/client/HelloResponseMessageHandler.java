@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.node.client;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.node.common.ProtocolVersions;
@@ -36,25 +37,24 @@ final class HelloResponseMessageHandler
     extends AbstractMessageHandler
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The singleton instance of this class. */
+    static final HelloResponseMessageHandler INSTANCE = new HelloResponseMessageHandler();
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
      * Initializes a new instance of the {@code HelloResponseMessageHandler}
      * class.
-     * 
-     * @param remoteNodeController
-     *        The control interface for the remote node associated with the
-     *        message handler; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code remoteNodeController} is {@code null}.
      */
-    HelloResponseMessageHandler(
-        /* @NonNull */
-        final IRemoteServerNodeController remoteNodeController )
+    private HelloResponseMessageHandler()
     {
-        super( remoteNodeController );
+        super();
     }
 
 
@@ -65,14 +65,20 @@ final class HelloResponseMessageHandler
     /**
      * Handles an {@code ErrorMessage} message.
      * 
+     * @param remoteNodeController
+     *        The control interface for the remote node that received the
+     *        message; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
     @SuppressWarnings( "unused" )
     private void handleMessage(
         /* @NonNull */
+        final IRemoteServerNodeController remoteNodeController,
+        /* @NonNull */
         final ErrorMessage message )
     {
+        assert remoteNodeController != null;
         assert message != null;
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
@@ -80,20 +86,26 @@ final class HelloResponseMessageHandler
                 message.getError(), //
                 Integer.valueOf( message.getId() ), //
                 Integer.valueOf( message.getCorrelationId() ) ) );
-        getRemoteNodeController().close( message.getError() );
+        remoteNodeController.close( message.getError() );
     }
 
     /**
      * Handles a {@code HelloResponseMessage} message.
      * 
+     * @param remoteNodeController
+     *        The control interface for the remote node that received the
+     *        message; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
     @SuppressWarnings( "unused" )
     private void handleMessage(
         /* @NonNull */
+        final IRemoteServerNodeController remoteNodeController,
+        /* @NonNull */
         final HelloResponseMessage message )
     {
+        assert remoteNodeController != null;
         assert message != null;
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
@@ -104,17 +116,20 @@ final class HelloResponseMessageHandler
         if( message.getChosenProtocolVersion() != ProtocolVersions.VERSION_1 )
         {
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, "received unsupported chosen protocol version" ); //$NON-NLS-1$
-            getRemoteNodeController().close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
+            remoteNodeController.close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
         }
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.node.AbstractMessageHandler#handleUnexpectedMessage()
+     * @see org.gamegineer.table.internal.net.node.AbstractMessageHandler#handleUnexpectedMessage(org.gamegineer.table.internal.net.node.IRemoteNodeController)
      */
     @Override
-    protected void handleUnexpectedMessage()
+    protected void handleUnexpectedMessage(
+        final IRemoteServerNodeController remoteNodeController )
     {
+        assertArgumentNotNull( remoteNodeController, "remoteNodeController" ); //$NON-NLS-1$
+
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received unexpected message in response to hello request" ); //$NON-NLS-1$
-        getRemoteNodeController().close( TableNetworkError.UNEXPECTED_MESSAGE );
+        remoteNodeController.close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

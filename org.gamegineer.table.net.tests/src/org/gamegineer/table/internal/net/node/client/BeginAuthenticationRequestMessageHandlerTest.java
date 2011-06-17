@@ -48,6 +48,9 @@ public final class BeginAuthenticationRequestMessageHandlerTest
     // Fields
     // ======================================================================
 
+    /** The message handler under test in the fixture. */
+    private IMessageHandler messageHandler_;
+
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
 
@@ -81,6 +84,7 @@ public final class BeginAuthenticationRequestMessageHandlerTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
+        messageHandler_ = BeginAuthenticationRequestMessageHandler.INSTANCE;
     }
 
     /**
@@ -93,6 +97,7 @@ public final class BeginAuthenticationRequestMessageHandlerTest
     public void tearDown()
         throws Exception
     {
+        messageHandler_ = null;
         mocksControl_ = null;
     }
 
@@ -128,8 +133,7 @@ public final class BeginAuthenticationRequestMessageHandlerTest
             5, 6, 7, 8
         };
         message.setSalt( salt );
-        final BeginAuthenticationRequestMessageHandler messageHandler = new BeginAuthenticationRequestMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
         assertEquals( BeginAuthenticationResponseMessage.class, messageCapture.getValue().getClass() );
@@ -165,8 +169,7 @@ public final class BeginAuthenticationRequestMessageHandlerTest
         message.setSalt( new byte[] {
             5, 6, 7, 8
         } );
-        final BeginAuthenticationRequestMessageHandler messageHandler = new BeginAuthenticationRequestMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
     }

@@ -32,24 +32,23 @@ final class PlayersMessageHandler
     extends AbstractMessageHandler
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The singleton instance of this class. */
+    static final PlayersMessageHandler INSTANCE = new PlayersMessageHandler();
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
      * Initializes a new instance of the {@code PlayersMessageHandler} class.
-     * 
-     * @param remoteNodeController
-     *        The control interface for the remote node associated with the
-     *        message handler; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code remoteNodeController} is {@code null}.
      */
-    PlayersMessageHandler(
-        /* @NonNull */
-        final IRemoteServerNodeController remoteNodeController )
+    private PlayersMessageHandler()
     {
-        super( remoteNodeController );
+        super();
     }
 
 
@@ -60,16 +59,22 @@ final class PlayersMessageHandler
     /**
      * Handles a {@code PlayersMessage} message.
      * 
+     * @param remoteNodeController
+     *        The control interface for the remote node that received the
+     *        message; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
     @SuppressWarnings( "unused" )
     private void handleMessage(
         /* @NonNull */
+        final IRemoteServerNodeController remoteNodeController,
+        /* @NonNull */
         final PlayersMessage message )
     {
+        assert remoteNodeController != null;
         assert message != null;
 
-        getRemoteNodeController().getLocalNode().setPlayers( message.getPlayers() );
+        remoteNodeController.getLocalNode().setPlayers( message.getPlayers() );
     }
 }

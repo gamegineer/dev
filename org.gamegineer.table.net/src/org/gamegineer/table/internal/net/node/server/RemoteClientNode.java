@@ -83,7 +83,7 @@ final class RemoteClientNode
         challenge_ = null;
         salt_ = null;
 
-        registerUncorrelatedMessageHandler( HelloRequestMessage.class, new HelloRequestMessageHandler( this ) );
+        registerUncorrelatedMessageHandler( HelloRequestMessage.class, HelloRequestMessageHandler.INSTANCE );
     }
 
 

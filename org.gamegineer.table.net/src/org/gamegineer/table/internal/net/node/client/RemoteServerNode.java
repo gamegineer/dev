@@ -61,8 +61,8 @@ final class RemoteServerNode
     {
         super( localNode );
 
-        registerUncorrelatedMessageHandler( BeginAuthenticationRequestMessage.class, new BeginAuthenticationRequestMessageHandler( this ) );
-        registerUncorrelatedMessageHandler( PlayersMessage.class, new PlayersMessageHandler( this ) );
+        registerUncorrelatedMessageHandler( BeginAuthenticationRequestMessage.class, BeginAuthenticationRequestMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( PlayersMessage.class, PlayersMessageHandler.INSTANCE );
     }
 
 
@@ -105,7 +105,7 @@ final class RemoteServerNode
 
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
-        if( !sendMessage( message, new HelloResponseMessageHandler( this ) ) )
+        if( !sendMessage( message, HelloResponseMessageHandler.INSTANCE ) )
         {
             close( TableNetworkError.TRANSPORT_ERROR );
         }

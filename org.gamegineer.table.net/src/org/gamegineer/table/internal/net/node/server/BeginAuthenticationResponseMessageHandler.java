@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.node.server;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Arrays;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
@@ -43,25 +44,24 @@ final class BeginAuthenticationResponseMessageHandler
     extends AbstractMessageHandler
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The singleton instance of this class. */
+    static final BeginAuthenticationResponseMessageHandler INSTANCE = new BeginAuthenticationResponseMessageHandler();
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
      * Initializes a new instance of the {@code
      * BeginAuthenticationResponseMessageHandler} class.
-     * 
-     * @param remoteNodeController
-     *        The control interface for the remote node associated with the
-     *        message handler; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code remoteNodeController} is {@code null}.
      */
-    BeginAuthenticationResponseMessageHandler(
-        /* @NonNull */
-        final IRemoteClientNodeController remoteNodeController )
+    private BeginAuthenticationResponseMessageHandler()
     {
-        super( remoteNodeController );
+        super();
     }
 
 
@@ -72,6 +72,9 @@ final class BeginAuthenticationResponseMessageHandler
     /**
      * Authenticates the specified remote player.
      * 
+     * @param remoteNodeController
+     *        The control interface for the remote node that received the
+     *        message; must not be {@code null}.
      * @param playerName
      *        The remote player name; must not be {@code null}.
      * @param response
@@ -81,23 +84,25 @@ final class BeginAuthenticationResponseMessageHandler
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If the remote player cannot be authenticated.
      */
-    private void authenticate(
+    private static void authenticate(
+        /* @NonNull */
+        final IRemoteClientNodeController remoteNodeController,
         /* @NonNull */
         final String playerName,
         /* @NonNull */
         final byte[] response )
         throws TableNetworkException
     {
+        assert remoteNodeController != null;
         assert playerName != null;
         assert response != null;
 
-        final IRemoteClientNodeController controller = getRemoteNodeController();
-        final IServerNode localNode = controller.getLocalNode();
+        final IServerNode localNode = remoteNodeController.getLocalNode();
         final SecureString password = localNode.getPassword();
         try
         {
             final Authenticator authenticator = new Authenticator();
-            final byte[] expectedResponse = authenticator.createResponse( controller.getChallenge(), password, controller.getSalt() );
+            final byte[] expectedResponse = authenticator.createResponse( remoteNodeController.getChallenge(), password, remoteNodeController.getSalt() );
             if( Arrays.equals( expectedResponse, response ) )
             {
                 Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Client authenticated" ); //$NON-NLS-1$
@@ -121,14 +126,20 @@ final class BeginAuthenticationResponseMessageHandler
     /**
      * Handles a {@code BeginAuthenticationResponseMessage} message.
      * 
+     * @param remoteNodeController
+     *        The control interface for the remote node that received the
+     *        message; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
     @SuppressWarnings( "unused" )
     private void handleMessage(
         /* @NonNull */
+        final IRemoteClientNodeController remoteNodeController,
+        /* @NonNull */
         final BeginAuthenticationResponseMessage message )
     {
+        assert remoteNodeController != null;
         assert message != null;
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
@@ -137,10 +148,9 @@ final class BeginAuthenticationResponseMessageHandler
                 Integer.valueOf( message.getCorrelationId() ) ) );
 
         IMessage responseMessage;
-        final IRemoteClientNodeController controller = getRemoteNodeController();
         try
         {
-            authenticate( message.getPlayerName(), message.getResponse() );
+            authenticate( remoteNodeController, message.getPlayerName(), message.getResponse() );
             final EndAuthenticationMessage endAuthenticationMessage = new EndAuthenticationMessage();
             responseMessage = endAuthenticationMessage;
         }
@@ -153,32 +163,35 @@ final class BeginAuthenticationResponseMessageHandler
         }
 
         responseMessage.setCorrelationId( message.getId() );
-        if( controller.sendMessage( responseMessage, null ) )
+        if( remoteNodeController.sendMessage( responseMessage, null ) )
         {
             if( responseMessage instanceof ErrorMessage )
             {
-                controller.close( ((ErrorMessage)responseMessage).getError() );
+                remoteNodeController.close( ((ErrorMessage)responseMessage).getError() );
             }
             else
             {
-                controller.bind( message.getPlayerName() );
+                remoteNodeController.bind( message.getPlayerName() );
             }
         }
         else
         {
-            controller.close( TableNetworkError.TRANSPORT_ERROR );
+            remoteNodeController.close( TableNetworkError.TRANSPORT_ERROR );
             // TODO: all these close() calls smell bad; may just allow handleMessage()
             // to throw an exception that will force the remote node to close.
         }
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.node.AbstractMessageHandler#handleUnexpectedMessage()
+     * @see org.gamegineer.table.internal.net.node.AbstractMessageHandler#handleUnexpectedMessage(org.gamegineer.table.internal.net.node.IRemoteNodeController)
      */
     @Override
-    protected void handleUnexpectedMessage()
+    protected void handleUnexpectedMessage(
+        final IRemoteClientNodeController remoteNodeController )
     {
+        assertArgumentNotNull( remoteNodeController, "remoteNodeController" ); //$NON-NLS-1$
+
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received unknown message in response to begin authentication request" ); //$NON-NLS-1$
-        getRemoteNodeController().close( TableNetworkError.UNEXPECTED_MESSAGE );
+        remoteNodeController.close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

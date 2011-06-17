@@ -49,6 +49,9 @@ public final class BeginAuthenticationResponseMessageHandlerTest
     // Fields
     // ======================================================================
 
+    /** The message handler under test in the fixture. */
+    private IMessageHandler messageHandler_;
+
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
 
@@ -82,6 +85,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
+        messageHandler_ = BeginAuthenticationResponseMessageHandler.INSTANCE;
     }
 
     /**
@@ -94,6 +98,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
     public void tearDown()
         throws Exception
     {
+        messageHandler_ = null;
         mocksControl_ = null;
     }
 
@@ -134,8 +139,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
         message.setPlayerName( playerName );
         message.setResponse( response );
-        final BeginAuthenticationResponseMessageHandler messageHandler = new BeginAuthenticationResponseMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
         assertEquals( EndAuthenticationMessage.class, messageCapture.getValue().getClass() );
@@ -179,8 +183,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
         message.setPlayerName( playerName );
         message.setResponse( response );
-        final BeginAuthenticationResponseMessageHandler messageHandler = new BeginAuthenticationResponseMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
@@ -226,8 +229,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
         message.setPlayerName( playerName );
         message.setResponse( response );
-        final BeginAuthenticationResponseMessageHandler messageHandler = new BeginAuthenticationResponseMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
@@ -273,8 +275,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
         message.setPlayerName( playerName );
         message.setResponse( response );
-        final BeginAuthenticationResponseMessageHandler messageHandler = new BeginAuthenticationResponseMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
     }
@@ -293,8 +294,7 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         mocksControl_.replay();
 
         final FakeMessage message = new FakeMessage();
-        final BeginAuthenticationResponseMessageHandler messageHandler = new BeginAuthenticationResponseMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
     }

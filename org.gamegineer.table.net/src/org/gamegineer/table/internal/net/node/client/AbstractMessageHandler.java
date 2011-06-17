@@ -36,18 +36,9 @@ abstract class AbstractMessageHandler
 
     /**
      * Initializes a new instance of the {@code AbstractMessageHandler} class.
-     * 
-     * @param remoteNodeController
-     *        The control interface for the remote node associated with the
-     *        message handler; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code remoteNodeController} is {@code null}.
      */
-    AbstractMessageHandler(
-        /* @NonNull */
-        final IRemoteServerNodeController remoteNodeController )
+    AbstractMessageHandler()
     {
-        super( remoteNodeController );
+        super( IRemoteServerNodeController.class );
     }
 }

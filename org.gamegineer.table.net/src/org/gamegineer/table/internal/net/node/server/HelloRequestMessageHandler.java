@@ -43,25 +43,24 @@ final class HelloRequestMessageHandler
     extends AbstractMessageHandler
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The singleton instance of this class. */
+    static final HelloRequestMessageHandler INSTANCE = new HelloRequestMessageHandler();
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
      * Initializes a new instance of the {@code HelloRequestMessageHandler}
      * class.
-     * 
-     * @param remoteNodeController
-     *        The control interface for the remote node associated with the
-     *        message handler; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code remoteNodeController} is {@code null}.
      */
-    HelloRequestMessageHandler(
-        /* @NonNull */
-        final IRemoteClientNodeController remoteNodeController )
+    private HelloRequestMessageHandler()
     {
-        super( remoteNodeController );
+        super();
     }
 
 
@@ -72,14 +71,20 @@ final class HelloRequestMessageHandler
     /**
      * Handles a {@code HelloRequestMessage} message.
      * 
+     * @param remoteNodeController
+     *        The control interface for the remote node that received the
+     *        message; must not be {@code null}.
      * @param message
      *        The message; must not be {@code null}.
      */
     @SuppressWarnings( "unused" )
     private void handleMessage(
         /* @NonNull */
+        final IRemoteClientNodeController remoteNodeController,
+        /* @NonNull */
         final HelloRequestMessage message )
     {
+        assert remoteNodeController != null;
         assert message != null;
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
@@ -87,8 +92,6 @@ final class HelloRequestMessageHandler
                 Integer.valueOf( message.getSupportedProtocolVersion() ), //
                 Integer.valueOf( message.getId() ), //
                 Integer.valueOf( message.getCorrelationId() ) ) );
-
-        final IRemoteClientNodeController controller = getRemoteNodeController();
 
         final IMessage responseMessage;
         if( message.getSupportedProtocolVersion() >= ProtocolVersions.VERSION_1 )
@@ -105,16 +108,16 @@ final class HelloRequestMessageHandler
         }
 
         responseMessage.setCorrelationId( message.getId() );
-        if( !controller.sendMessage( responseMessage, null ) )
+        if( !remoteNodeController.sendMessage( responseMessage, null ) )
         {
-            controller.close( TableNetworkError.TRANSPORT_ERROR );
+            remoteNodeController.close( TableNetworkError.TRANSPORT_ERROR );
             return;
         }
 
         if( responseMessage instanceof ErrorMessage )
         {
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Server does not support client protocol version" ); //$NON-NLS-1$
-            controller.close( ((ErrorMessage)responseMessage).getError() );
+            remoteNodeController.close( ((ErrorMessage)responseMessage).getError() );
             return;
         }
 
@@ -123,21 +126,21 @@ final class HelloRequestMessageHandler
             final Authenticator authenticator = new Authenticator();
             final BeginAuthenticationRequestMessage beginAuthenticationRequest = new BeginAuthenticationRequestMessage();
             final byte[] challenge = authenticator.createChallenge();
-            controller.setChallenge( challenge );
+            remoteNodeController.setChallenge( challenge );
             beginAuthenticationRequest.setChallenge( challenge );
             final byte[] salt = authenticator.createSalt();
-            controller.setSalt( salt );
+            remoteNodeController.setSalt( salt );
             beginAuthenticationRequest.setSalt( salt );
 
-            if( !controller.sendMessage( beginAuthenticationRequest, new BeginAuthenticationResponseMessageHandler( controller ) ) )
+            if( !remoteNodeController.sendMessage( beginAuthenticationRequest, BeginAuthenticationResponseMessageHandler.INSTANCE ) )
             {
-                controller.close( TableNetworkError.TRANSPORT_ERROR );
+                remoteNodeController.close( TableNetworkError.TRANSPORT_ERROR );
             }
         }
         catch( final TableNetworkException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, Messages.HelloRequestMessageHandler_beginAuthenticationRequestFailed, e );
-            controller.close( e.getError() );
+            remoteNodeController.close( e.getError() );
         }
     }
 }

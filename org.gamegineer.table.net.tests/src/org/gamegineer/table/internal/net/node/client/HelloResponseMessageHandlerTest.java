@@ -45,6 +45,9 @@ public final class HelloResponseMessageHandlerTest
     // Fields
     // ======================================================================
 
+    /** The message handler under test in the fixture. */
+    private IMessageHandler messageHandler_;
+
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
 
@@ -78,6 +81,7 @@ public final class HelloResponseMessageHandlerTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
+        messageHandler_ = HelloResponseMessageHandler.INSTANCE;
     }
 
     /**
@@ -90,6 +94,7 @@ public final class HelloResponseMessageHandlerTest
     public void tearDown()
         throws Exception
     {
+        messageHandler_ = null;
         mocksControl_ = null;
     }
 
@@ -106,8 +111,7 @@ public final class HelloResponseMessageHandlerTest
 
         final ErrorMessage message = new ErrorMessage();
         message.setError( TableNetworkError.UNSPECIFIED_ERROR );
-        final HelloResponseMessageHandler messageHandler = new HelloResponseMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
     }
@@ -125,8 +129,7 @@ public final class HelloResponseMessageHandlerTest
 
         final HelloResponseMessage message = new HelloResponseMessage();
         message.setChosenProtocolVersion( ProtocolVersions.VERSION_1 );
-        final HelloResponseMessageHandler messageHandler = new HelloResponseMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
     }
@@ -145,8 +148,7 @@ public final class HelloResponseMessageHandlerTest
 
         final HelloResponseMessage message = new HelloResponseMessage();
         message.setChosenProtocolVersion( 0 );
-        final HelloResponseMessageHandler messageHandler = new HelloResponseMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
     }
@@ -165,8 +167,7 @@ public final class HelloResponseMessageHandlerTest
         mocksControl_.replay();
 
         final FakeMessage message = new FakeMessage();
-        final HelloResponseMessageHandler messageHandler = new HelloResponseMessageHandler( controller );
-        messageHandler.handleMessage( message );
+        messageHandler_.handleMessage( controller, message );
 
         mocksControl_.verify();
     }
