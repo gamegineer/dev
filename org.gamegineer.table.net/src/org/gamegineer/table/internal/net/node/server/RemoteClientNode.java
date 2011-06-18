@@ -28,6 +28,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.node.AbstractRemoteNode;
 import org.gamegineer.table.internal.net.node.common.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
+import org.gamegineer.table.internal.net.node.common.messages.TableMessage;
 
 /**
  * A remote client node.
@@ -164,6 +165,23 @@ final class RemoteClientNode
         synchronized( getLock() )
         {
             salt_ = salt;
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.server.IRemoteClientNode#setTableMemento(java.lang.Object)
+     */
+    @Override
+    public void setTableMemento(
+        final Object memento )
+    {
+        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
+
+        final TableMessage message = new TableMessage();
+        message.setMemento( memento );
+        synchronized( getLock() )
+        {
+            sendMessage( message, null );
         }
     }
 }

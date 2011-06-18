@@ -107,7 +107,7 @@ final class Dispatcher
         // FIXME: Under current implementation, buffer capacity must be as
         // large as the largest incoming message.  Need to fix this requirement.
 
-        bufferPool_ = new ByteBufferPool( 8196 );
+        bufferPool_ = new ByteBufferPool( 16384 );
         eventDispatchTask_ = null;
         eventHandlers_ = new ArrayList<AbstractEventHandler>();
         lock_ = new Object();

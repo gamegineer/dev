@@ -62,4 +62,14 @@ public abstract class AbstractRemoteClientNodeTestCase<T extends IRemoteClientNo
     {
         getRemoteNode().setPlayers( null );
     }
+
+    /**
+     * Ensures the {@code setTableMemento} method throws an exception when
+     * passed a {@code null} memento.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetTableMemento_Memento_Null()
+    {
+        getRemoteNode().setTableMemento( null );
+    }
 }

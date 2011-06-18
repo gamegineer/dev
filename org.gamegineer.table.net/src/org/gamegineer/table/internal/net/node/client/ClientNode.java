@@ -28,9 +28,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.memento.IMementoOriginator;
+import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.node.AbstractNode;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -279,5 +283,41 @@ public final class ClientNode
         players_.clear();
         players_.addAll( players );
         getTableNetworkController().playersUpdated();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.client.IClientNode#setTableMemento(java.lang.Object)
+     */
+    @Override
+    public void setTableMemento(
+        final Object memento )
+    {
+        assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        assertConnected();
+        updateLocalTable( memento );
+    }
+
+    /**
+     * Updates the state of the local table using the specified memento.
+     * 
+     * @param memento
+     *        The table memento; must not be {@code null}.
+     */
+    private void updateLocalTable(
+        /* @NonNull */
+        final Object memento )
+    {
+        assert memento != null;
+
+        try
+        {
+            ((IMementoOriginator)getLocalTable()).setMemento( memento );
+        }
+        catch( final MementoException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ClientNode_updateLocalTable_error, e );
+        }
     }
 }

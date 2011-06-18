@@ -26,10 +26,11 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.persistence.serializable.ObjectInputStream;
+import org.gamegineer.common.persistence.serializable.ObjectOutputStream;
+import org.gamegineer.common.persistence.serializable.ObjectStreams;
 
 /**
  * A network protocol message envelope.
@@ -195,7 +196,7 @@ public final class MessageEnvelope
     {
         assert body != null;
 
-        final ObjectInputStream stream = new ObjectInputStream( new ByteArrayInputStream( body ) );
+        final ObjectInputStream stream = ObjectStreams.createPlatformObjectInputStream( new ByteArrayInputStream( body ) );
         try
         {
             return (IMessage)stream.readObject();
@@ -341,7 +342,7 @@ public final class MessageEnvelope
         assert message != null;
 
         final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        final ObjectOutputStream objectStream = new ObjectOutputStream( byteStream );
+        final ObjectOutputStream objectStream = ObjectStreams.createPlatformObjectOutputStream( byteStream );
         try
         {
             objectStream.writeObject( message );

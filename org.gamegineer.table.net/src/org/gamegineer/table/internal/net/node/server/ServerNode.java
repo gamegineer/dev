@@ -24,13 +24,20 @@ package org.gamegineer.table.internal.net.node.server;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.util.memento.IMementoOriginator;
+import org.gamegineer.common.core.util.memento.MementoException;
+import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.node.AbstractNode;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkException;
 
 /**
@@ -44,6 +51,10 @@ public final class ServerNode
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The master table for the table network. */
+    @GuardedBy( "getLock()" )
+    private ITable masterTable_;
 
     /** The collection of players connected to the table network. */
     @GuardedBy( "getLock()" )
@@ -69,6 +80,7 @@ public final class ServerNode
     {
         super( tableNetworkController );
 
+        masterTable_ = null;
         players_ = new ArrayList<String>();
     }
 
@@ -109,6 +121,7 @@ public final class ServerNode
 
         super.connecting();
 
+        initializeMasterTable();
         bindPlayer( getPlayerName() );
     }
 
@@ -141,6 +154,7 @@ public final class ServerNode
         super.disconnected();
 
         unbindPlayer( getPlayerName() );
+        masterTable_ = null;
     }
 
     /*
@@ -179,6 +193,30 @@ public final class ServerNode
         {
             return new ArrayList<String>( players_ );
         }
+    }
+
+    /**
+     * Initializes the master table for the table network.
+     * 
+     * @throws org.gamegineer.table.net.TableNetworkException
+     *         If an error occurs.
+     */
+    private void initializeMasterTable()
+        throws TableNetworkException
+    {
+        final ITable masterTable;
+        try
+        {
+            final Object memento = ((IMementoOriginator)getLocalTable()).createMemento();
+            masterTable = TableFactory.createTable();
+            ((IMementoOriginator)masterTable).setMemento( memento );
+        }
+        catch( final MementoException e )
+        {
+            throw new TableNetworkException( TableNetworkError.UNSPECIFIED_ERROR, e );
+        }
+
+        masterTable_ = masterTable;
     }
 
     /*
@@ -223,6 +261,7 @@ public final class ServerNode
         super.remoteNodeBound( remoteNode );
 
         bindPlayer( remoteNode.getPlayerName() );
+        updateRemoteTable( remoteNode );
     }
 
     /*
@@ -259,5 +298,28 @@ public final class ServerNode
         players_.remove( playerName );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has disconnected", playerName ) ); //$NON-NLS-1$
         notifyPlayersUpdated();
+    }
+
+    /**
+     * Updates the state of the table at the specified remote node with the
+     * master table state.
+     * 
+     * @param remoteNode
+     *        The remote node; must not be {@code null}.
+     */
+    private void updateRemoteTable(
+        /* @NonNull */
+        final IRemoteClientNode remoteNode )
+    {
+        assert remoteNode != null;
+
+        try
+        {
+            remoteNode.setTableMemento( ((IMementoOriginator)masterTable_).createMemento() );
+        }
+        catch( final MementoException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerNode_updateRemoteTable_error, e );
+        }
     }
 }

@@ -394,6 +394,24 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         tableProxies_.clear();
     }
 
+    /**
+     * Gets the local table.
+     * 
+     * @return The local table; never {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If the network is not connected.
+     */
+    @GuardedBy( "getLock()" )
+    /* @NonNull */
+    protected final ITable getLocalTable()
+    {
+        assert Thread.holdsLock( getLock() );
+
+        assertStateLegal( localPlayerName_ != null, Messages.AbstractNode_networkDisconnected );
+        return tableProxies_.get( localPlayerName_ );
+    }
+
     /*
      * @see org.gamegineer.table.internal.net.node.INode#getLock()
      */
@@ -403,10 +421,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         return lock_;
     }
 
-    /**
-     * @throws java.lang.IllegalStateException
-     *         If the network is not connected.
-     * 
+    /*
      * @see org.gamegineer.table.internal.net.node.INode#getPassword()
      */
     @Override
