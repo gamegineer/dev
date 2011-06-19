@@ -322,6 +322,12 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
             }
 
             @Override
+            public Object createMemento()
+            {
+                return null;
+            }
+
+            @Override
             public ICardPile getCardPile(
                 @SuppressWarnings( "unused" )
                 final Point location )
@@ -353,6 +359,14 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
             public void removeTableListener(
                 @SuppressWarnings( "unused" )
                 final ITableListener listener )
+            {
+                // do nothing
+            }
+
+            @Override
+            public void setMemento(
+                @SuppressWarnings( "unused" )
+                final Object memento )
             {
                 // do nothing
             }

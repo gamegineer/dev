@@ -38,7 +38,6 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
@@ -53,7 +52,7 @@ import org.gamegineer.table.core.ICardPileListener;
  */
 @ThreadSafe
 public final class CardPile
-    implements ICardPile, IMementoOriginator
+    implements ICardPile
 {
     // ======================================================================
     // Fields
@@ -272,7 +271,6 @@ public final class CardPile
      */
     @Override
     public Object createMemento()
-        throws MementoException
     {
         final Map<String, Object> memento = new HashMap<String, Object>();
 
@@ -285,14 +283,7 @@ public final class CardPile
             final List<Object> cardMementos = new ArrayList<Object>( cards_.size() );
             for( final ICard card : cards_ )
             {
-                if( card instanceof IMementoOriginator )
-                {
-                    cardMementos.add( ((IMementoOriginator)card).createMemento() );
-                }
-                else
-                {
-                    throw new MementoException( Messages.CardPile_createMemento_cardNotMementoOriginator( card.getClass() ) );
-                }
+                cardMementos.add( card.createMemento() );
             }
             memento.put( CARDS_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardMementos ) );
         }

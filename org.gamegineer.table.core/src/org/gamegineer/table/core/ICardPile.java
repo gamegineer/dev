@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
+import org.gamegineer.common.core.util.memento.IMementoOriginator;
 
 /**
  * A card pile.
@@ -34,6 +35,7 @@ import java.util.List;
  * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface ICardPile
+    extends IMementoOriginator
 {
     // ======================================================================
     // Methods

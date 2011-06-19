@@ -35,7 +35,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
@@ -48,7 +47,7 @@ import org.gamegineer.table.core.ICardSurfaceDesign;
  */
 @ThreadSafe
 public final class Card
-    implements ICard, IMementoOriginator
+    implements ICard
 {
     // ======================================================================
     // Fields

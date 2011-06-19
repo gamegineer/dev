@@ -24,6 +24,7 @@ package org.gamegineer.table.core;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import org.gamegineer.common.core.util.memento.IMementoOriginator;
 
 /**
  * A card.
@@ -33,6 +34,7 @@ import java.awt.Rectangle;
  * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface ICard
+    extends IMementoOriginator
 {
     // ======================================================================
     // Methods

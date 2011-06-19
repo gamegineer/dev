@@ -45,11 +45,6 @@ final class Messages
     /** Failed to create the begin authentication request. */
     public static String HelloRequestMessageHandler_beginAuthenticationRequestFailed;
 
-    // --- ServerNode -------------------------------------------------------
-
-    /** An error occurred while updating a remote table. */
-    public static String ServerNode_updateRemoteTable_error;
-
 
     // ======================================================================
     // Constructors

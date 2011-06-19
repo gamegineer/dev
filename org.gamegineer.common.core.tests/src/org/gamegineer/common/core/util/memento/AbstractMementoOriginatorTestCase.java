@@ -145,13 +145,9 @@ public abstract class AbstractMementoOriginatorTestCase
 
     /**
      * Ensures the {@code createMemento} method does not return {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test
     public void testCreateMemento_ReturnValue_NonNull()
-        throws Exception
     {
         assertNotNull( mementoOriginator_.createMemento() );
     }

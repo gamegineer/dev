@@ -23,8 +23,6 @@ package org.gamegineer.common.core.util.memento;
 
 /**
  * A memento originator.
- * 
- * @noextend This interface is not intended to be extended by clients.
  */
 public interface IMementoOriginator
 {
@@ -37,13 +35,9 @@ public interface IMementoOriginator
      * 
      * @return A memento that represents the state of the originator; never
      *         {@code null}.
-     * 
-     * @throws org.gamegineer.common.core.util.memento.MementoException
-     *         If the memento cannot be created.
      */
     /* @NonNull */
-    public Object createMemento()
-        throws MementoException;
+    public Object createMemento();
 
     /**
      * Sets the state of the originator using the specified memento.

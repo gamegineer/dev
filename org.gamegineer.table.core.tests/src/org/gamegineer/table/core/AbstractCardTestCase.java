@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.table.core.Assert.assertCardEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
@@ -28,6 +29,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase;
+import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +40,7 @@ import org.junit.Test;
  * {@link org.gamegineer.table.core.ICard} interface.
  */
 public abstract class AbstractCardTestCase
+    extends AbstractMementoOriginatorTestCase
 {
     // ======================================================================
     // Fields
@@ -66,6 +70,19 @@ public abstract class AbstractCardTestCase
     // Methods
     // ======================================================================
 
+    /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#assertMementoOriginatorEquals(org.gamegineer.common.core.util.memento.IMementoOriginator, org.gamegineer.common.core.util.memento.IMementoOriginator)
+     */
+    @Override
+    protected void assertMementoOriginatorEquals(
+        final IMementoOriginator expected,
+        final IMementoOriginator actual )
+    {
+        final ICard expectedCard = (ICard)expected;
+        final ICard actualCard = (ICard)actual;
+        assertCardEquals( expectedCard, actualCard );
+    }
+
     /**
      * Creates the card to be tested.
      * 
@@ -78,31 +95,54 @@ public abstract class AbstractCardTestCase
     protected abstract ICard createCard()
         throws Exception;
 
-    /**
-     * Sets up the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+    /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#createMementoOriginator()
+     */
+    @Override
+    protected IMementoOriginator createMementoOriginator()
+    {
+        card_.setLocation( new Point( 0, 0 ) );
+        card_.setOrientation( CardOrientation.BACK_UP );
+        return card_;
+    }
+
+    /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#initializeMementoOriginator(org.gamegineer.common.core.util.memento.IMementoOriginator)
+     */
+    @Override
+    protected void initializeMementoOriginator(
+        final IMementoOriginator mementoOriginator )
+    {
+        final ICard card = (ICard)mementoOriginator;
+        card.setLocation( new Point( Integer.MAX_VALUE, Integer.MIN_VALUE ) );
+        card.setOrientation( CardOrientation.FACE_UP );
+    }
+
+    /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#setUp()
      */
     @Before
+    @Override
     public void setUp()
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
         card_ = createCard();
         assertNotNull( card_ );
+
+        super.setUp();
     }
 
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+    /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#tearDown()
      */
     @After
+    @Override
     public void tearDown()
         throws Exception
     {
+        super.tearDown();
+
         card_ = null;
         mocksControl_ = null;
     }

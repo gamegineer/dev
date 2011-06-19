@@ -31,7 +31,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.Loggers;
@@ -313,7 +312,7 @@ public final class ClientNode
 
         try
         {
-            ((IMementoOriginator)getLocalTable()).setMemento( memento );
+            getLocalTable().setMemento( memento );
         }
         catch( final MementoException e )
         {

@@ -24,16 +24,13 @@ package org.gamegineer.table.internal.net.node.server;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
-import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.node.AbstractNode;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -207,9 +204,8 @@ public final class ServerNode
         final ITable masterTable;
         try
         {
-            final Object memento = ((IMementoOriginator)getLocalTable()).createMemento();
             masterTable = TableFactory.createTable();
-            ((IMementoOriginator)masterTable).setMemento( memento );
+            masterTable.setMemento( getLocalTable().createMemento() );
         }
         catch( final MementoException e )
         {
@@ -313,13 +309,6 @@ public final class ServerNode
     {
         assert remoteNode != null;
 
-        try
-        {
-            remoteNode.setTableMemento( ((IMementoOriginator)masterTable_).createMemento() );
-        }
-        catch( final MementoException e )
-        {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerNode_updateRemoteTable_error, e );
-        }
+        remoteNode.setTableMemento( masterTable_.createMemento() );
     }
 }

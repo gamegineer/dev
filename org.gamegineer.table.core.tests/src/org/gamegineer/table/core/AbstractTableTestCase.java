@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.table.core.Assert.assertTableEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -31,6 +32,8 @@ import java.awt.Point;
 import java.util.List;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase;
+import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +43,7 @@ import org.junit.Test;
  * {@link org.gamegineer.table.core.ITable} interface.
  */
 public abstract class AbstractTableTestCase
+    extends AbstractMementoOriginatorTestCase
 {
     // ======================================================================
     // Fields
@@ -69,6 +73,19 @@ public abstract class AbstractTableTestCase
     // Methods
     // ======================================================================
 
+    /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#assertMementoOriginatorEquals(org.gamegineer.common.core.util.memento.IMementoOriginator, org.gamegineer.common.core.util.memento.IMementoOriginator)
+     */
+    @Override
+    protected void assertMementoOriginatorEquals(
+        final IMementoOriginator expected,
+        final IMementoOriginator actual )
+    {
+        final ITable expectedTable = (ITable)expected;
+        final ITable actualTable = (ITable)actual;
+        assertTableEquals( expectedTable, actualTable );
+    }
+
     /**
      * Creates the table to be tested.
      * 
@@ -81,31 +98,53 @@ public abstract class AbstractTableTestCase
     protected abstract ITable createTable()
         throws Exception;
 
-    /**
-     * Sets up the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+    /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#createMementoOriginator()
+     */
+    @Override
+    protected IMementoOriginator createMementoOriginator()
+    {
+        return table_;
+    }
+
+    /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#initializeMementoOriginator(org.gamegineer.common.core.util.memento.IMementoOriginator)
+     */
+    @Override
+    protected void initializeMementoOriginator(
+        final IMementoOriginator mementoOriginator )
+    {
+        final ITable table = (ITable)mementoOriginator;
+        final ICardPile cardPile = CardPiles.createUniqueCardPile();
+        cardPile.addCard( Cards.createUniqueCard() );
+        table.addCardPile( cardPile );
+    }
+
+    /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#setUp()
      */
     @Before
+    @Override
     public void setUp()
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
         table_ = createTable();
         assertNotNull( table_ );
+
+        super.setUp();
     }
 
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+    /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#tearDown()
      */
     @After
+    @Override
     public void tearDown()
         throws Exception
     {
+        super.tearDown();
+
         table_ = null;
         mocksControl_ = null;
     }

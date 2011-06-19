@@ -36,7 +36,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
 import org.gamegineer.table.core.ICardPile;
@@ -264,41 +263,6 @@ public final class TableModel
         cardPileModels_.put( cardPile, cardPileModel );
         cardPileModel.addCardPileModelListener( this );
         return cardPileModel;
-    }
-
-    /**
-     * Creates a memento from the specified table.
-     * 
-     * @param table
-     *        The table from which the memento is created; must not be {@code
-     *        null}.
-     * 
-     * @return The table memento; never {@code null}.
-     * 
-     * @throws org.gamegineer.table.internal.ui.model.ModelException
-     *         If an error occurs while creating the memento.
-     */
-    /* @NonNull */
-    private static Object createTableMemento(
-        /* @NonNull */
-        final ITable table )
-        throws ModelException
-    {
-        assert table != null;
-
-        if( !(table instanceof IMementoOriginator) )
-        {
-            throw new ModelException( Messages.TableModel_createTableMemento_tableNotMementoOriginator( table.getClass() ) );
-        }
-
-        try
-        {
-            return ((IMementoOriginator)table).createMemento();
-        }
-        catch( final MementoException e )
-        {
-            throw new ModelException( Messages.TableModel_createTableMemento_error, e );
-        }
     }
 
     /**
@@ -805,14 +769,9 @@ public final class TableModel
         assert table != null;
         assert file != null;
 
-        if( !(table instanceof IMementoOriginator) )
-        {
-            throw new ModelException( Messages.TableModel_setTableMemento_tableNotMementoOriginator( table.getClass() ) );
-        }
-
         try
         {
-            ((IMementoOriginator)table).setMemento( readTableMemento( file ) );
+            table.setMemento( readTableMemento( file ) );
         }
         catch( final MementoException e )
         {
@@ -878,7 +837,7 @@ public final class TableModel
         assert file != null;
         assert table != null;
 
-        writeTableMemento( file, createTableMemento( table ) );
+        writeTableMemento( file, table.createMemento() );
     }
 
     /**

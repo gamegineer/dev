@@ -119,12 +119,6 @@ final class Messages
      */
     public static String TableModel_cardPileFocusChanged_unexpectedException;
 
-    /** An error occurred while creating the table memento. */
-    public static String TableModel_createTableMemento_error;
-
-    /** The table is not a memento originator. */
-    public static String TableModel_createTableMemento_tableNotMementoOriginator;
-
     /** The card pile is not present in the table. */
     public static String TableModel_getCardPileModel_cardPile_absent;
 
@@ -136,9 +130,6 @@ final class Messages
 
     /** An error occurred while setting the table memento. */
     public static String TableModel_setTableMemento_error;
-
-    /** The table is not a memento originator. */
-    public static String TableModel_setTableMemento_tableNotMementoOriginator;
 
     /**
      * An unexpected exception was thrown from
@@ -196,24 +187,6 @@ final class Messages
     // --- TableModel -------------------------------------------------------
 
     /**
-     * Gets the formatted message indicating the table is not a memento
-     * originator.
-     * 
-     * @param type
-     *        The table type; must not be {@code null}.
-     * 
-     * @return The formatted message indicating the table is not a memento
-     *         originator; never {@code null}.
-     */
-    /* @NonNull */
-    static String TableModel_createTableMemento_tableNotMementoOriginator(
-        /* @NonNull */
-        final Class<?> type )
-    {
-        return bind( TableModel_createTableMemento_tableNotMementoOriginator, type.getName() );
-    }
-
-    /**
      * Gets the formatted message indicating an error occurred while reading the
      * table memento.
      * 
@@ -230,24 +203,6 @@ final class Messages
         final File file )
     {
         return bind( TableModel_readTableMemento_error, file.getAbsolutePath() );
-    }
-
-    /**
-     * Gets the formatted message indicating the table is not a memento
-     * originator.
-     * 
-     * @param type
-     *        The table type; must not be {@code null}.
-     * 
-     * @return The formatted message indicating the table is not a memento
-     *         originator; never {@code null}.
-     */
-    /* @NonNull */
-    static String TableModel_setTableMemento_tableNotMementoOriginator(
-        /* @NonNull */
-        final Class<?> type )
-    {
-        return bind( TableModel_setTableMemento_tableNotMementoOriginator, type.getName() );
     }
 
     /**

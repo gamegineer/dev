@@ -23,6 +23,7 @@ package org.gamegineer.table.core;
 
 import java.awt.Point;
 import java.util.List;
+import org.gamegineer.common.core.util.memento.IMementoOriginator;
 
 /**
  * A virtual game table.
@@ -32,6 +33,7 @@ import java.util.List;
  * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface ITable
+    extends IMementoOriginator
 {
     // ======================================================================
     // Methods
