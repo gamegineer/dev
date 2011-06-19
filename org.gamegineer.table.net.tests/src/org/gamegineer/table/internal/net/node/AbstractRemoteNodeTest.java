@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.transport.FakeMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
@@ -100,6 +101,12 @@ public final class AbstractRemoteNodeTest
     {
         return new AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode>( node )
         {
+            @Override
+            public ITable getTableProxy()
+            {
+                return null;
+            }
+
             @Override
             protected IRemoteNode getThisAsRemoteNodeType()
             {

@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.net.node.server;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
@@ -31,6 +32,7 @@ import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.node.AbstractNode;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -309,6 +311,13 @@ public final class ServerNode
     {
         assert remoteNode != null;
 
-        remoteNode.setTableMemento( masterTable_.createMemento() );
+        try
+        {
+            remoteNode.getTableProxy().setMemento( masterTable_.createMemento() );
+        }
+        catch( final MementoException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerNode_updateRemoteTable_error( remoteNode.getPlayerName() ), e );
+        }
     }
 }

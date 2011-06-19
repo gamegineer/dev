@@ -49,17 +49,4 @@ public interface IRemoteClientNode
     public void setPlayers(
         /* @NonNull */
         Collection<String> players );
-
-    /**
-     * Sets the state of the remote client table using the specified memento.
-     * 
-     * @param memento
-     *        The table memento; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code memento} is {@code null}.
-     */
-    public void setTableMemento(
-        /* @NonNull */
-        Object memento );
 }

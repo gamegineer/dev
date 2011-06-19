@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.node;
 
 import org.easymock.EasyMock;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.transport.AbstractServiceTestCase;
 import org.gamegineer.table.internal.net.transport.IService;
 
@@ -72,6 +73,12 @@ public final class AbstractRemoteNodeAsServiceTest
     {
         return new AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode>( createMockLocalNode() )
         {
+            @Override
+            public ITable getTableProxy()
+            {
+                return null;
+            }
+
             @Override
             protected IRemoteNode getThisAsRemoteNodeType()
             {

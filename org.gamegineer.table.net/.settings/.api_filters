@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<component id="org.gamegineer.table.net" version="2">
+    <resource path="src/org/gamegineer/table/internal/net/node/client/RemoteServerNode.java" type="org.gamegineer.table.internal.net.node.client.RemoteServerNode$TableProxy">
+        <filter id="574619656">
+            <message_arguments>
+                <message_argument value="ITable"/>
+                <message_argument value="TableProxy"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/org/gamegineer/table/internal/net/node/server/RemoteClientNode.java" type="org.gamegineer.table.internal.net.node.server.RemoteClientNode$TableProxy">
+        <filter id="574619656">
+            <message_arguments>
+                <message_argument value="ITable"/>
+                <message_argument value="TableProxy"/>
+            </message_arguments>
+        </filter>
+    </resource>
+</component>
