@@ -136,6 +136,21 @@ final class Dispatcher
     }
 
     /**
+     * Processes event handlers in the status change queue.
+     */
+    private void checkStatusChangeQueue()
+    {
+        AbstractEventHandler eventHandler = null;
+        while( (eventHandler = statusChangeQueue_.poll()) != null )
+        {
+            if( eventHandler.getState() != AbstractEventHandler.State.CLOSED )
+            {
+                resumeSelection( eventHandler );
+            }
+        }
+    }
+
+    /**
      * Closes the dispatcher.
      */
     void close()
@@ -203,21 +218,6 @@ final class Dispatcher
         {
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Closing orphaned event handler '%s'", eventHandler ) ); //$NON-NLS-1$
             eventHandler.close();
-        }
-    }
-
-    /**
-     * Processes event handlers in the status change queue.
-     */
-    private void checkStatusChangeQueue()
-    {
-        AbstractEventHandler eventHandler = null;
-        while( (eventHandler = statusChangeQueue_.poll()) != null )
-        {
-            if( eventHandler.getState() != AbstractEventHandler.State.CLOSED )
-            {
-                resumeSelection( eventHandler );
-            }
         }
     }
 
