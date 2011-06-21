@@ -140,17 +140,12 @@ final class Dispatcher
      */
     void close()
     {
+        closeOrphanedEventHandlers();
+
         synchronized( lock_ )
         {
             if( state_ == State.OPEN )
             {
-                final Collection<AbstractEventHandler> eventHandlers = new ArrayList<AbstractEventHandler>( eventHandlers_ );
-                for( final AbstractEventHandler eventHandler : eventHandlers )
-                {
-                    Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Closing orphaned event handler '%s'", eventHandler ) ); //$NON-NLS-1$
-                    eventHandler.close();
-                }
-
                 eventDispatchTask_.cancel( true );
                 try
                 {
@@ -190,6 +185,24 @@ final class Dispatcher
             }
 
             state_ = State.CLOSED;
+        }
+    }
+
+    /**
+     * Closes any orphaned event handlers before the dispatcher is closed.
+     */
+    private void closeOrphanedEventHandlers()
+    {
+        final Collection<AbstractEventHandler> eventHandlers;
+        synchronized( lock_ )
+        {
+            eventHandlers = new ArrayList<AbstractEventHandler>( eventHandlers_ );
+        }
+
+        for( final AbstractEventHandler eventHandler : eventHandlers )
+        {
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Closing orphaned event handler '%s'", eventHandler ) ); //$NON-NLS-1$
+            eventHandler.close();
         }
     }
 
