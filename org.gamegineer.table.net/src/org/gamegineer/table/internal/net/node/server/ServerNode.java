@@ -166,7 +166,10 @@ public final class ServerNode
 
         super.disconnecting();
 
-        // TODO: need to gracefully shut down all remote clients : GoodbyeMessage
+        for( final IRemoteClientNode remoteNode : getRemoteNodes() )
+        {
+            remoteNode.goodbye();
+        }
     }
 
     /*

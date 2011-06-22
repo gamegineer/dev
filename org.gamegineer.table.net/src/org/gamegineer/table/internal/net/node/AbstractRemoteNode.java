@@ -166,6 +166,24 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
 
         closeError_ = error;
         serviceContext_.stopService();
+
+        // FIXME: Temporary hack to workaround yet another deadlock due to the remote node
+        // attempting to call back into the local node while the local node holds its lock
+        // on another thread waiting for the transport layer to disconnect.  The potential
+        // for deadlock probably always existed, but is now being manifest because we are
+        // sending the Goodbye message causing the remote node to be closed from both sides.
+        // By unbinding the remote node from the local node here, we prevent it from happening
+        // in closed(), which is where the local node will be locked waiting for the transport
+        // layer to disconnect.
+        if( playerName_ != null )
+        {
+            synchronized( localNode_.getLock() )
+            {
+                localNode_.unbindRemoteNode( getThisAsRemoteNodeType() );
+            }
+
+            playerName_ = null;
+        }
     }
 
     /**

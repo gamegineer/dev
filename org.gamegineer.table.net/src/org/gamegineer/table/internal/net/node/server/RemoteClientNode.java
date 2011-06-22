@@ -32,6 +32,7 @@ import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.internal.net.node.AbstractRemoteNode;
+import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
 import org.gamegineer.table.internal.net.node.common.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
 import org.gamegineer.table.internal.net.node.common.messages.TableMessage;
@@ -142,6 +143,20 @@ final class RemoteClientNode
     protected IRemoteClientNode getThisAsRemoteNodeType()
     {
         return this;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.server.IRemoteClientNode#goodbye()
+     */
+    @Override
+    public void goodbye()
+    {
+        final GoodbyeMessage message = new GoodbyeMessage();
+        synchronized( getLock() )
+        {
+            sendMessage( message, null );
+            close( null );
+        }
     }
 
     /*

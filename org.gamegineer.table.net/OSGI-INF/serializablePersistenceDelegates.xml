@@ -18,6 +18,7 @@
 			org.gamegineer.table.internal.net.node.common.messages.EchoResponseMessage
 			org.gamegineer.table.internal.net.node.common.messages.EndAuthenticationMessage
 			org.gamegineer.table.internal.net.node.common.messages.ErrorMessage
+			org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage
 			org.gamegineer.table.internal.net.node.common.messages.HelloRequestMessage
 			org.gamegineer.table.internal.net.node.common.messages.HelloResponseMessage
 			org.gamegineer.table.internal.net.node.common.messages.PlayersMessage
