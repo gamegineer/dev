@@ -643,6 +643,9 @@ final class Messages
     /** The table network was disconnected due to a generic error. */
     public static String MainView_tableNetworkDisconnected_error_generic;
 
+    /** The table network was disconnected due to a server shutdown. */
+    public static String MainView_tableNetworkDisconnected_error_serverShutdown;
+
     /** The table network was disconnected due to a transport error. */
     public static String MainView_tableNetworkDisconnected_error_transportError;
 
@@ -1042,6 +1045,9 @@ final class Messages
     {
         switch( error )
         {
+            case SERVER_SHUTDOWN:
+                return MainView_tableNetworkDisconnected_error_serverShutdown;
+
             case TRANSPORT_ERROR:
                 return MainView_tableNetworkDisconnected_error_transportError;
 

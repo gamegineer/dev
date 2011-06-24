@@ -49,6 +49,9 @@ public enum TableNetworkError
     /** An operation was interrupted waiting for completion. */
     INTERRUPTED,
 
+    /** The server has been shut down. */
+    SERVER_SHUTDOWN,
+
     /** An operation timed out waiting for completion. */
     TIME_OUT,
 

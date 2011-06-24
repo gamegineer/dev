@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net.node.client;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
+import org.gamegineer.table.net.TableNetworkError;
 
 /**
  * A message handler for the {@link GoodbyeMessage} message.
@@ -75,6 +76,6 @@ final class GoodbyeMessageHandler
         assert remoteNodeController != null;
         assert message != null;
 
-        remoteNodeController.getLocalNode().disconnect( null );
+        remoteNodeController.getLocalNode().disconnect( TableNetworkError.SERVER_SHUTDOWN );
     }
 }
