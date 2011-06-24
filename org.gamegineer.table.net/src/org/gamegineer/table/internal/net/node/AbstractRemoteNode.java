@@ -34,6 +34,7 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
+import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.IServiceContext;
@@ -302,6 +303,20 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      */
     /* @NonNull */
     protected abstract RemoteNodeType getThisAsRemoteNodeType();
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.IRemoteNode#goodbye()
+     */
+    @Override
+    public final void goodbye()
+    {
+        final GoodbyeMessage message = new GoodbyeMessage();
+        synchronized( getLock() )
+        {
+            sendMessage( message, null );
+            close( null );
+        }
+    }
 
     /*
      * @see org.gamegineer.table.internal.net.transport.IService#messageReceived(org.gamegineer.table.internal.net.transport.MessageEnvelope)

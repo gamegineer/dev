@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 18, 2011 at 11:30:17 PM.
+ * Created on Jun 23, 2011 at 11:05:16 PM.
  */
 
-package org.gamegineer.table.internal.net.node.client;
+package org.gamegineer.table.internal.net.node.server;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.Debug;
@@ -70,14 +70,14 @@ final class GoodbyeMessageHandler
     @SuppressWarnings( "unused" )
     private void handleMessage(
         /* @NonNull */
-        final IRemoteServerNodeController remoteNodeController,
+        final IRemoteClientNodeController remoteNodeController,
         /* @NonNull */
         final GoodbyeMessage message )
     {
         assert remoteNodeController != null;
         assert message != null;
 
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received goodbye message from server" ); //$NON-NLS-1$
-        remoteNodeController.getLocalNode().disconnect( TableNetworkError.SERVER_SHUTDOWN );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received goodbye message from client" ); //$NON-NLS-1$
+        remoteNodeController.close( TableNetworkError.CLIENT_SHUTDOWN );
     }
 }

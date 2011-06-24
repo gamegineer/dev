@@ -157,22 +157,6 @@ public final class ServerNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.node.AbstractNode#disconnecting()
-     */
-    @Override
-    protected void disconnecting()
-    {
-        assert Thread.holdsLock( getLock() );
-
-        super.disconnecting();
-
-        for( final IRemoteClientNode remoteNode : getRemoteNodes() )
-        {
-            remoteNode.goodbye();
-        }
-    }
-
-    /*
      * @see org.gamegineer.table.internal.net.node.AbstractNode#dispose()
      */
     @Override

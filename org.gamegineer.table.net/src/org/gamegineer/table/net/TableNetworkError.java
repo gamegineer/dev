@@ -33,6 +33,9 @@ public enum TableNetworkError
     /** Authentication failed. */
     AUTHENTICATION_FAILED,
 
+    /** The client has been shut down. */
+    CLIENT_SHUTDOWN,
+
     /** The player name is already registered. */
     DUPLICATE_PLAYER_NAME,
 

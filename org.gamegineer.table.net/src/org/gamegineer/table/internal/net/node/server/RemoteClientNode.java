@@ -95,6 +95,7 @@ final class RemoteClientNode
         salt_ = null;
         tableProxy_ = new TableProxy();
 
+        registerUncorrelatedMessageHandler( GoodbyeMessage.class, GoodbyeMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( HelloRequestMessage.class, HelloRequestMessageHandler.INSTANCE );
     }
 
@@ -143,20 +144,6 @@ final class RemoteClientNode
     protected IRemoteClientNode getThisAsRemoteNodeType()
     {
         return this;
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.node.server.IRemoteClientNode#goodbye()
-     */
-    @Override
-    public void goodbye()
-    {
-        final GoodbyeMessage message = new GoodbyeMessage();
-        synchronized( getLock() )
-        {
-            sendMessage( message, null );
-            close( null );
-        }
     }
 
     /*

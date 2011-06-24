@@ -37,11 +37,6 @@ public interface IRemoteClientNode
     // ======================================================================
 
     /**
-     * Gracefully terminates the connection to the remote client.
-     */
-    public void goodbye();
-
-    /**
      * Sets the collection of players connected to the table network.
      * 
      * @param players

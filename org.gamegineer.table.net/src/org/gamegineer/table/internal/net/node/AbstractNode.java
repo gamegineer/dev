@@ -365,7 +365,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * </p>
      * 
      * <p>
-     * This implementation does nothing.
+     * This implementation sends a goodbye message to all remote nodes.
      * </p>
      */
     @GuardedBy( "getLock()" )
@@ -373,7 +373,10 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     {
         assert Thread.holdsLock( getLock() );
 
-        // do nothing
+        for( final IRemoteNode remoteNode : remoteNodes_.values() )
+        {
+            remoteNode.goodbye();
+        }
     }
 
     /**

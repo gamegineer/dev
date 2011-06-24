@@ -51,4 +51,9 @@ public interface IRemoteNode
      */
     /* @NonNull */
     public ITable getTableProxy();
+
+    /**
+     * Gracefully terminates the connection to the remote node.
+     */
+    public void goodbye();
 }
