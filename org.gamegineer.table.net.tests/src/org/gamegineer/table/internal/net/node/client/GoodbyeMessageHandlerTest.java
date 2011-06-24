@@ -25,6 +25,7 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.node.IMessageHandler;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
+import org.gamegineer.table.net.TableNetworkError;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -105,7 +106,7 @@ public final class GoodbyeMessageHandlerTest
         throws Exception
     {
         final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
-        localNode.disconnect( null );
+        localNode.disconnect( TableNetworkError.SERVER_SHUTDOWN );
         final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
         EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();
         mocksControl_.replay();
