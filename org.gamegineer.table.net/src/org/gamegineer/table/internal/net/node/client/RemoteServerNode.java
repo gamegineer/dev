@@ -102,7 +102,10 @@ final class RemoteServerNode
 
         super.closed( error );
 
-        getLocalNode().disconnect( error );
+        synchronized( getLocalNode().getLock() )
+        {
+            getLocalNode().disconnect( error );
+        }
     }
 
     /*

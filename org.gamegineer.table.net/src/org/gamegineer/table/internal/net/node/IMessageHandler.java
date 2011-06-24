@@ -40,8 +40,9 @@ public interface IMessageHandler
      * 
      * <p>
      * This method will be invoked by the remote node while its instance lock is
-     * held. Thus, message handlers may assume any methods they invoke on the
-     * remote node will be thread-safe and atomic.
+     * held, as well as the instance lock for the local node.. Thus, message
+     * handlers may assume any methods they invoke on the remote and local nodes
+     * will be thread-safe and atomic.
      * </p>
      * 
      * @param remoteNodeController

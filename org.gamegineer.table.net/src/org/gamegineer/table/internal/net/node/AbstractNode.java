@@ -61,6 +61,12 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     // ======================================================================
 
     /**
+     * The lock used to serialize access to methods invoked through the
+     * {@link INodeController} interface.
+     */
+    private final Object controllerLock_;
+
+    /**
      * The local player name or {@code null} if the table network is not
      * connected.
      */
@@ -121,6 +127,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     {
         assertArgumentNotNull( tableNetworkController, "tableNetworkController" ); //$NON-NLS-1$
 
+        controllerLock_ = new Object();
         localPlayerName_ = null;
         lock_ = new Object();
         password_ = null;
@@ -178,41 +185,44 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
-        synchronized( getLock() )
+        synchronized( controllerLock_ )
         {
-            if( transportLayer_ != null )
+            synchronized( getLock() )
             {
-                throw new TableNetworkException( TableNetworkError.ILLEGAL_CONNECTION_STATE );
+                if( transportLayer_ != null )
+                {
+                    throw new TableNetworkException( TableNetworkError.ILLEGAL_CONNECTION_STATE );
+                }
+
+                localPlayerName_ = configuration.getLocalPlayerName();
+                password_ = configuration.getPassword();
+                tableProxies_.put( localPlayerName_, configuration.getLocalTable() );
+
+                connecting();
+
+                final ITransportLayer transportLayer = createTransportLayer();
+                try
+                {
+                    transportLayer.open( configuration.getHostName(), configuration.getPort() );
+                }
+                catch( final TransportException e )
+                {
+                    dispose();
+                    throw new TableNetworkException( TableNetworkError.TRANSPORT_ERROR, e );
+                }
+
+                transportLayer_ = transportLayer;
             }
 
-            localPlayerName_ = configuration.getLocalPlayerName();
-            password_ = configuration.getPassword();
-            tableProxies_.put( localPlayerName_, configuration.getLocalTable() );
-
-            connecting();
-
-            final ITransportLayer transportLayer = createTransportLayer();
             try
             {
-                transportLayer.open( configuration.getHostName(), configuration.getPort() );
+                connected();
             }
-            catch( final TransportException e )
+            catch( final TableNetworkException e )
             {
-                dispose();
-                throw new TableNetworkException( TableNetworkError.TRANSPORT_ERROR, e );
+                disconnect();
+                throw e;
             }
-
-            transportLayer_ = transportLayer;
-        }
-
-        try
-        {
-            connected();
-        }
-        catch( final TableNetworkException e )
-        {
-            disconnect();
-            throw e;
         }
     }
 
@@ -281,18 +291,34 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     @Override
     public final void disconnect()
     {
-        synchronized( getLock() )
+        synchronized( controllerLock_ )
         {
-            if( transportLayer_ != null )
+            final ITransportLayer transportLayer;
+            synchronized( getLock() )
             {
-                disconnecting();
+                transportLayer = transportLayer_;
+                if( transportLayer != null )
+                {
+                    disconnecting();
+                }
+            }
 
-                transportLayer_.close();
-                transportLayer_ = null;
-                tableProxies_.remove( localPlayerName_ );
+            // NB: Do not hold instance lock when calling into transport layer!
+            if( transportLayer != null )
+            {
+                transportLayer.close();
+            }
 
-                disconnected();
-                dispose();
+            synchronized( getLock() )
+            {
+                if( transportLayer != null )
+                {
+                    transportLayer_ = null;
+                    tableProxies_.remove( localPlayerName_ );
+
+                    disconnected();
+                    dispose();
+                }
             }
         }
     }
@@ -304,6 +330,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     public final void disconnect(
         final TableNetworkError error )
     {
+        assert Thread.holdsLock( getLock() );
+
         disconnecting( error );
         tableNetworkController_.disconnect( error );
     }
@@ -353,8 +381,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * the specified cause.
      * 
      * <p>
-     * This method is <b>not</b> invoked while the instance lock is held.
-     * Subclasses must always invoke the superclass method.
+     * This method is invoked while the instance lock is held. Subclasses must
+     * always invoke the superclass method.
      * </p>
      * 
      * <p>
@@ -365,9 +393,12 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      *        The error that caused the table network node to be disconnected or
      *        {@code null} if the table network node was disconnected normally.
      */
+    @GuardedBy( "getLock()" )
     protected void disconnecting(
         final TableNetworkError error )
     {
+        assert Thread.holdsLock( getLock() );
+
         // do nothing
     }
 

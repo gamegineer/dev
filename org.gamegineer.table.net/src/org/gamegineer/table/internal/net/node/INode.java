@@ -71,6 +71,7 @@ public interface INode<RemoteNodeType extends IRemoteNode>
      *        disconnected or {@code null} if the local table network node was
      *        disconnected normally.
      */
+    @GuardedBy( "getLock()" )
     public void disconnect(
         /* @Nullable */
         TableNetworkError error );

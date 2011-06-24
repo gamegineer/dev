@@ -196,6 +196,8 @@ public final class ClientNode
     protected void disconnecting(
         final TableNetworkError error )
     {
+        assert Thread.holdsLock( getLock() );
+
         super.disconnecting( error );
 
         setHandshakeComplete( error );
