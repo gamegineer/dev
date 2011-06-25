@@ -123,7 +123,6 @@ final class EndAuthenticationMessageHandler
     {
         assertArgumentNotNull( remoteNodeController, "remoteNodeController" ); //$NON-NLS-1$
 
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received unknown message in response to begin authentication response" ); //$NON-NLS-1$
         remoteNodeController.close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

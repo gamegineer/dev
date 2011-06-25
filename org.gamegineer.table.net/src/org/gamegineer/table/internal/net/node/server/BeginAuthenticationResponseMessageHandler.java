@@ -177,8 +177,6 @@ final class BeginAuthenticationResponseMessageHandler
         else
         {
             remoteNodeController.close( TableNetworkError.TRANSPORT_ERROR );
-            // TODO: all these close() calls smell bad; may just allow handleMessage()
-            // to throw an exception that will force the remote node to close.
         }
     }
 
@@ -191,7 +189,6 @@ final class BeginAuthenticationResponseMessageHandler
     {
         assertArgumentNotNull( remoteNodeController, "remoteNodeController" ); //$NON-NLS-1$
 
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received unknown message in response to begin authentication request" ); //$NON-NLS-1$
         remoteNodeController.close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }

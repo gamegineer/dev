@@ -115,7 +115,7 @@ final class HelloResponseMessageHandler
                 Integer.valueOf( message.getCorrelationId() ) ) );
         if( message.getChosenProtocolVersion() != ProtocolVersions.VERSION_1 )
         {
-            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "received unsupported chosen protocol version" ); //$NON-NLS-1$
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received unsupported chosen protocol version" ); //$NON-NLS-1$
             remoteNodeController.close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
         }
     }
@@ -129,7 +129,6 @@ final class HelloResponseMessageHandler
     {
         assertArgumentNotNull( remoteNodeController, "remoteNodeController" ); //$NON-NLS-1$
 
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received unexpected message in response to hello request" ); //$NON-NLS-1$
         remoteNodeController.close( TableNetworkError.UNEXPECTED_MESSAGE );
     }
 }
