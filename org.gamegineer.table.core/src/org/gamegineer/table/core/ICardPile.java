@@ -151,6 +151,13 @@ public interface ICardPile
         Point location );
 
     /**
+     * Gets the count of cards contained in this card pile.
+     * 
+     * @return The count of cards contained in this card pile.
+     */
+    public int getCardCount();
+
+    /**
      * Gets the collection of cards in this card pile.
      * 
      * @return The collection of cards in this card pile; never {@code null}.

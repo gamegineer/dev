@@ -302,6 +302,18 @@ public final class Table
     }
 
     /*
+     * @see org.gamegineer.table.core.ITable#getCardPileCount()
+     */
+    @Override
+    public int getCardPileCount()
+    {
+        synchronized( lock_ )
+        {
+            return cardPiles_.size();
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.ITable#getCardPiles()
      */
     @Override

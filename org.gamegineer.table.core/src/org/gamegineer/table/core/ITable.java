@@ -98,6 +98,13 @@ public interface ITable
         Point location );
 
     /**
+     * Gets the count of card piles contained in this table.
+     * 
+     * @return The count of card piles contained in this table.
+     */
+    public int getCardPileCount();
+
+    /**
      * Gets the collection of card piles on this table.
      * 
      * @return The collection of card piles on this table; never {@code null}.

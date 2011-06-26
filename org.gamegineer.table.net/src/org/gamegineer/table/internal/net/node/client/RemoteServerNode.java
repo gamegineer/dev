@@ -216,6 +216,15 @@ final class RemoteServerNode
         }
 
         /*
+         * @see org.gamegineer.table.core.ITable#getCardPileCount()
+         */
+        @Override
+        public int getCardPileCount()
+        {
+            return 0;
+        }
+
+        /*
          * @see org.gamegineer.table.core.ITable#getCardPiles()
          */
         @Override

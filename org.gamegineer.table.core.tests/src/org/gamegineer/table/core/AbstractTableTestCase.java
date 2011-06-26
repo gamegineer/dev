@@ -328,6 +328,21 @@ public abstract class AbstractTableTestCase
     }
 
     /**
+     * Ensures the {@code getCardPileCount} method returns the correct value.
+     */
+    @Test
+    public void testGetCardPileCount()
+    {
+        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        table_.addCardPile( CardPiles.createUniqueCardPile() );
+
+        final int actualValue = table_.getCardPileCount();
+
+        assertEquals( 3, actualValue );
+    }
+
+    /**
      * Ensures the {@code getCardPiles} method returns a copy of the card pile
      * collection.
      */
@@ -454,7 +469,7 @@ public abstract class AbstractTableTestCase
 
         final List<ICardPile> actualCardPiles = table_.removeCardPiles();
 
-        assertEquals( 0, table_.getCardPiles().size() );
+        assertEquals( 0, table_.getCardPileCount() );
         for( final ICardPile cardPile : actualCardPiles )
         {
             assertNull( cardPile.getTable() );

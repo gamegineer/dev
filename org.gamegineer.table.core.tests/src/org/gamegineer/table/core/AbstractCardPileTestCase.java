@@ -636,6 +636,21 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
+     * Ensures the {@code getCardCount} method returns the correct value.
+     */
+    @Test
+    public void testGetCardCount()
+    {
+        cardPile_.addCard( Cards.createUniqueCard() );
+        cardPile_.addCard( Cards.createUniqueCard() );
+        cardPile_.addCard( Cards.createUniqueCard() );
+
+        final int actualValue = cardPile_.getCardCount();
+
+        assertEquals( 3, actualValue );
+    }
+
+    /**
      * Ensures the {@code getCards} method returns a copy of the card
      * collection.
      */
@@ -831,7 +846,7 @@ public abstract class AbstractCardPileTestCase
         final ICard actualCard = cardPile_.removeCard();
 
         assertSame( expectedCard, actualCard );
-        assertEquals( 0, cardPile_.getCards().size() );
+        assertEquals( 0, cardPile_.getCardCount() );
         assertNull( actualCard.getCardPile() );
     }
 
@@ -967,7 +982,7 @@ public abstract class AbstractCardPileTestCase
         final List<ICard> actualCards = cardPile_.removeCards();
 
         assertEquals( expectedCards, actualCards );
-        assertEquals( 0, cardPile_.getCards().size() );
+        assertEquals( 0, cardPile_.getCardCount() );
         for( final ICard actualCard : actualCards )
         {
             assertNull( actualCard.getCardPile() );
@@ -1072,7 +1087,7 @@ public abstract class AbstractCardPileTestCase
         final List<ICard> actualCards = cardPile_.removeCards( cards.get( 1 ).getLocation() );
 
         assertEquals( expectedCards, actualCards );
-        assertEquals( cards.size() - expectedCards.size(), cardPile_.getCards().size() );
+        assertEquals( cards.size() - expectedCards.size(), cardPile_.getCardCount() );
         for( final ICard actualCard : actualCards )
         {
             assertNull( actualCard.getCardPile() );

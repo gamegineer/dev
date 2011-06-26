@@ -513,6 +513,18 @@ public final class CardPile
         }
     }
 
+    /*
+     * @see org.gamegineer.table.core.ICardPile#getCardCount()
+     */
+    @Override
+    public int getCardCount()
+    {
+        synchronized( lock_ )
+        {
+            return cards_.size();
+        }
+    }
+
     /**
      * Gets the index of the card in this card pile at the specified location.
      * 
