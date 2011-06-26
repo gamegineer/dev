@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -50,7 +50,8 @@ public final class Activator
     private BundleContext bundleContext_;
 
     /** The bundle executor service. */
-    private final ExecutorService executorService_;
+    @GuardedBy( "lock_" )
+    private ExecutorService executorService_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -67,7 +68,7 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
-        executorService_ = Executors.newCachedThreadPool();
+        executorService_ = null;
     }
 
 
@@ -111,7 +112,45 @@ public final class Activator
     /* @NonNull */
     public ExecutorService getExecutorService()
     {
-        return executorService_;
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( executorService_ == null )
+            {
+                executorService_ = Executors.newCachedThreadPool();
+            }
+
+            return executorService_;
+        }
+    }
+
+    /**
+     * Shuts down the bundle executor service.
+     */
+    @GuardedBy( "lock_" )
+    private void shutdownExecutorService()
+    {
+        assert executorService_ != null;
+        assert Thread.holdsLock( lock_ );
+
+        executorService_.shutdown();
+
+        boolean isExecutorServiceTerminated = false;
+        try
+        {
+            isExecutorServiceTerminated = executorService_.awaitTermination( 10, TimeUnit.SECONDS );
+        }
+        catch( final InterruptedException e )
+        {
+            Thread.currentThread().interrupt();
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Interrupted while awaiting executor service shutdown", e ); //$NON-NLS-1$
+        }
+
+        if( !isExecutorServiceTerminated )
+        {
+            executorService_.shutdownNow();
+        }
     }
 
     /*
@@ -151,10 +190,10 @@ public final class Activator
             assert bundleContext_ != null;
             bundleContext_ = null;
 
-            executorService_.shutdown();
-            if( !executorService_.awaitTermination( 10, TimeUnit.SECONDS ) )
+            if( executorService_ != null )
             {
-                executorService_.shutdownNow();
+                shutdownExecutorService();
+                executorService_ = null;
             }
         }
     }
