@@ -379,6 +379,43 @@ public abstract class AbstractTableTestCase
     }
 
     /**
+     * Ensures the {@code getCardPileIndex} method throws an exception when
+     * passed a card pile that is absent from the card pile collection.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testGetCardPileIndex_CardPile_Absent()
+    {
+        table_.getCardPileIndex( CardPiles.createUniqueCardPile() );
+    }
+
+    /**
+     * Ensures the {@code getCardPileIndex} method throws an exception when
+     * passed a {@code null} card pile.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetCardPileIndex_CardPile_Null()
+    {
+        table_.getCardPileIndex( null );
+    }
+
+    /**
+     * Ensures the {@code getCardPileIndex} method returns the correct value
+     * when passed a card pile present in the card pile collection.
+     */
+    @Test
+    public void testGetCardPileIndex_CardPile_Present()
+    {
+        final ICardPile cardPile = CardPiles.createUniqueCardPile();
+        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        table_.addCardPile( cardPile );
+        table_.addCardPile( CardPiles.createUniqueCardPile() );
+
+        final int actualValue = table_.getCardPileIndex( cardPile );
+
+        assertEquals( 1, actualValue );
+    }
+
+    /**
      * Ensures the {@code getCardPiles} method returns a copy of the card pile
      * collection.
      */

@@ -329,6 +329,25 @@ public final class Table
     }
 
     /*
+     * @see org.gamegineer.table.core.ITable#getCardPileIndex(org.gamegineer.table.core.ICardPile)
+     */
+    @Override
+    public int getCardPileIndex(
+        final ICardPile cardPile )
+    {
+        assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
+
+        final int index;
+        synchronized( lock_ )
+        {
+            index = cardPiles_.indexOf( cardPile );
+        }
+
+        assertArgumentLegal( index != -1, "cardPile", Messages.Table_getCardPileIndex_cardPile_notOwned ); //$NON-NLS-1$
+        return index;
+    }
+
+    /*
      * @see org.gamegineer.table.core.ITable#getCardPiles()
      */
     @Override

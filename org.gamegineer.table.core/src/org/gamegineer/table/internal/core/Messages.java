@@ -98,6 +98,9 @@ final class Messages
     /** The card index is out of range. */
     public static String CardPile_getCardFromIndex_index_outOfRange;
 
+    /** The card is not contained in the card pile. */
+    public static String CardPile_getCardIndex_card_notOwned;
+
     /** An unknown layout is active. */
     public static String CardPile_getCardOffsetAt_unknownLayout;
 
@@ -239,6 +242,9 @@ final class Messages
 
     /** The card pile index is out of range. */
     public static String Table_getCardPileFromIndex_index_outOfRange;
+
+    /** The card pile is not contained in the table. */
+    public static String Table_getCardPileIndex_cardPile_notOwned;
 
     /** The card pile is not contained in the table. */
     public static String Table_removeCardPileInternal_cardPile_notOwned;

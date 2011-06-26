@@ -175,6 +175,23 @@ public interface ICardPile
     public int getCardCount();
 
     /**
+     * Gets the index of the specified card in this card pile.
+     * 
+     * @param card
+     *        The card; must not be {@code null}.
+     * 
+     * @return The index of the specified card in this card pile.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code card} is not contained in this card pile.
+     * @throws java.lang.NullPointerException
+     *         If {@code card} is {@code null}.
+     */
+    public int getCardIndex(
+        /* @NonNull */
+        ICard card );
+
+    /**
      * Gets the collection of cards in this card pile.
      * 
      * @return The collection of cards in this card pile; never {@code null}.

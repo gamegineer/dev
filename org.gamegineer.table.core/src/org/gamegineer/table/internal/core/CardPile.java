@@ -540,6 +540,25 @@ public final class CardPile
         }
     }
 
+    /*
+     * @see org.gamegineer.table.core.ICardPile#getCardIndex(org.gamegineer.table.core.ICard)
+     */
+    @Override
+    public int getCardIndex(
+        final ICard card )
+    {
+        assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
+
+        final int index;
+        synchronized( lock_ )
+        {
+            index = cards_.indexOf( card );
+        }
+
+        assertArgumentLegal( index != -1, "card", Messages.CardPile_getCardIndex_card_notOwned ); //$NON-NLS-1$
+        return index;
+    }
+
     /**
      * Gets the index of the card in this card pile at the specified location.
      * 
