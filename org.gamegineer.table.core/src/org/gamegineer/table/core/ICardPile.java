@@ -44,14 +44,11 @@ public interface ICardPile
     /**
      * Adds the specified card to the top of this card pile.
      * 
-     * <p>
-     * This method does nothing if the specified card is already in the card
-     * pile.
-     * </p>
-     * 
      * @param card
      *        The card; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code card} is already contained in a card pile.
      * @throws java.lang.NullPointerException
      *         If {@code card} is {@code null}.
      */
@@ -77,18 +74,14 @@ public interface ICardPile
     /**
      * Adds the specified collection of cards to the top of this card pile.
      * 
-     * <p>
-     * This method does nothing if any card in the specified collection is
-     * already in the card pile.
-     * </p>
-     * 
      * @param cards
      *        The collection of cards to be added to this card pile; must not be
      *        {@code null}. The cards are added to the top of this card pile in
      *        the order they appear in the collection.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code cards} contains a {@code null} element.
+     *         If {@code cards} contains a {@code null} element or any card is
+     *         already contained in a card pile.
      * @throws java.lang.NullPointerException
      *         If {@code cards} is {@code null}.
      */
@@ -192,6 +185,15 @@ public interface ICardPile
      */
     /* @NonNull */
     public Dimension getSize();
+
+    /**
+     * Gets the table that contains this card pile.
+     * 
+     * @return The table that contains this card pile or {@code null} if this
+     *         card pile is not contained in a table.
+     */
+    /* @Nullable */
+    public ITable getTable();
 
     /**
      * Removes the card at the top of this card pile.
@@ -298,4 +300,15 @@ public interface ICardPile
     public void setLocation(
         /* @NonNull */
         Point location );
+
+    /**
+     * Sets the table that contains this card pile.
+     * 
+     * @param table
+     *        The table that contains this card pile or {@code null} if this
+     *        card pile is not contained in a table.
+     */
+    public void setTable(
+        /* @Nullable */
+        ITable table );
 }

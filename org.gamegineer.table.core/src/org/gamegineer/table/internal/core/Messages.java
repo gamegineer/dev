@@ -74,6 +74,9 @@ final class Messages
     /** The card collection contains a {@code null} element. */
     public static String CardPile_addCardsInternal_cards_containsNullElement;
 
+    /** The card collection contains a card already contained in a card pile. */
+    public static String CardPile_addCardsInternal_cards_containsOwnedCard;
+
     /** An unexpected exception was thrown from ICardPileListener.cardAdded(). */
     public static String CardPile_cardAdded_unexpectedException;
 
@@ -217,6 +220,9 @@ final class Messages
 
     // --- Table ------------------------------------------------------------
 
+    /** The card pile is already contained in a table. */
+    public static String Table_addCardPileInternal_cardPile_owned;
+
     /** The table listener is already registered. */
     public static String Table_addTableListener_listener_registered;
 
@@ -227,6 +233,9 @@ final class Messages
      * An unexpected exception was thrown from ITableListener.cardPileRemoved().
      */
     public static String Table_cardPileRemoved_unexpectedException;
+
+    /** The card pile is not contained in the table. */
+    public static String Table_removeCardPileInternal_cardPile_notOwned;
 
     /** The table listener is not registered. */
     public static String Table_removeTableListener_listener_notRegistered;

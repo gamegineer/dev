@@ -78,6 +78,15 @@ public interface ICard
     public Rectangle getBounds();
 
     /**
+     * Gets the card pile that contains this card.
+     * 
+     * @return The card pile that contains this card or {@code null} if this
+     *         card is not contained in a card pile.
+     */
+    /* @Nullable */
+    public ICardPile getCardPile();
+
+    /**
      * Gets the design on the face of this card.
      * 
      * @return The design on the face of this card; never {@code null}.
@@ -124,6 +133,17 @@ public interface ICard
     public void removeCardListener(
         /* @NonNull */
         ICardListener listener );
+
+    /**
+     * Sets the card pile that contains this card.
+     * 
+     * @param cardPile
+     *        The card pile that contains this card or {@code null} if this card
+     *        is not contained in a card pile.
+     */
+    public void setCardPile(
+        /* @Nullable */
+        ICardPile cardPile );
 
     /**
      * Sets the location of this card in table coordinates.

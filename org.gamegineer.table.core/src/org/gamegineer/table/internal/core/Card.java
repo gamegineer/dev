@@ -40,6 +40,7 @@ import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardListener;
+import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardSurfaceDesign;
 
 /**
@@ -74,6 +75,13 @@ public final class Card
     /** The design on the back of the card. */
     @GuardedBy( "lock_" )
     private ICardSurfaceDesign backDesign_;
+
+    /**
+     * The card pile that contains this card or {@code null} if this card is not
+     * contained in a card pile.
+     */
+    @GuardedBy( "lock_" )
+    private ICardPile cardPile_;
 
     /** The design on the face of the card. */
     @GuardedBy( "lock_" )
@@ -110,6 +118,7 @@ public final class Card
     private Card()
     {
         backDesign_ = null;
+        cardPile_ = null;
         faceDesign_ = null;
         listeners_ = new CopyOnWriteArrayList<ICardListener>();
         location_ = new Point( 0, 0 );
@@ -337,6 +346,18 @@ public final class Card
     }
 
     /*
+     * @see org.gamegineer.table.core.ICard#getCardPile()
+     */
+    @Override
+    public ICardPile getCardPile()
+    {
+        synchronized( lock_ )
+        {
+            return cardPile_;
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.ICard#getFaceDesign()
      */
     @Override
@@ -393,6 +414,19 @@ public final class Card
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.Card_removeCardListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICard#setCardPile(org.gamegineer.table.core.ICardPile)
+     */
+    @Override
+    public void setCardPile(
+        final ICardPile cardPile )
+    {
+        synchronized( lock_ )
+        {
+            cardPile_ = cardPile;
+        }
     }
 
     /*

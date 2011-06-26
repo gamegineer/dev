@@ -46,6 +46,7 @@ import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.core.ICardPileListener;
+import org.gamegineer.table.core.ITable;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ICardPile}.
@@ -118,6 +119,13 @@ public final class CardPile
      */
     private final Queue<Runnable> pendingEventNotifications_;
 
+    /**
+     * The table that contains this card pile or {@code null} if this card pile
+     * is not contained in a table.
+     */
+    @GuardedBy( "lock_" )
+    private ITable table_;
+
 
     // ======================================================================
     // Constructors
@@ -135,6 +143,7 @@ public final class CardPile
         listeners_ = new CopyOnWriteArrayList<ICardPileListener>();
         lock_ = new Object();
         pendingEventNotifications_ = new ConcurrentLinkedQueue<Runnable>();
+        table_ = null;
     }
 
     /**
@@ -203,18 +212,14 @@ public final class CardPile
     /**
      * Adds the specified collection of cards to the top of this card pile.
      * 
-     * <p>
-     * This method does nothing if any card in the specified collection is
-     * already in the card pile.
-     * </p>
-     * 
      * @param cards
      *        The collection of cards to be added to this card pile; must not be
      *        {@code null}. The cards are added to the top of this card pile in
      *        the order they appear in the collection.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code cards} contains a {@code null} element.
+     *         If {@code cards} contains a {@code null} element or any card is
+     *         already attached to a card pile.
      */
     @GuardedBy( "lock_" )
     private void addCardsInternal(
@@ -222,7 +227,6 @@ public final class CardPile
         final List<ICard> cards )
     {
         assert cards != null;
-        assertArgumentLegal( !cards.contains( null ), "cards", Messages.CardPile_addCardsInternal_cards_containsNullElement ); //$NON-NLS-1$
         assert Thread.holdsLock( lock_ );
 
         final List<ICard> addedCards = new ArrayList<ICard>();
@@ -230,15 +234,22 @@ public final class CardPile
 
         for( final ICard card : cards )
         {
-            if( !cards_.contains( card ) )
+            if( card == null )
             {
-                final Point cardLocation = new Point( baseLocation_ );
-                final Dimension cardOffset = getCardOffsetAt( cards_.size() );
-                cardLocation.translate( cardOffset.width, cardOffset.height );
-                card.setLocation( cardLocation );
-                cards_.add( card );
-                addedCards.add( card );
+                throw new IllegalArgumentException( Messages.CardPile_addCardsInternal_cards_containsNullElement );
             }
+            else if( card.getCardPile() != null )
+            {
+                throw new IllegalArgumentException( Messages.CardPile_addCardsInternal_cards_containsOwnedCard );
+            }
+
+            final Point cardLocation = new Point( baseLocation_ );
+            final Dimension cardOffset = getCardOffsetAt( cards_.size() );
+            cardLocation.translate( cardOffset.width, cardOffset.height );
+            card.setCardPile( this );
+            card.setLocation( cardLocation );
+            cards_.add( card );
+            addedCards.add( card );
         }
 
         final Rectangle newBounds = getBounds();
@@ -622,6 +633,18 @@ public final class CardPile
     }
 
     /*
+     * @see org.gamegineer.table.core.ICardPile#getTable()
+     */
+    @Override
+    public ITable getTable()
+    {
+        synchronized( lock_ )
+        {
+            return table_;
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.ICardPile#removeCard()
      */
     @Override
@@ -742,6 +765,10 @@ public final class CardPile
 
         removedCards.addAll( cards_.subList( cardRangeStrategy.getLowerIndex(), cardRangeStrategy.getUpperIndex() ) );
         cards_.removeAll( removedCards );
+        for( final ICard card : removedCards )
+        {
+            card.setCardPile( null );
+        }
 
         final Rectangle newBounds = getBounds();
         final boolean cardPileBoundsChanged = !newBounds.equals( oldBounds );
@@ -984,10 +1011,23 @@ public final class CardPile
             setLayoutInternal( cardPile.getLayout() );
 
             removeCardsInternal( new CardRangeStrategy() );
-            addCardsInternal( cardPile.getCards() );
+            addCardsInternal( cardPile.removeCards() );
         }
 
         firePendingEventNotifications();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ICardPile#setTable(org.gamegineer.table.core.ITable)
+     */
+    @Override
+    public void setTable(
+        final ITable table )
+    {
+        synchronized( lock_ )
+        {
+            table_ = table;
+        }
     }
 
     /*

@@ -116,13 +116,11 @@ public final class Table
     /**
      * Adds the specified card pile to this table.
      * 
-     * <p>
-     * This method does nothing if the specified card pile is already on the
-     * table.
-     * </p>
-     * 
      * @param cardPile
      *        The card pile; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code cardPile} is already contained in a table.
      */
     @GuardedBy( "lock_" )
     private void addCardPileInternal(
@@ -130,22 +128,21 @@ public final class Table
         final ICardPile cardPile )
     {
         assert cardPile != null;
+        assertArgumentLegal( cardPile.getTable() == null, "cardPile", Messages.Table_addCardPileInternal_cardPile_owned ); //$NON-NLS-1$
         assert Thread.holdsLock( lock_ );
 
-        if( !cardPiles_.contains( cardPile ) )
-        {
-            cardPiles_.add( cardPile );
+        cardPiles_.add( cardPile );
+        cardPile.setTable( this );
 
-            pendingEventNotifications_.offer( new Runnable()
+        pendingEventNotifications_.offer( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
             {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    fireCardPileAdded( cardPile );
-                }
-            } );
-        }
+                fireCardPileAdded( cardPile );
+            }
+        } );
     }
 
     /*
@@ -317,48 +314,6 @@ public final class Table
     }
 
     /*
-     * @see org.gamegineer.table.core.ITable#removeAllCardPiles()
-     */
-    @Override
-    public void removeAllCardPiles()
-    {
-        synchronized( lock_ )
-        {
-            removeAllCardPilesInternal();
-        }
-
-        firePendingEventNotifications();
-    }
-
-    /**
-     * Removes all card piles from this table.
-     */
-    @GuardedBy( "lock_" )
-    private void removeAllCardPilesInternal()
-    {
-        assert Thread.holdsLock( lock_ );
-
-        if( !cardPiles_.isEmpty() )
-        {
-            final List<ICardPile> cardPiles = new ArrayList<ICardPile>( cardPiles_ );
-            cardPiles_.clear();
-
-            pendingEventNotifications_.offer( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    for( final ICardPile cardPile : cardPiles )
-                    {
-                        fireCardPileRemoved( cardPile );
-                    }
-                }
-            } );
-        }
-    }
-
-    /*
      * @see org.gamegineer.table.core.ITable#removeCardPile(org.gamegineer.table.core.ICardPile)
      */
     @Override
@@ -378,12 +333,11 @@ public final class Table
     /**
      * Removes the specified card pile from this table.
      * 
-     * <p>
-     * This method does nothing if the specified card pile is not on the table.
-     * </p>
-     * 
      * @param cardPile
      *        The card pile; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code cardPile} is not contained in this table.
      */
     @GuardedBy( "lock_" )
     private void removeCardPileInternal(
@@ -391,9 +345,59 @@ public final class Table
         final ICardPile cardPile )
     {
         assert cardPile != null;
+        assertArgumentLegal( cardPile.getTable() == this, "cardPile", Messages.Table_removeCardPileInternal_cardPile_notOwned ); //$NON-NLS-1$
         assert Thread.holdsLock( lock_ );
 
-        if( cardPiles_.remove( cardPile ) )
+        cardPiles_.remove( cardPile );
+
+        pendingEventNotifications_.offer( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireCardPileRemoved( cardPile );
+            }
+        } );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITable#removeCardPiles()
+     */
+    @Override
+    public List<ICardPile> removeCardPiles()
+    {
+        final List<ICardPile> removedCardPiles;
+        synchronized( lock_ )
+        {
+            removedCardPiles = removeCardPilesInternal();
+        }
+
+        firePendingEventNotifications();
+
+        return removedCardPiles;
+    }
+
+    /**
+     * Removes all card piles from this table.
+     * 
+     * @return The collection of card piles removed from this table; never
+     *         {@code null}. The card piles are returned in the order they were
+     *         added to the table from oldest to newest.
+     */
+    @GuardedBy( "lock_" )
+    private List<ICardPile> removeCardPilesInternal()
+    {
+        assert Thread.holdsLock( lock_ );
+
+        final List<ICardPile> removedCardPiles = new ArrayList<ICardPile>( cardPiles_ );
+        cardPiles_.clear();
+        for( final ICardPile cardPile : removedCardPiles )
+        {
+            cardPile.setTable( null );
+        }
+
+        if( !removedCardPiles.isEmpty() )
         {
             pendingEventNotifications_.offer( new Runnable()
             {
@@ -401,10 +405,15 @@ public final class Table
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    fireCardPileRemoved( cardPile );
+                    for( final ICardPile cardPile : removedCardPiles )
+                    {
+                        fireCardPileRemoved( cardPile );
+                    }
                 }
             } );
         }
+
+        return removedCardPiles;
     }
 
     /*
@@ -432,8 +441,8 @@ public final class Table
 
         synchronized( lock_ )
         {
-            removeAllCardPilesInternal();
-            for( final ICardPile cardPile : table.getCardPiles() )
+            removeCardPilesInternal();
+            for( final ICardPile cardPile : table.removeCardPiles() )
             {
                 addCardPileInternal( cardPile );
             }

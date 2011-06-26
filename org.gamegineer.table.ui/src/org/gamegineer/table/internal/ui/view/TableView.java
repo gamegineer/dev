@@ -1106,7 +1106,7 @@ final class TableView
      */
     private void removeAllCardPiles()
     {
-        model_.getTable().removeAllCardPiles();
+        model_.getTable().removeCardPiles();
     }
 
     /**

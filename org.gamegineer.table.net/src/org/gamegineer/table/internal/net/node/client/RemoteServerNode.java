@@ -225,15 +225,6 @@ final class RemoteServerNode
         }
 
         /*
-         * @see org.gamegineer.table.core.ITable#removeAllCardPiles()
-         */
-        @Override
-        public void removeAllCardPiles()
-        {
-            // do nothing
-        }
-
-        /*
          * @see org.gamegineer.table.core.ITable#removeCardPile(org.gamegineer.table.core.ICardPile)
          */
         @Override
@@ -242,6 +233,15 @@ final class RemoteServerNode
             final ICardPile cardPile )
         {
             // do nothing
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ITable#removeCardPiles()
+         */
+        @Override
+        public List<ICardPile> removeCardPiles()
+        {
+            return null;
         }
 
         /*

@@ -42,14 +42,11 @@ public interface ITable
     /**
      * Adds the specified card pile to this table.
      * 
-     * <p>
-     * This method does nothing if the specified card pile is already on the
-     * table.
-     * </p>
-     * 
      * @param cardPile
      *        The card pile; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code cardPile} is already contained in a table.
      * @throws java.lang.NullPointerException
      *         If {@code cardPile} is {@code null}.
      */
@@ -111,26 +108,28 @@ public interface ITable
     public List<ICardPile> getCardPiles();
 
     /**
-     * Removes all card piles from this table.
-     */
-    public void removeAllCardPiles();
-
-    /**
      * Removes the specified card pile from this table.
-     * 
-     * <p>
-     * This method does nothing if the specified card pile is not on the table.
-     * </p>
      * 
      * @param cardPile
      *        The card pile; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code cardPile} is not contained in this table.
      * @throws java.lang.NullPointerException
      *         If {@code cardPile} is {@code null}.
      */
     public void removeCardPile(
         /* @NonNull */
         ICardPile cardPile );
+
+    /**
+     * Removes all card piles from this table.
+     * 
+     * @return The collection of card piles removed from this table; never
+     *         {@code null}. The card piles are returned in the order they were
+     *         added to the table from oldest to newest.
+     */
+    public List<ICardPile> removeCardPiles();
 
     /**
      * Removes the specified table listener from this table.
