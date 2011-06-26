@@ -116,6 +116,23 @@ public interface ICardPile
     public Rectangle getBounds();
 
     /**
+     * Gets the card in this card at the specified index.
+     * 
+     * @param index
+     *        The card index.
+     * 
+     * @return The card in this card pile at the specified index; never {@code
+     *         null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code index} is less than zero or greater than or equal to
+     *         the card count.
+     */
+    /* @NonNull */
+    public ICard getCard(
+        int index );
+
+    /**
      * Gets the card in this card pile at the specified location.
      * 
      * <p>

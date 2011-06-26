@@ -205,6 +205,17 @@ final class RemoteServerNode
         }
 
         /*
+         * @see org.gamegineer.table.core.ITable#getCardPile(int)
+         */
+        @Override
+        public ICardPile getCardPile(
+            @SuppressWarnings( "unused" )
+            final int index )
+        {
+            return null;
+        }
+
+        /*
          * @see org.gamegineer.table.core.ITable#getCardPile(java.awt.Point)
          */
         @Override

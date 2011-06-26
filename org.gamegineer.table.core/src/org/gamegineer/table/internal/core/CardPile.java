@@ -498,6 +498,21 @@ public final class CardPile
     }
 
     /*
+     * @see org.gamegineer.table.core.ICardPile#getCard(int)
+     */
+    @Override
+    public ICard getCard(
+        final int index )
+    {
+        synchronized( lock_ )
+        {
+            assertArgumentLegal( (index >= 0) && (index < cards_.size()), "index", Messages.CardPile_getCardFromIndex_index_outOfRange ); //$NON-NLS-1$
+
+            return cards_.get( index );
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.ICardPile#getCard(java.awt.Point)
      */
     @Override

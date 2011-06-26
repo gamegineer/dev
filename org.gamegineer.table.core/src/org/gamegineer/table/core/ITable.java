@@ -70,6 +70,23 @@ public interface ITable
         ITableListener listener );
 
     /**
+     * Gets the card pile in this table at the specified index.
+     * 
+     * @param index
+     *        The card pile index.
+     * 
+     * @return The card pile in this table at the specified index; never {@code
+     *         null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code index} is less than zero or greater than or equal to
+     *         the card pile count.
+     */
+    /* @NonNull */
+    public ICardPile getCardPile(
+        int index );
+
+    /**
      * Gets the card pile at the specified location.
      * 
      * <p>

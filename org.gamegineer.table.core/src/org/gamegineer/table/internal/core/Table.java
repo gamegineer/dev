@@ -279,6 +279,21 @@ public final class Table
     }
 
     /*
+     * @see org.gamegineer.table.core.ITable#getCardPile(int)
+     */
+    @Override
+    public ICardPile getCardPile(
+        final int index )
+    {
+        synchronized( lock_ )
+        {
+            assertArgumentLegal( (index >= 0) && (index < cardPiles_.size()), "index", Messages.Table_getCardPileFromIndex_index_outOfRange ); //$NON-NLS-1$
+
+            return cardPiles_.get( index );
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.ITable#getCardPile(java.awt.Point)
      */
     public ICardPile getCardPile(

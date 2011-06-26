@@ -271,21 +271,57 @@ public abstract class AbstractTableTestCase
     }
 
     /**
-     * Ensures the {@code getCardPile} method returns {@code null} when a card
-     * pile is absent at the specified location.
+     * Ensures the {@code getCardPile(int)} method throws an exception when
+     * passed an illegal index greater than the maximum legal value.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testGetCardPileFromIndex_Index_Illegal_GreaterThanMaximumLegalValue()
+    {
+        table_.getCardPile( 0 );
+    }
+
+    /**
+     * Ensures the {@code getCardPile(int)} method throws an exception when
+     * passed an illegal index less than the minimum legal value.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testGetCardPileFromIndex_Index_Illegal_LessThanMinimumLegalValue()
+    {
+        table_.getCardPile( -1 );
+    }
+
+    /**
+     * Ensures the {@code getCardPile(int)} method returns the correct card pile
+     * when passed a legal index.
      */
     @Test
-    public void testGetCardPile_Location_CardPileAbsent()
+    public void testGetCardPileFromIndex_Index_Legal()
+    {
+        final ICardPile expectedValue = CardPiles.createUniqueCardPile();
+        table_.addCardPile( expectedValue );
+
+        final ICardPile actualValue = table_.getCardPile( 0 );
+
+        assertSame( expectedValue, actualValue );
+    }
+
+    /**
+     * Ensures the {@code getCardPile(Point)} method returns {@code null} when a
+     * card pile is absent at the specified location.
+     */
+    @Test
+    public void testGetCardPileFromLocation_Location_CardPileAbsent()
     {
         assertNull( table_.getCardPile( new Point( 0, 0 ) ) );
     }
 
     /**
-     * Ensures the {@code getCardPile} method returns the most recently added
-     * card pile when multiple card piles are present at the specified location.
+     * Ensures the {@code getCardPile(Point)} method returns the most recently
+     * added card pile when multiple card piles are present at the specified
+     * location.
      */
     @Test
-    public void testGetCardPile_Location_MultipleCardPilesPresent()
+    public void testGetCardPileFromLocation_Location_MultipleCardPilesPresent()
     {
         final Point location = new Point( 7, 42 );
         final ICardPile initialCardPile = CardPiles.createUniqueCardPile();
@@ -301,11 +337,11 @@ public abstract class AbstractTableTestCase
     }
 
     /**
-     * Ensures the {@code getCardPile} method returns the appropriate card pile
-     * when a single card pile is present at the specified location.
+     * Ensures the {@code getCardPile(Point)} method returns the appropriate
+     * card pile when a single card pile is present at the specified location.
      */
     @Test
-    public void testGetCardPile_Location_SingleCardPilePresent()
+    public void testGetCardPileFromLocation_Location_SingleCardPilePresent()
     {
         final Point location = new Point( 7, 42 );
         final ICardPile expectedCardPile = CardPiles.createUniqueCardPile();
@@ -318,11 +354,11 @@ public abstract class AbstractTableTestCase
     }
 
     /**
-     * Ensures the {@code getCardPile} method throws an exception when passed a
-     * {@code null} location.
+     * Ensures the {@code getCardPile(Point)} method throws an exception when
+     * passed a {@code null} location.
      */
     @Test( expected = NullPointerException.class )
-    public void testGetCardPile_Location_Null()
+    public void testGetCardPileFromLocation_Location_Null()
     {
         table_.getCardPile( null );
     }

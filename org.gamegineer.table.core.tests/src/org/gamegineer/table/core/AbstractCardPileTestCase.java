@@ -561,21 +561,56 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code getCard} method returns {@code null} when a card is
-     * absent at the specified location.
+     * Ensures the {@code getCard(int)} method throws an exception when passed
+     * an illegal index greater than the maximum legal value.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testGetCardFromIndex_Index_Illegal_GreaterThanMaximumLegalValue()
+    {
+        cardPile_.getCard( 0 );
+    }
+
+    /**
+     * Ensures the {@code getCard(int)} method throws an exception when passed
+     * an illegal index less than the minimum legal value.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testGetCardFromIndex_Index_Illegal_LessThanMinimumLegalValue()
+    {
+        cardPile_.getCard( -1 );
+    }
+
+    /**
+     * Ensures the {@code getCard(int)} method returns the correct card when
+     * passed a legal index.
      */
     @Test
-    public void testGetCard_Location_CardAbsent()
+    public void testGetCardFromIndex_Index_Legal()
+    {
+        final ICard expectedValue = Cards.createUniqueCard();
+        cardPile_.addCard( expectedValue );
+
+        final ICard actualValue = cardPile_.getCard( 0 );
+
+        assertSame( expectedValue, actualValue );
+    }
+
+    /**
+     * Ensures the {@code getCard(Point)} method returns {@code null} when a
+     * card is absent at the specified location.
+     */
+    @Test
+    public void testGetCardFromLocation_Location_CardAbsent()
     {
         assertNull( cardPile_.getCard( new Point( 0, 0 ) ) );
     }
 
     /**
-     * Ensures the {@code getCard} method returns the top-most card when
+     * Ensures the {@code getCard(Point)} method returns the top-most card when
      * multiple cards are present at the specified location.
      */
     @Test
-    public void testGetCard_Location_CardPresent_MultipleCards()
+    public void testGetCardFromLocation_Location_CardPresent_MultipleCards()
     {
         final ICard initialCard = Cards.createUniqueCard();
         cardPile_.addCard( initialCard );
@@ -588,12 +623,12 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code getCard} method returns {@code null} when a card is
-     * present at the specified location but the card is not the top-most card
-     * when the stacked layout is active.
+     * Ensures the {@code getCard(Point)} method returns {@code null} when a
+     * card is present at the specified location but the card is not the
+     * top-most card when the stacked layout is active.
      */
     @Test
-    public void testGetCard_Location_CardPresent_NotTopCardInStackedLayout()
+    public void testGetCardFromLocation_Location_CardPresent_NotTopCardInStackedLayout()
     {
         cardPile_.setLayout( CardPileLayout.STACKED );
         final Rectangle originalBounds = cardPile_.getBounds();
@@ -611,11 +646,11 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code getCard} method returns the appropriate card when a
-     * single card is present at the specified location.
+     * Ensures the {@code getCard(Point)} method returns the appropriate card
+     * when a single card is present at the specified location.
      */
     @Test
-    public void testGetCard_Location_CardPresent_SingleCard()
+    public void testGetCardFromLocation_Location_CardPresent_SingleCard()
     {
         final ICard expectedCard = Cards.createUniqueCard();
         cardPile_.addCard( expectedCard );
@@ -626,11 +661,11 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code getCard} method throws an exception when passed a
-     * {@code null} location.
+     * Ensures the {@code getCard(Point)} method throws an exception when passed
+     * a {@code null} location.
      */
     @Test( expected = NullPointerException.class )
-    public void testGetCard_Location_Null()
+    public void testGetCardFromLocation_Location_Null()
     {
         cardPile_.getCard( null );
     }

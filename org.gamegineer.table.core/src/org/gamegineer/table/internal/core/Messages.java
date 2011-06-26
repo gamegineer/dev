@@ -95,6 +95,9 @@ final class Messages
     /** An unexpected exception was thrown from ICardPileListener.cardRemoved(). */
     public static String CardPile_cardRemoved_unexpectedException;
 
+    /** The card index is out of range. */
+    public static String CardPile_getCardFromIndex_index_outOfRange;
+
     /** An unknown layout is active. */
     public static String CardPile_getCardOffsetAt_unknownLayout;
 
@@ -233,6 +236,9 @@ final class Messages
      * An unexpected exception was thrown from ITableListener.cardPileRemoved().
      */
     public static String Table_cardPileRemoved_unexpectedException;
+
+    /** The card pile index is out of range. */
+    public static String Table_getCardPileFromIndex_index_outOfRange;
 
     /** The card pile is not contained in the table. */
     public static String Table_removeCardPileInternal_cardPile_notOwned;
