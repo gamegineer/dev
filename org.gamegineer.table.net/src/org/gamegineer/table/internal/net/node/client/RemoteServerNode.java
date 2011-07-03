@@ -21,17 +21,11 @@
 
 package org.gamegineer.table.internal.net.node.client;
 
-import java.awt.Point;
-import java.util.List;
-import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.memento.MementoException;
-import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.internal.net.node.AbstractRemoteNode;
 import org.gamegineer.table.internal.net.node.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationRequestMessage;
+import org.gamegineer.table.internal.net.node.common.messages.CardOrientationMessage;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
 import org.gamegineer.table.internal.net.node.common.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
@@ -52,14 +46,6 @@ final class RemoteServerNode
     implements IRemoteServerNode, IRemoteServerNodeController
 {
     // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The proxy for the remote server table. */
-    private final ITable tableProxy_;
-
-
-    // ======================================================================
     // Constructors
     // ======================================================================
 
@@ -78,9 +64,8 @@ final class RemoteServerNode
     {
         super( localNode );
 
-        tableProxy_ = new TableProxy();
-
         registerUncorrelatedMessageHandler( BeginAuthenticationRequestMessage.class, BeginAuthenticationRequestMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( CardOrientationMessage.class, CardOrientationMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( GoodbyeMessage.class, GoodbyeMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( PlayersMessage.class, PlayersMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( TableMessage.class, TableMessageHandler.INSTANCE );
@@ -109,15 +94,6 @@ final class RemoteServerNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.node.IRemoteNode#getTableProxy()
-     */
-    @Override
-    public ITable getTableProxy()
-    {
-        return tableProxy_;
-    }
-
-    /*
      * @see org.gamegineer.table.internal.net.node.AbstractRemoteNode#getThisAsRemoteNodeType()
      */
     @Override
@@ -141,161 +117,6 @@ final class RemoteServerNode
         if( !sendMessage( message, HelloResponseMessageHandler.INSTANCE ) )
         {
             close( TableNetworkError.TRANSPORT_ERROR );
-        }
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * A proxy for a remote server table.
-     */
-    @Immutable
-    private final class TableProxy
-        implements ITable
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code TableProxy} class.
-         */
-        TableProxy()
-        {
-            super();
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.ITable#addCardPile(org.gamegineer.table.core.ICardPile)
-         */
-        @Override
-        public void addCardPile(
-            @SuppressWarnings( "unused" )
-            final ICardPile cardPile )
-        {
-            // do nothing
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ITable#addTableListener(org.gamegineer.table.core.ITableListener)
-         */
-        @Override
-        public void addTableListener(
-            @SuppressWarnings( "unused" )
-            final ITableListener listener )
-        {
-            // do nothing
-        }
-
-        /*
-         * @see org.gamegineer.common.core.util.memento.IMementoOriginator#createMemento()
-         */
-        @Override
-        public Object createMemento()
-        {
-            return null;
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ITable#getCardPile(int)
-         */
-        @Override
-        public ICardPile getCardPile(
-            @SuppressWarnings( "unused" )
-            final int index )
-        {
-            return null;
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ITable#getCardPile(java.awt.Point)
-         */
-        @Override
-        public ICardPile getCardPile(
-            @SuppressWarnings( "unused" )
-            final Point location )
-        {
-            return null;
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ITable#getCardPileCount()
-         */
-        @Override
-        public int getCardPileCount()
-        {
-            return 0;
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ITable#getCardPileIndex(org.gamegineer.table.core.ICardPile)
-         */
-        @Override
-        public int getCardPileIndex(
-            @SuppressWarnings( "unused" )
-            final ICardPile cardPile )
-        {
-            return -1;
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ITable#getCardPiles()
-         */
-        @Override
-        public List<ICardPile> getCardPiles()
-        {
-            return null;
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ITable#removeCardPile(org.gamegineer.table.core.ICardPile)
-         */
-        @Override
-        public void removeCardPile(
-            @SuppressWarnings( "unused" )
-            final ICardPile cardPile )
-        {
-            // do nothing
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ITable#removeCardPiles()
-         */
-        @Override
-        public List<ICardPile> removeCardPiles()
-        {
-            return null;
-        }
-
-        /*
-         * @see org.gamegineer.table.core.ITable#removeTableListener(org.gamegineer.table.core.ITableListener)
-         */
-        @Override
-        public void removeTableListener(
-            @SuppressWarnings( "unused" )
-            final ITableListener listener )
-        {
-            // do nothing
-        }
-
-        /*
-         * @see org.gamegineer.common.core.util.memento.IMementoOriginator#setMemento(java.lang.Object)
-         */
-        @Override
-        @SuppressWarnings( "unused" )
-        public void setMemento(
-            final Object memento )
-            throws MementoException
-        {
-            // do nothing
         }
     }
 }

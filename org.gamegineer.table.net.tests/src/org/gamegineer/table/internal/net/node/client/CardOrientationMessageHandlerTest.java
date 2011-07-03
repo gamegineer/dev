@@ -1,5 +1,5 @@
 /*
- * TableMessageHandlerTest.java
+ * CardOrientationMessageHandlerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,27 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 16, 2011 at 11:34:34 PM.
+ * Created on Jun 30, 2011 at 11:59:36 PM.
  */
 
 package org.gamegineer.table.internal.net.node.client;
 
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.internal.net.node.IMessageHandler;
 import org.gamegineer.table.internal.net.node.INetworkTable;
 import org.gamegineer.table.internal.net.node.INetworkTableManager;
-import org.gamegineer.table.internal.net.node.common.messages.TableMessage;
+import org.gamegineer.table.internal.net.node.common.messages.CardOrientationMessage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.client.TableMessageHandler}
+ * {@link org.gamegineer.table.internal.net.node.client.CardOrientationMessageHandler}
  * class.
  */
-public final class TableMessageHandlerTest
+public final class CardOrientationMessageHandlerTest
 {
     // ======================================================================
     // Fields
@@ -54,9 +55,10 @@ public final class TableMessageHandlerTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableMessageHandlerTest} class.
+     * Initializes a new instance of the {@code
+     * CardOrientationMessageHandlerTest} class.
      */
-    public TableMessageHandlerTest()
+    public CardOrientationMessageHandlerTest()
     {
         super();
     }
@@ -77,7 +79,7 @@ public final class TableMessageHandlerTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        messageHandler_ = TableMessageHandler.INSTANCE;
+        messageHandler_ = CardOrientationMessageHandler.INSTANCE;
     }
 
     /**
@@ -95,20 +97,22 @@ public final class TableMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a table
-     * message.
+     * Ensures the {@code handleMessage} method correctly handles a card
+     * orientation message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test
-    public void testHandleMessage_TableMessage()
+    public void testHandleMessage_CardOrienationMessage()
         throws Exception
     {
-        final Object memento = new Object();
+        final int cardPileIndex = 3;
+        final int cardIndex = 1;
+        final CardOrientation cardOrientation = CardOrientation.FACE_UP;
         final INetworkTable table = mocksControl_.createMock( INetworkTable.class );
         final INetworkTableManager tableManager = mocksControl_.createMock( INetworkTableManager.class );
-        tableManager.setTableMemento( table, memento );
+        tableManager.setCardOrientation( table, cardPileIndex, cardIndex, cardOrientation );
         final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
         EasyMock.expect( localNode.getTableManager() ).andReturn( tableManager ).anyTimes();
         final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
@@ -116,8 +120,10 @@ public final class TableMessageHandlerTest
         EasyMock.expect( remoteNodeController.getTable() ).andReturn( table ).anyTimes();
         mocksControl_.replay();
 
-        final TableMessage message = new TableMessage();
-        message.setMemento( memento );
+        final CardOrientationMessage message = new CardOrientationMessage();
+        message.setCardIndex( cardIndex );
+        message.setCardOrientation( cardOrientation );
+        message.setCardPileIndex( cardPileIndex );
         messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();

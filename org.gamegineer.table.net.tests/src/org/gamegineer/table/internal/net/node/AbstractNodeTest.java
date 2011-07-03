@@ -24,11 +24,12 @@ package org.gamegineer.table.internal.net.node;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import net.jcip.annotations.Immutable;
 import org.easymock.EasyMock;
-import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -116,16 +117,18 @@ public final class AbstractNodeTest
             {
                 super.connected();
 
-                assertTrue( isTableProxyBound( configuration.getLocalTable() ) );
+                assertTrue( isTableBound( configuration.getLocalPlayerName() ) );
             }
 
             @Override
-            protected void connecting()
+            protected void connecting(
+                @SuppressWarnings( "hiding" )
+                final ITableNetworkConfiguration configuration )
                 throws TableNetworkException
             {
-                super.connecting();
+                super.connecting( configuration );
 
-                assertTrue( isTableProxyBound( configuration.getLocalTable() ) );
+                assertTrue( isTableBound( configuration.getLocalPlayerName() ) );
             }
         };
 
@@ -175,7 +178,7 @@ public final class AbstractNodeTest
             {
                 super.disconnected();
 
-                assertFalse( isTableProxyBound( configuration.getLocalTable() ) );
+                assertFalse( isTableBound( configuration.getLocalPlayerName() ) );
             }
 
             @Override
@@ -183,7 +186,7 @@ public final class AbstractNodeTest
             {
                 super.disconnecting();
 
-                assertTrue( isTableProxyBound( configuration.getLocalTable() ) );
+                assertTrue( isTableBound( configuration.getLocalPlayerName() ) );
             }
         };
         node.connect( configuration );
@@ -205,22 +208,6 @@ public final class AbstractNodeTest
         final int actualRemoteNodesSize = node_.getRemoteNodes().size();
 
         assertEquals( expectedRemoteNodesSize, actualRemoteNodesSize );
-    }
-
-    /**
-     * Ensures the {@code getTableProxies} method returns a copy of the bound
-     * table proxies collection.
-     */
-    @Test
-    public void testGetTableProxies_ReturnValue_Copy()
-    {
-        final Collection<ITable> tableProxies = node_.getTableProxies();
-        final int expectedTableProxiesSize = tableProxies.size();
-        tableProxies.add( EasyMock.createMock( ITable.class ) );
-
-        final int actualTableProxiesSize = node_.getTableProxies().size();
-
-        assertEquals( expectedTableProxiesSize, actualTableProxiesSize );
     }
 
 
@@ -271,29 +258,36 @@ public final class AbstractNodeTest
         }
 
         /**
-         * Indicates the specified table proxy is bound to this node.
+         * Indicates a table is bound to this node for the specified player
+         * name.
          * 
-         * @param tableProxy
-         *        The table proxy; must not be {@code null}.
+         * @param playerName
+         *        The player name; must not be {@code null}.
          * 
-         * @return {@code true} if the specified table proxy is bound to this
-         *         node; otherwise {@code false}.
+         * @return {@code true} if a table is bound to this node for the
+         *         specified player name; otherwise {@code false}.
          */
-        final boolean isTableProxyBound(
+        final boolean isTableBound(
             /* @NonNull */
-            final ITable tableProxy )
+            final String playerName )
         {
-            assert tableProxy != null;
+            assert playerName != null;
 
-            for( final ITable otherTableProxy : getTableProxies() )
+            try
             {
-                if( tableProxy.equals( otherTableProxy ) )
-                {
-                    return true;
-                }
+                final Field field = AbstractNode.class.getDeclaredField( "tables_" ); //$NON-NLS-1$
+                field.setAccessible( true );
+                final Map<?, ?> tables = (Map<?, ?>)field.get( this );
+                return tables.containsKey( playerName );
             }
-
-            return false;
+            catch( final NoSuchFieldException e )
+            {
+                throw new AssertionError( e );
+            }
+            catch( final IllegalAccessException e )
+            {
+                throw new AssertionError( e );
+            }
         }
     }
 }

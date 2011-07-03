@@ -112,6 +112,15 @@ public interface INode<RemoteNodeType extends IRemoteNode>
     public String getPlayerName();
 
     /**
+     * Gets the table manager for the local table network node.
+     * 
+     * @return The table manager for the local table network node; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    public INetworkTableManager getTableManager();
+
+    /**
      * Unbinds the specified remote node from the local table network node.
      * 
      * @param remoteNode

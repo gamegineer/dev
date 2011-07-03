@@ -29,6 +29,7 @@ import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.TransportException;
+import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
 import org.junit.Test;
 
@@ -228,6 +229,20 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     }
 
     /**
+     * Ensures the {@code connecting} method throws an exception when passed a
+     * {@code null} table network configuration.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConnecting_Configuration_Null()
+        throws Exception
+    {
+        getNodeController().connecting( null );
+    }
+
+    /**
      * Ensures the {@code disconnect} method invokes the {@code disconnected}
      * method when the transport layer is open.
      * 
@@ -292,7 +307,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
 
     /**
      * Mock implementation of
-     * {@link org.gamegineer.table.internal.net.node.AbstractNode} .
+     * {@link org.gamegineer.table.internal.net.node.AbstractNode}.
      */
     @NotThreadSafe
     private static final class MockNode
@@ -305,7 +320,10 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         /** The count of calls made to the {@link #connected()} method. */
         private int connectedCallCount_;
 
-        /** The count of calls made to the {@link #connecting()} method. */
+        /**
+         * The count of calls made to the
+         * {@link #connecting(ITableNetworkConfiguration)} method.
+         */
         private int connectingCallCount_;
 
         /** The count of calls made to the {@link #disconnected()} method. */
@@ -366,13 +384,14 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.node.AbstractNode#connecting()
+         * @see org.gamegineer.table.internal.net.node.AbstractNode#connecting(org.gamegineer.table.net.ITableNetworkConfiguration)
          */
         @Override
-        protected void connecting()
+        protected void connecting(
+            final ITableNetworkConfiguration configuration )
             throws TableNetworkException
         {
-            super.connecting();
+            super.connecting( configuration );
 
             ++connectingCallCount_;
         }
@@ -430,9 +449,11 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         }
 
         /**
-         * Gets the count of calls made to the {@link #connecting()} method.
+         * Gets the count of calls made to the
+         * {@link #connecting(ITableNetworkConfiguration)} method.
          * 
-         * @return The count of calls made to the {@link #connecting()} method.
+         * @return The count of calls made to the
+         *         {@link #connecting(ITableNetworkConfiguration)} method.
          */
         int getConnectingCallCount()
         {

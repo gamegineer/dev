@@ -97,6 +97,14 @@ public interface IRemoteNodeController<LocalNodeType extends INode<?>>
     public Object getLock();
 
     /**
+     * Gets the table associated with the remote node.
+     * 
+     * @return The table associated with the remote node; never {@code null}.
+     */
+    /* @NonNull */
+    public INetworkTable getTable();
+
+    /**
      * Sends the specified message to the remote node peer.
      * 
      * @param message

@@ -32,7 +32,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.core.ITable;
+import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -43,7 +43,7 @@ import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkException;
 
 /**
- * Superclass for all table network nodes.
+ * Superclass for all local nodes in a table network.
  * 
  * <p>
  * Implementations of this class should not be reused for multiple connections.
@@ -90,15 +90,18 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     @GuardedBy( "getLock()" )
     private final Map<String, RemoteNodeType> remoteNodes_;
 
+    /** The table manager. */
+    private final INetworkTableManager tableManager_;
+
     /** The table network controller. */
     private final ITableNetworkController tableNetworkController_;
 
     /**
-     * The collection of bound table proxies. The key is the name of the player
-     * associated with the table. The value is the table proxy.
+     * The collection of bound tables. The key is the name of the player
+     * associated with the table. The value is the table.
      */
     @GuardedBy( "getLock()" )
-    private final Map<String, ITable> tableProxies_;
+    private final Map<String, INetworkTable> tables_;
 
     /**
      * The transport layer or {@code null} if the table network is not
@@ -132,8 +135,9 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         lock_ = new Object();
         password_ = null;
         remoteNodes_ = new HashMap<String, RemoteNodeType>();
+        tableManager_ = new NetworkTableManager();
         tableNetworkController_ = tableNetworkController;
-        tableProxies_ = new HashMap<String, ITable>();
+        tables_ = new HashMap<String, INetworkTable>();
         transportLayer_ = null;
     }
 
@@ -169,8 +173,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assertConnected();
         assertArgumentLegal( !remoteNodes_.containsKey( remoteNode.getPlayerName() ), "remoteNode", Messages.AbstractNode_bindRemoteNode_remoteNodeBound ); //$NON-NLS-1$ 
         remoteNodes_.put( remoteNode.getPlayerName(), remoteNode );
-        assert !tableProxies_.containsKey( remoteNode.getPlayerName() );
-        tableProxies_.put( remoteNode.getPlayerName(), remoteNode.getTableProxy() );
+        assert !tables_.containsKey( remoteNode.getPlayerName() );
+        tables_.put( remoteNode.getPlayerName(), remoteNode.getTable() );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Remote node bound for player '%s'", remoteNode.getPlayerName() ) ); //$NON-NLS-1$
         remoteNodeBound( remoteNode );
     }
@@ -196,9 +200,9 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
                 localPlayerName_ = configuration.getLocalPlayerName();
                 password_ = configuration.getPassword();
-                tableProxies_.put( localPlayerName_, configuration.getLocalTable() );
+                tables_.put( localPlayerName_, new LocalNodeTable( tableManager_, configuration.getLocalTable() ) );
 
-                connecting();
+                connecting( configuration );
 
                 final ITransportLayer transportLayer = createTransportLayer();
                 try
@@ -259,13 +263,21 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * This implementation does nothing.
      * </p>
      * 
+     * @param configuration
+     *        The table network configuration; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code configuration} is {@code null}.
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
     @GuardedBy( "getLock()" )
-    protected void connecting()
+    protected void connecting(
+        /* @NonNull */
+        final ITableNetworkConfiguration configuration )
         throws TableNetworkException
     {
+        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         // do nothing
@@ -314,7 +326,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                 if( transportLayer != null )
                 {
                     transportLayer_ = null;
-                    tableProxies_.remove( localPlayerName_ );
+                    tables_.remove( localPlayerName_ );
 
                     disconnected();
                     dispose();
@@ -425,25 +437,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             password_ = null;
         }
         remoteNodes_.clear();
-        tableProxies_.clear();
-    }
-
-    /**
-     * Gets the local table.
-     * 
-     * @return The local table; never {@code null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If the network is not connected.
-     */
-    @GuardedBy( "getLock()" )
-    /* @NonNull */
-    protected final ITable getLocalTable()
-    {
-        assert Thread.holdsLock( getLock() );
-
-        assertStateLegal( localPlayerName_ != null, Messages.AbstractNode_networkDisconnected );
-        return tableProxies_.get( localPlayerName_ );
+        tables_.clear();
     }
 
     /*
@@ -493,6 +487,15 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         }
     }
 
+    /*
+     * @see org.gamegineer.table.internal.net.node.INode#getTableManager()
+     */
+    @Override
+    public final INetworkTableManager getTableManager()
+    {
+        return tableManager_;
+    }
+
     /**
      * Gets the table network controller.
      * 
@@ -505,16 +508,16 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     }
 
     /**
-     * Gets the collection of bound table proxies.
+     * Gets the collection of bound tables.
      * 
-     * @return The collection of bound table proxies; never {@code null}.
+     * @return The collection of bound tables; never {@code null}.
      */
     /* @NonNull */
-    protected final Collection<ITable> getTableProxies()
+    private Collection<INetworkTable> getTables()
     {
         synchronized( getLock() )
         {
-            return new ArrayList<ITable>( tableProxies_.values() );
+            return new ArrayList<INetworkTable>( tables_.values() );
         }
     }
 
@@ -590,8 +593,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
         assertConnected();
         assertArgumentLegal( remoteNodes_.remove( remoteNode.getPlayerName() ) != null, "remoteNode", Messages.AbstractNode_unbindRemoteNode_remoteNodeNotBound ); //$NON-NLS-1$
-        assert tableProxies_.containsKey( remoteNode.getPlayerName() );
-        tableProxies_.remove( remoteNode.getPlayerName() );
+        assert tables_.containsKey( remoteNode.getPlayerName() );
+        tables_.remove( remoteNode.getPlayerName() );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Remote node unbound for player '%s'", remoteNode.getPlayerName() ) ); //$NON-NLS-1$
         remoteNodeUnbound( remoteNode );
     }
@@ -635,6 +638,77 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             final Exception exception )
         {
             getTableNetworkController().disconnect( (exception != null) ? TableNetworkError.TRANSPORT_ERROR : null );
+        }
+    }
+
+    /**
+     * Implementation of {@link INetworkTableManager}.
+     */
+    @Immutable
+    private final class NetworkTableManager
+        implements INetworkTableManager
+    {
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code NetworkTableManager} class.
+         */
+        NetworkTableManager()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.INetworkTableManager#setCardOrientation(org.gamegineer.table.internal.net.node.INetworkTable, int, int, org.gamegineer.table.core.CardOrientation)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void setCardOrientation(
+            final INetworkTable sourceTable,
+            final int cardPileIndex,
+            final int cardIndex,
+            final CardOrientation cardOrientation )
+        {
+            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
+            assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
+            assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
+            assertArgumentNotNull( cardOrientation, "cardOrientation" ); //$NON-NLS-1$
+
+            for( final INetworkTable table : getTables() )
+            {
+                if( table != sourceTable )
+                {
+                    table.setCardOrientation( cardPileIndex, cardIndex, cardOrientation );
+                }
+            }
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.INetworkTableManager#setTableMemento(org.gamegineer.table.internal.net.node.INetworkTable, java.lang.Object)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void setTableMemento(
+            final INetworkTable sourceTable,
+            final Object tableMemento )
+        {
+            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
+            assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
+
+            for( final INetworkTable table : getTables() )
+            {
+                if( table != sourceTable )
+                {
+                    table.setTableMemento( tableMemento );
+                }
+            }
         }
     }
 }

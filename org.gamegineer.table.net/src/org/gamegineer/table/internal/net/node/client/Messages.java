@@ -48,9 +48,6 @@ final class Messages
     /** The protocol handshake timed out waiting for completion. */
     public static String ClientNode_handshake_timedOut;
 
-    /** An error occurred while updating the local table. */
-    public static String ClientNode_updateLocalTable_error;
-
 
     // ======================================================================
     // Constructors

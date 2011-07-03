@@ -79,17 +79,4 @@ public abstract class AbstractConnectedClientNodeTestCase<T extends IClientNode>
             getNode().setPlayers( null );
         }
     }
-
-    /**
-     * Ensures the {@code setTableMemento} method throws an exception when
-     * passed a {@code null} memento.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetTableMemento_Memento_Null()
-    {
-        synchronized( getNode().getLock() )
-        {
-            getNode().setTableMemento( null );
-        }
-    }
 }

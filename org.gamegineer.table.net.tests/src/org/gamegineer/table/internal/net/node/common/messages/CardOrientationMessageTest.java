@@ -1,5 +1,5 @@
 /*
- * AbstractRemoteNodeTestCase.java
+ * CardOrientationMessageTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,31 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 16, 2011 at 11:04:26 PM.
+ * Created on Jun 30, 2011 at 11:31:15 PM.
  */
 
-package org.gamegineer.table.internal.net.node;
+package org.gamegineer.table.internal.net.node.common.messages;
 
-import static org.junit.Assert.assertNotNull;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.node.IRemoteNode} interface.
- * 
- * @param <T>
- *        The type of the remote node.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.internal.net.node.common.messages.CardOrientationMessage}
+ * class.
  */
-public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
+public final class CardOrientationMessageTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The remote node under test in the fixture. */
-    private T remoteNode_;
+    /** The card orientation message under test in the fixture. */
+    private CardOrientationMessage message_;
 
 
     // ======================================================================
@@ -48,10 +45,10 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractRemoteNodeTestCase}
+     * Initializes a new instance of the {@code CardOrientationMessageTest}
      * class.
      */
-    protected AbstractRemoteNodeTestCase()
+    public CardOrientationMessageTest()
     {
         super();
     }
@@ -60,30 +57,6 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates the remote node to be tested.
-     * 
-     * @return The remote node to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    /* @NonNull */
-    protected abstract T createRemoteNode()
-        throws Exception;
-
-    /**
-     * Gets the remote node under test in the fixture.
-     * 
-     * @return The remote node under test in the fixture; never {@code null}.
-     */
-    /* @NonNull */
-    protected final T getRemoteNode()
-    {
-        assertNotNull( remoteNode_ );
-        return remoteNode_;
-    }
 
     /**
      * Sets up the test fixture.
@@ -95,8 +68,7 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
     public void setUp()
         throws Exception
     {
-        remoteNode_ = createRemoteNode();
-        assertNotNull( remoteNode_ );
+        message_ = new CardOrientationMessage();
     }
 
     /**
@@ -109,24 +81,36 @@ public abstract class AbstractRemoteNodeTestCase<T extends IRemoteNode>
     public void tearDown()
         throws Exception
     {
-        remoteNode_ = null;
+        message_ = null;
     }
 
     /**
-     * Ensures the {@code getPlayerName} method does not return {@code null}.
+     * Ensures the {@code setCardIndex} method throws an exception when passed
+     * an illegal card index that is negative.
      */
-    @Test
-    public void testGetPlayerName_ReturnValue_NonNull()
+    @Test( expected = IllegalArgumentException.class )
+    public void testSetCardIndex_CardIndex_Null()
     {
-        assertNotNull( remoteNode_.getPlayerName() );
+        message_.setCardIndex( -1 );
     }
 
     /**
-     * Ensures the {@code getTable} method does not return {@code null}.
+     * Ensures the {@code setCardOrientation} method throws an exception when
+     * passed a {@code null} card orientation.
      */
-    @Test
-    public void testGetTable_ReturnValue_NonNull()
+    @Test( expected = NullPointerException.class )
+    public void testSetCardOrientation_CardOrientation_Null()
     {
-        assertNotNull( remoteNode_.getTable() );
+        message_.setCardOrientation( null );
+    }
+
+    /**
+     * Ensures the {@code setCardPileIndex} method throws an exception when
+     * passed an illegal card pile index that is negative.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testSetCardPileIndex_CardPileIndex_Null()
+    {
+        message_.setCardPileIndex( -1 );
     }
 }

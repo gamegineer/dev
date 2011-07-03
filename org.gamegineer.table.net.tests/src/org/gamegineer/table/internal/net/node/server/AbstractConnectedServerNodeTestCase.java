@@ -23,8 +23,8 @@ package org.gamegineer.table.internal.net.node.server;
 
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.internal.net.node.AbstractConnectedNodeTestCase;
+import org.gamegineer.table.internal.net.node.INetworkTable;
 import org.junit.Test;
 
 /**
@@ -65,7 +65,7 @@ public abstract class AbstractConnectedServerNodeTestCase<T extends IServerNode>
     {
         final IRemoteClientNode remoteNode = mocksControl.createMock( IRemoteClientNode.class );
         EasyMock.expect( remoteNode.getPlayerName() ).andReturn( "newPlayerName" ).anyTimes(); //$NON-NLS-1$
-        EasyMock.expect( remoteNode.getTableProxy() ).andReturn( mocksControl.createMock( ITable.class ) ).anyTimes();
+        EasyMock.expect( remoteNode.getTable() ).andReturn( mocksControl.createMock( INetworkTable.class ) ).anyTimes();
         return remoteNode;
     }
 

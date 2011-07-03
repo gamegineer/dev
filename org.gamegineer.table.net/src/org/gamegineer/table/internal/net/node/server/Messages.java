@@ -45,11 +45,6 @@ final class Messages
     /** Failed to create the begin authentication request. */
     public static String HelloRequestMessageHandler_beginAuthenticationRequestFailed;
 
-    // --- ServerNode -------------------------------------------------------
-
-    /** An error occurred while updating the remote table. */
-    public static String ServerNode_updateRemoteTable_error;
-
 
     // ======================================================================
     // Constructors
@@ -69,31 +64,5 @@ final class Messages
     private Messages()
     {
         super();
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    // --- ServerNode -------------------------------------------------------
-
-    /**
-     * Gets the formatted message indicating an error occurred while updating
-     * the remote table.
-     * 
-     * @param playerName
-     *        The name of the player associated with the remote table; must not
-     *        be {@code null}.
-     * 
-     * @return The formatted message indicating an error occurred while updating
-     *         the remote table; never {@code null}.
-     */
-    /* @NonNull */
-    static String ServerNode_updateRemoteTable_error(
-        /* @NonNull */
-        final String playerName )
-    {
-        return bind( ServerNode_updateRemoteTable_error, playerName );
     }
 }

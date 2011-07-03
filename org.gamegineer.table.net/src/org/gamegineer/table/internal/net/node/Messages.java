@@ -82,6 +82,11 @@ final class Messages
     /** An uncorrelated error message was received. */
     public static String ErrorMessageHandler_handleMessage_errorReceived;
 
+    // --- LocalNodeTable ---------------------------------------------------
+
+    /** Failed to set the table memento. */
+    public static String LocalNodeTable_setTableMemento_failed;
+
 
     // ======================================================================
     // Constructors

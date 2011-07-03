@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.net.node.server;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
@@ -32,10 +31,10 @@ import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
-import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.node.AbstractNode;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkException;
 
@@ -110,17 +109,19 @@ public final class ServerNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.node.AbstractNode#connecting()
+     * @see org.gamegineer.table.internal.net.node.AbstractNode#connecting(org.gamegineer.table.net.ITableNetworkConfiguration)
      */
     @Override
-    protected void connecting()
+    protected void connecting(
+        final ITableNetworkConfiguration configuration )
         throws TableNetworkException
     {
+        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
-        super.connecting();
+        super.connecting( configuration );
 
-        initializeMasterTable();
+        initializeMasterTable( configuration.getLocalTable() );
         bindPlayer( getPlayerName() );
     }
 
@@ -182,19 +183,28 @@ public final class ServerNode
     }
 
     /**
-     * Initializes the master table for the table network.
+     * Initializes the master table for the table network using the specified
+     * table.
+     * 
+     * @param table
+     *        The table used to specify the master table; must not be {@code
+     *        null}.
      * 
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
-    private void initializeMasterTable()
+    private void initializeMasterTable(
+        /* @NonNull */
+        final ITable table )
         throws TableNetworkException
     {
+        assert table != null;
+
         final ITable masterTable;
         try
         {
             masterTable = TableFactory.createTable();
-            masterTable.setMemento( getLocalTable().createMemento() );
+            masterTable.setMemento( table.createMemento() );
         }
         catch( final MementoException e )
         {
@@ -246,7 +256,7 @@ public final class ServerNode
         super.remoteNodeBound( remoteNode );
 
         bindPlayer( remoteNode.getPlayerName() );
-        updateRemoteTable( remoteNode );
+        synchronizeRemoteTable( remoteNode );
     }
 
     /*
@@ -262,6 +272,24 @@ public final class ServerNode
         super.remoteNodeUnbound( remoteNode );
 
         unbindPlayer( remoteNode.getPlayerName() );
+    }
+
+    /**
+     * Synchronizes the state of the table at the specified remote node with the
+     * master table.
+     * 
+     * @param remoteNode
+     *        The remote node; must not be {@code null}.
+     */
+    @GuardedBy( "lock_" )
+    private void synchronizeRemoteTable(
+        /* @NonNull */
+        final IRemoteClientNode remoteNode )
+    {
+        assert remoteNode != null;
+        assert Thread.holdsLock( getLock() );
+
+        remoteNode.getTable().setTableMemento( masterTable_.createMemento() );
     }
 
     /**
@@ -283,28 +311,5 @@ public final class ServerNode
         players_.remove( playerName );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has disconnected", playerName ) ); //$NON-NLS-1$
         notifyPlayersUpdated();
-    }
-
-    /**
-     * Updates the state of the table at the specified remote node with the
-     * master table state.
-     * 
-     * @param remoteNode
-     *        The remote node; must not be {@code null}.
-     */
-    private void updateRemoteTable(
-        /* @NonNull */
-        final IRemoteClientNode remoteNode )
-    {
-        assert remoteNode != null;
-
-        try
-        {
-            remoteNode.getTableProxy().setMemento( masterTable_.createMemento() );
-        }
-        catch( final MementoException e )
-        {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerNode_updateRemoteTable_error( remoteNode.getPlayerName() ), e );
-        }
     }
 }

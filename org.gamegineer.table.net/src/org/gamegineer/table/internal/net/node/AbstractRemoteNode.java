@@ -51,7 +51,7 @@ import org.gamegineer.table.net.TableNetworkError;
  */
 @ThreadSafe
 public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeType>, RemoteNodeType extends IRemoteNode>
-    implements IRemoteNodeController<LocalNodeType>, IService, IRemoteNode
+    implements IRemoteNode, IRemoteNodeController<LocalNodeType>, IService
 {
     // ======================================================================
     // Fields
@@ -95,6 +95,9 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     @GuardedBy( "getLock()" )
     private IServiceContext serviceContext_;
 
+    /** The table associated with the remote node. */
+    private final INetworkTable table_;
+
     /**
      * The collection of message handlers for uncorrelated messages. The key is
      * the message type. The value is the message handler.
@@ -129,6 +132,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         nextId_ = getInitialMessageId();
         playerName_ = null;
         serviceContext_ = null;
+        table_ = new RemoteNodeTable( this );
         uncorrelatedMessageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler>();
 
         registerUncorrelatedMessageHandler( ErrorMessage.class, ErrorMessageHandler.INSTANCE );
@@ -292,6 +296,16 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
             assertStateLegal( playerName_ != null, Messages.AbstractRemoteNode_playerNotAuthenticated );
             return playerName_;
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.IRemoteNode#getTable()
+     * @see org.gamegineer.table.internal.net.node.IRemoteNodeController#getTable()
+     */
+    @Override
+    public final INetworkTable getTable()
+    {
+        return table_;
     }
 
     /**

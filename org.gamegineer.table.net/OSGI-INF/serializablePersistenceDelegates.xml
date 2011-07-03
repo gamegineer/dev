@@ -14,6 +14,7 @@
 				type="String">
 			org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationRequestMessage
 			org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationResponseMessage
+			org.gamegineer.table.internal.net.node.common.messages.CardOrientationMessage
 			org.gamegineer.table.internal.net.node.common.messages.EchoRequestMessage
 			org.gamegineer.table.internal.net.node.common.messages.EchoResponseMessage
 			org.gamegineer.table.internal.net.node.common.messages.EndAuthenticationMessage

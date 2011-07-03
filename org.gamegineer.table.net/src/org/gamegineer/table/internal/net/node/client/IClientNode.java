@@ -53,20 +53,4 @@ public interface IClientNode
     public void setPlayers(
         /* @NonNull */
         Collection<String> players );
-
-    /**
-     * Sets the state of the local table using the specified memento.
-     * 
-     * @param memento
-     *        The table memento; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If the table network is not connected.
-     * @throws java.lang.NullPointerException
-     *         If {@code memento} is {@code null}.
-     */
-    @GuardedBy( "getLock()" )
-    public void setTableMemento(
-        /* @NonNull */
-        Object memento );
 }

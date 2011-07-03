@@ -93,30 +93,4 @@ public abstract class AbstractDisconnectedClientNodeTestCase<T extends IClientNo
             getNode().setPlayers( null );
         }
     }
-
-    /**
-     * Ensures the {@code setTableMemento} method throws an exception when
-     * passed a non-{@code null} memento.
-     */
-    @Test( expected = IllegalStateException.class )
-    public void testSetTableMemento_Memento_NonNull()
-    {
-        synchronized( getNode().getLock() )
-        {
-            getNode().setTableMemento( new Object() );
-        }
-    }
-
-    /**
-     * Ensures the {@code setTableMemento} method throws an exception when
-     * passed a {@code null} memento.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetTableMemento_Memento_Null()
-    {
-        synchronized( getNode().getLock() )
-        {
-            getNode().setTableMemento( null );
-        }
-    }
 }
