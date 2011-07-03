@@ -33,8 +33,12 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Loggers;
+import org.gamegineer.table.internal.net.node.common.handlers.CardOrientationMessageHandler;
+import org.gamegineer.table.internal.net.node.common.handlers.TableMessageHandler;
+import org.gamegineer.table.internal.net.node.common.messages.CardOrientationMessage;
 import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
+import org.gamegineer.table.internal.net.node.common.messages.TableMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.IServiceContext;
@@ -135,7 +139,9 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         table_ = new RemoteNodeTable( this );
         uncorrelatedMessageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler>();
 
+        registerUncorrelatedMessageHandler( CardOrientationMessage.class, CardOrientationMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( ErrorMessage.class, ErrorMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( TableMessage.class, TableMessageHandler.INSTANCE );
     }
 
 

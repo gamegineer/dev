@@ -25,11 +25,9 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.node.AbstractRemoteNode;
 import org.gamegineer.table.internal.net.node.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationRequestMessage;
-import org.gamegineer.table.internal.net.node.common.messages.CardOrientationMessage;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
 import org.gamegineer.table.internal.net.node.common.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
-import org.gamegineer.table.internal.net.node.common.messages.TableMessage;
 import org.gamegineer.table.net.TableNetworkError;
 
 /**
@@ -65,10 +63,8 @@ final class RemoteServerNode
         super( localNode );
 
         registerUncorrelatedMessageHandler( BeginAuthenticationRequestMessage.class, BeginAuthenticationRequestMessageHandler.INSTANCE );
-        registerUncorrelatedMessageHandler( CardOrientationMessage.class, CardOrientationMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( GoodbyeMessage.class, GoodbyeMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( PlayersMessage.class, PlayersMessageHandler.INSTANCE );
-        registerUncorrelatedMessageHandler( TableMessage.class, TableMessageHandler.INSTANCE );
     }
 
 

@@ -1,5 +1,5 @@
 /*
- * AbstractMessageHandler.java
+ * AbstractClientMessageHandler.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 30, 2011 at 8:46:32 PM.
+ * Created on May 30, 2011 at 8:44:06 PM.
  */
 
-package org.gamegineer.table.internal.net.node.server;
+package org.gamegineer.table.internal.net.node.client;
 
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.node.AbstractMessageHandler;
 
 /**
- * Superclass for all message handlers associated with a remote client node.
+ * Superclass for all client message handlers that communicate with a remote
+ * server node.
  */
 @Immutable
-abstract class AbstractMessageHandler
-    extends org.gamegineer.table.internal.net.node.AbstractMessageHandler<IRemoteClientNodeController>
+abstract class AbstractClientMessageHandler
+    extends AbstractMessageHandler<IRemoteServerNodeController>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code AbstractMessageHandler} class.
+     * Initializes a new instance of the {@code AbstractClientMessageHandler}
+     * class.
      */
-    AbstractMessageHandler()
+    AbstractClientMessageHandler()
     {
-        super( IRemoteClientNodeController.class );
+        super( IRemoteServerNodeController.class );
     }
 }

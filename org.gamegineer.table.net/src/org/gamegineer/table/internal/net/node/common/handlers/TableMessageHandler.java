@@ -1,5 +1,5 @@
 /*
- * CardOrientationMessageHandler.java
+ * TableMessageHandler.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,27 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 30, 2011 at 10:35:04 PM.
+ * Created on Jun 16, 2011 at 11:32:43 PM.
  */
 
-package org.gamegineer.table.internal.net.node.client;
+package org.gamegineer.table.internal.net.node.common.handlers;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.node.common.messages.CardOrientationMessage;
+import org.gamegineer.table.internal.net.node.IRemoteNodeController;
+import org.gamegineer.table.internal.net.node.common.messages.TableMessage;
 
 /**
- * A message handler for the {@link CardOrientationMessage} message.
+ * A message handler for the {@link TableMessage} message.
  */
 @Immutable
-final class CardOrientationMessageHandler
-    extends AbstractMessageHandler
+public final class TableMessageHandler
+    extends AbstractCommonMessageHandler
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The singleton instance of this class. */
-    static final CardOrientationMessageHandler INSTANCE = new CardOrientationMessageHandler();
+    public static final TableMessageHandler INSTANCE = new TableMessageHandler();
 
 
     // ======================================================================
@@ -44,10 +45,9 @@ final class CardOrientationMessageHandler
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardOrientationMessageHandler}
-     * class.
+     * Initializes a new instance of the {@code TableMessageHandler} class.
      */
-    private CardOrientationMessageHandler()
+    private TableMessageHandler()
     {
         super();
     }
@@ -58,7 +58,7 @@ final class CardOrientationMessageHandler
     // ======================================================================
 
     /**
-     * Handles a {@code CardOrientationMessage} message.
+     * Handles a {@code TableMessage} message.
      * 
      * @param remoteNodeController
      *        The control interface for the remote node that received the
@@ -69,17 +69,15 @@ final class CardOrientationMessageHandler
     @SuppressWarnings( "unused" )
     private void handleMessage(
         /* @NonNull */
-        final IRemoteServerNodeController remoteNodeController,
+        final IRemoteNodeController<?> remoteNodeController,
         /* @NonNull */
-        final CardOrientationMessage message )
+        final TableMessage message )
     {
         assert remoteNodeController != null;
         assert message != null;
 
-        remoteNodeController.getLocalNode().getTableManager().setCardOrientation( //
+        remoteNodeController.getLocalNode().getTableManager().setTableMemento( //
             remoteNodeController.getTable(), //
-            message.getCardPileIndex(), //
-            message.getCardIndex(), //
-            message.getCardOrientation() );
+            message.getMemento() );
     }
 }

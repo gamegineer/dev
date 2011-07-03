@@ -19,7 +19,7 @@
  * Created on Jun 30, 2011 at 11:59:36 PM.
  */
 
-package org.gamegineer.table.internal.net.node.client;
+package org.gamegineer.table.internal.net.node.common.handlers;
 
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
@@ -27,6 +27,8 @@ import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.internal.net.node.IMessageHandler;
 import org.gamegineer.table.internal.net.node.INetworkTable;
 import org.gamegineer.table.internal.net.node.INetworkTableManager;
+import org.gamegineer.table.internal.net.node.INode;
+import org.gamegineer.table.internal.net.node.IRemoteNodeController;
 import org.gamegineer.table.internal.net.node.common.messages.CardOrientationMessage;
 import org.junit.After;
 import org.junit.Before;
@@ -34,7 +36,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.client.CardOrientationMessageHandler}
+ * {@link org.gamegineer.table.internal.net.node.common.handlers.CardOrientationMessageHandler}
  * class.
  */
 public final class CardOrientationMessageHandlerTest
@@ -103,6 +105,7 @@ public final class CardOrientationMessageHandlerTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
+    @SuppressWarnings( "unchecked" )
     @Test
     public void testHandleMessage_CardOrienationMessage()
         throws Exception
@@ -113,9 +116,9 @@ public final class CardOrientationMessageHandlerTest
         final INetworkTable table = mocksControl_.createMock( INetworkTable.class );
         final INetworkTableManager tableManager = mocksControl_.createMock( INetworkTableManager.class );
         tableManager.setCardOrientation( table, cardPileIndex, cardIndex, cardOrientation );
-        final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
+        final INode localNode = mocksControl_.createMock( INode.class );
         EasyMock.expect( localNode.getTableManager() ).andReturn( tableManager ).anyTimes();
-        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
+        final IRemoteNodeController remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         EasyMock.expect( remoteNodeController.getTable() ).andReturn( table ).anyTimes();
         mocksControl_.replay();

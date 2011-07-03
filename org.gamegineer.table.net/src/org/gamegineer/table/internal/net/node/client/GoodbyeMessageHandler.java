@@ -31,7 +31,7 @@ import org.gamegineer.table.net.TableNetworkError;
  */
 @Immutable
 final class GoodbyeMessageHandler
-    extends AbstractMessageHandler
+    extends AbstractClientMessageHandler
 {
     // ======================================================================
     // Fields

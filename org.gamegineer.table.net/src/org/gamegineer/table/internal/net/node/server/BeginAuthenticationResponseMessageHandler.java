@@ -41,7 +41,7 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @Immutable
 final class BeginAuthenticationResponseMessageHandler
-    extends AbstractMessageHandler
+    extends AbstractServerMessageHandler
 {
     // ======================================================================
     // Fields

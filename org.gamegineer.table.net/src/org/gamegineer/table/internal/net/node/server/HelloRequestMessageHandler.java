@@ -40,7 +40,7 @@ import org.gamegineer.table.net.TableNetworkException;
  */
 @Immutable
 final class HelloRequestMessageHandler
-    extends AbstractMessageHandler
+    extends AbstractServerMessageHandler
 {
     // ======================================================================
     // Fields

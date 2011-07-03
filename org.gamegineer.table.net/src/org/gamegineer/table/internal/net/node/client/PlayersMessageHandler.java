@@ -29,7 +29,7 @@ import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
  */
 @Immutable
 final class PlayersMessageHandler
-    extends AbstractMessageHandler
+    extends AbstractClientMessageHandler
 {
     // ======================================================================
     // Fields
