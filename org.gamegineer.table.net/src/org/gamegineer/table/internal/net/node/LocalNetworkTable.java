@@ -1,5 +1,5 @@
 /*
- * LocalNodeTable.java
+ * LocalNetworkTable.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -44,10 +44,10 @@ import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.internal.net.Loggers;
 
 /**
- * Adapts an instance of {@link ITable} to {@link INetworkTable}.
+ * Adapts a local table to {@link INetworkTable}.
  */
 @ThreadSafe
-final class LocalNodeTable
+final class LocalNetworkTable
     implements INetworkTable
 {
     // ======================================================================
@@ -91,7 +91,7 @@ final class LocalNodeTable
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code LocalNodeTable} class.
+     * Initializes a new instance of the {@code LocalNetworkTable} class.
      * 
      * @param tableManager
      *        The table manager for the local table network node; must not be
@@ -99,7 +99,7 @@ final class LocalNodeTable
      * @param table
      *        The local table; must not be {@code null}.
      */
-    LocalNodeTable(
+    LocalNetworkTable(
         /* @NonNull */
         final INetworkTableManager tableManager,
         /* @NonNull */
@@ -197,7 +197,7 @@ final class LocalNodeTable
             }
             catch( final MementoException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.LocalNodeTable_setTableMemento_failed, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.LocalNetworkTable_setTableMemento_failed, e );
             }
             finally
             {
@@ -267,7 +267,7 @@ final class LocalNodeTable
             final CardOrientation cardOrientation = card.getOrientation();
             final int cardIndex = card.getCardPile().getCardIndex( card );
             final int cardPileIndex = card.getCardPile().getTable().getCardPileIndex( card.getCardPile() );
-            tableManager_.setCardOrientation( LocalNodeTable.this, cardPileIndex, cardIndex, cardOrientation );
+            tableManager_.setCardOrientation( LocalNetworkTable.this, cardPileIndex, cardIndex, cardOrientation );
         }
 
         /*

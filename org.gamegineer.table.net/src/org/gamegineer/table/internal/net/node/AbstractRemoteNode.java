@@ -136,7 +136,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         nextId_ = getInitialMessageId();
         playerName_ = null;
         serviceContext_ = null;
-        table_ = new RemoteNodeTable( this );
+        table_ = new RemoteNetworkTable( this );
         uncorrelatedMessageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler>();
 
         registerUncorrelatedMessageHandler( CardOrientationMessage.class, CardOrientationMessageHandler.INSTANCE );

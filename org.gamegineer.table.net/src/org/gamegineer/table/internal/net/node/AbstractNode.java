@@ -200,7 +200,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
                 localPlayerName_ = configuration.getLocalPlayerName();
                 password_ = configuration.getPassword();
-                tables_.put( localPlayerName_, new LocalNodeTable( tableManager_, configuration.getLocalTable() ) );
+                tables_.put( localPlayerName_, new LocalNetworkTable( tableManager_, configuration.getLocalTable() ) );
 
                 connecting( configuration );
 

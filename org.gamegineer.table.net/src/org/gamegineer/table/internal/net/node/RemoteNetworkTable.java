@@ -1,5 +1,5 @@
 /*
- * RemoteNodeTable.java
+ * RemoteNetworkTable.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -29,10 +29,10 @@ import org.gamegineer.table.internal.net.node.common.messages.CardOrientationMes
 import org.gamegineer.table.internal.net.node.common.messages.TableMessage;
 
 /**
- * Adapts a remote node table to {@link INetworkTable}.
+ * Adapts a remote table to {@link INetworkTable}.
  */
 @Immutable
-final class RemoteNodeTable
+final class RemoteNetworkTable
     implements INetworkTable
 {
     // ======================================================================
@@ -48,13 +48,13 @@ final class RemoteNodeTable
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code RemoteNodeTable} class.
+     * Initializes a new instance of the {@code RemoteNetworkTable} class.
      * 
      * @param remoteNodeController
      *        The control interface for the remote node associated with the
      *        table; must not be {@code null}.
      */
-    RemoteNodeTable(
+    RemoteNetworkTable(
         /* @NonNull */
         final IRemoteNodeController<?> remoteNodeController )
     {
