@@ -109,13 +109,13 @@ public final class PlayersMessageHandlerTest
         final Collection<String> players = Arrays.asList( "player1", "player2", "player3" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
         localNode.setPlayers( players );
-        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
-        EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();
+        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
+        EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         mocksControl_.replay();
 
         final PlayersMessage message = new PlayersMessage();
         message.setPlayers( players );
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
     }

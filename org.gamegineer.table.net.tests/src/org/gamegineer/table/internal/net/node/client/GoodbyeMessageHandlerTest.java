@@ -107,12 +107,12 @@ public final class GoodbyeMessageHandlerTest
     {
         final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
         localNode.disconnect( TableNetworkError.SERVER_SHUTDOWN );
-        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
-        EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();
+        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
+        EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         mocksControl_.replay();
 
         final GoodbyeMessage message = new GoodbyeMessage();
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
     }

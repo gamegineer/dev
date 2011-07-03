@@ -126,20 +126,20 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         final byte[] response = authenticator.createResponse( challenge, password, salt );
         final IServerNode localNode = mocksControl_.createMock( IServerNode.class );
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );
-        final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
-        EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();
-        EasyMock.expect( controller.getChallenge() ).andReturn( challenge ).anyTimes();
-        EasyMock.expect( controller.getSalt() ).andReturn( salt ).anyTimes();
+        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
+        EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
+        EasyMock.expect( remoteNodeController.getChallenge() ).andReturn( challenge ).anyTimes();
+        EasyMock.expect( remoteNodeController.getSalt() ).andReturn( salt ).anyTimes();
         EasyMock.expect( localNode.isPlayerConnected( playerName ) ).andReturn( false );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
-        EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        controller.bind( playerName );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        remoteNodeController.bind( playerName );
         mocksControl_.replay();
 
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
         message.setPlayerName( playerName );
         message.setResponse( response );
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
         assertEquals( EndAuthenticationMessage.class, messageCapture.getValue().getClass() );
@@ -171,19 +171,19 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         };
         final IServerNode localNode = mocksControl_.createMock( IServerNode.class );
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );
-        final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
-        EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();
-        EasyMock.expect( controller.getChallenge() ).andReturn( challenge ).anyTimes();
-        EasyMock.expect( controller.getSalt() ).andReturn( salt ).anyTimes();
+        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
+        EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
+        EasyMock.expect( remoteNodeController.getChallenge() ).andReturn( challenge ).anyTimes();
+        EasyMock.expect( remoteNodeController.getSalt() ).andReturn( salt ).anyTimes();
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
-        EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        controller.close( TableNetworkError.AUTHENTICATION_FAILED );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        remoteNodeController.close( TableNetworkError.AUTHENTICATION_FAILED );
         mocksControl_.replay();
 
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
         message.setPlayerName( playerName );
         message.setResponse( response );
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
@@ -216,20 +216,20 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         final byte[] response = authenticator.createResponse( challenge, password, salt );
         final IServerNode localNode = mocksControl_.createMock( IServerNode.class );
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );
-        final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
-        EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();
-        EasyMock.expect( controller.getChallenge() ).andReturn( challenge ).anyTimes();
-        EasyMock.expect( controller.getSalt() ).andReturn( salt ).anyTimes();
+        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
+        EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
+        EasyMock.expect( remoteNodeController.getChallenge() ).andReturn( challenge ).anyTimes();
+        EasyMock.expect( remoteNodeController.getSalt() ).andReturn( salt ).anyTimes();
         EasyMock.expect( localNode.isPlayerConnected( playerName ) ).andReturn( true );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
-        EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        controller.close( TableNetworkError.DUPLICATE_PLAYER_NAME );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        remoteNodeController.close( TableNetworkError.DUPLICATE_PLAYER_NAME );
         mocksControl_.replay();
 
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
         message.setPlayerName( playerName );
         message.setResponse( response );
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );
@@ -262,20 +262,20 @@ public final class BeginAuthenticationResponseMessageHandlerTest
         final byte[] response = authenticator.createResponse( challenge, password, salt );
         final IServerNode localNode = mocksControl_.createMock( IServerNode.class );
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );
-        final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
-        EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();
-        EasyMock.expect( controller.getChallenge() ).andReturn( challenge ).anyTimes();
-        EasyMock.expect( controller.getSalt() ).andReturn( salt ).anyTimes();
+        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
+        EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
+        EasyMock.expect( remoteNodeController.getChallenge() ).andReturn( challenge ).anyTimes();
+        EasyMock.expect( remoteNodeController.getSalt() ).andReturn( salt ).anyTimes();
         EasyMock.expect( localNode.isPlayerConnected( playerName ) ).andReturn( false );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
-        EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( false );
-        controller.close( TableNetworkError.TRANSPORT_ERROR );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( false );
+        remoteNodeController.close( TableNetworkError.TRANSPORT_ERROR );
         mocksControl_.replay();
 
         final BeginAuthenticationResponseMessage message = new BeginAuthenticationResponseMessage();
         message.setPlayerName( playerName );
         message.setResponse( response );
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
     }
@@ -288,13 +288,13 @@ public final class BeginAuthenticationResponseMessageHandlerTest
     @Test
     public void testHandleMessage_UnexpectedMessage()
     {
-        final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
-        EasyMock.expect( controller.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        controller.close( TableNetworkError.UNEXPECTED_MESSAGE );
+        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        remoteNodeController.close( TableNetworkError.UNEXPECTED_MESSAGE );
         mocksControl_.replay();
 
         final FakeMessage message = new FakeMessage();
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
     }

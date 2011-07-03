@@ -66,8 +66,8 @@ public final class RemoteClientNodeAsRemoteClientNodeControllerTest
      */
     @Override
     protected void openRemoteNode(
-        final RemoteClientNode controller )
+        final RemoteClientNode remoteNodeController )
     {
-        controller.started( new FakeServiceContext() );
+        remoteNodeController.started( new FakeServiceContext() );
     }
 }

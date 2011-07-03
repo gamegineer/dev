@@ -128,11 +128,11 @@ public final class AbstractMessageHandlerTest
     @Test
     public void testHandleMessage_Message_Supported()
     {
-        final IRemoteNodeController<?> controller = mocksControl_.createMock( IRemoteNodeController.class );
+        final IRemoteNodeController<?> remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
         final IMessage message = new FakeMessage();
         mocksControl_.replay();
 
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         assertEquals( 1, messageHandler_.getHandleFakeMessageCallCount() );
     }
@@ -145,15 +145,15 @@ public final class AbstractMessageHandlerTest
     @Test
     public void testHandleMessage_Message_Unsupported()
     {
-        final IRemoteNodeController<?> controller = mocksControl_.createMock( IRemoteNodeController.class );
+        final IRemoteNodeController<?> remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
-        EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
         final IMessage message = mocksControl_.createMock( IMessage.class );
         EasyMock.expect( message.getId() ).andReturn( IMessage.MINIMUM_ID ).anyTimes();
         EasyMock.expect( message.getCorrelationId() ).andReturn( IMessage.MAXIMUM_ID ).anyTimes();
         mocksControl_.replay();
 
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
         assertEquals( 1, messageHandler_.getHandleUnexpectedMessageCallCount() );

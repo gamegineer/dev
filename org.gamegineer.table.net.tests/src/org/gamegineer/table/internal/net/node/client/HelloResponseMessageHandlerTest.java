@@ -105,13 +105,13 @@ public final class HelloResponseMessageHandlerTest
     @Test
     public void testHandleMessage_ErrorMessage()
     {
-        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
-        controller.close( TableNetworkError.UNSPECIFIED_ERROR );
+        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
+        remoteNodeController.close( TableNetworkError.UNSPECIFIED_ERROR );
         mocksControl_.replay();
 
         final ErrorMessage message = new ErrorMessage();
         message.setError( TableNetworkError.UNSPECIFIED_ERROR );
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
     }
@@ -124,12 +124,12 @@ public final class HelloResponseMessageHandlerTest
     @Test
     public void testHandleMessage_HelloResponseMessage_SupportedChosenProtocolVersion()
     {
-        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
+        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
         mocksControl_.replay();
 
         final HelloResponseMessage message = new HelloResponseMessage();
         message.setChosenProtocolVersion( ProtocolVersions.VERSION_1 );
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
     }
@@ -142,13 +142,13 @@ public final class HelloResponseMessageHandlerTest
     @Test
     public void testHandleMessage_HelloResponseMessage_UnsupportedChosenProtocolVersion()
     {
-        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
-        controller.close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
+        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
+        remoteNodeController.close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
         mocksControl_.replay();
 
         final HelloResponseMessage message = new HelloResponseMessage();
         message.setChosenProtocolVersion( 0 );
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
     }
@@ -161,13 +161,13 @@ public final class HelloResponseMessageHandlerTest
     @Test
     public void testHandleMessage_UnexpectedMessage()
     {
-        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
-        EasyMock.expect( controller.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        controller.close( TableNetworkError.UNEXPECTED_MESSAGE );
+        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        remoteNodeController.close( TableNetworkError.UNEXPECTED_MESSAGE );
         mocksControl_.replay();
 
         final FakeMessage message = new FakeMessage();
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
     }

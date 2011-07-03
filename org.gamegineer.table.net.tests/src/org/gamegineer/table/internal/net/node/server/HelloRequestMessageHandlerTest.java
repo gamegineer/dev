@@ -111,18 +111,18 @@ public final class HelloRequestMessageHandlerTest
     @Test
     public void testHandleMessage_HelloRequestMessage_SendBeginAuthenticationRequestMessageFails()
     {
-        final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
+        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<IMessage>( CaptureType.ALL );
-        EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        controller.setChallenge( EasyMock.notNull( byte[].class ) );
-        controller.setSalt( EasyMock.notNull( byte[].class ) );
-        EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( false );
-        controller.close( TableNetworkError.TRANSPORT_ERROR );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        remoteNodeController.setChallenge( EasyMock.notNull( byte[].class ) );
+        remoteNodeController.setSalt( EasyMock.notNull( byte[].class ) );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( false );
+        remoteNodeController.close( TableNetworkError.TRANSPORT_ERROR );
         mocksControl_.replay();
 
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
     }
@@ -136,14 +136,14 @@ public final class HelloRequestMessageHandlerTest
     @Test
     public void testHandleMessage_HelloRequestMessage_SendResponseMessageFails()
     {
-        final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
-        EasyMock.expect( controller.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( false );
-        controller.close( TableNetworkError.TRANSPORT_ERROR );
+        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( false );
+        remoteNodeController.close( TableNetworkError.TRANSPORT_ERROR );
         mocksControl_.replay();
 
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
     }
@@ -157,17 +157,17 @@ public final class HelloRequestMessageHandlerTest
     @Test
     public void testHandleMessage_HelloRequestMessage_SupportedProtocolVersion()
     {
-        final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
+        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<IMessage>( CaptureType.ALL );
-        EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        controller.setChallenge( EasyMock.notNull( byte[].class ) );
-        controller.setSalt( EasyMock.notNull( byte[].class ) );
-        EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( true );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        remoteNodeController.setChallenge( EasyMock.notNull( byte[].class ) );
+        remoteNodeController.setSalt( EasyMock.notNull( byte[].class ) );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( true );
         mocksControl_.replay();
 
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
         assertEquals( 2, messageCapture.getValues().size() );
@@ -189,15 +189,15 @@ public final class HelloRequestMessageHandlerTest
     @Test
     public void testHandleMessage_HelloRequestMessage_UnsupportedProtocolVersion()
     {
-        final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
+        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
-        EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        controller.close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        remoteNodeController.close( TableNetworkError.UNSUPPORTED_PROTOCOL_VERSION );
         mocksControl_.replay();
 
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( 0 );
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
         assertEquals( ErrorMessage.class, messageCapture.getValue().getClass() );

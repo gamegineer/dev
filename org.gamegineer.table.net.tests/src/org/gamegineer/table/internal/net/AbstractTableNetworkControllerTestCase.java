@@ -37,7 +37,7 @@ public abstract class AbstractTableNetworkControllerTestCase
     // ======================================================================
 
     /** The table network controller under test in the fixture. */
-    private ITableNetworkController controller_;
+    private ITableNetworkController tableNetworkController_;
 
 
     // ======================================================================
@@ -80,8 +80,8 @@ public abstract class AbstractTableNetworkControllerTestCase
     public void setUp()
         throws Exception
     {
-        controller_ = createTableNetworkController();
-        assertNotNull( controller_ );
+        tableNetworkController_ = createTableNetworkController();
+        assertNotNull( tableNetworkController_ );
     }
 
     /**
@@ -94,7 +94,7 @@ public abstract class AbstractTableNetworkControllerTestCase
     public void tearDown()
         throws Exception
     {
-        controller_ = null;
+        tableNetworkController_ = null;
     }
 
     /**
@@ -104,6 +104,6 @@ public abstract class AbstractTableNetworkControllerTestCase
     @Test
     public void testGetTransportLayerFactory_ReturnValue_NonNull()
     {
-        assertNotNull( controller_.getTransportLayerFactory() );
+        assertNotNull( tableNetworkController_.getTransportLayerFactory() );
     }
 }

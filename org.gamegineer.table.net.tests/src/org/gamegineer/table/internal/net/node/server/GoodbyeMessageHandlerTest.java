@@ -105,12 +105,12 @@ public final class GoodbyeMessageHandlerTest
     public void testHandleMessage_GoodbyeMessage()
         throws Exception
     {
-        final IRemoteClientNodeController controller = mocksControl_.createMock( IRemoteClientNodeController.class );
-        controller.close( TableNetworkError.CLIENT_SHUTDOWN );
+        final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
+        remoteNodeController.close( TableNetworkError.CLIENT_SHUTDOWN );
         mocksControl_.replay();
 
         final GoodbyeMessage message = new GoodbyeMessage();
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
     }

@@ -118,10 +118,10 @@ public final class BeginAuthenticationRequestMessageHandlerTest
         final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
         EasyMock.expect( localNode.getPlayerName() ).andReturn( playerName );
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( password ) );
-        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
-        EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();
+        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
+        EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
-        EasyMock.expect( controller.sendMessage( EasyMock.capture( messageCapture ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( true );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( true );
         mocksControl_.replay();
 
         final BeginAuthenticationRequestMessage message = new BeginAuthenticationRequestMessage();
@@ -133,7 +133,7 @@ public final class BeginAuthenticationRequestMessageHandlerTest
             5, 6, 7, 8
         };
         message.setSalt( salt );
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
         assertEquals( BeginAuthenticationResponseMessage.class, messageCapture.getValue().getClass() );
@@ -156,10 +156,10 @@ public final class BeginAuthenticationRequestMessageHandlerTest
         final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
         EasyMock.expect( localNode.getPlayerName() ).andReturn( "playerName" ); //$NON-NLS-1$
         EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( "password".toCharArray() ) ); //$NON-NLS-1$
-        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
-        EasyMock.expect( controller.getLocalNode() ).andReturn( localNode ).anyTimes();
-        EasyMock.expect( controller.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( false );
-        controller.close( TableNetworkError.TRANSPORT_ERROR );
+        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
+        EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( false );
+        remoteNodeController.close( TableNetworkError.TRANSPORT_ERROR );
         mocksControl_.replay();
 
         final BeginAuthenticationRequestMessage message = new BeginAuthenticationRequestMessage();
@@ -169,7 +169,7 @@ public final class BeginAuthenticationRequestMessageHandlerTest
         message.setSalt( new byte[] {
             5, 6, 7, 8
         } );
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
     }

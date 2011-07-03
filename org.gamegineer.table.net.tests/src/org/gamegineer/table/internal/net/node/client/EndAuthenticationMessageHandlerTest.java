@@ -108,12 +108,12 @@ public final class EndAuthenticationMessageHandlerTest
     public void testHandleMessage_EndAuthenticationMessage()
         throws Exception
     {
-        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
-        controller.bind( EasyMock.notNull( String.class ) );
+        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
+        remoteNodeController.bind( EasyMock.notNull( String.class ) );
         mocksControl_.replay();
 
         final EndAuthenticationMessage message = new EndAuthenticationMessage();
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
     }
@@ -125,13 +125,13 @@ public final class EndAuthenticationMessageHandlerTest
     @Test
     public void testHandleMessage_ErrorMessage()
     {
-        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
-        controller.close( TableNetworkError.UNSPECIFIED_ERROR );
+        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
+        remoteNodeController.close( TableNetworkError.UNSPECIFIED_ERROR );
         mocksControl_.replay();
 
         final ErrorMessage message = new ErrorMessage();
         message.setError( TableNetworkError.UNSPECIFIED_ERROR );
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
     }
@@ -144,13 +144,13 @@ public final class EndAuthenticationMessageHandlerTest
     @Test
     public void testHandleMessage_UnexpectedMessage()
     {
-        final IRemoteServerNodeController controller = mocksControl_.createMock( IRemoteServerNodeController.class );
-        EasyMock.expect( controller.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
-        controller.close( TableNetworkError.UNEXPECTED_MESSAGE );
+        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        remoteNodeController.close( TableNetworkError.UNEXPECTED_MESSAGE );
         mocksControl_.replay();
 
         final FakeMessage message = new FakeMessage();
-        messageHandler_.handleMessage( controller, message );
+        messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();
     }
