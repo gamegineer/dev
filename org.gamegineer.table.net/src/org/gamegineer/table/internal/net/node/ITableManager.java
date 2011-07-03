@@ -1,5 +1,5 @@
 /*
- * INetworkTableManager.java
+ * ITableManager.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -29,7 +29,7 @@ import org.gamegineer.table.core.CardOrientation;
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface INetworkTableManager
+public interface ITableManager
 {
     // ======================================================================
     // Methods

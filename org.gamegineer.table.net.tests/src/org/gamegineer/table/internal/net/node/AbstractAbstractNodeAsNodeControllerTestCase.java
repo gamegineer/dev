@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net.node;
 
 import static org.junit.Assert.assertEquals;
 import java.util.Collection;
+import java.util.Collections;
 import net.jcip.annotations.NotThreadSafe;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.ITableNetworkController;
@@ -498,7 +499,16 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         @Override
         public Collection<String> getPlayers()
         {
-            return null;
+            return Collections.emptyList();
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.INode#getTableManager()
+         */
+        @Override
+        public ITableManager getTableManager()
+        {
+            return EasyMock.createMock( ITableManager.class );
         }
     }
 }

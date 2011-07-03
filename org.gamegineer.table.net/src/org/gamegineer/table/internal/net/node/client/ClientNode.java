@@ -32,6 +32,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.node.AbstractNode;
+import org.gamegineer.table.internal.net.node.ITableManager;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.net.TableNetworkError;
@@ -69,6 +70,9 @@ public final class ClientNode
     /** The collection of players connected to the table network. */
     @GuardedBy( "getLock()" )
     private final Collection<String> players_;
+
+    /** The table manager. */
+    private final ITableManager tableManager_;
 
 
     // ======================================================================
@@ -122,6 +126,7 @@ public final class ClientNode
         handshakeError_ = null;
         isHandshakeComplete_ = waitForHandshakeCompletion ? false : true;
         players_ = new ArrayList<String>();
+        tableManager_ = new TableManager();
     }
 
 
@@ -223,6 +228,15 @@ public final class ClientNode
         {
             return new ArrayList<String>( players_ );
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.INode#getTableManager()
+     */
+    @Override
+    public ITableManager getTableManager()
+    {
+        return tableManager_;
     }
 
     /*

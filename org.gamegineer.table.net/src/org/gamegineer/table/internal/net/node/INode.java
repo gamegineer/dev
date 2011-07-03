@@ -118,7 +118,7 @@ public interface INode<RemoteNodeType extends IRemoteNode>
      *         null}.
      */
     /* @NonNull */
-    public INetworkTableManager getTableManager();
+    public ITableManager getTableManager();
 
     /**
      * Unbinds the specified remote node from the local table network node.

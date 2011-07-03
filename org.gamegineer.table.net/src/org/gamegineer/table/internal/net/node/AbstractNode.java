@@ -90,9 +90,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     @GuardedBy( "getLock()" )
     private final Map<String, RemoteNodeType> remoteNodes_;
 
-    /** The table manager. */
-    private final INetworkTableManager tableManager_;
-
     /** The table network controller. */
     private final ITableNetworkController tableNetworkController_;
 
@@ -135,7 +132,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         lock_ = new Object();
         password_ = null;
         remoteNodes_ = new HashMap<String, RemoteNodeType>();
-        tableManager_ = new NetworkTableManager();
         tableNetworkController_ = tableNetworkController;
         tables_ = new HashMap<String, INetworkTable>();
         transportLayer_ = null;
@@ -200,7 +196,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
                 localPlayerName_ = configuration.getLocalPlayerName();
                 password_ = configuration.getPassword();
-                tables_.put( localPlayerName_, new LocalNetworkTable( tableManager_, configuration.getLocalTable() ) );
+                tables_.put( localPlayerName_, new LocalNetworkTable( getTableManager(), configuration.getLocalTable() ) );
 
                 connecting( configuration );
 
@@ -487,15 +483,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         }
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.node.INode#getTableManager()
-     */
-    @Override
-    public final INetworkTableManager getTableManager()
-    {
-        return tableManager_;
-    }
-
     /**
      * Gets the table network controller.
      * 
@@ -642,20 +629,22 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     }
 
     /**
-     * Implementation of {@link INetworkTableManager}.
+     * Standard implementation of {@link ITableManager} that forwards each
+     * method call to all tables connected to the node, not including the
+     * originator of the request.
      */
     @Immutable
-    private final class NetworkTableManager
-        implements INetworkTableManager
+    protected class TableManager
+        implements ITableManager
     {
         // ==================================================================
-        // Methods
+        // Constructors
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code NetworkTableManager} class.
+         * Initializes a new instance of the {@code TableManager} class.
          */
-        NetworkTableManager()
+        public TableManager()
         {
             super();
         }
@@ -665,8 +654,16 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         // Methods
         // ==================================================================
 
-        /*
-         * @see org.gamegineer.table.internal.net.node.INetworkTableManager#setCardOrientation(org.gamegineer.table.internal.net.node.INetworkTable, int, int, org.gamegineer.table.core.CardOrientation)
+        /**
+         * This implementation forwards the request to all tables connected to
+         * the node, not including the originator of the request.
+         * 
+         * <p>
+         * Subclasses may override but must call the superclass implementation.
+         * </p>
+         * 
+         * @see org.gamegineer.table.internal.net.node.ITableManager#setCardOrientation(org.gamegineer.table.internal.net.node.INetworkTable,
+         *      int, int, org.gamegineer.table.core.CardOrientation)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
@@ -690,8 +687,16 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             }
         }
 
-        /*
-         * @see org.gamegineer.table.internal.net.node.INetworkTableManager#setTableMemento(org.gamegineer.table.internal.net.node.INetworkTable, java.lang.Object)
+        /**
+         * This implementation forwards the request to all tables connected to
+         * the node, not including the originator of the request.
+         * 
+         * <p>
+         * Subclasses may override but must call the superclass implementation.
+         * </p>
+         * 
+         * @see org.gamegineer.table.internal.net.node.ITableManager#setTableMemento(org.gamegineer.table.internal.net.node.INetworkTable,
+         *      java.lang.Object)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )

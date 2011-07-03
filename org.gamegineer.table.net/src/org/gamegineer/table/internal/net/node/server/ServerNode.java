@@ -21,17 +21,26 @@
 
 package org.gamegineer.table.internal.net.node.server;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
+import org.gamegineer.table.core.CardOrientation;
+import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.node.AbstractNode;
+import org.gamegineer.table.internal.net.node.INetworkTable;
+import org.gamegineer.table.internal.net.node.ITableManager;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
@@ -58,6 +67,9 @@ public final class ServerNode
     @GuardedBy( "getLock()" )
     private final Collection<String> players_;
 
+    /** The table manager. */
+    private final ITableManager tableManager_;
+
 
     // ======================================================================
     // Constructors
@@ -80,6 +92,7 @@ public final class ServerNode
 
         masterTable_ = null;
         players_ = new ArrayList<String>();
+        tableManager_ = new ServerTableManager();
     }
 
 
@@ -180,6 +193,15 @@ public final class ServerNode
         {
             return new ArrayList<String>( players_ );
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.INode#getTableManager()
+     */
+    @Override
+    public ITableManager getTableManager()
+    {
+        return tableManager_;
     }
 
     /**
@@ -311,5 +333,83 @@ public final class ServerNode
         players_.remove( playerName );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has disconnected", playerName ) ); //$NON-NLS-1$
         notifyPlayersUpdated();
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * Implementation of {@link ITableManager} that keeps the master table
+     * synchronized, in addition to all tables connected to the node.
+     */
+    @Immutable
+    private final class ServerTableManager
+        extends TableManager
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ServerTableManager} class.
+         */
+        ServerTableManager()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#setCardOrientation(org.gamegineer.table.internal.net.node.INetworkTable, int, int, org.gamegineer.table.core.CardOrientation)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void setCardOrientation(
+            final INetworkTable sourceTable,
+            final int cardPileIndex,
+            final int cardIndex,
+            final CardOrientation cardOrientation )
+        {
+            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
+            assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
+            assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
+            assertArgumentNotNull( cardOrientation, "cardOrientation" ); //$NON-NLS-1$
+
+            final ICardPile cardPile = masterTable_.getCardPile( cardPileIndex );
+            final ICard card = cardPile.getCard( cardIndex );
+            card.setOrientation( cardOrientation );
+
+            super.setCardOrientation( sourceTable, cardPileIndex, cardIndex, cardOrientation );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#setTableMemento(org.gamegineer.table.internal.net.node.INetworkTable, java.lang.Object)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void setTableMemento(
+            final INetworkTable sourceTable,
+            final Object tableMemento )
+        {
+            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
+            assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
+
+            try
+            {
+                masterTable_.setMemento( tableMemento );
+            }
+            catch( final MementoException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerTableManager_setTableMemento_failed, e );
+            }
+
+            super.setTableMemento( sourceTable, tableMemento );
+        }
     }
 }

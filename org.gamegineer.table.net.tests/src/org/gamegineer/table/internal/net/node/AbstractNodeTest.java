@@ -155,6 +155,12 @@ public final class AbstractNodeTest
             {
                 return null;
             }
+
+            @Override
+            public ITableManager getTableManager()
+            {
+                return null;
+            }
         };
     }
 
@@ -255,6 +261,15 @@ public final class AbstractNodeTest
         public Collection<String> getPlayers()
         {
             return Collections.emptyList();
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.INode#getTableManager()
+         */
+        @Override
+        public ITableManager getTableManager()
+        {
+            return EasyMock.createMock( ITableManager.class );
         }
 
         /**

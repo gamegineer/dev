@@ -25,9 +25,9 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.node.IMessageHandler;
 import org.gamegineer.table.internal.net.node.INetworkTable;
-import org.gamegineer.table.internal.net.node.INetworkTableManager;
 import org.gamegineer.table.internal.net.node.INode;
 import org.gamegineer.table.internal.net.node.IRemoteNodeController;
+import org.gamegineer.table.internal.net.node.ITableManager;
 import org.gamegineer.table.internal.net.node.common.messages.TableMessage;
 import org.junit.After;
 import org.junit.Before;
@@ -110,7 +110,7 @@ public final class TableMessageHandlerTest
     {
         final Object memento = new Object();
         final INetworkTable table = mocksControl_.createMock( INetworkTable.class );
-        final INetworkTableManager tableManager = mocksControl_.createMock( INetworkTableManager.class );
+        final ITableManager tableManager = mocksControl_.createMock( ITableManager.class );
         tableManager.setTableMemento( table, memento );
         final INode localNode = mocksControl_.createMock( INode.class );
         EasyMock.expect( localNode.getTableManager() ).andReturn( tableManager ).anyTimes();

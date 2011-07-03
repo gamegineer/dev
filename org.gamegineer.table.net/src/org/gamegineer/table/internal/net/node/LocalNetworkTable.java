@@ -83,7 +83,7 @@ final class LocalNetworkTable
     private ITableListener tableListener_;
 
     /** The table manager for the local table network node. */
-    private final INetworkTableManager tableManager_;
+    private final ITableManager tableManager_;
 
 
     // ======================================================================
@@ -101,7 +101,7 @@ final class LocalNetworkTable
      */
     LocalNetworkTable(
         /* @NonNull */
-        final INetworkTableManager tableManager,
+        final ITableManager tableManager,
         /* @NonNull */
         final ITable table )
     {
@@ -165,14 +165,8 @@ final class LocalNetworkTable
             ignoreEvents_ = true;
 
             final ICardPile cardPile = table_.getCardPile( cardPileIndex );
-            if( cardPile != null )
-            {
-                final ICard card = cardPile.getCard( cardIndex );
-                if( card != null )
-                {
-                    card.setOrientation( cardOrientation );
-                }
-            }
+            final ICard card = cardPile.getCard( cardIndex );
+            card.setOrientation( cardOrientation );
 
             ignoreEvents_ = false;
         }
