@@ -19,17 +19,18 @@
  * Created on May 30, 2011 at 8:44:06 PM.
  */
 
-package org.gamegineer.table.internal.net.node.client;
+package org.gamegineer.table.internal.net.node.client.handlers;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.node.AbstractMessageHandler;
+import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController;
 
 /**
  * Superclass for all client message handlers that communicate with a remote
  * server node.
  */
 @Immutable
-abstract class AbstractClientMessageHandler
+public abstract class AbstractClientMessageHandler
     extends AbstractMessageHandler<IRemoteServerNodeController>
 {
     // ======================================================================
@@ -40,7 +41,7 @@ abstract class AbstractClientMessageHandler
      * Initializes a new instance of the {@code AbstractClientMessageHandler}
      * class.
      */
-    AbstractClientMessageHandler()
+    protected AbstractClientMessageHandler()
     {
         super( IRemoteServerNodeController.class );
     }

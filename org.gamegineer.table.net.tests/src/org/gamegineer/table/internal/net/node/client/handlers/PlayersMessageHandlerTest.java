@@ -1,5 +1,5 @@
 /*
- * GoodbyeMessageHandlerTest.java
+ * PlayersMessageHandlerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,26 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 18, 2011 at 11:32:34 PM.
+ * Created on May 20, 2011 at 9:45:12 PM.
  */
 
-package org.gamegineer.table.internal.net.node.client;
+package org.gamegineer.table.internal.net.node.client.handlers;
 
+import java.util.Arrays;
+import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.node.IMessageHandler;
-import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
-import org.gamegineer.table.net.TableNetworkError;
+import org.gamegineer.table.internal.net.node.client.IClientNode;
+import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController;
+import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.client.GoodbyeMessageHandler}
+ * {@link org.gamegineer.table.internal.net.node.client.handlers.PlayersMessageHandler}
  * class.
  */
-public final class GoodbyeMessageHandlerTest
+public final class PlayersMessageHandlerTest
 {
     // ======================================================================
     // Fields
@@ -53,10 +56,10 @@ public final class GoodbyeMessageHandlerTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code GoodbyeMessageHandlerTest}
+     * Initializes a new instance of the {@code PlayersMessageHandlerTest}
      * class.
      */
-    public GoodbyeMessageHandlerTest()
+    public PlayersMessageHandlerTest()
     {
         super();
     }
@@ -77,7 +80,7 @@ public final class GoodbyeMessageHandlerTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        messageHandler_ = GoodbyeMessageHandler.INSTANCE;
+        messageHandler_ = PlayersMessageHandler.INSTANCE;
     }
 
     /**
@@ -95,23 +98,25 @@ public final class GoodbyeMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a goodbye
+     * Ensures the {@code handleMessage} method correctly handles a players
      * message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test
-    public void testHandleMessage_GoodbyeMessage()
+    public void testHandleMessage_PlayersMessage()
         throws Exception
     {
+        final Collection<String> players = Arrays.asList( "player1", "player2", "player3" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
-        localNode.disconnect( TableNetworkError.SERVER_SHUTDOWN );
+        localNode.setPlayers( players );
         final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         mocksControl_.replay();
 
-        final GoodbyeMessage message = new GoodbyeMessage();
+        final PlayersMessage message = new PlayersMessage();
+        message.setPlayers( players );
         messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();

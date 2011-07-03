@@ -19,7 +19,7 @@
  * Created on Apr 29, 2011 at 9:24:02 PM.
  */
 
-package org.gamegineer.table.internal.net.node.server;
+package org.gamegineer.table.internal.net.node.server.handlers;
 
 import static org.junit.Assert.assertEquals;
 import org.easymock.Capture;
@@ -32,6 +32,7 @@ import org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticatio
 import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.node.common.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.node.common.messages.HelloResponseMessage;
+import org.gamegineer.table.internal.net.node.server.IRemoteClientNodeController;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.net.TableNetworkError;
 import org.junit.After;
@@ -40,7 +41,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.server.HelloRequestMessageHandler}
+ * {@link org.gamegineer.table.internal.net.node.server.handlers.HelloRequestMessageHandler}
  * class.
  */
 public final class HelloRequestMessageHandlerTest

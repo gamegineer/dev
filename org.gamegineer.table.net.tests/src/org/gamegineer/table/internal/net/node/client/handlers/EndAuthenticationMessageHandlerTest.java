@@ -1,5 +1,5 @@
 /*
- * PlayersMessageHandlerTest.java
+ * EndAuthenticationMessageHandlerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,27 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 20, 2011 at 9:45:12 PM.
+ * Created on Apr 29, 2011 at 10:35:10 PM.
  */
 
-package org.gamegineer.table.internal.net.node.client;
+package org.gamegineer.table.internal.net.node.client.handlers;
 
-import java.util.Arrays;
-import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.node.IMessageHandler;
-import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
+import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController;
+import org.gamegineer.table.internal.net.node.common.messages.EndAuthenticationMessage;
+import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
+import org.gamegineer.table.internal.net.transport.FakeMessage;
+import org.gamegineer.table.internal.net.transport.IMessage;
+import org.gamegineer.table.net.TableNetworkError;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.client.PlayersMessageHandler}
+ * {@link org.gamegineer.table.internal.net.node.client.handlers.EndAuthenticationMessageHandler}
  * class.
  */
-public final class PlayersMessageHandlerTest
+public final class EndAuthenticationMessageHandlerTest
 {
     // ======================================================================
     // Fields
@@ -54,10 +57,10 @@ public final class PlayersMessageHandlerTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code PlayersMessageHandlerTest}
-     * class.
+     * Initializes a new instance of the {@code
+     * EndAuthenticationMessageHandlerTest} class.
      */
-    public PlayersMessageHandlerTest()
+    public EndAuthenticationMessageHandlerTest()
     {
         super();
     }
@@ -78,7 +81,7 @@ public final class PlayersMessageHandlerTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        messageHandler_ = PlayersMessageHandler.INSTANCE;
+        messageHandler_ = EndAuthenticationMessageHandler.INSTANCE;
     }
 
     /**
@@ -96,25 +99,58 @@ public final class PlayersMessageHandlerTest
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a players
-     * message.
+     * Ensures the {@code handleMessage} method correctly handles an end
+     * authentication message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test
-    public void testHandleMessage_PlayersMessage()
+    public void testHandleMessage_EndAuthenticationMessage()
         throws Exception
     {
-        final Collection<String> players = Arrays.asList( "player1", "player2", "player3" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
-        localNode.setPlayers( players );
         final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
-        EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
+        remoteNodeController.bind( EasyMock.notNull( String.class ) );
         mocksControl_.replay();
 
-        final PlayersMessage message = new PlayersMessage();
-        message.setPlayers( players );
+        final EndAuthenticationMessage message = new EndAuthenticationMessage();
+        messageHandler_.handleMessage( remoteNodeController, message );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code handleMessage} method correctly handles an error
+     * message.
+     */
+    @Test
+    public void testHandleMessage_ErrorMessage()
+    {
+        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
+        remoteNodeController.close( TableNetworkError.UNSPECIFIED_ERROR );
+        mocksControl_.replay();
+
+        final ErrorMessage message = new ErrorMessage();
+        message.setError( TableNetworkError.UNSPECIFIED_ERROR );
+        messageHandler_.handleMessage( remoteNodeController, message );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code handleMessage} method correctly handles an unexpected
+     * message.
+     */
+    @SuppressWarnings( "boxing" )
+    @Test
+    public void testHandleMessage_UnexpectedMessage()
+    {
+        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
+        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        remoteNodeController.close( TableNetworkError.UNEXPECTED_MESSAGE );
+        mocksControl_.replay();
+
+        final FakeMessage message = new FakeMessage();
         messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();

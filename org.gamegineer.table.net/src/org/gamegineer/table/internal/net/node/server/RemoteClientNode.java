@@ -29,6 +29,8 @@ import org.gamegineer.table.internal.net.node.AbstractRemoteNode;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
 import org.gamegineer.table.internal.net.node.common.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
+import org.gamegineer.table.internal.net.node.server.handlers.GoodbyeMessageHandler;
+import org.gamegineer.table.internal.net.node.server.handlers.HelloRequestMessageHandler;
 
 /**
  * A remote client node.

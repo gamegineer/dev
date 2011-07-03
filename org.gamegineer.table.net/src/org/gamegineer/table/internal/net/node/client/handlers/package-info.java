@@ -1,5 +1,5 @@
 /*
- * IRemoteServerNodeController.java
+ * package-info.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,22 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 23, 2011 at 8:44:12 PM.
+ * Created on Jul 2, 2011 at 10:20:05 PM.
  */
-
-package org.gamegineer.table.internal.net.node.client;
-
-import org.gamegineer.table.internal.net.node.IRemoteNodeController;
 
 /**
- * The control interface for a remote server node.
+ * Provides classes that define client table network protocol message
+ * handlers.
  * 
- * @noextend This interface is not intended to be extended by clients.
+ * <p>
+ * This package is only intended for use by members of the
+ * {@code org.gamegineer.table} project.
+ * </p>
  */
-public interface IRemoteServerNodeController
-    extends IRemoteNodeController<IClientNode>
-{
-    // ======================================================================
-    // Methods
-    // ======================================================================
-}
+package org.gamegineer.table.internal.net.node.client.handlers;

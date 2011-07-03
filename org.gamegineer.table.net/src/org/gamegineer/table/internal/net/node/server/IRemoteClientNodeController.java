@@ -28,7 +28,7 @@ import org.gamegineer.table.internal.net.node.IRemoteNodeController;
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-interface IRemoteClientNodeController
+public interface IRemoteClientNodeController
     extends IRemoteNodeController<IServerNode>
 {
     // ======================================================================

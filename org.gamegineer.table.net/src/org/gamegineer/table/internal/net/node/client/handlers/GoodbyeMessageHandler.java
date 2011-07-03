@@ -16,13 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 23, 2011 at 11:05:16 PM.
+ * Created on Jun 18, 2011 at 11:30:17 PM.
  */
 
-package org.gamegineer.table.internal.net.node.server;
+package org.gamegineer.table.internal.net.node.client.handlers;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.Debug;
+import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
 import org.gamegineer.table.net.TableNetworkError;
 
@@ -30,15 +31,15 @@ import org.gamegineer.table.net.TableNetworkError;
  * A message handler for the {@link GoodbyeMessage} message.
  */
 @Immutable
-final class GoodbyeMessageHandler
-    extends AbstractServerMessageHandler
+public final class GoodbyeMessageHandler
+    extends AbstractClientMessageHandler
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The singleton instance of this class. */
-    static final GoodbyeMessageHandler INSTANCE = new GoodbyeMessageHandler();
+    public static final GoodbyeMessageHandler INSTANCE = new GoodbyeMessageHandler();
 
 
     // ======================================================================
@@ -70,14 +71,14 @@ final class GoodbyeMessageHandler
     @SuppressWarnings( "unused" )
     private void handleMessage(
         /* @NonNull */
-        final IRemoteClientNodeController remoteNodeController,
+        final IRemoteServerNodeController remoteNodeController,
         /* @NonNull */
         final GoodbyeMessage message )
     {
         assert remoteNodeController != null;
         assert message != null;
 
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received goodbye message from client" ); //$NON-NLS-1$
-        remoteNodeController.close( TableNetworkError.CLIENT_SHUTDOWN );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received goodbye message from server" ); //$NON-NLS-1$
+        remoteNodeController.getLocalNode().disconnect( TableNetworkError.SERVER_SHUTDOWN );
     }
 }

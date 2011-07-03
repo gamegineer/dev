@@ -1,5 +1,5 @@
 /*
- * PlayersMessageHandler.java
+ * GoodbyeMessageHandler.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,27 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 20, 2011 at 9:36:06 PM.
+ * Created on Jun 23, 2011 at 11:05:16 PM.
  */
 
-package org.gamegineer.table.internal.net.node.client;
+package org.gamegineer.table.internal.net.node.server.handlers;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
+import org.gamegineer.table.internal.net.Debug;
+import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
+import org.gamegineer.table.internal.net.node.server.IRemoteClientNodeController;
+import org.gamegineer.table.net.TableNetworkError;
 
 /**
- * A message handler for the {@link PlayersMessage} message.
+ * A message handler for the {@link GoodbyeMessage} message.
  */
 @Immutable
-final class PlayersMessageHandler
-    extends AbstractClientMessageHandler
+public final class GoodbyeMessageHandler
+    extends AbstractServerMessageHandler
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The singleton instance of this class. */
-    static final PlayersMessageHandler INSTANCE = new PlayersMessageHandler();
+    public static final GoodbyeMessageHandler INSTANCE = new GoodbyeMessageHandler();
 
 
     // ======================================================================
@@ -44,9 +47,9 @@ final class PlayersMessageHandler
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code PlayersMessageHandler} class.
+     * Initializes a new instance of the {@code GoodbyeMessageHandler} class.
      */
-    private PlayersMessageHandler()
+    private GoodbyeMessageHandler()
     {
         super();
     }
@@ -57,7 +60,7 @@ final class PlayersMessageHandler
     // ======================================================================
 
     /**
-     * Handles a {@code PlayersMessage} message.
+     * Handles a {@code GoodbyeMessage} message.
      * 
      * @param remoteNodeController
      *        The control interface for the remote node that received the
@@ -68,13 +71,14 @@ final class PlayersMessageHandler
     @SuppressWarnings( "unused" )
     private void handleMessage(
         /* @NonNull */
-        final IRemoteServerNodeController remoteNodeController,
+        final IRemoteClientNodeController remoteNodeController,
         /* @NonNull */
-        final PlayersMessage message )
+        final GoodbyeMessage message )
     {
         assert remoteNodeController != null;
         assert message != null;
 
-        remoteNodeController.getLocalNode().setPlayers( message.getPlayers() );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Received goodbye message from client" ); //$NON-NLS-1$
+        remoteNodeController.close( TableNetworkError.CLIENT_SHUTDOWN );
     }
 }

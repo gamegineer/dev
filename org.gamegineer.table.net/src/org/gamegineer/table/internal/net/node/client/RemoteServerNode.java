@@ -23,6 +23,10 @@ package org.gamegineer.table.internal.net.node.client;
 
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.node.AbstractRemoteNode;
+import org.gamegineer.table.internal.net.node.client.handlers.BeginAuthenticationRequestMessageHandler;
+import org.gamegineer.table.internal.net.node.client.handlers.GoodbyeMessageHandler;
+import org.gamegineer.table.internal.net.node.client.handlers.HelloResponseMessageHandler;
+import org.gamegineer.table.internal.net.node.client.handlers.PlayersMessageHandler;
 import org.gamegineer.table.internal.net.node.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;

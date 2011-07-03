@@ -19,7 +19,7 @@
  * Created on Apr 29, 2011 at 10:09:08 PM.
  */
 
-package org.gamegineer.table.internal.net.node.client;
+package org.gamegineer.table.internal.net.node.client.handlers;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -28,6 +28,8 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.node.IMessageHandler;
+import org.gamegineer.table.internal.net.node.client.IClientNode;
+import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController;
 import org.gamegineer.table.internal.net.node.common.Authenticator;
 import org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationResponseMessage;
@@ -39,7 +41,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.client.BeginAuthenticationRequestMessageHandler}
+ * {@link org.gamegineer.table.internal.net.node.client.handlers.BeginAuthenticationRequestMessageHandler}
  * class.
  */
 public final class BeginAuthenticationRequestMessageHandlerTest

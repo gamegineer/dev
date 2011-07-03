@@ -19,11 +19,12 @@
  * Created on Apr 22, 2011 at 4:34:46 PM.
  */
 
-package org.gamegineer.table.internal.net.node.client;
+package org.gamegineer.table.internal.net.node.client.handlers;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.Debug;
+import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController;
 import org.gamegineer.table.internal.net.node.common.messages.EndAuthenticationMessage;
 import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
 import org.gamegineer.table.net.TableNetworkError;
@@ -32,7 +33,7 @@ import org.gamegineer.table.net.TableNetworkError;
  * A message handler for the {@link EndAuthenticationMessage} message.
  */
 @Immutable
-final class EndAuthenticationMessageHandler
+public final class EndAuthenticationMessageHandler
     extends AbstractClientMessageHandler
 {
     // ======================================================================
@@ -40,7 +41,7 @@ final class EndAuthenticationMessageHandler
     // ======================================================================
 
     /** The singleton instance of this class. */
-    static final EndAuthenticationMessageHandler INSTANCE = new EndAuthenticationMessageHandler();
+    public static final EndAuthenticationMessageHandler INSTANCE = new EndAuthenticationMessageHandler();
 
 
     // ======================================================================

@@ -19,11 +19,12 @@
  * Created on Apr 23, 2011 at 4:02:18 PM.
  */
 
-package org.gamegineer.table.internal.net.node.client;
+package org.gamegineer.table.internal.net.node.client.handlers;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.Debug;
+import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController;
 import org.gamegineer.table.internal.net.node.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.node.common.messages.HelloResponseMessage;
@@ -33,7 +34,7 @@ import org.gamegineer.table.net.TableNetworkError;
  * A message handler for the {@link HelloResponseMessage} message.
  */
 @Immutable
-final class HelloResponseMessageHandler
+public final class HelloResponseMessageHandler
     extends AbstractClientMessageHandler
 {
     // ======================================================================
@@ -41,7 +42,7 @@ final class HelloResponseMessageHandler
     // ======================================================================
 
     /** The singleton instance of this class. */
-    static final HelloResponseMessageHandler INSTANCE = new HelloResponseMessageHandler();
+    public static final HelloResponseMessageHandler INSTANCE = new HelloResponseMessageHandler();
 
 
     // ======================================================================

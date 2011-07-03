@@ -19,11 +19,12 @@
  * Created on Apr 29, 2011 at 10:00:40 PM.
  */
 
-package org.gamegineer.table.internal.net.node.client;
+package org.gamegineer.table.internal.net.node.client.handlers;
 
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.node.IMessageHandler;
+import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController;
 import org.gamegineer.table.internal.net.node.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.node.common.messages.HelloResponseMessage;
@@ -36,7 +37,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.client.HelloResponseMessageHandler}
+ * {@link org.gamegineer.table.internal.net.node.client.handlers.HelloResponseMessageHandler}
  * class.
  */
 public final class HelloResponseMessageHandlerTest

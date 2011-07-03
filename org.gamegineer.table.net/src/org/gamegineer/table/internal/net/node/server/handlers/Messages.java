@@ -19,7 +19,7 @@
  * Created on Apr 15, 2011 at 1:32:38 PM.
  */
 
-package org.gamegineer.table.internal.net.node.server;
+package org.gamegineer.table.internal.net.node.server.handlers;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;

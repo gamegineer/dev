@@ -19,12 +19,13 @@
  * Created on Jun 23, 2011 at 11:07:43 PM.
  */
 
-package org.gamegineer.table.internal.net.node.server;
+package org.gamegineer.table.internal.net.node.server.handlers;
 
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.node.IMessageHandler;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
+import org.gamegineer.table.internal.net.node.server.IRemoteClientNodeController;
 import org.gamegineer.table.net.TableNetworkError;
 import org.junit.After;
 import org.junit.Before;
@@ -32,7 +33,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.server.GoodbyeMessageHandler}
+ * {@link org.gamegineer.table.internal.net.node.server.handlers.GoodbyeMessageHandler}
  * class.
  */
 public final class GoodbyeMessageHandlerTest

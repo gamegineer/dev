@@ -19,7 +19,7 @@
  * Created on Apr 23, 2011 at 4:06:56 PM.
  */
 
-package org.gamegineer.table.internal.net.node.server;
+package org.gamegineer.table.internal.net.node.server.handlers;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Arrays;
@@ -32,6 +32,8 @@ import org.gamegineer.table.internal.net.node.common.Authenticator;
 import org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.node.common.messages.EndAuthenticationMessage;
 import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
+import org.gamegineer.table.internal.net.node.server.IRemoteClientNodeController;
+import org.gamegineer.table.internal.net.node.server.IServerNode;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkException;
@@ -40,7 +42,7 @@ import org.gamegineer.table.net.TableNetworkException;
  * A message handler for the {@link BeginAuthenticationResponseMessage} message.
  */
 @Immutable
-final class BeginAuthenticationResponseMessageHandler
+public final class BeginAuthenticationResponseMessageHandler
     extends AbstractServerMessageHandler
 {
     // ======================================================================
@@ -48,7 +50,7 @@ final class BeginAuthenticationResponseMessageHandler
     // ======================================================================
 
     /** The singleton instance of this class. */
-    static final BeginAuthenticationResponseMessageHandler INSTANCE = new BeginAuthenticationResponseMessageHandler();
+    public static final BeginAuthenticationResponseMessageHandler INSTANCE = new BeginAuthenticationResponseMessageHandler();
 
 
     // ======================================================================

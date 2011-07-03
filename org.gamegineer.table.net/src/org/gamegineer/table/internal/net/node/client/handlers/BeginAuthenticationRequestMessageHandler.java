@@ -19,12 +19,14 @@
  * Created on Apr 22, 2011 at 4:29:55 PM.
  */
 
-package org.gamegineer.table.internal.net.node.client;
+package org.gamegineer.table.internal.net.node.client.handlers;
 
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.Loggers;
+import org.gamegineer.table.internal.net.node.client.IClientNode;
+import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController;
 import org.gamegineer.table.internal.net.node.common.Authenticator;
 import org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationResponseMessage;
@@ -35,7 +37,7 @@ import org.gamegineer.table.net.TableNetworkException;
  * A message handler for the {@link BeginAuthenticationRequestMessage} message.
  */
 @Immutable
-final class BeginAuthenticationRequestMessageHandler
+public final class BeginAuthenticationRequestMessageHandler
     extends AbstractClientMessageHandler
 {
     // ======================================================================
@@ -43,7 +45,7 @@ final class BeginAuthenticationRequestMessageHandler
     // ======================================================================
 
     /** The singleton instance of this class. */
-    static final BeginAuthenticationRequestMessageHandler INSTANCE = new BeginAuthenticationRequestMessageHandler();
+    public static final BeginAuthenticationRequestMessageHandler INSTANCE = new BeginAuthenticationRequestMessageHandler();
 
 
     // ======================================================================

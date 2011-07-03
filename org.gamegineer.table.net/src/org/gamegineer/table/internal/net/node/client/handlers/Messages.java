@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 17, 2011 at 6:49:29 PM.
+ * Created on Jul 2, 2011 at 10:21:26 PM.
  */
 
-package org.gamegineer.table.internal.net.node.client;
+package org.gamegineer.table.internal.net.node.client.handlers;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
@@ -35,13 +35,10 @@ final class Messages
     // Fields
     // ======================================================================
 
-    // --- ClientNode -------------------------------------------------------
+    // --- BeginAuthenticationRequestMessageHandler -------------------------
 
-    /** The protocol handshake was interrupted waiting for completion. */
-    public static String ClientNode_handshake_interrupted;
-
-    /** The protocol handshake timed out waiting for completion. */
-    public static String ClientNode_handshake_timedOut;
+    /** Failed to create the begin authentication response. */
+    public static String BeginAuthenticationRequestMessageHandler_beginAuthenticationResponseFailed;
 
 
     // ======================================================================
