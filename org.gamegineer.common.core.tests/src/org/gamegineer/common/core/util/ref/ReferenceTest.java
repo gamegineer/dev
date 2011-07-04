@@ -1,6 +1,6 @@
 /*
  * ReferenceTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,6 @@ package org.gamegineer.common.core.util.ref;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -69,19 +68,6 @@ public final class ReferenceTest
         throws Exception
     {
         ref_ = new Reference<Object>();
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        ref_ = null;
     }
 
     /**

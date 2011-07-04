@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.net.node;
 import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -126,20 +125,6 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
         niceMocksControl_ = EasyMock.createNiceControl();
         node_ = createDisconnectedNode();
         assertNotNull( node_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        node_ = null;
-        niceMocksControl_ = null;
     }
 
     /**

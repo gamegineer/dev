@@ -29,7 +29,6 @@ import org.gamegineer.table.internal.net.node.IMessageHandler;
 import org.gamegineer.table.internal.net.node.client.IClientNode;
 import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController;
 import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -81,20 +80,6 @@ public final class PlayersMessageHandlerTest
     {
         mocksControl_ = EasyMock.createControl();
         messageHandler_ = PlayersMessageHandler.INSTANCE;
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        messageHandler_ = null;
-        mocksControl_ = null;
     }
 
     /**

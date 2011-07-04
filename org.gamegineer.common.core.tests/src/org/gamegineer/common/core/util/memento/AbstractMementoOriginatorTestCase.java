@@ -24,7 +24,6 @@ package org.gamegineer.common.core.util.memento;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -128,19 +127,6 @@ public abstract class AbstractMementoOriginatorTestCase
     {
         mementoOriginator_ = createMementoOriginator();
         assertNotNull( mementoOriginator_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        mementoOriginator_ = null;
     }
 
     /**

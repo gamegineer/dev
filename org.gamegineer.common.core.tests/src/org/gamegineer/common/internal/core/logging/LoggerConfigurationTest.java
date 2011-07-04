@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.ServiceRegistration;
@@ -127,20 +126,6 @@ public final class LoggerConfigurationTest
         properties_.put( String.format( "%1$s.%2$s.%3$s", HANDLER_CLASS_NAME, HANDLER_INSTANCE_NAME_2, LoggingServiceConstants.PROPERTY_HANDLER_LEVEL ), Level.WARNING.getName() ); //$NON-NLS-1$
 
         config_ = new LoggerConfiguration( "logger.default", properties_ ); //$NON-NLS-1$
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        config_ = null;
-        properties_ = null;
     }
 
     /**

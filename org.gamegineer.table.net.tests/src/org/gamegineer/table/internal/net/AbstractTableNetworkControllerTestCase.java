@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net;
 
 import static org.junit.Assert.assertNotNull;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -82,19 +81,6 @@ public abstract class AbstractTableNetworkControllerTestCase
     {
         tableNetworkController_ = createTableNetworkController();
         assertNotNull( tableNetworkController_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        tableNetworkController_ = null;
     }
 
     /**

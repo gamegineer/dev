@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.transport;
 
 import static org.junit.Assert.assertNotNull;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -83,19 +82,6 @@ public abstract class AbstractTransportLayerFactoryTestCase
     {
         transportLayerFactory_ = createTransportLayerFactory();
         assertNotNull( transportLayerFactory_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        transportLayerFactory_ = null;
     }
 
     /**

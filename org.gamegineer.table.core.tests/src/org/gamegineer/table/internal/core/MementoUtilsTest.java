@@ -25,7 +25,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 import java.util.Map;
 import org.gamegineer.common.core.util.memento.MementoException;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -88,19 +87,6 @@ public final class MementoUtilsTest
         memento_ = new HashMap<String, Object>();
         memento_.put( NULL_ATTRIBUTE_NAME, null );
         memento_.put( PRESENT_ATTRIBUTE_NAME, PRESENT_ATTRIBUTE_VALUE );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        memento_ = null;
     }
 
     /**

@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.core.logging;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -66,19 +65,6 @@ public final class LoggingServiceTest
         throws Exception
     {
         loggingService_ = new LoggingService();
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        loggingService_ = null;
     }
 
     /**

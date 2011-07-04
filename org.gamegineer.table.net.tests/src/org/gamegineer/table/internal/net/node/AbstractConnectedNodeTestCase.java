@@ -28,7 +28,6 @@ import static org.junit.Assert.assertTrue;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.security.SecureString;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -153,20 +152,6 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
         niceMocksControl_ = EasyMock.createNiceControl();
         node_ = createConnectedNode();
         assertNotNull( node_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        node_ = null;
-        niceMocksControl_ = null;
     }
 
     /**

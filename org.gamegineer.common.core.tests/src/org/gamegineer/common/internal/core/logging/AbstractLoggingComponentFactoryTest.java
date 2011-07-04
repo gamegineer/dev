@@ -28,7 +28,6 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.logging.Filter;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.ServiceRegistration;
@@ -89,19 +88,6 @@ public final class AbstractLoggingComponentFactoryTest
         {
             // no overrides
         };
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        factory_ = null;
     }
 
     /**

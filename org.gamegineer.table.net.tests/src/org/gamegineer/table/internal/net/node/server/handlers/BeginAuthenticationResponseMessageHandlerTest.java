@@ -36,7 +36,6 @@ import org.gamegineer.table.internal.net.node.server.IServerNode;
 import org.gamegineer.table.internal.net.transport.FakeMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.net.TableNetworkError;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -88,20 +87,6 @@ public final class BeginAuthenticationResponseMessageHandlerTest
     {
         mocksControl_ = EasyMock.createControl();
         messageHandler_ = BeginAuthenticationResponseMessageHandler.INSTANCE;
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        messageHandler_ = null;
-        mocksControl_ = null;
     }
 
     /**

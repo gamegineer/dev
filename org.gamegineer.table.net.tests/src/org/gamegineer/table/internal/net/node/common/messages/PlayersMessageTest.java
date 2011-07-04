@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.node.common.messages;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,19 +67,6 @@ public final class PlayersMessageTest
         throws Exception
     {
         message_ = new PlayersMessage();
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        message_ = null;
     }
 
     /**

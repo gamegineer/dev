@@ -28,7 +28,6 @@ import java.util.Collection;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.TableFactory;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -133,21 +132,6 @@ public abstract class AbstractTableNetworkTestCase
             .setLocalTable( TableFactory.createTable() ) //
             .setPort( TableNetworkConstants.DEFAULT_PORT ) //
             .toTableNetworkConfiguration();
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        tableNetworkConfiguration_ = null;
-        tableNetwork_ = null;
-        mocksControl_ = null;
     }
 
     /**

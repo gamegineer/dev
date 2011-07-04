@@ -28,7 +28,6 @@ import java.util.Collection;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -105,19 +104,6 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     {
         nodeController_ = createNodeController();
         assertNotNull( nodeController_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        nodeController_ = null;
     }
 
     /**

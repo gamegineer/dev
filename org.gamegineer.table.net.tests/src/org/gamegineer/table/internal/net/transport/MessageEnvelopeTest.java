@@ -25,7 +25,6 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import java.nio.ByteBuffer;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -82,19 +81,6 @@ public final class MessageEnvelopeTest
         throws Exception
     {
         messageEnvelope_ = new MessageEnvelope( DEFAULT_ID, DEFAULT_CORRELATION_ID, DEFAULT_BODY );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        messageEnvelope_ = null;
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * CardViewTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,7 +31,6 @@ import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.CardModel;
 import org.gamegineer.table.ui.CardSurfaceDesignUIs;
 import org.gamegineer.table.ui.ICardSurfaceDesignUI;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -98,22 +97,6 @@ public final class CardViewTest
         final ICard card = TableFactory.createCard( backDesign, faceDesign );
         cardModel_ = new CardModel( card );
         cardView_ = new CardView( cardModel_, backDesignUI_, faceDesignUI_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        backDesignUI_ = null;
-        faceDesignUI_ = null;
-        cardModel_ = null;
-        cardView_ = null;
     }
 
     /**

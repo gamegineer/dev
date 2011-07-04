@@ -1,6 +1,6 @@
 /*
  * AbstractDialogPageTestCase.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.common.ui.dialog;
 
 import static org.junit.Assert.assertNotNull;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -82,19 +81,6 @@ public abstract class AbstractDialogPageTestCase
     {
         dialogPage_ = createDialogPage();
         assertNotNull( dialogPage_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        dialogPage_ = null;
     }
 
     /**

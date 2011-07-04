@@ -1,6 +1,6 @@
 /*
  * ActivatorTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.product;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -67,19 +66,6 @@ public final class ActivatorTest
         throws Exception
     {
         activator_ = new Activator();
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        activator_ = null;
     }
 
     /**

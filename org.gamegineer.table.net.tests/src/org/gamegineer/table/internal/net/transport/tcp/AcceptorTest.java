@@ -86,9 +86,7 @@ public final class AcceptorTest
         throws Exception
     {
         acceptor_.close();
-        acceptor_ = null;
         transportLayer_.close();
-        transportLayer_ = null;
     }
 
     /**

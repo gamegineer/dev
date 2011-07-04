@@ -23,7 +23,6 @@ package org.gamegineer.common.internal.core.logging;
 
 import org.easymock.EasyMock;
 import org.eclipse.osgi.framework.log.FrameworkLog;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -71,19 +70,6 @@ public final class FrameworkLogHandlerFactoryTest
         throws Exception
     {
         factory_ = new FrameworkLogHandlerFactory();
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        factory_ = null;
     }
 
     /**

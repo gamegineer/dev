@@ -33,7 +33,6 @@ import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.internal.ui.util.swing.IconProxy;
 import org.gamegineer.table.ui.ICardSurfaceDesignUI;
 import org.gamegineer.table.ui.ICardSurfaceDesignUIRegistry;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -88,20 +87,6 @@ public final class CardSurfaceDesignUIRegistryExtensionPointAdapterTest
     {
         mocksControl_ = EasyMock.createControl();
         cardSurfaceDesignUIRegistryExtensionPointAdapter_ = new CardSurfaceDesignUIRegistryExtensionPointAdapter();
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        cardSurfaceDesignUIRegistryExtensionPointAdapter_ = null;
-        mocksControl_ = null;
     }
 
     /**

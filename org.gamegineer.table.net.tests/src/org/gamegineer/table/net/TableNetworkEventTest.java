@@ -24,7 +24,6 @@ package org.gamegineer.table.net;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import org.easymock.EasyMock;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -71,19 +70,6 @@ public final class TableNetworkEventTest
     {
         event_ = new TableNetworkEvent( EasyMock.createMock( ITableNetwork.class ) );
         assertNotNull( event_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        event_ = null;
     }
 
     /**

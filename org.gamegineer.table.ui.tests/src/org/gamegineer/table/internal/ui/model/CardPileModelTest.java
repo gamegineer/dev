@@ -1,6 +1,6 @@
 /*
  * CardPileModelTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,6 @@ import org.easymock.IMocksControl;
 import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.ICard;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -83,21 +82,6 @@ public final class CardPileModelTest
         mocksControl_ = EasyMock.createControl();
         niceMocksControl_ = EasyMock.createNiceControl();
         model_ = new CardPileModel( CardPiles.createUniqueCardPile() );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        model_ = null;
-        niceMocksControl_ = null;
-        mocksControl_ = null;
     }
 
     /**

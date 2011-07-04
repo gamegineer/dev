@@ -24,7 +24,6 @@ package org.gamegineer.table.core;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import org.easymock.EasyMock;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -69,19 +68,6 @@ public final class TableEventTest
         throws Exception
     {
         event_ = new TableEvent( EasyMock.createMock( ITable.class ) );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        event_ = null;
     }
 
     /**

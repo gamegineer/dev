@@ -31,7 +31,6 @@ import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 import org.gamegineer.table.net.TableNetworkError;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -122,20 +121,6 @@ public final class AbstractRemoteNodeTest
         final INode<IRemoteNode> localNode = createMockLocalNode();
         EasyMock.expect( localNode.getLock() ).andReturn( new Object() ).anyTimes();
         remoteNode_ = createRemoteNode( localNode );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        remoteNode_ = null;
-        mocksControl_ = null;
     }
 
     /**

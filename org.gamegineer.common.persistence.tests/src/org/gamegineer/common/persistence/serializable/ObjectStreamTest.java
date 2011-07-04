@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -124,19 +123,6 @@ public final class ObjectStreamTest
     {
         persistenceDelegateRegistry_ = new FakePersistenceDelegateRegistry();
         persistenceDelegateRegistry_.registerPersistenceDelegate( FakeNonSerializableClass.class, new FakeNonSerializableClassPersistenceDelegate() );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        persistenceDelegateRegistry_ = null;
     }
 
     /**

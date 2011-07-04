@@ -24,7 +24,6 @@ package org.gamegineer.common.core.logging;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import org.gamegineer.common.internal.core.Activator;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
@@ -85,19 +84,6 @@ public abstract class AbstractLoggingServiceTestCase
     {
         service_ = createLoggingService();
         assertNotNull( service_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        service_ = null;
     }
 
     /**

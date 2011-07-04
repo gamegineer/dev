@@ -22,7 +22,6 @@
 package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertNotNull;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -82,19 +81,6 @@ public abstract class AbstractCardPileListenerTestCase
     {
         listener_ = createCardPileListener();
         assertNotNull( listener_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        listener_ = null;
     }
 
     /**

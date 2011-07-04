@@ -27,7 +27,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Set;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -89,19 +88,6 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     {
         persistenceDelegateRegistry_ = createPersistenceDelegateRegistry();
         assertNotNull( persistenceDelegateRegistry_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        persistenceDelegateRegistry_ = null;
     }
 
     /**

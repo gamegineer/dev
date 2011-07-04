@@ -35,7 +35,6 @@ import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -81,19 +80,6 @@ public final class AbstractNodeTest
         throws Exception
     {
         node_ = new MockNode();
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        node_ = null;
     }
 
     /**

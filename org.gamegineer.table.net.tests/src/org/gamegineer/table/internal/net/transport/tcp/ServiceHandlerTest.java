@@ -87,9 +87,7 @@ public final class ServiceHandlerTest
         throws Exception
     {
         serviceHandler_.close();
-        serviceHandler_ = null;
         transportLayer_.close();
-        transportLayer_ = null;
     }
 
     /**

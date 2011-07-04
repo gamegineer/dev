@@ -1,6 +1,6 @@
 /*
  * AbstractTableRunnerTestCase.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,7 +30,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -90,19 +89,6 @@ public abstract class AbstractTableRunnerTestCase
     {
         runner_ = createTableRunner();
         assertNotNull( runner_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        runner_ = null;
     }
 
     /**

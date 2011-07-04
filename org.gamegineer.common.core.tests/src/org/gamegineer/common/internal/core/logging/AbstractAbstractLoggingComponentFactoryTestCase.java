@@ -24,7 +24,6 @@ package org.gamegineer.common.internal.core.logging;
 import static org.junit.Assert.assertNotNull;
 import java.util.Collections;
 import java.util.Map;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -135,20 +134,6 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
         assertNotNull( factory_ );
         component_ = factory_.createLoggingComponent( getLoggingComponentType().getName() );
         assertNotNull( component_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        component_ = null;
-        factory_ = null;
     }
 
     /**

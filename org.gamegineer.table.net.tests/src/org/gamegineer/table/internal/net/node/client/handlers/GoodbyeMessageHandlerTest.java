@@ -28,7 +28,6 @@ import org.gamegineer.table.internal.net.node.client.IClientNode;
 import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
 import org.gamegineer.table.net.TableNetworkError;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -80,20 +79,6 @@ public final class GoodbyeMessageHandlerTest
     {
         mocksControl_ = EasyMock.createControl();
         messageHandler_ = GoodbyeMessageHandler.INSTANCE;
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        messageHandler_ = null;
-        mocksControl_ = null;
     }
 
     /**

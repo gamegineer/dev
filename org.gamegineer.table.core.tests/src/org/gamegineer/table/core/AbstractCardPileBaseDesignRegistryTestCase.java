@@ -27,7 +27,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Collection;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -88,19 +87,6 @@ public abstract class AbstractCardPileBaseDesignRegistryTestCase
     {
         cardPileBaseDesignRegistry_ = createCardPileBaseDesignRegistry();
         assertNotNull( cardPileBaseDesignRegistry_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        cardPileBaseDesignRegistry_ = null;
     }
 
     /**

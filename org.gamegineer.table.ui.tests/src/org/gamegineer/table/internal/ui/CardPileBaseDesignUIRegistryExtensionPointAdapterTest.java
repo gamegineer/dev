@@ -33,7 +33,6 @@ import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.internal.ui.util.swing.IconProxy;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -88,20 +87,6 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapterTest
     {
         mocksControl_ = EasyMock.createControl();
         cardPileBaseDesignUIRegistryExtensionPointAdapter_ = new CardPileBaseDesignUIRegistryExtensionPointAdapter();
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        cardPileBaseDesignUIRegistryExtensionPointAdapter_ = null;
-        mocksControl_ = null;
     }
 
     /**

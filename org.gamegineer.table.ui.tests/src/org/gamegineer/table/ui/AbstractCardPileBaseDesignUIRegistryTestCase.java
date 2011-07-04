@@ -28,7 +28,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import org.gamegineer.table.core.CardPileBaseDesignId;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -92,19 +91,6 @@ public abstract class AbstractCardPileBaseDesignUIRegistryTestCase
     {
         cardPileBaseDesignUIRegistry_ = createCardPileBaseDesignUIRegistry();
         assertNotNull( cardPileBaseDesignUIRegistry_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        cardPileBaseDesignUIRegistry_ = null;
     }
 
     /**

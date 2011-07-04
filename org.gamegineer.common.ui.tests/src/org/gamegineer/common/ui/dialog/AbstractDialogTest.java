@@ -1,6 +1,6 @@
 /*
  * AbstractDialogTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.common.ui.dialog;
 
 import javax.swing.JPanel;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -71,19 +70,6 @@ public final class AbstractDialogTest
         {
             // no overrides
         };
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        dialog_ = null;
     }
 
     /**

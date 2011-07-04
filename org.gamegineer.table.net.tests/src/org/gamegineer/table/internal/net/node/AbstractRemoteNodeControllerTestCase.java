@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -154,21 +153,6 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
         node_ = createMockLocalNode( mocksControl_ );
         remoteNodeController_ = createRemoteNodeController( node_ );
         assertNotNull( remoteNodeController_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        remoteNodeController_ = null;
-        node_ = null;
-        mocksControl_ = null;
     }
 
     /**

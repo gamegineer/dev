@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectStreamClass;
 import java.io.OutputStream;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -226,20 +225,6 @@ public abstract class AbstractPersistenceDelegateTestCase
         assertNotNull( persistenceDelegate_ );
         persistenceDelegateRegistry_ = new FakePersistenceDelegateRegistry();
         registerPersistenceDelegates( persistenceDelegateRegistry_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        persistenceDelegateRegistry_ = null;
-        persistenceDelegate_ = null;
     }
 
     /**

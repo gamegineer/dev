@@ -21,7 +21,6 @@
 
 package org.gamegineer.common.internal.persistence.serializable;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -69,19 +68,6 @@ public final class PersistenceDelegateRegistryTest
         throws Exception
     {
         persistenceDelegateRegistry_ = new PersistenceDelegateRegistry();
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        persistenceDelegateRegistry_ = null;
     }
 
     /**

@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.transport;
 
 import static org.junit.Assert.assertNotNull;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -81,19 +80,6 @@ public abstract class AbstractServiceTestCase
     {
         service_ = createService();
         assertNotNull( service_ );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        service_ = null;
     }
 
     /**

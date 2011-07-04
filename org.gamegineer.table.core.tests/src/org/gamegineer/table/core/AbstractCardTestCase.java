@@ -31,7 +31,6 @@ import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -131,20 +130,6 @@ public abstract class AbstractCardTestCase
         assertNotNull( card_ );
 
         super.setUp();
-    }
-
-    /*
-     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#tearDown()
-     */
-    @After
-    @Override
-    public void tearDown()
-        throws Exception
-    {
-        super.tearDown();
-
-        card_ = null;
-        mocksControl_ = null;
     }
 
     /**

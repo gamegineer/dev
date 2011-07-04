@@ -1,6 +1,6 @@
 /*
  * MainModelTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,6 @@ import java.io.IOException;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.ui.TableAdvisor;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -98,20 +97,6 @@ public final class MainModelTest
     {
         niceMocksControl_ = EasyMock.createNiceControl();
         model_ = new MainModel( new TableAdvisor() );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        model_ = null;
-        niceMocksControl_ = null;
     }
 
     /**

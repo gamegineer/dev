@@ -86,9 +86,7 @@ public final class ConnectorTest
         throws Exception
     {
         connector_.close();
-        connector_ = null;
         transportLayer_.close();
-        transportLayer_ = null;
     }
 
     /**

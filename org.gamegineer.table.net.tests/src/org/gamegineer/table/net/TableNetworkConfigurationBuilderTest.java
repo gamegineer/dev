@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.net;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,19 +67,6 @@ public final class TableNetworkConfigurationBuilderTest
         throws Exception
     {
         builder_ = new TableNetworkConfigurationBuilder();
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        builder_ = null;
     }
 
     /**

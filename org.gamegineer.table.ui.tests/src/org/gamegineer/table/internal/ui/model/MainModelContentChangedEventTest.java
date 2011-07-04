@@ -1,6 +1,6 @@
 /*
  * MainModelContentChangedEventTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.ui.model;
 import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
 import org.gamegineer.table.ui.ITableAdvisor;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -72,19 +71,6 @@ public final class MainModelContentChangedEventTest
         throws Exception
     {
         event_ = new MainModelContentChangedEvent( new MainModel( EasyMock.createMock( ITableAdvisor.class ) ), TableModel.createTableModel() );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        event_ = null;
     }
 
     /**

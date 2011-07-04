@@ -26,7 +26,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.net.TableNetworkException;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -106,19 +105,6 @@ public final class AuthenticatorTest
         throws Exception
     {
         authenticator_ = new Authenticator();
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        authenticator_ = null;
     }
 
     /**

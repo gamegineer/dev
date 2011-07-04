@@ -86,7 +86,6 @@ public final class DispatcherTest
         throws Exception
     {
         dispatcher_.close();
-        dispatcher_ = null;
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * MainModelEventTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import org.easymock.EasyMock;
 import org.gamegineer.table.ui.ITableAdvisor;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -71,19 +70,6 @@ public final class MainModelEventTest
         throws Exception
     {
         event_ = new MainModelEvent( new MainModel( EasyMock.createMock( ITableAdvisor.class ) ) );
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        event_ = null;
     }
 
     /**

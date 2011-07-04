@@ -82,7 +82,6 @@ public final class SecureStringTest
         throws Exception
     {
         secureString_.dispose();
-        secureString_ = null;
     }
 
     /**

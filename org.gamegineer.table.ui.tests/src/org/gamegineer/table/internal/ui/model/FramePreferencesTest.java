@@ -1,6 +1,6 @@
 /*
  * FramePreferencesTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.ui.model;
 import static org.junit.Assert.assertEquals;
 import java.awt.Dimension;
 import java.awt.Point;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,19 +69,6 @@ public final class FramePreferencesTest
         throws Exception
     {
         framePreferences_ = new FramePreferences();
-    }
-
-    /**
-     * Tears down the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @After
-    public void tearDown()
-        throws Exception
-    {
-        framePreferences_ = null;
     }
 
     /**

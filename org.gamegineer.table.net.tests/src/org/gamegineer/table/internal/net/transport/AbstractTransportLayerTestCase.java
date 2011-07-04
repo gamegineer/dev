@@ -96,7 +96,6 @@ public abstract class AbstractTransportLayerTestCase
         throws Exception
     {
         transportLayer_.close();
-        transportLayer_ = null;
     }
 
     /**
