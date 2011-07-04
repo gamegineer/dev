@@ -70,7 +70,7 @@ public abstract class AbstractLoggingServiceTestCase
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract ILoggingService createLogService()
+    protected abstract ILoggingService createLoggingService()
         throws Exception;
 
     /**
@@ -83,7 +83,7 @@ public abstract class AbstractLoggingServiceTestCase
     public void setUp()
         throws Exception
     {
-        service_ = createLogService();
+        service_ = createLoggingService();
         assertNotNull( service_ );
     }
 
