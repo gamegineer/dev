@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -304,9 +303,9 @@ public final class Table
 
         synchronized( lock_ )
         {
-            for( final ListIterator<CardPile> iterator = cardPiles_.listIterator( cardPiles_.size() ); iterator.hasPrevious(); )
+            for( int index = cardPiles_.size() - 1; index >= 0; --index )
             {
-                final ICardPile cardPile = iterator.previous();
+                final ICardPile cardPile = cardPiles_.get( index );
                 if( cardPile.getBounds().contains( location ) )
                 {
                     return cardPile;
