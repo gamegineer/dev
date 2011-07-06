@@ -101,7 +101,7 @@ public final class CardPile
 
     /** The collection of cards in this card pile ordered from bottom to top. */
     @GuardedBy( "lock_ " )
-    private final List<ICard> cards_;
+    private final List<Card> cards_;
 
     /** The card pile layout. */
     @GuardedBy( "lock_" )
@@ -124,7 +124,7 @@ public final class CardPile
      * is not contained in a table.
      */
     @GuardedBy( "lock_" )
-    private ITable table_;
+    private Table table_;
 
 
     // ======================================================================
@@ -138,7 +138,7 @@ public final class CardPile
     {
         baseDesign_ = null;
         baseLocation_ = new Point( 0, 0 );
-        cards_ = new ArrayList<ICard>();
+        cards_ = new ArrayList<Card>();
         layout_ = CardPileLayout.STACKED;
         listeners_ = new CopyOnWriteArrayList<ICardPileListener>();
         lock_ = new Object();
@@ -229,7 +229,7 @@ public final class CardPile
         assert cards != null;
         assert Thread.holdsLock( lock_ );
 
-        final List<ICard> addedCards = new ArrayList<ICard>();
+        final List<Card> addedCards = new ArrayList<Card>();
         final Rectangle oldBounds = getBounds();
 
         for( final ICard card : cards )
@@ -243,13 +243,14 @@ public final class CardPile
                 throw new IllegalArgumentException( Messages.CardPile_addCardsInternal_cards_containsOwnedCard );
             }
 
+            final Card typedCard = (Card)card;
             final Point cardLocation = new Point( baseLocation_ );
             final Dimension cardOffset = getCardOffsetAt( cards_.size() );
             cardLocation.translate( cardOffset.width, cardOffset.height );
-            card.setCardPile( this );
-            card.setLocation( cardLocation );
-            cards_.add( card );
-            addedCards.add( card );
+            typedCard.setCardPile( this );
+            typedCard.setLocation( cardLocation );
+            cards_.add( typedCard );
+            addedCards.add( typedCard );
         }
 
         final Rectangle newBounds = getBounds();
@@ -806,12 +807,12 @@ public final class CardPile
         assert cardRangeStrategy != null;
         assert Thread.holdsLock( lock_ );
 
-        final List<ICard> removedCards = new ArrayList<ICard>();
+        final List<Card> removedCards = new ArrayList<Card>();
         final Rectangle oldBounds = getBounds();
 
         removedCards.addAll( cards_.subList( cardRangeStrategy.getLowerIndex(), cardRangeStrategy.getUpperIndex() ) );
         cards_.removeAll( removedCards );
-        for( final ICard card : removedCards )
+        for( final Card card : removedCards )
         {
             card.setCardPile( null );
         }
@@ -840,7 +841,7 @@ public final class CardPile
             } );
         }
 
-        return removedCards;
+        return new ArrayList<ICard>( removedCards );
     }
 
     /*
@@ -1063,12 +1064,16 @@ public final class CardPile
         firePendingEventNotifications();
     }
 
-    /*
-     * @see org.gamegineer.table.core.ICardPile#setTable(org.gamegineer.table.core.ITable)
+    /**
+     * Sets the table that contains this card pile.
+     * 
+     * @param table
+     *        The table that contains this card pile or {@code null} if this
+     *        card pile is not contained in a table.
      */
-    @Override
-    public void setTable(
-        final ITable table )
+    void setTable(
+        /* @Nullable */
+        final Table table )
     {
         synchronized( lock_ )
         {

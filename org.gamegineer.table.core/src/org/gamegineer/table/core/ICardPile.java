@@ -341,15 +341,4 @@ public interface ICardPile
     public void setLocation(
         /* @NonNull */
         Point location );
-
-    /**
-     * Sets the table that contains this card pile.
-     * 
-     * @param table
-     *        The table that contains this card pile or {@code null} if this
-     *        card pile is not contained in a table.
-     */
-    public void setTable(
-        /* @Nullable */
-        ITable table );
 }

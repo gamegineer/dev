@@ -135,17 +135,6 @@ public interface ICard
         ICardListener listener );
 
     /**
-     * Sets the card pile that contains this card.
-     * 
-     * @param cardPile
-     *        The card pile that contains this card or {@code null} if this card
-     *        is not contained in a card pile.
-     */
-    public void setCardPile(
-        /* @Nullable */
-        ICardPile cardPile );
-
-    /**
      * Sets the location of this card in table coordinates.
      * 
      * @param location

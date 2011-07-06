@@ -81,7 +81,7 @@ public final class Card
      * contained in a card pile.
      */
     @GuardedBy( "lock_" )
-    private ICardPile cardPile_;
+    private CardPile cardPile_;
 
     /** The design on the face of the card. */
     @GuardedBy( "lock_" )
@@ -416,12 +416,16 @@ public final class Card
         assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.Card_removeCardListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
-    /*
-     * @see org.gamegineer.table.core.ICard#setCardPile(org.gamegineer.table.core.ICardPile)
+    /**
+     * Sets the card pile that contains this card.
+     * 
+     * @param cardPile
+     *        The card pile that contains this card or {@code null} if this card
+     *        is not contained in a card pile.
      */
-    @Override
-    public void setCardPile(
-        final ICardPile cardPile )
+    void setCardPile(
+        /* @Nullable */
+        final CardPile cardPile )
     {
         synchronized( lock_ )
         {

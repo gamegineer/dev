@@ -61,7 +61,7 @@ public final class Table
 
     /** The collection of card piles on this table. */
     @GuardedBy( "lock_ " )
-    private final List<ICardPile> cardPiles_;
+    private final List<CardPile> cardPiles_;
 
     /** The collection of table listeners. */
     private final CopyOnWriteArrayList<ITableListener> listeners_;
@@ -85,7 +85,7 @@ public final class Table
      */
     public Table()
     {
-        cardPiles_ = new ArrayList<ICardPile>();
+        cardPiles_ = new ArrayList<CardPile>();
         listeners_ = new CopyOnWriteArrayList<ITableListener>();
         lock_ = new Object();
         pendingEventNotifications_ = new ConcurrentLinkedQueue<Runnable>();
@@ -131,8 +131,9 @@ public final class Table
         assertArgumentLegal( cardPile.getTable() == null, "cardPile", Messages.Table_addCardPileInternal_cardPile_owned ); //$NON-NLS-1$
         assert Thread.holdsLock( lock_ );
 
-        cardPiles_.add( cardPile );
-        cardPile.setTable( this );
+        final CardPile typedCardPile = (CardPile)cardPile;
+        cardPiles_.add( typedCardPile );
+        typedCardPile.setTable( this );
 
         pendingEventNotifications_.offer( new Runnable()
         {
@@ -303,7 +304,7 @@ public final class Table
 
         synchronized( lock_ )
         {
-            for( final ListIterator<ICardPile> iterator = cardPiles_.listIterator( cardPiles_.size() ); iterator.hasPrevious(); )
+            for( final ListIterator<CardPile> iterator = cardPiles_.listIterator( cardPiles_.size() ); iterator.hasPrevious(); )
             {
                 final ICardPile cardPile = iterator.previous();
                 if( cardPile.getBounds().contains( location ) )
@@ -432,13 +433,14 @@ public final class Table
      *         added to the table from oldest to newest.
      */
     @GuardedBy( "lock_" )
+    /* @NonNull */
     private List<ICardPile> removeCardPilesInternal()
     {
         assert Thread.holdsLock( lock_ );
 
-        final List<ICardPile> removedCardPiles = new ArrayList<ICardPile>( cardPiles_ );
+        final List<CardPile> removedCardPiles = new ArrayList<CardPile>( cardPiles_ );
         cardPiles_.clear();
-        for( final ICardPile cardPile : removedCardPiles )
+        for( final CardPile cardPile : removedCardPiles )
         {
             cardPile.setTable( null );
         }
@@ -459,7 +461,7 @@ public final class Table
             } );
         }
 
-        return removedCardPiles;
+        return new ArrayList<ICardPile>( removedCardPiles );
     }
 
     /*
