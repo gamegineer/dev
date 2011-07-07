@@ -59,7 +59,7 @@ public final class Table
     private static final String CARD_PILES_MEMENTO_ATTRIBUTE_NAME = "cardPiles"; //$NON-NLS-1$
 
     /** The collection of card piles on this table. */
-    @GuardedBy( "lock_ " )
+    @GuardedBy( "lock_" )
     private final List<CardPile> cardPiles_;
 
     /** The collection of table listeners. */

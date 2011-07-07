@@ -100,7 +100,7 @@ public final class CardPile
     private final Point baseLocation_;
 
     /** The collection of cards in this card pile ordered from bottom to top. */
-    @GuardedBy( "lock_ " )
+    @GuardedBy( "lock_" )
     private final List<Card> cards_;
 
     /** The card pile layout. */
