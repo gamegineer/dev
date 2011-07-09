@@ -106,6 +106,9 @@ final class Dispatcher
     {
         // FIXME: Under current implementation, buffer capacity must be as
         // large as the largest incoming message.  Need to fix this requirement.
+        //
+        // The fix is to break each MessageEnvelope into fixed size fragments
+        // an reassemble them as needed.
 
         bufferPool_ = new ByteBufferPool( 16384 );
         eventDispatchTask_ = null;
