@@ -281,11 +281,7 @@ public final class AbstractNodeTest
                 final Map<?, ?> tables = (Map<?, ?>)field.get( this );
                 return tables.containsKey( playerName );
             }
-            catch( final NoSuchFieldException e )
-            {
-                throw new AssertionError( e );
-            }
-            catch( final IllegalAccessException e )
+            catch( final Exception e )
             {
                 throw new AssertionError( e );
             }
