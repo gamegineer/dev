@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net;
 
+import java.lang.reflect.Method;
 import org.gamegineer.table.internal.net.node.DefaultNodeFactory;
 import org.gamegineer.table.internal.net.node.INodeController;
 import org.gamegineer.table.internal.net.node.client.ClientNode;
@@ -81,6 +82,15 @@ public final class TableNetworkAsTableNetworkTest
     protected void fireTableNetworkPlayersUpdatedEvent(
         final ITableNetwork tableNetwork )
     {
-        ((TableNetwork)tableNetwork).fireTableNetworkPlayersUpdated();
+        try
+        {
+            final Method method = TableNetwork.class.getDeclaredMethod( "fireTableNetworkPlayersUpdated" ); //$NON-NLS-1$
+            method.setAccessible( true );
+            method.invoke( tableNetwork );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
     }
 }

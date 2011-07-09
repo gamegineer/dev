@@ -251,7 +251,7 @@ public final class TableNetwork
     /**
      * Fires a table network players updated event.
      */
-    void fireTableNetworkPlayersUpdated()
+    private void fireTableNetworkPlayersUpdated()
     {
         final TableNetworkEvent event = new TableNetworkEvent( this );
         for( final ITableNetworkListener listener : listeners_ )
