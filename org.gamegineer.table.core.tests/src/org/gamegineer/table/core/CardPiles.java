@@ -1,6 +1,6 @@
 /*
  * CardPiles.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -47,13 +47,23 @@ public final class CardPiles
     // ======================================================================
 
     /**
-     * Creates a new card pile with a unique base design.
+     * Creates a new card pile with a unique base design for the specified
+     * table.
+     * 
+     * @param table
+     *        The table associated with the new card pile; must not be {@code
+     *        null}.
      * 
      * @return A new card pile; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code table} is {@code null}.
      */
     /* @NonNull */
-    public static ICardPile createUniqueCardPile()
+    public static ICardPile createUniqueCardPile(
+        /* @NonNull */
+        final ITable table )
     {
-        return TableFactory.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
+        return table.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
     }
 }

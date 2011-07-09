@@ -85,6 +85,15 @@ public abstract class AbstractTableTestCase
         assertTableEquals( expectedTable, actualTable );
     }
 
+    /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#createMementoOriginator()
+     */
+    @Override
+    protected IMementoOriginator createMementoOriginator()
+    {
+        return table_;
+    }
+
     /**
      * Creates the table to be tested.
      * 
@@ -97,13 +106,15 @@ public abstract class AbstractTableTestCase
     protected abstract ITable createTable()
         throws Exception;
 
-    /*
-     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#createMementoOriginator()
+    /**
+     * Creates a new card pile with a unique base design for the fixture table.
+     * 
+     * @return A new card pile; never {@code null}.
      */
-    @Override
-    protected IMementoOriginator createMementoOriginator()
+    /* @NonNull */
+    private ICardPile createUniqueCardPile()
     {
-        return table_;
+        return CardPiles.createUniqueCardPile( table_ );
     }
 
     /*
@@ -114,8 +125,8 @@ public abstract class AbstractTableTestCase
         final IMementoOriginator mementoOriginator )
     {
         final ITable table = (ITable)mementoOriginator;
-        final ICardPile cardPile = CardPiles.createUniqueCardPile();
-        cardPile.addCard( Cards.createUniqueCard() );
+        final ICardPile cardPile = CardPiles.createUniqueCardPile( table );
+        cardPile.addCard( Cards.createUniqueCard( table ) );
         table.addCardPile( cardPile );
     }
 
@@ -140,7 +151,7 @@ public abstract class AbstractTableTestCase
     @Test
     public void testAddCardPile_AddsCardPile()
     {
-        final ICardPile cardPile = CardPiles.createUniqueCardPile();
+        final ICardPile cardPile = createUniqueCardPile();
 
         table_.addCardPile( cardPile );
 
@@ -150,14 +161,26 @@ public abstract class AbstractTableTestCase
 
     /**
      * Ensures the {@code addCardPile} method throws an exception when passed an
+     * illegal card pile that was created by a different table.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddCardPile_CardPile_Illegal_CreatedByDifferentTable()
+    {
+        final ITable otherTable = TableFactory.createTable();
+        final ICardPile cardPile = CardPiles.createUniqueCardPile( otherTable );
+
+        table_.addCardPile( cardPile );
+    }
+
+    /**
+     * Ensures the {@code addCardPile} method throws an exception when passed an
      * illegal card pile that is already contained in a table.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testAddCardPile_CardPile_Illegal_Owned()
     {
-        final ICardPile cardPile = mocksControl_.createMock( ICardPile.class );
-        EasyMock.expect( cardPile.getTable() ).andReturn( mocksControl_.createMock( ITable.class ) );
-        mocksControl_.replay();
+        final ICardPile cardPile = createUniqueCardPile();
+        table_.addCardPile( cardPile );
 
         table_.addCardPile( cardPile );
     }
@@ -183,7 +206,7 @@ public abstract class AbstractTableTestCase
         mocksControl_.replay();
         table_.addTableListener( listener );
 
-        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        table_.addCardPile( createUniqueCardPile() );
 
         mocksControl_.verify();
     }
@@ -227,7 +250,7 @@ public abstract class AbstractTableTestCase
         table_.addTableListener( listener1 );
         table_.addTableListener( listener2 );
 
-        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        table_.addCardPile( createUniqueCardPile() );
 
         mocksControl_.verify();
     }
@@ -239,7 +262,7 @@ public abstract class AbstractTableTestCase
     @Test
     public void testCardPileRemoved_CatchesListenerException()
     {
-        final ICardPile cardPile = CardPiles.createUniqueCardPile();
+        final ICardPile cardPile = createUniqueCardPile();
         table_.addCardPile( cardPile );
         final ITableListener listener1 = mocksControl_.createMock( ITableListener.class );
         listener1.cardPileRemoved( EasyMock.notNull( TableContentChangedEvent.class ) );
@@ -253,6 +276,69 @@ public abstract class AbstractTableTestCase
         table_.removeCardPile( cardPile );
 
         mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code createCard} method throws an exception when passed a
+     * {@code null} back design.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateCard_BackDesign_Null()
+    {
+        table_.createCard( null, CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
+    }
+
+    /**
+     * Ensures the {@code createCard} method throws an exception when passed a
+     * {@code null} face design.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateCard_FaceDesign_Null()
+    {
+        table_.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), null );
+    }
+
+    /**
+     * Ensures the {@code createCard} method throws an exception when passed a
+     * face design that has a size different from the back design.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testCreateCard_FaceDesign_SizeNotEqual()
+    {
+        final int width = 10;
+        final int height = 20;
+        final ICardSurfaceDesign backDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign( width, height );
+        final ICardSurfaceDesign faceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign( 2 * width, 2 * height );
+
+        table_.createCard( backDesign, faceDesign );
+    }
+
+    /**
+     * Ensures the {@code createCard} method does not return {@code null}.
+     */
+    @Test
+    public void testCreateCard_ReturnValue_NonNull()
+    {
+        assertNotNull( table_.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() ) );
+    }
+
+    /**
+     * Ensures the {@code createCardPile} method throws an exception when passed
+     * a {@code null} card pile base design.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateCardPile_BaseDesign_Null()
+    {
+        table_.createCardPile( null );
+    }
+
+    /**
+     * Ensures the {@code createCardPile} method does not return {@code null}.
+     */
+    @Test
+    public void testCreateCardPile_ReturnValue_NonNull()
+    {
+        assertNotNull( table_.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() ) );
     }
 
     /**
@@ -282,7 +368,7 @@ public abstract class AbstractTableTestCase
     @Test
     public void testGetCardPileFromIndex_Index_Legal()
     {
-        final ICardPile expectedValue = CardPiles.createUniqueCardPile();
+        final ICardPile expectedValue = createUniqueCardPile();
         table_.addCardPile( expectedValue );
 
         final ICardPile actualValue = table_.getCardPile( 0 );
@@ -309,10 +395,10 @@ public abstract class AbstractTableTestCase
     public void testGetCardPileFromLocation_Location_MultipleCardPilesPresent()
     {
         final Point location = new Point( 7, 42 );
-        final ICardPile initialCardPile = CardPiles.createUniqueCardPile();
+        final ICardPile initialCardPile = createUniqueCardPile();
         initialCardPile.setLocation( location );
         table_.addCardPile( initialCardPile );
-        final ICardPile expectedCardPile = CardPiles.createUniqueCardPile();
+        final ICardPile expectedCardPile = createUniqueCardPile();
         expectedCardPile.setLocation( location );
         table_.addCardPile( expectedCardPile );
 
@@ -329,7 +415,7 @@ public abstract class AbstractTableTestCase
     public void testGetCardPileFromLocation_Location_SingleCardPilePresent()
     {
         final Point location = new Point( 7, 42 );
-        final ICardPile expectedCardPile = CardPiles.createUniqueCardPile();
+        final ICardPile expectedCardPile = createUniqueCardPile();
         expectedCardPile.setLocation( location );
         table_.addCardPile( expectedCardPile );
 
@@ -354,9 +440,9 @@ public abstract class AbstractTableTestCase
     @Test
     public void testGetCardPileCount()
     {
-        table_.addCardPile( CardPiles.createUniqueCardPile() );
-        table_.addCardPile( CardPiles.createUniqueCardPile() );
-        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        table_.addCardPile( createUniqueCardPile() );
+        table_.addCardPile( createUniqueCardPile() );
+        table_.addCardPile( createUniqueCardPile() );
 
         final int actualValue = table_.getCardPileCount();
 
@@ -370,7 +456,7 @@ public abstract class AbstractTableTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testGetCardPileIndex_CardPile_Absent()
     {
-        table_.getCardPileIndex( CardPiles.createUniqueCardPile() );
+        table_.getCardPileIndex( createUniqueCardPile() );
     }
 
     /**
@@ -390,10 +476,10 @@ public abstract class AbstractTableTestCase
     @Test
     public void testGetCardPileIndex_CardPile_Present()
     {
-        final ICardPile cardPile = CardPiles.createUniqueCardPile();
-        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        final ICardPile cardPile = createUniqueCardPile();
+        table_.addCardPile( createUniqueCardPile() );
         table_.addCardPile( cardPile );
-        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        table_.addCardPile( createUniqueCardPile() );
 
         final int actualValue = table_.getCardPileIndex( cardPile );
 
@@ -410,7 +496,7 @@ public abstract class AbstractTableTestCase
         final List<ICardPile> cardPiles = table_.getCardPiles();
         final int expectedCardPilesSize = cardPiles.size();
 
-        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        table_.addCardPile( createUniqueCardPile() );
 
         assertEquals( expectedCardPilesSize, cardPiles.size() );
     }
@@ -431,7 +517,7 @@ public abstract class AbstractTableTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveCardPile_CardPile_Illegal_NotOwnedByTable()
     {
-        table_.removeCardPile( CardPiles.createUniqueCardPile() );
+        table_.removeCardPile( createUniqueCardPile() );
     }
 
     /**
@@ -451,7 +537,7 @@ public abstract class AbstractTableTestCase
     @Test
     public void testRemoveCardPile_FiresCardPileRemovedEvent()
     {
-        final ICardPile cardPile = CardPiles.createUniqueCardPile();
+        final ICardPile cardPile = createUniqueCardPile();
         table_.addCardPile( cardPile );
         final ITableListener listener = mocksControl_.createMock( ITableListener.class );
         listener.cardPileRemoved( EasyMock.notNull( TableContentChangedEvent.class ) );
@@ -469,7 +555,7 @@ public abstract class AbstractTableTestCase
     @Test
     public void testRemoveCardPile_RemovesCardPile()
     {
-        final ICardPile cardPile = CardPiles.createUniqueCardPile();
+        final ICardPile cardPile = createUniqueCardPile();
         table_.addCardPile( cardPile );
 
         table_.removeCardPile( cardPile );
@@ -502,8 +588,8 @@ public abstract class AbstractTableTestCase
     @Test
     public void testRemoveCardPiles_NotEmpty_FiresCardPileRemovedEvent()
     {
-        table_.addCardPile( CardPiles.createUniqueCardPile() );
-        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        table_.addCardPile( createUniqueCardPile() );
+        table_.addCardPile( createUniqueCardPile() );
         final ITableListener listener = mocksControl_.createMock( ITableListener.class );
         listener.cardPileRemoved( EasyMock.notNull( TableContentChangedEvent.class ) );
         listener.cardPileRemoved( EasyMock.notNull( TableContentChangedEvent.class ) );
@@ -522,8 +608,8 @@ public abstract class AbstractTableTestCase
     @Test
     public void testRemoveCardPiles_NotEmpty_RemovesCardPiles()
     {
-        table_.addCardPile( CardPiles.createUniqueCardPile() );
-        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        table_.addCardPile( createUniqueCardPile() );
+        table_.addCardPile( createUniqueCardPile() );
 
         final List<ICardPile> actualCardPiles = table_.removeCardPiles();
 
@@ -565,10 +651,10 @@ public abstract class AbstractTableTestCase
         listener.cardPileAdded( EasyMock.notNull( TableContentChangedEvent.class ) );
         mocksControl_.replay();
         table_.addTableListener( listener );
-        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        table_.addCardPile( createUniqueCardPile() );
 
         table_.removeTableListener( listener );
-        table_.addCardPile( CardPiles.createUniqueCardPile() );
+        table_.addCardPile( createUniqueCardPile() );
 
         mocksControl_.verify();
     }

@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.Cards;
+import org.gamegineer.table.core.TableFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -73,7 +74,7 @@ public final class CardModelTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        model_ = new CardModel( Cards.createUniqueCard() );
+        model_ = new CardModel( Cards.createUniqueCard( TableFactory.createTable() ) );
     }
 
     /**

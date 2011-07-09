@@ -72,7 +72,6 @@ import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.core.ICardSurfaceDesignRegistry;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
-import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
@@ -180,7 +179,7 @@ final class TableView
             assert cardSurfaceDesignRegistry != null;
             final ICardSurfaceDesign backDesign = cardSurfaceDesignRegistry.getCardSurfaceDesign( CardSurfaceDesignId.fromString( "org.gamegineer.cardSurfaces.back.red" ) ); //$NON-NLS-1$ );
             final ICardSurfaceDesign faceDesign = cardSurfaceDesignRegistry.getCardSurfaceDesign( faceDesignId );
-            final ICard card = TableFactory.createCard( backDesign, faceDesign );
+            final ICard card = model_.getTable().createCard( backDesign, faceDesign );
             cardPile.addCard( card );
         }
     }
@@ -193,7 +192,7 @@ final class TableView
         final ICardPileBaseDesignRegistry cardPileBaseDesignRegistry = Activator.getDefault().getCardPileBaseDesignRegistry();
         assert cardPileBaseDesignRegistry != null;
         final ICardPileBaseDesign cardPileBaseDesign = cardPileBaseDesignRegistry.getCardPileBaseDesign( CardPileBaseDesignId.fromString( "org.gamegineer.cardPileBases.default" ) ); //$NON-NLS-1$
-        final ICardPile cardPile = TableFactory.createCardPile( cardPileBaseDesign );
+        final ICardPile cardPile = model_.getTable().createCardPile( cardPileBaseDesign );
 
         final Point location = getMouseLocation();
         convertPointFromTable( location );
@@ -1557,7 +1556,7 @@ final class TableView
                 {
                     final Point draggedCardsBaseLocation = draggedCards.get( 0 ).getLocation();
                     mobileCardPileBaseLocationOffset_.setSize( draggedCardsBaseLocation.x - mouseLocation.x, draggedCardsBaseLocation.y - mouseLocation.y );
-                    mobileCardPile_ = TableFactory.createCardPile( sourceCardPile_.getBaseDesign() );
+                    mobileCardPile_ = model_.getTable().createCardPile( sourceCardPile_.getBaseDesign() );
                     mobileCardPile_.setBaseLocation( draggedCardsBaseLocation );
                     mobileCardPile_.setLayout( sourceCardPile_.getLayout() );
                     model_.getTable().addCardPile( mobileCardPile_ );

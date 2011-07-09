@@ -51,6 +51,9 @@ public abstract class AbstractCardTestCase
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
 
+    /** The table for use in the fixture. */
+    private ITable table_;
+
 
     // ======================================================================
     // Constructors
@@ -85,13 +88,20 @@ public abstract class AbstractCardTestCase
     /**
      * Creates the card to be tested.
      * 
+     * @param table
+     *        The fixture table; must not be {@code null}.
+     * 
      * @return The card to be tested; never {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
+     * @throws java.lang.NullPointerException
+     *         If {@code table} is {@code null}.
      */
     /* @NonNull */
-    protected abstract ICard createCard()
+    protected abstract ICard createCard(
+        /* @NonNull */
+        final ITable table )
         throws Exception;
 
     /*
@@ -104,6 +114,18 @@ public abstract class AbstractCardTestCase
         card_.setOrientation( CardOrientation.BACK_UP );
         return card_;
     }
+
+    /**
+     * Creates the table for use in the fixture.
+     * 
+     * @return The table for use in the fixture; never {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    /* @NonNull */
+    protected abstract ITable createTable()
+        throws Exception;
 
     /*
      * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#initializeMementoOriginator(org.gamegineer.common.core.util.memento.IMementoOriginator)
@@ -126,8 +148,11 @@ public abstract class AbstractCardTestCase
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        card_ = createCard();
+        table_ = createTable();
+        assertNotNull( table_ );
+        card_ = createCard( table_ );
         assertNotNull( card_ );
+        card_.setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
 
         super.setUp();
     }

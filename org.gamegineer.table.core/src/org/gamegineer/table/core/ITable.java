@@ -46,7 +46,8 @@ public interface ITable
      *        The card pile; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code cardPile} is already contained in a table.
+     *         If {@code cardPile} is already contained in the table or if
+     *         {@code cardPile} was created by a different table.
      * @throws java.lang.NullPointerException
      *         If {@code cardPile} is {@code null}.
      */
@@ -68,6 +69,47 @@ public interface ITable
     public void addTableListener(
         /* @NonNull */
         ITableListener listener );
+
+    /**
+     * Creates a new card with the specified back and face designs.
+     * 
+     * @param backDesign
+     *        The design on the back of the card; must not be {@code null}.
+     * @param faceDesign
+     *        The design on the face of the card; must not be {@code null}.
+     * 
+     * @return A new card; never {@code null}. The new card is not contained in
+     *         any card pile.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code backDesign} and {@code faceDesign} do not have the same
+     *         size.
+     * @throws java.lang.NullPointerException
+     *         If {@code backDesign} or {@code faceDesign} is {@code null}.
+     */
+    /* @NonNull */
+    public ICard createCard(
+        /* @NonNull */
+        ICardSurfaceDesign backDesign,
+        /* @NonNull */
+        ICardSurfaceDesign faceDesign );
+
+    /**
+     * Creates a new card pile.
+     * 
+     * @param baseDesign
+     *        The design of the card pile base; must not be {@code null}.
+     * 
+     * @return A new card pile; never {@code null}. The new card pile is not
+     *         contained in the table.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code baseDesign} is {@code null}.
+     */
+    /* @NonNull */
+    public ICardPile createCardPile(
+        /* @NonNull */
+        ICardPileBaseDesign baseDesign );
 
     /**
      * Gets the card pile in this table at the specified index.

@@ -27,6 +27,7 @@ import java.awt.Rectangle;
 import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardPileBaseDesign;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
 import org.gamegineer.table.ui.CardPileBaseDesignUIs;
@@ -81,9 +82,10 @@ public final class CardPileViewTest
     public void setUp()
         throws Exception
     {
+        final ITable table = TableFactory.createTable();
         final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
         cardPileBaseDesignUI_ = CardPileBaseDesignUIs.createCardPileBaseDesignUI( cardPileBaseDesign );
-        final ICardPile cardPile = TableFactory.createCardPile( cardPileBaseDesign );
+        final ICardPile cardPile = table.createCardPile( cardPileBaseDesign );
         cardPileModel_ = new CardPileModel( cardPile );
         cardPileView_ = new CardPileView( cardPileModel_, cardPileBaseDesignUI_ );
     }

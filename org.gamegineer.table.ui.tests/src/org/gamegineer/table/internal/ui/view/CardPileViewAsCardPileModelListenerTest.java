@@ -1,6 +1,6 @@
 /*
  * CardPileViewAsCardPileModelListenerTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui.view;
 import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardPileBaseDesign;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.AbstractCardPileModelListenerTestCase;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
@@ -65,9 +66,10 @@ public final class CardPileViewAsCardPileModelListenerTest
     @Override
     protected ICardPileModelListener createCardPileModelListener()
     {
+        final ITable table = TableFactory.createTable();
         final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
         final ICardPileBaseDesignUI cardPileBaseDesignUI = CardPileBaseDesignUIs.createCardPileBaseDesignUI( cardPileBaseDesign );
-        final ICardPile cardPile = TableFactory.createCardPile( cardPileBaseDesign );
+        final ICardPile cardPile = table.createCardPile( cardPileBaseDesign );
         return new CardPileView( new CardPileModel( cardPile ), cardPileBaseDesignUI );
     }
 }

@@ -24,8 +24,6 @@ package org.gamegineer.table.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.Card;
-import org.gamegineer.table.internal.core.CardPile;
 import org.gamegineer.table.internal.core.CardPileBaseDesign;
 import org.gamegineer.table.internal.core.CardSurfaceDesign;
 import org.gamegineer.table.internal.core.Table;
@@ -52,51 +50,6 @@ public final class TableFactory
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates a new card with the specified back and face designs.
-     * 
-     * @param backDesign
-     *        The design on the back of the card; must not be {@code null}.
-     * @param faceDesign
-     *        The design on the face of the card; must not be {@code null}.
-     * 
-     * @return A new card; never {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code backDesign} and {@code faceDesign} do not have the same
-     *         size.
-     * @throws java.lang.NullPointerException
-     *         If {@code backDesign} or {@code faceDesign} is {@code null}.
-     */
-    /* @NonNull */
-    public static ICard createCard(
-        /* @NonNull */
-        final ICardSurfaceDesign backDesign,
-        /* @NonNull */
-        final ICardSurfaceDesign faceDesign )
-    {
-        return new Card( backDesign, faceDesign );
-    }
-
-    /**
-     * Creates a new card pile.
-     * 
-     * @param baseDesign
-     *        The design of the card pile base; must not be {@code null}.
-     * 
-     * @return A new card pile; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code baseDesign} is {@code null}.
-     */
-    /* @NonNull */
-    public static ICardPile createCardPile(
-        /* @NonNull */
-        final ICardPileBaseDesign baseDesign )
-    {
-        return new CardPile( baseDesign );
-    }
 
     /**
      * Creates a new card pile base design.

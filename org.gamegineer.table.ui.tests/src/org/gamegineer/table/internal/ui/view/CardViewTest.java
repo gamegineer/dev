@@ -27,6 +27,7 @@ import java.awt.Rectangle;
 import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardSurfaceDesign;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.CardModel;
 import org.gamegineer.table.ui.CardSurfaceDesignUIs;
@@ -90,11 +91,12 @@ public final class CardViewTest
     public void setUp()
         throws Exception
     {
+        final ITable table = TableFactory.createTable();
         final ICardSurfaceDesign backDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
         backDesignUI_ = CardSurfaceDesignUIs.createCardSurfaceDesignUI( backDesign );
         final ICardSurfaceDesign faceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
         faceDesignUI_ = CardSurfaceDesignUIs.createCardSurfaceDesignUI( faceDesign );
-        final ICard card = TableFactory.createCard( backDesign, faceDesign );
+        final ICard card = table.createCard( backDesign, faceDesign );
         cardModel_ = new CardModel( card );
         cardView_ = new CardView( cardModel_, backDesignUI_, faceDesignUI_ );
     }

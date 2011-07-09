@@ -1,6 +1,6 @@
 /*
  * Cards.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -47,13 +47,22 @@ public final class Cards
     // ======================================================================
 
     /**
-     * Creates a new card with unique back and face designs.
+     * Creates a new card with unique back and face designs for the specified
+     * table.
+     * 
+     * @param table
+     *        The table associated with the new card; must not be {@code null}.
      * 
      * @return A new card; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code table} is {@code null}.
      */
     /* @NonNull */
-    public static ICard createUniqueCard()
+    public static ICard createUniqueCard(
+        /* @NonNull */
+        final ITable table )
     {
-        return TableFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
+        return table.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
     }
 }

@@ -22,8 +22,8 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.AbstractCardTestCase;
-import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ITable;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.internal.core.Card}
@@ -51,11 +51,21 @@ public final class CardAsCardTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractCardTestCase#createCard()
+     * @see org.gamegineer.table.core.AbstractCardTestCase#createCard(org.gamegineer.table.core.ITable)
      */
     @Override
-    protected ICard createCard()
+    protected ICard createCard(
+        final ITable table )
     {
-        return new Card( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
+        return new Card( ((Table)table).getTableContext() );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractCardTestCase#createTable()
+     */
+    @Override
+    protected ITable createTable()
+    {
+        return new Table();
     }
 }

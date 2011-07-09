@@ -71,6 +71,9 @@ final class Messages
     /** The card pile listener is already registered. */
     public static String CardPile_addCardPileListener_listener_registered;
 
+    /** The card collection contains a card created by a different table. */
+    public static String CardPile_addCardsInternal_cards_containsCardCreatedByDifferentTable;
+
     /** The card collection contains a {@code null} element. */
     public static String CardPile_addCardsInternal_cards_containsNullElement;
 
@@ -225,6 +228,9 @@ final class Messages
     public static String MementoUtils_memento_wrongType;
 
     // --- Table ------------------------------------------------------------
+
+    /** The card pile was created by a different table. */
+    public static String Table_addCardPileInternal_cardPile_createdByDifferentTable;
 
     /** The card pile is already contained in a table. */
     public static String Table_addCardPileInternal_cardPile_owned;

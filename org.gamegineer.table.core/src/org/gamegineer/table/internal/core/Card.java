@@ -38,6 +38,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
+import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardListener;
 import org.gamegineer.table.core.ICardPile;
@@ -47,7 +48,7 @@ import org.gamegineer.table.core.ICardSurfaceDesign;
  * Implementation of {@link org.gamegineer.table.core.ICard}.
  */
 @ThreadSafe
-public final class Card
+final class Card
     implements ICard
 {
     // ======================================================================
@@ -59,6 +60,9 @@ public final class Card
      * the card.
      */
     private static final String BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME = "backDesign"; //$NON-NLS-1$
+
+    /** The default card surface design. */
+    private static final CardSurfaceDesign DEFAULT_SURFACE_DESIGN = new CardSurfaceDesign( CardSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Card.DEFAULT_SURFACE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
 
     /**
      * The name of the memento attribute that stores the design on the face of
@@ -107,6 +111,9 @@ public final class Card
      */
     private final Queue<Runnable> pendingEventNotifications_;
 
+    /** The table context associated with the card. */
+    private final TableContext tableContext_;
+
 
     // ======================================================================
     // Constructors
@@ -114,42 +121,26 @@ public final class Card
 
     /**
      * Initializes a new instance of the {@code Card} class.
+     * 
+     * @param tableContext
+     *        The table context associated with the card; must not be {@code
+     *        null}.
      */
-    private Card()
+    Card(
+        /* @NonNull */
+        final TableContext tableContext )
     {
-        backDesign_ = null;
+        assert tableContext != null;
+
+        backDesign_ = DEFAULT_SURFACE_DESIGN;
         cardPile_ = null;
-        faceDesign_ = null;
+        faceDesign_ = DEFAULT_SURFACE_DESIGN;
         listeners_ = new CopyOnWriteArrayList<ICardListener>();
         location_ = new Point( 0, 0 );
         lock_ = new Object();
         orientation_ = CardOrientation.FACE_UP;
         pendingEventNotifications_ = new ConcurrentLinkedQueue<Runnable>();
-    }
-
-    /**
-     * Initializes a new instance of the {@code Card} class.
-     * 
-     * @param backDesign
-     *        The design on the back of the card; must not be {@code null}.
-     * @param faceDesign
-     *        The design on the face of the card; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code backDesign} and {@code faceDesign} do not have the same
-     *         size.
-     * @throws java.lang.NullPointerException
-     *         If {@code backDesign} or {@code faceDesign} is {@code null}.
-     */
-    public Card(
-        /* @NonNull */
-        final ICardSurfaceDesign backDesign,
-        /* @NonNull */
-        final ICardSurfaceDesign faceDesign )
-    {
-        this();
-
-        setSurfaceDesigns( backDesign, faceDesign );
+        tableContext_ = tableContext;
     }
 
 
@@ -282,6 +273,9 @@ public final class Card
      * Creates a new instance of the {@code Card} class from the specified
      * memento.
      * 
+     * @param tableContext
+     *        The table context associated with the new card; must not be
+     *        {@code null}.
      * @param memento
      *        The memento representing the initial card state; must not be
      *        {@code null}.
@@ -294,12 +288,15 @@ public final class Card
     /* @NonNull */
     static Card fromMemento(
         /* @NonNull */
+        final TableContext tableContext,
+        /* @NonNull */
         final Object memento )
         throws MementoException
     {
+        assert tableContext != null;
         assert memento != null;
 
-        final Card card = new Card();
+        final Card card = new Card( tableContext );
 
         final ICardSurfaceDesign backDesign = MementoUtils.getAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
         final ICardSurfaceDesign faceDesign = MementoUtils.getAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
@@ -405,6 +402,17 @@ public final class Card
         }
     }
 
+    /**
+     * Gets the table context associated with the card.
+     * 
+     * @return The table context associated with the card; never {@code null}.
+     */
+    /* @NonNull */
+    TableContext getTableContext()
+    {
+        return tableContext_;
+    }
+
     /*
      * @see org.gamegineer.table.core.ICard#removeCardListener(org.gamegineer.table.core.ICardListener)
      */
@@ -488,7 +496,7 @@ public final class Card
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
-        final Card card = fromMemento( memento );
+        final Card card = fromMemento( tableContext_, memento );
 
         synchronized( lock_ )
         {
@@ -607,9 +615,22 @@ public final class Card
     @Override
     public String toString()
     {
+        final StringBuilder sb = new StringBuilder();
+        sb.append( "Card[" ); //$NON-NLS-1$
+
         synchronized( lock_ )
         {
-            return String.format( "Card[backDesign_='%1$s', faceDesign_='%2$s', location_='%3$s', orientation_='%4$s'", backDesign_, faceDesign_, location_, orientation_ ); //$NON-NLS-1$
+            sb.append( "backDesign_=" ); //$NON-NLS-1$
+            sb.append( backDesign_ );
+            sb.append( ", faceDesign_=" ); //$NON-NLS-1$
+            sb.append( faceDesign_ );
+            sb.append( ", location_=" ); //$NON-NLS-1$
+            sb.append( location_ );
+            sb.append( ", orientation_=" ); //$NON-NLS-1$
+            sb.append( orientation_ );
         }
+
+        sb.append( "]" ); //$NON-NLS-1$
+        return sb.toString();
     }
 }

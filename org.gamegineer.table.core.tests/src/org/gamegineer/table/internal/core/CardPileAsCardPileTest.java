@@ -22,8 +22,8 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.AbstractCardPileTestCase;
-import org.gamegineer.table.core.CardPileBaseDesigns;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.ITable;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.internal.core.CardPile}
@@ -51,11 +51,21 @@ public final class CardPileAsCardPileTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractCardPileTestCase#createCardPile()
+     * @see org.gamegineer.table.core.AbstractCardPileTestCase#createCardPile(org.gamegineer.table.core.ITable)
      */
     @Override
-    protected ICardPile createCardPile()
+    protected ICardPile createCardPile(
+        final ITable table )
     {
-        return new CardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
+        return new CardPile( ((Table)table).getTableContext() );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractCardPileTestCase#createTable()
+     */
+    @Override
+    protected ITable createTable()
+    {
+        return new Table();
     }
 }

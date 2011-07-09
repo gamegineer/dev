@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui.model;
 import org.gamegineer.table.core.AbstractCardListenerTestCase;
 import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.ICardListener;
+import org.gamegineer.table.core.TableFactory;
 
 /**
  * A fixture for testing the
@@ -58,6 +59,6 @@ public final class CardModelAsCardListenerTest
     @Override
     protected ICardListener createCardListener()
     {
-        return new CardModel( Cards.createUniqueCard() );
+        return new CardModel( Cards.createUniqueCard( TableFactory.createTable() ) );
     }
 }

@@ -28,6 +28,7 @@ import org.easymock.IMocksControl;
 import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.TableFactory;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -81,7 +82,7 @@ public final class CardPileModelTest
     {
         mocksControl_ = EasyMock.createControl();
         niceMocksControl_ = EasyMock.createNiceControl();
-        model_ = new CardPileModel( CardPiles.createUniqueCardPile() );
+        model_ = new CardPileModel( CardPiles.createUniqueCardPile( TableFactory.createTable() ) );
     }
 
     /**
@@ -116,7 +117,7 @@ public final class CardPileModelTest
     @Test
     public void testCardModel_StateChanged_FiresCardPileModelStateChangedEvent()
     {
-        final ICard card = Cards.createUniqueCard();
+        final ICard card = Cards.createUniqueCard( model_.getCardPile().getTable() );
         model_.getCardPile().addCard( card );
         final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
         listener.cardPileModelStateChanged( EasyMock.notNull( CardPileModelEvent.class ) );

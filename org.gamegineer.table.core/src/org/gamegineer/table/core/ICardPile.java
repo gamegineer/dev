@@ -48,7 +48,9 @@ public interface ICardPile
      *        The card; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code card} is already contained in a card pile.
+     *         If {@code card} is already contained in a card pile or if {@code
+     *         card} was created by a table different from the table that
+     *         created this card pile.
      * @throws java.lang.NullPointerException
      *         If {@code card} is {@code null}.
      */
@@ -80,8 +82,9 @@ public interface ICardPile
      *        the order they appear in the collection.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code cards} contains a {@code null} element or any card is
-     *         already contained in a card pile.
+     *         If {@code cards} contains a {@code null} element; if any card is
+     *         already contained in a card pile; or if any card was created by a
+     *         table different from the table that created this card pile.
      * @throws java.lang.NullPointerException
      *         If {@code cards} is {@code null}.
      */

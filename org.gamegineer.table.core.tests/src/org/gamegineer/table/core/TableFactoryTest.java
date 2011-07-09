@@ -49,52 +49,6 @@ public final class TableFactoryTest
     // ======================================================================
 
     /**
-     * Ensures the {@code createCard(ICardSurfaceDesign, ICardSurfaceDesign)}
-     * method throws an exception when passed a {@code null} back design.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateCardFromBackDesignAndFaceDesign_BackDesign_Null()
-    {
-        TableFactory.createCard( null, CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
-    }
-
-    /**
-     * Ensures the {@code createCard(ICardSurfaceDesign, ICardSurfaceDesign)}
-     * method throws an exception when passed a {@code null} face design.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateCardFromBackDesignAndFaceDesign_FaceDesign_Null()
-    {
-        TableFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), null );
-    }
-
-    /**
-     * Ensures the {@code createCard(ICardSurfaceDesign, ICardSurfaceDesign)}
-     * method throws an exception when passed a face design that has a size
-     * different from the back design.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testCreateCardFromBackDesignAndFaceDesign_FaceDesign_SizeNotEqual()
-    {
-        final int width = 10;
-        final int height = 20;
-        final ICardSurfaceDesign backDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign( width, height );
-        final ICardSurfaceDesign faceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign( 2 * width, 2 * height );
-
-        TableFactory.createCard( backDesign, faceDesign );
-    }
-
-    /**
-     * Ensures the {@code createCard(ICardSurfaceDesign, ICardSurfaceDesign)}
-     * method does not return {@code null}.
-     */
-    @Test
-    public void testCreateCardFromBackDesignAndFaceDesign_ReturnValue_NonNull()
-    {
-        assertNotNull( TableFactory.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() ) );
-    }
-
-    /**
      * Ensures the {@code createCardPileBaseDesign(CardPileBaseDesignId,
      * Dimension)} method throws an exception when passed a negative height.
      */
@@ -186,26 +140,6 @@ public final class TableFactoryTest
     public void testCreateCardPileBaseDesignFromWidthHeight_Width_Negative()
     {
         TableFactory.createCardPileBaseDesign( CardPileBaseDesignId.fromString( "id" ), -1, 0 ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code createCardPile(CardPileBaseDesign)} method throws an
-     * exception when passed a {@code null} card pile base design.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateCardPileFromBaseDesign_BaseDesign_Null()
-    {
-        TableFactory.createCardPile( (ICardPileBaseDesign)null );
-    }
-
-    /**
-     * Ensures the {@code createCardPile(CardPileBaseDesign)} method does not
-     * return {@code null}.
-     */
-    @Test
-    public void testCreateCardPileFromBaseDesign_ReturnValue_NonNull()
-    {
-        assertNotNull( TableFactory.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() ) );
     }
 
     /**

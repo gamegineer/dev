@@ -36,7 +36,10 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
+import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.ICardPileBaseDesign;
+import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
@@ -74,6 +77,9 @@ public final class Table
      */
     private final Queue<Runnable> pendingEventNotifications_;
 
+    /** The table context. */
+    private final TableContext tableContext_;
+
 
     // ======================================================================
     // Constructors
@@ -81,13 +87,29 @@ public final class Table
 
     /**
      * Initializes a new instance of the {@code Table} class.
+     * 
+     * @param tableContext
+     *        The table context; must not be {@code null}.
      */
-    public Table()
+    private Table(
+        /* @NonNull */
+        final TableContext tableContext )
     {
+        assert tableContext != null;
+
         cardPiles_ = new ArrayList<CardPile>();
         listeners_ = new CopyOnWriteArrayList<ITableListener>();
         lock_ = new Object();
         pendingEventNotifications_ = new ConcurrentLinkedQueue<Runnable>();
+        tableContext_ = tableContext;
+    }
+
+    /**
+     * Initializes a new instance of the {@code Table} class.
+     */
+    public Table()
+    {
+        this( new TableContext() );
     }
 
 
@@ -119,7 +141,8 @@ public final class Table
      *        The card pile; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code cardPile} is already contained in a table.
+     *         If {@code cardPile} is already contained in the table or if
+     *         {@code cardPile} was created by a different table.
      */
     @GuardedBy( "lock_" )
     private void addCardPileInternal(
@@ -127,10 +150,12 @@ public final class Table
         final ICardPile cardPile )
     {
         assert cardPile != null;
-        assertArgumentLegal( cardPile.getTable() == null, "cardPile", Messages.Table_addCardPileInternal_cardPile_owned ); //$NON-NLS-1$
         assert Thread.holdsLock( lock_ );
 
         final CardPile typedCardPile = (CardPile)cardPile;
+        assertArgumentLegal( typedCardPile.getTable() == null, "cardPile", Messages.Table_addCardPileInternal_cardPile_owned ); //$NON-NLS-1$
+        assertArgumentLegal( typedCardPile.getTableContext() == tableContext_, "cardPile", Messages.Table_addCardPileInternal_cardPile_createdByDifferentTable ); //$NON-NLS-1$
+
         cardPiles_.add( typedCardPile );
         typedCardPile.setTable( this );
 
@@ -154,6 +179,31 @@ public final class Table
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.Table_addTableListener_listener_registered ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITable#createCard(org.gamegineer.table.core.ICardSurfaceDesign, org.gamegineer.table.core.ICardSurfaceDesign)
+     */
+    @Override
+    public ICard createCard(
+        final ICardSurfaceDesign backDesign,
+        final ICardSurfaceDesign faceDesign )
+    {
+        final Card card = new Card( tableContext_ );
+        card.setSurfaceDesigns( backDesign, faceDesign );
+        return card;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITable#createCardPile(org.gamegineer.table.core.ICardPileBaseDesign)
+     */
+    @Override
+    public ICardPile createCardPile(
+        final ICardPileBaseDesign baseDesign )
+    {
+        final CardPile cardPile = new CardPile( tableContext_ );
+        cardPile.setBaseDesign( baseDesign );
+        return cardPile;
     }
 
     /*
@@ -249,6 +299,9 @@ public final class Table
      * Creates a new instance of the {@code Table} class from the specified
      * memento.
      * 
+     * @param tableContext
+     *        The table context associated with the new table; must not be
+     *        {@code null}.
      * @param memento
      *        The memento representing the initial table state; must not be
      *        {@code null}.
@@ -261,18 +314,21 @@ public final class Table
     /* @NonNull */
     static Table fromMemento(
         /* @NonNull */
+        final TableContext tableContext,
+        /* @NonNull */
         final Object memento )
         throws MementoException
     {
+        assert tableContext != null;
         assert memento != null;
 
-        final Table table = new Table();
+        final Table table = new Table( tableContext );
 
         @SuppressWarnings( "unchecked" )
         final List<Object> cardPileMementos = MementoUtils.getAttribute( memento, CARD_PILES_MEMENTO_ATTRIBUTE_NAME, List.class );
         for( final Object cardPileMemento : cardPileMementos )
         {
-            table.addCardPile( CardPile.fromMemento( cardPileMemento ) );
+            table.addCardPile( CardPile.fromMemento( table.tableContext_, cardPileMemento ) );
         }
 
         return table;
@@ -357,6 +413,17 @@ public final class Table
         {
             return new ArrayList<ICardPile>( cardPiles_ );
         }
+    }
+
+    /**
+     * Gets the table context.
+     * 
+     * @return The table context; never {@code null}.
+     */
+    /* @NonNull */
+    TableContext getTableContext()
+    {
+        return tableContext_;
     }
 
     /*
@@ -484,7 +551,7 @@ public final class Table
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
-        final Table table = fromMemento( memento );
+        final Table table = fromMemento( tableContext_, memento );
 
         synchronized( lock_ )
         {
@@ -496,5 +563,24 @@ public final class Table
         }
 
         firePendingEventNotifications();
+    }
+
+    /*
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString()
+    {
+        final StringBuilder sb = new StringBuilder();
+        sb.append( "Table[" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            sb.append( "cardPiles_.size()=" ); //$NON-NLS-1$
+            sb.append( cardPiles_.size() );
+        }
+
+        sb.append( "]" ); //$NON-NLS-1$
+        return sb.toString();
     }
 }

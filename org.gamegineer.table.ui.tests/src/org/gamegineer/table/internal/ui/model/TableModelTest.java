@@ -90,6 +90,17 @@ public final class TableModelTest
     }
 
     /**
+     * Creates a new card pile with a unique base design for the fixture table.
+     * 
+     * @return A new card pile; never {@code null}.
+     */
+    /* @NonNull */
+    private ICardPile createUniqueCardPile()
+    {
+        return CardPiles.createUniqueCardPile( model_.getTable() );
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -133,7 +144,7 @@ public final class TableModelTest
     @Test
     public void testCardPileFocusChanged_CatchesListenerException()
     {
-        final ICardPile cardPile = CardPiles.createUniqueCardPile();
+        final ICardPile cardPile = createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.cardPileFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
@@ -153,7 +164,7 @@ public final class TableModelTest
     @Test
     public void testCardPileModel_StateChanged_FiresTableModelDirtyFlagChangedEvent()
     {
-        final ICardPile cardPile = CardPiles.createUniqueCardPile();
+        final ICardPile cardPile = createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelDirtyFlagChanged( EasyMock.notNull( TableModelEvent.class ) );
@@ -172,7 +183,7 @@ public final class TableModelTest
     @Test
     public void testCardPileModel_StateChanged_FiresTableModelStateChangedEvent()
     {
-        final ICardPile cardPile = CardPiles.createUniqueCardPile();
+        final ICardPile cardPile = createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelStateChanged( EasyMock.notNull( TableModelEvent.class ) );
@@ -281,7 +292,7 @@ public final class TableModelTest
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelDirtyFlagChanged( EasyMock.notNull( TableModelEvent.class ) );
         niceMocksControl_.replay();
-        model_.getTable().addCardPile( CardPiles.createUniqueCardPile() );
+        model_.getTable().addCardPile( createUniqueCardPile() );
         model_.save( file );
         model_.addTableModelListener( listener );
 
@@ -305,7 +316,7 @@ public final class TableModelTest
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelStateChanged( EasyMock.notNull( TableModelEvent.class ) );
         niceMocksControl_.replay();
-        model_.getTable().addCardPile( CardPiles.createUniqueCardPile() );
+        model_.getTable().addCardPile( createUniqueCardPile() );
         model_.save( file );
         model_.addTableModelListener( listener );
 
@@ -342,7 +353,7 @@ public final class TableModelTest
     @Test
     public void testRemoveTableModelListener_Listener_Present()
     {
-        final ICardPile cardPile = CardPiles.createUniqueCardPile();
+        final ICardPile cardPile = createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.cardPileFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
@@ -405,9 +416,9 @@ public final class TableModelTest
     @Test
     public void testSetFocus()
     {
-        final ICardPile cardPile1 = CardPiles.createUniqueCardPile();
+        final ICardPile cardPile1 = createUniqueCardPile();
         model_.getTable().addCardPile( cardPile1 );
-        final ICardPile cardPile2 = CardPiles.createUniqueCardPile();
+        final ICardPile cardPile2 = createUniqueCardPile();
         model_.getTable().addCardPile( cardPile2 );
 
         model_.setFocus( cardPile1 );
@@ -435,7 +446,7 @@ public final class TableModelTest
     @Test
     public void testSetFocus_FiresCardPileFocusChangedEvent()
     {
-        final ICardPile cardPile = CardPiles.createUniqueCardPile();
+        final ICardPile cardPile = createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.cardPileFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
@@ -454,7 +465,7 @@ public final class TableModelTest
     @Test
     public void testSetFocus_FiresTableModelStateChangedEvent()
     {
-        final ICardPile cardPile = CardPiles.createUniqueCardPile();
+        final ICardPile cardPile = createUniqueCardPile();
         model_.getTable().addCardPile( cardPile );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelStateChanged( EasyMock.notNull( TableModelEvent.class ) );
@@ -522,7 +533,7 @@ public final class TableModelTest
         niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
-        model_.getTable().addCardPile( CardPiles.createUniqueCardPile() );
+        model_.getTable().addCardPile( createUniqueCardPile() );
 
         niceMocksControl_.verify();
     }

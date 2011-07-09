@@ -1,5 +1,5 @@
 /*
- * CardPileTest.java
+ * TableContext.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,43 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 18, 2010 at 11:45:31 PM.
+ * Created on Jul 6, 2011 at 8:11:30 PM.
  */
 
 package org.gamegineer.table.internal.core;
 
-import org.junit.Test;
+import net.jcip.annotations.Immutable;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.internal.core.CardPile}
- * class.
+ * The execution context for a virtual game table.
  */
-public final class CardPileTest
+@Immutable
+final class TableContext
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileTest} class.
+     * Initializes a new instance of the {@code TableContext} class.
      */
-    public CardPileTest()
+    TableContext()
     {
         super();
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * base design.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_BaseDesign_Null()
-    {
-        new CardPile( null );
     }
 }

@@ -39,6 +39,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
+import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.CardPileLayout;
@@ -52,7 +53,7 @@ import org.gamegineer.table.core.ITable;
  * Implementation of {@link org.gamegineer.table.core.ICardPile}.
  */
 @ThreadSafe
-public final class CardPile
+final class CardPile
     implements ICardPile
 {
     // ======================================================================
@@ -82,6 +83,9 @@ public final class CardPile
 
     /** The number of cards per stack level. */
     private static final int CARDS_PER_STACK_LEVEL = 10;
+
+    /** The default card pile base design. */
+    private static final CardPileBaseDesign DEFAULT_BASE_DESIGN = new CardPileBaseDesign( CardPileBaseDesignId.fromString( "org.gamegineer.table.internal.core.CardPile.DEFAULT_BASE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
 
     /**
      * The name of the memento attribute that stores the card pile layout.
@@ -126,6 +130,9 @@ public final class CardPile
     @GuardedBy( "lock_" )
     private Table table_;
 
+    /** The table context associated with the card pile. */
+    private final TableContext tableContext_;
+
 
     // ======================================================================
     // Constructors
@@ -133,10 +140,18 @@ public final class CardPile
 
     /**
      * Initializes a new instance of the {@code CardPile} class.
+     * 
+     * @param tableContext
+     *        The table context associated with the card pile; must not be
+     *        {@code null}.
      */
-    private CardPile()
+    CardPile(
+        /* @NonNull */
+        final TableContext tableContext )
     {
-        baseDesign_ = null;
+        assert tableContext != null;
+
+        baseDesign_ = DEFAULT_BASE_DESIGN;
         baseLocation_ = new Point( 0, 0 );
         cards_ = new ArrayList<Card>();
         layout_ = CardPileLayout.STACKED;
@@ -144,24 +159,7 @@ public final class CardPile
         lock_ = new Object();
         pendingEventNotifications_ = new ConcurrentLinkedQueue<Runnable>();
         table_ = null;
-    }
-
-    /**
-     * Initializes a new instance of the {@code CardPile} class.
-     * 
-     * @param baseDesign
-     *        The design of the card pile base; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code baseDesign} is {@code null}.
-     */
-    public CardPile(
-        /* @NonNull */
-        final ICardPileBaseDesign baseDesign )
-    {
-        this();
-
-        setBaseDesign( baseDesign );
+        tableContext_ = tableContext;
     }
 
 
@@ -218,8 +216,9 @@ public final class CardPile
      *        the order they appear in the collection.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code cards} contains a {@code null} element or any card is
-     *         already attached to a card pile.
+     *         If {@code cards} contains a {@code null} element; if any card is
+     *         already contained in a card pile; or if any card was created by a
+     *         table different from the table that created this card pile.
      */
     @GuardedBy( "lock_" )
     private void addCardsInternal(
@@ -234,16 +233,14 @@ public final class CardPile
 
         for( final ICard card : cards )
         {
-            if( card == null )
+            final Card typedCard = (Card)card;
+            if( typedCard == null )
             {
                 throw new IllegalArgumentException( Messages.CardPile_addCardsInternal_cards_containsNullElement );
             }
-            else if( card.getCardPile() != null )
-            {
-                throw new IllegalArgumentException( Messages.CardPile_addCardsInternal_cards_containsOwnedCard );
-            }
+            assertArgumentLegal( typedCard.getCardPile() == null, "cards", Messages.CardPile_addCardsInternal_cards_containsOwnedCard ); //$NON-NLS-1$
+            assertArgumentLegal( typedCard.getTableContext() == tableContext_, "cards", Messages.CardPile_addCardsInternal_cards_containsCardCreatedByDifferentTable ); //$NON-NLS-1$
 
-            final Card typedCard = (Card)card;
             final Point cardLocation = new Point( baseLocation_ );
             final Dimension cardOffset = getCardOffsetAt( cards_.size() );
             cardLocation.translate( cardOffset.width, cardOffset.height );
@@ -417,6 +414,9 @@ public final class CardPile
      * Creates a new instance of the {@code CardPile} class from the specified
      * memento.
      * 
+     * @param tableContext
+     *        The table context associated with the new card pile; must not be
+     *        {@code null}.
      * @param memento
      *        The memento representing the initial card pile state; must not be
      *        {@code null}.
@@ -429,12 +429,15 @@ public final class CardPile
     /* @NonNull */
     static CardPile fromMemento(
         /* @NonNull */
+        final TableContext tableContext,
+        /* @NonNull */
         final Object memento )
         throws MementoException
     {
+        assert tableContext != null;
         assert memento != null;
 
-        final CardPile cardPile = new CardPile();
+        final CardPile cardPile = new CardPile( tableContext );
 
         final ICardPileBaseDesign baseDesign = MementoUtils.getAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardPileBaseDesign.class );
         cardPile.setBaseDesign( baseDesign );
@@ -449,7 +452,7 @@ public final class CardPile
         final List<Object> cardMementos = MementoUtils.getAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
         for( final Object cardMemento : cardMementos )
         {
-            cardPile.addCard( Card.fromMemento( cardMemento ) );
+            cardPile.addCard( Card.fromMemento( tableContext, cardMemento ) );
         }
 
         return cardPile;
@@ -689,6 +692,18 @@ public final class CardPile
         {
             return table_;
         }
+    }
+
+    /**
+     * Gets the table context associated with the card pile.
+     * 
+     * @return The table context associated with the card pile; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    TableContext getTableContext()
+    {
+        return tableContext_;
     }
 
     /*
@@ -1049,7 +1064,7 @@ public final class CardPile
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
-        final CardPile cardPile = fromMemento( memento );
+        final CardPile cardPile = fromMemento( tableContext_, memento );
 
         synchronized( lock_ )
         {
@@ -1085,13 +1100,25 @@ public final class CardPile
      * @see java.lang.Object#toString()
      */
     @Override
-    @SuppressWarnings( "boxing" )
     public String toString()
     {
+        final StringBuilder sb = new StringBuilder();
+        sb.append( "CardPile[" ); //$NON-NLS-1$
+
         synchronized( lock_ )
         {
-            return String.format( "CardPile[baseDesign_='%1$s', baseLocation_='%2$s', layout_='%3$s', cards_.size='%4$d'", baseDesign_, baseLocation_, layout_, cards_.size() ); //$NON-NLS-1$
+            sb.append( "baseDesign_=" ); //$NON-NLS-1$
+            sb.append( baseDesign_ );
+            sb.append( ", baseLocation_=" ); //$NON-NLS-1$
+            sb.append( baseLocation_ );
+            sb.append( ", cards_.size()=" ); //$NON-NLS-1$
+            sb.append( cards_.size() );
+            sb.append( ", layout_=" ); //$NON-NLS-1$
+            sb.append( layout_ );
         }
+
+        sb.append( "]" ); //$NON-NLS-1$
+        return sb.toString();
     }
 
     /**

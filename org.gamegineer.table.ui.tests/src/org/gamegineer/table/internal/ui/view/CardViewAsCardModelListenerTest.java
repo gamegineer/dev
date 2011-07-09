@@ -1,6 +1,6 @@
 /*
  * CardViewAsCardModelListenerTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.ui.view;
 import org.gamegineer.table.core.CardSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardSurfaceDesign;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.AbstractCardModelListenerTestCase;
 import org.gamegineer.table.internal.ui.model.CardModel;
@@ -64,11 +65,12 @@ public final class CardViewAsCardModelListenerTest
     @Override
     protected ICardModelListener createCardModelListener()
     {
+        final ITable table = TableFactory.createTable();
         final ICardSurfaceDesign backDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
         final ICardSurfaceDesignUI backDesignUI = CardSurfaceDesignUIs.createCardSurfaceDesignUI( backDesign );
         final ICardSurfaceDesign faceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
         final ICardSurfaceDesignUI faceDesignUI = CardSurfaceDesignUIs.createCardSurfaceDesignUI( faceDesign );
-        final ICard card = TableFactory.createCard( backDesign, faceDesign );
+        final ICard card = table.createCard( backDesign, faceDesign );
         return new CardView( new CardModel( card ), backDesignUI, faceDesignUI );
     }
 }
