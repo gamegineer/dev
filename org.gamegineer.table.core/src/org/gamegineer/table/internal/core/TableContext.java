@@ -21,7 +21,11 @@
 
 package org.gamegineer.table.internal.core;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.Immutable;
+import net.jcip.annotations.ThreadSafe;
 
 /**
  * The execution context for a virtual game table.
@@ -29,6 +33,20 @@ import net.jcip.annotations.Immutable;
 @Immutable
 final class TableContext
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The table context lock. */
+    private final TableContextLock lock_;
+
+    /**
+     * The collection of pending event notifications to be executed the next
+     * time the table context lock is released.
+     */
+    private final Queue<Runnable> pendingEventNotifications_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -38,6 +56,112 @@ final class TableContext
      */
     TableContext()
     {
-        super();
+        lock_ = new TableContextLock();
+        pendingEventNotifications_ = new ConcurrentLinkedQueue<Runnable>();
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Adds an event notification to be fired as soon as the table context lock
+     * is not held by the current thread.
+     * 
+     * <p>
+     * If the current thread does not hold the table context lock, the event
+     * notification will be fired immediately. Otherwise, it will be queued and
+     * fired as soon as this thread releases the table context lock.
+     * </p>
+     * 
+     * @param notification
+     *        The event notification; must not be {@code null}.
+     */
+    void addEventNotification(
+        /* @NonNull */
+        final Runnable notification )
+    {
+        assert notification != null;
+
+        if( lock_.isHeldByCurrentThread() )
+        {
+            if( !pendingEventNotifications_.offer( notification ) )
+            {
+                Loggers.getDefaultLogger().warning( Messages.TableContext_addEventNotification_queueFailed );
+            }
+        }
+        else
+        {
+            notification.run();
+        }
+    }
+
+    /**
+     * Gets the table context lock.
+     * 
+     * @return The table context lock; never {@code null}.
+     */
+    /* @NonNull */
+    ReentrantLock getLock()
+    {
+        return lock_;
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * A reentrant mutual exclusion lock for a table context.
+     */
+    @ThreadSafe
+    private final class TableContextLock
+        extends ReentrantLock
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** Serializable class version number. */
+        private static final long serialVersionUID = 7505597870826416138L;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code TableContextLock} class.
+         */
+        TableContextLock()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see java.util.concurrent.locks.ReentrantLock#unlock()
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void unlock()
+        {
+            super.unlock();
+
+            if( !isHeldByCurrentThread() )
+            {
+                Runnable notification = null;
+                while( (notification = pendingEventNotifications_.poll()) != null )
+                {
+                    notification.run();
+                }
+            }
+        }
     }
 }

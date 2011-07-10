@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
@@ -129,22 +130,41 @@ final class LocalNetworkTable
      */
     private void initializeListeners()
     {
-        tableListener_ = new TableListener();
-        table_.addTableListener( tableListener_ );
-
-        for( final ICardPile cardPile : table_.getCardPiles() )
+        getTableLock().lock();
+        try
         {
-            final ICardPileListener cardPileListener = new CardPileListener();
-            cardPile.addCardPileListener( cardPileListener );
-            cardPileListeners_.put( cardPile, cardPileListener );
+            tableListener_ = new TableListener();
+            table_.addTableListener( tableListener_ );
 
-            for( final ICard card : cardPile.getCards() )
+            for( final ICardPile cardPile : table_.getCardPiles() )
             {
-                final ICardListener cardListener = new CardListener();
-                card.addCardListener( cardListener );
-                cardListeners_.put( card, cardListener );
+                final ICardPileListener cardPileListener = new CardPileListener();
+                cardPile.addCardPileListener( cardPileListener );
+                cardPileListeners_.put( cardPile, cardPileListener );
+
+                for( final ICard card : cardPile.getCards() )
+                {
+                    final ICardListener cardListener = new CardListener();
+                    card.addCardListener( cardListener );
+                    cardListeners_.put( card, cardListener );
+                }
             }
         }
+        finally
+        {
+            getTableLock().unlock();
+        }
+    }
+
+    /**
+     * Gets the table lock.
+     * 
+     * @return The table lock; never {@code null}.
+     */
+    /* @NonNull */
+    private Lock getTableLock()
+    {
+        return table_.getLock();
     }
 
     /*
@@ -164,9 +184,17 @@ final class LocalNetworkTable
         {
             ignoreEvents_ = true;
 
-            final ICardPile cardPile = table_.getCardPile( cardPileIndex );
-            final ICard card = cardPile.getCard( cardIndex );
-            card.setOrientation( cardOrientation );
+            getTableLock().lock();
+            try
+            {
+                final ICardPile cardPile = table_.getCardPile( cardPileIndex );
+                final ICard card = cardPile.getCard( cardIndex );
+                card.setOrientation( cardOrientation );
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
 
             ignoreEvents_ = false;
         }
@@ -257,10 +285,21 @@ final class LocalNetworkTable
                 }
             }
 
-            final ICard card = event.getCard();
-            final CardOrientation cardOrientation = card.getOrientation();
-            final int cardIndex = card.getCardPile().getCardIndex( card );
-            final int cardPileIndex = card.getCardPile().getTable().getCardPileIndex( card.getCardPile() );
+            final int cardPileIndex, cardIndex;
+            final CardOrientation cardOrientation;
+            getTableLock().lock();
+            try
+            {
+                final ICard card = event.getCard();
+                cardOrientation = card.getOrientation();
+                cardIndex = card.getCardPile().getCardIndex( card );
+                cardPileIndex = card.getCardPile().getTable().getCardPileIndex( card.getCardPile() );
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
+
             tableManager_.setCardOrientation( LocalNetworkTable.this, cardPileIndex, cardIndex, cardOrientation );
         }
 
@@ -393,16 +432,24 @@ final class LocalNetworkTable
 
             synchronized( lock_ )
             {
-                final ICardPile cardPile = event.getCardPile();
-                final ICardPileListener cardPileListener = new CardPileListener();
-                cardPile.addCardPileListener( cardPileListener );
-                cardPileListeners_.put( cardPile, cardPileListener );
-
-                for( final ICard card : cardPile.getCards() )
+                getTableLock().lock();
+                try
                 {
-                    final ICardListener cardListener = new CardListener();
-                    card.addCardListener( cardListener );
-                    cardListeners_.put( card, cardListener );
+                    final ICardPile cardPile = event.getCardPile();
+                    final ICardPileListener cardPileListener = new CardPileListener();
+                    cardPile.addCardPileListener( cardPileListener );
+                    cardPileListeners_.put( cardPile, cardPileListener );
+
+                    for( final ICard card : cardPile.getCards() )
+                    {
+                        final ICardListener cardListener = new CardListener();
+                        card.addCardListener( cardListener );
+                        cardListeners_.put( card, cardListener );
+                    }
+                }
+                finally
+                {
+                    getTableLock().unlock();
                 }
             }
         }
@@ -419,15 +466,23 @@ final class LocalNetworkTable
 
             synchronized( lock_ )
             {
-                final ICardPile cardPile = event.getCardPile();
-                for( final ICard card : cardPile.getCards() )
+                getTableLock().lock();
+                try
                 {
-                    final ICardListener cardListener = cardListeners_.remove( card );
-                    card.removeCardListener( cardListener );
-                }
+                    final ICardPile cardPile = event.getCardPile();
+                    for( final ICard card : cardPile.getCards() )
+                    {
+                        final ICardListener cardListener = cardListeners_.remove( card );
+                        card.removeCardListener( cardListener );
+                    }
 
-                final ICardPileListener cardPileListener = cardPileListeners_.remove( cardPile );
-                cardPile.removeCardPileListener( cardPileListener );
+                    final ICardPileListener cardPileListener = cardPileListeners_.remove( cardPile );
+                    cardPile.removeCardPileListener( cardPileListener );
+                }
+                finally
+                {
+                    getTableLock().unlock();
+                }
             }
         }
     }

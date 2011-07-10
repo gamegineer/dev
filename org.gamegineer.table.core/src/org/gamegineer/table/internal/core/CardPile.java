@@ -31,9 +31,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
@@ -96,38 +95,29 @@ final class CardPile
     private static final Dimension STACK_LEVEL_OFFSET = new Dimension( 2, 1 );
 
     /** The design of the card pile base. */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private ICardPileBaseDesign baseDesign_;
 
     /** The location of the card pile base in table coordinates. */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private final Point baseLocation_;
 
     /** The collection of cards in this card pile ordered from bottom to top. */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private final List<Card> cards_;
 
     /** The card pile layout. */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private CardPileLayout layout_;
 
     /** The collection of card pile listeners. */
     private final CopyOnWriteArrayList<ICardPileListener> listeners_;
 
-    /** The instance lock. */
-    private final Object lock_;
-
-    /**
-     * The collection of pending event notifications to be executed the next
-     * time the instance lock is released.
-     */
-    private final Queue<Runnable> pendingEventNotifications_;
-
     /**
      * The table that contains this card pile or {@code null} if this card pile
      * is not contained in a table.
      */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private Table table_;
 
     /** The table context associated with the card pile. */
@@ -156,8 +146,6 @@ final class CardPile
         cards_ = new ArrayList<Card>();
         layout_ = CardPileLayout.STACKED;
         listeners_ = new CopyOnWriteArrayList<ICardPileListener>();
-        lock_ = new Object();
-        pendingEventNotifications_ = new ConcurrentLinkedQueue<Runnable>();
         table_ = null;
         tableContext_ = tableContext;
     }
@@ -199,63 +187,44 @@ final class CardPile
     {
         assertArgumentNotNull( cards, "cards" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
-        {
-            addCardsInternal( cards );
-        }
-
-        firePendingEventNotifications();
-    }
-
-    /**
-     * Adds the specified collection of cards to the top of this card pile.
-     * 
-     * @param cards
-     *        The collection of cards to be added to this card pile; must not be
-     *        {@code null}. The cards are added to the top of this card pile in
-     *        the order they appear in the collection.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code cards} contains a {@code null} element; if any card is
-     *         already contained in a card pile; or if any card was created by a
-     *         table different from the table that created this card pile.
-     */
-    @GuardedBy( "lock_" )
-    private void addCardsInternal(
-        /* @NonNull */
-        final List<ICard> cards )
-    {
-        assert cards != null;
-        assert Thread.holdsLock( lock_ );
-
         final List<Card> addedCards = new ArrayList<Card>();
-        final Rectangle oldBounds = getBounds();
+        final boolean cardPileBoundsChanged;
 
-        for( final ICard card : cards )
+        getLock().lock();
+        try
         {
-            final Card typedCard = (Card)card;
-            if( typedCard == null )
+            final Rectangle oldBounds = getBounds();
+
+            for( final ICard card : cards )
             {
-                throw new IllegalArgumentException( Messages.CardPile_addCardsInternal_cards_containsNullElement );
+                final Card typedCard = (Card)card;
+                if( typedCard == null )
+                {
+                    throw new IllegalArgumentException( Messages.CardPile_addCards_cards_containsNullElement );
+                }
+                assertArgumentLegal( typedCard.getCardPile() == null, "cards", Messages.CardPile_addCards_cards_containsOwnedCard ); //$NON-NLS-1$
+                assertArgumentLegal( typedCard.getTableContext() == tableContext_, "cards", Messages.CardPile_addCards_cards_containsCardCreatedByDifferentTable ); //$NON-NLS-1$
+
+                final Point cardLocation = new Point( baseLocation_ );
+                final Dimension cardOffset = getCardOffsetAt( cards_.size() );
+                cardLocation.translate( cardOffset.width, cardOffset.height );
+                typedCard.setCardPile( this );
+                typedCard.setLocation( cardLocation );
+                cards_.add( typedCard );
+                addedCards.add( typedCard );
             }
-            assertArgumentLegal( typedCard.getCardPile() == null, "cards", Messages.CardPile_addCardsInternal_cards_containsOwnedCard ); //$NON-NLS-1$
-            assertArgumentLegal( typedCard.getTableContext() == tableContext_, "cards", Messages.CardPile_addCardsInternal_cards_containsCardCreatedByDifferentTable ); //$NON-NLS-1$
 
-            final Point cardLocation = new Point( baseLocation_ );
-            final Dimension cardOffset = getCardOffsetAt( cards_.size() );
-            cardLocation.translate( cardOffset.width, cardOffset.height );
-            typedCard.setCardPile( this );
-            typedCard.setLocation( cardLocation );
-            cards_.add( typedCard );
-            addedCards.add( typedCard );
+            final Rectangle newBounds = getBounds();
+            cardPileBoundsChanged = !newBounds.equals( oldBounds );
         }
-
-        final Rectangle newBounds = getBounds();
-        final boolean cardPileBoundsChanged = !newBounds.equals( oldBounds );
+        finally
+        {
+            getLock().unlock();
+        }
 
         if( !addedCards.isEmpty() || cardPileBoundsChanged )
         {
-            pendingEventNotifications_.offer( new Runnable()
+            tableContext_.addEventNotification( new Runnable()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
@@ -283,7 +252,8 @@ final class CardPile
     {
         final Map<String, Object> memento = new HashMap<String, Object>();
 
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             memento.put( BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, baseDesign_ );
             memento.put( BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( baseLocation_ ) );
@@ -295,6 +265,10 @@ final class CardPile
                 cardMementos.add( card.createMemento() );
             }
             memento.put( CARDS_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardMementos ) );
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
         return Collections.unmodifiableMap( memento );
@@ -311,7 +285,7 @@ final class CardPile
         final ICard card )
     {
         assert card != null;
-        assert !Thread.holdsLock( lock_ );
+        assert !getLock().isHeldByCurrentThread();
 
         final CardPileContentChangedEvent event = new CardPileContentChangedEvent( this, card );
         for( final ICardPileListener listener : listeners_ )
@@ -332,7 +306,7 @@ final class CardPile
      */
     private void fireCardPileBaseDesignChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !getLock().isHeldByCurrentThread();
 
         final CardPileEvent event = new CardPileEvent( this );
         for( final ICardPileListener listener : listeners_ )
@@ -353,7 +327,7 @@ final class CardPile
      */
     private void fireCardPileBoundsChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !getLock().isHeldByCurrentThread();
 
         final CardPileEvent event = new CardPileEvent( this );
         for( final ICardPileListener listener : listeners_ )
@@ -380,7 +354,7 @@ final class CardPile
         final ICard card )
     {
         assert card != null;
-        assert !Thread.holdsLock( lock_ );
+        assert !getLock().isHeldByCurrentThread();
 
         final CardPileContentChangedEvent event = new CardPileContentChangedEvent( this, card );
         for( final ICardPileListener listener : listeners_ )
@@ -393,20 +367,6 @@ final class CardPile
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPile_cardRemoved_unexpectedException, e );
             }
-        }
-    }
-
-    /**
-     * Fires all pending event notifications.
-     */
-    private void firePendingEventNotifications()
-    {
-        assert !Thread.holdsLock( lock_ );
-
-        Runnable notification = null;
-        while( (notification = pendingEventNotifications_.poll()) != null )
-        {
-            notification.run();
         }
     }
 
@@ -464,9 +424,14 @@ final class CardPile
     @Override
     public ICardPileBaseDesign getBaseDesign()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             return baseDesign_;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -476,9 +441,14 @@ final class CardPile
     @Override
     public Point getBaseLocation()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             return new Point( baseLocation_ );
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -488,7 +458,8 @@ final class CardPile
     @Override
     public Rectangle getBounds()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             if( cards_.isEmpty() )
             {
@@ -499,6 +470,10 @@ final class CardPile
             final Rectangle bottomCardBounds = cards_.get( 0 ).getBounds();
             return topCardBounds.union( bottomCardBounds );
         }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /*
@@ -508,11 +483,16 @@ final class CardPile
     public ICard getCard(
         final int index )
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             assertArgumentLegal( (index >= 0) && (index < cards_.size()), "index", Messages.CardPile_getCardFromIndex_index_outOfRange ); //$NON-NLS-1$
 
             return cards_.get( index );
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -525,10 +505,15 @@ final class CardPile
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             final int index = getCardIndex( location );
             return (index != -1) ? cards_.get( index ) : null;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -538,9 +523,14 @@ final class CardPile
     @Override
     public int getCardCount()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             return cards_.size();
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -554,9 +544,14 @@ final class CardPile
         assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
 
         final int index;
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             index = cards_.indexOf( card );
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
         assertArgumentLegal( index != -1, "card", Messages.CardPile_getCardIndex_card_notOwned ); //$NON-NLS-1$
@@ -576,13 +571,13 @@ final class CardPile
      * @return The index of the card in this card pile at the specified location
      *         or -1 if no card in this card pile is at that location.
      */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private int getCardIndex(
         /* @NonNull */
         final Point location )
     {
         assert location != null;
-        assert Thread.holdsLock( lock_ );
+        assert getLock().isHeldByCurrentThread();
 
         final int upperIndex = cards_.size() - 1;
         final int lowerIndex = Math.max( 0, (layout_ == CardPileLayout.STACKED) ? upperIndex : 0 );
@@ -610,13 +605,13 @@ final class CardPile
      * @throws java.lang.IllegalStateException
      *         If an unknown layout is active.
      */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     /* @NonNull */
     private Dimension getCardOffsetAt(
         final int index )
     {
         assert index >= 0;
-        assert Thread.holdsLock( lock_ );
+        assert getLock().isHeldByCurrentThread();
 
         switch( layout_ )
         {
@@ -646,9 +641,14 @@ final class CardPile
     @Override
     public List<ICard> getCards()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             return new ArrayList<ICard>( cards_ );
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -658,9 +658,14 @@ final class CardPile
     @Override
     public CardPileLayout getLayout()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             return layout_;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -671,6 +676,17 @@ final class CardPile
     public Point getLocation()
     {
         return getBounds().getLocation();
+    }
+
+    /**
+     * Gets the table lock.
+     * 
+     * @return The table lock; never {@code null}.
+     */
+    /* @NonNull */
+    private ReentrantLock getLock()
+    {
+        return tableContext_.getLock();
     }
 
     /*
@@ -688,9 +704,14 @@ final class CardPile
     @Override
     public ITable getTable()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             return table_;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -787,57 +808,33 @@ final class CardPile
         final CardRangeStrategy cardRangeStrategy )
     {
         assert cardRangeStrategy != null;
-        assert !Thread.holdsLock( lock_ );
-
-        final List<ICard> removedCards;
-        synchronized( lock_ )
-        {
-            removedCards = removeCardsInternal( cardRangeStrategy );
-        }
-
-        firePendingEventNotifications();
-
-        return removedCards;
-    }
-
-    /**
-     * Removes all cards from this card pile in the specified range.
-     * 
-     * @param cardRangeStrategy
-     *        The strategy used to determine the range of cards to remove; must
-     *        not be {@code null}. The strategy will be invoked while the card
-     *        pile instance lock is held.
-     * 
-     * @return The collection of cards removed from this card pile; never
-     *         {@code null}. The cards are returned in order from the card
-     *         nearest the bottom of the card pile to the card nearest the top
-     *         of the card pile.
-     */
-    @GuardedBy( "lock_" )
-    /* @NonNull */
-    private List<ICard> removeCardsInternal(
-        /* @NonNull */
-        final CardRangeStrategy cardRangeStrategy )
-    {
-        assert cardRangeStrategy != null;
-        assert Thread.holdsLock( lock_ );
 
         final List<Card> removedCards = new ArrayList<Card>();
-        final Rectangle oldBounds = getBounds();
+        final boolean cardPileBoundsChanged;
 
-        removedCards.addAll( cards_.subList( cardRangeStrategy.getLowerIndex(), cardRangeStrategy.getUpperIndex() ) );
-        cards_.removeAll( removedCards );
-        for( final Card card : removedCards )
+        getLock().lock();
+        try
         {
-            card.setCardPile( null );
-        }
+            final Rectangle oldBounds = getBounds();
 
-        final Rectangle newBounds = getBounds();
-        final boolean cardPileBoundsChanged = !newBounds.equals( oldBounds );
+            removedCards.addAll( cards_.subList( cardRangeStrategy.getLowerIndex(), cardRangeStrategy.getUpperIndex() ) );
+            cards_.removeAll( removedCards );
+            for( final Card card : removedCards )
+            {
+                card.setCardPile( null );
+            }
+
+            final Rectangle newBounds = getBounds();
+            cardPileBoundsChanged = !newBounds.equals( oldBounds );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
 
         if( !removedCards.isEmpty() || cardPileBoundsChanged )
         {
-            pendingEventNotifications_.offer( new Runnable()
+            tableContext_.addEventNotification( new Runnable()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
@@ -868,31 +865,17 @@ final class CardPile
     {
         assertArgumentNotNull( baseDesign, "baseDesign" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
-            setBaseDesignInternal( baseDesign );
+            baseDesign_ = baseDesign;
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
-        firePendingEventNotifications();
-    }
-
-    /**
-     * Sets the base design of this card pile.
-     * 
-     * @param baseDesign
-     *        The base design of this card pile; must not be {@code null}.
-     */
-    @GuardedBy( "lock_" )
-    private void setBaseDesignInternal(
-        /* @NonNull */
-        final ICardPileBaseDesign baseDesign )
-    {
-        assert baseDesign != null;
-        assert Thread.holdsLock( lock_ );
-
-        baseDesign_ = baseDesign;
-
-        pendingEventNotifications_.add( new Runnable()
+        tableContext_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -911,29 +894,6 @@ final class CardPile
         final Point baseLocation )
     {
         assertArgumentNotNull( baseLocation, "baseLocation" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            setBaseLocationInternal( baseLocation );
-        }
-
-        firePendingEventNotifications();
-    }
-
-    /**
-     * Sets the base location of this card pile in table coordinates.
-     * 
-     * @param baseLocation
-     *        The base location of this card pile in table coordinates; must not
-     *        be {@code null}.
-     */
-    @GuardedBy( "lock_" )
-    private void setBaseLocationInternal(
-        /* @NonNull */
-        final Point baseLocation )
-    {
-        assert baseLocation != null;
-        assert Thread.holdsLock( lock_ );
 
         translateBaseLocation( new TranslationOffsetStrategy()
         {
@@ -955,59 +915,50 @@ final class CardPile
     {
         assertArgumentNotNull( layout, "layout" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        final boolean cardPileBoundsChanged;
+
+        getLock().lock();
+        try
         {
-            setLayoutInternal( layout );
+            layout_ = layout;
+
+            if( cards_.isEmpty() )
+            {
+                cardPileBoundsChanged = false;
+            }
+            else
+            {
+                final Rectangle oldBounds = getBounds();
+
+                final Point cardLocation = new Point();
+                for( int index = 0, size = cards_.size(); index < size; ++index )
+                {
+                    cardLocation.setLocation( baseLocation_ );
+                    final Dimension cardOffset = getCardOffsetAt( index );
+                    cardLocation.translate( cardOffset.width, cardOffset.height );
+                    cards_.get( index ).setLocation( cardLocation );
+                }
+
+                final Rectangle newBounds = getBounds();
+                cardPileBoundsChanged = !newBounds.equals( oldBounds );
+            }
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
-        firePendingEventNotifications();
-    }
-
-    /**
-     * Sets the layout of cards within this card pile.
-     * 
-     * @param layout
-     *        The layout of cards within this card pile; must not be {@code
-     *        null}.
-     */
-    @GuardedBy( "lock_" )
-    private void setLayoutInternal(
-        /* @NonNull */
-        final CardPileLayout layout )
-    {
-        assert layout != null;
-        assert Thread.holdsLock( lock_ );
-
-        layout_ = layout;
-
-        if( !cards_.isEmpty() )
+        if( cardPileBoundsChanged )
         {
-            final Rectangle oldBounds = getBounds();
-
-            final Point cardLocation = new Point();
-            for( int index = 0, size = cards_.size(); index < size; ++index )
+            tableContext_.addEventNotification( new Runnable()
             {
-                cardLocation.setLocation( baseLocation_ );
-                final Dimension cardOffset = getCardOffsetAt( index );
-                cardLocation.translate( cardOffset.width, cardOffset.height );
-                cards_.get( index ).setLocation( cardLocation );
-            }
-
-            final Rectangle newBounds = getBounds();
-            final boolean cardPileBoundsChanged = !newBounds.equals( oldBounds );
-
-            if( cardPileBoundsChanged )
-            {
-                pendingEventNotifications_.offer( new Runnable()
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
                 {
-                    @Override
-                    @SuppressWarnings( "synthetic-access" )
-                    public void run()
-                    {
-                        fireCardPileBoundsChanged();
-                    }
-                } );
-            }
+                    fireCardPileBoundsChanged();
+                }
+            } );
         }
     }
 
@@ -1019,29 +970,6 @@ final class CardPile
         final Point location )
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            setLocationInternal( location );
-        }
-
-        firePendingEventNotifications();
-    }
-
-    /**
-     * Sets the location of this card pile in table coordinates.
-     * 
-     * @param location
-     *        The location of this card pile in table coordinates; must not be
-     *        {@code null}.
-     */
-    @GuardedBy( "lock_" )
-    private void setLocationInternal(
-        /* @NonNull */
-        final Point location )
-    {
-        assert location != null;
-        assert Thread.holdsLock( lock_ );
 
         translateBaseLocation( new TranslationOffsetStrategy()
         {
@@ -1064,19 +992,22 @@ final class CardPile
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
-        final CardPile cardPile = fromMemento( tableContext_, memento );
-
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
-            setBaseDesignInternal( cardPile.getBaseDesign() );
-            setBaseLocationInternal( cardPile.getBaseLocation() );
-            setLayoutInternal( cardPile.getLayout() );
+            final CardPile cardPile = fromMemento( tableContext_, memento );
 
-            removeCardsInternal( new CardRangeStrategy() );
-            addCardsInternal( cardPile.removeCards() );
+            setBaseDesign( cardPile.getBaseDesign() );
+            setBaseLocation( cardPile.getBaseLocation() );
+            setLayout( cardPile.getLayout() );
+
+            removeCards();
+            addCards( cardPile.removeCards() );
         }
-
-        firePendingEventNotifications();
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /**
@@ -1090,9 +1021,14 @@ final class CardPile
         /* @Nullable */
         final Table table )
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             table_ = table;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -1105,7 +1041,8 @@ final class CardPile
         final StringBuilder sb = new StringBuilder();
         sb.append( "CardPile[" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             sb.append( "baseDesign_=" ); //$NON-NLS-1$
             sb.append( baseDesign_ );
@@ -1115,6 +1052,10 @@ final class CardPile
             sb.append( cards_.size() );
             sb.append( ", layout_=" ); //$NON-NLS-1$
             sb.append( layout_ );
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
         sb.append( "]" ); //$NON-NLS-1$
@@ -1129,24 +1070,30 @@ final class CardPile
      *        location; must not be {@code null}. The strategy will be invoked
      *        while the card pile instance lock is held.
      */
-    @GuardedBy( "lock_" )
     private void translateBaseLocation(
         /* @NonNull */
         final TranslationOffsetStrategy translationOffsetStrategy )
     {
         assert translationOffsetStrategy != null;
-        assert Thread.holdsLock( lock_ );
 
-        final Dimension offset = translationOffsetStrategy.getOffset();
-        baseLocation_.translate( offset.width, offset.height );
-        for( final ICard card : cards_ )
+        getLock().lock();
+        try
         {
-            final Point cardLocation = card.getLocation();
-            cardLocation.translate( offset.width, offset.height );
-            card.setLocation( cardLocation );
+            final Dimension offset = translationOffsetStrategy.getOffset();
+            baseLocation_.translate( offset.width, offset.height );
+            for( final ICard card : cards_ )
+            {
+                final Point cardLocation = card.getLocation();
+                cardLocation.translate( offset.width, offset.height );
+                card.setLocation( cardLocation );
+            }
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
-        pendingEventNotifications_.offer( new Runnable()
+        tableContext_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )

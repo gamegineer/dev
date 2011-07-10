@@ -511,6 +511,15 @@ public abstract class AbstractTableTestCase
     }
 
     /**
+     * Ensures the {@code getLock} method does not return {@code null}.
+     */
+    @Test
+    public void testGetLock_ReturnValue_NonNull()
+    {
+        assertNotNull( table_.getLock() );
+    }
+
+    /**
      * Ensures the {@code removeCardPile} method throws an exception when passed
      * an illegal card pile that is not contained by the table.
      */

@@ -64,7 +64,7 @@ final class Messages
     public static String Card_removeCardListener_listener_notRegistered;
 
     /** The face design size is not equal to the back design size. */
-    public static String Card_setSurfaceDesignsInternal_faceDesign_sizeNotEqual;
+    public static String Card_setSurfaceDesigns_faceDesign_sizeNotEqual;
 
     // --- CardPile ---------------------------------------------------------
 
@@ -72,13 +72,13 @@ final class Messages
     public static String CardPile_addCardPileListener_listener_registered;
 
     /** The card collection contains a card created by a different table. */
-    public static String CardPile_addCardsInternal_cards_containsCardCreatedByDifferentTable;
+    public static String CardPile_addCards_cards_containsCardCreatedByDifferentTable;
 
     /** The card collection contains a {@code null} element. */
-    public static String CardPile_addCardsInternal_cards_containsNullElement;
+    public static String CardPile_addCards_cards_containsNullElement;
 
     /** The card collection contains a card already contained in a card pile. */
-    public static String CardPile_addCardsInternal_cards_containsOwnedCard;
+    public static String CardPile_addCards_cards_containsOwnedCard;
 
     /** An unexpected exception was thrown from ICardPileListener.cardAdded(). */
     public static String CardPile_cardAdded_unexpectedException;
@@ -230,10 +230,10 @@ final class Messages
     // --- Table ------------------------------------------------------------
 
     /** The card pile was created by a different table. */
-    public static String Table_addCardPileInternal_cardPile_createdByDifferentTable;
+    public static String Table_addCardPile_cardPile_createdByDifferentTable;
 
     /** The card pile is already contained in a table. */
-    public static String Table_addCardPileInternal_cardPile_owned;
+    public static String Table_addCardPile_cardPile_owned;
 
     /** The table listener is already registered. */
     public static String Table_addTableListener_listener_registered;
@@ -253,10 +253,15 @@ final class Messages
     public static String Table_getCardPileIndex_cardPile_notOwned;
 
     /** The card pile is not contained in the table. */
-    public static String Table_removeCardPileInternal_cardPile_notOwned;
+    public static String Table_removeCardPile_cardPile_notOwned;
 
     /** The table listener is not registered. */
     public static String Table_removeTableListener_listener_notRegistered;
+
+    // --- TableContext -----------------------------------------------------
+
+    /** Failed to queue the event notification. */
+    public static String TableContext_addEventNotification_queueFailed;
 
 
     // ======================================================================

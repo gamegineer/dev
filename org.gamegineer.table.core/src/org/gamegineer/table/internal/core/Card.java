@@ -29,9 +29,8 @@ import java.awt.Rectangle;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -77,39 +76,30 @@ final class Card
     private static final String ORIENTATION_MEMENTO_ATTRIBUTE_NAME = "orientation"; //$NON-NLS-1$
 
     /** The design on the back of the card. */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private ICardSurfaceDesign backDesign_;
 
     /**
      * The card pile that contains this card or {@code null} if this card is not
      * contained in a card pile.
      */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private CardPile cardPile_;
 
     /** The design on the face of the card. */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private ICardSurfaceDesign faceDesign_;
 
     /** The collection of card listeners. */
     private final CopyOnWriteArrayList<ICardListener> listeners_;
 
     /** The card location in table coordinates. */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private final Point location_;
 
-    /** The instance lock. */
-    private final Object lock_;
-
     /** The card orientation. */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private CardOrientation orientation_;
-
-    /**
-     * The collection of pending event notifications to be executed the next
-     * time the instance lock is released.
-     */
-    private final Queue<Runnable> pendingEventNotifications_;
 
     /** The table context associated with the card. */
     private final TableContext tableContext_;
@@ -137,9 +127,7 @@ final class Card
         faceDesign_ = DEFAULT_SURFACE_DESIGN;
         listeners_ = new CopyOnWriteArrayList<ICardListener>();
         location_ = new Point( 0, 0 );
-        lock_ = new Object();
         orientation_ = CardOrientation.FACE_UP;
-        pendingEventNotifications_ = new ConcurrentLinkedQueue<Runnable>();
         tableContext_ = tableContext;
     }
 
@@ -167,12 +155,17 @@ final class Card
     {
         final Map<String, Object> memento = new HashMap<String, Object>();
 
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             memento.put( BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, backDesign_ );
             memento.put( FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, faceDesign_ );
             memento.put( LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( location_ ) );
             memento.put( ORIENTATION_MEMENTO_ATTRIBUTE_NAME, orientation_ );
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
         return Collections.unmodifiableMap( memento );
@@ -183,7 +176,7 @@ final class Card
      */
     private void fireCardLocationChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !getLock().isHeldByCurrentThread();
 
         final CardEvent event = new CardEvent( this );
         for( final ICardListener listener : listeners_ )
@@ -204,7 +197,7 @@ final class Card
      */
     private void fireCardOrientationChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !getLock().isHeldByCurrentThread();
 
         final CardEvent event = new CardEvent( this );
         for( final ICardListener listener : listeners_ )
@@ -225,7 +218,7 @@ final class Card
      */
     private void fireCardSurfaceDesignsChanged()
     {
-        assert !Thread.holdsLock( lock_ );
+        assert !getLock().isHeldByCurrentThread();
 
         final CardEvent event = new CardEvent( this );
         for( final ICardListener listener : listeners_ )
@@ -241,32 +234,21 @@ final class Card
         }
     }
 
-    /**
-     * Fires all pending event notifications.
-     */
-    private void firePendingEventNotifications()
-    {
-        assert !Thread.holdsLock( lock_ );
-
-        Runnable notification = null;
-        while( (notification = pendingEventNotifications_.poll()) != null )
-        {
-            notification.run();
-        }
-    }
-
     /*
      * @see org.gamegineer.table.core.ICard#flip()
      */
     @Override
     public void flip()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
-            setOrientationInternal( orientation_.inverse() );
+            setOrientation( orientation_.inverse() );
         }
-
-        firePendingEventNotifications();
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /**
@@ -324,9 +306,14 @@ final class Card
     @Override
     public ICardSurfaceDesign getBackDesign()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             return backDesign_;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -336,9 +323,14 @@ final class Card
     @Override
     public Rectangle getBounds()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             return new Rectangle( location_, backDesign_.getSize() );
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -348,9 +340,14 @@ final class Card
     @Override
     public ICardPile getCardPile()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             return cardPile_;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -360,9 +357,14 @@ final class Card
     @Override
     public ICardSurfaceDesign getFaceDesign()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             return faceDesign_;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -372,10 +374,26 @@ final class Card
     @Override
     public Point getLocation()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             return new Point( location_ );
         }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /**
+     * Gets the table lock.
+     * 
+     * @return The table lock; never {@code null}.
+     */
+    /* @NonNull */
+    private ReentrantLock getLock()
+    {
+        return tableContext_.getLock();
     }
 
     /*
@@ -384,9 +402,14 @@ final class Card
     @Override
     public CardOrientation getOrientation()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             return orientation_;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -396,9 +419,14 @@ final class Card
     @Override
     public Dimension getSize()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             return backDesign_.getSize();
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -435,9 +463,14 @@ final class Card
         /* @Nullable */
         final CardPile cardPile )
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             cardPile_ = cardPile;
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -450,32 +483,17 @@ final class Card
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
-            setLocationInternal( location );
+            location_.setLocation( location );
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
-        firePendingEventNotifications();
-    }
-
-    /**
-     * Sets the location of this card in table coordinates.
-     * 
-     * @param location
-     *        The location of this card in table coordinates; must not be
-     *        {@code null}.
-     */
-    @GuardedBy( "lock_" )
-    private void setLocationInternal(
-        /* @NonNull */
-        final Point location )
-    {
-        assert location != null;
-        assert Thread.holdsLock( lock_ );
-
-        location_.setLocation( location );
-
-        pendingEventNotifications_.offer( new Runnable()
+        tableContext_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -496,16 +514,19 @@ final class Card
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
-        final Card card = fromMemento( tableContext_, memento );
-
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
-            setSurfaceDesignsInternal( card.getBackDesign(), card.getFaceDesign() );
-            setLocationInternal( card.getLocation() );
-            setOrientationInternal( card.getOrientation() );
-        }
+            final Card card = fromMemento( tableContext_, memento );
 
-        firePendingEventNotifications();
+            setSurfaceDesigns( card.getBackDesign(), card.getFaceDesign() );
+            setLocation( card.getLocation() );
+            setOrientation( card.getOrientation() );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /*
@@ -517,31 +538,17 @@ final class Card
     {
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
-            setOrientationInternal( orientation );
+            orientation_ = orientation;
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
-        firePendingEventNotifications();
-    }
-
-    /**
-     * Sets the orientation of this card.
-     * 
-     * @param orientation
-     *        The orientation of this card; must not be {@code null}.
-     */
-    @GuardedBy( "lock_" )
-    private void setOrientationInternal(
-        /* @NonNull */
-        final CardOrientation orientation )
-    {
-        assert orientation != null;
-        assert Thread.holdsLock( lock_ );
-
-        orientation_ = orientation;
-
-        pendingEventNotifications_.offer( new Runnable()
+        tableContext_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -562,43 +569,20 @@ final class Card
     {
         assertArgumentNotNull( backDesign, "backDesign" ); //$NON-NLS-1$
         assertArgumentNotNull( faceDesign, "faceDesign" ); //$NON-NLS-1$
+        assertArgumentLegal( faceDesign.getSize().equals( backDesign.getSize() ), "faceDesign", Messages.Card_setSurfaceDesigns_faceDesign_sizeNotEqual ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
-            setSurfaceDesignsInternal( backDesign, faceDesign );
+            backDesign_ = backDesign;
+            faceDesign_ = faceDesign;
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
-        firePendingEventNotifications();
-    }
-
-    /**
-     * Sets the surface designs of this card.
-     * 
-     * @param backDesign
-     *        The design on the back of the card; must not be {@code null}.
-     * @param faceDesign
-     *        The design on the face of the card; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code backDesign} and {@code faceDesign} do not have the same
-     *         size.
-     */
-    @GuardedBy( "lock_" )
-    private void setSurfaceDesignsInternal(
-        /* @NonNull */
-        final ICardSurfaceDesign backDesign,
-        /* @NonNull */
-        final ICardSurfaceDesign faceDesign )
-    {
-        assert backDesign != null;
-        assert faceDesign != null;
-        assertArgumentLegal( faceDesign.getSize().equals( backDesign.getSize() ), "faceDesign", Messages.Card_setSurfaceDesignsInternal_faceDesign_sizeNotEqual ); //$NON-NLS-1$
-        assert Thread.holdsLock( lock_ );
-
-        backDesign_ = backDesign;
-        faceDesign_ = faceDesign;
-
-        pendingEventNotifications_.offer( new Runnable()
+        tableContext_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -618,7 +602,8 @@ final class Card
         final StringBuilder sb = new StringBuilder();
         sb.append( "Card[" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             sb.append( "backDesign_=" ); //$NON-NLS-1$
             sb.append( backDesign_ );
@@ -628,6 +613,10 @@ final class Card
             sb.append( location_ );
             sb.append( ", orientation_=" ); //$NON-NLS-1$
             sb.append( orientation_ );
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
         sb.append( "]" ); //$NON-NLS-1$

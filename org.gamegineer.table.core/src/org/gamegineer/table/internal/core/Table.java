@@ -29,9 +29,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -62,20 +61,11 @@ public final class Table
     private static final String CARD_PILES_MEMENTO_ATTRIBUTE_NAME = "cardPiles"; //$NON-NLS-1$
 
     /** The collection of card piles on this table. */
-    @GuardedBy( "lock_" )
+    @GuardedBy( "getLock()" )
     private final List<CardPile> cardPiles_;
 
     /** The collection of table listeners. */
     private final CopyOnWriteArrayList<ITableListener> listeners_;
-
-    /** The instance lock. */
-    private final Object lock_;
-
-    /**
-     * The collection of pending event notifications to be executed the next
-     * time the instance lock is released.
-     */
-    private final Queue<Runnable> pendingEventNotifications_;
 
     /** The table context. */
     private final TableContext tableContext_;
@@ -99,8 +89,6 @@ public final class Table
 
         cardPiles_ = new ArrayList<CardPile>();
         listeners_ = new CopyOnWriteArrayList<ITableListener>();
-        lock_ = new Object();
-        pendingEventNotifications_ = new ConcurrentLinkedQueue<Runnable>();
         tableContext_ = tableContext;
     }
 
@@ -126,40 +114,22 @@ public final class Table
     {
         assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
-            addCardPileInternal( cardPile );
+            final CardPile typedCardPile = (CardPile)cardPile;
+            assertArgumentLegal( typedCardPile.getTable() == null, "cardPile", Messages.Table_addCardPile_cardPile_owned ); //$NON-NLS-1$
+            assertArgumentLegal( typedCardPile.getTableContext() == tableContext_, "cardPile", Messages.Table_addCardPile_cardPile_createdByDifferentTable ); //$NON-NLS-1$
+
+            cardPiles_.add( typedCardPile );
+            typedCardPile.setTable( this );
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
-        firePendingEventNotifications();
-    }
-
-    /**
-     * Adds the specified card pile to this table.
-     * 
-     * @param cardPile
-     *        The card pile; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code cardPile} is already contained in the table or if
-     *         {@code cardPile} was created by a different table.
-     */
-    @GuardedBy( "lock_" )
-    private void addCardPileInternal(
-        /* @NonNull */
-        final ICardPile cardPile )
-    {
-        assert cardPile != null;
-        assert Thread.holdsLock( lock_ );
-
-        final CardPile typedCardPile = (CardPile)cardPile;
-        assertArgumentLegal( typedCardPile.getTable() == null, "cardPile", Messages.Table_addCardPileInternal_cardPile_owned ); //$NON-NLS-1$
-        assertArgumentLegal( typedCardPile.getTableContext() == tableContext_, "cardPile", Messages.Table_addCardPileInternal_cardPile_createdByDifferentTable ); //$NON-NLS-1$
-
-        cardPiles_.add( typedCardPile );
-        typedCardPile.setTable( this );
-
-        pendingEventNotifications_.offer( new Runnable()
+        tableContext_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -214,7 +184,8 @@ public final class Table
     {
         final Map<String, Object> memento = new HashMap<String, Object>();
 
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             final List<Object> cardPileMementos = new ArrayList<Object>( cardPiles_.size() );
             for( final ICardPile cardPile : cardPiles_ )
@@ -222,6 +193,10 @@ public final class Table
                 cardPileMementos.add( cardPile.createMemento() );
             }
             memento.put( CARD_PILES_MEMENTO_ATTRIBUTE_NAME, Collections.unmodifiableList( cardPileMementos ) );
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
         return Collections.unmodifiableMap( memento );
@@ -238,7 +213,7 @@ public final class Table
         final ICardPile cardPile )
     {
         assert cardPile != null;
-        assert !Thread.holdsLock( lock_ );
+        assert !getLock().isHeldByCurrentThread();
 
         final TableContentChangedEvent event = new TableContentChangedEvent( this, cardPile );
         for( final ITableListener listener : listeners_ )
@@ -265,7 +240,7 @@ public final class Table
         final ICardPile cardPile )
     {
         assert cardPile != null;
-        assert !Thread.holdsLock( lock_ );
+        assert !getLock().isHeldByCurrentThread();
 
         final TableContentChangedEvent event = new TableContentChangedEvent( this, cardPile );
         for( final ITableListener listener : listeners_ )
@@ -278,20 +253,6 @@ public final class Table
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Table_cardPileRemoved_unexpectedException, e );
             }
-        }
-    }
-
-    /**
-     * Fires all pending event notifications.
-     */
-    private void firePendingEventNotifications()
-    {
-        assert !Thread.holdsLock( lock_ );
-
-        Runnable notification = null;
-        while( (notification = pendingEventNotifications_.poll()) != null )
-        {
-            notification.run();
         }
     }
 
@@ -341,11 +302,16 @@ public final class Table
     public ICardPile getCardPile(
         final int index )
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             assertArgumentLegal( (index >= 0) && (index < cardPiles_.size()), "index", Messages.Table_getCardPileFromIndex_index_outOfRange ); //$NON-NLS-1$
 
             return cardPiles_.get( index );
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -357,7 +323,8 @@ public final class Table
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             for( int index = cardPiles_.size() - 1; index >= 0; --index )
             {
@@ -367,6 +334,10 @@ public final class Table
                     return cardPile;
                 }
             }
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
         return null;
@@ -378,9 +349,14 @@ public final class Table
     @Override
     public int getCardPileCount()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             return cardPiles_.size();
+        }
+        finally
+        {
+            getLock().unlock();
         }
     }
 
@@ -394,9 +370,14 @@ public final class Table
         assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
 
         final int index;
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             index = cardPiles_.indexOf( cardPile );
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
         assertArgumentLegal( index != -1, "cardPile", Messages.Table_getCardPileIndex_cardPile_notOwned ); //$NON-NLS-1$
@@ -409,10 +390,24 @@ public final class Table
     @Override
     public List<ICardPile> getCardPiles()
     {
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             return new ArrayList<ICardPile>( cardPiles_ );
         }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITable#getLock()
+     */
+    @Override
+    public ReentrantLock getLock()
+    {
+        return tableContext_.getLock();
     }
 
     /**
@@ -435,35 +430,19 @@ public final class Table
     {
         assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
-            removeCardPileInternal( cardPile );
+            assertArgumentLegal( cardPile.getTable() == this, "cardPile", Messages.Table_removeCardPile_cardPile_notOwned ); //$NON-NLS-1$
+
+            cardPiles_.remove( cardPile );
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
-        firePendingEventNotifications();
-    }
-
-    /**
-     * Removes the specified card pile from this table.
-     * 
-     * @param cardPile
-     *        The card pile; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code cardPile} is not contained in this table.
-     */
-    @GuardedBy( "lock_" )
-    private void removeCardPileInternal(
-        /* @NonNull */
-        final ICardPile cardPile )
-    {
-        assert cardPile != null;
-        assertArgumentLegal( cardPile.getTable() == this, "cardPile", Messages.Table_removeCardPileInternal_cardPile_notOwned ); //$NON-NLS-1$
-        assert Thread.holdsLock( lock_ );
-
-        cardPiles_.remove( cardPile );
-
-        pendingEventNotifications_.offer( new Runnable()
+        tableContext_.addEventNotification( new Runnable()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -480,40 +459,26 @@ public final class Table
     @Override
     public List<ICardPile> removeCardPiles()
     {
-        final List<ICardPile> removedCardPiles;
-        synchronized( lock_ )
+        final List<CardPile> removedCardPiles;
+
+        getLock().lock();
+        try
         {
-            removedCardPiles = removeCardPilesInternal();
+            removedCardPiles = new ArrayList<CardPile>( cardPiles_ );
+            cardPiles_.clear();
+            for( final CardPile cardPile : removedCardPiles )
+            {
+                cardPile.setTable( null );
+            }
         }
-
-        firePendingEventNotifications();
-
-        return removedCardPiles;
-    }
-
-    /**
-     * Removes all card piles from this table.
-     * 
-     * @return The collection of card piles removed from this table; never
-     *         {@code null}. The card piles are returned in the order they were
-     *         added to the table from oldest to newest.
-     */
-    @GuardedBy( "lock_" )
-    /* @NonNull */
-    private List<ICardPile> removeCardPilesInternal()
-    {
-        assert Thread.holdsLock( lock_ );
-
-        final List<CardPile> removedCardPiles = new ArrayList<CardPile>( cardPiles_ );
-        cardPiles_.clear();
-        for( final CardPile cardPile : removedCardPiles )
+        finally
         {
-            cardPile.setTable( null );
+            getLock().unlock();
         }
 
         if( !removedCardPiles.isEmpty() )
         {
-            pendingEventNotifications_.offer( new Runnable()
+            tableContext_.addEventNotification( new Runnable()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
@@ -551,18 +516,21 @@ public final class Table
     {
         assertArgumentNotNull( memento, "memento" ); //$NON-NLS-1$
 
-        final Table table = fromMemento( tableContext_, memento );
-
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
-            removeCardPilesInternal();
+            final Table table = fromMemento( tableContext_, memento );
+
+            removeCardPiles();
             for( final ICardPile cardPile : table.removeCardPiles() )
             {
-                addCardPileInternal( cardPile );
+                addCardPile( cardPile );
             }
         }
-
-        firePendingEventNotifications();
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /*
@@ -574,10 +542,15 @@ public final class Table
         final StringBuilder sb = new StringBuilder();
         sb.append( "Table[" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        getLock().lock();
+        try
         {
             sb.append( "cardPiles_.size()=" ); //$NON-NLS-1$
             sb.append( cardPiles_.size() );
+        }
+        finally
+        {
+            getLock().unlock();
         }
 
         sb.append( "]" ); //$NON-NLS-1$

@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
@@ -215,12 +216,14 @@ public final class ServerNode
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
+    @GuardedBy( "getLock()" )
     private void initializeMasterTable(
         /* @NonNull */
         final ITable table )
         throws TableNetworkException
     {
         assert table != null;
+        assert Thread.holdsLock( getLock() );
 
         final ITable masterTable;
         try
@@ -365,6 +368,18 @@ public final class ServerNode
         // Methods
         // ==================================================================
 
+        /**
+         * Gets the master table lock.
+         * 
+         * @return The master table lock; never {@code null}.
+         */
+        /* @NonNull */
+        @SuppressWarnings( "synthetic-access" )
+        private Lock getMasterTableLock()
+        {
+            return masterTable_.getLock();
+        }
+
         /*
          * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#setCardOrientation(org.gamegineer.table.internal.net.node.INetworkTable, int, int, org.gamegineer.table.core.CardOrientation)
          */
@@ -381,9 +396,17 @@ public final class ServerNode
             assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
             assertArgumentNotNull( cardOrientation, "cardOrientation" ); //$NON-NLS-1$
 
-            final ICardPile cardPile = masterTable_.getCardPile( cardPileIndex );
-            final ICard card = cardPile.getCard( cardIndex );
-            card.setOrientation( cardOrientation );
+            getMasterTableLock().lock();
+            try
+            {
+                final ICardPile cardPile = masterTable_.getCardPile( cardPileIndex );
+                final ICard card = cardPile.getCard( cardIndex );
+                card.setOrientation( cardOrientation );
+            }
+            finally
+            {
+                getMasterTableLock().unlock();
+            }
 
             super.setCardOrientation( sourceTable, cardPileIndex, cardIndex, cardOrientation );
         }
