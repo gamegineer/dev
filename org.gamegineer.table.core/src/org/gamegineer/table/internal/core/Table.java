@@ -152,6 +152,15 @@ public final class Table
     }
 
     /*
+     * @see org.gamegineer.table.core.ITable#createCard()
+     */
+    @Override
+    public ICard createCard()
+    {
+        return new Card( tableContext_ );
+    }
+
+    /*
      * @see org.gamegineer.table.core.ITable#createCard(org.gamegineer.table.core.ICardSurfaceDesign, org.gamegineer.table.core.ICardSurfaceDesign)
      */
     @Override
@@ -159,9 +168,18 @@ public final class Table
         final ICardSurfaceDesign backDesign,
         final ICardSurfaceDesign faceDesign )
     {
-        final Card card = new Card( tableContext_ );
+        final ICard card = createCard();
         card.setSurfaceDesigns( backDesign, faceDesign );
         return card;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.ITable#createCardPile()
+     */
+    @Override
+    public ICardPile createCardPile()
+    {
+        return new CardPile( tableContext_ );
     }
 
     /*
@@ -171,7 +189,7 @@ public final class Table
     public ICardPile createCardPile(
         final ICardPileBaseDesign baseDesign )
     {
-        final CardPile cardPile = new CardPile( tableContext_ );
+        final ICardPile cardPile = createCardPile();
         cardPile.setBaseDesign( baseDesign );
         return cardPile;
     }

@@ -72,6 +72,15 @@ public interface ITable
         ITableListener listener );
 
     /**
+     * Creates a new card.
+     * 
+     * @return A new card; never {@code null}. The new card is not contained in
+     *         any card pile.
+     */
+    /* @NonNull */
+    public ICard createCard();
+
+    /**
      * Creates a new card with the specified back and face designs.
      * 
      * @param backDesign
@@ -97,6 +106,15 @@ public interface ITable
 
     /**
      * Creates a new card pile.
+     * 
+     * @return A new card pile; never {@code null}. The new card pile is not
+     *         contained in the table.
+     */
+    /* @NonNull */
+    public ICardPile createCardPile();
+
+    /**
+     * Creates a new card pile with the specified base design.
      * 
      * @param baseDesign
      *        The design of the card pile base; must not be {@code null}.

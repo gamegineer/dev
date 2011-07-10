@@ -279,31 +279,41 @@ public abstract class AbstractTableTestCase
     }
 
     /**
-     * Ensures the {@code createCard} method throws an exception when passed a
-     * {@code null} back design.
+     * Ensures the {@code createCard()} method does not return {@code null}.
+     */
+    @Test
+    public void testCreateCard_ReturnValue_NonNull()
+    {
+        assertNotNull( table_.createCard() );
+    }
+
+    /**
+     * Ensures the {@code createCard(ICardSurfaceDesign, ICardSurfaceDesign)}
+     * method throws an exception when passed a {@code null} back design.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateCard_BackDesign_Null()
+    public void testCreateCardFromSurfaceDesigns_BackDesign_Null()
     {
         table_.createCard( null, CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
     }
 
     /**
-     * Ensures the {@code createCard} method throws an exception when passed a
-     * {@code null} face design.
+     * Ensures the {@code createCard(ICardSurfaceDesign, ICardSurfaceDesign)}
+     * method throws an exception when passed a {@code null} face design.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateCard_FaceDesign_Null()
+    public void testCreateCardFromSurfaceDesigns_FaceDesign_Null()
     {
         table_.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), null );
     }
 
     /**
-     * Ensures the {@code createCard} method throws an exception when passed a
-     * face design that has a size different from the back design.
+     * Ensures the {@code createCard(ICardSurfaceDesign, ICardSurfaceDesign)}
+     * method throws an exception when passed a face design that has a size
+     * different from the back design.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testCreateCard_FaceDesign_SizeNotEqual()
+    public void testCreateCardFromSurfaceDesigns_FaceDesign_SizeNotEqual()
     {
         final int width = 10;
         final int height = 20;
@@ -314,29 +324,40 @@ public abstract class AbstractTableTestCase
     }
 
     /**
-     * Ensures the {@code createCard} method does not return {@code null}.
+     * Ensures the {@code createCard(ICardSurfaceDesign, ICardSurfaceDesign)}
+     * method does not return {@code null}.
      */
     @Test
-    public void testCreateCard_ReturnValue_NonNull()
+    public void testCreateCardFromSurfaceDesigns_ReturnValue_NonNull()
     {
         assertNotNull( table_.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() ) );
     }
 
     /**
-     * Ensures the {@code createCardPile} method throws an exception when passed
-     * a {@code null} card pile base design.
+     * Ensures the {@code createCardPile()} method does not return {@code null}.
+     */
+    @Test
+    public void testCreateCardPile_ReturnValue_NonNull()
+    {
+        assertNotNull( table_.createCardPile() );
+    }
+
+    /**
+     * Ensures the {@code createCardPile(ICardPileBaseDesign)} method throws an
+     * exception when passed a {@code null} card pile base design.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateCardPile_BaseDesign_Null()
+    public void testCreateCardPileFromBaseDesign_BaseDesign_Null()
     {
         table_.createCardPile( null );
     }
 
     /**
-     * Ensures the {@code createCardPile} method does not return {@code null}.
+     * Ensures the {@code createCardPile(ICardPileBaseDesign)} method does not
+     * return {@code null}.
      */
     @Test
-    public void testCreateCardPile_ReturnValue_NonNull()
+    public void testCreateCardPileFromBaseDesign_ReturnValue_NonNull()
     {
         assertNotNull( table_.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() ) );
     }
