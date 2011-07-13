@@ -26,7 +26,7 @@ import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.transport.AbstractMessage;
 
 /**
- * A message sent by a server to a client to refresh the table state.
+ * A message sent by a node to set the state of the table.
  */
 @NotThreadSafe
 public final class TableMessage

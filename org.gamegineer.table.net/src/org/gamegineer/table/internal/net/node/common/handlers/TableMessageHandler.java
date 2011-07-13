@@ -76,7 +76,7 @@ public final class TableMessageHandler
         assert remoteNodeController != null;
         assert message != null;
 
-        remoteNodeController.getLocalNode().getTableManager().setTableMemento( //
+        remoteNodeController.getLocalNode().getTableManager().setTableState( //
             remoteNodeController.getTable(), //
             message.getMemento() );
     }

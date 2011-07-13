@@ -1,5 +1,5 @@
 /*
- * CardOrientationMessageHandler.java
+ * CardIncrementMessageHandler.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -23,13 +23,13 @@ package org.gamegineer.table.internal.net.node.common.handlers;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.node.IRemoteNodeController;
-import org.gamegineer.table.internal.net.node.common.messages.CardOrientationMessage;
+import org.gamegineer.table.internal.net.node.common.messages.CardIncrementMessage;
 
 /**
- * A message handler for the {@link CardOrientationMessage} message.
+ * A message handler for the {@link CardIncrementMessage} message.
  */
 @Immutable
-public final class CardOrientationMessageHandler
+public final class CardIncrementMessageHandler
     extends AbstractCommonMessageHandler
 {
     // ======================================================================
@@ -37,7 +37,7 @@ public final class CardOrientationMessageHandler
     // ======================================================================
 
     /** The singleton instance of this class. */
-    public static final CardOrientationMessageHandler INSTANCE = new CardOrientationMessageHandler();
+    public static final CardIncrementMessageHandler INSTANCE = new CardIncrementMessageHandler();
 
 
     // ======================================================================
@@ -45,10 +45,10 @@ public final class CardOrientationMessageHandler
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardOrientationMessageHandler}
+     * Initializes a new instance of the {@code CardIncrementMessageHandler}
      * class.
      */
-    private CardOrientationMessageHandler()
+    private CardIncrementMessageHandler()
     {
         super();
     }
@@ -59,7 +59,7 @@ public final class CardOrientationMessageHandler
     // ======================================================================
 
     /**
-     * Handles a {@code CardOrientationMessage} message.
+     * Handles a {@code CardIncrementMessage} message.
      * 
      * @param remoteNodeController
      *        The control interface for the remote node that received the
@@ -72,15 +72,15 @@ public final class CardOrientationMessageHandler
         /* @NonNull */
         final IRemoteNodeController<?> remoteNodeController,
         /* @NonNull */
-        final CardOrientationMessage message )
+        final CardIncrementMessage message )
     {
         assert remoteNodeController != null;
         assert message != null;
 
-        remoteNodeController.getLocalNode().getTableManager().setCardOrientation( //
+        remoteNodeController.getLocalNode().getTableManager().incrementCardState( //
             remoteNodeController.getTable(), //
             message.getCardPileIndex(), //
             message.getCardIndex(), //
-            message.getCardOrientation() );
+            message.getIncrement() );
     }
 }

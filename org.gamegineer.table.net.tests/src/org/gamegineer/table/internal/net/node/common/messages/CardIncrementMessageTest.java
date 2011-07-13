@@ -1,5 +1,5 @@
 /*
- * CardOrientationMessageTest.java
+ * CardIncrementMessageTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -26,17 +26,17 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.common.messages.CardOrientationMessage}
+ * {@link org.gamegineer.table.internal.net.node.common.messages.CardIncrementMessage}
  * class.
  */
-public final class CardOrientationMessageTest
+public final class CardIncrementMessageTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The card orientation message under test in the fixture. */
-    private CardOrientationMessage message_;
+    private CardIncrementMessage message_;
 
 
     // ======================================================================
@@ -44,10 +44,9 @@ public final class CardOrientationMessageTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardOrientationMessageTest}
-     * class.
+     * Initializes a new instance of the {@code CardIncrementMessageTest} class.
      */
-    public CardOrientationMessageTest()
+    public CardIncrementMessageTest()
     {
         super();
     }
@@ -67,7 +66,7 @@ public final class CardOrientationMessageTest
     public void setUp()
         throws Exception
     {
-        message_ = new CardOrientationMessage();
+        message_ = new CardIncrementMessage();
     }
 
     /**
@@ -81,16 +80,6 @@ public final class CardOrientationMessageTest
     }
 
     /**
-     * Ensures the {@code setCardOrientation} method throws an exception when
-     * passed a {@code null} card orientation.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetCardOrientation_CardOrientation_Null()
-    {
-        message_.setCardOrientation( null );
-    }
-
-    /**
      * Ensures the {@code setCardPileIndex} method throws an exception when
      * passed an illegal card pile index that is negative.
      */
@@ -98,5 +87,15 @@ public final class CardOrientationMessageTest
     public void testSetCardPileIndex_CardPileIndex_Null()
     {
         message_.setCardPileIndex( -1 );
+    }
+
+    /**
+     * Ensures the {@code setIncrement} method throws an exception when passed a
+     * {@code null} increment.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetIncrement_Increment_Null()
+    {
+        message_.setIncrement( null );
     }
 }

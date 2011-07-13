@@ -84,8 +84,8 @@ final class Messages
 
     // --- LocalNetworkTable ------------------------------------------------
 
-    /** Failed to set the table memento. */
-    public static String LocalNetworkTable_setTableMemento_failed;
+    /** Failed to set the table state. */
+    public static String LocalNetworkTable_setTableState_failed;
 
 
     // ======================================================================

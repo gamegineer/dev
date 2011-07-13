@@ -21,8 +21,6 @@
 
 package org.gamegineer.table.internal.net.node;
 
-import org.gamegineer.table.core.CardOrientation;
-
 /**
  * A table connected to the table network.
  * 
@@ -35,36 +33,37 @@ public interface INetworkTable
     // ======================================================================
 
     /**
-     * Sets the orientation for the specified card.
+     * Increments the state of the specified card.
      * 
      * @param cardPileIndex
      *        The card pile index.
      * @param cardIndex
      *        The card index.
-     * @param cardOrientation
-     *        The card orientation; must not be {@code null}.
+     * @param cardIncrement
+     *        The incremental change to the state of the card; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code cardPileIndex} or {@code cardIndex} is negative.
      * @throws java.lang.NullPointerException
-     *         If {@code cardOrientation} is {@code null}.
+     *         If {@code cardIncrement} is {@code null}.
      */
-    public void setCardOrientation(
+    public void incrementCardState(
         int cardPileIndex,
         int cardIndex,
         /* @NonNull */
-        CardOrientation cardOrientation );
+        CardIncrement cardIncrement );
 
     /**
-     * Sets the memento for the table.
+     * Sets the state of the table.
      * 
      * @param tableMemento
-     *        The table memento; must not be {@code null}.
+     *        The memento containing the table state; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code tableMemento} is {@code null}.
      */
-    public void setTableMemento(
+    public void setTableState(
         /* @NonNull */
         Object tableMemento );
 }

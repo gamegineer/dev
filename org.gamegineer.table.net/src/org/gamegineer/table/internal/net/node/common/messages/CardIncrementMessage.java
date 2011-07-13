@@ -1,5 +1,5 @@
 /*
- * CardOrientationMessage.java
+ * CardIncrementMessage.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -24,14 +24,14 @@ package org.gamegineer.table.internal.net.node.common.messages;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.CardOrientation;
+import org.gamegineer.table.internal.net.node.CardIncrement;
 import org.gamegineer.table.internal.net.transport.AbstractMessage;
 
 /**
- * A message sent by a node to indicate the orientation of a card has changed.
+ * A message sent by a node to increment the state of a card.
  */
 @NotThreadSafe
-public final class CardOrientationMessage
+public final class CardIncrementMessage
     extends AbstractMessage
 {
     // ======================================================================
@@ -49,18 +49,18 @@ public final class CardOrientationMessage
     private int cardIndex_;
 
     /**
-     * The card orientation.
+     * The table-relative index of the card pile that contains the card.
      * 
-     * @serial The card orientation.
-     */
-    private CardOrientation cardOrientation_;
-
-    /**
-     * The card pile index.
-     * 
-     * @serial The card pile index.
+     * @serial The table-relative index of the card pile that contains the card.
      */
     private int cardPileIndex_;
+
+    /**
+     * The incremental change to the state of the card.
+     * 
+     * @serial The incremental change to the state of the card.
+     */
+    private CardIncrement increment_;
 
 
     // ======================================================================
@@ -68,13 +68,13 @@ public final class CardOrientationMessage
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardOrientationMessage} class.
+     * Initializes a new instance of the {@code CardIncrementMessage} class.
      */
-    public CardOrientationMessage()
+    public CardIncrementMessage()
     {
         cardIndex_ = 0;
-        cardOrientation_ = CardOrientation.BACK_UP;
         cardPileIndex_ = 0;
+        increment_ = new CardIncrement();
     }
 
 
@@ -93,24 +93,25 @@ public final class CardOrientationMessage
     }
 
     /**
-     * Gets the card orientation.
+     * Gets the table-relative index of the card pile that contains the card.
      * 
-     * @return The card orientation; never {@code null}.
-     */
-    /* @NonNull */
-    public CardOrientation getCardOrientation()
-    {
-        return cardOrientation_;
-    }
-
-    /**
-     * Gets the card pile index.
-     * 
-     * @return The card pile index.
+     * @return The table-relative index of the card pile that contains the card.
      */
     public int getCardPileIndex()
     {
         return cardPileIndex_;
+    }
+
+    /**
+     * Gets the incremental change to the state of the card.
+     * 
+     * @return The incremental change to the state of the card; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    public CardIncrement getIncrement()
+    {
+        return increment_;
     }
 
     /**
@@ -131,28 +132,10 @@ public final class CardOrientationMessage
     }
 
     /**
-     * Sets the card orientation.
-     * 
-     * @param cardOrientation
-     *        The card orientation; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code cardOrientation} is {@code null}.
-     */
-    public void setCardOrientation(
-        /* @NonNull */
-        final CardOrientation cardOrientation )
-    {
-        assertArgumentNotNull( cardOrientation, "cardOrientation" ); //$NON-NLS-1$
-
-        cardOrientation_ = cardOrientation;
-    }
-
-    /**
-     * Sets the card pile index.
+     * Sets the table-relative index of the card pile that contains the card.
      * 
      * @param cardPileIndex
-     *        The card pile index.
+     *        The table-relative index of the card pile that contains the card.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code cardPileIndex} is negative.
@@ -163,5 +146,24 @@ public final class CardOrientationMessage
         assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
 
         cardPileIndex_ = cardPileIndex;
+    }
+
+    /**
+     * Sets the incremental change to the state of the card.
+     * 
+     * @param increment
+     *        The incremental change to the state of the card; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code increment} is {@code null}.
+     */
+    public void setIncrement(
+        /* @NonNull */
+        final CardIncrement increment )
+    {
+        assertArgumentNotNull( increment, "increment" ); //$NON-NLS-1$
+
+        increment_ = increment;
     }
 }

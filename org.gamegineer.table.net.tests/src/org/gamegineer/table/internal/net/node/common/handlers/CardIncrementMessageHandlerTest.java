@@ -1,5 +1,5 @@
 /*
- * CardOrientationMessageHandlerTest.java
+ * CardIncrementMessageHandlerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -23,22 +23,22 @@ package org.gamegineer.table.internal.net.node.common.handlers;
 
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.table.core.CardOrientation;
+import org.gamegineer.table.internal.net.node.CardIncrement;
 import org.gamegineer.table.internal.net.node.IMessageHandler;
 import org.gamegineer.table.internal.net.node.INetworkTable;
 import org.gamegineer.table.internal.net.node.INode;
 import org.gamegineer.table.internal.net.node.IRemoteNodeController;
 import org.gamegineer.table.internal.net.node.ITableManager;
-import org.gamegineer.table.internal.net.node.common.messages.CardOrientationMessage;
+import org.gamegineer.table.internal.net.node.common.messages.CardIncrementMessage;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.common.handlers.CardOrientationMessageHandler}
+ * {@link org.gamegineer.table.internal.net.node.common.handlers.CardIncrementMessageHandler}
  * class.
  */
-public final class CardOrientationMessageHandlerTest
+public final class CardIncrementMessageHandlerTest
 {
     // ======================================================================
     // Fields
@@ -56,10 +56,10 @@ public final class CardOrientationMessageHandlerTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * CardOrientationMessageHandlerTest} class.
+     * Initializes a new instance of the {@code CardIncrementMessageHandlerTest}
+     * class.
      */
-    public CardOrientationMessageHandlerTest()
+    public CardIncrementMessageHandlerTest()
     {
         super();
     }
@@ -80,27 +80,27 @@ public final class CardOrientationMessageHandlerTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        messageHandler_ = CardOrientationMessageHandler.INSTANCE;
+        messageHandler_ = CardIncrementMessageHandler.INSTANCE;
     }
 
     /**
-     * Ensures the {@code handleMessage} method correctly handles a card
-     * orientation message.
+     * Ensures the {@code handleMessage} method correctly handles a card delta
+     * message.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @SuppressWarnings( "unchecked" )
     @Test
-    public void testHandleMessage_CardOrienationMessage()
+    public void testHandleMessage_CardDeltaMessage()
         throws Exception
     {
         final int cardPileIndex = 3;
         final int cardIndex = 1;
-        final CardOrientation cardOrientation = CardOrientation.FACE_UP;
+        final CardIncrement cardIncrement = new CardIncrement();
         final INetworkTable table = mocksControl_.createMock( INetworkTable.class );
         final ITableManager tableManager = mocksControl_.createMock( ITableManager.class );
-        tableManager.setCardOrientation( table, cardPileIndex, cardIndex, cardOrientation );
+        tableManager.incrementCardState( table, cardPileIndex, cardIndex, cardIncrement );
         final INode localNode = mocksControl_.createMock( INode.class );
         EasyMock.expect( localNode.getTableManager() ).andReturn( tableManager ).anyTimes();
         final IRemoteNodeController remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
@@ -108,10 +108,10 @@ public final class CardOrientationMessageHandlerTest
         EasyMock.expect( remoteNodeController.getTable() ).andReturn( table ).anyTimes();
         mocksControl_.replay();
 
-        final CardOrientationMessage message = new CardOrientationMessage();
+        final CardIncrementMessage message = new CardIncrementMessage();
         message.setCardIndex( cardIndex );
-        message.setCardOrientation( cardOrientation );
         message.setCardPileIndex( cardPileIndex );
+        message.setIncrement( cardIncrement );
         messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();

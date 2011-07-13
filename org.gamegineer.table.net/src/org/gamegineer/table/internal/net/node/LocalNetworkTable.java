@@ -32,7 +32,6 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardEvent;
-import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.ICard;
@@ -125,6 +124,52 @@ final class LocalNetworkTable
     // Methods
     // ======================================================================
 
+    /*
+     * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementCardState(int, int, org.gamegineer.table.internal.net.node.CardIncrement)
+     */
+    @Override
+    public void incrementCardState(
+        final int cardPileIndex,
+        final int cardIndex,
+        final CardIncrement cardIncremenet )
+    {
+        assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
+        assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
+        assertArgumentNotNull( cardIncremenet, "cardIncrement" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            final boolean oldIgnoreEvents = ignoreEvents_;
+            ignoreEvents_ = true;
+            getTableLock().lock();
+            try
+            {
+                final ICardPile cardPile = table_.getCardPile( cardPileIndex );
+                final ICard card = cardPile.getCard( cardIndex );
+
+                if( (cardIncremenet.getBackDesign() != null) && (cardIncremenet.getFaceDesign() != null) )
+                {
+                    card.setSurfaceDesigns( cardIncremenet.getBackDesign(), cardIncremenet.getFaceDesign() );
+                }
+
+                if( cardIncremenet.getLocation() != null )
+                {
+                    card.setLocation( cardIncremenet.getLocation() );
+                }
+
+                if( cardIncremenet.getOrientation() != null )
+                {
+                    card.setOrientation( cardIncremenet.getOrientation() );
+                }
+            }
+            finally
+            {
+                getTableLock().unlock();
+                ignoreEvents_ = oldIgnoreEvents;
+            }
+        }
+    }
+
     /**
      * Initializes the listeners for the local table.
      */
@@ -168,62 +213,29 @@ final class LocalNetworkTable
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.node.INetworkTable#setCardOrientation(int, int, org.gamegineer.table.core.CardOrientation)
+     * @see org.gamegineer.table.internal.net.node.INetworkTable#setTableState(java.lang.Object)
      */
     @Override
-    public void setCardOrientation(
-        final int cardPileIndex,
-        final int cardIndex,
-        final CardOrientation cardOrientation )
-    {
-        assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
-        assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
-        assertArgumentNotNull( cardOrientation, "cardOrientation" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            ignoreEvents_ = true;
-
-            getTableLock().lock();
-            try
-            {
-                final ICardPile cardPile = table_.getCardPile( cardPileIndex );
-                final ICard card = cardPile.getCard( cardIndex );
-                card.setOrientation( cardOrientation );
-            }
-            finally
-            {
-                getTableLock().unlock();
-            }
-
-            ignoreEvents_ = false;
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.node.INetworkTable#setTableMemento(java.lang.Object)
-     */
-    @Override
-    public void setTableMemento(
+    public void setTableState(
         final Object tableMemento )
     {
         assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
 
         synchronized( lock_ )
         {
+            final boolean oldIgnoreEvents = ignoreEvents_;
             ignoreEvents_ = true;
-
             try
             {
                 table_.setMemento( tableMemento );
             }
             catch( final MementoException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.LocalNetworkTable_setTableMemento_failed, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.LocalNetworkTable_setTableState_failed, e );
             }
             finally
             {
-                ignoreEvents_ = false;
+                ignoreEvents_ = oldIgnoreEvents;
             }
         }
     }
@@ -286,21 +298,22 @@ final class LocalNetworkTable
             }
 
             final int cardPileIndex, cardIndex;
-            final CardOrientation cardOrientation;
+            final CardIncrement cardIncrement = new CardIncrement();
             getTableLock().lock();
             try
             {
                 final ICard card = event.getCard();
-                cardOrientation = card.getOrientation();
                 cardIndex = card.getCardPile().getCardIndex( card );
                 cardPileIndex = card.getCardPile().getTable().getCardPileIndex( card.getCardPile() );
+                cardIncrement.setOrientation( card.getOrientation() );
             }
             finally
             {
                 getTableLock().unlock();
             }
 
-            tableManager_.setCardOrientation( LocalNetworkTable.this, cardPileIndex, cardIndex, cardOrientation );
+
+            tableManager_.incrementCardState( LocalNetworkTable.this, cardPileIndex, cardIndex, cardIncrement );
         }
 
         /*

@@ -21,8 +21,6 @@
 
 package org.gamegineer.table.internal.net.node;
 
-import org.gamegineer.table.core.CardOrientation;
-
 /**
  * Manages the local and remote tables connected to a node on the table network
  * to ensure they remain synchronized.
@@ -36,7 +34,7 @@ public interface ITableManager
     // ======================================================================
 
     /**
-     * Sets the orientation for the specified card throughout the table network.
+     * Increments the state of the specified card throughout the table network
      * 
      * @param sourceTable
      *        The table that originated the request; must not be {@code null}.
@@ -44,35 +42,35 @@ public interface ITableManager
      *        The card pile index.
      * @param cardIndex
      *        The card index.
-     * @param cardOrientation
-     *        The card orientation; must not be {@code null}.
+     * @param cardIncrement
+     *        The incremental change to the state of the card; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code cardPileIndex} or {@code cardIndex} is negative.
      * @throws java.lang.NullPointerException
-     *         If {@code sourceTable} or @{code cardOrientation} is {@code null}
-     *         .
+     *         If {@code sourceTable} or {@code cardIncrement} is {@code null}.
      */
-    public void setCardOrientation(
+    public void incrementCardState(
         /* @NonNull */
         INetworkTable sourceTable,
         int cardPileIndex,
         int cardIndex,
         /* @NonNull */
-        CardOrientation cardOrientation );
+        CardIncrement cardIncrement );
 
     /**
-     * Sets the memento for the table throughout the table network.
+     * Sets the state of the table throughout the table network.
      * 
      * @param sourceTable
      *        The table that originated the request; must not be {@code null}.
      * @param tableMemento
-     *        The table memento; must not be {@code null}.
+     *        The memento containing the table state; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code sourceTable} or {@code tableMemento} is {@code null}.
      */
-    public void setTableMemento(
+    public void setTableState(
         /* @NonNull */
         INetworkTable sourceTable,
         /* @NonNull */

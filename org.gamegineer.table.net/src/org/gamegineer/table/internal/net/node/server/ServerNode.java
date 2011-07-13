@@ -31,7 +31,6 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
-import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
@@ -40,6 +39,7 @@ import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.node.AbstractNode;
+import org.gamegineer.table.internal.net.node.CardIncrement;
 import org.gamegineer.table.internal.net.node.INetworkTable;
 import org.gamegineer.table.internal.net.node.ITableManager;
 import org.gamegineer.table.internal.net.transport.IService;
@@ -314,7 +314,7 @@ public final class ServerNode
         assert remoteNode != null;
         assert Thread.holdsLock( getLock() );
 
-        remoteNode.getTable().setTableMemento( masterTable_.createMemento() );
+        remoteNode.getTable().setTableState( masterTable_.createMemento() );
     }
 
     /**
@@ -381,42 +381,56 @@ public final class ServerNode
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#setCardOrientation(org.gamegineer.table.internal.net.node.INetworkTable, int, int, org.gamegineer.table.core.CardOrientation)
+         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementCardState(org.gamegineer.table.internal.net.node.INetworkTable, int, int, org.gamegineer.table.internal.net.node.CardIncrement)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
-        public void setCardOrientation(
+        public void incrementCardState(
             final INetworkTable sourceTable,
             final int cardPileIndex,
             final int cardIndex,
-            final CardOrientation cardOrientation )
+            final CardIncrement cardIncrement )
         {
             assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
             assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
             assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
-            assertArgumentNotNull( cardOrientation, "cardOrientation" ); //$NON-NLS-1$
+            assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
 
             getMasterTableLock().lock();
             try
             {
                 final ICardPile cardPile = masterTable_.getCardPile( cardPileIndex );
                 final ICard card = cardPile.getCard( cardIndex );
-                card.setOrientation( cardOrientation );
+
+                if( (cardIncrement.getBackDesign() != null) && (cardIncrement.getFaceDesign() != null) )
+                {
+                    card.setSurfaceDesigns( cardIncrement.getBackDesign(), cardIncrement.getFaceDesign() );
+                }
+
+                if( cardIncrement.getLocation() != null )
+                {
+                    card.setLocation( cardIncrement.getLocation() );
+                }
+
+                if( cardIncrement.getOrientation() != null )
+                {
+                    card.setOrientation( cardIncrement.getOrientation() );
+                }
             }
             finally
             {
                 getMasterTableLock().unlock();
             }
 
-            super.setCardOrientation( sourceTable, cardPileIndex, cardIndex, cardOrientation );
+            super.incrementCardState( sourceTable, cardPileIndex, cardIndex, cardIncrement );
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#setTableMemento(org.gamegineer.table.internal.net.node.INetworkTable, java.lang.Object)
+         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#setTableState(org.gamegineer.table.internal.net.node.INetworkTable, java.lang.Object)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
-        public void setTableMemento(
+        public void setTableState(
             final INetworkTable sourceTable,
             final Object tableMemento )
         {
@@ -429,10 +443,10 @@ public final class ServerNode
             }
             catch( final MementoException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerTableManager_setTableMemento_failed, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerTableManager_setTableState_failed, e );
             }
 
-            super.setTableMemento( sourceTable, tableMemento );
+            super.setTableState( sourceTable, tableMemento );
         }
     }
 }

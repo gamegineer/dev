@@ -37,8 +37,8 @@ final class Messages
 
     // --- ServerNode.ServerTableManager ------------------------------------
 
-    /** Failed to set the table memento. */
-    public static String ServerTableManager_setTableMemento_failed;
+    /** Failed to set the table state. */
+    public static String ServerTableManager_setTableState_failed;
 
 
     // ======================================================================

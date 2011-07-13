@@ -93,10 +93,10 @@ public final class TableMessageHandlerTest
     public void testHandleMessage_TableMessage()
         throws Exception
     {
-        final Object memento = new Object();
+        final Object tableMemento = new Object();
         final INetworkTable table = mocksControl_.createMock( INetworkTable.class );
         final ITableManager tableManager = mocksControl_.createMock( ITableManager.class );
-        tableManager.setTableMemento( table, memento );
+        tableManager.setTableState( table, tableMemento );
         final INode localNode = mocksControl_.createMock( INode.class );
         EasyMock.expect( localNode.getTableManager() ).andReturn( tableManager ).anyTimes();
         final IRemoteNodeController remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
@@ -105,7 +105,7 @@ public final class TableMessageHandlerTest
         mocksControl_.replay();
 
         final TableMessage message = new TableMessage();
-        message.setMemento( memento );
+        message.setMemento( tableMemento );
         messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();

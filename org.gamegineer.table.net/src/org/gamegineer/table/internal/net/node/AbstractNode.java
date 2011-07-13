@@ -32,7 +32,6 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
-import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -662,27 +661,27 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          * Subclasses may override but must call the superclass implementation.
          * </p>
          * 
-         * @see org.gamegineer.table.internal.net.node.ITableManager#setCardOrientation(org.gamegineer.table.internal.net.node.INetworkTable,
-         *      int, int, org.gamegineer.table.core.CardOrientation)
+         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementCardState(org.gamegineer.table.internal.net.node.INetworkTable,
+         *      int, int, org.gamegineer.table.internal.net.node.CardIncrement)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
-        public void setCardOrientation(
+        public void incrementCardState(
             final INetworkTable sourceTable,
             final int cardPileIndex,
             final int cardIndex,
-            final CardOrientation cardOrientation )
+            final CardIncrement cardIncrement )
         {
             assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
             assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
             assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
-            assertArgumentNotNull( cardOrientation, "cardOrientation" ); //$NON-NLS-1$
+            assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
 
             for( final INetworkTable table : getTables() )
             {
                 if( table != sourceTable )
                 {
-                    table.setCardOrientation( cardPileIndex, cardIndex, cardOrientation );
+                    table.incrementCardState( cardPileIndex, cardIndex, cardIncrement );
                 }
             }
         }
@@ -695,12 +694,12 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          * Subclasses may override but must call the superclass implementation.
          * </p>
          * 
-         * @see org.gamegineer.table.internal.net.node.ITableManager#setTableMemento(org.gamegineer.table.internal.net.node.INetworkTable,
+         * @see org.gamegineer.table.internal.net.node.ITableManager#setTableState(org.gamegineer.table.internal.net.node.INetworkTable,
          *      java.lang.Object)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
-        public void setTableMemento(
+        public void setTableState(
             final INetworkTable sourceTable,
             final Object tableMemento )
         {
@@ -711,7 +710,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             {
                 if( table != sourceTable )
                 {
-                    table.setTableMemento( tableMemento );
+                    table.setTableState( tableMemento );
                 }
             }
         }

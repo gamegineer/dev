@@ -24,8 +24,7 @@ package org.gamegineer.table.internal.net.node;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.core.CardOrientation;
-import org.gamegineer.table.internal.net.node.common.messages.CardOrientationMessage;
+import org.gamegineer.table.internal.net.node.common.messages.CardIncrementMessage;
 import org.gamegineer.table.internal.net.node.common.messages.TableMessage;
 
 /**
@@ -69,22 +68,22 @@ final class RemoteNetworkTable
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.node.INetworkTable#setCardOrientation(int, int, org.gamegineer.table.core.CardOrientation)
+     * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementCardState(int, int, org.gamegineer.table.internal.net.node.CardIncrement)
      */
     @Override
-    public void setCardOrientation(
+    public void incrementCardState(
         final int cardPileIndex,
         final int cardIndex,
-        final CardOrientation cardOrientation )
+        final CardIncrement cardIncrement )
     {
         assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
         assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
-        assertArgumentNotNull( cardOrientation, "cardOrientation" ); //$NON-NLS-1$
+        assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
 
-        final CardOrientationMessage message = new CardOrientationMessage();
+        final CardIncrementMessage message = new CardIncrementMessage();
         message.setCardPileIndex( cardPileIndex );
         message.setCardIndex( cardIndex );
-        message.setCardOrientation( cardOrientation );
+        message.setIncrement( cardIncrement );
         synchronized( remoteNodeController_.getLock() )
         {
             remoteNodeController_.sendMessage( message, null );
@@ -92,10 +91,10 @@ final class RemoteNetworkTable
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.node.INetworkTable#setTableMemento(java.lang.Object)
+     * @see org.gamegineer.table.internal.net.node.INetworkTable#setTableState(java.lang.Object)
      */
     @Override
-    public void setTableMemento(
+    public void setTableState(
         final Object tableMemento )
     {
         assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
