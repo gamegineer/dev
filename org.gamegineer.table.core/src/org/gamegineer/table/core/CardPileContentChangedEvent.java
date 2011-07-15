@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
 
@@ -44,6 +45,9 @@ public class CardPileContentChangedEvent
     /** The card associated with the event. */
     private final ICard card_;
 
+    /** The index of the card associated with the event. */
+    private final int cardIndex_;
+
 
     // ======================================================================
     // Constructors
@@ -57,9 +61,12 @@ public class CardPileContentChangedEvent
      *        The card pile that fired the event; must not be {@code null}.
      * @param card
      *        The card associated with the event; must not be {@code null}.
+     * @param cardIndex
+     *        The index of the card associated with the event.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code source} is {@code null}.
+     *         If {@code source} is {@code null} or if {@code cardIndex} is
+     *         negative.
      * @throws java.lang.NullPointerException
      *         If {@code card} is {@code null}.
      */
@@ -68,13 +75,16 @@ public class CardPileContentChangedEvent
         @SuppressWarnings( "hiding" )
         final ICardPile source,
         /* @NonNull */
-        final ICard card )
+        final ICard card,
+        final int cardIndex )
     {
         super( source );
 
         assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
+        assertArgumentLegal( cardIndex >= 0, "cardIndex", Messages.CardPileContentChangedEvent_ctor_cardIndex_negative ); //$NON-NLS-1$
 
         card_ = card;
+        cardIndex_ = cardIndex;
     }
 
 
@@ -91,5 +101,15 @@ public class CardPileContentChangedEvent
     public final ICard getCard()
     {
         return card_;
+    }
+
+    /**
+     * Gets the index of the card associated with the event.
+     * 
+     * @return The index of the card associated with the event.
+     */
+    public final int getCardIndex()
+    {
+        return cardIndex_;
     }
 }

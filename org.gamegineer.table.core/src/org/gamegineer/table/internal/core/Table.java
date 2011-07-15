@@ -114,6 +114,8 @@ public final class Table
     {
         assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
 
+        final int cardPileIndex;
+
         getLock().lock();
         try
         {
@@ -123,6 +125,7 @@ public final class Table
 
             cardPiles_.add( typedCardPile );
             typedCardPile.setTable( this );
+            cardPileIndex = cardPiles_.size() - 1;
         }
         finally
         {
@@ -135,7 +138,7 @@ public final class Table
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                fireCardPileAdded( cardPile );
+                fireCardPileAdded( cardPile, cardPileIndex );
             }
         } );
     }
@@ -225,15 +228,19 @@ public final class Table
      * 
      * @param cardPile
      *        The added card pile; must not be {@code null}.
+     * @param cardPileIndex
+     *        The index of the added card pile; must not be negative.
      */
     private void fireCardPileAdded(
         /* @NonNull */
-        final ICardPile cardPile )
+        final ICardPile cardPile,
+        final int cardPileIndex )
     {
         assert cardPile != null;
+        assert cardPileIndex >= 0;
         assert !getLock().isHeldByCurrentThread();
 
-        final TableContentChangedEvent event = new TableContentChangedEvent( this, cardPile );
+        final TableContentChangedEvent event = new TableContentChangedEvent( this, cardPile, cardPileIndex );
         for( final ITableListener listener : listeners_ )
         {
             try
@@ -252,15 +259,19 @@ public final class Table
      * 
      * @param cardPile
      *        The removed card pile; must not be {@code null}.
+     * @param cardPileIndex
+     *        The index of the removed card pile; must not be negative.
      */
     private void fireCardPileRemoved(
         /* @NonNull */
-        final ICardPile cardPile )
+        final ICardPile cardPile,
+        final int cardPileIndex )
     {
         assert cardPile != null;
+        assert cardPileIndex >= 0;
         assert !getLock().isHeldByCurrentThread();
 
-        final TableContentChangedEvent event = new TableContentChangedEvent( this, cardPile );
+        final TableContentChangedEvent event = new TableContentChangedEvent( this, cardPile, cardPileIndex );
         for( final ITableListener listener : listeners_ )
         {
             try
@@ -448,12 +459,15 @@ public final class Table
     {
         assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
 
+        final int cardPileIndex;
+
         getLock().lock();
         try
         {
             assertArgumentLegal( cardPile.getTable() == this, "cardPile", Messages.Table_removeCardPile_cardPile_notOwned ); //$NON-NLS-1$
 
-            cardPiles_.remove( cardPile );
+            cardPileIndex = cardPiles_.indexOf( cardPile );
+            cardPiles_.remove( cardPileIndex );
         }
         finally
         {
@@ -466,7 +480,7 @@ public final class Table
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                fireCardPileRemoved( cardPile );
+                fireCardPileRemoved( cardPile, cardPileIndex );
             }
         } );
     }
@@ -502,9 +516,13 @@ public final class Table
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    for( final ICardPile cardPile : removedCardPiles )
+                    // ensure events are fired in order from highest index to lowest index
+                    final List<ICardPile> reversedRemovedCardPiles = new ArrayList<ICardPile>( removedCardPiles );
+                    Collections.reverse( reversedRemovedCardPiles );
+                    int cardPileIndex = removedCardPiles.size() - 1;
+                    for( final ICardPile cardPile : reversedRemovedCardPiles )
                     {
-                        fireCardPileRemoved( cardPile );
+                        fireCardPileRemoved( cardPile, cardPileIndex-- );
                     }
                 }
             } );

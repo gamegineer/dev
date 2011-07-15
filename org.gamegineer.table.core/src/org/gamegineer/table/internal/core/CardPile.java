@@ -188,12 +188,14 @@ final class CardPile
         assertArgumentNotNull( cards, "cards" ); //$NON-NLS-1$
 
         final List<Card> addedCards = new ArrayList<Card>();
+        final int firstCardIndex;
         final boolean cardPileBoundsChanged;
 
         getLock().lock();
         try
         {
             final Rectangle oldBounds = getBounds();
+            firstCardIndex = cards_.size();
 
             for( final ICard card : cards )
             {
@@ -230,9 +232,10 @@ final class CardPile
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
+                    int cardIndex = firstCardIndex;
                     for( final ICard card : addedCards )
                     {
-                        fireCardAdded( card );
+                        fireCardAdded( card, cardIndex++ );
                     }
 
                     if( cardPileBoundsChanged )
@@ -279,15 +282,19 @@ final class CardPile
      * 
      * @param card
      *        The added card; must not be {@code null}.
+     * @param cardIndex
+     *        The index of the added card; must not be negative.
      */
     private void fireCardAdded(
         /* @NonNull */
-        final ICard card )
+        final ICard card,
+        final int cardIndex )
     {
         assert card != null;
+        assert cardIndex >= 0;
         assert !getLock().isHeldByCurrentThread();
 
-        final CardPileContentChangedEvent event = new CardPileContentChangedEvent( this, card );
+        final CardPileContentChangedEvent event = new CardPileContentChangedEvent( this, card, cardIndex );
         for( final ICardPileListener listener : listeners_ )
         {
             try
@@ -348,15 +355,19 @@ final class CardPile
      * 
      * @param card
      *        The removed card; must not be {@code null}.
+     * @param cardIndex
+     *        The index of the removed card; must not be negative.
      */
     private void fireCardRemoved(
         /* @NonNull */
-        final ICard card )
+        final ICard card,
+        final int cardIndex )
     {
         assert card != null;
+        assert cardIndex >= 0;
         assert !getLock().isHeldByCurrentThread();
 
-        final CardPileContentChangedEvent event = new CardPileContentChangedEvent( this, card );
+        final CardPileContentChangedEvent event = new CardPileContentChangedEvent( this, card, cardIndex );
         for( final ICardPileListener listener : listeners_ )
         {
             try
@@ -810,6 +821,7 @@ final class CardPile
         assert cardRangeStrategy != null;
 
         final List<Card> removedCards = new ArrayList<Card>();
+        final int upperCardIndex = cardRangeStrategy.getUpperIndex() - 1;
         final boolean cardPileBoundsChanged;
 
         getLock().lock();
@@ -840,9 +852,13 @@ final class CardPile
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    for( final ICard card : removedCards )
+                    // ensure events are fired in order from highest index to lowest index
+                    final List<ICard> reversedRemovedCards = new ArrayList<ICard>( removedCards );
+                    Collections.reverse( reversedRemovedCards );
+                    int cardIndex = upperCardIndex;
+                    for( final ICard card : reversedRemovedCards )
                     {
-                        fireCardRemoved( card );
+                        fireCardRemoved( card, cardIndex-- );
                     }
 
                     if( cardPileBoundsChanged )

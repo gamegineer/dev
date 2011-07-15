@@ -68,7 +68,7 @@ public final class TableContentChangedEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new TableContentChangedEvent( EasyMock.createMock( ITable.class ), EasyMock.createMock( ICardPile.class ) );
+        event_ = new TableContentChangedEvent( EasyMock.createMock( ITable.class ), EasyMock.createMock( ICardPile.class ), 0 );
     }
 
     /**
@@ -78,7 +78,17 @@ public final class TableContentChangedEventTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_CardPile_Null()
     {
-        new TableContentChangedEvent( EasyMock.createMock( ITable.class ), null );
+        new TableContentChangedEvent( EasyMock.createMock( ITable.class ), null, 0 );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed an illegal card
+     * pile index that is negative.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testConstructor_CardPileIndex_Illegal_Negative()
+    {
+        new TableContentChangedEvent( EasyMock.createMock( ITable.class ), EasyMock.createMock( ICardPile.class ), -1 );
     }
 
     /**
@@ -88,7 +98,7 @@ public final class TableContentChangedEventTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Source_Null()
     {
-        new TableContentChangedEvent( null, EasyMock.createMock( ICardPile.class ) );
+        new TableContentChangedEvent( null, EasyMock.createMock( ICardPile.class ), 0 );
     }
 
     /**

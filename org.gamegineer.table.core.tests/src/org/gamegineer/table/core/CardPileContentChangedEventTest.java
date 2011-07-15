@@ -68,7 +68,7 @@ public final class CardPileContentChangedEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new CardPileContentChangedEvent( EasyMock.createMock( ICardPile.class ), EasyMock.createMock( ICard.class ) );
+        event_ = new CardPileContentChangedEvent( EasyMock.createMock( ICardPile.class ), EasyMock.createMock( ICard.class ), 0 );
     }
 
     /**
@@ -78,7 +78,17 @@ public final class CardPileContentChangedEventTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_Card_Null()
     {
-        new CardPileContentChangedEvent( EasyMock.createMock( ICardPile.class ), null );
+        new CardPileContentChangedEvent( EasyMock.createMock( ICardPile.class ), null, 0 );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed an illegal card
+     * index that is negative.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testConstructor_CardIndex_Illegal_Negative()
+    {
+        new CardPileContentChangedEvent( EasyMock.createMock( ICardPile.class ), EasyMock.createMock( ICard.class ), -1 );
     }
 
     /**
@@ -88,7 +98,7 @@ public final class CardPileContentChangedEventTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Source_Null()
     {
-        new CardPileContentChangedEvent( null, EasyMock.createMock( ICard.class ) );
+        new CardPileContentChangedEvent( null, EasyMock.createMock( ICard.class ), 0 );
     }
 
     /**

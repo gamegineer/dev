@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase;
@@ -287,14 +288,19 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testAddCard_FiresCardAddedEvent()
     {
+        final ICard card = createUniqueCard();
         final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
-        listener.cardAdded( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        final Capture<CardPileContentChangedEvent> eventCapture = new Capture<CardPileContentChangedEvent>();
+        listener.cardAdded( EasyMock.capture( eventCapture ) );
         mocksControl_.replay();
         cardPile_.addCardPileListener( listener );
 
-        cardPile_.addCard( createUniqueCard() );
+        cardPile_.addCard( card );
 
         mocksControl_.verify();
+        assertSame( cardPile_, eventCapture.getValue().getCardPile() );
+        assertSame( card, eventCapture.getValue().getCard() );
+        assertEquals( 0, eventCapture.getValue().getCardIndex() );
     }
 
     /**
@@ -954,15 +960,20 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testRemoveCard_NotEmpty_FiresCardRemovedEvent()
     {
-        cardPile_.addCard( createUniqueCard() );
+        final ICard card = createUniqueCard();
+        cardPile_.addCard( card );
         final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
-        listener.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
+        final Capture<CardPileContentChangedEvent> eventCapture = new Capture<CardPileContentChangedEvent>();
+        listener.cardRemoved( EasyMock.capture( eventCapture ) );
         mocksControl_.replay();
         cardPile_.addCardPileListener( listener );
 
         cardPile_.removeCard();
 
         mocksControl_.verify();
+        assertSame( cardPile_, eventCapture.getValue().getCardPile() );
+        assertSame( card, eventCapture.getValue().getCard() );
+        assertEquals( 0, eventCapture.getValue().getCardIndex() );
     }
 
     /**
@@ -1086,16 +1097,25 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testRemoveCards_NotEmpty_FiresCardRemovedEvent()
     {
-        cardPile_.addCards( Arrays.asList( createUniqueCard(), createUniqueCard() ) );
+        final List<ICard> cards = Arrays.asList( createUniqueCard(), createUniqueCard() );
+        cardPile_.addCards( cards );
         final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
-        listener.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
-        EasyMock.expectLastCall().times( 2 );
+        final Capture<CardPileContentChangedEvent> eventCapture1 = new Capture<CardPileContentChangedEvent>();
+        listener.cardRemoved( EasyMock.capture( eventCapture1 ) );
+        final Capture<CardPileContentChangedEvent> eventCapture2 = new Capture<CardPileContentChangedEvent>();
+        listener.cardRemoved( EasyMock.capture( eventCapture2 ) );
         mocksControl_.replay();
         cardPile_.addCardPileListener( listener );
 
         cardPile_.removeCards();
 
         mocksControl_.verify();
+        assertSame( cardPile_, eventCapture1.getValue().getCardPile() );
+        assertSame( cards.get( 1 ), eventCapture1.getValue().getCard() );
+        assertEquals( 1, eventCapture1.getValue().getCardIndex() );
+        assertSame( cardPile_, eventCapture2.getValue().getCardPile() );
+        assertSame( cards.get( 0 ), eventCapture2.getValue().getCard() );
+        assertEquals( 0, eventCapture2.getValue().getCardIndex() );
     }
 
     /**
@@ -1186,19 +1206,27 @@ public abstract class AbstractCardPileTestCase
     @Test
     public void testRemoveCardsFromPoint_Location_CardPresent_FiresCardRemovedEvent()
     {
+        final List<ICard> cards = Arrays.asList( createUniqueCard(), createUniqueCard() );
         cardPile_.setLayout( CardPileLayout.ACCORDIAN_RIGHT );
-        cardPile_.addCards( Arrays.asList( createUniqueCard(), createUniqueCard() ) );
+        cardPile_.addCards( cards );
         final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
-        listener.cardRemoved( EasyMock.notNull( CardPileContentChangedEvent.class ) );
-        EasyMock.expectLastCall().times( 2 );
+        final Capture<CardPileContentChangedEvent> eventCapture1 = new Capture<CardPileContentChangedEvent>();
+        listener.cardRemoved( EasyMock.capture( eventCapture1 ) );
+        final Capture<CardPileContentChangedEvent> eventCapture2 = new Capture<CardPileContentChangedEvent>();
+        listener.cardRemoved( EasyMock.capture( eventCapture2 ) );
         listener.cardPileBoundsChanged( EasyMock.notNull( CardPileEvent.class ) );
-        EasyMock.expectLastCall().anyTimes();
         mocksControl_.replay();
         cardPile_.addCardPileListener( listener );
 
         cardPile_.removeCards( cardPile_.getCards().get( 0 ).getLocation() );
 
         mocksControl_.verify();
+        assertSame( cardPile_, eventCapture1.getValue().getCardPile() );
+        assertSame( cards.get( 1 ), eventCapture1.getValue().getCard() );
+        assertEquals( 1, eventCapture1.getValue().getCardIndex() );
+        assertSame( cardPile_, eventCapture2.getValue().getCardPile() );
+        assertSame( cards.get( 0 ), eventCapture2.getValue().getCard() );
+        assertEquals( 0, eventCapture2.getValue().getCardIndex() );
     }
 
     /**

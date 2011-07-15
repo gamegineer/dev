@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
 
@@ -43,6 +44,9 @@ public class TableContentChangedEvent
     /** The card pile associated with the event. */
     private final ICardPile cardPile_;
 
+    /** The index of the card pile associated with the event. */
+    private final int cardPileIndex_;
+
 
     // ======================================================================
     // Constructors
@@ -55,9 +59,12 @@ public class TableContentChangedEvent
      *        The table that fired the event; must not be {@code null}.
      * @param cardPile
      *        The card pile associated with the event; must not be {@code null}.
+     * @param cardPileIndex
+     *        The index of the card pile associated with the event.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code source} is {@code null}.
+     *         If {@code source} is {@code null} or if {@cardPileIndex} is
+     *         negative.
      * @throws java.lang.NullPointerException
      *         If {@code cardPile} is {@code null}.
      */
@@ -66,13 +73,16 @@ public class TableContentChangedEvent
         @SuppressWarnings( "hiding" )
         final ITable source,
         /* @NonNull */
-        final ICardPile cardPile )
+        final ICardPile cardPile,
+        final int cardPileIndex )
     {
         super( source );
 
         assertArgumentNotNull( cardPile, "cardPile" ); //$NON-NLS-1$
+        assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex", Messages.TableContentChangedEvent_ctor_cardPileIndex_negative ); //$NON-NLS-1$
 
         cardPile_ = cardPile;
+        cardPileIndex_ = cardPileIndex;
     }
 
 
@@ -89,5 +99,15 @@ public class TableContentChangedEvent
     public final ICardPile getCardPile()
     {
         return cardPile_;
+    }
+
+    /**
+     * Gets the index of the card pile associated with the event.
+     * 
+     * @return The index of the card pile associated with the event.
+     */
+    public final int getCardPileIndex()
+    {
+        return cardPileIndex_;
     }
 }
