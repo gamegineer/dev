@@ -33,6 +33,25 @@ public interface INetworkTable
     // ======================================================================
 
     /**
+     * Increments the state of the specified card pile.
+     * 
+     * @param cardPileIndex
+     *        The card pile index.
+     * @param cardPileIncrement
+     *        The incremental change to the state of the card pile; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code cardPileIndex} is negative.
+     * @throws java.lang.NullPointerException
+     *         If {@code cardPileIncrement} is {@code null}.
+     */
+    public void incrementCardPileState(
+        int cardPileIndex,
+        /* @NonNull */
+        CardPileIncrement cardPileIncrement );
+
+    /**
      * Increments the state of the specified card.
      * 
      * @param cardPileIndex
@@ -53,6 +72,20 @@ public interface INetworkTable
         int cardIndex,
         /* @NonNull */
         CardIncrement cardIncrement );
+
+    /**
+     * Increments the state of the table.
+     * 
+     * @param tableIncrement
+     *        The incremental change to the state of the table; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableIncrement} is {@code null}.
+     */
+    public void incrementTableState(
+        /* @NonNull */
+        TableIncrement tableIncrement );
 
     /**
      * Sets the state of the table.

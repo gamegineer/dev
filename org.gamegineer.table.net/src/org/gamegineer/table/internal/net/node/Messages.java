@@ -84,6 +84,12 @@ final class Messages
 
     // --- LocalNetworkTable ------------------------------------------------
 
+    /** Failed to set the card state. */
+    public static String LocalNetworkTable_incrementCardPileState_setCardStateFailed;
+
+    /** Failed to set the card pile state. */
+    public static String LocalNetworkTable_incrementTableState_setCardPileStateFailed;
+
     /** Failed to set the table state. */
     public static String LocalNetworkTable_setTableState_failed;
 

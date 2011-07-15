@@ -1,5 +1,5 @@
 /*
- * CardIncrementMessageHandler.java
+ * TableIncrementMessageHandler.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,20 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 30, 2011 at 10:35:04 PM.
+ * Created on Jul 12, 2011 at 8:57:33 PM.
  */
 
 package org.gamegineer.table.internal.net.node.common.handlers;
 
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.node.IRemoteNodeController;
-import org.gamegineer.table.internal.net.node.common.messages.CardIncrementMessage;
+import org.gamegineer.table.internal.net.node.common.messages.TableIncrementMessage;
 
 /**
- * A message handler for the {@link CardIncrementMessage} message.
+ * A message handler for the {@link TableIncrementMessage} message.
  */
 @Immutable
-public final class CardIncrementMessageHandler
+public final class TableIncrementMessageHandler
     extends AbstractCommonMessageHandler
 {
     // ======================================================================
@@ -37,7 +37,7 @@ public final class CardIncrementMessageHandler
     // ======================================================================
 
     /** The singleton instance of this class. */
-    public static final CardIncrementMessageHandler INSTANCE = new CardIncrementMessageHandler();
+    public static final TableIncrementMessageHandler INSTANCE = new TableIncrementMessageHandler();
 
 
     // ======================================================================
@@ -45,10 +45,10 @@ public final class CardIncrementMessageHandler
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardIncrementMessageHandler}
+     * Initializes a new instance of the {@code TableIncrementMessageHandler}
      * class.
      */
-    private CardIncrementMessageHandler()
+    private TableIncrementMessageHandler()
     {
         super();
     }
@@ -59,7 +59,7 @@ public final class CardIncrementMessageHandler
     // ======================================================================
 
     /**
-     * Handles a {@code CardIncrementMessage} message.
+     * Handles a {@code TableIncrementMessage} message.
      * 
      * @param remoteNodeController
      *        The control interface for the remote node that received the
@@ -72,15 +72,13 @@ public final class CardIncrementMessageHandler
         /* @NonNull */
         final IRemoteNodeController<?> remoteNodeController,
         /* @NonNull */
-        final CardIncrementMessage message )
+        final TableIncrementMessage message )
     {
         assert remoteNodeController != null;
         assert message != null;
 
-        remoteNodeController.getLocalNode().getTableManager().incrementCardState( //
+        remoteNodeController.getLocalNode().getTableManager().incrementTableState( //
             remoteNodeController.getTable(), //
-            message.getCardPileIndex(), //
-            message.getIndex(), //
             message.getIncrement() );
     }
 }

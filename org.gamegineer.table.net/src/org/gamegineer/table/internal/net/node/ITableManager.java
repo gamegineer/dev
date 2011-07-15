@@ -34,6 +34,31 @@ public interface ITableManager
     // ======================================================================
 
     /**
+     * Increments the state of the specified card pile throughout the table
+     * network
+     * 
+     * @param sourceTable
+     *        The table that originated the request; must not be {@code null}.
+     * @param cardPileIndex
+     *        The card pile index.
+     * @param cardPileIncrement
+     *        The incremental change to the state of the card pile; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code cardPileIndex} is negative.
+     * @throws java.lang.NullPointerException
+     *         If {@code sourceTable} or {@code cardPileIncrement} is {@code
+     *         null}.
+     */
+    public void incrementCardPileState(
+        /* @NonNull */
+        INetworkTable sourceTable,
+        int cardPileIndex,
+        /* @NonNull */
+        CardPileIncrement cardPileIncrement );
+
+    /**
      * Increments the state of the specified card throughout the table network
      * 
      * @param sourceTable
@@ -58,6 +83,24 @@ public interface ITableManager
         int cardIndex,
         /* @NonNull */
         CardIncrement cardIncrement );
+
+    /**
+     * Increments the state of the table throughout the table network
+     * 
+     * @param sourceTable
+     *        The table that originated the request; must not be {@code null}.
+     * @param tableIncrement
+     *        The incremental change to the state of the table; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code sourceTable} or {@code tableIncrement} is {@code null}.
+     */
+    public void incrementTableState(
+        /* @NonNull */
+        INetworkTable sourceTable,
+        /* @NonNull */
+        TableIncrement tableIncrement );
 
     /**
      * Sets the state of the table throughout the table network.

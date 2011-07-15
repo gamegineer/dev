@@ -40,8 +40,10 @@ import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.node.AbstractNode;
 import org.gamegineer.table.internal.net.node.CardIncrement;
+import org.gamegineer.table.internal.net.node.CardPileIncrement;
 import org.gamegineer.table.internal.net.node.INetworkTable;
 import org.gamegineer.table.internal.net.node.ITableManager;
+import org.gamegineer.table.internal.net.node.TableIncrement;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
@@ -380,6 +382,86 @@ public final class ServerNode
             return masterTable_.getLock();
         }
 
+        // TODO: combine the increment logic here with the similar code in LocalNetworkTable
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementCardPileState(org.gamegineer.table.internal.net.node.INetworkTable, int, org.gamegineer.table.internal.net.node.CardPileIncrement)
+         */
+        @Override
+        @SuppressWarnings( {
+            "boxing", "synthetic-access"
+        } )
+        public void incrementCardPileState(
+            final INetworkTable sourceTable,
+            final int cardPileIndex,
+            final CardPileIncrement cardPileIncrement )
+        {
+            assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
+            assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
+
+            getMasterTableLock().lock();
+            try
+            {
+                final ICardPile cardPile = masterTable_.getCardPile( cardPileIndex );
+
+                if( cardPileIncrement.getBaseDesign() != null )
+                {
+                    cardPile.setBaseDesign( cardPileIncrement.getBaseDesign() );
+                }
+
+                if( cardPileIncrement.getBaseLocation() != null )
+                {
+                    cardPile.setBaseLocation( cardPileIncrement.getBaseLocation() );
+                }
+
+                if( cardPileIncrement.getLayout() != null )
+                {
+                    cardPile.setLayout( cardPileIncrement.getLayout() );
+                }
+
+                if( cardPileIncrement.getRemovedCardCount() != null )
+                {
+                    final int removedCardCount = cardPileIncrement.getRemovedCardCount();
+                    if( removedCardCount == cardPile.getCardCount() )
+                    {
+                        cardPile.removeCards();
+                    }
+                    else
+                    {
+                        for( int index = 0; index < removedCardCount; ++index )
+                        {
+                            cardPile.removeCard();
+                        }
+                    }
+                }
+
+                if( cardPileIncrement.getAddedCardMementos() != null )
+                {
+                    for( final Object cardMemento : cardPileIncrement.getAddedCardMementos() )
+                    {
+                        final ICard card = masterTable_.createCard();
+
+                        try
+                        {
+                            card.setMemento( cardMemento );
+                        }
+                        catch( final MementoException e )
+                        {
+                            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerTableManager_incrementCardPileState_setCardStateFailed, e );
+                        }
+
+                        cardPile.addCard( card );
+                    }
+                }
+            }
+            finally
+            {
+                getMasterTableLock().unlock();
+            }
+
+            super.incrementCardPileState( sourceTable, cardPileIndex, cardPileIncrement );
+        }
+
         /*
          * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementCardState(org.gamegineer.table.internal.net.node.INetworkTable, int, int, org.gamegineer.table.internal.net.node.CardIncrement)
          */
@@ -423,6 +505,58 @@ public final class ServerNode
             }
 
             super.incrementCardState( sourceTable, cardPileIndex, cardIndex, cardIncrement );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementTableState(org.gamegineer.table.internal.net.node.INetworkTable, org.gamegineer.table.internal.net.node.TableIncrement)
+         */
+        @SuppressWarnings( {
+            "boxing", "synthetic-access"
+        } )
+        @Override
+        public void incrementTableState(
+            final INetworkTable sourceTable,
+            final TableIncrement tableIncrement )
+        {
+            assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
+
+            getMasterTableLock().lock();
+            try
+            {
+                // TODO: unit test these methods
+                if( tableIncrement.getRemovedCardPileIndexes() != null )
+                {
+                    for( final Integer index : tableIncrement.getRemovedCardPileIndexes() )
+                    {
+                        masterTable_.removeCardPile( masterTable_.getCardPile( index ) );
+                    }
+                }
+
+                if( tableIncrement.getAddedCardPileMementos() != null )
+                {
+                    for( final Object cardPileMemento : tableIncrement.getAddedCardPileMementos() )
+                    {
+                        final ICardPile cardPile = masterTable_.createCardPile();
+
+                        try
+                        {
+                            cardPile.setMemento( cardPileMemento );
+                        }
+                        catch( final MementoException e )
+                        {
+                            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerTableManager_incrementTableState_setCardPileStateFailed, e );
+                        }
+
+                        masterTable_.addCardPile( cardPile );
+                    }
+                }
+            }
+            finally
+            {
+                getMasterTableLock().unlock();
+            }
+
+            super.incrementTableState( sourceTable, tableIncrement );
         }
 
         /*

@@ -1,5 +1,5 @@
 /*
- * CardIncrementMessage.java
+ * CardPileIncrementMessage.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 30, 2011 at 10:29:37 PM.
+ * Created on Jul 12, 2011 at 8:42:31 PM.
  */
 
 package org.gamegineer.table.internal.net.node.common.messages;
@@ -24,14 +24,14 @@ package org.gamegineer.table.internal.net.node.common.messages;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.internal.net.node.CardIncrement;
+import org.gamegineer.table.internal.net.node.CardPileIncrement;
 import org.gamegineer.table.internal.net.transport.AbstractMessage;
 
 /**
- * A message sent by a node to increment the state of a card.
+ * A message sent by a node to increment the state of a card pile.
  */
 @NotThreadSafe
-public final class CardIncrementMessage
+public final class CardPileIncrementMessage
     extends AbstractMessage
 {
     // ======================================================================
@@ -39,26 +39,19 @@ public final class CardIncrementMessage
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = -3587077290756850335L;
+    private static final long serialVersionUID = 57895247573982620L;
 
     /**
-     * The table-relative index of the card pile that contains the card.
+     * The incremental change to the state of the card pile.
      * 
-     * @serial The table-relative index of the card pile that contains the card.
+     * @serial The incremental change to the state of the card pile.
      */
-    private int cardPileIndex_;
+    private CardPileIncrement increment_;
 
     /**
-     * The incremental change to the state of the card.
+     * The card pile index.
      * 
-     * @serial The incremental change to the state of the card.
-     */
-    private CardIncrement increment_;
-
-    /**
-     * The card index.
-     * 
-     * @serial The card index.
+     * @serial The card pile index.
      */
     private int index_;
 
@@ -68,12 +61,11 @@ public final class CardIncrementMessage
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardIncrementMessage} class.
+     * Initializes a new instance of the {@code CardPileIncrementMessage} class.
      */
-    public CardIncrementMessage()
+    public CardPileIncrementMessage()
     {
-        cardPileIndex_ = 0;
-        increment_ = new CardIncrement();
+        increment_ = new CardPileIncrement();
         index_ = 0;
     }
 
@@ -83,31 +75,21 @@ public final class CardIncrementMessage
     // ======================================================================
 
     /**
-     * Gets the table-relative index of the card pile that contains the card.
+     * Gets the incremental change to the state of the card pile.
      * 
-     * @return The table-relative index of the card pile that contains the card.
-     */
-    public int getCardPileIndex()
-    {
-        return cardPileIndex_;
-    }
-
-    /**
-     * Gets the incremental change to the state of the card.
-     * 
-     * @return The incremental change to the state of the card; never {@code
-     *         null}.
+     * @return The incremental change to the state of the card pile; never
+     *         {@code null}.
      */
     /* @NonNull */
-    public CardIncrement getIncrement()
+    public CardPileIncrement getIncrement()
     {
         return increment_;
     }
 
     /**
-     * Gets the card index.
+     * Gets the card pile index.
      * 
-     * @return The card index.
+     * @return The card pile index.
      */
     public int getIndex()
     {
@@ -115,27 +97,10 @@ public final class CardIncrementMessage
     }
 
     /**
-     * Sets the table-relative index of the card pile that contains the card.
-     * 
-     * @param cardPileIndex
-     *        The table-relative index of the card pile that contains the card.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code cardPileIndex} is negative.
-     */
-    public void setCardPileIndex(
-        final int cardPileIndex )
-    {
-        assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
-
-        cardPileIndex_ = cardPileIndex;
-    }
-
-    /**
-     * Sets the incremental change to the state of the card.
+     * Sets the incremental change to the state of the card pile.
      * 
      * @param increment
-     *        The incremental change to the state of the card; must not be
+     *        The incremental change to the state of the card pile; must not be
      *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
@@ -143,7 +108,7 @@ public final class CardIncrementMessage
      */
     public void setIncrement(
         /* @NonNull */
-        final CardIncrement increment )
+        final CardPileIncrement increment )
     {
         assertArgumentNotNull( increment, "increment" ); //$NON-NLS-1$
 
@@ -151,10 +116,10 @@ public final class CardIncrementMessage
     }
 
     /**
-     * Sets the card index.
+     * Sets the card pile index.
      * 
      * @param index
-     *        The card index.
+     *        The card pile index.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code index} is negative.

@@ -661,6 +661,37 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          * Subclasses may override but must call the superclass implementation.
          * </p>
          * 
+         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementCardPileState(org.gamegineer.table.internal.net.node.INetworkTable,
+         *      int, org.gamegineer.table.internal.net.node.CardPileIncrement)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void incrementCardPileState(
+            final INetworkTable sourceTable,
+            final int cardPileIndex,
+            final CardPileIncrement cardPileIncrement )
+        {
+            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
+            assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
+            assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
+
+            for( final INetworkTable table : getTables() )
+            {
+                if( table != sourceTable )
+                {
+                    table.incrementCardPileState( cardPileIndex, cardPileIncrement );
+                }
+            }
+        }
+
+        /**
+         * This implementation forwards the request to all tables connected to
+         * the node, not including the originator of the request.
+         * 
+         * <p>
+         * Subclasses may override but must call the superclass implementation.
+         * </p>
+         * 
          * @see org.gamegineer.table.internal.net.node.ITableManager#incrementCardState(org.gamegineer.table.internal.net.node.INetworkTable,
          *      int, int, org.gamegineer.table.internal.net.node.CardIncrement)
          */
@@ -682,6 +713,35 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                 if( table != sourceTable )
                 {
                     table.incrementCardState( cardPileIndex, cardIndex, cardIncrement );
+                }
+            }
+        }
+
+        /**
+         * This implementation forwards the request to all tables connected to
+         * the node, not including the originator of the request.
+         * 
+         * <p>
+         * Subclasses may override but must call the superclass implementation.
+         * </p>
+         * 
+         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementTableState(org.gamegineer.table.internal.net.node.INetworkTable,
+         *      org.gamegineer.table.internal.net.node.TableIncrement)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void incrementTableState(
+            final INetworkTable sourceTable,
+            final TableIncrement tableIncrement )
+        {
+            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
+            assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
+
+            for( final INetworkTable table : getTables() )
+            {
+                if( table != sourceTable )
+                {
+                    table.incrementTableState( tableIncrement );
                 }
             }
         }

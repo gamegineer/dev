@@ -1,5 +1,5 @@
 /*
- * CardIncrementMessageTest.java
+ * TableIncrementMessageTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 30, 2011 at 11:31:15 PM.
+ * Created on Jul 12, 2011 at 8:49:57 PM.
  */
 
 package org.gamegineer.table.internal.net.node.common.messages;
@@ -26,17 +26,17 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.net.node.common.messages.CardIncrementMessage}
+ * {@link org.gamegineer.table.internal.net.node.common.messages.TableIncrementMessage}
  * class.
  */
-public final class CardIncrementMessageTest
+public final class TableIncrementMessageTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The card increment message under test in the fixture. */
-    private CardIncrementMessage message_;
+    /** The table increment message under test in the fixture. */
+    private TableIncrementMessage message_;
 
 
     // ======================================================================
@@ -44,9 +44,10 @@ public final class CardIncrementMessageTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardIncrementMessageTest} class.
+     * Initializes a new instance of the {@code TableIncrementMessageTest}
+     * class.
      */
-    public CardIncrementMessageTest()
+    public TableIncrementMessageTest()
     {
         super();
     }
@@ -66,17 +67,7 @@ public final class CardIncrementMessageTest
     public void setUp()
         throws Exception
     {
-        message_ = new CardIncrementMessage();
-    }
-
-    /**
-     * Ensures the {@code setCardPileIndex} method throws an exception when
-     * passed an illegal card pile index that is negative.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testSetCardPileIndex_CardPileIndex_Null()
-    {
-        message_.setCardPileIndex( -1 );
+        message_ = new TableIncrementMessage();
     }
 
     /**
@@ -87,15 +78,5 @@ public final class CardIncrementMessageTest
     public void testSetIncrement_Increment_Null()
     {
         message_.setIncrement( null );
-    }
-
-    /**
-     * Ensures the {@code setIndex} method throws an exception when passed an
-     * illegal index that is negative.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testSetIndex_Index_Null()
-    {
-        message_.setIndex( -1 );
     }
 }

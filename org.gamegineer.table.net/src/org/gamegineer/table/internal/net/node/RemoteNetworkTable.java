@@ -25,6 +25,8 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.node.common.messages.CardIncrementMessage;
+import org.gamegineer.table.internal.net.node.common.messages.CardPileIncrementMessage;
+import org.gamegineer.table.internal.net.node.common.messages.TableIncrementMessage;
 import org.gamegineer.table.internal.net.node.common.messages.TableMessage;
 
 /**
@@ -68,6 +70,26 @@ final class RemoteNetworkTable
     // ======================================================================
 
     /*
+     * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementCardPileState(int, org.gamegineer.table.internal.net.node.CardPileIncrement)
+     */
+    @Override
+    public void incrementCardPileState(
+        final int cardPileIndex,
+        final CardPileIncrement cardPileIncrement )
+    {
+        assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
+        assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
+
+        final CardPileIncrementMessage message = new CardPileIncrementMessage();
+        message.setIncrement( cardPileIncrement );
+        message.setIndex( cardPileIndex );
+        synchronized( remoteNodeController_.getLock() )
+        {
+            remoteNodeController_.sendMessage( message, null );
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementCardState(int, int, org.gamegineer.table.internal.net.node.CardIncrement)
      */
     @Override
@@ -82,8 +104,25 @@ final class RemoteNetworkTable
 
         final CardIncrementMessage message = new CardIncrementMessage();
         message.setCardPileIndex( cardPileIndex );
-        message.setCardIndex( cardIndex );
         message.setIncrement( cardIncrement );
+        message.setIndex( cardIndex );
+        synchronized( remoteNodeController_.getLock() )
+        {
+            remoteNodeController_.sendMessage( message, null );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementTableState(org.gamegineer.table.internal.net.node.TableIncrement)
+     */
+    @Override
+    public void incrementTableState(
+        final TableIncrement tableIncrement )
+    {
+        assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
+
+        final TableIncrementMessage message = new TableIncrementMessage();
+        message.setIncrement( tableIncrement );
         synchronized( remoteNodeController_.getLock() )
         {
             remoteNodeController_.sendMessage( message, null );

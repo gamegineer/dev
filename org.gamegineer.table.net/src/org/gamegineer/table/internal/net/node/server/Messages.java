@@ -37,6 +37,12 @@ final class Messages
 
     // --- ServerNode.ServerTableManager ------------------------------------
 
+    /** Failed to set the card state. */
+    public static String ServerTableManager_incrementCardPileState_setCardStateFailed;
+
+    /** Failed to set the card pile state. */
+    public static String ServerTableManager_incrementTableState_setCardPileStateFailed;
+
     /** Failed to set the table state. */
     public static String ServerTableManager_setTableState_failed;
 

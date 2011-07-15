@@ -34,10 +34,14 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.node.common.handlers.CardIncrementMessageHandler;
+import org.gamegineer.table.internal.net.node.common.handlers.CardPileIncrementMessageHandler;
+import org.gamegineer.table.internal.net.node.common.handlers.TableIncrementMessageHandler;
 import org.gamegineer.table.internal.net.node.common.handlers.TableMessageHandler;
 import org.gamegineer.table.internal.net.node.common.messages.CardIncrementMessage;
+import org.gamegineer.table.internal.net.node.common.messages.CardPileIncrementMessage;
 import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
+import org.gamegineer.table.internal.net.node.common.messages.TableIncrementMessage;
 import org.gamegineer.table.internal.net.node.common.messages.TableMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.IService;
@@ -140,7 +144,9 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         uncorrelatedMessageHandlers_ = new IdentityHashMap<Class<? extends IMessage>, IMessageHandler>();
 
         registerUncorrelatedMessageHandler( CardIncrementMessage.class, CardIncrementMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( CardPileIncrementMessage.class, CardPileIncrementMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( ErrorMessage.class, ErrorMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( TableIncrementMessage.class, TableIncrementMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( TableMessage.class, TableMessageHandler.INSTANCE );
     }
 

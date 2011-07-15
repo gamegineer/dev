@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net.node;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -125,17 +126,96 @@ final class LocalNetworkTable
     // ======================================================================
 
     /*
+     * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementCardPileState(int, org.gamegineer.table.internal.net.node.CardPileIncrement)
+     */
+    @Override
+    @SuppressWarnings( "boxing" )
+    public void incrementCardPileState(
+        final int cardPileIndex,
+        final CardPileIncrement cardPileIncrement )
+    {
+        assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
+        assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            final boolean oldIgnoreEvents = ignoreEvents_;
+            ignoreEvents_ = true;
+            getTableLock().lock();
+            try
+            {
+                final ICardPile cardPile = table_.getCardPile( cardPileIndex );
+
+                if( cardPileIncrement.getBaseDesign() != null )
+                {
+                    cardPile.setBaseDesign( cardPileIncrement.getBaseDesign() );
+                }
+
+                if( cardPileIncrement.getBaseLocation() != null )
+                {
+                    cardPile.setBaseLocation( cardPileIncrement.getBaseLocation() );
+                }
+
+                if( cardPileIncrement.getLayout() != null )
+                {
+                    cardPile.setLayout( cardPileIncrement.getLayout() );
+                }
+
+                if( cardPileIncrement.getRemovedCardCount() != null )
+                {
+                    final int removedCardCount = cardPileIncrement.getRemovedCardCount();
+                    if( removedCardCount == cardPile.getCardCount() )
+                    {
+                        cardPile.removeCards();
+                    }
+                    else
+                    {
+                        for( int index = 0; index < removedCardCount; ++index )
+                        {
+                            cardPile.removeCard();
+                        }
+                    }
+                }
+
+                if( cardPileIncrement.getAddedCardMementos() != null )
+                {
+                    for( final Object cardMemento : cardPileIncrement.getAddedCardMementos() )
+                    {
+                        final ICard card = table_.createCard();
+
+                        try
+                        {
+                            card.setMemento( cardMemento );
+                        }
+                        catch( final MementoException e )
+                        {
+                            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.LocalNetworkTable_incrementCardPileState_setCardStateFailed, e );
+                        }
+
+                        cardPile.addCard( card );
+                    }
+                }
+            }
+            finally
+            {
+                getTableLock().unlock();
+                ignoreEvents_ = oldIgnoreEvents;
+            }
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementCardState(int, int, org.gamegineer.table.internal.net.node.CardIncrement)
      */
     @Override
     public void incrementCardState(
         final int cardPileIndex,
         final int cardIndex,
-        final CardIncrement cardIncremenet )
+        final CardIncrement cardIncrement )
     {
         assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
         assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
-        assertArgumentNotNull( cardIncremenet, "cardIncrement" ); //$NON-NLS-1$
+        assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
 
         synchronized( lock_ )
         {
@@ -147,19 +227,72 @@ final class LocalNetworkTable
                 final ICardPile cardPile = table_.getCardPile( cardPileIndex );
                 final ICard card = cardPile.getCard( cardIndex );
 
-                if( (cardIncremenet.getBackDesign() != null) && (cardIncremenet.getFaceDesign() != null) )
+                if( (cardIncrement.getBackDesign() != null) && (cardIncrement.getFaceDesign() != null) )
                 {
-                    card.setSurfaceDesigns( cardIncremenet.getBackDesign(), cardIncremenet.getFaceDesign() );
+                    card.setSurfaceDesigns( cardIncrement.getBackDesign(), cardIncrement.getFaceDesign() );
                 }
 
-                if( cardIncremenet.getLocation() != null )
+                if( cardIncrement.getLocation() != null )
                 {
-                    card.setLocation( cardIncremenet.getLocation() );
+                    card.setLocation( cardIncrement.getLocation() );
                 }
 
-                if( cardIncremenet.getOrientation() != null )
+                if( cardIncrement.getOrientation() != null )
                 {
-                    card.setOrientation( cardIncremenet.getOrientation() );
+                    card.setOrientation( cardIncrement.getOrientation() );
+                }
+            }
+            finally
+            {
+                getTableLock().unlock();
+                ignoreEvents_ = oldIgnoreEvents;
+            }
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementTableState(org.gamegineer.table.internal.net.node.TableIncrement)
+     */
+    @Override
+    @SuppressWarnings( "boxing" )
+    public void incrementTableState(
+        final TableIncrement tableIncrement )
+    {
+        assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            final boolean oldIgnoreEvents = ignoreEvents_;
+            ignoreEvents_ = true;
+            getTableLock().lock();
+            try
+            {
+                // TODO: unit test these methods
+                if( tableIncrement.getRemovedCardPileIndexes() != null )
+                {
+                    for( final Integer index : tableIncrement.getRemovedCardPileIndexes() )
+                    {
+                        table_.removeCardPile( table_.getCardPile( index ) );
+                    }
+                }
+
+                if( tableIncrement.getAddedCardPileMementos() != null )
+                {
+                    for( final Object cardPileMemento : tableIncrement.getAddedCardPileMementos() )
+                    {
+                        final ICardPile cardPile = table_.createCardPile();
+
+                        try
+                        {
+                            cardPile.setMemento( cardPileMemento );
+                        }
+                        catch( final MementoException e )
+                        {
+                            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.LocalNetworkTable_incrementTableState_setCardPileStateFailed, e );
+                        }
+
+                        table_.addCardPile( cardPile );
+                    }
                 }
             }
             finally
@@ -269,14 +402,42 @@ final class LocalNetworkTable
         // Methods
         // ==================================================================
 
+        // TODO: merge all these methods together with the help of a strategy interface
+
         /*
          * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
          */
         @Override
+        @SuppressWarnings( "synthetic-access" )
         public void cardLocationChanged(
             final CardEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            synchronized( lock_ )
+            {
+                if( ignoreEvents_ )
+                {
+                    return;
+                }
+            }
+
+            final int cardPileIndex, cardIndex;
+            final CardIncrement cardIncrement = new CardIncrement();
+            getTableLock().lock();
+            try
+            {
+                final ICard card = event.getCard();
+                cardIndex = card.getCardPile().getCardIndex( card );
+                cardPileIndex = card.getCardPile().getTable().getCardPileIndex( card.getCardPile() );
+                cardIncrement.setLocation( card.getLocation() );
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
+
+            tableManager_.incrementCardState( LocalNetworkTable.this, cardPileIndex, cardIndex, cardIncrement );
         }
 
         /*
@@ -312,7 +473,6 @@ final class LocalNetworkTable
                 getTableLock().unlock();
             }
 
-
             tableManager_.incrementCardState( LocalNetworkTable.this, cardPileIndex, cardIndex, cardIncrement );
         }
 
@@ -320,10 +480,36 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.ICardListener#cardSurfaceDesignsChanged(org.gamegineer.table.core.CardEvent)
          */
         @Override
+        @SuppressWarnings( "synthetic-access" )
         public void cardSurfaceDesignsChanged(
             final CardEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            synchronized( lock_ )
+            {
+                if( ignoreEvents_ )
+                {
+                    return;
+                }
+            }
+
+            final int cardPileIndex, cardIndex;
+            final CardIncrement cardIncrement = new CardIncrement();
+            getTableLock().lock();
+            try
+            {
+                final ICard card = event.getCard();
+                cardIndex = card.getCardPile().getCardIndex( card );
+                cardPileIndex = card.getCardPile().getTable().getCardPileIndex( card.getCardPile() );
+                cardIncrement.setSurfaceDesigns( card.getBackDesign(), card.getFaceDesign() );
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
+
+            tableManager_.incrementCardState( LocalNetworkTable.this, cardPileIndex, cardIndex, cardIncrement );
         }
     }
 
@@ -367,34 +553,110 @@ final class LocalNetworkTable
                 final ICardListener cardListener = new CardListener();
                 card.addCardListener( cardListener );
                 cardListeners_.put( card, cardListener );
+
+                if( ignoreEvents_ )
+                {
+                    return;
+                }
             }
+
+            final int cardPileIndex;
+            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+            getTableLock().lock();
+            try
+            {
+                final ICardPile cardPile = event.getCardPile();
+                cardPileIndex = cardPile.getTable().getCardPileIndex( cardPile );
+                cardPileIncrement.setAddedCardMementos( Collections.singletonList( event.getCard().createMemento() ) );
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
+
+            tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
         }
 
         /*
          * @see org.gamegineer.table.core.ICardPileListener#cardPileBaseDesignChanged(org.gamegineer.table.core.CardPileEvent)
          */
         @Override
+        @SuppressWarnings( "synthetic-access" )
         public void cardPileBaseDesignChanged(
             final CardPileEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            synchronized( lock_ )
+            {
+                if( ignoreEvents_ )
+                {
+                    return;
+                }
+            }
+
+            final int cardPileIndex;
+            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+            getTableLock().lock();
+            try
+            {
+                final ICardPile cardPile = event.getCardPile();
+                cardPileIndex = cardPile.getTable().getCardPileIndex( cardPile );
+                cardPileIncrement.setBaseDesign( cardPile.getBaseDesign() );
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
+
+            tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
         }
 
         /*
          * @see org.gamegineer.table.core.ICardPileListener#cardPileBoundsChanged(org.gamegineer.table.core.CardPileEvent)
          */
         @Override
+        @SuppressWarnings( "synthetic-access" )
         public void cardPileBoundsChanged(
             final CardPileEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            synchronized( lock_ )
+            {
+                if( ignoreEvents_ )
+                {
+                    return;
+                }
+            }
+
+            final int cardPileIndex;
+            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+            getTableLock().lock();
+            try
+            {
+                final ICardPile cardPile = event.getCardPile();
+                cardPileIndex = cardPile.getTable().getCardPileIndex( cardPile );
+                cardPileIncrement.setBaseLocation( cardPile.getBaseLocation() );
+                // FIXME: HACK to update layout -- no independent event to detect this change
+                // add a card pile layout changed event
+                cardPileIncrement.setLayout( cardPile.getLayout() );
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
+
+            tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
         }
 
         /*
          * @see org.gamegineer.table.core.ICardPileListener#cardRemoved(org.gamegineer.table.core.CardPileContentChangedEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
+        @SuppressWarnings( {
+            "boxing", "synthetic-access"
+        } )
         public void cardRemoved(
             final CardPileContentChangedEvent event )
         {
@@ -405,7 +667,28 @@ final class LocalNetworkTable
                 final ICard card = event.getCard();
                 final ICardListener cardListener = cardListeners_.remove( card );
                 card.removeCardListener( cardListener );
+
+                if( ignoreEvents_ )
+                {
+                    return;
+                }
             }
+
+            final int cardPileIndex;
+            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+            getTableLock().lock();
+            try
+            {
+                final ICardPile cardPile = event.getCardPile();
+                cardPileIndex = cardPile.getTable().getCardPileIndex( cardPile );
+                cardPileIncrement.setRemovedCardCount( 1 );
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
+
+            tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
         }
     }
 
@@ -464,14 +747,26 @@ final class LocalNetworkTable
                 {
                     getTableLock().unlock();
                 }
+
+                if( ignoreEvents_ )
+                {
+                    return;
+                }
             }
+
+            final TableIncrement tableIncrement = new TableIncrement();
+            tableIncrement.setAddedCardPileMementos( Collections.singletonList( event.getCardPile().createMemento() ) );
+
+            tableManager_.incrementTableState( LocalNetworkTable.this, tableIncrement );
         }
 
         /*
          * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
+        @SuppressWarnings( {
+            "boxing", "synthetic-access"
+        } )
         public void cardPileRemoved(
             final TableContentChangedEvent event )
         {
@@ -496,7 +791,17 @@ final class LocalNetworkTable
                 {
                     getTableLock().unlock();
                 }
+
+                if( ignoreEvents_ )
+                {
+                    return;
+                }
             }
+
+            final TableIncrement tableIncrement = new TableIncrement();
+            tableIncrement.setRemovedCardPileIndexes( Collections.singletonList( event.getCardPileIndex() ) );
+
+            tableManager_.incrementTableState( LocalNetworkTable.this, tableIncrement );
         }
     }
 }
