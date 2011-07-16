@@ -63,6 +63,8 @@ public final class Cards
         /* @NonNull */
         final ITable table )
     {
-        return table.createCard( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
+        final ICard card = table.createCard();
+        card.setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
+        return card;
     }
 }

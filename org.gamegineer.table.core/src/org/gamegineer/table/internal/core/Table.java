@@ -37,8 +37,6 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.ICardPileBaseDesign;
-import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
@@ -164,37 +162,12 @@ public final class Table
     }
 
     /*
-     * @see org.gamegineer.table.core.ITable#createCard(org.gamegineer.table.core.ICardSurfaceDesign, org.gamegineer.table.core.ICardSurfaceDesign)
-     */
-    @Override
-    public ICard createCard(
-        final ICardSurfaceDesign backDesign,
-        final ICardSurfaceDesign faceDesign )
-    {
-        final ICard card = createCard();
-        card.setSurfaceDesigns( backDesign, faceDesign );
-        return card;
-    }
-
-    /*
      * @see org.gamegineer.table.core.ITable#createCardPile()
      */
     @Override
     public ICardPile createCardPile()
     {
         return new CardPile( tableContext_ );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITable#createCardPile(org.gamegineer.table.core.ICardPileBaseDesign)
-     */
-    @Override
-    public ICardPile createCardPile(
-        final ICardPileBaseDesign baseDesign )
-    {
-        final ICardPile cardPile = createCardPile();
-        cardPile.setBaseDesign( baseDesign );
-        return cardPile;
     }
 
     /*

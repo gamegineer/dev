@@ -64,6 +64,8 @@ public final class CardPiles
         /* @NonNull */
         final ITable table )
     {
-        return table.createCardPile( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
+        final ICardPile cardPile = table.createCardPile();
+        cardPile.setBaseDesign( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
+        return cardPile;
     }
 }

@@ -85,7 +85,8 @@ public final class CardPileViewTest
         final ITable table = TableFactory.createTable();
         final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
         cardPileBaseDesignUI_ = CardPileBaseDesignUIs.createCardPileBaseDesignUI( cardPileBaseDesign );
-        final ICardPile cardPile = table.createCardPile( cardPileBaseDesign );
+        final ICardPile cardPile = table.createCardPile();
+        cardPile.setBaseDesign( cardPileBaseDesign );
         cardPileModel_ = new CardPileModel( cardPile );
         cardPileView_ = new CardPileView( cardPileModel_, cardPileBaseDesignUI_ );
     }

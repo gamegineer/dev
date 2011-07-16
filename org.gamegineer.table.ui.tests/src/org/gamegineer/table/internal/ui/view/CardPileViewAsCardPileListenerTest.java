@@ -68,7 +68,8 @@ public final class CardPileViewAsCardPileListenerTest
         final ITable table = TableFactory.createTable();
         final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
         final ICardPileBaseDesignUI cardPileBaseDesignUI = CardPileBaseDesignUIs.createCardPileBaseDesignUI( cardPileBaseDesign );
-        final ICardPile cardPile = table.createCardPile( cardPileBaseDesign );
+        final ICardPile cardPile = table.createCardPile();
+        cardPile.setBaseDesign( cardPileBaseDesign );
         return new CardPileView( new CardPileModel( cardPile ), cardPileBaseDesignUI );
     }
 }

@@ -70,7 +70,8 @@ public final class CardViewAsCardListenerTest
         final ICardSurfaceDesignUI backDesignUI = CardSurfaceDesignUIs.createCardSurfaceDesignUI( backDesign );
         final ICardSurfaceDesign faceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
         final ICardSurfaceDesignUI faceDesignUI = CardSurfaceDesignUIs.createCardSurfaceDesignUI( faceDesign );
-        final ICard card = table.createCard( backDesign, faceDesign );
+        final ICard card = table.createCard();
+        card.setSurfaceDesigns( backDesign, faceDesign );
         return new CardView( new CardModel( card ), backDesignUI, faceDesignUI );
     }
 }
