@@ -165,20 +165,14 @@ public final class BeginAuthenticationResponseMessageHandler
         }
 
         responseMessage.setCorrelationId( message.getId() );
-        if( remoteNodeController.sendMessage( responseMessage, null ) )
+        remoteNodeController.sendMessage( responseMessage, null );
+        if( responseMessage instanceof ErrorMessage )
         {
-            if( responseMessage instanceof ErrorMessage )
-            {
-                remoteNodeController.close( ((ErrorMessage)responseMessage).getError() );
-            }
-            else
-            {
-                remoteNodeController.bind( message.getPlayerName() );
-            }
+            remoteNodeController.close( ((ErrorMessage)responseMessage).getError() );
         }
         else
         {
-            remoteNodeController.close( TableNetworkError.TRANSPORT_ERROR );
+            remoteNodeController.bind( message.getPlayerName() );
         }
     }
 

@@ -109,11 +109,7 @@ public final class HelloRequestMessageHandler
         }
 
         responseMessage.setCorrelationId( message.getId() );
-        if( !remoteNodeController.sendMessage( responseMessage, null ) )
-        {
-            remoteNodeController.close( TableNetworkError.TRANSPORT_ERROR );
-            return;
-        }
+        remoteNodeController.sendMessage( responseMessage, null );
 
         if( responseMessage instanceof ErrorMessage )
         {
@@ -132,11 +128,7 @@ public final class HelloRequestMessageHandler
             final byte[] salt = authenticator.createSalt();
             remoteNodeController.setSalt( salt );
             beginAuthenticationRequest.setSalt( salt );
-
-            if( !remoteNodeController.sendMessage( beginAuthenticationRequest, BeginAuthenticationResponseMessageHandler.INSTANCE ) )
-            {
-                remoteNodeController.close( TableNetworkError.TRANSPORT_ERROR );
-            }
+            remoteNodeController.sendMessage( beginAuthenticationRequest, BeginAuthenticationResponseMessageHandler.INSTANCE );
         }
         catch( final TableNetworkException e )
         {

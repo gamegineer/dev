@@ -113,16 +113,13 @@ public interface IRemoteNodeController<LocalNodeType extends INode<?>>
      *        The message handler to be invoked for any response to the
      *        specified message or {@code null} if no response is expected.
      * 
-     * @return {@code true} if the message was sent successfully; otherwise
-     *         {@code false}.
-     * 
      * @throws java.lang.IllegalStateException
      *         If the remote node is closed.
      * @throws java.lang.NullPointerException
      *         If {@code message} is {@code null}.
      */
     @GuardedBy( "getLock()" )
-    public boolean sendMessage(
+    public void sendMessage(
         /* @NonNull */
         IMessage message,
         /* @Nullable */

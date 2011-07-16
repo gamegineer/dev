@@ -132,7 +132,7 @@ public final class AbstractMessageHandlerTest
     {
         final IRemoteNodeController<?> remoteNodeController = mocksControl_.createMock( IRemoteNodeController.class );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
-        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.isNull( IMessageHandler.class ) );
         final IMessage message = mocksControl_.createMock( IMessage.class );
         EasyMock.expect( message.getId() ).andReturn( IMessage.MINIMUM_ID ).anyTimes();
         EasyMock.expect( message.getCorrelationId() ).andReturn( IMessage.MAXIMUM_ID ).anyTimes();

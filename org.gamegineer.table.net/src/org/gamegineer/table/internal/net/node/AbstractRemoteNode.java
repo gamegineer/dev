@@ -487,7 +487,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      */
     @Override
     @SuppressWarnings( "boxing" )
-    public final boolean sendMessage(
+    public final void sendMessage(
         final IMessage message,
         final IMessageHandler messageHandler )
     {
@@ -496,13 +496,11 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         assert Thread.holdsLock( getLock() );
 
         message.setId( getNextMessageId() );
-        final boolean wasSent = serviceContext_.sendMessage( message );
-        if( wasSent && (messageHandler != null) )
+        serviceContext_.sendMessage( message );
+        if( messageHandler != null )
         {
             correlatedMessageHandlers_.put( message.getId(), messageHandler );
         }
-
-        return wasSent;
     }
 
     /*

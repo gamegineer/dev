@@ -30,7 +30,6 @@ import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController
 import org.gamegineer.table.internal.net.node.common.Authenticator;
 import org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationResponseMessage;
-import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkException;
 
 /**
@@ -95,10 +94,7 @@ public final class BeginAuthenticationRequestMessageHandler
         {
             final Authenticator authenticator = new Authenticator();
             response.setResponse( authenticator.createResponse( message.getChallenge(), password, message.getSalt() ) );
-            if( !remoteNodeController.sendMessage( response, EndAuthenticationMessageHandler.INSTANCE ) )
-            {
-                remoteNodeController.close( TableNetworkError.TRANSPORT_ERROR );
-            }
+            remoteNodeController.sendMessage( response, EndAuthenticationMessageHandler.INSTANCE );
         }
         catch( final TableNetworkException e )
         {

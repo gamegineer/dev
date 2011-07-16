@@ -114,9 +114,6 @@ final class RemoteServerNode
 
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
-        if( !sendMessage( message, HelloResponseMessageHandler.INSTANCE ) )
-        {
-            close( TableNetworkError.TRANSPORT_ERROR );
-        }
+        sendMessage( message, HelloResponseMessageHandler.INSTANCE );
     }
 }

@@ -394,7 +394,7 @@ final class ServiceHandler
     /*
      * @see org.gamegineer.table.internal.net.transport.IServiceContext#sendMessage(org.gamegineer.table.internal.net.transport.IMessage)
      */
-    public boolean sendMessage(
+    public void sendMessage(
         /* @NonNull */
         final IMessage message )
     {
@@ -405,12 +405,10 @@ final class ServiceHandler
             try
             {
                 outputQueue_.enqueueMessageEnvelope( MessageEnvelope.fromMessage( message ) );
-                return true;
             }
             catch( final IOException e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServiceHandler_sendMessage_ioError( message ), e );
-                return false;
             }
         }
     }

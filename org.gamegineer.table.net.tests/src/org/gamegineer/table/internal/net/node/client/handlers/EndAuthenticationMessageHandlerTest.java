@@ -126,12 +126,11 @@ public final class EndAuthenticationMessageHandlerTest
      * Ensures the {@code handleMessage} method correctly handles an unexpected
      * message.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testHandleMessage_UnexpectedMessage()
     {
         final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
-        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) ) ).andReturn( true );
+        remoteNodeController.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.isNull( IMessageHandler.class ) );
         remoteNodeController.close( TableNetworkError.UNEXPECTED_MESSAGE );
         mocksControl_.replay();
 

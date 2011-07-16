@@ -193,14 +193,13 @@ public final class AbstractRemoteNodeTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testMessageReceived_MessageEnvelope_UnhandledMessage_Correlated_NonError()
         throws Exception
     {
         final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
-        EasyMock.expect( serviceContext.sendMessage( EasyMock.capture( messageCapture ) ) ).andReturn( true );
+        serviceContext.sendMessage( EasyMock.capture( messageCapture ) );
         final FakeMessage message = new FakeMessage();
         message.setId( IMessage.MINIMUM_ID );
         message.setCorrelationId( IMessage.MAXIMUM_ID );
@@ -223,14 +222,13 @@ public final class AbstractRemoteNodeTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testMessageReceived_MessageEnvelope_UnhandledMessage_Uncorrelated()
         throws Exception
     {
         final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
-        EasyMock.expect( serviceContext.sendMessage( EasyMock.capture( messageCapture ) ) ).andReturn( true );
+        serviceContext.sendMessage( EasyMock.capture( messageCapture ) );
         final FakeMessage message = new FakeMessage();
         message.setId( IMessage.MINIMUM_ID );
         message.setCorrelationId( IMessage.NULL_CORRELATION_ID );
@@ -249,13 +247,12 @@ public final class AbstractRemoteNodeTest
      * Ensures the {@code messageReceived} method sends an error message in
      * response to a message envelope that contains an unknown message.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testMessageReceived_MessageEnvelope_UnknownMessage()
     {
         final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
-        EasyMock.expect( serviceContext.sendMessage( EasyMock.capture( messageCapture ) ) ).andReturn( true );
+        serviceContext.sendMessage( EasyMock.capture( messageCapture ) );
         final MessageEnvelope messageEnvelope = new MessageEnvelope( IMessage.MINIMUM_ID, IMessage.NULL_CORRELATION_ID, new byte[ 0 ] );
         mocksControl_.replay();
         remoteNode_.started( serviceContext );

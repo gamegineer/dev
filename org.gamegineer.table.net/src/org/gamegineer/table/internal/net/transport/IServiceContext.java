@@ -43,13 +43,10 @@ public interface IServiceContext
      * @param message
      *        The message; must not be {@code null}.
      * 
-     * @return {@code true} if the message was sent successfully; otherwise
-     *         {@code false}.
-     * 
      * @throws java.lang.NullPointerException
      *         If {@code message} is {@code null}.
      */
-    public boolean sendMessage(
+    public void sendMessage(
         /* @NonNull */
         IMessage message );
 

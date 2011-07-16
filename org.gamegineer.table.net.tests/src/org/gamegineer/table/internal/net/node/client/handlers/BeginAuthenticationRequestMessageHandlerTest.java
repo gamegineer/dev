@@ -34,7 +34,6 @@ import org.gamegineer.table.internal.net.node.common.Authenticator;
 import org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationRequestMessage;
 import org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationResponseMessage;
 import org.gamegineer.table.internal.net.transport.IMessage;
-import org.gamegineer.table.net.TableNetworkError;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -95,7 +94,6 @@ public final class BeginAuthenticationRequestMessageHandlerTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "boxing" )
     @Test
     public void testHandleMessage_BeginAuthenticationRequestMessage()
         throws Exception
@@ -108,7 +106,7 @@ public final class BeginAuthenticationRequestMessageHandlerTest
         final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
-        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( true );
+        remoteNodeController.sendMessage( EasyMock.capture( messageCapture ), EasyMock.notNull( IMessageHandler.class ) );
         mocksControl_.replay();
 
         final BeginAuthenticationRequestMessage message = new BeginAuthenticationRequestMessage();
@@ -129,35 +127,5 @@ public final class BeginAuthenticationRequestMessageHandlerTest
         assertEquals( playerName, responseMessage.getPlayerName() );
         final Authenticator authenticator = new Authenticator();
         assertArrayEquals( authenticator.createResponse( challenge, password, salt ), responseMessage.getResponse() );
-    }
-
-    /**
-     * Ensures the {@code handleMessage} method correctly handles a begin
-     * authentication request message in the case when the attempt to send the
-     * response message fails.
-     */
-    @SuppressWarnings( "boxing" )
-    @Test
-    public void testHandleMessage_BeginAuthenticationRequestMessage_SendResponseMessageFails()
-    {
-        final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
-        EasyMock.expect( localNode.getPlayerName() ).andReturn( "playerName" ); //$NON-NLS-1$
-        EasyMock.expect( localNode.getPassword() ).andReturn( new SecureString( "password".toCharArray() ) ); //$NON-NLS-1$
-        final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
-        EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
-        EasyMock.expect( remoteNodeController.sendMessage( EasyMock.notNull( IMessage.class ), EasyMock.notNull( IMessageHandler.class ) ) ).andReturn( false );
-        remoteNodeController.close( TableNetworkError.TRANSPORT_ERROR );
-        mocksControl_.replay();
-
-        final BeginAuthenticationRequestMessage message = new BeginAuthenticationRequestMessage();
-        message.setChallenge( new byte[] {
-            1, 2, 3, 4
-        } );
-        message.setSalt( new byte[] {
-            5, 6, 7, 8
-        } );
-        messageHandler_.handleMessage( remoteNodeController, message );
-
-        mocksControl_.verify();
     }
 }

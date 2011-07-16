@@ -53,12 +53,10 @@ public class FakeServiceContext
      * @see org.gamegineer.table.internal.net.transport.IServiceContext#sendMessage(org.gamegineer.table.internal.net.transport.IMessage)
      */
     @Override
-    public boolean sendMessage(
+    public void sendMessage(
         final IMessage message )
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
-
-        return true;
     }
 
     /*
