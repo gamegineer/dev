@@ -516,6 +516,27 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
+     * Ensures the card pile layout changed event catches any exception thrown
+     * by the {@code cardPileLayoutChanged} method of a card pile listener.
+     */
+    @Test
+    public void testCardPileLayoutChanged_CatchesListenerException()
+    {
+        final ICardPileListener listener1 = mocksControl_.createMock( ICardPileListener.class );
+        listener1.cardPileLayoutChanged( EasyMock.notNull( CardPileEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final ICardPileListener listener2 = mocksControl_.createMock( ICardPileListener.class );
+        listener2.cardPileLayoutChanged( EasyMock.notNull( CardPileEvent.class ) );
+        mocksControl_.replay();
+        cardPile_.addCardPileListener( listener1 );
+        cardPile_.addCardPileListener( listener2 );
+
+        cardPile_.setLayout( CardPileLayout.ACCORDIAN_DOWN );
+
+        mocksControl_.verify();
+    }
+
+    /**
      * Ensures the card removed event catches any exception thrown by the
      * {@code cardRemoved} method of a card pile listener.
      */
@@ -1364,7 +1385,26 @@ public abstract class AbstractCardPileTestCase
         cardPile_.addCard( createUniqueCard() );
         cardPile_.addCard( createUniqueCard() );
         final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        listener.cardPileLayoutChanged( EasyMock.notNull( CardPileEvent.class ) );
         listener.cardPileBoundsChanged( EasyMock.notNull( CardPileEvent.class ) );
+        mocksControl_.replay();
+        cardPile_.addCardPileListener( listener );
+
+        cardPile_.setLayout( CardPileLayout.ACCORDIAN_DOWN );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code setLayout} method fires a card pile layout changed
+     * event.
+     */
+    @Test
+    public void testSetLayout_FiresCardPileLayoutChangedEvent()
+    {
+        cardPile_.setLayout( CardPileLayout.STACKED );
+        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
+        listener.cardPileLayoutChanged( EasyMock.notNull( CardPileEvent.class ) );
         mocksControl_.replay();
         cardPile_.addCardPileListener( listener );
 

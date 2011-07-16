@@ -351,6 +351,27 @@ final class CardPile
     }
 
     /**
+     * Fires a card pile layout changed event.
+     */
+    private void fireCardPileLayoutChanged()
+    {
+        assert !getLock().isHeldByCurrentThread();
+
+        final CardPileEvent event = new CardPileEvent( this );
+        for( final ICardPileListener listener : listeners_ )
+        {
+            try
+            {
+                listener.cardPileLayoutChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPile_cardPileLayoutChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
      * Fires a card removed event.
      * 
      * @param card
@@ -964,18 +985,20 @@ final class CardPile
             getLock().unlock();
         }
 
-        if( cardPileBoundsChanged )
+        tableContext_.addEventNotification( new Runnable()
         {
-            tableContext_.addEventNotification( new Runnable()
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
             {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
+                fireCardPileLayoutChanged();
+
+                if( cardPileBoundsChanged )
                 {
                     fireCardPileBoundsChanged();
                 }
-            } );
-        }
+            }
+        } );
     }
 
     /*

@@ -95,6 +95,12 @@ final class Messages
      */
     public static String CardPile_cardPileBoundsChanged_unexpectedException;
 
+    /**
+     * An unexpected exception was thrown from
+     * ICardPileListener.cardPileLayoutChanged().
+     */
+    public static String CardPile_cardPileLayoutChanged_unexpectedException;
+
     /** An unexpected exception was thrown from ICardPileListener.cardRemoved(). */
     public static String CardPile_cardRemoved_unexpectedException;
 

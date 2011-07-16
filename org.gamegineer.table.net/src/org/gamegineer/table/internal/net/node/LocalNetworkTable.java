@@ -638,8 +638,40 @@ final class LocalNetworkTable
                 final ICardPile cardPile = event.getCardPile();
                 cardPileIndex = cardPile.getTable().getCardPileIndex( cardPile );
                 cardPileIncrement.setBaseLocation( cardPile.getBaseLocation() );
-                // FIXME: HACK to update layout -- no independent event to detect this change
-                // add a card pile layout changed event
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
+
+            tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ICardPileListener#cardPileLayoutChanged(org.gamegineer.table.core.CardPileEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void cardPileLayoutChanged(
+            final CardPileEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            synchronized( lock_ )
+            {
+                if( ignoreEvents_ )
+                {
+                    return;
+                }
+            }
+
+            final int cardPileIndex;
+            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+            getTableLock().lock();
+            try
+            {
+                final ICardPile cardPile = event.getCardPile();
+                cardPileIndex = cardPile.getTable().getCardPileIndex( cardPile );
                 cardPileIncrement.setLayout( cardPile.getLayout() );
             }
             finally

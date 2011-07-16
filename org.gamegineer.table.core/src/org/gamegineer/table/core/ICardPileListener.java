@@ -76,6 +76,19 @@ public interface ICardPileListener
         CardPileEvent event );
 
     /**
+     * Invoked after the card pile layout has changed.
+     * 
+     * @param event
+     *        The event describing the card pile; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void cardPileLayoutChanged(
+        /* @NonNull */
+        CardPileEvent event );
+
+    /**
      * Invoked after a card has been removed from the card pile.
      * 
      * @param event

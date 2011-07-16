@@ -178,6 +178,18 @@ public final class CardPileModel
     }
 
     /*
+     * @see org.gamegineer.table.core.ICardPileListener#cardPileLayoutChanged(org.gamegineer.table.core.CardPileEvent)
+     */
+    @Override
+    public void cardPileLayoutChanged(
+        final CardPileEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        fireCardPileModelStateChanged();
+    }
+
+    /*
      * @see org.gamegineer.table.core.ICardPileListener#cardRemoved(org.gamegineer.table.core.CardPileContentChangedEvent)
      */
     @Override

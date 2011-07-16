@@ -255,6 +255,18 @@ final class CardPileView
     }
 
     /*
+     * @see org.gamegineer.table.core.ICardPileListener#cardPileLayoutChanged(org.gamegineer.table.core.CardPileEvent)
+     */
+    @Override
+    public void cardPileLayoutChanged(
+        final CardPileEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing -- repaint only if layout change caused a bounds change
+    }
+
+    /*
      * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileModelStateChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
      */
     @Override
