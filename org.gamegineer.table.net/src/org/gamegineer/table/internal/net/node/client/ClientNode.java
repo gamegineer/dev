@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.node.client;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,10 +30,15 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.node.AbstractNode;
+import org.gamegineer.table.internal.net.node.CardIncrement;
+import org.gamegineer.table.internal.net.node.CardPileIncrement;
+import org.gamegineer.table.internal.net.node.INetworkTable;
 import org.gamegineer.table.internal.net.node.ITableManager;
+import org.gamegineer.table.internal.net.node.TableIncrement;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.net.TableNetworkError;
@@ -126,7 +132,7 @@ public final class ClientNode
         handshakeError_ = null;
         isHandshakeComplete_ = waitForHandshakeCompletion ? false : true;
         players_ = new ArrayList<String>();
-        tableManager_ = new TableManager();
+        tableManager_ = new ClientTableManager();
     }
 
 
@@ -295,5 +301,118 @@ public final class ClientNode
         players_.clear();
         players_.addAll( players );
         getTableNetworkController().playersUpdated();
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * Implementation of {@link ITableManager} that ensures changes to the local
+     * table are not broadcast to the server.
+     * 
+     * <p>
+     * THIS IS A TEMPORARY IMPLEMENTATION UNTIL WE SUPPORT CLIENTS BEING
+     * "PASSED THE BALL" AND HAVING THE AUTHORITY TO MAKE CHANGES TO THE NETWORK
+     * TABLE.
+     * </p>
+     */
+    @Immutable
+    private final class ClientTableManager
+        extends TableManager
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ClientTableManager} class.
+         */
+        ClientTableManager()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementCardPileState(org.gamegineer.table.internal.net.node.INetworkTable, int, org.gamegineer.table.internal.net.node.CardPileIncrement)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void incrementCardPileState(
+            final INetworkTable sourceTable,
+            final int cardPileIndex,
+            final CardPileIncrement cardPileIncrement )
+        {
+            assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
+            assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
+
+            if( sourceTable != getTable() )
+            {
+                super.incrementCardPileState( sourceTable, cardPileIndex, cardPileIncrement );
+            }
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementCardState(org.gamegineer.table.internal.net.node.INetworkTable, int, int, org.gamegineer.table.internal.net.node.CardIncrement)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void incrementCardState(
+            final INetworkTable sourceTable,
+            final int cardPileIndex,
+            final int cardIndex,
+            final CardIncrement cardIncrement )
+        {
+            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
+            assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
+            assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
+            assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
+
+            if( sourceTable != getTable() )
+            {
+                super.incrementCardState( sourceTable, cardPileIndex, cardIndex, cardIncrement );
+            }
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementTableState(org.gamegineer.table.internal.net.node.INetworkTable, org.gamegineer.table.internal.net.node.TableIncrement)
+         */
+        @SuppressWarnings( "synthetic-access" )
+        @Override
+        public void incrementTableState(
+            final INetworkTable sourceTable,
+            final TableIncrement tableIncrement )
+        {
+            assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
+
+            if( sourceTable != getTable() )
+            {
+                super.incrementTableState( sourceTable, tableIncrement );
+            }
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#setTableState(org.gamegineer.table.internal.net.node.INetworkTable, java.lang.Object)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void setTableState(
+            final INetworkTable sourceTable,
+            final Object tableMemento )
+        {
+            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
+            assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
+
+            if( sourceTable != getTable() )
+            {
+                super.setTableState( sourceTable, tableMemento );
+            }
+        }
     }
 }

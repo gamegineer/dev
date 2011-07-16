@@ -494,6 +494,23 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     }
 
     /**
+     * Gets the bound table associated with the local table network node.
+     * 
+     * @return The bound table associated with the local table network node;
+     *         never {@code null}.
+     */
+    /* @NonNull */
+    protected final INetworkTable getTable()
+    {
+        assert localPlayerName_ != null;
+
+        synchronized( getLock() )
+        {
+            return tables_.get( localPlayerName_ );
+        }
+    }
+
+    /**
      * Gets the collection of bound tables.
      * 
      * @return The collection of bound tables; never {@code null}.
