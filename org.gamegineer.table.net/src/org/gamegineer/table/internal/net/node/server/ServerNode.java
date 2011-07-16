@@ -25,24 +25,20 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.concurrent.locks.Lock;
-import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
-import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
-import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.node.AbstractNode;
 import org.gamegineer.table.internal.net.node.CardIncrement;
 import org.gamegineer.table.internal.net.node.CardPileIncrement;
 import org.gamegineer.table.internal.net.node.INetworkTable;
 import org.gamegineer.table.internal.net.node.ITableManager;
+import org.gamegineer.table.internal.net.node.NetworkTableUtils;
 import org.gamegineer.table.internal.net.node.TableIncrement;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -370,27 +366,11 @@ public final class ServerNode
         // Methods
         // ==================================================================
 
-        /**
-         * Gets the master table lock.
-         * 
-         * @return The master table lock; never {@code null}.
-         */
-        /* @NonNull */
-        @SuppressWarnings( "synthetic-access" )
-        private Lock getMasterTableLock()
-        {
-            return masterTable_.getLock();
-        }
-
-        // TODO: combine the increment logic here with the similar code in LocalNetworkTable
-
         /*
          * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementCardPileState(org.gamegineer.table.internal.net.node.INetworkTable, int, org.gamegineer.table.internal.net.node.CardPileIncrement)
          */
         @Override
-        @SuppressWarnings( {
-            "boxing", "synthetic-access"
-        } )
+        @SuppressWarnings( "synthetic-access" )
         public void incrementCardPileState(
             final INetworkTable sourceTable,
             final int cardPileIndex,
@@ -399,65 +379,7 @@ public final class ServerNode
             assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
             assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
 
-            getMasterTableLock().lock();
-            try
-            {
-                final ICardPile cardPile = masterTable_.getCardPile( cardPileIndex );
-
-                if( cardPileIncrement.getBaseDesign() != null )
-                {
-                    cardPile.setBaseDesign( cardPileIncrement.getBaseDesign() );
-                }
-
-                if( cardPileIncrement.getBaseLocation() != null )
-                {
-                    cardPile.setBaseLocation( cardPileIncrement.getBaseLocation() );
-                }
-
-                if( cardPileIncrement.getLayout() != null )
-                {
-                    cardPile.setLayout( cardPileIncrement.getLayout() );
-                }
-
-                if( cardPileIncrement.getRemovedCardCount() != null )
-                {
-                    final int removedCardCount = cardPileIncrement.getRemovedCardCount();
-                    if( removedCardCount == cardPile.getCardCount() )
-                    {
-                        cardPile.removeCards();
-                    }
-                    else
-                    {
-                        for( int index = 0; index < removedCardCount; ++index )
-                        {
-                            cardPile.removeCard();
-                        }
-                    }
-                }
-
-                if( cardPileIncrement.getAddedCardMementos() != null )
-                {
-                    for( final Object cardMemento : cardPileIncrement.getAddedCardMementos() )
-                    {
-                        final ICard card = masterTable_.createCard();
-
-                        try
-                        {
-                            card.setMemento( cardMemento );
-                        }
-                        catch( final MementoException e )
-                        {
-                            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerTableManager_incrementCardPileState_setCardStateFailed, e );
-                        }
-
-                        cardPile.addCard( card );
-                    }
-                }
-            }
-            finally
-            {
-                getMasterTableLock().unlock();
-            }
+            NetworkTableUtils.incrementCardPileState( masterTable_, cardPileIndex, cardPileIncrement );
 
             super.incrementCardPileState( sourceTable, cardPileIndex, cardPileIncrement );
         }
@@ -478,31 +400,7 @@ public final class ServerNode
             assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
             assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
 
-            getMasterTableLock().lock();
-            try
-            {
-                final ICardPile cardPile = masterTable_.getCardPile( cardPileIndex );
-                final ICard card = cardPile.getCard( cardIndex );
-
-                if( (cardIncrement.getBackDesign() != null) && (cardIncrement.getFaceDesign() != null) )
-                {
-                    card.setSurfaceDesigns( cardIncrement.getBackDesign(), cardIncrement.getFaceDesign() );
-                }
-
-                if( cardIncrement.getLocation() != null )
-                {
-                    card.setLocation( cardIncrement.getLocation() );
-                }
-
-                if( cardIncrement.getOrientation() != null )
-                {
-                    card.setOrientation( cardIncrement.getOrientation() );
-                }
-            }
-            finally
-            {
-                getMasterTableLock().unlock();
-            }
+            NetworkTableUtils.incrementCardState( masterTable_, cardPileIndex, cardIndex, cardIncrement );
 
             super.incrementCardState( sourceTable, cardPileIndex, cardIndex, cardIncrement );
         }
@@ -510,9 +408,7 @@ public final class ServerNode
         /*
          * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementTableState(org.gamegineer.table.internal.net.node.INetworkTable, org.gamegineer.table.internal.net.node.TableIncrement)
          */
-        @SuppressWarnings( {
-            "boxing", "synthetic-access"
-        } )
+        @SuppressWarnings( "synthetic-access" )
         @Override
         public void incrementTableState(
             final INetworkTable sourceTable,
@@ -520,41 +416,7 @@ public final class ServerNode
         {
             assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
 
-            getMasterTableLock().lock();
-            try
-            {
-                // TODO: unit test these methods
-                if( tableIncrement.getRemovedCardPileIndexes() != null )
-                {
-                    for( final Integer index : tableIncrement.getRemovedCardPileIndexes() )
-                    {
-                        masterTable_.removeCardPile( masterTable_.getCardPile( index ) );
-                    }
-                }
-
-                if( tableIncrement.getAddedCardPileMementos() != null )
-                {
-                    for( final Object cardPileMemento : tableIncrement.getAddedCardPileMementos() )
-                    {
-                        final ICardPile cardPile = masterTable_.createCardPile();
-
-                        try
-                        {
-                            cardPile.setMemento( cardPileMemento );
-                        }
-                        catch( final MementoException e )
-                        {
-                            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerTableManager_incrementTableState_setCardPileStateFailed, e );
-                        }
-
-                        masterTable_.addCardPile( cardPile );
-                    }
-                }
-            }
-            finally
-            {
-                getMasterTableLock().unlock();
-            }
+            NetworkTableUtils.incrementTableState( masterTable_, tableIncrement );
 
             super.incrementTableState( sourceTable, tableIncrement );
         }
@@ -571,14 +433,7 @@ public final class ServerNode
             assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
             assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
 
-            try
-            {
-                masterTable_.setMemento( tableMemento );
-            }
-            catch( final MementoException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServerTableManager_setTableState_failed, e );
-            }
+            NetworkTableUtils.setTableState( masterTable_, tableMemento );
 
             super.setTableState( sourceTable, tableMemento );
         }

@@ -27,11 +27,9 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
-import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
@@ -42,7 +40,6 @@ import org.gamegineer.table.core.ICardPileListener;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
-import org.gamegineer.table.internal.net.Loggers;
 
 /**
  * Adapts a local table to {@link INetworkTable}.
@@ -125,11 +122,21 @@ final class LocalNetworkTable
     // Methods
     // ======================================================================
 
+    /**
+     * Gets the table lock.
+     * 
+     * @return The table lock; never {@code null}.
+     */
+    /* @NonNull */
+    private Lock getTableLock()
+    {
+        return table_.getLock();
+    }
+
     /*
      * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementCardPileState(int, org.gamegineer.table.internal.net.node.CardPileIncrement)
      */
     @Override
-    @SuppressWarnings( "boxing" )
     public void incrementCardPileState(
         final int cardPileIndex,
         final CardPileIncrement cardPileIncrement )
@@ -141,66 +148,8 @@ final class LocalNetworkTable
         {
             final boolean oldIgnoreEvents = ignoreEvents_;
             ignoreEvents_ = true;
-            getTableLock().lock();
-            try
-            {
-                final ICardPile cardPile = table_.getCardPile( cardPileIndex );
-
-                if( cardPileIncrement.getBaseDesign() != null )
-                {
-                    cardPile.setBaseDesign( cardPileIncrement.getBaseDesign() );
-                }
-
-                if( cardPileIncrement.getBaseLocation() != null )
-                {
-                    cardPile.setBaseLocation( cardPileIncrement.getBaseLocation() );
-                }
-
-                if( cardPileIncrement.getLayout() != null )
-                {
-                    cardPile.setLayout( cardPileIncrement.getLayout() );
-                }
-
-                if( cardPileIncrement.getRemovedCardCount() != null )
-                {
-                    final int removedCardCount = cardPileIncrement.getRemovedCardCount();
-                    if( removedCardCount == cardPile.getCardCount() )
-                    {
-                        cardPile.removeCards();
-                    }
-                    else
-                    {
-                        for( int index = 0; index < removedCardCount; ++index )
-                        {
-                            cardPile.removeCard();
-                        }
-                    }
-                }
-
-                if( cardPileIncrement.getAddedCardMementos() != null )
-                {
-                    for( final Object cardMemento : cardPileIncrement.getAddedCardMementos() )
-                    {
-                        final ICard card = table_.createCard();
-
-                        try
-                        {
-                            card.setMemento( cardMemento );
-                        }
-                        catch( final MementoException e )
-                        {
-                            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.LocalNetworkTable_incrementCardPileState_setCardStateFailed, e );
-                        }
-
-                        cardPile.addCard( card );
-                    }
-                }
-            }
-            finally
-            {
-                getTableLock().unlock();
-                ignoreEvents_ = oldIgnoreEvents;
-            }
+            NetworkTableUtils.incrementCardPileState( table_, cardPileIndex, cardPileIncrement );
+            ignoreEvents_ = oldIgnoreEvents;
         }
     }
 
@@ -221,32 +170,8 @@ final class LocalNetworkTable
         {
             final boolean oldIgnoreEvents = ignoreEvents_;
             ignoreEvents_ = true;
-            getTableLock().lock();
-            try
-            {
-                final ICardPile cardPile = table_.getCardPile( cardPileIndex );
-                final ICard card = cardPile.getCard( cardIndex );
-
-                if( (cardIncrement.getBackDesign() != null) && (cardIncrement.getFaceDesign() != null) )
-                {
-                    card.setSurfaceDesigns( cardIncrement.getBackDesign(), cardIncrement.getFaceDesign() );
-                }
-
-                if( cardIncrement.getLocation() != null )
-                {
-                    card.setLocation( cardIncrement.getLocation() );
-                }
-
-                if( cardIncrement.getOrientation() != null )
-                {
-                    card.setOrientation( cardIncrement.getOrientation() );
-                }
-            }
-            finally
-            {
-                getTableLock().unlock();
-                ignoreEvents_ = oldIgnoreEvents;
-            }
+            NetworkTableUtils.incrementCardState( table_, cardPileIndex, cardIndex, cardIncrement );
+            ignoreEvents_ = oldIgnoreEvents;
         }
     }
 
@@ -254,7 +179,6 @@ final class LocalNetworkTable
      * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementTableState(org.gamegineer.table.internal.net.node.TableIncrement)
      */
     @Override
-    @SuppressWarnings( "boxing" )
     public void incrementTableState(
         final TableIncrement tableIncrement )
     {
@@ -264,42 +188,8 @@ final class LocalNetworkTable
         {
             final boolean oldIgnoreEvents = ignoreEvents_;
             ignoreEvents_ = true;
-            getTableLock().lock();
-            try
-            {
-                // TODO: unit test these methods
-                if( tableIncrement.getRemovedCardPileIndexes() != null )
-                {
-                    for( final Integer index : tableIncrement.getRemovedCardPileIndexes() )
-                    {
-                        table_.removeCardPile( table_.getCardPile( index ) );
-                    }
-                }
-
-                if( tableIncrement.getAddedCardPileMementos() != null )
-                {
-                    for( final Object cardPileMemento : tableIncrement.getAddedCardPileMementos() )
-                    {
-                        final ICardPile cardPile = table_.createCardPile();
-
-                        try
-                        {
-                            cardPile.setMemento( cardPileMemento );
-                        }
-                        catch( final MementoException e )
-                        {
-                            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.LocalNetworkTable_incrementTableState_setCardPileStateFailed, e );
-                        }
-
-                        table_.addCardPile( cardPile );
-                    }
-                }
-            }
-            finally
-            {
-                getTableLock().unlock();
-                ignoreEvents_ = oldIgnoreEvents;
-            }
+            NetworkTableUtils.incrementTableState( table_, tableIncrement );
+            ignoreEvents_ = oldIgnoreEvents;
         }
     }
 
@@ -334,17 +224,6 @@ final class LocalNetworkTable
         }
     }
 
-    /**
-     * Gets the table lock.
-     * 
-     * @return The table lock; never {@code null}.
-     */
-    /* @NonNull */
-    private Lock getTableLock()
-    {
-        return table_.getLock();
-    }
-
     /*
      * @see org.gamegineer.table.internal.net.node.INetworkTable#setTableState(java.lang.Object)
      */
@@ -358,18 +237,8 @@ final class LocalNetworkTable
         {
             final boolean oldIgnoreEvents = ignoreEvents_;
             ignoreEvents_ = true;
-            try
-            {
-                table_.setMemento( tableMemento );
-            }
-            catch( final MementoException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.LocalNetworkTable_setTableState_failed, e );
-            }
-            finally
-            {
-                ignoreEvents_ = oldIgnoreEvents;
-            }
+            NetworkTableUtils.setTableState( table_, tableMemento );
+            ignoreEvents_ = oldIgnoreEvents;
         }
     }
 
@@ -401,8 +270,6 @@ final class LocalNetworkTable
         // ==================================================================
         // Methods
         // ==================================================================
-
-        // TODO: merge all these methods together with the help of a strategy interface
 
         /*
          * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)

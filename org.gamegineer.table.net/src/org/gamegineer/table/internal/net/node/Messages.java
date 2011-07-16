@@ -82,16 +82,16 @@ final class Messages
     /** An uncorrelated error message was received. */
     public static String ErrorMessageHandler_handleMessage_errorReceived;
 
-    // --- LocalNetworkTable ------------------------------------------------
+    // --- NetworkTableUtils ------------------------------------------------
 
     /** Failed to set the card state. */
-    public static String LocalNetworkTable_incrementCardPileState_setCardStateFailed;
+    public static String NetworkTableUtils_incrementCardPileState_setCardStateFailed;
 
     /** Failed to set the card pile state. */
-    public static String LocalNetworkTable_incrementTableState_setCardPileStateFailed;
+    public static String NetworkTableUtils_incrementTableState_setCardPileStateFailed;
 
     /** Failed to set the table state. */
-    public static String LocalNetworkTable_setTableState_failed;
+    public static String NetworkTableUtils_setTableState_failed;
 
 
     // ======================================================================
