@@ -323,6 +323,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                     transportLayer_ = null;
 
                     final INetworkTable table = tables_.remove( localPlayerName_ );
+                    assert table != null;
                     table.dispose();
 
                     disconnected();
