@@ -89,3 +89,4 @@ uninstalls
 validator
 unregistration
 deserializes
+editable
