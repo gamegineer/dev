@@ -510,5 +510,14 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         {
             return EasyMock.createMock( ITableManager.class );
         }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.INodeController#isEditor()
+         */
+        @Override
+        public boolean isEditor()
+        {
+            return false;
+        }
     }
 }

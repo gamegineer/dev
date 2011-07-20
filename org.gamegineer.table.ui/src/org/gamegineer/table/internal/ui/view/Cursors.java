@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui.view;
 
+import java.awt.AWTException;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -29,9 +30,11 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.ui.Activator;
+import org.gamegineer.table.internal.ui.Loggers;
 
 /**
  * The collection of cursors available to all views.
@@ -49,6 +52,9 @@ final class Cursors
     /** The hand cursor. */
     private static final Cursor handCursor_;
 
+    /** The invalid cursor. */
+    private static final Cursor invalidCursor_;
+
 
     // ======================================================================
     // Constructors
@@ -61,6 +67,7 @@ final class Cursors
     {
         grabCursor_ = createCursor( "/icons/cursors/grab.png", new Point( 0, 0 ), Messages.Cursors_grab_name ); //$NON-NLS-1$
         handCursor_ = createCursor( "/icons/cursors/hand.png", new Point( 0, 0 ), Messages.Cursors_hand_name ); //$NON-NLS-1$
+        invalidCursor_ = createInvalidCursor();
     }
 
     /**
@@ -132,6 +139,25 @@ final class Cursors
     }
 
     /**
+     * Creates the invalid cursor.
+     * 
+     * @return The invalid cursor; never {@code null}.
+     */
+    /* @NonNull */
+    private static Cursor createInvalidCursor()
+    {
+        try
+        {
+            return Cursor.getSystemCustomCursor( "Invalid.32x32" ); //$NON-NLS-1$
+        }
+        catch( final AWTException e )
+        {
+            Loggers.getDefaultLogger().log( Level.WARNING, Messages.Cursors_createInvalidCursor_failed, e );
+            return Cursor.getDefaultCursor();
+        }
+    }
+
+    /**
      * Gets the default cursor.
      * 
      * @return The default cursor; never {@code null}.
@@ -162,5 +188,16 @@ final class Cursors
     static Cursor getHandCursor()
     {
         return handCursor_;
+    }
+
+    /**
+     * Gets the invalid cursor.
+     * 
+     * @return The invalid cursor; never {@code null}.
+     */
+    /* @NonNull */
+    static Cursor getInvalidCursor()
+    {
+        return invalidCursor_;
     }
 }

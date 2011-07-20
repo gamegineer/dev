@@ -314,6 +314,21 @@ public final class TableNetwork
     }
 
     /*
+     * @see org.gamegineer.table.net.ITableNetwork#isEditor()
+     */
+    @Override
+    public boolean isEditor()
+    {
+        final INodeController nodeController = nodeControllerRef_.get();
+        if( nodeController != null )
+        {
+            return nodeController.isEditor();
+        }
+
+        return false;
+    }
+
+    /*
      * @see org.gamegineer.table.net.ITableNetwork#join(org.gamegineer.table.net.ITableNetworkConfiguration)
      */
     @Override

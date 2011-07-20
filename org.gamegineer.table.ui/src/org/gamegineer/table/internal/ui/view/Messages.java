@@ -550,6 +550,9 @@ final class Messages
 
     // --- Cursors ----------------------------------------------------------
 
+    /** Failed to create the system invalid cursor. */
+    public static String Cursors_createInvalidCursor_failed;
+
     /** The name of the grab cursor. */
     public static String Cursors_grab_name;
 

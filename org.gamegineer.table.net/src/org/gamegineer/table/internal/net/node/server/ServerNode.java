@@ -238,6 +238,15 @@ public final class ServerNode
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.node.INodeController#isEditor()
+     */
+    @Override
+    public boolean isEditor()
+    {
+        return true;
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.node.server.IServerNode#isPlayerConnected(java.lang.String)
      */
     @Override

@@ -83,4 +83,13 @@ public interface INodeController
      */
     /* @NonNull */
     public Collection<String> getPlayers();
+
+    /**
+     * Indicates the player associated with the table network node is the table
+     * editor.
+     * 
+     * @return {@code true} if the player associated with the table network node
+     *         is the table editor; otherwise {@code false}.
+     */
+    public boolean isEditor();
 }

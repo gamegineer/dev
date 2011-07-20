@@ -537,6 +537,17 @@ public final class TableModel
     }
 
     /**
+     * Indicates the table model is editable.
+     * 
+     * @return {@code true} if the table model is editable; otherwise {@code
+     *         false}.
+     */
+    public boolean isEditable()
+    {
+        return tableNetwork_.isConnected() ? tableNetwork_.isEditor() : true;
+    }
+
+    /**
      * Reads a table from the specified file.
      * 
      * @param file

@@ -99,6 +99,14 @@ public interface ITableNetwork
     public boolean isConnected();
 
     /**
+     * Indicates the local player is the table editor.
+     * 
+     * @return {@code true} if the local player is the table editor; otherwise
+     *         {@code false}.
+     */
+    public boolean isEditor();
+
+    /**
      * Joins an existing table network.
      * 
      * <p>

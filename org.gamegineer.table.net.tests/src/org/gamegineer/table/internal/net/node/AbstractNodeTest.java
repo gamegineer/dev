@@ -147,6 +147,12 @@ public final class AbstractNodeTest
             {
                 return null;
             }
+
+            @Override
+            public boolean isEditor()
+            {
+                return false;
+            }
         };
     }
 
@@ -256,6 +262,15 @@ public final class AbstractNodeTest
         public ITableManager getTableManager()
         {
             return EasyMock.createMock( ITableManager.class );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.INodeController#isEditor()
+         */
+        @Override
+        public boolean isEditor()
+        {
+            return false;
         }
 
         /**

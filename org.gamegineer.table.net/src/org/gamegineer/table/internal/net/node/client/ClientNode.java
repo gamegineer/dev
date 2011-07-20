@@ -246,6 +246,15 @@ public final class ClientNode
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.node.INodeController#isEditor()
+     */
+    @Override
+    public boolean isEditor()
+    {
+        return false;
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.node.AbstractNode#remoteNodeBound(org.gamegineer.table.internal.net.node.IRemoteNode)
      */
     @Override
