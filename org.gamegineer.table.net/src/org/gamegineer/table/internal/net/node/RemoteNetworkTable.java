@@ -70,6 +70,15 @@ final class RemoteNetworkTable
     // ======================================================================
 
     /*
+     * @see org.gamegineer.table.internal.net.node.INetworkTable#dispose()
+     */
+    @Override
+    public void dispose()
+    {
+        // do nothing
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.node.INetworkTable#incrementCardPileState(int, org.gamegineer.table.internal.net.node.CardPileIncrement)
      */
     @Override

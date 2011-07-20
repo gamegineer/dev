@@ -33,6 +33,11 @@ public interface INetworkTable
     // ======================================================================
 
     /**
+     * Disposes of the resources associated with the table.
+     */
+    public void dispose();
+
+    /**
      * Increments the state of the specified card pile.
      * 
      * @param cardPileIndex

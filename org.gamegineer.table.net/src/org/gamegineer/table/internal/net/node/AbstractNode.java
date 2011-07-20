@@ -321,7 +321,9 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                 if( transportLayer != null )
                 {
                     transportLayer_ = null;
-                    tables_.remove( localPlayerName_ );
+
+                    final INetworkTable table = tables_.remove( localPlayerName_ );
+                    table.dispose();
 
                     disconnected();
                     dispose();
@@ -431,8 +433,14 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             password_.dispose();
             password_ = null;
         }
-        remoteNodes_.clear();
+
+        for( final INetworkTable table : tables_.values() )
+        {
+            table.dispose();
+        }
         tables_.clear();
+
+        remoteNodes_.clear();
     }
 
     /*
@@ -596,8 +604,9 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
         assertConnected();
         assertArgumentLegal( remoteNodes_.remove( remoteNode.getPlayerName() ) != null, "remoteNode", Messages.AbstractNode_unbindRemoteNode_remoteNodeNotBound ); //$NON-NLS-1$
-        assert tables_.containsKey( remoteNode.getPlayerName() );
-        tables_.remove( remoteNode.getPlayerName() );
+        final INetworkTable table = tables_.remove( remoteNode.getPlayerName() );
+        assert table != null;
+        table.dispose();
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Remote node unbound for player '%s'", remoteNode.getPlayerName() ) ); //$NON-NLS-1$
         remoteNodeUnbound( remoteNode );
     }

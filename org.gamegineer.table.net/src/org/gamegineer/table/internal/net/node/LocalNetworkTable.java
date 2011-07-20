@@ -122,6 +122,15 @@ final class LocalNetworkTable
     // Methods
     // ======================================================================
 
+    /*
+     * @see org.gamegineer.table.internal.net.node.INetworkTable#dispose()
+     */
+    @Override
+    public void dispose()
+    {
+        uninitializeListeners();
+    }
+
     /**
      * Gets the table lock.
      * 
@@ -239,6 +248,44 @@ final class LocalNetworkTable
             ignoreEvents_ = true;
             NetworkTableUtils.setTableState( table_, tableMemento );
             ignoreEvents_ = oldIgnoreEvents;
+        }
+    }
+
+    /**
+     * Uninitializes the listeners for the local table.
+     */
+    private void uninitializeListeners()
+    {
+        getTableLock().lock();
+        try
+        {
+            if( tableListener_ != null )
+            {
+                table_.removeTableListener( tableListener_ );
+                tableListener_ = null;
+            }
+
+            for( final ICardPile cardPile : table_.getCardPiles() )
+            {
+                final ICardPileListener cardPileListener = cardPileListeners_.remove( cardPile );
+                if( cardPileListener != null )
+                {
+                    cardPile.removeCardPileListener( cardPileListener );
+                }
+
+                for( final ICard card : cardPile.getCards() )
+                {
+                    final ICardListener cardListener = cardListeners_.remove( card );
+                    if( cardListener != null )
+                    {
+                        card.removeCardListener( cardListener );
+                    }
+                }
+            }
+        }
+        finally
+        {
+            getTableLock().unlock();
         }
     }
 
@@ -565,7 +612,10 @@ final class LocalNetworkTable
             {
                 final ICard card = event.getCard();
                 final ICardListener cardListener = cardListeners_.remove( card );
-                card.removeCardListener( cardListener );
+                if( cardListener != null )
+                {
+                    card.removeCardListener( cardListener );
+                }
 
                 if( ignoreEvents_ )
                 {
@@ -680,11 +730,17 @@ final class LocalNetworkTable
                     for( final ICard card : cardPile.getCards() )
                     {
                         final ICardListener cardListener = cardListeners_.remove( card );
-                        card.removeCardListener( cardListener );
+                        if( cardListener != null )
+                        {
+                            card.removeCardListener( cardListener );
+                        }
                     }
 
                     final ICardPileListener cardPileListener = cardPileListeners_.remove( cardPile );
-                    cardPile.removeCardPileListener( cardPileListener );
+                    if( cardPileListener != null )
+                    {
+                        cardPile.removeCardPileListener( cardPileListener );
+                    }
                 }
                 finally
                 {
