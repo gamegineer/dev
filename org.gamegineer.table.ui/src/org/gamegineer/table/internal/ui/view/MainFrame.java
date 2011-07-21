@@ -204,16 +204,30 @@ public final class MainFrame
             }
         } );
 
-        actionMediator_.bindShouldEnablePredicate( Actions.getSaveTableAction(), new IPredicate<Action>()
+        final IPredicate<Action> isTableDirtyAndEditablePredicate = new IPredicate<Action>()
         {
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
-                return isTableDirty();
+                return isTableDirty() && isTableEditable();
             }
-        } );
+        };
+        final IPredicate<Action> isTableEditablePredicate = new IPredicate<Action>()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Action obj )
+            {
+                return isTableEditable();
+            }
+        };
+        actionMediator_.bindShouldEnablePredicate( Actions.getOpenNewTableAction(), isTableEditablePredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getOpenTableAction(), isTableEditablePredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getSaveTableAction(), isTableDirtyAndEditablePredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getSaveTableAsAction(), isTableEditablePredicate );
     }
 
     /*
@@ -340,6 +354,21 @@ public final class MainFrame
     }
 
     /**
+     * Initializes this component.
+     */
+    private void initializeComponent()
+    {
+        setJMenuBar( menuBarView_.getMenuBar() );
+
+        setContentPane( mainView_ );
+
+        setLocationByPlatform( true );
+        setSize( 640, 480 );
+        setIconImages( getApplicationIconImages() );
+        updateTitle();
+    }
+
+    /**
      * Indicates the table is dirty.
      * 
      * @return {@code true} if the table is dirty; otherwise {@code false}.
@@ -356,18 +385,19 @@ public final class MainFrame
     }
 
     /**
-     * Initializes this component.
+     * Indicates the table is editable.
+     * 
+     * @return {@code true} if the table is editable; otherwise {@code false}.
      */
-    private void initializeComponent()
+    private boolean isTableEditable()
     {
-        setJMenuBar( menuBarView_.getMenuBar() );
+        final TableModel tableModel = model_.getTableModel();
+        if( tableModel == null )
+        {
+            return false;
+        }
 
-        setContentPane( mainView_ );
-
-        setLocationByPlatform( true );
-        setSize( 640, 480 );
-        setIconImages( getApplicationIconImages() );
-        updateTitle();
+        return !tableModel.getTableNetwork().isConnected();
     }
 
     /**
