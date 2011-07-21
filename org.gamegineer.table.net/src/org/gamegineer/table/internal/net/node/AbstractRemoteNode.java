@@ -32,6 +32,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.node.common.handlers.CardIncrementMessageHandler;
 import org.gamegineer.table.internal.net.node.common.handlers.CardPileIncrementMessageHandler;
@@ -359,6 +360,12 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
             final IMessage message = extractMessage( messageEnvelope );
             if( message != null )
             {
+                Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
+                    String.format( "Received message '%s' (id=%d, correlation-id=%d)", //$NON-NLS-1$
+                        message.getClass().getName(), //
+                        message.getId(), //
+                        message.getCorrelationId() ) );
+
                 final IMessageHandler messageHandler;
                 if( message.getCorrelationId() != IMessage.NULL_CORRELATION_ID )
                 {
@@ -497,6 +504,12 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
 
         message.setId( getNextMessageId() );
         serviceContext_.sendMessage( message );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
+            String.format( "Sent message '%s' (id=%d, correlation-id=%d)", //$NON-NLS-1$
+                message.getClass().getName(), //
+                message.getId(), //
+                message.getCorrelationId() ) );
+
         if( messageHandler != null )
         {
             correlatedMessageHandlers_.put( message.getId(), messageHandler );
