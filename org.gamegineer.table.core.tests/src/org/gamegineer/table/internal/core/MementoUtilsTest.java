@@ -30,7 +30,7 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.MementoUtilsTest} class.
+ * {@link org.gamegineer.table.internal.core.MementoUtils} class.
  */
 public final class MementoUtilsTest
 {
