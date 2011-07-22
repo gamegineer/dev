@@ -21,30 +21,33 @@
 
 package org.gamegineer.table.internal.core;
 
+import java.util.ArrayDeque;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.ReentrantLock;
-import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 
 /**
  * The execution context for a virtual game table.
  */
-@Immutable
+@ThreadSafe
 final class TableContext
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
+    /** Indicates an event notification is in progress on the current thread. */
+    private final ThreadLocal<Boolean> isEventNotificationInProgress_;
+
     /** The table context lock. */
     private final TableContextLock lock_;
 
     /**
-     * The collection of pending event notifications to be executed the next
-     * time the table context lock is released.
+     * The collection of pending event notifications queued on the current
+     * thread to be executed the next time the table context lock is released on
+     * this thread.
      */
-    private final Queue<Runnable> pendingEventNotifications_;
+    private final ThreadLocal<Queue<Runnable>> pendingEventNotifications_;
 
 
     // ======================================================================
@@ -56,8 +59,23 @@ final class TableContext
      */
     TableContext()
     {
+        isEventNotificationInProgress_ = new ThreadLocal<Boolean>()
+        {
+            @Override
+            protected Boolean initialValue()
+            {
+                return Boolean.FALSE;
+            }
+        };
         lock_ = new TableContextLock();
-        pendingEventNotifications_ = new ConcurrentLinkedQueue<Runnable>();
+        pendingEventNotifications_ = new ThreadLocal<Queue<Runnable>>()
+        {
+            @Override
+            protected Queue<Runnable> initialValue()
+            {
+                return new ArrayDeque<Runnable>();
+            }
+        };
     }
 
 
@@ -84,16 +102,50 @@ final class TableContext
     {
         assert notification != null;
 
-        if( lock_.isHeldByCurrentThread() )
+        if( canFireEventNotifications() )
         {
-            if( !pendingEventNotifications_.offer( notification ) )
+            notification.run();
+        }
+        else
+        {
+            if( !pendingEventNotifications_.get().offer( notification ) )
             {
                 Loggers.getDefaultLogger().warning( Messages.TableContext_addEventNotification_queueFailed );
             }
         }
-        else
+    }
+
+    /**
+     * Indicates event notifications can be fired on the current thread.
+     * 
+     * @return {@code true} if event notifications can be fired on the current
+     *         thread; otherwise {@code false}.
+     */
+    private boolean canFireEventNotifications()
+    {
+        return !lock_.isHeldByCurrentThread() && !isEventNotificationInProgress_.get().booleanValue();
+    }
+
+    /**
+     * Fires all pending event notifications queued for the current thread.
+     */
+    private void firePendingEventNotifications()
+    {
+        assert canFireEventNotifications();
+
+        isEventNotificationInProgress_.set( Boolean.TRUE );
+        try
         {
-            notification.run();
+            final Queue<Runnable> pendingEventNotifications = pendingEventNotifications_.get();
+            Runnable notification = null;
+            while( (notification = pendingEventNotifications.poll()) != null )
+            {
+                notification.run();
+            }
+        }
+        finally
+        {
+            isEventNotificationInProgress_.set( Boolean.FALSE );
         }
     }
 
@@ -154,13 +206,9 @@ final class TableContext
         {
             super.unlock();
 
-            if( !isHeldByCurrentThread() )
+            if( canFireEventNotifications() )
             {
-                Runnable notification = null;
-                while( (notification = pendingEventNotifications_.poll()) != null )
-                {
-                    notification.run();
-                }
+                firePendingEventNotifications();
             }
         }
     }
