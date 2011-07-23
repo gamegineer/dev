@@ -322,36 +322,22 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void cardLocationChanged(
             final CardEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            synchronized( lock_ )
-            {
-                if( ignoreEvents_ )
-                {
-                    return;
-                }
-            }
+            // do nothing
 
-            final int cardPileIndex, cardIndex;
-            final CardIncrement cardIncrement = new CardIncrement();
-            getTableLock().lock();
-            try
-            {
-                final ICard card = event.getCard();
-                cardIndex = card.getCardPile().getCardIndex( card );
-                cardPileIndex = card.getCardPile().getTable().getCardPileIndex( card.getCardPile() );
-                cardIncrement.setLocation( card.getLocation() );
-            }
-            finally
-            {
-                getTableLock().unlock();
-            }
-
-            tableManager_.incrementCardState( LocalNetworkTable.this, cardPileIndex, cardIndex, cardIncrement );
+            // In the current implementation, handling this event is unnecessary because a
+            // card can only be moved by moving a card pile that contains the card. Thus,
+            // when the corresponding card pile bounds changed event is fired, it will
+            // automatically set the new card location when the card pile location is changed.
+            //
+            // If we send both the card pile bounds changed event and the card location
+            // changed event over the network, the card movement on remote tables will appear
+            // "jumpy" because two ICard.setLocation() calls will be made that may be a few
+            // pixels off.
         }
 
         /*
