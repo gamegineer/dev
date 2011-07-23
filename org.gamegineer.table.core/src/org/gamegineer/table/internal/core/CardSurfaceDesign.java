@@ -1,6 +1,6 @@
 /*
  * CardSurfaceDesign.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -74,8 +74,8 @@ public final class CardSurfaceDesign
         final int height )
     {
         assertArgumentNotNull( id, "id" ); //$NON-NLS-1$
-        assertArgumentLegal( width >= 0, "width", Messages.CardSurfaceDesign_ctor_width_negative ); //$NON-NLS-1$
-        assertArgumentLegal( height >= 0, "height", Messages.CardSurfaceDesign_ctor_height_negative ); //$NON-NLS-1$
+        assertArgumentLegal( width >= 0, "width", NonNlsMessages.CardSurfaceDesign_ctor_width_negative ); //$NON-NLS-1$
+        assertArgumentLegal( height >= 0, "height", NonNlsMessages.CardSurfaceDesign_ctor_height_negative ); //$NON-NLS-1$
 
         id_ = id;
         size_ = new Dimension( width, height );

@@ -1,6 +1,6 @@
 /*
  * WizardDialog.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -331,23 +331,23 @@ public final class WizardDialog
 
         if( wizard_.needsPreviousAndNextButtons() )
         {
-            final JButton backButton = createButton( parent, WizardConstants.BACK_BUTTON_ID, Messages.WizardDialog_backButton_label, false );
-            backButton.setMnemonic( Messages.WizardDialog_backButton_mnemonic.charAt( 0 ) );
+            final JButton backButton = createButton( parent, WizardConstants.BACK_BUTTON_ID, NlsMessages.WizardDialog_backButton_label, false );
+            backButton.setMnemonic( NlsMessages.WizardDialog_backButton_mnemonic.charAt( 0 ) );
             hGroup.addComponent( backButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE );
             vGroup.addComponent( backButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE );
 
             hGroup.addGap( convertWidthInDlusToPixels( 1 ) );
 
-            final JButton nextButton = createButton( parent, WizardConstants.NEXT_BUTTON_ID, Messages.WizardDialog_nextButton_label, false );
-            nextButton.setMnemonic( Messages.WizardDialog_nextButton_mnemonic.charAt( 0 ) );
+            final JButton nextButton = createButton( parent, WizardConstants.NEXT_BUTTON_ID, NlsMessages.WizardDialog_nextButton_label, false );
+            nextButton.setMnemonic( NlsMessages.WizardDialog_nextButton_mnemonic.charAt( 0 ) );
             hGroup.addComponent( nextButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE );
             vGroup.addComponent( nextButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE );
 
             hGroup.addGap( hGap );
         }
 
-        final JButton finishButton = createButton( parent, WizardConstants.FINISH_BUTTON_ID, Messages.WizardDialog_finishButton_label, true );
-        finishButton.setMnemonic( Messages.WizardDialog_finishButton_mnemonic.charAt( 0 ) );
+        final JButton finishButton = createButton( parent, WizardConstants.FINISH_BUTTON_ID, NlsMessages.WizardDialog_finishButton_label, true );
+        finishButton.setMnemonic( NlsMessages.WizardDialog_finishButton_mnemonic.charAt( 0 ) );
         hGroup.addComponent( finishButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE );
         vGroup.addComponent( finishButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE );
 

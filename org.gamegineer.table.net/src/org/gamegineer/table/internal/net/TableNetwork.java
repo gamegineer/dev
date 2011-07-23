@@ -131,7 +131,7 @@ public final class TableNetwork
         final ITableNetworkListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.TableNetwork_addTableNetworkListener_listener_registered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.TableNetwork_addTableNetworkListener_listener_registered ); //$NON-NLS-1$
     }
 
     /**
@@ -218,7 +218,7 @@ public final class TableNetwork
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableNetwork_tableNetworkConnected_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableNetwork_tableNetworkConnected_unexpectedException, e );
             }
         }
     }
@@ -243,7 +243,7 @@ public final class TableNetwork
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableNetwork_tableNetworkDisconnected_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableNetwork_tableNetworkDisconnected_unexpectedException, e );
             }
         }
     }
@@ -262,7 +262,7 @@ public final class TableNetwork
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableNetwork_tableNetworkPlayersUpdated_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableNetwork_tableNetworkPlayersUpdated_unexpectedException, e );
             }
         }
     }
@@ -349,7 +349,7 @@ public final class TableNetwork
         final ITableNetworkListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.TableNetwork_removeTableNetworkListener_listener_notRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.TableNetwork_removeTableNetworkListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /*

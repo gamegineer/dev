@@ -144,7 +144,7 @@ final class Card
         final ICardListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.Card_addCardListener_listener_registered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Card_addCardListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -187,7 +187,7 @@ final class Card
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Card_cardLocationChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Card_cardLocationChanged_unexpectedException, e );
             }
         }
     }
@@ -208,7 +208,7 @@ final class Card
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Card_cardOrientationChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Card_cardOrientationChanged_unexpectedException, e );
             }
         }
     }
@@ -229,7 +229,7 @@ final class Card
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Card_cardSurfaceDesignsChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Card_cardSurfaceDesignsChanged_unexpectedException, e );
             }
         }
     }
@@ -449,7 +449,7 @@ final class Card
         final ICardListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.Card_removeCardListener_listener_notRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.Card_removeCardListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /**
@@ -569,7 +569,7 @@ final class Card
     {
         assertArgumentNotNull( backDesign, "backDesign" ); //$NON-NLS-1$
         assertArgumentNotNull( faceDesign, "faceDesign" ); //$NON-NLS-1$
-        assertArgumentLegal( faceDesign.getSize().equals( backDesign.getSize() ), "faceDesign", Messages.Card_setSurfaceDesigns_faceDesign_sizeNotEqual ); //$NON-NLS-1$
+        assertArgumentLegal( faceDesign.getSize().equals( backDesign.getSize() ), "faceDesign", NonNlsMessages.Card_setSurfaceDesigns_faceDesign_sizeNotEqual ); //$NON-NLS-1$
 
         getLock().lock();
         try

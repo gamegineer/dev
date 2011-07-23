@@ -494,8 +494,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.ace" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddAceOfClubsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddAceOfClubsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddAceOfClubsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddAceOfClubsCardAction_text );
             }
         } );
         actions.put( ADD_ACE_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
@@ -504,8 +504,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.ace" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddAceOfDiamondsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddAceOfDiamondsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddAceOfDiamondsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddAceOfDiamondsCardAction_text );
             }
         } );
         actions.put( ADD_ACE_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
@@ -514,8 +514,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.ace" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddAceOfHeartsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddAceOfHeartsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddAceOfHeartsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddAceOfHeartsCardAction_text );
             }
         } );
         actions.put( ADD_ACE_OF_SPADES_CARD_ACTION_ID, new BasicAction()
@@ -524,8 +524,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.ace" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddAceOfSpadesCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddAceOfSpadesCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddAceOfSpadesCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddAceOfSpadesCardAction_text );
             }
         } );
         actions.put( ADD_CARD_PILE_ACTION_ID, new BasicAction()
@@ -533,9 +533,9 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.AddCardPileAction_accelerator ) );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddCardPileAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddCardPileAction_text );
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.AddCardPileAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddCardPileAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddCardPileAction_text );
             }
         } );
         actions.put( ADD_EIGHT_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
@@ -544,8 +544,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.eight" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddEightOfClubsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddEightOfClubsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddEightOfClubsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddEightOfClubsCardAction_text );
             }
         } );
         actions.put( ADD_EIGHT_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
@@ -554,8 +554,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.eight" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddEightOfDiamondsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddEightOfDiamondsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddEightOfDiamondsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddEightOfDiamondsCardAction_text );
             }
         } );
         actions.put( ADD_EIGHT_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
@@ -564,8 +564,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.eight" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddEightOfHeartsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddEightOfHeartsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddEightOfHeartsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddEightOfHeartsCardAction_text );
             }
         } );
         actions.put( ADD_EIGHT_OF_SPADES_CARD_ACTION_ID, new BasicAction()
@@ -574,8 +574,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.eight" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddEightOfSpadesCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddEightOfSpadesCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddEightOfSpadesCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddEightOfSpadesCardAction_text );
             }
         } );
         actions.put( ADD_FIVE_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
@@ -584,8 +584,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.five" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFiveOfClubsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddFiveOfClubsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddFiveOfClubsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddFiveOfClubsCardAction_text );
             }
         } );
         actions.put( ADD_FIVE_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
@@ -594,8 +594,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.five" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFiveOfDiamondsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddFiveOfDiamondsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddFiveOfDiamondsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddFiveOfDiamondsCardAction_text );
             }
         } );
         actions.put( ADD_FIVE_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
@@ -604,8 +604,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.five" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFiveOfHeartsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddFiveOfHeartsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddFiveOfHeartsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddFiveOfHeartsCardAction_text );
             }
         } );
         actions.put( ADD_FIVE_OF_SPADES_CARD_ACTION_ID, new BasicAction()
@@ -614,8 +614,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.five" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFiveOfSpadesCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddFiveOfSpadesCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddFiveOfSpadesCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddFiveOfSpadesCardAction_text );
             }
         } );
         actions.put( ADD_FOUR_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
@@ -624,8 +624,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.four" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFourOfClubsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddFourOfClubsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddFourOfClubsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddFourOfClubsCardAction_text );
             }
         } );
         actions.put( ADD_FOUR_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
@@ -634,8 +634,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.four" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFourOfDiamondsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddFourOfDiamondsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddFourOfDiamondsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddFourOfDiamondsCardAction_text );
             }
         } );
         actions.put( ADD_FOUR_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
@@ -644,8 +644,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.four" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFourOfHeartsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddFourOfHeartsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddFourOfHeartsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddFourOfHeartsCardAction_text );
             }
         } );
         actions.put( ADD_FOUR_OF_SPADES_CARD_ACTION_ID, new BasicAction()
@@ -654,8 +654,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.four" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddFourOfSpadesCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddFourOfSpadesCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddFourOfSpadesCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddFourOfSpadesCardAction_text );
             }
         } );
         actions.put( ADD_JACK_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
@@ -664,8 +664,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.jack" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddJackOfClubsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddJackOfClubsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddJackOfClubsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddJackOfClubsCardAction_text );
             }
         } );
         actions.put( ADD_JACK_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
@@ -674,8 +674,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.jack" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddJackOfDiamondsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddJackOfDiamondsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddJackOfDiamondsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddJackOfDiamondsCardAction_text );
             }
         } );
         actions.put( ADD_JACK_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
@@ -684,8 +684,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.jack" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddJackOfHeartsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddJackOfHeartsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddJackOfHeartsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddJackOfHeartsCardAction_text );
             }
         } );
         actions.put( ADD_JACK_OF_SPADES_CARD_ACTION_ID, new BasicAction()
@@ -694,8 +694,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.jack" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddJackOfSpadesCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddJackOfSpadesCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddJackOfSpadesCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddJackOfSpadesCardAction_text );
             }
         } );
         actions.put( ADD_JOKER_CARD_ACTION_ID, new BasicAction()
@@ -704,8 +704,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.special.joker" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddJokerCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddJokerCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddJokerCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddJokerCardAction_text );
             }
         } );
         actions.put( ADD_KING_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
@@ -714,8 +714,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.king" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddKingOfClubsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddKingOfClubsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddKingOfClubsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddKingOfClubsCardAction_text );
             }
         } );
         actions.put( ADD_KING_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
@@ -724,8 +724,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.king" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddKingOfDiamondsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddKingOfDiamondsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddKingOfDiamondsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddKingOfDiamondsCardAction_text );
             }
         } );
         actions.put( ADD_KING_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
@@ -734,8 +734,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.king" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddKingOfHeartsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddKingOfHeartsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddKingOfHeartsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddKingOfHeartsCardAction_text );
             }
         } );
         actions.put( ADD_KING_OF_SPADES_CARD_ACTION_ID, new BasicAction()
@@ -744,8 +744,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.king" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddKingOfSpadesCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddKingOfSpadesCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddKingOfSpadesCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddKingOfSpadesCardAction_text );
             }
         } );
         actions.put( ADD_NINE_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
@@ -754,8 +754,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.nine" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddNineOfClubsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddNineOfClubsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddNineOfClubsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddNineOfClubsCardAction_text );
             }
         } );
         actions.put( ADD_NINE_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
@@ -764,8 +764,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.nine" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddNineOfDiamondsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddNineOfDiamondsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddNineOfDiamondsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddNineOfDiamondsCardAction_text );
             }
         } );
         actions.put( ADD_NINE_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
@@ -774,8 +774,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.nine" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddNineOfHeartsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddNineOfHeartsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddNineOfHeartsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddNineOfHeartsCardAction_text );
             }
         } );
         actions.put( ADD_NINE_OF_SPADES_CARD_ACTION_ID, new BasicAction()
@@ -784,8 +784,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.nine" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddNineOfSpadesCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddNineOfSpadesCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddNineOfSpadesCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddNineOfSpadesCardAction_text );
             }
         } );
         actions.put( ADD_QUEEN_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
@@ -794,8 +794,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.queen" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddQueenOfClubsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddQueenOfClubsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddQueenOfClubsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddQueenOfClubsCardAction_text );
             }
         } );
         actions.put( ADD_QUEEN_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
@@ -804,8 +804,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.queen" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddQueenOfDiamondsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddQueenOfDiamondsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddQueenOfDiamondsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddQueenOfDiamondsCardAction_text );
             }
         } );
         actions.put( ADD_QUEEN_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
@@ -814,8 +814,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.queen" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddQueenOfHeartsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddQueenOfHeartsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddQueenOfHeartsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddQueenOfHeartsCardAction_text );
             }
         } );
         actions.put( ADD_QUEEN_OF_SPADES_CARD_ACTION_ID, new BasicAction()
@@ -824,8 +824,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.queen" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddQueenOfSpadesCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddQueenOfSpadesCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddQueenOfSpadesCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddQueenOfSpadesCardAction_text );
             }
         } );
         actions.put( ADD_SEVEN_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
@@ -834,8 +834,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.seven" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSevenOfClubsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddSevenOfClubsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddSevenOfClubsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddSevenOfClubsCardAction_text );
             }
         } );
         actions.put( ADD_SEVEN_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
@@ -844,8 +844,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.seven" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSevenOfDiamondsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddSevenOfDiamondsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddSevenOfDiamondsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddSevenOfDiamondsCardAction_text );
             }
         } );
         actions.put( ADD_SEVEN_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
@@ -854,8 +854,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.seven" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSevenOfHeartsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddSevenOfHeartsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddSevenOfHeartsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddSevenOfHeartsCardAction_text );
             }
         } );
         actions.put( ADD_SEVEN_OF_SPADES_CARD_ACTION_ID, new BasicAction()
@@ -864,8 +864,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.seven" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSevenOfSpadesCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddSevenOfSpadesCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddSevenOfSpadesCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddSevenOfSpadesCardAction_text );
             }
         } );
         actions.put( ADD_SIX_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
@@ -874,8 +874,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.six" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSixOfClubsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddSixOfClubsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddSixOfClubsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddSixOfClubsCardAction_text );
             }
         } );
         actions.put( ADD_SIX_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
@@ -884,8 +884,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.six" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSixOfDiamondsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddSixOfDiamondsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddSixOfDiamondsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddSixOfDiamondsCardAction_text );
             }
         } );
         actions.put( ADD_SIX_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
@@ -894,8 +894,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.six" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSixOfHeartsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddSixOfHeartsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddSixOfHeartsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddSixOfHeartsCardAction_text );
             }
         } );
         actions.put( ADD_SIX_OF_SPADES_CARD_ACTION_ID, new BasicAction()
@@ -904,8 +904,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.six" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddSixOfSpadesCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddSixOfSpadesCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddSixOfSpadesCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddSixOfSpadesCardAction_text );
             }
         } );
         actions.put( ADD_STANDARD_52_CARD_DECK_ACTION_ID, new BasicAction()
@@ -913,8 +913,8 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddStandard52CardDeckAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddStandard52CardDeckAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddStandard52CardDeckAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddStandard52CardDeckAction_text );
             }
         } );
         actions.put( ADD_STANDARD_54_CARD_DECK_ACTION_ID, new BasicAction()
@@ -922,8 +922,8 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddStandard54CardDeckAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddStandard54CardDeckAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddStandard54CardDeckAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddStandard54CardDeckAction_text );
             }
         } );
         actions.put( ADD_TEN_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
@@ -932,8 +932,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.ten" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTenOfClubsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddTenOfClubsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddTenOfClubsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddTenOfClubsCardAction_text );
             }
         } );
         actions.put( ADD_TEN_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
@@ -942,8 +942,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.ten" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTenOfDiamondsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddTenOfDiamondsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddTenOfDiamondsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddTenOfDiamondsCardAction_text );
             }
         } );
         actions.put( ADD_TEN_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
@@ -952,8 +952,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.ten" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTenOfHeartsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddTenOfHeartsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddTenOfHeartsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddTenOfHeartsCardAction_text );
             }
         } );
         actions.put( ADD_TEN_OF_SPADES_CARD_ACTION_ID, new BasicAction()
@@ -962,8 +962,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.ten" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTenOfSpadesCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddTenOfSpadesCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddTenOfSpadesCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddTenOfSpadesCardAction_text );
             }
         } );
         actions.put( ADD_THREE_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
@@ -972,8 +972,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.three" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddThreeOfClubsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddThreeOfClubsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddThreeOfClubsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddThreeOfClubsCardAction_text );
             }
         } );
         actions.put( ADD_THREE_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
@@ -982,8 +982,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.three" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddThreeOfDiamondsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddThreeOfDiamondsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddThreeOfDiamondsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddThreeOfDiamondsCardAction_text );
             }
         } );
         actions.put( ADD_THREE_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
@@ -992,8 +992,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.three" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddThreeOfHeartsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddThreeOfHeartsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddThreeOfHeartsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddThreeOfHeartsCardAction_text );
             }
         } );
         actions.put( ADD_THREE_OF_SPADES_CARD_ACTION_ID, new BasicAction()
@@ -1002,8 +1002,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.three" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddThreeOfSpadesCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddThreeOfSpadesCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddThreeOfSpadesCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddThreeOfSpadesCardAction_text );
             }
         } );
         actions.put( ADD_TWO_OF_CLUBS_CARD_ACTION_ID, new BasicAction()
@@ -1012,8 +1012,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.clubs.two" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTwoOfClubsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddTwoOfClubsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddTwoOfClubsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddTwoOfClubsCardAction_text );
             }
         } );
         actions.put( ADD_TWO_OF_DIAMONDS_CARD_ACTION_ID, new BasicAction()
@@ -1022,8 +1022,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.diamonds.two" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTwoOfDiamondsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddTwoOfDiamondsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddTwoOfDiamondsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddTwoOfDiamondsCardAction_text );
             }
         } );
         actions.put( ADD_TWO_OF_HEARTS_CARD_ACTION_ID, new BasicAction()
@@ -1032,8 +1032,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.hearts.two" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTwoOfHeartsCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddTwoOfHeartsCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddTwoOfHeartsCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddTwoOfHeartsCardAction_text );
             }
         } );
         actions.put( ADD_TWO_OF_SPADES_CARD_ACTION_ID, new BasicAction()
@@ -1042,8 +1042,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, "org.gamegineer.cardSurfaces.spades.two" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.AddTwoOfSpadesCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.AddTwoOfSpadesCardAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.AddTwoOfSpadesCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.AddTwoOfSpadesCardAction_text );
             }
         } );
         actions.put( DISCONNECT_TABLE_NETWORK_ACTION_ID, new BasicAction()
@@ -1051,8 +1051,8 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.DisconnectTableNetworkAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.DisconnectTableNetworkAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.DisconnectTableNetworkAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.DisconnectTableNetworkAction_text );
             }
         } );
         actions.put( EXIT_ACTION_ID, new BasicAction()
@@ -1060,8 +1060,8 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.ExitAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.ExitAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.ExitAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.ExitAction_text );
             }
         } );
         actions.put( FLIP_CARD_ACTION_ID, new BasicAction()
@@ -1069,9 +1069,9 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.FlipCardAction_accelerator ) );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.FlipCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.FlipCardAction_text );
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.FlipCardAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.FlipCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.FlipCardAction_text );
             }
         } );
         actions.put( HOST_TABLE_NETWORK_ACTION_ID, new BasicAction()
@@ -1079,8 +1079,8 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.HostTableNetworkAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.HostTableNetworkAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.HostTableNetworkAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.HostTableNetworkAction_text );
             }
         } );
         actions.put( IMPORT_TABLE_ACTION_ID, new BasicAction()
@@ -1088,8 +1088,8 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.ImportTableAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.ImportTableAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.ImportTableAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.ImportTableAction_text );
             }
         } );
         actions.put( JOIN_TABLE_NETWORK_ACTION_ID, new BasicAction()
@@ -1097,8 +1097,8 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.JoinTableNetworkAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.JoinTableNetworkAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.JoinTableNetworkAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.JoinTableNetworkAction_text );
             }
         } );
         actions.put( OPEN_ABOUT_DIALOG_ACTION_ID, new BasicAction()
@@ -1106,8 +1106,8 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.OpenAboutDialogAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.OpenAboutDialogAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.OpenAboutDialogAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.OpenAboutDialogAction_text );
             }
         } );
         actions.put( OPEN_NEW_TABLE_ACTION_ID, new BasicAction()
@@ -1115,9 +1115,9 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.OpenNewTableAction_accelerator ) );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.OpenNewTableAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.OpenNewTableAction_text );
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.OpenNewTableAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.OpenNewTableAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.OpenNewTableAction_text );
             }
         } );
         actions.put( OPEN_TABLE_ACTION_ID, new BasicAction()
@@ -1129,10 +1129,10 @@ final class Actions
                 // prompted for a file name.  Cannot use null because AbstractButton
                 // substitutes the button text for the command key when the command key
                 // is null.
-                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.OpenTableAction_accelerator ) );
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.OpenTableAction_accelerator ) );
                 putValue( ACTION_COMMAND_KEY, "" ); //$NON-NLS-1$
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.OpenTableAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.OpenTableAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.OpenTableAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.OpenTableAction_text );
             }
         } );
         actions.put( REMOVE_ALL_CARD_PILES_ACTION_ID, new BasicAction()
@@ -1140,9 +1140,9 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.RemoveAllCardPilesAction_accelerator ) );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.RemoveAllCardPilesAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.RemoveAllCardPilesAction_text );
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveAllCardPilesAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveAllCardPilesAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.RemoveAllCardPilesAction_text );
             }
         } );
         actions.put( REMOVE_ALL_CARDS_ACTION_ID, new BasicAction()
@@ -1150,9 +1150,9 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.RemoveAllCardsAction_accelerator ) );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.RemoveAllCardsAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.RemoveAllCardsAction_text );
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveAllCardsAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveAllCardsAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.RemoveAllCardsAction_text );
             }
         } );
         actions.put( REMOVE_CARD_ACTION_ID, new BasicAction()
@@ -1160,9 +1160,9 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.RemoveCardAction_accelerator ) );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.RemoveCardAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.RemoveCardAction_text );
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveCardAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveCardAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.RemoveCardAction_text );
             }
         } );
         actions.put( REMOVE_CARD_PILE_ACTION_ID, new BasicAction()
@@ -1170,9 +1170,9 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.RemoveCardPileAction_accelerator ) );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.RemoveCardPileAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.RemoveCardPileAction_text );
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveCardPileAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveCardPileAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.RemoveCardPileAction_text );
             }
         } );
         actions.put( RESET_TABLE_ORIGIN_ACTION_ID, new BasicAction()
@@ -1180,8 +1180,8 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.ResetTableOriginAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.ResetTableOriginAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.ResetTableOriginAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.ResetTableOriginAction_text );
             }
         } );
         actions.put( SAVE_TABLE_ACTION_ID, new BasicAction()
@@ -1189,9 +1189,9 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( Messages.SaveTableAction_accelerator ) );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SaveTableAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.SaveTableAction_text );
+                putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.SaveTableAction_accelerator ) );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SaveTableAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.SaveTableAction_text );
             }
         } );
         actions.put( SAVE_TABLE_AS_ACTION_ID, new BasicAction()
@@ -1199,8 +1199,8 @@ final class Actions
             private static final long serialVersionUID = 1L;
 
             {
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SaveTableAsAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.SaveTableAsAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SaveTableAsAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.SaveTableAsAction_text );
             }
         } );
         actions.put( SET_ACCORDIAN_DOWN_CARD_PILE_LAYOUT_ACTION_ID, new BasicAction()
@@ -1209,8 +1209,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, CardPileLayout.ACCORDIAN_DOWN.name() );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SetAccordianDownCardPileLayoutAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.SetAccordianDownCardPileLayoutAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianDownCardPileLayoutAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.SetAccordianDownCardPileLayoutAction_text );
             }
         } );
         actions.put( SET_ACCORDIAN_LEFT_CARD_PILE_LAYOUT_ACTION_ID, new BasicAction()
@@ -1219,8 +1219,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, CardPileLayout.ACCORDIAN_LEFT.name() );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SetAccordianLeftCardPileLayoutAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.SetAccordianLeftCardPileLayoutAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianLeftCardPileLayoutAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.SetAccordianLeftCardPileLayoutAction_text );
             }
         } );
         actions.put( SET_ACCORDIAN_RIGHT_CARD_PILE_LAYOUT_ACTION_ID, new BasicAction()
@@ -1229,8 +1229,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, CardPileLayout.ACCORDIAN_RIGHT.name() );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SetAccordianRightCardPileLayoutAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.SetAccordianRightCardPileLayoutAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianRightCardPileLayoutAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.SetAccordianRightCardPileLayoutAction_text );
             }
         } );
         actions.put( SET_ACCORDIAN_UP_CARD_PILE_LAYOUT_ACTION_ID, new BasicAction()
@@ -1239,8 +1239,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, CardPileLayout.ACCORDIAN_UP.name() );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SetAccordianUpCardPileLayoutAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.SetAccordianUpCardPileLayoutAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetAccordianUpCardPileLayoutAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.SetAccordianUpCardPileLayoutAction_text );
             }
         } );
         actions.put( SET_STACKED_CARD_PILE_LAYOUT_ACTION_ID, new BasicAction()
@@ -1249,8 +1249,8 @@ final class Actions
 
             {
                 putValue( ACTION_COMMAND_KEY, CardPileLayout.STACKED.name() );
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( Messages.SetStackedCardPileLayoutAction_mnemonic ).getKeyCode() );
-                putValue( NAME, Messages.SetStackedCardPileLayoutAction_text );
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.SetStackedCardPileLayoutAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.SetStackedCardPileLayoutAction_text );
             }
         } );
 

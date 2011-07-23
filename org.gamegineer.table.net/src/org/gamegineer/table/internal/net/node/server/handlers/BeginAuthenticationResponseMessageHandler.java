@@ -158,7 +158,7 @@ public final class BeginAuthenticationResponseMessageHandler
         }
         catch( final TableNetworkException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.BeginAuthenticationResponseMessageHandler_authenticationFailed, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.BeginAuthenticationResponseMessageHandler_authenticationFailed, e );
             final ErrorMessage errorMessage = new ErrorMessage();
             errorMessage.setError( e.getError() );
             responseMessage = errorMessage;

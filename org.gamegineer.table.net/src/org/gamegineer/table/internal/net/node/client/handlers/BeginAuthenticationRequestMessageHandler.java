@@ -98,7 +98,7 @@ public final class BeginAuthenticationRequestMessageHandler
         }
         catch( final TableNetworkException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.BeginAuthenticationRequestMessageHandler_beginAuthenticationResponseFailed, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.BeginAuthenticationRequestMessageHandler_beginAuthenticationResponseFailed, e );
             remoteNodeController.close( e.getError() );
         }
         finally

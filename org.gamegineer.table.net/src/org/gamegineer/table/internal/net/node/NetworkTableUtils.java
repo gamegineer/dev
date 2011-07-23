@@ -131,7 +131,7 @@ public final class NetworkTableUtils
                     }
                     catch( final MementoException e )
                     {
-                        Loggers.getDefaultLogger().log( Level.SEVERE, Messages.NetworkTableUtils_incrementCardPileState_setCardStateFailed, e );
+                        Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.NetworkTableUtils_incrementCardPileState_setCardStateFailed, e );
                     }
 
                     cardPile.addCard( card );
@@ -248,7 +248,7 @@ public final class NetworkTableUtils
                     }
                     catch( final MementoException e )
                     {
-                        Loggers.getDefaultLogger().log( Level.SEVERE, Messages.NetworkTableUtils_incrementTableState_setCardPileStateFailed, e );
+                        Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.NetworkTableUtils_incrementTableState_setCardPileStateFailed, e );
                     }
 
                     table.addCardPile( cardPile );
@@ -287,7 +287,7 @@ public final class NetworkTableUtils
         }
         catch( final MementoException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.NetworkTableUtils_setTableState_failed, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.NetworkTableUtils_setTableState_failed, e );
         }
     }
 }

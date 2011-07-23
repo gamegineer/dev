@@ -164,8 +164,8 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         final String playerName )
     {
         assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
-        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteNode_closed );
-        assertStateLegal( playerName_ == null, Messages.AbstractRemoteNode_bound );
+        assertStateLegal( serviceContext_ != null, NonNlsMessages.AbstractRemoteNode_closed );
+        assertStateLegal( playerName_ == null, NonNlsMessages.AbstractRemoteNode_bound );
         assert Thread.holdsLock( getLock() );
 
         playerName_ = playerName;
@@ -179,7 +179,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     public final void close(
         final TableNetworkError error )
     {
-        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteNode_closed );
+        assertStateLegal( serviceContext_ != null, NonNlsMessages.AbstractRemoteNode_closed );
         assert Thread.holdsLock( getLock() );
 
         closeError_ = error;
@@ -241,12 +241,12 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         }
         catch( final IOException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteNode_extractMessage_deserializationError( messageEnvelope ), e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractRemoteNode_extractMessage_deserializationError( messageEnvelope ), e );
             return null;
         }
         catch( final ClassNotFoundException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractRemoteNode_extractMessage_deserializationError( messageEnvelope ), e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractRemoteNode_extractMessage_deserializationError( messageEnvelope ), e );
             return null;
         }
     }
@@ -306,7 +306,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     {
         synchronized( getLock() )
         {
-            assertStateLegal( playerName_ != null, Messages.AbstractRemoteNode_playerNotAuthenticated );
+            assertStateLegal( playerName_ != null, NonNlsMessages.AbstractRemoteNode_playerNotAuthenticated );
             return playerName_;
         }
     }
@@ -385,7 +385,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
                 }
                 else
                 {
-                    Loggers.getDefaultLogger().warning( Messages.AbstractRemoteNode_messageReceived_unhandledMessage( message ) );
+                    Loggers.getDefaultLogger().warning( NonNlsMessages.AbstractRemoteNode_messageReceived_unhandledMessage( message ) );
                     if( !(message instanceof ErrorMessage) )
                     {
                         sendErrorMessage( TableNetworkError.UNHANDLED_MESSAGE, message.getId() );
@@ -456,7 +456,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
 
         synchronized( getLock() )
         {
-            assertArgumentLegal( !uncorrelatedMessageHandlers_.containsKey( type ), "type", Messages.AbstractRemoteNode_registerUncorrelatedMessageHandler_messageTypeRegistered ); //$NON-NLS-1$
+            assertArgumentLegal( !uncorrelatedMessageHandlers_.containsKey( type ), "type", NonNlsMessages.AbstractRemoteNode_registerUncorrelatedMessageHandler_messageTypeRegistered ); //$NON-NLS-1$
             uncorrelatedMessageHandlers_.put( type, messageHandler );
         }
     }
@@ -499,7 +499,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         final IMessageHandler messageHandler )
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
-        assertStateLegal( serviceContext_ != null, Messages.AbstractRemoteNode_closed );
+        assertStateLegal( serviceContext_ != null, NonNlsMessages.AbstractRemoteNode_closed );
         assert Thread.holdsLock( getLock() );
 
         message.setId( getNextMessageId() );
@@ -609,7 +609,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
             assert remoteNodeController != null;
             assert message != null;
 
-            Loggers.getDefaultLogger().warning( Messages.ErrorMessageHandler_handleMessage_errorReceived( message.getError() ) );
+            Loggers.getDefaultLogger().warning( NonNlsMessages.ErrorMessageHandler_handleMessage_errorReceived( message.getError() ) );
         }
     }
 }

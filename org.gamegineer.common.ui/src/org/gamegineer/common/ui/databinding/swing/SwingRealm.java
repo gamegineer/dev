@@ -1,6 +1,6 @@
 /*
  * SwingRealm.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -175,7 +175,7 @@ public final class SwingRealm
         }
         catch( final Exception e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.SwingRealm_safeInvokeAndWait_error, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.SwingRealm_safeInvokeAndWait_error, e );
         }
     }
 

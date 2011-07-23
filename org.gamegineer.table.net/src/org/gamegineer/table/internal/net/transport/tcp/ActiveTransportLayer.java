@@ -79,7 +79,7 @@ final class ActiveTransportLayer
         catch( final IOException e )
         {
             close();
-            throw new TransportException( Messages.ActiveTransportLayer_open_ioError, e );
+            throw new TransportException( NonNlsMessages.ActiveTransportLayer_open_ioError, e );
         }
         finally
         {

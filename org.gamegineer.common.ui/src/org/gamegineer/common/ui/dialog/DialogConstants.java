@@ -1,6 +1,6 @@
 /*
  * DialogConstants.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,7 +40,7 @@ public final class DialogConstants
     public static final String CANCEL_BUTTON_ID = "cancel"; //$NON-NLS-1$
 
     /** The label for the Cancel button. */
-    public static final String CANCEL_BUTTON_LABEL = Messages.DialogConstants_cancelButton_label;
+    public static final String CANCEL_BUTTON_LABEL = NlsMessages.DialogConstants_cancelButton_label;
 
     /** Horizontal margin in dialog units. */
     public static final int HORIZONTAL_MARGIN = 7;
@@ -55,7 +55,7 @@ public final class DialogConstants
     public static final String OK_BUTTON_ID = "ok"; //$NON-NLS-1$
 
     /** The label for the OK button. */
-    public static final String OK_BUTTON_LABEL = Messages.DialogConstants_okButton_label;
+    public static final String OK_BUTTON_LABEL = NlsMessages.DialogConstants_okButton_label;
 
     /** Small indent in dialog units. */
     public static final int SMALL_INDENT = 7;

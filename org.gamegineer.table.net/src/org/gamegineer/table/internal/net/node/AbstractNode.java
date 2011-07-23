@@ -152,7 +152,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     {
         assert Thread.holdsLock( getLock() );
 
-        assertStateLegal( transportLayer_ != null, Messages.AbstractNode_networkDisconnected );
+        assertStateLegal( transportLayer_ != null, NonNlsMessages.AbstractNode_networkDisconnected );
     }
 
     /*
@@ -166,7 +166,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assert Thread.holdsLock( getLock() );
 
         assertConnected();
-        assertArgumentLegal( !remoteNodes_.containsKey( remoteNode.getPlayerName() ), "remoteNode", Messages.AbstractNode_bindRemoteNode_remoteNodeBound ); //$NON-NLS-1$ 
+        assertArgumentLegal( !remoteNodes_.containsKey( remoteNode.getPlayerName() ), "remoteNode", NonNlsMessages.AbstractNode_bindRemoteNode_remoteNodeBound ); //$NON-NLS-1$ 
         remoteNodes_.put( remoteNode.getPlayerName(), remoteNode );
         assert !tables_.containsKey( remoteNode.getPlayerName() );
         tables_.put( remoteNode.getPlayerName(), remoteNode.getTable() );
@@ -461,7 +461,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     {
         assert Thread.holdsLock( getLock() );
 
-        assertStateLegal( password_ != null, Messages.AbstractNode_networkDisconnected );
+        assertStateLegal( password_ != null, NonNlsMessages.AbstractNode_networkDisconnected );
         return new SecureString( password_ );
     }
 
@@ -473,7 +473,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     {
         assert Thread.holdsLock( getLock() );
 
-        assertStateLegal( localPlayerName_ != null, Messages.AbstractNode_networkDisconnected );
+        assertStateLegal( localPlayerName_ != null, NonNlsMessages.AbstractNode_networkDisconnected );
         return localPlayerName_;
     }
 
@@ -604,7 +604,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assert Thread.holdsLock( getLock() );
 
         assertConnected();
-        assertArgumentLegal( remoteNodes_.remove( remoteNode.getPlayerName() ) != null, "remoteNode", Messages.AbstractNode_unbindRemoteNode_remoteNodeNotBound ); //$NON-NLS-1$
+        assertArgumentLegal( remoteNodes_.remove( remoteNode.getPlayerName() ) != null, "remoteNode", NonNlsMessages.AbstractNode_unbindRemoteNode_remoteNodeNotBound ); //$NON-NLS-1$
         final INetworkTable table = tables_.remove( remoteNode.getPlayerName() );
         assert table != null;
         table.dispose();

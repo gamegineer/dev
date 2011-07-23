@@ -1,6 +1,6 @@
 /*
  * Cursors.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -65,8 +65,8 @@ final class Cursors
      */
     static
     {
-        grabCursor_ = createCursor( "/icons/cursors/grab.png", new Point( 0, 0 ), Messages.Cursors_grab_name ); //$NON-NLS-1$
-        handCursor_ = createCursor( "/icons/cursors/hand.png", new Point( 0, 0 ), Messages.Cursors_hand_name ); //$NON-NLS-1$
+        grabCursor_ = createCursor( "/icons/cursors/grab.png", new Point( 0, 0 ), NonNlsMessages.Cursors_grab_name ); //$NON-NLS-1$
+        handCursor_ = createCursor( "/icons/cursors/hand.png", new Point( 0, 0 ), NonNlsMessages.Cursors_hand_name ); //$NON-NLS-1$
         invalidCursor_ = createInvalidCursor();
     }
 
@@ -152,7 +152,7 @@ final class Cursors
         }
         catch( final AWTException e )
         {
-            Loggers.getDefaultLogger().log( Level.WARNING, Messages.Cursors_createInvalidCursor_failed, e );
+            Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.Cursors_createInvalidCursor_failed, e );
             return Cursor.getDefaultCursor();
         }
     }

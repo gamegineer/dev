@@ -1,6 +1,6 @@
 /*
  * ComponentPasswordProperty.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -80,6 +80,6 @@ final class ComponentPasswordProperty
             return passwordFieldValueProperty_;
         }
 
-        throw new IllegalArgumentException( Messages.ComponentProperties_password_unsupportedComponent( source ) );
+        throw new IllegalArgumentException( NonNlsMessages.ComponentProperties_password_unsupportedComponent( source ) );
     }
 }

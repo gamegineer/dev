@@ -158,7 +158,7 @@ final class ServiceHandler
                 }
                 catch( final IOException e )
                 {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServiceHandler_close_ioError, e );
+                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ServiceHandler_close_ioError, e );
                 }
                 finally
                 {
@@ -310,7 +310,7 @@ final class ServiceHandler
 
         synchronized( getLock() )
         {
-            assertStateLegal( getState() == State.PRISTINE, Messages.ServiceHandler_state_notPristine );
+            assertStateLegal( getState() == State.PRISTINE, NonNlsMessages.ServiceHandler_state_notPristine );
 
             channel_ = channel;
             setState( State.OPEN );
@@ -380,7 +380,7 @@ final class ServiceHandler
             }
             catch( final Exception e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServiceHandler_run_error, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ServiceHandler_run_error, e );
                 close( e );
             }
             finally
@@ -408,7 +408,7 @@ final class ServiceHandler
             }
             catch( final IOException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.ServiceHandler_sendMessage_ioError( message ), e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ServiceHandler_sendMessage_ioError( message ), e );
             }
         }
     }

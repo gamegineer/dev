@@ -81,7 +81,7 @@ public class CardPileContentChangedEvent
         super( source );
 
         assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
-        assertArgumentLegal( cardIndex >= 0, "cardIndex", Messages.CardPileContentChangedEvent_ctor_cardIndex_negative ); //$NON-NLS-1$
+        assertArgumentLegal( cardIndex >= 0, "cardIndex", NonNlsMessages.CardPileContentChangedEvent_ctor_cardIndex_negative ); //$NON-NLS-1$
 
         card_ = card;
         cardIndex_ = cardIndex;

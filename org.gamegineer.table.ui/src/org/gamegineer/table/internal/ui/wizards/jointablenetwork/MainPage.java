@@ -89,8 +89,8 @@ final class MainPage
         playerNameTextField_ = null;
         portTextField_ = null;
 
-        setTitle( Messages.MainPage_title );
-        setDescription( Messages.MainPage_description );
+        setTitle( NlsMessages.MainPage_title );
+        setDescription( NlsMessages.MainPage_description );
     }
 
 
@@ -109,32 +109,32 @@ final class MainPage
         final SpringLayout layout = new SpringLayout();
         container.setLayout( layout );
 
-        final JLabel playerNameLabel = new JLabel( Messages.MainPage_playerNameLabel_text );
-        playerNameLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( Messages.MainPage_playerNameLabel_mnemonic ).getKeyCode() );
+        final JLabel playerNameLabel = new JLabel( NlsMessages.MainPage_playerNameLabel_text );
+        playerNameLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( NlsMessages.MainPage_playerNameLabel_mnemonic ).getKeyCode() );
         container.add( playerNameLabel );
         playerNameTextField_ = new JTextField();
         JComponents.freezeHeight( playerNameTextField_ );
         container.add( playerNameTextField_ );
         playerNameLabel.setLabelFor( playerNameTextField_ );
 
-        final JLabel hostNameLabel = new JLabel( Messages.MainPage_hostNameLabel_text );
-        hostNameLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( Messages.MainPage_hostNameLabel_mnemonic ).getKeyCode() );
+        final JLabel hostNameLabel = new JLabel( NlsMessages.MainPage_hostNameLabel_text );
+        hostNameLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( NlsMessages.MainPage_hostNameLabel_mnemonic ).getKeyCode() );
         container.add( hostNameLabel );
         hostNameTextField_ = new JTextField();
         JComponents.freezeHeight( hostNameTextField_ );
         container.add( hostNameTextField_ );
         hostNameLabel.setLabelFor( hostNameTextField_ );
 
-        final JLabel portLabel = new JLabel( Messages.MainPage_portLabel_text );
-        portLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( Messages.MainPage_portLabel_mnemonic ).getKeyCode() );
+        final JLabel portLabel = new JLabel( NlsMessages.MainPage_portLabel_text );
+        portLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( NlsMessages.MainPage_portLabel_mnemonic ).getKeyCode() );
         container.add( portLabel );
         portTextField_ = new JTextField();
         JComponents.freezeHeight( portTextField_ );
         container.add( portTextField_ );
         portLabel.setLabelFor( portTextField_ );
 
-        final JLabel passwordLabel = new JLabel( Messages.MainPage_passwordLabel_text );
-        passwordLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( Messages.MainPage_passwordLabel_mnemonic ).getKeyCode() );
+        final JLabel passwordLabel = new JLabel( NlsMessages.MainPage_passwordLabel_text );
+        passwordLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( NlsMessages.MainPage_passwordLabel_mnemonic ).getKeyCode() );
         container.add( passwordLabel );
         passwordField_ = new JPasswordField();
         JComponents.freezeHeight( passwordField_ );
@@ -175,7 +175,7 @@ final class MainPage
         portModelToTargetStrategy.setConverter( Converters.getPrimitiveIntegerToStringConverter() );
         final IObservableValue portModelValue = PojoProperties.value( "port" ).observe( model ); //$NON-NLS-1$
         final UpdateValueStrategy portTargetToModelStrategy = new UpdateValueStrategy();
-        portTargetToModelStrategy.setConverter( Converters.withExceptionMessage( Converters.getStringToPrimitiveIntegerConverter(), Messages.MainPage_port_illegal ) );
+        portTargetToModelStrategy.setConverter( Converters.withExceptionMessage( Converters.getStringToPrimitiveIntegerConverter(), NlsMessages.MainPage_port_illegal ) );
         portTargetToModelStrategy.setBeforeSetValidator( model.getPortValidator() );
         dataBindingContext_.bindValue( portTargetValue, portModelValue, portTargetToModelStrategy, portModelToTargetStrategy );
 

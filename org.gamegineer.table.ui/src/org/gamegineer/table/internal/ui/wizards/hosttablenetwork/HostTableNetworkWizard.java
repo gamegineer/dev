@@ -83,7 +83,7 @@ public final class HostTableNetworkWizard
         model_ = new Model();
         tableModel_ = tableModel;
 
-        setTitle( Messages.HostTableNetworkWizard_title );
+        setTitle( NlsMessages.HostTableNetworkWizard_title );
         setNeedsProgressMonitor( true );
     }
 
@@ -157,7 +157,7 @@ public final class HostTableNetworkWizard
                 protected ConnectionState doInBackground()
                     throws Exception
                 {
-                    setDescription( Messages.HostTableNetworkWizard_description_connecting );
+                    setDescription( NlsMessages.HostTableNetworkWizard_description_connecting );
                     setProgressIndeterminate( true );
                     tableNetwork.host( configuration );
                     return ConnectionState.CONNECTED;
@@ -182,11 +182,11 @@ public final class HostTableNetworkWizard
                     }
                     catch( final ExecutionException e )
                     {
-                        Loggers.getDefaultLogger().log( Level.SEVERE, Messages.HostTableNetworkWizard_finish_error_nonNls, e );
+                        Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.HostTableNetworkWizard_finish_error, e );
                         final Throwable cause = e.getCause();
                         if( cause instanceof TableNetworkException )
                         {
-                            showErrorMessageDialogLater( Messages.HostTableNetworkWizard_finish_error( ((TableNetworkException)cause).getError() ) );
+                            showErrorMessageDialogLater( NlsMessages.HostTableNetworkWizard_finish_error( ((TableNetworkException)cause).getError() ) );
                         }
                         else
                         {
@@ -195,8 +195,8 @@ public final class HostTableNetworkWizard
                     }
                     catch( final InterruptedException e )
                     {
-                        Loggers.getDefaultLogger().log( Level.SEVERE, Messages.HostTableNetworkWizard_finish_interrupted_nonNls, e );
-                        showErrorMessageDialogLater( Messages.HostTableNetworkWizard_finish_interrupted );
+                        Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.HostTableNetworkWizard_finish_interrupted, e );
+                        showErrorMessageDialogLater( NlsMessages.HostTableNetworkWizard_finish_interrupted );
                     }
                     finally
                     {

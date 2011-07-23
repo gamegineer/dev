@@ -154,19 +154,19 @@ public abstract class AbstractLoggingComponentFactory<T>
         }
         catch( final ClassNotFoundException e )
         {
-            throw new ComponentException( Messages.AbstractLoggingComponentFactory_createLoggingComponent_failed( typeName ), e );
+            throw new ComponentException( NonNlsMessages.AbstractLoggingComponentFactory_createLoggingComponent_failed( typeName ), e );
         }
         catch( final IllegalAccessException e )
         {
-            throw new ComponentException( Messages.AbstractLoggingComponentFactory_createLoggingComponent_failed( typeName ), e );
+            throw new ComponentException( NonNlsMessages.AbstractLoggingComponentFactory_createLoggingComponent_failed( typeName ), e );
         }
         catch( final InstantiationException e )
         {
-            throw new ComponentException( Messages.AbstractLoggingComponentFactory_createLoggingComponent_failed( typeName ), e );
+            throw new ComponentException( NonNlsMessages.AbstractLoggingComponentFactory_createLoggingComponent_failed( typeName ), e );
         }
         catch( final ClassCastException e )
         {
-            throw new ComponentException( Messages.AbstractLoggingComponentFactory_createLoggingComponent_failed( typeName ), e );
+            throw new ComponentException( NonNlsMessages.AbstractLoggingComponentFactory_createLoggingComponent_failed( typeName ), e );
         }
     }
 
@@ -219,7 +219,7 @@ public abstract class AbstractLoggingComponentFactory<T>
         assert name != null;
 
         final int index = name.lastIndexOf( '.' );
-        assertArgumentLegal( index != -1, "name", Messages.AbstractLoggingComponentFactory_createNamedLoggingComponent_nameNoDots ); //$NON-NLS-1$
+        assertArgumentLegal( index != -1, "name", NonNlsMessages.AbstractLoggingComponentFactory_createNamedLoggingComponent_nameNoDots ); //$NON-NLS-1$
         final String typeName = name.substring( 0, index );
         final String instanceName = name.substring( index + 1 );
 
@@ -227,7 +227,7 @@ public abstract class AbstractLoggingComponentFactory<T>
         final ComponentFactory factory = (ComponentFactory)Activator.getDefault().getBundleContext().getService( serviceReference );
         if( factory == null )
         {
-            throw new ComponentException( Messages.AbstractLoggingComponentFactory_createNamedLoggingComponent_noComponentFactoryAvailable );
+            throw new ComponentException( NonNlsMessages.AbstractLoggingComponentFactory_createNamedLoggingComponent_noComponentFactoryAvailable );
         }
 
         try
@@ -288,7 +288,7 @@ public abstract class AbstractLoggingComponentFactory<T>
             return serviceReference;
         }
 
-        throw new ComponentException( Messages.AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable( typeName ) );
+        throw new ComponentException( NonNlsMessages.AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable( typeName ) );
     }
 
     /**
@@ -324,7 +324,7 @@ public abstract class AbstractLoggingComponentFactory<T>
         }
         catch( final InvalidSyntaxException e )
         {
-            throw new ComponentException( Messages.AbstractLoggingComponentFactory_getComponentFactory_invalidFilterSyntax, e );
+            throw new ComponentException( NonNlsMessages.AbstractLoggingComponentFactory_getComponentFactory_invalidFilterSyntax, e );
         }
     }
 
@@ -368,7 +368,7 @@ public abstract class AbstractLoggingComponentFactory<T>
         final Object value = componentProperties.get( name );
         if( (value == null) && !isNullable )
         {
-            throw new ComponentException( Messages.AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue( name ) );
+            throw new ComponentException( NonNlsMessages.AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue( name ) );
         }
 
         try
@@ -377,7 +377,7 @@ public abstract class AbstractLoggingComponentFactory<T>
         }
         catch( final ClassCastException e )
         {
-            throw new ComponentException( Messages.AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue( name ), e );
+            throw new ComponentException( NonNlsMessages.AbstractLoggingComponentFactory_getComponentProperty_illegalPropertyValue( name ), e );
         }
     }
 
@@ -394,7 +394,7 @@ public abstract class AbstractLoggingComponentFactory<T>
     {
         if( componentProperties == null )
         {
-            throw new ComponentException( Messages.AbstractLoggingComponentFactory_newInstance_noComponentProperties );
+            throw new ComponentException( NonNlsMessages.AbstractLoggingComponentFactory_newInstance_noComponentProperties );
         }
 
         final String typeName = getComponentProperty( componentProperties, LoggingServiceConstants.PROPERTY_COMPONENT_FACTORY_TYPE_NAME, String.class, false );

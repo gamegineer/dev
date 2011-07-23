@@ -177,7 +177,7 @@ public final class CardSurfaceDesignUIRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            assertStateLegal( cardSurfaceDesignUIRegistry_ == null, Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_bindCardSurfaceDesignUIRegistry_bound );
+            assertStateLegal( cardSurfaceDesignUIRegistry_ == null, NonNlsMessages.CardSurfaceDesignUIRegistryExtensionPointAdapter_bindCardSurfaceDesignUIRegistry_bound );
             cardSurfaceDesignUIRegistry_ = cardSurfaceDesignUIRegistry;
         }
     }
@@ -201,7 +201,7 @@ public final class CardSurfaceDesignUIRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            assertStateLegal( extensionRegistry_ == null, Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_bindExtensionRegistry_bound );
+            assertStateLegal( extensionRegistry_ == null, NonNlsMessages.CardSurfaceDesignUIRegistryExtensionPointAdapter_bindExtensionRegistry_bound );
             extensionRegistry_ = extensionRegistry;
         }
     }
@@ -229,35 +229,35 @@ public final class CardSurfaceDesignUIRegistryExtensionPointAdapter
         final String idString = configurationElement.getAttribute( ATTR_ID );
         if( idString == null )
         {
-            throw new IllegalArgumentException( Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingId );
+            throw new IllegalArgumentException( NonNlsMessages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingId );
         }
         final CardSurfaceDesignId id = CardSurfaceDesignId.fromString( idString );
 
         final String name = configurationElement.getAttribute( ATTR_NAME );
         if( name == null )
         {
-            throw new IllegalArgumentException( Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingName );
+            throw new IllegalArgumentException( NonNlsMessages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingName );
         }
 
         final String iconPath = configurationElement.getAttribute( ATTR_ICON );
         if( iconPath == null )
         {
-            throw new IllegalArgumentException( Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingIconPath );
+            throw new IllegalArgumentException( NonNlsMessages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingIconPath );
         }
         final PackageAdmin packageAdmin = Activator.getDefault().getPackageAdmin();
         if( packageAdmin == null )
         {
-            throw new IllegalArgumentException( Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_noPackageAdminService );
+            throw new IllegalArgumentException( NonNlsMessages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_noPackageAdminService );
         }
         final Bundle[] bundles = packageAdmin.getBundles( configurationElement.getNamespaceIdentifier(), null );
         if( (bundles == null) || (bundles.length == 0) )
         {
-            throw new IllegalArgumentException( Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconBundleNotFound( configurationElement.getNamespaceIdentifier() ) );
+            throw new IllegalArgumentException( NonNlsMessages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconBundleNotFound( configurationElement.getNamespaceIdentifier() ) );
         }
         final URL iconUrl = FileLocator.find( bundles[ 0 ], new Path( iconPath ), null );
         if( iconUrl == null )
         {
-            throw new IllegalArgumentException( Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconFileNotFound( bundles[ 0 ], iconPath ) );
+            throw new IllegalArgumentException( NonNlsMessages.CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconFileNotFound( bundles[ 0 ], iconPath ) );
         }
         final Icon icon = new IconProxy( iconUrl );
 
@@ -324,7 +324,7 @@ public final class CardSurfaceDesignUIRegistryExtensionPointAdapter
         }
         catch( final IllegalArgumentException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_registerCardSurfaceDesignUI_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardSurfaceDesignUIRegistryExtensionPointAdapter_registerCardSurfaceDesignUI_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
             return;
         }
 
@@ -392,7 +392,7 @@ public final class CardSurfaceDesignUIRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            assertArgumentLegal( cardSurfaceDesignUIRegistry_ == cardSurfaceDesignUIRegistry, "cardSurfaceDesignUIRegistry", Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_unbindCardSurfaceDesignUIRegistry_notBound ); //$NON-NLS-1$
+            assertArgumentLegal( cardSurfaceDesignUIRegistry_ == cardSurfaceDesignUIRegistry, "cardSurfaceDesignUIRegistry", NonNlsMessages.CardSurfaceDesignUIRegistryExtensionPointAdapter_unbindCardSurfaceDesignUIRegistry_notBound ); //$NON-NLS-1$
             cardSurfaceDesignUIRegistry_ = null;
         }
     }
@@ -416,7 +416,7 @@ public final class CardSurfaceDesignUIRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            assertArgumentLegal( extensionRegistry_ == extensionRegistry, "extensionRegistry", Messages.CardSurfaceDesignUIRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound ); //$NON-NLS-1$
+            assertArgumentLegal( extensionRegistry_ == extensionRegistry, "extensionRegistry", NonNlsMessages.CardSurfaceDesignUIRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound ); //$NON-NLS-1$
             extensionRegistry_ = null;
         }
     }

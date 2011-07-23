@@ -1,6 +1,6 @@
 /*
  * MainModel.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -107,7 +107,7 @@ public final class MainModel
         final IMainModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.MainModel_addMainModelListener_listener_registered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.MainModel_addMainModelListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -136,7 +136,7 @@ public final class MainModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainModel_mainModelStateChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.MainModel_mainModelStateChanged_unexpectedException, e );
             }
         }
     }
@@ -162,7 +162,7 @@ public final class MainModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainModel_tableClosed_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.MainModel_tableClosed_unexpectedException, e );
             }
         }
     }
@@ -188,7 +188,7 @@ public final class MainModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainModel_tableOpened_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.MainModel_tableOpened_unexpectedException, e );
             }
         }
     }
@@ -330,7 +330,7 @@ public final class MainModel
         final IMainModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.MainModel_removeMainModelListener_listener_notRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.MainModel_removeMainModelListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /**

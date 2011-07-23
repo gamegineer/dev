@@ -1,6 +1,6 @@
 /*
  * TableRunner.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -116,7 +116,7 @@ public final class TableRunner
     public TableResult call()
         throws Exception
     {
-        assertStateLegal( state_.compareAndSet( State.PRISTINE, State.STARTING ), Messages.TableRunner_state_notPristine );
+        assertStateLegal( state_.compareAndSet( State.PRISTINE, State.STARTING ), NonNlsMessages.TableRunner_state_notPristine );
 
         final TableResult processCommandLineResult = processCommandLineArguments();
         if( processCommandLineResult != null )
@@ -217,7 +217,7 @@ public final class TableRunner
         }
         catch( final Exception e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableRunner_openFrame_error, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableRunner_openFrame_error, e );
             stop( TableResult.FAIL );
         }
     }
@@ -257,7 +257,7 @@ public final class TableRunner
             if( commandLine.hasOption( CommandLineOptions.OPTION_HELP ) )
             {
                 final HelpFormatter helpFormatter = new HelpFormatter();
-                helpFormatter.printHelp( new PrintWriter( System.out, true ), HelpFormatter.DEFAULT_WIDTH, Messages.TableRunner_cli_usage, null, options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null );
+                helpFormatter.printHelp( new PrintWriter( System.out, true ), HelpFormatter.DEFAULT_WIDTH, NlsMessages.TableRunner_cli_usage, null, options, HelpFormatter.DEFAULT_LEFT_PAD, HelpFormatter.DEFAULT_DESC_PAD, null );
                 return TableResult.OK;
             }
         }

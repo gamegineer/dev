@@ -1,6 +1,6 @@
 /*
  * SwingTextUtilities.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -90,7 +90,7 @@ public final class SwingTextUtilities
         final int maxLength )
     {
         assertArgumentNotNull( path, "path" ); //$NON-NLS-1$
-        assertArgumentLegal( maxLength >= 0, "maxLength", Messages.SwingTextUtilities_shortenPath_maxLengthNegative ); //$NON-NLS-1$
+        assertArgumentLegal( maxLength >= 0, "maxLength", NonNlsMessages.SwingTextUtilities_shortenPath_maxLengthNegative ); //$NON-NLS-1$
 
         if( path.length() <= maxLength )
         {

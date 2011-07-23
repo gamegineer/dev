@@ -95,7 +95,7 @@ public final class CardModel
         final ICardModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.CardModel_addCardModelListener_listener_registered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.CardModel_addCardModelListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -148,7 +148,7 @@ public final class CardModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardModel_cardModelStateChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardModel_cardModelStateChanged_unexpectedException, e );
             }
         }
     }
@@ -180,6 +180,6 @@ public final class CardModel
         final ICardModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.CardModel_removeCardModelListener_listener_notRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.CardModel_removeCardModelListener_listener_notRegistered ); //$NON-NLS-1$
     }
 }

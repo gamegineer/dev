@@ -132,7 +132,7 @@ public final class HelloRequestMessageHandler
         }
         catch( final TableNetworkException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.HelloRequestMessageHandler_beginAuthenticationRequestFailed, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.HelloRequestMessageHandler_beginAuthenticationRequestFailed, e );
             remoteNodeController.close( e.getError() );
         }
     }

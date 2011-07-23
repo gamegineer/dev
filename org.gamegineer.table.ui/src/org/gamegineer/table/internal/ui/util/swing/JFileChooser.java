@@ -1,6 +1,6 @@
 /*
  * JFileChooser.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -211,8 +211,8 @@ public final class JFileChooser
 
         return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog( //
             this, //
-            Messages.JFileChooser_confirmOverwriteFile_message( file ), //
-            Messages.JFileChooser_confirmOverwriteFile_title, //
+            NlsMessages.JFileChooser_confirmOverwriteFile_message( file ), //
+            NlsMessages.JFileChooser_confirmOverwriteFile_title, //
             JOptionPane.YES_NO_OPTION, //
             JOptionPane.WARNING_MESSAGE );
     }

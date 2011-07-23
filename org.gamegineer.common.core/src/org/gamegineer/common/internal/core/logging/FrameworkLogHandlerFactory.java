@@ -95,13 +95,13 @@ public final class FrameworkLogHandlerFactory
 
         if( !typeName.equals( FrameworkLogHandler.class.getName() ) )
         {
-            throw new ComponentException( Messages.FrameworkLogHandlerFactory_createLoggingComponent_illegalTypeName );
+            throw new ComponentException( NonNlsMessages.FrameworkLogHandlerFactory_createLoggingComponent_illegalTypeName );
         }
 
         final FrameworkLog frameworkLog = frameworkLog_.get();
         if( frameworkLog == null )
         {
-            throw new ComponentException( Messages.FrameworkLogHandlerFactory_createLoggingComponent_noFrameworkLogAvailable );
+            throw new ComponentException( NonNlsMessages.FrameworkLogHandlerFactory_createLoggingComponent_noFrameworkLogAvailable );
         }
 
         return new FrameworkLogHandler( frameworkLog );

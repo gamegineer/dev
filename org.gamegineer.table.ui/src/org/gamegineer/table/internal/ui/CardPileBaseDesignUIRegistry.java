@@ -98,7 +98,7 @@ public final class CardPileBaseDesignUIRegistry
         final ICardPileBaseDesignUI cardPileBaseDesignUI )
     {
         assertArgumentNotNull( cardPileBaseDesignUI, "cardPileBaseDesignUI" ); //$NON-NLS-1$
-        assertArgumentLegal( cardPileBaseDesignUIs_.putIfAbsent( cardPileBaseDesignUI.getId(), cardPileBaseDesignUI ) == null, "cardPileBaseDesignUI", Messages.CardPileBaseDesignUIRegistry_registerCardPileBaseDesignUI_cardPileBaseDesignUI_registered( cardPileBaseDesignUI.getId() ) ); //$NON-NLS-1$
+        assertArgumentLegal( cardPileBaseDesignUIs_.putIfAbsent( cardPileBaseDesignUI.getId(), cardPileBaseDesignUI ) == null, "cardPileBaseDesignUI", NonNlsMessages.CardPileBaseDesignUIRegistry_registerCardPileBaseDesignUI_cardPileBaseDesignUI_registered( cardPileBaseDesignUI.getId() ) ); //$NON-NLS-1$
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered card pile base design user interface '%1$s'", cardPileBaseDesignUI.getId() ) ); //$NON-NLS-1$
     }
@@ -111,7 +111,7 @@ public final class CardPileBaseDesignUIRegistry
         final ICardPileBaseDesignUI cardPileBaseDesignUI )
     {
         assertArgumentNotNull( cardPileBaseDesignUI, "cardPileBaseDesignUI" ); //$NON-NLS-1$
-        assertArgumentLegal( cardPileBaseDesignUIs_.remove( cardPileBaseDesignUI.getId(), cardPileBaseDesignUI ), "cardPileBaseDesignUI", Messages.CardPileBaseDesignUIRegistry_unregisterCardPileBaseDesignUI_cardPileBaseDesignUI_unregistered( cardPileBaseDesignUI.getId() ) ); //$NON-NLS-1$
+        assertArgumentLegal( cardPileBaseDesignUIs_.remove( cardPileBaseDesignUI.getId(), cardPileBaseDesignUI ), "cardPileBaseDesignUI", NonNlsMessages.CardPileBaseDesignUIRegistry_unregisterCardPileBaseDesignUI_cardPileBaseDesignUI_unregistered( cardPileBaseDesignUI.getId() ) ); //$NON-NLS-1$
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered card pile base design user interface '%1$s'", cardPileBaseDesignUI.getId() ) ); //$NON-NLS-1$
     }

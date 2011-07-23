@@ -1,6 +1,6 @@
 /*
  * FileChoosers.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -63,7 +63,7 @@ final class FileChoosers
         final File file )
     {
         final JFileChooser fileChooser = new JFileChooser( file );
-        fileChooser.addChoosableFileFilter( new FileNameExtensionFilter( Messages.FileChoosers_fileFilter_table, "ser" ) ); //$NON-NLS-1$
+        fileChooser.addChoosableFileFilter( new FileNameExtensionFilter( NlsMessages.FileChoosers_fileFilter_table, "ser" ) ); //$NON-NLS-1$
         return fileChooser;
     }
 }

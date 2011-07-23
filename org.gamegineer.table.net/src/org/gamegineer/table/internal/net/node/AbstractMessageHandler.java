@@ -110,12 +110,12 @@ public abstract class AbstractMessageHandler<RemoteNodeControllerType extends IR
             }
             catch( final Exception e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.AbstractMessageHandler_handleMessage_unexpectedError, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractMessageHandler_handleMessage_unexpectedError, e );
             }
         }
         catch( final NoSuchMethodException e )
         {
-            Loggers.getDefaultLogger().severe( Messages.AbstractMessageHandler_messageReceived_unexpectedMessage( this, message ) );
+            Loggers.getDefaultLogger().severe( NonNlsMessages.AbstractMessageHandler_messageReceived_unexpectedMessage( this, message ) );
 
             final ErrorMessage errorMessage = new ErrorMessage();
             errorMessage.setCorrelationId( message.getId() );

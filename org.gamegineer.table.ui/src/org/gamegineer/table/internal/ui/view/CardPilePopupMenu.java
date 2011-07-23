@@ -1,6 +1,6 @@
 /*
  * CardPilePopupMenu.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -68,8 +68,8 @@ final class CardPilePopupMenu
     /* @NonNull */
     private JMenu createAddCardMenu()
     {
-        final JMenu menu = new JMenu( Messages.CardPilePopupMenu_addCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.CardPilePopupMenu_addCard_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addCard_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addCard_mnemonic ).getKeyCode() );
         menu.add( createAddClubsCardMenu() );
         menu.add( createAddDiamondsCardMenu() );
         menu.add( createAddHeartsCardMenu() );
@@ -86,8 +86,8 @@ final class CardPilePopupMenu
     /* @NonNull */
     private JMenu createAddClubsCardMenu()
     {
-        final JMenu menu = new JMenu( Messages.CardPilePopupMenu_addClubsCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.CardPilePopupMenu_addClubsCard_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addClubsCard_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addClubsCard_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddAceOfClubsCardAction() );
         menu.add( Actions.getAddTwoOfClubsCardAction() );
         menu.add( Actions.getAddThreeOfClubsCardAction() );
@@ -112,8 +112,8 @@ final class CardPilePopupMenu
     /* @NonNull */
     private JMenu createAddDeckMenu()
     {
-        final JMenu menu = new JMenu( Messages.CardPilePopupMenu_addDeck_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.CardPilePopupMenu_addDeck_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addDeck_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addDeck_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddStandard52CardDeckAction() );
         menu.add( Actions.getAddStandard54CardDeckAction() );
         return menu;
@@ -127,8 +127,8 @@ final class CardPilePopupMenu
     /* @NonNull */
     private JMenu createAddDiamondsCardMenu()
     {
-        final JMenu menu = new JMenu( Messages.CardPilePopupMenu_addDiamondsCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.CardPilePopupMenu_addDiamondsCard_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addDiamondsCard_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addDiamondsCard_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddAceOfDiamondsCardAction() );
         menu.add( Actions.getAddTwoOfDiamondsCardAction() );
         menu.add( Actions.getAddThreeOfDiamondsCardAction() );
@@ -153,8 +153,8 @@ final class CardPilePopupMenu
     /* @NonNull */
     private JMenu createAddHeartsCardMenu()
     {
-        final JMenu menu = new JMenu( Messages.CardPilePopupMenu_addHeartsCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.CardPilePopupMenu_addHeartsCard_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addHeartsCard_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addHeartsCard_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddAceOfHeartsCardAction() );
         menu.add( Actions.getAddTwoOfHeartsCardAction() );
         menu.add( Actions.getAddThreeOfHeartsCardAction() );
@@ -179,8 +179,8 @@ final class CardPilePopupMenu
     /* @NonNull */
     private JMenu createAddSpadesCardMenu()
     {
-        final JMenu menu = new JMenu( Messages.CardPilePopupMenu_addSpadesCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.CardPilePopupMenu_addSpadesCard_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addSpadesCard_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addSpadesCard_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddAceOfSpadesCardAction() );
         menu.add( Actions.getAddTwoOfSpadesCardAction() );
         menu.add( Actions.getAddThreeOfSpadesCardAction() );
@@ -205,8 +205,8 @@ final class CardPilePopupMenu
     /* @NonNull */
     private JMenu createAddSpecialCardMenu()
     {
-        final JMenu menu = new JMenu( Messages.CardPilePopupMenu_addSpecialCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.CardPilePopupMenu_addSpecialCard_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addSpecialCard_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addSpecialCard_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddJokerCardAction() );
         return menu;
     }
@@ -219,8 +219,8 @@ final class CardPilePopupMenu
     /* @NonNull */
     private JMenu createLayoutMenu()
     {
-        final JMenu menu = new JMenu( Messages.CardPilePopupMenu_layout_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.CardPilePopupMenu_layout_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_layout_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_layout_mnemonic ).getKeyCode() );
         final ButtonGroup layoutButtonGroup = new ButtonGroup();
         layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetStackedCardPileLayoutAction() ) ) );
         layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetAccordianUpCardPileLayoutAction() ) ) );

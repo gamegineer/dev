@@ -113,7 +113,7 @@ final class Acceptor
         }
         catch( final IOException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Acceptor_accept_ioError, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Acceptor_accept_ioError, e );
         }
     }
 
@@ -146,7 +146,7 @@ final class Acceptor
 
         synchronized( getLock() )
         {
-            assertStateLegal( getState() == State.PRISTINE, Messages.Acceptor_state_notPristine );
+            assertStateLegal( getState() == State.PRISTINE, NonNlsMessages.Acceptor_state_notPristine );
 
             try
             {
@@ -189,7 +189,7 @@ final class Acceptor
                 }
                 catch( final IOException e )
                 {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Acceptor_close_ioError, e );
+                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Acceptor_close_ioError, e );
                 }
                 finally
                 {

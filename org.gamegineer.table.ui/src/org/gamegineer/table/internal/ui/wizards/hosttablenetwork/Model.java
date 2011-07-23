@@ -135,7 +135,7 @@ final class Model
                 final SecureString confirmedPassword = (SecureString)confirmedPasswordValue.getValue();
                 if( (password == null) || (confirmedPassword == null) || !password.equals( confirmedPassword ) )
                 {
-                    return ValidationStatus.error( Messages.Model_password_unconfirmed );
+                    return ValidationStatus.error( NlsMessages.Model_password_unconfirmed );
                 }
 
                 return ValidationStatus.ok();
@@ -171,7 +171,7 @@ final class Model
                 final String playerName = (String)value;
                 if( (playerName == null) || playerName.isEmpty() )
                 {
-                    return ValidationStatus.error( Messages.Model_playerName_empty );
+                    return ValidationStatus.error( NlsMessages.Model_playerName_empty );
                 }
 
                 return ValidationStatus.ok();
@@ -207,7 +207,7 @@ final class Model
                 final int port = (Integer)value;
                 if( (port < 1) || (port > 65535) )
                 {
-                    return ValidationStatus.error( Messages.Model_port_outOfRange );
+                    return ValidationStatus.error( NlsMessages.Model_port_outOfRange );
                 }
 
                 return ValidationStatus.ok();

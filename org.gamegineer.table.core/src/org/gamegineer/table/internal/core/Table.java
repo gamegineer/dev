@@ -118,8 +118,8 @@ public final class Table
         try
         {
             final CardPile typedCardPile = (CardPile)cardPile;
-            assertArgumentLegal( typedCardPile.getTable() == null, "cardPile", Messages.Table_addCardPile_cardPile_owned ); //$NON-NLS-1$
-            assertArgumentLegal( typedCardPile.getTableContext() == tableContext_, "cardPile", Messages.Table_addCardPile_cardPile_createdByDifferentTable ); //$NON-NLS-1$
+            assertArgumentLegal( typedCardPile.getTable() == null, "cardPile", NonNlsMessages.Table_addCardPile_cardPile_owned ); //$NON-NLS-1$
+            assertArgumentLegal( typedCardPile.getTableContext() == tableContext_, "cardPile", NonNlsMessages.Table_addCardPile_cardPile_createdByDifferentTable ); //$NON-NLS-1$
 
             cardPiles_.add( typedCardPile );
             typedCardPile.setTable( this );
@@ -149,7 +149,7 @@ public final class Table
         final ITableListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.Table_addTableListener_listener_registered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Table_addTableListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -222,7 +222,7 @@ public final class Table
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Table_cardPileAdded_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Table_cardPileAdded_unexpectedException, e );
             }
         }
     }
@@ -253,7 +253,7 @@ public final class Table
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Table_cardPileRemoved_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Table_cardPileRemoved_unexpectedException, e );
             }
         }
     }
@@ -307,7 +307,7 @@ public final class Table
         getLock().lock();
         try
         {
-            assertArgumentLegal( (index >= 0) && (index < cardPiles_.size()), "index", Messages.Table_getCardPileFromIndex_index_outOfRange ); //$NON-NLS-1$
+            assertArgumentLegal( (index >= 0) && (index < cardPiles_.size()), "index", NonNlsMessages.Table_getCardPileFromIndex_index_outOfRange ); //$NON-NLS-1$
 
             return cardPiles_.get( index );
         }
@@ -382,7 +382,7 @@ public final class Table
             getLock().unlock();
         }
 
-        assertArgumentLegal( index != -1, "cardPile", Messages.Table_getCardPileIndex_cardPile_notOwned ); //$NON-NLS-1$
+        assertArgumentLegal( index != -1, "cardPile", NonNlsMessages.Table_getCardPileIndex_cardPile_notOwned ); //$NON-NLS-1$
         return index;
     }
 
@@ -437,7 +437,7 @@ public final class Table
         getLock().lock();
         try
         {
-            assertArgumentLegal( cardPile.getTable() == this, "cardPile", Messages.Table_removeCardPile_cardPile_notOwned ); //$NON-NLS-1$
+            assertArgumentLegal( cardPile.getTable() == this, "cardPile", NonNlsMessages.Table_removeCardPile_cardPile_notOwned ); //$NON-NLS-1$
 
             cardPileIndex = cardPiles_.indexOf( cardPile );
             cardPiles_.remove( cardPileIndex );
@@ -512,7 +512,7 @@ public final class Table
         final ITableListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.Table_removeTableListener_listener_notRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.Table_removeTableListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /*

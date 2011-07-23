@@ -1,6 +1,6 @@
 /*
  * Assert.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -146,9 +146,9 @@ public final class Assert
     {
         if( !expression )
         {
-            final String displayParamName = (paramName != null) ? paramName : Messages.Assert_defaultParamName;
-            final String displayMessage = (message != null) ? message : Messages.Assert_assertArgumentLegal_defaultMessage;
-            throw new IllegalArgumentException( Messages.Assert_message( displayParamName, displayMessage ) );
+            final String displayParamName = (paramName != null) ? paramName : NonNlsMessages.Assert_defaultParamName;
+            final String displayMessage = (message != null) ? message : NonNlsMessages.Assert_assertArgumentLegal_defaultMessage;
+            throw new IllegalArgumentException( NonNlsMessages.Assert_message( displayParamName, displayMessage ) );
         }
     }
 
@@ -213,9 +213,9 @@ public final class Assert
     {
         if( object == null )
         {
-            final String displayParamName = (paramName != null) ? paramName : Messages.Assert_defaultParamName;
-            final String displayMessage = (message != null) ? message : Messages.Assert_assertArgumentNotNull_defaultMessage;
-            throw new NullPointerException( Messages.Assert_message( displayParamName, displayMessage ) );
+            final String displayParamName = (paramName != null) ? paramName : NonNlsMessages.Assert_defaultParamName;
+            final String displayMessage = (message != null) ? message : NonNlsMessages.Assert_assertArgumentNotNull_defaultMessage;
+            throw new NullPointerException( NonNlsMessages.Assert_message( displayParamName, displayMessage ) );
         }
     }
 

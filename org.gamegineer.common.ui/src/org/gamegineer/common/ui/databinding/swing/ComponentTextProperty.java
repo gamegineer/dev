@@ -1,6 +1,6 @@
 /*
  * ComponentTextProperty.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -77,6 +77,6 @@ final class ComponentTextProperty
             return textComponentValueProperty_;
         }
 
-        throw new IllegalArgumentException( Messages.ComponentProperties_text_unsupportedComponent( source ) );
+        throw new IllegalArgumentException( NonNlsMessages.ComponentProperties_text_unsupportedComponent( source ) );
     }
 }

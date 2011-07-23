@@ -136,7 +136,7 @@ public final class Authenticator
         }
         catch( final GeneralSecurityException e )
         {
-            throw new TableNetworkException( TableNetworkError.UNSPECIFIED_ERROR, Messages.Authenticator_createResponse_failed, e );
+            throw new TableNetworkException( TableNetworkError.UNSPECIFIED_ERROR, NonNlsMessages.Authenticator_createResponse_failed, e );
         }
     }
 
@@ -192,7 +192,7 @@ public final class Authenticator
         }
         catch( final GeneralSecurityException e )
         {
-            throw new TableNetworkException( TableNetworkError.UNSPECIFIED_ERROR, Messages.Authenticator_createSecretKey_failed, e );
+            throw new TableNetworkException( TableNetworkError.UNSPECIFIED_ERROR, NonNlsMessages.Authenticator_createSecretKey_failed, e );
         }
         finally
         {
@@ -228,7 +228,7 @@ public final class Authenticator
         }
         catch( final GeneralSecurityException e )
         {
-            throw new TableNetworkException( TableNetworkError.UNSPECIFIED_ERROR, Messages.Authenticator_createSecureRandomBytes_failed, e );
+            throw new TableNetworkException( TableNetworkError.UNSPECIFIED_ERROR, NonNlsMessages.Authenticator_createSecureRandomBytes_failed, e );
         }
     }
 

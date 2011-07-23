@@ -177,7 +177,7 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            assertStateLegal( cardPileBaseDesignUIRegistry_ == null, Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_bindCardPileBaseDesignUIRegistry_bound );
+            assertStateLegal( cardPileBaseDesignUIRegistry_ == null, NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_bindCardPileBaseDesignUIRegistry_bound );
             cardPileBaseDesignUIRegistry_ = cardPileBaseDesignUIRegistry;
         }
     }
@@ -201,7 +201,7 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            assertStateLegal( extensionRegistry_ == null, Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_bindExtensionRegistry_bound );
+            assertStateLegal( extensionRegistry_ == null, NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_bindExtensionRegistry_bound );
             extensionRegistry_ = extensionRegistry;
         }
     }
@@ -229,35 +229,35 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
         final String idString = configurationElement.getAttribute( ATTR_ID );
         if( idString == null )
         {
-            throw new IllegalArgumentException( Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingId );
+            throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingId );
         }
         final CardPileBaseDesignId id = CardPileBaseDesignId.fromString( idString );
 
         final String name = configurationElement.getAttribute( ATTR_NAME );
         if( name == null )
         {
-            throw new IllegalArgumentException( Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingName );
+            throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingName );
         }
 
         final String iconPath = configurationElement.getAttribute( ATTR_ICON );
         if( iconPath == null )
         {
-            throw new IllegalArgumentException( Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingIconPath );
+            throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingIconPath );
         }
         final PackageAdmin packageAdmin = Activator.getDefault().getPackageAdmin();
         if( packageAdmin == null )
         {
-            throw new IllegalArgumentException( Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_noPackageAdminService );
+            throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_noPackageAdminService );
         }
         final Bundle[] bundles = packageAdmin.getBundles( configurationElement.getNamespaceIdentifier(), null );
         if( (bundles == null) || (bundles.length == 0) )
         {
-            throw new IllegalArgumentException( Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconBundleNotFound( configurationElement.getNamespaceIdentifier() ) );
+            throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconBundleNotFound( configurationElement.getNamespaceIdentifier() ) );
         }
         final URL iconUrl = FileLocator.find( bundles[ 0 ], new Path( iconPath ), null );
         if( iconUrl == null )
         {
-            throw new IllegalArgumentException( Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconFileNotFound( bundles[ 0 ], iconPath ) );
+            throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconFileNotFound( bundles[ 0 ], iconPath ) );
         }
         final Icon icon = new IconProxy( iconUrl );
 
@@ -325,7 +325,7 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
         }
         catch( final IllegalArgumentException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_registerCardPileBaseDesignUI_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_registerCardPileBaseDesignUI_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
             return;
         }
 
@@ -393,7 +393,7 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            assertArgumentLegal( cardPileBaseDesignUIRegistry_ == cardPileBaseDesignUIRegistry, "cardPileBaseDesignUIRegistry", Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_unbindCardPileBaseDesignUIRegistry_notBound ); //$NON-NLS-1$
+            assertArgumentLegal( cardPileBaseDesignUIRegistry_ == cardPileBaseDesignUIRegistry, "cardPileBaseDesignUIRegistry", NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_unbindCardPileBaseDesignUIRegistry_notBound ); //$NON-NLS-1$
             cardPileBaseDesignUIRegistry_ = null;
         }
     }
@@ -417,7 +417,7 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            assertArgumentLegal( extensionRegistry_ == extensionRegistry, "extensionRegistry", Messages.CardPileBaseDesignUIRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound ); //$NON-NLS-1$
+            assertArgumentLegal( extensionRegistry_ == extensionRegistry, "extensionRegistry", NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound ); //$NON-NLS-1$
             extensionRegistry_ = null;
         }
     }

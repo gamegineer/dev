@@ -97,7 +97,7 @@ public final class CardPileBaseDesignRegistry
         final ICardPileBaseDesign cardPileBaseDesign )
     {
         assertArgumentNotNull( cardPileBaseDesign, "cardPileBaseDesign" ); //$NON-NLS-1$
-        assertArgumentLegal( cardPileBaseDesigns_.putIfAbsent( cardPileBaseDesign.getId(), cardPileBaseDesign ) == null, "cardPileBaseDesign", Messages.CardPileBaseDesignRegistry_registerCardPileBaseDesign_cardPileBaseDesign_registered( cardPileBaseDesign.getId() ) ); //$NON-NLS-1$
+        assertArgumentLegal( cardPileBaseDesigns_.putIfAbsent( cardPileBaseDesign.getId(), cardPileBaseDesign ) == null, "cardPileBaseDesign", NonNlsMessages.CardPileBaseDesignRegistry_registerCardPileBaseDesign_cardPileBaseDesign_registered( cardPileBaseDesign.getId() ) ); //$NON-NLS-1$
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered card pile base design '%1$s'", cardPileBaseDesign.getId() ) ); //$NON-NLS-1$
     }
@@ -110,7 +110,7 @@ public final class CardPileBaseDesignRegistry
         final ICardPileBaseDesign cardPileBaseDesign )
     {
         assertArgumentNotNull( cardPileBaseDesign, "cardPileBaseDesign" ); //$NON-NLS-1$
-        assertArgumentLegal( cardPileBaseDesigns_.remove( cardPileBaseDesign.getId(), cardPileBaseDesign ), "cardPileBaseDesign", Messages.CardPileBaseDesignRegistry_unregisterCardPileBaseDesign_cardPileBaseDesign_unregistered( cardPileBaseDesign.getId() ) ); //$NON-NLS-1$
+        assertArgumentLegal( cardPileBaseDesigns_.remove( cardPileBaseDesign.getId(), cardPileBaseDesign ), "cardPileBaseDesign", NonNlsMessages.CardPileBaseDesignRegistry_unregisterCardPileBaseDesign_cardPileBaseDesign_unregistered( cardPileBaseDesign.getId() ) ); //$NON-NLS-1$
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered card pile base design '%1$s'", cardPileBaseDesign.getId() ) ); //$NON-NLS-1$
     }

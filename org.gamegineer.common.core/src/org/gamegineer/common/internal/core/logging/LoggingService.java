@@ -98,7 +98,7 @@ public final class LoggingService
         // order to ensure the "org.gamegineer" logger is created so that all
         // other Gamegineer bundle loggers will inherit its attributes.
         // DO NOT REMOVE THIS STATEMENT!
-        getLogger( bundleContext.getBundle() ).info( "Gamegineer logging service activated." ); //$NON-NLS-1$
+        getLogger( bundleContext.getBundle() ).info( "Gamegineer logging service activated" ); //$NON-NLS-1$
     }
 
     /**

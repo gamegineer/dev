@@ -114,7 +114,7 @@ final class TableNetworkPlayerView
         setLayout( new BorderLayout() );
         setOpaque( true );
 
-        final JLabel label = new JLabel( Messages.TableNetworkPlayerView_playersLabel_text );
+        final JLabel label = new JLabel( NlsMessages.TableNetworkPlayerView_playersLabel_text );
         label.setBorder( BorderFactory.createEmptyBorder( 0, 0, DialogUtils.convertWidthInDlusToPixels( fontMetrics, 3 ), 0 ) );
         add( label, BorderLayout.NORTH );
 

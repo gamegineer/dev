@@ -107,7 +107,7 @@ final class Model
                 final String hostName = (String)value;
                 if( (hostName == null) || hostName.isEmpty() )
                 {
-                    return ValidationStatus.error( Messages.Model_hostName_empty );
+                    return ValidationStatus.error( NlsMessages.Model_hostName_empty );
                 }
 
                 return ValidationStatus.ok();
@@ -154,7 +154,7 @@ final class Model
                 final String playerName = (String)value;
                 if( (playerName == null) || playerName.isEmpty() )
                 {
-                    return ValidationStatus.error( Messages.Model_playerName_empty );
+                    return ValidationStatus.error( NlsMessages.Model_playerName_empty );
                 }
 
                 return ValidationStatus.ok();
@@ -190,7 +190,7 @@ final class Model
                 final int port = (Integer)value;
                 if( (port < 1) || (port > 65535) )
                 {
-                    return ValidationStatus.error( Messages.Model_port_outOfRange );
+                    return ValidationStatus.error( NlsMessages.Model_port_outOfRange );
                 }
 
                 return ValidationStatus.ok();

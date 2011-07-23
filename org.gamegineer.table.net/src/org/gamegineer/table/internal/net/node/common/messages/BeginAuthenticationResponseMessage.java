@@ -133,7 +133,7 @@ public final class BeginAuthenticationResponseMessage
         final byte[] response )
     {
         assertArgumentNotNull( response, "response" ); //$NON-NLS-1$
-        assertArgumentLegal( response.length != 0, "response", Messages.BeginAuthenticationResponseMessage_setResponse_empty ); //$NON-NLS-1$
+        assertArgumentLegal( response.length != 0, "response", NonNlsMessages.BeginAuthenticationResponseMessage_setResponse_empty ); //$NON-NLS-1$
 
         response_ = response;
     }

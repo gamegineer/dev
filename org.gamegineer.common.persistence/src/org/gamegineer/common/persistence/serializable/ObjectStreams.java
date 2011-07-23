@@ -132,7 +132,7 @@ public final class ObjectStreams
             return persistenceDelegateRegistry;
         }
 
-        Loggers.getDefaultLogger().warning( Messages.ObjectStreams_platformPersistenceDelegateRegistry_notAvailable );
+        Loggers.getDefaultLogger().warning( NonNlsMessages.ObjectStreams_platformPersistenceDelegateRegistry_notAvailable );
         return NULL_PERSISTENCE_DELEGATE_REGISTRY;
     }
 

@@ -747,7 +747,7 @@ final class TableView
         }
         catch( final IOException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableView_createBackgroundPaint_readImageError, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableView_createBackgroundPaint_readImageError, e );
             return new Color( 0, 128, 0 );
         }
     }
@@ -1065,8 +1065,8 @@ final class TableView
         }
         catch( final ModelException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableView_importTable_error_nonNls, e );
-            OptionDialogs.showErrorMessageDialog( this, Messages.TableView_importTable_error );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableView_importTable_error, e );
+            OptionDialogs.showErrorMessageDialog( this, NlsMessages.TableView_importTable_error );
         }
     }
 

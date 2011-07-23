@@ -1,6 +1,6 @@
 /*
  * CommandLineOptions.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -69,7 +69,7 @@ final class CommandLineOptions
     {
         final Options options = new Options();
 
-        options.addOption( OPTION_HELP, false, Messages.CommandLineOptions_help_description );
+        options.addOption( OPTION_HELP, false, NlsMessages.CommandLineOptions_help_description );
 
         return options;
     }

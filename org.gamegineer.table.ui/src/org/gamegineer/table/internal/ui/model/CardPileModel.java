@@ -121,7 +121,7 @@ public final class CardPileModel
         final ICardPileModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.CardPileModel_addCardPileModelListener_listener_registered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.CardPileModel_addCardPileModelListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -245,7 +245,7 @@ public final class CardPileModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPileModel_cardPileFocusGained_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPileModel_cardPileFocusGained_unexpectedException, e );
             }
         }
     }
@@ -264,7 +264,7 @@ public final class CardPileModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPileModel_cardPileFocusLost_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPileModel_cardPileFocusLost_unexpectedException, e );
             }
         }
     }
@@ -283,7 +283,7 @@ public final class CardPileModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPileModel_cardPileModelStateChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPileModel_cardPileModelStateChanged_unexpectedException, e );
             }
         }
     }
@@ -316,7 +316,7 @@ public final class CardPileModel
             cardModel = cardModels_.get( card );
         }
 
-        assertArgumentLegal( cardModel != null, "card", Messages.CardPileModel_getCardModel_card_absent ); //$NON-NLS-1$
+        assertArgumentLegal( cardModel != null, "card", NonNlsMessages.CardPileModel_getCardModel_card_absent ); //$NON-NLS-1$
         return cardModel;
     }
 
@@ -361,7 +361,7 @@ public final class CardPileModel
         final ICardPileModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.CardPileModel_removeCardPileModelListener_listener_notRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.CardPileModel_removeCardPileModelListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /**

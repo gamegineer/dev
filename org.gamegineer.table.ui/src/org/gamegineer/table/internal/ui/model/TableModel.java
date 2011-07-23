@@ -154,7 +154,7 @@ public final class TableModel
         final ITableModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", Messages.TableModel_addTableModelListener_listener_registered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.TableModel_addTableModelListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -318,7 +318,7 @@ public final class TableModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableModel_cardPileFocusChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_cardPileFocusChanged_unexpectedException, e );
             }
         }
     }
@@ -337,7 +337,7 @@ public final class TableModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableModel_tableModelDirtyFlagChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_tableModelDirtyFlagChanged_unexpectedException, e );
             }
         }
     }
@@ -356,7 +356,7 @@ public final class TableModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableModel_tableModelFileChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_tableModelFileChanged_unexpectedException, e );
             }
         }
     }
@@ -375,7 +375,7 @@ public final class TableModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableModel_tableModelStateChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_tableModelStateChanged_unexpectedException, e );
             }
         }
     }
@@ -394,7 +394,7 @@ public final class TableModel
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.TableModel_tableOriginOffsetChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_tableOriginOffsetChanged_unexpectedException, e );
             }
         }
     }
@@ -427,7 +427,7 @@ public final class TableModel
             cardPileModel = cardPileModels_.get( cardPile );
         }
 
-        assertArgumentLegal( cardPileModel != null, "cardPile", Messages.TableModel_getCardPileModel_cardPile_absent ); //$NON-NLS-1$
+        assertArgumentLegal( cardPileModel != null, "cardPile", NonNlsMessages.TableModel_getCardPileModel_cardPile_absent ); //$NON-NLS-1$
         return cardPileModel;
     }
 
@@ -608,11 +608,11 @@ public final class TableModel
         }
         catch( final ClassNotFoundException e )
         {
-            throw new ModelException( Messages.TableModel_readTableMemento_error( file ), e );
+            throw new ModelException( NonNlsMessages.TableModel_readTableMemento_error( file ), e );
         }
         catch( final IOException e )
         {
-            throw new ModelException( Messages.TableModel_readTableMemento_error( file ), e );
+            throw new ModelException( NonNlsMessages.TableModel_readTableMemento_error( file ), e );
         }
     }
 
@@ -632,7 +632,7 @@ public final class TableModel
         final ITableModelListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener", Messages.TableModel_removeTableModelListener_listener_notRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.TableModel_removeTableModelListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /**
@@ -786,7 +786,7 @@ public final class TableModel
         }
         catch( final MementoException e )
         {
-            throw new ModelException( Messages.TableModel_setTableMemento_error, e );
+            throw new ModelException( NonNlsMessages.TableModel_setTableMemento_error, e );
         }
     }
 
@@ -887,7 +887,7 @@ public final class TableModel
         }
         catch( final IOException e )
         {
-            throw new ModelException( Messages.TableModel_writeTableMemento_error( file ), e );
+            throw new ModelException( NonNlsMessages.TableModel_writeTableMemento_error( file ), e );
         }
     }
 }

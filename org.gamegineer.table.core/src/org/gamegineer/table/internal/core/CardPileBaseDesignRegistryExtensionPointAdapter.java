@@ -165,7 +165,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            assertStateLegal( cardPileBaseDesignRegistry_ == null, Messages.CardPileBaseDesignRegistryExtensionPointAdapter_bindCardPileBaseDesignRegistry_bound );
+            assertStateLegal( cardPileBaseDesignRegistry_ == null, NonNlsMessages.CardPileBaseDesignRegistryExtensionPointAdapter_bindCardPileBaseDesignRegistry_bound );
             cardPileBaseDesignRegistry_ = cardPileBaseDesignRegistry;
         }
     }
@@ -189,7 +189,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            assertStateLegal( extensionRegistry_ == null, Messages.CardPileBaseDesignRegistryExtensionPointAdapter_bindExtensionRegistry_bound );
+            assertStateLegal( extensionRegistry_ == null, NonNlsMessages.CardPileBaseDesignRegistryExtensionPointAdapter_bindExtensionRegistry_bound );
             extensionRegistry_ = extensionRegistry;
         }
     }
@@ -223,7 +223,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
         }
         catch( final NumberFormatException e )
         {
-            throw new IllegalArgumentException( Messages.CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseWidthError, e );
+            throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseWidthError, e );
         }
 
         final int height;
@@ -233,7 +233,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
         }
         catch( final NumberFormatException e )
         {
-            throw new IllegalArgumentException( Messages.CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseHeightError, e );
+            throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseHeightError, e );
         }
 
         return new CardPileBaseDesignExtensionProxy( configurationElement.getDeclaringExtension(), id, width, height );
@@ -298,7 +298,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
         }
         catch( final IllegalArgumentException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.CardPileBaseDesignRegistryExtensionPointAdapter_registerCardPileBaseDesign_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPileBaseDesignRegistryExtensionPointAdapter_registerCardPileBaseDesign_parseError( configurationElement.getAttribute( ATTR_ID ) ), e );
             return;
         }
 
@@ -364,7 +364,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            assertArgumentLegal( cardPileBaseDesignRegistry_ == cardPileBaseDesignRegistry, "cardPileBaseDesignRegistry", Messages.CardPileBaseDesignRegistryExtensionPointAdapter_unbindCardPileBaseDesignRegistry_notBound ); //$NON-NLS-1$
+            assertArgumentLegal( cardPileBaseDesignRegistry_ == cardPileBaseDesignRegistry, "cardPileBaseDesignRegistry", NonNlsMessages.CardPileBaseDesignRegistryExtensionPointAdapter_unbindCardPileBaseDesignRegistry_notBound ); //$NON-NLS-1$
             cardPileBaseDesignRegistry_ = null;
         }
     }
@@ -388,7 +388,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            assertArgumentLegal( extensionRegistry_ == extensionRegistry, "extensionRegistry", Messages.CardPileBaseDesignRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound ); //$NON-NLS-1$
+            assertArgumentLegal( extensionRegistry_ == extensionRegistry, "extensionRegistry", NonNlsMessages.CardPileBaseDesignRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound ); //$NON-NLS-1$
             extensionRegistry_ = null;
         }
     }

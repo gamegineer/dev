@@ -1,6 +1,6 @@
 /*
  * OptionDialogs.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -71,7 +71,7 @@ public final class OptionDialogs
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
 
-        return JOptionPane.showConfirmDialog( parentComponent, message, CommonMessages.Common_application_name, JOptionPane.YES_NO_CANCEL_OPTION );
+        return JOptionPane.showConfirmDialog( parentComponent, message, CommonNlsMessages.Common_application_name, JOptionPane.YES_NO_CANCEL_OPTION );
     }
 
     /**
@@ -93,6 +93,6 @@ public final class OptionDialogs
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
 
-        JOptionPane.showMessageDialog( parentComponent, message, CommonMessages.Common_application_name, JOptionPane.ERROR_MESSAGE );
+        JOptionPane.showMessageDialog( parentComponent, message, CommonNlsMessages.Common_application_name, JOptionPane.ERROR_MESSAGE );
     }
 }

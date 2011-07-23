@@ -117,7 +117,7 @@ final class Connector
 
         synchronized( getLock() )
         {
-            assertStateLegal( getState() == State.PRISTINE, Messages.Connector_state_notPristine );
+            assertStateLegal( getState() == State.PRISTINE, NonNlsMessages.Connector_state_notPristine );
 
             try
             {
@@ -158,7 +158,7 @@ final class Connector
         final InetSocketAddress address = new InetSocketAddress( hostName, port );
         if( address.isUnresolved() )
         {
-            throw new IOException( Messages.Connector_createSocketChannel_addressUnresolved );
+            throw new IOException( NonNlsMessages.Connector_createSocketChannel_addressUnresolved );
         }
 
         final SocketChannel channel = SocketChannel.open();

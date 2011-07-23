@@ -1,6 +1,6 @@
 /*
  * Application.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -107,7 +107,7 @@ public final class Application
         }
         catch( final IllegalArgumentException e )
         {
-            Loggers.getDefaultLogger().log( Level.WARNING, Messages.Application_createTableAdvisor_parseVersionError( versionString ), e );
+            Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.Application_createTableAdvisor_parseVersionError( versionString ), e );
             version = Version.emptyVersion;
         }
 
@@ -125,7 +125,7 @@ public final class Application
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
         final ITableAdvisor advisor = createTableAdvisor( context );
-        Loggers.getDefaultLogger().info( Messages.Application_start_starting( advisor.getApplicationVersion() ) );
+        Loggers.getDefaultLogger().info( NonNlsMessages.Application_start_starting( advisor.getApplicationVersion() ) );
 
         final ExecutorService executor = Executors.newSingleThreadExecutor();
         try
@@ -140,11 +140,11 @@ public final class Application
             }
             catch( final CancellationException e )
             {
-                Loggers.getDefaultLogger().log( Level.WARNING, Messages.Application_start_cancelled, e );
+                Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.Application_start_cancelled, e );
                 result = TableResult.OK;
             }
 
-            Loggers.getDefaultLogger().info( Messages.Application_start_stopped( result ) );
+            Loggers.getDefaultLogger().info( NonNlsMessages.Application_start_stopped( result ) );
             return toApplicationExitObject( result );
         }
         finally
@@ -153,7 +153,7 @@ public final class Application
             executor.shutdown();
             if( !executor.awaitTermination( 10, TimeUnit.SECONDS ) )
             {
-                Loggers.getDefaultLogger().severe( Messages.Application_start_stopFailed );
+                Loggers.getDefaultLogger().severe( NonNlsMessages.Application_start_stopFailed );
             }
         }
     }
@@ -167,10 +167,10 @@ public final class Application
         final Future<?> task = task_.get();
         if( task != null )
         {
-            Loggers.getDefaultLogger().info( Messages.Application_stop_stopping );
+            Loggers.getDefaultLogger().info( NonNlsMessages.Application_stop_stopping );
             if( !task.cancel( true ) )
             {
-                Loggers.getDefaultLogger().severe( Messages.Application_stop_cancelFailed );
+                Loggers.getDefaultLogger().severe( NonNlsMessages.Application_stop_cancelFailed );
             }
         }
     }

@@ -1,6 +1,6 @@
 /*
  * MainView.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -249,7 +249,7 @@ final class MainView
                 final TableNetworkError error = event.getError();
                 if( error != null )
                 {
-                    OptionDialogs.showErrorMessageDialog( MainView.this, Messages.MainView_tableNetworkDisconnected_error( error ) );
+                    OptionDialogs.showErrorMessageDialog( MainView.this, NlsMessages.MainView_tableNetworkDisconnected_error( error ) );
                 }
             }
         } );

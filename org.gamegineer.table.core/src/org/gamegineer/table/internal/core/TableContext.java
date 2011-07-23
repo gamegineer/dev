@@ -110,7 +110,7 @@ final class TableContext
         {
             if( !pendingEventNotifications_.get().offer( notification ) )
             {
-                Loggers.getDefaultLogger().warning( Messages.TableContext_addEventNotification_queueFailed );
+                Loggers.getDefaultLogger().warning( NonNlsMessages.TableContext_addEventNotification_queueFailed );
             }
         }
     }

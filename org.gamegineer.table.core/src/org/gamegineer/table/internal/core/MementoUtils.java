@@ -84,14 +84,14 @@ final class MementoUtils
 
         if( !(memento instanceof Map<?, ?>) )
         {
-            throw new MementoException( Messages.MementoUtils_memento_wrongType );
+            throw new MementoException( NonNlsMessages.MementoUtils_memento_wrongType );
         }
 
         @SuppressWarnings( "unchecked" )
         final Map<String, Object> attributes = (Map<String, Object>)memento;
         if( !attributes.containsKey( name ) )
         {
-            throw new MementoException( Messages.MementoUtils_attribute_absent( name ) );
+            throw new MementoException( NonNlsMessages.MementoUtils_attribute_absent( name ) );
         }
 
         final T value;
@@ -101,12 +101,12 @@ final class MementoUtils
         }
         catch( final ClassCastException e )
         {
-            throw new MementoException( Messages.MementoUtils_attributeValue_wrongType( name ), e );
+            throw new MementoException( NonNlsMessages.MementoUtils_attributeValue_wrongType( name ), e );
         }
 
         if( value == null )
         {
-            throw new MementoException( Messages.MementoUtils_attributeValue_null( name ) );
+            throw new MementoException( NonNlsMessages.MementoUtils_attributeValue_null( name ) );
         }
 
         return value;

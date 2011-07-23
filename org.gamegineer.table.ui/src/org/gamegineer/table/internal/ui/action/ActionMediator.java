@@ -1,6 +1,6 @@
 /*
  * ActionMediator.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -97,7 +97,7 @@ public final class ActionMediator
     {
         assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertStateLegal( !actionListeners_.containsKey( action ), Messages.ActionMediator_bindActionListener_alreadyBound );
+        assertStateLegal( !actionListeners_.containsKey( action ), NonNlsMessages.ActionMediator_bindActionListener_alreadyBound );
 
         actionListeners_.put( action, listener );
 
@@ -127,7 +127,7 @@ public final class ActionMediator
     {
         assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
         assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
-        assertStateLegal( !shouldEnablePredicates_.containsKey( action ), Messages.ActionMediator_bindShouldEnablePredicate_alreadyBound );
+        assertStateLegal( !shouldEnablePredicates_.containsKey( action ), NonNlsMessages.ActionMediator_bindShouldEnablePredicate_alreadyBound );
 
         shouldEnablePredicates_.put( action, predicate );
 
@@ -158,7 +158,7 @@ public final class ActionMediator
     {
         assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
         assertArgumentNotNull( predicate, "predicate" ); //$NON-NLS-1$
-        assertStateLegal( !shouldSelectPredicates_.containsKey( action ), Messages.ActionMediator_bindShouldSelectPredicate_alreadyBound );
+        assertStateLegal( !shouldSelectPredicates_.containsKey( action ), NonNlsMessages.ActionMediator_bindShouldSelectPredicate_alreadyBound );
 
         shouldSelectPredicates_.put( action, predicate );
 
@@ -218,7 +218,7 @@ public final class ActionMediator
         final BasicAction action )
     {
         assertArgumentNotNull( action, "action" ); //$NON-NLS-1$
-        assertArgumentLegal( hasAttachments( action ), "action", Messages.ActionMediator_unbind_noAttachments ); //$NON-NLS-1$
+        assertArgumentLegal( hasAttachments( action ), "action", NonNlsMessages.ActionMediator_unbind_noAttachments ); //$NON-NLS-1$
 
         final IPredicate<Action> shouldEnablePredicate = shouldEnablePredicates_.remove( action );
         if( shouldEnablePredicate != null )

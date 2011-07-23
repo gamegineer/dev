@@ -1,6 +1,6 @@
 /*
  * ImageRegistry.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -117,7 +117,7 @@ public final class ImageRegistry
                 }
                 catch( final IOException e )
                 {
-                    Loggers.getDefaultLogger().log( Level.WARNING, Messages.ImageRegistry_loadImage_error( path ), e );
+                    Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.ImageRegistry_loadImage_error( path ), e );
                 }
             }
         }

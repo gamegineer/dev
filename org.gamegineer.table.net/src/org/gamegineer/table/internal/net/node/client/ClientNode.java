@@ -158,13 +158,13 @@ public final class ClientNode
                 {
                     if( !handshakeCondition_.await( 30L, TimeUnit.SECONDS ) )
                     {
-                        throw new TableNetworkException( TableNetworkError.TIME_OUT, Messages.ClientNode_handshake_timedOut );
+                        throw new TableNetworkException( TableNetworkError.TIME_OUT, NonNlsMessages.ClientNode_handshake_timedOut );
                     }
                 }
                 catch( final InterruptedException e )
                 {
                     Thread.currentThread().interrupt();
-                    throw new TableNetworkException( TableNetworkError.INTERRUPTED, Messages.ClientNode_handshake_interrupted, e );
+                    throw new TableNetworkException( TableNetworkError.INTERRUPTED, NonNlsMessages.ClientNode_handshake_interrupted, e );
                 }
             }
 

@@ -179,7 +179,7 @@ final class Dispatcher
                 }
                 catch( final Exception e )
                 {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_close_error, e );
+                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_close_error, e );
                 }
                 finally
                 {
@@ -193,7 +193,7 @@ final class Dispatcher
                 }
                 catch( final IOException e )
                 {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_close_error, e );
+                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_close_error, e );
                 }
                 finally
                 {
@@ -259,7 +259,7 @@ final class Dispatcher
         }
         catch( final IOException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_dispatchEvents_error, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_dispatchEvents_error, e );
         }
         finally
         {
@@ -331,7 +331,7 @@ final class Dispatcher
     {
         synchronized( lock_ )
         {
-            assertStateLegal( state_ == State.PRISTINE, Messages.Dispatcher_state_notPristine );
+            assertStateLegal( state_ == State.PRISTINE, NonNlsMessages.Dispatcher_state_notPristine );
 
             final Selector selector;
             try
@@ -341,7 +341,7 @@ final class Dispatcher
             catch( final IOException e )
             {
                 state_ = State.CLOSED;
-                throw new TransportException( Messages.Dispatcher_open_ioError, e );
+                throw new TransportException( NonNlsMessages.Dispatcher_open_ioError, e );
             }
 
             state_ = State.OPEN;
@@ -389,7 +389,7 @@ final class Dispatcher
         }
         catch( final RuntimeException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Dispatcher_processEvents_unexpectedError, e );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_processEvents_unexpectedError, e );
         }
         finally
         {
@@ -427,8 +427,8 @@ final class Dispatcher
 
         synchronized( lock_ )
         {
-            assertStateLegal( state_ == State.OPEN, Messages.Dispatcher_state_notOpen );
-            assertArgumentLegal( !eventHandlers_.contains( eventHandler ), "eventHandler", Messages.Dispatcher_registerEventHandler_eventHandlerRegistered ); //$NON-NLS-1$
+            assertStateLegal( state_ == State.OPEN, NonNlsMessages.Dispatcher_state_notOpen );
+            assertArgumentLegal( !eventHandlers_.contains( eventHandler ), "eventHandler", NonNlsMessages.Dispatcher_registerEventHandler_eventHandlerRegistered ); //$NON-NLS-1$
 
             acquireSelectorGuard();
             try
@@ -493,8 +493,8 @@ final class Dispatcher
 
         synchronized( lock_ )
         {
-            assertStateLegal( state_ == State.OPEN, Messages.Dispatcher_state_notOpen );
-            assertArgumentLegal( eventHandlers_.remove( eventHandler ), "eventHandler", Messages.Dispatcher_unregisterEventHandler_eventHandlerUnregistered ); //$NON-NLS-1$
+            assertStateLegal( state_ == State.OPEN, NonNlsMessages.Dispatcher_state_notOpen );
+            assertArgumentLegal( eventHandlers_.remove( eventHandler ), "eventHandler", NonNlsMessages.Dispatcher_unregisterEventHandler_eventHandlerUnregistered ); //$NON-NLS-1$
 
             acquireSelectorGuard();
             try

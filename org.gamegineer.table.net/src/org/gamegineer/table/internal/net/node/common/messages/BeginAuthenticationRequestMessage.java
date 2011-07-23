@@ -117,7 +117,7 @@ public final class BeginAuthenticationRequestMessage
         final byte[] challenge )
     {
         assertArgumentNotNull( challenge, "challenge" ); //$NON-NLS-1$
-        assertArgumentLegal( challenge.length != 0, "challenge", Messages.BeginAuthenticationRequestMessage_setChallenge_empty ); //$NON-NLS-1$
+        assertArgumentLegal( challenge.length != 0, "challenge", NonNlsMessages.BeginAuthenticationRequestMessage_setChallenge_empty ); //$NON-NLS-1$
 
         challenge_ = challenge;
     }
@@ -139,7 +139,7 @@ public final class BeginAuthenticationRequestMessage
         final byte[] salt )
     {
         assertArgumentNotNull( salt, "salt" ); //$NON-NLS-1$
-        assertArgumentLegal( salt.length != 0, "salt", Messages.BeginAuthenticationRequestMessage_setSalt_empty ); //$NON-NLS-1$
+        assertArgumentLegal( salt.length != 0, "salt", NonNlsMessages.BeginAuthenticationRequestMessage_setSalt_empty ); //$NON-NLS-1$
 
         salt_ = salt;
     }

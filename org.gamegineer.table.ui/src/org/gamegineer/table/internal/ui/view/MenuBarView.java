@@ -80,8 +80,8 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createAddCardMenu()
     {
-        final JMenu menu = new JMenu( Messages.MenuBarView_addCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_addCard_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.MenuBarView_addCard_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_addCard_mnemonic ).getKeyCode() );
         menu.add( createAddClubsCardMenu() );
         menu.add( createAddDiamondsCardMenu() );
         menu.add( createAddHeartsCardMenu() );
@@ -98,8 +98,8 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createAddClubsCardMenu()
     {
-        final JMenu menu = new JMenu( Messages.MenuBarView_addClubsCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_addClubsCard_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.MenuBarView_addClubsCard_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_addClubsCard_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddAceOfClubsCardAction() );
         menu.add( Actions.getAddTwoOfClubsCardAction() );
         menu.add( Actions.getAddThreeOfClubsCardAction() );
@@ -124,8 +124,8 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createAddDeckMenu()
     {
-        final JMenu menu = new JMenu( Messages.MenuBarView_addDeck_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_addDeck_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.MenuBarView_addDeck_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_addDeck_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddStandard52CardDeckAction() );
         menu.add( Actions.getAddStandard54CardDeckAction() );
         return menu;
@@ -139,8 +139,8 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createAddDiamondsCardMenu()
     {
-        final JMenu menu = new JMenu( Messages.MenuBarView_addDiamondsCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_addDiamondsCard_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.MenuBarView_addDiamondsCard_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_addDiamondsCard_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddAceOfDiamondsCardAction() );
         menu.add( Actions.getAddTwoOfDiamondsCardAction() );
         menu.add( Actions.getAddThreeOfDiamondsCardAction() );
@@ -165,8 +165,8 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createAddHeartsCardMenu()
     {
-        final JMenu menu = new JMenu( Messages.MenuBarView_addHeartsCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_addHeartsCard_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.MenuBarView_addHeartsCard_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_addHeartsCard_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddAceOfHeartsCardAction() );
         menu.add( Actions.getAddTwoOfHeartsCardAction() );
         menu.add( Actions.getAddThreeOfHeartsCardAction() );
@@ -191,8 +191,8 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createAddSpadesCardMenu()
     {
-        final JMenu menu = new JMenu( Messages.MenuBarView_addSpadesCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_addSpadesCard_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.MenuBarView_addSpadesCard_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_addSpadesCard_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddAceOfSpadesCardAction() );
         menu.add( Actions.getAddTwoOfSpadesCardAction() );
         menu.add( Actions.getAddThreeOfSpadesCardAction() );
@@ -217,8 +217,8 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createAddSpecialCardMenu()
     {
-        final JMenu menu = new JMenu( Messages.MenuBarView_addSpecialCard_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_addSpecialCard_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.MenuBarView_addSpecialCard_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_addSpecialCard_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddJokerCardAction() );
         return menu;
     }
@@ -231,8 +231,8 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createFileMenu()
     {
-        final JMenu menu = new JMenu( Messages.MenuBarView_file_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_file_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.MenuBarView_file_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_file_mnemonic ).getKeyCode() );
         menu.add( Actions.getOpenNewTableAction() );
         menu.add( Actions.getOpenTableAction() );
         menu.addSeparator();
@@ -252,8 +252,8 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createHelpMenu()
     {
-        final JMenu menu = new JMenu( Messages.MenuBarView_help_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_help_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.MenuBarView_help_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_help_mnemonic ).getKeyCode() );
         menu.add( Actions.getOpenAboutDialogAction() );
         return menu;
     }
@@ -266,8 +266,8 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createLayoutMenu()
     {
-        final JMenu menu = new JMenu( Messages.MenuBarView_layout_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_layout_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.MenuBarView_layout_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_layout_mnemonic ).getKeyCode() );
         final ButtonGroup layoutButtonGroup = new ButtonGroup();
         layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetStackedCardPileLayoutAction() ) ) );
         layoutButtonGroup.add( menu.add( new JRadioButtonMenuItem( Actions.getSetAccordianUpCardPileLayoutAction() ) ) );
@@ -285,8 +285,8 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createNetworkMenu()
     {
-        final JMenu menu = new JMenu( Messages.MenuBarView_network_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_network_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.MenuBarView_network_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_network_mnemonic ).getKeyCode() );
         menu.add( Actions.getHostTableNetworkAction() );
         menu.add( Actions.getJoinTableNetworkAction() );
         menu.add( Actions.getDisconnectTableNetworkAction() );
@@ -318,8 +318,8 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createTableMenu()
     {
-        final JMenu menu = new JMenu( Messages.MenuBarView_table_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_table_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.MenuBarView_table_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_table_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddCardPileAction() );
         menu.add( Actions.getRemoveCardPileAction() );
         menu.add( Actions.getRemoveAllCardPilesAction() );
@@ -343,8 +343,8 @@ final class MenuBarView
      */
     private JMenu createViewMenu()
     {
-        final JMenu menu = new JMenu( Messages.MenuBarView_view_text );
-        menu.setMnemonic( KeyStroke.getKeyStroke( Messages.MenuBarView_view_mnemonic ).getKeyCode() );
+        final JMenu menu = new JMenu( NlsMessages.MenuBarView_view_text );
+        menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_view_mnemonic ).getKeyCode() );
         menu.add( Actions.getResetTableOriginAction() );
         return menu;
     }

@@ -83,7 +83,7 @@ public final class JoinTableNetworkWizard
         model_ = new Model();
         tableModel_ = tableModel;
 
-        setTitle( Messages.JoinTableNetworkWizard_title );
+        setTitle( NlsMessages.JoinTableNetworkWizard_title );
         setNeedsProgressMonitor( true );
     }
 
@@ -157,7 +157,7 @@ public final class JoinTableNetworkWizard
                 protected ConnectionState doInBackground()
                     throws Exception
                 {
-                    setDescription( Messages.JoinTableNetworkWizard_description_connecting );
+                    setDescription( NlsMessages.JoinTableNetworkWizard_description_connecting );
                     setProgressIndeterminate( true );
                     tableNetwork.join( configuration );
                     return ConnectionState.CONNECTED;
@@ -182,11 +182,11 @@ public final class JoinTableNetworkWizard
                     }
                     catch( final ExecutionException e )
                     {
-                        Loggers.getDefaultLogger().log( Level.SEVERE, Messages.JoinTableNetworkWizard_finish_error_nonNls, e );
+                        Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.JoinTableNetworkWizard_finish_error, e );
                         final Throwable cause = e.getCause();
                         if( cause instanceof TableNetworkException )
                         {
-                            showErrorMessageDialogLater( Messages.JoinTableNetworkWizard_finish_error( ((TableNetworkException)cause).getError() ) );
+                            showErrorMessageDialogLater( NlsMessages.JoinTableNetworkWizard_finish_error( ((TableNetworkException)cause).getError() ) );
                         }
                         else
                         {
@@ -195,8 +195,8 @@ public final class JoinTableNetworkWizard
                     }
                     catch( final InterruptedException e )
                     {
-                        Loggers.getDefaultLogger().log( Level.SEVERE, Messages.JoinTableNetworkWizard_finish_interrupted_nonNls, e );
-                        showErrorMessageDialogLater( Messages.JoinTableNetworkWizard_finish_interrupted );
+                        Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.JoinTableNetworkWizard_finish_interrupted, e );
+                        showErrorMessageDialogLater( NlsMessages.JoinTableNetworkWizard_finish_interrupted );
                     }
                     finally
                     {

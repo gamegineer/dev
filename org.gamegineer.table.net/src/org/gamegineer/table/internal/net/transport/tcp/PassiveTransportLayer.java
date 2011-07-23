@@ -79,7 +79,7 @@ final class PassiveTransportLayer
         catch( final IOException e )
         {
             close();
-            throw new TransportException( Messages.PassiveTransportLayer_open_ioError, e );
+            throw new TransportException( NonNlsMessages.PassiveTransportLayer_open_ioError, e );
         }
     }
 }

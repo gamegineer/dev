@@ -1,6 +1,6 @@
 /*
  * PreferencesModel.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -97,7 +97,7 @@ public final class PreferencesModel
         final Preferences preferences = Activator.getDefault().getUserPreferences( PreferencesModel.class );
         if( preferences == null )
         {
-            Loggers.getDefaultLogger().severe( Messages.PreferencesModel_userPreferences_notAvailable );
+            Loggers.getDefaultLogger().severe( NonNlsMessages.PreferencesModel_userPreferences_notAvailable );
             return;
         }
 
@@ -113,7 +113,7 @@ public final class PreferencesModel
         final Preferences preferences = Activator.getDefault().getUserPreferences( PreferencesModel.class );
         if( preferences == null )
         {
-            Loggers.getDefaultLogger().severe( Messages.PreferencesModel_userPreferences_notAvailable );
+            Loggers.getDefaultLogger().severe( NonNlsMessages.PreferencesModel_userPreferences_notAvailable );
             return;
         }
 

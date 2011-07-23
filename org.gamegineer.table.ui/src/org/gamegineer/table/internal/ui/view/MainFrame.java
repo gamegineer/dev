@@ -161,7 +161,7 @@ public final class MainFrame
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
-                JOptionPane.showMessageDialog( MainFrame.this, Messages.AboutDialog_message( model_.getVersion() ), Messages.AboutDialog_title, JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE );
+                JOptionPane.showMessageDialog( MainFrame.this, NlsMessages.AboutDialog_message( model_.getVersion() ), NlsMessages.AboutDialog_title, JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE );
             }
         } );
         actionMediator_.bindActionListener( Actions.getOpenNewTableAction(), new ActionListener()
@@ -262,7 +262,7 @@ public final class MainFrame
             return true;
         }
 
-        final int result = OptionDialogs.showConfirmDialog( this, Messages.MainFrame_confirmSaveDirtyTable_message( getTableName() ) );
+        final int result = OptionDialogs.showConfirmDialog( this, NlsMessages.MainFrame_confirmSaveDirtyTable_message( getTableName() ) );
         if( result == JOptionPane.YES_OPTION )
         {
             return saveTable( false );
@@ -313,7 +313,7 @@ public final class MainFrame
             }
             catch( final IOException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainFrame_getApplicationIconImages_readImageError_nonNls( imagePath ), e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.MainFrame_getApplicationIconImages_readImageError( imagePath ), e );
             }
         }
         return iconImages;
@@ -347,7 +347,7 @@ public final class MainFrame
         final File file = getTableFile();
         if( file == null )
         {
-            return Messages.MainFrame_untitledTable;
+            return NlsMessages.MainFrame_untitledTable;
         }
 
         return file.getName();
@@ -501,8 +501,8 @@ public final class MainFrame
         }
         catch( final ModelException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainFrame_openTable_error_nonNls( file ), e );
-            OptionDialogs.showErrorMessageDialog( this, Messages.MainFrame_openTable_error );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.MainFrame_openTable_error( file ), e );
+            OptionDialogs.showErrorMessageDialog( this, NlsMessages.MainFrame_openTable_error );
         }
     }
 
@@ -601,8 +601,8 @@ public final class MainFrame
         }
         catch( final ModelException e )
         {
-            Loggers.getDefaultLogger().log( Level.SEVERE, Messages.MainFrame_saveTable_error_nonNls( file ), e );
-            OptionDialogs.showErrorMessageDialog( this, Messages.MainFrame_saveTable_error );
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.MainFrame_saveTable_error( file ), e );
+            OptionDialogs.showErrorMessageDialog( this, NlsMessages.MainFrame_saveTable_error );
             return false;
         }
 
@@ -712,6 +712,6 @@ public final class MainFrame
      */
     private void updateTitle()
     {
-        setTitle( Messages.MainFrame_title( getTableName() ) );
+        setTitle( NlsMessages.MainFrame_title( getTableName() ) );
     }
 }

@@ -121,7 +121,7 @@ public final class PersistenceDelegateRegistry
             return new HashSet<String>( Arrays.asList( (String[])propertyValue ) );
         }
 
-        Loggers.getDefaultLogger().warning( Messages.PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators( persistenceDelegateReference ) );
+        Loggers.getDefaultLogger().warning( NonNlsMessages.PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators( persistenceDelegateReference ) );
         return Collections.emptySet();
     }
 
@@ -221,7 +221,7 @@ public final class PersistenceDelegateRegistry
                 }
                 catch( final IllegalArgumentException e )
                 {
-                    Loggers.getDefaultLogger().log( Level.WARNING, Messages.PersistenceDelegateRegistry_registerPersistenceDelegateFromServiceReference_registrationFailed( typeName, persistenceDelegateReference ), e );
+                    Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.PersistenceDelegateRegistry_registerPersistenceDelegateFromServiceReference_registrationFailed( typeName, persistenceDelegateReference ), e );
                 }
             }
 
@@ -257,7 +257,7 @@ public final class PersistenceDelegateRegistry
         assert persistenceDelegate != null;
         assert Thread.holdsLock( lock_ );
 
-        assertArgumentLegal( !persistenceDelegates_.containsKey( typeName ), "typeName", Messages.PersistenceDelegateRegistry_registerPersistenceDelegate_type_registered( typeName ) ); //$NON-NLS-1$
+        assertArgumentLegal( !persistenceDelegates_.containsKey( typeName ), "typeName", NonNlsMessages.PersistenceDelegateRegistry_registerPersistenceDelegate_type_registered( typeName ) ); //$NON-NLS-1$
         persistenceDelegates_.put( typeName, persistenceDelegate );
         Debug.getDefault().trace( Debug.OPTION_SERIALIZABLE, String.format( "Registered persistence delegate '%1$s' for type '%2$s'", persistenceDelegate, typeName ) ); //$NON-NLS-1$
     }
@@ -342,7 +342,7 @@ public final class PersistenceDelegateRegistry
         assert persistenceDelegate != null;
         assert Thread.holdsLock( lock_ );
 
-        assertArgumentLegal( persistenceDelegate.equals( persistenceDelegates_.get( typeName ) ), "typeName", Messages.PersistenceDelegateRegistry_unregisterPersistenceDelegate_type_unregistered( typeName ) ); //$NON-NLS-1$
+        assertArgumentLegal( persistenceDelegate.equals( persistenceDelegates_.get( typeName ) ), "typeName", NonNlsMessages.PersistenceDelegateRegistry_unregisterPersistenceDelegate_type_unregistered( typeName ) ); //$NON-NLS-1$
         persistenceDelegates_.remove( typeName );
         Debug.getDefault().trace( Debug.OPTION_SERIALIZABLE, String.format( "Unregistered persistence delegate '%1$s' for type '%2$s'", persistenceDelegate, typeName ) ); //$NON-NLS-1$
     }

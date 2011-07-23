@@ -339,7 +339,7 @@ public final class Activator
             }
             catch( final BackingStoreException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, Messages.Activator_saveUserPreferenecs_error, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Activator_saveUserPreferenecs_error, e );
             }
         }
     }
