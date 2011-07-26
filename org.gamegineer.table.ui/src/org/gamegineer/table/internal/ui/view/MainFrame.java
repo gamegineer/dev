@@ -204,14 +204,14 @@ public final class MainFrame
             }
         } );
 
-        final IPredicate<Action> isTableDirtyAndEditablePredicate = new IPredicate<Action>()
+        final IPredicate<Action> isTableDirtyPredicate = new IPredicate<Action>()
         {
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
                 @SuppressWarnings( "unused" )
                 final Action obj )
             {
-                return isTableDirty() && isTableEditable();
+                return isTableDirty();
             }
         };
         final IPredicate<Action> isTableEditablePredicate = new IPredicate<Action>()
@@ -226,8 +226,7 @@ public final class MainFrame
         };
         actionMediator_.bindShouldEnablePredicate( Actions.getOpenNewTableAction(), isTableEditablePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getOpenTableAction(), isTableEditablePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getSaveTableAction(), isTableDirtyAndEditablePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getSaveTableAsAction(), isTableEditablePredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getSaveTableAction(), isTableDirtyPredicate );
     }
 
     /*
