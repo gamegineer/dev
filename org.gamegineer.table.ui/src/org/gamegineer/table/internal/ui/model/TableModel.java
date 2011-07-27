@@ -749,11 +749,9 @@ public final class TableModel
         synchronized( lock_ )
         {
             originOffset_.setSize( originOffset );
-            isDirty_ = true;
         }
 
         fireTableOriginOffsetChanged();
-        fireTableModelDirtyFlagChanged();
         fireTableModelStateChanged();
     }
 
