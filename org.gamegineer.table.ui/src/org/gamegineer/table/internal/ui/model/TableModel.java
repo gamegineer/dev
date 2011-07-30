@@ -99,21 +99,10 @@ public final class TableModel
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableModel} class from the
-     * specified table.
-     * 
-     * @param table
-     *        The table associated with this model; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code table} is {@code null}.
+     * Initializes a new instance of the {@code TableModel}.
      */
-    private TableModel(
-        /* @NonNull */
-        final ITable table )
+    public TableModel()
     {
-        assertArgumentNotNull( table, "table" ); //$NON-NLS-1$
-
         lock_ = new Object();
         cardPileModels_ = new IdentityHashMap<ICardPile, CardPileModel>();
         file_ = null;
@@ -121,16 +110,11 @@ public final class TableModel
         isDirty_ = false;
         listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
         originOffset_ = new Dimension( 0, 0 );
-        table_ = table;
+        table_ = TableFactory.createTable();
         tableNetwork_ = TableNetworkFactory.createTableNetwork();
 
         table_.addTableListener( this );
         tableNetwork_.addTableNetworkListener( this );
-
-        for( final ICardPile cardPile : table.getCardPiles() )
-        {
-            createCardPileModel( cardPile );
-        }
     }
 
 
@@ -263,45 +247,6 @@ public final class TableModel
         cardPileModels_.put( cardPile, cardPileModel );
         cardPileModel.addCardPileModelListener( this );
         return cardPileModel;
-    }
-
-    /**
-     * Creates a new instance of the {@code TableModel} class and initializes it
-     * with an empty table.
-     * 
-     * @return A new instance of the {@code TableModel} class; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    public static TableModel createTableModel()
-    {
-        return new TableModel( TableFactory.createTable() );
-    }
-
-    /**
-     * Creates a new instance of the {@code TableModel} class and initializes it
-     * with the table contained in the specified file.
-     * 
-     * @param file
-     *        The file that contains the table; must not be {@code null}.
-     * 
-     * @return A new instance of the {@code TableModel} class; never {@code
-     *         null}.
-     * 
-     * @throws org.gamegineer.table.internal.ui.model.ModelException
-     *         If an error occurs.
-     */
-    /* @NonNull */
-    public static TableModel createTableModel(
-        /* @NonNull */
-        final File file )
-        throws ModelException
-    {
-        assertArgumentNotNull( file, "file" ); //$NON-NLS-1$
-
-        final TableModel tableModel = new TableModel( readTable( file ) );
-        tableModel.file_ = file;
-        return tableModel;
     }
 
     /**
@@ -500,29 +445,6 @@ public final class TableModel
     }
 
     /**
-     * Imports the table contained in the specified file and replaces the
-     * contents of the current table with the imported table.
-     * 
-     * @param file
-     *        The file from which the table will be imported; must not be
-     *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code file} is {@code null}.
-     * @throws org.gamegineer.table.internal.ui.model.ModelException
-     *         If an error occurs.
-     */
-    public void importTable(
-        /* @NonNull */
-        final File file )
-        throws ModelException
-    {
-        assertArgumentNotNull( file, "file" ); //$NON-NLS-1$
-
-        setTableMemento( table_, file );
-    }
-
-    /**
      * Indicates the table model is dirty.
      * 
      * @return {@code true} if the table model is dirty; otherwise {@code false}
@@ -548,29 +470,53 @@ public final class TableModel
     }
 
     /**
-     * Reads a table from the specified file.
+     * Opens a new empty table.
+     */
+    void open()
+    {
+        table_.removeCardPiles();
+
+        file_ = null;
+        focusedCardPile_ = null;
+        isDirty_ = false;
+        originOffset_.setSize( new Dimension( 0, 0 ) );
+
+        fireCardPileFocusChanged();
+        fireTableModelDirtyFlagChanged();
+        fireTableModelFileChanged();
+        fireTableOriginOffsetChanged();
+        fireTableModelStateChanged();
+    }
+
+    /**
+     * Opens an existing table from the specified file.
      * 
      * @param file
-     *        The file from which the table will be read; must not be {@code
+     *        The file from which the table will be opened; must not be {@code
      *        null}.
      * 
-     * @return The table that was read from the specified file; never {@code
-     *         null}.
-     * 
      * @throws org.gamegineer.table.internal.ui.model.ModelException
-     *         If an error occurs while reading the file.
+     *         If an error occurs while opening the file.
      */
-    /* @NonNull */
-    private static ITable readTable(
+    void open(
         /* @NonNull */
         final File file )
         throws ModelException
     {
         assert file != null;
 
-        final ITable table = TableFactory.createTable();
-        setTableMemento( table, file );
-        return table;
+        setTableMemento( table_, file );
+
+        file_ = file;
+        focusedCardPile_ = null;
+        isDirty_ = false;
+        originOffset_.setSize( new Dimension( 0, 0 ) );
+
+        fireCardPileFocusChanged();
+        fireTableModelDirtyFlagChanged();
+        fireTableModelFileChanged();
+        fireTableOriginOffsetChanged();
+        fireTableModelStateChanged();
     }
 
     /**
@@ -654,7 +600,7 @@ public final class TableModel
 
         synchronized( lock_ )
         {
-            writeTable( file, table_ );
+            writeTableMemento( file, table_.createMemento() );
 
             file_ = file;
             isDirty_ = false;
@@ -822,31 +768,6 @@ public final class TableModel
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
         fireTableModelStateChanged();
-    }
-
-    /**
-     * Writes the specified table to the specified file.
-     * 
-     * @param file
-     *        The file to which the table will be written; must not be {@code
-     *        null}.
-     * @param table
-     *        The table to be written; must not be {@code null}.
-     * 
-     * @throws org.gamegineer.table.internal.ui.model.ModelException
-     *         If an error occurs while writing the file.
-     */
-    private static void writeTable(
-        /* @NonNull */
-        final File file,
-        /* @NonNull */
-        final ITable table )
-        throws ModelException
-    {
-        assert file != null;
-        assert table != null;
-
-        writeTableMemento( file, table.createMemento() );
     }
 
     /**

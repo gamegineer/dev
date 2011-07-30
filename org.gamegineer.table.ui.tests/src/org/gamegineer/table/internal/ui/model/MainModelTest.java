@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.ui.TableAdvisor;
@@ -86,6 +87,24 @@ public final class MainModelTest
     }
 
     /**
+     * Fires a main model state changed event for the main model under test in
+     * the fixture.
+     */
+    private void fireMainModelStateChangedEvent()
+    {
+        try
+        {
+            final Method method = MainModel.class.getDeclaredMethod( "fireMainModelStateChanged" ); //$NON-NLS-1$
+            method.setAccessible( true );
+            method.invoke( model_ );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -97,6 +116,23 @@ public final class MainModelTest
     {
         niceMocksControl_ = EasyMock.createNiceControl();
         model_ = new MainModel( new TableAdvisor() );
+    }
+
+    /**
+     * Ensures the {@code addMainModelListener} method adds a listener that is
+     * absent from the main model listener collection.
+     */
+    @Test
+    public void testAddMainModelListener_Listener_Absent()
+    {
+        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        listener.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
+        niceMocksControl_.replay();
+
+        model_.addMainModelListener( listener );
+        fireMainModelStateChangedEvent();
+
+        niceMocksControl_.verify();
     }
 
     /**
@@ -116,7 +152,7 @@ public final class MainModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddMainModelListener_Listener_Present()
     {
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
+        final IMainModelListener listener = EasyMock.createMock( IMainModelListener.class );
         model_.addMainModelListener( listener );
 
         model_.addMainModelListener( listener );
@@ -154,7 +190,7 @@ public final class MainModelTest
         niceMocksControl_.replay();
         model_.addMainModelListener( listener );
 
-        model_.openTable();
+        fireMainModelStateChangedEvent();
 
         niceMocksControl_.verify();
     }
@@ -168,39 +204,6 @@ public final class MainModelTest
     {
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
         listener.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
-        niceMocksControl_.replay();
-        model_.addMainModelListener( listener );
-
-        model_.openTable();
-
-        niceMocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code openTable()} method fires a table closed event.
-     */
-    @Test
-    public void testOpenTable_FiresTableClosedEvent()
-    {
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.tableClosed( EasyMock.notNull( MainModelContentChangedEvent.class ) );
-        niceMocksControl_.replay();
-        model_.openTable();
-        model_.addMainModelListener( listener );
-
-        model_.openTable();
-
-        niceMocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code openTable()} method fires a table opened event.
-     */
-    @Test
-    public void testOpenTable_FiresTableOpenedEvent()
-    {
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.tableOpened( EasyMock.notNull( MainModelContentChangedEvent.class ) );
         niceMocksControl_.replay();
         model_.addMainModelListener( listener );
 
@@ -248,52 +251,6 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the {@code openTable(File)} method fires a table closed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testOpenTableFromFile_FiresTableClosedEvent()
-        throws Exception
-    {
-        final File file = createTemporaryFile();
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.tableClosed( EasyMock.notNull( MainModelContentChangedEvent.class ) );
-        niceMocksControl_.replay();
-        model_.openTable();
-        model_.saveTable( file );
-        model_.addMainModelListener( listener );
-
-        model_.openTable( file );
-
-        niceMocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code openTable(File)} method fires a table opened event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test
-    public void testOpenTableFromFile_FiresTableOpenedEvent()
-        throws Exception
-    {
-        final File file = createTemporaryFile();
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.tableOpened( EasyMock.notNull( MainModelContentChangedEvent.class ) );
-        niceMocksControl_.replay();
-        model_.openTable();
-        model_.saveTable( file );
-        model_.addMainModelListener( listener );
-
-        model_.openTable( file );
-
-        niceMocksControl_.verify();
-    }
-
-    /**
      * Ensures the {@code removeMainModelListener} method throws an exception
      * when passed a listener that is absent from the main model listener
      * collection.
@@ -301,7 +258,7 @@ public final class MainModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveMainModelListener_Listener_Absent()
     {
-        model_.removeMainModelListener( niceMocksControl_.createMock( IMainModelListener.class ) );
+        model_.removeMainModelListener( EasyMock.createMock( IMainModelListener.class ) );
     }
 
     /**
@@ -322,13 +279,13 @@ public final class MainModelTest
     public void testRemoveMainModelListener_Listener_Present()
     {
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.tableOpened( EasyMock.notNull( MainModelContentChangedEvent.class ) );
+        listener.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
         niceMocksControl_.replay();
         model_.addMainModelListener( listener );
-        model_.openTable();
+        fireMainModelStateChangedEvent();
 
         model_.removeMainModelListener( listener );
-        model_.openTable();
+        fireMainModelStateChangedEvent();
 
         niceMocksControl_.verify();
     }
@@ -371,25 +328,6 @@ public final class MainModelTest
     }
 
     /**
-     * Ensures the table closed event catches any exception thrown by the
-     * {@code tableClosed} method of a main model listener.
-     */
-    @Test
-    public void testTableClosed_CatchesListenerException()
-    {
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.tableClosed( EasyMock.notNull( MainModelContentChangedEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        niceMocksControl_.replay();
-        model_.openTable();
-        model_.addMainModelListener( listener );
-
-        model_.openTable();
-
-        niceMocksControl_.verify();
-    }
-
-    /**
      * Ensures a change to a table model owned by the main model fires a main
      * model state changed event.
      */
@@ -403,24 +341,6 @@ public final class MainModelTest
         model_.addMainModelListener( listener );
 
         model_.getTableModel().setOriginOffset( new Dimension( 100, 200 ) );
-
-        niceMocksControl_.verify();
-    }
-
-    /**
-     * Ensures the table opened event catches any exception thrown by the
-     * {@code tableOpened} method of a main model listener.
-     */
-    @Test
-    public void testTableOpened_CatchesListenerException()
-    {
-        final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
-        listener.tableOpened( EasyMock.notNull( MainModelContentChangedEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        niceMocksControl_.replay();
-        model_.addMainModelListener( listener );
-
-        model_.openTable();
 
         niceMocksControl_.verify();
     }

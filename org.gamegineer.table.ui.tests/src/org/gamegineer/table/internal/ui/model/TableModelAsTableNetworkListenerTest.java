@@ -57,6 +57,6 @@ public final class TableModelAsTableNetworkListenerTest
     @Override
     protected ITableNetworkListener createTableNetworkListener()
     {
-        return TableModel.createTableModel();
+        return new TableModel();
     }
 }

@@ -28,6 +28,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.CardPiles;
@@ -101,6 +102,77 @@ public final class TableModelTest
     }
 
     /**
+     * Fires a card pile focus changed event for the table model under test in
+     * the fixture.
+     */
+    private void fireCardPileFocusChangedEvent()
+    {
+        fireTableModelEvent( "fireCardPileFocusChanged" ); //$NON-NLS-1$
+    }
+
+    /**
+     * Fires a table model dirty flag changed event for the table model under
+     * test in the fixture.
+     */
+    private void fireTableModelDirtyFlagChangedEvent()
+    {
+        fireTableModelEvent( "fireTableModelDirtyFlagChanged" ); //$NON-NLS-1$
+    }
+
+    /**
+     * Fires the specified table model event for the table model under test in
+     * the fixture.
+     * 
+     * @param methodName
+     *        The name of the method that fires the table model event; must not
+     *        be {@code null}.
+     */
+    private void fireTableModelEvent(
+        /* @NonNull */
+        final String methodName )
+    {
+        assert methodName != null;
+
+        try
+        {
+            final Method method = TableModel.class.getDeclaredMethod( methodName );
+            method.setAccessible( true );
+            method.invoke( model_ );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
+    /**
+     * Fires a table model file changed event for the table model under test in
+     * the fixture.
+     */
+    private void fireTableModelFileChangedEvent()
+    {
+        fireTableModelEvent( "fireTableModelFileChanged" ); //$NON-NLS-1$
+    }
+
+    /**
+     * Fires a table model state changed event for the table model under test in
+     * the fixture.
+     */
+    private void fireTableModelStateChangedEvent()
+    {
+        fireTableModelEvent( "fireTableModelStateChanged" ); //$NON-NLS-1$
+    }
+
+    /**
+     * Fires a table origin offset changed event for the table model under test
+     * in the fixture.
+     */
+    private void fireTableOriginOffsetChangedEvent()
+    {
+        fireTableModelEvent( "fireTableOriginOffsetChanged" ); //$NON-NLS-1$
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -111,7 +183,25 @@ public final class TableModelTest
         throws Exception
     {
         niceMocksControl_ = EasyMock.createNiceControl();
-        model_ = TableModel.createTableModel();
+        model_ = new TableModel();
+    }
+
+    /**
+     * Ensures the {@code addTableModelListener} method adds a listener that is
+     * absent from the table model listener collection.
+     */
+    @Test
+    public void testAddTableModelListener_Listener_Absent()
+    {
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelStateChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+
+        fireTableModelStateChangedEvent();
+        model_.addTableModelListener( listener );
+        fireTableModelStateChangedEvent();
+
+        niceMocksControl_.verify();
     }
 
     /**
@@ -131,7 +221,7 @@ public final class TableModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddTableModelListener_Listener_Present()
     {
-        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        final ITableModelListener listener = EasyMock.createMock( ITableModelListener.class );
         model_.addTableModelListener( listener );
 
         model_.addTableModelListener( listener );
@@ -144,15 +234,13 @@ public final class TableModelTest
     @Test
     public void testCardPileFocusChanged_CatchesListenerException()
     {
-        final ICardPile cardPile = createUniqueCardPile();
-        model_.getTable().addCardPile( cardPile );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.cardPileFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
-        model_.setFocus( cardPile );
+        fireCardPileFocusChangedEvent();
 
         niceMocksControl_.verify();
     }
@@ -196,27 +284,13 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code createTableModel(File)} method throws an exception
-     * when passed a {@code null} file.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateTableModelFromFile_File_Null()
-        throws Exception
-    {
-        TableModel.createTableModel( null );
-    }
-
-    /**
      * Ensures the {@code getCardPileModel} throws an exception when passed a
      * card pile that is absent from the table.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testGetCardPileModel_CardPile_Absent()
     {
-        model_.getCardPileModel( niceMocksControl_.createMock( ICardPile.class ) );
+        model_.getCardPileModel( EasyMock.createMock( ICardPile.class ) );
     }
 
     /**
@@ -264,63 +338,199 @@ public final class TableModelTest
     }
 
     /**
-     * Ensures the {@code importTable} method throws an exception when passed a
-     * {@code null} file.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testImportTable_File_Null()
-        throws Exception
-    {
-        model_.importTable( null );
-    }
-
-    /**
-     * Ensures the {@code importTable} method fires a table model dirty flag
-     * changed event.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * Ensures the {@code open()} method fires a card pile focus changed event.
      */
     @Test
-    public void testImportTable_FiresTableModelDirtyFlagChangedEvent()
-        throws Exception
+    public void testOpen_FiresCardPileFocusChangedEvent()
     {
-        final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.tableModelDirtyFlagChanged( EasyMock.notNull( TableModelEvent.class ) );
+        listener.cardPileFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
         niceMocksControl_.replay();
-        model_.getTable().addCardPile( createUniqueCardPile() );
-        model_.save( file );
         model_.addTableModelListener( listener );
 
-        model_.importTable( file );
+        model_.open();
 
         niceMocksControl_.verify();
     }
 
     /**
-     * Ensures the {@code importTable} method fires a table model state changed
+     * Ensures the {@code open()} method fires a table model dirty flag changed
+     * event.
+     */
+    @Test
+    public void testOpen_FiresTableModelDirtyFalgChangedEvent()
+    {
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelDirtyFlagChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
+
+        model_.open();
+
+        niceMocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code open()} method fires a table model file changed event.
+     */
+    @Test
+    public void testOpen_FiresTabelModelFileChangedEvent()
+    {
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelFileChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
+
+        model_.open();
+
+        niceMocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code open()} method fires a table model state changed
+     * event.
+     */
+    @Test
+    public void testOpen_FiresTabelModelStateChangedEvent()
+    {
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelStateChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
+
+        model_.open();
+
+        niceMocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code open()} method fires a table origin offset changed
+     * event.
+     */
+    @Test
+    public void testOpen_FiresTabelOriginOffsetChangedEvent()
+    {
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableOriginOffsetChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
+
+        model_.open();
+
+        niceMocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code open(File)} method fires a card pile focus changed
      * event.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test
-    public void testImportTable_FiresTableModelStateChangedEvent()
+    public void testOpenFromFile_FiresCardPileFocusChangedEvent()
+        throws Exception
+    {
+        final File file = createTemporaryFile();
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.cardPileFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.save( file );
+        model_.addTableModelListener( listener );
+
+        model_.open( file );
+
+        niceMocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code open(File)} method fires a table model dirty flag
+     * changed event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testOpenFromFile_FiresTableModelDirtyFalgChangedEvent()
+        throws Exception
+    {
+        final File file = createTemporaryFile();
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelDirtyFlagChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.save( file );
+        model_.addTableModelListener( listener );
+
+        model_.open( file );
+
+        niceMocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code open(File)} method fires a table model file changed
+     * event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testOpenFromFile_FiresTabelModelFileChangedEvent()
+        throws Exception
+    {
+        final File file = createTemporaryFile();
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelFileChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.save( file );
+        model_.addTableModelListener( listener );
+
+        model_.open( file );
+
+        niceMocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code open(File)} method fires a table model state changed
+     * event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testOpenFromFile_FiresTabelModelStateChangedEvent()
         throws Exception
     {
         final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelStateChanged( EasyMock.notNull( TableModelEvent.class ) );
         niceMocksControl_.replay();
-        model_.getTable().addCardPile( createUniqueCardPile() );
         model_.save( file );
         model_.addTableModelListener( listener );
 
-        model_.importTable( file );
+        model_.open( file );
+
+        niceMocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code open(File)} method fires a table origin offset changed
+     * event.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testOpenFromFile_FiresTabelOriginOffsetChangedEvent()
+        throws Exception
+    {
+        final File file = createTemporaryFile();
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableOriginOffsetChanged( EasyMock.notNull( TableModelEvent.class ) );
+        niceMocksControl_.replay();
+        model_.save( file );
+        model_.addTableModelListener( listener );
+
+        model_.open( file );
 
         niceMocksControl_.verify();
     }
@@ -333,7 +543,7 @@ public final class TableModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveTableModelListener_Listener_Absent()
     {
-        model_.removeTableModelListener( niceMocksControl_.createMock( ITableModelListener.class ) );
+        model_.removeTableModelListener( EasyMock.createMock( ITableModelListener.class ) );
     }
 
     /**
@@ -353,16 +563,14 @@ public final class TableModelTest
     @Test
     public void testRemoveTableModelListener_Listener_Present()
     {
-        final ICardPile cardPile = createUniqueCardPile();
-        model_.getTable().addCardPile( cardPile );
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
-        listener.cardPileFocusChanged( EasyMock.notNull( TableModelEvent.class ) );
+        listener.tableModelStateChanged( EasyMock.notNull( TableModelEvent.class ) );
         niceMocksControl_.replay();
         model_.addTableModelListener( listener );
-        model_.setFocus( cardPile );
 
+        fireTableModelStateChangedEvent();
         model_.removeTableModelListener( listener );
-        model_.setFocus( null );
+        fireTableModelStateChangedEvent();
 
         niceMocksControl_.verify();
     }
@@ -396,7 +604,7 @@ public final class TableModelTest
      *         If an error occurs.
      */
     @Test
-    public void testSaveTable_FiresMainModelFileChangedEvent()
+    public void testSave_FiresTableModelFileChangedEvent()
         throws Exception
     {
         final File file = createTemporaryFile();
@@ -552,7 +760,7 @@ public final class TableModelTest
         niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
-        model_.setOriginOffset( new Dimension( 100, 100 ) );
+        fireTableModelDirtyFlagChangedEvent();
 
         niceMocksControl_.verify();
     }
@@ -568,14 +776,31 @@ public final class TableModelTest
     public void testTableModelFileChanged_CatchesListenerException()
         throws Exception
     {
-        final File file = createTemporaryFile();
         final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
         listener.tableModelFileChanged( EasyMock.notNull( TableModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
-        model_.save( file );
+        fireTableModelFileChangedEvent();
+
+        niceMocksControl_.verify();
+    }
+
+    /**
+     * Ensures the table model state changed event catches any exception thrown
+     * by the {@code tableModelStateChanged} method of a table model listener.
+     */
+    @Test
+    public void testTableModelStateChanged_CatchesListenerException()
+    {
+        final ITableModelListener listener = niceMocksControl_.createMock( ITableModelListener.class );
+        listener.tableModelStateChanged( EasyMock.notNull( TableModelEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        niceMocksControl_.replay();
+        model_.addTableModelListener( listener );
+
+        fireTableModelStateChangedEvent();
 
         niceMocksControl_.verify();
     }
@@ -594,7 +819,7 @@ public final class TableModelTest
         niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
-        model_.setOriginOffset( new Dimension( 100, 200 ) );
+        fireTableOriginOffsetChangedEvent();
 
         niceMocksControl_.verify();
     }

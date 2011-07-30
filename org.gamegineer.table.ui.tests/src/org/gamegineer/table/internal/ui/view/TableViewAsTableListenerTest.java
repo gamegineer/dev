@@ -1,6 +1,6 @@
 /*
  * TableViewAsTableListenerTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -58,6 +58,6 @@ public final class TableViewAsTableListenerTest
     @Override
     protected ITableListener createTableListener()
     {
-        return new TableView( TableModel.createTableModel() );
+        return new TableView( new TableModel() );
     }
 }

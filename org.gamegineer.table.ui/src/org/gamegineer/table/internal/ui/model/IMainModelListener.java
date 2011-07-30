@@ -1,6 +1,6 @@
 /*
  * IMainModelListener.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,30 +46,4 @@ public interface IMainModelListener
     public void mainModelStateChanged(
         /* @NonNull */
         MainModelEvent event );
-
-    /**
-     * Invoked after a table has been closed.
-     * 
-     * @param event
-     *        The event describing the closed table; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
-     */
-    public void tableClosed(
-        /* @NonNull */
-        MainModelContentChangedEvent event );
-
-    /**
-     * Invoked after a table has been opened.
-     * 
-     * @param event
-     *        The event describing the opened table; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
-     */
-    public void tableOpened(
-        /* @NonNull */
-        MainModelContentChangedEvent event );
 }

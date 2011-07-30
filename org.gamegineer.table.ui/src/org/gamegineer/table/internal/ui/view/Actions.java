@@ -381,9 +381,6 @@ final class Actions
     /** The identifier of the action used to host a table network. */
     private static final String HOST_TABLE_NETWORK_ACTION_ID = "hostTableNetworkAction"; //$NON-NLS-1$
 
-    /** The identifier of the action used to import a table. */
-    private static final String IMPORT_TABLE_ACTION_ID = "importTableAction"; //$NON-NLS-1$
-
     /** The identifier of the action used to join a table network. */
     private static final String JOIN_TABLE_NETWORK_ACTION_ID = "joinTableNetworkAction"; //$NON-NLS-1$
 
@@ -1081,15 +1078,6 @@ final class Actions
             {
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.HostTableNetworkAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.HostTableNetworkAction_text );
-            }
-        } );
-        actions.put( IMPORT_TABLE_ACTION_ID, new BasicAction()
-        {
-            private static final long serialVersionUID = 1L;
-
-            {
-                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.ImportTableAction_mnemonic ).getKeyCode() );
-                putValue( NAME, NlsMessages.ImportTableAction_text );
             }
         } );
         actions.put( JOIN_TABLE_NETWORK_ACTION_ID, new BasicAction()
@@ -1915,17 +1903,6 @@ final class Actions
     static BasicAction getHostTableNetworkAction()
     {
         return actions_.get( HOST_TABLE_NETWORK_ACTION_ID );
-    }
-
-    /**
-     * Gets the import table action.
-     * 
-     * @return The import table action; never {@code null}.
-     */
-    /* @NonNull */
-    static BasicAction getImportTableAction()
-    {
-        return actions_.get( IMPORT_TABLE_ACTION_ID );
     }
 
     /**

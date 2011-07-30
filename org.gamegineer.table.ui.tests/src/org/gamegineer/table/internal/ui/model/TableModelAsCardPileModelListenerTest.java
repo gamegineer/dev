@@ -1,6 +1,6 @@
 /*
  * TableModelAsCardPileModelListenerTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,6 @@
  */
 
 package org.gamegineer.table.internal.ui.model;
-
 
 /**
  * A fixture for testing the
@@ -56,6 +55,6 @@ public final class TableModelAsCardPileModelListenerTest
     @Override
     protected ICardPileModelListener createCardPileModelListener()
     {
-        return TableModel.createTableModel();
+        return new TableModel();
     }
 }

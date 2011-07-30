@@ -30,9 +30,7 @@ import javax.swing.SwingUtilities;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.ui.model.IMainModelListener;
 import org.gamegineer.table.internal.ui.model.MainModel;
-import org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent;
 import org.gamegineer.table.internal.ui.model.MainModelEvent;
-import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.net.ITableNetworkListener;
 import org.gamegineer.table.net.TableNetworkDisconnectedEvent;
@@ -64,10 +62,10 @@ final class MainView
     private int splitPaneDividerSize_;
 
     /** The table network player view. */
-    private TableNetworkPlayerView tableNetworkPlayerView_;
+    private final TableNetworkPlayerView tableNetworkPlayerView_;
 
     /** The table view. */
-    private TableView tableView_;
+    private final TableView tableView_;
 
 
     // ======================================================================
@@ -89,8 +87,8 @@ final class MainView
         model_ = model;
         splitPane_ = null;
         splitPaneDividerSize_ = 0;
-        tableNetworkPlayerView_ = null;
-        tableView_ = null;
+        tableNetworkPlayerView_ = new TableNetworkPlayerView( model.getTableModel() );
+        tableView_ = new TableView( model.getTableModel() );
 
         initializeComponent();
     }
@@ -109,6 +107,7 @@ final class MainView
         super.addNotify();
 
         model_.addMainModelListener( this );
+        model_.getTableModel().getTableNetwork().addTableNetworkListener( this );
     }
 
     /**
@@ -124,7 +123,11 @@ final class MainView
         splitPaneDividerSize_ = splitPane_.getDividerSize();
         splitPane_.setDividerSize( 0 );
         splitPane_.setResizeWeight( 1.0 );
+        splitPane_.setLeftComponent( tableView_ );
+        splitPane_.setRightComponent( tableNetworkPlayerView_ );
         add( splitPane_, BorderLayout.CENTER );
+
+        tableNetworkPlayerView_.setVisible( false );
     }
 
     /*
@@ -145,6 +148,7 @@ final class MainView
     @Override
     public void removeNotify()
     {
+        model_.getTableModel().getTableNetwork().removeTableNetworkListener( this );
         model_.removeMainModelListener( this );
 
         super.removeNotify();
@@ -164,49 +168,6 @@ final class MainView
         splitPane_.setDividerSize( isVisible ? splitPaneDividerSize_ : 0 );
         splitPane_.setDividerLocation( isVisible ? 0.8 : 0.0 );
         validate();
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#tableClosed(org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent)
-     */
-    @Override
-    public void tableClosed(
-        final MainModelContentChangedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                tableClosed( event.getTableModel() );
-            }
-        } );
-    }
-
-    /**
-     * Invoked when a table has been closed.
-     * 
-     * @param tableModel
-     *        The table model that was closed; must not be {@code null}.
-     */
-    private void tableClosed(
-        /* @NonNull */
-        final TableModel tableModel )
-    {
-        assert tableModel != null;
-        assert tableView_ != null;
-
-        tableModel.getTableNetwork().removeTableNetworkListener( this );
-
-        splitPane_.setLeftComponent( null );
-        tableView_ = null;
-        splitPane_.setRightComponent( null );
-        tableNetworkPlayerView_ = null;
-
-        validate();
-        requestFocusInWindow();
     }
 
     /*
@@ -265,49 +226,5 @@ final class MainView
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
         // do nothing
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#tableOpened(org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent)
-     */
-    @Override
-    public void tableOpened(
-        final MainModelContentChangedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                tableOpened( event.getTableModel() );
-            }
-        } );
-    }
-
-    /**
-     * Invoked when a new table has been opened.
-     * 
-     * @param tableModel
-     *        The table model that was opened; must not be {@code null}.
-     */
-    private void tableOpened(
-        /* @NonNull */
-        final TableModel tableModel )
-    {
-        assert tableModel != null;
-        assert tableView_ == null;
-
-        tableView_ = new TableView( tableModel );
-        splitPane_.setLeftComponent( tableView_ );
-        tableNetworkPlayerView_ = new TableNetworkPlayerView( tableModel );
-        tableNetworkPlayerView_.setVisible( false );
-        splitPane_.setRightComponent( tableNetworkPlayerView_ );
-
-        tableModel.getTableNetwork().addTableNetworkListener( this );
-
-        validate();
-        tableView_.requestFocusInWindow();
     }
 }

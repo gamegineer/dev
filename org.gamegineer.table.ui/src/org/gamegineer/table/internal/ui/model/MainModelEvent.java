@@ -1,6 +1,6 @@
 /*
  * MainModelEvent.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ import net.jcip.annotations.ThreadSafe;
  * An event fired by a main model.
  */
 @ThreadSafe
-public class MainModelEvent
+public final class MainModelEvent
     extends EventObject
 {
     // ======================================================================
@@ -71,7 +71,7 @@ public class MainModelEvent
      * @return The main model that fired the event; never {@code null}.
      */
     /* @NonNull */
-    public final MainModel getMainModel()
+    public MainModel getMainModel()
     {
         return (MainModel)getSource();
     }

@@ -93,16 +93,6 @@ final class NonNlsMessages
     /** The main model listener is not registered. */
     public static String MainModel_removeMainModelListener_listener_notRegistered;
 
-    /**
-     * An unexpected exception was thrown from IMainModelListener.tableClosed().
-     */
-    public static String MainModel_tableClosed_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from IMainModelListener.tableOpened().
-     */
-    public static String MainModel_tableOpened_unexpectedException;
-
     // --- PreferencesModel -------------------------------------------------
 
     /** The user preferences are not available. */

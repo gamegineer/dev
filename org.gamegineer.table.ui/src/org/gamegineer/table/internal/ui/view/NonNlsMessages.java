@@ -63,9 +63,6 @@ final class NonNlsMessages
     /** An error occurred while reading the background image. */
     public static String TableView_createBackgroundPaint_readImageError;
 
-    /** An error occurred while importing the table. */
-    public static String TableView_importTable_error;
-
 
     // ======================================================================
     // Constructors

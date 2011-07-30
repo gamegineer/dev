@@ -58,6 +58,6 @@ public final class TableNetworkPlayerViewAsTableNetworkListenerTest
     @Override
     protected ITableNetworkListener createTableNetworkListener()
     {
-        return new TableNetworkPlayerView( TableModel.createTableModel() );
+        return new TableNetworkPlayerView( new TableModel() );
     }
 }

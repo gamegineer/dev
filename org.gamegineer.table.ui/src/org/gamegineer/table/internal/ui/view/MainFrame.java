@@ -49,7 +49,6 @@ import org.gamegineer.table.internal.ui.model.FramePreferences;
 import org.gamegineer.table.internal.ui.model.IMainModelListener;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.MainModel;
-import org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent;
 import org.gamegineer.table.internal.ui.model.MainModelEvent;
 import org.gamegineer.table.internal.ui.model.ModelException;
 import org.gamegineer.table.internal.ui.model.TableModel;
@@ -133,7 +132,7 @@ public final class MainFrame
 
         bindActions();
         model_.addMainModelListener( this );
-        model_.openTable();
+        model_.getTableModel().addTableModelListener( this );
     }
 
     /**
@@ -214,18 +213,6 @@ public final class MainFrame
                 return isTableDirty();
             }
         };
-        final IPredicate<Action> isTableEditablePredicate = new IPredicate<Action>()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public boolean evaluate(
-                @SuppressWarnings( "unused" )
-                final Action obj )
-            {
-                return isTableEditable();
-            }
-        };
-        actionMediator_.bindShouldEnablePredicate( Actions.getOpenNewTableAction(), isTableEditablePredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getOpenTableAction(), isTableEditablePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getSaveTableAction(), isTableDirtyPredicate );
     }
 
@@ -384,22 +371,6 @@ public final class MainFrame
     }
 
     /**
-     * Indicates the table is editable.
-     * 
-     * @return {@code true} if the table is editable; otherwise {@code false}.
-     */
-    private boolean isTableEditable()
-    {
-        final TableModel tableModel = model_.getTableModel();
-        if( tableModel == null )
-        {
-            return false;
-        }
-
-        return !tableModel.getTableNetwork().isConnected();
-    }
-
-    /**
      * Loads the global application state.
      */
     private void loadApplicationState()
@@ -535,6 +506,7 @@ public final class MainFrame
     @Override
     public void removeNotify()
     {
+        model_.getTableModel().removeTableModelListener( this );
         model_.removeMainModelListener( this );
         actionMediator_.unbindAll();
 
@@ -609,27 +581,6 @@ public final class MainFrame
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#tableClosed(org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent)
-     */
-    @Override
-    public void tableClosed(
-        final MainModelContentChangedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                event.getTableModel().removeTableModelListener( MainFrame.this );
-                updateTitle();
-            }
-        } );
-    }
-
-    /*
      * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
     @Override
@@ -683,27 +634,6 @@ public final class MainFrame
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
         // do nothing
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#tableOpened(org.gamegineer.table.internal.ui.model.MainModelContentChangedEvent)
-     */
-    @Override
-    public void tableOpened(
-        final MainModelContentChangedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                event.getTableModel().addTableModelListener( MainFrame.this );
-                updateTitle();
-            }
-        } );
     }
 
     /**

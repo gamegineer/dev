@@ -92,24 +92,4 @@ public abstract class AbstractMainModelListenerTestCase
     {
         listener_.mainModelStateChanged( null );
     }
-
-    /**
-     * Ensures the {@code tableClosed} method throws an exception when passed a
-     * {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testTableClosed_Event_Null()
-    {
-        listener_.tableClosed( null );
-    }
-
-    /**
-     * Ensures the {@code tableOpened} method throws an exception when passed a
-     * {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testTableOpened_Event_Null()
-    {
-        listener_.tableOpened( null );
-    }
 }

@@ -76,11 +76,8 @@ import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
-import org.gamegineer.table.internal.ui.model.ModelException;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
-import org.gamegineer.table.internal.ui.util.OptionDialogs;
-import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
 import org.gamegineer.table.internal.ui.wizards.hosttablenetwork.HostTableNetworkWizard;
 import org.gamegineer.table.internal.ui.wizards.jointablenetwork.JoinTableNetworkWizard;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
@@ -465,17 +462,6 @@ final class TableView
                 hostTableNetwork();
             }
         } );
-        actionMediator_.bindActionListener( Actions.getImportTableAction(), new ActionListener()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void actionPerformed(
-                @SuppressWarnings( "unused" )
-                final ActionEvent event )
-            {
-                importTable();
-            }
-        } );
         actionMediator_.bindActionListener( Actions.getJoinTableNetworkAction(), new ActionListener()
         {
             @Override
@@ -694,7 +680,6 @@ final class TableView
         actionMediator_.bindShouldEnablePredicate( Actions.getDisconnectTableNetworkAction(), isNetworkConnectedPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getFlipCardAction(), hasEditableCardPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getHostTableNetworkAction(), isNetworkDisconnectedPredicate );
-        actionMediator_.bindShouldEnablePredicate( Actions.getImportTableAction(), isTableEditablePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getJoinTableNetworkAction(), isNetworkDisconnectedPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardPilesAction(), hasEditableCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardsAction(), hasEditableFocusedCardPilePredicate );
@@ -1046,28 +1031,6 @@ final class TableView
         final IWizard wizard = new HostTableNetworkWizard( model_ );
         final WizardDialog dialog = new WizardDialog( JOptionPane.getFrameForComponent( this ), wizard );
         dialog.open();
-    }
-
-    /**
-     * Imports a table into the existing table model.
-     */
-    private void importTable()
-    {
-        final JFileChooser fileChooser = FileChoosers.getTableFileChooser( model_.getFile() );
-        if( fileChooser.showOpenDialog( this ) == JFileChooser.CANCEL_OPTION )
-        {
-            return;
-        }
-
-        try
-        {
-            model_.importTable( fileChooser.getSelectedFile() );
-        }
-        catch( final ModelException e )
-        {
-            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableView_importTable_error, e );
-            OptionDialogs.showErrorMessageDialog( this, NlsMessages.TableView_importTable_error );
-        }
     }
 
     /**

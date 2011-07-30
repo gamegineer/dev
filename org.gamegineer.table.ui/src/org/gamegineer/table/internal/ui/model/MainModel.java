@@ -26,7 +26,6 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.File;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
-import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.ui.ITableAdvisor;
@@ -49,15 +48,11 @@ public final class MainModel
     /** The collection of main model listeners. */
     private final CopyOnWriteArrayList<IMainModelListener> listeners_;
 
-    /** The instance lock. */
-    private final Object lock_;
-
     /** The preferences model. */
     private final PreferencesModel preferencesModel_;
 
     /** The table model. */
-    @GuardedBy( "lock_" )
-    private TableModel tableModel_;
+    private final TableModel tableModel_;
 
 
     // ======================================================================
@@ -79,11 +74,12 @@ public final class MainModel
     {
         assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
 
-        lock_ = new Object();
         advisor_ = advisor;
         listeners_ = new CopyOnWriteArrayList<IMainModelListener>();
         preferencesModel_ = new PreferencesModel();
-        tableModel_ = null;
+        tableModel_ = new TableModel();
+
+        tableModel_.addTableModelListener( this );
     }
 
 
@@ -142,58 +138,6 @@ public final class MainModel
     }
 
     /**
-     * Fires a table closed event.
-     * 
-     * @param tableModel
-     *        The table model that was closed; must not be {@code null}.
-     */
-    private void fireTableClosed(
-        /* @NonNull */
-        final TableModel tableModel )
-    {
-        assert tableModel != null;
-
-        final MainModelContentChangedEvent event = new MainModelContentChangedEvent( this, tableModel );
-        for( final IMainModelListener listener : listeners_ )
-        {
-            try
-            {
-                listener.tableClosed( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.MainModel_tableClosed_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a table opened event.
-     * 
-     * @param tableModel
-     *        The table model that was opened; must not be {@code null}.
-     */
-    private void fireTableOpened(
-        /* @NonNull */
-        final TableModel tableModel )
-    {
-        assert tableModel != null;
-
-        final MainModelContentChangedEvent event = new MainModelContentChangedEvent( this, tableModel );
-        for( final IMainModelListener listener : listeners_ )
-        {
-            try
-            {
-                listener.tableOpened( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.MainModel_tableOpened_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
      * Gets the preferences model.
      * 
      * @return The preferences model; never {@code null}.
@@ -207,15 +151,12 @@ public final class MainModel
     /**
      * Gets the table model.
      * 
-     * @return The table model or {@code null} if no table model is open.
+     * @return The table model; never {@code null}.
      */
-    /* @Nullable */
+    /* @NonNull */
     public TableModel getTableModel()
     {
-        synchronized( lock_ )
-        {
-            return tableModel_;
-        }
+        return tableModel_;
     }
 
     /**
@@ -242,25 +183,7 @@ public final class MainModel
      */
     public void openTable()
     {
-        final TableModel closedTableModel, openedTableModel;
-        synchronized( lock_ )
-        {
-            closedTableModel = tableModel_;
-            if( closedTableModel != null )
-            {
-                closedTableModel.removeTableModelListener( this );
-            }
-
-            openedTableModel = tableModel_ = TableModel.createTableModel();
-            openedTableModel.addTableModelListener( this );
-        }
-
-        if( closedTableModel != null )
-        {
-            fireTableClosed( closedTableModel );
-        }
-        fireTableOpened( openedTableModel );
-        fireMainModelStateChanged();
+        tableModel_.open();
     }
 
     /**
@@ -282,36 +205,17 @@ public final class MainModel
     {
         assertArgumentNotNull( file, "file" ); //$NON-NLS-1$
 
-        final TableModel closedTableModel, openedTableModel;
-        synchronized( lock_ )
+        try
         {
-            try
-            {
-                openedTableModel = TableModel.createTableModel( file );
-            }
-            catch( final ModelException e )
-            {
-                preferencesModel_.getFileHistoryPreferences().removeFile( file );
-                throw e;
-            }
-
-            closedTableModel = tableModel_;
-            if( closedTableModel != null )
-            {
-                closedTableModel.removeTableModelListener( this );
-            }
-
-            tableModel_ = openedTableModel;
-            openedTableModel.addTableModelListener( this );
-            preferencesModel_.getFileHistoryPreferences().addFile( file );
+            tableModel_.open( file );
+        }
+        catch( final ModelException e )
+        {
+            preferencesModel_.getFileHistoryPreferences().removeFile( file );
+            throw e;
         }
 
-        if( closedTableModel != null )
-        {
-            fireTableClosed( closedTableModel );
-        }
-        fireTableOpened( openedTableModel );
-        fireMainModelStateChanged();
+        preferencesModel_.getFileHistoryPreferences().addFile( file );
     }
 
     /**
@@ -360,19 +264,17 @@ public final class MainModel
     {
         assertArgumentNotNull( file, "file" ); //$NON-NLS-1$
 
-        synchronized( lock_ )
+        try
         {
-            try
-            {
-                tableModel_.save( file );
-                preferencesModel_.getFileHistoryPreferences().addFile( file );
-            }
-            catch( final ModelException e )
-            {
-                preferencesModel_.getFileHistoryPreferences().removeFile( file );
-                throw e;
-            }
+            tableModel_.save( file );
         }
+        catch( final ModelException e )
+        {
+            preferencesModel_.getFileHistoryPreferences().removeFile( file );
+            throw e;
+        }
+
+        preferencesModel_.getFileHistoryPreferences().addFile( file );
     }
 
     /*

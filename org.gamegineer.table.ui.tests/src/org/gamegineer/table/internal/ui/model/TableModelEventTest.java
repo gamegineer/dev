@@ -67,7 +67,7 @@ public final class TableModelEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new TableModelEvent( TableModel.createTableModel() );
+        event_ = new TableModelEvent( new TableModel() );
     }
 
     /**

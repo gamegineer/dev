@@ -587,14 +587,6 @@ final class NlsMessages
     /** The host table network action text. */
     public static String HostTableNetworkAction_text;
 
-    // --- ImportTableAction ------------------------------------------------
-
-    /** The import table action mnemonic. */
-    public static String ImportTableAction_mnemonic;
-
-    /** The import table action text. */
-    public static String ImportTableAction_text;
-
     // --- JoinTableNetworkAction -------------------------------------------
 
     /** The join table network action mnemonic. */
@@ -861,11 +853,6 @@ final class NlsMessages
 
     /** The text for the players label. */
     public static String TableNetworkPlayerView_playersLabel_text;
-
-    // --- TableView --------------------------------------------------------
-
-    /** An error occurred while importing the table. */
-    public static String TableView_importTable_error;
 
 
     // ======================================================================
