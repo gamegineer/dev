@@ -51,7 +51,6 @@ import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.MainModel;
 import org.gamegineer.table.internal.ui.model.MainModelEvent;
 import org.gamegineer.table.internal.ui.model.ModelException;
-import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
 import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
@@ -213,6 +212,18 @@ public final class MainFrame
                 return isTableDirty();
             }
         };
+        final IPredicate<Action> isTableEditablePredicate = new IPredicate<Action>()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Action obj )
+            {
+                return isTableEditable();
+            }
+        };
+        actionMediator_.bindShouldEnablePredicate( Actions.getOpenNewTableAction(), isTableEditablePredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getOpenTableAction(), isTableEditablePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getSaveTableAction(), isTableDirtyPredicate );
     }
 
@@ -313,13 +324,7 @@ public final class MainFrame
     /* @NonNull */
     private File getTableFile()
     {
-        final TableModel tableModel = model_.getTableModel();
-        if( tableModel == null )
-        {
-            return null;
-        }
-
-        return tableModel.getFile();
+        return model_.getTableModel().getFile();
     }
 
     /**
@@ -361,13 +366,17 @@ public final class MainFrame
      */
     private boolean isTableDirty()
     {
-        final TableModel tableModel = model_.getTableModel();
-        if( tableModel == null )
-        {
-            return false;
-        }
+        return model_.getTableModel().isDirty();
+    }
 
-        return tableModel.isDirty();
+    /**
+     * Indicates the table is editable.
+     * 
+     * @return {@code true} if the table is editable; otherwise {@code false}.
+     */
+    private boolean isTableEditable()
+    {
+        return model_.getTableModel().isEditable();
     }
 
     /**
