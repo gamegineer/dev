@@ -177,10 +177,10 @@ public final class JFileChooser
     @Override
     public void approveSelection()
     {
+        addExtensionIfAbsent();
+
         if( getDialogType() == SAVE_DIALOG )
         {
-            addExtensionIfAbsent();
-
             final File selectedFile = getSelectedFile();
             if( (selectedFile != null) && selectedFile.exists() )
             {
