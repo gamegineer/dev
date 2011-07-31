@@ -85,32 +85,22 @@ public abstract class AbstractCardPileModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code cardPileFocusGained} method throws an exception when
+     * Ensures the {@code cardPileChanged} method throws an exception when
      * passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
-    public void testCardPileFocusGained_Event_Null()
+    public void testCardPileChanged_Event_Null()
     {
-        listener_.cardPileFocusGained( null );
+        listener_.cardPileChanged( null );
     }
 
     /**
-     * Ensures the {@code cardPileFocusLost} method throws an exception when
-     * passed a {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCardPileFocusLost_Event_Null()
-    {
-        listener_.cardPileFocusLost( null );
-    }
-
-    /**
-     * Ensures the {@code cardPileModelStateChanged} method throws an exception
+     * Ensures the {@code cardPileModelFocusChanged} method throws an exception
      * when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
-    public void testCardPileModelStateChanged_Event_Null()
+    public void testCardPileModelFocusChanged_Event_Null()
     {
-        listener_.cardPileModelStateChanged( null );
+        listener_.cardPileModelFocusChanged( null );
     }
 }

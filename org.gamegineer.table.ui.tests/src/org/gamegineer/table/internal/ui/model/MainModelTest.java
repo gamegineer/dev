@@ -22,12 +22,12 @@
 package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
-import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.ui.TableAdvisor;
 import org.junit.Before;
 import org.junit.Test;
@@ -241,7 +241,6 @@ public final class MainModelTest
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
         listener.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
         niceMocksControl_.replay();
-        model_.openTable();
         model_.saveTable( file );
         model_.addMainModelListener( listener );
 
@@ -319,7 +318,6 @@ public final class MainModelTest
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
         listener.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
         niceMocksControl_.replay();
-        model_.openTable();
         model_.addMainModelListener( listener );
 
         model_.saveTable( file );
@@ -334,13 +332,13 @@ public final class MainModelTest
     @Test
     public void testTableModel_StateChanged_FiresMainModelStateChangedEvent()
     {
-        model_.openTable();
         final IMainModelListener listener = niceMocksControl_.createMock( IMainModelListener.class );
         listener.mainModelStateChanged( EasyMock.notNull( MainModelEvent.class ) );
         niceMocksControl_.replay();
         model_.addMainModelListener( listener );
 
-        model_.getTableModel().setOriginOffset( new Dimension( 100, 200 ) );
+        final ITable table = model_.getTableModel().getTable();
+        table.addCardPile( table.createCardPile() );
 
         niceMocksControl_.verify();
     }

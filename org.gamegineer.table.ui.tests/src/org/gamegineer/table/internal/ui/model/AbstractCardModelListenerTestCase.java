@@ -84,12 +84,12 @@ public abstract class AbstractCardModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code cardModelStateChanged} method throws an exception when
-     * passed a {@code null} event.
+     * Ensures the {@code cardChanged} method throws an exception when passed a
+     * {@code null} event.
      */
     @Test( expected = NullPointerException.class )
-    public void testCardModelStateChanged_Event_Null()
+    public void testCardChanged_Event_Null()
     {
-        listener_.cardModelStateChanged( null );
+        listener_.cardChanged( null );
     }
 }

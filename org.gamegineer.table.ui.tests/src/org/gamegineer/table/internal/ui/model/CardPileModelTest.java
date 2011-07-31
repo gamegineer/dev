@@ -23,14 +23,16 @@ package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
 import java.awt.Point;
+import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -48,9 +50,6 @@ public final class CardPileModelTest
 
     /** The card pile model under test in the fixture. */
     private CardPileModel model_;
-
-    /** The nice mocks control for use in the fixture. */
-    private IMocksControl niceMocksControl_;
 
 
     // ======================================================================
@@ -71,6 +70,50 @@ public final class CardPileModelTest
     // ======================================================================
 
     /**
+     * Fires a card pile changed event for the card pile model under test in the
+     * fixture.
+     */
+    private void fireCardPileChangedEvent()
+    {
+        fireCardPileModelEvent( "fireCardPileChanged" ); //$NON-NLS-1$
+    }
+
+    /**
+     * Fires the specified card pile model event for the card pile model under
+     * test in the fixture.
+     * 
+     * @param methodName
+     *        The name of the method that fires the card pile model event; must
+     *        not be {@code null}.
+     */
+    private void fireCardPileModelEvent(
+        /* @NonNull */
+        final String methodName )
+    {
+        assert methodName != null;
+
+        try
+        {
+            final Method method = CardPileModel.class.getDeclaredMethod( methodName );
+            method.setAccessible( true );
+            method.invoke( model_ );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
+    /**
+     * Fires a card pile model focus changed event for the card pile model under
+     * test in the fixture.
+     */
+    private void fireCardPileModelFocusChangedEvent()
+    {
+        fireCardPileModelEvent( "fireCardPileModelFocusChanged" ); //$NON-NLS-1$
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -81,8 +124,28 @@ public final class CardPileModelTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        niceMocksControl_ = EasyMock.createNiceControl();
-        model_ = new CardPileModel( CardPiles.createUniqueCardPile( TableFactory.createTable() ) );
+        final ITable table = TableFactory.createTable();
+        final ICardPile cardPile = CardPiles.createUniqueCardPile( table );
+        table.addCardPile( cardPile );
+        model_ = new CardPileModel( cardPile );
+    }
+
+    /**
+     * Ensures the {@code addCardPileModelListener} method adds a listener that
+     * is absent from the card pile model listener collection.
+     */
+    @Test
+    public void testAddCardPileModelListener_Listener_Absent()
+    {
+        final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileChanged( EasyMock.notNull( CardPileModelEvent.class ) );
+        mocksControl_.replay();
+
+        fireCardPileChangedEvent();
+        model_.addCardPileModelListener( listener );
+        fireCardPileChangedEvent();
+
+        mocksControl_.verify();
     }
 
     /**
@@ -103,41 +166,40 @@ public final class CardPileModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddCardPileModelListener_Listener_Present()
     {
-        final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
+        final ICardPileModelListener listener = EasyMock.createMock( ICardPileModelListener.class );
         model_.addCardPileModelListener( listener );
 
         model_.addCardPileModelListener( listener );
     }
 
     /**
-     * Ensures a change to a card model owned by the card pile model fires a
-     * card pile model state changed event.
+     * Ensures a change to a card associated with a card model owned by the card
+     * pile model fires a card pile state changed event.
      */
-    @Ignore( "currently no mutating methods on CardModel" )
     @Test
-    public void testCardModel_StateChanged_FiresCardPileModelStateChangedEvent()
+    public void testCardModel_CardChanged_FiresCardPileChangedEvent()
     {
         final ICard card = Cards.createUniqueCard( model_.getCardPile().getTable() );
         model_.getCardPile().addCard( card );
         final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
-        listener.cardPileModelStateChanged( EasyMock.notNull( CardPileModelEvent.class ) );
+        listener.cardPileChanged( EasyMock.notNull( CardPileModelEvent.class ) );
         mocksControl_.replay();
         model_.addCardPileModelListener( listener );
 
-        // NB: change card model state here when applicable
+        card.flip();
 
         mocksControl_.verify();
     }
 
     /**
      * Ensures a change to the underlying card pile state fires a card pile
-     * model state changed event.
+     * changed event.
      */
     @Test
-    public void testCardPile_StateChanged_FiresCardPileModelStateChangedEvent()
+    public void testCardPile_StateChanged_FiresCardPileChangedEvent()
     {
         final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
-        listener.cardPileModelStateChanged( EasyMock.notNull( CardPileModelEvent.class ) );
+        listener.cardPileChanged( EasyMock.notNull( CardPileModelEvent.class ) );
         mocksControl_.replay();
         model_.addCardPileModelListener( listener );
 
@@ -147,58 +209,40 @@ public final class CardPileModelTest
     }
 
     /**
-     * Ensures the card pile focus gained event catches any exception thrown by
-     * the {@code cardPileFocusGained} method of a card pile model listener.
+     * Ensures the card pile changed event catches any exception thrown by the
+     * {@code cardPileChanged} method of a card pile model listener.
      */
     @Test
-    public void testCardPileFocusGained_CatchesListenerException()
+    public void testCardPileChanged_CatchesListenerException()
     {
-        final ICardPileModelListener listener = niceMocksControl_.createMock( ICardPileModelListener.class );
-        listener.cardPileFocusGained( EasyMock.notNull( CardPileModelEvent.class ) );
+        final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileChanged( EasyMock.notNull( CardPileModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        niceMocksControl_.replay();
+        mocksControl_.replay();
         model_.addCardPileModelListener( listener );
 
-        model_.setFocused( true );
+        fireCardPileChangedEvent();
 
-        niceMocksControl_.verify();
+        mocksControl_.verify();
     }
 
     /**
-     * Ensures the card pile focus lost event catches any exception thrown by
-     * the {@code cardPileFocusLost} method of a card pile model listener.
-     */
-    @Test
-    public void testCardPileFocusLost_CatchesListenerException()
-    {
-        final ICardPileModelListener listener = niceMocksControl_.createMock( ICardPileModelListener.class );
-        listener.cardPileFocusLost( EasyMock.notNull( CardPileModelEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        niceMocksControl_.replay();
-        model_.addCardPileModelListener( listener );
-
-        model_.setFocused( false );
-
-        niceMocksControl_.verify();
-    }
-
-    /**
-     * Ensures the card pile model state changed event catches any exception
-     * thrown by the {@code cardPileModelStateChanged} method of a card pile
+     * Ensures the card pile model focus changed event catches any exception
+     * thrown by the {@code cardPileModelFocusChanged} method of a card pile
      * model listener.
      */
     @Test
-    public void testCardPileModelStateChanged_CatchesListenerException()
+    public void testCardPileModelFocusChanged_CatchesListenerException()
     {
-        final ICardPileModelListener listener = niceMocksControl_.createMock( ICardPileModelListener.class );
-        listener.cardPileModelStateChanged( EasyMock.notNull( CardPileModelEvent.class ) );
+        final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileModelFocusChanged( EasyMock.notNull( CardPileModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        niceMocksControl_.replay();
+        mocksControl_.replay();
         model_.addCardPileModelListener( listener );
 
-        model_.getCardPile().setLocation( new Point( 101, 102 ) );
+        fireCardPileModelFocusChangedEvent();
 
-        niceMocksControl_.verify();
+        mocksControl_.verify();
     }
 
     /**
@@ -248,7 +292,7 @@ public final class CardPileModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveCardPileModelListener_Listener_Absent()
     {
-        model_.removeCardPileModelListener( mocksControl_.createMock( ICardPileModelListener.class ) );
+        model_.removeCardPileModelListener( EasyMock.createMock( ICardPileModelListener.class ) );
     }
 
     /**
@@ -268,65 +312,48 @@ public final class CardPileModelTest
     @Test
     public void testRemoveCardPileModelListener_Listener_Present()
     {
-        final ICardPileModelListener listener = niceMocksControl_.createMock( ICardPileModelListener.class );
-        listener.cardPileFocusGained( EasyMock.notNull( CardPileModelEvent.class ) );
-        niceMocksControl_.replay();
+        final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileChanged( EasyMock.notNull( CardPileModelEvent.class ) );
+        mocksControl_.replay();
         model_.addCardPileModelListener( listener );
-        model_.setFocused( true );
 
+        fireCardPileChangedEvent();
         model_.removeCardPileModelListener( listener );
-        model_.setFocused( false );
+        fireCardPileChangedEvent();
 
-        niceMocksControl_.verify();
+        mocksControl_.verify();
     }
 
     /**
-     * Ensures the {@code setFocused} method fires a card pile model state
-     * changed event.
+     * Ensures the {@code setFocused} method fires a card pile model focus
+     * changed event after the card pile model gained the focus.
      */
     @Test
-    public void testSetFocused_FiresCardPileModelStateChangedEvent()
+    public void testSetFocused_GainedFocus_FiresCardPileModelFocusChangedEvent()
     {
-        final ICardPileModelListener listener = niceMocksControl_.createMock( ICardPileModelListener.class );
-        listener.cardPileModelStateChanged( EasyMock.notNull( CardPileModelEvent.class ) );
-        niceMocksControl_.replay();
+        final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileModelFocusChanged( EasyMock.notNull( CardPileModelEvent.class ) );
+        mocksControl_.replay();
         model_.addCardPileModelListener( listener );
 
         model_.setFocused( true );
 
-        niceMocksControl_.verify();
+        mocksControl_.verify();
     }
 
     /**
-     * Ensures the {@code setFocused} method fires a card pile focus gained
-     * event.
+     * Ensures the {@code setFocused} method fires a card pile model focus
+     * changed event after the card pile model lost the focus.
      */
     @Test
-    public void testSetFocused_GainedFocus_FiresCardPileFocusGainedEvent()
+    public void testSetFocused_LostFocus_FiresCardPileModelFocusChangedEvent()
     {
-        final ICardPileModelListener listener = niceMocksControl_.createMock( ICardPileModelListener.class );
-        listener.cardPileFocusGained( EasyMock.notNull( CardPileModelEvent.class ) );
-        niceMocksControl_.replay();
-        model_.addCardPileModelListener( listener );
-
-        model_.setFocused( true );
-
-        niceMocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code setFocused} method fires a card pile focus lost event.
-     */
-    @Test
-    public void testSetFocused_LostFocus_FiresCardPileFocusLostEvent()
-    {
-        final ICardPileModelListener listener = niceMocksControl_.createMock( ICardPileModelListener.class );
-        listener.cardPileFocusLost( EasyMock.notNull( CardPileModelEvent.class ) );
-        niceMocksControl_.replay();
+        final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
+        listener.cardPileModelFocusChanged( EasyMock.notNull( CardPileModelEvent.class ) );
+        mocksControl_.replay();
         model_.addCardPileModelListener( listener );
 
         model_.setFocused( false );
 
-        niceMocksControl_.verify();
     }
 }

@@ -84,13 +84,13 @@ public abstract class AbstractTableModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code cardPileFocusChanged} method throws an exception when
-     * passed a {@code null} event.
+     * Ensures the {@code tableChanged} method throws an exception when passed a
+     * {@code null} event.
      */
     @Test( expected = NullPointerException.class )
-    public void testCardPileFocusChanged_Event_Null()
+    public void testTableChanged_Event_Null()
     {
-        listener_.cardPileFocusChanged( null );
+        listener_.tableChanged( null );
     }
 
     /**
@@ -114,22 +114,22 @@ public abstract class AbstractTableModelListenerTestCase
     }
 
     /**
-     * Ensures the {@code tableModelStateChanged} method throws an exception
+     * Ensures the {@code tableModelFocusChanged} method throws an exception
      * when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
-    public void testTableModelStateChanged_Event_Null()
+    public void testTableModelFocusChanged_Event_Null()
     {
-        listener_.tableModelStateChanged( null );
+        listener_.tableModelFocusChanged( null );
     }
 
     /**
-     * Ensures the {@code tableOriginOffsetChanged} method throws an exception
-     * when passed a {@code null} event.
+     * Ensures the {@code tableModelOriginOffsetChanged} method throws an
+     * exception when passed a {@code null} event.
      */
     @Test( expected = NullPointerException.class )
-    public void testTableOriginOffsetChanged_Event_Null()
+    public void testTableModelOriginOffsetChanged_Event_Null()
     {
-        listener_.tableOriginOffsetChanged( null );
+        listener_.tableModelOriginOffsetChanged( null );
     }
 }

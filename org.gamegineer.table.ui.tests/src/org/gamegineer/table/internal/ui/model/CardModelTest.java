@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.ui.model;
 
 import static org.junit.Assert.assertNotNull;
+import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.Cards;
@@ -64,6 +65,23 @@ public final class CardModelTest
     // ======================================================================
 
     /**
+     * Fires a card changed event for the card model under test in the fixture.
+     */
+    private void fireCardChangedEvent()
+    {
+        try
+        {
+            final Method method = CardModel.class.getDeclaredMethod( "fireCardChanged" ); //$NON-NLS-1$
+            method.setAccessible( true );
+            method.invoke( model_ );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -75,6 +93,24 @@ public final class CardModelTest
     {
         mocksControl_ = EasyMock.createControl();
         model_ = new CardModel( Cards.createUniqueCard( TableFactory.createTable() ) );
+    }
+
+    /**
+     * Ensures the {@code addCardModelListener} method adds a listener that is
+     * absent from the card model listener collection.
+     */
+    @Test
+    public void testAddCardModelListener_Listener_Absent()
+    {
+        final ICardModelListener listener = mocksControl_.createMock( ICardModelListener.class );
+        listener.cardChanged( EasyMock.notNull( CardModelEvent.class ) );
+        mocksControl_.replay();
+
+        fireCardChangedEvent();
+        model_.addCardModelListener( listener );
+        fireCardChangedEvent();
+
+        mocksControl_.verify();
     }
 
     /**
@@ -94,21 +130,20 @@ public final class CardModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testAddCardModelListener_Listener_Present()
     {
-        final ICardModelListener listener = mocksControl_.createMock( ICardModelListener.class );
+        final ICardModelListener listener = EasyMock.createMock( ICardModelListener.class );
         model_.addCardModelListener( listener );
 
         model_.addCardModelListener( listener );
     }
 
     /**
-     * Ensures a change to the underlying card state fires a card model state
-     * changed event.
+     * Ensures a change to the underlying card state fires a card changed event.
      */
     @Test
-    public void testCard_StateChanged_FiresCardModelStateChangedEvent()
+    public void testCard_StateChanged_FiresCardChangedEvent()
     {
         final ICardModelListener listener = mocksControl_.createMock( ICardModelListener.class );
-        listener.cardModelStateChanged( EasyMock.notNull( CardModelEvent.class ) );
+        listener.cardChanged( EasyMock.notNull( CardModelEvent.class ) );
         mocksControl_.replay();
         model_.addCardModelListener( listener );
 
@@ -118,19 +153,19 @@ public final class CardModelTest
     }
 
     /**
-     * Ensures the card model state changed event catches any exception thrown
-     * by the {@code cardModelStateChanged} method of a card model listener.
+     * Ensures the card changed event catches any exception thrown by the
+     * {@code cardChanged} method of a card model listener.
      */
     @Test
-    public void testCardModelStateChanged_CatchesListenerException()
+    public void testCardChanged_CatchesListenerException()
     {
         final ICardModelListener listener = mocksControl_.createMock( ICardModelListener.class );
-        listener.cardModelStateChanged( EasyMock.notNull( CardModelEvent.class ) );
+        listener.cardChanged( EasyMock.notNull( CardModelEvent.class ) );
         EasyMock.expectLastCall().andThrow( new RuntimeException() );
         mocksControl_.replay();
         model_.addCardModelListener( listener );
 
-        model_.getCard().flip();
+        fireCardChangedEvent();
 
         mocksControl_.verify();
     }
@@ -162,7 +197,7 @@ public final class CardModelTest
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveCardModelListener_Listener_Absent()
     {
-        model_.removeCardModelListener( mocksControl_.createMock( ICardModelListener.class ) );
+        model_.removeCardModelListener( EasyMock.createMock( ICardModelListener.class ) );
     }
 
     /**
@@ -183,13 +218,13 @@ public final class CardModelTest
     public void testRemoveCardModelListener_Listener_Present()
     {
         final ICardModelListener listener = mocksControl_.createMock( ICardModelListener.class );
-        listener.cardModelStateChanged( EasyMock.notNull( CardModelEvent.class ) );
+        listener.cardChanged( EasyMock.notNull( CardModelEvent.class ) );
         mocksControl_.replay();
         model_.addCardModelListener( listener );
-        model_.getCard().flip();
 
+        fireCardChangedEvent();
         model_.removeCardModelListener( listener );
-        model_.getCard().flip();
+        fireCardChangedEvent();
 
         mocksControl_.verify();
     }
