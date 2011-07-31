@@ -138,19 +138,19 @@ public final class CardPileModel
             createCardModel( event.getCard() );
         }
 
-        fireCardPileModelStateChanged();
+        fireCardPileChanged();
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardModelStateChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
      */
     @Override
-    public void cardModelStateChanged(
+    public void cardChanged(
         final CardModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireCardPileModelStateChanged();
+        fireCardPileChanged();
     }
 
     /*
@@ -162,7 +162,7 @@ public final class CardPileModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireCardPileModelStateChanged();
+        fireCardPileChanged();
     }
 
     /*
@@ -174,7 +174,7 @@ public final class CardPileModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireCardPileModelStateChanged();
+        fireCardPileChanged();
     }
 
     /*
@@ -186,7 +186,7 @@ public final class CardPileModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireCardPileModelStateChanged();
+        fireCardPileChanged();
     }
 
     /*
@@ -207,7 +207,7 @@ public final class CardPileModel
             }
         }
 
-        fireCardPileModelStateChanged();
+        fireCardPileChanged();
     }
 
     /**
@@ -232,58 +232,39 @@ public final class CardPileModel
     }
 
     /**
-     * Fires a card pile focus gained event.
+     * Fires a card pile changed event.
      */
-    private void fireCardPileFocusGained()
+    private void fireCardPileChanged()
     {
         final CardPileModelEvent event = new CardPileModelEvent( this );
         for( final ICardPileModelListener listener : listeners_ )
         {
             try
             {
-                listener.cardPileFocusGained( event );
+                listener.cardPileChanged( event );
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPileModel_cardPileFocusGained_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPileModel_cardPileChanged_unexpectedException, e );
             }
         }
     }
 
     /**
-     * Fires a card pile focus lost event.
+     * Fires a card pile model focus changed event.
      */
-    private void fireCardPileFocusLost()
+    private void fireCardPileModelFocusChanged()
     {
         final CardPileModelEvent event = new CardPileModelEvent( this );
         for( final ICardPileModelListener listener : listeners_ )
         {
             try
             {
-                listener.cardPileFocusLost( event );
+                listener.cardPileModelFocusChanged( event );
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPileModel_cardPileFocusLost_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a card pile model state changed event.
-     */
-    private void fireCardPileModelStateChanged()
-    {
-        final CardPileModelEvent event = new CardPileModelEvent( this );
-        for( final ICardPileModelListener listener : listeners_ )
-        {
-            try
-            {
-                listener.cardPileModelStateChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPileModel_cardPileModelStateChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPileModel_cardPileModelFocusChanged_unexpectedException, e );
             }
         }
     }
@@ -379,15 +360,6 @@ public final class CardPileModel
             isFocused_ = isFocused;
         }
 
-        if( isFocused )
-        {
-            fireCardPileFocusGained();
-        }
-        else
-        {
-            fireCardPileFocusLost();
-        }
-
-        fireCardPileModelStateChanged();
+        fireCardPileModelFocusChanged();
     }
 }

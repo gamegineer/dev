@@ -106,18 +106,6 @@ public final class MainModel
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.MainModel_addMainModelListener_listener_registered ); //$NON-NLS-1$
     }
 
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#cardPileFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void cardPileFocusChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
-    }
-
     /**
      * Fires a main model state changed event.
      */
@@ -278,6 +266,18 @@ public final class MainModel
     }
 
     /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    @Override
+    public void tableChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        fireMainModelStateChanged();
+    }
+
+    /*
      * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
     @Override
@@ -286,7 +286,7 @@ public final class MainModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        // do nothing
+        fireMainModelStateChanged();
     }
 
     /*
@@ -298,14 +298,14 @@ public final class MainModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        // do nothing
+        fireMainModelStateChanged();
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelStateChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
     @Override
-    public void tableModelStateChanged(
+    public void tableModelFocusChanged(
         final TableModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
@@ -314,10 +314,10 @@ public final class MainModel
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
     @Override
-    public void tableOriginOffsetChanged(
+    public void tableModelOriginOffsetChanged(
         final TableModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$

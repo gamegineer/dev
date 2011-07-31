@@ -1,6 +1,6 @@
 /*
  * ICardModelListener.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@ public interface ICardModelListener
     // ======================================================================
 
     /**
-     * Invoked after the card model state has changed.
+     * Invoked after the card associated with the model has changed.
      * 
      * @param event
      *        The event describing the card model; must not be {@code null}.
@@ -43,7 +43,7 @@ public interface ICardModelListener
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void cardModelStateChanged(
+    public void cardChanged(
         /* @NonNull */
         CardModelEvent event );
 }

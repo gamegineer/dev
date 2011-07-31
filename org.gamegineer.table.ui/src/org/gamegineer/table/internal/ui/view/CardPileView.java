@@ -205,53 +205,16 @@ final class CardPileView
         }
     }
 
-    /**
-     * Invoked after the card pile has gained or lost the logical focus.
-     */
-    private void cardPileFocusChanged()
-    {
-        if( isInitialized() )
-        {
-            tableView_.repaintTable( getDirtyBounds() );
-        }
-    }
-
     /*
-     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileFocusGained(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
      */
     @Override
-    public void cardPileFocusGained(
+    public void cardPileChanged(
         final CardPileModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                cardPileFocusChanged();
-            }
-        } );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileFocusLost(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
-     */
-    @Override
-    public void cardPileFocusLost(
-        final CardPileModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                cardPileFocusChanged();
-            }
-        } );
+        // do nothing
     }
 
     /*
@@ -267,15 +230,33 @@ final class CardPileView
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileModelStateChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileModelFocusChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
      */
     @Override
-    public void cardPileModelStateChanged(
+    public void cardPileModelFocusChanged(
         final CardPileModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        // do nothing
+        SwingUtilities.invokeLater( new Runnable()
+        {
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                cardPileModelFocusChanged();
+            }
+        } );
+    }
+
+    /**
+     * Invoked after the card pile model has gained or lost the logical focus.
+     */
+    private void cardPileModelFocusChanged()
+    {
+        if( isInitialized() )
+        {
+            tableView_.repaintTable( getDirtyBounds() );
+        }
     }
 
     /*

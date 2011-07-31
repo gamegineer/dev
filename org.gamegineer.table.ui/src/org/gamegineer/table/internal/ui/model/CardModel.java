@@ -107,7 +107,7 @@ public final class CardModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireCardModelStateChanged();
+        fireCardChanged();
     }
 
     /*
@@ -119,7 +119,7 @@ public final class CardModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireCardModelStateChanged();
+        fireCardChanged();
     }
 
     /*
@@ -131,24 +131,24 @@ public final class CardModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireCardModelStateChanged();
+        fireCardChanged();
     }
 
     /**
-     * Fires a card model state changed event.
+     * Fires a card changed event.
      */
-    private void fireCardModelStateChanged()
+    private void fireCardChanged()
     {
         final CardModelEvent event = new CardModelEvent( this );
         for( final ICardModelListener listener : listeners_ )
         {
             try
             {
-                listener.cardModelStateChanged( event );
+                listener.cardChanged( event );
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardModel_cardModelStateChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardModel_cardChanged_unexpectedException, e );
             }
         }
     }

@@ -1,6 +1,6 @@
 /*
  * ITableModelListener.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,15 +35,16 @@ public interface ITableModelListener
     // ======================================================================
 
     /**
-     * Invoked after the focused card pile on the table has changed.
+     * Invoked after the table or table network associated with the model has
+     * changed.
      * 
      * @param event
-     *        The event describing the focus change; must not be {@code null}.
+     *        The event describing the table model; must not be {@code null} .
      * 
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void cardPileFocusChanged(
+    public void tableChanged(
         /* @NonNull */
         TableModelEvent event );
 
@@ -74,29 +75,28 @@ public interface ITableModelListener
         TableModelEvent event );
 
     /**
-     * Invoked after the table model state has changed.
+     * Invoked after the table model focus has changed.
      * 
      * @param event
-     *        The event describing the table model; must not be {@code null} .
+     *        The event describing the table model; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void tableModelStateChanged(
+    public void tableModelFocusChanged(
         /* @NonNull */
         TableModelEvent event );
 
     /**
-     * Invoked after the table origin offset has changed.
+     * Invoked after the table model origin offset has changed.
      * 
      * @param event
-     *        The event describing the origin offset change; must not be {@code
-     *        null}.
+     *        The event describing the table model; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void tableOriginOffsetChanged(
+    public void tableModelOriginOffsetChanged(
         /* @NonNull */
         TableModelEvent event );
 }

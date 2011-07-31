@@ -102,6 +102,18 @@ final class CardView
     // ======================================================================
 
     /*
+     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
+     */
+    @Override
+    public void cardChanged(
+        final CardModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing
+    }
+
+    /*
      * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
      */
     @Override
@@ -131,18 +143,6 @@ final class CardView
             tableView_.repaintTable( newBounds.union( bounds_ ) );
             bounds_ = newBounds;
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardModelStateChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
-     */
-    @Override
-    public void cardModelStateChanged(
-        final CardModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
     }
 
     /*

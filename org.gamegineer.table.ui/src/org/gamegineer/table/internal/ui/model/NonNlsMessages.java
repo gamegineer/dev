@@ -42,10 +42,9 @@ final class NonNlsMessages
     public static String CardModel_addCardModelListener_listener_registered;
 
     /**
-     * An unexpected exception was thrown from
-     * ICardModelListener.cardModelStateChanged().
+     * An unexpected exception was thrown from ICardModelListener.cardChanged().
      */
-    public static String CardModel_cardModelStateChanged_unexpectedException;
+    public static String CardModel_cardChanged_unexpectedException;
 
     /** The card model listener is not registered. */
     public static String CardModel_removeCardModelListener_listener_notRegistered;
@@ -57,21 +56,15 @@ final class NonNlsMessages
 
     /**
      * An unexpected exception was thrown from
-     * ICardPileModelListener.cardPileFocusGained().
+     * ICardPileModelListener.cardPileChanged().
      */
-    public static String CardPileModel_cardPileFocusGained_unexpectedException;
+    public static String CardPileModel_cardPileChanged_unexpectedException;
 
     /**
      * An unexpected exception was thrown from
-     * ICardPileModelListener.cardPileFocusLost().
+     * ICardPileModelListener.cardPileModelFocusChanged().
      */
-    public static String CardPileModel_cardPileFocusLost_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * ICardPileModelListener.cardPileModelStateChanged().
-     */
-    public static String CardPileModel_cardPileModelStateChanged_unexpectedException;
+    public static String CardPileModel_cardPileModelFocusChanged_unexpectedException;
 
     /** The card is not present in the card pile. */
     public static String CardPileModel_getCardModel_card_absent;
@@ -103,12 +96,6 @@ final class NonNlsMessages
     /** The table model listener is already registered. */
     public static String TableModel_addTableModelListener_listener_registered;
 
-    /**
-     * An unexpected exception was thrown from
-     * ITableModelListener.cardPileFocusChanged().
-     */
-    public static String TableModel_cardPileFocusChanged_unexpectedException;
-
     /** The card pile is not present in the table. */
     public static String TableModel_getCardPileModel_cardPile_absent;
 
@@ -120,6 +107,12 @@ final class NonNlsMessages
 
     /** An error occurred while setting the table memento. */
     public static String TableModel_setTableMemento_error;
+
+    /**
+     * An unexpected exception was thrown from
+     * ITableModelListener.tableChanged().
+     */
+    public static String TableModel_tableChanged_unexpectedException;
 
     /**
      * An unexpected exception was thrown from
@@ -135,15 +128,15 @@ final class NonNlsMessages
 
     /**
      * An unexpected exception was thrown from
-     * ITableModelListener.tableModelStateChanged().
+     * ITableModelListener.tableModelFocusChanged().
      */
-    public static String TableModel_tableModelStateChanged_unexpectedException;
+    public static String TableModel_tableModelFocusChanged_unexpectedException;
 
     /**
      * An unexpected exception was thrown from
-     * ITableModelListener.tableOriginOffsetChanged().
+     * ITableModelListener.tableModelOriginOffsetChanged().
      */
-    public static String TableModel_tableOriginOffsetChanged_unexpectedException;
+    public static String TableModel_tableModelOriginOffsetChanged_unexpectedException;
 
     /** An error occurred while writing the table memento. */
     public static String TableModel_writeTableMemento_error;

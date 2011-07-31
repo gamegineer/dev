@@ -156,44 +156,38 @@ public final class TableModel
             isDirty_ = true;
         }
 
+        fireTableChanged();
         fireTableModelDirtyFlagChanged();
-        fireTableModelStateChanged();
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileFocusGained(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
      */
     @Override
-    public void cardPileFocusGained(
+    public void cardPileChanged(
         final CardPileModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        setDirty();
+        synchronized( lock_ )
+        {
+            isDirty_ = true;
+        }
+
+        fireTableChanged();
+        fireTableModelDirtyFlagChanged();
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileFocusLost(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileModelFocusChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
      */
     @Override
-    public void cardPileFocusLost(
+    public void cardPileModelFocusChanged(
         final CardPileModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        setDirty();
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileModelStateChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
-     */
-    @Override
-    public void cardPileModelStateChanged(
-        final CardPileModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        setDirty();
+        fireTableModelFocusChanged();
     }
 
     /*
@@ -221,11 +215,11 @@ public final class TableModel
 
         if( clearFocusedCardPile )
         {
-            setFocus( (ICardPile)null );
+            setFocus( null );
         }
 
+        fireTableChanged();
         fireTableModelDirtyFlagChanged();
-        fireTableModelStateChanged();
     }
 
     /**
@@ -250,20 +244,20 @@ public final class TableModel
     }
 
     /**
-     * Fires a card pile focus changed event.
+     * Fires a table changed event.
      */
-    private void fireCardPileFocusChanged()
+    private void fireTableChanged()
     {
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
         {
             try
             {
-                listener.cardPileFocusChanged( event );
+                listener.tableChanged( event );
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_cardPileFocusChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_tableChanged_unexpectedException, e );
             }
         }
     }
@@ -307,39 +301,39 @@ public final class TableModel
     }
 
     /**
-     * Fires a table model state changed event.
+     * Fires a table model focus changed event.
      */
-    private void fireTableModelStateChanged()
+    private void fireTableModelFocusChanged()
     {
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
         {
             try
             {
-                listener.tableModelStateChanged( event );
+                listener.tableModelFocusChanged( event );
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_tableModelStateChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_tableModelFocusChanged_unexpectedException, e );
             }
         }
     }
 
     /**
-     * Fires a table origin offset changed event.
+     * Fires a table model origin offset changed event.
      */
-    private void fireTableOriginOffsetChanged()
+    private void fireTableModelOriginOffsetChanged()
     {
         final TableModelEvent event = new TableModelEvent( this );
         for( final ITableModelListener listener : listeners_ )
         {
             try
             {
-                listener.tableOriginOffsetChanged( event );
+                listener.tableModelOriginOffsetChanged( event );
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_tableOriginOffsetChanged_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableModel_tableModelOriginOffsetChanged_unexpectedException, e );
             }
         }
     }
@@ -474,18 +468,21 @@ public final class TableModel
      */
     void open()
     {
-        table_.removeCardPiles();
+        synchronized( lock_ )
+        {
+            table_.removeCardPiles();
 
-        file_ = null;
-        focusedCardPile_ = null;
-        isDirty_ = false;
-        originOffset_.setSize( new Dimension( 0, 0 ) );
+            file_ = null;
+            focusedCardPile_ = null;
+            isDirty_ = false;
+            originOffset_.setSize( new Dimension( 0, 0 ) );
+        }
 
-        fireCardPileFocusChanged();
-        fireTableModelDirtyFlagChanged();
+        fireTableChanged();
         fireTableModelFileChanged();
-        fireTableOriginOffsetChanged();
-        fireTableModelStateChanged();
+        fireTableModelFocusChanged();
+        fireTableModelOriginOffsetChanged();
+        fireTableModelDirtyFlagChanged();
     }
 
     /**
@@ -505,18 +502,21 @@ public final class TableModel
     {
         assert file != null;
 
-        setTableMemento( table_, file );
+        synchronized( lock_ )
+        {
+            setTableMemento( table_, file );
 
-        file_ = file;
-        focusedCardPile_ = null;
-        isDirty_ = false;
-        originOffset_.setSize( new Dimension( 0, 0 ) );
+            file_ = file;
+            focusedCardPile_ = null;
+            isDirty_ = false;
+            originOffset_.setSize( new Dimension( 0, 0 ) );
+        }
 
-        fireCardPileFocusChanged();
-        fireTableModelDirtyFlagChanged();
+        fireTableChanged();
         fireTableModelFileChanged();
-        fireTableOriginOffsetChanged();
-        fireTableModelStateChanged();
+        fireTableModelFocusChanged();
+        fireTableModelOriginOffsetChanged();
+        fireTableModelDirtyFlagChanged();
     }
 
     /**
@@ -608,21 +608,6 @@ public final class TableModel
 
         fireTableModelFileChanged();
         fireTableModelDirtyFlagChanged();
-        fireTableModelStateChanged();
-    }
-
-    /**
-     * Marks the table model as dirty.
-     */
-    private void setDirty()
-    {
-        synchronized( lock_ )
-        {
-            isDirty_ = true;
-        }
-
-        fireTableModelDirtyFlagChanged();
-        fireTableModelStateChanged();
     }
 
     /**
@@ -648,7 +633,6 @@ public final class TableModel
                 oldFocusedCardPileModel = (focusedCardPile_ != null) ? cardPileModels_.get( focusedCardPile_ ) : null;
                 newFocusedCardPileModel = (cardPile != null) ? cardPileModels_.get( cardPile ) : null;
                 focusedCardPile_ = cardPile;
-                isDirty_ = true;
             }
             else
             {
@@ -668,10 +652,6 @@ public final class TableModel
             {
                 newFocusedCardPileModel.setFocused( true );
             }
-
-            fireCardPileFocusChanged();
-            fireTableModelDirtyFlagChanged();
-            fireTableModelStateChanged();
         }
     }
 
@@ -697,8 +677,7 @@ public final class TableModel
             originOffset_.setSize( originOffset );
         }
 
-        fireTableOriginOffsetChanged();
-        fireTableModelStateChanged();
+        fireTableModelOriginOffsetChanged();
     }
 
     /**
@@ -743,7 +722,7 @@ public final class TableModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireTableModelStateChanged();
+        fireTableChanged();
     }
 
     /*
@@ -755,7 +734,7 @@ public final class TableModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireTableModelStateChanged();
+        fireTableChanged();
     }
 
     /*
@@ -767,7 +746,7 @@ public final class TableModel
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireTableModelStateChanged();
+        fireTableChanged();
     }
 
     /**

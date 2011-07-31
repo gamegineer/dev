@@ -774,18 +774,6 @@ final class TableView
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#cardPileFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void cardPileFocusChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
-    }
-
-    /*
      * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
      */
     @Override
@@ -1228,6 +1216,18 @@ final class TableView
     }
 
     /*
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     */
+    @Override
+    public void tableChanged(
+        final TableModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+        // do nothing
+    }
+
+    /*
      * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
     @Override
@@ -1252,10 +1252,10 @@ final class TableView
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelStateChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
     @Override
-    public void tableModelStateChanged(
+    public void tableModelFocusChanged(
         final TableModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
@@ -1264,10 +1264,10 @@ final class TableView
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
      */
     @Override
-    public void tableOriginOffsetChanged(
+    public void tableModelOriginOffsetChanged(
         final TableModelEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
@@ -1278,15 +1278,15 @@ final class TableView
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                tableOriginOffsetChanged();
+                tableModelOriginOffsetChanged();
             }
         } );
     }
 
     /**
-     * Invoked when the table origin offset has changed.
+     * Invoked when the table model origin offset has changed.
      */
-    private void tableOriginOffsetChanged()
+    private void tableModelOriginOffsetChanged()
     {
         repaint();
     }

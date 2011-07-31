@@ -1,6 +1,6 @@
 /*
  * ICardPileModelListener.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,7 +35,7 @@ public interface ICardPileModelListener
     // ======================================================================
 
     /**
-     * Invoked after the card pile has gained the logical focus.
+     * Invoked after the card pile associated with the model has changed.
      * 
      * @param event
      *        The event describing the card pile model; must not be {@code null}
@@ -44,12 +44,12 @@ public interface ICardPileModelListener
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void cardPileFocusGained(
+    public void cardPileChanged(
         /* @NonNull */
         CardPileModelEvent event );
 
     /**
-     * Invoked after the card pile has lost the logical focus.
+     * Invoked after the card pile model has gained or lost the logical focus.
      * 
      * @param event
      *        The event describing the card pile model; must not be {@code null}
@@ -58,21 +58,7 @@ public interface ICardPileModelListener
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void cardPileFocusLost(
-        /* @NonNull */
-        CardPileModelEvent event );
-
-    /**
-     * Invoked after the card pile model state has changed.
-     * 
-     * @param event
-     *        The event describing the card pile model; must not be {@code null}
-     *        .
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
-     */
-    public void cardPileModelStateChanged(
+    public void cardPileModelFocusChanged(
         /* @NonNull */
         CardPileModelEvent event );
 }
