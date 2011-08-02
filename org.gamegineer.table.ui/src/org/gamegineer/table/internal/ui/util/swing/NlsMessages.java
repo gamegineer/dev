@@ -44,6 +44,9 @@ final class NlsMessages
     /** The Confirm Overwrite File dialog title. */
     public static String JFileChooser_confirmOverwriteFile_title;
 
+    /** The Warn File Not Found dialog message. */
+    public static String JFileChooser_warnFileNotFound_message;
+
 
     // ======================================================================
     // Constructors
@@ -87,5 +90,22 @@ final class NlsMessages
         final File file )
     {
         return bind( JFileChooser_confirmOverwriteFile_message, file.getName() );
+    }
+
+    /**
+     * Gets the formatted message for the Warn File Not Found dialog message.
+     * 
+     * @param file
+     *        The file that was not found; must not be {@code null}.
+     * 
+     * @return The formatted message for the Warn File Not Found dialog message;
+     *         never {@code null}.
+     */
+    /* @NonNull */
+    static String JFileChooser_warnFileNotFound_message(
+        /* @NonNull */
+        final File file )
+    {
+        return bind( JFileChooser_warnFileNotFound_message, file.getName() );
     }
 }

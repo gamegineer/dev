@@ -179,15 +179,26 @@ public final class JFileChooser
     {
         addExtensionIfAbsent();
 
-        if( getDialogType() == SAVE_DIALOG )
+        final File file = getSelectedFile();
+        if( file == null )
         {
-            final File selectedFile = getSelectedFile();
-            if( (selectedFile != null) && selectedFile.exists() )
+            return;
+        }
+
+        final int dialogType = getDialogType();
+        if( dialogType == OPEN_DIALOG )
+        {
+            if( !file.exists() )
             {
-                if( !confirmOverwriteFile( selectedFile ) )
-                {
-                    return;
-                }
+                warnFileNotFound( file );
+                return;
+            }
+        }
+        else if( dialogType == SAVE_DIALOG )
+        {
+            if( file.exists() && !confirmOverwriteFile( file ) )
+            {
+                return;
             }
         }
 
@@ -214,6 +225,25 @@ public final class JFileChooser
             NlsMessages.JFileChooser_confirmOverwriteFile_message( file ), //
             NlsMessages.JFileChooser_confirmOverwriteFile_title, //
             JOptionPane.YES_NO_OPTION, //
+            JOptionPane.WARNING_MESSAGE );
+    }
+
+    /**
+     * Warns the user that the specified file was not found.
+     * 
+     * @param file
+     *        The file that was not found; must not be {@code null}.
+     */
+    private void warnFileNotFound(
+        /* @NonNull */
+        final File file )
+    {
+        assert file != null;
+
+        JOptionPane.showMessageDialog( //
+            this, //
+            NlsMessages.JFileChooser_warnFileNotFound_message( file ), //
+            getUI().getDialogTitle( this ), //
             JOptionPane.WARNING_MESSAGE );
     }
 }
