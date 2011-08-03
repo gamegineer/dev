@@ -169,7 +169,7 @@ public final class MainFrame
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
-                openNewTable();
+                openTable();
             }
         } );
         actionMediator_.bindActionListener( Actions.getOpenTableAction(), new ActionListener()
@@ -419,7 +419,7 @@ public final class MainFrame
     /**
      * Opens a new empty table.
      */
-    private void openNewTable()
+    private void openTable()
     {
         if( confirmSaveDirtyTable() )
         {
