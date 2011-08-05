@@ -116,7 +116,7 @@ public abstract class AbstractTableRunnerTestCase
                 {
                     try
                     {
-                        firstTask.get( 1, TimeUnit.MILLISECONDS );
+                        firstTask.get( 500, TimeUnit.MILLISECONDS );
                     }
                     catch( final TimeoutException e )
                     {
@@ -125,7 +125,7 @@ public abstract class AbstractTableRunnerTestCase
 
                     try
                     {
-                        secondTask.get( 1, TimeUnit.MILLISECONDS );
+                        secondTask.get( 500, TimeUnit.MILLISECONDS );
                     }
                     catch( final TimeoutException e )
                     {
