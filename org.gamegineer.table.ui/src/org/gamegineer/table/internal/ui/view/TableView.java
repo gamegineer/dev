@@ -57,6 +57,7 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.common.ui.wizard.IWizard;
@@ -89,7 +90,6 @@ import org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry;
 @NotThreadSafe
 final class TableView
     extends JPanel
-    implements ITableListener, ITableModelListener
 {
     // ======================================================================
     // Fields
@@ -122,6 +122,12 @@ final class TableView
     /** The mouse input listener for this view. */
     private final MouseInputListener mouseInputListener_;
 
+    /** The table listener for this view. */
+    private ITableListener tableListener_;
+
+    /** The table model listener for this view. */
+    private ITableModelListener tableModelListener_;
+
 
     // ======================================================================
     // Constructors
@@ -147,6 +153,8 @@ final class TableView
         mouseInputHandlers_ = createMouseInputHandlers();
         mouseInputHandler_ = mouseInputHandlers_.get( DefaultMouseInputHandler.class );
         mouseInputListener_ = createMouseInputListener();
+        tableListener_ = null;
+        tableModelListener_ = null;
 
         initializeComponent();
     }
@@ -228,8 +236,10 @@ final class TableView
         super.addNotify();
 
         bindActions();
-        model_.addTableModelListener( this );
-        model_.getTable().addTableListener( this );
+        tableModelListener_ = new TableModelListener();
+        model_.addTableModelListener( tableModelListener_ );
+        tableListener_ = new TableListener();
+        model_.getTable().addTableListener( tableListener_ );
         addKeyListener( keyListener_ );
         addMouseListener( mouseInputListener_ );
         addMouseMotionListener( mouseInputListener_ );
@@ -737,26 +747,6 @@ final class TableView
         }
     }
 
-    /*
-     * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
-     */
-    @Override
-    public void cardPileAdded(
-        final TableContentChangedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                cardPileAdded( event.getCardPile() );
-            }
-        } );
-    }
-
     /**
      * Invoked when a new card pile is added to the table.
      * 
@@ -771,26 +761,6 @@ final class TableView
 
         final CardPileView view = createCardPileView( cardPile );
         repaintTable( view.getDirtyBounds() );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
-     */
-    @Override
-    public void cardPileRemoved(
-        final TableContentChangedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                cardPileRemoved( event.getCardPile() );
-            }
-        } );
     }
 
     /**
@@ -1140,8 +1110,10 @@ final class TableView
         removeMouseMotionListener( mouseInputListener_ );
         removeMouseListener( mouseInputListener_ );
         removeKeyListener( keyListener_ );
-        model_.getTable().removeTableListener( this );
-        model_.removeTableModelListener( this );
+        model_.getTable().removeTableListener( tableListener_ );
+        tableListener_ = null;
+        model_.removeTableModelListener( tableModelListener_ );
+        tableModelListener_ = null;
         actionMediator_.unbindAll();
 
         super.removeNotify();
@@ -1213,74 +1185,6 @@ final class TableView
         mouseInputHandler_ = mouseInputHandlers_.get( handlerClass );
         assert mouseInputHandler_ != null;
         mouseInputHandler_.activate( event );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void tableChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void tableModelDirtyFlagChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelFileChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void tableModelFileChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void tableModelFocusChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void tableModelOriginOffsetChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                tableModelOriginOffsetChanged();
-            }
-        } );
     }
 
     /**
@@ -1914,6 +1818,116 @@ final class TableView
             final PopupMenuEvent event )
         {
             // do nothing
+        }
+    }
+
+    /**
+     * A table listener for the table view.
+     */
+    @Immutable
+    private final class TableListener
+        extends org.gamegineer.table.core.TableListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code TableListener} class.
+         */
+        TableListener()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.TableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
+         */
+        @Override
+        public void cardPileAdded(
+            final TableContentChangedEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    TableView.this.cardPileAdded( event.getCardPile() );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.TableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
+         */
+        @Override
+        public void cardPileRemoved(
+            final TableContentChangedEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    TableView.this.cardPileRemoved( event.getCardPile() );
+                }
+            } );
+        }
+    }
+
+    /**
+     * A table model listener for the table view.
+     */
+    @Immutable
+    private final class TableModelListener
+        extends org.gamegineer.table.internal.ui.model.TableModelListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code TableModelListener} class.
+         */
+        TableModelListener()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.TableModelListener#tableModelOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+         */
+        @Override
+        public void tableModelOriginOffsetChanged(
+            final TableModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    TableView.this.tableModelOriginOffsetChanged();
+                }
+            } );
         }
     }
 }

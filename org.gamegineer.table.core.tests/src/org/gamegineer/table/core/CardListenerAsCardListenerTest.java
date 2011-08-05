@@ -1,6 +1,6 @@
 /*
- * MainFrameAsTableModelListenerTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * CardListenerAsCardListenerTest.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,33 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 1, 2010 at 11:39:48 PM.
+ * Created on Aug 2, 2011 at 8:09:58 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
-
-import org.gamegineer.table.internal.ui.model.AbstractTableModelListenerTestCase;
-import org.gamegineer.table.internal.ui.model.ITableModelListener;
-import org.gamegineer.table.ui.TableAdvisor;
+package org.gamegineer.table.core;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.view.MainFrame} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.internal.ui.model.ITableModelListener} interface.
+ * A fixture for testing the {@link org.gamegineer.table.core.CardListener}
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.ICardListener} interface.
  */
-public final class MainFrameAsTableModelListenerTest
-    extends AbstractTableModelListenerTestCase
+public final class CardListenerAsCardListenerTest
+    extends AbstractCardListenerTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * MainFrameAsTableModelListenerTest} class.
+     * Initializes a new instance of the {@code CardListenerAsCardListenerTest}
+     * class.
      */
-    public MainFrameAsTableModelListenerTest()
+    public CardListenerAsCardListenerTest()
     {
         super();
     }
@@ -53,11 +48,11 @@ public final class MainFrameAsTableModelListenerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.AbstractTableModelListenerTestCase#createTableModelListener()
+     * @see org.gamegineer.table.core.AbstractCardListenerTestCase#createCardListener()
      */
     @Override
-    protected ITableModelListener createTableModelListener()
+    protected ICardListener createCardListener()
     {
-        return new MainFrame( new TableAdvisor() );
+        return new CardListener();
     }
 }

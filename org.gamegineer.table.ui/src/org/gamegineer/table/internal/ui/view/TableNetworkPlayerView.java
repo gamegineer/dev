@@ -35,6 +35,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.ui.dialog.DialogUtils;
 import org.gamegineer.table.internal.ui.model.TableModel;
@@ -48,7 +49,6 @@ import org.gamegineer.table.net.TableNetworkEvent;
 @NotThreadSafe
 final class TableNetworkPlayerView
     extends JPanel
-    implements ITableNetworkListener
 {
     // ======================================================================
     // Fields
@@ -62,6 +62,9 @@ final class TableNetworkPlayerView
 
     /** The player list model. */
     private final DefaultListModel playerListModel_;
+
+    /** The table network listener for this view. */
+    private ITableNetworkListener tableNetworkListener_;
 
 
     // ======================================================================
@@ -82,6 +85,7 @@ final class TableNetworkPlayerView
 
         model_ = model;
         playerListModel_ = new DefaultListModel();
+        tableNetworkListener_ = null;
 
         initializeComponent();
     }
@@ -99,7 +103,8 @@ final class TableNetworkPlayerView
     {
         super.addNotify();
 
-        model_.getTableNetwork().addTableNetworkListener( this );
+        tableNetworkListener_ = new TableNetworkListener();
+        model_.getTableNetwork().addTableNetworkListener( tableNetworkListener_ );
     }
 
     /**
@@ -152,68 +157,99 @@ final class TableNetworkPlayerView
     @Override
     public void removeNotify()
     {
-        model_.getTableNetwork().removeTableNetworkListener( this );
+        model_.getTableNetwork().removeTableNetworkListener( tableNetworkListener_ );
+        tableNetworkListener_ = null;
 
         super.removeNotify();
     }
 
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkListener#tableNetworkConnected(org.gamegineer.table.net.TableNetworkEvent)
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * A table network listener for the table network player view.
      */
-    @Override
-    public void tableNetworkConnected(
-        final TableNetworkEvent event )
+    @Immutable
+    private final class TableNetworkListener
+        extends org.gamegineer.table.net.TableNetworkListener
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        // ==================================================================
+        // Constructors
+        // ==================================================================
 
-        SwingUtilities.invokeLater( new Runnable()
+        /**
+         * Initializes a new instance of the {@code TableNetworkListener} class.
+         */
+        TableNetworkListener()
         {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                refreshPlayerList( event.getTableNetwork().getPlayers() );
-            }
-        } );
-    }
+            super();
+        }
 
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkListener#tableNetworkDisconnected(org.gamegineer.table.net.TableNetworkDisconnectedEvent)
-     */
-    @Override
-    public void tableNetworkDisconnected(
-        final TableNetworkDisconnectedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        SwingUtilities.invokeLater( new Runnable()
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.net.TableNetworkListener#tableNetworkConnected(org.gamegineer.table.net.TableNetworkEvent)
+         */
+        @Override
+        public void tableNetworkConnected(
+            final TableNetworkEvent event )
         {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
             {
-                refreshPlayerList( Collections.<String>emptyList() );
-            }
-        } );
-    }
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    refreshPlayerList( event.getTableNetwork().getPlayers() );
+                }
+            } );
+        }
 
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkListener#tableNetworkPlayersUpdated(org.gamegineer.table.net.TableNetworkEvent)
-     */
-    @Override
-    public void tableNetworkPlayersUpdated(
-        final TableNetworkEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
+        /*
+         * @see org.gamegineer.table.net.TableNetworkListener#tableNetworkDisconnected(org.gamegineer.table.net.TableNetworkDisconnectedEvent)
+         */
+        @Override
+        public void tableNetworkDisconnected(
+            final TableNetworkDisconnectedEvent event )
         {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
             {
-                refreshPlayerList( event.getTableNetwork().getPlayers() );
-            }
-        } );
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    refreshPlayerList( Collections.<String>emptyList() );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.net.TableNetworkListener#tableNetworkPlayersUpdated(org.gamegineer.table.net.TableNetworkEvent)
+         */
+        @Override
+        public void tableNetworkPlayersUpdated(
+            final TableNetworkEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    refreshPlayerList( event.getTableNetwork().getPlayers() );
+                }
+            } );
+        }
     }
 }

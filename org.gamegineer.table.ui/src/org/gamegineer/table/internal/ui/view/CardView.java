@@ -25,12 +25,12 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.SwingUtilities;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ICardListener;
 import org.gamegineer.table.internal.ui.model.CardModel;
-import org.gamegineer.table.internal.ui.model.CardModelEvent;
 import org.gamegineer.table.internal.ui.model.ICardModelListener;
 import org.gamegineer.table.ui.ICardSurfaceDesignUI;
 
@@ -39,7 +39,6 @@ import org.gamegineer.table.ui.ICardSurfaceDesignUI;
  */
 @NotThreadSafe
 final class CardView
-    implements ICardListener, ICardModelListener
 {
     // ======================================================================
     // Fields
@@ -50,6 +49,12 @@ final class CardView
 
     /** The current bounds of this view in table coordinates. */
     private Rectangle bounds_;
+
+    /** The card listener for this view. */
+    private ICardListener cardListener_;
+
+    /** The card model listener for this view. */
+    private ICardModelListener cardModelListener_;
 
     /** The card surface design user interface for the card face. */
     private final ICardSurfaceDesignUI faceDesignUI_;
@@ -89,10 +94,12 @@ final class CardView
         assert backDesignUI != null;
         assert faceDesignUI != null;
 
-        bounds_ = null;
-        model_ = model;
         backDesignUI_ = backDesignUI;
+        bounds_ = null;
+        cardListener_ = null;
+        cardModelListener_ = null;
         faceDesignUI_ = faceDesignUI;
+        model_ = model;
         tableView_ = null;
     }
 
@@ -100,37 +107,6 @@ final class CardView
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
-     */
-    @Override
-    public void cardChanged(
-        final CardModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
-     */
-    @Override
-    public void cardLocationChanged(
-        final CardEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                cardLocationChanged();
-            }
-        } );
-    }
 
     /**
      * Invoked after the card location has changed.
@@ -145,25 +121,6 @@ final class CardView
         }
     }
 
-    /*
-     * @see org.gamegineer.table.core.ICardListener#cardOrientationChanged(org.gamegineer.table.core.CardEvent)
-     */
-    @Override
-    public void cardOrientationChanged(
-        final CardEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                cardOrientationChanged();
-            }
-        } );
-    }
-
     /**
      * Invoked after the card orientation has changed.
      */
@@ -173,25 +130,6 @@ final class CardView
         {
             tableView_.repaintTable( getBounds() );
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ICardListener#cardSurfaceDesignsChanged(org.gamegineer.table.core.CardEvent)
-     */
-    @Override
-    public void cardSurfaceDesignsChanged(
-        final CardEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                cardSurfaceDesignsChanged();
-            }
-        } );
     }
 
     /**
@@ -249,8 +187,10 @@ final class CardView
 
         tableView_ = tableView;
         bounds_ = getBounds();
-        model_.addCardModelListener( this );
-        model_.getCard().addCardListener( this );
+        cardModelListener_ = new CardModelListener();
+        model_.addCardModelListener( cardModelListener_ );
+        cardListener_ = new CardListener();
+        model_.getCard().addCardListener( cardListener_ );
     }
 
     /**
@@ -296,8 +236,117 @@ final class CardView
     {
         assert isInitialized();
 
-        model_.getCard().removeCardListener( this );
-        model_.removeCardModelListener( this );
+        model_.getCard().removeCardListener( cardListener_ );
+        cardListener_ = null;
+        model_.removeCardModelListener( cardModelListener_ );
+        cardModelListener_ = null;
         tableView_ = null;
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * A card listener for the card view.
+     */
+    @Immutable
+    private final class CardListener
+        extends org.gamegineer.table.core.CardListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code CardListener} class.
+         */
+        CardListener()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.CardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
+         */
+        @Override
+        public void cardLocationChanged(
+            final CardEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    CardView.this.cardLocationChanged();
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.CardListener#cardOrientationChanged(org.gamegineer.table.core.CardEvent)
+         */
+        @Override
+        public void cardOrientationChanged(
+            final CardEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    CardView.this.cardOrientationChanged();
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.CardListener#cardSurfaceDesignsChanged(org.gamegineer.table.core.CardEvent)
+         */
+        @Override
+        public void cardSurfaceDesignsChanged(
+            final CardEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    CardView.this.cardSurfaceDesignsChanged();
+                }
+            } );
+        }
+    }
+
+    /**
+     * A card model listener for the card view.
+     */
+    @Immutable
+    private final class CardModelListener
+        extends org.gamegineer.table.internal.ui.model.CardModelListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code CardModelListener} class.
+         */
+        CardModelListener()
+        {
+            super();
+        }
     }
 }

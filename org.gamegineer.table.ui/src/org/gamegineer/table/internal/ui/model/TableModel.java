@@ -35,17 +35,16 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.common.persistence.serializable.ObjectStreams;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.net.ITableNetwork;
-import org.gamegineer.table.net.ITableNetworkListener;
 import org.gamegineer.table.net.TableNetworkDisconnectedEvent;
 import org.gamegineer.table.net.TableNetworkEvent;
 import org.gamegineer.table.net.TableNetworkFactory;
@@ -55,11 +54,13 @@ import org.gamegineer.table.net.TableNetworkFactory;
  */
 @ThreadSafe
 public final class TableModel
-    implements ICardPileModelListener, ITableListener, ITableNetworkListener
 {
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The card pile model listener for this model. */
+    private final ICardPileModelListener cardPileModelListener_;
 
     /** The collection of card pile models. */
     @GuardedBy( "lock_" )
@@ -103,18 +104,19 @@ public final class TableModel
      */
     public TableModel()
     {
-        lock_ = new Object();
+        cardPileModelListener_ = new CardPileModelListener();
         cardPileModels_ = new IdentityHashMap<ICardPile, CardPileModel>();
         file_ = null;
         focusedCardPile_ = null;
         isDirty_ = false;
         listeners_ = new CopyOnWriteArrayList<ITableModelListener>();
+        lock_ = new Object();
         originOffset_ = new Dimension( 0, 0 );
         table_ = TableFactory.createTable();
         tableNetwork_ = TableNetworkFactory.createTableNetwork();
 
-        table_.addTableListener( this );
-        tableNetwork_.addTableNetworkListener( this );
+        table_.addTableListener( new TableListener() );
+        tableNetwork_.addTableNetworkListener( new TableNetworkListener() );
     }
 
 
@@ -141,87 +143,6 @@ public final class TableModel
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.TableModel_addTableModelListener_listener_registered ); //$NON-NLS-1$
     }
 
-    /*
-     * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
-     */
-    @Override
-    public void cardPileAdded(
-        final TableContentChangedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            createCardPileModel( event.getCardPile() );
-            isDirty_ = true;
-        }
-
-        fireTableChanged();
-        fireTableModelDirtyFlagChanged();
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
-     */
-    @Override
-    public void cardPileChanged(
-        final CardPileModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        synchronized( lock_ )
-        {
-            isDirty_ = true;
-        }
-
-        fireTableChanged();
-        fireTableModelDirtyFlagChanged();
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileModelFocusChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
-     */
-    @Override
-    public void cardPileModelFocusChanged(
-        final CardPileModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        fireTableModelFocusChanged();
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
-     */
-    @Override
-    public void cardPileRemoved(
-        final TableContentChangedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        final ICardPile cardPile = event.getCardPile();
-        final boolean clearFocusedCardPile;
-        synchronized( lock_ )
-        {
-            final CardPileModel cardPileModel = cardPileModels_.remove( cardPile );
-            if( cardPileModel != null )
-            {
-                cardPileModel.removeCardPileModelListener( this );
-            }
-
-            clearFocusedCardPile = (focusedCardPile_ == cardPile);
-            isDirty_ = true;
-        }
-
-        if( clearFocusedCardPile )
-        {
-            setFocus( null );
-        }
-
-        fireTableChanged();
-        fireTableModelDirtyFlagChanged();
-    }
-
     /**
      * Creates a card pile model for the specified card pile.
      * 
@@ -239,7 +160,7 @@ public final class TableModel
 
         final CardPileModel cardPileModel = new CardPileModel( cardPile );
         cardPileModels_.put( cardPile, cardPileModel );
-        cardPileModel.addCardPileModelListener( this );
+        cardPileModel.addCardPileModelListener( cardPileModelListener_ );
         return cardPileModel;
     }
 
@@ -713,42 +634,6 @@ public final class TableModel
         }
     }
 
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkListener#tableNetworkConnected(org.gamegineer.table.net.TableNetworkEvent)
-     */
-    @Override
-    public void tableNetworkConnected(
-        final TableNetworkEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        fireTableChanged();
-    }
-
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkListener#tableNetworkDisconnected(org.gamegineer.table.net.TableNetworkDisconnectedEvent)
-     */
-    @Override
-    public void tableNetworkDisconnected(
-        final TableNetworkDisconnectedEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        fireTableChanged();
-    }
-
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkListener#tableNetworkPlayersUpdated(org.gamegineer.table.net.TableNetworkEvent)
-     */
-    @Override
-    public void tableNetworkPlayersUpdated(
-        final TableNetworkEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        fireTableChanged();
-    }
-
     /**
      * Writes the specified table memento to the specified file.
      * 
@@ -786,6 +671,211 @@ public final class TableModel
         catch( final IOException e )
         {
             throw new ModelException( NonNlsMessages.TableModel_writeTableMemento_error( file ), e );
+        }
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * A card pile model listener for the table model.
+     */
+    @Immutable
+    private final class CardPileModelListener
+        extends org.gamegineer.table.internal.ui.model.CardPileModelListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code CardPileModelListener}
+         * class.
+         */
+        CardPileModelListener()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.CardPileModelListener#cardPileChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void cardPileChanged(
+            final CardPileModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            synchronized( lock_ )
+            {
+                isDirty_ = true;
+            }
+
+            fireTableChanged();
+            fireTableModelDirtyFlagChanged();
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.CardPileModelListener#cardPileModelFocusChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void cardPileModelFocusChanged(
+            final CardPileModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            fireTableModelFocusChanged();
+        }
+    }
+
+    /**
+     * A table listener for the table model.
+     */
+    @Immutable
+    private final class TableListener
+        extends org.gamegineer.table.core.TableListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code TableListener} class.
+         */
+        TableListener()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.TableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void cardPileAdded(
+            final TableContentChangedEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            synchronized( lock_ )
+            {
+                createCardPileModel( event.getCardPile() );
+                isDirty_ = true;
+            }
+
+            fireTableChanged();
+            fireTableModelDirtyFlagChanged();
+        }
+
+        /*
+         * @see org.gamegineer.table.core.TableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void cardPileRemoved(
+            final TableContentChangedEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            final ICardPile cardPile = event.getCardPile();
+            final boolean clearFocusedCardPile;
+            synchronized( lock_ )
+            {
+                final CardPileModel cardPileModel = cardPileModels_.remove( cardPile );
+                if( cardPileModel != null )
+                {
+                    cardPileModel.removeCardPileModelListener( cardPileModelListener_ );
+                }
+
+                clearFocusedCardPile = (focusedCardPile_ == cardPile);
+                isDirty_ = true;
+            }
+
+            if( clearFocusedCardPile )
+            {
+                setFocus( null );
+            }
+
+            fireTableChanged();
+            fireTableModelDirtyFlagChanged();
+        }
+    }
+
+    /**
+     * A table network listener for the table model.
+     */
+    @Immutable
+    private final class TableNetworkListener
+        extends org.gamegineer.table.net.TableNetworkListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code TableNetworkListener} class.
+         */
+        TableNetworkListener()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.net.TableNetworkListener#tableNetworkConnected(org.gamegineer.table.net.TableNetworkEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void tableNetworkConnected(
+            final TableNetworkEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            fireTableChanged();
+        }
+
+        /*
+         * @see org.gamegineer.table.net.TableNetworkListener#tableNetworkDisconnected(org.gamegineer.table.net.TableNetworkDisconnectedEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void tableNetworkDisconnected(
+            final TableNetworkDisconnectedEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            fireTableChanged();
+        }
+
+        /*
+         * @see org.gamegineer.table.net.TableNetworkListener#tableNetworkPlayersUpdated(org.gamegineer.table.net.TableNetworkEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void tableNetworkPlayersUpdated(
+            final TableNetworkEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            fireTableChanged();
         }
     }
 }

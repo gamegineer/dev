@@ -26,6 +26,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.File;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.ui.ITableAdvisor;
@@ -36,7 +37,6 @@ import org.osgi.framework.Version;
  */
 @ThreadSafe
 public final class MainModel
-    implements ITableModelListener
 {
     // ======================================================================
     // Fields
@@ -79,7 +79,7 @@ public final class MainModel
         preferencesModel_ = new PreferencesModel();
         tableModel_ = new TableModel();
 
-        tableModel_.addTableModelListener( this );
+        tableModel_.addTableModelListener( new TableModelListener() );
     }
 
 
@@ -265,63 +265,85 @@ public final class MainModel
         preferencesModel_.getFileHistoryPreferences().addFile( file );
     }
 
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * A table model listener for the main model.
      */
-    @Override
-    public void tableChanged(
-        final TableModelEvent event )
+    @Immutable
+    private final class TableModelListener
+        extends org.gamegineer.table.internal.ui.model.TableModelListener
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        // ==================================================================
+        // Constructors
+        // ==================================================================
 
-        fireMainModelStateChanged();
-    }
+        /**
+         * Initializes a new instance of the {@code TableModelListener} class.
+         */
+        TableModelListener()
+        {
+            super();
+        }
 
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void tableModelDirtyFlagChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireMainModelStateChanged();
-    }
+        // ==================================================================
+        // Methods
+        // ==================================================================
 
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelFileChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void tableModelFileChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        /*
+         * @see org.gamegineer.table.internal.ui.model.TableModelListener#tableChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void tableChanged(
+            final TableModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireMainModelStateChanged();
-    }
+            fireMainModelStateChanged();
+        }
 
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void tableModelFocusChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        /*
+         * @see org.gamegineer.table.internal.ui.model.TableModelListener#tableModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void tableModelDirtyFlagChanged(
+            final TableModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        fireMainModelStateChanged();
-    }
+            fireMainModelStateChanged();
+        }
 
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void tableModelOriginOffsetChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        /*
+         * @see org.gamegineer.table.internal.ui.model.TableModelListener#tableModelFileChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void tableModelFileChanged(
+            final TableModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        // do nothing
+            fireMainModelStateChanged();
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.TableModelListener#tableModelFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void tableModelFocusChanged(
+            final TableModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            fireMainModelStateChanged();
+        }
     }
 }

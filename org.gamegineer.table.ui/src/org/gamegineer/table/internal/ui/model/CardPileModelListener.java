@@ -1,5 +1,5 @@
 /*
- * CardPileModelAsCardPileListenerTest.java
+ * CardPileModelListener.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,34 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 27, 2010 at 11:02:19 PM.
+ * Created on Aug 3, 2011 at 8:46:12 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
-import org.gamegineer.table.core.AbstractCardPileListenerTestCase;
-import org.gamegineer.table.core.CardPiles;
-import org.gamegineer.table.core.ICardPileListener;
-import org.gamegineer.table.core.TableFactory;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.CardPileModel} class to ensure
- * it does not violate the contract of the
- * {@link org.gamegineer.table.core.ICardPileListener} interface.
+ * Default implementation of {@link ICardPileModelListener}.
+ * 
+ * <p>
+ * All methods of this class do nothing.
+ * </p>
  */
-public final class CardPileModelAsCardPileListenerTest
-    extends AbstractCardPileListenerTestCase
+public class CardPileModelListener
+    implements ICardPileModelListener
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * CardPileModelAsCardPileListenerTest} class.
+     * Initializes a new instance of the {@code CardPileModelListener} class.
      */
-    public CardPileModelAsCardPileListenerTest()
+    public CardPileModelListener()
     {
         super();
     }
@@ -53,12 +50,27 @@ public final class CardPileModelAsCardPileListenerTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.core.AbstractCardPileListenerTestCase#createCardPileListener()
+    /**
+     * This implementation does nothing.
+     * 
+     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
      */
     @Override
-    protected ICardPileListener createCardPileListener()
+    public void cardPileChanged(
+        final CardPileModelEvent event )
     {
-        return new CardPileModel( CardPiles.createUniqueCardPile( TableFactory.createTable() ) );
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+    }
+
+    /**
+     * This implementation does nothing.
+     * 
+     * @see org.gamegineer.table.internal.ui.model.ICardPileModelListener#cardPileModelFocusChanged(org.gamegineer.table.internal.ui.model.CardPileModelEvent)
+     */
+    @Override
+    public void cardPileModelFocusChanged(
+        final CardPileModelEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
     }
 }

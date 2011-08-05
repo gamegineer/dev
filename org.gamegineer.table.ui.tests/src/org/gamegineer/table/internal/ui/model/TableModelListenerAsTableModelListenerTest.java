@@ -1,5 +1,5 @@
 /*
- * TableNetworkPlayerViewAsTableNetworkListenerTest.java
+ * TableModelListenerAsTableModelListenerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,23 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 21, 2011 at 10:27:26 PM.
+ * Created on Aug 3, 2011 at 9:02:25 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
-
-import org.gamegineer.table.internal.ui.model.TableModel;
-import org.gamegineer.table.net.AbstractTableNetworkListenerTestCase;
-import org.gamegineer.table.net.ITableNetworkListener;
+package org.gamegineer.table.internal.ui.model;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.view.TableNetworkPlayerView} class to
+ * {@link org.gamegineer.table.internal.ui.model.TableModelListener} class to
  * ensure it does not violate the contract of the
- * {@link org.gamegineer.table.net.ITableNetworkListener} interface.
+ * {@link org.gamegineer.table.internal.ui.model.ITableModelListener} interface.
  */
-public final class TableNetworkPlayerViewAsTableNetworkListenerTest
-    extends AbstractTableNetworkListenerTestCase
+public final class TableModelListenerAsTableModelListenerTest
+    extends AbstractTableModelListenerTestCase
 {
     // ======================================================================
     // Constructors
@@ -40,9 +36,9 @@ public final class TableNetworkPlayerViewAsTableNetworkListenerTest
 
     /**
      * Initializes a new instance of the {@code
-     * TableNetworkPlayerViewAsTableNetworkListenerTest} class.
+     * TableModelListenerAsTableModelListenerTest} class.
      */
-    public TableNetworkPlayerViewAsTableNetworkListenerTest()
+    public TableModelListenerAsTableModelListenerTest()
     {
         super();
     }
@@ -53,11 +49,11 @@ public final class TableNetworkPlayerViewAsTableNetworkListenerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.net.AbstractTableNetworkListenerTestCase#createTableNetworkListener()
+     * @see org.gamegineer.table.internal.ui.model.AbstractTableModelListenerTestCase#createTableModelListener()
      */
     @Override
-    protected ITableNetworkListener createTableNetworkListener()
+    protected ITableModelListener createTableModelListener()
     {
-        return new TableNetworkPlayerView( new TableModel() );
+        return new TableModelListener();
     }
 }

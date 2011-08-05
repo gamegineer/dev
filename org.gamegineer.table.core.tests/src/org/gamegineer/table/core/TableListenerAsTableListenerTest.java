@@ -1,5 +1,5 @@
 /*
- * CardPileModelAsCardModelListenerTest.java
+ * TableListenerAsTableListenerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,22 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 16, 2010 at 11:07:41 PM.
+ * Created on Aug 3, 2011 at 8:40:44 PM.
  */
 
-package org.gamegineer.table.internal.ui.model;
-
-import org.gamegineer.table.core.CardPiles;
-import org.gamegineer.table.core.TableFactory;
+package org.gamegineer.table.core;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.CardPileModel} class to ensure
- * it does not violate the contract of the
- * {@link org.gamegineer.table.internal.ui.model.ICardModelListener} interface.
+ * A fixture for testing the {@link org.gamegineer.table.core.TableListener}
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.core.ITableListener} interface.
  */
-public final class CardPileModelAsCardModelListenerTest
-    extends AbstractCardModelListenerTestCase
+public final class TableListenerAsTableListenerTest
+    extends AbstractTableListenerTestCase
 {
     // ======================================================================
     // Constructors
@@ -39,9 +35,9 @@ public final class CardPileModelAsCardModelListenerTest
 
     /**
      * Initializes a new instance of the {@code
-     * CardPileModelAsCardModelListenerTest} class.
+     * TableListenerAsTableListenerTest} class.
      */
-    public CardPileModelAsCardModelListenerTest()
+    public TableListenerAsTableListenerTest()
     {
         super();
     }
@@ -52,11 +48,11 @@ public final class CardPileModelAsCardModelListenerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.AbstractCardModelListenerTestCase#createCardModelListener()
+     * @see org.gamegineer.table.core.AbstractTableListenerTestCase#createTableListener()
      */
     @Override
-    protected ICardModelListener createCardModelListener()
+    protected ITableListener createTableListener()
     {
-        return new CardPileModel( CardPiles.createUniqueCardPile( TableFactory.createTable() ) );
+        return new TableListener();
     }
 }

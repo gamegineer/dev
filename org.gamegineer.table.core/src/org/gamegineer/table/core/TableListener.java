@@ -1,5 +1,5 @@
 /*
- * TableViewAsTableListenerTest.java
+ * TableListener.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,33 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 17, 2009 at 11:18:09 PM.
+ * Created on Aug 3, 2011 at 8:39:38 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
+package org.gamegineer.table.core;
 
-import org.gamegineer.table.core.AbstractTableListenerTestCase;
-import org.gamegineer.table.core.ITableListener;
-import org.gamegineer.table.internal.ui.model.TableModel;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import net.jcip.annotations.Immutable;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.view.TableView} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.core.ITableListener} interface.
+ * Default implementation of {@link ITableListener}.
+ * 
+ * <p>
+ * All methods of this class do nothing.
+ * </p>
  */
-public final class TableViewAsTableListenerTest
-    extends AbstractTableListenerTestCase
+@Immutable
+public class TableListener
+    implements ITableListener
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TableViewAsTableListenerTest}
-     * class.
+     * Initializes a new instance of the {@code TableListener} class.
      */
-    public TableViewAsTableListenerTest()
+    public TableListener()
     {
         super();
     }
@@ -52,12 +52,27 @@ public final class TableViewAsTableListenerTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.core.AbstractTableListenerTestCase#createTableListener()
+    /**
+     * This implementation does nothing.
+     * 
+     * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
      */
     @Override
-    protected ITableListener createTableListener()
+    public void cardPileAdded(
+        final TableContentChangedEvent event )
     {
-        return new TableView( new TableModel() );
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+    }
+
+    /**
+     * This implementation does nothing.
+     * 
+     * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
+     */
+    @Override
+    public void cardPileRemoved(
+        final TableContentChangedEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
     }
 }

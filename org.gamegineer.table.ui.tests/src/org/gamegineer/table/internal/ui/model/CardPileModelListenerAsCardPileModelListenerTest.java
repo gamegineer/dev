@@ -1,5 +1,5 @@
 /*
- * CardPileViewAsCardPileModelListenerTest.java
+ * CardPileModelListenerAsCardPileModelListenerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,30 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 26, 2010 at 11:48:25 PM.
+ * Created on Aug 3, 2011 at 8:47:24 PM.
  */
 
-package org.gamegineer.table.internal.ui.view;
-
-import org.gamegineer.table.core.CardPileBaseDesigns;
-import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.ICardPileBaseDesign;
-import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.core.TableFactory;
-import org.gamegineer.table.internal.ui.model.AbstractCardPileModelListenerTestCase;
-import org.gamegineer.table.internal.ui.model.CardPileModel;
-import org.gamegineer.table.internal.ui.model.ICardPileModelListener;
-import org.gamegineer.table.ui.CardPileBaseDesignUIs;
-import org.gamegineer.table.ui.ICardPileBaseDesignUI;
+package org.gamegineer.table.internal.ui.model;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.view.CardPileView} class to ensure it
- * does not violate the contract of the
+ * {@link org.gamegineer.table.internal.ui.model.CardPileModelListener} class to
+ * ensure it does not violate the contract of the
  * {@link org.gamegineer.table.internal.ui.model.ICardPileModelListener}
  * interface.
  */
-public final class CardPileViewAsCardPileModelListenerTest
+public final class CardPileModelListenerAsCardPileModelListenerTest
     extends AbstractCardPileModelListenerTestCase
 {
     // ======================================================================
@@ -48,9 +37,9 @@ public final class CardPileViewAsCardPileModelListenerTest
 
     /**
      * Initializes a new instance of the {@code
-     * CardPileViewAsCardPileModelListenerTest} class.
+     * CardPileModelListenerAsCardPileModelListenerTest} class.
      */
-    public CardPileViewAsCardPileModelListenerTest()
+    public CardPileModelListenerAsCardPileModelListenerTest()
     {
         super();
     }
@@ -66,11 +55,6 @@ public final class CardPileViewAsCardPileModelListenerTest
     @Override
     protected ICardPileModelListener createCardPileModelListener()
     {
-        final ITable table = TableFactory.createTable();
-        final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
-        final ICardPileBaseDesignUI cardPileBaseDesignUI = CardPileBaseDesignUIs.createCardPileBaseDesignUI( cardPileBaseDesign );
-        final ICardPile cardPile = table.createCardPile();
-        cardPile.setBaseDesign( cardPileBaseDesign );
-        return new CardPileView( new CardPileModel( cardPile ), cardPileBaseDesignUI );
+        return new CardPileModelListener();
     }
 }

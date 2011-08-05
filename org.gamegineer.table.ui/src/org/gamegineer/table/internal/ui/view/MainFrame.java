@@ -39,6 +39,7 @@ import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.common.ui.databinding.swing.SwingRealm;
@@ -63,7 +64,6 @@ import org.osgi.framework.Bundle;
 @NotThreadSafe
 public final class MainFrame
     extends JFrame
-    implements IMainModelListener, ITableModelListener
 {
     // ======================================================================
     // Fields
@@ -75,14 +75,20 @@ public final class MainFrame
     /** The action mediator. */
     private final ActionMediator actionMediator_;
 
-    /** The model. */
-    private final MainModel model_;
+    /** The main model listener for this view. */
+    private IMainModelListener mainModelListener_;
 
     /** The main view. */
     private final MainView mainView_;
 
     /** The menu bar view. */
     private final MenuBarView menuBarView_;
+
+    /** The model. */
+    private final MainModel model_;
+
+    /** The table model listener for this view. */
+    private ITableModelListener tableModelListener_;
 
 
     // ======================================================================
@@ -105,9 +111,11 @@ public final class MainFrame
         assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
 
         actionMediator_ = new ActionMediator();
+        mainModelListener_ = null;
         model_ = new MainModel( advisor );
         mainView_ = new MainView( model_ );
         menuBarView_ = new MenuBarView( model_ );
+        tableModelListener_ = null;
 
         initializeComponent();
 
@@ -130,8 +138,10 @@ public final class MainFrame
         SwingRealm.installSystemRealm();
 
         bindActions();
-        model_.addMainModelListener( this );
-        model_.getTableModel().addTableModelListener( this );
+        mainModelListener_ = new MainModelListener();
+        model_.addMainModelListener( mainModelListener_ );
+        tableModelListener_ = new TableModelListener();
+        model_.getTableModel().addTableModelListener( tableModelListener_ );
     }
 
     /**
@@ -404,18 +414,6 @@ public final class MainFrame
         }
     }
 
-    /*
-     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelStateChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
-     */
-    @Override
-    public void mainModelStateChanged(
-        final MainModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        Actions.updateAll();
-    }
-
     /**
      * Opens a new empty table.
      */
@@ -503,8 +501,10 @@ public final class MainFrame
     @Override
     public void removeNotify()
     {
-        model_.getTableModel().removeTableModelListener( this );
-        model_.removeMainModelListener( this );
+        model_.getTableModel().removeTableModelListener( tableModelListener_ );
+        tableModelListener_ = null;
+        model_.removeMainModelListener( mainModelListener_ );
+        mainModelListener_ = null;
         actionMediator_.unbindAll();
 
         SwingRealm.uninstallSystemRealm();
@@ -577,79 +577,98 @@ public final class MainFrame
         return true;
     }
 
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void tableChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelDirtyFlagChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void tableModelDirtyFlagChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelFileChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void tableModelFileChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        SwingUtilities.invokeLater( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                updateTitle();
-            }
-        } );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelFocusChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void tableModelFocusChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.ui.model.ITableModelListener#tableModelOriginOffsetChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
-     */
-    @Override
-    public void tableModelOriginOffsetChanged(
-        final TableModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
-    }
-
     /**
      * Updates the frame title based on the state of the model.
      */
     private void updateTitle()
     {
         setTitle( NlsMessages.MainFrame_title( getTableName() ) );
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * A main model listener for the main frame.
+     */
+    @Immutable
+    private final class MainModelListener
+        extends org.gamegineer.table.internal.ui.model.MainModelListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code MainModelListener} class.
+         */
+        MainModelListener()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.MainModelListener#mainModelStateChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
+         */
+        @Override
+        public void mainModelStateChanged(
+            final MainModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            Actions.updateAll();
+        }
+    }
+
+    /**
+     * A table model listener for the main frame.
+     */
+    @Immutable
+    private final class TableModelListener
+        extends org.gamegineer.table.internal.ui.model.TableModelListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code TableModelListener} class.
+         */
+        TableModelListener()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.model.TableModelListener#tableModelFileChanged(org.gamegineer.table.internal.ui.model.TableModelEvent)
+         */
+        @Override
+        public void tableModelFileChanged(
+            final TableModelEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    updateTitle();
+                }
+            } );
+        }
     }
 }

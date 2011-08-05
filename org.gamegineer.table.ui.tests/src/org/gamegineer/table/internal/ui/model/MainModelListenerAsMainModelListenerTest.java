@@ -1,5 +1,5 @@
 /*
- * TableModelAsCardPileModelListenerTest.java
+ * MainModelListenerAsMainModelListenerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,20 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 17, 2010 at 10:07:24 PM.
+ * Created on Aug 3, 2011 at 9:10:13 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.TableModel} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.internal.ui.model.ICardPileModelListener}
- * interface.
+ * {@link org.gamegineer.table.internal.ui.model.MainModelListener} class to
+ * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.ui.model.IMainModelListener} interface.
  */
-public final class TableModelAsCardPileModelListenerTest
-    extends AbstractCardPileModelListenerTestCase
+public final class MainModelListenerAsMainModelListenerTest
+    extends AbstractMainModelListenerTestCase
 {
     // ======================================================================
     // Constructors
@@ -37,9 +36,9 @@ public final class TableModelAsCardPileModelListenerTest
 
     /**
      * Initializes a new instance of the {@code
-     * TableModelAsCardPileModelListenerTest} class.
+     * MainModelListenerAsMainModelListenerTest} class.
      */
-    public TableModelAsCardPileModelListenerTest()
+    public MainModelListenerAsMainModelListenerTest()
     {
         super();
     }
@@ -50,11 +49,11 @@ public final class TableModelAsCardPileModelListenerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.AbstractCardPileModelListenerTestCase#createCardPileModelListener()
+     * @see org.gamegineer.table.internal.ui.model.AbstractMainModelListenerTestCase#createMainModelListener()
      */
     @Override
-    protected ICardPileModelListener createCardPileModelListener()
+    protected IMainModelListener createMainModelListener()
     {
-        return new TableModel();
+        return new MainModelListener();
     }
 }

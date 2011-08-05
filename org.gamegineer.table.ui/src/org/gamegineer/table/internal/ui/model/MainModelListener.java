@@ -1,5 +1,5 @@
 /*
- * CardModelAsCardListenerTest.java
+ * MainModelListener.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,34 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jun 10, 2011 at 2:39:54 PM.
+ * Created on Aug 3, 2011 at 9:09:04 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
-import org.gamegineer.table.core.AbstractCardListenerTestCase;
-import org.gamegineer.table.core.Cards;
-import org.gamegineer.table.core.ICardListener;
-import org.gamegineer.table.core.TableFactory;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import net.jcip.annotations.Immutable;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.CardModel} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.core.ICardListener} interface.
+ * Default implementation of {@link IMainModelListener}.
+ * 
+ * <p>
+ * All methods of this class do nothing.
+ * </p>
  */
-public final class CardModelAsCardListenerTest
-    extends AbstractCardListenerTestCase
+@Immutable
+public class MainModelListener
+    implements IMainModelListener
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardModelAsCardListenerTest}
-     * class.
+     * Initializes a new instance of the {@code MainModelListener} class.
      */
-    public CardModelAsCardListenerTest()
+    public MainModelListener()
     {
         super();
     }
@@ -53,12 +52,15 @@ public final class CardModelAsCardListenerTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.core.AbstractCardListenerTestCase#createCardListener()
+    /**
+     * This implementation does nothing.
+     * 
+     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelStateChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
      */
     @Override
-    protected ICardListener createCardListener()
+    public void mainModelStateChanged(
+        final MainModelEvent event )
     {
-        return new CardModel( Cards.createUniqueCard( TableFactory.createTable() ) );
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
     }
 }

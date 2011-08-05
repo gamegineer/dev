@@ -27,10 +27,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.ui.model.IMainModelListener;
 import org.gamegineer.table.internal.ui.model.MainModel;
-import org.gamegineer.table.internal.ui.model.MainModelEvent;
 import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.net.ITableNetworkListener;
 import org.gamegineer.table.net.TableNetworkDisconnectedEvent;
@@ -43,7 +43,6 @@ import org.gamegineer.table.net.TableNetworkEvent;
 @NotThreadSafe
 final class MainView
     extends JPanel
-    implements IMainModelListener, ITableNetworkListener
 {
     // ======================================================================
     // Fields
@@ -51,6 +50,9 @@ final class MainView
 
     /** Serializable class version number. */
     private static final long serialVersionUID = 8895515474498086806L;
+
+    /** The main model listener for this view. */
+    private IMainModelListener mainModelListener_;
 
     /** The model associated with this view. */
     private final MainModel model_;
@@ -60,6 +62,9 @@ final class MainView
 
     /** The default size of the split pane divider. */
     private int splitPaneDividerSize_;
+
+    /** The table network listener for this view. */
+    private ITableNetworkListener tableNetworkListener_;
 
     /** The table network player view. */
     private final TableNetworkPlayerView tableNetworkPlayerView_;
@@ -84,9 +89,11 @@ final class MainView
     {
         assert model != null;
 
+        mainModelListener_ = null;
         model_ = model;
         splitPane_ = null;
         splitPaneDividerSize_ = 0;
+        tableNetworkListener_ = null;
         tableNetworkPlayerView_ = new TableNetworkPlayerView( model.getTableModel() );
         tableView_ = new TableView( model.getTableModel() );
 
@@ -106,8 +113,10 @@ final class MainView
     {
         super.addNotify();
 
-        model_.addMainModelListener( this );
-        model_.getTableModel().getTableNetwork().addTableNetworkListener( this );
+        mainModelListener_ = new MainModelListener();
+        model_.addMainModelListener( mainModelListener_ );
+        tableNetworkListener_ = new TableNetworkListener();
+        model_.getTableModel().getTableNetwork().addTableNetworkListener( tableNetworkListener_ );
     }
 
     /**
@@ -131,25 +140,15 @@ final class MainView
     }
 
     /*
-     * @see org.gamegineer.table.internal.ui.model.IMainModelListener#mainModelStateChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
-     */
-    @Override
-    public void mainModelStateChanged(
-        final MainModelEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-        // do nothing
-    }
-
-    /*
      * @see javax.swing.JComponent#removeNotify()
      */
     @Override
     public void removeNotify()
     {
-        model_.getTableModel().getTableNetwork().removeTableNetworkListener( this );
-        model_.removeMainModelListener( this );
+        model_.getTableModel().getTableNetwork().removeTableNetworkListener( tableNetworkListener_ );
+        tableNetworkListener_ = null;
+        model_.removeMainModelListener( mainModelListener_ );
+        mainModelListener_ = null;
 
         super.removeNotify();
     }
@@ -170,61 +169,99 @@ final class MainView
         validate();
     }
 
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkListener#tableNetworkConnected(org.gamegineer.table.net.TableNetworkEvent)
-     */
-    @Override
-    public void tableNetworkConnected(
-        final TableNetworkEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        SwingUtilities.invokeLater( new Runnable()
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * A main model listener for the main view.
+     */
+    @Immutable
+    private final class MainModelListener
+        extends org.gamegineer.table.internal.ui.model.MainModelListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code MainModelListener} class.
+         */
+        MainModelListener()
         {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                setPlayerViewVisible( true );
-            }
-        } );
+            super();
+        }
     }
 
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkListener#tableNetworkDisconnected(org.gamegineer.table.net.TableNetworkDisconnectedEvent)
+    /**
+     * A table network listener for the main view.
      */
-    @Override
-    public void tableNetworkDisconnected(
-        final TableNetworkDisconnectedEvent event )
+    @Immutable
+    private final class TableNetworkListener
+        extends org.gamegineer.table.net.TableNetworkListener
     {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        // ==================================================================
+        // Constructors
+        // ==================================================================
 
-        SwingUtilities.invokeLater( new Runnable()
+        /**
+         * Initializes a new instance of the {@code TableNetworkListener} class.
+         */
+        TableNetworkListener()
         {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                setPlayerViewVisible( false );
+            super();
+        }
 
-                final TableNetworkError error = event.getError();
-                if( error != null )
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.net.TableNetworkListener#tableNetworkConnected(org.gamegineer.table.net.TableNetworkEvent)
+         */
+        @Override
+        public void tableNetworkConnected(
+            final TableNetworkEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
                 {
-                    OptionDialogs.showErrorMessageDialog( MainView.this, NlsMessages.MainView_tableNetworkDisconnected_error( error ) );
+                    setPlayerViewVisible( true );
                 }
-            }
-        } );
-    }
+            } );
+        }
 
-    /*
-     * @see org.gamegineer.table.net.ITableNetworkListener#tableNetworkPlayersUpdated(org.gamegineer.table.net.TableNetworkEvent)
-     */
-    @Override
-    public void tableNetworkPlayersUpdated(
-        final TableNetworkEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+        /*
+         * @see org.gamegineer.table.net.TableNetworkListener#tableNetworkDisconnected(org.gamegineer.table.net.TableNetworkDisconnectedEvent)
+         */
+        @Override
+        public void tableNetworkDisconnected(
+            final TableNetworkDisconnectedEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-        // do nothing
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    setPlayerViewVisible( false );
+
+                    final TableNetworkError error = event.getError();
+                    if( error != null )
+                    {
+                        OptionDialogs.showErrorMessageDialog( MainView.this, NlsMessages.MainView_tableNetworkDisconnected_error( error ) );
+                    }
+                }
+            } );
+        }
     }
 }

@@ -1,6 +1,6 @@
 /*
- * MainModelAsTableModelListenerTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * CardModelListener.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,31 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 17, 2010 at 10:22:09 PM.
+ * Created on Aug 3, 2011 at 8:35:08 PM.
  */
 
 package org.gamegineer.table.internal.ui.model;
 
-import org.gamegineer.table.ui.TableAdvisor;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import net.jcip.annotations.Immutable;
 
 /**
- * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.model.MainModel} class to ensure it
- * does not violate the contract of the
- * {@link org.gamegineer.table.internal.ui.model.ITableModelListener} interface.
+ * Default implementation of {@link ICardModelListener}.
+ * 
+ * <p>
+ * All methods of this class do nothing.
+ * </p>
  */
-public final class MainModelAsTableModelListenerTest
-    extends AbstractTableModelListenerTestCase
+@Immutable
+public class CardModelListener
+    implements ICardModelListener
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * MainModelAsTableModelListenerTest} class.
+     * Initializes a new instance of the {@code CardModelListener} class.
      */
-    public MainModelAsTableModelListenerTest()
+    public CardModelListener()
     {
         super();
     }
@@ -50,12 +52,15 @@ public final class MainModelAsTableModelListenerTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.internal.ui.model.AbstractTableModelListenerTestCase#createTableModelListener()
+    /**
+     * This implementation does nothing.
+     * 
+     * @see org.gamegineer.table.internal.ui.model.ICardModelListener#cardChanged(org.gamegineer.table.internal.ui.model.CardModelEvent)
      */
     @Override
-    protected ITableModelListener createTableModelListener()
+    public void cardChanged(
+        final CardModelEvent event )
     {
-        return new MainModel( new TableAdvisor() );
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
     }
 }
