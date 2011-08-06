@@ -1,22 +1,18 @@
 Gamegineer
 Version 0.7.0
-XX XXX XXXX
+6 August 2011
 
 Defects closed:
-    * [#34] MRU file list contains duplicate file names that only differ by case
-    * [#41] SwingRealm not installed on AWT event dispatch thread
-    * [#42] Failure to serialize objects registered via JavaBeans persistence layer IPersistenceDelegateRegistry
-    * [#43] Bundle loggers not reinitialized correctly after being garbage collected
+	* [#46] Potential deadlock within network transport layer
+	* [#51] Moving table origin should not set table dirty flag
+	* [#52] Changing card pile focus should not set table dirty flag
 
 Enhancements closed:
-    * [#32] Save As dialog should automatically add extension if nessary
-    * [#37] Add action to remove all card piles from table
-    * [#38] Add action to remove all cards from card pile
-    * [#39] Add import table action
-    * [#40] Bind ESC key to Cancel button in AbstractDialog class
+	* [#53] Open dialog should automatically add extension if necessary
+	* [#54] Open dialog should not allow user to select non-existent file
 
 Tasks closed:
-    * [#33] Add custom application icon
-    * [#35] Upgrade automated build to PDE Build 3.5.2
-    * [#36] Create wizard framework
-    * [#44] Add framework to support basic peer-to-peer networking
+	* [#45] Upgrade to JDK 6 Update 25
+	* [#47] Upgrade build server to CruiseControl 2.8.4
+	* [#49] Allow table network clients to see all table changes performed on server
+	* [#50] Split package-specific message resource bundles into NLS and non-NLS variants
