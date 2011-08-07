@@ -1,6 +1,6 @@
 Gamegineer
 Version 0.7.0
-6 August 2011
+7 August 2011
 
 Copyright 2008-2011 Gamegineer contributors and others. 
 All rights reserved. 
@@ -38,7 +38,7 @@ The table consists of a collection of card piles.  Use the Add Card Pile and Rem
 
 A card pile consists of a collection of cards.  Use the Add Card and Remove Card commands to add/remove cards to/from a card pile, respectively.  Alternatively, the Add Deck command can be used to add an entire deck of cards to a card pile at once.  The Flip Card command will toggle the orientation (face up or face down) of the card at the top of the card pile.  The Layout command will change the arrangement of the cards in the card pile.  All of these commands are executed in the context of the focused card pile.  Cards can be moved from one card pile to another by left-clicking and dragging a card with the mouse.  When the Stacked layout is active, only the top card can be selected and moved.  When any of the Accordian layouts are active, left-clicking and dragging a card will move the selected card and all cards above it as a single unit.
 
-A new empty table can be created using the New command.  A table can be saved for later use using the Save and Save As commands.  A previously saved table can be loaded using the Open command or by selecting a previously-loaded file from the Most Recently Used file list.  Alternatively, the contents of the existing table can be replaced using the Import (Table) command.  Unlike the New command, Import will not disassociate the current table from its corresponding file, if applicable.
+A new empty table can be created using the New command.  A table can be saved for later use using the Save and Save As commands.  A previously saved table can be loaded using the Open command or by selecting a previously-loaded file from the Most Recently Used file list.
 
 THE NETWORK FUNCTIONALITY IS CURRENTLY EXPERIMENTAL AND NOT FULLY IMPLEMENTED.
 

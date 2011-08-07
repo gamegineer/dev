@@ -1,6 +1,6 @@
 Gamegineer
 Version 0.7.0
-6 August 2011
+7 August 2011
 
 Defects closed:
 	* [#46] Potential deadlock within network transport layer
