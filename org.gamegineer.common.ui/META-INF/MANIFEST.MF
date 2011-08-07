@@ -7,15 +7,15 @@ Bundle-Name: %bundleName
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.gamegineer.common.ui
 Bundle-Vendor: %bundleVendor
-Bundle-Version: 0.7.0.qualifier
-Export-Package: org.gamegineer.common.ui.databinding.dialog;version="0.7.0",
- org.gamegineer.common.ui.databinding.swing;version="0.7.0",
- org.gamegineer.common.ui.databinding.wizard;version="0.7.0",
- org.gamegineer.common.ui.dialog;version="0.7.0",
- org.gamegineer.common.ui.operation;version="0.7.0",
- org.gamegineer.common.ui.util;version="0.7.0",
- org.gamegineer.common.ui.window;version="0.7.0",
- org.gamegineer.common.ui.wizard;version="0.7.0"
+Bundle-Version: 0.8.0.qualifier
+Export-Package: org.gamegineer.common.ui.databinding.dialog;version="0.8.0",
+ org.gamegineer.common.ui.databinding.swing;version="0.8.0",
+ org.gamegineer.common.ui.databinding.wizard;version="0.8.0",
+ org.gamegineer.common.ui.dialog;version="0.8.0",
+ org.gamegineer.common.ui.operation;version="0.8.0",
+ org.gamegineer.common.ui.util;version="0.8.0",
+ org.gamegineer.common.ui.window;version="0.8.0",
+ org.gamegineer.common.ui.wizard;version="0.8.0"
 Import-Package: net.jcip.annotations;version="[1.0.0,2.0.0)",
  org.eclipse.core.databinding,
  org.eclipse.core.databinding.observable,
@@ -24,7 +24,7 @@ Import-Package: net.jcip.annotations;version="[1.0.0,2.0.0)",
  org.eclipse.core.databinding.property,
  org.eclipse.core.databinding.property.value,
  org.eclipse.osgi.util;version="1.1.0",
- org.gamegineer.common.core.runtime;version="[0.7.0,0.8.0)",
- org.gamegineer.common.core.security;version="[0.7.0,0.8.0)",
+ org.gamegineer.common.core.runtime;version="[0.8.0,0.9.0)",
+ org.gamegineer.common.core.security;version="[0.8.0,0.9.0)",
  org.osgi.framework;version="1.5.0"
 Require-Bundle: org.eclipse.equinox.common;bundle-version="3.5.1"
