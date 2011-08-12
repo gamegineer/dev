@@ -1,5 +1,5 @@
 /*
- * IRemoteClientNode.java
+ * IPlayer.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,38 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 27, 2011 at 11:11:35 PM.
+ * Created on Aug 9, 2011 at 8:49:50 PM.
  */
 
-package org.gamegineer.table.internal.net.node.server;
-
-import java.util.Collection;
-import org.gamegineer.table.internal.net.node.IRemoteNode;
-import org.gamegineer.table.net.IPlayer;
+package org.gamegineer.table.net;
 
 /**
- * A proxy for a remote client node connected to the table network.
+ * A player connected to the table network.
  * 
  * @noextend This interface is not intended to be extended by clients.
+ * 
+ * @noimplement This interface is not intended to be implemented by clients.
  */
-public interface IRemoteClientNode
-    extends IRemoteNode
+public interface IPlayer
 {
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Sets the collection of players connected to the table network.
+     * Gets the player name.
      * 
-     * @param players
-     *        The collection of players connected to the table network; must not
-     *        be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code players} is {@code null}.
+     * @return The player name; never {@code null}.
      */
-    public void setPlayers(
-        /* @NonNull */
-        Collection<IPlayer> players );
+    /* @NonNull */
+    public String getName();
 }

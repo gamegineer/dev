@@ -22,10 +22,13 @@
 package org.gamegineer.table.internal.net.node.common.messages;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.internal.net.Player;
 import org.gamegineer.table.internal.net.transport.AbstractMessage;
+import org.gamegineer.table.net.IPlayer;
 
 /**
  * A message sent by a server to a client to refresh the collection of players
@@ -43,11 +46,12 @@ public final class PlayersMessage
     private static final long serialVersionUID = 9204915904767282462L;
 
     /**
-     * The collection of players connected to the table network.
+     * The collection of names of each player connected to the table network.
      * 
-     * @serial The collection of players connected to the table network.
+     * @serial The collection of names of each player connected to the table
+     *         network.
      */
-    private Collection<String> players_;
+    private Collection<String> playerNames_;
 
 
     // ======================================================================
@@ -59,7 +63,7 @@ public final class PlayersMessage
      */
     public PlayersMessage()
     {
-        players_ = Collections.emptyList();
+        playerNames_ = Collections.emptyList();
     }
 
 
@@ -71,13 +75,18 @@ public final class PlayersMessage
      * Gets the collection of players connected to the table network.
      * 
      * @return The collection of players connected to the table network; never
-     *         {@code null}. The returned value is a direct reference to the
-     *         field and must not be modified.
+     *         {@code null}.
      */
     /* @NonNull */
-    public Collection<String> getPlayers()
+    public Collection<IPlayer> getPlayers()
     {
-        return players_;
+        final Collection<IPlayer> players = new ArrayList<IPlayer>( playerNames_.size() );
+        for( final String playerName : playerNames_ )
+        {
+            players.add( new Player( playerName ) );
+        }
+
+        return players;
     }
 
     /**
@@ -85,18 +94,21 @@ public final class PlayersMessage
      * 
      * @param players
      *        The collection of players connected to the table network; must not
-     *        be {@code null}. No copy is made of this value and it must not be
-     *        modified at a later time.
+     *        be {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code players} is {@code null}.
      */
     public void setPlayers(
         /* @NonNull */
-        final Collection<String> players )
+        final Collection<IPlayer> players )
     {
         assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
 
-        players_ = players;
+        playerNames_ = new ArrayList<String>( players.size() );
+        for( final IPlayer player : players )
+        {
+            playerNames_.add( player.getName() );
+        }
     }
 }

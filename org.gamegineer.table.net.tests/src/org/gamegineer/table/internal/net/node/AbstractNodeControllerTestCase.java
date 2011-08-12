@@ -25,7 +25,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
+import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
 import org.junit.Before;
@@ -154,11 +156,11 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     @Test
     public void testGetPlayers_ReturnValue_Copy()
     {
-        final Collection<String> players = nodeController_.getPlayers();
-        final Collection<String> expectedValue = new ArrayList<String>( players );
+        final Collection<IPlayer> players = nodeController_.getPlayers();
+        final Collection<IPlayer> expectedValue = new ArrayList<IPlayer>( players );
 
-        players.add( "newPlayerName" ); //$NON-NLS-1$
-        final Collection<String> actualValue = nodeController_.getPlayers();
+        players.add( EasyMock.createMock( IPlayer.class ) );
+        final Collection<IPlayer> actualValue = nodeController_.getPlayers();
 
         assertEquals( expectedValue, actualValue );
     }

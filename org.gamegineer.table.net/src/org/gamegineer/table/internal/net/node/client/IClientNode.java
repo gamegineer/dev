@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.net.node.client;
 import java.util.Collection;
 import net.jcip.annotations.GuardedBy;
 import org.gamegineer.table.internal.net.node.INode;
+import org.gamegineer.table.net.IPlayer;
 
 /**
  * A local client node in a table network.
@@ -52,5 +53,5 @@ public interface IClientNode
     @GuardedBy( "getLock()" )
     public void setPlayers(
         /* @NonNull */
-        Collection<String> players );
+        Collection<IPlayer> players );
 }

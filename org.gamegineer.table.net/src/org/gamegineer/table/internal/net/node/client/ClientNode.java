@@ -25,6 +25,8 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -41,6 +43,7 @@ import org.gamegineer.table.internal.net.node.ITableManager;
 import org.gamegineer.table.internal.net.node.TableIncrement;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkException;
 
@@ -73,9 +76,12 @@ public final class ClientNode
     @GuardedBy( "handshakeLock_" )
     private boolean isHandshakeComplete_;
 
-    /** The collection of players connected to the table network. */
+    /**
+     * The collection of players connected to the table network. The key is the
+     * player name. The value is the player.
+     */
     @GuardedBy( "getLock()" )
-    private final Collection<String> players_;
+    private final Map<String, IPlayer> players_;
 
     /** The table manager. */
     private final ITableManager tableManager_;
@@ -131,7 +137,7 @@ public final class ClientNode
         handshakeCondition_ = handshakeLock_.newCondition();
         handshakeError_ = null;
         isHandshakeComplete_ = waitForHandshakeCompletion ? false : true;
-        players_ = new ArrayList<String>();
+        players_ = new HashMap<String, IPlayer>();
         tableManager_ = new ClientTableManager();
     }
 
@@ -228,11 +234,11 @@ public final class ClientNode
      * @see org.gamegineer.table.internal.net.node.INodeController#getPlayers()
      */
     @Override
-    public Collection<String> getPlayers()
+    public Collection<IPlayer> getPlayers()
     {
         synchronized( getLock() )
         {
-            return new ArrayList<String>( players_ );
+            return new ArrayList<IPlayer>( players_.values() );
         }
     }
 
@@ -301,14 +307,17 @@ public final class ClientNode
      */
     @Override
     public void setPlayers(
-        final Collection<String> players )
+        final Collection<IPlayer> players )
     {
         assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
         assert Thread.holdsLock( getLock() );
 
         assertConnected();
         players_.clear();
-        players_.addAll( players );
+        for( final IPlayer player : players )
+        {
+            players_.put( player.getName(), player );
+        }
         getTableNetworkController().playersUpdated();
     }
 

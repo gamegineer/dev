@@ -30,6 +30,7 @@ import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.TransportException;
+import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
 import org.junit.Test;
@@ -497,7 +498,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
          * @see org.gamegineer.table.internal.net.node.INodeController#getPlayers()
          */
         @Override
-        public Collection<String> getPlayers()
+        public Collection<IPlayer> getPlayers()
         {
             return Collections.emptyList();
         }

@@ -69,7 +69,7 @@ public interface ITableNetwork
      *         {@code null}.
      */
     /* @NonNull */
-    public Collection<String> getPlayers();
+    public Collection<IPlayer> getPlayers();
 
     /**
      * Hosts a new table network.

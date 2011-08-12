@@ -23,12 +23,15 @@ package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FontMetrics;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -39,6 +42,7 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.ui.dialog.DialogUtils;
 import org.gamegineer.table.internal.ui.model.TableModel;
+import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetworkListener;
 import org.gamegineer.table.net.TableNetworkDisconnectedEvent;
 import org.gamegineer.table.net.TableNetworkEvent;
@@ -119,12 +123,13 @@ final class TableNetworkPlayerView
         setLayout( new BorderLayout() );
         setOpaque( true );
 
-        final JLabel label = new JLabel( NlsMessages.TableNetworkPlayerView_playersLabel_text );
-        label.setBorder( BorderFactory.createEmptyBorder( 0, 0, DialogUtils.convertWidthInDlusToPixels( fontMetrics, 3 ), 0 ) );
-        add( label, BorderLayout.NORTH );
+        final JLabel playersLabel = new JLabel( NlsMessages.TableNetworkPlayerView_playersLabel_text );
+        playersLabel.setBorder( BorderFactory.createEmptyBorder( 0, 0, DialogUtils.convertWidthInDlusToPixels( fontMetrics, 3 ), 0 ) );
+        add( playersLabel, BorderLayout.NORTH );
 
-        final JList list = new JList( playerListModel_ );
-        final JScrollPane scrollPane = new JScrollPane( list );
+        final JList playerList = new JList( playerListModel_ );
+        playerList.setCellRenderer( new PlayerListCellRenderer() );
+        final JScrollPane scrollPane = new JScrollPane( playerList );
         add( scrollPane, BorderLayout.CENTER );
     }
 
@@ -137,15 +142,24 @@ final class TableNetworkPlayerView
      */
     private void refreshPlayerList(
         /* @NonNull */
-        final Collection<String> players )
+        final Collection<IPlayer> players )
     {
         assert players != null;
 
-        final List<String> sortedPlayers = new ArrayList<String>( players );
-        Collections.sort( sortedPlayers );
+        final List<IPlayer> sortedPlayers = new ArrayList<IPlayer>( players );
+        Collections.sort( sortedPlayers, new Comparator<IPlayer>()
+        {
+            @Override
+            public int compare(
+                final IPlayer o1,
+                final IPlayer o2 )
+            {
+                return o1.getName().compareTo( o2.getName() );
+            }
+        } );
 
         playerListModel_.clear();
-        for( final String player : sortedPlayers )
+        for( final IPlayer player : sortedPlayers )
         {
             playerListModel_.addElement( player );
         }
@@ -167,6 +181,56 @@ final class TableNetworkPlayerView
     // ======================================================================
     // Nested Types
     // ======================================================================
+
+    /**
+     * The cell renderer for the player list.
+     */
+    @Immutable
+    private static final class PlayerListCellRenderer
+        extends DefaultListCellRenderer
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** Serializable class version number. */
+        private static final long serialVersionUID = 1956026725118986173L;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code PlayerListCellRenderer}
+         * class.
+         */
+        PlayerListCellRenderer()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see javax.swing.DefaultListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
+         */
+        @Override
+        public Component getListCellRendererComponent(
+            final JList list,
+            final Object value,
+            final int index,
+            final boolean isSelected,
+            final boolean cellHasFocus )
+        {
+            final JLabel label = (JLabel)super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+            label.setText( ((IPlayer)value).getName() );
+            return label;
+        }
+    }
 
     /**
      * A table network listener for the table network player view.
@@ -227,7 +291,7 @@ final class TableNetworkPlayerView
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    refreshPlayerList( Collections.<String>emptyList() );
+                    refreshPlayerList( Collections.<IPlayer>emptyList() );
                 }
             } );
         }

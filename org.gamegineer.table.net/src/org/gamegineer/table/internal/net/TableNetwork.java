@@ -34,6 +34,7 @@ import org.gamegineer.table.internal.net.node.INodeController;
 import org.gamegineer.table.internal.net.node.INodeFactory;
 import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 import org.gamegineer.table.internal.net.transport.tcp.TcpTransportLayerFactory;
+import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetwork;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.ITableNetworkListener;
@@ -271,7 +272,7 @@ public final class TableNetwork
      * @see org.gamegineer.table.net.ITableNetwork#getPlayers()
      */
     @Override
-    public Collection<String> getPlayers()
+    public Collection<IPlayer> getPlayers()
     {
         final INodeController nodeController = nodeControllerRef_.get();
         if( nodeController != null )
@@ -279,7 +280,7 @@ public final class TableNetwork
             return nodeController.getPlayers();
         }
 
-        return new ArrayList<String>();
+        return new ArrayList<IPlayer>();
     }
 
     /*

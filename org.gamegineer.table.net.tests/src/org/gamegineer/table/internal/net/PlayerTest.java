@@ -1,5 +1,5 @@
 /*
- * IRemoteClientNode.java
+ * PlayerTest.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,38 +16,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 27, 2011 at 11:11:35 PM.
+ * Created on Aug 10, 2011 at 8:10:47 PM.
  */
 
-package org.gamegineer.table.internal.net.node.server;
+package org.gamegineer.table.internal.net;
 
-import java.util.Collection;
-import org.gamegineer.table.internal.net.node.IRemoteNode;
-import org.gamegineer.table.net.IPlayer;
+import org.junit.Test;
 
 /**
- * A proxy for a remote client node connected to the table network.
- * 
- * @noextend This interface is not intended to be extended by clients.
+ * A fixture for testing the {@link org.gamegineer.table.internal.net.Player}
+ * class.
  */
-public interface IRemoteClientNode
-    extends IRemoteNode
+public final class PlayerTest
 {
+    // ======================================================================
+    // Constructors
+    // ======================================================================
+
+    /**
+     * Initializes a new instance of the {@code PlayerTest} class.
+     */
+    public PlayerTest()
+    {
+        super();
+    }
+
+
     // ======================================================================
     // Methods
     // ======================================================================
 
     /**
-     * Sets the collection of players connected to the table network.
-     * 
-     * @param players
-     *        The collection of players connected to the table network; must not
-     *        be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code players} is {@code null}.
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * name.
      */
-    public void setPlayers(
-        /* @NonNull */
-        Collection<IPlayer> players );
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_Name_Null()
+    {
+        new Player( null );
+    }
 }

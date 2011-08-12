@@ -25,6 +25,7 @@ import java.util.Collections;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.node.AbstractDisconnectedNodeTestCase;
+import org.gamegineer.table.net.IPlayer;
 import org.junit.Test;
 
 /**
@@ -77,7 +78,7 @@ public abstract class AbstractDisconnectedClientNodeTestCase<T extends IClientNo
     {
         synchronized( getNode().getLock() )
         {
-            getNode().setPlayers( Collections.<String>emptyList() );
+            getNode().setPlayers( Collections.<IPlayer>emptyList() );
         }
     }
 

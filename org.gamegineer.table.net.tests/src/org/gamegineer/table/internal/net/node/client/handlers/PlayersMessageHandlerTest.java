@@ -29,6 +29,7 @@ import org.gamegineer.table.internal.net.node.IMessageHandler;
 import org.gamegineer.table.internal.net.node.client.IClientNode;
 import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController;
 import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
+import org.gamegineer.table.net.IPlayer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -69,6 +70,26 @@ public final class PlayersMessageHandlerTest
     // ======================================================================
 
     /**
+     * Create a new mock player.
+     * 
+     * @param name
+     *        The player name; must not be {@code null}.
+     * 
+     * @return The new mock player; never {@code null}.
+     */
+    /* @NonNull */
+    private IPlayer createMockPlayer(
+        /* @NonNull */
+        final String name )
+    {
+        assert name != null;
+
+        final IPlayer player = mocksControl_.createMock( IPlayer.class );
+        EasyMock.expect( player.getName() ).andReturn( name ).anyTimes();
+        return player;
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -93,9 +114,12 @@ public final class PlayersMessageHandlerTest
     public void testHandleMessage_PlayersMessage()
         throws Exception
     {
-        final Collection<String> players = Arrays.asList( "player1", "player2", "player3" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        final Collection<IPlayer> players = Arrays.asList( //
+            createMockPlayer( "player1" ), //$NON-NLS-1$
+            createMockPlayer( "player2" ), //$NON-NLS-1$
+            createMockPlayer( "player3" ) ); //$NON-NLS-1$
         final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
-        localNode.setPlayers( players );
+        localNode.setPlayers( EasyMock.<Collection<IPlayer>>notNull() );
         final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         mocksControl_.replay();

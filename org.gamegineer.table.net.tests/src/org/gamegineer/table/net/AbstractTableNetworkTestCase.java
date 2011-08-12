@@ -207,11 +207,11 @@ public abstract class AbstractTableNetworkTestCase
     @Test
     public void testGetPlayers_ReturnValue_Copy()
     {
-        final Collection<String> players = tableNetwork_.getPlayers();
-        final Collection<String> expectedValue = new ArrayList<String>( players );
+        final Collection<IPlayer> players = tableNetwork_.getPlayers();
+        final Collection<IPlayer> expectedValue = new ArrayList<IPlayer>( players );
 
-        players.add( "newPlayerName" ); //$NON-NLS-1$
-        final Collection<String> actualValue = tableNetwork_.getPlayers();
+        players.add( EasyMock.createMock( IPlayer.class ) );
+        final Collection<IPlayer> actualValue = tableNetwork_.getPlayers();
 
         assertEquals( expectedValue, actualValue );
     }

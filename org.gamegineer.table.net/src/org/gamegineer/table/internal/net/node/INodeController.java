@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net.node;
 
 import java.util.Collection;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
 
@@ -82,7 +83,7 @@ public interface INodeController
      *         {@code null}.
      */
     /* @NonNull */
-    public Collection<String> getPlayers();
+    public Collection<IPlayer> getPlayers();
 
     /**
      * Indicates the player associated with the table network node is the table

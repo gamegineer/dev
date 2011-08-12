@@ -31,6 +31,7 @@ import org.gamegineer.table.internal.net.node.common.messages.HelloRequestMessag
 import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
 import org.gamegineer.table.internal.net.node.server.handlers.GoodbyeMessageHandler;
 import org.gamegineer.table.internal.net.node.server.handlers.HelloRequestMessageHandler;
+import org.gamegineer.table.net.IPlayer;
 
 /**
  * A remote client node.
@@ -146,7 +147,7 @@ final class RemoteClientNode
      */
     @Override
     public void setPlayers(
-        final Collection<String> players )
+        final Collection<IPlayer> players )
     {
         assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
 

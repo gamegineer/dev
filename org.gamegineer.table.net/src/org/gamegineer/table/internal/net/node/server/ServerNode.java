@@ -25,6 +25,8 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
@@ -33,6 +35,7 @@ import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.internal.net.Player;
 import org.gamegineer.table.internal.net.node.AbstractNode;
 import org.gamegineer.table.internal.net.node.CardIncrement;
 import org.gamegineer.table.internal.net.node.CardPileIncrement;
@@ -42,6 +45,7 @@ import org.gamegineer.table.internal.net.node.NetworkTableUtils;
 import org.gamegineer.table.internal.net.node.TableIncrement;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkException;
@@ -62,9 +66,12 @@ public final class ServerNode
     @GuardedBy( "getLock()" )
     private ITable masterTable_;
 
-    /** The collection of players connected to the table network. */
+    /**
+     * The collection of players connected to the table network. The key is the
+     * player name. The value is the player.
+     */
     @GuardedBy( "getLock()" )
-    private final Collection<String> players_;
+    private final Map<String, IPlayer> players_;
 
     /** The table manager. */
     private final ITableManager tableManager_;
@@ -90,7 +97,7 @@ public final class ServerNode
         super( tableNetworkController );
 
         masterTable_ = null;
-        players_ = new ArrayList<String>();
+        players_ = new HashMap<String, IPlayer>();
         tableManager_ = new ServerTableManager();
     }
 
@@ -102,21 +109,20 @@ public final class ServerNode
     /**
      * Binds the specified player to the table network.
      * 
-     * @param playerName
-     *        The name of the player to bind to the table network; must not be
-     *        {@code null}.
+     * @param player
+     *        The player to bind to the table network; must not be {@code null}.
      */
     @GuardedBy( "getLock()" )
     private void bindPlayer(
         /* @NonNull */
-        final String playerName )
+        final IPlayer player )
     {
-        assert playerName != null;
+        assert player != null;
         assert Thread.holdsLock( getLock() );
 
-        assert !players_.contains( playerName );
-        players_.add( playerName );
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has connected", playerName ) ); //$NON-NLS-1$
+        assert !players_.containsKey( player.getName() );
+        players_.put( player.getName(), player );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has connected", player.getName() ) ); //$NON-NLS-1$
         notifyPlayersUpdated();
     }
 
@@ -134,7 +140,7 @@ public final class ServerNode
         super.connecting( configuration );
 
         initializeMasterTable( configuration.getLocalTable() );
-        bindPlayer( getPlayerName() );
+        bindPlayer( new Player( getPlayerName() ) );
     }
 
     /*
@@ -186,11 +192,11 @@ public final class ServerNode
      * @see org.gamegineer.table.internal.net.node.INodeController#getPlayers()
      */
     @Override
-    public Collection<String> getPlayers()
+    public Collection<IPlayer> getPlayers()
     {
         synchronized( getLock() )
         {
-            return new ArrayList<String>( players_ );
+            return new ArrayList<IPlayer>( players_.values() );
         }
     }
 
@@ -257,7 +263,7 @@ public final class ServerNode
         assert Thread.holdsLock( getLock() );
 
         assertConnected();
-        return players_.contains( playerName );
+        return players_.containsKey( playerName );
     }
 
     /**
@@ -266,7 +272,7 @@ public final class ServerNode
      */
     private void notifyPlayersUpdated()
     {
-        final Collection<String> players = getPlayers();
+        final Collection<IPlayer> players = getPlayers();
         for( final IRemoteClientNode remoteNode : getRemoteNodes() )
         {
             remoteNode.setPlayers( players );
@@ -287,7 +293,7 @@ public final class ServerNode
 
         super.remoteNodeBound( remoteNode );
 
-        bindPlayer( remoteNode.getPlayerName() );
+        bindPlayer( new Player( remoteNode.getPlayerName() ) );
         synchronizeRemoteTable( remoteNode );
     }
 
@@ -339,7 +345,7 @@ public final class ServerNode
         assert playerName != null;
         assert Thread.holdsLock( getLock() );
 
-        assert players_.contains( playerName );
+        assert players_.containsKey( playerName );
         players_.remove( playerName );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has disconnected", playerName ) ); //$NON-NLS-1$
         notifyPlayersUpdated();
