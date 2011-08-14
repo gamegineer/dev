@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import net.jcip.annotations.GuardedBy;
@@ -47,6 +48,7 @@ import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
+import org.gamegineer.table.net.PlayerRole;
 import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkException;
 
@@ -140,7 +142,9 @@ public final class ServerNode
         super.connecting( configuration );
 
         initializeMasterTable( configuration.getLocalTable() );
-        bindPlayer( new Player( getPlayerName() ) );
+        final Player player = new Player( getPlayerName() );
+        player.addRoles( EnumSet.of( PlayerRole.LOCAL, PlayerRole.HOST ) );
+        bindPlayer( player );
     }
 
     /*

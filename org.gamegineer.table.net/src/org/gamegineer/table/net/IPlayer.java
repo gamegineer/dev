@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.net;
 
+import java.util.Set;
+
 /**
  * A player connected to the table network.
  * 
@@ -41,4 +43,28 @@ public interface IPlayer
      */
     /* @NonNull */
     public String getName();
+
+    /**
+     * Gets the collection of player roles.
+     * 
+     * @return The collection of player roles; never {@code null}.
+     */
+    /* @NonNull */
+    public Set<PlayerRole> getRoles();
+
+    /**
+     * Indicates the player has the specified role.
+     * 
+     * @param role
+     *        The player role to test; must not be {@code null}.
+     * 
+     * @return {@code true} if the player has the specified role; otherwise
+     *         {@code false}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code role} is {@code null}.
+     */
+    public boolean hasRole(
+        /* @NonNull */
+        PlayerRole role );
 }

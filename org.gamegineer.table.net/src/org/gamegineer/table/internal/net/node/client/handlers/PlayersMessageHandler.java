@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.node.client.handlers;
 
 import net.jcip.annotations.Immutable;
+import org.gamegineer.table.internal.net.node.client.IClientNode;
 import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController;
 import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
 
@@ -76,6 +77,7 @@ public final class PlayersMessageHandler
         assert remoteNodeController != null;
         assert message != null;
 
-        remoteNodeController.getLocalNode().setPlayers( message.getPlayers() );
+        final IClientNode localNode = remoteNodeController.getLocalNode();
+        localNode.setPlayers( message.getPlayers( localNode.getPlayerName() ) );
     }
 }

@@ -21,7 +21,12 @@
 
 package org.gamegineer.table.net;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import java.util.EnumSet;
+import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -69,6 +74,23 @@ public abstract class AbstractPlayerTestCase
         throws Exception;
 
     /**
+     * Sets the roles for the specified player.
+     * 
+     * @param player
+     *        The player; must not be {@code null}.
+     * @param playerRoles
+     *        The collection of player roles; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code player} or {@code playerRoles} is {@code null}.
+     */
+    protected abstract void setPlayerRoles(
+        /* @NonNull */
+        IPlayer player,
+        /* @NonNull */
+        Set<PlayerRole> playerRoles );
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -89,5 +111,58 @@ public abstract class AbstractPlayerTestCase
     public void testGetName_ReturnValue_NonNull()
     {
         assertNotNull( player_.getName() );
+    }
+
+    /**
+     * Ensures the {@code getRoles} method returns a copy of the roles
+     * collection.
+     */
+    @Test
+    public void testGetRoles_ReturnValue_Copy()
+    {
+        assertNotSame( player_.getRoles(), player_.getRoles() );
+    }
+
+    /**
+     * Ensures the {@code getRoles} method does not return {@code null}.
+     */
+    @Test
+    public void testGetRoles_ReturnValue_NonNull()
+    {
+        assertNotNull( player_.getRoles() );
+    }
+
+    /**
+     * Ensures the {@code hasRole} method correctly indicates a player role is
+     * absent.
+     */
+    @Test
+    public void testHasRole_Role_Absent()
+    {
+        setPlayerRoles( player_, EnumSet.complementOf( EnumSet.of( PlayerRole.LOCAL ) ) );
+
+        assertFalse( player_.hasRole( PlayerRole.LOCAL ) );
+    }
+
+    /**
+     * Ensures the {@code hasRole} method throws an exception when passed a
+     * {@code null} role.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testHasRole_Role_Null()
+    {
+        player_.hasRole( null );
+    }
+
+    /**
+     * Ensures the {@code hasRole} method correctly indicates a player role is
+     * present.
+     */
+    @Test
+    public void testHasRole_Role_Present()
+    {
+        setPlayerRoles( player_, EnumSet.allOf( PlayerRole.class ) );
+
+        assertTrue( player_.hasRole( PlayerRole.LOCAL ) );
     }
 }

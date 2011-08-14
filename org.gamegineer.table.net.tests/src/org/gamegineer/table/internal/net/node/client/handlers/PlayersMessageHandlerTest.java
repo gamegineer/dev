@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net.node.client.handlers;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.EnumSet;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.node.IMessageHandler;
@@ -30,6 +31,7 @@ import org.gamegineer.table.internal.net.node.client.IClientNode;
 import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController;
 import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
 import org.gamegineer.table.net.IPlayer;
+import org.gamegineer.table.net.PlayerRole;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -86,6 +88,7 @@ public final class PlayersMessageHandlerTest
 
         final IPlayer player = mocksControl_.createMock( IPlayer.class );
         EasyMock.expect( player.getName() ).andReturn( name ).anyTimes();
+        EasyMock.expect( player.getRoles() ).andReturn( EnumSet.noneOf( PlayerRole.class ) ).anyTimes();
         return player;
     }
 
@@ -119,6 +122,7 @@ public final class PlayersMessageHandlerTest
             createMockPlayer( "player2" ), //$NON-NLS-1$
             createMockPlayer( "player3" ) ); //$NON-NLS-1$
         final IClientNode localNode = mocksControl_.createMock( IClientNode.class );
+        EasyMock.expect( localNode.getPlayerName() ).andReturn( "player1" ).anyTimes(); //$NON-NLS-1$
         localNode.setPlayers( EasyMock.<Collection<IPlayer>>notNull() );
         final IRemoteServerNodeController remoteNodeController = mocksControl_.createMock( IRemoteServerNodeController.class );
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();

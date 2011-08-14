@@ -25,10 +25,13 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.Player;
 import org.gamegineer.table.internal.net.transport.AbstractMessage;
 import org.gamegineer.table.net.IPlayer;
+import org.gamegineer.table.net.PlayerRole;
 
 /**
  * A message sent by a server to a client to refresh the collection of players
@@ -51,7 +54,15 @@ public final class PlayersMessage
      * @serial The collection of names of each player connected to the table
      *         network.
      */
-    private Collection<String> playerNames_;
+    private List<String> playerNames_;
+
+    /**
+     * The collection of roles of each player connected to the table network.
+     * 
+     * @serial The collection of roles of each player connected to the table
+     *         network.
+     */
+    private List<Set<PlayerRole>> playerRoles_;
 
 
     // ======================================================================
@@ -64,6 +75,7 @@ public final class PlayersMessage
     public PlayersMessage()
     {
         playerNames_ = Collections.emptyList();
+        playerRoles_ = Collections.emptyList();
     }
 
 
@@ -74,16 +86,37 @@ public final class PlayersMessage
     /**
      * Gets the collection of players connected to the table network.
      * 
+     * @param localPlayerName
+     *        The name of the local player; must not be {@code null}.
+     * 
      * @return The collection of players connected to the table network; never
      *         {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code localPlayerName} is {@code null}.
      */
     /* @NonNull */
-    public Collection<IPlayer> getPlayers()
+    public Collection<IPlayer> getPlayers(
+        /* @NonNull */
+        final String localPlayerName )
     {
+        assertArgumentNotNull( localPlayerName, "localPlayerName" ); //$NON-NLS-1$
+
+        assert playerNames_.size() == playerRoles_.size();
         final Collection<IPlayer> players = new ArrayList<IPlayer>( playerNames_.size() );
-        for( final String playerName : playerNames_ )
+        for( int index = 0, size = playerNames_.size(); index < size; ++index )
         {
-            players.add( new Player( playerName ) );
+            final String playerName = playerNames_.get( index );
+            final Set<PlayerRole> playerRoles = playerRoles_.get( index );
+
+            if( playerName.equals( localPlayerName ) )
+            {
+                playerRoles.add( PlayerRole.LOCAL );
+            }
+
+            final Player player = new Player( playerName );
+            player.addRoles( playerRoles );
+            players.add( player );
         }
 
         return players;
@@ -106,9 +139,14 @@ public final class PlayersMessage
         assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
 
         playerNames_ = new ArrayList<String>( players.size() );
+        playerRoles_ = new ArrayList<Set<PlayerRole>>( players.size() );
         for( final IPlayer player : players )
         {
+            final Set<PlayerRole> playerRoles = player.getRoles();
+            playerRoles.remove( PlayerRole.LOCAL );
+
             playerNames_.add( player.getName() );
+            playerRoles_.add( playerRoles );
         }
     }
 }

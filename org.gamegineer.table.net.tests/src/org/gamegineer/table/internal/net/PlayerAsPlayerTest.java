@@ -21,8 +21,11 @@
 
 package org.gamegineer.table.internal.net;
 
+import java.util.EnumSet;
+import java.util.Set;
 import org.gamegineer.table.net.AbstractPlayerTestCase;
 import org.gamegineer.table.net.IPlayer;
+import org.gamegineer.table.net.PlayerRole;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.internal.net.Player}
@@ -56,5 +59,18 @@ public final class PlayerAsPlayerTest
     protected IPlayer createPlayer()
     {
         return new Player( "name" ); //$NON-NLS-1$
+    }
+
+    /*
+     * @see org.gamegineer.table.net.AbstractPlayerTestCase#setPlayerRoles(org.gamegineer.table.net.IPlayer, java.util.Set)
+     */
+    @Override
+    protected void setPlayerRoles(
+        final IPlayer player,
+        final Set<PlayerRole> playerRoles )
+    {
+        final Player typedPlayer = (Player)player;
+        typedPlayer.removeRoles( EnumSet.allOf( PlayerRole.class ) );
+        typedPlayer.addRoles( playerRoles );
     }
 }

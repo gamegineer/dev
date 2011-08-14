@@ -29,6 +29,7 @@
 			org.gamegineer.table.internal.net.node.common.messages.PlayersMessage
 			org.gamegineer.table.internal.net.node.common.messages.TableIncrementMessage
 			org.gamegineer.table.internal.net.node.common.messages.TableMessage
+			org.gamegineer.table.net.PlayerRole
 			org.gamegineer.table.net.TableNetworkError
        </property>
 	</scr:component>

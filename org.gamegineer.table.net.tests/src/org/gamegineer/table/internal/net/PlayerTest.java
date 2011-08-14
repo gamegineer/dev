@@ -21,6 +21,13 @@
 
 package org.gamegineer.table.internal.net;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import java.util.Collections;
+import java.util.EnumSet;
+import org.gamegineer.table.net.PlayerRole;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -29,6 +36,14 @@ import org.junit.Test;
  */
 public final class PlayerTest
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The player under test in the fixture. */
+    private Player player_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -47,6 +62,53 @@ public final class PlayerTest
     // ======================================================================
 
     /**
+     * Sets up the test fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Before
+    public void setUp()
+        throws Exception
+    {
+        player_ = new Player( "name" ); //$NON-NLS-1$
+    }
+
+    /**
+     * Ensures the {@code addRoles} method adds player roles.
+     */
+    @Test
+    public void testAddRoles()
+    {
+        assertEquals( 0, player_.getRoles().size() );
+
+        player_.addRoles( EnumSet.of( PlayerRole.LOCAL ) );
+
+        assertEquals( 1, player_.getRoles().size() );
+        assertTrue( player_.getRoles().contains( PlayerRole.LOCAL ) );
+    }
+
+    /**
+     * Ensures the {@code addRoles} method throws an exception when passed an
+     * illegal role collection that contains a {@code null} element.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddRoles_Roles_Illegal_ContainsNullElement()
+    {
+        player_.addRoles( Collections.<PlayerRole>singleton( null ) );
+    }
+
+    /**
+     * Ensures the {@code addRoles} method throws an exception when passed a
+     * {@code null} role collection.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testAddRoles_Roles_Null()
+    {
+        player_.addRoles( null );
+    }
+
+    /**
      * Ensures the constructor throws an exception when passed a {@code null}
      * name.
      */
@@ -54,5 +116,41 @@ public final class PlayerTest
     public void testConstructor_Name_Null()
     {
         new Player( null );
+    }
+
+    /**
+     * Ensures the {@code removeRoles} method removes player roles.
+     */
+    @Test
+    public void testRemoveRoles()
+    {
+        player_.addRoles( EnumSet.of( PlayerRole.LOCAL ) );
+        final int originalRolesSize = player_.getRoles().size();
+        assertTrue( player_.getRoles().contains( PlayerRole.LOCAL ) );
+
+        player_.removeRoles( EnumSet.of( PlayerRole.LOCAL ) );
+
+        assertEquals( originalRolesSize - 1, player_.getRoles().size() );
+        assertFalse( player_.getRoles().contains( PlayerRole.LOCAL ) );
+    }
+
+    /**
+     * Ensures the {@code removeRoles} method throws an exception when passed an
+     * illegal role collection that contains a {@code null} element.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testRemoveRoles_Roles_Illegal_ContainsNullElement()
+    {
+        player_.removeRoles( Collections.<PlayerRole>singleton( null ) );
+    }
+
+    /**
+     * Ensures the {@code removeRoles} method throws an exception when passed a
+     * {@code null} role collection.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testRemoveRoles_Roles_Null()
+    {
+        player_.removeRoles( null );
     }
 }

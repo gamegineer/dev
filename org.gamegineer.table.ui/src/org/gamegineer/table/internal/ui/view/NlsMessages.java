@@ -21,9 +21,13 @@
 
 package org.gamegineer.table.internal.ui.view;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.internal.ui.util.CommonNlsMessages;
+import org.gamegineer.table.net.IPlayer;
+import org.gamegineer.table.net.PlayerRole;
 import org.gamegineer.table.net.TableNetworkError;
 import org.osgi.framework.Version;
 
@@ -854,6 +858,12 @@ final class NlsMessages
     /** The text for the players label. */
     public static String TableNetworkPlayerView_playersLabel_text;
 
+    /** The test for the host role in the players list. */
+    public static String TableNetworkPlayerView_playersList_role_host;
+
+    /** The test for the local role in the players list. */
+    public static String TableNetworkPlayerView_playersList_role_local;
+
 
     // ======================================================================
     // Constructors
@@ -966,5 +976,82 @@ final class NlsMessages
             default:
                 return bind( MainView_tableNetworkDisconnected_error_generic, error );
         }
+    }
+
+    // --- TableNetworkPlayerView -------------------------------------------
+
+    /**
+     * Gets the formatted text for the specified player role in the players
+     * list.
+     * 
+     * @param playerRole
+     *        The player role; must not be {@code null}.
+     * 
+     * @return The formatted text for the specified role in the players list;
+     *         never {@code null}.
+     */
+    /* @NonNull */
+    static String TableNetworkPlayerView_playersList_role(
+        /* @NonNull */
+        final PlayerRole playerRole )
+    {
+        switch( playerRole )
+        {
+            case HOST:
+                return TableNetworkPlayerView_playersList_role_host;
+
+            case LOCAL:
+                return TableNetworkPlayerView_playersList_role_local;
+
+            default:
+                throw new AssertionError( "unsupported player role" ); //$NON-NLS-1$
+        }
+    }
+
+    /**
+     * Gets the formatted text for an element in the players list.
+     * 
+     * @param player
+     *        The player associated with the list element; must not be {@code
+     *        null}.
+     * 
+     * @return The formatted text for an element in the players list; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    static String TableNetworkPlayerView_playersList_text(
+        /* @NonNull */
+        final IPlayer player )
+    {
+        final StringBuilder sb = new StringBuilder();
+        sb.append( player.getName() );
+
+        final List<PlayerRole> annotatedRoles = new ArrayList<PlayerRole>( 2 );
+        if( player.hasRole( PlayerRole.HOST ) )
+        {
+            annotatedRoles.add( PlayerRole.HOST );
+        }
+        if( player.hasRole( PlayerRole.LOCAL ) )
+        {
+            annotatedRoles.add( PlayerRole.LOCAL );
+        }
+
+        if( !annotatedRoles.isEmpty() )
+        {
+            sb.append( " (" ); //$NON-NLS-1$
+
+            for( int index = 0, size = annotatedRoles.size(); index < size; ++index )
+            {
+                sb.append( TableNetworkPlayerView_playersList_role( annotatedRoles.get( index ) ) );
+                if( index < (size - 1) )
+                {
+                    sb.append( ", " ); //$NON-NLS-1$
+                }
+            }
+
+            sb.append( ")" ); //$NON-NLS-1$
+        }
+
+        return sb.toString();
     }
 }

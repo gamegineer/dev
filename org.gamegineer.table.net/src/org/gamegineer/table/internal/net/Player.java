@@ -21,14 +21,19 @@
 
 package org.gamegineer.table.internal.net;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import net.jcip.annotations.Immutable;
+import java.util.EnumSet;
+import java.util.Set;
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.net.IPlayer;
+import org.gamegineer.table.net.PlayerRole;
 
 /**
  * Implementation of {@link IPlayer}.
  */
-@Immutable
+@ThreadSafe
 public final class Player
     implements IPlayer
 {
@@ -36,8 +41,15 @@ public final class Player
     // Fields
     // ======================================================================
 
+    /** The instance lock. */
+    private final Object lock_;
+
     /** The player name. */
     private final String name_;
+
+    /** The collection of player roles. */
+    @GuardedBy( "lock_" )
+    private final EnumSet<PlayerRole> roles_;
 
 
     // ======================================================================
@@ -45,7 +57,8 @@ public final class Player
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code Player} class.
+     * Initializes a new instance of the {@code Player} class with the specified
+     * name and no roles.
      * 
      * @param name
      *        The player name; must not be {@code null}.
@@ -59,13 +72,40 @@ public final class Player
     {
         assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
 
+        lock_ = new Object();
         name_ = name;
+        roles_ = EnumSet.noneOf( PlayerRole.class );
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Adds the specified roles to this player.
+     * 
+     * @param roles
+     *        The collection of roles to add to this player; must not be {@code
+     *        null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code roles} contains a {@code null} element.
+     * @throws java.lang.NullPointerException
+     *         If {@code roles} is {@code null}.
+     */
+    public void addRoles(
+        /* @NonNull */
+        final Set<PlayerRole> roles )
+    {
+        assertArgumentNotNull( roles, "roles" ); //$NON-NLS-1$
+        assertArgumentLegal( !roles.contains( null ), "roles" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            roles_.addAll( roles );
+        }
+    }
 
     /*
      * @see org.gamegineer.table.net.IPlayer#getName()
@@ -74,5 +114,57 @@ public final class Player
     public String getName()
     {
         return name_;
+    }
+
+    /*
+     * @see org.gamegineer.table.net.IPlayer#getRoles()
+     */
+    @Override
+    public Set<PlayerRole> getRoles()
+    {
+        synchronized( lock_ )
+        {
+            return EnumSet.copyOf( roles_ );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.net.IPlayer#hasRole(org.gamegineer.table.net.PlayerRole)
+     */
+    @Override
+    public boolean hasRole(
+        final PlayerRole role )
+    {
+        assertArgumentNotNull( role, "role" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            return roles_.contains( role );
+        }
+    }
+
+    /**
+     * Removes the specified roles from this player.
+     * 
+     * @param roles
+     *        The collection of roles to remove from this player; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code roles} contains a {@code null} element.
+     * @throws java.lang.NullPointerException
+     *         If {@code roles} is {@code null}.
+     */
+    public void removeRoles(
+        /* @NonNull */
+        final Set<PlayerRole> roles )
+    {
+        assertArgumentNotNull( roles, "roles" ); //$NON-NLS-1$
+        assertArgumentLegal( !roles.contains( null ), "roles" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            roles_.removeAll( roles );
+        }
     }
 }

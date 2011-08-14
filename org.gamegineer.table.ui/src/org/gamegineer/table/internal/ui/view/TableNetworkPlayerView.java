@@ -227,7 +227,7 @@ final class TableNetworkPlayerView
             final boolean cellHasFocus )
         {
             final JLabel label = (JLabel)super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
-            label.setText( ((IPlayer)value).getName() );
+            label.setText( NlsMessages.TableNetworkPlayerView_playersList_text( (IPlayer)value ) );
             return label;
         }
     }
