@@ -858,10 +858,13 @@ final class NlsMessages
     /** The text for the players label. */
     public static String TableNetworkPlayerView_playersLabel_text;
 
-    /** The test for the host role in the players list. */
+    /** The text for the editor role in the players list. */
+    public static String TableNetworkPlayerView_playersList_role_editor;
+
+    /** The text for the host role in the players list. */
     public static String TableNetworkPlayerView_playersList_role_host;
 
-    /** The test for the local role in the players list. */
+    /** The text for the local role in the players list. */
     public static String TableNetworkPlayerView_playersList_role_local;
 
 
@@ -997,6 +1000,9 @@ final class NlsMessages
     {
         switch( playerRole )
         {
+            case EDITOR:
+                return TableNetworkPlayerView_playersList_role_editor;
+
             case HOST:
                 return TableNetworkPlayerView_playersList_role_host;
 
@@ -1027,6 +1033,10 @@ final class NlsMessages
         sb.append( player.getName() );
 
         final List<PlayerRole> annotatedRoles = new ArrayList<PlayerRole>( 2 );
+        if( player.hasRole( PlayerRole.EDITOR ) )
+        {
+            annotatedRoles.add( PlayerRole.EDITOR );
+        }
         if( player.hasRole( PlayerRole.HOST ) )
         {
             annotatedRoles.add( PlayerRole.HOST );

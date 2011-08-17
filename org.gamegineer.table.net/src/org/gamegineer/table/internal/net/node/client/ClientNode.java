@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -35,6 +36,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.internal.net.Player;
 import org.gamegineer.table.internal.net.node.AbstractNode;
 import org.gamegineer.table.internal.net.node.CardIncrement;
 import org.gamegineer.table.internal.net.node.CardPileIncrement;
@@ -44,6 +46,8 @@ import org.gamegineer.table.internal.net.node.TableIncrement;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.net.IPlayer;
+import org.gamegineer.table.net.ITableNetworkConfiguration;
+import org.gamegineer.table.net.PlayerRole;
 import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkException;
 
@@ -186,6 +190,25 @@ public final class ClientNode
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.node.AbstractNode#connecting(org.gamegineer.table.net.ITableNetworkConfiguration)
+     */
+    @Override
+    protected void connecting(
+        final ITableNetworkConfiguration configuration )
+        throws TableNetworkException
+    {
+        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        super.connecting( configuration );
+
+        // Temporarily add local player until we receive the player list from the server
+        final Player player = new Player( getPlayerName() );
+        player.addRoles( EnumSet.of( PlayerRole.LOCAL ) );
+        players_.put( player.getName(), player );
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.node.AbstractNode#createTransportLayer()
      */
     @Override
@@ -231,6 +254,18 @@ public final class ClientNode
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.node.INodeController#getPlayer()
+     */
+    @Override
+    public IPlayer getPlayer()
+    {
+        synchronized( getLock() )
+        {
+            return isConnected() ? players_.get( getPlayerName() ) : null;
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.node.INodeController#getPlayers()
      */
     @Override
@@ -249,15 +284,6 @@ public final class ClientNode
     public ITableManager getTableManager()
     {
         return tableManager_;
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.node.INodeController#isEditor()
-     */
-    @Override
-    public boolean isEditor()
-    {
-        return false;
     }
 
     /*

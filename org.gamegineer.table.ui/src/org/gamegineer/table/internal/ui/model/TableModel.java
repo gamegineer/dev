@@ -44,7 +44,9 @@ import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.Loggers;
+import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetwork;
+import org.gamegineer.table.net.PlayerRole;
 import org.gamegineer.table.net.TableNetworkDisconnectedEvent;
 import org.gamegineer.table.net.TableNetworkEvent;
 import org.gamegineer.table.net.TableNetworkFactory;
@@ -381,7 +383,16 @@ public final class TableModel
      */
     public boolean isEditable()
     {
-        return tableNetwork_.isConnected() ? tableNetwork_.isEditor() : true;
+        if( tableNetwork_.isConnected() )
+        {
+            final IPlayer localPlayer = tableNetwork_.getLocalPlayer();
+            if( localPlayer != null )
+            {
+                return localPlayer.hasRole( PlayerRole.EDITOR );
+            }
+        }
+
+        return true;
     }
 
     /**

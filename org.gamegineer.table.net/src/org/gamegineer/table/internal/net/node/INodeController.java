@@ -77,6 +77,15 @@ public interface INodeController
     public void disconnect();
 
     /**
+     * Gets the player associated with the table network node.
+     * 
+     * @return The player associated with the table network node or {@code null}
+     *         if the table network is not connected.
+     */
+    /* @Nullable */
+    public IPlayer getPlayer();
+
+    /**
      * Gets the collection of players connected to the table network.
      * 
      * @return The collection of players connected to the table network; never
@@ -84,13 +93,4 @@ public interface INodeController
      */
     /* @NonNull */
     public Collection<IPlayer> getPlayers();
-
-    /**
-     * Indicates the player associated with the table network node is the table
-     * editor.
-     * 
-     * @return {@code true} if the player associated with the table network node
-     *         is the table editor; otherwise {@code false}.
-     */
-    public boolean isEditor();
 }

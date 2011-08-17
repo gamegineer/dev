@@ -152,7 +152,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     {
         assert Thread.holdsLock( getLock() );
 
-        assertStateLegal( transportLayer_ != null, NonNlsMessages.AbstractNode_networkDisconnected );
+        assertStateLegal( isConnected(), NonNlsMessages.AbstractNode_networkDisconnected );
     }
 
     /*
@@ -531,6 +531,20 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             return new ArrayList<INetworkTable>( tables_.values() );
         }
+    }
+
+    /**
+     * Indicates the table network is connected.
+     * 
+     * @return {@code true} if the table network is connected; otherwise {@code
+     *         false}.
+     */
+    @GuardedBy( "getLock()" )
+    protected final boolean isConnected()
+    {
+        assert Thread.holdsLock( getLock() );
+
+        return transportLayer_ != null;
     }
 
     /**

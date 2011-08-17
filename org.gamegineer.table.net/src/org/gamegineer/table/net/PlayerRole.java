@@ -30,7 +30,8 @@ public enum PlayerRole
     // Enum Constants
     // ======================================================================
 
-    // TODO: add EDITOR role
+    /** The player is the table network editor. */
+    EDITOR,
 
     /** The player is the table network host. */
     HOST,

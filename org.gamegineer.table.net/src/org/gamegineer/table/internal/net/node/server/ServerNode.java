@@ -143,7 +143,7 @@ public final class ServerNode
 
         initializeMasterTable( configuration.getLocalTable() );
         final Player player = new Player( getPlayerName() );
-        player.addRoles( EnumSet.of( PlayerRole.LOCAL, PlayerRole.HOST ) );
+        player.addRoles( EnumSet.of( PlayerRole.EDITOR, PlayerRole.HOST, PlayerRole.LOCAL ) );
         bindPlayer( player );
     }
 
@@ -190,6 +190,18 @@ public final class ServerNode
         players_.clear();
 
         super.dispose();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.INodeController#getPlayer()
+     */
+    @Override
+    public IPlayer getPlayer()
+    {
+        synchronized( getLock() )
+        {
+            return isConnected() ? players_.get( getPlayerName() ) : null;
+        }
     }
 
     /*
@@ -245,15 +257,6 @@ public final class ServerNode
         }
 
         masterTable_ = masterTable;
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.node.INodeController#isEditor()
-     */
-    @Override
-    public boolean isEditor()
-    {
-        return true;
     }
 
     /*

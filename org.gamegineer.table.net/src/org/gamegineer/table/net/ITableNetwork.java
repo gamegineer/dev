@@ -63,6 +63,15 @@ public interface ITableNetwork
     public void disconnect();
 
     /**
+     * Gets the local player connected to the table network.
+     * 
+     * @return The local player connected to the table network or {@code null}
+     *         if the table network is not connected.
+     */
+    /* @Nullable */
+    public IPlayer getLocalPlayer();
+
+    /**
      * Gets the collection of players connected to the table network.
      * 
      * @return The collection of players connected to the table network; never
@@ -97,14 +106,6 @@ public interface ITableNetwork
      *         false}.
      */
     public boolean isConnected();
-
-    /**
-     * Indicates the local player is the table editor.
-     * 
-     * @return {@code true} if the local player is the table editor; otherwise
-     *         {@code false}.
-     */
-    public boolean isEditor();
 
     /**
      * Joins an existing table network.

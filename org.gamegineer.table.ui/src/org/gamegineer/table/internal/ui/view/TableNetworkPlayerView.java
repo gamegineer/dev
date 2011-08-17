@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FontMetrics;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,6 +34,8 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -41,11 +44,14 @@ import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.ui.dialog.DialogUtils;
+import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetworkListener;
+import org.gamegineer.table.net.PlayerRole;
 import org.gamegineer.table.net.TableNetworkDisconnectedEvent;
 import org.gamegineer.table.net.TableNetworkEvent;
+import org.osgi.framework.Bundle;
 
 /**
  * A view of the table network players.
@@ -196,6 +202,12 @@ final class TableNetworkPlayerView
         /** Serializable class version number. */
         private static final long serialVersionUID = 1956026725118986173L;
 
+        /** The icon to display for a player with the editor role. */
+        private final Icon editorRoleIcon_;
+
+        /** The icon to display for a player with no special roles. */
+        private final Icon noRolesIcon_;
+
 
         // ==================================================================
         // Constructors
@@ -207,7 +219,13 @@ final class TableNetworkPlayerView
          */
         PlayerListCellRenderer()
         {
-            super();
+            final Bundle bundle = Activator.getDefault().getBundleContext().getBundle();
+            final URL editorRoleIconUrl = bundle.getEntry( "/icons/roles/editor.png" ); //$NON-NLS-1$
+            assert editorRoleIconUrl != null;
+            editorRoleIcon_ = new ImageIcon( editorRoleIconUrl );
+            final URL noRolesIconUrl = bundle.getEntry( "/icons/roles/none.png" ); //$NON-NLS-1$
+            assert noRolesIconUrl != null;
+            noRolesIcon_ = new ImageIcon( noRolesIconUrl );
         }
 
 
@@ -226,8 +244,10 @@ final class TableNetworkPlayerView
             final boolean isSelected,
             final boolean cellHasFocus )
         {
+            final IPlayer player = (IPlayer)value;
             final JLabel label = (JLabel)super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
-            label.setText( NlsMessages.TableNetworkPlayerView_playersList_text( (IPlayer)value ) );
+            label.setText( NlsMessages.TableNetworkPlayerView_playersList_text( player ) );
+            label.setIcon( player.hasRole( PlayerRole.EDITOR ) ? editorRoleIcon_ : noRolesIcon_ );
             return label;
         }
     }

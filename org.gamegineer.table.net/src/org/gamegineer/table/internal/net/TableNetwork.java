@@ -269,6 +269,21 @@ public final class TableNetwork
     }
 
     /*
+     * @see org.gamegineer.table.net.ITableNetwork#getLocalPlayer()
+     */
+    @Override
+    public IPlayer getLocalPlayer()
+    {
+        final INodeController nodeController = nodeControllerRef_.get();
+        if( nodeController != null )
+        {
+            return nodeController.getPlayer();
+        }
+
+        return null;
+    }
+
+    /*
      * @see org.gamegineer.table.net.ITableNetwork#getPlayers()
      */
     @Override
@@ -312,21 +327,6 @@ public final class TableNetwork
     public boolean isConnected()
     {
         return connectionStateRef_.get() == ConnectionState.CONNECTED;
-    }
-
-    /*
-     * @see org.gamegineer.table.net.ITableNetwork#isEditor()
-     */
-    @Override
-    public boolean isEditor()
-    {
-        final INodeController nodeController = nodeControllerRef_.get();
-        if( nodeController != null )
-        {
-            return nodeController.isEditor();
-        }
-
-        return false;
     }
 
     /*

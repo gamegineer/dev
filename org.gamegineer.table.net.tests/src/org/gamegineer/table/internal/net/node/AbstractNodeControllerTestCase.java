@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.net.node;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.easymock.EasyMock;
@@ -147,6 +148,33 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     public void testDisconnect_Disconnected_DoesNothing()
     {
         nodeController_.disconnect();
+    }
+
+    /**
+     * Ensures the {@code getPlayer} method does not return {@code null} when
+     * the table network is connected.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testGetPlayer_Connected()
+        throws Exception
+    {
+        final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
+        nodeController_.connect( configuration );
+
+        assertNotNull( nodeController_.getPlayer() );
+    }
+
+    /**
+     * Ensures the {@code getPlayer} method returns {@code null} when the table
+     * network is disconnected.
+     */
+    @Test
+    public void testGetPlayer_Disconnected()
+    {
+        assertNull( nodeController_.getPlayer() );
     }
 
     /**
