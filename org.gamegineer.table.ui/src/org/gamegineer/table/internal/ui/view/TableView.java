@@ -32,6 +32,7 @@ import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
+import java.awt.dnd.DragSource;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -892,6 +893,7 @@ final class TableView
     {
         final Map<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler> mouseInputHandlers = new HashMap<Class<? extends AbstractMouseInputHandler>, AbstractMouseInputHandler>();
         mouseInputHandlers.put( DefaultMouseInputHandler.class, new DefaultMouseInputHandler() );
+        mouseInputHandlers.put( DragPrimedMouseInputHandler.class, new DragPrimedMouseInputHandler() );
         mouseInputHandlers.put( DraggingCardsMouseInputHandler.class, new DraggingCardsMouseInputHandler() );
         mouseInputHandlers.put( DraggingCardPileMouseInputHandler.class, new DraggingCardPileMouseInputHandler() );
         mouseInputHandlers.put( DraggingTableMouseInputHandler.class, new DraggingTableMouseInputHandler() );
@@ -1208,6 +1210,7 @@ final class TableView
      * pattern.
      * </p>
      */
+    @Immutable
     private abstract class AbstractMouseInputHandler
         extends MouseInputAdapter
     {
@@ -1283,6 +1286,7 @@ final class TableView
     /**
      * The default mouse input handler.
      */
+    @Immutable
     private final class DefaultMouseInputHandler
         extends AbstractMouseInputHandler
     {
@@ -1343,17 +1347,7 @@ final class TableView
             {
                 if( cardPile != null )
                 {
-                    if( model_.isEditable() )
-                    {
-                        if( (event.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK )
-                        {
-                            setMouseInputHandler( DraggingCardPileMouseInputHandler.class, event );
-                        }
-                        else
-                        {
-                            setMouseInputHandler( DraggingCardsMouseInputHandler.class, event );
-                        }
-                    }
+                    setMouseInputHandler( DragPrimedMouseInputHandler.class, event );
                 }
                 else
                 {
@@ -1407,9 +1401,144 @@ final class TableView
     }
 
     /**
+     * The mouse input handler that is active when a drag operation is primed
+     * but has not yet begun.
+     */
+    @NotThreadSafe
+    private final class DragPrimedMouseInputHandler
+        extends AbstractMouseInputHandler
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /**
+         * The number of pixels the mouse can move in any direction before a
+         * drag operation begins.
+         */
+        private final int DRAG_THRESHOLD = DragSource.getDragThreshold();
+
+        /**
+         * The mouse location when this handler was activated in table
+         * coordinates.
+         */
+        private final Point originalLocation_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code DragPrimedMouseInputHandler}
+         * class.
+         */
+        DragPrimedMouseInputHandler()
+        {
+            originalLocation_ = new Point( 0, 0 );
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#activate(java.awt.event.MouseEvent)
+         */
+        @Override
+        void activate(
+            final MouseEvent event )
+        {
+            originalLocation_.setLocation( getMouseLocation( event ) );
+        }
+
+        /**
+         * Indicates the specified mouse location is sufficiently distant from
+         * the original mouse location to begin a drag operation.
+         * 
+         * @param location
+         *        The mouse location; must not be {@code null}.
+         * 
+         * @return {@code true} if the drag operation can begin; otherwise
+         *         {@code false}.
+         */
+        private boolean canBeginDrag(
+            /* @NonNUll */
+            final Point location )
+        {
+            assert location != null;
+
+            final Rectangle rect = new Rectangle( originalLocation_ );
+            rect.grow( DRAG_THRESHOLD, DRAG_THRESHOLD );
+            return !rect.contains( location );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.ui.view.TableView.AbstractMouseInputHandler#deactivate()
+         */
+        @Override
+        void deactivate()
+        {
+            originalLocation_.setLocation( 0, 0 );
+        }
+
+        /*
+         * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void mouseDragged(
+            final MouseEvent event )
+        {
+            final Point location = getMouseLocation( event );
+            if( canBeginDrag( location ) )
+            {
+                if( model_.getTable().getCardPile( location ) != null )
+                {
+                    if( model_.isEditable() )
+                    {
+                        if( (event.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK )
+                        {
+                            setMouseInputHandler( DraggingCardPileMouseInputHandler.class, event );
+                        }
+                        else
+                        {
+                            setMouseInputHandler( DraggingCardsMouseInputHandler.class, event );
+                        }
+                    }
+                    else
+                    {
+                        setMouseInputHandler( DefaultMouseInputHandler.class, event );
+                    }
+                }
+                else
+                {
+                    setMouseInputHandler( DefaultMouseInputHandler.class, event );
+                }
+            }
+        }
+
+        /*
+         * @see java.awt.event.MouseAdapter#mouseReleased(java.awt.event.MouseEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void mouseReleased(
+            final MouseEvent event )
+        {
+            if( SwingUtilities.isLeftMouseButton( event ) )
+            {
+                setMouseInputHandler( DefaultMouseInputHandler.class, null );
+            }
+        }
+    }
+
+    /**
      * The mouse input handler that is active when a collection of cards are
      * being dragged.
      */
+    @NotThreadSafe
     private final class DraggingCardsMouseInputHandler
         extends AbstractMouseInputHandler
     {
@@ -1533,6 +1662,7 @@ final class TableView
     /**
      * The mouse input handler that is active when a card pile is being dragged.
      */
+    @NotThreadSafe
     private final class DraggingCardPileMouseInputHandler
         extends AbstractMouseInputHandler
     {
@@ -1629,6 +1759,7 @@ final class TableView
     /**
      * The mouse input handler that is active when the table is being dragged.
      */
+    @NotThreadSafe
     private final class DraggingTableMouseInputHandler
         extends AbstractMouseInputHandler
     {
@@ -1723,6 +1854,7 @@ final class TableView
     /**
      * The mouse input handler that is active when a popup menu is visible.
      */
+    @Immutable
     private final class PopupMenuMouseInputHandler
         extends AbstractMouseInputHandler
         implements PopupMenuListener
