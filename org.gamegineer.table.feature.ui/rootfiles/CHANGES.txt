@@ -1,18 +1,12 @@
 Gamegineer
 Version 0.8.0
-XX XX XXXX
+26 August 2011
 
 Defects closed:
-	* [#46] Potential deadlock within network transport layer
-	* [#51] Moving table origin should not set table dirty flag
-	* [#52] Changing card pile focus should not set table dirty flag
+	None
 
 Enhancements closed:
-	* [#53] Open dialog should automatically add extension if necessary
-	* [#54] Open dialog should not allow user to select non-existent file
+	* [#56] Delay drag operation until mouse has moved some minimum threshold
 
 Tasks closed:
-	* [#45] Upgrade to JDK 6 Update 25
-	* [#47] Upgrade build server to CruiseControl 2.8.4
-	* [#49] Allow table network clients to see all table changes performed on server
-	* [#50] Split package-specific message resource bundles into NLS and non-NLS variants
+	* [#55] Add support for player roles within the table network
