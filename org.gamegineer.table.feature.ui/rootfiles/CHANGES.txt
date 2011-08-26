@@ -1,6 +1,6 @@
 Gamegineer
-Version 0.8.0
-26 August 2011
+Version 0.9.0
+XX XX XXXX
 
 Defects closed:
 	None
