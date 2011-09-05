@@ -73,7 +73,7 @@ public final class ServerNode
      * player name. The value is the player.
      */
     @GuardedBy( "getLock()" )
-    private final Map<String, IPlayer> players_;
+    private final Map<String, Player> players_;
 
     /** The table manager. */
     private final ITableManager tableManager_;
@@ -99,7 +99,7 @@ public final class ServerNode
         super( tableNetworkController );
 
         masterTable_ = null;
-        players_ = new HashMap<String, IPlayer>();
+        players_ = new HashMap<String, Player>();
         tableManager_ = new ServerTableManager();
     }
 
@@ -117,7 +117,7 @@ public final class ServerNode
     @GuardedBy( "getLock()" )
     private void bindPlayer(
         /* @NonNull */
-        final IPlayer player )
+        final Player player )
     {
         assert player != null;
         assert Thread.holdsLock( getLock() );
@@ -125,6 +125,39 @@ public final class ServerNode
         assert !players_.containsKey( player.getName() );
         players_.put( player.getName(), player );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has connected", player.getName() ) ); //$NON-NLS-1$
+        notifyPlayersUpdated();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.INodeController#cancelControlRequest()
+     */
+    @Override
+    public void cancelControlRequest()
+    {
+        synchronized( getLock() )
+        {
+            cancelControlRequest( getPlayerName() );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.server.IServerNode#cancelControlRequest(java.lang.String)
+     */
+    @Override
+    public void cancelControlRequest(
+        final String originatingPlayerName )
+    {
+        assertArgumentNotNull( originatingPlayerName, "originatingPlayerName" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        final Player originatingPlayer = players_.get( originatingPlayerName );
+        if( (originatingPlayer == null) || !originatingPlayer.hasRole( PlayerRole.EDITOR_REQUESTOR ) )
+        {
+            return;
+        }
+
+        originatingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTOR ) );
+
         notifyPlayersUpdated();
     }
 
@@ -225,6 +258,51 @@ public final class ServerNode
         return tableManager_;
     }
 
+    /*
+     * @see org.gamegineer.table.internal.net.node.INodeController#giveControl(org.gamegineer.table.net.IPlayer)
+     */
+    @Override
+    public void giveControl(
+        final IPlayer player )
+    {
+        assertArgumentNotNull( player, "player" ); //$NON-NLS-1$
+
+        synchronized( getLock() )
+        {
+            giveControl( getPlayerName(), player.getName() );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.server.IServerNode#giveControl(java.lang.String, java.lang.String)
+     */
+    @Override
+    public void giveControl(
+        final String originatingPlayerName,
+        final String playerName )
+    {
+        assertArgumentNotNull( originatingPlayerName, "originatingPlayerName" ); //$NON-NLS-1$
+        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        final Player player = players_.get( playerName );
+        if( player == null )
+        {
+            return;
+        }
+
+        final Player originatingPlayer = players_.get( originatingPlayerName );
+        if( (originatingPlayer == null) || !originatingPlayer.hasRole( PlayerRole.EDITOR ) )
+        {
+            return;
+        }
+
+        originatingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR ) );
+        player.addRoles( EnumSet.of( PlayerRole.EDITOR ) );
+
+        notifyPlayersUpdated();
+    }
+
     /**
      * Initializes the master table for the table network using the specified
      * table.
@@ -317,6 +395,44 @@ public final class ServerNode
         super.remoteNodeUnbound( remoteNode );
 
         unbindPlayer( remoteNode.getPlayerName() );
+
+        // TODO: If the remote node being unbound has the editor role, the editor role
+        // must be assigned to the host.
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.INodeController#requestControl()
+     */
+    @Override
+    public void requestControl()
+    {
+        synchronized( getLock() )
+        {
+            requestControl( getPlayerName() );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.server.IServerNode#requestControl(java.lang.String)
+     */
+    @Override
+    public void requestControl(
+        final String originatingPlayerName )
+    {
+        assertArgumentNotNull( originatingPlayerName, "originatingPlayerName" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        final Player originatingPlayer = players_.get( originatingPlayerName );
+        if( (originatingPlayer == null) //
+            || originatingPlayer.hasRole( PlayerRole.EDITOR ) //
+            || originatingPlayer.hasRole( PlayerRole.EDITOR_REQUESTOR ) )
+        {
+            return;
+        }
+
+        originatingPlayer.addRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTOR ) );
+
+        notifyPlayersUpdated();
     }
 
     /**

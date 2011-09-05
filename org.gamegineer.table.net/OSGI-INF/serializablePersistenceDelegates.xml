@@ -17,16 +17,19 @@
 			org.gamegineer.table.internal.net.node.TableIncrement
 			org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationRequestMessage
 			org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationResponseMessage
+			org.gamegineer.table.internal.net.node.common.messages.CancelControlRequestMessage
 			org.gamegineer.table.internal.net.node.common.messages.CardIncrementMessage
 			org.gamegineer.table.internal.net.node.common.messages.CardPileIncrementMessage
 			org.gamegineer.table.internal.net.node.common.messages.EchoRequestMessage
 			org.gamegineer.table.internal.net.node.common.messages.EchoResponseMessage
 			org.gamegineer.table.internal.net.node.common.messages.EndAuthenticationMessage
 			org.gamegineer.table.internal.net.node.common.messages.ErrorMessage
+			org.gamegineer.table.internal.net.node.common.messages.GiveControlMessage
 			org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage
 			org.gamegineer.table.internal.net.node.common.messages.HelloRequestMessage
 			org.gamegineer.table.internal.net.node.common.messages.HelloResponseMessage
 			org.gamegineer.table.internal.net.node.common.messages.PlayersMessage
+			org.gamegineer.table.internal.net.node.common.messages.RequestControlMessage
 			org.gamegineer.table.internal.net.node.common.messages.TableIncrementMessage
 			org.gamegineer.table.internal.net.node.common.messages.TableMessage
 			org.gamegineer.table.net.PlayerRole

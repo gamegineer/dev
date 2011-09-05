@@ -26,11 +26,17 @@ import java.util.Collection;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.node.AbstractRemoteNode;
+import org.gamegineer.table.internal.net.node.common.messages.CancelControlRequestMessage;
+import org.gamegineer.table.internal.net.node.common.messages.GiveControlMessage;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
 import org.gamegineer.table.internal.net.node.common.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
+import org.gamegineer.table.internal.net.node.common.messages.RequestControlMessage;
+import org.gamegineer.table.internal.net.node.server.handlers.CancelControlRequestMessageHandler;
+import org.gamegineer.table.internal.net.node.server.handlers.GiveControlMessageHandler;
 import org.gamegineer.table.internal.net.node.server.handlers.GoodbyeMessageHandler;
 import org.gamegineer.table.internal.net.node.server.handlers.HelloRequestMessageHandler;
+import org.gamegineer.table.internal.net.node.server.handlers.RequestControlMessageHandler;
 import org.gamegineer.table.net.IPlayer;
 
 /**
@@ -87,8 +93,11 @@ final class RemoteClientNode
         challenge_ = null;
         salt_ = null;
 
+        registerUncorrelatedMessageHandler( CancelControlRequestMessage.class, CancelControlRequestMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( GiveControlMessage.class, GiveControlMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( GoodbyeMessage.class, GoodbyeMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( HelloRequestMessage.class, HelloRequestMessageHandler.INSTANCE );
+        registerUncorrelatedMessageHandler( RequestControlMessage.class, RequestControlMessageHandler.INSTANCE );
     }
 
 

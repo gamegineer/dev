@@ -135,6 +135,19 @@ public final class TableNetwork
         assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.TableNetwork_addTableNetworkListener_listener_registered ); //$NON-NLS-1$
     }
 
+    /*
+     * @see org.gamegineer.table.net.ITableNetwork#cancelControlRequest()
+     */
+    @Override
+    public void cancelControlRequest()
+    {
+        final INodeController nodeController = nodeControllerRef_.get();
+        if( nodeController != null )
+        {
+            nodeController.cancelControlRequest();
+        }
+    }
+
     /**
      * Connects the specified table network node to the table network defined by
      * the specified configuration.
@@ -308,6 +321,22 @@ public final class TableNetwork
     }
 
     /*
+     * @see org.gamegineer.table.net.ITableNetwork#giveControl(org.gamegineer.table.net.IPlayer)
+     */
+    @Override
+    public void giveControl(
+        final IPlayer player )
+    {
+        assertArgumentNotNull( player, "player" ); //$NON-NLS-1$
+
+        final INodeController nodeController = nodeControllerRef_.get();
+        if( nodeController != null )
+        {
+            nodeController.giveControl( player );
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.net.ITableNetwork#host(org.gamegineer.table.net.ITableNetworkConfiguration)
      */
     @Override
@@ -362,6 +391,19 @@ public final class TableNetwork
         if( isConnected() )
         {
             fireTableNetworkPlayersUpdated();
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.net.ITableNetwork#requestControl()
+     */
+    @Override
+    public void requestControl()
+    {
+        final INodeController nodeController = nodeControllerRef_.get();
+        if( nodeController != null )
+        {
+            nodeController.requestControl();
         }
     }
 

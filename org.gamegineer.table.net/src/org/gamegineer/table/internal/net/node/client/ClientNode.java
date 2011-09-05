@@ -151,6 +151,15 @@ public final class ClientNode
     // ======================================================================
 
     /*
+     * @see org.gamegineer.table.internal.net.node.INodeController#cancelControlRequest()
+     */
+    @Override
+    public void cancelControlRequest()
+    {
+        getRemoteServerNode().cancelControlRequest();
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.node.AbstractNode#connected()
      */
     @Override
@@ -277,6 +286,19 @@ public final class ClientNode
         }
     }
 
+    /**
+     * Gets the remote node associated with the server.
+     * 
+     * @return The remote node associated with the server; never {@code null}.
+     */
+    /* @NonNull */
+    private IRemoteServerNode getRemoteServerNode()
+    {
+        final IRemoteServerNode remoteNode = getRemoteNode( ClientNodeConstants.SERVER_PLAYER_NAME );
+        assert remoteNode != null;
+        return remoteNode;
+    }
+
     /*
      * @see org.gamegineer.table.internal.net.node.INode#getTableManager()
      */
@@ -284,6 +306,18 @@ public final class ClientNode
     public ITableManager getTableManager()
     {
         return tableManager_;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.INodeController#giveControl(org.gamegineer.table.net.IPlayer)
+     */
+    @Override
+    public void giveControl(
+        final IPlayer player )
+    {
+        assertArgumentNotNull( player, "player" ); //$NON-NLS-1$
+
+        getRemoteServerNode().giveControl( player.getName() );
     }
 
     /*
@@ -299,6 +333,15 @@ public final class ClientNode
         super.remoteNodeBound( remoteNode );
 
         setHandshakeComplete( null );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.INodeController#requestControl()
+     */
+    @Override
+    public void requestControl()
+    {
+        getRemoteServerNode().requestControl();
     }
 
     /**

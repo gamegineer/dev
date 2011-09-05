@@ -53,6 +53,17 @@ public interface ITableNetwork
         ITableNetworkListener listener );
 
     /**
+     * Cancels the current network table control request made by the local
+     * player.
+     * 
+     * <p>
+     * This method does nothing if the local player has not made a network table
+     * control request or if the table network is not connected.
+     * </p>
+     */
+    public void cancelControlRequest();
+
+    /**
      * Disconnects the table network.
      * 
      * <p>
@@ -79,6 +90,24 @@ public interface ITableNetwork
      */
     /* @NonNull */
     public Collection<IPlayer> getPlayers();
+
+    /**
+     * Gives control of the network table to the specified player.
+     * 
+     * <p>
+     * This method does nothing if the local player is not the table network
+     * editor or if the table network is not connected.
+     * </p>
+     * 
+     * @param player
+     *        The player to receive control; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code player} is {@code null}.
+     */
+    public void giveControl(
+        /* @NonNull */
+        IPlayer player );
 
     /**
      * Hosts a new table network.
@@ -140,4 +169,14 @@ public interface ITableNetwork
     public void removeTableNetworkListener(
         /* @NonNull */
         ITableNetworkListener listener );
+
+    /**
+     * Requests that the local player be given control of the network table.
+     * 
+     * <p>
+     * This method does nothing if the local player already has control of the
+     * network table or if the table network is not connected.
+     * </p>
+     */
+    public void requestControl();
 }

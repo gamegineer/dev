@@ -1,5 +1,5 @@
 /*
- * PlayerRole.java
+ * ClientNodeConstants.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 9, 2011 at 8:50:14 PM.
+ * Created on Sep 2, 2011 at 8:01:03 PM.
  */
 
-package org.gamegineer.table.net;
+package org.gamegineer.table.internal.net.node.client;
+
+import net.jcip.annotations.ThreadSafe;
 
 /**
- * The possible roles of a table network player.
+ * A collection of useful constants for working with client nodes.
  */
-public enum PlayerRole
+@ThreadSafe
+public final class ClientNodeConstants
 {
     // ======================================================================
-    // Enum Constants
+    // Fields
     // ======================================================================
 
-    /** The player is the table network editor. */
-    EDITOR,
+    /** The name of the virtual player associated with the remote server node. */
+    public static final String SERVER_PLAYER_NAME = "<<server>>"; //$NON-NLS-1$
 
-    /** The player has requested control to be the table network editor. */
-    EDITOR_REQUESTOR,
 
-    /** The player is the table network host. */
-    HOST,
+    // ======================================================================
+    // Constructors
+    // ======================================================================
 
-    /** The player is associated with the local network node. */
-    LOCAL;
+    /**
+     * Initializes a new instance of the {@code ClientNodeConstants} class.
+     */
+    private ClientNodeConstants()
+    {
+        super();
+    }
 }

@@ -201,4 +201,14 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     {
         assertNotNull( nodeController_.getPlayers() );
     }
+
+    /**
+     * Ensures the {@code giveControl} method throws an exception when passed a
+     * {@code null} player.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGiveControl_Player_Null()
+    {
+        nodeController_.giveControl( null );
+    }
 }

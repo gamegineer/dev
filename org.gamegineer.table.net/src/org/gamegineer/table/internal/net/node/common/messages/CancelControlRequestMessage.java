@@ -1,5 +1,5 @@
 /*
- * AbstractRemoteServerNodeTestCase.java
+ * CancelControlRequestMessage.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,50 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 27, 2011 at 11:14:46 PM.
+ * Created on Aug 29, 2011 at 8:40:45 PM.
  */
 
-package org.gamegineer.table.internal.net.node.client;
+package org.gamegineer.table.internal.net.node.common.messages;
 
-import org.gamegineer.table.internal.net.node.AbstractRemoteNodeTestCase;
-import org.junit.Test;
+import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.internal.net.transport.AbstractMessage;
 
 /**
- * A fixture for testing the basic aspects of classes that implement the
- * {@link org.gamegineer.table.internal.net.node.client.IRemoteServerNode}
- * interface.
- * 
- * @param <T>
- *        The type of the remote server node.
+ * A message sent by a node to indicate that the player is canceling a previous
+ * request to control the table.
  */
-public abstract class AbstractRemoteServerNodeTestCase<T extends IRemoteServerNode>
-    extends AbstractRemoteNodeTestCase<T>
+@NotThreadSafe
+public final class CancelControlRequestMessage
+    extends AbstractMessage
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** Serializable class version number. */
+    private static final long serialVersionUID = 68651736329203858L;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractRemoteServerNodeTestCase} class.
+     * Initializes a new instance of the {@code CancelControlRequestMessage}
+     * class.
      */
-    protected AbstractRemoteServerNodeTestCase()
+    public CancelControlRequestMessage()
     {
         super();
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /**
-     * Ensures the {@code giveControl} method throws an exception when passed a
-     * {@code null} player name.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testGiveControl_PlayerName_Null()
-    {
-        getRemoteNode().giveControl( null );
     }
 }

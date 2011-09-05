@@ -1,5 +1,5 @@
 /*
- * PlayerRole.java
+ * RequestControlMessage.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -16,29 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 9, 2011 at 8:50:14 PM.
+ * Created on Aug 29, 2011 at 8:40:36 PM.
  */
 
-package org.gamegineer.table.net;
+package org.gamegineer.table.internal.net.node.common.messages;
+
+import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.internal.net.transport.AbstractMessage;
 
 /**
- * The possible roles of a table network player.
+ * A message sent by a node to indicate that the player is requesting control of
+ * the table.
  */
-public enum PlayerRole
+@NotThreadSafe
+public final class RequestControlMessage
+    extends AbstractMessage
 {
     // ======================================================================
-    // Enum Constants
+    // Fields
     // ======================================================================
 
-    /** The player is the table network editor. */
-    EDITOR,
+    /** Serializable class version number. */
+    private static final long serialVersionUID = 9190796558362281256L;
 
-    /** The player has requested control to be the table network editor. */
-    EDITOR_REQUESTOR,
 
-    /** The player is the table network host. */
-    HOST,
+    // ======================================================================
+    // Constructors
+    // ======================================================================
 
-    /** The player is associated with the local network node. */
-    LOCAL;
+    /**
+     * Initializes a new instance of the {@code RequestControlMessage} class.
+     */
+    public RequestControlMessage()
+    {
+        super();
+    }
 }

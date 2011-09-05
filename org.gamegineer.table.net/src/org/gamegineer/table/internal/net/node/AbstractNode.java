@@ -478,6 +478,32 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     }
 
     /**
+     * Gets the bound remote node associated with the specified player.
+     * 
+     * @param playerName
+     *        The name of the player associated with the bound remote node; must
+     *        not be {@code null}.
+     * 
+     * @return The bound remote node associated with the specified player or
+     *         {@code null} if no remote node is bound for the specified player.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code playerName} is {@code null}.
+     */
+    /* @Nullable */
+    protected final RemoteNodeType getRemoteNode(
+        /* @NonNull */
+        final String playerName )
+    {
+        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
+
+        synchronized( getLock() )
+        {
+            return remoteNodes_.get( playerName );
+        }
+    }
+
+    /**
      * Gets the collection of bound remote nodes.
      * 
      * @return The collection of bound remote nodes; never {@code null}.

@@ -132,6 +132,12 @@ public final class AbstractNodeTest
         new AbstractNode<IRemoteNode>( null )
         {
             @Override
+            public void cancelControlRequest()
+            {
+                // do nothing
+            }
+
+            @Override
             protected ITransportLayer createTransportLayer()
             {
                 return null;
@@ -153,6 +159,20 @@ public final class AbstractNodeTest
             public ITableManager getTableManager()
             {
                 return null;
+            }
+
+            @Override
+            public void giveControl(
+                @SuppressWarnings( "unused" )
+                final IPlayer player )
+            {
+                // do nothing
+            }
+
+            @Override
+            public void requestControl()
+            {
+                // do nothing
             }
         };
     }
@@ -191,6 +211,16 @@ public final class AbstractNodeTest
         node.connect( configuration );
 
         node.disconnect();
+    }
+
+    /**
+     * Ensures the {@code getRemoteNode} method throws an exception when passed
+     * a {@code null} player name.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetRemoteNode_PlayerName_Null()
+    {
+        node_.getRemoteNode( null );
     }
 
     /**
@@ -239,6 +269,15 @@ public final class AbstractNodeTest
         // ==================================================================
 
         /*
+         * @see org.gamegineer.table.internal.net.node.INodeController#cancelControlRequest()
+         */
+        @Override
+        public void cancelControlRequest()
+        {
+            // do nothing
+        }
+
+        /*
          * @see org.gamegineer.table.internal.net.node.AbstractNode#createTransportLayer()
          */
         @Override
@@ -274,6 +313,17 @@ public final class AbstractNodeTest
             return EasyMock.createMock( ITableManager.class );
         }
 
+        /*
+         * @see org.gamegineer.table.internal.net.node.INodeController#giveControl(org.gamegineer.table.net.IPlayer)
+         */
+        @Override
+        public void giveControl(
+            @SuppressWarnings( "unused" )
+            final IPlayer player )
+        {
+            // do nothing
+        }
+
         /**
          * Indicates a table is bound to this node for the specified player
          * name.
@@ -301,6 +351,15 @@ public final class AbstractNodeTest
             {
                 throw new AssertionError( e );
             }
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.INodeController#requestControl()
+         */
+        @Override
+        public void requestControl()
+        {
+            // do nothing
         }
     }
 }

@@ -226,6 +226,16 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
+     * Ensures the {@code giveControl} method throws an exception when passed a
+     * {@code null} player.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGiveControl_Player_Null()
+    {
+        tableNetwork_.giveControl( null );
+    }
+
+    /**
      * Ensures the {@code host} method throws an exception when passed a {@code
      * null} configuration.
      * 

@@ -374,6 +374,15 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         // ==================================================================
 
         /*
+         * @see org.gamegineer.table.internal.net.node.INodeController#cancelControlRequest()
+         */
+        @Override
+        public void cancelControlRequest()
+        {
+            // do nothing
+        }
+
+        /*
          * @see org.gamegineer.table.internal.net.node.AbstractNode#connected()
          */
         @Override
@@ -519,6 +528,26 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         public ITableManager getTableManager()
         {
             return EasyMock.createMock( ITableManager.class );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.INodeController#giveControl(org.gamegineer.table.net.IPlayer)
+         */
+        @Override
+        public void giveControl(
+            @SuppressWarnings( "unused" )
+            final IPlayer player )
+        {
+            // do nothing
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.INodeController#requestControl()
+         */
+        @Override
+        public void requestControl()
+        {
+            // do nothing
         }
     }
 }

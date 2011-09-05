@@ -34,4 +34,29 @@ public interface IRemoteServerNode
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Cancels the current network table control request made by the local
+     * player.
+     */
+    public void cancelControlRequest();
+
+    /**
+     * Gives control of the network table to the player with the specified name.
+     * 
+     * @param playerName
+     *        The name of the player to receive control; must not be {@code
+     *        null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code playerName} is {@code null}.
+     */
+    public void giveControl(
+        /* @NonNull */
+        String playerName );
+
+    /**
+     * Requests that the local player be given control of the network table.
+     */
+    public void requestControl();
 }

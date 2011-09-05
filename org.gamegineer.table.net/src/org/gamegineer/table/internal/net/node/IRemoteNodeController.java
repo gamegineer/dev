@@ -96,6 +96,17 @@ public interface IRemoteNodeController<LocalNodeType extends INode<?>>
     /* @NonNull */
     public Object getLock();
 
+    // TODO: Remove once we add support for thread-local remote player name.
+
+    /**
+     * Gets the name of the player associated with the remote node.
+     * 
+     * @return The name of the player associated with the remote node; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public String getPlayerName();
+
     /**
      * Gets the table associated with the remote node.
      * 

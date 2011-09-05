@@ -300,6 +300,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
 
     /*
      * @see org.gamegineer.table.internal.net.IRemoteNode#getPlayerName()
+     * @see org.gamegineer.table.internal.net.IRemoteNodeController#getPlayerName()
      */
     @Override
     public final String getPlayerName()

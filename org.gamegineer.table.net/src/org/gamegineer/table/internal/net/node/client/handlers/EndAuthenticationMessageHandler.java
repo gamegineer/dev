@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.net.node.client.handlers;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.Debug;
+import org.gamegineer.table.internal.net.node.client.ClientNodeConstants;
 import org.gamegineer.table.internal.net.node.client.IRemoteServerNodeController;
 import org.gamegineer.table.internal.net.node.common.messages.EndAuthenticationMessage;
 import org.gamegineer.table.internal.net.node.common.messages.ErrorMessage;
@@ -85,7 +86,7 @@ public final class EndAuthenticationMessageHandler
             String.format( "Received authentication confirmation (id=%d, correlation-id=%d)", //$NON-NLS-1$
                 Integer.valueOf( message.getId() ), //
                 Integer.valueOf( message.getCorrelationId() ) ) );
-        remoteNodeController.bind( "<<server>>" ); //$NON-NLS-1$
+        remoteNodeController.bind( ClientNodeConstants.SERVER_PLAYER_NAME );
     }
 
     /**

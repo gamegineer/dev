@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.node.client;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.node.AbstractRemoteNode;
 import org.gamegineer.table.internal.net.node.client.handlers.BeginAuthenticationRequestMessageHandler;
@@ -29,9 +30,12 @@ import org.gamegineer.table.internal.net.node.client.handlers.HelloResponseMessa
 import org.gamegineer.table.internal.net.node.client.handlers.PlayersMessageHandler;
 import org.gamegineer.table.internal.net.node.common.ProtocolVersions;
 import org.gamegineer.table.internal.net.node.common.messages.BeginAuthenticationRequestMessage;
+import org.gamegineer.table.internal.net.node.common.messages.CancelControlRequestMessage;
+import org.gamegineer.table.internal.net.node.common.messages.GiveControlMessage;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
 import org.gamegineer.table.internal.net.node.common.messages.HelloRequestMessage;
 import org.gamegineer.table.internal.net.node.common.messages.PlayersMessage;
+import org.gamegineer.table.internal.net.node.common.messages.RequestControlMessage;
 import org.gamegineer.table.net.TableNetworkError;
 
 /**
@@ -77,6 +81,19 @@ final class RemoteServerNode
     // ======================================================================
 
     /*
+     * @see org.gamegineer.table.internal.net.node.client.IRemoteServerNode#cancelControlRequest()
+     */
+    @Override
+    public void cancelControlRequest()
+    {
+        final CancelControlRequestMessage message = new CancelControlRequestMessage();
+        synchronized( getLock() )
+        {
+            sendMessage( message, null );
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.node.AbstractRemoteNode#closed(org.gamegineer.table.net.TableNetworkError)
      */
     @Override
@@ -103,6 +120,24 @@ final class RemoteServerNode
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.node.client.IRemoteServerNode#giveControl(java.lang.String)
+     */
+    @Override
+    public void giveControl(
+        final String playerName )
+    {
+        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        final GiveControlMessage message = new GiveControlMessage();
+        message.setPlayerName( playerName );
+        synchronized( getLock() )
+        {
+            sendMessage( message, null );
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.node.AbstractRemoteNode#opened()
      */
     @Override
@@ -115,5 +150,20 @@ final class RemoteServerNode
         final HelloRequestMessage message = new HelloRequestMessage();
         message.setSupportedProtocolVersion( ProtocolVersions.VERSION_1 );
         sendMessage( message, HelloResponseMessageHandler.INSTANCE );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.client.IRemoteServerNode#requestControl()
+     */
+    @Override
+    public void requestControl()
+    {
+        assert Thread.holdsLock( getLock() );
+
+        final RequestControlMessage message = new RequestControlMessage();
+        synchronized( getLock() )
+        {
+            sendMessage( message, null );
+        }
     }
 }
