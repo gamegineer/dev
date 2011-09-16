@@ -32,6 +32,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.net.node.DefaultNodeFactory;
 import org.gamegineer.table.internal.net.node.INodeController;
 import org.gamegineer.table.internal.net.node.INodeFactory;
+import org.gamegineer.table.internal.net.node.ThreadPlayer;
 import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
 import org.gamegineer.table.internal.net.transport.tcp.TcpTransportLayerFactory;
 import org.gamegineer.table.net.IPlayer;
@@ -144,7 +145,15 @@ public final class TableNetwork
         final INodeController nodeController = nodeControllerRef_.get();
         if( nodeController != null )
         {
-            nodeController.cancelControlRequest();
+            ThreadPlayer.setPlayerName( nodeController.getPlayer().getName() );
+            try
+            {
+                nodeController.cancelControlRequest();
+            }
+            finally
+            {
+                ThreadPlayer.setPlayerName( null );
+            }
         }
     }
 
@@ -332,7 +341,15 @@ public final class TableNetwork
         final INodeController nodeController = nodeControllerRef_.get();
         if( nodeController != null )
         {
-            nodeController.giveControl( player );
+            ThreadPlayer.setPlayerName( nodeController.getPlayer().getName() );
+            try
+            {
+                nodeController.giveControl( player.getName() );
+            }
+            finally
+            {
+                ThreadPlayer.setPlayerName( null );
+            }
         }
     }
 
@@ -403,7 +420,15 @@ public final class TableNetwork
         final INodeController nodeController = nodeControllerRef_.get();
         if( nodeController != null )
         {
-            nodeController.requestControl();
+            ThreadPlayer.setPlayerName( nodeController.getPlayer().getName() );
+            try
+            {
+                nodeController.requestControl();
+            }
+            finally
+            {
+                ThreadPlayer.setPlayerName( null );
+            }
         }
     }
 

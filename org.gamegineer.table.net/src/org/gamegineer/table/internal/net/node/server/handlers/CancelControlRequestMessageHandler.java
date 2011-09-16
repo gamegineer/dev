@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.node.server.handlers;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.node.common.messages.CancelControlRequestMessage;
 import org.gamegineer.table.internal.net.node.server.IRemoteClientNodeController;
 
@@ -78,7 +77,6 @@ public final class CancelControlRequestMessageHandler
         assert remoteNodeController != null;
         assert message != null;
 
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Received cancel control request message from client '%s'", remoteNodeController.getPlayerName() ) ); //$NON-NLS-1$
-        remoteNodeController.getLocalNode().cancelControlRequest( remoteNodeController.getPlayerName() );
+        remoteNodeController.getLocalNode().cancelControlRequest();
     }
 }

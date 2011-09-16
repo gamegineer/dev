@@ -45,12 +45,12 @@ public interface INodeController
     // ======================================================================
 
     /**
-     * Cancels the current network table control request made by the local
+     * Cancels the current network table control request made by the active
      * player.
      * 
      * <p>
-     * This method does nothing if the local player has not made a network table
-     * control request or if the table network is not connected.
+     * This method does nothing if the active player has not made a network
+     * table control request.
      * </p>
      */
     public void cancelControlRequest();
@@ -109,26 +109,27 @@ public interface INodeController
      * Gives control of the network table to the specified player.
      * 
      * <p>
-     * This method does nothing if the local player is not the table network
-     * editor or if the table network is not connected.
+     * This method does nothing if the active player is not the table network
+     * editor.
      * </p>
      * 
-     * @param player
-     *        The player to receive control; must not be {@code null}.
+     * @param playerName
+     *        The name of the player to receive control; must not be {@code
+     *        null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code player} is {@code null}.
+     *         If {@code playerName} is {@code null}.
      */
     public void giveControl(
         /* @NonNull */
-        IPlayer player );
+        String playerName );
 
     /**
-     * Requests that the local player be given control of the network table.
+     * Requests that the active player be given control of the network table.
      * 
      * <p>
-     * This method does nothing if the local player already has control of the
-     * network table or if the table network is not connected.
+     * This method does nothing if the active player already has control of the
+     * network table.
      * </p>
      */
     public void requestControl();

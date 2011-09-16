@@ -91,11 +91,9 @@ public final class RequestControlMessageHandlerTest
     public void testHandleMessage_RequestControlMessage()
         throws Exception
     {
-        final String remotePlayerName = "name"; //$NON-NLS-1$
         final IServerNode localNode = mocksControl_.createMock( IServerNode.class );
-        localNode.requestControl( remotePlayerName );
+        localNode.requestControl();
         final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
-        EasyMock.expect( remoteNodeController.getPlayerName() ).andReturn( remotePlayerName ).anyTimes();
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         mocksControl_.replay();
 

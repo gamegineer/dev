@@ -44,6 +44,7 @@ import org.gamegineer.table.internal.net.node.INetworkTable;
 import org.gamegineer.table.internal.net.node.ITableManager;
 import org.gamegineer.table.internal.net.node.NetworkTableUtils;
 import org.gamegineer.table.internal.net.node.TableIncrement;
+import org.gamegineer.table.internal.net.node.ThreadPlayer;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.net.IPlayer;
@@ -130,33 +131,24 @@ public final class ServerNode
 
     /*
      * @see org.gamegineer.table.internal.net.node.INodeController#cancelControlRequest()
+     * @see org.gamegineer.table.internal.net.node.server.IServerNode#cancelControlRequest()
      */
     @Override
     public void cancelControlRequest()
     {
+        final String requestingPlayerName = ThreadPlayer.getPlayerName();
+        assert requestingPlayerName != null;
+
         synchronized( getLock() )
         {
-            cancelControlRequest( getPlayerName() );
+            final Player requestingPlayer = players_.get( requestingPlayerName );
+            if( (requestingPlayer == null) || !requestingPlayer.hasRole( PlayerRole.EDITOR_REQUESTOR ) )
+            {
+                return;
+            }
+
+            requestingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTOR ) );
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.node.server.IServerNode#cancelControlRequest(java.lang.String)
-     */
-    @Override
-    public void cancelControlRequest(
-        final String originatingPlayerName )
-    {
-        assertArgumentNotNull( originatingPlayerName, "originatingPlayerName" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
-
-        final Player originatingPlayer = players_.get( originatingPlayerName );
-        if( (originatingPlayer == null) || !originatingPlayer.hasRole( PlayerRole.EDITOR_REQUESTOR ) )
-        {
-            return;
-        }
-
-        originatingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTOR ) );
 
         notifyPlayersUpdated();
     }
@@ -259,46 +251,35 @@ public final class ServerNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.node.INodeController#giveControl(org.gamegineer.table.net.IPlayer)
+     * @see org.gamegineer.table.internal.net.node.INodeController#giveControl(java.lang.String)
+     * @see org.gamegineer.table.internal.net.node.server.IServerNode#giveControl(java.lang.String)
      */
     @Override
     public void giveControl(
-        final IPlayer player )
+        final String playerName )
     {
-        assertArgumentNotNull( player, "player" ); //$NON-NLS-1$
+        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
+
+        final String requestingPlayerName = ThreadPlayer.getPlayerName();
+        assert requestingPlayerName != null;
 
         synchronized( getLock() )
         {
-            giveControl( getPlayerName(), player.getName() );
+            final Player player = players_.get( playerName );
+            if( player == null )
+            {
+                return;
+            }
+
+            final Player requestingPlayer = players_.get( requestingPlayerName );
+            if( (requestingPlayer == null) || !requestingPlayer.hasRole( PlayerRole.EDITOR ) )
+            {
+                return;
+            }
+
+            requestingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR ) );
+            player.addRoles( EnumSet.of( PlayerRole.EDITOR ) );
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.node.server.IServerNode#giveControl(java.lang.String, java.lang.String)
-     */
-    @Override
-    public void giveControl(
-        final String originatingPlayerName,
-        final String playerName )
-    {
-        assertArgumentNotNull( originatingPlayerName, "originatingPlayerName" ); //$NON-NLS-1$
-        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
-
-        final Player player = players_.get( playerName );
-        if( player == null )
-        {
-            return;
-        }
-
-        final Player originatingPlayer = players_.get( originatingPlayerName );
-        if( (originatingPlayer == null) || !originatingPlayer.hasRole( PlayerRole.EDITOR ) )
-        {
-            return;
-        }
-
-        originatingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR ) );
-        player.addRoles( EnumSet.of( PlayerRole.EDITOR ) );
 
         notifyPlayersUpdated();
     }
@@ -402,35 +383,26 @@ public final class ServerNode
 
     /*
      * @see org.gamegineer.table.internal.net.node.INodeController#requestControl()
+     * @see org.gamegineer.table.internal.net.node.server.IServerNode#requestControl()
      */
     @Override
     public void requestControl()
     {
+        final String requestingPlayerName = ThreadPlayer.getPlayerName();
+        assert requestingPlayerName != null;
+
         synchronized( getLock() )
         {
-            requestControl( getPlayerName() );
+            final Player requestingPlayer = players_.get( requestingPlayerName );
+            if( (requestingPlayer == null) //
+                || requestingPlayer.hasRole( PlayerRole.EDITOR ) //
+                || requestingPlayer.hasRole( PlayerRole.EDITOR_REQUESTOR ) )
+            {
+                return;
+            }
+
+            requestingPlayer.addRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTOR ) );
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.node.server.IServerNode#requestControl(java.lang.String)
-     */
-    @Override
-    public void requestControl(
-        final String originatingPlayerName )
-    {
-        assertArgumentNotNull( originatingPlayerName, "originatingPlayerName" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
-
-        final Player originatingPlayer = players_.get( originatingPlayerName );
-        if( (originatingPlayer == null) //
-            || originatingPlayer.hasRole( PlayerRole.EDITOR ) //
-            || originatingPlayer.hasRole( PlayerRole.EDITOR_REQUESTOR ) )
-        {
-            return;
-        }
-
-        originatingPlayer.addRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTOR ) );
 
         notifyPlayersUpdated();
     }
@@ -478,6 +450,13 @@ public final class ServerNode
     // ======================================================================
     // Nested Types
     // ======================================================================
+
+    // TODO: This class needs to ensure that the active player (obtained via
+    // ThreadPlayer.getPlayerName()) has the editor role before executing an
+    // operation that increments the table state. In addition, the methods of
+    // LocalNetworkTable used by the server node must be decorated such that
+    // it sets the active player name (via ThreadPlayer.setPlayerName()) before
+    // each call into the table manager.
 
     /**
      * Implementation of {@link ITableManager} that keeps the master table

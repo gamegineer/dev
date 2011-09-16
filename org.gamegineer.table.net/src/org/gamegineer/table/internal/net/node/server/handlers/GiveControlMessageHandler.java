@@ -78,7 +78,7 @@ public final class GiveControlMessageHandler
         assert remoteNodeController != null;
         assert message != null;
 
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Received give control message from client '%s' to give control to '%s'", remoteNodeController.getPlayerName(), message.getPlayerName() ) ); //$NON-NLS-1$
-        remoteNodeController.getLocalNode().giveControl( remoteNodeController.getPlayerName(), message.getPlayerName() );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Received request to give control to player '%s'", message.getPlayerName() ) ); //$NON-NLS-1$
+        remoteNodeController.getLocalNode().giveControl( message.getPlayerName() );
     }
 }

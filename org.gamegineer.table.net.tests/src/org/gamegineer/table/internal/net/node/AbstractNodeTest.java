@@ -164,7 +164,7 @@ public final class AbstractNodeTest
             @Override
             public void giveControl(
                 @SuppressWarnings( "unused" )
-                final IPlayer player )
+                final String playerName )
             {
                 // do nothing
             }
@@ -314,12 +314,12 @@ public final class AbstractNodeTest
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.node.INodeController#giveControl(org.gamegineer.table.net.IPlayer)
+         * @see org.gamegineer.table.internal.net.node.INodeController#giveControl(java.lang.String)
          */
         @Override
         public void giveControl(
             @SuppressWarnings( "unused" )
-            final IPlayer player )
+            final String playerName )
         {
             // do nothing
         }

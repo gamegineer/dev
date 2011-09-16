@@ -300,7 +300,6 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
 
     /*
      * @see org.gamegineer.table.internal.net.IRemoteNode#getPlayerName()
-     * @see org.gamegineer.table.internal.net.IRemoteNodeController#getPlayerName()
      */
     @Override
     public final String getPlayerName()
@@ -362,10 +361,11 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
             if( message != null )
             {
                 Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
-                    String.format( "Received message '%s' (id=%d, correlation-id=%d)", //$NON-NLS-1$
+                    String.format( "Received message '%s' (id=%d, correlation-id=%d) from client '%s'", //$NON-NLS-1$
                         message.getClass().getName(), //
                         message.getId(), //
-                        message.getCorrelationId() ) );
+                        message.getCorrelationId(), //
+                        playerName_ ) );
 
                 final IMessageHandler messageHandler;
                 if( message.getCorrelationId() != IMessage.NULL_CORRELATION_ID )
@@ -379,9 +379,17 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
 
                 if( messageHandler != null )
                 {
-                    synchronized( localNode_.getLock() )
+                    ThreadPlayer.setPlayerName( playerName_ );
+                    try
                     {
-                        messageHandler.handleMessage( this, message );
+                        synchronized( localNode_.getLock() )
+                        {
+                            messageHandler.handleMessage( this, message );
+                        }
+                    }
+                    finally
+                    {
+                        ThreadPlayer.setPlayerName( null );
                     }
                 }
                 else

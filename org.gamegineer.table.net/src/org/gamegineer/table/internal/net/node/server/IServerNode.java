@@ -36,56 +36,33 @@ public interface IServerNode
     // Methods
     // ======================================================================
 
-    // TODO: Remove originatingPlayerName from all applicable methods.  Will be
-    // replaced with a thread local that serves the same role.  Whenever a remote
-    // node calls back into its associated local node, it must set the thread
-    // local so the server can decide if the remote node is authorized to perform
-    // the action.  This will also be used by all methods of INetworkTable.
-
     /**
-     * Cancels the current network table control request made by the specified
+     * Cancels the current network table control request made by the active
      * player.
      * 
      * <p>
-     * This method does nothing if the originating player has not made a network
+     * This method does nothing if the active player has not made a network
      * table control request.
      * </p>
-     * 
-     * @param originatingPlayerName
-     *        The name of the player who originated the request; must not be
-     *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code originatingPlayerName} is {@code null}.
      */
-    @GuardedBy( "getLock()" )
-    public void cancelControlRequest(
-        /* @NonNull */
-        String originatingPlayerName );
+    public void cancelControlRequest();
 
     /**
      * Gives control of the network table to the specified player.
      * 
      * <p>
-     * This method does nothing if the originating player is not the table
-     * network editor.
+     * This method does nothing if the active player is not the table network
+     * editor.
      * </p>
      * 
-     * @param originatingPlayerName
-     *        The name of the player who originated the request; must not be
-     *        {@code null}.
      * @param playerName
      *        The name of the player to receive control; must not be {@code
      *        null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code originatingPlayerName} or {@code playerName} is {@code
-     *         null}.
+     *         If {@code playerName} is {@code null}.
      */
-    @GuardedBy( "getLock()" )
     public void giveControl(
-        /* @NonNull */
-        String originatingPlayerName,
         /* @NonNull */
         String playerName );
 
@@ -110,22 +87,12 @@ public interface IServerNode
         String playerName );
 
     /**
-     * Requests that the specified player be given control of the network table.
+     * Requests that the active player be given control of the network table.
      * 
      * <p>
-     * This method does nothing if the originating player already has control of
-     * the network table.
+     * This method does nothing if the active player already has control of the
+     * network table.
      * </p>
-     * 
-     * @param originatingPlayerName
-     *        The name of the player who originated the request; must not be
-     *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code originatingPlayerName} is {@code null}.
      */
-    @GuardedBy( "getLock()" )
-    public void requestControl(
-        /* @NonNull */
-        String originatingPlayerName );
+    public void requestControl();
 }

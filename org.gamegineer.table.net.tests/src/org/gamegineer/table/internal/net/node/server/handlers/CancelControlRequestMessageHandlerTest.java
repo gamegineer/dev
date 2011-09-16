@@ -91,11 +91,9 @@ public final class CancelControlRequestMessageHandlerTest
     public void testHandleMessage_CancelControlRequestMessage()
         throws Exception
     {
-        final String remotePlayerName = "name"; //$NON-NLS-1$
         final IServerNode localNode = mocksControl_.createMock( IServerNode.class );
-        localNode.cancelControlRequest( remotePlayerName );
+        localNode.cancelControlRequest();
         final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
-        EasyMock.expect( remoteNodeController.getPlayerName() ).andReturn( remotePlayerName ).anyTimes();
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         mocksControl_.replay();
 

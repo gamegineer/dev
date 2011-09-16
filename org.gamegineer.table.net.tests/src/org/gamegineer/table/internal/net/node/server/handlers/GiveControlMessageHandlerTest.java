@@ -91,17 +91,15 @@ public final class GiveControlMessageHandlerTest
     public void testHandleMessage_GiveControlMessage()
         throws Exception
     {
-        final String remotePlayerName = "name"; //$NON-NLS-1$
-        final String newEditorPlayerName = "otherName"; //$NON-NLS-1$
+        final String playerName = "playerName"; //$NON-NLS-1$
         final IServerNode localNode = mocksControl_.createMock( IServerNode.class );
-        localNode.giveControl( remotePlayerName, newEditorPlayerName );
+        localNode.giveControl( playerName );
         final IRemoteClientNodeController remoteNodeController = mocksControl_.createMock( IRemoteClientNodeController.class );
-        EasyMock.expect( remoteNodeController.getPlayerName() ).andReturn( remotePlayerName ).anyTimes();
         EasyMock.expect( remoteNodeController.getLocalNode() ).andReturn( localNode ).anyTimes();
         mocksControl_.replay();
 
         final GiveControlMessage message = new GiveControlMessage();
-        message.setPlayerName( newEditorPlayerName );
+        message.setPlayerName( playerName );
         messageHandler_.handleMessage( remoteNodeController, message );
 
         mocksControl_.verify();

@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.node.server.handlers;
 
 import net.jcip.annotations.Immutable;
-import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.node.common.messages.RequestControlMessage;
 import org.gamegineer.table.internal.net.node.server.IRemoteClientNodeController;
 
@@ -78,7 +77,6 @@ public final class RequestControlMessageHandler
         assert remoteNodeController != null;
         assert message != null;
 
-        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Received control request message from client '%s'", remoteNodeController.getPlayerName() ) ); //$NON-NLS-1$
-        remoteNodeController.getLocalNode().requestControl( remoteNodeController.getPlayerName() );
+        remoteNodeController.getLocalNode().requestControl();
     }
 }

@@ -309,15 +309,15 @@ public final class ClientNode
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.node.INodeController#giveControl(org.gamegineer.table.net.IPlayer)
+     * @see org.gamegineer.table.internal.net.node.INodeController#giveControl(java.lang.String)
      */
     @Override
     public void giveControl(
-        final IPlayer player )
+        final String playerName )
     {
-        assertArgumentNotNull( player, "player" ); //$NON-NLS-1$
+        assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
 
-        getRemoteServerNode().giveControl( player.getName() );
+        getRemoteServerNode().giveControl( playerName );
     }
 
     /*
@@ -400,7 +400,7 @@ public final class ClientNode
      * table are not broadcast to the server.
      * 
      * <p>
-     * THIS IS A TEMPORARY IMPLEMENTATION UNTIL WE SUPPORT CLIENTS BEING
+     * TODO: THIS IS A TEMPORARY IMPLEMENTATION UNTIL WE SUPPORT CLIENTS BEING
      * "PASSED THE BALL" AND HAVING THE AUTHORITY TO MAKE CHANGES TO THE NETWORK
      * TABLE.
      * </p>
