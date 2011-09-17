@@ -61,6 +61,7 @@ import javax.swing.event.PopupMenuListener;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
+import org.gamegineer.common.ui.window.WindowConstants;
 import org.gamegineer.common.ui.wizard.IWizard;
 import org.gamegineer.common.ui.wizard.WizardDialog;
 import org.gamegineer.table.core.CardPileBaseDesignId;
@@ -77,11 +78,14 @@ import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
+import org.gamegineer.table.internal.ui.dialogs.selectremoteplayer.SelectRemotePlayerDialog;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
 import org.gamegineer.table.internal.ui.wizards.hosttablenetwork.HostTableNetworkWizard;
 import org.gamegineer.table.internal.ui.wizards.jointablenetwork.JoinTableNetworkWizard;
+import org.gamegineer.table.net.IPlayer;
+import org.gamegineer.table.net.PlayerRole;
 import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry;
 
@@ -440,6 +444,17 @@ final class TableView
         actionMediator_.bindActionListener( Actions.getAddTwoOfDiamondsCardAction(), addCardActionListener );
         actionMediator_.bindActionListener( Actions.getAddTwoOfHeartsCardAction(), addCardActionListener );
         actionMediator_.bindActionListener( Actions.getAddTwoOfSpadesCardAction(), addCardActionListener );
+        actionMediator_.bindActionListener( Actions.getCancelTableNetworkControlRequestAction(), new ActionListener()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent event )
+            {
+                cancelTableNetworkControlRequest();
+            }
+        } );
         actionMediator_.bindActionListener( Actions.getDisconnectTableNetworkAction(), new ActionListener()
         {
             @Override
@@ -460,6 +475,17 @@ final class TableView
                 final ActionEvent event )
             {
                 flipTopCard();
+            }
+        } );
+        actionMediator_.bindActionListener( Actions.getGiveTableNetworkControlAction(), new ActionListener()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent event )
+            {
+                giveTableNetworkControl();
             }
         } );
         actionMediator_.bindActionListener( Actions.getHostTableNetworkAction(), new ActionListener()
@@ -526,6 +552,17 @@ final class TableView
                 final ActionEvent event )
             {
                 removeFocusedCardPile();
+            }
+        } );
+        actionMediator_.bindActionListener( Actions.getRequestTableNetworkControlAction(), new ActionListener()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent event )
+            {
+                requestTableNetworkControl();
             }
         } );
         actionMediator_.bindActionListener( Actions.getResetTableOriginAction(), new ActionListener()
@@ -688,14 +725,50 @@ final class TableView
         actionMediator_.bindShouldEnablePredicate( Actions.getAddTwoOfDiamondsCardAction(), hasEditableFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getAddTwoOfHeartsCardAction(), hasEditableFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getAddTwoOfSpadesCardAction(), hasEditableFocusedCardPilePredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getCancelTableNetworkControlRequestAction(), new IPredicate<Action>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Action obj )
+            {
+                final IPlayer localPlayer = model_.getTableNetwork().getLocalPlayer();
+                return (localPlayer != null) && localPlayer.hasRole( PlayerRole.EDITOR_REQUESTOR );
+            }
+        } );
         actionMediator_.bindShouldEnablePredicate( Actions.getDisconnectTableNetworkAction(), isNetworkConnectedPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getFlipCardAction(), hasEditableCardPredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getGiveTableNetworkControlAction(), new IPredicate<Action>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Action obj )
+            {
+                final IPlayer localPlayer = model_.getTableNetwork().getLocalPlayer();
+                return (localPlayer != null) && localPlayer.hasRole( PlayerRole.EDITOR );
+            }
+        } );
         actionMediator_.bindShouldEnablePredicate( Actions.getHostTableNetworkAction(), isNetworkDisconnectedPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getJoinTableNetworkAction(), isNetworkDisconnectedPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardPilesAction(), hasEditableCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveAllCardsAction(), hasEditableFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveCardAction(), hasEditableCardPredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getRemoveCardPileAction(), hasEditableFocusedCardPilePredicate );
+        actionMediator_.bindShouldEnablePredicate( Actions.getRequestTableNetworkControlAction(), new IPredicate<Action>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public boolean evaluate(
+                @SuppressWarnings( "unused" )
+                final Action obj )
+            {
+                final IPlayer localPlayer = model_.getTableNetwork().getLocalPlayer();
+                return (localPlayer != null) && !localPlayer.hasRole( PlayerRole.EDITOR );
+            }
+        } );
         actionMediator_.bindShouldEnablePredicate( Actions.getSetAccordianDownCardPileLayoutAction(), hasEditableFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getSetAccordianLeftCardPileLayoutAction(), hasEditableFocusedCardPilePredicate );
         actionMediator_.bindShouldEnablePredicate( Actions.getSetAccordianRightCardPileLayoutAction(), hasEditableFocusedCardPilePredicate );
@@ -724,6 +797,14 @@ final class TableView
         actionMediator_.bindShouldSelectPredicate( Actions.getSetAccordianRightCardPileLayoutAction(), isCardPileLayoutSelectedPredicate );
         actionMediator_.bindShouldSelectPredicate( Actions.getSetAccordianUpCardPileLayoutAction(), isCardPileLayoutSelectedPredicate );
         actionMediator_.bindShouldSelectPredicate( Actions.getSetStackedCardPileLayoutAction(), isCardPileLayoutSelectedPredicate );
+    }
+
+    /**
+     * Cancels a previous request to take control of the table network.
+     */
+    private void cancelTableNetworkControlRequest()
+    {
+        model_.getTableNetwork().cancelControlRequest();
     }
 
     /**
@@ -984,6 +1065,22 @@ final class TableView
     }
 
     /**
+     * Gives control of the table network to another player.
+     */
+    private void giveTableNetworkControl()
+    {
+        final SelectRemotePlayerDialog dialog = new SelectRemotePlayerDialog( JOptionPane.getFrameForComponent( this ), model_ );
+        if( dialog.open() == WindowConstants.RETURN_CODE_OK )
+        {
+            final IPlayer player = dialog.getSelectedPlayer();
+            if( player != null )
+            {
+                model_.getTableNetwork().giveControl( player );
+            }
+        }
+    }
+
+    /**
      * Hosts a new table network.
      */
     private void hostTableNetwork()
@@ -1135,6 +1232,14 @@ final class TableView
 
         convertRectangleFromTable( region );
         repaint( region );
+    }
+
+    /**
+     * Requests control of the table network.
+     */
+    private void requestTableNetworkControl()
+    {
+        model_.getTableNetwork().requestControl();
     }
 
     /**

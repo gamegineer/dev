@@ -501,6 +501,14 @@ final class NlsMessages
     /** The add Two of Spades card action text. */
     public static String AddTwoOfSpadesCardAction_text;
 
+    // --- CancelTableNetworkControlRequestAction ---------------------------
+
+    /** The cancel table network control request action mnemonic. */
+    public static String CancelTableNetworkControlRequestAction_mnemonic;
+
+    /** The cancel table network control request action text. */
+    public static String CancelTableNetworkControlRequestAction_text;
+
     // --- CardPilePopupMenu ------------------------------------------------
 
     /** The Add Card menu mnemonic. */
@@ -582,6 +590,14 @@ final class NlsMessages
 
     /** The flip card action text. */
     public static String FlipCardAction_text;
+
+    // --- GiveTableNetworkControlAction ------------------------------------
+
+    /** The give table network control action mnemonic. */
+    public static String GiveTableNetworkControlAction_mnemonic;
+
+    /** The give table network control action text. */
+    public static String GiveTableNetworkControlAction_text;
 
     // --- HostTableNetworkAction -------------------------------------------
 
@@ -785,6 +801,14 @@ final class NlsMessages
 
     /** The remove card pile action text. */
     public static String RemoveCardPileAction_text;
+
+    // --- RequestTableNetworkControlAction ---------------------------------
+
+    /** The request table network control action mnemonic. */
+    public static String RequestTableNetworkControlAction_mnemonic;
+
+    /** The request table network control action text. */
+    public static String RequestTableNetworkControlAction_text;
 
     // --- ResetTableOriginAction -------------------------------------------
 

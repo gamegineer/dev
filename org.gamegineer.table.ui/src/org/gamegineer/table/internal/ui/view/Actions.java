@@ -369,6 +369,12 @@ final class Actions
      */
     private static final String ADD_TWO_OF_SPADES_CARD_ACTION_ID = "addTwoOfSpadesCardAction"; //$NON-NLS-1$
 
+    /**
+     * The identifier of the action used to cancel a table network control
+     * request.
+     */
+    private static final String CANCEL_TABLE_NETWORK_CONTROL_REQUEST_ID = "cancelTableNetworkControlRequestAction"; //$NON-NLS-1$
+
     /** The identifier of the action used to disconnect a table network. */
     private static final String DISCONNECT_TABLE_NETWORK_ACTION_ID = "disconnectTableNetworkAction"; //$NON-NLS-1$
 
@@ -377,6 +383,9 @@ final class Actions
 
     /** The identifier of the action used to flip a card in a card pile. */
     private static final String FLIP_CARD_ACTION_ID = "flipCardAction"; //$NON-NLS-1$
+
+    /** The identifier of the action used to give table network control. */
+    private static final String GIVE_TABLE_NETWORK_CONTROL_ID = "giveTableNetworkControlAction"; //$NON-NLS-1$
 
     /** The identifier of the action used to host a table network. */
     private static final String HOST_TABLE_NETWORK_ACTION_ID = "hostTableNetworkAction"; //$NON-NLS-1$
@@ -407,6 +416,9 @@ final class Actions
 
     /** The identifier of the action used to remove a card pile from the table. */
     private static final String REMOVE_CARD_PILE_ACTION_ID = "removeCardPileAction"; //$NON-NLS-1$
+
+    /** The identifier of the action used to request table network control. */
+    private static final String REQUEST_TABLE_NETWORK_CONTROL_ID = "requestTableNetworkControlAction"; //$NON-NLS-1$
 
     /**
      * The identifier of the action used to reset the table origin to the view
@@ -1043,6 +1055,15 @@ final class Actions
                 putValue( NAME, NlsMessages.AddTwoOfSpadesCardAction_text );
             }
         } );
+        actions.put( CANCEL_TABLE_NETWORK_CONTROL_REQUEST_ID, new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.CancelTableNetworkControlRequestAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.CancelTableNetworkControlRequestAction_text );
+            }
+        } );
         actions.put( DISCONNECT_TABLE_NETWORK_ACTION_ID, new BasicAction()
         {
             private static final long serialVersionUID = 1L;
@@ -1069,6 +1090,15 @@ final class Actions
                 putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.FlipCardAction_accelerator ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.FlipCardAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.FlipCardAction_text );
+            }
+        } );
+        actions.put( GIVE_TABLE_NETWORK_CONTROL_ID, new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.GiveTableNetworkControlAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.GiveTableNetworkControlAction_text );
             }
         } );
         actions.put( HOST_TABLE_NETWORK_ACTION_ID, new BasicAction()
@@ -1161,6 +1191,15 @@ final class Actions
                 putValue( ACCELERATOR_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveCardPileAction_accelerator ) );
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.RemoveCardPileAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.RemoveCardPileAction_text );
+            }
+        } );
+        actions.put( REQUEST_TABLE_NETWORK_CONTROL_ID, new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.RequestTableNetworkControlAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.RequestTableNetworkControlAction_text );
             }
         } );
         actions.put( RESET_TABLE_ORIGIN_ACTION_ID, new BasicAction()
@@ -1862,6 +1901,18 @@ final class Actions
     }
 
     /**
+     * Gets the cancel table network control request action.
+     * 
+     * @return The cancel table network control request action; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    static BasicAction getCancelTableNetworkControlRequestAction()
+    {
+        return actions_.get( CANCEL_TABLE_NETWORK_CONTROL_REQUEST_ID );
+    }
+
+    /**
      * Gets the disconnect table network action.
      * 
      * @return The disconnect table network action; never {@code null}.
@@ -1892,6 +1943,17 @@ final class Actions
     static BasicAction getFlipCardAction()
     {
         return actions_.get( FLIP_CARD_ACTION_ID );
+    }
+
+    /**
+     * Gets the give table network control action.
+     * 
+     * @return The give table network control action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getGiveTableNetworkControlAction()
+    {
+        return actions_.get( GIVE_TABLE_NETWORK_CONTROL_ID );
     }
 
     /**
@@ -1991,6 +2053,17 @@ final class Actions
     static BasicAction getRemoveCardPileAction()
     {
         return actions_.get( REMOVE_CARD_PILE_ACTION_ID );
+    }
+
+    /**
+     * Gets the request table network control action.
+     * 
+     * @return The request table network control action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getRequestTableNetworkControlAction()
+    {
+        return actions_.get( REQUEST_TABLE_NETWORK_CONTROL_ID );
     }
 
     /**

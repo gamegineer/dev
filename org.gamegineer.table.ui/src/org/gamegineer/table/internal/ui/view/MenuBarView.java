@@ -290,6 +290,10 @@ final class MenuBarView
         menu.add( Actions.getHostTableNetworkAction() );
         menu.add( Actions.getJoinTableNetworkAction() );
         menu.add( Actions.getDisconnectTableNetworkAction() );
+        menu.addSeparator();
+        menu.add( Actions.getGiveTableNetworkControlAction() );
+        menu.add( Actions.getRequestTableNetworkControlAction() );
+        menu.add( Actions.getCancelTableNetworkControlRequestAction() );
         return menu;
     }
 
