@@ -113,11 +113,11 @@ public final class SelectRemotePlayerDialog
         remotePlayersLabel.setBorder( BorderFactory.createEmptyBorder( 0, 0, DialogUtils.convertWidthInDlusToPixels( fontMetrics, 3 ), 0 ) );
         remotePlayersLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( NlsMessages.SelectRemotePlayerDialog_remotePlayersLabel_mnemonic ).getKeyCode() );
         container.add( remotePlayersLabel, BorderLayout.NORTH );
-        final JList playerList = new JList( playerListModel_ );
-        playerList.setCellRenderer( new PlayerListCellRenderer() );
-        final JScrollPane scrollPane = new JScrollPane( playerList );
+        playerList_ = new JList( playerListModel_ );
+        playerList_.setCellRenderer( new PlayerListCellRenderer() );
+        final JScrollPane scrollPane = new JScrollPane( playerList_ );
         container.add( scrollPane, BorderLayout.CENTER );
-        remotePlayersLabel.setLabelFor( playerList );
+        remotePlayersLabel.setLabelFor( playerList_ );
 
         // TODO: enable/disable OK button if no item is selected (via data binding)
 
