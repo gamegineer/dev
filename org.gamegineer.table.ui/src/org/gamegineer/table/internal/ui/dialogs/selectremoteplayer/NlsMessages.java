@@ -35,6 +35,11 @@ final class NlsMessages
     // Fields
     // ======================================================================
 
+    // --- Model ------------------------------------------------------------
+
+    /** A remote player is not selected. */
+    public static String Model_remotePlayer_notSelected;
+
     // --- SelectRemotePlayerDialog -----------------------------------------
 
     /** The dialog banner title. */

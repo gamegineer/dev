@@ -40,6 +40,12 @@ final class NonNlsMessages
     /** The password property was requested for an unsupported component. */
     public static String ComponentProperties_password_unsupportedComponent;
 
+    /**
+     * The single selection value property was requested for an unsupported
+     * component.
+     */
+    public static String ComponentProperties_singleSelectionValue_unsupportedComponent;
+
     /** The text property was requested for an unsupported component. */
     public static String ComponentProperties_text_unsupportedComponent;
 
@@ -92,6 +98,25 @@ final class NonNlsMessages
         final Object source )
     {
         return bind( ComponentProperties_password_unsupportedComponent, source );
+    }
+
+    /**
+     * Gets the formatted message indicating the single selection value property
+     * was requested for an unsupported component.
+     * 
+     * @param source
+     *        The property source; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the single selection value
+     *         property was requested for an unsupported component; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentProperties_singleSelectionValue_unsupportedComponent(
+        /* @NonNull */
+        final Object source )
+    {
+        return bind( ComponentProperties_singleSelectionValue_unsupportedComponent, source );
     }
 
     /**

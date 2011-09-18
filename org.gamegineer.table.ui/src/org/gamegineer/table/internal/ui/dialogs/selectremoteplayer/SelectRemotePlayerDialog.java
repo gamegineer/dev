@@ -29,18 +29,23 @@ import java.awt.FontMetrics;
 import java.awt.Window;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
+import org.eclipse.core.databinding.beans.PojoProperties;
+import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.gamegineer.common.ui.databinding.dialog.BannerDialogDataBindingAdapter;
+import org.gamegineer.common.ui.databinding.swing.ComponentProperties;
 import org.gamegineer.common.ui.dialog.AbstractBannerDialog;
+import org.gamegineer.common.ui.dialog.DialogConstants;
 import org.gamegineer.common.ui.dialog.DialogUtils;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.net.IPlayer;
-import org.gamegineer.table.net.ITableNetwork;
 
 /**
  * A dialog used to select a remote table network player.
@@ -53,11 +58,17 @@ public final class SelectRemotePlayerDialog
     // Fields
     // ======================================================================
 
+    /** The dialog data binding adapter. */
+    private BannerDialogDataBindingAdapter dataBindingAdapter_;
+
+    /** The dialog data binding context. */
+    private DataBindingContext dataBindingContext_;
+
+    /** The dialog model. */
+    private final Model model_;
+
     /** The player list component. */
     private JList playerList_;
-
-    /** The player list model. */
-    private final DefaultListModel playerListModel_;
 
 
     // ======================================================================
@@ -86,8 +97,10 @@ public final class SelectRemotePlayerDialog
 
         assertArgumentNotNull( tableModel, "tableModel" ); //$NON-NLS-1$
 
+        dataBindingAdapter_ = null;
+        dataBindingContext_ = null;
+        model_ = new Model( tableModel );
         playerList_ = null;
-        playerListModel_ = createRemotePlayerList( tableModel );
 
         setTitle( NlsMessages.SelectRemotePlayerDialog_title );
         setBannerTitle( NlsMessages.SelectRemotePlayerDialog_bannerTitle );
@@ -98,6 +111,41 @@ public final class SelectRemotePlayerDialog
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.common.ui.dialog.AbstractDialog#close()
+     */
+    @Override
+    public boolean close()
+    {
+        if( dataBindingAdapter_ != null )
+        {
+            dataBindingAdapter_.dispose();
+            dataBindingAdapter_ = null;
+        }
+
+        if( dataBindingContext_ != null )
+        {
+            dataBindingContext_.dispose();
+            dataBindingContext_ = null;
+        }
+
+        return super.close();
+    }
+
+    /*
+     * @see org.gamegineer.common.ui.window.AbstractWindow#contentCreated()
+     */
+    @Override
+    protected void contentCreated()
+    {
+        super.contentCreated();
+
+        // NB: may provide a data binding strategy for JList.setModel()
+        playerList_.setModel( model_.getRemotePlayers() );
+
+        createDataBindings();
+    }
 
     /*
      * @see org.gamegineer.common.ui.dialog.AbstractBannerDialog#createContentArea(java.awt.Container)
@@ -113,44 +161,39 @@ public final class SelectRemotePlayerDialog
         remotePlayersLabel.setBorder( BorderFactory.createEmptyBorder( 0, 0, DialogUtils.convertWidthInDlusToPixels( fontMetrics, 3 ), 0 ) );
         remotePlayersLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( NlsMessages.SelectRemotePlayerDialog_remotePlayersLabel_mnemonic ).getKeyCode() );
         container.add( remotePlayersLabel, BorderLayout.NORTH );
-        playerList_ = new JList( playerListModel_ );
+        playerList_ = new JList();
         playerList_.setCellRenderer( new PlayerListCellRenderer() );
         final JScrollPane scrollPane = new JScrollPane( playerList_ );
         container.add( scrollPane, BorderLayout.CENTER );
         remotePlayersLabel.setLabelFor( playerList_ );
 
-        // TODO: enable/disable OK button if no item is selected (via data binding)
-
         return container;
     }
 
     /**
-     * Creates the remote player list.
-     * 
-     * @param tableModel
-     *        The table model; must not be {@code null}.
-     * 
-     * @return The remote player list; never {@code null}.
+     * Creates the data bindings for this dialog.
      */
-    /* @NonNull */
-    private static DefaultListModel createRemotePlayerList(
-        /* @NonNull */
-        final TableModel tableModel )
+    private void createDataBindings()
     {
-        assert tableModel != null;
+        dataBindingContext_ = new DataBindingContext();
 
-        final ITableNetwork tableNetwork = tableModel.getTableNetwork();
-        final IPlayer localPlayer = tableNetwork.getLocalPlayer();
-        final DefaultListModel playerListModel = new DefaultListModel();
-        for( final IPlayer player : tableNetwork.getPlayers() )
+        final IObservableValue remotePlayerTargetValue = ComponentProperties.singleSelectionValue().observe( playerList_ );
+        final IObservableValue remotePlayerModelValue = PojoProperties.value( "remotePlayer" ).observe( model_ ); //$NON-NLS-1$
+        final UpdateValueStrategy remotePlayerTargetToModelStrategy = new UpdateValueStrategy();
+        remotePlayerTargetToModelStrategy.setBeforeSetValidator( model_.getRemotePlayerValidator() );
+        dataBindingContext_.bindValue( remotePlayerTargetValue, remotePlayerModelValue, remotePlayerTargetToModelStrategy, null );
+
+        dataBindingAdapter_ = new BannerDialogDataBindingAdapter( this, dataBindingContext_ )
         {
-            if( player != localPlayer )
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            protected void handleValidationStatusChanged()
             {
-                playerListModel.addElement( player );
-            }
-        }
+                super.handleValidationStatusChanged();
 
-        return playerListModel;
+                getButton( DialogConstants.OK_BUTTON_ID ).setEnabled( !isCurrentValidationStatusFatal() );
+            }
+        };
     }
 
     /**
@@ -162,8 +205,7 @@ public final class SelectRemotePlayerDialog
     /* @Nullable */
     public IPlayer getSelectedPlayer()
     {
-        // TODO: replace with data binding on model
-        return (playerList_ != null) ? (IPlayer)playerList_.getSelectedValue() : null;
+        return model_.getRemotePlayer();
     }
 
 
