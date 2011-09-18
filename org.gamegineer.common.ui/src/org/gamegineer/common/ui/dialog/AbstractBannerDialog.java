@@ -335,7 +335,7 @@ public abstract class AbstractBannerDialog
      * @param message
      *        The dialog message or {@code null} to clear the message.
      */
-    protected final void setMessage(
+    public final void setMessage(
         /* @Nullable */
         final DialogMessage message )
     {

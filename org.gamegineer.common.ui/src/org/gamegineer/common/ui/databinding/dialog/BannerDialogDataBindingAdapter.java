@@ -22,7 +22,6 @@
 package org.gamegineer.common.ui.databinding.dialog;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import java.lang.reflect.Method;
 import java.util.Iterator;
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.AggregateValidationStatus;
@@ -316,18 +315,7 @@ public class BannerDialogDataBindingAdapter
             message = null;
         }
 
-        // FIXME: make appropriate methods of AbstractDialog and AbstractBannerDialog public
-        //bannerDialog_.setMessage( message );
-        try
-        {
-            final Method method = AbstractBannerDialog.class.getDeclaredMethod( "setMessage", DialogMessage.class ); //$NON-NLS-1$
-            method.setAccessible( true );
-            method.invoke( bannerDialog_, message );
-        }
-        catch( final Exception e )
-        {
-            e.printStackTrace();
-        }
+        bannerDialog_.setMessage( message );
     }
 
     /**
