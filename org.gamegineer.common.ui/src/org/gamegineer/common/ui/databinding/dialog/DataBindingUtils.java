@@ -1,6 +1,6 @@
 /*
  * DataBindingUtils.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -83,5 +83,31 @@ final class DataBindingUtils
             default:
                 throw new AssertionError( "unknown IStatus severity" ); //$NON-NLS-1$
         }
+    }
+
+    /**
+     * Indicates the specified validation status is fatal.
+     * 
+     * @param status
+     *        The validation status to test or {@code null} if the status is not
+     *        available.
+     * @param isStatusStale
+     *        {@code true} if the validation status is stale; otherwise {@code
+     *        false}.
+     * 
+     * @return {@code true} if the specified validation status is fatal;
+     *         otherwise {@code false}.
+     */
+    static boolean isValidationStatusFatal(
+        /* @Nullable */
+        final IStatus status,
+        final boolean isStatusStale )
+    {
+        if( isStatusStale )
+        {
+            return true;
+        }
+
+        return (status != null) ? status.matches( IStatus.CANCEL | IStatus.ERROR ) : false;
     }
 }

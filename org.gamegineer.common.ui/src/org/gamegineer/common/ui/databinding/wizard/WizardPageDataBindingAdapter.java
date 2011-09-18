@@ -1,6 +1,6 @@
 /*
  * WizardPageDataBindingAdapter.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,6 @@ package org.gamegineer.common.ui.databinding.wizard;
 
 import net.jcip.annotations.NotThreadSafe;
 import org.eclipse.core.databinding.DataBindingContext;
-import org.eclipse.core.runtime.IStatus;
 import org.gamegineer.common.ui.databinding.dialog.DialogPageDataBindingAdapter;
 import org.gamegineer.common.ui.wizard.IWizardPage;
 
@@ -84,20 +83,6 @@ public class WizardPageDataBindingAdapter
     {
         super.handleValidationStatusChanged();
 
-        final boolean isPageComplete;
-        if( isCurrentValidationStatusStale() )
-        {
-            isPageComplete = false;
-        }
-        else if( getCurrentValidationStatus() != null )
-        {
-            isPageComplete = !getCurrentValidationStatus().matches( IStatus.CANCEL | IStatus.ERROR );
-        }
-        else
-        {
-            isPageComplete = true;
-        }
-
-        getWizardPage().setComplete( isPageComplete );
+        getWizardPage().setComplete( !isCurrentValidationStatusFatal() );
     }
 }

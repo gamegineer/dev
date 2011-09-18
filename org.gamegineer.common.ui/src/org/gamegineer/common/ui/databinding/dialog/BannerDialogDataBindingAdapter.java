@@ -267,9 +267,10 @@ public class BannerDialogDataBindingAdapter
     /**
      * Gets the current validation status.
      * 
-     * @return The current validation status; never {@code null}.
+     * @return The current validation status or {@code null} if there is no
+     *         current validation status.
      */
-    /* @NonNull */
+    /* @Nullable */
     protected final IStatus getCurrentValidationStatus()
     {
         return currentValidationStatus_;
@@ -384,7 +385,6 @@ public class BannerDialogDataBindingAdapter
         }
     }
 
-    // TODO: extract to DataBindingUtils
     /**
      * Indicates the current validation status is fatal.
      * 
@@ -393,18 +393,7 @@ public class BannerDialogDataBindingAdapter
      */
     protected final boolean isCurrentValidationStatusFatal()
     {
-        if( isCurrentValidationStatusStale() )
-        {
-            return true;
-        }
-
-        final IStatus status = getCurrentValidationStatus();
-        if( status == null )
-        {
-            return false;
-        }
-
-        return status.matches( IStatus.CANCEL | IStatus.ERROR );
+        return DataBindingUtils.isValidationStatusFatal( currentValidationStatus_, isCurrentValidationStatusStale_ );
     }
 
     /**

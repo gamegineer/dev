@@ -1,6 +1,6 @@
 /*
  * DialogPageDataBindingAdapter.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -255,9 +255,10 @@ public class DialogPageDataBindingAdapter
     /**
      * Gets the current validation status.
      * 
-     * @return The current validation status; never {@code null}.
+     * @return The current validation status or {@code null} if there is no
+     *         current validation status.
      */
-    /* @NonNull */
+    /* @Nullable */
     protected final IStatus getCurrentValidationStatus()
     {
         return currentValidationStatus_;
@@ -370,6 +371,17 @@ public class DialogPageDataBindingAdapter
                 ((IObservable)targetIterator.next()).addChangeListener( uiChangeListener_ );
             }
         }
+    }
+
+    /**
+     * Indicates the current validation status is fatal.
+     * 
+     * @return {@code true} if the current validation status is fatal; otherwise
+     *         {@code false}.
+     */
+    protected final boolean isCurrentValidationStatusFatal()
+    {
+        return DataBindingUtils.isValidationStatusFatal( currentValidationStatus_, isCurrentValidationStatusStale_ );
     }
 
     /**
