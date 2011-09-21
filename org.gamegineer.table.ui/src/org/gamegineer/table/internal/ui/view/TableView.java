@@ -734,7 +734,7 @@ final class TableView
                 final Action obj )
             {
                 final IPlayer localPlayer = model_.getTableNetwork().getLocalPlayer();
-                return (localPlayer != null) && localPlayer.hasRole( PlayerRole.EDITOR_REQUESTOR );
+                return (localPlayer != null) && localPlayer.hasRole( PlayerRole.EDITOR_REQUESTER );
             }
         } );
         actionMediator_.bindShouldEnablePredicate( Actions.getDisconnectTableNetworkAction(), isNetworkConnectedPredicate );

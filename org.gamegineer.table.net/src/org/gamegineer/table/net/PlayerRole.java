@@ -34,7 +34,7 @@ public enum PlayerRole
     EDITOR,
 
     /** The player has requested control to be the table network editor. */
-    EDITOR_REQUESTOR,
+    EDITOR_REQUESTER,
 
     /** The player is the table network host. */
     HOST,

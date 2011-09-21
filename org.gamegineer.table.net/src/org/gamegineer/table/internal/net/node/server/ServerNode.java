@@ -142,12 +142,12 @@ public final class ServerNode
         synchronized( getLock() )
         {
             final Player requestingPlayer = players_.get( requestingPlayerName );
-            if( (requestingPlayer == null) || !requestingPlayer.hasRole( PlayerRole.EDITOR_REQUESTOR ) )
+            if( (requestingPlayer == null) || !requestingPlayer.hasRole( PlayerRole.EDITOR_REQUESTER ) )
             {
                 return;
             }
 
-            requestingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTOR ) );
+            requestingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) );
         }
 
         notifyPlayersUpdated();
@@ -396,12 +396,12 @@ public final class ServerNode
             final Player requestingPlayer = players_.get( requestingPlayerName );
             if( (requestingPlayer == null) //
                 || requestingPlayer.hasRole( PlayerRole.EDITOR ) //
-                || requestingPlayer.hasRole( PlayerRole.EDITOR_REQUESTOR ) )
+                || requestingPlayer.hasRole( PlayerRole.EDITOR_REQUESTER ) )
             {
                 return;
             }
 
-            requestingPlayer.addRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTOR ) );
+            requestingPlayer.addRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) );
         }
 
         notifyPlayersUpdated();
