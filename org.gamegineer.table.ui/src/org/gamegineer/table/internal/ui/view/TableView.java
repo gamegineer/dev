@@ -766,7 +766,7 @@ final class TableView
                 final Action obj )
             {
                 final IPlayer localPlayer = model_.getTableNetwork().getLocalPlayer();
-                return (localPlayer != null) && !localPlayer.hasRole( PlayerRole.EDITOR );
+                return (localPlayer != null) && !localPlayer.hasRole( PlayerRole.EDITOR ) && !localPlayer.hasRole( PlayerRole.EDITOR_REQUESTER );
             }
         } );
         actionMediator_.bindShouldEnablePredicate( Actions.getSetAccordianDownCardPileLayoutAction(), hasEditableFocusedCardPilePredicate );
