@@ -27,8 +27,11 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.FontMetrics;
 import java.awt.Window;
+import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -44,8 +47,11 @@ import org.gamegineer.common.ui.databinding.swing.ComponentProperties;
 import org.gamegineer.common.ui.dialog.AbstractBannerDialog;
 import org.gamegineer.common.ui.dialog.DialogConstants;
 import org.gamegineer.common.ui.dialog.DialogUtils;
+import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.net.IPlayer;
+import org.gamegineer.table.net.PlayerRole;
+import org.osgi.framework.Bundle;
 
 /**
  * A dialog used to select a remote table network player.
@@ -227,6 +233,12 @@ public final class SelectRemotePlayerDialog
         /** Serializable class version number. */
         private static final long serialVersionUID = 1956026725118986173L;
 
+        /** The icon to display for a player with the editor requester role. */
+        private final Icon editorRequesterRoleIcon_;
+
+        /** The icon to display for a player with no special roles. */
+        private final Icon noRolesIcon_;
+
 
         // ==================================================================
         // Constructors
@@ -238,7 +250,13 @@ public final class SelectRemotePlayerDialog
          */
         PlayerListCellRenderer()
         {
-            super();
+            final Bundle bundle = Activator.getDefault().getBundleContext().getBundle();
+            final URL editorRequesterRoleIconUrl = bundle.getEntry( "/icons/roles/editor-requester.png" ); //$NON-NLS-1$
+            assert editorRequesterRoleIconUrl != null;
+            editorRequesterRoleIcon_ = new ImageIcon( editorRequesterRoleIconUrl );
+            final URL noRolesIconUrl = bundle.getEntry( "/icons/roles/none.png" ); //$NON-NLS-1$
+            assert noRolesIconUrl != null;
+            noRolesIcon_ = new ImageIcon( noRolesIconUrl );
         }
 
 
@@ -260,6 +278,7 @@ public final class SelectRemotePlayerDialog
             final IPlayer player = (IPlayer)value;
             final JLabel label = (JLabel)super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
             label.setText( player.getName() );
+            label.setIcon( player.hasRole( PlayerRole.EDITOR_REQUESTER ) ? editorRequesterRoleIcon_ : noRolesIcon_ );
             return label;
         }
     }

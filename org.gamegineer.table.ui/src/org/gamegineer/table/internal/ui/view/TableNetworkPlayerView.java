@@ -202,6 +202,9 @@ final class TableNetworkPlayerView
         /** Serializable class version number. */
         private static final long serialVersionUID = 1956026725118986173L;
 
+        /** The icon to display for a player with the editor requester role. */
+        private final Icon editorRequesterRoleIcon_;
+
         /** The icon to display for a player with the editor role. */
         private final Icon editorRoleIcon_;
 
@@ -220,6 +223,9 @@ final class TableNetworkPlayerView
         PlayerListCellRenderer()
         {
             final Bundle bundle = Activator.getDefault().getBundleContext().getBundle();
+            final URL editorRequesterRoleIconUrl = bundle.getEntry( "/icons/roles/editor-requester.png" ); //$NON-NLS-1$
+            assert editorRequesterRoleIconUrl != null;
+            editorRequesterRoleIcon_ = new ImageIcon( editorRequesterRoleIconUrl );
             final URL editorRoleIconUrl = bundle.getEntry( "/icons/roles/editor.png" ); //$NON-NLS-1$
             assert editorRoleIconUrl != null;
             editorRoleIcon_ = new ImageIcon( editorRoleIconUrl );
@@ -247,8 +253,35 @@ final class TableNetworkPlayerView
             final IPlayer player = (IPlayer)value;
             final JLabel label = (JLabel)super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
             label.setText( NlsMessages.TableNetworkPlayerView_playersList_text( player ) );
-            label.setIcon( player.hasRole( PlayerRole.EDITOR ) ? editorRoleIcon_ : noRolesIcon_ );
+            label.setIcon( getPlayerIcon( player ) );
             return label;
+        }
+
+        /**
+         * Gets the icon for the specified player.
+         * 
+         * @param player
+         *        The player; must not be {@code null}.
+         * 
+         * @return The icon for the specified player; never {@code null}.
+         */
+        /* @NonNull */
+        private Icon getPlayerIcon(
+            /* @NonNull */
+            final IPlayer player )
+        {
+            assert player != null;
+
+            if( player.hasRole( PlayerRole.EDITOR ) )
+            {
+                return editorRoleIcon_;
+            }
+            else if( player.hasRole( PlayerRole.EDITOR_REQUESTER ) )
+            {
+                return editorRequesterRoleIcon_;
+            }
+
+            return noRolesIcon_;
         }
     }
 
