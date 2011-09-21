@@ -127,7 +127,6 @@ final class RemoteServerNode
         final String playerName )
     {
         assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
 
         final GiveControlMessage message = new GiveControlMessage();
         message.setPlayerName( playerName );
@@ -158,8 +157,6 @@ final class RemoteServerNode
     @Override
     public void requestControl()
     {
-        assert Thread.holdsLock( getLock() );
-
         final RequestControlMessage message = new RequestControlMessage();
         synchronized( getLock() )
         {
