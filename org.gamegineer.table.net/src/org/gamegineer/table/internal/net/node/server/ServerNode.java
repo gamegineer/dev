@@ -278,6 +278,7 @@ public final class ServerNode
             }
 
             requestingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR ) );
+            player.removeRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) );
             player.addRoles( EnumSet.of( PlayerRole.EDITOR ) );
         }
 
