@@ -56,6 +56,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private BundleContext bundleContext_;
 
+    /** The bundle image manager. */
+    @GuardedBy( "lock_" )
+    private BundleImages bundleImages_;
+
     /** The card pile base design registry service tracker. */
     @GuardedBy( "lock_" )
     private ServiceTracker cardPileBaseDesignRegistryTracker_;
@@ -95,6 +99,7 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
+        bundleImages_ = null;
         cardPileBaseDesignRegistryTracker_ = null;
         cardPileBaseDesignUIRegistryTracker_ = null;
         cardSurfaceDesignRegistryTracker_ = null;
@@ -120,6 +125,27 @@ public final class Activator
         {
             assert bundleContext_ != null;
             return bundleContext_;
+        }
+    }
+
+    /**
+     * Gets the bundle image manager.
+     * 
+     * @return The bundle image manager; never {@code null}.
+     */
+    /* @NonNull */
+    public BundleImages getBundleImages()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( bundleImages_ == null )
+            {
+                bundleImages_ = new BundleImages( bundleContext_ );
+            }
+
+            return bundleImages_;
         }
     }
 
@@ -382,6 +408,11 @@ public final class Activator
             assert bundleContext_ != null;
             bundleContext_ = null;
 
+            if( bundleImages_ != null )
+            {
+                bundleImages_.dispose();
+                bundleImages_ = null;
+            }
             if( cardPileBaseDesignRegistryTracker_ != null )
             {
                 cardPileBaseDesignRegistryTracker_.close();

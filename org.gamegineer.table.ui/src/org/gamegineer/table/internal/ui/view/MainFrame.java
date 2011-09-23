@@ -29,12 +29,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import javax.imageio.ImageIO;
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -44,6 +41,7 @@ import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.common.ui.databinding.swing.SwingRealm;
 import org.gamegineer.table.internal.ui.Activator;
+import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.model.FramePreferences;
@@ -56,7 +54,6 @@ import org.gamegineer.table.internal.ui.model.TableModelEvent;
 import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
 import org.gamegineer.table.ui.ITableAdvisor;
-import org.osgi.framework.Bundle;
 
 /**
  * The top-level frame.
@@ -290,27 +287,22 @@ public final class MainFrame
     private static List<Image> getApplicationIconImages()
     {
         final String[] imagePaths = new String[] { //
-            "/icons/application-16.png", //$NON-NLS-1$
-            "/icons/application-32.png", //$NON-NLS-1$
-            "/icons/application-48.png", //$NON-NLS-1$
-            "/icons/application-64.png" //$NON-NLS-1$
+            BundleImages.APPLICATION_16, //
+            BundleImages.APPLICATION_32, //
+            BundleImages.APPLICATION_48, //
+            BundleImages.APPLICATION_64
         };
-
-        final Bundle bundle = Activator.getDefault().getBundleContext().getBundle();
+        final BundleImages bundleImages = Activator.getDefault().getBundleImages();
         final List<Image> iconImages = new ArrayList<Image>();
         for( final String imagePath : imagePaths )
         {
-            try
+            final Image iconImage = bundleImages.getImage( imagePath );
+            if( iconImage != null )
             {
-                final URL url = bundle.getEntry( imagePath );
-                assert url != null;
-                iconImages.add( ImageIO.read( url ) );
-            }
-            catch( final IOException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.MainFrame_getApplicationIconImages_readImageError( imagePath ), e );
+                iconImages.add( iconImage );
             }
         }
+
         return iconImages;
     }
 

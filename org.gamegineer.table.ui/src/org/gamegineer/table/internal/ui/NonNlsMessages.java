@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui;
 
+import java.net.URL;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.core.CardPileBaseDesignId;
@@ -42,6 +43,11 @@ final class NonNlsMessages
 
     /** An error occurred while saving the user preferences. */
     public static String Activator_saveUserPreferenecs_error;
+
+    // --- BundleImages -----------------------------------------------------
+
+    /** An error occurred while reading the image. */
+    public static String BundleImages_getImage_readError;
 
     // --- CardPileBaseDesignUIRegistry -------------------------------------
 
@@ -185,6 +191,26 @@ final class NonNlsMessages
     // ======================================================================
     // Methods
     // ======================================================================
+
+    // --- BundleImages -----------------------------------------------------
+
+    /**
+     * Gets the formatted message indicating an error occurred while reading the
+     * specified image.
+     * 
+     * @param imageUrl
+     *        The URL of the image; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while reading
+     *         the specified image; never {@code null}.
+     */
+    /* @NonNull */
+    static String BundleImages_getImage_readError(
+        /* @NonNull */
+        final URL imageUrl )
+    {
+        return bind( BundleImages_getImage_readError, imageUrl );
+    }
 
     // --- CardPileBaseDesignUIRegistry -------------------------------------
 

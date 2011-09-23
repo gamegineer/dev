@@ -49,19 +49,11 @@ final class NonNlsMessages
 
     // --- MainFrame --------------------------------------------------------
 
-    /** An error occurred while reading an application icon image. */
-    public static String MainFrame_getApplicationIconImages_readImageError;
-
     /** An error occurred while opening the table. */
     public static String MainFrame_openTable_error;
 
     /** An error occurred while saving the table. */
     public static String MainFrame_saveTable_error;
-
-    // --- TableView --------------------------------------------------------
-
-    /** An error occurred while reading the background image. */
-    public static String TableView_createBackgroundPaint_readImageError;
 
 
     // ======================================================================
@@ -90,24 +82,6 @@ final class NonNlsMessages
     // ======================================================================
 
     // --- MainFrame --------------------------------------------------------
-
-    /**
-     * Gets the formatted message that indicates an error occurred while reading
-     * an application icon image.
-     * 
-     * @param imagePath
-     *        The bundle-relative path to the image; must not be {@code null}.
-     * 
-     * @return The formatted message that indicates an error occurred while
-     *         reading an application icon image; never {@code null}.
-     */
-    /* @NonNull */
-    static String MainFrame_getApplicationIconImages_readImageError(
-        /* @NonNull */
-        final String imagePath )
-    {
-        return bind( MainFrame_getApplicationIconImages_readImageError, imagePath );
-    }
 
     /**
      * Gets the formatted message that indicates an error occurred while opening

@@ -25,7 +25,6 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FontMetrics;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,7 +34,6 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -45,13 +43,13 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.ui.dialog.DialogUtils;
 import org.gamegineer.table.internal.ui.Activator;
+import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetworkListener;
 import org.gamegineer.table.net.PlayerRole;
 import org.gamegineer.table.net.TableNetworkDisconnectedEvent;
 import org.gamegineer.table.net.TableNetworkEvent;
-import org.osgi.framework.Bundle;
 
 /**
  * A view of the table network players.
@@ -222,16 +220,10 @@ final class TableNetworkPlayerView
          */
         PlayerListCellRenderer()
         {
-            final Bundle bundle = Activator.getDefault().getBundleContext().getBundle();
-            final URL editorRequesterRoleIconUrl = bundle.getEntry( "/icons/roles/editor-requester.png" ); //$NON-NLS-1$
-            assert editorRequesterRoleIconUrl != null;
-            editorRequesterRoleIcon_ = new ImageIcon( editorRequesterRoleIconUrl );
-            final URL editorRoleIconUrl = bundle.getEntry( "/icons/roles/editor.png" ); //$NON-NLS-1$
-            assert editorRoleIconUrl != null;
-            editorRoleIcon_ = new ImageIcon( editorRoleIconUrl );
-            final URL noRolesIconUrl = bundle.getEntry( "/icons/roles/none.png" ); //$NON-NLS-1$
-            assert noRolesIconUrl != null;
-            noRolesIcon_ = new ImageIcon( noRolesIconUrl );
+            final BundleImages bundleImages = Activator.getDefault().getBundleImages();
+            editorRoleIcon_ = bundleImages.getIcon( BundleImages.ROLE_EDITOR );
+            editorRequesterRoleIcon_ = bundleImages.getIcon( BundleImages.ROLE_EDITOR_REQUESTER );
+            noRolesIcon_ = bundleImages.getIcon( BundleImages.ROLE_NONE );
         }
 
 

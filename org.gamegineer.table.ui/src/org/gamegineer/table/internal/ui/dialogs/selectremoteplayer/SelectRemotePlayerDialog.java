@@ -27,11 +27,9 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.FontMetrics;
 import java.awt.Window;
-import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -48,10 +46,10 @@ import org.gamegineer.common.ui.dialog.AbstractBannerDialog;
 import org.gamegineer.common.ui.dialog.DialogConstants;
 import org.gamegineer.common.ui.dialog.DialogUtils;
 import org.gamegineer.table.internal.ui.Activator;
+import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.model.TableModel;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.PlayerRole;
-import org.osgi.framework.Bundle;
 
 /**
  * A dialog used to select a remote table network player.
@@ -250,13 +248,9 @@ public final class SelectRemotePlayerDialog
          */
         PlayerListCellRenderer()
         {
-            final Bundle bundle = Activator.getDefault().getBundleContext().getBundle();
-            final URL editorRequesterRoleIconUrl = bundle.getEntry( "/icons/roles/editor-requester.png" ); //$NON-NLS-1$
-            assert editorRequesterRoleIconUrl != null;
-            editorRequesterRoleIcon_ = new ImageIcon( editorRequesterRoleIconUrl );
-            final URL noRolesIconUrl = bundle.getEntry( "/icons/roles/none.png" ); //$NON-NLS-1$
-            assert noRolesIconUrl != null;
-            noRolesIcon_ = new ImageIcon( noRolesIconUrl );
+            final BundleImages bundleImages = Activator.getDefault().getBundleImages();
+            editorRequesterRoleIcon_ = bundleImages.getIcon( BundleImages.ROLE_EDITOR_REQUESTER );
+            noRolesIcon_ = bundleImages.getIcon( BundleImages.ROLE_NONE );
         }
 
 

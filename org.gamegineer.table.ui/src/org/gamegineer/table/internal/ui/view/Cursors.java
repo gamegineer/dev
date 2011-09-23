@@ -29,11 +29,11 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.net.URL;
 import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.ui.Activator;
+import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.Loggers;
 
 /**
@@ -65,8 +65,8 @@ final class Cursors
      */
     static
     {
-        grabCursor_ = createCursor( "/icons/cursors/grab.png", new Point( 0, 0 ), NonNlsMessages.Cursors_grab_name ); //$NON-NLS-1$
-        handCursor_ = createCursor( "/icons/cursors/hand.png", new Point( 0, 0 ), NonNlsMessages.Cursors_hand_name ); //$NON-NLS-1$
+        grabCursor_ = createCursor( BundleImages.CURSOR_GRAB, new Point( 0, 0 ), NonNlsMessages.Cursors_grab_name );
+        handCursor_ = createCursor( BundleImages.CURSOR_HAND, new Point( 0, 0 ), NonNlsMessages.Cursors_hand_name );
         invalidCursor_ = createInvalidCursor();
     }
 
@@ -109,9 +109,8 @@ final class Cursors
         assert hotSpot != null;
         assert name != null;
 
-        final URL cursorImageUrl = Activator.getDefault().getBundleContext().getBundle().getEntry( path );
-        assert cursorImageUrl != null;
-        final ImageIcon cursorIcon = new ImageIcon( cursorImageUrl );
+        final ImageIcon cursorIcon = Activator.getDefault().getBundleImages().getIcon( path );
+        assert cursorIcon != null;
 
         final Toolkit toolkit = Toolkit.getDefaultToolkit();
         final Dimension bestCursorSize = toolkit.getBestCursorSize( cursorIcon.getIconWidth(), cursorIcon.getIconHeight() );

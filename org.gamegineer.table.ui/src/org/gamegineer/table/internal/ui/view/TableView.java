@@ -41,14 +41,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import javax.imageio.ImageIO;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -76,7 +72,7 @@ import org.gamegineer.table.core.ICardSurfaceDesignRegistry;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.internal.ui.Activator;
-import org.gamegineer.table.internal.ui.Loggers;
+import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.dialogs.selectremoteplayer.SelectRemotePlayerDialog;
 import org.gamegineer.table.internal.ui.model.ITableModelListener;
@@ -815,18 +811,13 @@ final class TableView
     /* @NonNull */
     private static Paint createBackgroundPaint()
     {
-        try
+        final BufferedImage image = Activator.getDefault().getBundleImages().getImage( BundleImages.BACKGROUND_GREEN_FELT );
+        if( image != null )
         {
-            final URL url = Activator.getDefault().getBundleContext().getBundle().getEntry( "/icons/backgrounds/green-felt.png" ); //$NON-NLS-1$
-            assert url != null;
-            final BufferedImage image = ImageIO.read( url );
             return new TexturePaint( image, new Rectangle( 0, 0, image.getWidth(), image.getHeight() ) );
         }
-        catch( final IOException e )
-        {
-            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.TableView_createBackgroundPaint_readImageError, e );
-            return new Color( 0, 128, 0 );
-        }
+
+        return new Color( 0, 128, 0 );
     }
 
     /**
