@@ -221,7 +221,7 @@ public final class ServerNode
      * @see org.gamegineer.table.internal.net.node.INodeController#getPlayer()
      */
     @Override
-    public IPlayer getPlayer()
+    public Player getPlayer()
     {
         synchronized( getLock() )
         {
@@ -377,9 +377,6 @@ public final class ServerNode
         super.remoteNodeUnbound( remoteNode );
 
         unbindPlayer( remoteNode.getPlayerName() );
-
-        // TODO: If the remote node being unbound has the editor role, the editor role
-        // must be assigned to the host.
     }
 
     /*
@@ -442,7 +439,17 @@ public final class ServerNode
         assert Thread.holdsLock( getLock() );
 
         assert players_.containsKey( playerName );
-        players_.remove( playerName );
+        final Player player = players_.remove( playerName );
+        if( player.hasRole( PlayerRole.EDITOR ) )
+        {
+            final Player hostPlayer = getPlayer();
+            if( hostPlayer != null )
+            {
+                assert hostPlayer.hasRole( PlayerRole.HOST );
+                hostPlayer.addRoles( EnumSet.of( PlayerRole.EDITOR ) );
+            }
+        }
+
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Player '%s' has disconnected", playerName ) ); //$NON-NLS-1$
         notifyPlayersUpdated();
     }
