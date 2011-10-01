@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.node.client;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -218,6 +217,19 @@ public final class ClientNode
     }
 
     /*
+     * @see org.gamegineer.table.internal.net.node.AbstractNode#createTableManagerDecoratorForLocalNetworkTable(org.gamegineer.table.internal.net.node.ITableManager)
+     */
+    @Override
+    protected ITableManager createTableManagerDecoratorForLocalNetworkTable(
+        final ITableManager tableManager )
+    {
+        assertArgumentNotNull( tableManager, "tableManager" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        return new ClientTableManagerDecorator( tableManager );
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.node.AbstractNode#createTransportLayer()
      */
     @Override
@@ -396,14 +408,8 @@ public final class ClientNode
     // ======================================================================
 
     /**
-     * Implementation of {@link ITableManager} that ensures changes to the local
-     * table are not broadcast to the server.
-     * 
-     * <p>
-     * TODO: THIS IS A TEMPORARY IMPLEMENTATION UNTIL WE SUPPORT CLIENTS BEING
-     * "PASSED THE BALL" AND HAVING THE AUTHORITY TO MAKE CHANGES TO THE NETWORK
-     * TABLE.
-     * </p>
+     * Implementation of {@link ITableManager} that keeps the client node
+     * synchronized with the master table on the server.
      */
     @Immutable
     private final class ClientTableManager
@@ -420,6 +426,42 @@ public final class ClientNode
         {
             super();
         }
+    }
+
+    /**
+     * A table manager decorator to be used by the client local network table.
+     */
+    @Immutable
+    private final class ClientTableManagerDecorator
+        implements ITableManager
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The decorated table manager. */
+        private final ITableManager tableManagerDecoratee_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ClientTableManagerDecorator}
+         * class.
+         * 
+         * @param tableManagerDecoratee
+         *        The decorated table manager; must not be {@code null}.
+         */
+        ClientTableManagerDecorator(
+            /* @NonNull */
+            final ITableManager tableManagerDecoratee )
+        {
+            assert tableManagerDecoratee != null;
+
+            tableManagerDecoratee_ = tableManagerDecoratee;
+        }
 
 
         // ==================================================================
@@ -427,78 +469,61 @@ public final class ClientNode
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementCardPileState(org.gamegineer.table.internal.net.node.INetworkTable, int, org.gamegineer.table.internal.net.node.CardPileIncrement)
+         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementCardPileState(org.gamegineer.table.internal.net.node.INetworkTable, int, org.gamegineer.table.internal.net.node.CardPileIncrement)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void incrementCardPileState(
             final INetworkTable sourceTable,
             final int cardPileIndex,
             final CardPileIncrement cardPileIncrement )
         {
-            assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
-            assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
-
-            if( sourceTable != getTable() )
+            if( getPlayer().hasRole( PlayerRole.EDITOR ) )
             {
-                super.incrementCardPileState( sourceTable, cardPileIndex, cardPileIncrement );
+                tableManagerDecoratee_.incrementCardPileState( sourceTable, cardPileIndex, cardPileIncrement );
             }
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementCardState(org.gamegineer.table.internal.net.node.INetworkTable, int, int, org.gamegineer.table.internal.net.node.CardIncrement)
+         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementCardState(org.gamegineer.table.internal.net.node.INetworkTable, int, int, org.gamegineer.table.internal.net.node.CardIncrement)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void incrementCardState(
             final INetworkTable sourceTable,
             final int cardPileIndex,
             final int cardIndex,
             final CardIncrement cardIncrement )
         {
-            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
-            assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
-            assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
-            assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
-
-            if( sourceTable != getTable() )
+            if( getPlayer().hasRole( PlayerRole.EDITOR ) )
             {
-                super.incrementCardState( sourceTable, cardPileIndex, cardIndex, cardIncrement );
+                tableManagerDecoratee_.incrementCardState( sourceTable, cardPileIndex, cardIndex, cardIncrement );
             }
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#incrementTableState(org.gamegineer.table.internal.net.node.INetworkTable, org.gamegineer.table.internal.net.node.TableIncrement)
+         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementTableState(org.gamegineer.table.internal.net.node.INetworkTable, org.gamegineer.table.internal.net.node.TableIncrement)
          */
-        @SuppressWarnings( "synthetic-access" )
         @Override
         public void incrementTableState(
             final INetworkTable sourceTable,
             final TableIncrement tableIncrement )
         {
-            assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
-
-            if( sourceTable != getTable() )
+            if( getPlayer().hasRole( PlayerRole.EDITOR ) )
             {
-                super.incrementTableState( sourceTable, tableIncrement );
+                tableManagerDecoratee_.incrementTableState( sourceTable, tableIncrement );
             }
         }
 
         /*
-         * @see org.gamegineer.table.internal.net.node.AbstractNode.TableManager#setTableState(org.gamegineer.table.internal.net.node.INetworkTable, java.lang.Object)
+         * @see org.gamegineer.table.internal.net.node.ITableManager#setTableState(org.gamegineer.table.internal.net.node.INetworkTable, java.lang.Object)
          */
         @Override
-        @SuppressWarnings( "synthetic-access" )
         public void setTableState(
             final INetworkTable sourceTable,
             final Object tableMemento )
         {
-            assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
-            assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
-
-            if( sourceTable != getTable() )
+            if( getPlayer().hasRole( PlayerRole.EDITOR ) )
             {
-                super.setTableState( sourceTable, tableMemento );
+                tableManagerDecoratee_.setTableState( sourceTable, tableMemento );
             }
         }
     }

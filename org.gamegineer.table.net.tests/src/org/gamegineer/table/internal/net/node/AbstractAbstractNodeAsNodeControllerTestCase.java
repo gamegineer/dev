@@ -245,6 +245,16 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     }
 
     /**
+     * Ensures the {@code createTableManagerDecoratorForLocalNetworkTable}
+     * method throws an exception when passed a {@code null} table manager.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateTableManagerDecoratorForLocalNetworkTable_TableManager_Null()
+    {
+        getNodeController().createTableManagerDecoratorForLocalNetworkTable( null );
+    }
+
+    /**
      * Ensures the {@code disconnect} method invokes the {@code disconnected}
      * method when the transport layer is open.
      * 

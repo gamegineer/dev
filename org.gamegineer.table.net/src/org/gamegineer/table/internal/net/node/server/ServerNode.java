@@ -36,6 +36,7 @@ import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.Player;
 import org.gamegineer.table.internal.net.node.AbstractNode;
 import org.gamegineer.table.internal.net.node.CardIncrement;
@@ -170,6 +171,19 @@ public final class ServerNode
         final Player player = new Player( getPlayerName() );
         player.addRoles( EnumSet.of( PlayerRole.EDITOR, PlayerRole.HOST, PlayerRole.LOCAL ) );
         bindPlayer( player );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.AbstractNode#createTableManagerDecoratorForLocalNetworkTable(org.gamegineer.table.internal.net.node.ITableManager)
+     */
+    @Override
+    protected ITableManager createTableManagerDecoratorForLocalNetworkTable(
+        final ITableManager tableManager )
+    {
+        assertArgumentNotNull( tableManager, "tableManager" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        return new ServerTableManagerDecorator( tableManager, getPlayerName() );
     }
 
     /*
@@ -459,13 +473,6 @@ public final class ServerNode
     // Nested Types
     // ======================================================================
 
-    // TODO: This class needs to ensure that the active player (obtained via
-    // ThreadPlayer.getPlayerName()) has the editor role before executing an
-    // operation that increments the table state. In addition, the methods of
-    // LocalNetworkTable used by the server node must be decorated such that
-    // it sets the active player name (via ThreadPlayer.setPlayerName()) before
-    // each call into the table manager.
-
     /**
      * Implementation of {@link ITableManager} that keeps the master table
      * synchronized, in addition to all tables connected to the node.
@@ -504,9 +511,11 @@ public final class ServerNode
             assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
             assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
 
-            NetworkTableUtils.incrementCardPileState( masterTable_, cardPileIndex, cardPileIncrement );
-
-            super.incrementCardPileState( sourceTable, cardPileIndex, cardPileIncrement );
+            if( verifyRequestingPlayerIsEditor() )
+            {
+                NetworkTableUtils.incrementCardPileState( masterTable_, cardPileIndex, cardPileIncrement );
+                super.incrementCardPileState( sourceTable, cardPileIndex, cardPileIncrement );
+            }
         }
 
         /*
@@ -525,9 +534,11 @@ public final class ServerNode
             assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
             assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
 
-            NetworkTableUtils.incrementCardState( masterTable_, cardPileIndex, cardIndex, cardIncrement );
-
-            super.incrementCardState( sourceTable, cardPileIndex, cardIndex, cardIncrement );
+            if( verifyRequestingPlayerIsEditor() )
+            {
+                NetworkTableUtils.incrementCardState( masterTable_, cardPileIndex, cardIndex, cardIncrement );
+                super.incrementCardState( sourceTable, cardPileIndex, cardIndex, cardIncrement );
+            }
         }
 
         /*
@@ -541,9 +552,11 @@ public final class ServerNode
         {
             assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
 
-            NetworkTableUtils.incrementTableState( masterTable_, tableIncrement );
-
-            super.incrementTableState( sourceTable, tableIncrement );
+            if( verifyRequestingPlayerIsEditor() )
+            {
+                NetworkTableUtils.incrementTableState( masterTable_, tableIncrement );
+                super.incrementTableState( sourceTable, tableIncrement );
+            }
         }
 
         /*
@@ -558,9 +571,164 @@ public final class ServerNode
             assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
             assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
 
-            NetworkTableUtils.setTableState( masterTable_, tableMemento );
+            if( verifyRequestingPlayerIsEditor() )
+            {
+                NetworkTableUtils.setTableState( masterTable_, tableMemento );
+                super.setTableState( sourceTable, tableMemento );
+            }
+        }
 
-            super.setTableState( sourceTable, tableMemento );
+        /**
+         * Verifies the requesting player is the network table editor.
+         * 
+         * @return {@code true} if the requesting player is the network table
+         *         editor; otherwise {@code false}.
+         */
+        @SuppressWarnings( "synthetic-access" )
+        private boolean verifyRequestingPlayerIsEditor()
+        {
+            final String requestingPlayerName = ThreadPlayer.getPlayerName();
+            assert requestingPlayerName != null;
+            final Player requestingPlayer;
+            synchronized( getLock() )
+            {
+                requestingPlayer = players_.get( requestingPlayerName );
+            }
+            if( (requestingPlayer != null) && requestingPlayer.hasRole( PlayerRole.EDITOR ) )
+            {
+                return true;
+            }
+
+            Loggers.getDefaultLogger().warning( NonNlsMessages.ServerNode_networkTableModification_playerNotEditor( requestingPlayerName ) );
+            return false;
+        }
+    }
+
+    /**
+     * A table manager decorator to be used by the server local network table.
+     */
+    @Immutable
+    private final class ServerTableManagerDecorator
+        implements ITableManager
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The name of the local player. */
+        private final String localPlayerName_;
+
+        /** The decorated table manager. */
+        private final ITableManager tableManagerDecoratee_;
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ServerTableManagerDecorator}
+         * class.
+         * 
+         * @param tableManagerDecoratee
+         *        The decorated table manager; must not be {@code null}.
+         * @param localPlayerName
+         *        The name of the local player; must not be {@code null}.
+         */
+        ServerTableManagerDecorator(
+            /* @NonNull */
+            final ITableManager tableManagerDecoratee,
+            /* @NonNull */
+            final String localPlayerName )
+        {
+            assert tableManagerDecoratee != null;
+            assert localPlayerName != null;
+
+            localPlayerName_ = localPlayerName;
+            tableManagerDecoratee_ = tableManagerDecoratee;
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementCardPileState(org.gamegineer.table.internal.net.node.INetworkTable, int, org.gamegineer.table.internal.net.node.CardPileIncrement)
+         */
+        @Override
+        public void incrementCardPileState(
+            final INetworkTable sourceTable,
+            final int cardPileIndex,
+            final CardPileIncrement cardPileIncrement )
+        {
+            ThreadPlayer.setPlayerName( localPlayerName_ );
+            try
+            {
+                tableManagerDecoratee_.incrementCardPileState( sourceTable, cardPileIndex, cardPileIncrement );
+            }
+            finally
+            {
+                ThreadPlayer.setPlayerName( null );
+            }
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementCardState(org.gamegineer.table.internal.net.node.INetworkTable, int, int, org.gamegineer.table.internal.net.node.CardIncrement)
+         */
+        @Override
+        public void incrementCardState(
+            final INetworkTable sourceTable,
+            final int cardPileIndex,
+            final int cardIndex,
+            final CardIncrement cardIncrement )
+        {
+            ThreadPlayer.setPlayerName( localPlayerName_ );
+            try
+            {
+                tableManagerDecoratee_.incrementCardState( sourceTable, cardPileIndex, cardIndex, cardIncrement );
+            }
+            finally
+            {
+                ThreadPlayer.setPlayerName( null );
+            }
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.ITableManager#incrementTableState(org.gamegineer.table.internal.net.node.INetworkTable, org.gamegineer.table.internal.net.node.TableIncrement)
+         */
+        @Override
+        public void incrementTableState(
+            final INetworkTable sourceTable,
+            final TableIncrement tableIncrement )
+        {
+            ThreadPlayer.setPlayerName( localPlayerName_ );
+            try
+            {
+                tableManagerDecoratee_.incrementTableState( sourceTable, tableIncrement );
+            }
+            finally
+            {
+                ThreadPlayer.setPlayerName( null );
+            }
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.ITableManager#setTableState(org.gamegineer.table.internal.net.node.INetworkTable, java.lang.Object)
+         */
+        @Override
+        public void setTableState(
+            final INetworkTable sourceTable,
+            final Object tableMemento )
+        {
+            ThreadPlayer.setPlayerName( localPlayerName_ );
+            try
+            {
+                tableManagerDecoratee_.setTableState( sourceTable, tableMemento );
+            }
+            finally
+            {
+                ThreadPlayer.setPlayerName( null );
+            }
         }
     }
 }

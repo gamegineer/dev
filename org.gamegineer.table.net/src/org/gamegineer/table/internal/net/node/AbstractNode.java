@@ -195,7 +195,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
                 localPlayerName_ = configuration.getLocalPlayerName();
                 password_ = configuration.getPassword();
-                tables_.put( localPlayerName_, new LocalNetworkTable( getTableManager(), configuration.getLocalTable() ) );
+                tables_.put( localPlayerName_, new LocalNetworkTable( createTableManagerDecoratorForLocalNetworkTable( getTableManager() ), configuration.getLocalTable() ) );
 
                 connecting( configuration );
 
@@ -276,6 +276,41 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assert Thread.holdsLock( getLock() );
 
         // do nothing
+    }
+
+    /**
+     * Template method invoked to create a decorator for the table manager used
+     * by the local network table.
+     * 
+     * <p>
+     * This method is invoked while the instance lock is held. Subclasses are
+     * not required to invoke the superclass method.
+     * </p>
+     * 
+     * <p>
+     * This implementation returns the table manager without decoration.
+     * </p>
+     * 
+     * @param tableManager
+     *        The table manager for the local network table; must not be {@code
+     *        null}.
+     * 
+     * @return A decorator for the table manager used by the local network
+     *         table; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code tableManager} is {@code null}.
+     */
+    @GuardedBy( "getLock()" )
+    /* @NonNull */
+    protected ITableManager createTableManagerDecoratorForLocalNetworkTable(
+        /* @NonNull */
+        final ITableManager tableManager )
+    {
+        assertArgumentNotNull( tableManager, "tableManager" ); //$NON-NLS-1$
+        assert Thread.holdsLock( getLock() );
+
+        return tableManager;
     }
 
     /**
