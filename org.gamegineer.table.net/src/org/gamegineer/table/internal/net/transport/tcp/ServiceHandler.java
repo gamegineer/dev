@@ -134,9 +134,8 @@ final class ServiceHandler
     {
         assert isTransportLayerThread();
 
-        final State state;
-
-        if( (state = getState()) == State.OPEN )
+        final State previousState = getState();
+        if( previousState == State.OPEN )
         {
             if( isRegistered_ )
             {
@@ -160,7 +159,7 @@ final class ServiceHandler
 
         setState( State.CLOSED );
 
-        if( state == State.OPEN )
+        if( previousState == State.OPEN )
         {
             service_.stopped( exception );
         }

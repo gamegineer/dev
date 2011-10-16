@@ -162,9 +162,8 @@ final class Acceptor
     {
         assert isTransportLayerThread();
 
-        final State previousState;
-
-        if( (previousState = getState()) == State.OPEN )
+        final State previousState = getState();
+        if( previousState == State.OPEN )
         {
             if( isRegistered_ )
             {
