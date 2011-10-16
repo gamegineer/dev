@@ -62,7 +62,7 @@ public final class TcpTransportLayerFactory
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        return new ActiveTransportLayer( context );
+        return new TransportLayerAdapter( new ActiveTransportLayer( context ) );
     }
 
     /*
@@ -74,6 +74,6 @@ public final class TcpTransportLayerFactory
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        return new PassiveTransportLayer( context );
+        return new TransportLayerAdapter( new PassiveTransportLayer( context ) );
     }
 }

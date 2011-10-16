@@ -24,14 +24,13 @@ package org.gamegineer.table.internal.net.transport.tcp;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ByteChannel;
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 
 /**
  * A message input queue.
  */
-@ThreadSafe
+@NotThreadSafe
 final class InputQueue
 {
     // ======================================================================
@@ -42,14 +41,10 @@ final class InputQueue
     private static final ByteBuffer EMPTY_BUFFER = ByteBuffer.allocate( 0 ).asReadOnlyBuffer();
 
     /** The buffer associated with the queue. */
-    @GuardedBy( "lock_" )
     private ByteBuffer buffer_;
 
     /** The buffer pool associated with the queue. */
     private final ByteBufferPool bufferPool_;
-
-    /** The instance lock. */
-    private final Object lock_;
 
 
     // ======================================================================
@@ -71,7 +66,6 @@ final class InputQueue
 
         buffer_ = null;
         bufferPool_ = bufferPool;
-        lock_ = new Object();
     }
 
 
@@ -95,44 +89,41 @@ final class InputQueue
     {
         assert count >= 0;
 
-        synchronized( lock_ )
+        if( (count == 0) || isEmpty() )
         {
-            if( (count == 0) || isEmpty() )
-            {
-                return EMPTY_BUFFER;
-            }
-
-            final int outgoingCapacity = Math.min( count, buffer_.position() );
-            final ByteBuffer outgoingBuffer = ByteBuffer.allocate( outgoingCapacity );
-
-            buffer_.flip();
-
-            if( buffer_.remaining() <= outgoingBuffer.remaining() )
-            {
-                outgoingBuffer.put( buffer_ );
-            }
-            else
-            {
-                while( outgoingBuffer.hasRemaining() )
-                {
-                    outgoingBuffer.put( buffer_.get() );
-                }
-            }
-
-            if( buffer_.hasRemaining() )
-            {
-                buffer_.compact();
-            }
-            else
-            {
-                bufferPool_.returnByteBuffer( buffer_ );
-                buffer_ = null;
-            }
-
-            outgoingBuffer.flip();
-
-            return outgoingBuffer;
+            return EMPTY_BUFFER;
         }
+
+        final int outgoingCapacity = Math.min( count, buffer_.position() );
+        final ByteBuffer outgoingBuffer = ByteBuffer.allocate( outgoingCapacity );
+
+        buffer_.flip();
+
+        if( buffer_.remaining() <= outgoingBuffer.remaining() )
+        {
+            outgoingBuffer.put( buffer_ );
+        }
+        else
+        {
+            while( outgoingBuffer.hasRemaining() )
+            {
+                outgoingBuffer.put( buffer_.get() );
+            }
+        }
+
+        if( buffer_.hasRemaining() )
+        {
+            buffer_.compact();
+        }
+        else
+        {
+            bufferPool_.returnByteBuffer( buffer_ );
+            buffer_ = null;
+        }
+
+        outgoingBuffer.flip();
+
+        return outgoingBuffer;
     }
 
     /**
@@ -144,33 +135,30 @@ final class InputQueue
     /* @Nullable */
     MessageEnvelope dequeueMessageEnvelope()
     {
-        synchronized( lock_ )
+        if( isEmpty() )
         {
-            if( isEmpty() )
-            {
-                return null;
-            }
-
-            buffer_.flip();
-
-            final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteBuffer( buffer_ );
-            if( messageEnvelope == null )
-            {
-                return null;
-            }
-
-            if( buffer_.hasRemaining() )
-            {
-                buffer_.compact();
-            }
-            else
-            {
-                bufferPool_.returnByteBuffer( buffer_ );
-                buffer_ = null;
-            }
-
-            return messageEnvelope;
+            return null;
         }
+
+        buffer_.flip();
+
+        final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteBuffer( buffer_ );
+        if( messageEnvelope == null )
+        {
+            return null;
+        }
+
+        if( buffer_.hasRemaining() )
+        {
+            buffer_.compact();
+        }
+        else
+        {
+            bufferPool_.returnByteBuffer( buffer_ );
+            buffer_ = null;
+        }
+
+        return messageEnvelope;
     }
 
     /**
@@ -205,15 +193,12 @@ final class InputQueue
     {
         assert channel != null;
 
-        synchronized( lock_ )
+        if( buffer_ == null )
         {
-            if( buffer_ == null )
-            {
-                buffer_ = bufferPool_.takeByteBuffer();
-            }
-
-            return channel.read( buffer_ );
+            buffer_ = bufferPool_.takeByteBuffer();
         }
+
+        return channel.read( buffer_ );
     }
 
     /**
@@ -228,19 +213,16 @@ final class InputQueue
     int indexOf(
         final byte b )
     {
-        synchronized( lock_ )
+        if( buffer_ == null )
         {
-            if( buffer_ == null )
-            {
-                return -1;
-            }
+            return -1;
+        }
 
-            for( int index = 0, position = buffer_.position(); index < position; ++index )
+        for( int index = 0, position = buffer_.position(); index < position; ++index )
+        {
+            if( b == buffer_.get( index ) )
             {
-                if( b == buffer_.get( index ) )
-                {
-                    return index;
-                }
+                return index;
             }
         }
 
@@ -254,9 +236,6 @@ final class InputQueue
      */
     boolean isEmpty()
     {
-        synchronized( lock_ )
-        {
-            return (buffer_ == null) || (buffer_.position() == 0);
-        }
+        return (buffer_ == null) || (buffer_.position() == 0);
     }
 }

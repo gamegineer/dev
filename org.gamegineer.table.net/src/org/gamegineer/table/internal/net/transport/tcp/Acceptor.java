@@ -29,8 +29,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.logging.Level;
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.Loggers;
 
 /**
@@ -42,7 +41,7 @@ import org.gamegineer.table.internal.net.Loggers;
  * service.
  * </p>
  */
-@ThreadSafe
+@NotThreadSafe
 final class Acceptor
     extends AbstractEventHandler
 {
@@ -51,15 +50,10 @@ final class Acceptor
     // ======================================================================
 
     /** Indicates the acceptor is registered with the dispatcher. */
-    @GuardedBy( "getLock()" )
     private boolean isRegistered_;
 
     /** The server socket channel on which incoming connections are accepted. */
-    @GuardedBy( "getLock()" )
     private ServerSocketChannel serverChannel_;
-
-    /** The transport layer associated with the acceptor. */
-    private final AbstractTransportLayer transportLayer_;
 
 
     // ======================================================================
@@ -77,11 +71,10 @@ final class Acceptor
         /* @NonNull */
         final AbstractTransportLayer transportLayer )
     {
-        assert transportLayer != null;
+        super( transportLayer );
 
         isRegistered_ = false;
         serverChannel_ = null;
-        transportLayer_ = transportLayer;
     }
 
 
@@ -92,11 +85,8 @@ final class Acceptor
     /**
      * Invoked when the server channel is ready to accept a new connection.
      */
-    @GuardedBy( "getLock()" )
     private void accept()
     {
-        assert Thread.holdsLock( getLock() );
-
         final SocketChannel clientChannel;
         try
         {
@@ -108,7 +98,8 @@ final class Acceptor
 
             clientChannel.configureBlocking( false );
 
-            final ServiceHandler serviceHandler = new ServiceHandler( transportLayer_, transportLayer_.getContext().createService() );
+            final AbstractTransportLayer transportLayer = getTransportLayer();
+            final ServiceHandler serviceHandler = new ServiceHandler( transportLayer, transportLayer.createService() );
             serviceHandler.open( clientChannel );
         }
         catch( final IOException e )
@@ -143,24 +134,22 @@ final class Acceptor
         throws IOException
     {
         assert hostName != null;
+        assert isTransportLayerThread();
 
-        synchronized( getLock() )
+        assertStateLegal( getState() == State.PRISTINE, NonNlsMessages.Acceptor_state_notPristine );
+
+        try
         {
-            assertStateLegal( getState() == State.PRISTINE, NonNlsMessages.Acceptor_state_notPristine );
+            serverChannel_ = createServerSocketChannel( hostName, port );
+            setState( State.OPEN );
 
-            try
-            {
-                serverChannel_ = createServerSocketChannel( hostName, port );
-                setState( State.OPEN );
-
-                transportLayer_.getDispatcher().registerEventHandler( this );
-                isRegistered_ = true;
-            }
-            catch( final IOException e )
-            {
-                close( e );
-                throw e;
-            }
+            getTransportLayer().getDispatcher().registerEventHandler( this );
+            isRegistered_ = true;
+        }
+        catch( final IOException e )
+        {
+            close( e );
+            throw e;
         }
     }
 
@@ -171,38 +160,37 @@ final class Acceptor
     void close(
         final Exception exception )
     {
-        final State state;
+        assert isTransportLayerThread();
 
-        synchronized( getLock() )
+        final State previousState;
+
+        if( (previousState = getState()) == State.OPEN )
         {
-            if( (state = getState()) == State.OPEN )
+            if( isRegistered_ )
             {
-                if( isRegistered_ )
-                {
-                    isRegistered_ = false;
-                    transportLayer_.getDispatcher().unregisterEventHandler( this );
-                }
-
-                try
-                {
-                    serverChannel_.close();
-                }
-                catch( final IOException e )
-                {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Acceptor_close_ioError, e );
-                }
-                finally
-                {
-                    serverChannel_ = null;
-                }
+                isRegistered_ = false;
+                getTransportLayer().getDispatcher().unregisterEventHandler( this );
             }
 
-            setState( State.CLOSED );
+            try
+            {
+                serverChannel_.close();
+            }
+            catch( final IOException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Acceptor_close_ioError, e );
+            }
+            finally
+            {
+                serverChannel_ = null;
+            }
         }
 
-        if( state == State.OPEN )
+        setState( State.CLOSED );
+
+        if( previousState == State.OPEN )
         {
-            transportLayer_.disconnected( exception );
+            getTransportLayer().disconnected( exception );
         }
     }
 
@@ -241,10 +229,9 @@ final class Acceptor
     @Override
     SelectableChannel getChannel()
     {
-        synchronized( getLock() )
-        {
-            return serverChannel_;
-        }
+        assert isTransportLayerThread();
+
+        return serverChannel_;
     }
 
     /*
@@ -253,6 +240,8 @@ final class Acceptor
     @Override
     int getInterestOperations()
     {
+        assert isTransportLayerThread();
+
         return SelectionKey.OP_ACCEPT;
     }
 
@@ -262,16 +251,15 @@ final class Acceptor
     @Override
     void run()
     {
-        synchronized( getLock() )
+        assert isTransportLayerThread();
+
+        // Handle race condition when acceptor is closed after an event has been
+        // dispatched but before this method is called
+        if( getState() == State.OPEN )
         {
-            // Handle race condition when acceptor is closed after an event has been
-            // dispatched but before this method is called
-            if( getState() == State.OPEN )
+            if( getSelectionKey().isAcceptable() )
             {
-                if( getSelectionKey().isAcceptable() )
-                {
-                    accept();
-                }
+                accept();
             }
         }
     }

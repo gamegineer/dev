@@ -23,34 +23,31 @@ package org.gamegineer.table.internal.net.transport.tcp;
 
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.NotThreadSafe;
 
 /**
  * Superclass for all event handlers in the TCP transport layer
  * Acceptor-Connector pattern implementation.
  */
-@ThreadSafe
+@NotThreadSafe
 abstract class AbstractEventHandler
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The instance lock. */
-    private final Object lock_;
-
     /**
      * The selection key representing the binding between the event handler and
      * an event dispatcher or {@code null} if the event handler is not currently
      * bound to an event dispatcher.
      */
-    @GuardedBy( "getLock()" )
     private SelectionKey selectionKey_;
 
     /** The event handler state. */
-    @GuardedBy( "getLock()" )
     private State state_;
+
+    /** The transport layer associated with the event handler. */
+    private final AbstractTransportLayer transportLayer_;
 
 
     // ======================================================================
@@ -59,12 +56,20 @@ abstract class AbstractEventHandler
 
     /**
      * Initializes a new instance of the {@code AbstractEventHandler} class.
+     * 
+     * @param transportLayer
+     *        The transport layer associated with the event handler; must not be
+     *        {@code null}.
      */
-    AbstractEventHandler()
+    AbstractEventHandler(
+        /* @NonNull */
+        final AbstractTransportLayer transportLayer )
     {
-        lock_ = new Object();
+        assert transportLayer != null;
+
         selectionKey_ = null;
         state_ = State.PRISTINE;
+        transportLayer_ = transportLayer;
     }
 
 
@@ -110,17 +115,6 @@ abstract class AbstractEventHandler
     abstract int getInterestOperations();
 
     /**
-     * Gets the instance lock for the event handler.
-     * 
-     * @return The instance lock for the event handler; never {@code null}.
-     */
-    /* @NonNull */
-    final Object getLock()
-    {
-        return lock_;
-    }
-
-    /**
      * Gets the selection key representing the binding between the event handler
      * and an event dispatcher.
      * 
@@ -131,10 +125,9 @@ abstract class AbstractEventHandler
     /* @Nullable */
     final SelectionKey getSelectionKey()
     {
-        synchronized( getLock() )
-        {
-            return selectionKey_;
-        }
+        assert isTransportLayerThread();
+
+        return selectionKey_;
     }
 
     /**
@@ -145,17 +138,55 @@ abstract class AbstractEventHandler
     /* @NonNull */
     final State getState()
     {
-        synchronized( getLock() )
-        {
-            return state_;
-        }
+        assert isTransportLayerThread();
+
+        return state_;
+    }
+
+    /**
+     * Gets the transport layer associated with the event handler.
+     * 
+     * <p>
+     * This method may be called from any thread.
+     * </p>
+     * 
+     * @return The transport layer associated with the event handler; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    final AbstractTransportLayer getTransportLayer()
+    {
+        return transportLayer_;
+    }
+
+    /**
+     * Indicates the current thread is the transport layer thread for the
+     * transport layer associated with the event handler.
+     * 
+     * <p>
+     * This method may be called from any thread.
+     * </p>
+     * 
+     * @return {@code true} if the current thread is the transport layer thread
+     *         for the transport layer associated with the event handler;
+     *         otherwise {@code false}.
+     */
+    final boolean isTransportLayerThread()
+    {
+        return transportLayer_.isTransportLayerThread();
     }
 
     /**
      * Invoked by the event dispatcher immediately before the handler is run.
+     * 
+     * <p>
+     * This implementation does nothing.
+     * </p>
      */
     void prepareToRun()
     {
+        assert isTransportLayerThread();
+
         // do nothing
     }
 
@@ -177,10 +208,9 @@ abstract class AbstractEventHandler
         /* @Nullable */
         final SelectionKey selectionKey )
     {
-        synchronized( getLock() )
-        {
-            selectionKey_ = selectionKey;
-        }
+        assert isTransportLayerThread();
+
+        selectionKey_ = selectionKey;
     }
 
     /**
@@ -194,11 +224,9 @@ abstract class AbstractEventHandler
         final State state )
     {
         assert state != null;
+        assert isTransportLayerThread();
 
-        synchronized( getLock() )
-        {
-            state_ = state;
-        }
+        state_ = state;
     }
 
 

@@ -21,6 +21,8 @@
 
 package org.gamegineer.table.internal.net.transport;
 
+import java.util.concurrent.Future;
+
 /**
  * A network transport layer.
  * 
@@ -33,6 +35,37 @@ public interface ITransportLayer
     // ======================================================================
 
     /**
+     * Begins an asynchronous operation to close the transport layer.
+     * 
+     * @return An asynchronous completion token for the operation; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    public Future<Void> beginClose();
+
+    /**
+     * Begins an asynchronous operation to open the transport layer.
+     * 
+     * @param hostName
+     *        The host name; must not be {@code null}. For a passive transport
+     *        layer, this value is the host name to which all services will be
+     *        bound. For an active transport layer, this value is the host name
+     *        of the remote service.
+     * @param port
+     *        The port. For a passive transport layer, this value is the port to
+     *        which all services will be bound. For an active transport layer,
+     *        this value is the port of the remote service.
+     * 
+     * @return An asynchronous completion token for the operation; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    public Future<Void> beginOpen(
+        /* @NonNull */
+        String hostName,
+        int port );
+
+    /**
      * Closes the transport layer.
      * 
      * <p>
@@ -43,8 +76,61 @@ public interface ITransportLayer
      * This method blocks until the transport layer is closed or an error
      * occurs.
      * </p>
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the transport
+     *         layer to be closed.
+     * @throws java.util.concurrent.CancellationException
+     *         If the operation is cancelled.
      */
-    public void close();
+    public void close()
+        throws InterruptedException;
+
+    /**
+     * Ends the asynchronous operation to close the transport layer associated
+     * with the specified asynchronous completion token.
+     * 
+     * @param future
+     *        The asynchronous completion token associated with the operation;
+     *        must not be {@code null}.
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the transport
+     *         layer to be closed.
+     * @throws java.lang.NullPointerException
+     *         If {@code future} is {@code null}.
+     * @throws java.util.concurrent.CancellationException
+     *         If the operation is cancelled.
+     */
+    public void endClose(
+        /* @NonNull */
+        Future<Void> future )
+        throws InterruptedException;
+
+    /**
+     * Ends the asynchronous operation to open the transport layer associated
+     * with the specified asynchronous completion token.
+     * 
+     * @param future
+     *        The asynchronous completion token associated with the operation;
+     *        must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If the transport layer has already been opened or is closed.
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the transport
+     *         layer to be opened.
+     * @throws java.lang.NullPointerException
+     *         If {@code future} is {@code null}.
+     * @throws java.util.concurrent.CancellationException
+     *         If the operation is cancelled.
+     * @throws org.gamegineer.table.internal.net.transport.TransportException
+     *         If an error occurs.
+     */
+    public void endOpen(
+        /* @NonNull */
+        Future<Void> future )
+        throws TransportException, InterruptedException;
 
     /**
      * Opens the transport layer.
@@ -66,8 +152,13 @@ public interface ITransportLayer
      * 
      * @throws java.lang.IllegalStateException
      *         If the transport layer has already been opened or is closed.
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the transport
+     *         layer to be closed.
      * @throws java.lang.NullPointerException
      *         If {@code hostName} is {@code null}.
+     * @throws java.util.concurrent.CancellationException
+     *         If the operation is cancelled.
      * @throws org.gamegineer.table.internal.net.transport.TransportException
      *         If an error occurs.
      */
@@ -75,5 +166,5 @@ public interface ITransportLayer
         /* @NonNull */
         String hostName,
         int port )
-        throws TransportException;
+        throws TransportException, InterruptedException;
 }

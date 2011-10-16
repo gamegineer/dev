@@ -47,23 +47,36 @@ class FakeEventHandler
     /**
      * Initializes a new instance of the {@code FakeEventHandler} class with a
      * default fake channel.
+     * 
+     * @param transportLayer
+     *        The transport layer associated with the event handler; must not be
+     *        {@code null}.
      */
-    FakeEventHandler()
+    FakeEventHandler(
+        /* @NonNull */
+        final AbstractTransportLayer transportLayer )
     {
-        this( new FakeSelectableChannel() );
+        this( transportLayer, new FakeSelectableChannel() );
     }
 
     /**
      * Initializes a new instance of the {@code FakeEventHandler} class with the
      * specified channel.
      * 
+     * @param transportLayer
+     *        The transport layer associated with the event handler; must not be
+     *        {@code null}.
      * @param channel
      *        The event handler channel; must not be {@code null}.
      */
     FakeEventHandler(
         /* @NonNull */
+        final AbstractTransportLayer transportLayer,
+        /* @NonNull */
         final SelectableChannel channel )
     {
+        super( transportLayer );
+
         assert channel != null;
 
         channel_ = channel;
@@ -82,7 +95,9 @@ class FakeEventHandler
         @SuppressWarnings( "unused" )
         final Exception exception )
     {
-        // do nothing
+        assert isTransportLayerThread();
+
+        setState( State.CLOSED );
     }
 
     /*
@@ -91,6 +106,8 @@ class FakeEventHandler
     @Override
     SelectableChannel getChannel()
     {
+        assert isTransportLayerThread();
+
         return channel_;
     }
 
@@ -100,6 +117,8 @@ class FakeEventHandler
     @Override
     int getInterestOperations()
     {
+        assert isTransportLayerThread();
+
         return 0;
     }
 
@@ -109,6 +128,8 @@ class FakeEventHandler
     @Override
     void run()
     {
+        assert isTransportLayerThread();
+
         // do nothing
     }
 }

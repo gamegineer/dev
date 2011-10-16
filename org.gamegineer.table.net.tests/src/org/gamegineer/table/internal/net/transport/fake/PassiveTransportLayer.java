@@ -22,7 +22,9 @@
 package org.gamegineer.table.internal.net.transport.fake;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.concurrent.Future;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 
 /**
@@ -52,11 +54,58 @@ final class PassiveTransportLayer
     // ======================================================================
 
     /*
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#beginClose()
+     */
+    @Override
+    public Future<Void> beginClose()
+    {
+        return new SynchronousFuture<Void>();
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#beginOpen(java.lang.String, int)
+     */
+    @Override
+    public Future<Void> beginOpen(
+        final String hostName,
+        @SuppressWarnings( "unused" )
+        final int port )
+    {
+        assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
+
+        return new SynchronousFuture<Void>();
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.transport.ITransportLayer#close()
      */
     @Override
     public void close()
     {
+        endClose( beginClose() );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#endClose(java.util.concurrent.Future)
+     */
+    @Override
+    public void endClose(
+        final Future<Void> future )
+    {
+        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
+
+        // do nothing
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#endOpen(java.util.concurrent.Future)
+     */
+    @Override
+    public void endOpen(
+        final Future<Void> future )
+    {
+        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
+
         // do nothing
     }
 
@@ -66,9 +115,8 @@ final class PassiveTransportLayer
     @Override
     public void open(
         final String hostName,
-        @SuppressWarnings( "unused" )
         final int port )
     {
-        assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
+        endOpen( beginOpen( hostName, port ) );
     }
 }

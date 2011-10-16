@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SocketChannel;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.NotThreadSafe;
 
 /**
  * A connector in the TCP transport layer Acceptor-Connector pattern
@@ -37,18 +37,10 @@ import net.jcip.annotations.ThreadSafe;
  * service.
  * </p>
  */
-@ThreadSafe
+@NotThreadSafe
 final class Connector
     extends AbstractEventHandler
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The transport layer associated with the connector. */
-    private final AbstractTransportLayer transportLayer_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -64,9 +56,7 @@ final class Connector
         /* @NonNull */
         final AbstractTransportLayer transportLayer )
     {
-        assert transportLayer != null;
-
-        transportLayer_ = transportLayer;
+        super( transportLayer );
     }
 
 
@@ -82,11 +72,9 @@ final class Connector
         final Exception exception )
     {
         assert exception == null : "asynchronous connection not supported"; //$NON-NLS-1$
+        assert isTransportLayerThread();
 
-        synchronized( getLock() )
-        {
-            setState( State.CLOSED );
-        }
+        setState( State.CLOSED );
     }
 
     /**
@@ -114,22 +102,21 @@ final class Connector
         throws IOException
     {
         assert hostName != null;
+        assert isTransportLayerThread();
 
-        synchronized( getLock() )
+        assertStateLegal( getState() == State.PRISTINE, NonNlsMessages.Connector_state_notPristine );
+
+        try
         {
-            assertStateLegal( getState() == State.PRISTINE, NonNlsMessages.Connector_state_notPristine );
+            final SocketChannel channel = createSocketChannel( hostName, port );
 
-            try
-            {
-                final SocketChannel channel = createSocketChannel( hostName, port );
-
-                final ServiceHandler serviceHandler = new ServiceHandler( transportLayer_, transportLayer_.getContext().createService() );
-                serviceHandler.open( channel );
-            }
-            finally
-            {
-                close();
-            }
+            final AbstractTransportLayer transportLayer = getTransportLayer();
+            final ServiceHandler serviceHandler = new ServiceHandler( transportLayer, transportLayer.createService() );
+            serviceHandler.open( channel );
+        }
+        finally
+        {
+            close();
         }
     }
 
@@ -174,6 +161,8 @@ final class Connector
     @Override
     SelectableChannel getChannel()
     {
+        assert isTransportLayerThread();
+
         throw new UnsupportedOperationException( "asynchronous connection not supported" ); //$NON-NLS-1$
     }
 
@@ -183,6 +172,8 @@ final class Connector
     @Override
     int getInterestOperations()
     {
+        assert isTransportLayerThread();
+
         throw new UnsupportedOperationException( "asynchronous connection not supported" ); //$NON-NLS-1$
     }
 
@@ -192,6 +183,8 @@ final class Connector
     @Override
     void run()
     {
+        assert isTransportLayerThread();
+
         throw new UnsupportedOperationException( "asynchronous connection not supported" ); //$NON-NLS-1$
     }
 }

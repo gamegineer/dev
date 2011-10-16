@@ -27,9 +27,10 @@ import java.net.SocketException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.logging.Level;
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.Immutable;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.internal.net.transport.IService;
@@ -40,57 +41,46 @@ import org.gamegineer.table.internal.net.transport.MessageEnvelope;
  * A service handler in the TCP transport layer Acceptor-Connector pattern
  * implementation.
  */
-@ThreadSafe
+@NotThreadSafe
 final class ServiceHandler
     extends AbstractEventHandler
-    implements IServiceContext
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The channel associated with the service handler. */
-    @GuardedBy( "getLock()" )
     private SocketChannel channel_;
 
     /** The input queue associated with the service handler. */
     private final InputQueue inputQueue_;
 
     /** The state of the input queue. */
-    @GuardedBy( "getLock()" )
     private QueueState inputQueueState_;
 
     /** The channel operations in which the handler is interested. */
-    @GuardedBy( "getLock()" )
     private int interestOperations_;
 
     /** Indicates the service handler has been registered with the dispatcher. */
-    @GuardedBy( "getLock()" )
     private boolean isRegistered_;
 
     /** Indicates the handler is running. */
-    @GuardedBy( "getLock()" )
     private boolean isRunning_;
 
     /** The output handler associated with the service handler. */
     private final OutputQueue outputQueue_;
 
     /** The state of the output queue. */
-    @GuardedBy( "getLock()" )
     private QueueState outputQueueState_;
 
     /**
      * A snapshot of the channel operations that are ready immediately before
      * the handler is run.
      */
-    @GuardedBy( "getLock()" )
     private int readyOperations_;
 
     /** The service. */
     private final IService service_;
-
-    /** The transport layer associated with the service handler. */
-    private final AbstractTransportLayer transportLayer_;
 
 
     // ======================================================================
@@ -112,20 +102,22 @@ final class ServiceHandler
         /* @NonNull */
         final IService service )
     {
-        assert transportLayer != null;
+        super( transportLayer );
+
         assert service != null;
 
+        final ByteBufferPool byteBufferPool = transportLayer.getDispatcher().getByteBufferPool();
+
         channel_ = null;
-        inputQueue_ = new InputQueue( transportLayer.getDispatcher().getByteBufferPool() );
+        inputQueue_ = new InputQueue( byteBufferPool );
         inputQueueState_ = QueueState.OPEN;
         interestOperations_ = SelectionKey.OP_READ;
         isRegistered_ = false;
         isRunning_ = false;
-        outputQueue_ = new OutputQueue( transportLayer.getDispatcher().getByteBufferPool(), this );
+        outputQueue_ = new OutputQueue( byteBufferPool, this );
         outputQueueState_ = QueueState.OPEN;
         readyOperations_ = 0;
         service_ = service;
-        transportLayer_ = transportLayer;
     }
 
 
@@ -140,34 +132,33 @@ final class ServiceHandler
     void close(
         final Exception exception )
     {
+        assert isTransportLayerThread();
+
         final State state;
 
-        synchronized( getLock() )
+        if( (state = getState()) == State.OPEN )
         {
-            if( (state = getState()) == State.OPEN )
+            if( isRegistered_ )
             {
-                if( isRegistered_ )
-                {
-                    isRegistered_ = false;
-                    transportLayer_.getDispatcher().unregisterEventHandler( this );
-                }
-
-                try
-                {
-                    channel_.close();
-                }
-                catch( final IOException e )
-                {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ServiceHandler_close_ioError, e );
-                }
-                finally
-                {
-                    channel_ = null;
-                }
+                isRegistered_ = false;
+                getTransportLayer().getDispatcher().unregisterEventHandler( this );
             }
 
-            setState( State.CLOSED );
+            try
+            {
+                channel_.close();
+            }
+            catch( final IOException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ServiceHandler_close_ioError, e );
+            }
+            finally
+            {
+                channel_ = null;
+            }
         }
+
+        setState( State.CLOSED );
 
         if( state == State.OPEN )
         {
@@ -181,12 +172,9 @@ final class ServiceHandler
      * @throws java.io.IOException
      *         If an I/O error occurs.
      */
-    @GuardedBy( "getLock()" )
     private void drainOutput()
         throws IOException
     {
-        assert Thread.holdsLock( getLock() );
-
         if( outputQueueState_ == QueueState.SHUT_DOWN )
         {
             return;
@@ -209,12 +197,9 @@ final class ServiceHandler
      * @throws java.io.IOException
      *         If an I/O error occurs.
      */
-    @GuardedBy( "getLock()" )
     private void fillInput()
         throws IOException
     {
-        assert Thread.holdsLock( getLock() );
-
         if( inputQueueState_ != QueueState.OPEN )
         {
             return;
@@ -248,10 +233,9 @@ final class ServiceHandler
     @Override
     SelectableChannel getChannel()
     {
-        synchronized( getLock() )
-        {
-            return channel_;
-        }
+        assert isTransportLayerThread();
+
+        return channel_;
     }
 
     /*
@@ -260,10 +244,9 @@ final class ServiceHandler
     @Override
     int getInterestOperations()
     {
-        synchronized( getLock() )
-        {
-            return interestOperations_;
-        }
+        assert isTransportLayerThread();
+
+        return interestOperations_;
     }
 
     /**
@@ -280,14 +263,13 @@ final class ServiceHandler
         final int operationsToSet,
         final int operationsToReset )
     {
-        synchronized( getLock() )
-        {
-            interestOperations_ = (interestOperations_ | operationsToSet) & ~operationsToReset;
+        assert isTransportLayerThread();
 
-            if( !isRunning_ )
-            {
-                transportLayer_.getDispatcher().enqueueStatusChange( this );
-            }
+        interestOperations_ = (interestOperations_ | operationsToSet) & ~operationsToReset;
+
+        if( !isRunning_ )
+        {
+            getTransportLayer().getDispatcher().enqueueStatusChange( this );
         }
     }
 
@@ -307,27 +289,25 @@ final class ServiceHandler
         throws IOException
     {
         assert channel != null;
+        assert isTransportLayerThread();
 
-        synchronized( getLock() )
+        assertStateLegal( getState() == State.PRISTINE, NonNlsMessages.ServiceHandler_state_notPristine );
+
+        channel_ = channel;
+        setState( State.OPEN );
+
+        try
         {
-            assertStateLegal( getState() == State.PRISTINE, NonNlsMessages.ServiceHandler_state_notPristine );
-
-            channel_ = channel;
-            setState( State.OPEN );
-
-            try
-            {
-                transportLayer_.getDispatcher().registerEventHandler( this );
-                isRegistered_ = true;
-            }
-            catch( final IOException e )
-            {
-                close( e );
-                throw e;
-            }
-
-            service_.started( this );
+            getTransportLayer().getDispatcher().registerEventHandler( this );
+            isRegistered_ = true;
         }
+        catch( final IOException e )
+        {
+            close( e );
+            throw e;
+        }
+
+        service_.started( new ServiceContextAdapter() );
     }
 
     /*
@@ -336,12 +316,11 @@ final class ServiceHandler
     @Override
     void prepareToRun()
     {
-        synchronized( getLock() )
-        {
-            interestOperations_ = getSelectionKey().interestOps();
-            readyOperations_ = getSelectionKey().readyOps();
-            isRunning_ = true;
-        }
+        assert isTransportLayerThread();
+
+        interestOperations_ = getSelectionKey().interestOps();
+        readyOperations_ = getSelectionKey().readyOps();
+        isRunning_ = true;
     }
 
     /*
@@ -350,81 +329,81 @@ final class ServiceHandler
     @Override
     void run()
     {
-        synchronized( getLock() )
+        assert isTransportLayerThread();
+
+        try
         {
-            try
+            drainOutput();
+            fillInput();
+
+            if( inputQueueState_ != QueueState.SHUT_DOWN )
             {
-                drainOutput();
-                fillInput();
-
-                if( inputQueueState_ != QueueState.SHUT_DOWN )
+                MessageEnvelope messageEnvelope = null;
+                while( (messageEnvelope = inputQueue_.dequeueMessageEnvelope()) != null )
                 {
-                    MessageEnvelope messageEnvelope = null;
-                    while( (messageEnvelope = inputQueue_.dequeueMessageEnvelope()) != null )
-                    {
-                        service_.messageReceived( messageEnvelope );
-                    }
+                    // TODO: in the future, this method will not block, but will return
+                    // immediately, which means all the code below that checks for shutdowns
+                    // needs to be run whenever the higher layer requests to transmit
+                    // a message or stop the service (i.e. any method of IServiceContext is
+                    // called)
+                    service_.messageReceived( messageEnvelope );
+                }
 
-                    if( inputQueueState_ == QueueState.SHUTTING_DOWN )
-                    {
-                        inputQueueState_ = QueueState.SHUT_DOWN;
-                        service_.peerStopped();
-                    }
+                if( inputQueueState_ == QueueState.SHUTTING_DOWN )
+                {
+                    inputQueueState_ = QueueState.SHUT_DOWN;
+                    service_.peerStopped();
+                }
 
-                    if( (outputQueueState_ == QueueState.SHUTTING_DOWN) && outputQueue_.isEmpty() )
-                    {
-                        outputQueueState_ = QueueState.SHUT_DOWN;
-                        close();
-                    }
+                if( (outputQueueState_ == QueueState.SHUTTING_DOWN) && outputQueue_.isEmpty() )
+                {
+                    outputQueueState_ = QueueState.SHUT_DOWN;
+                    close();
                 }
             }
-            catch( final Exception e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ServiceHandler_run_error, e );
-                close( e );
-            }
-            finally
-            {
-                isRunning_ = false;
-                readyOperations_ = 0;
-            }
+        }
+        catch( final Exception e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ServiceHandler_run_error, e );
+            close( e );
+        }
+        finally
+        {
+            isRunning_ = false;
+            readyOperations_ = 0;
         }
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.transport.IServiceContext#sendMessage(org.gamegineer.table.internal.net.transport.IMessage)
+    /**
+     * Sends the specified message to the service peer.
+     * 
+     * @param message
+     *        The message; must not be {@code null}.
      */
-    public void sendMessage(
+    private void sendMessage(
         /* @NonNull */
         final IMessage message )
     {
         assert message != null;
 
-        synchronized( getLock() )
+        try
         {
-            try
-            {
-                outputQueue_.enqueueMessageEnvelope( MessageEnvelope.fromMessage( message ) );
-            }
-            catch( final IOException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ServiceHandler_sendMessage_ioError( message ), e );
-            }
+            outputQueue_.enqueueMessageEnvelope( MessageEnvelope.fromMessage( message ) );
+        }
+        catch( final IOException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ServiceHandler_sendMessage_ioError( message ), e );
         }
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.transport.IServiceContext#stopService()
+    /**
+     * Stops the service.
      */
-    @Override
-    public void stopService()
+    private void stopService()
     {
-        synchronized( getLock() )
+        if( outputQueueState_ == QueueState.OPEN )
         {
-            if( outputQueueState_ == QueueState.OPEN )
-            {
-                outputQueueState_ = QueueState.SHUTTING_DOWN;
-            }
+            outputQueueState_ = QueueState.SHUTTING_DOWN;
         }
     }
 
@@ -460,5 +439,80 @@ final class ServiceHandler
          * </p>
          */
         SHUT_DOWN;
+    }
+
+    /**
+     * Adapts a service handler to the {@link IServiceContext} interface.
+     */
+    @Immutable
+    private final class ServiceContextAdapter
+        implements IServiceContext
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ServiceContextAdapter}
+         * class.
+         */
+        ServiceContextAdapter()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.net.transport.IServiceContext#sendMessage(org.gamegineer.table.internal.net.transport.IMessage)
+         */
+        @Override
+        public void sendMessage(
+            final IMessage message )
+        {
+            try
+            {
+                getTransportLayer().getExecutorService().submit( new Runnable()
+                {
+                    @Override
+                    @SuppressWarnings( "synthetic-access" )
+                    public void run()
+                    {
+                        ServiceHandler.this.sendMessage( message );
+                    }
+                } );
+            }
+            catch( final RejectedExecutionException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ServiceHandler_transportLayer_shutdown, e );
+            }
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.transport.IServiceContext#stopService()
+         */
+        @Override
+        public void stopService()
+        {
+            try
+            {
+                getTransportLayer().getExecutorService().submit( new Runnable()
+                {
+                    @Override
+                    @SuppressWarnings( "synthetic-access" )
+                    public void run()
+                    {
+                        ServiceHandler.this.stopService();
+                    }
+                } );
+            }
+            catch( final RejectedExecutionException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ServiceHandler_transportLayer_shutdown, e );
+            }
+        }
     }
 }

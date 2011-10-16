@@ -209,6 +209,12 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                     dispose();
                     throw new TableNetworkException( TableNetworkError.TRANSPORT_ERROR, e );
                 }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
+                    dispose();
+                    throw new TableNetworkException( TableNetworkError.INTERRUPTED, e );
+                }
 
                 transportLayer_ = transportLayer;
             }
@@ -348,7 +354,15 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             // NB: Do not hold instance lock when calling into transport layer!
             if( transportLayer != null )
             {
-                transportLayer.close();
+                try
+                {
+                    transportLayer.close();
+                }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
+                    Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Interrupted while waiting for transport layer to close", e ); //$NON-NLS-1$
+                }
             }
 
             synchronized( getLock() )

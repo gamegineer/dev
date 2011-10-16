@@ -28,17 +28,22 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
+import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.internal.net.Activator;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.Loggers;
@@ -52,8 +57,13 @@ import org.gamegineer.table.internal.net.transport.TransportException;
  * An event dispatcher is responsible for managing event handlers and
  * appropriately dispatching events that occur on the event handler channels.
  * </p>
+ * 
+ * <p>
+ * All client methods of this class are expected to be invoked on the associated
+ * transport layer thread except where explicitly noted.
+ * </p>
  */
-@ThreadSafe
+@NotThreadSafe
 final class Dispatcher
 {
     // ======================================================================
@@ -64,18 +74,14 @@ final class Dispatcher
     private final ByteBufferPool bufferPool_;
 
     /**
-     * The task executing the event dispatch thread or {@code null} if the event
-     * dispatch thread is not running.
+     * The asynchronous completion token for the task executing the event
+     * dispatch thread or {@code null} if the event dispatch thread is not
+     * running.
      */
-    @GuardedBy( "lock_" )
-    private Future<?> eventDispatchTask_;
+    private Future<?> eventDispatchFuture_;
 
     /** The collection of registered event handlers. */
-    @GuardedBy( "lock_" )
     private final Collection<AbstractEventHandler> eventHandlers_;
-
-    /** The instance lock. */
-    private final Object lock_;
 
     /**
      * The dispatcher channel multiplexor executing on the event dispatch thread
@@ -88,11 +94,13 @@ final class Dispatcher
     private final ReadWriteLock selectorGuard_;
 
     /** The dispatcher state. */
-    @GuardedBy( "lock_" )
     private State state_;
 
     /** The event handler status change queue. */
-    private final BlockingQueue<AbstractEventHandler> statusChangeQueue_;
+    private final Queue<AbstractEventHandler> statusChangeQueue_;
+
+    /** The transport layer associated with the dispatcher. */
+    private final AbstractTransportLayer transportLayer_;
 
 
     // ======================================================================
@@ -101,23 +109,31 @@ final class Dispatcher
 
     /**
      * Initializes a new instance of the {@code Dispatcher} class.
+     * 
+     * @param transportLayer
+     *        The transport layer associated with the dispatcher; must not be
+     *        {@code null}.
      */
-    Dispatcher()
+    Dispatcher(
+        /* @NonNull */
+        final AbstractTransportLayer transportLayer )
     {
+        assert transportLayer != null;
+
         // FIXME: Under current implementation, buffer capacity must be as
         // large as the largest incoming message.  Need to fix this requirement.
         //
         // The fix is to break each MessageEnvelope into fixed size fragments
-        // an reassemble them as needed.
+        // and reassemble them as needed.
 
         bufferPool_ = new ByteBufferPool( 16384 );
-        eventDispatchTask_ = null;
+        eventDispatchFuture_ = null;
         eventHandlers_ = new ArrayList<AbstractEventHandler>();
-        lock_ = new Object();
         selector_ = null;
         selectorGuard_ = new ReentrantReadWriteLock();
         state_ = State.PRISTINE;
-        statusChangeQueue_ = new ArrayBlockingQueue<AbstractEventHandler>( 100 );
+        statusChangeQueue_ = new LinkedList<AbstractEventHandler>();
+        transportLayer_ = transportLayer;
     }
 
 
@@ -139,6 +155,48 @@ final class Dispatcher
     }
 
     /**
+     * Begins an asynchronous operation to close the dispatcher.
+     * 
+     * @return An asynchronous completion token for the operation; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    Future<Void> beginClose()
+    {
+        assert isTransportLayerThread();
+
+        if( state_ == State.OPEN )
+        {
+            closeOrphanedEventHandlers();
+
+            // Wait for the event dispatch task to shut down on a thread other than
+            // the transport layer thread or the event dispatch thread because the
+            // event dispatch thread may wait on the transport layer thread
+            eventDispatchFuture_.cancel( true );
+            final Future<?> eventDispatchFuture = eventDispatchFuture_;
+            return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+            {
+                @Override
+                public Void call()
+                    throws Exception
+                {
+                    try
+                    {
+                        eventDispatchFuture.get( 10, TimeUnit.SECONDS );
+                    }
+                    catch( final CancellationException e )
+                    {
+                        // do nothing
+                    }
+
+                    return null;
+                }
+            } );
+        }
+        return new SynchronousFuture<Void>();
+    }
+
+    /**
      * Processes event handlers in the status change queue.
      */
     private void checkStatusChangeQueue()
@@ -154,69 +212,11 @@ final class Dispatcher
     }
 
     /**
-     * Closes the dispatcher.
-     */
-    void close()
-    {
-        closeOrphanedEventHandlers();
-
-        synchronized( lock_ )
-        {
-            if( state_ == State.OPEN )
-            {
-                eventDispatchTask_.cancel( true );
-                try
-                {
-                    eventDispatchTask_.get( 10, TimeUnit.SECONDS );
-                }
-                catch( final CancellationException e )
-                {
-                    // do nothing
-                }
-                catch( final InterruptedException e )
-                {
-                    Thread.currentThread().interrupt();
-                }
-                catch( final Exception e )
-                {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_close_error, e );
-                }
-                finally
-                {
-                    eventDispatchTask_ = null;
-                }
-
-                acquireSelectorGuard();
-                try
-                {
-                    selector_.close();
-                }
-                catch( final IOException e )
-                {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_close_error, e );
-                }
-                finally
-                {
-                    selector_ = null;
-                    releaseSelectorGuard();
-                }
-            }
-
-            state_ = State.CLOSED;
-        }
-    }
-
-    /**
      * Closes any orphaned event handlers before the dispatcher is closed.
      */
     private void closeOrphanedEventHandlers()
     {
-        final Collection<AbstractEventHandler> eventHandlers;
-        synchronized( lock_ )
-        {
-            eventHandlers = new ArrayList<AbstractEventHandler>( eventHandlers_ );
-        }
-
+        final Collection<AbstractEventHandler> eventHandlers = new ArrayList<AbstractEventHandler>( eventHandlers_ );
         for( final AbstractEventHandler eventHandler : eventHandlers )
         {
             Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Closing orphaned event handler '%s'", eventHandler ) ); //$NON-NLS-1$
@@ -237,6 +237,7 @@ final class Dispatcher
     {
         assert selector != null;
 
+        Thread.currentThread().setName( NonNlsMessages.Dispatcher_eventDispatchThread_name );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Event dispatch thread started" ); //$NON-NLS-1$
 
         try
@@ -247,14 +248,41 @@ final class Dispatcher
 
                 selector.select();
 
-                checkStatusChangeQueue();
-
                 final Set<SelectionKey> selectionKeys = selector.selectedKeys();
-                for( final SelectionKey selectionKey : selectionKeys )
+                try
                 {
-                    processEvents( selectionKey );
+                    final Future<?> future = transportLayer_.getExecutorService().submit( new Runnable()
+                    {
+                        @Override
+                        @SuppressWarnings( "synthetic-access" )
+                        public void run()
+                        {
+                            checkStatusChangeQueue();
+
+                            for( final SelectionKey selectionKey : selectionKeys )
+                            {
+                                processEvents( selectionKey );
+                            }
+                        }
+                    } );
+                    future.get();
                 }
-                selectionKeys.clear();
+                catch( final RejectedExecutionException e )
+                {
+                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_transportLayer_shutdown, e );
+                }
+                catch( final ExecutionException e )
+                {
+                    throw TaskUtils.launderThrowable( e.getCause() );
+                }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
+                }
+                finally
+                {
+                    selectionKeys.clear();
+                }
             }
         }
         catch( final IOException e )
@@ -268,6 +296,63 @@ final class Dispatcher
     }
 
     /**
+     * Ends an asynchronous operation to close the dispatcher.
+     * 
+     * <p>
+     * This method does nothing if the dispatcher is already closed.
+     * </p>
+     * 
+     * @param future
+     *        The asynchronous completion token associated with the operation;
+     *        must not be {@code null} and must be done.
+     */
+    void endClose(
+        /* @NonNull */
+        final Future<Void> future )
+    {
+        assert future != null;
+        assert future.isDone();
+        assert isTransportLayerThread();
+
+        if( state_ == State.OPEN )
+        {
+            try
+            {
+                future.get();
+            }
+            catch( final InterruptedException e )
+            {
+                throw new AssertionError( "InterruptedException should not happen if future.isDone()" ); //$NON-NLS-1$
+            }
+            catch( final ExecutionException e )
+            {
+                throw TaskUtils.launderThrowable( e.getCause() );
+            }
+            finally
+            {
+                eventDispatchFuture_ = null;
+            }
+
+            acquireSelectorGuard();
+            try
+            {
+                selector_.close();
+            }
+            catch( final IOException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_close_error, e );
+            }
+            finally
+            {
+                selector_ = null;
+                releaseSelectorGuard();
+            }
+        }
+
+        state_ = State.CLOSED;
+    }
+
+    /**
      * Adds the specified event handler to the status change queue.
      * 
      * @param eventHandler
@@ -278,32 +363,12 @@ final class Dispatcher
         final AbstractEventHandler eventHandler )
     {
         assert eventHandler != null;
+        assert isTransportLayerThread();
 
-        boolean interrupted = false;
-        try
-        {
-            while( true )
-            {
-                try
-                {
-                    statusChangeQueue_.put( eventHandler );
-                    acquireSelectorGuard(); // forces thread-safe wake up of selector
-                    releaseSelectorGuard();
-                    return;
-                }
-                catch( final InterruptedException e )
-                {
-                    interrupted = true;
-                }
-            }
-        }
-        finally
-        {
-            if( interrupted )
-            {
-                Thread.currentThread().interrupt();
-            }
-        }
+        statusChangeQueue_.add( eventHandler );
+
+        acquireSelectorGuard(); // forces thread-safe wake up of selector
+        releaseSelectorGuard();
     }
 
     /**
@@ -315,55 +380,69 @@ final class Dispatcher
     /* @NonNull */
     ByteBufferPool getByteBufferPool()
     {
+        assert isTransportLayerThread();
+
         return bufferPool_;
+    }
+
+    /**
+     * Indicates the current thread is the transport layer thread for the
+     * transport layer associated with the dispatcher.
+     * 
+     * <p>
+     * This method may be called from any thread.
+     * </p>
+     * 
+     * @return {@code true} if the current thread is the transport layer thread
+     *         for the transport layer associated with the dispatcher; otherwise
+     *         {@code false}.
+     */
+    private boolean isTransportLayerThread()
+    {
+        return transportLayer_.isTransportLayerThread();
     }
 
     /**
      * Opens the dispatcher.
      * 
-     * @throws java.lang.IllegalStateException
-     *         If the dispatcher has already been opened or is closed.
      * @throws org.gamegineer.table.internal.net.transport.TransportException
      *         If an error occurs.
      */
     void open()
         throws TransportException
     {
-        synchronized( lock_ )
+        assertStateLegal( state_ == State.PRISTINE, NonNlsMessages.Dispatcher_state_notPristine );
+
+        final Selector selector;
+        try
         {
-            assertStateLegal( state_ == State.PRISTINE, NonNlsMessages.Dispatcher_state_notPristine );
+            selector = Selector.open();
+        }
+        catch( final IOException e )
+        {
+            state_ = State.CLOSED;
+            throw new TransportException( NonNlsMessages.Dispatcher_open_ioError, e );
+        }
 
-            final Selector selector;
-            try
-            {
-                selector = Selector.open();
-            }
-            catch( final IOException e )
-            {
-                state_ = State.CLOSED;
-                throw new TransportException( NonNlsMessages.Dispatcher_open_ioError, e );
-            }
+        state_ = State.OPEN;
 
-            state_ = State.OPEN;
-
-            acquireSelectorGuard();
-            try
+        acquireSelectorGuard();
+        try
+        {
+            selector_ = selector;
+            eventDispatchFuture_ = Activator.getDefault().getExecutorService().submit( new Runnable()
             {
-                selector_ = selector;
-                eventDispatchTask_ = Activator.getDefault().getExecutorService().submit( new Runnable()
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
                 {
-                    @Override
-                    @SuppressWarnings( "synthetic-access" )
-                    public void run()
-                    {
-                        dispatchEvents( selector );
-                    }
-                } );
-            }
-            finally
-            {
-                releaseSelectorGuard();
-            }
+                    dispatchEvents( selector );
+                }
+            } );
+        }
+        finally
+        {
+            releaseSelectorGuard();
         }
     }
 
@@ -425,24 +504,22 @@ final class Dispatcher
     {
         assert eventHandler != null;
 
-        synchronized( lock_ )
+        assertStateLegal( state_ == State.OPEN, NonNlsMessages.Dispatcher_state_notOpen );
+        assertArgumentLegal( !eventHandlers_.contains( eventHandler ), "eventHandler", NonNlsMessages.Dispatcher_registerEventHandler_eventHandlerRegistered ); //$NON-NLS-1$
+        assert isTransportLayerThread();
+
+        acquireSelectorGuard();
+        try
         {
-            assertStateLegal( state_ == State.OPEN, NonNlsMessages.Dispatcher_state_notOpen );
-            assertArgumentLegal( !eventHandlers_.contains( eventHandler ), "eventHandler", NonNlsMessages.Dispatcher_registerEventHandler_eventHandlerRegistered ); //$NON-NLS-1$
-
-            acquireSelectorGuard();
-            try
-            {
-                eventHandler.setSelectionKey( eventHandler.getChannel().register( selector_, eventHandler.getInterestOperations(), eventHandler ) );
-            }
-            finally
-            {
-                releaseSelectorGuard();
-            }
-
-            eventHandlers_.add( eventHandler );
-            Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
+            eventHandler.setSelectionKey( eventHandler.getChannel().register( selector_, eventHandler.getInterestOperations(), eventHandler ) );
         }
+        finally
+        {
+            releaseSelectorGuard();
+        }
+
+        eventHandlers_.add( eventHandler );
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Registered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
     }
 
     /**
@@ -491,28 +568,26 @@ final class Dispatcher
     {
         assert eventHandler != null;
 
-        synchronized( lock_ )
+        assertStateLegal( state_ == State.OPEN, NonNlsMessages.Dispatcher_state_notOpen );
+        assertArgumentLegal( eventHandlers_.remove( eventHandler ), "eventHandler", NonNlsMessages.Dispatcher_unregisterEventHandler_eventHandlerUnregistered ); //$NON-NLS-1$
+        assert isTransportLayerThread();
+
+        acquireSelectorGuard();
+        try
         {
-            assertStateLegal( state_ == State.OPEN, NonNlsMessages.Dispatcher_state_notOpen );
-            assertArgumentLegal( eventHandlers_.remove( eventHandler ), "eventHandler", NonNlsMessages.Dispatcher_unregisterEventHandler_eventHandlerUnregistered ); //$NON-NLS-1$
-
-            acquireSelectorGuard();
-            try
+            final SelectionKey selectionKey = eventHandler.getSelectionKey();
+            if( selectionKey != null )
             {
-                final SelectionKey selectionKey = eventHandler.getSelectionKey();
-                if( selectionKey != null )
-                {
-                    selectionKey.cancel();
-                    eventHandler.setSelectionKey( null );
-                }
+                selectionKey.cancel();
+                eventHandler.setSelectionKey( null );
             }
-            finally
-            {
-                releaseSelectorGuard();
-            }
-
-            Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
         }
+        finally
+        {
+            releaseSelectorGuard();
+        }
+
+        Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
     }
 
 

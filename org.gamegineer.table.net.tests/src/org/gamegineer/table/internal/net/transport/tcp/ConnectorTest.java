@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.transport.tcp;
 
 import java.io.IOException;
+import java.util.concurrent.Callable;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,10 +38,13 @@ public final class ConnectorTest
     // ======================================================================
 
     /** The connector under test in the fixture. */
-    private Connector connector_;
+    private volatile Connector connector_;
 
     /** The transport layer for use in the fixture. */
-    private AbstractTransportLayer transportLayer_;
+    private volatile AbstractTransportLayer transportLayer_;
+
+    /** The transport layer runner for use in the fixture. */
+    private TransportLayerRunner transportLayerRunner_;
 
 
     // ======================================================================
@@ -71,8 +75,20 @@ public final class ConnectorTest
         throws Exception
     {
         transportLayer_ = new FakeTransportLayer();
-        transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
-        connector_ = new Connector( transportLayer_ );
+        transportLayerRunner_ = new TransportLayerRunner( transportLayer_ );
+
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
+                connector_ = new Connector( transportLayer_ );
+                return null;
+            }
+        } );
     }
 
     /**
@@ -85,8 +101,17 @@ public final class ConnectorTest
     public void tearDown()
         throws Exception
     {
-        connector_.close();
-        transportLayer_.close();
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+            {
+                connector_.close();
+                return null;
+            }
+        } );
+        transportLayerRunner_.close();
     }
 
     /**
@@ -100,9 +125,20 @@ public final class ConnectorTest
     public void testConnect_AfterClose()
         throws Exception
     {
-        connector_.close();
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                connector_.close();
 
-        connector_.connect( "localhost", 8888 ); //$NON-NLS-1$
+                connector_.connect( "localhost", 8888 ); //$NON-NLS-1$
+
+                return null;
+            }
+        } );
     }
 
     /**
@@ -116,15 +152,26 @@ public final class ConnectorTest
     public void testConnect_MultipleInvocations()
         throws Exception
     {
-        try
+        transportLayerRunner_.run( new Callable<Void>()
         {
-            connector_.connect( "localhost", 8888 ); //$NON-NLS-1$
-        }
-        catch( final IOException e )
-        {
-            // ignore I/O errors
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                try
+                {
+                    connector_.connect( "localhost", 8888 ); //$NON-NLS-1$
+                }
+                catch( final IOException e )
+                {
+                    // ignore I/O errors
+                }
 
-        connector_.connect( "localhost", 8888 ); //$NON-NLS-1$
+                connector_.connect( "localhost", 8888 ); //$NON-NLS-1$
+
+                return null;
+            }
+        } );
     }
 }

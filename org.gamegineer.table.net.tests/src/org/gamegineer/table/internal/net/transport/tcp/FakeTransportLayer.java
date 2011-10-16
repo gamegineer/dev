@@ -21,11 +21,9 @@
 
 package org.gamegineer.table.internal.net.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
-import org.gamegineer.table.internal.net.transport.TransportException;
 
 /**
  * Fake implementation of
@@ -41,27 +39,11 @@ final class FakeTransportLayer
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code FakeTransportLayer} class using
-     * a new dispatcher.
+     * Initializes a new instance of the {@code FakeTransportLayer} class.
      */
     FakeTransportLayer()
     {
-        this( new Dispatcher() );
-    }
-
-    /**
-     * Initializes a new instance of the {@code FakeTransportLayer} class using
-     * the specified dispatcher.
-     * 
-     * @param dispatcher
-     *        The dispatcher associated with the transport layer; must not be
-     *        {@code null}.
-     */
-    FakeTransportLayer(
-        /* @NonNull */
-        final Dispatcher dispatcher )
-    {
-        super( EasyMock.createMock( ITransportLayerContext.class ), dispatcher );
+        super( EasyMock.createMock( ITransportLayerContext.class ) );
     }
 
 
@@ -70,17 +52,17 @@ final class FakeTransportLayer
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#open(java.lang.String, int)
+     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractTransportLayer#openInternal(java.lang.String, int)
      */
     @Override
-    public void open(
+    void openInternal(
         final String hostName,
         @SuppressWarnings( "unused" )
         final int port )
-        throws TransportException
     {
-        assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
+        assert hostName != null;
+        assert isTransportLayerThread();
 
-        getDispatcher().open();
+        // do nothing
     }
 }

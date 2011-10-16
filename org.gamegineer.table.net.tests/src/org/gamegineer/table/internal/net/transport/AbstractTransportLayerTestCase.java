@@ -99,6 +99,44 @@ public abstract class AbstractTransportLayerTestCase
     }
 
     /**
+     * Ensures the {@code beginOpen} method throws an exception when passed a
+     * {@code null} host name.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testBeginOpen_HostName_Null()
+    {
+        transportLayer_.beginOpen( null, 8888 );
+    }
+
+    /**
+     * Ensures the {@code endClose} method throws an exception when passed a
+     * {@code null} future.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testEndClose_Future_Null()
+        throws Exception
+    {
+        transportLayer_.endClose( null );
+    }
+
+    /**
+     * Ensures the {@code endOpen} method throws an exception when passed a
+     * {@code null} future.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testEndOpen_Future_Null()
+        throws Exception
+    {
+        transportLayer_.endOpen( null );
+    }
+
+    /**
      * Ensures the {@code open} method throws an exception if the transport
      * layer has been closed.
      * 

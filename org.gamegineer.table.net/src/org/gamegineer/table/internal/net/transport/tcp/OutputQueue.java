@@ -27,14 +27,13 @@ import java.nio.channels.ByteChannel;
 import java.nio.channels.SelectionKey;
 import java.util.Deque;
 import java.util.LinkedList;
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 
 /**
  * A message output queue.
  */
-@ThreadSafe
+@NotThreadSafe
 final class OutputQueue
 {
     // ======================================================================
@@ -42,18 +41,13 @@ final class OutputQueue
     // ======================================================================
 
     /** The active buffer associated with the queue. */
-    @GuardedBy( "lock_" )
     private ByteBuffer buffer_;
 
     /** The buffer pool associated with the queue. */
     private final ByteBufferPool bufferPool_;
 
     /** The queue of buffers associated with the queue waiting to be processed. */
-    @GuardedBy( "lock_" )
     private final Deque<ByteBuffer> bufferQueue_;
-
-    /** The instance lock. */
-    private final Object lock_;
 
     /** The service handler adapter that owns the queue. */
     private final ServiceHandler serviceHandler_;
@@ -85,7 +79,6 @@ final class OutputQueue
         buffer_ = null;
         bufferPool_ = bufferPool;
         bufferQueue_ = new LinkedList<ByteBuffer>();
-        lock_ = new Object();
         serviceHandler_ = serviceHandler;
     }
 
@@ -115,34 +108,31 @@ final class OutputQueue
 
         int bytesWritten = 0;
 
-        synchronized( lock_ )
+        while( true )
         {
-            while( true )
+            if( buffer_ == null )
             {
-                if( buffer_ == null )
-                {
-                    if( bufferQueue_.isEmpty() )
-                    {
-                        break;
-                    }
-
-                    buffer_ = bufferQueue_.removeFirst();
-                    buffer_.flip();
-                }
-
-                final int localBytesWritten = channel.write( buffer_ );
-                bytesWritten += localBytesWritten;
-
-                if( !buffer_.hasRemaining() )
-                {
-                    bufferPool_.returnByteBuffer( buffer_ );
-                    buffer_ = null;
-                }
-
-                if( localBytesWritten == 0 )
+                if( bufferQueue_.isEmpty() )
                 {
                     break;
                 }
+
+                buffer_ = bufferQueue_.removeFirst();
+                buffer_.flip();
+            }
+
+            final int localBytesWritten = channel.write( buffer_ );
+            bytesWritten += localBytesWritten;
+
+            if( !buffer_.hasRemaining() )
+            {
+                bufferPool_.returnByteBuffer( buffer_ );
+                buffer_ = null;
+            }
+
+            if( localBytesWritten == 0 )
+            {
+                break;
             }
         }
 
@@ -170,23 +160,20 @@ final class OutputQueue
             return false;
         }
 
-        synchronized( lock_ )
+        if( !bufferQueue_.isEmpty() )
         {
-            if( !bufferQueue_.isEmpty() )
+            final ByteBuffer lastBuffer = bufferQueue_.getLast();
+            if( lastBuffer.hasRemaining() )
             {
-                final ByteBuffer lastBuffer = bufferQueue_.getLast();
-                if( lastBuffer.hasRemaining() )
-                {
-                    fillBuffer( lastBuffer, incomingBuffer );
-                }
+                fillBuffer( lastBuffer, incomingBuffer );
             }
+        }
 
-            while( incomingBuffer.hasRemaining() )
-            {
-                final ByteBuffer newBuffer = bufferPool_.takeByteBuffer();
-                fillBuffer( newBuffer, incomingBuffer );
-                bufferQueue_.addLast( newBuffer );
-            }
+        while( incomingBuffer.hasRemaining() )
+        {
+            final ByteBuffer newBuffer = bufferPool_.takeByteBuffer();
+            fillBuffer( newBuffer, incomingBuffer );
+            bufferQueue_.addLast( newBuffer );
         }
 
         serviceHandler_.modifyInterestOperations( SelectionKey.OP_WRITE, 0 );
@@ -250,9 +237,6 @@ final class OutputQueue
      */
     boolean isEmpty()
     {
-        synchronized( lock_ )
-        {
-            return (buffer_ == null) && bufferQueue_.isEmpty();
-        }
+        return (buffer_ == null) && bufferQueue_.isEmpty();
     }
 }

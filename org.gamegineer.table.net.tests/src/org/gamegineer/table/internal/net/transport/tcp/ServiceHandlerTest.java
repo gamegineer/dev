@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.transport.tcp;
 
 import java.nio.channels.SocketChannel;
+import java.util.concurrent.Callable;
 import org.gamegineer.table.internal.net.transport.FakeService;
 import org.junit.After;
 import org.junit.Before;
@@ -38,10 +39,13 @@ public final class ServiceHandlerTest
     // ======================================================================
 
     /** The service handler under test in the fixture. */
-    private ServiceHandler serviceHandler_;
+    private volatile ServiceHandler serviceHandler_;
 
     /** The transport layer for use in the fixture. */
-    private AbstractTransportLayer transportLayer_;
+    private volatile AbstractTransportLayer transportLayer_;
+
+    /** The transport layer runner for use in the fixture. */
+    private TransportLayerRunner transportLayerRunner_;
 
 
     // ======================================================================
@@ -72,8 +76,20 @@ public final class ServiceHandlerTest
         throws Exception
     {
         transportLayer_ = new FakeTransportLayer();
-        transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
-        serviceHandler_ = new ServiceHandler( transportLayer_, new FakeService() );
+        transportLayerRunner_ = new TransportLayerRunner( transportLayer_ );
+
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
+                serviceHandler_ = new ServiceHandler( transportLayer_, new FakeService() );
+                return null;
+            }
+        } );
     }
 
     /**
@@ -86,8 +102,17 @@ public final class ServiceHandlerTest
     public void tearDown()
         throws Exception
     {
-        serviceHandler_.close();
-        transportLayer_.close();
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+            {
+                serviceHandler_.close();
+                return null;
+            }
+        } );
+        transportLayerRunner_.close();
     }
 
     /**
@@ -101,9 +126,20 @@ public final class ServiceHandlerTest
     public void testOpen_AfterClose()
         throws Exception
     {
-        serviceHandler_.close();
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                serviceHandler_.close();
 
-        serviceHandler_.open( new FakeSocketChannel() );
+                serviceHandler_.open( new FakeSocketChannel() );
+
+                return null;
+            }
+        } );
     }
 
     /**
@@ -117,9 +153,20 @@ public final class ServiceHandlerTest
     public void testOpen_MultipleInvocations()
         throws Exception
     {
-        final SocketChannel channel = new FakeSocketChannel();
-        serviceHandler_.open( channel );
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                final SocketChannel channel = new FakeSocketChannel();
+                serviceHandler_.open( channel );
 
-        serviceHandler_.open( channel );
+                serviceHandler_.open( channel );
+
+                return null;
+            }
+        } );
     }
 }

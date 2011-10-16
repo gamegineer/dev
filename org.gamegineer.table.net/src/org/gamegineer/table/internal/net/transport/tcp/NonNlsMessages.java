@@ -36,6 +36,14 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
+    // --- AbstractTransportLayer -------------------------------------------
+
+    /** The transport layer state is not pristine. */
+    public static String AbstractTransportLayer_state_notPristine;
+
+    /** The name of the transport layer thread. */
+    public static String AbstractTransportLayer_transportLayerThread_name;
+
     // --- Acceptor ---------------------------------------------------------
 
     /** An I/O error occurred while accepting a new connection. */
@@ -68,6 +76,9 @@ final class NonNlsMessages
     /** An error occurred on the event dispatch thread. */
     public static String Dispatcher_dispatchEvents_error;
 
+    /** The name of the event dispatch thread. */
+    public static String Dispatcher_eventDispatchThread_name;
+
     /** An I/O error occurred while opening the dispatcher. */
     public static String Dispatcher_open_ioError;
 
@@ -82,6 +93,9 @@ final class NonNlsMessages
 
     /** The dispatcher state is not pristine. */
     public static String Dispatcher_state_notPristine;
+
+    /** The transport layer associated with the dispatcher has been shutdown. */
+    public static String Dispatcher_transportLayer_shutdown;
 
     /** The event handler is not registered. */
     public static String Dispatcher_unregisterEventHandler_eventHandlerUnregistered;
@@ -104,6 +118,14 @@ final class NonNlsMessages
 
     /** The service handler state is not pristine. */
     public static String ServiceHandler_state_notPristine;
+
+    /** The transport layer associated with the service has been shutdown. */
+    public static String ServiceHandler_transportLayer_shutdown;
+
+    // --- TransportLayerAdapter --------------------------------------------
+
+    /** The transport layer is closed. */
+    public static String TransportLayerAdapter_beginOpen_closed;
 
 
     // ======================================================================

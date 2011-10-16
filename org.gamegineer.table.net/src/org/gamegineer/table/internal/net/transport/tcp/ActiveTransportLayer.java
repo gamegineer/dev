@@ -21,18 +21,17 @@
 
 package org.gamegineer.table.internal.net.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
-import net.jcip.annotations.Immutable;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 import org.gamegineer.table.internal.net.transport.TransportException;
 
 /**
  * Implementation of
- * {@link org.gamegineer.table.internal.net.transport.ITransportLayer} for
- * active TCP connections.
+ * {@link org.gamegineer.table.internal.net.transport.tcp.AbstractTransportLayer}
+ * for active connections.
  */
-@Immutable
+@NotThreadSafe
 final class ActiveTransportLayer
     extends AbstractTransportLayer
 {
@@ -50,7 +49,7 @@ final class ActiveTransportLayer
         /* @NonNull */
         final ITransportLayerContext context )
     {
-        super( context, new Dispatcher() );
+        super( context );
     }
 
 
@@ -59,17 +58,16 @@ final class ActiveTransportLayer
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#open(java.lang.String, int)
+     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractTransportLayer#openInternal(java.lang.String, int)
      */
     @Override
-    public void open(
+    void openInternal(
         final String hostName,
         final int port )
         throws TransportException
     {
-        assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
-
-        getDispatcher().open();
+        assert hostName != null;
+        assert isTransportLayerThread();
 
         final Connector connector = new Connector( this );
         try
@@ -78,7 +76,6 @@ final class ActiveTransportLayer
         }
         catch( final IOException e )
         {
-            close();
             throw new TransportException( NonNlsMessages.ActiveTransportLayer_open_ioError, e );
         }
         finally

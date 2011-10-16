@@ -22,8 +22,10 @@
 package org.gamegineer.table.internal.net.transport.tcp;
 
 import java.io.IOException;
+import java.util.concurrent.Callable;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -37,10 +39,13 @@ public final class AcceptorTest
     // ======================================================================
 
     /** The acceptor under test in the fixture. */
-    private Acceptor acceptor_;
+    private volatile Acceptor acceptor_;
 
     /** The transport layer for use in the fixture. */
-    private AbstractTransportLayer transportLayer_;
+    private volatile AbstractTransportLayer transportLayer_;
+
+    /** The transport layer runner for use in the fixture. */
+    private TransportLayerRunner transportLayerRunner_;
 
 
     // ======================================================================
@@ -71,8 +76,20 @@ public final class AcceptorTest
         throws Exception
     {
         transportLayer_ = new FakeTransportLayer();
-        transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
-        acceptor_ = new Acceptor( transportLayer_ );
+        transportLayerRunner_ = new TransportLayerRunner( transportLayer_ );
+
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
+                acceptor_ = new Acceptor( transportLayer_ );
+                return null;
+            }
+        } );
     }
 
     /**
@@ -85,8 +102,17 @@ public final class AcceptorTest
     public void tearDown()
         throws Exception
     {
-        acceptor_.close();
-        transportLayer_.close();
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+            {
+                acceptor_.close();
+                return null;
+            }
+        } );
+        transportLayerRunner_.close();
     }
 
     /**
@@ -96,13 +122,25 @@ public final class AcceptorTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
+    @Ignore
     @Test( expected = IllegalStateException.class )
     public void testBind_AfterClose()
         throws Exception
     {
-        acceptor_.close();
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                acceptor_.close();
 
-        acceptor_.bind( "localhost", 8888 ); //$NON-NLS-1$
+                acceptor_.bind( "localhost", 8888 ); //$NON-NLS-1$
+
+                return null;
+            }
+        } );
     }
 
     /**
@@ -116,15 +154,26 @@ public final class AcceptorTest
     public void testBind_MultipleInvocations()
         throws Exception
     {
-        try
+        transportLayerRunner_.run( new Callable<Void>()
         {
-            acceptor_.bind( "localhost", 8888 ); //$NON-NLS-1$
-        }
-        catch( final IOException e )
-        {
-            // ignore I/O errors
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                try
+                {
+                    acceptor_.bind( "localhost", 8888 ); //$NON-NLS-1$
+                }
+                catch( final IOException e )
+                {
+                    // ignore I/O errors
+                }
 
-        acceptor_.bind( "localhost", 8888 ); //$NON-NLS-1$
+                acceptor_.bind( "localhost", 8888 ); //$NON-NLS-1$
+
+                return null;
+            }
+        } );
     }
 }

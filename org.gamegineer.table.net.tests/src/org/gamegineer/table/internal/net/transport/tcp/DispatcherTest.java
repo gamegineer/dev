@@ -26,6 +26,9 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicReference;
 import org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler.State;
 import org.junit.After;
 import org.junit.Before;
@@ -42,7 +45,13 @@ public final class DispatcherTest
     // ======================================================================
 
     /** The dispatcher under test in the fixture. */
-    private Dispatcher dispatcher_;
+    private volatile Dispatcher dispatcher_;
+
+    /** The transport layer for use in the fixture. */
+    private volatile AbstractTransportLayer transportLayer_;
+
+    /** The transport layer runner for use in the fixture. */
+    private TransportLayerRunner transportLayerRunner_;
 
 
     // ======================================================================
@@ -63,6 +72,45 @@ public final class DispatcherTest
     // ======================================================================
 
     /**
+     * Synchronously closes the dispatcher under test in the fixture.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    private void closeDispatcher()
+        throws Exception
+    {
+        assert !transportLayer_.isTransportLayerThread();
+
+        // Invoke beginClose() on transport layer thread
+        final Future<Void> dispatcherCloseFuture = transportLayerRunner_.run( new Callable<Future<Void>>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Future<Void> call()
+            {
+                return dispatcher_.beginClose();
+            }
+        } );
+
+        // Wait for dispatcher to close on current thread
+        dispatcherCloseFuture.get();
+
+        // Invoke endClose() on transport layer thread
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                dispatcher_.endClose( dispatcherCloseFuture );
+                return null;
+            }
+        } );
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -72,7 +120,19 @@ public final class DispatcherTest
     public void setUp()
         throws Exception
     {
-        dispatcher_ = new Dispatcher();
+        transportLayer_ = new FakeTransportLayer();
+        transportLayerRunner_ = new TransportLayerRunner( transportLayer_ );
+
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+            {
+                dispatcher_ = new Dispatcher( transportLayer_ );
+                return null;
+            }
+        } );
     }
 
     /**
@@ -85,7 +145,8 @@ public final class DispatcherTest
     public void tearDown()
         throws Exception
     {
-        dispatcher_.close();
+        closeDispatcher();
+        transportLayerRunner_.close();
     }
 
     /**
@@ -99,14 +160,40 @@ public final class DispatcherTest
     public void testClose_ClosesRegisteredEventHandlers()
         throws Exception
     {
-        dispatcher_.open();
-        final Acceptor acceptor = new Acceptor( new FakeTransportLayer( dispatcher_ ) );
-        acceptor.bind( "localhost", 8888 ); //$NON-NLS-1$
-        assertEquals( State.OPEN, acceptor.getState() );
+        final AtomicReference<AbstractEventHandler> eventHandlerRef = new AtomicReference<AbstractEventHandler>();
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                dispatcher_.open();
+                final AbstractEventHandler eventHandler = new FakeEventHandler( transportLayer_ )
+                {
+                    {
+                        setState( State.OPEN );
+                    }
+                };
+                eventHandlerRef.set( eventHandler );
+                dispatcher_.registerEventHandler( eventHandler );
+                assertEquals( State.OPEN, eventHandler.getState() );
 
-        dispatcher_.close();
+                return null;
+            }
+        } );
+        closeDispatcher();
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            public Void call()
+            {
+                final AbstractEventHandler eventHandler = eventHandlerRef.get();
+                assertEquals( State.CLOSED, eventHandler.getState() );
 
-        assertEquals( State.CLOSED, acceptor.getState() );
+                return null;
+            }
+        } );
     }
 
     /**
@@ -120,9 +207,19 @@ public final class DispatcherTest
     public void testOpen_AfterClose()
         throws Exception
     {
-        dispatcher_.close();
+        closeDispatcher();
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                dispatcher_.open();
 
-        dispatcher_.open();
+                return null;
+            }
+        } );
     }
 
     /**
@@ -136,9 +233,20 @@ public final class DispatcherTest
     public void testOpen_MultipleInvocations()
         throws Exception
     {
-        dispatcher_.open();
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                dispatcher_.open();
 
-        dispatcher_.open();
+                dispatcher_.open();
+
+                return null;
+            }
+        } );
     }
 
     /**
@@ -152,9 +260,19 @@ public final class DispatcherTest
     public void testRegisterEventHandler_AfterClose()
         throws Exception
     {
-        dispatcher_.close();
+        closeDispatcher();
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                dispatcher_.registerEventHandler( new FakeEventHandler( transportLayer_ ) );
 
-        dispatcher_.registerEventHandler( new FakeEventHandler() );
+                return null;
+            }
+        } );
     }
 
     /**
@@ -168,7 +286,18 @@ public final class DispatcherTest
     public void testRegisterEventHandler_BeforeOpen()
         throws Exception
     {
-        dispatcher_.registerEventHandler( new FakeEventHandler() );
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                dispatcher_.registerEventHandler( new FakeEventHandler( transportLayer_ ) );
+
+                return null;
+            }
+        } );
     }
 
     /**
@@ -182,22 +311,35 @@ public final class DispatcherTest
     public void testRegisterEventHandler_EventHandler_ChannelClosed()
         throws Exception
     {
-        final SelectableChannel channel = new FakeSelectableChannel()
-        {
-            @Override
-            @SuppressWarnings( "unused" )
-            public SelectionKey register(
-                final Selector selector,
-                final int ops,
-                final Object attachment )
-                throws ClosedChannelException
+        transportLayerRunner_.run( //
+            new Callable<Void>()
             {
-                throw new ClosedChannelException();
-            }
-        };
-        dispatcher_.open();
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public Void call()
+                    throws Exception
+                {
+                    final SelectableChannel channel = new FakeSelectableChannel()
+                    {
+                        @Override
+                        @SuppressWarnings( "unused" )
+                        public SelectionKey register(
+                            final Selector selector,
+                            final int ops,
+                            final Object attachment )
+                            throws ClosedChannelException
+                        {
+                            throw new ClosedChannelException();
+                        }
+                    };
+                    dispatcher_.open();
 
-        dispatcher_.registerEventHandler( new FakeEventHandler( channel ) );
+                    dispatcher_.registerEventHandler( new FakeEventHandler( transportLayer_, channel ) );
+
+                    return null;
+                }
+            }, //
+            ClosedChannelException.class );
     }
 
     /**
@@ -211,33 +353,73 @@ public final class DispatcherTest
     public void testRegisterEventHandler_EventHandler_Registered()
         throws Exception
     {
-        final AbstractEventHandler eventHandler = new FakeEventHandler();
-        dispatcher_.open();
-        dispatcher_.registerEventHandler( eventHandler );
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                final AbstractEventHandler eventHandler = new FakeEventHandler( transportLayer_ );
+                dispatcher_.open();
+                dispatcher_.registerEventHandler( eventHandler );
 
-        dispatcher_.registerEventHandler( eventHandler );
+                dispatcher_.registerEventHandler( eventHandler );
+
+                return null;
+            }
+        } );
     }
 
     /**
      * Ensures the {@code unregisterEventHandler} method throws an exception if
      * the dispatcher has been closed.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
     public void testUnegisterEventHandler_AfterClose()
+        throws Exception
     {
-        dispatcher_.close();
+        closeDispatcher();
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                dispatcher_.unregisterEventHandler( new FakeEventHandler( transportLayer_ ) );
 
-        dispatcher_.unregisterEventHandler( new FakeEventHandler() );
+                return null;
+            }
+        } );
     }
 
     /**
      * Ensures the {@code unregisterEventHandler} method throws an exception if
      * the dispatcher has not yet been opened.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
     public void testUnegisterEventHandler_BeforeOpen()
+        throws Exception
     {
-        dispatcher_.unregisterEventHandler( new FakeEventHandler() );
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                dispatcher_.unregisterEventHandler( new FakeEventHandler( transportLayer_ ) );
+
+                return null;
+            }
+        } );
     }
 
     /**
@@ -251,8 +433,19 @@ public final class DispatcherTest
     public void testUnregisterEventHandler_EventHandler_Unregistered()
         throws Exception
     {
-        dispatcher_.open();
+        transportLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                dispatcher_.open();
 
-        dispatcher_.unregisterEventHandler( new FakeEventHandler() );
+                dispatcher_.unregisterEventHandler( new FakeEventHandler( transportLayer_ ) );
+
+                return null;
+            }
+        } );
     }
 }

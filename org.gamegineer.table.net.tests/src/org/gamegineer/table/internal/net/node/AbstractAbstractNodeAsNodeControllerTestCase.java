@@ -24,8 +24,10 @@ package org.gamegineer.table.internal.net.node;
 import static org.junit.Assert.assertEquals;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.concurrent.Future;
 import net.jcip.annotations.NotThreadSafe;
 import org.easymock.EasyMock;
+import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -78,20 +80,51 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         return new ITransportLayer()
         {
             @Override
+            public Future<Void> beginClose()
+            {
+                return new SynchronousFuture<Void>();
+            }
+
+            @Override
+            public Future<Void> beginOpen(
+                @SuppressWarnings( "unused" )
+                final String hostName,
+                @SuppressWarnings( "unused" )
+                final int port )
+            {
+                return new SynchronousFuture<Void>();
+            }
+
+            @Override
             public void close()
+            {
+                endClose( beginClose() );
+            }
+
+            @Override
+            public void endClose(
+                @SuppressWarnings( "unused" )
+                final Future<Void> future )
             {
                 // do nothing
             }
 
             @Override
-            public void open(
+            public void endOpen(
                 @SuppressWarnings( "unused" )
-                final String hostName,
-                @SuppressWarnings( "unused" )
-                final int port )
+                final Future<Void> future )
                 throws TransportException
             {
                 throw new TransportException();
+            }
+
+            @Override
+            public void open(
+                final String hostName,
+                final int port )
+                throws TransportException
+            {
+                endOpen( beginOpen( hostName, port ) );
             }
         };
     }
@@ -108,19 +141,49 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
         return new ITransportLayer()
         {
             @Override
+            public Future<Void> beginClose()
+            {
+                return new SynchronousFuture<Void>();
+            }
+
+            @Override
+            public Future<Void> beginOpen(
+                @SuppressWarnings( "unused" )
+                final String hostName,
+                @SuppressWarnings( "unused" )
+                final int port )
+            {
+                return new SynchronousFuture<Void>();
+            }
+
+            @Override
             public void close()
+            {
+                endClose( beginClose() );
+            }
+
+            @Override
+            public void endClose(
+                @SuppressWarnings( "unused" )
+                final Future<Void> future )
+            {
+                // do nothing
+            }
+
+            @Override
+            public void endOpen(
+                @SuppressWarnings( "unused" )
+                final Future<Void> future )
             {
                 // do nothing
             }
 
             @Override
             public void open(
-                @SuppressWarnings( "unused" )
                 final String hostName,
-                @SuppressWarnings( "unused" )
                 final int port )
             {
-                // do nothing
+                endOpen( beginOpen( hostName, port ) );
             }
         };
     }
