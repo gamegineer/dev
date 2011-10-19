@@ -1,6 +1,6 @@
 /*
- * SpringUtilities.java
- * Copyright 2008-2010 Gamegineer.org
+ * SpringUtils.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,16 +36,16 @@ import net.jcip.annotations.ThreadSafe;
  * </p>
  */
 @ThreadSafe
-public final class SpringUtilities
+public final class SpringUtils
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code SpringUtilities} class.
+     * Initializes a new instance of the {@code SpringUtils} class.
      */
-    private SpringUtilities()
+    private SpringUtils()
     {
         super();
     }

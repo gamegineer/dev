@@ -1,6 +1,6 @@
 /*
  * FileHistoryMenuItemGroupContentProvider.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.ui.model.MainModel;
-import org.gamegineer.table.internal.ui.util.swing.SwingTextUtilities;
+import org.gamegineer.table.internal.ui.util.swing.TextUtils;
 import org.gamegineer.table.internal.ui.util.swing.JMenuItemGroup.IContentProvider;
 import org.gamegineer.table.internal.ui.util.swing.JMenuItemGroup.MenuItemDescriptor;
 
@@ -98,7 +98,7 @@ final class FileHistoryMenuItemGroupContentProvider
             final String label;
             if( Collections.frequency( fileNames, fileName ) > 1 )
             {
-                label = SwingTextUtilities.shortenPath( path, MAX_PATH_LENGTH );
+                label = TextUtils.shortenPath( path, MAX_PATH_LENGTH );
             }
             else
             {

@@ -1,6 +1,6 @@
 /*
- * SpringUtilitiesTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * SpringUtilsTest.java
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,18 +25,18 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.ui.util.swing.SpringUtilities} class.
+ * {@link org.gamegineer.table.internal.ui.util.swing.SpringUtils} class.
  */
-public final class SpringUtilitiesTest
+public final class SpringUtilsTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code SpringUtilitiesTest} class.
+     * Initializes a new instance of the {@code SpringUtilsTest} class.
      */
-    public SpringUtilitiesTest()
+    public SpringUtilsTest()
     {
         super();
     }
@@ -53,7 +53,7 @@ public final class SpringUtilitiesTest
     @Test( expected = NullPointerException.class )
     public void testBuildCompactGrid_Parent_Null()
     {
-        SpringUtilities.buildCompactGrid( null, 1, 1, 1, 1, 1, 1 );
+        SpringUtils.buildCompactGrid( null, 1, 1, 1, 1, 1, 1 );
     }
 
     /**
@@ -63,6 +63,6 @@ public final class SpringUtilitiesTest
     @Test( expected = NullPointerException.class )
     public void testBuildGrid_Parent_Null()
     {
-        SpringUtilities.buildGrid( null, 1, 1, 1, 1, 1, 1 );
+        SpringUtils.buildGrid( null, 1, 1, 1, 1, 1, 1 );
     }
 }

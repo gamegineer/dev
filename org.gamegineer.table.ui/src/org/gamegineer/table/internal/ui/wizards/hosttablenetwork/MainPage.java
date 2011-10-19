@@ -39,7 +39,7 @@ import org.gamegineer.common.ui.dialog.DialogConstants;
 import org.gamegineer.common.ui.wizard.AbstractWizardPage;
 import org.gamegineer.table.internal.ui.databinding.conversion.Converters;
 import org.gamegineer.table.internal.ui.util.swing.JComponents;
-import org.gamegineer.table.internal.ui.util.swing.SpringUtilities;
+import org.gamegineer.table.internal.ui.util.swing.SpringUtils;
 
 /**
  * The main page in the host table network wizard.
@@ -143,7 +143,7 @@ final class MainPage
 
         final int horizontalSpacing = convertWidthInDlusToPixels( DialogConstants.HORIZONTAL_SPACING );
         final int verticalSpacing = convertHeightInDlusToPixels( DialogConstants.VERTICAL_SPACING );
-        SpringUtilities.buildCompactGrid( container, 4, 2, 0, 0, horizontalSpacing, verticalSpacing );
+        SpringUtils.buildCompactGrid( container, 4, 2, 0, 0, horizontalSpacing, verticalSpacing );
 
         createDataBindings();
 

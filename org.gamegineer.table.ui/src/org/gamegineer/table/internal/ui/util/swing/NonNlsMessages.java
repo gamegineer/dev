@@ -35,10 +35,10 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
-    // --- SwingTextUtilities -----------------------------------------------
+    // --- TextUtils --------------------------------------------------------
 
     /** The maximum length is negative. */
-    public static String SwingTextUtilities_shortenPath_maxLengthNegative;
+    public static String TextUtils_shortenPath_maxLengthNegative;
 
 
     // ======================================================================

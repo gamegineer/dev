@@ -1,5 +1,5 @@
 /*
- * SwingTextUtilities.java
+ * TextUtils.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -35,16 +35,16 @@ import net.jcip.annotations.ThreadSafe;
  * framework.
  */
 @ThreadSafe
-public final class SwingTextUtilities
+public final class TextUtils
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code SwingTextUtilities} class.
+     * Initializes a new instance of the {@code TextUtils} class.
      */
-    private SwingTextUtilities()
+    private TextUtils()
     {
         super();
     }
@@ -90,7 +90,7 @@ public final class SwingTextUtilities
         final int maxLength )
     {
         assertArgumentNotNull( path, "path" ); //$NON-NLS-1$
-        assertArgumentLegal( maxLength >= 0, "maxLength", NonNlsMessages.SwingTextUtilities_shortenPath_maxLengthNegative ); //$NON-NLS-1$
+        assertArgumentLegal( maxLength >= 0, "maxLength", NonNlsMessages.TextUtils_shortenPath_maxLengthNegative ); //$NON-NLS-1$
 
         if( path.length() <= maxLength )
         {
