@@ -28,6 +28,8 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.databinding.validation.ValidationStatus;
 import org.eclipse.core.runtime.IStatus;
 import org.gamegineer.table.internal.ui.model.TableModel;
+import org.gamegineer.table.internal.ui.util.Comparators;
+import org.gamegineer.table.internal.ui.util.swing.SortedListModel;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetwork;
 
@@ -128,7 +130,7 @@ final class Model
             }
         }
 
-        return remotePlayers;
+        return new SortedListModel( remotePlayers, Comparators.PLAYER_BY_NAME );
     }
 
     /**

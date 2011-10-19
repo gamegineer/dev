@@ -25,11 +25,8 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FontMetrics;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -45,6 +42,8 @@ import org.gamegineer.common.ui.dialog.DialogUtils;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.model.TableModel;
+import org.gamegineer.table.internal.ui.util.Comparators;
+import org.gamegineer.table.internal.ui.util.swing.SortedListModel;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetworkListener;
 import org.gamegineer.table.net.PlayerRole;
@@ -131,7 +130,8 @@ final class TableNetworkPlayerView
         playersLabel.setBorder( BorderFactory.createEmptyBorder( 0, 0, DialogUtils.convertWidthInDlusToPixels( fontMetrics, 3 ), 0 ) );
         add( playersLabel, BorderLayout.NORTH );
 
-        final JList playerList = new JList( playerListModel_ );
+        final JList playerList = new JList();
+        playerList.setModel( new SortedListModel( playerListModel_, Comparators.PLAYER_BY_NAME ) );
         playerList.setCellRenderer( new PlayerListCellRenderer() );
         final JScrollPane scrollPane = new JScrollPane( playerList );
         add( scrollPane, BorderLayout.CENTER );
@@ -150,20 +150,8 @@ final class TableNetworkPlayerView
     {
         assert players != null;
 
-        final List<IPlayer> sortedPlayers = new ArrayList<IPlayer>( players );
-        Collections.sort( sortedPlayers, new Comparator<IPlayer>()
-        {
-            @Override
-            public int compare(
-                final IPlayer o1,
-                final IPlayer o2 )
-            {
-                return o1.getName().compareTo( o2.getName() );
-            }
-        } );
-
         playerListModel_.clear();
-        for( final IPlayer player : sortedPlayers )
+        for( final IPlayer player : players )
         {
             playerListModel_.addElement( player );
         }
