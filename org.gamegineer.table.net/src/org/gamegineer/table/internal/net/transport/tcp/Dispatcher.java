@@ -405,6 +405,8 @@ final class Dispatcher
     /**
      * Opens the dispatcher.
      * 
+     * @throws java.lang.IllegalStateException
+     *         If the dispatcher has already been opened or is closed.
      * @throws org.gamegineer.table.internal.net.transport.TransportException
      *         If an error occurs.
      */

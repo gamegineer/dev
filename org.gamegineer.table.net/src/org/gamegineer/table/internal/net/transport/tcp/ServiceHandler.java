@@ -281,6 +281,8 @@ final class ServiceHandler
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs
+     * @throws java.lang.IllegalStateException
+     *         If the service handler has already been opened or is closed.
      */
     void open(
         /* @NonNull */
