@@ -29,7 +29,6 @@ import java.nio.channels.Selector;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
-import org.gamegineer.table.internal.net.transport.tcp.AbstractEventHandler.State;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

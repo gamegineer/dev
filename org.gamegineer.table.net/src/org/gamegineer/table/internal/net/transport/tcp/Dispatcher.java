@@ -204,7 +204,7 @@ final class Dispatcher
         AbstractEventHandler eventHandler = null;
         while( (eventHandler = statusChangeQueue_.poll()) != null )
         {
-            if( eventHandler.getState() != AbstractEventHandler.State.CLOSED )
+            if( eventHandler.getState() != State.CLOSED )
             {
                 resumeSelection( eventHandler );
             }
@@ -588,25 +588,5 @@ final class Dispatcher
         }
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
-    }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * The possible dispatcher states.
-     */
-    private enum State
-    {
-        /** The dispatcher has never been used. */
-        PRISTINE,
-
-        /** The dispatcher is open. */
-        OPEN,
-
-        /** The dispatcher is closed. */
-        CLOSED;
     }
 }

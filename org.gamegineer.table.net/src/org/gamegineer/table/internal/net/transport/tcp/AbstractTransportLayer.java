@@ -343,24 +343,4 @@ abstract class AbstractTransportLayer
         String hostName,
         int port )
         throws TransportException;
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * The possible transport layer states.
-     */
-    private enum State
-    {
-        /** The transport layer has never been used. */
-        PRISTINE,
-
-        /** The transport layer is open. */
-        OPEN,
-
-        /** The transport layer is closed. */
-        CLOSED;
-    }
 }

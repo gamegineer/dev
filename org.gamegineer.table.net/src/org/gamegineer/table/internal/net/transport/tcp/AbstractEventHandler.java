@@ -228,24 +228,4 @@ abstract class AbstractEventHandler
 
         state_ = state;
     }
-
-
-    // ======================================================================
-    // Nested Types
-    // ======================================================================
-
-    /**
-     * The possible event handler states.
-     */
-    enum State
-    {
-        /** The event handler has never been opened. */
-        PRISTINE,
-
-        /** The event handler is open. */
-        OPEN,
-
-        /** The event handler is closed. */
-        CLOSED;
-    }
 }
