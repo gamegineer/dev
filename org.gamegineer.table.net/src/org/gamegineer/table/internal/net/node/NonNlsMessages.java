@@ -54,6 +54,9 @@ final class NonNlsMessages
     /** The network is disconnected. */
     public static String AbstractNode_networkDisconnected;
 
+    /** The name of the node layer thread. */
+    public static String AbstractNode_nodeLayerThread_name;
+
     /** The remote node is not bound. */
     public static String AbstractNode_unbindRemoteNode_remoteNodeNotBound;
 

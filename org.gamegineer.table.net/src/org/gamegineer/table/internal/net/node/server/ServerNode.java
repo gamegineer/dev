@@ -199,7 +199,17 @@ public final class ServerNode
             @Override
             public IService createService()
             {
-                return new RemoteClientNode( ServerNode.this );
+                return new AbstractServiceProxy()
+                {
+                    @Override
+                    @SuppressWarnings( "synthetic-access" )
+                    protected IService createActualService()
+                    {
+                        assert isNodeLayerThread();
+
+                        return new RemoteClientNode( ServerNode.this );
+                    }
+                };
             }
         } );
     }

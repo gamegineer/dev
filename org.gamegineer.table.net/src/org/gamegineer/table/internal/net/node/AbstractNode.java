@@ -28,14 +28,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
+import net.jcip.annotations.NotThreadSafe;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.internal.net.transport.IService;
+import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
+import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 import org.gamegineer.table.internal.net.transport.TransportException;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkError;
@@ -65,6 +73,9 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      */
     private final Object controllerLock_;
 
+    /** The executor service associated with the node layer. */
+    private final ExecutorService executorService_;
+
     /**
      * The local player name or {@code null} if the table network is not
      * connected.
@@ -74,6 +85,12 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
     /** The instance lock. */
     private final Object lock_;
+
+    /**
+     * A reference to the node layer thread or {@code null} if the node layer is
+     * not open.
+     */
+    private final AtomicReference<Thread> nodeLayerThreadRef_;
 
     /**
      * The table network password or {@code null} if the table network is not
@@ -127,8 +144,10 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assertArgumentNotNull( tableNetworkController, "tableNetworkController" ); //$NON-NLS-1$
 
         controllerLock_ = new Object();
+        executorService_ = createExecutorService();
         localPlayerName_ = null;
         lock_ = new Object();
+        nodeLayerThreadRef_ = new AtomicReference<Thread>( null );
         password_ = null;
         remoteNodes_ = new HashMap<String, RemoteNodeType>();
         tableNetworkController_ = tableNetworkController;
@@ -282,6 +301,43 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assert Thread.holdsLock( getLock() );
 
         // do nothing
+    }
+
+    /**
+     * Creates the node layer executor service.
+     * 
+     * @return The node layer executor service; never {@code null}.
+     */
+    /* @NonNull */
+    private ExecutorService createExecutorService()
+    {
+        return Executors.newSingleThreadExecutor( new ThreadFactory()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Thread newThread(
+                final Runnable r )
+            {
+                final Thread nodeLayerThread = new Thread( r, NonNlsMessages.AbstractNode_nodeLayerThread_name )
+                {
+                    @Override
+                    public void run()
+                    {
+                        nodeLayerThreadRef_.set( this );
+                        try
+                        {
+                            super.run();
+                        }
+                        finally
+                        {
+                            nodeLayerThreadRef_.set( null );
+                        }
+                    }
+                };
+
+                return nodeLayerThread;
+            }
+        } );
     }
 
     /**
@@ -491,6 +547,24 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         tables_.clear();
 
         remoteNodes_.clear();
+
+        executorService_.shutdown();
+    }
+
+    /**
+     * Gets the executor service associated with the node layer.
+     * 
+     * <p>
+     * This method may be called from any thread.
+     * </p>
+     * 
+     * @return The executor service associated with the node layer; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    final ExecutorService getExecutorService()
+    {
+        return executorService_;
     }
 
     /*
@@ -623,6 +697,21 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     }
 
     /**
+     * Indicates the current thread is the node layer thread.
+     * 
+     * <p>
+     * This method may be called from any thread.
+     * </p>
+     * 
+     * @return {@code true} if the current thread is the node layer thread;
+     *         otherwise {@code false}.
+     */
+    protected final boolean isNodeLayerThread()
+    {
+        return Thread.currentThread() == nodeLayerThreadRef_.get();
+    }
+
+    /**
      * Template method invoked when a remote node has been bound to the local
      * table network node.
      * 
@@ -706,6 +795,136 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     // Nested Types
     // ======================================================================
 
+
+    /**
+     * Superclass for transport layer service proxies that ensure all methods
+     * are executed on the node layer thread.
+     */
+    @NotThreadSafe
+    protected abstract class AbstractServiceProxy
+        implements IService
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The actual service. */
+        private IService service_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code AbstractServiceProxy} class.
+         */
+        protected AbstractServiceProxy()
+        {
+            service_ = null;
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Creates the actual service.
+         * 
+         * @return The actual service; never {@code null}.
+         */
+        /* @NonNull */
+        protected abstract IService createActualService();
+
+        /**
+         * Gets the actual service.
+         * 
+         * @return The actual service; never {@code null}.
+         */
+        /* @NonNull */
+        private IService getActualService()
+        {
+            if( service_ == null )
+            {
+                service_ = createActualService();
+            }
+
+            return service_;
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.transport.IService#messageReceived(org.gamegineer.table.internal.net.transport.MessageEnvelope)
+         */
+        @Override
+        public void messageReceived(
+            final MessageEnvelope messageEnvelope )
+        {
+            getExecutorService().submit( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    getActualService().messageReceived( messageEnvelope );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.transport.IService#peerStopped()
+         */
+        @Override
+        public void peerStopped()
+        {
+            getExecutorService().submit( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    getActualService().peerStopped();
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.transport.IService#started(org.gamegineer.table.internal.net.transport.IServiceContext)
+         */
+        @Override
+        public void started(
+            final IServiceContext context )
+        {
+            getExecutorService().submit( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    getActualService().started( context );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.transport.IService#stopped(java.lang.Exception)
+         */
+        @Override
+        public void stopped(
+            final Exception exception )
+        {
+            getExecutorService().submit( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    getActualService().stopped( exception );
+                }
+            } );
+        }
+    }
+
     /**
      * Superclass for implementations of the {@link ITransportLayerContext}
      * associated with a table network node.
@@ -739,7 +958,14 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         public final void transportLayerDisconnected(
             final Exception exception )
         {
-            getTableNetworkController().disconnect( (exception != null) ? TableNetworkError.TRANSPORT_ERROR : null );
+            getExecutorService().submit( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    getTableNetworkController().disconnect( (exception != null) ? TableNetworkError.TRANSPORT_ERROR : null );
+                }
+            } );
         }
     }
 
