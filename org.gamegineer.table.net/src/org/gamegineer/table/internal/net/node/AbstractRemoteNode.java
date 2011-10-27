@@ -361,7 +361,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
             if( message != null )
             {
                 Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
-                    String.format( "Received message '%s' (id=%d, correlation-id=%d) from client '%s'", //$NON-NLS-1$
+                    String.format( "Received message '%s' (id=%d, correlation-id=%d) from remote node '%s'", //$NON-NLS-1$
                         message.getClass().getName(), //
                         message.getId(), //
                         message.getCorrelationId(), //
