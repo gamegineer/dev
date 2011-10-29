@@ -121,7 +121,7 @@ abstract class AbstractTransportLayer
             return new SynchronousFuture<Void>();
         }
 
-        closeInternal();
+        close();
         final Dispatcher dispatcher = dispatcher_;
         final Future<Void> dispatcherCloseTaskFuture = dispatcher.beginClose();
 
@@ -157,7 +157,7 @@ abstract class AbstractTransportLayer
     /**
      * Template method invoked to close the transport layer.
      */
-    abstract void closeInternal();
+    abstract void close();
 
     /**
      * Creates the transport layer executor service.

@@ -57,12 +57,11 @@ final class ActiveTransportLayer
     // Methods
     // ======================================================================
 
-
     /*
-     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractTransportLayer#closeInternal()
+     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractTransportLayer#close()
      */
     @Override
-    void closeInternal()
+    void close()
     {
         assert isTransportLayerThread();
 
