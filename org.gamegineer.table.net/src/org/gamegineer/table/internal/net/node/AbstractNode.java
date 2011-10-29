@@ -30,8 +30,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
@@ -39,6 +41,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.IServiceContext;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
@@ -860,15 +863,22 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         public void messageReceived(
             final MessageEnvelope messageEnvelope )
         {
-            getExecutorService().submit( new Runnable()
+            try
             {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
+                getExecutorService().submit( new Runnable()
                 {
-                    getActualService().messageReceived( messageEnvelope );
-                }
-            } );
+                    @Override
+                    @SuppressWarnings( "synthetic-access" )
+                    public void run()
+                    {
+                        getActualService().messageReceived( messageEnvelope );
+                    }
+                } );
+            }
+            catch( final RejectedExecutionException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractNode_nodeLayer_shutdown, e );
+            }
         }
 
         /*
@@ -877,15 +887,22 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         @Override
         public void peerStopped()
         {
-            getExecutorService().submit( new Runnable()
+            try
             {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
+                getExecutorService().submit( new Runnable()
                 {
-                    getActualService().peerStopped();
-                }
-            } );
+                    @Override
+                    @SuppressWarnings( "synthetic-access" )
+                    public void run()
+                    {
+                        getActualService().peerStopped();
+                    }
+                } );
+            }
+            catch( final RejectedExecutionException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractNode_nodeLayer_shutdown, e );
+            }
         }
 
         /*
@@ -895,15 +912,22 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         public void started(
             final IServiceContext context )
         {
-            getExecutorService().submit( new Runnable()
+            try
             {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
+                getExecutorService().submit( new Runnable()
                 {
-                    getActualService().started( context );
-                }
-            } );
+                    @Override
+                    @SuppressWarnings( "synthetic-access" )
+                    public void run()
+                    {
+                        getActualService().started( context );
+                    }
+                } );
+            }
+            catch( final RejectedExecutionException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractNode_nodeLayer_shutdown, e );
+            }
         }
 
         /*
@@ -913,15 +937,22 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         public void stopped(
             final Exception exception )
         {
-            getExecutorService().submit( new Runnable()
+            try
             {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
+                getExecutorService().submit( new Runnable()
                 {
-                    getActualService().stopped( exception );
-                }
-            } );
+                    @Override
+                    @SuppressWarnings( "synthetic-access" )
+                    public void run()
+                    {
+                        getActualService().stopped( exception );
+                    }
+                } );
+            }
+            catch( final RejectedExecutionException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractNode_nodeLayer_shutdown, e );
+            }
         }
     }
 
@@ -958,14 +989,21 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         public final void transportLayerDisconnected(
             final Exception exception )
         {
-            getExecutorService().submit( new Runnable()
+            try
             {
-                @Override
-                public void run()
+                getExecutorService().submit( new Runnable()
                 {
-                    getTableNetworkController().disconnect( (exception != null) ? TableNetworkError.TRANSPORT_ERROR : null );
-                }
-            } );
+                    @Override
+                    public void run()
+                    {
+                        getTableNetworkController().disconnect( (exception != null) ? TableNetworkError.TRANSPORT_ERROR : null );
+                    }
+                } );
+            }
+            catch( final RejectedExecutionException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractNode_nodeLayer_shutdown, e );
+            }
         }
     }
 

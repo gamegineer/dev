@@ -80,7 +80,6 @@ final class TransportLayerAdapter
     @Override
     public Future<Void> beginClose()
     {
-        // Invoke beginClose() on transport layer thread
         final Future<Future<Void>> beginCloseTaskFuture;
         try
         {
@@ -96,12 +95,10 @@ final class TransportLayerAdapter
         }
         catch( final RejectedExecutionException e )
         {
-            // Transport layer is closed
+            // Silently ignore request when transport layer is closed
             return new SynchronousFuture<Void>();
         }
 
-        // Wait for beginClose() to complete on a thread other than the transport layer
-        // thread and then invoke endClose() on the transport layer thread
         return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
             @Override
@@ -109,16 +106,9 @@ final class TransportLayerAdapter
             public Void call()
                 throws Exception
             {
-                final Future<Void> beginCloseFuture = beginCloseTaskFuture.get();
-                transportLayer_.getExecutorService().submit( new Callable<Void>()
-                {
-                    @Override
-                    public Void call()
-                    {
-                        transportLayer_.endClose( beginCloseFuture );
-                        return null;
-                    }
-                } );
+                final Future<Void> closeFuture = beginCloseTaskFuture.get();
+                transportLayer_.endClose( closeFuture );
+
                 return null;
             }
         } );
@@ -144,14 +134,14 @@ final class TransportLayerAdapter
                     throws Exception
                 {
                     transportLayer_.open( hostName, port );
+
                     return null;
                 }
             } );
         }
         catch( final RejectedExecutionException e )
         {
-            // Transport layer is closed
-            throw new IllegalStateException( NonNlsMessages.TransportLayerAdapter_beginOpen_closed, e );
+            throw new IllegalStateException( NonNlsMessages.TransportLayerAdapter_beginOpen_transportLayerClosed, e );
         }
     }
 

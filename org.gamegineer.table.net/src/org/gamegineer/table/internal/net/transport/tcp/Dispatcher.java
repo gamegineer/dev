@@ -37,6 +37,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
@@ -78,7 +79,10 @@ final class Dispatcher
      * dispatch thread or {@code null} if the event dispatch thread is not
      * running.
      */
-    private Future<?> eventDispatchFuture_;
+    private Future<?> eventDispatchTaskFuture_;
+
+    /** The event handler shutdown timeout in milliseconds. */
+    private long eventHandlerShutdownTimeout_;
 
     /** The collection of registered event handlers. */
     private final Collection<AbstractEventHandler> eventHandlers_;
@@ -127,7 +131,8 @@ final class Dispatcher
         // and reassemble them as needed.
 
         bufferPool_ = new ByteBufferPool( 16384 );
-        eventDispatchFuture_ = null;
+        eventDispatchTaskFuture_ = null;
+        eventHandlerShutdownTimeout_ = 10000L;
         eventHandlers_ = new ArrayList<AbstractEventHandler>();
         selector_ = null;
         selectorGuard_ = new ReentrantReadWriteLock();
@@ -165,35 +170,66 @@ final class Dispatcher
     {
         assert isTransportLayerThread();
 
-        if( state_ == State.OPEN )
+        if( state_ != State.OPEN )
         {
-            closeOrphanedEventHandlers();
-
-            // Wait for the event dispatch task to shut down on a thread other than
-            // the transport layer thread or the event dispatch thread because the
-            // event dispatch thread may wait on the transport layer thread
-            eventDispatchFuture_.cancel( true );
-            final Future<?> eventDispatchFuture = eventDispatchFuture_;
-            return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
-            {
-                @Override
-                public Void call()
-                    throws Exception
-                {
-                    try
-                    {
-                        eventDispatchFuture.get( 10, TimeUnit.SECONDS );
-                    }
-                    catch( final CancellationException e )
-                    {
-                        // do nothing
-                    }
-
-                    return null;
-                }
-            } );
+            state_ = State.CLOSED;
+            return new SynchronousFuture<Void>();
         }
-        return new SynchronousFuture<Void>();
+
+        final Future<?> eventDispatchTaskFuture = eventDispatchTaskFuture_;
+        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+            {
+                try
+                {
+                    waitForEventHandlersToShutdown();
+
+                    waitForEventDispatchTaskToShutdown( eventDispatchTaskFuture );
+
+                    final Future<Void> closeFuture = transportLayer_.getExecutorService().submit( new Callable<Void>()
+                    {
+                        @Override
+                        public Void call()
+                        {
+                            eventDispatchTaskFuture_ = null;
+
+                            acquireSelectorGuard();
+                            try
+                            {
+                                selector_.close();
+                            }
+                            catch( final IOException e )
+                            {
+                                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_close_error, e );
+                            }
+                            finally
+                            {
+                                selector_ = null;
+                                releaseSelectorGuard();
+                            }
+
+                            state_ = State.CLOSED;
+
+                            return null;
+                        }
+                    } );
+                    closeFuture.get();
+                }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
+                }
+                catch( final ExecutionException e )
+                {
+                    throw TaskUtils.launderThrowable( e.getCause() );
+                }
+
+                return null;
+            }
+        } );
     }
 
     /**
@@ -302,54 +338,35 @@ final class Dispatcher
      * This method does nothing if the dispatcher is already closed.
      * </p>
      * 
+     * <p>
+     * This method may be called from any thread. It must not be called on the
+     * transport layer thread if the operation is not done.
+     * </p>
+     * 
      * @param future
      *        The asynchronous completion token associated with the operation;
-     *        must not be {@code null} and must be done.
+     *        must not be {@code null}.
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the operation to
+     *         complete.
      */
     void endClose(
         /* @NonNull */
         final Future<Void> future )
+        throws InterruptedException
     {
         assert future != null;
-        assert future.isDone();
-        assert isTransportLayerThread();
+        assert !isTransportLayerThread() || future.isDone();
 
-        if( state_ == State.OPEN )
+        try
         {
-            try
-            {
-                future.get();
-            }
-            catch( final InterruptedException e )
-            {
-                throw new AssertionError( "InterruptedException should not happen if future.isDone()" ); //$NON-NLS-1$
-            }
-            catch( final ExecutionException e )
-            {
-                throw TaskUtils.launderThrowable( e.getCause() );
-            }
-            finally
-            {
-                eventDispatchFuture_ = null;
-            }
-
-            acquireSelectorGuard();
-            try
-            {
-                selector_.close();
-            }
-            catch( final IOException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_close_error, e );
-            }
-            finally
-            {
-                selector_ = null;
-                releaseSelectorGuard();
-            }
+            future.get();
         }
-
-        state_ = State.CLOSED;
+        catch( final ExecutionException e )
+        {
+            throw TaskUtils.launderThrowable( e.getCause() );
+        }
     }
 
     /**
@@ -432,7 +449,7 @@ final class Dispatcher
         try
         {
             selector_ = selector;
-            eventDispatchFuture_ = Activator.getDefault().getExecutorService().submit( new Runnable()
+            eventDispatchTaskFuture_ = Activator.getDefault().getExecutorService().submit( new Runnable()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
@@ -554,6 +571,27 @@ final class Dispatcher
     }
 
     /**
+     * Sets the event handler shutdown timeout.
+     * 
+     * <p>
+     * This value represents the time the dispatcher will wait for all event
+     * handlers to shutdown after it has been requested to close.
+     * </p>
+     * 
+     * @param eventHandlerShutdownTimeout
+     *        The event handler shutdown timeout in milliseconds; must not be
+     *        negative.
+     */
+    void setEventHandlerShutdownTimeout(
+        final long eventHandlerShutdownTimeout )
+    {
+        assert eventHandlerShutdownTimeout >= 0;
+        assert isTransportLayerThread();
+
+        eventHandlerShutdownTimeout_ = eventHandlerShutdownTimeout;
+    }
+
+    /**
      * Unregisters the specified event handler.
      * 
      * @param eventHandler
@@ -590,5 +628,110 @@ final class Dispatcher
         }
 
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, String.format( "Unregistered event handler '%s'", eventHandler ) ); //$NON-NLS-1$
+    }
+
+    /**
+     * Waits for the event dispatch task to shutdown.
+     * 
+     * <p>
+     * This method must not be called on the transport layer thread.
+     * </p>
+     * 
+     * @param eventDispatchTaskFuture
+     *        The asynchronous completion token for the event dispatch task;
+     *        must not be {@code null}.
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the event
+     *         dispatch task to shutdown.
+     */
+    private void waitForEventDispatchTaskToShutdown(
+        /* @NonNull */
+        final Future<?> eventDispatchTaskFuture )
+        throws InterruptedException
+    {
+        assert eventDispatchTaskFuture != null;
+        assert !isTransportLayerThread();
+
+        eventDispatchTaskFuture.cancel( true );
+
+        try
+        {
+            eventDispatchTaskFuture.get( 10, TimeUnit.SECONDS );
+        }
+        catch( final CancellationException e )
+        {
+            // do nothing
+        }
+        catch( final TimeoutException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_waitForEventDispatchTaskToShutdown_timeout, e );
+        }
+        catch( final ExecutionException e )
+        {
+            throw TaskUtils.launderThrowable( e.getCause() );
+        }
+    }
+
+    /**
+     * Waits for all event handlers to shutdown.
+     * 
+     * <p>
+     * If all event handlers are not shutdown within the allowable timeout, they
+     * will be forcibly closed.
+     * </p>
+     * 
+     * <p>
+     * This method must not be called on the transport layer thread.
+     * </p>
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the event
+     *         handlers to shutdown.
+     */
+    private void waitForEventHandlersToShutdown()
+        throws InterruptedException
+    {
+        assert !isTransportLayerThread();
+
+        final long startTime = System.currentTimeMillis();
+
+        while( true )
+        {
+            final Future<Boolean> areEventHandlersClosedFuture = transportLayer_.getExecutorService().submit( new Callable<Boolean>()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public Boolean call()
+                {
+                    if( eventHandlers_.isEmpty() )
+                    {
+                        return Boolean.TRUE;
+                    }
+                    else if( (System.currentTimeMillis() - startTime) >= eventHandlerShutdownTimeout_ )
+                    {
+                        closeOrphanedEventHandlers();
+                        return Boolean.TRUE;
+                    }
+
+                    return Boolean.FALSE;
+                }
+            } );
+
+            try
+            {
+                final boolean areEventHandlersClosed = areEventHandlersClosedFuture.get().booleanValue();
+                if( areEventHandlersClosed )
+                {
+                    break;
+                }
+            }
+            catch( final ExecutionException e )
+            {
+                throw TaskUtils.launderThrowable( e.getCause() );
+            }
+
+            Thread.sleep( 100L );
+        }
     }
 }

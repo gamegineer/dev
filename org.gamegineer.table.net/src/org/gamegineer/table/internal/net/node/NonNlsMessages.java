@@ -54,6 +54,9 @@ final class NonNlsMessages
     /** The network is disconnected. */
     public static String AbstractNode_networkDisconnected;
 
+    /** The node layer has been shutdown. */
+    public static String AbstractNode_nodeLayer_shutdown;
+
     /** The name of the node layer thread. */
     public static String AbstractNode_nodeLayerThread_name;
 

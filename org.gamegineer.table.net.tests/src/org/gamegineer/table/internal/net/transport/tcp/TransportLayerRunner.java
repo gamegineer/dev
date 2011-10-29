@@ -90,20 +90,7 @@ final class TransportLayerRunner
         } );
 
         // Wait for transport layer to close on current thread
-        closeFuture.get();
-
-        // Invoke endClose() on transport layer thread
-        run( new Callable<Void>()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public Void call()
-                throws Exception
-            {
-                transportLayer_.endClose( closeFuture );
-                return null;
-            }
-        } );
+        transportLayer_.endClose( closeFuture );
     }
 
     /**

@@ -36,6 +36,14 @@ final class PassiveTransportLayer
     extends AbstractTransportLayer
 {
     // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The acceptor that receives passive connections. */
+    private Acceptor acceptor_;
+
+
+    // ======================================================================
     // Constructors
     // ======================================================================
 
@@ -50,12 +58,29 @@ final class PassiveTransportLayer
         final ITransportLayerContext context )
     {
         super( context );
+
+        acceptor_ = null;
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractTransportLayer#closeInternal()
+     */
+    @Override
+    void closeInternal()
+    {
+        assert isTransportLayerThread();
+
+        if( acceptor_ != null )
+        {
+            acceptor_.close();
+            acceptor_ = null;
+        }
+    }
 
     /*
      * @see org.gamegineer.table.internal.net.transport.tcp.AbstractTransportLayer#openInternal(java.lang.String, int)
@@ -73,6 +98,7 @@ final class PassiveTransportLayer
         try
         {
             acceptor.bind( hostName, port );
+            acceptor_ = acceptor;
         }
         catch( final IOException e )
         {

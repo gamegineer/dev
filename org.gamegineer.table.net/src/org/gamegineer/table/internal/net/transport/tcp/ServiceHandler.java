@@ -319,9 +319,13 @@ final class ServiceHandler
     {
         assert isTransportLayerThread();
 
-        interestOperations_ = getSelectionKey().interestOps();
-        readyOperations_ = getSelectionKey().readyOps();
-        isRunning_ = true;
+        final SelectionKey selectionKey = getSelectionKey();
+        if( selectionKey != null )
+        {
+            interestOperations_ = selectionKey.interestOps();
+            readyOperations_ = selectionKey.readyOps();
+            isRunning_ = true;
+        }
     }
 
     /*
@@ -331,6 +335,11 @@ final class ServiceHandler
     void run()
     {
         assert isTransportLayerThread();
+
+        if( !isRunning_ )
+        {
+            return;
+        }
 
         try
         {
@@ -342,11 +351,6 @@ final class ServiceHandler
                 MessageEnvelope messageEnvelope = null;
                 while( (messageEnvelope = inputQueue_.dequeueMessageEnvelope()) != null )
                 {
-                    // TODO: in the future, this method will not block, but will return
-                    // immediately, which means all the code below that checks for shutdowns
-                    // needs to be run whenever the higher layer requests to transmit
-                    // a message or stop the service (i.e. any method of IServiceContext is
-                    // called)
                     service_.messageReceived( messageEnvelope );
                 }
 
@@ -355,12 +359,12 @@ final class ServiceHandler
                     inputQueueState_ = QueueState.SHUT_DOWN;
                     service_.peerStopped();
                 }
+            }
 
-                if( (outputQueueState_ == QueueState.SHUTTING_DOWN) && outputQueue_.isEmpty() )
-                {
-                    outputQueueState_ = QueueState.SHUT_DOWN;
-                    close();
-                }
+            if( (outputQueueState_ == QueueState.SHUTTING_DOWN) && outputQueue_.isEmpty() )
+            {
+                outputQueueState_ = QueueState.SHUT_DOWN;
+                close();
             }
         }
         catch( final Exception e )
@@ -404,7 +408,15 @@ final class ServiceHandler
     {
         if( outputQueueState_ == QueueState.OPEN )
         {
-            outputQueueState_ = QueueState.SHUTTING_DOWN;
+            if( outputQueue_.isEmpty() && ((interestOperations_ & SelectionKey.OP_WRITE) == 0) )
+            {
+                outputQueueState_ = QueueState.SHUT_DOWN;
+                close();
+            }
+            else
+            {
+                outputQueueState_ = QueueState.SHUTTING_DOWN;
+            }
         }
     }
 

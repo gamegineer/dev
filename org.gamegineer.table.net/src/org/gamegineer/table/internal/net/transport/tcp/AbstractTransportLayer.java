@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.transport.tcp;
 
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,6 +32,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
+import org.gamegineer.table.internal.net.Activator;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 import org.gamegineer.table.internal.net.transport.TransportException;
@@ -112,13 +114,50 @@ abstract class AbstractTransportLayer
     {
         assert isTransportLayerThread();
 
-        if( state_ == State.OPEN )
+        if( state_ != State.OPEN )
         {
-            return dispatcher_.beginClose();
+            executorService_.shutdown();
+            state_ = State.CLOSED;
+            return new SynchronousFuture<Void>();
         }
 
-        return new SynchronousFuture<Void>();
+        closeInternal();
+        final Dispatcher dispatcher = dispatcher_;
+        final Future<Void> dispatcherCloseTaskFuture = dispatcher.beginClose();
+
+        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                dispatcher.endClose( dispatcherCloseTaskFuture );
+
+                final Future<Void> endCloseTaskFuture = executorService_.submit( new Callable<Void>()
+                {
+                    @Override
+                    public Void call()
+                        throws Exception
+                    {
+                        dispatcher_ = null;
+                        executorService_.shutdown();
+                        state_ = State.CLOSED;
+
+                        return null;
+                    }
+                } );
+                endCloseTaskFuture.get();
+
+                return null;
+            }
+        } );
     }
+
+    /**
+     * Template method invoked to close the transport layer.
+     */
+    abstract void closeInternal();
 
     /**
      * Creates the transport layer executor service.
@@ -195,40 +234,35 @@ abstract class AbstractTransportLayer
      * This method does nothing if the transport layer is already closed.
      * </p>
      * 
+     * <p>
+     * This method may be called from any thread. It must not be called on the
+     * transport layer thread if the operation is not done.
+     * </p>
+     * 
      * @param future
      *        The asynchronous completion token associated with the operation;
-     *        must not be {@code null} and must be done.
+     *        must not be {@code null}.
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the operation to
+     *         complete.
      */
     final void endClose(
         /* @NonNull */
         final Future<Void> future )
+        throws InterruptedException
     {
         assert future != null;
-        assert future.isDone();
-        assert isTransportLayerThread();
+        assert !isTransportLayerThread() || future.isDone();
 
-        if( state_ == State.OPEN )
+        try
         {
-            try
-            {
-                future.get();
-            }
-            catch( final InterruptedException e )
-            {
-                throw new AssertionError( "InterruptedException should not happen if future.isDone()" ); //$NON-NLS-1$
-            }
-            catch( final ExecutionException e )
-            {
-                throw TaskUtils.launderThrowable( e.getCause() );
-            }
-            finally
-            {
-                dispatcher_ = null;
-            }
+            future.get();
         }
-
-        executorService_.shutdown();
-        state_ = State.CLOSED;
+        catch( final ExecutionException e )
+        {
+            throw TaskUtils.launderThrowable( e.getCause() );
+        }
     }
 
     /**

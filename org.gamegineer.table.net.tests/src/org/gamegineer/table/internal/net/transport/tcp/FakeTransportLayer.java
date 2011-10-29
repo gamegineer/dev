@@ -52,6 +52,17 @@ final class FakeTransportLayer
     // ======================================================================
 
     /*
+     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractTransportLayer#closeInternal()
+     */
+    @Override
+    void closeInternal()
+    {
+        assert isTransportLayerThread();
+
+        // do nothing
+    }
+
+    /*
      * @see org.gamegineer.table.internal.net.transport.tcp.AbstractTransportLayer#openInternal(java.lang.String, int)
      */
     @Override

@@ -93,20 +93,7 @@ public final class DispatcherTest
         } );
 
         // Wait for dispatcher to close on current thread
-        dispatcherCloseFuture.get();
-
-        // Invoke endClose() on transport layer thread
-        transportLayerRunner_.run( new Callable<Void>()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public Void call()
-                throws Exception
-            {
-                dispatcher_.endClose( dispatcherCloseFuture );
-                return null;
-            }
-        } );
+        dispatcher_.endClose( dispatcherCloseFuture );
     }
 
     /**
@@ -129,6 +116,7 @@ public final class DispatcherTest
             public Void call()
             {
                 dispatcher_ = new Dispatcher( transportLayer_ );
+                dispatcher_.setEventHandlerShutdownTimeout( 500L );
                 return null;
             }
         } );
@@ -362,8 +350,14 @@ public final class DispatcherTest
                 final AbstractEventHandler eventHandler = new FakeEventHandler( transportLayer_ );
                 dispatcher_.open();
                 dispatcher_.registerEventHandler( eventHandler );
-
-                dispatcher_.registerEventHandler( eventHandler );
+                try
+                {
+                    dispatcher_.registerEventHandler( eventHandler );
+                }
+                finally
+                {
+                    dispatcher_.unregisterEventHandler( eventHandler );
+                }
 
                 return null;
             }

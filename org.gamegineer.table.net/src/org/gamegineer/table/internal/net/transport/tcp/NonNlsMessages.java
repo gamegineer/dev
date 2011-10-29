@@ -100,6 +100,9 @@ final class NonNlsMessages
     /** The event handler is not registered. */
     public static String Dispatcher_unregisterEventHandler_eventHandlerUnregistered;
 
+    /** Timed out waiting for the event dispatch task to shutdown. */
+    public static String Dispatcher_waitForEventDispatchTaskToShutdown_timeout;
+
     // --- PassiveTransportLayer --------------------------------------------
 
     /** An I/O error occurred while opening the transport layer. */
@@ -125,7 +128,7 @@ final class NonNlsMessages
     // --- TransportLayerAdapter --------------------------------------------
 
     /** The transport layer is closed. */
-    public static String TransportLayerAdapter_beginOpen_closed;
+    public static String TransportLayerAdapter_beginOpen_transportLayerClosed;
 
 
     // ======================================================================
