@@ -252,14 +252,10 @@ final class Acceptor
     {
         assert isTransportLayerThread();
 
-        // Handle race condition when acceptor is closed after an event has been
-        // dispatched but before this method is called
-        if( getState() == State.OPEN )
+        final SelectionKey selectionKey = getSelectionKey();
+        if( (selectionKey != null) && selectionKey.isAcceptable() )
         {
-            if( getSelectionKey().isAcceptable() )
-            {
-                accept();
-            }
+            accept();
         }
     }
 }
