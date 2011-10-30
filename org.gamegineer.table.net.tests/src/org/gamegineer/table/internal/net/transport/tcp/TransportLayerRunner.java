@@ -94,6 +94,41 @@ final class TransportLayerRunner
     }
 
     /**
+     * Synchronously opens the associated transport layer.
+     * 
+     * @param hostName
+     *        The host name; must not be {@code null}.
+     * @param port
+     *        The port.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    void open(
+        /* @NonNull */
+        final String hostName,
+        final int port )
+        throws Exception
+    {
+        assert hostName != null;
+        assert !transportLayer_.isTransportLayerThread();
+
+        // Invoke beginOpen() on transport layer thread
+        final Future<Void> openFuture = run( new Callable<Future<Void>>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Future<Void> call()
+            {
+                return transportLayer_.beginOpen( hostName, port );
+            }
+        } );
+
+        // Wait for transport layer to open on current thread
+        transportLayer_.endOpen( openFuture );
+    }
+
+    /**
      * Executes the specified task on the transport layer thread expecting no
      * checked exceptions will be thrown.
      * 

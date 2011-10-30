@@ -83,10 +83,10 @@ final class PassiveTransportLayer
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractTransportLayer#openInternal(java.lang.String, int)
+     * @see org.gamegineer.table.internal.net.transport.tcp.AbstractTransportLayer#open(java.lang.String, int)
      */
     @Override
-    void openInternal(
+    void open(
         final String hostName,
         final int port )
         throws TransportException

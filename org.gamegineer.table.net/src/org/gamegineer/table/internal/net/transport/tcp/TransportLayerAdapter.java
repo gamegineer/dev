@@ -106,8 +106,7 @@ final class TransportLayerAdapter
             public Void call()
                 throws Exception
             {
-                final Future<Void> closeFuture = beginCloseTaskFuture.get();
-                transportLayer_.endClose( closeFuture );
+                transportLayer_.endClose( beginCloseTaskFuture.get() );
 
                 return null;
             }
@@ -124,18 +123,16 @@ final class TransportLayerAdapter
     {
         assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
 
+        final Future<Future<Void>> beginOpenTaskFuture;
         try
         {
-            return transportLayer_.getExecutorService().submit( new Callable<Void>()
+            beginOpenTaskFuture = transportLayer_.getExecutorService().submit( new Callable<Future<Void>>()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
-                public Void call()
-                    throws Exception
+                public Future<Void> call()
                 {
-                    transportLayer_.open( hostName, port );
-
-                    return null;
+                    return transportLayer_.beginOpen( hostName, port );
                 }
             } );
         }
@@ -143,6 +140,19 @@ final class TransportLayerAdapter
         {
             throw new IllegalStateException( NonNlsMessages.TransportLayerAdapter_beginOpen_transportLayerClosed, e );
         }
+
+        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                transportLayer_.endOpen( beginOpenTaskFuture.get() );
+
+                return null;
+            }
+        } );
     }
 
     /*

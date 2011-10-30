@@ -77,14 +77,13 @@ public final class ConnectorTest
         transportLayer_ = new FakeTransportLayer();
         transportLayerRunner_ = new TransportLayerRunner( transportLayer_ );
 
+        transportLayerRunner_.open( "localhost", 8888 ); //$NON-NLS-1$
         transportLayerRunner_.run( new Callable<Void>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
             public Void call()
-                throws Exception
             {
-                transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
                 connector_ = new Connector( transportLayer_ );
                 return null;
             }

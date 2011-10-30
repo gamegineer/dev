@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.net.transport;
 import static org.junit.Assert.assertNotNull;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -174,10 +173,6 @@ public abstract class AbstractTransportLayerTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Ignore
-    // FIXME: Re-enable this test when we address the FIXME in AbstractTransportLayer.open().
-    // Currently, there is a race condition because we're not waiting for the transport layer
-    // to close before returning from open().
     @Test( expected = IllegalStateException.class )
     public void testOpen_MultipleInvocations()
         throws Exception

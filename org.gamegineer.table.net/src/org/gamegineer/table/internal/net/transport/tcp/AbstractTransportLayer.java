@@ -155,6 +155,83 @@ abstract class AbstractTransportLayer
     }
 
     /**
+     * Begins an asynchronous operation to open the transport layer.
+     * 
+     * @param hostName
+     *        The host name; must not be {@code null}. For a passive transport
+     *        layer, this value is the host name to which all services will be
+     *        bound. For an active transport layer, this value is the host name
+     *        of the remote service.
+     * @param port
+     *        The port. For a passive transport layer, this value is the port to
+     *        which all services will be bound. For an active transport layer,
+     *        this value is the port of the remote service.
+     * 
+     * @return An asynchronous completion token for the operation; never {@code
+     *         null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If the transport layer has already been opened or is closed.
+     */
+    /* @NonNull */
+    final Future<Void> beginOpen(
+        /* @NonNull */
+        final String hostName,
+        final int port )
+    {
+        assert hostName != null;
+        assert isTransportLayerThread();
+        assertStateLegal( state_ == State.PRISTINE, NonNlsMessages.AbstractTransportLayer_state_notPristine );
+
+        state_ = State.OPEN;
+        dispatcher_ = new Dispatcher( this );
+
+        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws TransportException
+            {
+                final Future<Void> openTaskFuture = getExecutorService().submit( new Callable<Void>()
+                {
+                    @Override
+                    public Void call()
+                        throws TransportException
+                    {
+                        dispatcher_.open();
+                        open( hostName, port );
+
+                        return null;
+                    }
+                } );
+
+                try
+                {
+                    openTaskFuture.get();
+                }
+                catch( final ExecutionException e )
+                {
+                    final Throwable cause = e.getCause();
+                    if( cause instanceof TransportException )
+                    {
+                        synchronousClose();
+                        throw (TransportException)cause;
+                    }
+
+                    throw TaskUtils.launderThrowable( cause );
+                }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
+                }
+
+                return null;
+            }
+        } );
+    }
+
+    /**
      * Template method invoked to close the transport layer.
      */
     abstract void close();
@@ -266,6 +343,50 @@ abstract class AbstractTransportLayer
     }
 
     /**
+     * Ends an asynchronous operation to open the transport layer.
+     * 
+     * <p>
+     * This method may be called from any thread. It must not be called on the
+     * transport layer thread if the operation is not done.
+     * </p>
+     * 
+     * @param future
+     *        The asynchronous completion token associated with the operation;
+     *        must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If the transport layer has already been opened or is closed.
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the operation to
+     *         complete.
+     * @throws org.gamegineer.table.internal.net.transport.TransportException
+     *         If an error occurs.
+     */
+    final void endOpen(
+        /* @NonNull */
+        final Future<Void> future )
+        throws TransportException, InterruptedException
+    {
+        assert future != null;
+        assert !isTransportLayerThread() || future.isDone();
+
+        try
+        {
+            future.get();
+        }
+        catch( final ExecutionException e )
+        {
+            final Throwable cause = e.getCause();
+            if( cause instanceof TransportException )
+            {
+                throw (TransportException)cause;
+            }
+
+            throw TaskUtils.launderThrowable( e );
+        }
+    }
+
+    /**
      * Gets the dispatcher associated with the transport layer.
      * 
      * @return The dispatcher associated with the transport layer; never {@code
@@ -312,56 +433,6 @@ abstract class AbstractTransportLayer
     }
 
     /**
-     * Opens the transport layer.
-     * 
-     * <p>
-     * This method blocks until the transport layer is connected or an error
-     * occurs.
-     * </p>
-     * 
-     * @param hostName
-     *        The host name; must not be {@code null}. For a passive transport
-     *        layer, this value is the host name to which all services will be
-     *        bound. For an active transport layer, this value is the host name
-     *        of the remote service.
-     * @param port
-     *        The port. For a passive transport layer, this value is the port to
-     *        which all services will be bound. For an active transport layer,
-     *        this value is the port of the remote service.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If the transport layer has already been opened or is closed.
-     * @throws org.gamegineer.table.internal.net.transport.TransportException
-     *         If an error occurs.
-     */
-    final void open(
-        /* @NonNull */
-        final String hostName,
-        final int port )
-        throws TransportException
-    {
-        assert hostName != null;
-        assert isTransportLayerThread();
-        assertStateLegal( state_ == State.PRISTINE, NonNlsMessages.AbstractTransportLayer_state_notPristine );
-
-        state_ = State.OPEN;
-        dispatcher_ = new Dispatcher( this );
-
-        try
-        {
-            dispatcher_.open();
-            openInternal( hostName, port );
-        }
-        catch( final TransportException e )
-        {
-            // FIXME: Can't wait for full closure on this thread.  Need to transform
-            // open() into beginOpen() and endOpen() to accomplish this correctly.
-            beginClose();
-            throw e;
-        }
-    }
-
-    /**
      * Template method invoked to open the transport layer.
      * 
      * @param hostName
@@ -372,9 +443,43 @@ abstract class AbstractTransportLayer
      * @throws org.gamegineer.table.internal.net.transport.TransportException
      *         If an error occurs.
      */
-    abstract void openInternal(
+    abstract void open(
         /* @NonNull */
         String hostName,
         int port )
         throws TransportException;
+
+    /**
+     * Synchronously closes the transport layer.
+     * 
+     * <p>
+     * This method must not be called on the transport layer thread.
+     * </p>
+     */
+    private void synchronousClose()
+    {
+        assert !isTransportLayerThread();
+
+        final Future<Future<Void>> beginCloseTaskFuture = getExecutorService().submit( new Callable<Future<Void>>()
+        {
+            @Override
+            public Future<Void> call()
+            {
+                return beginClose();
+            }
+        } );
+
+        try
+        {
+            endClose( beginCloseTaskFuture.get() );
+        }
+        catch( final ExecutionException e )
+        {
+            throw TaskUtils.launderThrowable( e.getCause() );
+        }
+        catch( final InterruptedException e )
+        {
+            Thread.currentThread().interrupt();
+        }
+    }
 }
