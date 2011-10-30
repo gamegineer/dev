@@ -130,24 +130,37 @@ abstract class AbstractTransportLayer
             @Override
             @SuppressWarnings( "synthetic-access" )
             public Void call()
-                throws Exception
             {
-                dispatcher.endClose( dispatcherCloseTaskFuture );
-
-                final Future<Void> endCloseTaskFuture = executorService_.submit( new Callable<Void>()
+                try
                 {
-                    @Override
-                    public Void call()
-                        throws Exception
-                    {
-                        dispatcher_ = null;
-                        executorService_.shutdown();
-                        state_ = State.CLOSED;
+                    dispatcher.endClose( dispatcherCloseTaskFuture );
 
-                        return null;
+                    final Future<Void> closeTaskFuture = executorService_.submit( new Callable<Void>()
+                    {
+                        @Override
+                        public Void call()
+                        {
+                            dispatcher_ = null;
+                            executorService_.shutdown();
+                            state_ = State.CLOSED;
+
+                            return null;
+                        }
+                    } );
+
+                    try
+                    {
+                        closeTaskFuture.get();
                     }
-                } );
-                endCloseTaskFuture.get();
+                    catch( final ExecutionException e )
+                    {
+                        throw TaskUtils.launderThrowable( e.getCause() );
+                    }
+                }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
+                }
 
                 return null;
             }

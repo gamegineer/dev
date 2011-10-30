@@ -104,9 +104,25 @@ final class TransportLayerAdapter
             @Override
             @SuppressWarnings( "synthetic-access" )
             public Void call()
-                throws Exception
             {
-                transportLayer_.endClose( beginCloseTaskFuture.get() );
+                try
+                {
+                    final Future<Void> closeTaskFuture;
+                    try
+                    {
+                        closeTaskFuture = beginCloseTaskFuture.get();
+                    }
+                    catch( final ExecutionException e )
+                    {
+                        throw TaskUtils.launderThrowable( e.getCause() );
+                    }
+
+                    transportLayer_.endClose( closeTaskFuture );
+                }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
+                }
 
                 return null;
             }
@@ -146,9 +162,26 @@ final class TransportLayerAdapter
             @Override
             @SuppressWarnings( "synthetic-access" )
             public Void call()
-                throws Exception
+                throws TransportException
             {
-                transportLayer_.endOpen( beginOpenTaskFuture.get() );
+                try
+                {
+                    final Future<Void> openTaskFuture;
+                    try
+                    {
+                        openTaskFuture = beginOpenTaskFuture.get();
+                    }
+                    catch( final ExecutionException e )
+                    {
+                        throw TaskUtils.launderThrowable( e.getCause() );
+                    }
+
+                    transportLayer_.endOpen( openTaskFuture );
+                }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
+                }
 
                 return null;
             }
