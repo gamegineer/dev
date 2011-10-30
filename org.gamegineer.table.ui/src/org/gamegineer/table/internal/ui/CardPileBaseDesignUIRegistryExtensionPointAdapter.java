@@ -124,8 +124,11 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
      */
     public void activate()
     {
-        registerCardPileBaseDesignUIs();
-        extensionRegistry_.addListener( this, BundleConstants.CARD_PILE_BASE_DESIGN_UIS_EXTENSION_POINT_UNIQUE_ID );
+        synchronized( lock_ )
+        {
+            registerCardPileBaseDesignUIs();
+            extensionRegistry_.addListener( this, BundleConstants.CARD_PILE_BASE_DESIGN_UIS_EXTENSION_POINT_UNIQUE_ID );
+        }
     }
 
     /*
@@ -269,8 +272,11 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
      */
     public void deactivate()
     {
-        extensionRegistry_.removeListener( this );
-        unregisterCardPileBaseDesignUIs();
+        synchronized( lock_ )
+        {
+            extensionRegistry_.removeListener( this );
+            unregisterCardPileBaseDesignUIs();
+        }
     }
 
     /**
@@ -340,8 +346,11 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
      * Registers all card pile base design user interfaces in the extension
      * registry.
      */
+    @GuardedBy( "lock_" )
     private void registerCardPileBaseDesignUIs()
     {
+        assert Thread.holdsLock( lock_ );
+
         for( final IConfigurationElement configurationElement : extensionRegistry_.getConfigurationElementsFor( BundleConstants.CARD_PILE_BASE_DESIGN_UIS_EXTENSION_POINT_UNIQUE_ID ) )
         {
             registerCardPileBaseDesignUI( configurationElement );
@@ -425,17 +434,17 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
     /**
      * Unregisters all card pile base design user interfaces.
      */
+    @GuardedBy( "lock_" )
     private void unregisterCardPileBaseDesignUIs()
     {
-        synchronized( lock_ )
-        {
-            for( final CardPileBaseDesignUI cardPileBaseDesignUI : cardPileBaseDesignUIs_ )
-            {
-                cardPileBaseDesignUIRegistry_.unregisterCardPileBaseDesignUI( cardPileBaseDesignUI );
-            }
+        assert Thread.holdsLock( lock_ );
 
-            cardPileBaseDesignUIs_.clear();
+        for( final CardPileBaseDesignUI cardPileBaseDesignUI : cardPileBaseDesignUIs_ )
+        {
+            cardPileBaseDesignUIRegistry_.unregisterCardPileBaseDesignUI( cardPileBaseDesignUI );
         }
+
+        cardPileBaseDesignUIs_.clear();
     }
 
     /**

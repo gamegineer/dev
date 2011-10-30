@@ -114,8 +114,11 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
      */
     public void activate()
     {
-        registerCardPileBaseDesigns();
-        extensionRegistry_.addListener( this, BundleConstants.CARD_PILE_BASE_DESIGNS_EXTENSION_POINT_UNIQUE_ID );
+        synchronized( lock_ )
+        {
+            registerCardPileBaseDesigns();
+            extensionRegistry_.addListener( this, BundleConstants.CARD_PILE_BASE_DESIGNS_EXTENSION_POINT_UNIQUE_ID );
+        }
     }
 
     /*
@@ -244,8 +247,11 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
      */
     public void deactivate()
     {
-        extensionRegistry_.removeListener( this );
-        unregisterCardPileBaseDesigns();
+        synchronized( lock_ )
+        {
+            extensionRegistry_.removeListener( this );
+            unregisterCardPileBaseDesigns();
+        }
     }
 
     /**
@@ -312,8 +318,11 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
     /**
      * Registers all card pile base designs in the extension registry.
      */
+    @GuardedBy( "lock_" )
     private void registerCardPileBaseDesigns()
     {
+        assert Thread.holdsLock( lock_ );
+
         for( final IConfigurationElement configurationElement : extensionRegistry_.getConfigurationElementsFor( BundleConstants.CARD_PILE_BASE_DESIGNS_EXTENSION_POINT_UNIQUE_ID ) )
         {
             registerCardPileBaseDesign( configurationElement );
@@ -396,17 +405,17 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
     /**
      * Unregisters all card pile base designs.
      */
+    @GuardedBy( "lock_" )
     private void unregisterCardPileBaseDesigns()
     {
-        synchronized( lock_ )
-        {
-            for( final CardPileBaseDesignExtensionProxy cardPileBaseDesign : cardPileBaseDesigns_ )
-            {
-                cardPileBaseDesignRegistry_.unregisterCardPileBaseDesign( cardPileBaseDesign );
-            }
+        assert Thread.holdsLock( lock_ );
 
-            cardPileBaseDesigns_.clear();
+        for( final CardPileBaseDesignExtensionProxy cardPileBaseDesign : cardPileBaseDesigns_ )
+        {
+            cardPileBaseDesignRegistry_.unregisterCardPileBaseDesign( cardPileBaseDesign );
         }
+
+        cardPileBaseDesigns_.clear();
     }
 
     /**

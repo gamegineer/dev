@@ -114,8 +114,11 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
      */
     public void activate()
     {
-        registerCardSurfaceDesigns();
-        extensionRegistry_.addListener( this, BundleConstants.CARD_SURFACE_DESIGNS_EXTENSION_POINT_UNIQUE_ID );
+        synchronized( lock_ )
+        {
+            registerCardSurfaceDesigns();
+            extensionRegistry_.addListener( this, BundleConstants.CARD_SURFACE_DESIGNS_EXTENSION_POINT_UNIQUE_ID );
+        }
     }
 
     /*
@@ -244,8 +247,11 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
      */
     public void deactivate()
     {
-        extensionRegistry_.removeListener( this );
-        unregisterCardSurfaceDesigns();
+        synchronized( lock_ )
+        {
+            extensionRegistry_.removeListener( this );
+            unregisterCardSurfaceDesigns();
+        }
     }
 
     /**
@@ -312,8 +318,11 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
     /**
      * Registers all card surface designs in the extension registry.
      */
+    @GuardedBy( "lock_" )
     private void registerCardSurfaceDesigns()
     {
+        assert Thread.holdsLock( lock_ );
+
         for( final IConfigurationElement configurationElement : extensionRegistry_.getConfigurationElementsFor( BundleConstants.CARD_SURFACE_DESIGNS_EXTENSION_POINT_UNIQUE_ID ) )
         {
             registerCardSurfaceDesign( configurationElement );
@@ -396,17 +405,17 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
     /**
      * Unregisters all card surface designs.
      */
+    @GuardedBy( "lock_" )
     private void unregisterCardSurfaceDesigns()
     {
-        synchronized( lock_ )
-        {
-            for( final CardSurfaceDesignExtensionProxy cardSurfaceDesign : cardSurfaceDesigns_ )
-            {
-                cardSurfaceDesignRegistry_.unregisterCardSurfaceDesign( cardSurfaceDesign );
-            }
+        assert Thread.holdsLock( lock_ );
 
-            cardSurfaceDesigns_.clear();
+        for( final CardSurfaceDesignExtensionProxy cardSurfaceDesign : cardSurfaceDesigns_ )
+        {
+            cardSurfaceDesignRegistry_.unregisterCardSurfaceDesign( cardSurfaceDesign );
         }
+
+        cardSurfaceDesigns_.clear();
     }
 
     /**

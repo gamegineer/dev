@@ -124,8 +124,11 @@ public final class CardSurfaceDesignUIRegistryExtensionPointAdapter
      */
     public void activate()
     {
-        registerCardSurfaceDesignUIs();
-        extensionRegistry_.addListener( this, BundleConstants.CARD_SURFACE_DESIGN_UIS_EXTENSION_POINT_UNIQUE_ID );
+        synchronized( lock_ )
+        {
+            registerCardSurfaceDesignUIs();
+            extensionRegistry_.addListener( this, BundleConstants.CARD_SURFACE_DESIGN_UIS_EXTENSION_POINT_UNIQUE_ID );
+        }
     }
 
     /*
@@ -269,8 +272,11 @@ public final class CardSurfaceDesignUIRegistryExtensionPointAdapter
      */
     public void deactivate()
     {
-        extensionRegistry_.removeListener( this );
-        unregisterCardSurfaceDesignUIs();
+        synchronized( lock_ )
+        {
+            extensionRegistry_.removeListener( this );
+            unregisterCardSurfaceDesignUIs();
+        }
     }
 
     /**
@@ -339,8 +345,11 @@ public final class CardSurfaceDesignUIRegistryExtensionPointAdapter
      * Registers all card surface design user interfaces in the extension
      * registry.
      */
+    @GuardedBy( "lock_" )
     private void registerCardSurfaceDesignUIs()
     {
+        assert Thread.holdsLock( lock_ );
+
         for( final IConfigurationElement configurationElement : extensionRegistry_.getConfigurationElementsFor( BundleConstants.CARD_SURFACE_DESIGN_UIS_EXTENSION_POINT_UNIQUE_ID ) )
         {
             registerCardSurfaceDesignUI( configurationElement );
@@ -424,17 +433,17 @@ public final class CardSurfaceDesignUIRegistryExtensionPointAdapter
     /**
      * Unregisters all card surface design user interfaces.
      */
+    @GuardedBy( "lock_" )
     private void unregisterCardSurfaceDesignUIs()
     {
-        synchronized( lock_ )
-        {
-            for( final CardSurfaceDesignUI cardSurfaceDesignUI : cardSurfaceDesignUIs_ )
-            {
-                cardSurfaceDesignUIRegistry_.unregisterCardSurfaceDesignUI( cardSurfaceDesignUI );
-            }
+        assert Thread.holdsLock( lock_ );
 
-            cardSurfaceDesignUIs_.clear();
+        for( final CardSurfaceDesignUI cardSurfaceDesignUI : cardSurfaceDesignUIs_ )
+        {
+            cardSurfaceDesignUIRegistry_.unregisterCardSurfaceDesignUI( cardSurfaceDesignUI );
         }
+
+        cardSurfaceDesignUIs_.clear();
     }
 
     /**
