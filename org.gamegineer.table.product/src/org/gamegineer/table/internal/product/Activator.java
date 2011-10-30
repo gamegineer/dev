@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,11 +22,13 @@
 package org.gamegineer.table.internal.product;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The bundle activator for the org.gamegineer.table.product bundle.
@@ -46,6 +48,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private BundleContext bundleContext_;
 
+    /** The executor service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker executorServiceTracker_;
+
     /** The instance lock. */
     private final Object lock_;
 
@@ -61,6 +67,7 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
+        executorServiceTracker_ = null;
     }
 
 
@@ -94,6 +101,29 @@ public final class Activator
         final Activator instance = instance_.get();
         assert instance != null;
         return instance;
+    }
+
+    /**
+     * Gets the executor service.
+     * 
+     * @return The executor service or {@code null} if no executor service is
+     *         available.
+     */
+    /* @Nullable */
+    public ExecutorService getExecutorService()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( executorServiceTracker_ == null )
+            {
+                executorServiceTracker_ = new ServiceTracker( bundleContext_, ExecutorService.class.getName(), null );
+                executorServiceTracker_.open();
+            }
+
+            return (ExecutorService)executorServiceTracker_.getService();
+        }
     }
 
     /*
@@ -131,6 +161,12 @@ public final class Activator
         {
             assert bundleContext_ != null;
             bundleContext_ = null;
+
+            if( executorServiceTracker_ != null )
+            {
+                executorServiceTracker_.close();
+                executorServiceTracker_ = null;
+            }
         }
     }
 }

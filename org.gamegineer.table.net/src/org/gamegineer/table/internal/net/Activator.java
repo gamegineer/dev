@@ -23,13 +23,12 @@ package org.gamegineer.table.internal.net;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The bundle activator for the org.gamegineer.table.net bundle.
@@ -49,9 +48,9 @@ public final class Activator
     @GuardedBy( "lock_" )
     private BundleContext bundleContext_;
 
-    /** The bundle executor service. */
+    /** The executor service tracker. */
     @GuardedBy( "lock_" )
-    private ExecutorService executorService_;
+    private ServiceTracker executorServiceTracker_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -68,7 +67,7 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
-        executorService_ = null;
+        executorServiceTracker_ = null;
     }
 
 
@@ -105,51 +104,25 @@ public final class Activator
     }
 
     /**
-     * Gets the bundle executor service.
+     * Gets the executor service.
      * 
-     * @return The bundle executor service; never {@code null}.
+     * @return The executor service or {@code null} if no executor service is
+     *         available.
      */
-    /* @NonNull */
+    /* @Nullable */
     public ExecutorService getExecutorService()
     {
         synchronized( lock_ )
         {
             assert bundleContext_ != null;
 
-            if( executorService_ == null )
+            if( executorServiceTracker_ == null )
             {
-                executorService_ = Executors.newCachedThreadPool();
+                executorServiceTracker_ = new ServiceTracker( bundleContext_, ExecutorService.class.getName(), null );
+                executorServiceTracker_.open();
             }
 
-            return executorService_;
-        }
-    }
-
-    /**
-     * Shuts down the bundle executor service.
-     */
-    @GuardedBy( "lock_" )
-    private void shutdownExecutorService()
-    {
-        assert executorService_ != null;
-        assert Thread.holdsLock( lock_ );
-
-        executorService_.shutdown();
-
-        boolean isExecutorServiceTerminated = false;
-        try
-        {
-            isExecutorServiceTerminated = executorService_.awaitTermination( 10, TimeUnit.SECONDS );
-        }
-        catch( final InterruptedException e )
-        {
-            Thread.currentThread().interrupt();
-            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Interrupted while awaiting executor service shutdown", e ); //$NON-NLS-1$
-        }
-
-        if( !isExecutorServiceTerminated )
-        {
-            executorService_.shutdownNow();
+            return (ExecutorService)executorServiceTracker_.getService();
         }
     }
 
@@ -190,10 +163,10 @@ public final class Activator
             assert bundleContext_ != null;
             bundleContext_ = null;
 
-            if( executorService_ != null )
+            if( executorServiceTracker_ != null )
             {
-                shutdownExecutorService();
-                executorService_ = null;
+                executorServiceTracker_.close();
+                executorServiceTracker_ = null;
             }
         }
     }

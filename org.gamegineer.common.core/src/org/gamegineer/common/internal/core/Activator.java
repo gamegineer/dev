@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,9 @@
 package org.gamegineer.common.internal.core;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
@@ -29,6 +32,7 @@ import org.eclipse.osgi.service.debug.DebugOptions;
 import org.gamegineer.common.core.logging.ILoggingService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
@@ -53,6 +57,14 @@ public final class Activator
     @GuardedBy( "lock_" )
     private ServiceTracker debugOptionsTracker_;
 
+    /** The executor service. */
+    @GuardedBy( "lock_" )
+    private ExecutorService executorService_;
+
+    /** The executor service registration token. */
+    @GuardedBy( "lock_" )
+    private ServiceRegistration executorServiceRegistration_;
+
     /** The instance lock. */
     private final Object lock_;
 
@@ -73,6 +85,8 @@ public final class Activator
         lock_ = new Object();
         bundleContext_ = null;
         debugOptionsTracker_ = null;
+        executorService_ = null;
+        executorServiceRegistration_ = null;
         loggingServiceTracker_ = null;
     }
 
@@ -155,6 +169,34 @@ public final class Activator
         }
     }
 
+    /**
+     * Shuts down the executor service.
+     */
+    @GuardedBy( "lock_" )
+    private void shutdownExecutorService()
+    {
+        assert executorService_ != null;
+        assert Thread.holdsLock( lock_ );
+
+        executorService_.shutdown();
+
+        boolean isExecutorServiceTerminated = false;
+        try
+        {
+            isExecutorServiceTerminated = executorService_.awaitTermination( 10, TimeUnit.SECONDS );
+        }
+        catch( final InterruptedException e )
+        {
+            Thread.currentThread().interrupt();
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Interrupted while awaiting executor service shutdown", e ); //$NON-NLS-1$
+        }
+
+        if( !isExecutorServiceTerminated )
+        {
+            executorService_.shutdownNow();
+        }
+    }
+
     /*
      * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
      */
@@ -168,6 +210,9 @@ public final class Activator
         {
             assert bundleContext_ == null;
             bundleContext_ = bundleContext;
+
+            executorService_ = Executors.newCachedThreadPool();
+            executorServiceRegistration_ = bundleContext.registerService( ExecutorService.class.getName(), executorService_, null );
         }
 
         final boolean wasInstanceNull = instance_.compareAndSet( null, this );
@@ -200,6 +245,18 @@ public final class Activator
             {
                 debugOptionsTracker_.close();
                 debugOptionsTracker_ = null;
+            }
+
+            if( executorServiceRegistration_ != null )
+            {
+                executorServiceRegistration_.unregister();
+                executorServiceRegistration_ = null;
+            }
+
+            if( executorService_ != null )
+            {
+                shutdownExecutorService();
+                executorService_ = null;
             }
         }
     }
