@@ -1,5 +1,5 @@
 /*
- * AbstractService.java
+ * ServiceHandler.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
