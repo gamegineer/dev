@@ -154,7 +154,7 @@ final class TransportLayerAdapter
         }
         catch( final RejectedExecutionException e )
         {
-            throw new IllegalStateException( NonNlsMessages.TransportLayerAdapter_beginOpen_transportLayerClosed, e );
+            return new SynchronousFuture<Void>( new IllegalStateException( NonNlsMessages.TransportLayerAdapter_beginOpen_transportLayerClosed, e ) );
         }
 
         return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
@@ -186,16 +186,6 @@ final class TransportLayerAdapter
                 return null;
             }
         } );
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#close()
-     */
-    @Override
-    public void close()
-        throws InterruptedException
-    {
-        endClose( beginClose() );
     }
 
     /*
@@ -242,17 +232,5 @@ final class TransportLayerAdapter
 
             throw TaskUtils.launderThrowable( cause );
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#open(java.lang.String, int)
-     */
-    @Override
-    public void open(
-        final String hostName,
-        final int port )
-        throws TransportException, InterruptedException
-    {
-        endOpen( beginOpen( hostName, port ) );
     }
 }

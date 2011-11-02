@@ -22,6 +22,8 @@
 package org.gamegineer.table.internal.net.transport;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+import java.util.concurrent.Future;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -95,7 +97,7 @@ public abstract class AbstractTransportLayerTestCase
     public void tearDown()
         throws Exception
     {
-        transportLayer_.close();
+        transportLayer_.endClose( transportLayer_.beginClose() );
     }
 
     /**
@@ -123,6 +125,31 @@ public abstract class AbstractTransportLayerTestCase
     }
 
     /**
+     * Ensures the {@code endOpen} method throws an exception if the transport
+     * layer has been closed.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testEndOpen_AfterClose()
+        throws Exception
+    {
+        transportLayer_.endClose( transportLayer_.beginClose() );
+
+        final Future<Void> future = transportLayer_.beginOpen( "localhost", 8888 ); //$NON-NLS-1$
+        try
+        {
+            transportLayer_.endOpen( future );
+            fail( "expected IllegalStateException" ); //$NON-NLS-1$
+        }
+        catch( final IllegalStateException e )
+        {
+            // expected
+        }
+    }
+
+    /**
      * Ensures the {@code endOpen} method throws an exception when passed a
      * {@code null} future.
      * 
@@ -137,55 +164,34 @@ public abstract class AbstractTransportLayerTestCase
     }
 
     /**
-     * Ensures the {@code open} method throws an exception if the transport
-     * layer has been closed.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = IllegalStateException.class )
-    public void testOpen_AfterClose()
-        throws Exception
-    {
-        transportLayer_.close();
-
-        transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code open} method throws an exception when passed a {@code
-     * null} host name.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testOpen_HostName_Null()
-        throws Exception
-    {
-        transportLayer_.open( null, 8888 );
-    }
-
-    /**
-     * Ensures the {@code open} method throws an exception when attempting to
+     * Ensures the {@code endOpen} method throws an exception when attempting to
      * open the transport layer more than once.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( expected = IllegalStateException.class )
-    public void testOpen_MultipleInvocations()
+    @Test
+    public void testEndOpen_MultipleInvocations()
         throws Exception
     {
         try
         {
-            transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
+            transportLayer_.endOpen( transportLayer_.beginOpen( "localhost", 8888 ) ); //$NON-NLS-1$
         }
         catch( final TransportException e )
         {
             // ignore transport layer errors
         }
 
-        transportLayer_.open( "localhost", 8888 ); //$NON-NLS-1$
+        final Future<Void> future = transportLayer_.beginOpen( "localhost", 8888 ); //$NON-NLS-1$
+        try
+        {
+            transportLayer_.endOpen( future );
+            fail( "expected IllegalStateException" ); //$NON-NLS-1$
+        }
+        catch( final IllegalStateException e )
+        {
+            // expected
+        }
     }
 }

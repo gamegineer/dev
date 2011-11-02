@@ -96,12 +96,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
             }
 
             @Override
-            public void close()
-            {
-                endClose( beginClose() );
-            }
-
-            @Override
             public void endClose(
                 @SuppressWarnings( "unused" )
                 final Future<Void> future )
@@ -116,15 +110,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
                 throws TransportException
             {
                 throw new TransportException();
-            }
-
-            @Override
-            public void open(
-                final String hostName,
-                final int port )
-                throws TransportException
-            {
-                endOpen( beginOpen( hostName, port ) );
             }
         };
     }
@@ -157,12 +142,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
             }
 
             @Override
-            public void close()
-            {
-                endClose( beginClose() );
-            }
-
-            @Override
             public void endClose(
                 @SuppressWarnings( "unused" )
                 final Future<Void> future )
@@ -176,14 +155,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
                 final Future<Void> future )
             {
                 // do nothing
-            }
-
-            @Override
-            public void open(
-                final String hostName,
-                final int port )
-            {
-                endOpen( beginOpen( hostName, port ) );
             }
         };
     }

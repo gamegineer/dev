@@ -77,15 +77,6 @@ final class PassiveTransportLayer
     }
 
     /*
-     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#close()
-     */
-    @Override
-    public void close()
-    {
-        endClose( beginClose() );
-    }
-
-    /*
      * @see org.gamegineer.table.internal.net.transport.ITransportLayer#endClose(java.util.concurrent.Future)
      */
     @Override
@@ -107,16 +98,5 @@ final class PassiveTransportLayer
         assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
 
         // do nothing
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#open(java.lang.String, int)
-     */
-    @Override
-    public void open(
-        final String hostName,
-        final int port )
-    {
-        endOpen( beginOpen( hostName, port ) );
     }
 }

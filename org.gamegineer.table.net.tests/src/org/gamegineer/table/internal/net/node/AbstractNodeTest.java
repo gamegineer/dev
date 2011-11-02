@@ -33,6 +33,8 @@ import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
+import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactory;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.TableNetworkException;
@@ -283,7 +285,7 @@ public final class AbstractNodeTest
         @Override
         protected ITransportLayer createTransportLayer()
         {
-            return EasyMock.createNiceMock( ITransportLayer.class );
+            return new FakeTransportLayerFactory().createActiveTransportLayer( EasyMock.createNiceMock( ITransportLayerContext.class ) );
         }
 
         /*

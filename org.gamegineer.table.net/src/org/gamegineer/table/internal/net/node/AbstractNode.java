@@ -224,7 +224,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                 final ITransportLayer transportLayer = createTransportLayer();
                 try
                 {
-                    transportLayer.open( configuration.getHostName(), configuration.getPort() );
+                    transportLayer.endOpen( transportLayer.beginOpen( configuration.getHostName(), configuration.getPort() ) );
                 }
                 catch( final TransportException e )
                 {
@@ -415,7 +415,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             {
                 try
                 {
-                    transportLayer.close();
+                    transportLayer.endClose( transportLayer.beginClose() );
                 }
                 catch( final InterruptedException e )
                 {

@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -182,9 +181,6 @@ abstract class AbstractTransportLayer
      * 
      * @return An asynchronous completion token for the operation; never {@code
      *         null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If the transport layer has already been opened or is closed.
      */
     /* @NonNull */
     final Future<Void> beginOpen(
@@ -194,7 +190,11 @@ abstract class AbstractTransportLayer
     {
         assert hostName != null;
         assert isTransportLayerThread();
-        assertStateLegal( state_ == State.PRISTINE, NonNlsMessages.AbstractTransportLayer_state_notPristine );
+
+        if( state_ != State.PRISTINE )
+        {
+            return new SynchronousFuture<Void>( new IllegalStateException( NonNlsMessages.AbstractTransportLayer_state_notPristine ) );
+        }
 
         state_ = State.OPEN;
         dispatcher_ = new Dispatcher( this );

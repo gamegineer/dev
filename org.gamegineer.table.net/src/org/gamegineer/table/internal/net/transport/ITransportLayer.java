@@ -37,6 +37,10 @@ public interface ITransportLayer
     /**
      * Begins an asynchronous operation to close the transport layer.
      * 
+     * <p>
+     * This method does nothing if the transport layer is already closed.
+     * </p>
+     * 
      * @return An asynchronous completion token for the operation; never {@code
      *         null}.
      */
@@ -66,29 +70,13 @@ public interface ITransportLayer
         int port );
 
     /**
-     * Closes the transport layer.
-     * 
-     * <p>
-     * This method does nothing if the transport layer is already closed.
-     * </p>
+     * Ends the asynchronous operation to close the transport layer associated
+     * with the specified asynchronous completion token.
      * 
      * <p>
      * This method blocks until the transport layer is closed or an error
      * occurs.
      * </p>
-     * 
-     * @throws java.lang.InterruptedException
-     *         If this thread is interrupted while waiting for the transport
-     *         layer to be closed.
-     * @throws java.util.concurrent.CancellationException
-     *         If the operation is cancelled.
-     */
-    public void close()
-        throws InterruptedException;
-
-    /**
-     * Ends the asynchronous operation to close the transport layer associated
-     * with the specified asynchronous completion token.
      * 
      * @param future
      *        The asynchronous completion token associated with the operation;
@@ -111,6 +99,11 @@ public interface ITransportLayer
      * Ends the asynchronous operation to open the transport layer associated
      * with the specified asynchronous completion token.
      * 
+     * <p>
+     * This method blocks until the transport layer is connected or an error
+     * occurs.
+     * </p>
+     * 
      * @param future
      *        The asynchronous completion token associated with the operation;
      *        must not be {@code null}.
@@ -130,41 +123,5 @@ public interface ITransportLayer
     public void endOpen(
         /* @NonNull */
         Future<Void> future )
-        throws TransportException, InterruptedException;
-
-    /**
-     * Opens the transport layer.
-     * 
-     * <p>
-     * This method blocks until the transport layer is connected or an error
-     * occurs.
-     * </p>
-     * 
-     * @param hostName
-     *        The host name; must not be {@code null}. For a passive transport
-     *        layer, this value is the host name to which all services will be
-     *        bound. For an active transport layer, this value is the host name
-     *        of the remote service.
-     * @param port
-     *        The port. For a passive transport layer, this value is the port to
-     *        which all services will be bound. For an active transport layer,
-     *        this value is the port of the remote service.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If the transport layer has already been opened or is closed.
-     * @throws java.lang.InterruptedException
-     *         If this thread is interrupted while waiting for the transport
-     *         layer to be closed.
-     * @throws java.lang.NullPointerException
-     *         If {@code hostName} is {@code null}.
-     * @throws java.util.concurrent.CancellationException
-     *         If the operation is cancelled.
-     * @throws org.gamegineer.table.internal.net.transport.TransportException
-     *         If an error occurs.
-     */
-    public void open(
-        /* @NonNull */
-        String hostName,
-        int port )
         throws TransportException, InterruptedException;
 }
