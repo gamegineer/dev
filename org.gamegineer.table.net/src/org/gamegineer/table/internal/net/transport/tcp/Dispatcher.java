@@ -21,8 +21,6 @@
 
 package org.gamegineer.table.internal.net.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
-import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -246,19 +244,23 @@ final class Dispatcher
                             }
                         }
                     } );
-                    future.get();
+
+                    try
+                    {
+                        future.get();
+                    }
+                    catch( final ExecutionException e )
+                    {
+                        throw TaskUtils.launderThrowable( e.getCause() );
+                    }
+                    catch( final InterruptedException e )
+                    {
+                        Thread.currentThread().interrupt();
+                    }
                 }
                 catch( final RejectedExecutionException e )
                 {
                     Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_transportLayer_shutdown, e );
-                }
-                catch( final ExecutionException e )
-                {
-                    throw TaskUtils.launderThrowable( e.getCause() );
-                }
-                catch( final InterruptedException e )
-                {
-                    Thread.currentThread().interrupt();
                 }
                 finally
                 {
@@ -367,15 +369,18 @@ final class Dispatcher
     /**
      * Opens the dispatcher.
      * 
-     * @throws java.lang.IllegalStateException
-     *         If the dispatcher has already been opened or is closed.
+     * <p>
+     * This method must only be called once.
+     * </p>
+     * 
      * @throws org.gamegineer.table.internal.net.transport.TransportException
      *         If an error occurs.
      */
     void open()
         throws TransportException
     {
-        assertStateLegal( state_ == State.PRISTINE, NonNlsMessages.Dispatcher_state_notPristine );
+        assert isTransportLayerThread();
+        assert state_ == State.PRISTINE;
 
         final Selector selector;
         try
@@ -451,15 +456,16 @@ final class Dispatcher
     /**
      * Registers the specified event handler.
      * 
+     * <p>
+     * This method must only be called while the dispatcher is open.
+     * </p>
+     * 
      * @param eventHandler
-     *        The event handler; must not be {@code null}.
+     *        The event handler; must not be {@code null}; must not have been
+     *        previously registered.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs.
-     * @throws java.lang.IllegalArgumentException
-     *         If the event handler is already registered with the dispatcher.
-     * @throws java.lang.IllegalStateException
-     *         If the dispatcher is not open.
      */
     void registerEventHandler(
         /* @NonNull */
@@ -467,10 +473,9 @@ final class Dispatcher
         throws IOException
     {
         assert eventHandler != null;
-
-        assertStateLegal( state_ == State.OPEN, NonNlsMessages.Dispatcher_state_notOpen );
-        assertArgumentLegal( !eventHandlers_.contains( eventHandler ), "eventHandler", NonNlsMessages.Dispatcher_registerEventHandler_eventHandlerRegistered ); //$NON-NLS-1$
         assert isTransportLayerThread();
+        assert state_ == State.OPEN;
+        assert !eventHandlers_.contains( eventHandler );
 
         acquireSelectorGuard();
         try
@@ -539,23 +544,24 @@ final class Dispatcher
     /**
      * Unregisters the specified event handler.
      * 
-     * @param eventHandler
-     *        The event handler; must not be {@code null}.
+     * <p>
+     * This method must only be called while the dispatcher is open.
+     * </p>
      * 
-     * @throws java.lang.IllegalArgumentException
-     *         If the event handler is not registered with the dispatcher.
-     * @throws java.lang.IllegalStateException
-     *         If the dispatcher is not open.
+     * @param eventHandler
+     *        The event handler; must not be {@code null}; must have been
+     *        previously registered.
      */
     void unregisterEventHandler(
         /* @NonNull */
         final AbstractEventHandler eventHandler )
     {
         assert eventHandler != null;
-
-        assertStateLegal( state_ == State.OPEN, NonNlsMessages.Dispatcher_state_notOpen );
-        assertArgumentLegal( eventHandlers_.remove( eventHandler ), "eventHandler", NonNlsMessages.Dispatcher_unregisterEventHandler_eventHandlerUnregistered ); //$NON-NLS-1$
         assert isTransportLayerThread();
+        assert state_ == State.OPEN;
+
+        final boolean wasEventHandlerRemoved = eventHandlers_.remove( eventHandler );
+        assert wasEventHandlerRemoved;
 
         acquireSelectorGuard();
         try

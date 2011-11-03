@@ -52,9 +52,6 @@ final class NonNlsMessages
     /** An I/O error occurred while closing the server socket channel. */
     public static String Acceptor_close_ioError;
 
-    /** The acceptor state is not pristine. */
-    public static String Acceptor_state_notPristine;
-
     // --- ActiveTransportLayer ---------------------------------------------
 
     /** An I/O error occurred while opening the transport layer. */
@@ -64,9 +61,6 @@ final class NonNlsMessages
 
     /** The peer address cannot be resolved. */
     public static String Connector_createSocketChannel_addressUnresolved;
-
-    /** The connector state is not pristine. */
-    public static String Connector_state_notPristine;
 
     // --- Dispatcher -------------------------------------------------------
 
@@ -85,20 +79,8 @@ final class NonNlsMessages
     /** An unexpected error occurred while running an event handler. */
     public static String Dispatcher_processEvents_unexpectedError;
 
-    /** The event handler is already registered. */
-    public static String Dispatcher_registerEventHandler_eventHandlerRegistered;
-
-    /** The dispatcher state is not open. */
-    public static String Dispatcher_state_notOpen;
-
-    /** The dispatcher state is not pristine. */
-    public static String Dispatcher_state_notPristine;
-
     /** The transport layer associated with the dispatcher has been shutdown. */
     public static String Dispatcher_transportLayer_shutdown;
-
-    /** The event handler is not registered. */
-    public static String Dispatcher_unregisterEventHandler_eventHandlerUnregistered;
 
     /** Timed out waiting for the event dispatch task to shutdown. */
     public static String Dispatcher_waitForEventDispatchTaskToShutdown_timeout;
@@ -118,9 +100,6 @@ final class NonNlsMessages
 
     /** An I/O error occurred while sending a message. */
     public static String ServiceHandler_sendMessage_ioError;
-
-    /** The service handler state is not pristine. */
-    public static String ServiceHandler_state_notPristine;
 
     /** The transport layer associated with the service has been shutdown. */
     public static String ServiceHandler_transportLayer_shutdown;

@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.net.SocketException;
 import java.nio.channels.SelectableChannel;
@@ -275,14 +274,16 @@ final class ServiceHandler
     /**
      * Opens the service handler.
      * 
+     * <p>
+     * This method must only be called once.
+     * </p>
+     * 
      * @param channel
      *        The channel associated with the service handler; must not be
      *        {@code null}.
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs
-     * @throws java.lang.IllegalStateException
-     *         If the service handler has already been opened or is closed.
      */
     void open(
         /* @NonNull */
@@ -291,8 +292,7 @@ final class ServiceHandler
     {
         assert channel != null;
         assert isTransportLayerThread();
-
-        assertStateLegal( getState() == State.PRISTINE, NonNlsMessages.ServiceHandler_state_notPristine );
+        assert getState() == State.PRISTINE;
 
         channel_ = channel;
         setState( State.OPEN );

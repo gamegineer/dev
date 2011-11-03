@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SelectableChannel;
@@ -124,8 +123,6 @@ final class Acceptor
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs
-     * @throws java.lang.IllegalStateException
-     *         If an attempt has already been made to bind the acceptor channel.
      */
     void bind(
         /* @NonNull */
@@ -135,8 +132,7 @@ final class Acceptor
     {
         assert hostName != null;
         assert isTransportLayerThread();
-
-        assertStateLegal( getState() == State.PRISTINE, NonNlsMessages.Acceptor_state_notPristine );
+        assert getState() == State.PRISTINE;
 
         try
         {

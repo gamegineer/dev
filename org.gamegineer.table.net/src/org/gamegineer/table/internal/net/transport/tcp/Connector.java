@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.transport.tcp;
 
-import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SelectableChannel;
@@ -92,8 +91,6 @@ final class Connector
      * 
      * @throws java.io.IOException
      *         If an I/O error occurs
-     * @throws java.lang.IllegalStateException
-     *         If an attempt has already been made to connect to the peer host.
      */
     void connect(
         /* @NonNull */
@@ -103,8 +100,7 @@ final class Connector
     {
         assert hostName != null;
         assert isTransportLayerThread();
-
-        assertStateLegal( getState() == State.PRISTINE, NonNlsMessages.Connector_state_notPristine );
+        assert getState() == State.PRISTINE;
 
         try
         {
