@@ -68,9 +68,6 @@ final class NonNlsMessages
     /** An error occurred on the event dispatch thread. */
     public static String Dispatcher_dispatchEvents_error;
 
-    /** The transport layer associated with the dispatcher has been shutdown. */
-    public static String Dispatcher_dispatchEvents_transportLayerShutdown;
-
     /** The name of the event dispatch thread. */
     public static String Dispatcher_eventDispatchThread_name;
 

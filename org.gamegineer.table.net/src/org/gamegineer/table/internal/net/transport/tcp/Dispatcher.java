@@ -33,7 +33,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -257,17 +256,13 @@ final class Dispatcher
                         Thread.currentThread().interrupt();
                     }
                 }
-                catch( final RejectedExecutionException e )
-                {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_dispatchEvents_transportLayerShutdown, e );
-                }
                 finally
                 {
                     selectionKeys.clear();
                 }
             }
         }
-        catch( final IOException e )
+        catch( final Exception e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_dispatchEvents_error, e );
         }
