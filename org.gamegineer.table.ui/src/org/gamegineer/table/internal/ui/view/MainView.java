@@ -29,6 +29,7 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.ui.dialog.DialogUtils;
 import org.gamegineer.table.internal.ui.model.IMainModelListener;
 import org.gamegineer.table.internal.ui.model.MainModel;
 import org.gamegineer.table.internal.ui.util.OptionDialogs;
@@ -165,7 +166,7 @@ final class MainView
     {
         tableNetworkPlayerView_.setVisible( isVisible );
         splitPane_.setDividerSize( isVisible ? splitPaneDividerSize_ : 0 );
-        splitPane_.setDividerLocation( isVisible ? 0.8 : 0.0 );
+        splitPane_.setDividerLocation( isVisible ? (getWidth() - Math.max( DialogUtils.convertWidthInCharsToPixels( getFontMetrics( getFont() ), 40 ), tableNetworkPlayerView_.getPreferredSize().width )) : 0 );
         validate();
     }
 
