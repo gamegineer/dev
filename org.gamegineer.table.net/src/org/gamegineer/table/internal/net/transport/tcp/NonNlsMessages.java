@@ -38,6 +38,9 @@ final class NonNlsMessages
 
     // --- AbstractTransportLayer -------------------------------------------
 
+    /** An I/O error occurred while opening the transport layer. */
+    public static String AbstractTransportLayer_open_ioError;
+
     /** The transport layer state is not pristine. */
     public static String AbstractTransportLayer_state_notPristine;
 
@@ -51,11 +54,6 @@ final class NonNlsMessages
 
     /** An I/O error occurred while closing the server socket channel. */
     public static String Acceptor_close_ioError;
-
-    // --- ActiveTransportLayer ---------------------------------------------
-
-    /** An I/O error occurred while opening the transport layer. */
-    public static String ActiveTransportLayer_open_ioError;
 
     // --- Connector --------------------------------------------------------
 
@@ -73,9 +71,6 @@ final class NonNlsMessages
     /** The name of the event dispatch thread. */
     public static String Dispatcher_eventDispatchThread_name;
 
-    /** An I/O error occurred while opening the dispatcher. */
-    public static String Dispatcher_open_ioError;
-
     /** An unexpected error occurred while running an event handler. */
     public static String Dispatcher_processEvents_unexpectedError;
 
@@ -84,11 +79,6 @@ final class NonNlsMessages
 
     /** Timed out waiting for the event dispatch task to shutdown. */
     public static String Dispatcher_waitForEventDispatchTaskToShutdown_timeout;
-
-    // --- PassiveTransportLayer --------------------------------------------
-
-    /** An I/O error occurred while opening the transport layer. */
-    public static String PassiveTransportLayer_open_ioError;
 
     // --- ServiceHandler ---------------------------------------------------
 

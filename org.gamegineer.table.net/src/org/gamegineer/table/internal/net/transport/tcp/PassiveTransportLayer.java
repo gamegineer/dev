@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.net.transport.tcp;
 import java.io.IOException;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
-import org.gamegineer.table.internal.net.transport.TransportException;
 
 /**
  * Implementation of
@@ -89,20 +88,12 @@ final class PassiveTransportLayer
     void open(
         final String hostName,
         final int port )
-        throws TransportException
+        throws IOException
     {
         assert hostName != null;
         assert isTransportLayerThread();
 
-        final Acceptor acceptor = new Acceptor( this );
-        try
-        {
-            acceptor.bind( hostName, port );
-            acceptor_ = acceptor;
-        }
-        catch( final IOException e )
-        {
-            throw new TransportException( NonNlsMessages.PassiveTransportLayer_open_ioError, e );
-        }
+        acceptor_ = new Acceptor( this );
+        acceptor_.bind( hostName, port );
     }
 }

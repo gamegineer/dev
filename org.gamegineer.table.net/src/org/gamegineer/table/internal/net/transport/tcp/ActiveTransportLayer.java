@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.net.transport.tcp;
 import java.io.IOException;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
-import org.gamegineer.table.internal.net.transport.TransportException;
 
 /**
  * Implementation of
@@ -75,7 +74,7 @@ final class ActiveTransportLayer
     void open(
         final String hostName,
         final int port )
-        throws TransportException
+        throws IOException
     {
         assert hostName != null;
         assert isTransportLayerThread();
@@ -84,10 +83,6 @@ final class ActiveTransportLayer
         try
         {
             connector.connect( hostName, port );
-        }
-        catch( final IOException e )
-        {
-            throw new TransportException( NonNlsMessages.ActiveTransportLayer_open_ioError, e );
         }
         finally
         {

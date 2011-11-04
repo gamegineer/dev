@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.transport.tcp;
 
+import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -212,8 +213,15 @@ abstract class AbstractTransportLayer
                     public Void call()
                         throws TransportException
                     {
-                        dispatcher_.open();
-                        open( hostName, port );
+                        try
+                        {
+                            dispatcher_.open();
+                            open( hostName, port );
+                        }
+                        catch( final IOException e )
+                        {
+                            throw new TransportException( NonNlsMessages.AbstractTransportLayer_open_ioError, e );
+                        }
 
                         return null;
                     }
@@ -453,14 +461,14 @@ abstract class AbstractTransportLayer
      * @param port
      *        The port.
      * 
-     * @throws org.gamegineer.table.internal.net.transport.TransportException
-     *         If an error occurs.
+     * @throws java.io.IOException
+     *         If an I/O error occurs.
      */
     abstract void open(
         /* @NonNull */
         String hostName,
         int port )
-        throws TransportException;
+        throws IOException;
 
     /**
      * Synchronously closes the transport layer.

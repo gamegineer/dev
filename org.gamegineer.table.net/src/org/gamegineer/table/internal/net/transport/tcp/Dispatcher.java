@@ -47,7 +47,6 @@ import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.internal.net.Activator;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.Loggers;
-import org.gamegineer.table.internal.net.transport.TransportException;
 
 /**
  * An event dispatcher in the TCP transport layer Acceptor-Connector pattern
@@ -373,11 +372,11 @@ final class Dispatcher
      * This method must only be called once.
      * </p>
      * 
-     * @throws org.gamegineer.table.internal.net.transport.TransportException
-     *         If an error occurs.
+     * @throws java.io.IOException
+     *         If an I/O error occurs.
      */
     void open()
-        throws TransportException
+        throws IOException
     {
         assert isTransportLayerThread();
         assert state_ == State.PRISTINE;
@@ -390,7 +389,7 @@ final class Dispatcher
         catch( final IOException e )
         {
             state_ = State.CLOSED;
-            throw new TransportException( NonNlsMessages.Dispatcher_open_ioError, e );
+            throw e;
         }
 
         state_ = State.OPEN;
