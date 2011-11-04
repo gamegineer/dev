@@ -259,7 +259,7 @@ final class Dispatcher
                 }
                 catch( final RejectedExecutionException e )
                 {
-                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_transportLayer_shutdown, e );
+                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_dispatchEvents_transportLayerShutdown, e );
                 }
                 finally
                 {
@@ -675,7 +675,7 @@ final class Dispatcher
                     }
                     catch( final IOException e )
                     {
-                        Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_close_error, e );
+                        Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_closeDispatcher_error, e );
                     }
                     finally
                     {

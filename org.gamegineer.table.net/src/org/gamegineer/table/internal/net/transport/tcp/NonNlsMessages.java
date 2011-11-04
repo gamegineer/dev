@@ -63,19 +63,19 @@ final class NonNlsMessages
     // --- Dispatcher -------------------------------------------------------
 
     /** An error occurred while closing the dispatcher. */
-    public static String Dispatcher_close_error;
+    public static String Dispatcher_closeDispatcher_error;
 
     /** An error occurred on the event dispatch thread. */
     public static String Dispatcher_dispatchEvents_error;
+
+    /** The transport layer associated with the dispatcher has been shutdown. */
+    public static String Dispatcher_dispatchEvents_transportLayerShutdown;
 
     /** The name of the event dispatch thread. */
     public static String Dispatcher_eventDispatchThread_name;
 
     /** An unexpected error occurred while running an event handler. */
     public static String Dispatcher_processEvents_unexpectedError;
-
-    /** The transport layer associated with the dispatcher has been shutdown. */
-    public static String Dispatcher_transportLayer_shutdown;
 
     /** Timed out waiting for the event dispatch task to shutdown. */
     public static String Dispatcher_waitForEventDispatchTaskToShutdown_timeout;
