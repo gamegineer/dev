@@ -106,12 +106,12 @@ public final class Activator
     /**
      * Gets the executor service.
      * 
-     * @return The executor service or {@code null} if no executor service is
-     *         available.
+     * @return The executor service; never {@code null}.
      */
-    /* @Nullable */
+    /* @NonNull */
     public ExecutorService getExecutorService()
     {
+        final ExecutorService executorService;
         synchronized( lock_ )
         {
             assert bundleContext_ != null;
@@ -122,8 +122,15 @@ public final class Activator
                 executorServiceTracker_.open();
             }
 
-            return (ExecutorService)executorServiceTracker_.getService();
+            executorService = (ExecutorService)executorServiceTracker_.getService();
         }
+
+        if( executorService == null )
+        {
+            throw new AssertionError( "the executor service is not available" ); //$NON-NLS-1$
+        }
+
+        return executorService;
     }
 
     /*

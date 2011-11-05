@@ -45,9 +45,6 @@ final class NonNlsMessages
     /** The application was cancelled. */
     public static String Application_start_cancelled;
 
-    /** The executor service is not available. */
-    public static String Application_start_executorServiceNotAvailable;
-
     /** The application is starting. */
     public static String Application_start_starting;
 

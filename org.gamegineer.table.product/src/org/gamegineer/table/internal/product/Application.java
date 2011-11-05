@@ -26,7 +26,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
@@ -125,13 +124,7 @@ public final class Application
         final ITableAdvisor advisor = createTableAdvisor( context );
         Loggers.getDefaultLogger().info( NonNlsMessages.Application_start_starting( advisor.getApplicationVersion() ) );
 
-        final ExecutorService executorService = Activator.getDefault().getExecutorService();
-        if( executorService == null )
-        {
-            throw new IllegalStateException( NonNlsMessages.Application_start_executorServiceNotAvailable );
-        }
-
-        final Future<TableResult> task = executorService.submit( TableUIFactory.createTableRunner( advisor ) );
+        final Future<TableResult> task = Activator.getDefault().getExecutorService().submit( TableUIFactory.createTableRunner( advisor ) );
         task_.set( task );
         try
         {
