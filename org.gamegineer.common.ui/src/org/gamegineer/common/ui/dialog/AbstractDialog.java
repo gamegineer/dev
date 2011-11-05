@@ -1,6 +1,6 @@
 /*
  * AbstractDialog.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,6 +45,7 @@ import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.internal.ui.Debug;
+import org.gamegineer.common.ui.layout.PixelConverter;
 import org.gamegineer.common.ui.window.AbstractWindow;
 import org.gamegineer.common.ui.window.WindowConstants;
 
@@ -72,8 +72,8 @@ public abstract class AbstractDialog
     /** The dialog content area component. */
     private Component dialogArea_;
 
-    /** The dialog font metrics. */
-    private FontMetrics fontMetrics_;
+    /** The dialog pixel converter. */
+    private PixelConverter pixelConverter_;
 
     /** The dialog title. */
     private String title_;
@@ -98,7 +98,7 @@ public abstract class AbstractDialog
         buttonBar_ = null;
         buttons_ = new LinkedHashMap<String, JButton>();
         dialogArea_ = null;
-        fontMetrics_ = null;
+        pixelConverter_ = null;
         title_ = null;
     }
 
@@ -196,8 +196,7 @@ public abstract class AbstractDialog
     }
 
     /**
-     * Converts the specified height in characters to pixels based on the
-     * current font.
+     * Converts the specified height in characters to pixels.
      * 
      * @param chars
      *        The height in characters.
@@ -207,18 +206,17 @@ public abstract class AbstractDialog
     protected final int convertHeightInCharsToPixels(
         final int chars )
     {
-        if( fontMetrics_ == null )
+        if( pixelConverter_ == null )
         {
-            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog font metrics not initialized" ); //$NON-NLS-1$
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog pixel converter not initialized" ); //$NON-NLS-1$
             return 0;
         }
 
-        return DialogUtils.convertHeightInCharsToPixels( fontMetrics_, chars );
+        return pixelConverter_.convertHeightInCharsToPixels( chars );
     }
 
     /**
-     * Converts the specified height in dialog units to pixels based on the
-     * current font.
+     * Converts the specified height in dialog units to pixels.
      * 
      * @param dlus
      *        The height in dialog units.
@@ -228,18 +226,17 @@ public abstract class AbstractDialog
     protected final int convertHeightInDlusToPixels(
         final int dlus )
     {
-        if( fontMetrics_ == null )
+        if( pixelConverter_ == null )
         {
-            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog font metrics not initialized" ); //$NON-NLS-1$
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog pixel converter not initialized" ); //$NON-NLS-1$
             return 0;
         }
 
-        return DialogUtils.convertHeightInDlusToPixels( fontMetrics_, dlus );
+        return pixelConverter_.convertHeightInDlusToPixels( dlus );
     }
 
     /**
-     * Converts the specified width in characters to pixels based on the current
-     * font.
+     * Converts the specified width in characters to pixels.
      * 
      * @param chars
      *        The width in characters.
@@ -249,18 +246,17 @@ public abstract class AbstractDialog
     protected final int convertWidthInCharsToPixels(
         final int chars )
     {
-        if( fontMetrics_ == null )
+        if( pixelConverter_ == null )
         {
-            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog font metrics not initialized" ); //$NON-NLS-1$
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog pixel converter not initialized" ); //$NON-NLS-1$
             return 0;
         }
 
-        return DialogUtils.convertWidthInCharsToPixels( fontMetrics_, chars );
+        return pixelConverter_.convertWidthInCharsToPixels( chars );
     }
 
     /**
-     * Converts the specified width in dialog units to pixels based on the
-     * current font.
+     * Converts the specified width in dialog units to pixels.
      * 
      * @param dlus
      *        The width in dialog units.
@@ -270,13 +266,13 @@ public abstract class AbstractDialog
     protected final int convertWidthInDlusToPixels(
         final int dlus )
     {
-        if( fontMetrics_ == null )
+        if( pixelConverter_ == null )
         {
-            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog font metrics not initialized" ); //$NON-NLS-1$
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Dialog pixel converter not initialized" ); //$NON-NLS-1$
             return 0;
         }
 
-        return DialogUtils.convertWidthInDlusToPixels( fontMetrics_, dlus );
+        return pixelConverter_.convertWidthInDlusToPixels( dlus );
     }
 
     /**
@@ -423,7 +419,7 @@ public abstract class AbstractDialog
         final BorderLayout layout = new BorderLayout();
         container.setLayout( layout );
 
-        initializeDialogUnits( container );
+        pixelConverter_ = new PixelConverter( container );
 
         dialogArea_ = createDialogArea( container );
         buttonBar_ = createButtonBar( container );
@@ -546,29 +542,6 @@ public abstract class AbstractDialog
     protected final Component getDialogArea()
     {
         return dialogArea_;
-    }
-
-    /**
-     * Initializes the computation of horizontal and vertical dialog units based
-     * on the size of the current font.
-     * 
-     * <p>
-     * This method must be called before any of the dialog unit conversion
-     * methods are called.
-     * </p>
-     * 
-     * @param component
-     *        The component from which to obtain the current font; must not be
-     *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code component} is {@code null}.
-     */
-    private void initializeDialogUnits(
-        /* @NonNull */
-        final Component component )
-    {
-        fontMetrics_ = component.getFontMetrics( component.getFont() );
     }
 
     /**

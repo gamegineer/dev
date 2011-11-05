@@ -1,6 +1,6 @@
 /*
  * ProgressMonitorComponent.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.common.ui.wizard;
 
 import java.awt.BorderLayout;
-import java.awt.FontMetrics;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.BorderFactory;
@@ -30,7 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.common.ui.dialog.DialogUtils;
+import org.gamegineer.common.ui.layout.PixelConverter;
 import org.gamegineer.common.ui.operation.RunnableTask;
 
 /**
@@ -80,10 +79,10 @@ final class ProgressMonitorComponent
     {
         setLayout( new BorderLayout() );
 
-        final FontMetrics fontMetrics = getFontMetrics( getFont() );
+        final PixelConverter pixelConverter = new PixelConverter( this );
 
         label_ = new JLabel();
-        label_.setBorder( BorderFactory.createEmptyBorder( 0, 0, DialogUtils.convertHeightInDlusToPixels( fontMetrics, 2 ), 0 ) );
+        label_.setBorder( BorderFactory.createEmptyBorder( 0, 0, pixelConverter.convertHeightInDlusToPixels( 2 ), 0 ) );
         add( label_, BorderLayout.NORTH );
         progressBar_ = new JProgressBar();
         add( progressBar_, BorderLayout.SOUTH );

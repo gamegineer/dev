@@ -25,7 +25,6 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.FontMetrics;
 import java.awt.Window;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
@@ -44,7 +43,7 @@ import org.gamegineer.common.ui.databinding.dialog.BannerDialogDataBindingAdapte
 import org.gamegineer.common.ui.databinding.swing.ComponentProperties;
 import org.gamegineer.common.ui.dialog.AbstractBannerDialog;
 import org.gamegineer.common.ui.dialog.DialogConstants;
-import org.gamegineer.common.ui.dialog.DialogUtils;
+import org.gamegineer.common.ui.layout.PixelConverter;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.model.TableModel;
@@ -159,10 +158,10 @@ public final class SelectRemotePlayerDialog
         final Container parent )
     {
         final Container container = (Container)super.createContentArea( parent );
-        final FontMetrics fontMetrics = container.getFontMetrics( container.getFont() );
+        final PixelConverter pixelConverter = new PixelConverter( container );
 
         final JLabel remotePlayersLabel = new JLabel( NlsMessages.SelectRemotePlayerDialog_remotePlayersLabel_text );
-        remotePlayersLabel.setBorder( BorderFactory.createEmptyBorder( 0, 0, DialogUtils.convertWidthInDlusToPixels( fontMetrics, 3 ), 0 ) );
+        remotePlayersLabel.setBorder( BorderFactory.createEmptyBorder( 0, 0, pixelConverter.convertWidthInDlusToPixels( 3 ), 0 ) );
         remotePlayersLabel.setDisplayedMnemonic( KeyStroke.getKeyStroke( NlsMessages.SelectRemotePlayerDialog_remotePlayersLabel_mnemonic ).getKeyCode() );
         container.add( remotePlayersLabel, BorderLayout.NORTH );
         playerList_ = new JList();

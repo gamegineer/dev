@@ -24,7 +24,6 @@ package org.gamegineer.table.internal.ui.view;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.FontMetrics;
 import java.util.Collection;
 import java.util.Collections;
 import javax.swing.BorderFactory;
@@ -38,7 +37,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.common.ui.dialog.DialogUtils;
+import org.gamegineer.common.ui.layout.PixelConverter;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.model.TableModel;
@@ -119,15 +118,15 @@ final class TableNetworkPlayerView
      */
     private void initializeComponent()
     {
-        final FontMetrics fontMetrics = getFontMetrics( getFont() );
-        final int borderWidth = DialogUtils.convertWidthInDlusToPixels( fontMetrics, 3 );
-        final int borderHeight = DialogUtils.convertHeightInDlusToPixels( fontMetrics, 3 );
+        final PixelConverter pixelConverter = new PixelConverter( this );
+        final int borderWidth = pixelConverter.convertWidthInDlusToPixels( 3 );
+        final int borderHeight = pixelConverter.convertHeightInDlusToPixels( 3 );
         setBorder( BorderFactory.createEmptyBorder( borderHeight, borderWidth, borderHeight, borderWidth ) );
         setLayout( new BorderLayout() );
         setOpaque( true );
 
         final JLabel playersLabel = new JLabel( NlsMessages.TableNetworkPlayerView_playersLabel_text );
-        playersLabel.setBorder( BorderFactory.createEmptyBorder( 0, 0, DialogUtils.convertWidthInDlusToPixels( fontMetrics, 3 ), 0 ) );
+        playersLabel.setBorder( BorderFactory.createEmptyBorder( 0, 0, pixelConverter.convertWidthInDlusToPixels( 3 ), 0 ) );
         add( playersLabel, BorderLayout.NORTH );
 
         final JList playerList = new JList();
