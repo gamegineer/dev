@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicReference;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
@@ -62,17 +62,14 @@ abstract class AbstractTransportLayer
      */
     private Dispatcher dispatcher_;
 
-    /** The executor service associated with the transport layer. */
+    /** The transport layer executor service. */
     private final ExecutorService executorService_;
 
     /** The transport layer state. */
     private State state_;
 
-    /**
-     * A reference to the transport layer thread or {@code null} if the
-     * transport layer is not open.
-     */
-    private final AtomicReference<Thread> transportLayerThreadRef_;
+    /** The transport layer thread. */
+    private final Thread transportLayerThread_;
 
 
     // ======================================================================
@@ -82,20 +79,30 @@ abstract class AbstractTransportLayer
     /**
      * Initializes a new instance of the {@code AbstractTransportLayer} class.
      * 
+     * <p>
+     * It is assumed that the thread that invokes this constructor is the
+     * transport layer thread and is managed by the specified executor service.
+     * </p>
+     * 
      * @param context
      *        The transport layer context; must not be {@code null}.
+     * @param executorService
+     *        The transport layer executor service; must not be {@code null}.
      */
     AbstractTransportLayer(
         /* @NonNull */
-        final ITransportLayerContext context )
+        final ITransportLayerContext context,
+        /* @NonNull */
+        final ExecutorService executorService )
     {
         assert context != null;
+        assert executorService != null;
 
         context_ = context;
         dispatcher_ = null;
-        executorService_ = createExecutorService();
+        executorService_ = executorService;
         state_ = State.PRISTINE;
-        transportLayerThreadRef_ = new AtomicReference<Thread>( null );
+        transportLayerThread_ = Thread.currentThread();
     }
 
 
@@ -258,43 +265,6 @@ abstract class AbstractTransportLayer
     abstract void close();
 
     /**
-     * Creates the transport layer executor service.
-     * 
-     * @return The transport layer executor service; never {@code null}.
-     */
-    /* @NonNull */
-    private ExecutorService createExecutorService()
-    {
-        return Executors.newSingleThreadExecutor( new ThreadFactory()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public Thread newThread(
-                final Runnable r )
-            {
-                final Thread transportLayerThread = new Thread( r, NonNlsMessages.AbstractTransportLayer_transportLayerThread_name )
-                {
-                    @Override
-                    public void run()
-                    {
-                        transportLayerThreadRef_.set( this );
-                        try
-                        {
-                            super.run();
-                        }
-                        finally
-                        {
-                            transportLayerThreadRef_.set( null );
-                        }
-                    }
-                };
-
-                return transportLayerThread;
-            }
-        } );
-    }
-
-    /**
      * Creates a new network service that can be associated with the transport
      * layer.
      * 
@@ -423,14 +393,13 @@ abstract class AbstractTransportLayer
     }
 
     /**
-     * Gets the executor service associated with the transport layer.
+     * Gets the transport layer executor service.
      * 
      * <p>
      * This method may be called from any thread.
      * </p>
      * 
-     * @return The executor service associated with the transport layer; never
-     *         {@code null}.
+     * @return The transport layer executor service; never {@code null}.
      */
     /* @NonNull */
     final ExecutorService getExecutorService()
@@ -450,7 +419,7 @@ abstract class AbstractTransportLayer
      */
     final boolean isTransportLayerThread()
     {
-        return Thread.currentThread() == transportLayerThreadRef_.get();
+        return Thread.currentThread() == transportLayerThread_;
     }
 
     /**
@@ -502,5 +471,126 @@ abstract class AbstractTransportLayer
         {
             Thread.currentThread().interrupt();
         }
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * Superclass for factories that create instances of
+     * {@link AbstractTransportLayer}.
+     * 
+     * <p>
+     * The purpose of this class is to ensure an instance of
+     * {@link AbstractTransportLayer} is constructed on its associated transport
+     * layer thread to guarantee thread confinement.
+     * </p>
+     */
+    @Immutable
+    static abstract class AbstractFactory
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code AbstractFactory} class.
+         */
+        AbstractFactory()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Creates the transport layer executor service.
+         * 
+         * @return The transport layer executor service; never {@code null}.
+         */
+        /* @NonNull */
+        private static ExecutorService createExecutorService()
+        {
+            return Executors.newSingleThreadExecutor( new ThreadFactory()
+            {
+                @Override
+                public Thread newThread(
+                    final Runnable r )
+                {
+                    return new Thread( r, NonNlsMessages.AbstractTransportLayer_transportLayerThread_name );
+                }
+            } );
+        }
+
+        /**
+         * Creates a new transport layer.
+         * 
+         * @param context
+         *        The transport layer context; must not be {@code null}.
+         * 
+         * @return A new transport layer; never {@code null}.
+         * 
+         * @throws java.lang.RuntimeException
+         *         If this thread is interrupted while waiting for the transport
+         *         layer to be created on the transport layer thread.
+         */
+        /* @NonNull */
+        final AbstractTransportLayer createTransportLayer(
+            /* @NonNull */
+            final ITransportLayerContext context )
+        {
+            assert context != null;
+
+            final ExecutorService executorService = createExecutorService();
+            final Future<AbstractTransportLayer> future = executorService.submit( new Callable<AbstractTransportLayer>()
+            {
+                @Override
+                public AbstractTransportLayer call()
+                {
+                    return createTransportLayer( context, executorService );
+                }
+            } );
+
+            try
+            {
+                return future.get();
+            }
+            catch( final ExecutionException e )
+            {
+                throw TaskUtils.launderThrowable( e.getCause() );
+            }
+            catch( final InterruptedException e )
+            {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException( NonNlsMessages.AbstractTransportLayer_createTransportLayer_interrupted );
+            }
+        }
+
+        /**
+         * Template method invoked to create a new transport layer.
+         * 
+         * <p>
+         * This method will be invoked on the transport layer thread.
+         * </p>
+         * 
+         * @param context
+         *        The transport layer context; must not be {@code null}.
+         * @param executorService
+         *        The transport layer executor service; must not be {@code null}
+         *        .
+         * 
+         * @return A new transport layer; never {@code null}.
+         */
+        /* @NonNull */
+        abstract AbstractTransportLayer createTransportLayer(
+            /* @NonNull */
+            ITransportLayerContext context,
+            /* @NonNull */
+            ExecutorService executorService );
     }
 }

@@ -29,6 +29,8 @@ import java.nio.channels.Selector;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
+import org.easymock.EasyMock;
+import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,8 +81,6 @@ public final class DispatcherTest
     private void closeDispatcher()
         throws Exception
     {
-        assert !transportLayer_.isTransportLayerThread();
-
         // Invoke beginClose() on transport layer thread
         final Future<Void> dispatcherCloseFuture = transportLayerRunner_.run( new Callable<Future<Void>>()
         {
@@ -106,7 +106,7 @@ public final class DispatcherTest
     public void setUp()
         throws Exception
     {
-        transportLayer_ = new FakeTransportLayer();
+        transportLayer_ = new FakeTransportLayer.Factory().createTransportLayer( EasyMock.createMock( ITransportLayerContext.class ) );
         transportLayerRunner_ = new TransportLayerRunner( transportLayer_ );
 
         transportLayerRunner_.run( new Callable<Void>()

@@ -38,6 +38,9 @@ final class NonNlsMessages
 
     // --- AbstractTransportLayer -------------------------------------------
 
+    /** Interrupted while creating the transport layer. */
+    public static String AbstractTransportLayer_createTransportLayer_interrupted;
+
     /** An I/O error occurred while opening the transport layer. */
     public static String AbstractTransportLayer_open_ioError;
 

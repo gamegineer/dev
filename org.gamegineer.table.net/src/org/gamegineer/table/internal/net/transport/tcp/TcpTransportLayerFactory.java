@@ -62,7 +62,7 @@ public final class TcpTransportLayerFactory
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        return new TransportLayerAdapter( new ActiveTransportLayer( context ) );
+        return createTransportLayer( new ActiveTransportLayer.Factory(), context );
     }
 
     /*
@@ -74,6 +74,29 @@ public final class TcpTransportLayerFactory
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        return new TransportLayerAdapter( new PassiveTransportLayer( context ) );
+        return createTransportLayer( new PassiveTransportLayer.Factory(), context );
+    }
+
+    /**
+     * Creates a new transport layer using the specified factory.
+     * 
+     * @param factory
+     *        The transport layer factory; must not be {@code null}.
+     * @param context
+     *        The transport layer context; must not be {@code null}.
+     * 
+     * @return A new transport layer; never {@code null}.
+     */
+    /* @NonNull */
+    private static ITransportLayer createTransportLayer(
+        /* @NonNull */
+        final AbstractTransportLayer.AbstractFactory factory,
+        /* @NonNull */
+        final ITransportLayerContext context )
+    {
+        assert factory != null;
+        assert context != null;
+
+        return new TransportLayerAdapter( factory.createTransportLayer( context ) );
     }
 }

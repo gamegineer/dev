@@ -21,8 +21,8 @@
 
 package org.gamegineer.table.internal.net.transport.tcp;
 
+import java.util.concurrent.ExecutorService;
 import net.jcip.annotations.Immutable;
-import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 
 /**
@@ -40,10 +40,19 @@ final class FakeTransportLayer
 
     /**
      * Initializes a new instance of the {@code FakeTransportLayer} class.
+     * 
+     * @param context
+     *        The transport layer context; must not be {@code null}.
+     * @param executorService
+     *        The transport layer executor service; must not be {@code null}.
      */
-    FakeTransportLayer()
+    private FakeTransportLayer(
+        /* @NonNull */
+        final ITransportLayerContext context,
+        /* @NonNull */
+        final ExecutorService executorService )
     {
-        super( EasyMock.createMock( ITransportLayerContext.class ) );
+        super( context, executorService );
     }
 
 
@@ -75,5 +84,47 @@ final class FakeTransportLayer
         assert isTransportLayerThread();
 
         // do nothing
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * A factory for creating instances of {@link FakeTransportLayer}.
+     */
+    @Immutable
+    static final class Factory
+        extends AbstractFactory
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code Factory} class.
+         */
+        Factory()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.net.transport.tcp.AbstractTransportLayer.AbstractFactory#createTransportLayer(org.gamegineer.table.internal.net.transport.ITransportLayerContext, java.util.concurrent.ExecutorService)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        AbstractTransportLayer createTransportLayer(
+            final ITransportLayerContext context,
+            final ExecutorService executorService )
+        {
+            return new FakeTransportLayer( context, executorService );
+        }
     }
 }

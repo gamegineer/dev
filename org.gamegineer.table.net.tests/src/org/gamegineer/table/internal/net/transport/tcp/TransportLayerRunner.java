@@ -31,6 +31,11 @@ import org.gamegineer.common.core.util.concurrent.TaskUtils;
 
 /**
  * Ensures a block of code is executed on a transport layer thread.
+ * 
+ * <p>
+ * All methods of this class are expected to not be called on the transport
+ * layer thread.
+ * </p>
  */
 @ThreadSafe
 final class TransportLayerRunner
@@ -129,8 +134,8 @@ final class TransportLayerRunner
     }
 
     /**
-     * Executes the specified task on the transport layer thread expecting no
-     * checked exceptions will be thrown.
+     * Synchronously executes the specified task on the transport layer thread
+     * expecting no checked exceptions will be thrown.
      * 
      * @param <V>
      *        The type of the task result.
@@ -156,8 +161,8 @@ final class TransportLayerRunner
     }
 
     /**
-     * Executes the specified task on the transport layer thread expecting the
-     * specified checked exception will be thrown.
+     * Synchronously executes the specified task on the transport layer thread
+     * expecting the specified checked exception will be thrown.
      * 
      * @param <V>
      *        The type of the task result.
@@ -189,8 +194,8 @@ final class TransportLayerRunner
     }
 
     /**
-     * Executes the specified task on the transport layer thread expecting any
-     * of the specified checked exceptions will be thrown.
+     * Synchronously executes the specified task on the transport layer thread
+     * expecting any of the specified checked exceptions will be thrown.
      * 
      * @param <V>
      *        The type of the task result.
@@ -219,6 +224,7 @@ final class TransportLayerRunner
         assert task != null;
         assert exceptionTypes != null;
         assert !exceptionTypes.contains( null );
+        assert !transportLayer_.isTransportLayerThread();
 
         try
         {
