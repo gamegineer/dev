@@ -81,10 +81,7 @@ final class TransportLayerRunner
     void close()
         throws Exception
     {
-        assert !transportLayer_.isTransportLayerThread();
-
-        // Invoke beginClose() on transport layer thread
-        final Future<Void> closeFuture = run( new Callable<Future<Void>>()
+        final Future<Void> future = run( new Callable<Future<Void>>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -94,8 +91,7 @@ final class TransportLayerRunner
             }
         } );
 
-        // Wait for transport layer to close on current thread
-        transportLayer_.endClose( closeFuture );
+        transportLayer_.endClose( future );
     }
 
     /**
@@ -116,10 +112,8 @@ final class TransportLayerRunner
         throws Exception
     {
         assert hostName != null;
-        assert !transportLayer_.isTransportLayerThread();
 
-        // Invoke beginOpen() on transport layer thread
-        final Future<Void> openFuture = run( new Callable<Future<Void>>()
+        final Future<Void> future = run( new Callable<Future<Void>>()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -129,8 +123,7 @@ final class TransportLayerRunner
             }
         } );
 
-        // Wait for transport layer to open on current thread
-        transportLayer_.endOpen( openFuture );
+        transportLayer_.endOpen( future );
     }
 
     /**
@@ -241,7 +234,7 @@ final class TransportLayerRunner
                 }
             }
 
-            throw TaskUtils.launderThrowable( e.getCause() );
+            throw TaskUtils.launderThrowable( cause );
         }
     }
 }
