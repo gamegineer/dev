@@ -40,7 +40,7 @@ final class NonNlsMessages
     // --- Application ------------------------------------------------------
 
     /** An error occurred while parsing the application version. */
-    public static String Application_createTableAdvisor_parseVersionError;
+    public static String Application_parseApplicationVersion_error;
 
     /** The application was cancelled. */
     public static String Application_start_cancelled;
@@ -96,11 +96,11 @@ final class NonNlsMessages
      *         the application version; never {@code null}.
      */
     /* @NonNull */
-    static String Application_createTableAdvisor_parseVersionError(
+    static String Application_parseApplicationVersion_error(
         /* @NonNull */
         final String version )
     {
-        return bind( Application_createTableAdvisor_parseVersionError, version );
+        return bind( Application_parseApplicationVersion_error, version );
     }
 
     /**

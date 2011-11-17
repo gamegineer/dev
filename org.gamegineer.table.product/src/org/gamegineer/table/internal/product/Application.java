@@ -49,8 +49,8 @@ public final class Application
     // Fields
     // ======================================================================
 
-    /** The task associated with the running table. */
-    private final AtomicReference<Future<TableResult>> task_;
+    /** The asynchronous completion token associated with the running table. */
+    private final AtomicReference<Future<TableResult>> futureRef_;
 
 
     // ======================================================================
@@ -62,7 +62,7 @@ public final class Application
      */
     public Application()
     {
-        task_ = new AtomicReference<Future<TableResult>>();
+        futureRef_ = new AtomicReference<Future<TableResult>>();
     }
 
 
@@ -85,30 +85,55 @@ public final class Application
     {
         assert context != null;
 
-        final String[] argsArray = (String[])context.getArguments().get( IApplicationContext.APPLICATION_ARGS );
-        final List<String> args;
-        if( (argsArray != null) && (argsArray.length != 0) )
+        final List<String> applicationArguments = parseApplicationArguments( (String[])context.getArguments().get( IApplicationContext.APPLICATION_ARGS ) );
+        final Version applicationVersion = parseApplicationVersion( (String)context.getBrandingBundle().getHeaders().get( org.osgi.framework.Constants.BUNDLE_VERSION ) );
+        return new TableAdvisor( applicationArguments, applicationVersion );
+    }
+
+    /**
+     * Parses the specified application arguments array.
+     * 
+     * @param applicationArgumentsArray
+     *        The application arguments array; may be {@code null}.
+     * 
+     * @return The collection of application arguments; never {@code null}.
+     */
+    /* @NonNull */
+    private static List<String> parseApplicationArguments(
+        /* @Nullable */
+        final String[] applicationArgumentsArray )
+    {
+        if( (applicationArgumentsArray == null) || (applicationArgumentsArray.length == 0) )
         {
-            args = Arrays.asList( argsArray );
-        }
-        else
-        {
-            args = Collections.emptyList();
+            return Collections.emptyList();
         }
 
-        final String versionString = (String)context.getBrandingBundle().getHeaders().get( org.osgi.framework.Constants.BUNDLE_VERSION );
-        Version version;
+        return Arrays.asList( applicationArgumentsArray );
+    }
+
+    /**
+     * Parses the specified application version string.
+     * 
+     * @param applicationVersionString
+     *        The application version string; may be {@code null}.
+     * 
+     * @return The application version; never {@code null}.
+     */
+    /* @NonNull */
+    private static Version parseApplicationVersion(
+        /* @Nullable */
+        final String applicationVersionString )
+    {
         try
         {
-            version = Version.parseVersion( versionString );
+            return Version.parseVersion( applicationVersionString );
         }
         catch( final IllegalArgumentException e )
         {
-            Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.Application_createTableAdvisor_parseVersionError( versionString ), e );
-            version = Version.emptyVersion;
+            Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.Application_parseApplicationVersion_error( applicationVersionString ), e );
         }
 
-        return new TableAdvisor( args, version );
+        return Version.emptyVersion;
     }
 
     /*
@@ -124,14 +149,14 @@ public final class Application
         final ITableAdvisor advisor = createTableAdvisor( context );
         Loggers.getDefaultLogger().info( NonNlsMessages.Application_start_starting( advisor.getApplicationVersion() ) );
 
-        final Future<TableResult> task = Activator.getDefault().getExecutorService().submit( TableUIFactory.createTableRunner( advisor ) );
-        task_.set( task );
+        final Future<TableResult> future = Activator.getDefault().getExecutorService().submit( TableUIFactory.createTableRunner( advisor ) );
+        futureRef_.set( future );
         try
         {
             TableResult result;
             try
             {
-                result = task.get();
+                result = future.get();
             }
             catch( final CancellationException e )
             {
@@ -144,7 +169,7 @@ public final class Application
         }
         finally
         {
-            task_.set( null );
+            futureRef_.set( null );
         }
     }
 
@@ -154,11 +179,11 @@ public final class Application
     @Override
     public void stop()
     {
-        final Future<?> task = task_.get();
-        if( task != null )
+        final Future<?> future = futureRef_.get();
+        if( future != null )
         {
             Loggers.getDefaultLogger().info( NonNlsMessages.Application_stop_stopping );
-            if( !task.cancel( true ) )
+            if( !future.cancel( true ) )
             {
                 Loggers.getDefaultLogger().severe( NonNlsMessages.Application_stop_cancelFailed );
             }
