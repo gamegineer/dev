@@ -49,7 +49,10 @@ public final class Application
     // Fields
     // ======================================================================
 
-    /** The asynchronous completion token associated with the running table. */
+    /**
+     * A reference to the asynchronous completion token associated with the
+     * running table.
+     */
     private final AtomicReference<Future<TableResult>> futureRef_;
 
 
