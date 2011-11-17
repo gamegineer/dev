@@ -1,6 +1,6 @@
 /*
  * TableAdvisor.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.ui;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,6 +69,8 @@ public final class TableAdvisor
      * @param appVersion
      *        The application version; must not be {@code null}.
      * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code appArgs} contains a {@code null} element.
      * @throws java.lang.NullPointerException
      *         If {@code appArgs} or {@code appVersion} is {@code null}.
      */
@@ -78,6 +81,7 @@ public final class TableAdvisor
         final Version appVersion )
     {
         assertArgumentNotNull( appArgs, "appArgs" ); //$NON-NLS-1$
+        assertArgumentLegal( !appArgs.contains( null ), "appArgs", NonNlsMessages.TableAdvisor_ctor_appArgs_containsNullElement ); //$NON-NLS-1$
         assertArgumentNotNull( appVersion, "appVersion" ); //$NON-NLS-1$
 
         appArgs_ = Collections.unmodifiableList( new ArrayList<String>( appArgs ) );

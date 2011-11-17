@@ -1,6 +1,6 @@
 /*
  * TableAdvisorTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -63,6 +63,16 @@ public final class TableAdvisorTest
         appArgs.add( "arg" ); //$NON-NLS-1$
 
         assertEquals( 0, tableAdvisor.getApplicationArguments().size() );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed an illegal
+     * application argument collection that contains a {@code null} element.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testConstructor_AppArgs_Illegal_ContainsNullElement()
+    {
+        new TableAdvisor( Collections.<String>singletonList( null ), Version.emptyVersion );
     }
 
     /**
