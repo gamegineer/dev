@@ -68,11 +68,11 @@ public final class TableRunner
      */
     private MainFrame frame_;
 
-    /** The table result. */
-    private final AtomicReference<TableResult> result_;
+    /** A reference to the table result. */
+    private final AtomicReference<TableResult> resultRef_;
 
-    /** The runner state. */
-    private final AtomicReference<State> state_;
+    /** A reference to the runner state. */
+    private final AtomicReference<State> stateRef_;
 
     /** The latch used to signal that the runner has stopped. */
     private final CountDownLatch stopLatch_;
@@ -99,8 +99,8 @@ public final class TableRunner
 
         advisor_ = advisor;
         frame_ = null;
-        result_ = new AtomicReference<TableResult>( TableResult.OK );
-        state_ = new AtomicReference<State>( State.PRISTINE );
+        resultRef_ = new AtomicReference<TableResult>( TableResult.OK );
+        stateRef_ = new AtomicReference<State>( State.PRISTINE );
         stopLatch_ = new CountDownLatch( 1 );
     }
 
@@ -116,12 +116,12 @@ public final class TableRunner
     public TableResult call()
         throws Exception
     {
-        assertStateLegal( state_.compareAndSet( State.PRISTINE, State.STARTING ), NonNlsMessages.TableRunner_state_notPristine );
+        assertStateLegal( stateRef_.compareAndSet( State.PRISTINE, State.STARTING ), NonNlsMessages.TableRunner_state_notPristine );
 
         final TableResult processCommandLineResult = processCommandLineArguments();
         if( processCommandLineResult != null )
         {
-            state_.set( State.STOPPED );
+            stateRef_.set( State.STOPPED );
             return processCommandLineResult;
         }
 
@@ -137,12 +137,12 @@ public final class TableRunner
         }
         finally
         {
-            state_.set( State.STOPPED );
+            stateRef_.set( State.STOPPED );
 
             closeFrameAsync();
         }
 
-        return result_.get();
+        return resultRef_.get();
     }
 
     /**
@@ -325,7 +325,7 @@ public final class TableRunner
         // It's possible the runner has already been cancelled by the time we
         // get here.  Therefore, we need to detect such a case and close the
         // frame window that was just opened.
-        if( !state_.compareAndSet( State.STARTING, State.STARTED ) )
+        if( !stateRef_.compareAndSet( State.STARTING, State.STARTED ) )
         {
             closeFrame();
         }
@@ -348,8 +348,8 @@ public final class TableRunner
         assert SwingUtilities.isEventDispatchThread();
         assert result != null;
 
-        result_.set( result );
-        state_.set( State.STOPPING );
+        resultRef_.set( result );
+        stateRef_.set( State.STOPPING );
         stopLatch_.countDown();
     }
 
