@@ -46,11 +46,11 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     // Constructors
     // ======================================================================
 
-    /** The mocks control for use in the fixture. */
-    private IMocksControl mocksControl_;
-
     /** The table network node for use in the fixture. */
     private LocalNodeType node_;
+
+    /** The mocks control used to create the mock local node in the fixture. */
+    private IMocksControl nodeMocksControl_;
 
     /** The remote node controller under test in the fixture. */
     private T remoteNodeController_;
@@ -93,8 +93,26 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
         IMocksControl mocksControl );
 
     /**
+     * Creates a mock node layer for use in the fixture.
+     * 
+     * @return A mock node layer for use in the fixture; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static INodeLayer createMockNodeLayer()
+    {
+        final IMocksControl mocksControl = EasyMock.createControl();
+        final INodeLayer nodeLayer = mocksControl.createMock( INodeLayer.class );
+        EasyMock.expect( nodeLayer.isNodeLayerThread() ).andReturn( true ).anyTimes();
+        mocksControl.replay();
+        return nodeLayer;
+    }
+
+    /**
      * Creates the remote node controller to be tested.
      * 
+     * @param nodeLayer
+     *        The node layer; must not be {@code null}.
      * @param node
      *        The local table network node; must not be {@code null}.
      * 
@@ -105,10 +123,12 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
      * @throws java.lang.Exception
      *         If an error occurs.
      * @throws java.lang.NullPointerException
-     *         If {@code node} is {@code null}.
+     *         If {@code nodeLayer} or {@code node} is {@code null}.
      */
     /* @NonNull */
     protected abstract T createRemoteNodeController(
+        /* @NonNull */
+        INodeLayer nodeLayer,
         /* @NonNull */
         LocalNodeType node )
         throws Exception;
@@ -149,9 +169,11 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     public void setUp()
         throws Exception
     {
-        mocksControl_ = EasyMock.createControl();
-        node_ = createMockLocalNode( mocksControl_ );
-        remoteNodeController_ = createRemoteNodeController( node_ );
+        nodeMocksControl_ = EasyMock.createNiceControl();
+        node_ = createMockLocalNode( nodeMocksControl_ );
+        nodeMocksControl_.replay();
+
+        remoteNodeController_ = createRemoteNodeController( createMockNodeLayer(), node_ );
         assertNotNull( remoteNodeController_ );
     }
 
@@ -162,13 +184,10 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     @Test( expected = IllegalStateException.class )
     public void testBind_Bound()
     {
-        synchronized( remoteNodeController_.getLock() )
-        {
-            openRemoteNode( remoteNodeController_ );
-            remoteNodeController_.bind( "playerName" ); //$NON-NLS-1$
+        openRemoteNode( remoteNodeController_ );
+        remoteNodeController_.bind( "playerName" ); //$NON-NLS-1$
 
-            remoteNodeController_.bind( "playerName" ); //$NON-NLS-1$
-        }
+        remoteNodeController_.bind( "playerName" ); //$NON-NLS-1$
     }
 
     /**
@@ -178,30 +197,30 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     @Test( expected = IllegalStateException.class )
     public void testBind_Closed()
     {
-        synchronized( remoteNodeController_.getLock() )
-        {
-            remoteNodeController_.bind( "playerName" ); //$NON-NLS-1$
-        }
+        remoteNodeController_.bind( "playerName" ); //$NON-NLS-1$
     }
 
     /**
      * Ensures the {@code bind} method throws an exception when passed a player
      * name that is associated with a table that is already bound to the local
      * node.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testBind_PlayerName_Bound()
+        throws Exception
     {
-        node_.bindRemoteNode( EasyMock.<RemoteNodeType>notNull() );
+        final IMocksControl nodeMocksControl = EasyMock.createControl();
+        final LocalNodeType node = createMockLocalNode( nodeMocksControl );
+        node.bindRemoteNode( EasyMock.<RemoteNodeType>notNull() );
         EasyMock.expectLastCall().andThrow( new IllegalArgumentException() );
-        mocksControl_.replay();
+        nodeMocksControl.replay();
+        final T remoteNodeController = createRemoteNodeController( createMockNodeLayer(), node );
+        openRemoteNode( remoteNodeController );
 
-        synchronized( remoteNodeController_.getLock() )
-        {
-            openRemoteNode( remoteNodeController_ );
-
-            remoteNodeController_.bind( "playerName" ); //$NON-NLS-1$
-        }
+        remoteNodeController.bind( "playerName" ); //$NON-NLS-1$
     }
 
     /**
@@ -211,10 +230,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     @Test( expected = NullPointerException.class )
     public void testBind_PlayerName_Null()
     {
-        synchronized( remoteNodeController_.getLock() )
-        {
-            remoteNodeController_.bind( null );
-        }
+        remoteNodeController_.bind( null );
     }
 
     /**
@@ -224,10 +240,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     @Test( expected = IllegalStateException.class )
     public void testClose_Closed()
     {
-        synchronized( remoteNodeController_.getLock() )
-        {
-            remoteNodeController_.close( null );
-        }
+        remoteNodeController_.close( null );
     }
 
     /**
@@ -246,10 +259,7 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     @Test( expected = IllegalStateException.class )
     public void testSendMessage_Closed()
     {
-        synchronized( remoteNodeController_.getLock() )
-        {
-            remoteNodeController_.sendMessage( EasyMock.createMock( IMessage.class ), EasyMock.createMock( IMessageHandler.class ) );
-        }
+        remoteNodeController_.sendMessage( EasyMock.createMock( IMessage.class ), EasyMock.createMock( IMessageHandler.class ) );
     }
 
     /**
@@ -259,9 +269,6 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     @Test( expected = NullPointerException.class )
     public void testSendMessage_Message_Null()
     {
-        synchronized( remoteNodeController_.getLock() )
-        {
-            remoteNodeController_.sendMessage( null, EasyMock.createMock( IMessageHandler.class ) );
-        }
+        remoteNodeController_.sendMessage( null, EasyMock.createMock( IMessageHandler.class ) );
     }
 }

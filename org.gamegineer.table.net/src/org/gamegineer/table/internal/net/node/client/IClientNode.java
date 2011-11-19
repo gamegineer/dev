@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.node.client;
 
 import java.util.Collection;
-import net.jcip.annotations.GuardedBy;
 import org.gamegineer.table.internal.net.node.INode;
 import org.gamegineer.table.net.IPlayer;
 
@@ -50,7 +49,6 @@ public interface IClientNode
      * @throws java.lang.NullPointerException
      *         If {@code players} is {@code null}.
      */
-    @GuardedBy( "getLock()" )
     public void setPlayers(
         /* @NonNull */
         Collection<IPlayer> players );

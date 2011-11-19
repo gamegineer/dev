@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.node.client;
 
 import org.gamegineer.table.internal.net.TableNetworkControllers;
+import org.gamegineer.table.internal.net.node.NodeLayerRunner;
 
 /**
  * A fixture for testing the
@@ -57,6 +58,18 @@ public final class ClientNodeAsDisconnectedClientNodeTest
     @Override
     protected ClientNode createDisconnectedNode()
     {
-        return new ClientNode( TableNetworkControllers.createFakeTableNetworkController(), false );
+        final ClientNode node = new ClientNode.Factory().createNode( TableNetworkControllers.createFakeTableNetworkController() );
+        node.setHandshakeComplete( null );
+        return node;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.AbstractDisconnectedNodeTestCase#createNodeLayerRunner(org.gamegineer.table.internal.net.node.INode)
+     */
+    @Override
+    protected NodeLayerRunner createNodeLayerRunner(
+        final ClientNode node )
+    {
+        return new NodeLayerRunner( node );
     }
 }

@@ -27,13 +27,14 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.Player;
 import org.gamegineer.table.internal.net.node.AbstractNode;
@@ -53,7 +54,7 @@ import org.gamegineer.table.net.TableNetworkException;
 /**
  * A client node in a table network.
  */
-@ThreadSafe
+@NotThreadSafe
 public final class ClientNode
     extends AbstractNode<IRemoteServerNode>
     implements IClientNode
@@ -83,7 +84,6 @@ public final class ClientNode
      * The collection of players connected to the table network. The key is the
      * player name. The value is the player.
      */
-    @GuardedBy( "getLock()" )
     private final Map<String, IPlayer> players_;
 
     /** The table manager. */
@@ -99,47 +99,25 @@ public final class ClientNode
      * 
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
+     * @param executorService
+     *        The node layer executor service; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code tableNetworkController} is {@code null}.
+     *         If {@code tableNetworkController} or {@code executorService} is
+     *         {@code null}.
      */
-    public ClientNode(
-        /* @NonNull */
-        final ITableNetworkController tableNetworkController )
-    {
-        this( tableNetworkController, true );
-    }
-
-    /**
-     * Initializes a new instance of the {@code ClientNode} class and indicates
-     * whether or not the node should wait for handshake to complete before
-     * indicating the connection has been established.
-     * 
-     * <p>
-     * This constructor is only intended to support testing.
-     * </p>
-     * 
-     * @param tableNetworkController
-     *        The table network controller; must not be {@code null}.
-     * @param waitForHandshakeCompletion
-     *        {@code true} if the node should wait for the handshake to complete
-     *        before indicating the connection has been established; otherwise
-     *        {@code false}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code tableNetworkController} is {@code null}.
-     */
-    public ClientNode(
+    private ClientNode(
         /* @NonNull */
         final ITableNetworkController tableNetworkController,
-        final boolean waitForHandshakeCompletion )
+        /* @NonNull */
+        final ExecutorService executorService )
     {
-        super( tableNetworkController );
+        super( tableNetworkController, executorService );
 
         handshakeLock_ = new ReentrantLock();
         handshakeCondition_ = handshakeLock_.newCondition();
         handshakeError_ = null;
-        isHandshakeComplete_ = waitForHandshakeCompletion ? false : true;
+        isHandshakeComplete_ = false;
         players_ = new HashMap<String, IPlayer>();
         tableManager_ = new ClientTableManager();
     }
@@ -155,6 +133,8 @@ public final class ClientNode
     @Override
     public void cancelControlRequest()
     {
+        assert isNodeLayerThread();
+
         getRemoteServerNode().cancelControlRequest();
     }
 
@@ -165,6 +145,8 @@ public final class ClientNode
     protected void connected()
         throws TableNetworkException
     {
+        assert !isNodeLayerThread();
+
         super.connected();
 
         handshakeLock_.lock();
@@ -206,7 +188,7 @@ public final class ClientNode
         throws TableNetworkException
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         super.connecting( configuration );
 
@@ -224,7 +206,7 @@ public final class ClientNode
         final ITableManager tableManager )
     {
         assertArgumentNotNull( tableManager, "tableManager" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         return new ClientTableManagerDecorator( tableManager );
     }
@@ -235,7 +217,7 @@ public final class ClientNode
     @Override
     protected ITransportLayer createTransportLayer()
     {
-        assert Thread.holdsLock( getLock() );
+        assert !isNodeLayerThread();
 
         return getTableNetworkController().getTransportLayerFactory().createActiveTransportLayer( new AbstractTransportLayerContext()
         {
@@ -250,7 +232,7 @@ public final class ClientNode
                     {
                         assert isNodeLayerThread();
 
-                        return new RemoteServerNode( ClientNode.this );
+                        return new RemoteServerNode( getNodeLayer(), ClientNode.this );
                     }
                 };
             }
@@ -264,7 +246,7 @@ public final class ClientNode
     protected void disconnecting(
         final TableNetworkError error )
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         super.disconnecting( error );
 
@@ -277,7 +259,7 @@ public final class ClientNode
     @Override
     protected void dispose()
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         players_.clear();
 
@@ -290,10 +272,9 @@ public final class ClientNode
     @Override
     public IPlayer getPlayer()
     {
-        synchronized( getLock() )
-        {
-            return isConnected() ? players_.get( getPlayerName() ) : null;
-        }
+        assert isNodeLayerThread();
+
+        return isConnected() ? players_.get( getPlayerName() ) : null;
     }
 
     /*
@@ -302,10 +283,9 @@ public final class ClientNode
     @Override
     public Collection<IPlayer> getPlayers()
     {
-        synchronized( getLock() )
-        {
-            return new ArrayList<IPlayer>( players_.values() );
-        }
+        assert isNodeLayerThread();
+
+        return new ArrayList<IPlayer>( players_.values() );
     }
 
     /**
@@ -338,6 +318,7 @@ public final class ClientNode
         final String playerName )
     {
         assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
+        assert isNodeLayerThread();
 
         getRemoteServerNode().giveControl( playerName );
     }
@@ -350,7 +331,7 @@ public final class ClientNode
         final IRemoteServerNode remoteNode )
     {
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         super.remoteNodeBound( remoteNode );
 
@@ -363,17 +344,24 @@ public final class ClientNode
     @Override
     public void requestControl()
     {
+        assert isNodeLayerThread();
+
         getRemoteServerNode().requestControl();
     }
 
     /**
      * Sets the condition that indicates the handshake is complete.
      * 
+     * <p>
+     * This method may be called from any thread. It should not be called
+     * outside of this class except when required for testing.
+     * </p>
+     * 
      * @param error
      *        The error that caused the handshake to fail or {@code null} if the
      *        handshake completed successfully.
      */
-    private void setHandshakeComplete(
+    void setHandshakeComplete(
         /* @Nullable */
         final TableNetworkError error )
     {
@@ -401,7 +389,7 @@ public final class ClientNode
         final Collection<IPlayer> players )
     {
         assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         assertConnected();
         players_.clear();
@@ -535,6 +523,43 @@ public final class ClientNode
             {
                 tableManagerDecoratee_.setTableState( sourceTable, tableMemento );
             }
+        }
+    }
+
+    /**
+     * A factory for creating instances of {@link ClientNode}.
+     */
+    @Immutable
+    public static final class Factory
+        extends AbstractFactory<ClientNode>
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code Factory} class.
+         */
+        public Factory()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.AbstractNode.AbstractFactory#createNode(org.gamegineer.table.internal.net.ITableNetworkController, java.util.concurrent.ExecutorService)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        protected ClientNode createNode(
+            final ITableNetworkController tableNetworkController,
+            final ExecutorService executorService )
+        {
+            return new ClientNode( tableNetworkController, executorService );
         }
     }
 }

@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.node;
 
-import net.jcip.annotations.GuardedBy;
 import org.gamegineer.common.core.security.SecureString;
 import org.gamegineer.table.net.TableNetworkError;
 
@@ -58,7 +57,6 @@ public interface INode<RemoteNodeType extends IRemoteNode>
      * @throws java.lang.NullPointerException
      *         If {@code remoteNode} is {@code null}.
      */
-    @GuardedBy( "getLock()" )
     public void bindRemoteNode(
         /* @NonNull */
         RemoteNodeType remoteNode );
@@ -71,19 +69,9 @@ public interface INode<RemoteNodeType extends IRemoteNode>
      *        disconnected or {@code null} if the local table network node was
      *        disconnected normally.
      */
-    @GuardedBy( "getLock()" )
     public void disconnect(
         /* @Nullable */
         TableNetworkError error );
-
-    /**
-     * Gets the instance lock for the local table network node.
-     * 
-     * @return The instance lock for the local table network node; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    public Object getLock();
 
     /**
      * Gets the table network password.
@@ -94,7 +82,6 @@ public interface INode<RemoteNodeType extends IRemoteNode>
      * @throws java.lang.IllegalStateException
      *         If the table network is not connected.
      */
-    @GuardedBy( "getLock()" )
     /* @NonNull */
     public SecureString getPassword();
 
@@ -107,7 +94,6 @@ public interface INode<RemoteNodeType extends IRemoteNode>
      * @throws java.lang.IllegalStateException
      *         If the table network is not connected.
      */
-    @GuardedBy( "getLock()" )
     /* @NonNull */
     public String getPlayerName();
 
@@ -134,7 +120,6 @@ public interface INode<RemoteNodeType extends IRemoteNode>
      * @throws java.lang.NullPointerException
      *         If {@code remoteNode} is {@code null}.
      */
-    @GuardedBy( "getLock()" )
     public void unbindRemoteNode(
         /* @NonNull */
         RemoteNodeType remoteNode );

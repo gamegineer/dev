@@ -99,19 +99,15 @@ public final class TableNetwork
      * @param transportLayerFactory
      *        The table network transport layer factory; must not be {@code
      *        null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code nodeFactory} or {@code transportLayerFactory} is
-     *         {@code null}.
      */
-    public TableNetwork(
+    TableNetwork(
         /* @NonNull */
         final INodeFactory nodeFactory,
         /* @NonNull */
         final ITransportLayerFactory transportLayerFactory )
     {
-        assertArgumentNotNull( nodeFactory, "nodeFactory" ); //$NON-NLS-1$
-        assertArgumentNotNull( transportLayerFactory, "transportLayerFactory" ); //$NON-NLS-1$
+        assert nodeFactory != null;
+        assert transportLayerFactory != null;
 
         connectionStateRef_ = new AtomicReference<ConnectionState>( ConnectionState.DISCONNECTED );
         listeners_ = new CopyOnWriteArrayList<ITableNetworkListener>();
@@ -185,7 +181,7 @@ public final class TableNetwork
         {
             try
             {
-                nodeController.connect( configuration );
+                nodeController.endConnect( nodeController.beginConnect( configuration ) );
                 nodeControllerRef_.set( nodeController );
                 connectionStateRef_.set( ConnectionState.CONNECTED );
                 fireTableNetworkConnected();
@@ -194,6 +190,12 @@ public final class TableNetwork
             {
                 connectionStateRef_.set( ConnectionState.DISCONNECTED );
                 throw e;
+            }
+            catch( final InterruptedException e )
+            {
+                Thread.currentThread().interrupt();
+                connectionStateRef_.set( ConnectionState.DISCONNECTED );
+                throw new TableNetworkException( TableNetworkError.INTERRUPTED );
             }
         }
         else
@@ -221,7 +223,14 @@ public final class TableNetwork
         if( connectionStateRef_.compareAndSet( ConnectionState.CONNECTED, ConnectionState.DISCONNECTING ) )
         {
             final INodeController nodeController = nodeControllerRef_.getAndSet( null );
-            nodeController.disconnect();
+            try
+            {
+                nodeController.endDisconnect( nodeController.beginDisconnect() );
+            }
+            catch( final InterruptedException e )
+            {
+                Thread.currentThread().interrupt();
+            }
             connectionStateRef_.set( ConnectionState.DISCONNECTED );
             fireTableNetworkDisconnected( error );
         }

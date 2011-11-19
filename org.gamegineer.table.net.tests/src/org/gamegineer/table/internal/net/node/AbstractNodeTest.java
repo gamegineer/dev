@@ -28,6 +28,7 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 import net.jcip.annotations.Immutable;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.ITableNetworkController;
@@ -52,7 +53,10 @@ public final class AbstractNodeTest
     // ======================================================================
 
     /** The table network node under test in the fixture. */
-    private AbstractNode<IRemoteNode> node_;
+    private volatile AbstractNode<?> node_;
+
+    /** The node layer runner for use in the fixture. */
+    private NodeLayerRunner nodeLayerRunner_;
 
 
     // ======================================================================
@@ -82,13 +86,14 @@ public final class AbstractNodeTest
     public void setUp()
         throws Exception
     {
-        node_ = new MockNode();
+        node_ = new MockNode.Factory().createNode( EasyMock.createMock( ITableNetworkController.class ) );
+        nodeLayerRunner_ = new NodeLayerRunner( node_ );
     }
 
     /**
-     * Ensures the {@code connect} method adds a table proxy for the local
-     * player before either the {@code connecting} or {@code connected} methods
-     * are invoked.
+     * Ensures the connect operation adds a table proxy for the local player
+     * before either the {@code connecting} or {@code connected} methods are
+     * invoked.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -98,30 +103,51 @@ public final class AbstractNodeTest
         throws Exception
     {
         final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
-        final MockNode node = new MockNode()
+        final MockNode.Factory nodeFactory = new MockNode.Factory()
         {
             @Override
-            protected void connected()
-                throws TableNetworkException
+            protected MockNode createNode(
+                final ITableNetworkController tableNetworkController,
+                final ExecutorService executorService )
             {
-                super.connected();
+                return new MockNode( tableNetworkController, executorService )
+                {
+                    @Override
+                    protected void connected()
+                        throws TableNetworkException
+                    {
+                        super.connected();
 
-                assertTrue( isTableBound( configuration.getLocalPlayerName() ) );
-            }
+                        assertTrue( isTableBound( configuration.getLocalPlayerName() ) );
+                    }
 
-            @Override
-            protected void connecting(
-                @SuppressWarnings( "hiding" )
-                final ITableNetworkConfiguration configuration )
-                throws TableNetworkException
-            {
-                super.connecting( configuration );
+                    @Override
+                    protected void connecting(
+                        @SuppressWarnings( "hiding" )
+                        final ITableNetworkConfiguration configuration )
+                        throws TableNetworkException
+                    {
+                        super.connecting( configuration );
 
-                assertTrue( isTableBound( configuration.getLocalPlayerName() ) );
+                        assertTrue( isTableBound( configuration.getLocalPlayerName() ) );
+                    }
+                };
             }
         };
+        final MockNode node = nodeFactory.createNode( EasyMock.createMock( ITableNetworkController.class ) );
+        final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
 
-        node.connect( configuration );
+        nodeLayerRunner.connect( configuration );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * executor service.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_ExecutorService_Null()
+    {
+        new MockNode( EasyMock.createMock( ITableNetworkController.class ), null );
     }
 
     /**
@@ -131,58 +157,13 @@ public final class AbstractNodeTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_TableNetworkController_Null()
     {
-        new AbstractNode<IRemoteNode>( null )
-        {
-            @Override
-            public void cancelControlRequest()
-            {
-                // do nothing
-            }
-
-            @Override
-            protected ITransportLayer createTransportLayer()
-            {
-                return null;
-            }
-
-            @Override
-            public IPlayer getPlayer()
-            {
-                return null;
-            }
-
-            @Override
-            public Collection<IPlayer> getPlayers()
-            {
-                return null;
-            }
-
-            @Override
-            public ITableManager getTableManager()
-            {
-                return null;
-            }
-
-            @Override
-            public void giveControl(
-                @SuppressWarnings( "unused" )
-                final String playerName )
-            {
-                // do nothing
-            }
-
-            @Override
-            public void requestControl()
-            {
-                // do nothing
-            }
-        };
+        new MockNode( null, EasyMock.createMock( ExecutorService.class ) );
     }
 
     /**
-     * Ensures the {@code disconnect} method removes the table proxy for the
-     * local player after the {@code disconnecting} method is invoked but before
-     * the {@code disconnected} method is invoked.
+     * Ensures the disconnect operation removes the table proxy for the local
+     * player after the {@code disconnecting} method is invoked but before the
+     * {@code disconnected} method is invoked.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -192,53 +173,88 @@ public final class AbstractNodeTest
         throws Exception
     {
         final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
-        final MockNode node = new MockNode()
+        final MockNode.Factory nodeFactory = new MockNode.Factory()
         {
             @Override
-            protected void disconnected()
+            protected MockNode createNode(
+                final ITableNetworkController tableNetworkController,
+                final ExecutorService executorService )
             {
-                super.disconnected();
+                return new MockNode( tableNetworkController, executorService )
+                {
+                    @Override
+                    protected void disconnected()
+                    {
+                        super.disconnected();
 
-                assertFalse( isTableBound( configuration.getLocalPlayerName() ) );
-            }
+                        assertFalse( isTableBound( configuration.getLocalPlayerName() ) );
+                    }
 
-            @Override
-            protected void disconnecting()
-            {
-                super.disconnecting();
+                    @Override
+                    protected void disconnecting()
+                    {
+                        super.disconnecting();
 
-                assertTrue( isTableBound( configuration.getLocalPlayerName() ) );
+                        assertTrue( isTableBound( configuration.getLocalPlayerName() ) );
+                    }
+                };
             }
         };
-        node.connect( configuration );
+        final MockNode node = nodeFactory.createNode( EasyMock.createMock( ITableNetworkController.class ) );
+        final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
+        nodeLayerRunner.connect( configuration );
 
-        node.disconnect();
+        nodeLayerRunner.disconnect();
     }
 
     /**
      * Ensures the {@code getRemoteNode} method throws an exception when passed
      * a {@code null} player name.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
     public void testGetRemoteNode_PlayerName_Null()
+        throws Exception
     {
-        node_.getRemoteNode( null );
+        nodeLayerRunner_.run( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                node_.getRemoteNode( null );
+            }
+        } );
     }
 
     /**
      * Ensures the {@code getRemoteNodes} method returns a copy of the bound
      * remote nodes collection.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testGetRemoteNodes_ReturnValue_Copy()
+        throws Exception
     {
-        final Collection<IRemoteNode> remoteNodes = node_.getRemoteNodes();
-        final int expectedRemoteNodesSize = remoteNodes.size();
-        remoteNodes.add( EasyMock.createMock( IRemoteNode.class ) );
+        nodeLayerRunner_.run( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                final Collection<?> remoteNodes = node_.getRemoteNodes();
+                final int expectedRemoteNodesSize = remoteNodes.size();
+                remoteNodes.add( null );
 
-        final int actualRemoteNodesSize = node_.getRemoteNodes().size();
+                final int actualRemoteNodesSize = node_.getRemoteNodes().size();
 
-        assertEquals( expectedRemoteNodesSize, actualRemoteNodesSize );
+                assertEquals( expectedRemoteNodesSize, actualRemoteNodesSize );
+            }
+        } );
     }
 
 
@@ -259,10 +275,23 @@ public final class AbstractNodeTest
 
         /**
          * Initializes a new instance of the {@code MockNode} class.
+         * 
+         * @param tableNetworkController
+         *        The table network controller; must not be {@code null}.
+         * @param executorService
+         *        The node layer executor service; must not be {@code null}.
+         * 
+         * @throws java.lang.NullPointerException
+         *         If {@code tableNetworkController} or {@code executorService}
+         *         is {@code null}.
          */
-        MockNode()
+        MockNode(
+            /* @NonNull */
+            final ITableNetworkController tableNetworkController,
+            /* @NonNull */
+            final ExecutorService executorService )
         {
-            super( EasyMock.createNiceMock( ITableNetworkController.class ) );
+            super( tableNetworkController, executorService );
         }
 
 
@@ -362,6 +391,47 @@ public final class AbstractNodeTest
         public void requestControl()
         {
             // do nothing
+        }
+
+
+        // ==================================================================
+        // Nested Types
+        // ==================================================================
+
+        /**
+         * A factory for creating instances of {@link MockNode}.
+         */
+        @Immutable
+        static class Factory
+            extends AbstractFactory<MockNode>
+        {
+            // ==============================================================
+            // Constructors
+            // ==============================================================
+
+            /**
+             * Initializes a new instance of the {@code Factory} class.
+             */
+            Factory()
+            {
+                super();
+            }
+
+
+            // ==============================================================
+            // Methods
+            // ==============================================================
+
+            /*
+             * @see org.gamegineer.table.internal.net.node.AbstractNode.AbstractFactory#createNode(org.gamegineer.table.internal.net.ITableNetworkController, java.util.concurrent.ExecutorService)
+             */
+            @Override
+            protected MockNode createNode(
+                final ITableNetworkController tableNetworkController,
+                final ExecutorService executorService )
+            {
+                return new MockNode( tableNetworkController, executorService );
+            }
         }
     }
 }

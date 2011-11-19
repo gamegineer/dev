@@ -26,6 +26,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.net.IPlayer;
@@ -48,7 +50,10 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     // ======================================================================
 
     /** The table network node controller under test in the fixture. */
-    private T nodeController_;
+    private volatile T nodeController_;
+
+    /** The node layer runner for use in the fixture. */
+    private NodeLayerRunner nodeLayerRunner_;
 
 
     // ======================================================================
@@ -83,6 +88,25 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
         throws Exception;
 
     /**
+     * Creates a node layer runner for the specified table network node
+     * controller.
+     * 
+     * @param nodeController
+     *        The table network node controller to associate with the node layer
+     *        runner; must not be {@code null}.
+     * 
+     * @return The new node layer runner for the specified table network node
+     *         controller; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code nodeController} is {@code null}.
+     */
+    /* @NonNull */
+    protected abstract NodeLayerRunner createNodeLayerRunner(
+        /* @NonNull */
+        T nodeController );
+
+    /**
      * Gets the table network node controller under test in the fixture.
      * 
      * @return The table network node controller under test in the fixture;
@@ -107,25 +131,34 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     {
         nodeController_ = createNodeController();
         assertNotNull( nodeController_ );
+        nodeLayerRunner_ = createNodeLayerRunner( nodeController_ );
     }
 
     /**
-     * Ensures the {@code connect} method throws an exception when passed a
+     * Ensures the {@code beginConnect} method throws an exception when passed a
      * {@code null} table network configuration.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
-    public void testConnect_Configuration_Null()
+    public void testBeginConnect_Configuration_Null()
         throws Exception
     {
-        nodeController_.connect( null );
+        nodeLayerRunner_.run( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                nodeController_.beginConnect( null );
+            }
+        } );
     }
 
     /**
-     * Ensures the {@code connect} method throws an exception when the table
-     * network node is connected.
+     * Ensures the connect operation throws an exception when the table network
+     * node is connected.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -135,19 +168,97 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
         throws Exception
     {
         final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
-        nodeController_.connect( configuration );
+        nodeController_.endConnect( nodeLayerRunner_.run( new Callable<Future<Void>>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Future<Void> call()
+            {
+                return nodeController_.beginConnect( configuration );
+            }
+        } ) );
 
-        nodeController_.connect( configuration );
+        nodeController_.endConnect( nodeLayerRunner_.run( new Callable<Future<Void>>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Future<Void> call()
+            {
+                return nodeController_.beginConnect( configuration );
+            }
+        } ) );
     }
 
     /**
-     * Ensures the {@code disconnect} method does nothing when the table network
-     * node is disconnected.
+     * Ensures the disconnect operation does nothing when the table network node
+     * is disconnected.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testDisconnect_Disconnected_DoesNothing()
+        throws Exception
     {
-        nodeController_.disconnect();
+        nodeController_.endDisconnect( nodeLayerRunner_.run( new Callable<Future<Void>>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Future<Void> call()
+            {
+                return nodeController_.beginDisconnect();
+            }
+        } ) );
+    }
+
+    /**
+     * Ensures the {@code endConnect} method throws an exception when passed a
+     * {@code null} asynchronous completion token.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testEndConnect_Future_Null()
+        throws Exception
+    {
+        nodeLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                nodeController_.endConnect( null );
+
+                return null;
+            }
+        } );
+    }
+
+    /**
+     * Ensures the {@code endDisconnect} method throws an exception when passed
+     * a {@code null} asynchronous completion token.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testEndDisconnect_Future_Null()
+        throws Exception
+    {
+        nodeLayerRunner_.run( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws Exception
+            {
+                nodeController_.endDisconnect( null );
+
+                return null;
+            }
+        } );
     }
 
     /**
@@ -161,54 +272,118 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     public void testGetPlayer_Connected()
         throws Exception
     {
-        final ITableNetworkConfiguration configuration = TableNetworkConfigurations.createDefaultTableNetworkConfiguration();
-        nodeController_.connect( configuration );
+        nodeController_.endConnect( nodeLayerRunner_.run( new Callable<Future<Void>>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Future<Void> call()
+                throws Exception
+            {
+                return nodeController_.beginConnect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+            }
+        } ) );
 
-        assertNotNull( nodeController_.getPlayer() );
+        nodeLayerRunner_.run( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                assertNotNull( nodeController_.getPlayer() );
+            }
+        } );
     }
 
     /**
      * Ensures the {@code getPlayer} method returns {@code null} when the table
      * network is disconnected.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testGetPlayer_Disconnected()
+        throws Exception
     {
-        assertNull( nodeController_.getPlayer() );
+        nodeLayerRunner_.run( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                assertNull( nodeController_.getPlayer() );
+            }
+        } );
     }
 
     /**
      * Ensures the {@code getPlayers} method returns a copy of the player
      * collection.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testGetPlayers_ReturnValue_Copy()
+        throws Exception
     {
-        final Collection<IPlayer> players = nodeController_.getPlayers();
-        final Collection<IPlayer> expectedValue = new ArrayList<IPlayer>( players );
+        nodeLayerRunner_.run( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                final Collection<IPlayer> players = nodeController_.getPlayers();
+                final Collection<IPlayer> expectedValue = new ArrayList<IPlayer>( players );
 
-        players.add( EasyMock.createMock( IPlayer.class ) );
-        final Collection<IPlayer> actualValue = nodeController_.getPlayers();
+                players.add( EasyMock.createMock( IPlayer.class ) );
+                final Collection<IPlayer> actualValue = nodeController_.getPlayers();
 
-        assertEquals( expectedValue, actualValue );
+                assertEquals( expectedValue, actualValue );
+            }
+        } );
     }
 
     /**
      * Ensures the {@code getPlayers} method does not return {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testGetPlayers_ReturnValue_NonNull()
+        throws Exception
     {
-        assertNotNull( nodeController_.getPlayers() );
+        nodeLayerRunner_.run( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                assertNotNull( nodeController_.getPlayers() );
+            }
+        } );
     }
 
     /**
      * Ensures the {@code giveControl} method throws an exception when passed a
-     * {@code null} player.
+     * {@code null} player name.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
-    public void testGiveControl_Player_Null()
+    public void testGiveControl_PlayerName_Null()
+        throws Exception
     {
-        nodeController_.giveControl( null );
+        nodeLayerRunner_.run( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                nodeController_.giveControl( null );
+            }
+        } );
     }
 }

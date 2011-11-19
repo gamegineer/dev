@@ -44,10 +44,13 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     // ======================================================================
 
     /** The nice mocks control for use in the fixture. */
-    private IMocksControl niceMocksControl_;
+    private volatile IMocksControl niceMocksControl_;
 
     /** The table network node under test in the fixture. */
-    private T node_;
+    private volatile T node_;
+
+    /** The node layer runner for use in the fixture. */
+    private NodeLayerRunner nodeLayerRunner_;
 
 
     // ======================================================================
@@ -69,6 +72,19 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     // ======================================================================
 
     /**
+     * Creates the table network node to be tested in the disconnected state.
+     * 
+     * @return The table network node to be tested in the disconnected state;
+     *         never {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    /* @NonNull */
+    protected abstract T createDisconnectedNode()
+        throws Exception;
+
+    /**
      * Creates a mock remote table network node for use in the fixture.
      * 
      * @param mocksControl
@@ -87,17 +103,22 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
         IMocksControl mocksControl );
 
     /**
-     * Creates the table network node to be tested in the disconnected state.
+     * Creates a node layer runner for the specified table network node.
      * 
-     * @return The table network node to be tested in the disconnected state;
+     * @param node
+     *        The table network node to associate with the node layer runner;
+     *        must not be {@code null}.
+     * 
+     * @return The new node layer runner for the specified table network node;
      *         never {@code null}.
      * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * @throws java.lang.NullPointerException
+     *         If {@code node} is {@code null}.
      */
     /* @NonNull */
-    protected abstract T createDisconnectedNode()
-        throws Exception;
+    protected abstract NodeLayerRunner createNodeLayerRunner(
+        /* @NonNull */
+        T node );
 
     /**
      * Gets the table network node under test in the fixture.
@@ -113,6 +134,18 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     }
 
     /**
+     * Gets the node layer runner for use in the fixture.
+     * 
+     * @return The node layer runner for use in the fixture; never {@code null}.
+     */
+    /* @NonNull */
+    protected final NodeLayerRunner getNodeLayerRunner()
+    {
+        assertNotNull( nodeLayerRunner_ );
+        return nodeLayerRunner_;
+    }
+
+    /**
      * Sets up the test fixture.
      * 
      * @throws java.lang.Exception
@@ -125,81 +158,136 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
         niceMocksControl_ = EasyMock.createNiceControl();
         node_ = createDisconnectedNode();
         assertNotNull( node_ );
+        nodeLayerRunner_ = createNodeLayerRunner( node_ );
     }
 
     /**
      * Ensures the {@code bindRemoteNode} method throws an exception when passed
      * a non-{@code null} remote node.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
     public void testBindRemoteNode_RemoteNode_NonNull()
+        throws Exception
     {
-        synchronized( node_.getLock() )
+        nodeLayerRunner_.run( new Runnable()
         {
-            node_.bindRemoteNode( createMockRemoteNode( niceMocksControl_ ) );
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                node_.bindRemoteNode( createMockRemoteNode( niceMocksControl_ ) );
+            }
+        } );
     }
 
     /**
      * Ensures the {@code bindRemoteNode} method throws an exception when passed
      * a {@code null} remote node.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
     public void testBindRemoteNode_RemoteNode_Null()
+        throws Exception
     {
-        synchronized( node_.getLock() )
+        nodeLayerRunner_.run( new Runnable()
         {
-            node_.bindRemoteNode( null );
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                node_.bindRemoteNode( null );
+            }
+        } );
     }
 
     /**
      * Ensures the {@code getPassword} method throws an exception.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
     public void testGetPassword()
+        throws Exception
     {
-        synchronized( node_.getLock() )
+        nodeLayerRunner_.run( new Runnable()
         {
-            node_.getPassword();
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                node_.getPassword();
+            }
+        } );
     }
 
     /**
      * Ensures the {@code getPlayerName} method throws an exception.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
     public void testGetPlayerName()
+        throws Exception
     {
-        synchronized( node_.getLock() )
+        nodeLayerRunner_.run( new Runnable()
         {
-            node_.getPlayerName();
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                node_.getPlayerName();
+            }
+        } );
     }
 
     /**
      * Ensures the {@code unbindRemoteNode} method throws an exception when
      * passed a non-{@code null} remote node.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
     public void testUnbindRemoteNode_RemoteNode_NonNull()
+        throws Exception
     {
-        synchronized( node_.getLock() )
+        nodeLayerRunner_.run( new Runnable()
         {
-            node_.unbindRemoteNode( createMockRemoteNode( niceMocksControl_ ) );
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                node_.unbindRemoteNode( createMockRemoteNode( niceMocksControl_ ) );
+            }
+        } );
     }
 
     /**
      * Ensures the {@code unbindRemoteNode} method throws an exception when
      * passed a {@code null} remote node.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
     public void testUnbindRemoteNode_RemoteNode_Null()
+        throws Exception
     {
-        synchronized( node_.getLock() )
+        nodeLayerRunner_.run( new Runnable()
         {
-            node_.unbindRemoteNode( null );
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                node_.unbindRemoteNode( null );
+            }
+        } );
     }
 }

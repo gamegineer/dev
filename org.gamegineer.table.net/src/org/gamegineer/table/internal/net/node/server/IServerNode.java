@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.node.server;
 
-import net.jcip.annotations.GuardedBy;
 import org.gamegineer.table.internal.net.node.INode;
 
 /**
@@ -81,7 +80,6 @@ public interface IServerNode
      * @throws java.lang.NullPointerException
      *         If {@code playerName} is {@code null}.
      */
-    @GuardedBy( "getLock()" )
     public boolean isPlayerConnected(
         /* @NonNull */
         String playerName );

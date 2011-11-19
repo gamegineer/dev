@@ -21,7 +21,6 @@
 
 package org.gamegineer.table.internal.net.node;
 
-import net.jcip.annotations.GuardedBy;
 import org.gamegineer.table.internal.net.transport.IMessage;
 import org.gamegineer.table.net.TableNetworkError;
 
@@ -60,7 +59,6 @@ public interface IRemoteNodeController<LocalNodeType extends INode<?>>
      * @throws java.lang.NullPointerException
      *         If {@code playerName} is {@code null}.
      */
-    @GuardedBy( "getLock()" )
     public void bind(
         /* @NonNull */
         String playerName );
@@ -75,7 +73,6 @@ public interface IRemoteNodeController<LocalNodeType extends INode<?>>
      * @throws java.lang.IllegalStateException
      *         If the remote node is closed.
      */
-    @GuardedBy( "getLock()" )
     public void close(
         /* @Nullable */
         TableNetworkError error );
@@ -87,14 +84,6 @@ public interface IRemoteNodeController<LocalNodeType extends INode<?>>
      */
     /* @NonNull */
     public LocalNodeType getLocalNode();
-
-    /**
-     * Gets the instance lock for the remote node.
-     * 
-     * @return The instance lock for the remote node; never {@code null}.
-     */
-    /* @NonNull */
-    public Object getLock();
 
     /**
      * Gets the table associated with the remote node.
@@ -118,7 +107,6 @@ public interface IRemoteNodeController<LocalNodeType extends INode<?>>
      * @throws java.lang.NullPointerException
      *         If {@code message} is {@code null}.
      */
-    @GuardedBy( "getLock()" )
     public void sendMessage(
         /* @NonNull */
         IMessage message,

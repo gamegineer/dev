@@ -24,6 +24,7 @@ package org.gamegineer.table.internal.net.node.server;
 import org.gamegineer.table.internal.net.TableNetworkConfigurations;
 import org.gamegineer.table.internal.net.TableNetworkControllers;
 import org.gamegineer.table.internal.net.node.AbstractNodeUtils;
+import org.gamegineer.table.internal.net.node.NodeLayerRunner;
 
 /**
  * A fixture for testing the
@@ -60,9 +61,20 @@ public final class ServerNodeAsConnectedServerNodeTest
     protected ServerNode createConnectedNode()
         throws Exception
     {
-        final ServerNode node = new ServerNode( TableNetworkControllers.createFakeTableNetworkController() );
-        node.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
+        final ServerNode node = new ServerNode.Factory().createNode( TableNetworkControllers.createFakeTableNetworkController() );
+        final NodeLayerRunner nodeLayerRunner = new NodeLayerRunner( node );
+        nodeLayerRunner.connect( TableNetworkConfigurations.createDefaultTableNetworkConfiguration() );
         return node;
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.AbstractConnectedNodeTestCase#createNodeLayerRunner(org.gamegineer.table.internal.net.node.INode)
+     */
+    @Override
+    protected NodeLayerRunner createNodeLayerRunner(
+        final ServerNode node )
+    {
+        return new NodeLayerRunner( node );
     }
 
     /*

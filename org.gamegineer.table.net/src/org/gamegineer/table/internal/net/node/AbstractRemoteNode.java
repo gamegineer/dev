@@ -29,9 +29,8 @@ import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.logging.Level;
-import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.internal.net.node.common.handlers.CardIncrementMessageHandler;
@@ -53,12 +52,17 @@ import org.gamegineer.table.net.TableNetworkError;
 /**
  * Superclass for all remote nodes.
  * 
+ * <p>
+ * All methods of this class are expected to be invoked on the associated node
+ * layer thread except where explicitly noted.
+ * </p>
+ * 
  * @param <LocalNodeType>
  *        The type of the local table network node.
  * @param <RemoteNodeType>
  *        The type of the remote table network node.
  */
-@ThreadSafe
+@NotThreadSafe
 public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeType>, RemoteNodeType extends IRemoteNode>
     implements IRemoteNode, IRemoteNodeController<LocalNodeType>, IService
 {
@@ -70,38 +74,33 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * The error that caused the connection to the remote node to be closed or
      * {@code null} if the connection to the remote node was closed normally.
      */
-    @GuardedBy( "getLock()" )
     private TableNetworkError closeError_;
 
     /**
      * The collection of message handlers for correlated messages. The key is
      * the message (request) identifier. The value is the message handler.
      */
-    @GuardedBy( "getLock()" )
     private final Map<Integer, IMessageHandler> correlatedMessageHandlers_;
 
     /** The local table network node. */
     private final LocalNodeType localNode_;
 
-    /** The instance lock. */
-    private final Object lock_;
-
     /** The next available message identifier. */
-    @GuardedBy( "getLock()" )
     private int nextId_;
+
+    /** The node layer. */
+    private final INodeLayer nodeLayer_;
 
     /**
      * The name of the remote player or {@code null} if the player has not yet
      * been authenticated.
      */
-    @GuardedBy( "getLock()" )
     private String playerName_;
 
     /**
      * The network service context or {@code null} if the network is not
      * connected.
      */
-    @GuardedBy( "getLock()" )
     private IServiceContext serviceContext_;
 
     /** The table associated with the remote node. */
@@ -111,7 +110,6 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * The collection of message handlers for uncorrelated messages. The key is
      * the message type. The value is the message handler.
      */
-    @GuardedBy( "getLock()" )
     private final Map<Class<? extends IMessage>, IMessageHandler> uncorrelatedMessageHandlers_;
 
 
@@ -122,23 +120,29 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     /**
      * Initializes a new instance of the {@code AbstractRemoteNode} class.
      * 
+     * @param nodeLayer
+     *        The node layer; must not be {@code null}.
      * @param node
      *        The local table network node; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code node} is {@code null}.
+     *         If {@code nodeLayer} or {@code node} is {@code null}.
      */
     protected AbstractRemoteNode(
         /* @NonNull */
+        final INodeLayer nodeLayer,
+        /* @NonNull */
         final LocalNodeType node )
     {
+        assertArgumentNotNull( nodeLayer, "nodeLayer" ); //$NON-NLS-1$
         assertArgumentNotNull( node, "node" ); //$NON-NLS-1$
+        assert nodeLayer.isNodeLayerThread();
 
         closeError_ = null;
         correlatedMessageHandlers_ = new HashMap<Integer, IMessageHandler>();
         localNode_ = node;
-        lock_ = new Object();
         nextId_ = getInitialMessageId();
+        nodeLayer_ = nodeLayer;
         playerName_ = null;
         serviceContext_ = null;
         table_ = new RemoteNetworkTable( this );
@@ -166,7 +170,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
         assertStateLegal( serviceContext_ != null, NonNlsMessages.AbstractRemoteNode_closed );
         assertStateLegal( playerName_ == null, NonNlsMessages.AbstractRemoteNode_bound );
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         playerName_ = playerName;
         localNode_.bindRemoteNode( getThisAsRemoteNodeType() );
@@ -180,7 +184,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         final TableNetworkError error )
     {
         assertStateLegal( serviceContext_ != null, NonNlsMessages.AbstractRemoteNode_closed );
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         closeError_ = error;
         serviceContext_.stopService();
@@ -190,10 +194,6 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * Invoked when the remote node has been closed.
      * 
      * <p>
-     * This method is invoked while the instance lock is held.
-     * </p>
-     * 
-     * <p>
      * Subclasses may override but the superclass version must be called.
      * </p>
      * 
@@ -201,20 +201,15 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      *        The error that caused the remote node to be closed or {@code null}
      *        if the remote node was closed normally.
      */
-    @GuardedBy( "getLock()" )
     protected void closed(
         /* @Nullable */
         final TableNetworkError error )
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         if( playerName_ != null )
         {
-            synchronized( localNode_.getLock() )
-            {
-                localNode_.unbindRemoteNode( getThisAsRemoteNodeType() );
-            }
-
+            localNode_.unbindRemoteNode( getThisAsRemoteNodeType() );
             playerName_ = null;
         }
     }
@@ -270,24 +265,14 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         return localNode_;
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.node.IRemoteNodeController#getLock()
-     */
-    @Override
-    public final Object getLock()
-    {
-        return lock_;
-    }
-
     /**
      * Gets the next available message identifier.
      * 
      * @return The next available message identifier.
      */
-    @GuardedBy( "getLock()" )
     private int getNextMessageId()
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         final int id = nextId_;
         if( ++nextId_ > IMessage.MAXIMUM_ID )
@@ -304,11 +289,10 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     @Override
     public final String getPlayerName()
     {
-        synchronized( getLock() )
-        {
-            assertStateLegal( playerName_ != null, NonNlsMessages.AbstractRemoteNode_playerNotAuthenticated );
-            return playerName_;
-        }
+        assert isNodeLayerThread();
+
+        assertStateLegal( playerName_ != null, NonNlsMessages.AbstractRemoteNode_playerNotAuthenticated );
+        return playerName_;
     }
 
     /*
@@ -337,12 +321,26 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     @Override
     public final void goodbye()
     {
+        assert isNodeLayerThread();
+
         final GoodbyeMessage message = new GoodbyeMessage();
-        synchronized( getLock() )
-        {
-            sendMessage( message, null );
-            close( null );
-        }
+        sendMessage( message, null );
+        close( null );
+    }
+
+    /**
+     * Indicates the current thread is the node layer thread.
+     * 
+     * <p>
+     * This method may be called from any thread.
+     * </p>
+     * 
+     * @return {@code true} if the current thread is the node layer thread;
+     *         otherwise {@code false}.
+     */
+    protected final boolean isNodeLayerThread()
+    {
+        return nodeLayer_.isNodeLayerThread();
     }
 
     /*
@@ -354,57 +352,52 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         final MessageEnvelope messageEnvelope )
     {
         assertArgumentNotNull( messageEnvelope, "messageEnvelope" ); //$NON-NLS-1$
+        assert isNodeLayerThread();
 
-        synchronized( getLock() )
+        final IMessage message = extractMessage( messageEnvelope );
+        if( message != null )
         {
-            final IMessage message = extractMessage( messageEnvelope );
-            if( message != null )
+            Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
+                String.format( "Received message '%s' (id=%d, correlation-id=%d) from remote node '%s'", //$NON-NLS-1$
+                    message.getClass().getName(), //
+                    message.getId(), //
+                    message.getCorrelationId(), //
+                    playerName_ ) );
+
+            final IMessageHandler messageHandler;
+            if( message.getCorrelationId() != IMessage.NULL_CORRELATION_ID )
             {
-                Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
-                    String.format( "Received message '%s' (id=%d, correlation-id=%d) from remote node '%s'", //$NON-NLS-1$
-                        message.getClass().getName(), //
-                        message.getId(), //
-                        message.getCorrelationId(), //
-                        playerName_ ) );
+                messageHandler = correlatedMessageHandlers_.remove( message.getCorrelationId() );
+            }
+            else
+            {
+                messageHandler = uncorrelatedMessageHandlers_.get( message.getClass() );
+            }
 
-                final IMessageHandler messageHandler;
-                if( message.getCorrelationId() != IMessage.NULL_CORRELATION_ID )
+            if( messageHandler != null )
+            {
+                ThreadPlayer.setPlayerName( playerName_ );
+                try
                 {
-                    messageHandler = correlatedMessageHandlers_.remove( message.getCorrelationId() );
+                    messageHandler.handleMessage( this, message );
                 }
-                else
+                finally
                 {
-                    messageHandler = uncorrelatedMessageHandlers_.get( message.getClass() );
-                }
-
-                if( messageHandler != null )
-                {
-                    ThreadPlayer.setPlayerName( playerName_ );
-                    try
-                    {
-                        synchronized( localNode_.getLock() )
-                        {
-                            messageHandler.handleMessage( this, message );
-                        }
-                    }
-                    finally
-                    {
-                        ThreadPlayer.setPlayerName( null );
-                    }
-                }
-                else
-                {
-                    Loggers.getDefaultLogger().warning( NonNlsMessages.AbstractRemoteNode_messageReceived_unhandledMessage( message ) );
-                    if( !(message instanceof ErrorMessage) )
-                    {
-                        sendErrorMessage( TableNetworkError.UNHANDLED_MESSAGE, message.getId() );
-                    }
+                    ThreadPlayer.setPlayerName( null );
                 }
             }
             else
             {
-                sendErrorMessage( TableNetworkError.UNKNOWN_MESSAGE, messageEnvelope.getId() );
+                Loggers.getDefaultLogger().warning( NonNlsMessages.AbstractRemoteNode_messageReceived_unhandledMessage( message ) );
+                if( !(message instanceof ErrorMessage) )
+                {
+                    sendErrorMessage( TableNetworkError.UNHANDLED_MESSAGE, message.getId() );
+                }
             }
+        }
+        else
+        {
+            sendErrorMessage( TableNetworkError.UNKNOWN_MESSAGE, messageEnvelope.getId() );
         }
     }
 
@@ -412,17 +405,12 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * Invoked when the remote node has been opened.
      * 
      * <p>
-     * This method is invoked while the instance lock is held.
-     * </p>
-     * 
-     * <p>
      * Subclasses may override but the superclass version must be called.
      * </p>
      */
-    @GuardedBy( "getLock()" )
     protected void opened()
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         // do nothing
     }
@@ -433,10 +421,9 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     @Override
     public final void peerStopped()
     {
-        synchronized( getLock() )
-        {
-            close( TableNetworkError.UNEXPECTED_PEER_TERMINATION );
-        }
+        assert isNodeLayerThread();
+
+        close( TableNetworkError.UNEXPECTED_PEER_TERMINATION );
     }
 
     /**
@@ -462,12 +449,10 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     {
         assertArgumentNotNull( type, "type" ); //$NON-NLS-1$
         assertArgumentNotNull( messageHandler, "messageHandler" ); //$NON-NLS-1$
+        assert isNodeLayerThread();
 
-        synchronized( getLock() )
-        {
-            assertArgumentLegal( !uncorrelatedMessageHandlers_.containsKey( type ), "type", NonNlsMessages.AbstractRemoteNode_registerUncorrelatedMessageHandler_messageTypeRegistered ); //$NON-NLS-1$
-            uncorrelatedMessageHandlers_.put( type, messageHandler );
-        }
+        assertArgumentLegal( !uncorrelatedMessageHandlers_.containsKey( type ), "type", NonNlsMessages.AbstractRemoteNode_registerUncorrelatedMessageHandler_messageTypeRegistered ); //$NON-NLS-1$
+        uncorrelatedMessageHandlers_.put( type, messageHandler );
     }
 
     /**
@@ -483,14 +468,13 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      *         or greater than {@link IMessage#MAXIMUM_ID} or not equal to
      *         {@link IMessage#NULL_CORRELATION_ID} .
      */
-    @GuardedBy( "getLock()" )
     private void sendErrorMessage(
         /* @NonNull */
         final TableNetworkError error,
         final int correlationId )
     {
         assert error != null;
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         final ErrorMessage message = new ErrorMessage();
         message.setCorrelationId( correlationId );
@@ -508,9 +492,9 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         final IMessageHandler messageHandler )
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
-        assertStateLegal( serviceContext_ != null, NonNlsMessages.AbstractRemoteNode_closed );
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
+        assertStateLegal( serviceContext_ != null, NonNlsMessages.AbstractRemoteNode_closed );
         message.setId( getNextMessageId() );
         serviceContext_.sendMessage( message );
         Debug.getDefault().trace( Debug.OPTION_DEFAULT, //
@@ -533,12 +517,10 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         final IServiceContext context )
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
+        assert isNodeLayerThread();
 
-        synchronized( getLock() )
-        {
-            serviceContext_ = context;
-            opened();
-        }
+        serviceContext_ = context;
+        opened();
     }
 
     /*
@@ -548,17 +530,16 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
     public final void stopped(
         final Exception exception )
     {
-        synchronized( getLock() )
-        {
-            // Do not overwrite the original error that caused the remote node to be closed
-            if( (exception != null) && (closeError_ == null) )
-            {
-                closeError_ = TableNetworkError.TRANSPORT_ERROR;
-            }
+        assert isNodeLayerThread();
 
-            closed( closeError_ );
-            serviceContext_ = null;
+        // Do not overwrite the original error that caused the remote node to be closed
+        if( (exception != null) && (closeError_ == null) )
+        {
+            closeError_ = TableNetworkError.TRANSPORT_ERROR;
         }
+
+        closed( closeError_ );
+        serviceContext_ = null;
     }
 
 

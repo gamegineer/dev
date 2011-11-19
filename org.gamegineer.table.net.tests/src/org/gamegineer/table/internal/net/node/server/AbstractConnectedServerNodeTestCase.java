@@ -72,13 +72,22 @@ public abstract class AbstractConnectedServerNodeTestCase<T extends IServerNode>
     /**
      * Ensures the {@code isPlayerConnected} method throws an exception when
      * passed a {@code null} player name.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
     public void testIsPlayerConnected_PlayerName_Null()
+        throws Exception
     {
-        synchronized( getNode().getLock() )
+        getNodeLayerRunner().run( new Runnable()
         {
-            getNode().isPlayerConnected( null );
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                getNode().isPlayerConnected( null );
+            }
+        } );
     }
 }

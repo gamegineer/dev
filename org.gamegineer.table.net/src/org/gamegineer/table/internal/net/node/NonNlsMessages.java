@@ -99,6 +99,11 @@ final class NonNlsMessages
     /** Failed to set the table state. */
     public static String NetworkTableUtils_setTableState_failed;
 
+    // --- NodeControllerProxy ----------------------------------------------
+
+    /** The operation was interrupted. */
+    public static String NodeControllerProxy_interrupted;
+
 
     // ======================================================================
     // Constructors

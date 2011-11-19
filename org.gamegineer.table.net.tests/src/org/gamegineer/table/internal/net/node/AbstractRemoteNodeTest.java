@@ -75,14 +75,35 @@ public final class AbstractRemoteNodeTest
      */
     /* @NonNull */
     @SuppressWarnings( "unchecked" )
-    private INode<IRemoteNode> createMockLocalNode()
+    private static INode<IRemoteNode> createMockLocalNode()
     {
-        return mocksControl_.createMock( INode.class );
+        final IMocksControl mocksControl = EasyMock.createControl();
+        final INode<IRemoteNode> localNode = mocksControl.createMock( INode.class );
+        mocksControl.replay();
+        return localNode;
+    }
+
+    /**
+     * Creates a mock node layer for use in the fixture.
+     * 
+     * @return A mock node layer for use in the fixture; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static INodeLayer createMockNodeLayer()
+    {
+        final IMocksControl mocksControl = EasyMock.createControl();
+        final INodeLayer nodeLayer = mocksControl.createMock( INodeLayer.class );
+        EasyMock.expect( nodeLayer.isNodeLayerThread() ).andReturn( true ).anyTimes();
+        mocksControl.replay();
+        return nodeLayer;
     }
 
     /**
      * Creates a new instance of the {@code AbstractRemoteNode} class.
      * 
+     * @param nodeLayer
+     *        The node layer; must not be {@code null}.
      * @param node
      *        The local table network node; must not be {@code null}.
      * 
@@ -90,14 +111,16 @@ public final class AbstractRemoteNodeTest
      *         {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code node} is {@code null}.
+     *         If {@code nodeLayer} or {@code node} is {@code null}.
      */
     /* @NonNull */
     private static AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode> createRemoteNode(
         /* @NonNull */
+        final INodeLayer nodeLayer,
+        /* @NonNull */
         final INode<IRemoteNode> node )
     {
-        return new AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode>( node )
+        return new AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode>( nodeLayer, node )
         {
             @Override
             protected IRemoteNode getThisAsRemoteNodeType()
@@ -118,9 +141,7 @@ public final class AbstractRemoteNodeTest
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        final INode<IRemoteNode> localNode = createMockLocalNode();
-        EasyMock.expect( localNode.getLock() ).andReturn( new Object() ).anyTimes();
-        remoteNode_ = createRemoteNode( localNode );
+        remoteNode_ = createRemoteNode( createMockNodeLayer(), createMockLocalNode() );
     }
 
     /**
@@ -130,7 +151,18 @@ public final class AbstractRemoteNodeTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_Node_Null()
     {
-        createRemoteNode( null );
+        createRemoteNode( EasyMock.createMock( INodeLayer.class ), null );
+    }
+
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * node layer.
+     */
+    @SuppressWarnings( "unchecked" )
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_NodeLayer_Null()
+    {
+        createRemoteNode( null, EasyMock.createMock( INode.class ) );
     }
 
     /**

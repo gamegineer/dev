@@ -31,7 +31,7 @@ import org.gamegineer.table.internal.net.node.server.ServerNode;
  * {@link org.gamegineer.table.internal.net.node.INodeFactory}.
  */
 @Immutable
-public class DefaultNodeFactory
+public final class DefaultNodeFactory
     implements INodeFactory
 {
     // ======================================================================
@@ -51,27 +51,23 @@ public class DefaultNodeFactory
     // Methods
     // ======================================================================
 
-    /**
-     * This implementation creates an instance of {@link ClientNode}.
-     * 
+    /*
      * @see org.gamegineer.table.internal.net.node.INodeFactory#createClientNode(org.gamegineer.table.internal.net.ITableNetworkController)
      */
     @Override
     public INodeController createClientNode(
         final ITableNetworkController tableNetworkController )
     {
-        return new ClientNode( tableNetworkController );
+        return new NodeControllerProxy( new ClientNode.Factory().createNode( tableNetworkController ) );
     }
 
-    /**
-     * This implementation creates an instance of {@link ServerNode}.
-     * 
+    /*
      * @see org.gamegineer.table.internal.net.node.INodeFactory#createServerNode(org.gamegineer.table.internal.net.ITableNetworkController)
      */
     @Override
     public INodeController createServerNode(
         final ITableNetworkController tableNetworkController )
     {
-        return new ServerNode( tableNetworkController );
+        return new NodeControllerProxy( new ServerNode.Factory().createNode( tableNetworkController ) );
     }
 }

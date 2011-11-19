@@ -22,8 +22,9 @@
 package org.gamegineer.table.internal.net.node.client;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.node.AbstractRemoteNode;
+import org.gamegineer.table.internal.net.node.INodeLayer;
 import org.gamegineer.table.internal.net.node.client.handlers.BeginAuthenticationRequestMessageHandler;
 import org.gamegineer.table.internal.net.node.client.handlers.GoodbyeMessageHandler;
 import org.gamegineer.table.internal.net.node.client.handlers.HelloResponseMessageHandler;
@@ -46,7 +47,7 @@ import org.gamegineer.table.net.TableNetworkError;
  * of the table network protocol.
  * </p>
  */
-@ThreadSafe
+@NotThreadSafe
 final class RemoteServerNode
     extends AbstractRemoteNode<IClientNode, IRemoteServerNode>
     implements IRemoteServerNode, IRemoteServerNodeController
@@ -58,17 +59,21 @@ final class RemoteServerNode
     /**
      * Initializes a new instance of the {@code RemoteServerNode} class.
      * 
+     * @param nodeLayer
+     *        The node layer; must not be {@code null}.
      * @param localNode
      *        The local table network node; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code localNode} is {@code null}.
+     *         If {@code nodeLayer} or {@code localNode} is {@code null}.
      */
     RemoteServerNode(
         /* @NonNull */
+        final INodeLayer nodeLayer,
+        /* @NonNull */
         final IClientNode localNode )
     {
-        super( localNode );
+        super( nodeLayer, localNode );
 
         registerUncorrelatedMessageHandler( BeginAuthenticationRequestMessage.class, BeginAuthenticationRequestMessageHandler.INSTANCE );
         registerUncorrelatedMessageHandler( GoodbyeMessage.class, GoodbyeMessageHandler.INSTANCE );
@@ -86,11 +91,10 @@ final class RemoteServerNode
     @Override
     public void cancelControlRequest()
     {
+        assert isNodeLayerThread();
+
         final CancelControlRequestMessage message = new CancelControlRequestMessage();
-        synchronized( getLock() )
-        {
-            sendMessage( message, null );
-        }
+        sendMessage( message, null );
     }
 
     /*
@@ -100,14 +104,11 @@ final class RemoteServerNode
     protected void closed(
         final TableNetworkError error )
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         super.closed( error );
 
-        synchronized( getLocalNode().getLock() )
-        {
-            getLocalNode().disconnect( error );
-        }
+        getLocalNode().disconnect( error );
     }
 
     /*
@@ -127,13 +128,11 @@ final class RemoteServerNode
         final String playerName )
     {
         assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
+        assert isNodeLayerThread();
 
         final GiveControlMessage message = new GiveControlMessage();
         message.setPlayerName( playerName );
-        synchronized( getLock() )
-        {
-            sendMessage( message, null );
-        }
+        sendMessage( message, null );
     }
 
     /*
@@ -142,7 +141,7 @@ final class RemoteServerNode
     @Override
     protected void opened()
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         super.opened();
 
@@ -157,10 +156,9 @@ final class RemoteServerNode
     @Override
     public void requestControl()
     {
+        assert isNodeLayerThread();
+
         final RequestControlMessage message = new RequestControlMessage();
-        synchronized( getLock() )
-        {
-            sendMessage( message, null );
-        }
+        sendMessage( message, null );
     }
 }

@@ -28,9 +28,9 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-import net.jcip.annotations.GuardedBy;
+import java.util.concurrent.ExecutorService;
 import net.jcip.annotations.Immutable;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
@@ -57,7 +57,7 @@ import org.gamegineer.table.net.TableNetworkException;
 /**
  * A server node in a table network.
  */
-@ThreadSafe
+@NotThreadSafe
 public final class ServerNode
     extends AbstractNode<IRemoteClientNode>
     implements IServerNode
@@ -67,14 +67,12 @@ public final class ServerNode
     // ======================================================================
 
     /** The master table for the table network. */
-    @GuardedBy( "getLock()" )
     private ITable masterTable_;
 
     /**
      * The collection of players connected to the table network. The key is the
      * player name. The value is the player.
      */
-    @GuardedBy( "getLock()" )
     private final Map<String, Player> players_;
 
     /** The table manager. */
@@ -90,15 +88,20 @@ public final class ServerNode
      * 
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
+     * @param executorService
+     *        The node layer executor service; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code tableNetworkController} is {@code null}.
+     *         If {@code tableNetworkController} or {@code executorService} is
+     *         {@code null}.
      */
-    public ServerNode(
+    private ServerNode(
         /* @NonNull */
-        final ITableNetworkController tableNetworkController )
+        final ITableNetworkController tableNetworkController,
+        /* @NonNull */
+        final ExecutorService executorService )
     {
-        super( tableNetworkController );
+        super( tableNetworkController, executorService );
 
         masterTable_ = null;
         players_ = new HashMap<String, Player>();
@@ -116,13 +119,11 @@ public final class ServerNode
      * @param player
      *        The player to bind to the table network; must not be {@code null}.
      */
-    @GuardedBy( "getLock()" )
     private void bindPlayer(
         /* @NonNull */
         final Player player )
     {
         assert player != null;
-        assert Thread.holdsLock( getLock() );
 
         assert !players_.containsKey( player.getName() );
         players_.put( player.getName(), player );
@@ -137,19 +138,18 @@ public final class ServerNode
     @Override
     public void cancelControlRequest()
     {
+        assert isNodeLayerThread();
+
         final String requestingPlayerName = ThreadPlayer.getPlayerName();
         assert requestingPlayerName != null;
 
-        synchronized( getLock() )
+        final Player requestingPlayer = players_.get( requestingPlayerName );
+        if( (requestingPlayer == null) || !requestingPlayer.hasRole( PlayerRole.EDITOR_REQUESTER ) )
         {
-            final Player requestingPlayer = players_.get( requestingPlayerName );
-            if( (requestingPlayer == null) || !requestingPlayer.hasRole( PlayerRole.EDITOR_REQUESTER ) )
-            {
-                return;
-            }
-
-            requestingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) );
+            return;
         }
+
+        requestingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) );
 
         notifyPlayersUpdated();
     }
@@ -163,7 +163,7 @@ public final class ServerNode
         throws TableNetworkException
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         super.connecting( configuration );
 
@@ -181,7 +181,7 @@ public final class ServerNode
         final ITableManager tableManager )
     {
         assertArgumentNotNull( tableManager, "tableManager" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         return new ServerTableManagerDecorator( tableManager, getPlayerName() );
     }
@@ -192,7 +192,7 @@ public final class ServerNode
     @Override
     protected ITransportLayer createTransportLayer()
     {
-        assert Thread.holdsLock( getLock() );
+        assert !isNodeLayerThread();
 
         return getTableNetworkController().getTransportLayerFactory().createPassiveTransportLayer( new AbstractTransportLayerContext()
         {
@@ -207,7 +207,7 @@ public final class ServerNode
                     {
                         assert isNodeLayerThread();
 
-                        return new RemoteClientNode( ServerNode.this );
+                        return new RemoteClientNode( getNodeLayer(), ServerNode.this );
                     }
                 };
             }
@@ -220,7 +220,7 @@ public final class ServerNode
     @Override
     protected void disconnected()
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         super.disconnected();
 
@@ -234,7 +234,7 @@ public final class ServerNode
     @Override
     protected void dispose()
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         players_.clear();
 
@@ -247,10 +247,9 @@ public final class ServerNode
     @Override
     public Player getPlayer()
     {
-        synchronized( getLock() )
-        {
-            return isConnected() ? players_.get( getPlayerName() ) : null;
-        }
+        assert isNodeLayerThread();
+
+        return isConnected() ? players_.get( getPlayerName() ) : null;
     }
 
     /*
@@ -259,10 +258,9 @@ public final class ServerNode
     @Override
     public Collection<IPlayer> getPlayers()
     {
-        synchronized( getLock() )
-        {
-            return new ArrayList<IPlayer>( players_.values() );
-        }
+        assert isNodeLayerThread();
+
+        return new ArrayList<IPlayer>( players_.values() );
     }
 
     /*
@@ -283,28 +281,26 @@ public final class ServerNode
         final String playerName )
     {
         assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
+        assert isNodeLayerThread();
 
         final String requestingPlayerName = ThreadPlayer.getPlayerName();
         assert requestingPlayerName != null;
 
-        synchronized( getLock() )
+        final Player player = players_.get( playerName );
+        if( player == null )
         {
-            final Player player = players_.get( playerName );
-            if( player == null )
-            {
-                return;
-            }
-
-            final Player requestingPlayer = players_.get( requestingPlayerName );
-            if( (requestingPlayer == null) || !requestingPlayer.hasRole( PlayerRole.EDITOR ) )
-            {
-                return;
-            }
-
-            requestingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR ) );
-            player.removeRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) );
-            player.addRoles( EnumSet.of( PlayerRole.EDITOR ) );
+            return;
         }
+
+        final Player requestingPlayer = players_.get( requestingPlayerName );
+        if( (requestingPlayer == null) || !requestingPlayer.hasRole( PlayerRole.EDITOR ) )
+        {
+            return;
+        }
+
+        requestingPlayer.removeRoles( EnumSet.of( PlayerRole.EDITOR ) );
+        player.removeRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) );
+        player.addRoles( EnumSet.of( PlayerRole.EDITOR ) );
 
         notifyPlayersUpdated();
     }
@@ -320,14 +316,12 @@ public final class ServerNode
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
-    @GuardedBy( "getLock()" )
     private void initializeMasterTable(
         /* @NonNull */
         final ITable table )
         throws TableNetworkException
     {
         assert table != null;
-        assert Thread.holdsLock( getLock() );
 
         final ITable masterTable;
         try
@@ -351,7 +345,7 @@ public final class ServerNode
         final String playerName )
     {
         assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         assertConnected();
         return players_.containsKey( playerName );
@@ -380,7 +374,7 @@ public final class ServerNode
         final IRemoteClientNode remoteNode )
     {
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         super.remoteNodeBound( remoteNode );
 
@@ -396,7 +390,7 @@ public final class ServerNode
         final IRemoteClientNode remoteNode )
     {
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         super.remoteNodeUnbound( remoteNode );
 
@@ -410,21 +404,20 @@ public final class ServerNode
     @Override
     public void requestControl()
     {
+        assert isNodeLayerThread();
+
         final String requestingPlayerName = ThreadPlayer.getPlayerName();
         assert requestingPlayerName != null;
 
-        synchronized( getLock() )
+        final Player requestingPlayer = players_.get( requestingPlayerName );
+        if( (requestingPlayer == null) //
+            || requestingPlayer.hasRole( PlayerRole.EDITOR ) //
+            || requestingPlayer.hasRole( PlayerRole.EDITOR_REQUESTER ) )
         {
-            final Player requestingPlayer = players_.get( requestingPlayerName );
-            if( (requestingPlayer == null) //
-                || requestingPlayer.hasRole( PlayerRole.EDITOR ) //
-                || requestingPlayer.hasRole( PlayerRole.EDITOR_REQUESTER ) )
-            {
-                return;
-            }
-
-            requestingPlayer.addRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) );
+            return;
         }
+
+        requestingPlayer.addRoles( EnumSet.of( PlayerRole.EDITOR_REQUESTER ) );
 
         notifyPlayersUpdated();
     }
@@ -436,13 +429,11 @@ public final class ServerNode
      * @param remoteNode
      *        The remote node; must not be {@code null}.
      */
-    @GuardedBy( "lock_" )
     private void synchronizeRemoteTable(
         /* @NonNull */
         final IRemoteClientNode remoteNode )
     {
         assert remoteNode != null;
-        assert Thread.holdsLock( getLock() );
 
         remoteNode.getTable().setTableState( masterTable_.createMemento() );
     }
@@ -454,13 +445,11 @@ public final class ServerNode
      *        The name of the player to unbind from the table network; must not
      *        be {@code null}.
      */
-    @GuardedBy( "getLock()" )
     private void unbindPlayer(
         /* @NonNull */
         final String playerName )
     {
         assert playerName != null;
-        assert Thread.holdsLock( getLock() );
 
         assert players_.containsKey( playerName );
         final Player player = players_.remove( playerName );
@@ -482,6 +471,43 @@ public final class ServerNode
     // ======================================================================
     // Nested Types
     // ======================================================================
+
+    /**
+     * A factory for creating instances of {@link ServerNode}.
+     */
+    @Immutable
+    public static final class Factory
+        extends AbstractFactory<ServerNode>
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code Factory} class.
+         */
+        public Factory()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.AbstractNode.AbstractFactory#createNode(org.gamegineer.table.internal.net.ITableNetworkController, java.util.concurrent.ExecutorService)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        protected ServerNode createNode(
+            final ITableNetworkController tableNetworkController,
+            final ExecutorService executorService )
+        {
+            return new ServerNode( tableNetworkController, executorService );
+        }
+    }
 
     /**
      * Implementation of {@link ITableManager} that keeps the master table
@@ -599,11 +625,7 @@ public final class ServerNode
         {
             final String requestingPlayerName = ThreadPlayer.getPlayerName();
             assert requestingPlayerName != null;
-            final Player requestingPlayer;
-            synchronized( getLock() )
-            {
-                requestingPlayer = players_.get( requestingPlayerName );
-            }
+            final Player requestingPlayer = players_.get( requestingPlayerName );
             if( (requestingPlayer != null) && requestingPlayer.hasRole( PlayerRole.EDITOR ) )
             {
                 return true;

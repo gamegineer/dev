@@ -22,6 +22,8 @@
 package org.gamegineer.table.internal.net.node.client;
 
 import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
+import org.gamegineer.table.internal.net.node.INodeLayer;
 import org.gamegineer.table.internal.net.transport.FakeServiceContext;
 
 /**
@@ -52,18 +54,45 @@ public final class RemoteServerNodeAsRemoteServerNodeTest
     // Methods
     // ======================================================================
 
+    /**
+     * Creates a mock local node for use in the fixture.
+     * 
+     * @return A mock local node for use in the fixture; never {@code null}.
+     */
+    /* @NonNull */
+    private static IClientNode createMockLocalNode()
+    {
+        final IMocksControl mocksControl = EasyMock.createNiceControl();
+        final IClientNode localNode = mocksControl.createMock( IClientNode.class );
+        mocksControl.replay();
+        return localNode;
+    }
+
+    /**
+     * Creates a mock node layer for use in the fixture.
+     * 
+     * @return A mock node layer for use in the fixture; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static INodeLayer createMockNodeLayer()
+    {
+        final IMocksControl mocksControl = EasyMock.createControl();
+        final INodeLayer nodeLayer = mocksControl.createMock( INodeLayer.class );
+        EasyMock.expect( nodeLayer.isNodeLayerThread() ).andReturn( true ).anyTimes();
+        mocksControl.replay();
+        return nodeLayer;
+    }
+
     /*
      * @see org.gamegineer.table.internal.net.node.AbstractRemoteNodeTestCase#createRemoteNode()
      */
     @Override
     protected RemoteServerNode createRemoteNode()
     {
-        final RemoteServerNode remoteNode = new RemoteServerNode( EasyMock.createMock( IClientNode.class ) );
-        synchronized( remoteNode.getLock() )
-        {
-            remoteNode.started( new FakeServiceContext() );
-            remoteNode.bind( "playerName" ); //$NON-NLS-1$
-        }
+        final RemoteServerNode remoteNode = new RemoteServerNode( createMockNodeLayer(), createMockLocalNode() );
+        remoteNode.started( new FakeServiceContext() );
+        remoteNode.bind( "playerName" ); //$NON-NLS-1$
         return remoteNode;
     }
 }

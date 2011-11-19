@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.node;
 
 import java.util.Collection;
+import java.util.concurrent.Future;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
@@ -45,6 +46,38 @@ public interface INodeController
     // ======================================================================
 
     /**
+     * Begins an asynchronous operation to connect the table network node to the
+     * table network using the specified configuration.
+     * 
+     * @param configuration
+     *        The table network configuration; must not be {@code null}.
+     * 
+     * @return An asynchronous completion token for the operation; never {@code
+     *         null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code configuration} is {@code null}.
+     */
+    /* @NonNull */
+    public Future<Void> beginConnect(
+        /* @NonNull */
+        ITableNetworkConfiguration configuration );
+
+    /**
+     * Begins an asynchronous operation to disconnect the table network node
+     * from the table network.
+     * 
+     * <p>
+     * This method does nothing if the table network node is not connected.
+     * </p>
+     * 
+     * @return An asynchronous completion token for the operation; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    public Future<Void> beginDisconnect();
+
+    /**
      * Cancels the current network table control request made by the active
      * player.
      * 
@@ -56,36 +89,54 @@ public interface INodeController
     public void cancelControlRequest();
 
     /**
-     * Connects the table network node to the table network using the specified
-     * configuration.
+     * Ends the asynchronous operation to connect the table network node to the
+     * table network associated with the specified asynchronous token.
      * 
      * <p>
-     * This method blocks until the table network node is connected.
+     * This method blocks until the table network node is connected or an error
+     * occurs.
      * </p>
      * 
-     * @param configuration
-     *        The table network configuration; must not be {@code null}.
+     * @param future
+     *        The asynchronous completion token associated with the operation;
+     *        must not be {@code null}.
      * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the table network
+     *         node to be connected.
      * @throws java.lang.NullPointerException
-     *         If {@code configuration} is {@code null}.
+     *         If {@code future} is {@code null}.
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If the connection cannot be established or the table network node
      *         is already connected.
      */
-    public void connect(
-        /* @NonNull */
-        ITableNetworkConfiguration configuration )
-        throws TableNetworkException;
+    public void endConnect(
+        /* @NonNull  */
+        Future<Void> future )
+        throws TableNetworkException, InterruptedException;
 
     /**
-     * Disconnects the table network node from the table network.
+     * Ends the asynchronous operation to disconnect the table network node from
+     * the table network associated with the specified asynchronous token.
      * 
      * <p>
-     * This method blocks until the table network node is disconnected. This
-     * method does nothing if the table network node is not connected.
+     * This method blocks until the table network node is disconnected.
      * </p>
+     * 
+     * @param future
+     *        The asynchronous completion token associated with the operation;
+     *        must not be {@code null}.
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the table network
+     *         node to be disconnected.
+     * @throws java.lang.NullPointerException
+     *         If {@code future} is {@code null}.
      */
-    public void disconnect();
+    public void endDisconnect(
+        /* @NonNull */
+        Future<Void> future )
+        throws InterruptedException;
 
     /**
      * Gets the player associated with the table network node.

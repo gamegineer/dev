@@ -28,17 +28,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
-import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
-import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.security.SecureString;
+import org.gamegineer.common.core.util.concurrent.TaskUtils;
+import org.gamegineer.table.internal.net.Activator;
 import org.gamegineer.table.internal.net.Debug;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.Loggers;
@@ -59,22 +61,21 @@ import org.gamegineer.table.net.TableNetworkException;
  * Implementations of this class should not be reused for multiple connections.
  * </p>
  * 
+ * <p>
+ * All methods of this class are expected to be invoked on the associated node
+ * layer thread except where explicitly noted.
+ * </p>
+ * 
  * @param <RemoteNodeType>
  *        The type of the remote node managed by the local table network node.
  */
-@ThreadSafe
+@NotThreadSafe
 public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     implements INode<RemoteNodeType>, INodeController
 {
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /**
-     * The lock used to serialize access to methods invoked through the
-     * {@link INodeController} interface.
-     */
-    private final Object controllerLock_;
 
     /** The executor service associated with the node layer. */
     private final ExecutorService executorService_;
@@ -83,30 +84,24 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * The local player name or {@code null} if the table network is not
      * connected.
      */
-    @GuardedBy( "getLock()" )
     private String localPlayerName_;
 
-    /** The instance lock. */
-    private final Object lock_;
+    /** The node layer. */
+    private final INodeLayer nodeLayer_;
 
-    /**
-     * A reference to the node layer thread or {@code null} if the node layer is
-     * not open.
-     */
-    private final AtomicReference<Thread> nodeLayerThreadRef_;
+    /** The node layer thread. */
+    private final Thread nodeLayerThread_;
 
     /**
      * The table network password or {@code null} if the table network is not
      * connected.
      */
-    @GuardedBy( "getLock()" )
     private SecureString password_;
 
     /**
      * The collection of bound remote nodes. The key is the name of the player
      * associated with the remote node. The value is the remote node.
      */
-    @GuardedBy( "getLock()" )
     private final Map<String, RemoteNodeType> remoteNodes_;
 
     /** The table network controller. */
@@ -116,14 +111,12 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * The collection of bound tables. The key is the name of the player
      * associated with the table. The value is the table.
      */
-    @GuardedBy( "getLock()" )
     private final Map<String, INetworkTable> tables_;
 
     /**
      * The transport layer or {@code null} if the table network is not
      * connected.
      */
-    @GuardedBy( "getLock()" )
     private ITransportLayer transportLayer_;
 
 
@@ -134,23 +127,33 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     /**
      * Initializes a new instance of the {@code AbstractNode} class.
      * 
+     * <p>
+     * It is assumed that the thread that invokes this constructor is the node
+     * layer thread and is managed by the specified executor service.
+     * </p>
+     * 
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
+     * @param executorService
+     *        The node layer executor service; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code tableNetworkController} is {@code null}.
+     *         If {@code tableNetworkController} or {@code executorService} is
+     *         {@code null}.
      */
     protected AbstractNode(
         /* @NonNull */
-        final ITableNetworkController tableNetworkController )
+        final ITableNetworkController tableNetworkController,
+        /* @NonNull */
+        final ExecutorService executorService )
     {
         assertArgumentNotNull( tableNetworkController, "tableNetworkController" ); //$NON-NLS-1$
+        assertArgumentNotNull( executorService, "executorService" ); //$NON-NLS-1$
 
-        controllerLock_ = new Object();
-        executorService_ = createExecutorService();
+        executorService_ = executorService;
         localPlayerName_ = null;
-        lock_ = new Object();
-        nodeLayerThreadRef_ = new AtomicReference<Thread>( null );
+        nodeLayer_ = new NodeLayer();
+        nodeLayerThread_ = Thread.currentThread();
         password_ = null;
         remoteNodes_ = new HashMap<String, RemoteNodeType>();
         tableNetworkController_ = tableNetworkController;
@@ -169,12 +172,379 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * @throws java.lang.IllegalStateException
      *         If the table network is not connected.
      */
-    @GuardedBy( "getLock()" )
     protected final void assertConnected()
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         assertStateLegal( isConnected(), NonNlsMessages.AbstractNode_networkDisconnected );
+    }
+
+    /**
+     * Asynchronously executes the specified task on the node layer thread.
+     * 
+     * <p>
+     * This method may be called from any thread.
+     * </p>
+     * 
+     * @param <T>
+     *        The return type of the task.
+     * 
+     * @param task
+     *        The task to execute; must not be {@code null}.
+     * 
+     * @return An asynchronous completion token for the task; never {@code null}
+     *         .
+     */
+    /* @NonNull */
+    final <T> Future<T> asyncExec(
+        /* @NonNull */
+        final Callable<T> task )
+    {
+        assert task != null;
+
+        final String playerName = ThreadPlayer.getPlayerName();
+        return executorService_.submit( new Callable<T>()
+        {
+            @Override
+            public T call()
+                throws Exception
+            {
+                ThreadPlayer.setPlayerName( playerName );
+                try
+                {
+                    return task.call();
+                }
+                finally
+                {
+                    ThreadPlayer.setPlayerName( null );
+                }
+            }
+        } );
+    }
+
+    /**
+     * Asynchronously executes the specified task on the node layer thread.
+     * 
+     * <p>
+     * This method may be called from any thread.
+     * </p>
+     * 
+     * @param task
+     *        The task to execute; must not be {@code null}.
+     * 
+     * @return An asynchronous completion token for the task; never {@code null}
+     *         .
+     */
+    /* @NonNull */
+    final Future<?> asyncExec(
+        /* @NonNull */
+        final Runnable task )
+    {
+        assert task != null;
+
+        final String playerName = ThreadPlayer.getPlayerName();
+        return executorService_.submit( new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                ThreadPlayer.setPlayerName( playerName );
+                try
+                {
+                    task.run();
+                }
+                finally
+                {
+                    ThreadPlayer.setPlayerName( null );
+                }
+            }
+        } );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.INodeController#beginConnect(org.gamegineer.table.net.ITableNetworkConfiguration)
+     */
+    @Override
+    public final Future<Void> beginConnect(
+        final ITableNetworkConfiguration configuration )
+    {
+        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
+        assert isNodeLayerThread();
+
+        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        {
+            @Override
+            public Void call()
+                throws TableNetworkException
+            {
+                try
+                {
+                    try
+                    {
+                        try
+                        {
+                            syncExec( new Callable<Void>()
+                            {
+                                @Override
+                                @SuppressWarnings( "synthetic-access" )
+                                public Void call()
+                                    throws TableNetworkException
+                                {
+                                    if( transportLayer_ != null )
+                                    {
+                                        throw new TableNetworkException( TableNetworkError.ILLEGAL_CONNECTION_STATE );
+                                    }
+
+                                    localPlayerName_ = configuration.getLocalPlayerName();
+                                    password_ = configuration.getPassword();
+                                    tables_.put( localPlayerName_, new LocalNetworkTable( nodeLayer_, createTableManagerDecoratorForLocalNetworkTable( getTableManager() ), configuration.getLocalTable() ) );
+
+                                    connecting( configuration );
+
+                                    return null;
+                                }
+                            } );
+                        }
+                        catch( final ExecutionException e )
+                        {
+                            final Throwable cause = e.getCause();
+                            if( cause instanceof TableNetworkException )
+                            {
+                                throw (TableNetworkException)cause;
+                            }
+
+                            throw TaskUtils.launderThrowable( cause );
+                        }
+
+                        final ITransportLayer transportLayer = createTransportLayer();
+                        try
+                        {
+                            transportLayer.endOpen( transportLayer.beginOpen( configuration.getHostName(), configuration.getPort() ) );
+                        }
+                        catch( final TransportException e )
+                        {
+                            throw new TableNetworkException( TableNetworkError.TRANSPORT_ERROR, e );
+                        }
+
+                        try
+                        {
+                            syncExec( new Callable<Void>()
+                            {
+                                @Override
+                                @SuppressWarnings( "synthetic-access" )
+                                public Void call()
+                                {
+                                    transportLayer_ = transportLayer;
+
+                                    return null;
+                                }
+                            } );
+                        }
+                        catch( final ExecutionException e )
+                        {
+                            throw TaskUtils.launderThrowable( e.getCause() );
+                        }
+
+                        try
+                        {
+                            connected();
+                        }
+                        catch( final TableNetworkException e )
+                        {
+                            // FIXME: something is broken here...   when the exception
+                            // reason should be DUPLICATE_USER or BAD_PASSWORD, we're getting
+                            // UNEXPECTED_PEER_TERMINATION instead....
+                            try
+                            {
+                                endDisconnect( syncExec( new Callable<Future<Void>>()
+                                {
+                                    @Override
+                                    public Future<Void> call()
+                                    {
+                                        return beginDisconnect();
+                                    }
+                                } ) );
+                            }
+                            catch( final ExecutionException e2 )
+                            {
+                                // TODO: LOG
+                            }
+
+                            throw e;
+                        }
+
+                        return null;
+                    }
+                    catch( final TableNetworkException e )
+                    {
+                        try
+                        {
+                            syncExec( new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    dispose();
+                                }
+                            } );
+                        }
+                        catch( final ExecutionException e2 )
+                        {
+                            // XXX
+                            // LOG
+                        }
+                        catch( final RejectedExecutionException e2 )
+                        {
+                            // XXX: this happening because connected() threw an exception
+                            // and we've already shutdown the executor service...  find a
+                            // better way to handle this....
+                            // LOG
+                        }
+
+                        throw e;
+                    }
+                    catch( final RuntimeException e )
+                    {
+                        try
+                        {
+                            syncExec( new Runnable()
+                            {
+                                @Override
+                                public void run()
+                                {
+                                    dispose();
+                                }
+                            } );
+                        }
+                        catch( final ExecutionException e2 )
+                        {
+                            // XXX
+                            // LOG
+                        }
+                        catch( final RejectedExecutionException e2 )
+                        {
+                            // XXX
+                            // LOG
+                        }
+
+                        throw e;
+                    }
+                }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
+                    // XXX: NOTE that it is possible this thread was interrupted AFTER
+                    // we already established the connection, in which case, dispose() does
+                    // not actually close the transport layer....
+                    //
+                    // we either need to have dispose() shutdown the transport layer if it
+                    // is connected, or need to determine if we need to call disconnect()
+                    // instead....  but that could get real messy..  may have to rethink the
+                    // whole way connected() is implemented for the handshake to complete so
+                    // we can report authentication errors during connection....????
+                    //XXX:dispose();
+                    // ---> can't call dispose() here because we then have to handle
+                    // InterruptedException AGAIN!!!!
+                    throw new TableNetworkException( TableNetworkError.INTERRUPTED, e );
+                }
+
+                // XXX: WE MUST CALL endConnect() here just like we did in transport layer??
+            }
+        } );
+    }
+
+    /*
+     * @see org.gamegineer.table.internal.net.node.INodeController#beginDisconnect()
+     */
+    @Override
+    public Future<Void> beginDisconnect()
+    {
+        assert isNodeLayerThread();
+
+        final ITransportLayer transportLayer = transportLayer_;
+        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+            {
+                try
+                {
+                    syncExec( new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            if( transportLayer != null )
+                            {
+                                disconnecting();
+                            }
+                        }
+                    } );
+                }
+                catch( final ExecutionException e )
+                {
+                    throw TaskUtils.launderThrowable( e.getCause() );
+                }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
+                    // TODO
+                    return null;
+                }
+
+                if( transportLayer != null )
+                {
+                    try
+                    {
+                        transportLayer.endClose( transportLayer.beginClose() );
+                    }
+                    catch( final InterruptedException e )
+                    {
+                        Thread.currentThread().interrupt();
+                        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Interrupted while waiting for transport layer to close", e ); //$NON-NLS-1$
+                        // TODO
+                        return null;
+                    }
+                }
+
+                try
+                {
+                    syncExec( new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            if( transportLayer != null )
+                            {
+                                transportLayer_ = null;
+
+                                final INetworkTable table = tables_.remove( localPlayerName_ );
+                                assert table != null;
+                                table.dispose();
+
+                                disconnected();
+                                dispose();
+                            }
+                        }
+                    } );
+                }
+                catch( final ExecutionException e )
+                {
+                    throw TaskUtils.launderThrowable( e.getCause() );
+                }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
+                    // TODO
+                    return null;
+                }
+
+                return null;
+
+                // XXX: WE MUST CALL endDisconnect() here just like we did in transport layer ??
+            }
+        } );
     }
 
     /*
@@ -185,7 +555,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         final RemoteNodeType remoteNode )
     {
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         assertConnected();
         assertArgumentLegal( !remoteNodes_.containsKey( remoteNode.getPlayerName() ), "remoteNode", NonNlsMessages.AbstractNode_bindRemoteNode_remoteNodeBound ); //$NON-NLS-1$ 
@@ -196,69 +566,12 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         remoteNodeBound( remoteNode );
     }
 
-    /*
-     * @see org.gamegineer.table.internal.net.node.INodeController#connect(org.gamegineer.table.net.ITableNetworkConfiguration)
-     */
-    @Override
-    public final void connect(
-        final ITableNetworkConfiguration configuration )
-        throws TableNetworkException
-    {
-        assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
-
-        synchronized( controllerLock_ )
-        {
-            synchronized( getLock() )
-            {
-                if( transportLayer_ != null )
-                {
-                    throw new TableNetworkException( TableNetworkError.ILLEGAL_CONNECTION_STATE );
-                }
-
-                localPlayerName_ = configuration.getLocalPlayerName();
-                password_ = configuration.getPassword();
-                tables_.put( localPlayerName_, new LocalNetworkTable( createTableManagerDecoratorForLocalNetworkTable( getTableManager() ), configuration.getLocalTable() ) );
-
-                connecting( configuration );
-
-                final ITransportLayer transportLayer = createTransportLayer();
-                try
-                {
-                    transportLayer.endOpen( transportLayer.beginOpen( configuration.getHostName(), configuration.getPort() ) );
-                }
-                catch( final TransportException e )
-                {
-                    dispose();
-                    throw new TableNetworkException( TableNetworkError.TRANSPORT_ERROR, e );
-                }
-                catch( final InterruptedException e )
-                {
-                    Thread.currentThread().interrupt();
-                    dispose();
-                    throw new TableNetworkException( TableNetworkError.INTERRUPTED, e );
-                }
-
-                transportLayer_ = transportLayer;
-            }
-
-            try
-            {
-                connected();
-            }
-            catch( final TableNetworkException e )
-            {
-                disconnect();
-                throw e;
-            }
-        }
-    }
-
     /**
      * Template method invoked when the table network node has connected.
      * 
      * <p>
-     * This method is <b>not</b> invoked while the instance lock is held.
-     * Subclasses must always invoke the superclass method.
+     * This method is <b>not</b> invoked on the node layer thread. Subclasses
+     * must always invoke the superclass method.
      * </p>
      * 
      * <p>
@@ -271,6 +584,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     protected void connected()
         throws TableNetworkException
     {
+        assert !isNodeLayerThread();
+
         // do nothing
     }
 
@@ -278,8 +593,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * Template method invoked when the table network node is connecting.
      * 
      * <p>
-     * This method is invoked while the instance lock is held. Subclasses must
-     * always invoke the superclass method.
+     * Subclasses must always invoke the superclass method.
      * </p>
      * 
      * <p>
@@ -294,53 +608,15 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
      */
-    @GuardedBy( "getLock()" )
     protected void connecting(
         /* @NonNull */
         final ITableNetworkConfiguration configuration )
         throws TableNetworkException
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         // do nothing
-    }
-
-    /**
-     * Creates the node layer executor service.
-     * 
-     * @return The node layer executor service; never {@code null}.
-     */
-    /* @NonNull */
-    private ExecutorService createExecutorService()
-    {
-        return Executors.newSingleThreadExecutor( new ThreadFactory()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public Thread newThread(
-                final Runnable r )
-            {
-                final Thread nodeLayerThread = new Thread( r, NonNlsMessages.AbstractNode_nodeLayerThread_name )
-                {
-                    @Override
-                    public void run()
-                    {
-                        nodeLayerThreadRef_.set( this );
-                        try
-                        {
-                            super.run();
-                        }
-                        finally
-                        {
-                            nodeLayerThreadRef_.set( null );
-                        }
-                    }
-                };
-
-                return nodeLayerThread;
-            }
-        } );
     }
 
     /**
@@ -348,8 +624,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * by the local network table.
      * 
      * <p>
-     * This method is invoked while the instance lock is held. Subclasses are
-     * not required to invoke the superclass method.
+     * Subclasses are not required to invoke the superclass method.
      * </p>
      * 
      * <p>
@@ -366,14 +641,13 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * @throws java.lang.NullPointerException
      *         If {@code tableManager} is {@code null}.
      */
-    @GuardedBy( "getLock()" )
     /* @NonNull */
     protected ITableManager createTableManagerDecoratorForLocalNetworkTable(
         /* @NonNull */
         final ITableManager tableManager )
     {
         assertArgumentNotNull( tableManager, "tableManager" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         return tableManager;
     }
@@ -383,63 +657,13 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * the table network transport layer factory.
      * 
      * <p>
-     * This method is invoked while the instance lock is held.
+     * This method is <b>not</b> invoked on the node layer thread.
      * </p>
      * 
      * @return The transport layer for this node; never {@code null}.
      */
-    @GuardedBy( "getLock()" )
     /* @NonNull */
     protected abstract ITransportLayer createTransportLayer();
-
-    /*
-     * @see org.gamegineer.table.internal.net.node.INodeController#disconnect()
-     */
-    @Override
-    public final void disconnect()
-    {
-        synchronized( controllerLock_ )
-        {
-            final ITransportLayer transportLayer;
-            synchronized( getLock() )
-            {
-                transportLayer = transportLayer_;
-                if( transportLayer != null )
-                {
-                    disconnecting();
-                }
-            }
-
-            // NB: Do not hold instance lock when calling into transport layer!
-            if( transportLayer != null )
-            {
-                try
-                {
-                    transportLayer.endClose( transportLayer.beginClose() );
-                }
-                catch( final InterruptedException e )
-                {
-                    Thread.currentThread().interrupt();
-                    Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Interrupted while waiting for transport layer to close", e ); //$NON-NLS-1$
-                }
-            }
-
-            synchronized( getLock() )
-            {
-                if( transportLayer != null )
-                {
-                    transportLayer_ = null;
-
-                    final INetworkTable table = tables_.remove( localPlayerName_ );
-                    assert table != null;
-                    table.dispose();
-
-                    disconnected();
-                    dispose();
-                }
-            }
-        }
-    }
 
     /*
      * @see org.gamegineer.table.internal.net.node.INode#disconnect(org.gamegineer.table.net.TableNetworkError)
@@ -448,28 +672,39 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     public final void disconnect(
         final TableNetworkError error )
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         disconnecting( error );
-        tableNetworkController_.disconnect( error );
+
+        // NB: Initiate disconnection through the table network, but this must
+        // be done on a thread other than the node layer thread because the
+        // table network controller disconnect() method blocks waiting for the
+        // node layer to disconnect.
+        Activator.getDefault().getExecutorService().submit( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                tableNetworkController_.disconnect( error );
+            }
+        } );
     }
 
     /**
      * Template method invoked when the table network node has disconnected.
      * 
      * <p>
-     * This method is invoked while the instance lock is held. Subclasses must
-     * always invoke the superclass method.
+     * Subclasses must always invoke the superclass method.
      * </p>
      * 
      * <p>
      * This implementation does nothing.
      * </p>
      */
-    @GuardedBy( "getLock()" )
     protected void disconnected()
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         // do nothing
     }
@@ -478,18 +713,16 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * Template method invoked when the table network node is disconnecting.
      * 
      * <p>
-     * This method is invoked while the instance lock is held. Subclasses must
-     * always invoke the superclass method.
+     * Subclasses must always invoke the superclass method.
      * </p>
      * 
      * <p>
      * This implementation sends a goodbye message to all remote nodes.
      * </p>
      */
-    @GuardedBy( "getLock()" )
     protected void disconnecting()
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         for( final IRemoteNode remoteNode : remoteNodes_.values() )
         {
@@ -502,8 +735,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * the specified cause.
      * 
      * <p>
-     * This method is invoked while the instance lock is held. Subclasses must
-     * always invoke the superclass method.
+     * Subclasses must always invoke the superclass method.
      * </p>
      * 
      * <p>
@@ -514,11 +746,10 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      *        The error that caused the table network node to be disconnected or
      *        {@code null} if the table network node was disconnected normally.
      */
-    @GuardedBy( "getLock()" )
     protected void disconnecting(
         final TableNetworkError error )
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         // do nothing
     }
@@ -527,14 +758,12 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * Disposes of the resources managed by the node.
      * 
      * <p>
-     * This method is invoked while the instance lock is held. Subclasses must
-     * always invoke the superclass method.
+     * Subclasses must always invoke the superclass method.
      * </p>
      */
-    @GuardedBy( "getLock()" )
     protected void dispose()
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         localPlayerName_ = null;
         if( password_ != null )
@@ -551,32 +780,78 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
         remoteNodes_.clear();
 
+        transportLayer_ = null;
+
         executorService_.shutdown();
     }
 
     /**
-     * Gets the executor service associated with the node layer.
+     * This method may be called from any thread. It must not be called on the
+     * node layer thread if the operation is not done.
+     * 
+     * @see org.gamegineer.table.internal.net.node.INodeController#endConnect(java.util.concurrent.Future)
+     */
+    @Override
+    public final void endConnect(
+        final Future<Void> future )
+        throws TableNetworkException, InterruptedException
+    {
+        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
+        assert !isNodeLayerThread() || future.isDone();
+
+        try
+        {
+            future.get();
+        }
+        catch( final ExecutionException e )
+        {
+            final Throwable cause = e.getCause();
+            if( cause instanceof TableNetworkException )
+            {
+                throw (TableNetworkException)cause;
+            }
+
+            throw TaskUtils.launderThrowable( cause );
+        }
+    }
+
+    /**
+     * This method may be called from any thread. It must not be called on the
+     * node layer thread if the operation is not done.
+     * 
+     * @see org.gamegineer.table.internal.net.node.INodeController#endDisconnect(java.util.concurrent.Future)
+     */
+    @Override
+    public final void endDisconnect(
+        final Future<Void> future )
+        throws InterruptedException
+    {
+        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
+        assert !isNodeLayerThread() || future.isDone();
+
+        try
+        {
+            future.get();
+        }
+        catch( final ExecutionException e )
+        {
+            throw TaskUtils.launderThrowable( e.getCause() );
+        }
+    }
+
+    /**
+     * Gets the node layer.
      * 
      * <p>
      * This method may be called from any thread.
      * </p>
      * 
-     * @return The executor service associated with the node layer; never
-     *         {@code null}.
+     * @return The node layer; never {@code null}.
      */
     /* @NonNull */
-    final ExecutorService getExecutorService()
+    protected final INodeLayer getNodeLayer()
     {
-        return executorService_;
-    }
-
-    /*
-     * @see org.gamegineer.table.internal.net.node.INode#getLock()
-     */
-    @Override
-    public final Object getLock()
-    {
-        return lock_;
+        return nodeLayer_;
     }
 
     /*
@@ -585,7 +860,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     @Override
     public final SecureString getPassword()
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         assertStateLegal( password_ != null, NonNlsMessages.AbstractNode_networkDisconnected );
         return new SecureString( password_ );
@@ -597,7 +872,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     @Override
     public final String getPlayerName()
     {
-        assert Thread.holdsLock( getLock() );
+        isNodeLayerThread();
 
         assertStateLegal( localPlayerName_ != null, NonNlsMessages.AbstractNode_networkDisconnected );
         return localPlayerName_;
@@ -622,11 +897,9 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         final String playerName )
     {
         assertArgumentNotNull( playerName, "playerName" ); //$NON-NLS-1$
+        assert isNodeLayerThread();
 
-        synchronized( getLock() )
-        {
-            return remoteNodes_.get( playerName );
-        }
+        return remoteNodes_.get( playerName );
     }
 
     /**
@@ -637,14 +910,17 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     /* @NonNull */
     protected final Collection<RemoteNodeType> getRemoteNodes()
     {
-        synchronized( getLock() )
-        {
-            return new ArrayList<RemoteNodeType>( remoteNodes_.values() );
-        }
+        assert isNodeLayerThread();
+
+        return new ArrayList<RemoteNodeType>( remoteNodes_.values() );
     }
 
     /**
      * Gets the table network controller.
+     * 
+     * <p>
+     * This method may be called from any thread.
+     * </p>
      * 
      * @return The table network controller; never {@code null}.
      */
@@ -663,12 +939,10 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     /* @NonNull */
     protected final INetworkTable getTable()
     {
-        assert localPlayerName_ != null;
+        assert isNodeLayerThread();
 
-        synchronized( getLock() )
-        {
-            return tables_.get( localPlayerName_ );
-        }
+        assert localPlayerName_ != null;
+        return tables_.get( localPlayerName_ );
     }
 
     /**
@@ -679,10 +953,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     /* @NonNull */
     private Collection<INetworkTable> getTables()
     {
-        synchronized( getLock() )
-        {
-            return new ArrayList<INetworkTable>( tables_.values() );
-        }
+        return new ArrayList<INetworkTable>( tables_.values() );
     }
 
     /**
@@ -691,10 +962,9 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * @return {@code true} if the table network is connected; otherwise {@code
      *         false}.
      */
-    @GuardedBy( "getLock()" )
     protected final boolean isConnected()
     {
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         return transportLayer_ != null;
     }
@@ -711,7 +981,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      */
     protected final boolean isNodeLayerThread()
     {
-        return Thread.currentThread() == nodeLayerThreadRef_.get();
+        return Thread.currentThread() == nodeLayerThread_;
     }
 
     /**
@@ -719,8 +989,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * table network node.
      * 
      * <p>
-     * This method is invoked while the instance lock is held. Subclasses must
-     * always invoke the superclass method.
+     * Subclasses must always invoke the superclass method.
      * </p>
      * 
      * <p>
@@ -733,13 +1002,12 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * @throws java.lang.NullPointerException
      *         If {@code remoteNode} is {@code null}.
      */
-    @GuardedBy( "getLock()" )
     protected void remoteNodeBound(
         /* @NonNull */
         final RemoteNodeType remoteNode )
     {
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         // do nothing
     }
@@ -749,8 +1017,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * local table network node.
      * 
      * <p>
-     * This method is invoked while the instance lock is held. Subclasses must
-     * always invoke the superclass method.
+     * Subclasses must always invoke the superclass method.
      * </p>
      * 
      * <p>
@@ -763,15 +1030,96 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * @throws java.lang.NullPointerException
      *         If {@code remoteNode} is {@code null}.
      */
-    @GuardedBy( "getLock()" )
     protected void remoteNodeUnbound(
         /* @NonNull */
         final RemoteNodeType remoteNode )
     {
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         // do nothing
+    }
+
+    /**
+     * Synchronously executes the specified task on the node layer thread.
+     * 
+     * <p>
+     * This method may be called from any thread.
+     * </p>
+     * 
+     * @param <T>
+     *        The return type of the task.
+     * 
+     * @param task
+     *        The task to execute; must not be {@code null}.
+     * 
+     * @return The return value of the task; may be {@code null}.
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the task to
+     *         complete.
+     * @throws java.util.concurrent.ExecutionException
+     *         If an error occurs while executing the task.
+     */
+    /* @Nullable */
+    final <T> T syncExec(
+        /* @NonNull */
+        final Callable<T> task )
+        throws ExecutionException, InterruptedException
+    {
+        assert task != null;
+
+        if( isNodeLayerThread() )
+        {
+            try
+            {
+                return task.call();
+            }
+            catch( final Exception e )
+            {
+                throw new ExecutionException( e );
+            }
+        }
+
+        return asyncExec( task ).get();
+    }
+
+    /**
+     * Synchronously executes the specified task on the node layer thread.
+     * 
+     * <p>
+     * This method may be called from any thread.
+     * </p>
+     * 
+     * @param task
+     *        The task to execute; must not be {@code null}.
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the task to
+     *         complete.
+     * @throws java.util.concurrent.ExecutionException
+     *         If an error occurs while executing the task.
+     */
+    final void syncExec(
+        /* @NonNull */
+        final Runnable task )
+        throws ExecutionException, InterruptedException
+    {
+        assert task != null;
+
+        if( isNodeLayerThread() )
+        {
+            try
+            {
+                task.run();
+            }
+            catch( final Exception e )
+            {
+                throw new ExecutionException( e );
+            }
+        }
+
+        asyncExec( task ).get();
     }
 
     /*
@@ -782,7 +1130,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         final RemoteNodeType remoteNode )
     {
         assertArgumentNotNull( remoteNode, "remoteNode" ); //$NON-NLS-1$
-        assert Thread.holdsLock( getLock() );
+        assert isNodeLayerThread();
 
         assertConnected();
         assertArgumentLegal( remoteNodes_.remove( remoteNode.getPlayerName() ) != null, "remoteNode", NonNlsMessages.AbstractNode_unbindRemoteNode_remoteNodeNotBound ); //$NON-NLS-1$
@@ -798,6 +1146,123 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     // Nested Types
     // ======================================================================
 
+    /**
+     * Superclass for all table network node factories.
+     * 
+     * <p>
+     * Instances of this class guarantee that a table network node is
+     * constructed on the node layer thread.
+     * </p>
+     * 
+     * @param <T>
+     *        The type of the table network node.
+     */
+    @Immutable
+    public static abstract class AbstractFactory<T extends AbstractNode<?>>
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code AbstractFactory} class.
+         */
+        protected AbstractFactory()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Creates the node layer executor service.
+         * 
+         * @return The node layer executor service; never {@code null}.
+         */
+        /* @NonNull */
+        private static ExecutorService createExecutorService()
+        {
+            return Executors.newSingleThreadExecutor( new ThreadFactory()
+            {
+                @Override
+                public Thread newThread(
+                    final Runnable r )
+                {
+                    return new Thread( r, NonNlsMessages.AbstractNode_nodeLayerThread_name );
+                }
+            } );
+        }
+
+        /**
+         * Creates a new table network node.
+         * 
+         * @param tableNetworkController
+         *        The table network controller; must not be {@code null}.
+         * 
+         * @return A new table network node; never {@code null}.
+         */
+        /* @NonNull */
+        public final T createNode(
+            /* @NonNull */
+            final ITableNetworkController tableNetworkController )
+        {
+            assertArgumentNotNull( tableNetworkController, "tableNetworkController" ); //$NON-NLS-1$
+
+            final ExecutorService executorService = createExecutorService();
+            final Future<T> future = executorService.submit( new Callable<T>()
+            {
+                @Override
+                public T call()
+                {
+                    return createNode( tableNetworkController, executorService );
+                }
+            } );
+
+            try
+            {
+                return future.get();
+            }
+            catch( final ExecutionException e )
+            {
+                throw TaskUtils.launderThrowable( e.getCause() );
+            }
+            catch( final InterruptedException e )
+            {
+                // FIXME: allow InterruptedException or some other kind of checked
+                // exception to be thrown from this method.
+                Thread.currentThread().interrupt();
+                throw new RuntimeException( e );
+            }
+        }
+
+        /**
+         * Template method invoked to create a new table network node.
+         * 
+         * <p>
+         * This method is guaranteed to be invoked on the node layer thread.
+         * </p>
+         * 
+         * @param tableNetworkController
+         *        The table network controller; must not be {@code null}.
+         * @param executorService
+         *        The node layer executor service; must not be {@code null}.
+         * 
+         * @return A new table network node; never {@code null}.
+         * 
+         * @throws java.lang.NullPointerException
+         *         If {@code tableNetworkController} or {@code executorService}
+         *         is {@code null}.
+         */
+        /* @NonNull */
+        protected abstract T createNode(
+            /* @NonNull */
+            ITableNetworkController tableNetworkController,
+            /* @NonNull */
+            ExecutorService executorService );
+    }
 
     /**
      * Superclass for transport layer service proxies that ensure all methods
@@ -865,7 +1330,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             try
             {
-                getExecutorService().submit( new Runnable()
+                asyncExec( new Runnable()
                 {
                     @Override
                     @SuppressWarnings( "synthetic-access" )
@@ -889,7 +1354,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             try
             {
-                getExecutorService().submit( new Runnable()
+                asyncExec( new Runnable()
                 {
                     @Override
                     @SuppressWarnings( "synthetic-access" )
@@ -914,7 +1379,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             try
             {
-                getExecutorService().submit( new Runnable()
+                asyncExec( new Runnable()
                 {
                     @Override
                     @SuppressWarnings( "synthetic-access" )
@@ -939,7 +1404,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             try
             {
-                getExecutorService().submit( new Runnable()
+                asyncExec( new Runnable()
                 {
                     @Override
                     @SuppressWarnings( "synthetic-access" )
@@ -991,7 +1456,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             try
             {
-                getExecutorService().submit( new Runnable()
+                asyncExec( new Runnable()
                 {
                     @Override
                     public void run()
@@ -1054,6 +1519,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
             assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
             assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
+            assert isNodeLayerThread();
 
             for( final INetworkTable table : getTables() )
             {
@@ -1087,6 +1553,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
             assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
             assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
+            assert isNodeLayerThread();
 
             for( final INetworkTable table : getTables() )
             {
@@ -1116,6 +1583,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
             assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
+            assert isNodeLayerThread();
 
             for( final INetworkTable table : getTables() )
             {
@@ -1145,6 +1613,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             assertArgumentNotNull( sourceTable, "sourceTable" ); //$NON-NLS-1$
             assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
+            assert isNodeLayerThread();
 
             for( final INetworkTable table : getTables() )
             {
@@ -1153,6 +1622,85 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                     table.setTableState( tableMemento );
                 }
             }
+        }
+    }
+
+    /**
+     * Implementation of {@link INodeLayer}.
+     */
+    @Immutable
+    private final class NodeLayer
+        implements INodeLayer
+    {
+        // TODO: Extract to a package-private class, and extract nodeLayerThread_ and
+        // executorService_ fields to that class.
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code NodeLayer} class.
+         */
+        NodeLayer()
+        {
+            super();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.INodeLayer#asyncExec(java.util.concurrent.Callable)
+         */
+        @Override
+        public <T> Future<T> asyncExec(
+            final Callable<T> task )
+        {
+            return AbstractNode.this.asyncExec( task );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.INodeLayer#asyncExec(java.lang.Runnable)
+         */
+        @Override
+        public Future<?> asyncExec(
+            final Runnable task )
+        {
+            return AbstractNode.this.asyncExec( task );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.INodeLayer#isNodeLayerThread()
+         */
+        @Override
+        public boolean isNodeLayerThread()
+        {
+            return AbstractNode.this.isNodeLayerThread();
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.INodeLayer#syncExec(java.util.concurrent.Callable)
+         */
+        @Override
+        public <T> T syncExec(
+            final Callable<T> task )
+            throws ExecutionException, InterruptedException
+        {
+            return AbstractNode.this.syncExec( task );
+        }
+
+        /*
+         * @see org.gamegineer.table.internal.net.node.INodeLayer#syncExec(java.lang.Runnable)
+         */
+        @Override
+        public void syncExec(
+            final Runnable task )
+            throws ExecutionException, InterruptedException
+        {
+            AbstractNode.this.syncExec( task );
         }
     }
 }

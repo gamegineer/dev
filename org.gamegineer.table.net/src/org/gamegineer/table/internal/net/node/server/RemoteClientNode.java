@@ -23,9 +23,9 @@ package org.gamegineer.table.internal.net.node.server;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collection;
-import net.jcip.annotations.GuardedBy;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.node.AbstractRemoteNode;
+import org.gamegineer.table.internal.net.node.INodeLayer;
 import org.gamegineer.table.internal.net.node.common.messages.CancelControlRequestMessage;
 import org.gamegineer.table.internal.net.node.common.messages.GiveControlMessage;
 import org.gamegineer.table.internal.net.node.common.messages.GoodbyeMessage;
@@ -47,7 +47,7 @@ import org.gamegineer.table.net.IPlayer;
  * of the table network protocol.
  * </p>
  */
-@ThreadSafe
+@NotThreadSafe
 final class RemoteClientNode
     extends AbstractRemoteNode<IServerNode, IRemoteClientNode>
     implements IRemoteClientNode, IRemoteClientNodeController
@@ -60,14 +60,12 @@ final class RemoteClientNode
      * The most-recent challenge used to authenticate the client or {@code null}
      * if an authentication request has not yet been sent.
      */
-    @GuardedBy( "getLock()" )
     private byte[] challenge_;
 
     /**
      * The most-recent salt used to authenticate the client or {@code null} if
      * an authentication request has not yet been sent.
      */
-    @GuardedBy( "getLock()" )
     private byte[] salt_;
 
 
@@ -78,17 +76,21 @@ final class RemoteClientNode
     /**
      * Initializes a new instance of the {@code RemoteClientNode} class.
      * 
+     * @param nodeLayer
+     *        The node layer; must not be {@code null}.
      * @param localNode
      *        The local table network node; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code localNode} is {@code null}.
+     *         If {@code nodeLayer} or {@code localNode} is {@code null}.
      */
     RemoteClientNode(
         /* @NonNull */
+        final INodeLayer nodeLayer,
+        /* @NonNull */
         final IServerNode localNode )
     {
-        super( localNode );
+        super( nodeLayer, localNode );
 
         challenge_ = null;
         salt_ = null;
@@ -111,10 +113,9 @@ final class RemoteClientNode
     @Override
     public byte[] getChallenge()
     {
-        synchronized( getLock() )
-        {
-            return challenge_;
-        }
+        assert isNodeLayerThread();
+
+        return challenge_;
     }
 
     /*
@@ -123,10 +124,9 @@ final class RemoteClientNode
     @Override
     public byte[] getSalt()
     {
-        synchronized( getLock() )
-        {
-            return salt_;
-        }
+        assert isNodeLayerThread();
+
+        return salt_;
     }
 
     /*
@@ -145,10 +145,9 @@ final class RemoteClientNode
     public void setChallenge(
         final byte[] challenge )
     {
-        synchronized( getLock() )
-        {
-            challenge_ = challenge;
-        }
+        assert isNodeLayerThread();
+
+        challenge_ = challenge;
     }
 
     /*
@@ -159,13 +158,11 @@ final class RemoteClientNode
         final Collection<IPlayer> players )
     {
         assertArgumentNotNull( players, "players" ); //$NON-NLS-1$
+        assert isNodeLayerThread();
 
         final PlayersMessage message = new PlayersMessage();
         message.setPlayers( players );
-        synchronized( getLock() )
-        {
-            sendMessage( message, null );
-        }
+        sendMessage( message, null );
     }
 
     /*
@@ -175,9 +172,8 @@ final class RemoteClientNode
     public void setSalt(
         final byte[] salt )
     {
-        synchronized( getLock() )
-        {
-            salt_ = salt;
-        }
+        assert isNodeLayerThread();
+
+        salt_ = salt;
     }
 }

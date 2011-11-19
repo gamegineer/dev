@@ -48,10 +48,13 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     // ======================================================================
 
     /** The nice mocks control for use in the fixture. */
-    private IMocksControl niceMocksControl_;
+    private volatile IMocksControl niceMocksControl_;
 
     /** The table network node under test in the fixture. */
-    private T node_;
+    private volatile T node_;
+
+    /** The node layer runner for use in the fixture. */
+    private NodeLayerRunner nodeLayerRunner_;
 
 
     // ======================================================================
@@ -104,6 +107,24 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
         throws Exception;
 
     /**
+     * Creates a node layer runner for the specified table network node.
+     * 
+     * @param node
+     *        The table network node to associate with the node layer runner;
+     *        must not be {@code null}.
+     * 
+     * @return The new node layer runner for the specified table network node;
+     *         never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code node} is {@code null}.
+     */
+    /* @NonNull */
+    protected abstract NodeLayerRunner createNodeLayerRunner(
+        /* @NonNull */
+        T node );
+
+    /**
      * Gets the table network node under test in the fixture.
      * 
      * @return The table network node under test in the fixture; never {@code
@@ -114,6 +135,18 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     {
         assertNotNull( node_ );
         return node_;
+    }
+
+    /**
+     * Gets the node layer runner for use in the fixture.
+     * 
+     * @return The node layer runner for use in the fixture; never {@code null}.
+     */
+    /* @NonNull */
+    protected final NodeLayerRunner getNodeLayerRunner()
+    {
+        assertNotNull( nodeLayerRunner_ );
+        return nodeLayerRunner_;
     }
 
     /**
@@ -152,97 +185,152 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
         niceMocksControl_ = EasyMock.createNiceControl();
         node_ = createConnectedNode();
         assertNotNull( node_ );
+        nodeLayerRunner_ = createNodeLayerRunner( node_ );
     }
 
     /**
      * Ensures the {@code bindRemoteNode} method adds the remote node when the
      * remote node is absent from the bound remote nodes collection.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testBindRemoteNode_RemoteNode_Absent()
+        throws Exception
     {
-        synchronized( node_.getLock() )
+        nodeLayerRunner_.run( new Runnable()
         {
-            final RemoteNodeType remoteNode = createMockRemoteNode( niceMocksControl_ );
-            niceMocksControl_.replay();
-            assertFalse( isRemoteNodeBound( node_, remoteNode.getPlayerName() ) );
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                final RemoteNodeType remoteNode = createMockRemoteNode( niceMocksControl_ );
+                niceMocksControl_.replay();
+                assertFalse( isRemoteNodeBound( node_, remoteNode.getPlayerName() ) );
 
-            node_.bindRemoteNode( remoteNode );
+                node_.bindRemoteNode( remoteNode );
 
-            assertTrue( isRemoteNodeBound( node_, remoteNode.getPlayerName() ) );
-        }
+                assertTrue( isRemoteNodeBound( node_, remoteNode.getPlayerName() ) );
+            }
+        } );
     }
 
     /**
      * Ensures the {@code bindRemoteNode} method throws an exception when passed
      * a {@code null} remote node.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
     public void testBindRemoteNode_RemoteNode_Null()
+        throws Exception
     {
-        synchronized( node_.getLock() )
+        nodeLayerRunner_.run( new Runnable()
         {
-            node_.bindRemoteNode( null );
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                node_.bindRemoteNode( null );
+            }
+        } );
     }
 
     /**
      * Ensures the {@code bindRemoteNode} method throws an exception when the
      * remote node is present in the bound remote nodes collection.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalArgumentException.class )
     public void testBindRemoteNode_RemoteNode_Present()
+        throws Exception
     {
-        synchronized( node_.getLock() )
+        nodeLayerRunner_.run( new Runnable()
         {
-            final RemoteNodeType remoteNode = createMockRemoteNode( niceMocksControl_ );
-            niceMocksControl_.replay();
-            node_.bindRemoteNode( remoteNode );
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                final RemoteNodeType remoteNode = createMockRemoteNode( niceMocksControl_ );
+                niceMocksControl_.replay();
+                node_.bindRemoteNode( remoteNode );
 
-            node_.bindRemoteNode( remoteNode );
-        }
+                node_.bindRemoteNode( remoteNode );
+            }
+        } );
     }
 
     /**
      * Ensures the {@code getPassword} method returns a copy of the password.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testGetPassword_ReturnValue_Copy()
+        throws Exception
     {
-        synchronized( node_.getLock() )
+        nodeLayerRunner_.run( new Runnable()
         {
-            final SecureString password = node_.getPassword();
-            final SecureString expectedValue = new SecureString( password );
-            password.dispose();
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                final SecureString password = node_.getPassword();
+                final SecureString expectedValue = new SecureString( password );
+                password.dispose();
 
-            final SecureString actualValue = node_.getPassword();
+                final SecureString actualValue = node_.getPassword();
 
-            assertEquals( expectedValue, actualValue );
-        }
+                assertEquals( expectedValue, actualValue );
+            }
+        } );
     }
 
     /**
      * Ensures the {@code getPassword} method does not return {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testGetPassword_ReturnValue_NonNull()
+        throws Exception
     {
-        synchronized( node_.getLock() )
+        nodeLayerRunner_.run( new Runnable()
         {
-            assertNotNull( node_.getPassword() );
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                assertNotNull( node_.getPassword() );
+            }
+        } );
     }
 
     /**
      * Ensures the {@code getPlayerName} method does not return {@code null}.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test
     public void testGetPlayerName_ReturnValue_NonNull()
+        throws Exception
     {
-        synchronized( node_.getLock() )
+        nodeLayerRunner_.run( new Runnable()
         {
-            assertNotNull( node_.getPlayerName() );
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                assertNotNull( node_.getPlayerName() );
+            }
+        } );
     }
 
     /**
@@ -256,26 +344,40 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     public void testUnbindRemoteNode_RemoteNode_Absent()
         throws Exception
     {
-        synchronized( node_.getLock() )
+        nodeLayerRunner_.run( new Runnable()
         {
-            final RemoteNodeType remoteNode = createMockRemoteNode( niceMocksControl_ );
-            niceMocksControl_.replay();
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                final RemoteNodeType remoteNode = createMockRemoteNode( niceMocksControl_ );
+                niceMocksControl_.replay();
 
-            node_.unbindRemoteNode( remoteNode );
-        }
+                node_.unbindRemoteNode( remoteNode );
+            }
+        } );
     }
 
     /**
      * Ensures the {@code unbindRemoteNode} method throws an exception when
      * passed a {@code null} remote node.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
     public void testUnbindRemoteNode_RemoteNode_Null()
+        throws Exception
     {
-        synchronized( node_.getLock() )
+        nodeLayerRunner_.run( new Runnable()
         {
-            node_.unbindRemoteNode( null );
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                node_.unbindRemoteNode( null );
+            }
+        } );
     }
 
     /**
@@ -289,16 +391,21 @@ public abstract class AbstractConnectedNodeTestCase<T extends INode<RemoteNodeTy
     public void testUnbindRemoteNode_RemoteNode_Present()
         throws Exception
     {
-        synchronized( node_.getLock() )
+        nodeLayerRunner_.run( new Runnable()
         {
-            final RemoteNodeType remoteNode = createMockRemoteNode( niceMocksControl_ );
-            niceMocksControl_.replay();
-            node_.bindRemoteNode( remoteNode );
-            assertTrue( isRemoteNodeBound( node_, remoteNode.getPlayerName() ) );
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                final RemoteNodeType remoteNode = createMockRemoteNode( niceMocksControl_ );
+                niceMocksControl_.replay();
+                node_.bindRemoteNode( remoteNode );
+                assertTrue( isRemoteNodeBound( node_, remoteNode.getPlayerName() ) );
 
-            node_.unbindRemoteNode( remoteNode );
+                node_.unbindRemoteNode( remoteNode );
 
-            assertFalse( isRemoteNodeBound( node_, remoteNode.getPlayerName() ) );
-        }
+                assertFalse( isRemoteNodeBound( node_, remoteNode.getPlayerName() ) );
+            }
+        } );
     }
 }

@@ -57,6 +57,8 @@ public final class ClientNodeAsNodeControllerTest
     @Override
     protected ClientNode createNodeController()
     {
-        return new ClientNode( TableNetworkControllers.createFakeTableNetworkController(), false );
+        final ClientNode node = new ClientNode.Factory().createNode( TableNetworkControllers.createFakeTableNetworkController() );
+        node.setHandshakeComplete( null );
+        return node;
     }
 }

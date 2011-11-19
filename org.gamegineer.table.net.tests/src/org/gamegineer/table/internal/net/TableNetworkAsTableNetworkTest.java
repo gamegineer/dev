@@ -22,9 +22,9 @@
 package org.gamegineer.table.internal.net;
 
 import java.lang.reflect.Method;
-import org.gamegineer.table.internal.net.node.DefaultNodeFactory;
+import org.gamegineer.table.internal.net.node.FakeNodeController;
 import org.gamegineer.table.internal.net.node.INodeController;
-import org.gamegineer.table.internal.net.node.client.ClientNode;
+import org.gamegineer.table.internal.net.node.INodeFactory;
 import org.gamegineer.table.internal.net.transport.fake.FakeTransportLayerFactory;
 import org.gamegineer.table.net.AbstractTableNetworkTestCase;
 import org.gamegineer.table.net.ITableNetwork;
@@ -63,13 +63,22 @@ public final class TableNetworkAsTableNetworkTest
     protected ITableNetwork createTableNetwork()
     {
         return new TableNetwork( //
-            new DefaultNodeFactory()
+            new INodeFactory()
             {
                 @Override
                 public INodeController createClientNode(
+                    @SuppressWarnings( "unused" )
                     final ITableNetworkController tableNetworkController )
                 {
-                    return new ClientNode( tableNetworkController, false );
+                    return new FakeNodeController();
+                }
+
+                @Override
+                public INodeController createServerNode(
+                    @SuppressWarnings( "unused" )
+                    final ITableNetworkController tableNetworkController )
+                {
+                    return new FakeNodeController();
                 }
             }, //
             new FakeTransportLayerFactory() );

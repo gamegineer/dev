@@ -72,26 +72,44 @@ public abstract class AbstractDisconnectedClientNodeTestCase<T extends IClientNo
     /**
      * Ensures the {@code setPlayers} method throws an exception when passed a
      * non-{@code null} players collection.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
     public void testSetPlayers_Players_NonNull()
+        throws Exception
     {
-        synchronized( getNode().getLock() )
+        getNodeLayerRunner().run( new Runnable()
         {
-            getNode().setPlayers( Collections.<IPlayer>emptyList() );
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                getNode().setPlayers( Collections.<IPlayer>emptyList() );
+            }
+        } );
     }
 
     /**
      * Ensures the {@code setPlayers} method throws an exception when passed a
      * {@code null} players collection.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
     public void testSetPlayers_Players_Null()
+        throws Exception
     {
-        synchronized( getNode().getLock() )
+        getNodeLayerRunner().run( new Runnable()
         {
-            getNode().setPlayers( null );
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                getNode().setPlayers( null );
+            }
+        } );
     }
 }

@@ -57,6 +57,6 @@ public final class ServerNodeAsNodeControllerTest
     @Override
     protected ServerNode createNodeController()
     {
-        return new ServerNode( TableNetworkControllers.createFakeTableNetworkController() );
+        return new ServerNode.Factory().createNode( TableNetworkControllers.createFakeTableNetworkController() );
     }
 }

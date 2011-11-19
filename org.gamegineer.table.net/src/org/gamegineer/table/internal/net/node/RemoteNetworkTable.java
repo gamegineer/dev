@@ -92,10 +92,7 @@ final class RemoteNetworkTable
         final CardPileIncrementMessage message = new CardPileIncrementMessage();
         message.setIncrement( cardPileIncrement );
         message.setIndex( cardPileIndex );
-        synchronized( remoteNodeController_.getLock() )
-        {
-            remoteNodeController_.sendMessage( message, null );
-        }
+        remoteNodeController_.sendMessage( message, null );
     }
 
     /*
@@ -115,10 +112,7 @@ final class RemoteNetworkTable
         message.setCardPileIndex( cardPileIndex );
         message.setIncrement( cardIncrement );
         message.setIndex( cardIndex );
-        synchronized( remoteNodeController_.getLock() )
-        {
-            remoteNodeController_.sendMessage( message, null );
-        }
+        remoteNodeController_.sendMessage( message, null );
     }
 
     /*
@@ -132,10 +126,7 @@ final class RemoteNetworkTable
 
         final TableIncrementMessage message = new TableIncrementMessage();
         message.setIncrement( tableIncrement );
-        synchronized( remoteNodeController_.getLock() )
-        {
-            remoteNodeController_.sendMessage( message, null );
-        }
+        remoteNodeController_.sendMessage( message, null );
     }
 
     /*
@@ -149,9 +140,6 @@ final class RemoteNetworkTable
 
         final TableMessage message = new TableMessage();
         message.setMemento( tableMemento );
-        synchronized( remoteNodeController_.getLock() )
-        {
-            remoteNodeController_.sendMessage( message, null );
-        }
+        remoteNodeController_.sendMessage( message, null );
     }
 }

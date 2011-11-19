@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.node;
 
 import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
 import org.gamegineer.table.internal.net.transport.AbstractServiceTestCase;
 import org.gamegineer.table.internal.net.transport.IService;
 
@@ -61,7 +62,26 @@ public final class AbstractRemoteNodeAsServiceTest
     @SuppressWarnings( "unchecked" )
     private static INode<IRemoteNode> createMockLocalNode()
     {
-        return EasyMock.createMock( INode.class );
+        final IMocksControl mocksControl = EasyMock.createControl();
+        final INode<IRemoteNode> localNode = mocksControl.createMock( INode.class );
+        mocksControl.replay();
+        return localNode;
+    }
+
+    /**
+     * Creates a mock node layer for use in the fixture.
+     * 
+     * @return A mock node layer for use in the fixture; never {@code null}.
+     */
+    /* @NonNull */
+    @SuppressWarnings( "boxing" )
+    private static INodeLayer createMockNodeLayer()
+    {
+        final IMocksControl mocksControl = EasyMock.createControl();
+        final INodeLayer nodeLayer = mocksControl.createMock( INodeLayer.class );
+        EasyMock.expect( nodeLayer.isNodeLayerThread() ).andReturn( true ).anyTimes();
+        mocksControl.replay();
+        return nodeLayer;
     }
 
     /*
@@ -70,7 +90,7 @@ public final class AbstractRemoteNodeAsServiceTest
     @Override
     protected IService createService()
     {
-        return new AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode>( createMockLocalNode() )
+        return new AbstractRemoteNode<INode<IRemoteNode>, IRemoteNode>( createMockNodeLayer(), createMockLocalNode() )
         {
             @Override
             protected IRemoteNode getThisAsRemoteNodeType()

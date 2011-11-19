@@ -70,26 +70,44 @@ public abstract class AbstractDisconnectedServerNodeTestCase<T extends IServerNo
     /**
      * Ensures the {@code isPlayerConnected} method throws an exception when
      * passed a non-{@code null} player name.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = IllegalStateException.class )
     public void testIsPlayerConnected_PlayerName_NonNull()
+        throws Exception
     {
-        synchronized( getNode().getLock() )
+        getNodeLayerRunner().run( new Runnable()
         {
-            getNode().isPlayerConnected( "playerName" ); //$NON-NLS-1$
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                getNode().isPlayerConnected( "playerName" ); //$NON-NLS-1$
+            }
+        } );
     }
 
     /**
      * Ensures the {@code isPlayerConnected} method throws an exception when
      * passed a {@code null} player name.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
     public void testIsPlayerConnected_PlayerName_Null()
+        throws Exception
     {
-        synchronized( getNode().getLock() )
+        getNodeLayerRunner().run( new Runnable()
         {
-            getNode().isPlayerConnected( null );
-        }
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                getNode().isPlayerConnected( null );
+            }
+        } );
     }
 }

@@ -27,9 +27,8 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
-import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
-import net.jcip.annotations.ThreadSafe;
+import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
@@ -41,10 +40,19 @@ import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
 
+// FIXME: there's a huge performance hit now when we move card piles that contain a large
+// number of cards because a huge number of events get fired and then forked onto the NLT
+//
+// FIXME: determine why two cards are created during drag/move operations (best observed
+// when dragging from a card pile with an accordian layout style).
+//
+// FIXME: when client is editor and modifying table, host is simultaneously attempting
+// to modify table (warnings are logged).
+
 /**
  * Adapts a local table to {@link INetworkTable}.
  */
-@ThreadSafe
+@NotThreadSafe
 final class LocalNetworkTable
     implements INetworkTable
 {
@@ -56,28 +64,24 @@ final class LocalNetworkTable
      * The collection of local card listeners. The key is the local card. The
      * value is the card listener.
      */
-    @GuardedBy( "lock_" )
     private final Map<ICard, ICardListener> cardListeners_;
 
     /**
      * The collection of local card pile listeners. The key is the local card
      * pile. The value is the card pile listener.
      */
-    @GuardedBy( "lock_" )
     private final Map<ICardPile, ICardPileListener> cardPileListeners_;
 
     /** Indicates events fired by the local table should be ignored. */
-    @GuardedBy( "lock_" )
     private boolean ignoreEvents_;
 
-    /** The instance lock. */
-    private final Object lock_;
+    /** The node layer. */
+    private final INodeLayer nodeLayer_;
 
     /** The local table. */
     private final ITable table_;
 
     /** The local table listener. */
-    @GuardedBy( "lock_" )
     private ITableListener tableListener_;
 
     /** The table manager for the local table network node. */
@@ -91,6 +95,8 @@ final class LocalNetworkTable
     /**
      * Initializes a new instance of the {@code LocalNetworkTable} class.
      * 
+     * @param nodeLayer
+     *        The node layer; must not be {@code null}.
      * @param tableManager
      *        The table manager for the local table network node; must not be
      *        {@code null}.
@@ -99,17 +105,21 @@ final class LocalNetworkTable
      */
     LocalNetworkTable(
         /* @NonNull */
+        final INodeLayer nodeLayer,
+        /* @NonNull */
         final ITableManager tableManager,
         /* @NonNull */
         final ITable table )
     {
+        assert nodeLayer != null;
+        assert nodeLayer.isNodeLayerThread();
         assert tableManager != null;
         assert table != null;
 
         cardListeners_ = new IdentityHashMap<ICard, ICardListener>();
         cardPileListeners_ = new IdentityHashMap<ICardPile, ICardPileListener>();
         ignoreEvents_ = false;
-        lock_ = new Object();
+        nodeLayer_ = nodeLayer;
         table_ = table;
         tableListener_ = null;
         tableManager_ = tableManager;
@@ -122,12 +132,66 @@ final class LocalNetworkTable
     // Methods
     // ======================================================================
 
+    /**
+     * Asynchronously executes the specified task on the node layer thread.
+     * 
+     * <p>
+     * This method may be called from any thread.
+     * </p>
+     * 
+     * @param task
+     *        The task to execute; must not be {@code null}.
+     */
+    private void asyncExec(
+        /* @NonNull */
+        final Runnable task )
+    {
+        assert task != null;
+
+        nodeLayer_.asyncExec( task );
+    }
+
+    /**
+     * Creates a new card listener.
+     * 
+     * @return A new card listener; never {@code null}.
+     */
+    /* @NonNull */
+    private ICardListener createCardListener()
+    {
+        return new CardListenerProxy( new CardListener() );
+    }
+
+    /**
+     * Creates a new card pile listener.
+     * 
+     * @return A new card pile listener; never {@code null}.
+     */
+    /* @NonNull */
+    private ICardPileListener createCardPileListener()
+    {
+        return new CardPileListenerProxy( new CardPileListener() );
+    }
+
+    /**
+     * Creates a new table listener.
+     * 
+     * @return A new table listener; never {@code null}.
+     */
+    /* @NonNull */
+    private ITableListener createTableListener()
+    {
+        return new TableListenerProxy( new TableListener() );
+    }
+
     /*
      * @see org.gamegineer.table.internal.net.node.INetworkTable#dispose()
      */
     @Override
     public void dispose()
     {
+        assert nodeLayer_.isNodeLayerThread();
+
         uninitializeListeners();
     }
 
@@ -152,14 +216,12 @@ final class LocalNetworkTable
     {
         assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
         assertArgumentNotNull( cardPileIncrement, "cardPileIncrement" ); //$NON-NLS-1$
+        assert nodeLayer_.isNodeLayerThread();
 
-        synchronized( lock_ )
-        {
-            final boolean oldIgnoreEvents = ignoreEvents_;
-            ignoreEvents_ = true;
-            NetworkTableUtils.incrementCardPileState( table_, cardPileIndex, cardPileIncrement );
-            ignoreEvents_ = oldIgnoreEvents;
-        }
+        final boolean oldIgnoreEvents = ignoreEvents_;
+        ignoreEvents_ = true;
+        NetworkTableUtils.incrementCardPileState( table_, cardPileIndex, cardPileIncrement );
+        ignoreEvents_ = oldIgnoreEvents;
     }
 
     /*
@@ -174,14 +236,12 @@ final class LocalNetworkTable
         assertArgumentLegal( cardPileIndex >= 0, "cardPileIndex" ); //$NON-NLS-1$
         assertArgumentLegal( cardIndex >= 0, "cardIndex" ); //$NON-NLS-1$
         assertArgumentNotNull( cardIncrement, "cardIncrement" ); //$NON-NLS-1$
+        assert nodeLayer_.isNodeLayerThread();
 
-        synchronized( lock_ )
-        {
-            final boolean oldIgnoreEvents = ignoreEvents_;
-            ignoreEvents_ = true;
-            NetworkTableUtils.incrementCardState( table_, cardPileIndex, cardIndex, cardIncrement );
-            ignoreEvents_ = oldIgnoreEvents;
-        }
+        final boolean oldIgnoreEvents = ignoreEvents_;
+        ignoreEvents_ = true;
+        NetworkTableUtils.incrementCardState( table_, cardPileIndex, cardIndex, cardIncrement );
+        ignoreEvents_ = oldIgnoreEvents;
     }
 
     /*
@@ -192,14 +252,12 @@ final class LocalNetworkTable
         final TableIncrement tableIncrement )
     {
         assertArgumentNotNull( tableIncrement, "tableIncrement" ); //$NON-NLS-1$
+        assert nodeLayer_.isNodeLayerThread();
 
-        synchronized( lock_ )
-        {
-            final boolean oldIgnoreEvents = ignoreEvents_;
-            ignoreEvents_ = true;
-            NetworkTableUtils.incrementTableState( table_, tableIncrement );
-            ignoreEvents_ = oldIgnoreEvents;
-        }
+        final boolean oldIgnoreEvents = ignoreEvents_;
+        ignoreEvents_ = true;
+        NetworkTableUtils.incrementTableState( table_, tableIncrement );
+        ignoreEvents_ = oldIgnoreEvents;
     }
 
     /**
@@ -207,21 +265,24 @@ final class LocalNetworkTable
      */
     private void initializeListeners()
     {
+        // FIXME: we don't need to create a listener per object.  create a single listener
+        // for each type and simply register/unregister it per instance.  therefore, can
+        // get rid of the maps, as well.
         getTableLock().lock();
         try
         {
-            tableListener_ = new TableListener();
+            tableListener_ = createTableListener();
             table_.addTableListener( tableListener_ );
 
             for( final ICardPile cardPile : table_.getCardPiles() )
             {
-                final ICardPileListener cardPileListener = new CardPileListener();
+                final ICardPileListener cardPileListener = createCardPileListener();
                 cardPile.addCardPileListener( cardPileListener );
                 cardPileListeners_.put( cardPile, cardPileListener );
 
                 for( final ICard card : cardPile.getCards() )
                 {
-                    final ICardListener cardListener = new CardListener();
+                    final ICardListener cardListener = createCardListener();
                     card.addCardListener( cardListener );
                     cardListeners_.put( card, cardListener );
                 }
@@ -241,14 +302,12 @@ final class LocalNetworkTable
         final Object tableMemento )
     {
         assertArgumentNotNull( tableMemento, "tableMemento" ); //$NON-NLS-1$
+        assert nodeLayer_.isNodeLayerThread();
 
-        synchronized( lock_ )
-        {
-            final boolean oldIgnoreEvents = ignoreEvents_;
-            ignoreEvents_ = true;
-            NetworkTableUtils.setTableState( table_, tableMemento );
-            ignoreEvents_ = oldIgnoreEvents;
-        }
+        final boolean oldIgnoreEvents = ignoreEvents_;
+        ignoreEvents_ = true;
+        NetworkTableUtils.setTableState( table_, tableMemento );
+        ignoreEvents_ = oldIgnoreEvents;
     }
 
     /**
@@ -349,13 +408,11 @@ final class LocalNetworkTable
             final CardEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
 
-            synchronized( lock_ )
+            if( ignoreEvents_ )
             {
-                if( ignoreEvents_ )
-                {
-                    return;
-                }
+                return;
             }
 
             final int cardPileIndex, cardIndex;
@@ -385,13 +442,11 @@ final class LocalNetworkTable
             final CardEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
 
-            synchronized( lock_ )
+            if( ignoreEvents_ )
             {
-                if( ignoreEvents_ )
-                {
-                    return;
-                }
+                return;
             }
 
             final int cardPileIndex, cardIndex;
@@ -410,6 +465,104 @@ final class LocalNetworkTable
             }
 
             tableManager_.incrementCardState( LocalNetworkTable.this, cardPileIndex, cardIndex, cardIncrement );
+        }
+    }
+
+    /**
+     * A proxy for instances of {@link ICardListener} that ensures all methods
+     * are called on the associated node layer thread.
+     */
+    @Immutable
+    private final class CardListenerProxy
+        implements ICardListener
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The actual card listener. */
+        private ICardListener actualCardListener_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code CardListenerProxy} class.
+         * 
+         * @param actualCardListener
+         *        The actual card listener; must not be {@code null}.
+         */
+        CardListenerProxy(
+            /* @NonNull */
+            final ICardListener actualCardListener )
+        {
+            assert actualCardListener != null;
+
+            actualCardListener_ = actualCardListener;
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
+         */
+        @Override
+        public void cardLocationChanged(
+            @SuppressWarnings( "unused" )
+            final CardEvent event )
+        {
+            // do nothing
+
+            // In the current implementation, handling this event is unnecessary because a
+            // card can only be moved by moving a card pile that contains the card. Thus,
+            // when the corresponding card pile bounds changed event is fired, it will
+            // automatically set the new card location when the card pile location is changed.
+            //
+            // If we send both the card pile bounds changed event and the card location
+            // changed event over the network, the card movement on remote tables will appear
+            // "jumpy" because two ICard.setLocation() calls will be made that may be a few
+            // pixels off.
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ICardListener#cardOrientationChanged(org.gamegineer.table.core.CardEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void cardOrientationChanged(
+            final CardEvent event )
+        {
+            asyncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualCardListener_.cardOrientationChanged( event );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ICardListener#cardSurfaceDesignsChanged(org.gamegineer.table.core.CardEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void cardSurfaceDesignsChanged(
+            final CardEvent event )
+        {
+            asyncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualCardListener_.cardSurfaceDesignsChanged( event );
+                }
+            } );
         }
     }
 
@@ -446,18 +599,16 @@ final class LocalNetworkTable
             final CardPileContentChangedEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
 
-            synchronized( lock_ )
+            final ICard card = event.getCard();
+            final ICardListener cardListener = createCardListener();
+            card.addCardListener( cardListener );
+            cardListeners_.put( card, cardListener );
+
+            if( ignoreEvents_ )
             {
-                final ICard card = event.getCard();
-                final ICardListener cardListener = new CardListener();
-                card.addCardListener( cardListener );
-                cardListeners_.put( card, cardListener );
-
-                if( ignoreEvents_ )
-                {
-                    return;
-                }
+                return;
             }
 
             final int cardPileIndex;
@@ -486,13 +637,11 @@ final class LocalNetworkTable
             final CardPileEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
 
-            synchronized( lock_ )
+            if( ignoreEvents_ )
             {
-                if( ignoreEvents_ )
-                {
-                    return;
-                }
+                return;
             }
 
             final int cardPileIndex;
@@ -521,13 +670,11 @@ final class LocalNetworkTable
             final CardPileEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
 
-            synchronized( lock_ )
+            if( ignoreEvents_ )
             {
-                if( ignoreEvents_ )
-                {
-                    return;
-                }
+                return;
             }
 
             final int cardPileIndex;
@@ -556,13 +703,11 @@ final class LocalNetworkTable
             final CardPileEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
 
-            synchronized( lock_ )
+            if( ignoreEvents_ )
             {
-                if( ignoreEvents_ )
-                {
-                    return;
-                }
+                return;
             }
 
             final int cardPileIndex;
@@ -593,20 +738,18 @@ final class LocalNetworkTable
             final CardPileContentChangedEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
 
-            synchronized( lock_ )
+            final ICard card = event.getCard();
+            final ICardListener cardListener = cardListeners_.remove( card );
+            if( cardListener != null )
             {
-                final ICard card = event.getCard();
-                final ICardListener cardListener = cardListeners_.remove( card );
-                if( cardListener != null )
-                {
-                    card.removeCardListener( cardListener );
-                }
+                card.removeCardListener( cardListener );
+            }
 
-                if( ignoreEvents_ )
-                {
-                    return;
-                }
+            if( ignoreEvents_ )
+            {
+                return;
             }
 
             final int cardPileIndex;
@@ -624,6 +767,138 @@ final class LocalNetworkTable
             }
 
             tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+        }
+    }
+
+    /**
+     * A proxy for instances of {@link ICardPileListener} that ensures all
+     * methods are called on the associated node layer thread.
+     */
+    @Immutable
+    private final class CardPileListenerProxy
+        implements ICardPileListener
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The actual card pile listener. */
+        private final ICardPileListener actualCardPileListener_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code CardPileListenerProxy}
+         * class.
+         * 
+         * @param actualCardPileListener
+         *        The actual card pile listener; must not be {@code null}.
+         */
+        CardPileListenerProxy(
+            /* @NonNull */
+            final ICardPileListener actualCardPileListener )
+        {
+            assert actualCardPileListener != null;
+
+            actualCardPileListener_ = actualCardPileListener;
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.ICardPileListener#cardAdded(org.gamegineer.table.core.CardPileContentChangedEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void cardAdded(
+            final CardPileContentChangedEvent event )
+        {
+            asyncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualCardPileListener_.cardAdded( event );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ICardPileListener#cardPileBaseDesignChanged(org.gamegineer.table.core.CardPileEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void cardPileBaseDesignChanged(
+            final CardPileEvent event )
+        {
+            asyncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualCardPileListener_.cardPileBaseDesignChanged( event );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ICardPileListener#cardPileBoundsChanged(org.gamegineer.table.core.CardPileEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void cardPileBoundsChanged(
+            final CardPileEvent event )
+        {
+            asyncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualCardPileListener_.cardPileBoundsChanged( event );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ICardPileListener#cardPileLayoutChanged(org.gamegineer.table.core.CardPileEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void cardPileLayoutChanged(
+            final CardPileEvent event )
+        {
+            asyncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualCardPileListener_.cardPileLayoutChanged( event );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ICardPileListener#cardRemoved(org.gamegineer.table.core.CardPileContentChangedEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void cardRemoved(
+            final CardPileContentChangedEvent event )
+        {
+            asyncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualCardPileListener_.cardRemoved( event );
+                }
+            } );
         }
     }
 
@@ -660,33 +935,31 @@ final class LocalNetworkTable
             final TableContentChangedEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
 
-            synchronized( lock_ )
+            getTableLock().lock();
+            try
             {
-                getTableLock().lock();
-                try
-                {
-                    final ICardPile cardPile = event.getCardPile();
-                    final ICardPileListener cardPileListener = new CardPileListener();
-                    cardPile.addCardPileListener( cardPileListener );
-                    cardPileListeners_.put( cardPile, cardPileListener );
+                final ICardPile cardPile = event.getCardPile();
+                final ICardPileListener cardPileListener = createCardPileListener();
+                cardPile.addCardPileListener( cardPileListener );
+                cardPileListeners_.put( cardPile, cardPileListener );
 
-                    for( final ICard card : cardPile.getCards() )
-                    {
-                        final ICardListener cardListener = new CardListener();
-                        card.addCardListener( cardListener );
-                        cardListeners_.put( card, cardListener );
-                    }
-                }
-                finally
+                for( final ICard card : cardPile.getCards() )
                 {
-                    getTableLock().unlock();
+                    final ICardListener cardListener = createCardListener();
+                    card.addCardListener( cardListener );
+                    cardListeners_.put( card, cardListener );
                 }
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
 
-                if( ignoreEvents_ )
-                {
-                    return;
-                }
+            if( ignoreEvents_ )
+            {
+                return;
             }
 
             final TableIncrement tableIncrement = new TableIncrement();
@@ -706,43 +979,118 @@ final class LocalNetworkTable
             final TableContentChangedEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
 
-            synchronized( lock_ )
+            getTableLock().lock();
+            try
             {
-                getTableLock().lock();
-                try
+                final ICardPile cardPile = event.getCardPile();
+                for( final ICard card : cardPile.getCards() )
                 {
-                    final ICardPile cardPile = event.getCardPile();
-                    for( final ICard card : cardPile.getCards() )
+                    final ICardListener cardListener = cardListeners_.remove( card );
+                    if( cardListener != null )
                     {
-                        final ICardListener cardListener = cardListeners_.remove( card );
-                        if( cardListener != null )
-                        {
-                            card.removeCardListener( cardListener );
-                        }
-                    }
-
-                    final ICardPileListener cardPileListener = cardPileListeners_.remove( cardPile );
-                    if( cardPileListener != null )
-                    {
-                        cardPile.removeCardPileListener( cardPileListener );
+                        card.removeCardListener( cardListener );
                     }
                 }
-                finally
-                {
-                    getTableLock().unlock();
-                }
 
-                if( ignoreEvents_ )
+                final ICardPileListener cardPileListener = cardPileListeners_.remove( cardPile );
+                if( cardPileListener != null )
                 {
-                    return;
+                    cardPile.removeCardPileListener( cardPileListener );
                 }
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
+
+            if( ignoreEvents_ )
+            {
+                return;
             }
 
             final TableIncrement tableIncrement = new TableIncrement();
             tableIncrement.setRemovedCardPileIndexes( Collections.singletonList( event.getCardPileIndex() ) );
 
             tableManager_.incrementTableState( LocalNetworkTable.this, tableIncrement );
+        }
+    }
+
+    /**
+     * A proxy for instances of {@link ITableListener} that ensures all methods
+     * are called on the associated node layer thread.
+     */
+    @Immutable
+    private final class TableListenerProxy
+        implements ITableListener
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The actual table listener. */
+        private final ITableListener actualTableListener_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code TableListenerProxy} class.
+         * 
+         * @param actualTableListener
+         *        The actual table listener; must not be {@code null}.
+         */
+        TableListenerProxy(
+            /* @NonNull */
+            final ITableListener actualTableListener )
+        {
+            assert actualTableListener != null;
+
+            actualTableListener_ = actualTableListener;
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.ITableListener#cardPileAdded(org.gamegineer.table.core.TableContentChangedEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void cardPileAdded(
+            final TableContentChangedEvent event )
+        {
+            asyncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualTableListener_.cardPileAdded( event );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ITableListener#cardPileRemoved(org.gamegineer.table.core.TableContentChangedEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void cardPileRemoved(
+            final TableContentChangedEvent event )
+        {
+            asyncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualTableListener_.cardPileRemoved( event );
+                }
+            } );
         }
     }
 }
