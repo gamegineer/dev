@@ -24,8 +24,6 @@ package org.gamegineer.table.internal.net.node;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collections;
-import java.util.IdentityHashMap;
-import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
@@ -60,17 +58,11 @@ final class LocalNetworkTable
     // Fields
     // ======================================================================
 
-    /**
-     * The collection of local card listeners. The key is the local card. The
-     * value is the card listener.
-     */
-    private final Map<ICard, ICardListener> cardListeners_;
+    /** The local card listener. */
+    private final ICardListener cardListener_;
 
-    /**
-     * The collection of local card pile listeners. The key is the local card
-     * pile. The value is the card pile listener.
-     */
-    private final Map<ICardPile, ICardPileListener> cardPileListeners_;
+    /** The local card pile listener. */
+    private final ICardPileListener cardPileListener_;
 
     /** Indicates events fired by the local table should be ignored. */
     private boolean ignoreEvents_;
@@ -82,7 +74,7 @@ final class LocalNetworkTable
     private final ITable table_;
 
     /** The local table listener. */
-    private ITableListener tableListener_;
+    private final ITableListener tableListener_;
 
     /** The table manager for the local table network node. */
     private final ITableManager tableManager_;
@@ -116,12 +108,12 @@ final class LocalNetworkTable
         assert tableManager != null;
         assert table != null;
 
-        cardListeners_ = new IdentityHashMap<ICard, ICardListener>();
-        cardPileListeners_ = new IdentityHashMap<ICardPile, ICardPileListener>();
+        cardListener_ = new CardListenerProxy( new CardListener() );
+        cardPileListener_ = new CardPileListenerProxy( new CardPileListener() );
         ignoreEvents_ = false;
         nodeLayer_ = nodeLayer;
         table_ = table;
-        tableListener_ = null;
+        tableListener_ = new TableListenerProxy( new TableListener() );
         tableManager_ = tableManager;
 
         initializeListeners();
@@ -149,39 +141,6 @@ final class LocalNetworkTable
         assert task != null;
 
         nodeLayer_.asyncExec( task );
-    }
-
-    /**
-     * Creates a new card listener.
-     * 
-     * @return A new card listener; never {@code null}.
-     */
-    /* @NonNull */
-    private ICardListener createCardListener()
-    {
-        return new CardListenerProxy( new CardListener() );
-    }
-
-    /**
-     * Creates a new card pile listener.
-     * 
-     * @return A new card pile listener; never {@code null}.
-     */
-    /* @NonNull */
-    private ICardPileListener createCardPileListener()
-    {
-        return new CardPileListenerProxy( new CardPileListener() );
-    }
-
-    /**
-     * Creates a new table listener.
-     * 
-     * @return A new table listener; never {@code null}.
-     */
-    /* @NonNull */
-    private ITableListener createTableListener()
-    {
-        return new TableListenerProxy( new TableListener() );
     }
 
     /*
@@ -265,26 +224,18 @@ final class LocalNetworkTable
      */
     private void initializeListeners()
     {
-        // FIXME: we don't need to create a listener per object.  create a single listener
-        // for each type and simply register/unregister it per instance.  therefore, can
-        // get rid of the maps, as well.
         getTableLock().lock();
         try
         {
-            tableListener_ = createTableListener();
             table_.addTableListener( tableListener_ );
 
             for( final ICardPile cardPile : table_.getCardPiles() )
             {
-                final ICardPileListener cardPileListener = createCardPileListener();
-                cardPile.addCardPileListener( cardPileListener );
-                cardPileListeners_.put( cardPile, cardPileListener );
+                cardPile.addCardPileListener( cardPileListener_ );
 
                 for( final ICard card : cardPile.getCards() )
                 {
-                    final ICardListener cardListener = createCardListener();
-                    card.addCardListener( cardListener );
-                    cardListeners_.put( card, cardListener );
+                    card.addCardListener( cardListener_ );
                 }
             }
         }
@@ -318,27 +269,15 @@ final class LocalNetworkTable
         getTableLock().lock();
         try
         {
-            if( tableListener_ != null )
-            {
-                table_.removeTableListener( tableListener_ );
-                tableListener_ = null;
-            }
+            table_.removeTableListener( tableListener_ );
 
             for( final ICardPile cardPile : table_.getCardPiles() )
             {
-                final ICardPileListener cardPileListener = cardPileListeners_.remove( cardPile );
-                if( cardPileListener != null )
-                {
-                    cardPile.removeCardPileListener( cardPileListener );
-                }
+                cardPile.removeCardPileListener( cardPileListener_ );
 
                 for( final ICard card : cardPile.getCards() )
                 {
-                    final ICardListener cardListener = cardListeners_.remove( card );
-                    if( cardListener != null )
-                    {
-                        card.removeCardListener( cardListener );
-                    }
+                    card.removeCardListener( cardListener_ );
                 }
             }
         }
@@ -602,9 +541,7 @@ final class LocalNetworkTable
             assert nodeLayer_.isNodeLayerThread();
 
             final ICard card = event.getCard();
-            final ICardListener cardListener = createCardListener();
-            card.addCardListener( cardListener );
-            cardListeners_.put( card, cardListener );
+            card.addCardListener( cardListener_ );
 
             if( ignoreEvents_ )
             {
@@ -741,11 +678,7 @@ final class LocalNetworkTable
             assert nodeLayer_.isNodeLayerThread();
 
             final ICard card = event.getCard();
-            final ICardListener cardListener = cardListeners_.remove( card );
-            if( cardListener != null )
-            {
-                card.removeCardListener( cardListener );
-            }
+            card.removeCardListener( cardListener_ );
 
             if( ignoreEvents_ )
             {
@@ -941,15 +874,11 @@ final class LocalNetworkTable
             try
             {
                 final ICardPile cardPile = event.getCardPile();
-                final ICardPileListener cardPileListener = createCardPileListener();
-                cardPile.addCardPileListener( cardPileListener );
-                cardPileListeners_.put( cardPile, cardPileListener );
+                cardPile.addCardPileListener( cardPileListener_ );
 
                 for( final ICard card : cardPile.getCards() )
                 {
-                    final ICardListener cardListener = createCardListener();
-                    card.addCardListener( cardListener );
-                    cardListeners_.put( card, cardListener );
+                    card.addCardListener( cardListener_ );
                 }
             }
             finally
@@ -987,18 +916,10 @@ final class LocalNetworkTable
                 final ICardPile cardPile = event.getCardPile();
                 for( final ICard card : cardPile.getCards() )
                 {
-                    final ICardListener cardListener = cardListeners_.remove( card );
-                    if( cardListener != null )
-                    {
-                        card.removeCardListener( cardListener );
-                    }
+                    card.removeCardListener( cardListener_ );
                 }
 
-                final ICardPileListener cardPileListener = cardPileListeners_.remove( cardPile );
-                if( cardPileListener != null )
-                {
-                    cardPile.removeCardPileListener( cardPileListener );
-                }
+                cardPile.removeCardPileListener( cardPileListener_ );
             }
             finally
             {
