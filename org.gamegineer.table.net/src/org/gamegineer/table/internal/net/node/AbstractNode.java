@@ -1118,8 +1118,10 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                 throw new ExecutionException( e );
             }
         }
-
-        asyncExec( task ).get();
+        else
+        {
+            asyncExec( task ).get();
+        }
     }
 
     /*
