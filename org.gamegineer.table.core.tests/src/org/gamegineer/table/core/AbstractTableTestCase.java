@@ -537,6 +537,7 @@ public abstract class AbstractTableTestCase
         final List<ICardPile> cardPiles = table_.getCardPiles();
         assertFalse( cardPiles.contains( cardPile ) );
         assertEquals( 0, cardPiles.size() );
+        assertNull( cardPile.getTable() );
     }
 
     /**

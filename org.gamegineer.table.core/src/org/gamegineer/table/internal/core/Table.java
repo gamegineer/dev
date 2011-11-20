@@ -440,7 +440,9 @@ public final class Table
             assertArgumentLegal( cardPile.getTable() == this, "cardPile", NonNlsMessages.Table_removeCardPile_cardPile_notOwned ); //$NON-NLS-1$
 
             cardPileIndex = cardPiles_.indexOf( cardPile );
-            cardPiles_.remove( cardPileIndex );
+            final CardPile typedCardPile = cardPiles_.remove( cardPileIndex );
+            assert typedCardPile != null;
+            typedCardPile.setTable( null );
         }
         finally
         {
