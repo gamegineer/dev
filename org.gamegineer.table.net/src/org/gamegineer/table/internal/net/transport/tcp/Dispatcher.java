@@ -26,6 +26,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
@@ -223,9 +224,8 @@ final class Dispatcher
             {
                 selectorGuardBarrier();
 
-                selector.select();
-
-                final Set<SelectionKey> selectionKeys = selector.selectedKeys();
+                final int readyKeyCount = selector.select();
+                final Set<SelectionKey> selectionKeys = (readyKeyCount > 0) ? selector.selectedKeys() : Collections.<SelectionKey>emptySet();
                 try
                 {
                     final Future<?> future = transportLayer_.getExecutorService().submit( new Runnable()
