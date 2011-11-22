@@ -88,6 +88,14 @@ final class NonNlsMessages
     /** An uncorrelated error message was received. */
     public static String ErrorMessageHandler_handleMessage_errorReceived;
 
+    // --- LocalNetworkTable ------------------------------------------------
+
+    /** An error occurred during the operation. */
+    public static String LocalNetworkTable_syncExec_error;
+
+    /** The operation was interrupted. */
+    public static String LocalNetworkTable_syncExec_interrupted;
+
     // --- NetworkTableUtils ------------------------------------------------
 
     /** Failed to set the card state. */

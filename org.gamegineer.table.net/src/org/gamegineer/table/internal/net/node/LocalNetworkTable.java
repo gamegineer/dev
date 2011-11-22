@@ -24,7 +24,9 @@ package org.gamegineer.table.internal.net.node;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collections;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.Lock;
+import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardEvent;
@@ -37,15 +39,10 @@ import org.gamegineer.table.core.ICardPileListener;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
+import org.gamegineer.table.internal.net.Loggers;
 
 // FIXME: there's a huge performance hit now when we move card piles that contain a large
 // number of cards because a huge number of events get fired and then forked onto the NLT
-//
-// FIXME: determine why two cards are created during drag/move operations (best observed
-// when dragging from a card pile with an accordian layout style).
-//
-// FIXME: when client is editor and modifying table, host is simultaneously attempting
-// to modify table (warnings are logged).
 
 /**
  * Adapts a local table to {@link INetworkTable}.
@@ -123,25 +120,6 @@ final class LocalNetworkTable
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Asynchronously executes the specified task on the node layer thread.
-     * 
-     * <p>
-     * This method may be called from any thread.
-     * </p>
-     * 
-     * @param task
-     *        The task to execute; must not be {@code null}.
-     */
-    private void asyncExec(
-        /* @NonNull */
-        final Runnable task )
-    {
-        assert task != null;
-
-        nodeLayer_.asyncExec( task );
-    }
 
     /*
      * @see org.gamegineer.table.internal.net.node.INetworkTable#dispose()
@@ -262,6 +240,37 @@ final class LocalNetworkTable
     }
 
     /**
+     * Synchronously executes the specified task on the node layer thread.
+     * 
+     * <p>
+     * This method may be called from any thread.
+     * </p>
+     * 
+     * @param task
+     *        The task to execute; must not be {@code null}.
+     */
+    private void syncExec(
+        /* @NonNull */
+        final Runnable task )
+    {
+        assert task != null;
+
+        try
+        {
+            nodeLayer_.syncExec( task );
+        }
+        catch( final ExecutionException e )
+        {
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.LocalNetworkTable_syncExec_error, e );
+        }
+        catch( final InterruptedException e )
+        {
+            Thread.currentThread().interrupt();
+            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.LocalNetworkTable_syncExec_interrupted, e );
+        }
+    }
+
+    /**
      * Uninitializes the listeners for the local table.
      */
     private void uninitializeListeners()
@@ -354,22 +363,33 @@ final class LocalNetworkTable
                 return;
             }
 
-            final int cardPileIndex, cardIndex;
+            int cardPileIndex = -1, cardIndex = -1;
             final CardIncrement cardIncrement = new CardIncrement();
             getTableLock().lock();
             try
             {
                 final ICard card = event.getCard();
-                cardIndex = card.getCardPile().getCardIndex( card );
-                cardPileIndex = card.getCardPile().getTable().getCardPileIndex( card.getCardPile() );
-                cardIncrement.setOrientation( card.getOrientation() );
+                final ICardPile cardPile = card.getCardPile();
+                if( cardPile != null )
+                {
+                    final ITable table = cardPile.getTable();
+                    if( table != null )
+                    {
+                        cardIndex = cardPile.getCardIndex( card );
+                        cardPileIndex = table.getCardPileIndex( cardPile );
+                        cardIncrement.setOrientation( card.getOrientation() );
+                    }
+                }
             }
             finally
             {
                 getTableLock().unlock();
             }
 
-            tableManager_.incrementCardState( LocalNetworkTable.this, cardPileIndex, cardIndex, cardIncrement );
+            if( (cardPileIndex != -1) && (cardIndex != -1) )
+            {
+                tableManager_.incrementCardState( LocalNetworkTable.this, cardPileIndex, cardIndex, cardIncrement );
+            }
         }
 
         /*
@@ -388,22 +408,33 @@ final class LocalNetworkTable
                 return;
             }
 
-            final int cardPileIndex, cardIndex;
+            int cardPileIndex = -1, cardIndex = -1;
             final CardIncrement cardIncrement = new CardIncrement();
             getTableLock().lock();
             try
             {
                 final ICard card = event.getCard();
-                cardIndex = card.getCardPile().getCardIndex( card );
-                cardPileIndex = card.getCardPile().getTable().getCardPileIndex( card.getCardPile() );
-                cardIncrement.setSurfaceDesigns( card.getBackDesign(), card.getFaceDesign() );
+                final ICardPile cardPile = card.getCardPile();
+                if( cardPile != null )
+                {
+                    final ITable table = cardPile.getTable();
+                    if( table != null )
+                    {
+                        cardIndex = cardPile.getCardIndex( card );
+                        cardPileIndex = table.getCardPileIndex( cardPile );
+                        cardIncrement.setSurfaceDesigns( card.getBackDesign(), card.getFaceDesign() );
+                    }
+                }
             }
             finally
             {
                 getTableLock().unlock();
             }
 
-            tableManager_.incrementCardState( LocalNetworkTable.this, cardPileIndex, cardIndex, cardIncrement );
+            if( (cardPileIndex != -1) && (cardIndex != -1) )
+            {
+                tableManager_.incrementCardState( LocalNetworkTable.this, cardPileIndex, cardIndex, cardIncrement );
+            }
         }
     }
 
@@ -476,7 +507,7 @@ final class LocalNetworkTable
         public void cardOrientationChanged(
             final CardEvent event )
         {
-            asyncExec( new Runnable()
+            syncExec( new Runnable()
             {
                 @Override
                 public void run()
@@ -494,7 +525,7 @@ final class LocalNetworkTable
         public void cardSurfaceDesignsChanged(
             final CardEvent event )
         {
-            asyncExec( new Runnable()
+            syncExec( new Runnable()
             {
                 @Override
                 public void run()
@@ -548,21 +579,28 @@ final class LocalNetworkTable
                 return;
             }
 
-            final int cardPileIndex;
+            int cardPileIndex = -1;
             final CardPileIncrement cardPileIncrement = new CardPileIncrement();
             getTableLock().lock();
             try
             {
                 final ICardPile cardPile = event.getCardPile();
-                cardPileIndex = cardPile.getTable().getCardPileIndex( cardPile );
-                cardPileIncrement.setAddedCardMementos( Collections.singletonList( event.getCard().createMemento() ) );
+                final ITable table = cardPile.getTable();
+                if( table != null )
+                {
+                    cardPileIndex = table.getCardPileIndex( cardPile );
+                    cardPileIncrement.setAddedCardMementos( Collections.singletonList( event.getCard().createMemento() ) );
+                }
             }
             finally
             {
                 getTableLock().unlock();
             }
 
-            tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+            if( cardPileIndex != -1 )
+            {
+                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+            }
         }
 
         /*
@@ -581,21 +619,28 @@ final class LocalNetworkTable
                 return;
             }
 
-            final int cardPileIndex;
+            int cardPileIndex = -1;
             final CardPileIncrement cardPileIncrement = new CardPileIncrement();
             getTableLock().lock();
             try
             {
                 final ICardPile cardPile = event.getCardPile();
-                cardPileIndex = cardPile.getTable().getCardPileIndex( cardPile );
-                cardPileIncrement.setBaseDesign( cardPile.getBaseDesign() );
+                final ITable table = cardPile.getTable();
+                if( table != null )
+                {
+                    cardPileIndex = table.getCardPileIndex( cardPile );
+                    cardPileIncrement.setBaseDesign( cardPile.getBaseDesign() );
+                }
             }
             finally
             {
                 getTableLock().unlock();
             }
 
-            tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+            if( cardPileIndex != -1 )
+            {
+                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+            }
         }
 
         /*
@@ -614,21 +659,28 @@ final class LocalNetworkTable
                 return;
             }
 
-            final int cardPileIndex;
+            int cardPileIndex = -1;
             final CardPileIncrement cardPileIncrement = new CardPileIncrement();
             getTableLock().lock();
             try
             {
                 final ICardPile cardPile = event.getCardPile();
-                cardPileIndex = cardPile.getTable().getCardPileIndex( cardPile );
-                cardPileIncrement.setBaseLocation( cardPile.getBaseLocation() );
+                final ITable table = cardPile.getTable();
+                if( table != null )
+                {
+                    cardPileIndex = table.getCardPileIndex( cardPile );
+                    cardPileIncrement.setBaseLocation( cardPile.getBaseLocation() );
+                }
             }
             finally
             {
                 getTableLock().unlock();
             }
 
-            tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+            if( cardPileIndex != -1 )
+            {
+                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+            }
         }
 
         /*
@@ -647,21 +699,28 @@ final class LocalNetworkTable
                 return;
             }
 
-            final int cardPileIndex;
+            int cardPileIndex = -1;
             final CardPileIncrement cardPileIncrement = new CardPileIncrement();
             getTableLock().lock();
             try
             {
                 final ICardPile cardPile = event.getCardPile();
-                cardPileIndex = cardPile.getTable().getCardPileIndex( cardPile );
-                cardPileIncrement.setLayout( cardPile.getLayout() );
+                final ITable table = cardPile.getTable();
+                if( table != null )
+                {
+                    cardPileIndex = table.getCardPileIndex( cardPile );
+                    cardPileIncrement.setLayout( cardPile.getLayout() );
+                }
             }
             finally
             {
                 getTableLock().unlock();
             }
 
-            tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+            if( cardPileIndex != -1 )
+            {
+                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+            }
         }
 
         /*
@@ -685,21 +744,28 @@ final class LocalNetworkTable
                 return;
             }
 
-            final int cardPileIndex;
+            int cardPileIndex = -1;
             final CardPileIncrement cardPileIncrement = new CardPileIncrement();
             getTableLock().lock();
             try
             {
                 final ICardPile cardPile = event.getCardPile();
-                cardPileIndex = cardPile.getTable().getCardPileIndex( cardPile );
-                cardPileIncrement.setRemovedCardCount( 1 );
+                final ITable table = cardPile.getTable();
+                if( table != null )
+                {
+                    cardPileIndex = table.getCardPileIndex( cardPile );
+                    cardPileIncrement.setRemovedCardCount( 1 );
+                }
             }
             finally
             {
                 getTableLock().unlock();
             }
 
-            tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+            if( cardPileIndex != -1 )
+            {
+                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+            }
         }
     }
 
@@ -752,7 +818,7 @@ final class LocalNetworkTable
         public void cardAdded(
             final CardPileContentChangedEvent event )
         {
-            asyncExec( new Runnable()
+            syncExec( new Runnable()
             {
                 @Override
                 public void run()
@@ -770,7 +836,7 @@ final class LocalNetworkTable
         public void cardPileBaseDesignChanged(
             final CardPileEvent event )
         {
-            asyncExec( new Runnable()
+            syncExec( new Runnable()
             {
                 @Override
                 public void run()
@@ -788,7 +854,7 @@ final class LocalNetworkTable
         public void cardPileBoundsChanged(
             final CardPileEvent event )
         {
-            asyncExec( new Runnable()
+            syncExec( new Runnable()
             {
                 @Override
                 public void run()
@@ -806,7 +872,7 @@ final class LocalNetworkTable
         public void cardPileLayoutChanged(
             final CardPileEvent event )
         {
-            asyncExec( new Runnable()
+            syncExec( new Runnable()
             {
                 @Override
                 public void run()
@@ -824,7 +890,7 @@ final class LocalNetworkTable
         public void cardRemoved(
             final CardPileContentChangedEvent event )
         {
-            asyncExec( new Runnable()
+            syncExec( new Runnable()
             {
                 @Override
                 public void run()
@@ -986,7 +1052,7 @@ final class LocalNetworkTable
         public void cardPileAdded(
             final TableContentChangedEvent event )
         {
-            asyncExec( new Runnable()
+            syncExec( new Runnable()
             {
                 @Override
                 public void run()
@@ -1004,7 +1070,7 @@ final class LocalNetworkTable
         public void cardPileRemoved(
             final TableContentChangedEvent event )
         {
-            asyncExec( new Runnable()
+            syncExec( new Runnable()
             {
                 @Override
                 public void run()
