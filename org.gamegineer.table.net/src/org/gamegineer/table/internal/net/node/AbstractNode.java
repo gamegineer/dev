@@ -351,9 +351,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                         }
                         catch( final TableNetworkException e )
                         {
-                            // FIXME: something is broken here...   when the exception
-                            // reason should be DUPLICATE_USER or BAD_PASSWORD, we're getting
-                            // UNEXPECTED_PEER_TERMINATION instead....
                             try
                             {
                                 endDisconnect( syncExec( new Callable<Future<Void>>()

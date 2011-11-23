@@ -186,7 +186,12 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         assertStateLegal( serviceContext_ != null, NonNlsMessages.AbstractRemoteNode_closed );
         assert isNodeLayerThread();
 
-        closeError_ = error;
+        // Do not overwrite the original error that caused the remote node to be closed
+        if( closeError_ == null )
+        {
+            closeError_ = error;
+        }
+
         serviceContext_.stopService();
     }
 
