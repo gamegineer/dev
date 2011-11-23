@@ -22,7 +22,6 @@
 package org.gamegineer.table.internal.net.transport.tcp;
 
 import java.io.IOException;
-import java.net.SocketException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
@@ -214,7 +213,7 @@ final class ServiceHandler
                 {
                     channel_.socket().shutdownInput();
                 }
-                catch( final SocketException e )
+                catch( final IOException e )
                 {
                     // ignore
                 }
