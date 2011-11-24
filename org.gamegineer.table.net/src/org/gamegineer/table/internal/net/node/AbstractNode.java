@@ -444,8 +444,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                     // InterruptedException AGAIN!!!!
                     throw new TableNetworkException( TableNetworkError.INTERRUPTED, e );
                 }
-
-                // XXX: WE MUST CALL endConnect() here just like we did in transport layer??
             }
         } );
     }
@@ -524,8 +522,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                 }
 
                 return null;
-
-                // XXX: WE MUST CALL endDisconnect() here just like we did in transport layer ??
             }
         } );
     }
