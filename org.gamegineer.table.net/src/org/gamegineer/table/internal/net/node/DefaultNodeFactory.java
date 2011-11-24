@@ -25,6 +25,7 @@ import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.ITableNetworkController;
 import org.gamegineer.table.internal.net.node.client.ClientNode;
 import org.gamegineer.table.internal.net.node.server.ServerNode;
+import org.gamegineer.table.net.TableNetworkException;
 
 /**
  * Default implementation of
@@ -57,6 +58,7 @@ public final class DefaultNodeFactory
     @Override
     public INodeController createClientNode(
         final ITableNetworkController tableNetworkController )
+        throws TableNetworkException
     {
         return new NodeControllerProxy( new ClientNode.Factory().createNode( tableNetworkController ) );
     }
@@ -67,6 +69,7 @@ public final class DefaultNodeFactory
     @Override
     public INodeController createServerNode(
         final ITableNetworkController tableNetworkController )
+        throws TableNetworkException
     {
         return new NodeControllerProxy( new ServerNode.Factory().createNode( tableNetworkController ) );
     }
