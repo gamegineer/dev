@@ -467,74 +467,60 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             {
                 try
                 {
-                    syncExec( new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            if( transportLayer != null )
-                            {
-                                disconnecting();
-                            }
-                        }
-                    } );
-                }
-                catch( final ExecutionException e )
-                {
-                    throw TaskUtils.launderThrowable( e.getCause() );
-                }
-                catch( final InterruptedException e )
-                {
-                    Thread.currentThread().interrupt();
-                    // TODO
-                    return null;
-                }
-
-                if( transportLayer != null )
-                {
                     try
+                    {
+                        syncExec( new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                if( transportLayer != null )
+                                {
+                                    disconnecting();
+                                }
+                            }
+                        } );
+                    }
+                    catch( final ExecutionException e )
+                    {
+                        throw TaskUtils.launderThrowable( e.getCause() );
+                    }
+
+                    if( transportLayer != null )
                     {
                         transportLayer.endClose( transportLayer.beginClose() );
                     }
-                    catch( final InterruptedException e )
-                    {
-                        Thread.currentThread().interrupt();
-                        Debug.getDefault().trace( Debug.OPTION_DEFAULT, "Interrupted while waiting for transport layer to close", e ); //$NON-NLS-1$
-                        // TODO
-                        return null;
-                    }
-                }
 
-                try
-                {
-                    syncExec( new Runnable()
+                    try
                     {
-                        @Override
-                        public void run()
+                        syncExec( new Runnable()
                         {
-                            if( transportLayer != null )
+                            @Override
+                            public void run()
                             {
-                                transportLayer_ = null;
+                                if( transportLayer != null )
+                                {
+                                    transportLayer_ = null;
 
-                                final INetworkTable table = tables_.remove( localPlayerName_ );
-                                assert table != null;
-                                table.dispose();
+                                    final INetworkTable table = tables_.remove( localPlayerName_ );
+                                    assert table != null;
+                                    table.dispose();
 
-                                disconnected();
-                                dispose();
+                                    disconnected();
+                                    dispose();
+                                }
                             }
-                        }
-                    } );
-                }
-                catch( final ExecutionException e )
-                {
-                    throw TaskUtils.launderThrowable( e.getCause() );
+                        } );
+                    }
+                    catch( final ExecutionException e )
+                    {
+                        throw TaskUtils.launderThrowable( e.getCause() );
+                    }
                 }
                 catch( final InterruptedException e )
                 {
                     Thread.currentThread().interrupt();
-                    // TODO
-                    return null;
+                    // TODO: log
                 }
 
                 return null;
