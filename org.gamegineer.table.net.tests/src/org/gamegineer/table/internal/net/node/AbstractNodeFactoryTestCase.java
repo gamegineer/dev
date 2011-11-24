@@ -86,9 +86,13 @@ public abstract class AbstractNodeFactoryTestCase
     /**
      * Ensures the {@code createClientNode} method throws an exception when
      * passed a {@code null} table network controller.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateClientNode_TableNetworkController_Null()
+        throws Exception
     {
         nodeFactory_.createClientNode( null );
     }
@@ -96,9 +100,13 @@ public abstract class AbstractNodeFactoryTestCase
     /**
      * Ensures the {@code createServerNode} method throws an exception when
      * passed a {@code null} table network controller.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
     public void testCreateServerNode_TableNetworkController_Null()
+        throws Exception
     {
         nodeFactory_.createServerNode( null );
     }

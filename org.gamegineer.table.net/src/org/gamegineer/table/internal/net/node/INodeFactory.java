@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.net.node;
 
 import org.gamegineer.table.internal.net.ITableNetworkController;
+import org.gamegineer.table.net.TableNetworkException;
 
 /**
  * A factory for creating local table network nodes.
@@ -45,11 +46,14 @@ public interface INodeFactory
      * 
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.
+     * @throws org.gamegineer.table.net.TableNetworkException
+     *         If the table network node cannot be created.
      */
     /* @NonNull */
     public INodeController createClientNode(
         /* @NonNull */
-        ITableNetworkController tableNetworkController );
+        ITableNetworkController tableNetworkController )
+        throws TableNetworkException;
 
     /**
      * Creates a new local server table network node.
@@ -62,9 +66,12 @@ public interface INodeFactory
      * 
      * @throws java.lang.NullPointerException
      *         If {@code tableNetworkController} is {@code null}.
+     * @throws org.gamegineer.table.net.TableNetworkException
+     *         If the table network node cannot be created.
      */
     /* @NonNull */
     public INodeController createServerNode(
         /* @NonNull */
-        ITableNetworkController tableNetworkController );
+        ITableNetworkController tableNetworkController )
+        throws TableNetworkException;
 }

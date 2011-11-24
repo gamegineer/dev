@@ -1202,11 +1202,15 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          *        The table network controller; must not be {@code null}.
          * 
          * @return A new table network node; never {@code null}.
+         * 
+         * @throws org.gamegineer.table.net.TableNetworkException
+         *         If the table network node cannot be created.
          */
         /* @NonNull */
         public final T createNode(
             /* @NonNull */
             final ITableNetworkController tableNetworkController )
+            throws TableNetworkException
         {
             assertArgumentNotNull( tableNetworkController, "tableNetworkController" ); //$NON-NLS-1$
 
@@ -1230,10 +1234,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             }
             catch( final InterruptedException e )
             {
-                // FIXME: allow InterruptedException or some other kind of checked
-                // exception to be thrown from this method.
                 Thread.currentThread().interrupt();
-                throw new RuntimeException( e );
+                throw new TableNetworkException( TableNetworkError.INTERRUPTED, e );
             }
         }
 

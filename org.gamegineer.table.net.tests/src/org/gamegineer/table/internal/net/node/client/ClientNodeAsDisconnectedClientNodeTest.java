@@ -57,6 +57,7 @@ public final class ClientNodeAsDisconnectedClientNodeTest
      */
     @Override
     protected ClientNode createDisconnectedNode()
+        throws Exception
     {
         final ClientNode node = new ClientNode.Factory().createNode( TableNetworkControllers.createFakeTableNetworkController() );
         node.setHandshakeComplete( null );
