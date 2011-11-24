@@ -57,6 +57,7 @@ public final class ServerNodeAsDisconnectedServerNodeTest
      */
     @Override
     protected ServerNode createDisconnectedNode()
+        throws Exception
     {
         return new ServerNode.Factory().createNode( TableNetworkControllers.createFakeTableNetworkController() );
     }
