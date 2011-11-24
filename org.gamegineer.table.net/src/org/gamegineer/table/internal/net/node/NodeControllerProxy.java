@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.node;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.Callable;
@@ -29,6 +30,7 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
+import org.gamegineer.table.internal.net.Activator;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
@@ -82,29 +84,42 @@ final class NodeControllerProxy
     public Future<Void> beginConnect(
         final ITableNetworkConfiguration configuration )
     {
-        try
+        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
-            return actualNodeController_.syncExec( new Callable<Future<Void>>()
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
+                throws TableNetworkException
             {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public Future<Void> call()
+                try
                 {
-                    return actualNodeController_.beginConnect( configuration );
+                    final Future<Void> connectFuture;
+                    try
+                    {
+                        connectFuture = actualNodeController_.syncExec( new Callable<Future<Void>>()
+                        {
+                            @Override
+                            public Future<Void> call()
+                            {
+                                return actualNodeController_.beginConnect( configuration );
+                            }
+                        } );
+                    }
+                    catch( final ExecutionException e )
+                    {
+                        throw TaskUtils.launderThrowable( e.getCause() );
+                    }
+
+                    actualNodeController_.endConnect( connectFuture );
                 }
-            } );
-        }
-        catch( final ExecutionException e )
-        {
-            throw TaskUtils.launderThrowable( e.getCause() );
-        }
-        catch( final InterruptedException e )
-        {
-            // TODO: avoid InterruptedException by not calling syncExec, but rather
-            // using a pool thread and invoking endConnect() within the pool task
-            Thread.currentThread().interrupt();
-            throw new RuntimeException( e );
-        }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
+                }
+
+                return null;
+            }
+        } );
     }
 
     /*
@@ -113,29 +128,41 @@ final class NodeControllerProxy
     @Override
     public Future<Void> beginDisconnect()
     {
-        try
+        return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
-            return actualNodeController_.syncExec( new Callable<Future<Void>>()
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public Void call()
             {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public Future<Void> call()
+                try
                 {
-                    return actualNodeController_.beginDisconnect();
+                    final Future<Void> disconnectFuture;
+                    try
+                    {
+                        disconnectFuture = actualNodeController_.syncExec( new Callable<Future<Void>>()
+                        {
+                            @Override
+                            public Future<Void> call()
+                            {
+                                return actualNodeController_.beginDisconnect();
+                            }
+                        } );
+                    }
+                    catch( final ExecutionException e )
+                    {
+                        throw TaskUtils.launderThrowable( e.getCause() );
+                    }
+
+                    actualNodeController_.endDisconnect( disconnectFuture );
                 }
-            } );
-        }
-        catch( final ExecutionException e )
-        {
-            throw TaskUtils.launderThrowable( e.getCause() );
-        }
-        catch( final InterruptedException e )
-        {
-            // TODO: avoid InterruptedException by not calling syncExec, but rather
-            // using a pool thread and invoking endDisconnect() within the pool task
-            Thread.currentThread().interrupt();
-            throw new RuntimeException( e );
-        }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
+                }
+
+                return null;
+            }
+        } );
     }
 
     /*
@@ -177,7 +204,22 @@ final class NodeControllerProxy
         final Future<Void> future )
         throws TableNetworkException, InterruptedException
     {
-        actualNodeController_.endConnect( future );
+        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
+
+        try
+        {
+            future.get();
+        }
+        catch( final ExecutionException e )
+        {
+            final Throwable cause = e.getCause();
+            if( cause instanceof TableNetworkException )
+            {
+                throw (TableNetworkException)cause;
+            }
+
+            throw TaskUtils.launderThrowable( cause );
+        }
     }
 
     /*
@@ -188,7 +230,16 @@ final class NodeControllerProxy
         final Future<Void> future )
         throws InterruptedException
     {
-        actualNodeController_.endDisconnect( future );
+        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
+
+        try
+        {
+            future.get();
+        }
+        catch( final ExecutionException e )
+        {
+            throw TaskUtils.launderThrowable( e.getCause() );
+        }
     }
 
     /*
