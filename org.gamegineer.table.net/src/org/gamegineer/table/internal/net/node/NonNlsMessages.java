@@ -54,6 +54,9 @@ final class NonNlsMessages
     /** An error occurred while attempting to disconnect the network. */
     public static String AbstractNode_connect_disconnectError;
 
+    /** An error occurred while attempting to dispose the node. */
+    public static String AbstractNode_connect_disposeError;
+
     /** The network is disconnected. */
     public static String AbstractNode_networkDisconnected;
 
