@@ -51,6 +51,9 @@ final class NonNlsMessages
     /** The remote node is already bound. */
     public static String AbstractNode_bindRemoteNode_remoteNodeBound;
 
+    /** An error occurred while attempting to disconnect the network. */
+    public static String AbstractNode_connect_disconnectError;
+
     /** The network is disconnected. */
     public static String AbstractNode_networkDisconnected;
 

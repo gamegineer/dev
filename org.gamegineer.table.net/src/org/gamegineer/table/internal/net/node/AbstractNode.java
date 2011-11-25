@@ -263,7 +263,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                             }
                             catch( final ExecutionException e2 )
                             {
-                                // TODO: LOG
+                                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractNode_connect_disconnectError, e2 );
                             }
 
                             throw e;
