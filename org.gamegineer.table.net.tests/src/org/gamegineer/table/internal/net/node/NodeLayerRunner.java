@@ -229,7 +229,7 @@ public final class NodeLayerRunner
 
         try
         {
-            return node_.syncExec( task );
+            return node_.getNodeLayer().syncExec( task );
         }
         catch( final ExecutionException e )
         {
@@ -269,7 +269,7 @@ public final class NodeLayerRunner
 
         try
         {
-            node_.syncExec( task );
+            node_.getNodeLayer().syncExec( task );
         }
         catch( final ExecutionException e )
         {

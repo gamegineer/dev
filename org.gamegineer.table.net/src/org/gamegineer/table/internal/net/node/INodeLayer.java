@@ -49,6 +49,9 @@ public interface INodeLayer
      * 
      * @return An asynchronous completion token for the task; never {@code null}
      *         .
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code task} is {@code null}.
      */
     /* @NonNull */
     public <T> Future<T> asyncExec(
@@ -63,11 +66,19 @@ public interface INodeLayer
      * 
      * @return An asynchronous completion token for the task; never {@code null}
      *         .
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code task} is {@code null}.
      */
     /* @NonNull */
     public Future<?> asyncExec(
         /* @NonNull */
         Runnable task );
+
+    /**
+     * Disposes of the resources managed by the node layer.
+     */
+    public void dispose();
 
     /**
      * Indicates the current thread is the node layer thread.
@@ -91,6 +102,8 @@ public interface INodeLayer
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the task to
      *         complete.
+     * @throws java.lang.NullPointerException
+     *         If {@code task} is {@code null}.
      * @throws java.util.concurrent.ExecutionException
      *         If an error occurs while executing the task.
      */
@@ -103,16 +116,14 @@ public interface INodeLayer
     /**
      * Synchronously executes the specified task on the node layer thread.
      * 
-     * <p>
-     * This method may be called from any thread.
-     * </p>
-     * 
      * @param task
      *        The task to execute; must not be {@code null}.
      * 
      * @throws java.lang.InterruptedException
      *         If this thread is interrupted while waiting for the task to
      *         complete.
+     * @throws java.lang.NullPointerException
+     *         If {@code task} is {@code null}.
      * @throws java.util.concurrent.ExecutionException
      *         If an error occurs while executing the task.
      */

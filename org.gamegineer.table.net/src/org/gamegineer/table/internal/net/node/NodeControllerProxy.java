@@ -96,7 +96,7 @@ final class NodeControllerProxy
                     final Future<Void> connectFuture;
                     try
                     {
-                        connectFuture = actualNodeController_.syncExec( new Callable<Future<Void>>()
+                        connectFuture = actualNodeController_.getNodeLayer().syncExec( new Callable<Future<Void>>()
                         {
                             @Override
                             public Future<Void> call()
@@ -139,7 +139,7 @@ final class NodeControllerProxy
                     final Future<Void> disconnectFuture;
                     try
                     {
-                        disconnectFuture = actualNodeController_.syncExec( new Callable<Future<Void>>()
+                        disconnectFuture = actualNodeController_.getNodeLayer().syncExec( new Callable<Future<Void>>()
                         {
                             @Override
                             public Future<Void> call()
@@ -173,15 +173,13 @@ final class NodeControllerProxy
     {
         try
         {
-            actualNodeController_.syncExec( new Callable<Void>()
+            actualNodeController_.getNodeLayer().syncExec( new Runnable()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
-                public Void call()
+                public void run()
                 {
                     actualNodeController_.cancelControlRequest();
-
-                    return null;
                 }
             } );
         }
@@ -250,7 +248,7 @@ final class NodeControllerProxy
     {
         try
         {
-            return actualNodeController_.syncExec( new Callable<IPlayer>()
+            return actualNodeController_.getNodeLayer().syncExec( new Callable<IPlayer>()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
@@ -281,7 +279,7 @@ final class NodeControllerProxy
     {
         try
         {
-            return actualNodeController_.syncExec( new Callable<Collection<IPlayer>>()
+            return actualNodeController_.getNodeLayer().syncExec( new Callable<Collection<IPlayer>>()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
@@ -312,15 +310,13 @@ final class NodeControllerProxy
     {
         try
         {
-            actualNodeController_.syncExec( new Callable<Void>()
+            actualNodeController_.getNodeLayer().syncExec( new Runnable()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
-                public Void call()
+                public void run()
                 {
                     actualNodeController_.giveControl( playerName );
-
-                    return null;
                 }
             } );
 
@@ -344,15 +340,13 @@ final class NodeControllerProxy
     {
         try
         {
-            actualNodeController_.syncExec( new Callable<Void>()
+            actualNodeController_.getNodeLayer().syncExec( new Runnable()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
-                public Void call()
+                public void run()
                 {
                     actualNodeController_.requestControl();
-
-                    return null;
                 }
             } );
         }

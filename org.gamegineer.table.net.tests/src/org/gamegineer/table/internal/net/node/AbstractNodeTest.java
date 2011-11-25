@@ -28,7 +28,6 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import net.jcip.annotations.Immutable;
 import org.easymock.EasyMock;
 import org.gamegineer.table.internal.net.ITableNetworkController;
@@ -107,10 +106,10 @@ public final class AbstractNodeTest
         {
             @Override
             protected MockNode createNode(
-                final ITableNetworkController tableNetworkController,
-                final ExecutorService executorService )
+                final INodeLayer nodeLayer,
+                final ITableNetworkController tableNetworkController )
             {
-                return new MockNode( tableNetworkController, executorService )
+                return new MockNode( nodeLayer, tableNetworkController )
                 {
                     @Override
                     protected void connected()
@@ -142,12 +141,12 @@ public final class AbstractNodeTest
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * executor service.
+     * node layer.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_ExecutorService_Null()
+    public void testConstructor_NodeLayer_Null()
     {
-        new MockNode( EasyMock.createMock( ITableNetworkController.class ), null );
+        new MockNode( null, EasyMock.createMock( ITableNetworkController.class ) );
     }
 
     /**
@@ -157,7 +156,7 @@ public final class AbstractNodeTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_TableNetworkController_Null()
     {
-        new MockNode( null, EasyMock.createMock( ExecutorService.class ) );
+        new MockNode( EasyMock.createMock( INodeLayer.class ), null );
     }
 
     /**
@@ -177,10 +176,10 @@ public final class AbstractNodeTest
         {
             @Override
             protected MockNode createNode(
-                final ITableNetworkController tableNetworkController,
-                final ExecutorService executorService )
+                final INodeLayer nodeLayer,
+                final ITableNetworkController tableNetworkController )
             {
-                return new MockNode( tableNetworkController, executorService )
+                return new MockNode( nodeLayer, tableNetworkController )
                 {
                     @Override
                     protected void disconnected()
@@ -276,22 +275,22 @@ public final class AbstractNodeTest
         /**
          * Initializes a new instance of the {@code MockNode} class.
          * 
+         * @param nodeLayer
+         *        The node layer; must not be {@code null}.
          * @param tableNetworkController
          *        The table network controller; must not be {@code null}.
-         * @param executorService
-         *        The node layer executor service; must not be {@code null}.
          * 
          * @throws java.lang.NullPointerException
-         *         If {@code tableNetworkController} or {@code executorService}
-         *         is {@code null}.
+         *         If {@code nodeLayer} or {@code tableNetworkController} is
+         *         {@code null}.
          */
         MockNode(
             /* @NonNull */
-            final ITableNetworkController tableNetworkController,
+            final INodeLayer nodeLayer,
             /* @NonNull */
-            final ExecutorService executorService )
+            final ITableNetworkController tableNetworkController )
         {
-            super( tableNetworkController, executorService );
+            super( nodeLayer, tableNetworkController );
         }
 
 
@@ -423,14 +422,14 @@ public final class AbstractNodeTest
             // ==============================================================
 
             /*
-             * @see org.gamegineer.table.internal.net.node.AbstractNode.AbstractFactory#createNode(org.gamegineer.table.internal.net.ITableNetworkController, java.util.concurrent.ExecutorService)
+             * @see org.gamegineer.table.internal.net.node.AbstractNode.AbstractFactory#createNode(org.gamegineer.table.internal.net.node.INodeLayer, org.gamegineer.table.internal.net.ITableNetworkController)
              */
             @Override
             protected MockNode createNode(
-                final ITableNetworkController tableNetworkController,
-                final ExecutorService executorService )
+                final INodeLayer nodeLayer,
+                final ITableNetworkController tableNetworkController )
             {
-                return new MockNode( tableNetworkController, executorService );
+                return new MockNode( nodeLayer, tableNetworkController );
             }
         }
     }

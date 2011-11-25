@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
@@ -42,6 +41,7 @@ import org.gamegineer.table.internal.net.node.AbstractNode;
 import org.gamegineer.table.internal.net.node.CardIncrement;
 import org.gamegineer.table.internal.net.node.CardPileIncrement;
 import org.gamegineer.table.internal.net.node.INetworkTable;
+import org.gamegineer.table.internal.net.node.INodeLayer;
 import org.gamegineer.table.internal.net.node.ITableManager;
 import org.gamegineer.table.internal.net.node.NetworkTableUtils;
 import org.gamegineer.table.internal.net.node.TableIncrement;
@@ -86,22 +86,22 @@ public final class ServerNode
     /**
      * Initializes a new instance of the {@code ServerNode} class.
      * 
+     * @param nodeLayer
+     *        The node layer; must not be {@code null}.
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
-     * @param executorService
-     *        The node layer executor service; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code tableNetworkController} or {@code executorService} is
-     *         {@code null}.
+     *         If {@code nodeLayer} or {@code tableNetworkController} is {@code
+     *         null}.
      */
     private ServerNode(
         /* @NonNull */
-        final ITableNetworkController tableNetworkController,
+        final INodeLayer nodeLayer,
         /* @NonNull */
-        final ExecutorService executorService )
+        final ITableNetworkController tableNetworkController )
     {
-        super( tableNetworkController, executorService );
+        super( nodeLayer, tableNetworkController );
 
         masterTable_ = null;
         players_ = new HashMap<String, Player>();
@@ -497,15 +497,15 @@ public final class ServerNode
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.internal.net.node.AbstractNode.AbstractFactory#createNode(org.gamegineer.table.internal.net.ITableNetworkController, java.util.concurrent.ExecutorService)
+         * @see org.gamegineer.table.internal.net.node.AbstractNode.AbstractFactory#createNode(org.gamegineer.table.internal.net.node.INodeLayer, org.gamegineer.table.internal.net.ITableNetworkController)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
         protected ServerNode createNode(
-            final ITableNetworkController tableNetworkController,
-            final ExecutorService executorService )
+            final INodeLayer nodeLayer,
+            final ITableNetworkController tableNetworkController )
         {
-            return new ServerNode( tableNetworkController, executorService );
+            return new ServerNode( nodeLayer, tableNetworkController );
         }
     }
 

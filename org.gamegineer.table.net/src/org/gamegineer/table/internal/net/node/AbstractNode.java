@@ -30,11 +30,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ThreadFactory;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
@@ -77,9 +74,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     // Fields
     // ======================================================================
 
-    /** The executor service associated with the node layer. */
-    private final ExecutorService executorService_;
-
     /**
      * The local player name or {@code null} if the table network is not
      * connected.
@@ -88,9 +82,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
     /** The node layer. */
     private final INodeLayer nodeLayer_;
-
-    /** The node layer thread. */
-    private final Thread nodeLayerThread_;
 
     /**
      * The table network password or {@code null} if the table network is not
@@ -127,33 +118,26 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     /**
      * Initializes a new instance of the {@code AbstractNode} class.
      * 
-     * <p>
-     * It is assumed that the thread that invokes this constructor is the node
-     * layer thread and is managed by the specified executor service.
-     * </p>
-     * 
+     * @param nodeLayer
+     *        The node layer; must not be {@code null}.
      * @param tableNetworkController
      *        The table network controller; must not be {@code null}.
-     * @param executorService
-     *        The node layer executor service; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code tableNetworkController} or {@code executorService} is
-     *         {@code null}.
+     *         If {@code nodeLayer} or {@code tableNetworkController} is {@code
+     *         null}.
      */
     protected AbstractNode(
         /* @NonNull */
-        final ITableNetworkController tableNetworkController,
+        final INodeLayer nodeLayer,
         /* @NonNull */
-        final ExecutorService executorService )
+        final ITableNetworkController tableNetworkController )
     {
+        assertArgumentNotNull( nodeLayer, "nodeLayer" ); //$NON-NLS-1$
         assertArgumentNotNull( tableNetworkController, "tableNetworkController" ); //$NON-NLS-1$
-        assertArgumentNotNull( executorService, "executorService" ); //$NON-NLS-1$
 
-        executorService_ = executorService;
         localPlayerName_ = null;
-        nodeLayer_ = new NodeLayer();
-        nodeLayerThread_ = Thread.currentThread();
+        nodeLayer_ = nodeLayer;
         password_ = null;
         remoteNodes_ = new HashMap<String, RemoteNodeType>();
         tableNetworkController_ = tableNetworkController;
@@ -179,88 +163,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assertStateLegal( isConnected(), NonNlsMessages.AbstractNode_networkDisconnected );
     }
 
-    /**
-     * Asynchronously executes the specified task on the node layer thread.
-     * 
-     * <p>
-     * This method may be called from any thread.
-     * </p>
-     * 
-     * @param <T>
-     *        The return type of the task.
-     * 
-     * @param task
-     *        The task to execute; must not be {@code null}.
-     * 
-     * @return An asynchronous completion token for the task; never {@code null}
-     *         .
-     */
-    /* @NonNull */
-    final <T> Future<T> asyncExec(
-        /* @NonNull */
-        final Callable<T> task )
-    {
-        assert task != null;
-
-        final String playerName = ThreadPlayer.getPlayerName();
-        return executorService_.submit( new Callable<T>()
-        {
-            @Override
-            public T call()
-                throws Exception
-            {
-                ThreadPlayer.setPlayerName( playerName );
-                try
-                {
-                    return task.call();
-                }
-                finally
-                {
-                    ThreadPlayer.setPlayerName( null );
-                }
-            }
-        } );
-    }
-
-    /**
-     * Asynchronously executes the specified task on the node layer thread.
-     * 
-     * <p>
-     * This method may be called from any thread.
-     * </p>
-     * 
-     * @param task
-     *        The task to execute; must not be {@code null}.
-     * 
-     * @return An asynchronous completion token for the task; never {@code null}
-     *         .
-     */
-    /* @NonNull */
-    final Future<?> asyncExec(
-        /* @NonNull */
-        final Runnable task )
-    {
-        assert task != null;
-
-        final String playerName = ThreadPlayer.getPlayerName();
-        return executorService_.submit( new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                ThreadPlayer.setPlayerName( playerName );
-                try
-                {
-                    task.run();
-                }
-                finally
-                {
-                    ThreadPlayer.setPlayerName( null );
-                }
-            }
-        } );
-    }
-
     /*
      * @see org.gamegineer.table.internal.net.node.INodeController#beginConnect(org.gamegineer.table.net.ITableNetworkConfiguration)
      */
@@ -274,6 +176,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
             @Override
+            @SuppressWarnings( "synthetic-access" )
             public Void call()
                 throws TableNetworkException
             {
@@ -283,10 +186,9 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                     {
                         try
                         {
-                            syncExec( new Callable<Void>()
+                            nodeLayer_.syncExec( new Callable<Void>()
                             {
                                 @Override
-                                @SuppressWarnings( "synthetic-access" )
                                 public Void call()
                                     throws TableNetworkException
                                 {
@@ -328,15 +230,12 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
                         try
                         {
-                            syncExec( new Callable<Void>()
+                            nodeLayer_.syncExec( new Runnable()
                             {
                                 @Override
-                                @SuppressWarnings( "synthetic-access" )
-                                public Void call()
+                                public void run()
                                 {
                                     transportLayer_ = transportLayer;
-
-                                    return null;
                                 }
                             } );
                         }
@@ -353,7 +252,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                         {
                             try
                             {
-                                endDisconnect( syncExec( new Callable<Future<Void>>()
+                                endDisconnect( nodeLayer_.syncExec( new Callable<Future<Void>>()
                                 {
                                     @Override
                                     public Future<Void> call()
@@ -376,7 +275,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                     {
                         try
                         {
-                            syncExec( new Runnable()
+                            nodeLayer_.syncExec( new Runnable()
                             {
                                 @Override
                                 public void run()
@@ -404,7 +303,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                     {
                         try
                         {
-                            syncExec( new Runnable()
+                            nodeLayer_.syncExec( new Runnable()
                             {
                                 @Override
                                 public void run()
@@ -467,7 +366,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                 {
                     try
                     {
-                        syncExec( new Runnable()
+                        nodeLayer_.syncExec( new Runnable()
                         {
                             @Override
                             public void run()
@@ -491,7 +390,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
                     try
                     {
-                        syncExec( new Runnable()
+                        nodeLayer_.syncExec( new Runnable()
                         {
                             @Override
                             public void run()
@@ -761,7 +660,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
         transportLayer_ = null;
 
-        executorService_.shutdown();
+        nodeLayer_.dispose();
     }
 
     /**
@@ -960,7 +859,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      */
     protected final boolean isNodeLayerThread()
     {
-        return Thread.currentThread() == nodeLayerThread_;
+        return nodeLayer_.isNodeLayerThread();
     }
 
     /**
@@ -1019,90 +918,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         // do nothing
     }
 
-    /**
-     * Synchronously executes the specified task on the node layer thread.
-     * 
-     * <p>
-     * This method may be called from any thread.
-     * </p>
-     * 
-     * @param <T>
-     *        The return type of the task.
-     * 
-     * @param task
-     *        The task to execute; must not be {@code null}.
-     * 
-     * @return The return value of the task; may be {@code null}.
-     * 
-     * @throws java.lang.InterruptedException
-     *         If this thread is interrupted while waiting for the task to
-     *         complete.
-     * @throws java.util.concurrent.ExecutionException
-     *         If an error occurs while executing the task.
-     */
-    /* @Nullable */
-    final <T> T syncExec(
-        /* @NonNull */
-        final Callable<T> task )
-        throws ExecutionException, InterruptedException
-    {
-        assert task != null;
-
-        if( isNodeLayerThread() )
-        {
-            try
-            {
-                return task.call();
-            }
-            catch( final Exception e )
-            {
-                throw new ExecutionException( e );
-            }
-        }
-
-        return asyncExec( task ).get();
-    }
-
-    /**
-     * Synchronously executes the specified task on the node layer thread.
-     * 
-     * <p>
-     * This method may be called from any thread.
-     * </p>
-     * 
-     * @param task
-     *        The task to execute; must not be {@code null}.
-     * 
-     * @throws java.lang.InterruptedException
-     *         If this thread is interrupted while waiting for the task to
-     *         complete.
-     * @throws java.util.concurrent.ExecutionException
-     *         If an error occurs while executing the task.
-     */
-    final void syncExec(
-        /* @NonNull */
-        final Runnable task )
-        throws ExecutionException, InterruptedException
-    {
-        assert task != null;
-
-        if( isNodeLayerThread() )
-        {
-            try
-            {
-                task.run();
-            }
-            catch( final Exception e )
-            {
-                throw new ExecutionException( e );
-            }
-        }
-        else
-        {
-            asyncExec( task ).get();
-        }
-    }
-
     /*
      * @see org.gamegineer.table.internal.net.node.INode#unbindRemoteNode(org.gamegineer.table.internal.net.node.IRemoteNode)
      */
@@ -1159,25 +974,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         // ==================================================================
 
         /**
-         * Creates the node layer executor service.
-         * 
-         * @return The node layer executor service; never {@code null}.
-         */
-        /* @NonNull */
-        private static ExecutorService createExecutorService()
-        {
-            return Executors.newSingleThreadExecutor( new ThreadFactory()
-            {
-                @Override
-                public Thread newThread(
-                    final Runnable r )
-                {
-                    return new Thread( r, NonNlsMessages.AbstractNode_nodeLayerThread_name );
-                }
-            } );
-        }
-
-        /**
          * Creates a new table network node.
          * 
          * @param tableNetworkController
@@ -1196,19 +992,17 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             assertArgumentNotNull( tableNetworkController, "tableNetworkController" ); //$NON-NLS-1$
 
-            final ExecutorService executorService = createExecutorService();
-            final Future<T> future = executorService.submit( new Callable<T>()
-            {
-                @Override
-                public T call()
-                {
-                    return createNode( tableNetworkController, executorService );
-                }
-            } );
-
+            final INodeLayer nodeLayer = new NodeLayer();
             try
             {
-                return future.get();
+                return nodeLayer.syncExec( new Callable<T>()
+                {
+                    @Override
+                    public T call()
+                    {
+                        return createNode( nodeLayer, tableNetworkController );
+                    }
+                } );
             }
             catch( final ExecutionException e )
             {
@@ -1228,23 +1022,23 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          * This method is guaranteed to be invoked on the node layer thread.
          * </p>
          * 
+         * @param nodeLayer
+         *        The node layer; must not be {@code null}.
          * @param tableNetworkController
          *        The table network controller; must not be {@code null}.
-         * @param executorService
-         *        The node layer executor service; must not be {@code null}.
          * 
          * @return A new table network node; never {@code null}.
          * 
          * @throws java.lang.NullPointerException
-         *         If {@code tableNetworkController} or {@code executorService}
-         *         is {@code null}.
+         *         If {@code nodeLayer} or {@code tableNetworkController} is
+         *         {@code null}.
          */
         /* @NonNull */
         protected abstract T createNode(
             /* @NonNull */
-            ITableNetworkController tableNetworkController,
+            INodeLayer nodeLayer,
             /* @NonNull */
-            ExecutorService executorService );
+            ITableNetworkController tableNetworkController );
     }
 
     /**
@@ -1313,7 +1107,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             try
             {
-                asyncExec( new Runnable()
+                getNodeLayer().asyncExec( new Runnable()
                 {
                     @Override
                     @SuppressWarnings( "synthetic-access" )
@@ -1337,7 +1131,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             try
             {
-                asyncExec( new Runnable()
+                getNodeLayer().asyncExec( new Runnable()
                 {
                     @Override
                     @SuppressWarnings( "synthetic-access" )
@@ -1362,7 +1156,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             try
             {
-                asyncExec( new Runnable()
+                getNodeLayer().asyncExec( new Runnable()
                 {
                     @Override
                     @SuppressWarnings( "synthetic-access" )
@@ -1387,7 +1181,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             try
             {
-                asyncExec( new Runnable()
+                getNodeLayer().asyncExec( new Runnable()
                 {
                     @Override
                     @SuppressWarnings( "synthetic-access" )
@@ -1439,7 +1233,7 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         {
             try
             {
-                asyncExec( new Runnable()
+                getNodeLayer().asyncExec( new Runnable()
                 {
                     @Override
                     public void run()
@@ -1605,85 +1399,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                     table.setTableState( tableMemento );
                 }
             }
-        }
-    }
-
-    /**
-     * Implementation of {@link INodeLayer}.
-     */
-    @Immutable
-    private final class NodeLayer
-        implements INodeLayer
-    {
-        // TODO: Extract to a package-private class, and extract nodeLayerThread_ and
-        // executorService_ fields to that class.
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code NodeLayer} class.
-         */
-        NodeLayer()
-        {
-            super();
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.internal.net.node.INodeLayer#asyncExec(java.util.concurrent.Callable)
-         */
-        @Override
-        public <T> Future<T> asyncExec(
-            final Callable<T> task )
-        {
-            return AbstractNode.this.asyncExec( task );
-        }
-
-        /*
-         * @see org.gamegineer.table.internal.net.node.INodeLayer#asyncExec(java.lang.Runnable)
-         */
-        @Override
-        public Future<?> asyncExec(
-            final Runnable task )
-        {
-            return AbstractNode.this.asyncExec( task );
-        }
-
-        /*
-         * @see org.gamegineer.table.internal.net.node.INodeLayer#isNodeLayerThread()
-         */
-        @Override
-        public boolean isNodeLayerThread()
-        {
-            return AbstractNode.this.isNodeLayerThread();
-        }
-
-        /*
-         * @see org.gamegineer.table.internal.net.node.INodeLayer#syncExec(java.util.concurrent.Callable)
-         */
-        @Override
-        public <T> T syncExec(
-            final Callable<T> task )
-            throws ExecutionException, InterruptedException
-        {
-            return AbstractNode.this.syncExec( task );
-        }
-
-        /*
-         * @see org.gamegineer.table.internal.net.node.INodeLayer#syncExec(java.lang.Runnable)
-         */
-        @Override
-        public void syncExec(
-            final Runnable task )
-            throws ExecutionException, InterruptedException
-        {
-            AbstractNode.this.syncExec( task );
         }
     }
 }

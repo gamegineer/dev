@@ -57,9 +57,6 @@ final class NonNlsMessages
     /** The node layer has been shutdown. */
     public static String AbstractNode_nodeLayer_shutdown;
 
-    /** The name of the node layer thread. */
-    public static String AbstractNode_nodeLayerThread_name;
-
     /** The remote node is not bound. */
     public static String AbstractNode_unbindRemoteNode_remoteNodeNotBound;
 
@@ -111,6 +108,11 @@ final class NonNlsMessages
 
     /** The operation was interrupted. */
     public static String NodeControllerProxy_interrupted;
+
+    // --- NodeLayer --------------------------------------------------------
+
+    /** The name of the node layer thread. */
+    public static String NodeLayer_thread_name;
 
 
     // ======================================================================
