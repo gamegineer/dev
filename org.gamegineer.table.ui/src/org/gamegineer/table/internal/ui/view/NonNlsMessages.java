@@ -55,6 +55,14 @@ final class NonNlsMessages
     /** An error occurred while saving the table. */
     public static String MainFrame_saveTable_error;
 
+    // --- ViewUtils --------------------------------------------------------
+
+    /** Interrupted while waiting for the table network to disconnect. */
+    public static String ViewUtils_disconnectTableNetwork_interrupted;
+
+    /** Timed out while waiting for the table network to disconnect. */
+    public static String ViewUtils_disconnectTableNetwork_timedOut;
+
 
     // ======================================================================
     // Constructors

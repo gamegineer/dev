@@ -70,8 +70,13 @@ public interface ITableNetwork
      * This method blocks until the table network is disconnected. This method
      * does nothing if the table network is not connected.
      * </p>
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the table network
+     *         to disconnect.
      */
-    public void disconnect();
+    public void disconnect()
+        throws InterruptedException;
 
     /**
      * Gets the local player connected to the table network.
@@ -119,6 +124,9 @@ public interface ITableNetwork
      * @param configuration
      *        The table network configuration; must not be {@code null}.
      * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the table network
+     *         to connect.
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If the connection cannot be established or the table network is
      *         already connected.
@@ -126,7 +134,7 @@ public interface ITableNetwork
     public void host(
         /* @NonNull */
         ITableNetworkConfiguration configuration )
-        throws TableNetworkException;
+        throws TableNetworkException, InterruptedException;
 
     /**
      * Indicates the table network is connected.
@@ -146,6 +154,9 @@ public interface ITableNetwork
      * @param configuration
      *        The table network configuration; must not be {@code null}.
      * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the table network
+     *         to connect.
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If the connection cannot be established or the table network is
      *         already connected.
@@ -153,7 +164,7 @@ public interface ITableNetwork
     public void join(
         /* @NonNull */
         ITableNetworkConfiguration configuration )
-        throws TableNetworkException;
+        throws TableNetworkException, InterruptedException;
 
     /**
      * Removes the specified table network listener from this table network.

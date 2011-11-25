@@ -273,7 +273,7 @@ public final class MainFrame
     @Override
     public void dispose()
     {
-        model_.getTableModel().getTableNetwork().disconnect();
+        ViewUtils.disconnectTableNetwork( this, model_.getTableModel().getTableNetwork() );
 
         super.dispose();
     }

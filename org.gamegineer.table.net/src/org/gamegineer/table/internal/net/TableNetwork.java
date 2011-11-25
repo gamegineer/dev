@@ -163,6 +163,9 @@ public final class TableNetwork
      *        The control interface of the table network node; must not be
      *        {@code null}.
      * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the table network
+     *         to connect.
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If the connection cannot be established or the table network is
      *         already connected.
@@ -172,7 +175,7 @@ public final class TableNetwork
         final ITableNetworkConfiguration configuration,
         /* @NonNull */
         final INodeController nodeController )
-        throws TableNetworkException
+        throws TableNetworkException, InterruptedException
     {
         assert configuration != null;
         assert nodeController != null;
@@ -193,9 +196,8 @@ public final class TableNetwork
             }
             catch( final InterruptedException e )
             {
-                Thread.currentThread().interrupt();
                 connectionStateRef_.set( ConnectionState.DISCONNECTED );
-                throw new TableNetworkException( TableNetworkError.INTERRUPTED );
+                throw e;
             }
         }
         else
@@ -209,6 +211,7 @@ public final class TableNetwork
      */
     @Override
     public void disconnect()
+        throws InterruptedException
     {
         disconnect( null );
     }
@@ -219,6 +222,7 @@ public final class TableNetwork
     @Override
     public void disconnect(
         final TableNetworkError error )
+        throws InterruptedException
     {
         if( connectionStateRef_.compareAndSet( ConnectionState.CONNECTED, ConnectionState.DISCONNECTING ) )
         {
@@ -227,12 +231,11 @@ public final class TableNetwork
             {
                 nodeController.endDisconnect( nodeController.beginDisconnect() );
             }
-            catch( final InterruptedException e )
+            finally
             {
-                Thread.currentThread().interrupt();
+                connectionStateRef_.set( ConnectionState.DISCONNECTED );
+                fireTableNetworkDisconnected( error );
             }
-            connectionStateRef_.set( ConnectionState.DISCONNECTED );
-            fireTableNetworkDisconnected( error );
         }
     }
 
@@ -368,7 +371,7 @@ public final class TableNetwork
     @Override
     public void host(
         final ITableNetworkConfiguration configuration )
-        throws TableNetworkException
+        throws TableNetworkException, InterruptedException
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 
@@ -390,7 +393,7 @@ public final class TableNetwork
     @Override
     public void join(
         final ITableNetworkConfiguration configuration )
-        throws TableNetworkException
+        throws TableNetworkException, InterruptedException
     {
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
 

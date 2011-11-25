@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.ui;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
@@ -76,6 +77,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private ServiceTracker cardSurfaceDesignUIRegistryTracker_;
 
+    /** The executor service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker executorServiceTracker_;
+
     /** The instance lock. */
     private final Object lock_;
 
@@ -104,6 +109,7 @@ public final class Activator
         cardPileBaseDesignUIRegistryTracker_ = null;
         cardSurfaceDesignRegistryTracker_ = null;
         cardSurfaceDesignUIRegistryTracker_ = null;
+        executorServiceTracker_ = null;
         packageAdminTracker_ = null;
         preferencesServiceTracker_ = null;
     }
@@ -254,6 +260,36 @@ public final class Activator
         final Activator instance = instance_.get();
         assert instance != null;
         return instance;
+    }
+
+    /**
+     * Gets the executor service.
+     * 
+     * @return The executor service; never {@code null}.
+     */
+    /* @NonNull */
+    public ExecutorService getExecutorService()
+    {
+        final ExecutorService executorService;
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( executorServiceTracker_ == null )
+            {
+                executorServiceTracker_ = new ServiceTracker( bundleContext_, ExecutorService.class.getName(), null );
+                executorServiceTracker_.open();
+            }
+
+            executorService = (ExecutorService)executorServiceTracker_.getService();
+        }
+
+        if( executorService == null )
+        {
+            throw new AssertionError( "the executor service is not available" ); //$NON-NLS-1$
+        }
+
+        return executorService;
     }
 
     /**
@@ -432,6 +468,11 @@ public final class Activator
             {
                 cardSurfaceDesignUIRegistryTracker_.close();
                 cardSurfaceDesignUIRegistryTracker_ = null;
+            }
+            if( executorServiceTracker_ != null )
+            {
+                executorServiceTracker_.close();
+                executorServiceTracker_ = null;
             }
             if( packageAdminTracker_ != null )
             {

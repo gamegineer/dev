@@ -1022,7 +1022,7 @@ final class TableView
      */
     private void disconnectTableNetwork()
     {
-        model_.getTableNetwork().disconnect();
+        ViewUtils.disconnectTableNetwork( this, model_.getTableNetwork() );
     }
 
     /**

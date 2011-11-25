@@ -417,7 +417,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                 catch( final InterruptedException e )
                 {
                     Thread.currentThread().interrupt();
-                    // TODO: log
                 }
 
                 return null;
@@ -564,7 +563,14 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                tableNetworkController_.disconnect( error );
+                try
+                {
+                    tableNetworkController_.disconnect( error );
+                }
+                catch( final InterruptedException e )
+                {
+                    Thread.currentThread().interrupt();
+                }
             }
         } );
     }
@@ -1238,7 +1244,14 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                     @Override
                     public void run()
                     {
-                        getTableNetworkController().disconnect( (exception != null) ? TableNetworkError.TRANSPORT_ERROR : null );
+                        try
+                        {
+                            getTableNetworkController().disconnect( (exception != null) ? TableNetworkError.TRANSPORT_ERROR : null );
+                        }
+                        catch( final InterruptedException e )
+                        {
+                            Thread.currentThread().interrupt();
+                        }
                     }
                 } );
             }

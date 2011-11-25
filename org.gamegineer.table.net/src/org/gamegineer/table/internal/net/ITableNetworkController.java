@@ -45,13 +45,22 @@ public interface ITableNetworkController
     /**
      * Disconnects the table network for the specified cause.
      * 
+     * <p>
+     * This method blocks until the table network is disconnected.
+     * </p>
+     * 
      * @param error
      *        The error that caused the table network to be disconnected or
      *        {@code null} if the table network was disconnected normally.
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the table network
+     *         to disconnect.
      */
     public void disconnect(
         /* @Nullable */
-        TableNetworkError error );
+        TableNetworkError error )
+        throws InterruptedException;
 
     /**
      * Gets the table network transport layer factory.
