@@ -298,31 +298,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
 
                         throw e;
                     }
-                    catch( final RuntimeException e )
-                    {
-                        try
-                        {
-                            nodeLayer_.syncExec( new Runnable()
-                            {
-                                @Override
-                                public void run()
-                                {
-                                    dispose();
-                                }
-                            } );
-                        }
-                        catch( final ExecutionException e2 )
-                        {
-                            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractNode_connect_disposeError, e2 );
-                        }
-                        catch( final RejectedExecutionException e2 )
-                        {
-                            // XXX
-                            // LOG
-                        }
-
-                        throw e;
-                    }
                 }
                 catch( final InterruptedException e )
                 {
