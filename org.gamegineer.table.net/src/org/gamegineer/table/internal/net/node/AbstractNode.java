@@ -294,19 +294,16 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                 }
                 catch( final InterruptedException e )
                 {
+                    nodeLayer_.asyncExec( new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            beginDisconnect();
+                        }
+                    } );
+
                     Thread.currentThread().interrupt();
-                    // XXX: NOTE that it is possible this thread was interrupted AFTER
-                    // we already established the connection, in which case, dispose() does
-                    // not actually close the transport layer....
-                    //
-                    // we either need to have dispose() shutdown the transport layer if it
-                    // is connected, or need to determine if we need to call disconnect()
-                    // instead....  but that could get real messy..  may have to rethink the
-                    // whole way connected() is implemented for the handshake to complete so
-                    // we can report authentication errors during connection....????
-                    //XXX:dispose();
-                    // ---> can't call dispose() here because we then have to handle
-                    // InterruptedException AGAIN!!!!
                     throw new TableNetworkException( TableNetworkError.INTERRUPTED, e );
                 }
             }
@@ -370,8 +367,9 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                                     table.dispose();
 
                                     disconnected();
-                                    dispose();
                                 }
+
+                                dispose();
                             }
                         } );
                     }
