@@ -243,33 +243,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                         {
                             throw TaskUtils.launderThrowable( e.getCause() );
                         }
-
-                        try
-                        {
-                            connected();
-                        }
-                        catch( final TableNetworkException e )
-                        {
-                            try
-                            {
-                                endDisconnect( nodeLayer_.syncExec( new Callable<Future<Void>>()
-                                {
-                                    @Override
-                                    public Future<Void> call()
-                                    {
-                                        return beginDisconnect();
-                                    }
-                                } ) );
-                            }
-                            catch( final ExecutionException e2 )
-                            {
-                                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractNode_connect_disconnectError, e2 );
-                            }
-
-                            throw e;
-                        }
-
-                        return null;
                     }
                     catch( final TableNetworkException e )
                     {
@@ -288,16 +261,36 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
                         {
                             Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractNode_connect_disposeError, e2 );
                         }
-                        catch( final RejectedExecutionException e2 )
+
+                        throw e;
+                    }
+
+                    try
+                    {
+                        connected();
+                    }
+                    catch( final TableNetworkException e )
+                    {
+                        try
                         {
-                            // XXX: this happening because connected() threw an exception
-                            // and we've already shutdown the executor service...  find a
-                            // better way to handle this....
-                            // LOG
+                            endDisconnect( nodeLayer_.syncExec( new Callable<Future<Void>>()
+                            {
+                                @Override
+                                public Future<Void> call()
+                                {
+                                    return beginDisconnect();
+                                }
+                            } ) );
+                        }
+                        catch( final ExecutionException e2 )
+                        {
+                            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractNode_connect_disconnectError, e2 );
                         }
 
                         throw e;
                     }
+
+                    return null;
                 }
                 catch( final InterruptedException e )
                 {
