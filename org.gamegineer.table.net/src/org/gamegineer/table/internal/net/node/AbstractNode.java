@@ -173,139 +173,16 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         assertArgumentNotNull( configuration, "configuration" ); //$NON-NLS-1$
         assert isNodeLayerThread();
 
+        final Connecter connecter = new Connecter( configuration );
         return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public Void call()
                 throws TableNetworkException
             {
-                try
-                {
-                    try
-                    {
-                        try
-                        {
-                            nodeLayer_.syncExec( new Callable<Void>()
-                            {
-                                @Override
-                                public Void call()
-                                    throws TableNetworkException
-                                {
-                                    if( transportLayer_ != null )
-                                    {
-                                        throw new TableNetworkException( TableNetworkError.ILLEGAL_CONNECTION_STATE );
-                                    }
+                connecter.connect();
 
-                                    localPlayerName_ = configuration.getLocalPlayerName();
-                                    password_ = configuration.getPassword();
-                                    tables_.put( localPlayerName_, new LocalNetworkTable( nodeLayer_, createTableManagerDecoratorForLocalNetworkTable( getTableManager() ), configuration.getLocalTable() ) );
-
-                                    connecting( configuration );
-
-                                    return null;
-                                }
-                            } );
-                        }
-                        catch( final ExecutionException e )
-                        {
-                            final Throwable cause = e.getCause();
-                            if( cause instanceof TableNetworkException )
-                            {
-                                throw (TableNetworkException)cause;
-                            }
-
-                            throw TaskUtils.launderThrowable( cause );
-                        }
-
-                        final ITransportLayer transportLayer = createTransportLayer();
-                        try
-                        {
-                            transportLayer.endOpen( transportLayer.beginOpen( configuration.getHostName(), configuration.getPort() ) );
-                        }
-                        catch( final TransportException e )
-                        {
-                            throw new TableNetworkException( TableNetworkError.TRANSPORT_ERROR, e );
-                        }
-
-                        try
-                        {
-                            nodeLayer_.syncExec( new Runnable()
-                            {
-                                @Override
-                                public void run()
-                                {
-                                    transportLayer_ = transportLayer;
-                                }
-                            } );
-                        }
-                        catch( final ExecutionException e )
-                        {
-                            throw TaskUtils.launderThrowable( e.getCause() );
-                        }
-                    }
-                    catch( final TableNetworkException e )
-                    {
-                        try
-                        {
-                            nodeLayer_.syncExec( new Runnable()
-                            {
-                                @Override
-                                public void run()
-                                {
-                                    dispose();
-                                }
-                            } );
-                        }
-                        catch( final ExecutionException e2 )
-                        {
-                            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractNode_connect_disposeError, e2 );
-                        }
-
-                        throw e;
-                    }
-
-                    try
-                    {
-                        connected();
-                    }
-                    catch( final TableNetworkException e )
-                    {
-                        try
-                        {
-                            endDisconnect( nodeLayer_.syncExec( new Callable<Future<Void>>()
-                            {
-                                @Override
-                                public Future<Void> call()
-                                {
-                                    return beginDisconnect();
-                                }
-                            } ) );
-                        }
-                        catch( final ExecutionException e2 )
-                        {
-                            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractNode_connect_disconnectError, e2 );
-                        }
-
-                        throw e;
-                    }
-
-                    return null;
-                }
-                catch( final InterruptedException e )
-                {
-                    nodeLayer_.asyncExec( new Runnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            beginDisconnect();
-                        }
-                    } );
-
-                    Thread.currentThread().interrupt();
-                    throw new TableNetworkException( TableNetworkError.INTERRUPTED, e );
-                }
+                return null;
             }
         } );
     }
@@ -1170,10 +1047,242 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     }
 
     /**
+     * Responsible for connecting the table network node to the table network.
+     */
+    @Immutable
+    @SuppressWarnings( "synthetic-access" )
+    private final class Connecter
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The table network configuration. */
+        private final ITableNetworkConfiguration configuration_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code Connecter} class.
+         * 
+         * <p>
+         * This constructor must be called on the node layer thread.
+         * </p>
+         * 
+         * @param configuration
+         *        The table network configuration; must not be {@code null}.
+         */
+        Connecter(
+            /* @NonNull */
+            final ITableNetworkConfiguration configuration )
+        {
+            assert configuration != null;
+            assert isNodeLayerThread();
+
+            configuration_ = configuration;
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Begins an asynchronous operation to disconnect the table network node
+         * from the table network.
+         */
+        /* @NonNull */
+        private void asyncDisconnect()
+        {
+            nodeLayer_.asyncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    beginDisconnect();
+                }
+            } );
+        }
+
+        /**
+         * Connects the table network node to the table network.
+         * 
+         * <p>
+         * This method must not be called on the node layer thread.
+         * </p>
+         * 
+         * @throws org.gamegineer.table.net.TableNetworkException
+         *         If the connection cannot be established or the table network
+         *         node is already connected.
+         */
+        void connect()
+            throws TableNetworkException
+        {
+            assert !isNodeLayerThread();
+
+            try
+            {
+                try
+                {
+                    connecting();
+                    openTransportLayer();
+                    connected();
+                }
+                catch( final TableNetworkException e )
+                {
+                    syncDisconnect();
+                    throw e;
+                }
+            }
+            catch( final InterruptedException e )
+            {
+                asyncDisconnect();
+                Thread.currentThread().interrupt();
+                throw new TableNetworkException( TableNetworkError.INTERRUPTED, e );
+            }
+        }
+
+        /**
+         * Invoked when the table network node has connected to the table
+         * network.
+         * 
+         * @throws java.lang.InterruptedException
+         *         If this thread is interrupted while waiting for the operation
+         *         to complete.
+         * @throws org.gamegineer.table.net.TableNetworkException
+         *         If an error occurs.
+         */
+        private void connected()
+            throws TableNetworkException, InterruptedException
+        {
+            AbstractNode.this.connected();
+        }
+
+        /**
+         * Invoked when the table network node is about to connect to the table
+         * network.
+         * 
+         * @throws java.lang.InterruptedException
+         *         If this thread is interrupted while waiting for the operation
+         *         to complete.
+         * @throws org.gamegineer.table.net.TableNetworkException
+         *         If an error occurs.
+         */
+        private void connecting()
+            throws TableNetworkException, InterruptedException
+        {
+            try
+            {
+                nodeLayer_.syncExec( new Callable<Void>()
+                {
+                    @Override
+                    public Void call()
+                        throws TableNetworkException
+                    {
+                        if( transportLayer_ != null )
+                        {
+                            throw new TableNetworkException( TableNetworkError.ILLEGAL_CONNECTION_STATE );
+                        }
+
+                        localPlayerName_ = configuration_.getLocalPlayerName();
+                        password_ = configuration_.getPassword();
+                        tables_.put( localPlayerName_, new LocalNetworkTable( nodeLayer_, createTableManagerDecoratorForLocalNetworkTable( getTableManager() ), configuration_.getLocalTable() ) );
+
+                        AbstractNode.this.connecting( configuration_ );
+
+                        return null;
+                    }
+                } );
+            }
+            catch( final ExecutionException e )
+            {
+                final Throwable cause = e.getCause();
+                if( cause instanceof TableNetworkException )
+                {
+                    throw (TableNetworkException)cause;
+                }
+
+                throw TaskUtils.launderThrowable( cause );
+            }
+        }
+
+        /**
+         * Opens the transport layer associated with the table network node.
+         * 
+         * @throws java.lang.InterruptedException
+         *         If this thread is interrupted while waiting for the operation
+         *         to complete.
+         * @throws org.gamegineer.table.net.TableNetworkException
+         *         If an error occurs.
+         */
+        private void openTransportLayer()
+            throws TableNetworkException, InterruptedException
+        {
+            final ITransportLayer transportLayer = createTransportLayer();
+            try
+            {
+                transportLayer.endOpen( transportLayer.beginOpen( configuration_.getHostName(), configuration_.getPort() ) );
+            }
+            catch( final TransportException e )
+            {
+                throw new TableNetworkException( TableNetworkError.TRANSPORT_ERROR, e );
+            }
+
+            try
+            {
+                nodeLayer_.syncExec( new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        transportLayer_ = transportLayer;
+                    }
+                } );
+            }
+            catch( final ExecutionException e )
+            {
+                throw TaskUtils.launderThrowable( e.getCause() );
+            }
+        }
+
+        /**
+         * Synchronously disconnects the table network node from the table
+         * network.
+         * 
+         * @throws java.lang.InterruptedException
+         *         If this thread is interrupted while waiting for the operation
+         *         to complete.
+         */
+        private void syncDisconnect()
+            throws InterruptedException
+        {
+            try
+            {
+                endDisconnect( nodeLayer_.syncExec( new Callable<Future<Void>>()
+                {
+                    @Override
+                    public Future<Void> call()
+                    {
+                        return beginDisconnect();
+                    }
+                } ) );
+            }
+            catch( final ExecutionException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractNode_connect_disconnectError, e );
+            }
+        }
+    }
+
+    /**
      * Responsible for disconnecting the table network node from the table
      * network.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class Disconnecter
     {
         // ==================================================================
@@ -1196,7 +1305,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          * This constructor must be called on the node layer thread.
          * </p>
          */
-        @SuppressWarnings( "synthetic-access" )
         Disconnecter()
         {
             assert isNodeLayerThread();
@@ -1256,7 +1364,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          *         If this thread is interrupted while waiting for the operation
          *         to complete.
          */
-        @SuppressWarnings( "synthetic-access" )
         private void disconnected()
             throws InterruptedException
         {
@@ -1296,7 +1403,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          *         If this thread is interrupted while waiting for the operation
          *         to complete.
          */
-        @SuppressWarnings( "synthetic-access" )
         private void disconnecting()
             throws InterruptedException
         {
