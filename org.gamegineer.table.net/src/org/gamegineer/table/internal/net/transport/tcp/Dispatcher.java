@@ -604,6 +604,10 @@ final class Dispatcher
 
         /**
          * Initializes a new instance of the {@code Closer} class.
+         * 
+         * <p>
+         * This constructor must be called on the transport layer thread.
+         * </p>
          */
         @SuppressWarnings( "synthetic-access" )
         Closer()
