@@ -318,70 +318,13 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     {
         assert isNodeLayerThread();
 
-        final ITransportLayer transportLayer = transportLayer_;
+        final Disconnecter disconnecter = new Disconnecter();
         return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
             @Override
-            @SuppressWarnings( "synthetic-access" )
             public Void call()
             {
-                try
-                {
-                    try
-                    {
-                        nodeLayer_.syncExec( new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                if( transportLayer != null )
-                                {
-                                    disconnecting();
-                                }
-                            }
-                        } );
-                    }
-                    catch( final ExecutionException e )
-                    {
-                        throw TaskUtils.launderThrowable( e.getCause() );
-                    }
-
-                    if( transportLayer != null )
-                    {
-                        transportLayer.endClose( transportLayer.beginClose() );
-                    }
-
-                    try
-                    {
-                        nodeLayer_.syncExec( new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                if( transportLayer != null )
-                                {
-                                    transportLayer_ = null;
-
-                                    final INetworkTable table = tables_.remove( localPlayerName_ );
-                                    assert table != null;
-                                    table.dispose();
-
-                                    disconnected();
-                                }
-
-                                dispose();
-                            }
-                        } );
-                    }
-                    catch( final ExecutionException e )
-                    {
-                        throw TaskUtils.launderThrowable( e.getCause() );
-                    }
-                }
-                catch( final InterruptedException e )
-                {
-                    Thread.currentThread().interrupt();
-                }
+                disconnecter.disconnect();
 
                 return null;
             }
@@ -1222,6 +1165,158 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
             catch( final RejectedExecutionException e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.AbstractNode_nodeLayer_shutdown, e );
+            }
+        }
+    }
+
+    /**
+     * Responsible for disconnecting the table network node from the table
+     * network.
+     */
+    @Immutable
+    private final class Disconnecter
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The transport layer associated with the table network node. */
+        @SuppressWarnings( "hiding" )
+        private final ITransportLayer transportLayer_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code Disconnecter} class.
+         * 
+         * <p>
+         * This constructor must be called on the node layer thread.
+         * </p>
+         */
+        @SuppressWarnings( "synthetic-access" )
+        Disconnecter()
+        {
+            assert isNodeLayerThread();
+
+            transportLayer_ = AbstractNode.this.transportLayer_;
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Closes the transport layer associated with the table network node.
+         * 
+         * @throws java.lang.InterruptedException
+         *         If this thread is interrupted while waiting for the operation
+         *         to complete.
+         */
+        private void closeTransportLayer()
+            throws InterruptedException
+        {
+            if( transportLayer_ != null )
+            {
+                transportLayer_.endClose( transportLayer_.beginClose() );
+            }
+        }
+
+        /**
+         * Disconnects the table network node from the table network.
+         * 
+         * <p>
+         * This method must not be called on the node layer thread.
+         * </p>
+         */
+        void disconnect()
+        {
+            assert !isNodeLayerThread();
+
+            try
+            {
+                disconnecting();
+                closeTransportLayer();
+                disconnected();
+            }
+            catch( final InterruptedException e )
+            {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        /**
+         * Invoked when the table network node has disconnected from the table
+         * network.
+         * 
+         * @throws java.lang.InterruptedException
+         *         If this thread is interrupted while waiting for the operation
+         *         to complete.
+         */
+        @SuppressWarnings( "synthetic-access" )
+        private void disconnected()
+            throws InterruptedException
+        {
+            try
+            {
+                nodeLayer_.syncExec( new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        if( transportLayer_ != null )
+                        {
+                            AbstractNode.this.transportLayer_ = null;
+
+                            final INetworkTable table = tables_.remove( localPlayerName_ );
+                            assert table != null;
+                            table.dispose();
+
+                            AbstractNode.this.disconnected();
+                        }
+
+                        dispose();
+                    }
+                } );
+            }
+            catch( final ExecutionException e )
+            {
+                throw TaskUtils.launderThrowable( e.getCause() );
+            }
+        }
+
+        /**
+         * Invoked when the table network is about to disconnect from the table
+         * network.
+         * 
+         * @throws java.lang.InterruptedException
+         *         If this thread is interrupted while waiting for the operation
+         *         to complete.
+         */
+        @SuppressWarnings( "synthetic-access" )
+        private void disconnecting()
+            throws InterruptedException
+        {
+            try
+            {
+                nodeLayer_.syncExec( new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        if( transportLayer_ != null )
+                        {
+                            AbstractNode.this.disconnecting();
+                        }
+                    }
+                } );
+            }
+            catch( final ExecutionException e )
+            {
+                throw TaskUtils.launderThrowable( e.getCause() );
             }
         }
     }
