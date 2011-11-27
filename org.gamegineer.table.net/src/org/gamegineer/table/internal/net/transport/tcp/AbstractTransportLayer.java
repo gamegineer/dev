@@ -87,19 +87,19 @@ abstract class AbstractTransportLayer
      * transport layer thread and is managed by the specified executor service.
      * </p>
      * 
-     * @param context
-     *        The transport layer context; must not be {@code null}.
      * @param executorService
      *        The transport layer executor service; must not be {@code null}.
+     * @param context
+     *        The transport layer context; must not be {@code null}.
      */
     AbstractTransportLayer(
         /* @NonNull */
-        final ITransportLayerContext context,
+        final ExecutorService executorService,
         /* @NonNull */
-        final ExecutorService executorService )
+        final ITransportLayerContext context )
     {
-        assert context != null;
         assert executorService != null;
+        assert context != null;
 
         context_ = context;
         dispatcher_ = null;
@@ -620,7 +620,7 @@ abstract class AbstractTransportLayer
                 @Override
                 public AbstractTransportLayer call()
                 {
-                    return createTransportLayer( context, executorService );
+                    return createTransportLayer( executorService, context );
                 }
             } );
 
@@ -646,19 +646,19 @@ abstract class AbstractTransportLayer
          * This method will be invoked on the transport layer thread.
          * </p>
          * 
-         * @param context
-         *        The transport layer context; must not be {@code null}.
          * @param executorService
          *        The transport layer executor service; must not be {@code null}
          *        .
+         * @param context
+         *        The transport layer context; must not be {@code null}.
          * 
          * @return A new transport layer; never {@code null}.
          */
         /* @NonNull */
         abstract AbstractTransportLayer createTransportLayer(
             /* @NonNull */
-            ITransportLayerContext context,
+            ExecutorService executorService,
             /* @NonNull */
-            ExecutorService executorService );
+            ITransportLayerContext context );
     }
 }
