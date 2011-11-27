@@ -27,13 +27,16 @@ import java.util.Collections;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
+import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.internal.net.Activator;
 import org.gamegineer.table.internal.net.Loggers;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
+import org.gamegineer.table.net.TableNetworkError;
 import org.gamegineer.table.net.TableNetworkException;
 
 /**
@@ -84,6 +87,24 @@ final class NodeControllerProxy
     public Future<Void> beginConnect(
         final ITableNetworkConfiguration configuration )
     {
+        final Future<Future<Void>> beginConnectTaskFuture;
+        try
+        {
+            beginConnectTaskFuture = actualNodeController_.getNodeLayer().asyncExec( new Callable<Future<Void>>()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public Future<Void> call()
+                {
+                    return actualNodeController_.beginConnect( configuration );
+                }
+            } );
+        }
+        catch( final RejectedExecutionException e )
+        {
+            return new SynchronousFuture<Void>( new TableNetworkException( TableNetworkError.ILLEGAL_CONNECTION_STATE ) );
+        }
+
         return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
             @Override
@@ -93,24 +114,17 @@ final class NodeControllerProxy
             {
                 try
                 {
-                    final Future<Void> connectFuture;
+                    final Future<Void> connectTaskFuture;
                     try
                     {
-                        connectFuture = actualNodeController_.getNodeLayer().syncExec( new Callable<Future<Void>>()
-                        {
-                            @Override
-                            public Future<Void> call()
-                            {
-                                return actualNodeController_.beginConnect( configuration );
-                            }
-                        } );
+                        connectTaskFuture = beginConnectTaskFuture.get();
                     }
                     catch( final ExecutionException e )
                     {
                         throw TaskUtils.launderThrowable( e.getCause() );
                     }
 
-                    actualNodeController_.endConnect( connectFuture );
+                    actualNodeController_.endConnect( connectTaskFuture );
                 }
                 catch( final InterruptedException e )
                 {
@@ -128,6 +142,25 @@ final class NodeControllerProxy
     @Override
     public Future<Void> beginDisconnect()
     {
+        final Future<Future<Void>> beginDisconnectTaskFuture;
+        try
+        {
+            beginDisconnectTaskFuture = actualNodeController_.getNodeLayer().asyncExec( new Callable<Future<Void>>()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public Future<Void> call()
+                {
+                    return actualNodeController_.beginDisconnect();
+                }
+            } );
+        }
+        catch( final RejectedExecutionException e )
+        {
+            // Silently ignore request when node layer is disconnected
+            return new SynchronousFuture<Void>();
+        }
+
         return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
         {
             @Override
@@ -136,24 +169,17 @@ final class NodeControllerProxy
             {
                 try
                 {
-                    final Future<Void> disconnectFuture;
+                    final Future<Void> disconnectTaskFuture;
                     try
                     {
-                        disconnectFuture = actualNodeController_.getNodeLayer().syncExec( new Callable<Future<Void>>()
-                        {
-                            @Override
-                            public Future<Void> call()
-                            {
-                                return actualNodeController_.beginDisconnect();
-                            }
-                        } );
+                        disconnectTaskFuture = beginDisconnectTaskFuture.get();
                     }
                     catch( final ExecutionException e )
                     {
                         throw TaskUtils.launderThrowable( e.getCause() );
                     }
 
-                    actualNodeController_.endDisconnect( disconnectFuture );
+                    actualNodeController_.endDisconnect( disconnectTaskFuture );
                 }
                 catch( final InterruptedException e )
                 {
