@@ -94,10 +94,10 @@ final class NonNlsMessages
     /** The transport layer associated with the service has been shutdown. */
     public static String ServiceHandler_transportLayer_shutdown;
 
-    // --- TransportLayerAdapter --------------------------------------------
+    // --- TransportLayerProxy ----------------------------------------------
 
     /** The transport layer is closed. */
-    public static String TransportLayerAdapter_beginOpen_transportLayerClosed;
+    public static String TransportLayerProxy_beginOpen_transportLayerClosed;
 
 
     // ======================================================================

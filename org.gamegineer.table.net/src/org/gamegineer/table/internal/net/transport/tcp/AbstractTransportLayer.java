@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.transport.tcp;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -34,12 +35,13 @@ import org.gamegineer.common.core.util.concurrent.SynchronousFuture;
 import org.gamegineer.common.core.util.concurrent.TaskUtils;
 import org.gamegineer.table.internal.net.Activator;
 import org.gamegineer.table.internal.net.transport.IService;
+import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 import org.gamegineer.table.internal.net.transport.TransportException;
 
 /**
- * Superclass for all transport layer implementations that operate over a TCP
- * connection.
+ * Superclass for all implementations of {@link ITransportLayer} that operate
+ * over a TCP connection.
  * 
  * <p>
  * All client methods of this class are expected to be invoked on the associated
@@ -48,6 +50,7 @@ import org.gamegineer.table.internal.net.transport.TransportException;
  */
 @NotThreadSafe
 abstract class AbstractTransportLayer
+    implements ITransportLayer
 {
     // ======================================================================
     // Fields
@@ -157,14 +160,11 @@ abstract class AbstractTransportLayer
         return executorService_.submit( task );
     }
 
-    /**
-     * Begins an asynchronous operation to close the transport layer.
-     * 
-     * @return An asynchronous completion token for the operation; never {@code
-     *         null}.
+    /*
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#beginClose()
      */
-    /* @NonNull */
-    final Future<Void> beginClose()
+    @Override
+    public final Future<Void> beginClose()
     {
         assert isTransportLayerThread();
 
@@ -221,29 +221,15 @@ abstract class AbstractTransportLayer
         } );
     }
 
-    /**
-     * Begins an asynchronous operation to open the transport layer.
-     * 
-     * @param hostName
-     *        The host name; must not be {@code null}. For a passive transport
-     *        layer, this value is the host name to which all services will be
-     *        bound. For an active transport layer, this value is the host name
-     *        of the remote service.
-     * @param port
-     *        The port. For a passive transport layer, this value is the port to
-     *        which all services will be bound. For an active transport layer,
-     *        this value is the port of the remote service.
-     * 
-     * @return An asynchronous completion token for the operation; never {@code
-     *         null}.
+    /*
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#beginOpen(java.lang.String, int)
      */
-    /* @NonNull */
-    final Future<Void> beginOpen(
-        /* @NonNull */
+    @Override
+    public final Future<Void> beginOpen(
         final String hostName,
         final int port )
     {
-        assert hostName != null;
+        assertArgumentNotNull( hostName, "hostName" ); //$NON-NLS-1$
         assert isTransportLayerThread();
 
         if( state_ != State.PRISTINE )
@@ -341,31 +327,17 @@ abstract class AbstractTransportLayer
     }
 
     /**
-     * Ends an asynchronous operation to close the transport layer.
-     * 
-     * <p>
-     * This method does nothing if the transport layer is already closed.
-     * </p>
-     * 
-     * <p>
      * This method may be called from any thread. It must not be called on the
      * transport layer thread if the operation is not done.
-     * </p>
      * 
-     * @param future
-     *        The asynchronous completion token associated with the operation;
-     *        must not be {@code null}.
-     * 
-     * @throws java.lang.InterruptedException
-     *         If this thread is interrupted while waiting for the operation to
-     *         complete.
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#endClose(java.util.concurrent.Future)
      */
-    final void endClose(
-        /* @NonNull */
+    @Override
+    public final void endClose(
         final Future<Void> future )
         throws InterruptedException
     {
-        assert future != null;
+        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
         assert !isTransportLayerThread() || future.isDone();
 
         try
@@ -379,31 +351,17 @@ abstract class AbstractTransportLayer
     }
 
     /**
-     * Ends an asynchronous operation to open the transport layer.
-     * 
-     * <p>
      * This method may be called from any thread. It must not be called on the
      * transport layer thread if the operation is not done.
-     * </p>
      * 
-     * @param future
-     *        The asynchronous completion token associated with the operation;
-     *        must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalStateException
-     *         If the transport layer has already been opened or is closed.
-     * @throws java.lang.InterruptedException
-     *         If this thread is interrupted while waiting for the operation to
-     *         complete.
-     * @throws org.gamegineer.table.internal.net.transport.TransportException
-     *         If an error occurs.
+     * @see org.gamegineer.table.internal.net.transport.ITransportLayer#endOpen(java.util.concurrent.Future)
      */
-    final void endOpen(
-        /* @NonNull */
+    @Override
+    public final void endOpen(
         final Future<Void> future )
         throws TransportException, InterruptedException
     {
-        assert future != null;
+        assertArgumentNotNull( future, "future" ); //$NON-NLS-1$
         assert !isTransportLayerThread() || future.isDone();
 
         try

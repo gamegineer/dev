@@ -97,6 +97,6 @@ public final class TcpTransportLayerFactory
         assert factory != null;
         assert context != null;
 
-        return new TransportLayerAdapter( factory.createTransportLayer( context ) );
+        return new TransportLayerProxy( factory.createTransportLayer( context ) );
     }
 }

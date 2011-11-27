@@ -1,5 +1,5 @@
 /*
- * TransportLayerAdapter.java
+ * TransportLayerProxy.java
  * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
@@ -34,20 +34,20 @@ import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.TransportException;
 
 /**
- * Adapts an instance of {@link AbstractTransportLayer} to
- * {@link ITransportLayer} ensuring that all operations of
- * {@link AbstractTransportLayer} are executed on the transport layer thread.
+ * A proxy for the {@link ITransportLayer} interface of an instance of
+ * {@link AbstractTransportLayer} that ensures all methods are called on the
+ * associated transport layer thread.
  */
 @Immutable
-final class TransportLayerAdapter
+final class TransportLayerProxy
     implements ITransportLayer
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The TCP transport layer to be adapted. */
-    private final AbstractTransportLayer transportLayer_;
+    /** The actual transport layer. */
+    private final AbstractTransportLayer actualTransportLayer_;
 
 
     // ======================================================================
@@ -55,18 +55,18 @@ final class TransportLayerAdapter
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code TransportLayerAdapter} class.
+     * Initializes a new instance of the {@code TransportLayerProxy} class.
      * 
      * @param transportLayer
-     *        The TCP transport layer to be adapted; must not be {@code null}.
+     *        The actual transport layer; must not be {@code null}.
      */
-    TransportLayerAdapter(
+    TransportLayerProxy(
         /* @NonNull */
         final AbstractTransportLayer transportLayer )
     {
         assert transportLayer != null;
 
-        transportLayer_ = transportLayer;
+        actualTransportLayer_ = transportLayer;
     }
 
 
@@ -83,13 +83,13 @@ final class TransportLayerAdapter
         final Future<Future<Void>> beginCloseTaskFuture;
         try
         {
-            beginCloseTaskFuture = transportLayer_.asyncExec( new Callable<Future<Void>>()
+            beginCloseTaskFuture = actualTransportLayer_.asyncExec( new Callable<Future<Void>>()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
                 public Future<Void> call()
                 {
-                    return transportLayer_.beginClose();
+                    return actualTransportLayer_.beginClose();
                 }
             } );
         }
@@ -117,7 +117,7 @@ final class TransportLayerAdapter
                         throw TaskUtils.launderThrowable( e.getCause() );
                     }
 
-                    transportLayer_.endClose( closeTaskFuture );
+                    actualTransportLayer_.endClose( closeTaskFuture );
                 }
                 catch( final InterruptedException e )
                 {
@@ -142,19 +142,19 @@ final class TransportLayerAdapter
         final Future<Future<Void>> beginOpenTaskFuture;
         try
         {
-            beginOpenTaskFuture = transportLayer_.asyncExec( new Callable<Future<Void>>()
+            beginOpenTaskFuture = actualTransportLayer_.asyncExec( new Callable<Future<Void>>()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
                 public Future<Void> call()
                 {
-                    return transportLayer_.beginOpen( hostName, port );
+                    return actualTransportLayer_.beginOpen( hostName, port );
                 }
             } );
         }
         catch( final RejectedExecutionException e )
         {
-            return new SynchronousFuture<Void>( new IllegalStateException( NonNlsMessages.TransportLayerAdapter_beginOpen_transportLayerClosed, e ) );
+            return new SynchronousFuture<Void>( new IllegalStateException( NonNlsMessages.TransportLayerProxy_beginOpen_transportLayerClosed, e ) );
         }
 
         return Activator.getDefault().getExecutorService().submit( new Callable<Void>()
@@ -176,7 +176,7 @@ final class TransportLayerAdapter
                         throw TaskUtils.launderThrowable( e.getCause() );
                     }
 
-                    transportLayer_.endOpen( openTaskFuture );
+                    actualTransportLayer_.endOpen( openTaskFuture );
                 }
                 catch( final InterruptedException e )
                 {

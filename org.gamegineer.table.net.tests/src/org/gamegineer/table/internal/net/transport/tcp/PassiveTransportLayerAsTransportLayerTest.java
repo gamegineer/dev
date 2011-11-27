@@ -60,6 +60,6 @@ public final class PassiveTransportLayerAsTransportLayerTest
     @Override
     protected ITransportLayer createTransportLayer()
     {
-        return new TransportLayerAdapter( new PassiveTransportLayer.Factory().createTransportLayer( EasyMock.createMock( ITransportLayerContext.class ) ) );
+        return new TransportLayerProxy( new PassiveTransportLayer.Factory().createTransportLayer( EasyMock.createMock( ITransportLayerContext.class ) ) );
     }
 }
