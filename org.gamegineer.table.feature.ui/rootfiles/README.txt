@@ -40,8 +40,10 @@ A card pile consists of a collection of cards.  Use the Add Card and Remove Card
 
 A new empty table can be created using the New command.  A table can be saved for later use using the Save and Save As commands.  A previously saved table can be loaded using the Open command or by selecting a previously-loaded file from the Most Recently Used file list.
 
-THE NETWORK FUNCTIONALITY IS CURRENTLY EXPERIMENTAL AND NOT FULLY IMPLEMENTED.
-
 Use the Host command to host a table on the network.  Enter the name of the local network interface card and the TCP port on which to listen for connections.  Specify the name by which you wish to be known to the other players connected to the table.  You may optionally require each remote player that connects to your table to provide a password.
 
 Use the Join command to join a hosted table on the network.  Enter the name and TCP port of the host.  Specify the name by which you wish to be known to the other players connected to the table.  Enter the password required by the host to join the table or leave it blank if no password is required.
+
+A single player can control the network table at one time.  This player is known as the editor and has a red flag next to their name in the player list.  To request control of the table from the current editor, use the Request Control command.  Any player who has requested control will have a gray flag next to their name in the player list.  To cancel a previous request for control, use the Cancel Control Request command.
+
+The editor may transfer control to any other player in the network.  Use the Give Control command to select a player to which control will be given.  After executing the command, the new player will become the editor.
