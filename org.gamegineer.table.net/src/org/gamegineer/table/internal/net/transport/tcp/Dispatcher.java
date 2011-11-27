@@ -228,24 +228,22 @@ final class Dispatcher
                 final Set<SelectionKey> selectionKeys = (readyKeyCount > 0) ? selector.selectedKeys() : Collections.<SelectionKey>emptySet();
                 try
                 {
-                    final Future<?> future = transportLayer_.getExecutorService().submit( new Runnable()
-                    {
-                        @Override
-                        @SuppressWarnings( "synthetic-access" )
-                        public void run()
-                        {
-                            checkStatusChangeQueue();
-
-                            for( final SelectionKey selectionKey : selectionKeys )
-                            {
-                                processEvents( selectionKey );
-                            }
-                        }
-                    } );
-
                     try
                     {
-                        future.get();
+                        transportLayer_.syncExec( new Runnable()
+                        {
+                            @Override
+                            @SuppressWarnings( "synthetic-access" )
+                            public void run()
+                            {
+                                checkStatusChangeQueue();
+
+                                for( final SelectionKey selectionKey : selectionKeys )
+                                {
+                                    processEvents( selectionKey );
+                                }
+                            }
+                        } );
                     }
                     catch( final ExecutionException e )
                     {
@@ -584,6 +582,7 @@ final class Dispatcher
      * Responsible for closing the dispatcher.
      */
     @Immutable
+    @SuppressWarnings( "synthetic-access" )
     private final class Closer
     {
         // ==================================================================
@@ -609,7 +608,6 @@ final class Dispatcher
          * This constructor must be called on the transport layer thread.
          * </p>
          */
-        @SuppressWarnings( "synthetic-access" )
         Closer()
         {
             assert isTransportLayerThread();
@@ -626,7 +624,6 @@ final class Dispatcher
         /**
          * Closes the dispatcher.
          */
-        @SuppressWarnings( "synthetic-access" )
         void close()
         {
             assert !isTransportLayerThread();
@@ -654,43 +651,38 @@ final class Dispatcher
          *         If this thread is interrupted while waiting for the
          *         dispatcher to shutdown.
          */
-        @SuppressWarnings( "synthetic-access" )
         private void closeDispatcher()
             throws InterruptedException
         {
             assert !isTransportLayerThread();
 
-            final Future<Void> closeDispatcherFuture = transportLayer_.getExecutorService().submit( new Callable<Void>()
-            {
-                @Override
-                public Void call()
-                {
-                    Dispatcher.this.eventDispatchTaskFuture_ = null;
-
-                    acquireSelectorGuard();
-                    try
-                    {
-                        selector_.close();
-                    }
-                    catch( final IOException e )
-                    {
-                        Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_closeDispatcher_error, e );
-                    }
-                    finally
-                    {
-                        selector_ = null;
-                        releaseSelectorGuard();
-                    }
-
-                    state_ = State.CLOSED;
-
-                    return null;
-                }
-            } );
-
             try
             {
-                closeDispatcherFuture.get();
+                transportLayer_.syncExec( new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        Dispatcher.this.eventDispatchTaskFuture_ = null;
+
+                        acquireSelectorGuard();
+                        try
+                        {
+                            selector_.close();
+                        }
+                        catch( final IOException e )
+                        {
+                            Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Dispatcher_closeDispatcher_error, e );
+                        }
+                        finally
+                        {
+                            selector_ = null;
+                            releaseSelectorGuard();
+                        }
+
+                        state_ = State.CLOSED;
+                    }
+                } );
             }
             catch( final ExecutionException e )
             {
@@ -701,7 +693,6 @@ final class Dispatcher
         /**
          * Closes any orphaned event handlers before the dispatcher is closed.
          */
-        @SuppressWarnings( "synthetic-access" )
         private void closeOrphanedEventHandlers()
         {
             assert isTransportLayerThread();
@@ -725,7 +716,6 @@ final class Dispatcher
          *         If this thread is interrupted while waiting for the event
          *         dispatch task to shutdown.
          */
-        @SuppressWarnings( "synthetic-access" )
         private void waitForEventDispatchTaskToShutdown()
             throws InterruptedException
         {
@@ -767,7 +757,6 @@ final class Dispatcher
          *         If this thread is interrupted while waiting for the event
          *         handlers to shutdown.
          */
-        @SuppressWarnings( "synthetic-access" )
         private void waitForEventHandlersToShutdown()
             throws InterruptedException
         {
@@ -777,28 +766,26 @@ final class Dispatcher
 
             while( true )
             {
-                final Future<Boolean> areEventHandlersClosedFuture = transportLayer_.getExecutorService().submit( new Callable<Boolean>()
-                {
-                    @Override
-                    public Boolean call()
-                    {
-                        if( eventHandlers_.isEmpty() )
-                        {
-                            return Boolean.TRUE;
-                        }
-                        else if( (System.currentTimeMillis() - startTime) >= eventHandlerShutdownTimeout_ )
-                        {
-                            closeOrphanedEventHandlers();
-                            return Boolean.TRUE;
-                        }
-
-                        return Boolean.FALSE;
-                    }
-                } );
-
                 try
                 {
-                    final boolean areEventHandlersClosed = areEventHandlersClosedFuture.get().booleanValue();
+                    final boolean areEventHandlersClosed = transportLayer_.syncExec( new Callable<Boolean>()
+                    {
+                        @Override
+                        public Boolean call()
+                        {
+                            if( eventHandlers_.isEmpty() )
+                            {
+                                return Boolean.TRUE;
+                            }
+                            else if( (System.currentTimeMillis() - startTime) >= eventHandlerShutdownTimeout_ )
+                            {
+                                closeOrphanedEventHandlers();
+                                return Boolean.TRUE;
+                            }
+
+                            return Boolean.FALSE;
+                        }
+                    } ).booleanValue();
                     if( areEventHandlersClosed )
                     {
                         break;

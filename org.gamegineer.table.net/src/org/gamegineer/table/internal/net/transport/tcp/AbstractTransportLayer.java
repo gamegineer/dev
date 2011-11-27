@@ -111,6 +111,53 @@ abstract class AbstractTransportLayer
     // ======================================================================
 
     /**
+     * Asynchronously executes the specified task on the transport layer thread.
+     * 
+     * @param <T>
+     *        The return type of the task.
+     * 
+     * @param task
+     *        The task to execute; must not be {@code null}.
+     * 
+     * @return An asynchronous completion token for the task; never {@code null}
+     *         .
+     * 
+     * @throws java.util.concurrent.RejectedExecutionException
+     *         If the task cannot be scheduled for execution.
+     */
+    /* @NonNull */
+    final <T> Future<T> asyncExec(
+        /* @NonNull */
+        final Callable<T> task )
+    {
+        assert task != null;
+
+        return executorService_.submit( task );
+    }
+
+    /**
+     * Asynchronously executes the specified task on the transport layer thread.
+     * 
+     * @param task
+     *        The task to execute; must not be {@code null}.
+     * 
+     * @return An asynchronous completion token for the task; never {@code null}
+     *         .
+     * 
+     * @throws java.util.concurrent.RejectedExecutionException
+     *         If the task cannot be scheduled for execution.
+     */
+    /* @NonNull */
+    Future<?> asyncExec(
+        /* @NonNull */
+        final Runnable task )
+    {
+        assert task != null;
+
+        return executorService_.submit( task );
+    }
+
+    /**
      * Begins an asynchronous operation to close the transport layer.
      * 
      * @return An asynchronous completion token for the operation; never {@code
@@ -214,29 +261,27 @@ abstract class AbstractTransportLayer
             public Void call()
                 throws TransportException
             {
-                final Future<Void> openTaskFuture = getExecutorService().submit( new Callable<Void>()
-                {
-                    @Override
-                    public Void call()
-                        throws TransportException
-                    {
-                        try
-                        {
-                            dispatcher_.open();
-                            open( hostName, port );
-                        }
-                        catch( final IOException e )
-                        {
-                            throw new TransportException( NonNlsMessages.AbstractTransportLayer_open_ioError, e );
-                        }
-
-                        return null;
-                    }
-                } );
-
                 try
                 {
-                    openTaskFuture.get();
+                    syncExec( new Callable<Void>()
+                    {
+                        @Override
+                        public Void call()
+                            throws TransportException
+                        {
+                            try
+                            {
+                                dispatcher_.open();
+                                open( hostName, port );
+                            }
+                            catch( final IOException e )
+                            {
+                                throw new TransportException( NonNlsMessages.AbstractTransportLayer_open_ioError, e );
+                            }
+
+                            return null;
+                        }
+                    } );
                 }
                 catch( final ExecutionException e )
                 {
@@ -393,21 +438,6 @@ abstract class AbstractTransportLayer
     }
 
     /**
-     * Gets the transport layer executor service.
-     * 
-     * <p>
-     * This method may be called from any thread.
-     * </p>
-     * 
-     * @return The transport layer executor service; never {@code null}.
-     */
-    /* @NonNull */
-    final ExecutorService getExecutorService()
-    {
-        return executorService_;
-    }
-
-    /**
      * Indicates the current thread is the transport layer thread.
      * 
      * <p>
@@ -440,6 +470,86 @@ abstract class AbstractTransportLayer
         throws IOException;
 
     /**
+     * Synchronously executes the specified task on the transport layer thread.
+     * 
+     * @param <T>
+     *        The return type of the task.
+     * 
+     * @param task
+     *        The task to execute; must not be {@code null}.
+     * 
+     * @return The return value of the task; may be {@code null}.
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the task to
+     *         complete.
+     * @throws java.util.concurrent.ExecutionException
+     *         If an error occurs while executing the task.
+     * @throws java.util.concurrent.RejectedExecutionException
+     *         If the task cannot be scheduled for execution.
+     */
+    /* @Nullable */
+    <T> T syncExec(
+        /* @NonNull */
+        final Callable<T> task )
+        throws ExecutionException, InterruptedException
+    {
+        assert task != null;
+
+        if( isTransportLayerThread() )
+        {
+            try
+            {
+                return task.call();
+            }
+            catch( final Exception e )
+            {
+                throw new ExecutionException( e );
+            }
+        }
+
+        return asyncExec( task ).get();
+    }
+
+    /**
+     * Synchronously executes the specified task on the transport layer thread.
+     * 
+     * @param task
+     *        The task to execute; must not be {@code null}.
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting for the task to
+     *         complete.
+     * @throws java.util.concurrent.ExecutionException
+     *         If an error occurs while executing the task.
+     * @throws java.util.concurrent.RejectedExecutionException
+     *         If the task cannot be scheduled for execution.
+     */
+    void syncExec(
+        /* @NonNull */
+        final Runnable task )
+        throws ExecutionException, InterruptedException
+    {
+        assert task != null;
+
+        if( isTransportLayerThread() )
+        {
+            try
+            {
+                task.run();
+            }
+            catch( final Exception e )
+            {
+                throw new ExecutionException( e );
+            }
+        }
+        else
+        {
+            asyncExec( task ).get();
+        }
+    }
+
+    /**
      * Synchronously closes the transport layer.
      * 
      * <p>
@@ -450,7 +560,7 @@ abstract class AbstractTransportLayer
     {
         assert !isTransportLayerThread();
 
-        final Future<Future<Void>> beginCloseTaskFuture = getExecutorService().submit( new Callable<Future<Void>>()
+        final Future<Future<Void>> beginCloseTaskFuture = asyncExec( new Callable<Future<Void>>()
         {
             @Override
             public Future<Void> call()

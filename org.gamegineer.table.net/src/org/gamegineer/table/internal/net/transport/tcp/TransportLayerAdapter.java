@@ -83,7 +83,7 @@ final class TransportLayerAdapter
         final Future<Future<Void>> beginCloseTaskFuture;
         try
         {
-            beginCloseTaskFuture = transportLayer_.getExecutorService().submit( new Callable<Future<Void>>()
+            beginCloseTaskFuture = transportLayer_.asyncExec( new Callable<Future<Void>>()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )
@@ -142,7 +142,7 @@ final class TransportLayerAdapter
         final Future<Future<Void>> beginOpenTaskFuture;
         try
         {
-            beginOpenTaskFuture = transportLayer_.getExecutorService().submit( new Callable<Future<Void>>()
+            beginOpenTaskFuture = transportLayer_.asyncExec( new Callable<Future<Void>>()
             {
                 @Override
                 @SuppressWarnings( "synthetic-access" )

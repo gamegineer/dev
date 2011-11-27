@@ -217,11 +217,10 @@ final class TransportLayerRunner
         assert task != null;
         assert exceptionTypes != null;
         assert !exceptionTypes.contains( null );
-        assert !transportLayer_.isTransportLayerThread();
 
         try
         {
-            return transportLayer_.getExecutorService().submit( task ).get();
+            return transportLayer_.syncExec( task );
         }
         catch( final ExecutionException e )
         {

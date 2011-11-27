@@ -487,7 +487,7 @@ final class ServiceHandler
         {
             try
             {
-                getTransportLayer().getExecutorService().submit( new Runnable()
+                getTransportLayer().asyncExec( new Runnable()
                 {
                     @Override
                     public void run()
@@ -510,7 +510,7 @@ final class ServiceHandler
         {
             try
             {
-                getTransportLayer().getExecutorService().submit( new Runnable()
+                getTransportLayer().asyncExec( new Runnable()
                 {
                     @Override
                     public void run()
