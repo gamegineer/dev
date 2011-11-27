@@ -52,6 +52,8 @@ public interface INodeLayer
      * 
      * @throws java.lang.NullPointerException
      *         If {@code task} is {@code null}.
+     * @throws java.util.concurrent.RejectedExecutionException
+     *         If the task cannot be scheduled for execution.
      */
     /* @NonNull */
     public <T> Future<T> asyncExec(
@@ -69,6 +71,8 @@ public interface INodeLayer
      * 
      * @throws java.lang.NullPointerException
      *         If {@code task} is {@code null}.
+     * @throws java.util.concurrent.RejectedExecutionException
+     *         If the task cannot be scheduled for execution.
      */
     /* @NonNull */
     public Future<?> asyncExec(
@@ -106,6 +110,8 @@ public interface INodeLayer
      *         If {@code task} is {@code null}.
      * @throws java.util.concurrent.ExecutionException
      *         If an error occurs while executing the task.
+     * @throws java.util.concurrent.RejectedExecutionException
+     *         If the task cannot be scheduled for execution.
      */
     /* @Nullable */
     public <T> T syncExec(
@@ -126,6 +132,8 @@ public interface INodeLayer
      *         If {@code task} is {@code null}.
      * @throws java.util.concurrent.ExecutionException
      *         If an error occurs while executing the task.
+     * @throws java.util.concurrent.RejectedExecutionException
+     *         If the task cannot be scheduled for execution.
      */
     public void syncExec(
         /* @NonNull */
