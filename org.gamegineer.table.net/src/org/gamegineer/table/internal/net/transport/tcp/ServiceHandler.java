@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.transport.tcp;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.IOException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
@@ -42,6 +43,7 @@ import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 @NotThreadSafe
 final class ServiceHandler
     extends AbstractEventHandler
+    implements IServiceContext
 {
     // ======================================================================
     // Fields
@@ -307,7 +309,7 @@ final class ServiceHandler
             throw e;
         }
 
-        service_.started( new ServiceContextAdapter() );
+        service_.started( new ServiceContextProxy() );
     }
 
     /*
@@ -378,17 +380,14 @@ final class ServiceHandler
         }
     }
 
-    /**
-     * Sends the specified message to the service peer.
-     * 
-     * @param message
-     *        The message; must not be {@code null}.
+    /*
+     * @see org.gamegineer.table.internal.net.transport.IServiceContext#sendMessage(org.gamegineer.table.internal.net.transport.IMessage)
      */
-    private void sendMessage(
-        /* @NonNull */
+    @Override
+    public void sendMessage(
         final IMessage message )
     {
-        assert message != null;
+        assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
 
         try
         {
@@ -400,10 +399,11 @@ final class ServiceHandler
         }
     }
 
-    /**
-     * Stops the service.
+    /*
+     * @see org.gamegineer.table.internal.net.transport.IServiceContext#stopService()
      */
-    private void stopService()
+    @Override
+    public void stopService()
     {
         if( outputQueueState_ == QueueState.OPEN )
         {
@@ -454,10 +454,11 @@ final class ServiceHandler
     }
 
     /**
-     * Adapts a service handler to the {@link IServiceContext} interface.
+     * A proxy for the {@link IServiceContext} interface that ensures all
+     * methods are called on the associated transport layer thread.
      */
     @Immutable
-    private final class ServiceContextAdapter
+    private final class ServiceContextProxy
         implements IServiceContext
     {
         // ==================================================================
@@ -465,10 +466,9 @@ final class ServiceHandler
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code ServiceContextAdapter}
-         * class.
+         * Initializes a new instance of the {@code ServiceContextProxy} class.
          */
-        ServiceContextAdapter()
+        ServiceContextProxy()
         {
             super();
         }
@@ -490,7 +490,6 @@ final class ServiceHandler
                 getTransportLayer().getExecutorService().submit( new Runnable()
                 {
                     @Override
-                    @SuppressWarnings( "synthetic-access" )
                     public void run()
                     {
                         ServiceHandler.this.sendMessage( message );
@@ -514,7 +513,6 @@ final class ServiceHandler
                 getTransportLayer().getExecutorService().submit( new Runnable()
                 {
                     @Override
-                    @SuppressWarnings( "synthetic-access" )
                     public void run()
                     {
                         ServiceHandler.this.stopService();
