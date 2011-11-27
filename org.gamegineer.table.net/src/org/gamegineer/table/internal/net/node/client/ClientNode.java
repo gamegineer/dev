@@ -45,6 +45,7 @@ import org.gamegineer.table.internal.net.node.ITableManager;
 import org.gamegineer.table.internal.net.node.TableIncrement;
 import org.gamegineer.table.internal.net.transport.IService;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
+import org.gamegineer.table.internal.net.transport.TransportException;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.ITableNetworkConfiguration;
 import org.gamegineer.table.net.PlayerRole;
@@ -216,27 +217,35 @@ public final class ClientNode
      */
     @Override
     protected ITransportLayer createTransportLayer()
+        throws TableNetworkException
     {
         assert !isNodeLayerThread();
 
-        return getTableNetworkController().getTransportLayerFactory().createActiveTransportLayer( new AbstractTransportLayerContext()
+        try
         {
-            @Override
-            public IService createService()
+            return getTableNetworkController().getTransportLayerFactory().createActiveTransportLayer( new AbstractTransportLayerContext()
             {
-                return new AbstractServiceProxy()
+                @Override
+                public IService createService()
                 {
-                    @Override
-                    @SuppressWarnings( "synthetic-access" )
-                    protected IService createActualService()
+                    return new AbstractServiceProxy()
                     {
-                        assert isNodeLayerThread();
+                        @Override
+                        @SuppressWarnings( "synthetic-access" )
+                        protected IService createActualService()
+                        {
+                            assert isNodeLayerThread();
 
-                        return new RemoteServerNode( getNodeLayer(), ClientNode.this );
-                    }
-                };
-            }
-        } );
+                            return new RemoteServerNode( getNodeLayer(), ClientNode.this );
+                        }
+                    };
+                }
+            } );
+        }
+        catch( final TransportException e )
+        {
+            throw new TableNetworkException( TableNetworkError.TRANSPORT_ERROR, e );
+        }
     }
 
     /*

@@ -603,14 +603,14 @@ abstract class AbstractTransportLayer
          * 
          * @return A new transport layer; never {@code null}.
          * 
-         * @throws java.lang.RuntimeException
-         *         If this thread is interrupted while waiting for the transport
-         *         layer to be created on the transport layer thread.
+         * @throws org.gamegineer.table.internal.net.transport.TransportException
+         *         If the transport layer cannot be created.
          */
         /* @NonNull */
         final AbstractTransportLayer createTransportLayer(
             /* @NonNull */
             final ITransportLayerContext context )
+            throws TransportException
         {
             assert context != null;
 
@@ -635,7 +635,7 @@ abstract class AbstractTransportLayer
             catch( final InterruptedException e )
             {
                 Thread.currentThread().interrupt();
-                throw new RuntimeException( NonNlsMessages.AbstractTransportLayer_createTransportLayer_interrupted );
+                throw new TransportException( NonNlsMessages.AbstractTransportLayer_createTransportLayer_interrupted );
             }
         }
 

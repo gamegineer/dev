@@ -322,9 +322,13 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * </p>
      * 
      * @return The transport layer for this node; never {@code null}.
+     * 
+     * @throws org.gamegineer.table.net.TableNetworkException
+     *         If the transport layer cannot be created.
      */
     /* @NonNull */
-    protected abstract ITransportLayer createTransportLayer();
+    protected abstract ITransportLayer createTransportLayer()
+        throws TableNetworkException;
 
     /*
      * @see org.gamegineer.table.internal.net.node.INode#disconnect(org.gamegineer.table.net.TableNetworkError)

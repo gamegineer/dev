@@ -59,6 +59,7 @@ public final class ActiveTransportLayerAsTransportLayerTest
      */
     @Override
     protected ITransportLayer createTransportLayer()
+        throws Exception
     {
         return new TransportLayerProxy( new ActiveTransportLayer.Factory().createTransportLayer( EasyMock.createMock( ITransportLayerContext.class ) ) );
 

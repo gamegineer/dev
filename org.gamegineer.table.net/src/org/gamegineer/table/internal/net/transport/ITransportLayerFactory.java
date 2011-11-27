@@ -42,11 +42,14 @@ public interface ITransportLayerFactory
      * 
      * @throws java.lang.NullPointerException
      *         If {@code context} is {@code null}.
+     * @throws org.gamegineer.table.internal.net.transport.TransportException
+     *         If the transport layer cannot be created.
      */
     /* @NonNull */
     public ITransportLayer createActiveTransportLayer(
         /* @NonNull */
-        ITransportLayerContext context );
+        ITransportLayerContext context )
+        throws TransportException;
 
     /**
      * Creates a new passive transport layer.
@@ -58,9 +61,12 @@ public interface ITransportLayerFactory
      * 
      * @throws java.lang.NullPointerException
      *         If {@code context} is {@code null}.
+     * @throws org.gamegineer.table.internal.net.transport.TransportException
+     *         If the transport layer cannot be created.
      */
     /* @NonNull */
     public ITransportLayer createPassiveTransportLayer(
         /* @NonNull */
-        ITransportLayerContext context );
+        ITransportLayerContext context )
+        throws TransportException;
 }

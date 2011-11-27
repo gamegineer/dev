@@ -26,6 +26,7 @@ import net.jcip.annotations.Immutable;
 import org.gamegineer.table.internal.net.transport.ITransportLayer;
 import org.gamegineer.table.internal.net.transport.ITransportLayerContext;
 import org.gamegineer.table.internal.net.transport.ITransportLayerFactory;
+import org.gamegineer.table.internal.net.transport.TransportException;
 
 /**
  * Implementation of
@@ -59,6 +60,7 @@ public final class TcpTransportLayerFactory
     @Override
     public ITransportLayer createActiveTransportLayer(
         final ITransportLayerContext context )
+        throws TransportException
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
@@ -71,6 +73,7 @@ public final class TcpTransportLayerFactory
     @Override
     public ITransportLayer createPassiveTransportLayer(
         final ITransportLayerContext context )
+        throws TransportException
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
@@ -86,6 +89,9 @@ public final class TcpTransportLayerFactory
      *        The transport layer context; must not be {@code null}.
      * 
      * @return A new transport layer; never {@code null}.
+     * 
+     * @throws org.gamegineer.table.internal.net.transport.TransportException
+     *         If the transport layer cannot be created.
      */
     /* @NonNull */
     private static ITransportLayer createTransportLayer(
@@ -93,6 +99,7 @@ public final class TcpTransportLayerFactory
         final AbstractTransportLayer.AbstractFactory factory,
         /* @NonNull */
         final ITransportLayerContext context )
+        throws TransportException
     {
         assert factory != null;
         assert context != null;
