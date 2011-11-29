@@ -1,6 +1,6 @@
 /*
  * AllTests.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2011 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,8 +51,10 @@ public final class AllTests
     /**
      * Creates a test suite consisting of all tests in the fragment.
      * 
-     * @return A test suite consisting of all tests in the fragment.
+     * @return A test suite consisting of all tests in the fragment; never
+     *         {@code null}.
      */
+    /* @NonNull */
     public static Test suite()
     {
         return BundleSuiteBuilder.suite( Activator.getDefault().getBundleContext().getBundle(), TestsFragmentConstants.SYMBOLIC_NAME );
