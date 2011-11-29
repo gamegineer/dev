@@ -1,12 +1,12 @@
 Gamegineer
 Version 0.9.0
-XX XX XXXX
+29 November 2011
 
 Defects closed:
 	None
 
 Enhancements closed:
-	* [#56] Delay drag operation until mouse has moved some minimum threshold
+	None
 
 Tasks closed:
-	* [#55] Add support for player roles within the table network
+	* [#57] Add support for transferring control of the table within the table network
