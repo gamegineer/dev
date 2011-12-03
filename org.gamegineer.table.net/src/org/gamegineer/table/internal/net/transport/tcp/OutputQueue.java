@@ -23,8 +23,8 @@ package org.gamegineer.table.internal.net.transport.tcp;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.ByteChannel;
 import java.nio.channels.SelectionKey;
+import java.nio.channels.WritableByteChannel;
 import java.util.Deque;
 import java.util.LinkedList;
 import net.jcip.annotations.NotThreadSafe;
@@ -101,7 +101,7 @@ final class OutputQueue
      */
     int drainTo(
         /* @NonNull */
-        final ByteChannel channel )
+        final WritableByteChannel channel )
         throws IOException
     {
         assert channel != null;
