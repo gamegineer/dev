@@ -23,7 +23,7 @@ package org.gamegineer.table.internal.net.transport.tcp;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.ByteChannel;
+import java.nio.channels.ReadableByteChannel;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 
@@ -188,7 +188,7 @@ final class InputQueue
      */
     int fillFrom(
         /* @NonNull */
-        final ByteChannel channel )
+        final ReadableByteChannel channel )
         throws IOException
     {
         assert channel != null;

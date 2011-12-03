@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.net.transport;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.NotThreadSafe;
 
 /**
@@ -37,6 +38,13 @@ public final class FakeMessage
     /** Serializable class version number. */
     private static final long serialVersionUID = 4942004570714420954L;
 
+    /**
+     * The message content.
+     * 
+     * @serial The message content.
+     */
+    private byte[] content_;
+
 
     // ======================================================================
     // Constructors
@@ -47,6 +55,42 @@ public final class FakeMessage
      */
     public FakeMessage()
     {
-        super();
+        content_ = new byte[ 0 ];
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /**
+     * Gets the message content.
+     * 
+     * @return The message content; never {@code null}. The returned value is a
+     *         direct reference to the field and must not be modified.
+     */
+    /* @NonNull */
+    public byte[] getContent()
+    {
+        return content_;
+    }
+
+    /**
+     * Sets the message content.
+     * 
+     * @param content
+     *        The message content; must not be {@code null}.No copy is made of
+     *        this value and it must not be modified at a later time.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code content} is {@code null}.
+     */
+    public void setContent(
+        /* @NonNull */
+        final byte[] content )
+    {
+        assertArgumentNotNull( content, "content" ); //$NON-NLS-1$
+
+        content_ = content;
     }
 }
