@@ -99,11 +99,11 @@ public final class InputQueueTest
         inputQueue_.fillFrom( Channels.newChannel( new ByteArrayInputStream( expectedBytes ) ) );
 
         final MessageEnvelope actualMessageEnvelope = inputQueue_.dequeueMessageEnvelope();
+
+        assertNotNull( actualMessageEnvelope );
         final ByteBuffer actualBuffer = actualMessageEnvelope.toByteBuffer();
         final byte[] actualBytes = new byte[ actualBuffer.remaining() ];
         actualBuffer.get( actualBytes );
-
-        assertNotNull( actualMessageEnvelope );
         assertArrayEquals( expectedBytes, actualBytes );
     }
 
@@ -130,12 +130,57 @@ public final class InputQueueTest
         inputQueue_.fillFrom( Channels.newChannel( new ByteArrayInputStream( expectedBytes ) ) );
 
         final MessageEnvelope actualMessageEnvelope = inputQueue_.dequeueMessageEnvelope();
+        assertNotNull( actualMessageEnvelope );
         final ByteBuffer actualBuffer = actualMessageEnvelope.toByteBuffer();
         final byte[] actualBytes = new byte[ actualBuffer.remaining() ];
         actualBuffer.get( actualBytes );
-
-        assertNotNull( actualMessageEnvelope );
         assertArrayEquals( expectedBytes, actualBytes );
+    }
+
+    /**
+     * Ensures the {@code dequeueMessageEnvelope} method correctly dequeues a
+     * message envelope when the input queue contains exactly two message
+     * envelopes.
+     * 
+     * @throws java.lang.Exception
+     *         If an error occurs.
+     */
+    @Test
+    public void testDequeueMessageEnvelope_ContainsExactlyTwoMessageEnvelope2()
+        throws Exception
+    {
+        final FakeMessage expectedMessage1 = new FakeMessage();
+        expectedMessage1.setContent( new byte[] {
+            0x11
+        } );
+        final MessageEnvelope expectedMessageEnvelope1 = MessageEnvelope.fromMessage( expectedMessage1 );
+        final ByteBuffer expectedBuffer1 = expectedMessageEnvelope1.toByteBuffer();
+        final byte[] expectedBytes1 = new byte[ expectedBuffer1.remaining() ];
+        expectedBuffer1.get( expectedBytes1 );
+        inputQueue_.fillFrom( Channels.newChannel( new ByteArrayInputStream( expectedBytes1 ) ) );
+        final FakeMessage expectedMessage2 = new FakeMessage();
+        expectedMessage2.setContent( new byte[] {
+            0x77
+        } );
+        final MessageEnvelope expectedMessageEnvelope2 = MessageEnvelope.fromMessage( expectedMessage2 );
+        final ByteBuffer expectedBuffer2 = expectedMessageEnvelope2.toByteBuffer();
+        final byte[] expectedBytes2 = new byte[ expectedBuffer2.remaining() ];
+        expectedBuffer2.get( expectedBytes2 );
+        inputQueue_.fillFrom( Channels.newChannel( new ByteArrayInputStream( expectedBytes2 ) ) );
+
+        final MessageEnvelope actualMessageEnvelope1 = inputQueue_.dequeueMessageEnvelope();
+        final MessageEnvelope actualMessageEnvelope2 = inputQueue_.dequeueMessageEnvelope();
+
+        assertNotNull( actualMessageEnvelope1 );
+        final ByteBuffer actualBuffer1 = actualMessageEnvelope1.toByteBuffer();
+        final byte[] actualBytes1 = new byte[ actualBuffer1.remaining() ];
+        actualBuffer1.get( actualBytes1 );
+        assertArrayEquals( expectedBytes1, actualBytes1 );
+        assertNotNull( actualMessageEnvelope2 );
+        final ByteBuffer actualBuffer2 = actualMessageEnvelope2.toByteBuffer();
+        final byte[] actualBytes2 = new byte[ actualBuffer2.remaining() ];
+        actualBuffer2.get( actualBytes2 );
+        assertArrayEquals( expectedBytes2, actualBytes2 );
     }
 
     /**
@@ -178,11 +223,10 @@ public final class InputQueueTest
         inputQueue_.fillFrom( Channels.newChannel( new ByteArrayInputStream( inputBytes ) ) );
 
         final MessageEnvelope actualMessageEnvelope = inputQueue_.dequeueMessageEnvelope();
+        assertNotNull( actualMessageEnvelope );
         final ByteBuffer actualBuffer = actualMessageEnvelope.toByteBuffer();
         final byte[] actualBytes = new byte[ actualBuffer.remaining() ];
         actualBuffer.get( actualBytes );
-
-        assertNotNull( actualMessageEnvelope );
         assertArrayEquals( expectedBytes, actualBytes );
     }
 
@@ -211,8 +255,6 @@ public final class InputQueueTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    // FIXME
-    @Ignore
     @Test
     public void testDequeueMessageEnvelope_FirstCallContainsIncompleteMessageEnvelope_SecondCallContainsCompleteMessageEnvelope()
         throws Exception
@@ -226,12 +268,12 @@ public final class InputQueueTest
         final MessageEnvelope firstMessageEnvelope = inputQueue_.dequeueMessageEnvelope();
         inputQueue_.fillFrom( Channels.newChannel( new ByteArrayInputStream( expectedBytes, expectedBytes.length - 1, 1 ) ) );
         final MessageEnvelope actualMessageEnvelope = inputQueue_.dequeueMessageEnvelope();
-        final ByteBuffer actualBuffer = actualMessageEnvelope.toByteBuffer();
-        final byte[] actualBytes = new byte[ actualBuffer.remaining() ];
-        actualBuffer.get( actualBytes );
 
         assertNull( firstMessageEnvelope );
         assertNotNull( actualMessageEnvelope );
+        final ByteBuffer actualBuffer = actualMessageEnvelope.toByteBuffer();
+        final byte[] actualBytes = new byte[ actualBuffer.remaining() ];
+        actualBuffer.get( actualBytes );
         assertArrayEquals( expectedBytes, actualBytes );
     }
 }

@@ -140,11 +140,14 @@ final class InputQueue
             return null;
         }
 
+        final int position = buffer_.position();
+        final int limit = buffer_.limit();
         buffer_.flip();
 
         final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteBuffer( buffer_ );
         if( messageEnvelope == null )
         {
+            buffer_.position( position ).limit( limit );
             return null;
         }
 
