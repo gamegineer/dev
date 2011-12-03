@@ -127,7 +127,8 @@ public final class BeginAuthenticationRequestMessage
      * 
      * @param salt
      *        The salt used to generate the shared secret key; must not be
-     *        {@code null}.
+     *        {@code null}. No copy is made of this value and it must not be
+     *        modified at a later time.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code salt} is empty.
