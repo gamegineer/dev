@@ -25,6 +25,8 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -202,6 +204,84 @@ public final class MessageEnvelopeTest
     public void testFromByteBuffer_Buffer_Null()
     {
         MessageEnvelope.fromByteBuffer( null );
+    }
+
+    /**
+     * Ensures the {@code fromByteBuffers} method returns the correct value when
+     * the buffer collection contains a complete message envelope.
+     */
+    @Test
+    public void testFromByteBuffers_Buffers_Complete()
+    {
+        final ByteBuffer buffer1 = ByteBuffer.allocate( 128 );
+        buffer1.putInt( ((DEFAULT_ID << 24) & 0xFF000000) | ((DEFAULT_CORRELATION_ID << 16) & 0x00FF0000) | (DEFAULT_BODY.length & 0x0000FFFF) );
+        buffer1.flip();
+        final ByteBuffer buffer2 = ByteBuffer.allocate( 128 );
+        buffer2.put( DEFAULT_BODY, 0, 1 );
+        buffer2.flip();
+        final ByteBuffer buffer3 = ByteBuffer.allocate( 128 );
+        buffer3.put( DEFAULT_BODY, 1, DEFAULT_BODY.length - 1 );
+        buffer3.flip();
+
+        final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteBuffers( Arrays.asList( buffer1, buffer2, buffer3 ) );
+
+        assertEquals( DEFAULT_ID, messageEnvelope.getId() );
+        assertEquals( DEFAULT_CORRELATION_ID, messageEnvelope.getCorrelationId() );
+        final ByteBuffer bodyBuffer = messageEnvelope_.getBody();
+        final byte[] body = new byte[ bodyBuffer.remaining() ];
+        bodyBuffer.get( body );
+        assertArrayEquals( DEFAULT_BODY, body );
+    }
+
+    /**
+     * Ensures the {@code fromByteBuffers} method throws an exception when
+     * passed an illegal buffer collection that contains a {@code null} element.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testFromByteBuffers_Buffers_Illegal_ContainsNullElement()
+    {
+        MessageEnvelope.fromByteBuffers( Collections.<ByteBuffer>singletonList( null ) );
+    }
+
+    /**
+     * Ensures the {@code fromByteBuffers} method returns {@code null} when the
+     * buffer collection contains a message envelope with an incomplete body.
+     */
+    @Test
+    public void testFromByteBuffers_Buffers_IncompleteBody()
+    {
+        final ByteBuffer buffer1 = ByteBuffer.allocate( 128 );
+        buffer1.putInt( ((DEFAULT_ID << 24) & 0xFF000000) | ((DEFAULT_CORRELATION_ID << 16) & 0x00FF0000) | (DEFAULT_BODY.length & 0x0000FFFF) );
+        buffer1.flip();
+        final ByteBuffer buffer2 = ByteBuffer.allocate( 128 );
+        buffer2.put( DEFAULT_BODY, 0, 1 );
+        buffer2.flip();
+
+        assertNull( MessageEnvelope.fromByteBuffers( Arrays.asList( buffer1, buffer2 ) ) );
+    }
+
+    /**
+     * Ensures the {@code fromByteBuffers} method returns {@code null} when the
+     * buffer collection contains a message envelope with an incomplete header.
+     */
+    @Test
+    public void testFromByteBuffers_Buffers_IncompleteHeader()
+    {
+        final ByteBuffer buffer = ByteBuffer.allocate( 128 );
+        buffer.putInt( DEFAULT_ID );
+        buffer.flip();
+
+        assertNull( MessageEnvelope.fromByteBuffers( Arrays.asList( buffer ) ) );
+    }
+
+    /**
+     * Ensures the {@code fromByteBuffers} method throws an exception when
+     * passed a {@code null} buffer collection.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testFromByteBuffers_Buffers_Null()
+    {
+        MessageEnvelope.fromByteBuffers( null );
     }
 
     /**

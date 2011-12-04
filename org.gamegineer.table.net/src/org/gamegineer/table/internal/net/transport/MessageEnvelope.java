@@ -27,6 +27,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.List;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.persistence.serializable.ObjectInputStream;
 import org.gamegineer.common.persistence.serializable.ObjectOutputStream;
@@ -124,6 +125,49 @@ public final class MessageEnvelope
         final int header = buffer.getInt( 0 );
         final int bodyLength = decodeMessageLength( header );
         if( buffer.remaining() < (HEADER_LENGTH + bodyLength) )
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Indicates the specified byte buffer collection contains a complete
+     * message envelope.
+     * 
+     * @param buffers
+     *        The collection of byte buffers; must not be {@code null} and must
+     *        not contains a {@code null} element.
+     * 
+     * @return {@code true} if the specified byte buffer collection contains a complete
+     *         message envelope; otherwise {@code false}.
+     */
+    private static boolean containsCompleteMessageEnvelope(
+        /* @NonNull */
+        final List<ByteBuffer> buffers )
+    {
+        assert buffers != null;
+        assert !buffers.contains( null );
+
+        if( buffers.isEmpty() )
+        {
+            return false;
+        }
+
+        if( buffers.get( 0 ).remaining() < HEADER_LENGTH )
+        {
+            return false;
+        }
+
+        final int header = buffers.get( 0 ).getInt( 0 );
+        final int bodyLength = decodeMessageLength( header );
+        int totalRemaining = 0;
+        for( final ByteBuffer buffer : buffers )
+        {
+            totalRemaining += buffer.remaining();
+        }
+        if( totalRemaining < (HEADER_LENGTH + bodyLength) )
         {
             return false;
         }
@@ -237,6 +281,53 @@ public final class MessageEnvelope
         final int bodyLength = decodeMessageLength( header );
         final byte[] body = new byte[ bodyLength ];
         buffer.get( body );
+
+        return new MessageEnvelope( id, correlationId, body );
+    }
+
+    /**
+     * Creates a new message envelope from the specified byte buffer collection.
+     * 
+     * @param buffers
+     *        The collection of byte buffer; must not be {@code null}.
+     * 
+     * @return A new message envelope or {@code null} if a complete message
+     *         envelope is available from the specified byte buffer collection.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code buffers} contains a {@code null} element.
+     * @throws java.lang.NullPointerException
+     *         If {@code buffers} is {@code null}.
+     */
+    /* @Nullable */
+    public static MessageEnvelope fromByteBuffers(
+        /* @NonNull */
+        final List<ByteBuffer> buffers )
+    {
+        assertArgumentNotNull( buffers, "buffers" ); //$NON-NLS-1$
+        assertArgumentLegal( !buffers.contains( null ), "buffers" ); //$NON-NLS-1$
+
+        if( !containsCompleteMessageEnvelope( buffers ) )
+        {
+            return null;
+        }
+
+        final int header = buffers.get( 0 ).getInt();
+        final int id = decodeMessageId( header );
+        final int correlationId = decodeMessageCorrelationId( header );
+        final int bodyLength = decodeMessageLength( header );
+        final byte[] body = new byte[ bodyLength ];
+        int bytesRead = 0;
+        int bytesRemaining = bodyLength;
+        int bufferIndex = 0;
+        while( bytesRemaining > 0 )
+        {
+            final ByteBuffer buffer = buffers.get( bufferIndex++ );
+            final int bytesToRead = (bytesRemaining < buffer.remaining()) ? bytesRemaining : buffer.remaining();
+            buffer.get( body, bytesRead, bytesToRead );
+            bytesRead += bytesToRead;
+            bytesRemaining -= bytesToRead;
+        }
 
         return new MessageEnvelope( id, correlationId, body );
     }

@@ -30,7 +30,6 @@ import java.nio.channels.Channels;
 import org.gamegineer.table.internal.net.transport.FakeMessage;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -115,8 +114,6 @@ public final class InputQueueTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    // FIXME
-    @Ignore
     @Test
     public void testDequeueMessageEnvelope_ContainsExactlyOneMessageEnvelope_MessageEnvelopeExceedsPoolBufferCapacity()
         throws Exception

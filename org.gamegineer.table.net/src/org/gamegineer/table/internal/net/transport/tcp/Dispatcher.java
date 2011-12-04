@@ -122,12 +122,6 @@ final class Dispatcher
     {
         assert transportLayer != null;
 
-        // FIXME: Under current implementation, buffer capacity must be as
-        // large as the largest incoming message.  Need to fix this requirement.
-        //
-        // The fix is to break each MessageEnvelope into fixed size fragments
-        // and reassemble them as needed.
-
         bufferPool_ = new ByteBufferPool( 16384 );
         eventDispatchTaskFuture_ = null;
         eventHandlerShutdownTimeout_ = 10000L;

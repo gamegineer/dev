@@ -24,6 +24,10 @@ package org.gamegineer.table.internal.net.transport.tcp;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 
@@ -37,14 +41,11 @@ final class InputQueue
     // Fields
     // ======================================================================
 
-    /** An immutable empty buffer. */
-    private static final ByteBuffer EMPTY_BUFFER = ByteBuffer.allocate( 0 ).asReadOnlyBuffer();
-
-    /** The buffer associated with the queue. */
-    private ByteBuffer buffer_;
-
     /** The buffer pool associated with the queue. */
     private final ByteBufferPool bufferPool_;
+
+    /** The queue of buffers associated with the queue waiting to be processed. */
+    private final Deque<ByteBuffer> bufferQueue_;
 
 
     // ======================================================================
@@ -64,67 +65,14 @@ final class InputQueue
     {
         assert bufferPool != null;
 
-        buffer_ = null;
         bufferPool_ = bufferPool;
+        bufferQueue_ = new LinkedList<ByteBuffer>();
     }
 
 
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Removes up to the specified count of bytes from the queue.
-     * 
-     * @param count
-     *        The maximum count of bytes to remove from the queue; must not be
-     *        negative.
-     * 
-     * @return A buffer containing the bytes removed from the queue; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    ByteBuffer dequeueBytes(
-        final int count )
-    {
-        assert count >= 0;
-
-        if( (count == 0) || isEmpty() )
-        {
-            return EMPTY_BUFFER;
-        }
-
-        final int outgoingCapacity = Math.min( count, buffer_.position() );
-        final ByteBuffer outgoingBuffer = ByteBuffer.allocate( outgoingCapacity );
-
-        buffer_.flip();
-
-        if( buffer_.remaining() <= outgoingBuffer.remaining() )
-        {
-            outgoingBuffer.put( buffer_ );
-        }
-        else
-        {
-            while( outgoingBuffer.hasRemaining() )
-            {
-                outgoingBuffer.put( buffer_.get() );
-            }
-        }
-
-        if( buffer_.hasRemaining() )
-        {
-            buffer_.compact();
-        }
-        else
-        {
-            bufferPool_.returnByteBuffer( buffer_ );
-            buffer_ = null;
-        }
-
-        outgoingBuffer.flip();
-
-        return outgoingBuffer;
-    }
 
     /**
      * Removes the next available message envelope from the queue.
@@ -140,41 +88,39 @@ final class InputQueue
             return null;
         }
 
-        final int position = buffer_.position();
-        final int limit = buffer_.limit();
-        buffer_.flip();
+        final List<ByteBuffer> buffers = Arrays.asList( bufferQueue_.toArray( new ByteBuffer[ bufferQueue_.size() ] ) );
+        final ByteBuffer lastBuffer = buffers.get( buffers.size() - 1 );
+        final int lastPosition = lastBuffer.position();
+        final int lastLimit = lastBuffer.limit();
+        lastBuffer.flip();
 
-        final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteBuffer( buffer_ );
+        final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteBuffers( buffers );
         if( messageEnvelope == null )
         {
-            buffer_.position( position ).limit( limit );
+            lastBuffer.position( lastPosition ).limit( lastLimit );
             return null;
         }
 
-        if( buffer_.hasRemaining() )
+        while( true )
         {
-            buffer_.compact();
-        }
-        else
-        {
-            bufferPool_.returnByteBuffer( buffer_ );
-            buffer_ = null;
+            final ByteBuffer buffer = bufferQueue_.peekFirst();
+            if( buffer == null )
+            {
+                break;
+            }
+            else if( buffer.hasRemaining() )
+            {
+                buffer.compact();
+                break;
+            }
+            else
+            {
+                bufferPool_.returnByteBuffer( buffer );
+                bufferQueue_.removeFirst();
+            }
         }
 
         return messageEnvelope;
-    }
-
-    /**
-     * Discards up to the specified count of bytes from the queue.
-     * 
-     * @param count
-     *        The maximum count of bytes to remove from the queue; must not be
-     *        negative.
-     */
-    void discardBytes(
-        final int count )
-    {
-        dequeueBytes( count );
     }
 
     /**
@@ -196,40 +142,34 @@ final class InputQueue
     {
         assert channel != null;
 
-        if( buffer_ == null )
+        ByteBuffer buffer = bufferQueue_.peekLast();
+        if( buffer == null )
         {
-            buffer_ = bufferPool_.takeByteBuffer();
+            buffer = bufferPool_.takeByteBuffer();
+            bufferQueue_.addLast( buffer );
         }
 
-        return channel.read( buffer_ );
-    }
-
-    /**
-     * Gets the index of the specified byte in the queue.
-     * 
-     * @param b
-     *        The byte for which to search.
-     * 
-     * @return The index of the specified byte in the queue or -1 if the byte is
-     *         not found.
-     */
-    int indexOf(
-        final byte b )
-    {
-        if( buffer_ == null )
+        int bytesRead = 0;
+        while( true )
         {
-            return -1;
-        }
-
-        for( int index = 0, position = buffer_.position(); index < position; ++index )
-        {
-            if( b == buffer_.get( index ) )
+            final int localBytesRead = channel.read( buffer );
+            bytesRead += localBytesRead;
+            if( localBytesRead <= 0 )
             {
-                return index;
+                break;
             }
+
+            if( buffer.hasRemaining() )
+            {
+                break;
+            }
+
+            buffer.flip();
+            buffer = bufferPool_.takeByteBuffer();
+            bufferQueue_.addLast( buffer );
         }
 
-        return -1;
+        return bytesRead;
     }
 
     /**
@@ -239,6 +179,16 @@ final class InputQueue
      */
     boolean isEmpty()
     {
-        return (buffer_ == null) || (buffer_.position() == 0);
+        final int bufferCount = bufferQueue_.size();
+        if( bufferCount == 0 )
+        {
+            return true;
+        }
+        else if( bufferCount == 1 )
+        {
+            return bufferQueue_.peekFirst().position() == 0;
+        }
+
+        return false;
     }
 }
