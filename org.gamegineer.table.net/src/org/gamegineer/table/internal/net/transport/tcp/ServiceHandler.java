@@ -114,7 +114,7 @@ final class ServiceHandler
         interestOperations_ = SelectionKey.OP_READ;
         isRegistered_ = false;
         isRunning_ = false;
-        outputQueue_ = new OutputQueue( byteBufferPool, this );
+        outputQueue_ = new OutputQueue( byteBufferPool );
         outputQueueState_ = QueueState.OPEN;
         readyOperations_ = 0;
         service_ = service;
@@ -258,12 +258,10 @@ final class ServiceHandler
      *        A bit mask of channel operations to remove from the handler
      *        interest set.
      */
-    void modifyInterestOperations(
+    private void modifyInterestOperations(
         final int operationsToSet,
         final int operationsToReset )
     {
-        assert isTransportLayerThread();
-
         interestOperations_ = (interestOperations_ | operationsToSet) & ~operationsToReset;
 
         if( !isRunning_ )
@@ -388,10 +386,12 @@ final class ServiceHandler
         final IMessage message )
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
+        assert isTransportLayerThread();
 
         try
         {
             outputQueue_.enqueueMessageEnvelope( MessageEnvelope.fromMessage( message ) );
+            modifyInterestOperations( SelectionKey.OP_WRITE, 0 );
         }
         catch( final IOException e )
         {
@@ -405,6 +405,8 @@ final class ServiceHandler
     @Override
     public void stopService()
     {
+        assert isTransportLayerThread();
+
         if( outputQueueState_ == QueueState.OPEN )
         {
             if( outputQueue_.isEmpty() && ((interestOperations_ & SelectionKey.OP_WRITE) == 0) )

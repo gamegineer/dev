@@ -23,7 +23,6 @@ package org.gamegineer.table.internal.net.transport.tcp;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.SelectionKey;
 import java.nio.channels.WritableByteChannel;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -46,9 +45,6 @@ final class OutputQueue
     /** The queue of buffers associated with the queue waiting to be processed. */
     private final Deque<ByteBuffer> bufferQueue_;
 
-    /** The service handler adapter that owns the queue. */
-    private final ServiceHandler serviceHandler_;
-
 
     // ======================================================================
     // Constructors
@@ -60,22 +56,15 @@ final class OutputQueue
      * @param bufferPool
      *        The buffer pool associated with the queue; must not be {@code
      *        null}.
-     * @param serviceHandler
-     *        The service handler adapter that owns the queue; must not be
-     *        {@code null}.
      */
     OutputQueue(
         /* @NonNull */
-        final ByteBufferPool bufferPool,
-        /* @NonNull */
-        final ServiceHandler serviceHandler )
+        final ByteBufferPool bufferPool )
     {
         assert bufferPool != null;
-        assert serviceHandler != null;
 
         bufferPool_ = bufferPool;
         bufferQueue_ = new LinkedList<ByteBuffer>();
-        serviceHandler_ = serviceHandler;
     }
 
 
@@ -162,8 +151,6 @@ final class OutputQueue
             fillBuffer( newBuffer, incomingBuffer );
             bufferQueue_.addLast( newBuffer );
         }
-
-        serviceHandler_.modifyInterestOperations( SelectionKey.OP_WRITE, 0 );
     }
 
     /**
