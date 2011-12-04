@@ -90,14 +90,14 @@ final class InputQueue
 
         final List<ByteBuffer> buffers = Arrays.asList( bufferQueue_.toArray( new ByteBuffer[ bufferQueue_.size() ] ) );
         final ByteBuffer lastBuffer = buffers.get( buffers.size() - 1 );
-        final int lastPosition = lastBuffer.position();
-        final int lastLimit = lastBuffer.limit();
+        final int lastBufferPosition = lastBuffer.position();
+        final int lastBufferLimit = lastBuffer.limit();
         lastBuffer.flip();
 
         final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteBuffers( buffers );
         if( messageEnvelope == null )
         {
-            lastBuffer.position( lastPosition ).limit( lastLimit );
+            lastBuffer.position( lastBufferPosition ).limit( lastBufferLimit );
             return null;
         }
 
