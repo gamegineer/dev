@@ -40,9 +40,6 @@ final class OutputQueue
     // Fields
     // ======================================================================
 
-    /** The active buffer associated with the queue. */
-    private ByteBuffer buffer_;
-
     /** The buffer pool associated with the queue. */
     private final ByteBufferPool bufferPool_;
 
@@ -76,7 +73,6 @@ final class OutputQueue
         assert bufferPool != null;
         assert serviceHandler != null;
 
-        buffer_ = null;
         bufferPool_ = bufferPool;
         bufferQueue_ = new LinkedList<ByteBuffer>();
         serviceHandler_ = serviceHandler;
@@ -106,28 +102,29 @@ final class OutputQueue
     {
         assert channel != null;
 
+        ByteBuffer buffer = null;
         int bytesWritten = 0;
 
         while( true )
         {
-            if( buffer_ == null )
+            if( buffer == null )
             {
                 if( bufferQueue_.isEmpty() )
                 {
                     break;
                 }
 
-                buffer_ = bufferQueue_.removeFirst();
-                buffer_.flip();
+                buffer = bufferQueue_.removeFirst();
+                buffer.flip();
             }
 
-            final int localBytesWritten = channel.write( buffer_ );
+            final int localBytesWritten = channel.write( buffer );
             bytesWritten += localBytesWritten;
 
-            if( !buffer_.hasRemaining() )
+            if( !buffer.hasRemaining() )
             {
-                bufferPool_.returnByteBuffer( buffer_ );
-                buffer_ = null;
+                bufferPool_.returnByteBuffer( buffer );
+                buffer = null;
             }
 
             if( localBytesWritten == 0 )
@@ -140,33 +137,23 @@ final class OutputQueue
     }
 
     /**
-     * Adds the bytes in the specified buffer to the queue.
+     * Adds the specified message envelope to the queue.
      * 
-     * @param incomingBuffer
-     *        The buffer whose contents are to be added to the queue; must not
-     *        be {@code null}.
-     * 
-     * @return {@code true} if the bytes in the specified buffer were added to
-     *         the queue; otherwise {@code false}.
+     * @param messageEnvelope
+     *        The message envelope to be added to the queue; must not be {@code
+     *        null}.
      */
-    boolean enqueueBytes(
+    void enqueueMessageEnvelope(
         /* @NonNull */
-        final ByteBuffer incomingBuffer )
+        final MessageEnvelope messageEnvelope )
     {
-        assert incomingBuffer != null;
+        assert messageEnvelope != null;
 
-        if( !incomingBuffer.hasRemaining() )
+        final ByteBuffer incomingBuffer = messageEnvelope.toByteBuffer();
+        final ByteBuffer lastBuffer = bufferQueue_.peekLast();
+        if( (lastBuffer != null) && lastBuffer.hasRemaining() )
         {
-            return false;
-        }
-
-        if( !bufferQueue_.isEmpty() )
-        {
-            final ByteBuffer lastBuffer = bufferQueue_.getLast();
-            if( lastBuffer.hasRemaining() )
-            {
-                fillBuffer( lastBuffer, incomingBuffer );
-            }
+            fillBuffer( lastBuffer, incomingBuffer );
         }
 
         while( incomingBuffer.hasRemaining() )
@@ -177,27 +164,6 @@ final class OutputQueue
         }
 
         serviceHandler_.modifyInterestOperations( SelectionKey.OP_WRITE, 0 );
-
-        return true;
-    }
-
-    /**
-     * Adds the specified message envelope to the queue.
-     * 
-     * @param messageEnvelope
-     *        The message envelope to be added to the queue; must not be {@code
-     *        null}.
-     * 
-     * @return {@code true} if the specified message envelope was added to the
-     *         queue; otherwise {@code false}.
-     */
-    boolean enqueueMessageEnvelope(
-        /* @NonNull */
-        final MessageEnvelope messageEnvelope )
-    {
-        assert messageEnvelope != null;
-
-        return enqueueBytes( messageEnvelope.toByteBuffer() );
     }
 
     /**
@@ -237,6 +203,6 @@ final class OutputQueue
      */
     boolean isEmpty()
     {
-        return (buffer_ == null) && bufferQueue_.isEmpty();
+        return bufferQueue_.isEmpty();
     }
 }
