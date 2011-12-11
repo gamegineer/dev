@@ -26,8 +26,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.List;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.persistence.serializable.ObjectInputStream;
 import org.gamegineer.common.persistence.serializable.ObjectOutputStream;
@@ -36,21 +35,18 @@ import org.gamegineer.common.persistence.serializable.ObjectStreams;
 /**
  * A network protocol message envelope.
  */
-@NotThreadSafe
+@Immutable
 public final class MessageEnvelope
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The header length in bytes. */
-    private static final int HEADER_LENGTH = 4;
-
-    /** The maximum message body length in bytes. */
-    public static final int MAXIMUM_BODY_LENGTH = 0xFFFF;
-
     /** The network representation of the message envelope. */
-    private final ByteBuffer buffer_;
+    private final byte[] bytes_;
+
+    /** The logical representation of the message envelope header. */
+    private final Header header_;
 
 
     // ======================================================================
@@ -60,41 +56,20 @@ public final class MessageEnvelope
     /**
      * Initializes a new instance of the {@code MessageEnvelope} class.
      * 
-     * @param id
-     *        The message identifier.
-     * @param correlationId
-     *        The message correlation identifier.
-     * @param body
-     *        The message body; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code id} is less than {@link IMessage#MINIMUM_ID} or greater
-     *         than {@link IMessage#MAXIMUM_ID}; if {@code correlationId} is
-     *         less than {@link IMessage#MINIMUM_ID} or greater than
-     *         {@link IMessage#MAXIMUM_ID} or not equal to
-     *         {@link IMessage#NULL_CORRELATION_ID}; if the length of {@code
-     *         body} is greater than {@link #MAXIMUM_BODY_LENGTH}.
-     * @throws java.lang.NullPointerException
-     *         If {@code body} is {@code null}.
+     * @param bytes
+     *        The network representation of the message envelope; must not be
+     *        {@code null} and must not have a length less than the sum of
+     *        {@link Header#LENGTH} and the body length decoded from the header.
      */
-    public MessageEnvelope(
-        final int id,
-        final int correlationId,
+    private MessageEnvelope(
         /* @NonNull */
-        final byte[] body )
+        final byte[] bytes )
     {
-        assertArgumentLegal( (id >= IMessage.MINIMUM_ID) && (id <= IMessage.MAXIMUM_ID), "id" ); //$NON-NLS-1$
-        assertArgumentLegal( (correlationId == IMessage.NULL_CORRELATION_ID) || ((correlationId >= IMessage.MINIMUM_ID) && (correlationId <= IMessage.MAXIMUM_ID)), "correlationId" ); //$NON-NLS-1$
-        assertArgumentNotNull( body, "body" ); //$NON-NLS-1$
-        assertArgumentLegal( body.length <= MAXIMUM_BODY_LENGTH, "body" ); //$NON-NLS-1$
+        assert bytes != null;
 
-        buffer_ = ByteBuffer.allocate( HEADER_LENGTH + body.length );
-        final int header = ((id << 24) & 0xFF000000) //
-            | ((correlationId << 16) & 0x00FF0000) //
-            | (body.length & 0x0000FFFF);
-        buffer_.putInt( header );
-        buffer_.put( body );
-        buffer_.flip();
+        bytes_ = bytes;
+        header_ = new Header( bytes );
+        assert bytes.length >= (Header.LENGTH + header_.getBodyLength());
     }
 
 
@@ -103,233 +78,33 @@ public final class MessageEnvelope
     // ======================================================================
 
     /**
-     * Indicates the specified byte buffer contains a complete message envelope.
+     * Creates a new message envelope from the specified byte array.
      * 
-     * @param buffer
-     *        The byte buffer; must not be {@code null}.
+     * @param bytes
+     *        The byte array; must not be {@code null}. No copy is made of this
+     *        array and it must not be modified after calling this method.
      * 
-     * @return {@code true} if the specified byte buffer contains a complete
-     *         message envelope; otherwise {@code false}.
-     */
-    private static boolean containsCompleteMessageEnvelope(
-        /* @NonNull */
-        final ByteBuffer buffer )
-    {
-        assert buffer != null;
-
-        if( buffer.remaining() < HEADER_LENGTH )
-        {
-            return false;
-        }
-
-        final int header = buffer.getInt( 0 );
-        final int bodyLength = decodeMessageLength( header );
-        if( buffer.remaining() < (HEADER_LENGTH + bodyLength) )
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Indicates the specified byte buffer collection contains a complete
-     * message envelope.
-     * 
-     * @param buffers
-     *        The collection of byte buffers; must not be {@code null} and must
-     *        not contains a {@code null} element.
-     * 
-     * @return {@code true} if the specified byte buffer collection contains a complete
-     *         message envelope; otherwise {@code false}.
-     */
-    private static boolean containsCompleteMessageEnvelope(
-        /* @NonNull */
-        final List<ByteBuffer> buffers )
-    {
-        assert buffers != null;
-        assert !buffers.contains( null );
-
-        if( buffers.isEmpty() )
-        {
-            return false;
-        }
-
-        if( buffers.get( 0 ).remaining() < HEADER_LENGTH )
-        {
-            return false;
-        }
-
-        final int header = buffers.get( 0 ).getInt( 0 );
-        final int bodyLength = decodeMessageLength( header );
-        int totalRemaining = 0;
-        for( final ByteBuffer buffer : buffers )
-        {
-            totalRemaining += buffer.remaining();
-        }
-        if( totalRemaining < (HEADER_LENGTH + bodyLength) )
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Decodes the message correlation identifier from the specified encoded
-     * header value.
-     * 
-     * @param header
-     *        The encoded message header.
-     * 
-     * @return The message correlation identifier.
-     */
-    private static int decodeMessageCorrelationId(
-        final int header )
-    {
-        return (header >>> 16) & 0x000000FF;
-    }
-
-    /**
-     * Decodes the message length from the specified encoded header value.
-     * 
-     * @param header
-     *        The encoded message header.
-     * 
-     * @return The message length.
-     */
-    private static int decodeMessageLength(
-        final int header )
-    {
-        return header & 0x0000FFFF;
-    }
-
-    /**
-     * Decodes the message identifier from the specified encoded header value.
-     * 
-     * @param header
-     *        The encoded message header.
-     * 
-     * @return The message identifier.
-     */
-    private static int decodeMessageId(
-        final int header )
-    {
-        return (header >>> 24) & 0x000000FF;
-    }
-
-    /**
-     * Deserializes the message contained in the specified byte array.
-     * 
-     * @param body
-     *        The byte array that contains the serialized message; must not be
-     *        {@code null}.
-     * 
-     * @return The deserialized message; never {@code null}.
-     * 
-     * @throws java.io.IOException
-     *         If an I/O error occurs.
-     * @throws java.lang.ClassNotFoundException
-     *         If the class of the serialized message cannot be found.
-     */
-    /* @NonNull */
-    private static IMessage deserializeMessage(
-        /* @NonNull */
-        final byte[] body )
-        throws IOException, ClassNotFoundException
-    {
-        assert body != null;
-
-        final ObjectInputStream stream = ObjectStreams.createPlatformObjectInputStream( new ByteArrayInputStream( body ) );
-        try
-        {
-            return (IMessage)stream.readObject();
-        }
-        finally
-        {
-            stream.close();
-        }
-    }
-
-    /**
-     * Creates a new message envelope from the specified byte buffer.
-     * 
-     * @param buffer
-     *        The byte buffer; must not be {@code null}.
-     * 
-     * @return A new message envelope or {@code null} if a complete message
-     *         envelope is available from the specified byte buffer.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code buffer} is {@code null}.
-     */
-    /* @Nullable */
-    public static MessageEnvelope fromByteBuffer(
-        /* @NonNull */
-        final ByteBuffer buffer )
-    {
-        assertArgumentNotNull( buffer, "buffer" ); //$NON-NLS-1$
-
-        if( !containsCompleteMessageEnvelope( buffer ) )
-        {
-            return null;
-        }
-
-        final int header = buffer.getInt();
-        final int id = decodeMessageId( header );
-        final int correlationId = decodeMessageCorrelationId( header );
-        final int bodyLength = decodeMessageLength( header );
-        final byte[] body = new byte[ bodyLength ];
-        buffer.get( body );
-
-        return new MessageEnvelope( id, correlationId, body );
-    }
-
-    /**
-     * Creates a new message envelope from the specified byte buffer collection.
-     * 
-     * @param buffers
-     *        The collection of byte buffer; must not be {@code null}.
-     * 
-     * @return A new message envelope or {@code null} if a complete message
-     *         envelope is available from the specified byte buffer collection.
+     * @return A new message envelope; never {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code buffers} contains a {@code null} element.
+     *         If the length of {@code bytes} is not exactly equal to the sum of
+     *         {@link Header#LENGTH} and the body length decoded from the
+     *         header.
      * @throws java.lang.NullPointerException
-     *         If {@code buffers} is {@code null}.
+     *         If {@code bytes} is {@code null}.
      */
-    /* @Nullable */
-    public static MessageEnvelope fromByteBuffers(
+    /* @NonNull */
+    public static MessageEnvelope fromByteArray(
         /* @NonNull */
-        final List<ByteBuffer> buffers )
+        final byte[] bytes )
     {
-        assertArgumentNotNull( buffers, "buffers" ); //$NON-NLS-1$
-        assertArgumentLegal( !buffers.contains( null ), "buffers" ); //$NON-NLS-1$
+        assertArgumentNotNull( bytes, "bytes" ); //$NON-NLS-1$
+        assertArgumentLegal( bytes.length >= Header.LENGTH, "bytes" ); //$NON-NLS-1$
 
-        if( !containsCompleteMessageEnvelope( buffers ) )
-        {
-            return null;
-        }
+        final Header header = new Header( bytes );
+        assertArgumentLegal( bytes.length == (Header.LENGTH + header.getBodyLength()), "bytes" ); //$NON-NLS-1$
 
-        final int header = buffers.get( 0 ).getInt();
-        final int id = decodeMessageId( header );
-        final int correlationId = decodeMessageCorrelationId( header );
-        final int bodyLength = decodeMessageLength( header );
-        final byte[] body = new byte[ bodyLength ];
-        int bytesRead = 0;
-        int bytesRemaining = bodyLength;
-        int bufferIndex = 0;
-        while( bytesRemaining > 0 )
-        {
-            final ByteBuffer buffer = buffers.get( bufferIndex++ );
-            final int bytesToRead = (bytesRemaining < buffer.remaining()) ? bytesRemaining : buffer.remaining();
-            buffer.get( body, bytesRead, bytesToRead );
-            bytesRead += bytesToRead;
-            bytesRemaining -= bytesToRead;
-        }
-
-        return new MessageEnvelope( id, correlationId, body );
+        return new MessageEnvelope( bytes );
     }
 
     /**
@@ -354,85 +129,15 @@ public final class MessageEnvelope
     {
         assertArgumentNotNull( message, "message" ); //$NON-NLS-1$
 
-        return new MessageEnvelope( message.getId(), message.getCorrelationId(), serializeMessage( message ) );
-    }
-
-    /**
-     * Gets an immutable view of the message envelope body.
-     * 
-     * @return An immutable view of the message envelope body; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    public ByteBuffer getBody()
-    {
-        final ByteBuffer body = buffer_.slice().asReadOnlyBuffer();
-        body.position( HEADER_LENGTH );
-        return body;
-    }
-
-    /**
-     * Gets the message envelope body as a message.
-     * 
-     * @return The message envelope body as a message; never {@code null}.
-     * 
-     * @throws java.io.IOException
-     *         If the message cannot be deserialized from the message envelope
-     *         body.
-     * @throws java.lang.ClassNotFoundException
-     *         If the class of the message cannot be found.
-     */
-    /* @NonNull */
-    public IMessage getBodyAsMessage()
-        throws IOException, ClassNotFoundException
-    {
-        final ByteBuffer buffer = getBody();
-        final byte[] body = new byte[ buffer.remaining() ];
-        buffer.get( body );
-        return deserializeMessage( body );
-    }
-
-    /**
-     * Gets the message correlation identifier.
-     * 
-     * @return The message correlation identifier.
-     */
-    public int getCorrelationId()
-    {
-        return decodeMessageCorrelationId( buffer_.getInt( 0 ) );
-    }
-
-    /**
-     * Gets the message identifier.
-     * 
-     * @return The message identifier.
-     */
-    public int getId()
-    {
-        return decodeMessageId( buffer_.getInt( 0 ) );
-    }
-
-    /**
-     * Serializes the specified message to a byte array.
-     * 
-     * @param message
-     *        The message; must not be {@code null}.
-     * 
-     * @return A byte array that contains the serialized message; never {@code
-     *         null}.
-     * 
-     * @throws java.io.IOException
-     *         If an I/O error occurs.
-     */
-    /* @NonNull */
-    private static byte[] serializeMessage(
-        /* @NonNull */
-        final IMessage message )
-        throws IOException
-    {
-        assert message != null;
-
         final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+
+        // reserve space for header
+        for( int index = 0; index < Header.LENGTH; ++index )
+        {
+            byteStream.write( 0x00 );
+        }
+
+        // write body
         final ObjectOutputStream objectStream = ObjectStreams.createPlatformObjectOutputStream( byteStream );
         try
         {
@@ -443,18 +148,292 @@ public final class MessageEnvelope
             objectStream.close();
         }
 
-        return byteStream.toByteArray();
+        // write header
+        final byte[] bytes = byteStream.toByteArray();
+        final HeaderBuilder headerBuilder = new HeaderBuilder();
+        final Header header = headerBuilder //
+            .setId( message.getId() ) //
+            .setCorrelationId( message.getCorrelationId() ) //
+            .setBodyLength( bytes.length - Header.LENGTH ) //
+            .toHeader();
+        final byte[] headerBytes = header.toByteArray();
+        System.arraycopy( headerBytes, 0, bytes, 0, headerBytes.length );
+
+        return new MessageEnvelope( bytes );
     }
 
     /**
-     * Gets an immutable byte buffer view of the message envelope.
+     * Gets the message envelope header.
      * 
-     * @return An immutable byte buffer view of the message envelope; never
-     *         {@code null}.
+     * @return The message envelope header; never {@code null}.
      */
     /* @NonNull */
-    public ByteBuffer toByteBuffer()
+    public Header getHeader()
     {
-        return buffer_.asReadOnlyBuffer();
+        return header_;
+    }
+
+    /**
+     * Gets the message contained in the message envelope body.
+     * 
+     * @return The message contained in the message envelope body; never {@code
+     *         null}.
+     * 
+     * @throws java.io.IOException
+     *         If the message cannot be deserialized from the message envelope
+     *         body.
+     * @throws java.lang.ClassNotFoundException
+     *         If the class of the message cannot be found.
+     */
+    /* @NonNull */
+    public IMessage getMessage()
+        throws IOException, ClassNotFoundException
+    {
+        final ObjectInputStream stream = ObjectStreams.createPlatformObjectInputStream( new ByteArrayInputStream( bytes_, Header.LENGTH, bytes_.length - Header.LENGTH ) );
+        try
+        {
+            return (IMessage)stream.readObject();
+        }
+        finally
+        {
+            stream.close();
+        }
+    }
+
+    /**
+     * Gets a byte array representing the message envelope.
+     * 
+     * @return A byte array representing the message envelope; never {@code
+     *         null}. The returned array is not a copy and must not be modified
+     *         by the caller.
+     */
+    /* @NonNull */
+    public byte[] toByteArray()
+    {
+        return bytes_;
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * A message envelope header.
+     */
+    @Immutable
+    public static final class Header
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The length of a message envelope header in bytes. */
+        public static final int LENGTH = 4;
+
+        /** The maximum message body length in bytes. */
+        public static final int MAXIMUM_BODY_LENGTH = 0xFFFF;
+
+        /** The network representation of the message envelope header. */
+        private final byte[] bytes_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code Header} class.
+         * 
+         * @param bytes
+         *        The network representation of the message envelope header;
+         *        must not be {@code null} and must not have a length less than
+         *        {@link #LENGTH}.
+         */
+        Header(
+            /* @NonNull */
+            final byte[] bytes )
+        {
+            assert bytes != null;
+            assert bytes.length >= LENGTH;
+
+            bytes_ = bytes;
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Creates a new message envelope header from the specified byte array.
+         * 
+         * @param bytes
+         *        The byte array; must not be {@code null}. No copy is made of
+         *        this array and it must not be modified after calling this
+         *        method.
+         * 
+         * @return A new message envelope header; never {@code null}.
+         * 
+         * @throws java.lang.IllegalArgumentException
+         *         If the length of {@code bytes} is not equal to
+         *         {@link #LENGTH}.
+         * @throws java.lang.NullPointerException
+         *         If {@code bytes} is {@code null}.
+         */
+        /* @NonNull */
+        public static Header fromByteArray(
+            /* @NonNull */
+            final byte[] bytes )
+        {
+            assertArgumentNotNull( bytes, "bytes" ); //$NON-NLS-1$
+            assertArgumentLegal( bytes.length == LENGTH, "bytes" ); //$NON-NLS-1$
+
+            return new Header( bytes );
+        }
+
+        /**
+         * Gets the length of the message envelope body in bytes.
+         * 
+         * @return The length of the message envelope body in bytes.
+         */
+        public int getBodyLength()
+        {
+            return ((bytes_[ 2 ] & 0x000000FF) << 8) | (bytes_[ 3 ] & 0x000000FF);
+        }
+
+        /**
+         * Gets the message correlation identifier.
+         * 
+         * @return The message correlation identifier.
+         */
+        public int getCorrelationId()
+        {
+            return bytes_[ 1 ] & 0x000000FF;
+        }
+
+        /**
+         * Gets the message identifier.
+         * 
+         * @return The message identifier.
+         */
+        public int getId()
+        {
+            return bytes_[ 0 ] & 0x000000FF;
+        }
+
+        /**
+         * Gets a byte array representing the message envelope header.
+         * 
+         * @return A byte array representing the message envelope header; never
+         *         {@code null}. The returned array is not a copy and must not
+         *         be modified by the caller.
+         */
+        /* @NonNull */
+        public byte[] toByteArray()
+        {
+            if( bytes_.length == LENGTH )
+            {
+                return bytes_;
+            }
+
+            final byte[] bytes = new byte[ LENGTH ];
+            System.arraycopy( bytes_, 0, bytes, 0, bytes.length );
+            return bytes;
+        }
+    }
+
+    /**
+     * A message envelope header builder.
+     */
+    @NotThreadSafe
+    public static final class HeaderBuilder
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The network representation of the message envelope header. */
+        private final byte[] bytes_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code HeaderBuilder} class.
+         */
+        public HeaderBuilder()
+        {
+            bytes_ = new byte[ Header.LENGTH ];
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Sets the length of the message envelope body.
+         * 
+         * @param bodyLength
+         *        The length of the message envelope body in bytes.
+         * 
+         * @return A reference to this builder; never {@code null}.
+         */
+        /* @NonNull */
+        public HeaderBuilder setBodyLength(
+            final int bodyLength )
+        {
+            bytes_[ 2 ] = (byte)((bodyLength >>> 8) & 0x000000FF);
+            bytes_[ 3 ] = (byte)(bodyLength & 0x000000FF);
+            return this;
+        }
+
+        /**
+         * Sets the message correlation identifier.
+         * 
+         * @param correlationId
+         *        The message correlation identifier.
+         * 
+         * @return A reference to this builder; never {@code null}.
+         */
+        /* @NonNull */
+        public HeaderBuilder setCorrelationId(
+            final int correlationId )
+        {
+            bytes_[ 1 ] = (byte)correlationId;
+            return this;
+        }
+
+        /**
+         * Sets the message identifier.
+         * 
+         * @param id
+         *        The message identifier.
+         * 
+         * @return A reference to this builder; never {@code null}.
+         */
+        /* @NonNull */
+        public HeaderBuilder setId(
+            final int id )
+        {
+            bytes_[ 0 ] = (byte)id;
+
+            return this;
+        }
+
+        /**
+         * Creates a new message envelope header based on the state of this
+         * builder.
+         * 
+         * @return A new message envelope header; never {@code null}.
+         */
+        /* @NonNull */
+        public Header toHeader()
+        {
+            return new Header( bytes_ );
+        }
     }
 }

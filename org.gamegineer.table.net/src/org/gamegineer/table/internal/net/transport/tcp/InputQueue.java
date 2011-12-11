@@ -24,10 +24,8 @@ package org.gamegineer.table.internal.net.transport.tcp;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
-import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.List;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.internal.net.transport.MessageEnvelope;
 
@@ -83,41 +81,45 @@ final class InputQueue
     /* @Nullable */
     MessageEnvelope dequeueMessageEnvelope()
     {
-        if( isEmpty() )
+        final ByteBuffer lastBuffer = bufferQueue_.peekLast();
+        if( lastBuffer == null )
         {
             return null;
         }
 
-        final List<ByteBuffer> buffers = Arrays.asList( bufferQueue_.toArray( new ByteBuffer[ bufferQueue_.size() ] ) );
-        final ByteBuffer lastBuffer = buffers.get( buffers.size() - 1 );
         final int lastBufferPosition = lastBuffer.position();
         final int lastBufferLimit = lastBuffer.limit();
         lastBuffer.flip();
 
-        final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteBuffers( buffers );
-        if( messageEnvelope == null )
+        final byte[] headerBytes = ByteBufferUtils.get( ByteBufferUtils.duplicate( bufferQueue_ ), MessageEnvelope.Header.LENGTH );
+        if( headerBytes == null )
         {
             lastBuffer.position( lastBufferPosition ).limit( lastBufferLimit );
             return null;
         }
 
-        while( true )
+        final MessageEnvelope.Header header = MessageEnvelope.Header.fromByteArray( headerBytes );
+        final int length = MessageEnvelope.Header.LENGTH + header.getBodyLength();
+        final byte[] bytes = ByteBufferUtils.get( bufferQueue_, length );
+        if( bytes == null )
+        {
+            lastBuffer.position( lastBufferPosition ).limit( lastBufferLimit );
+            return null;
+        }
+
+        final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteArray( bytes );
+
+        while( !bufferQueue_.isEmpty() )
         {
             final ByteBuffer buffer = bufferQueue_.peekFirst();
-            if( buffer == null )
-            {
-                break;
-            }
-            else if( buffer.hasRemaining() )
+            if( buffer.hasRemaining() )
             {
                 buffer.compact();
                 break;
             }
-            else
-            {
-                bufferPool_.returnByteBuffer( buffer );
-                bufferQueue_.removeFirst();
-            }
+
+            bufferPool_.returnByteBuffer( buffer );
+            bufferQueue_.removeFirst();
         }
 
         return messageEnvelope;

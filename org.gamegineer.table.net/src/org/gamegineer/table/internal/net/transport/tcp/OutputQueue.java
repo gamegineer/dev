@@ -138,7 +138,7 @@ final class OutputQueue
     {
         assert messageEnvelope != null;
 
-        final ByteBuffer incomingBuffer = messageEnvelope.toByteBuffer();
+        final ByteBuffer incomingBuffer = ByteBuffer.wrap( messageEnvelope.toByteArray() );
         final ByteBuffer lastBuffer = bufferQueue_.peekLast();
         if( (lastBuffer != null) && lastBuffer.hasRemaining() )
         {

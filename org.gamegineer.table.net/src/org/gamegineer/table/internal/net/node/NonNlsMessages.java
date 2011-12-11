@@ -191,7 +191,8 @@ final class NonNlsMessages
         /* @NonNull */
         final MessageEnvelope messageEnvelope )
     {
-        return bind( AbstractRemoteNode_extractMessage_deserializationError, messageEnvelope.getId(), messageEnvelope.getCorrelationId() );
+        final MessageEnvelope.Header header = messageEnvelope.getHeader();
+        return bind( AbstractRemoteNode_extractMessage_deserializationError, header.getId(), header.getCorrelationId() );
     }
 
     /**

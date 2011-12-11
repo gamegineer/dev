@@ -237,7 +237,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
 
         try
         {
-            return messageEnvelope.getBodyAsMessage();
+            return messageEnvelope.getMessage();
         }
         catch( final IOException e )
         {
@@ -402,7 +402,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
         }
         else
         {
-            sendErrorMessage( TableNetworkError.UNKNOWN_MESSAGE, messageEnvelope.getId() );
+            sendErrorMessage( TableNetworkError.UNKNOWN_MESSAGE, messageEnvelope.getHeader().getId() );
         }
     }
 

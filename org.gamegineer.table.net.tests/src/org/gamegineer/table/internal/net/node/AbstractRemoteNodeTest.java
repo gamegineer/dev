@@ -285,7 +285,13 @@ public final class AbstractRemoteNodeTest
         final IServiceContext serviceContext = mocksControl_.createMock( IServiceContext.class );
         final Capture<IMessage> messageCapture = new Capture<IMessage>();
         serviceContext.sendMessage( EasyMock.capture( messageCapture ) );
-        final MessageEnvelope messageEnvelope = new MessageEnvelope( IMessage.MINIMUM_ID, IMessage.NULL_CORRELATION_ID, new byte[ 0 ] );
+        final MessageEnvelope.HeaderBuilder headerBuilder = new MessageEnvelope.HeaderBuilder();
+        final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteArray( //
+            headerBuilder //
+                .setId( IMessage.MINIMUM_ID )//
+                .setCorrelationId( IMessage.NULL_CORRELATION_ID )//
+                .setBodyLength( 0 )//
+                .toHeader().toByteArray() );
         mocksControl_.replay();
         remoteNode_.started( serviceContext );
 

@@ -23,11 +23,7 @@ package org.gamegineer.table.internal.net.transport;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.Collections;
-import org.junit.Before;
+import org.gamegineer.table.internal.net.transport.MessageEnvelope.Header;
 import org.junit.Test;
 
 /**
@@ -36,25 +32,6 @@ import org.junit.Test;
  */
 public final class MessageEnvelopeTest
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The default message body for use in the fixture. */
-    private static final byte[] DEFAULT_BODY = new byte[] {
-        0x09, 0x01, 0x25
-    };
-
-    /** The default message correlation identifier for use in the fixture. */
-    private static final int DEFAULT_CORRELATION_ID = 42;
-
-    /** The default message identifier for use in the fixture. */
-    private static final int DEFAULT_ID = 212;
-
-    /** The message envelope under test in the fixture. */
-    private MessageEnvelope messageEnvelope_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -73,215 +50,76 @@ public final class MessageEnvelopeTest
     // ======================================================================
 
     /**
-     * Sets up the test fixture.
+     * Ensures the {@code fromByteArray} method returns the correct message
+     * envelope.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Before
-    public void setUp()
+    @Test
+    public void testFromByteArray()
         throws Exception
     {
-        messageEnvelope_ = new MessageEnvelope( DEFAULT_ID, DEFAULT_CORRELATION_ID, DEFAULT_BODY );
+        final FakeMessage message = new FakeMessage();
+        message.setId( IMessage.MAXIMUM_ID );
+        message.setCorrelationId( IMessage.MAXIMUM_ID );
+        message.setContent( new byte[] {
+            (byte)0x00, (byte)0x11, (byte)0x22, (byte)0x33, //
+            (byte)0x44, (byte)0x55, (byte)0x66, (byte)0x77, //
+            (byte)0x88, (byte)0x99, (byte)0xAA, (byte)0xBB, //
+            (byte)0xCC, (byte)0xDD, (byte)0xEE, (byte)0xFF
+        } );
+        final MessageEnvelope expectedValue = MessageEnvelope.fromMessage( message );
+
+        final MessageEnvelope actualValue = MessageEnvelope.fromByteArray( expectedValue.toByteArray() );
+
+        assertArrayEquals( expectedValue.toByteArray(), actualValue.toByteArray() );
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a body whose
-     * length is greater than the maximum body length.
+     * Ensures the {@code fromByteArray} method throws an exception when passed
+     * an illegal byte array that has a length longer than the total message
+     * envelope length.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_Body_Illegal_LengthGreaterThanMaxLength()
+    public void testFromByteArray_Bytes_Illegal_LengthLongerThanTotalLength()
     {
-        new MessageEnvelope( DEFAULT_ID, DEFAULT_CORRELATION_ID, new byte[ MessageEnvelope.MAXIMUM_BODY_LENGTH + 1 ] );
+        MessageEnvelope.fromByteArray( new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0x00, (byte)0x00, (byte)0xFF
+        } );
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * body.
+     * Ensures the {@code fromByteArray} method throws an exception when passed
+     * an illegal byte array that has a length shorter than the header length.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testFromByteArray_Bytes_Illegal_LengthShorterThanHeaderLength()
+    {
+        MessageEnvelope.fromByteArray( new byte[ Header.LENGTH - 1 ] );
+    }
+
+    /**
+     * Ensures the {@code fromByteArray} method throws an exception when passed
+     * an illegal byte array that has a length shorter than the total message
+     * envelope length.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testFromByteArray_Bytes_Illegal_LengthShorterThanTotalLength()
+    {
+        MessageEnvelope.fromByteArray( new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF
+        } );
+    }
+
+    /**
+     * Ensures the {@code fromByteArray} method throws an exception when passed
+     * a {@code null} byte array.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_Body_Null()
+    public void testFromByteArray_Bytes_Null()
     {
-        new MessageEnvelope( DEFAULT_ID, DEFAULT_CORRELATION_ID, null );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed a correlation
-     * identifier that is greater than the maximum correlation identifier.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_CorrelationId_Illegal_GreaterThanMaxCorrelationId()
-    {
-        new MessageEnvelope( DEFAULT_ID, IMessage.MAXIMUM_ID + 1, DEFAULT_BODY );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed a correlation
-     * identifier that is less than the minimum correlation identifier.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_CorrelationId_Illegal_LessThanMinCorrelationId()
-    {
-        new MessageEnvelope( DEFAULT_ID, IMessage.NULL_CORRELATION_ID - 1, DEFAULT_BODY );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed an identifier
-     * that is greater than the maximum identifier.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_Id_Illegal_GreaterThanMaxId()
-    {
-        new MessageEnvelope( IMessage.MAXIMUM_ID + 1, DEFAULT_CORRELATION_ID, DEFAULT_BODY );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed an identifier
-     * that is less than the minimum identifier.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_Id_Illegal_LessThanMinId()
-    {
-        new MessageEnvelope( IMessage.MINIMUM_ID - 1, DEFAULT_CORRELATION_ID, DEFAULT_BODY );
-    }
-
-    /**
-     * Ensures the {@code fromByteBuffer} method returns the correct value when
-     * the buffer contains a complete message envelope.
-     */
-    @Test
-    public void testFromByteBuffer_Buffer_Complete()
-    {
-        final ByteBuffer buffer = ByteBuffer.allocate( 128 );
-        buffer.putInt( ((DEFAULT_ID << 24) & 0xFF000000) | ((DEFAULT_CORRELATION_ID << 16) & 0x00FF0000) | (DEFAULT_BODY.length & 0x0000FFFF) );
-        buffer.put( DEFAULT_BODY );
-        buffer.flip();
-
-        final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteBuffer( buffer );
-
-        assertEquals( DEFAULT_ID, messageEnvelope.getId() );
-        assertEquals( DEFAULT_CORRELATION_ID, messageEnvelope.getCorrelationId() );
-        final ByteBuffer bodyBuffer = messageEnvelope_.getBody();
-        final byte[] body = new byte[ bodyBuffer.remaining() ];
-        bodyBuffer.get( body );
-        assertArrayEquals( DEFAULT_BODY, body );
-    }
-
-    /**
-     * Ensures the {@code fromByteBuffer} method returns {@code null} when the
-     * buffer contains a message envelope with an incomplete body.
-     */
-    @Test
-    public void testFromByteBuffer_Buffer_IncompleteBody()
-    {
-        final ByteBuffer buffer = ByteBuffer.allocate( 128 );
-        buffer.putInt( ((DEFAULT_ID << 24) & 0xFF000000) | ((DEFAULT_CORRELATION_ID << 16) & 0x00FF0000) | (DEFAULT_BODY.length & 0x0000FFFF) );
-        buffer.put( DEFAULT_BODY, 0, 1 );
-        buffer.flip();
-
-        assertNull( MessageEnvelope.fromByteBuffer( buffer ) );
-    }
-
-    /**
-     * Ensures the {@code fromByteBuffer} method returns {@code null} when the
-     * buffer contains a message envelope with an incomplete header.
-     */
-    @Test
-    public void testFromByteBuffer_Buffer_IncompleteHeader()
-    {
-        final ByteBuffer buffer = ByteBuffer.allocate( 128 );
-        buffer.putInt( DEFAULT_ID );
-        buffer.flip();
-
-        assertNull( MessageEnvelope.fromByteBuffer( buffer ) );
-    }
-
-    /**
-     * Ensures the {@code fromByteBuffer} method throws an exception when passed
-     * a {@code null} buffer.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testFromByteBuffer_Buffer_Null()
-    {
-        MessageEnvelope.fromByteBuffer( null );
-    }
-
-    /**
-     * Ensures the {@code fromByteBuffers} method returns the correct value when
-     * the buffer collection contains a complete message envelope.
-     */
-    @Test
-    public void testFromByteBuffers_Buffers_Complete()
-    {
-        final ByteBuffer buffer1 = ByteBuffer.allocate( 128 );
-        buffer1.putInt( ((DEFAULT_ID << 24) & 0xFF000000) | ((DEFAULT_CORRELATION_ID << 16) & 0x00FF0000) | (DEFAULT_BODY.length & 0x0000FFFF) );
-        buffer1.flip();
-        final ByteBuffer buffer2 = ByteBuffer.allocate( 128 );
-        buffer2.put( DEFAULT_BODY, 0, 1 );
-        buffer2.flip();
-        final ByteBuffer buffer3 = ByteBuffer.allocate( 128 );
-        buffer3.put( DEFAULT_BODY, 1, DEFAULT_BODY.length - 1 );
-        buffer3.flip();
-
-        final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteBuffers( Arrays.asList( buffer1, buffer2, buffer3 ) );
-
-        assertEquals( DEFAULT_ID, messageEnvelope.getId() );
-        assertEquals( DEFAULT_CORRELATION_ID, messageEnvelope.getCorrelationId() );
-        final ByteBuffer bodyBuffer = messageEnvelope_.getBody();
-        final byte[] body = new byte[ bodyBuffer.remaining() ];
-        bodyBuffer.get( body );
-        assertArrayEquals( DEFAULT_BODY, body );
-    }
-
-    /**
-     * Ensures the {@code fromByteBuffers} method throws an exception when
-     * passed an illegal buffer collection that contains a {@code null} element.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testFromByteBuffers_Buffers_Illegal_ContainsNullElement()
-    {
-        MessageEnvelope.fromByteBuffers( Collections.<ByteBuffer>singletonList( null ) );
-    }
-
-    /**
-     * Ensures the {@code fromByteBuffers} method returns {@code null} when the
-     * buffer collection contains a message envelope with an incomplete body.
-     */
-    @Test
-    public void testFromByteBuffers_Buffers_IncompleteBody()
-    {
-        final ByteBuffer buffer1 = ByteBuffer.allocate( 128 );
-        buffer1.putInt( ((DEFAULT_ID << 24) & 0xFF000000) | ((DEFAULT_CORRELATION_ID << 16) & 0x00FF0000) | (DEFAULT_BODY.length & 0x0000FFFF) );
-        buffer1.flip();
-        final ByteBuffer buffer2 = ByteBuffer.allocate( 128 );
-        buffer2.put( DEFAULT_BODY, 0, 1 );
-        buffer2.flip();
-
-        assertNull( MessageEnvelope.fromByteBuffers( Arrays.asList( buffer1, buffer2 ) ) );
-    }
-
-    /**
-     * Ensures the {@code fromByteBuffers} method returns {@code null} when the
-     * buffer collection contains a message envelope with an incomplete header.
-     */
-    @Test
-    public void testFromByteBuffers_Buffers_IncompleteHeader()
-    {
-        final ByteBuffer buffer = ByteBuffer.allocate( 128 );
-        buffer.putInt( DEFAULT_ID );
-        buffer.flip();
-
-        assertNull( MessageEnvelope.fromByteBuffers( Arrays.asList( buffer ) ) );
-    }
-
-    /**
-     * Ensures the {@code fromByteBuffers} method throws an exception when
-     * passed a {@code null} buffer collection.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testFromByteBuffers_Buffers_Null()
-    {
-        MessageEnvelope.fromByteBuffers( null );
+        MessageEnvelope.fromByteArray( null );
     }
 
     /**
@@ -300,10 +138,10 @@ public final class MessageEnvelopeTest
         expectedValue.setCorrelationId( IMessage.MAXIMUM_ID );
 
         final MessageEnvelope messageEnvelope = MessageEnvelope.fromMessage( expectedValue );
-        final IMessage actualValue = messageEnvelope.getBodyAsMessage();
+        final IMessage actualValue = messageEnvelope.getMessage();
 
-        assertEquals( expectedValue.getId(), messageEnvelope.getId() );
-        assertEquals( expectedValue.getCorrelationId(), messageEnvelope.getCorrelationId() );
+        assertEquals( expectedValue.getId(), messageEnvelope.getHeader().getId() );
+        assertEquals( expectedValue.getCorrelationId(), messageEnvelope.getHeader().getCorrelationId() );
         assertEquals( expectedValue.getId(), actualValue.getId() );
         assertEquals( expectedValue.getCorrelationId(), actualValue.getCorrelationId() );
     }
@@ -320,37 +158,5 @@ public final class MessageEnvelopeTest
         throws Exception
     {
         MessageEnvelope.fromMessage( null );
-    }
-
-    /**
-     * Ensures the {@code getBody} method returns the message body.
-     */
-    @Test
-    public void testGetBody()
-    {
-        final ByteBuffer bodyBuffer = messageEnvelope_.getBody();
-        final byte[] body = new byte[ bodyBuffer.remaining() ];
-        bodyBuffer.get( body );
-
-        assertArrayEquals( DEFAULT_BODY, body );
-    }
-
-    /**
-     * Ensures the {@code getCorrelationId} method returns the message
-     * correlation identifier.
-     */
-    @Test
-    public void testGetCorrelationId()
-    {
-        assertEquals( DEFAULT_CORRELATION_ID, messageEnvelope_.getCorrelationId() );
-    }
-
-    /**
-     * Ensures the {@code getId} method returns the message identifier.
-     */
-    @Test
-    public void testGetId()
-    {
-        assertEquals( DEFAULT_ID, messageEnvelope_.getId() );
     }
 }
