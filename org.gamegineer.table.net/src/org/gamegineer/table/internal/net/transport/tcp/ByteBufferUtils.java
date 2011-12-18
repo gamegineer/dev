@@ -75,6 +75,36 @@ final class ByteBufferUtils
     }
 
     /**
+     * Fills the destination buffer with the contents of the source buffer.
+     * 
+     * @param destinationBuffer
+     *        The destination buffer; must not be {@code null}.
+     * @param sourceBuffer
+     *        The source buffer; must not be {@code null}.
+     */
+    static void fill(
+        /* @NonNull */
+        final ByteBuffer destinationBuffer,
+        /* @NonNull */
+        final ByteBuffer sourceBuffer )
+    {
+        assert destinationBuffer != null;
+        assert sourceBuffer != null;
+
+        if( sourceBuffer.remaining() <= destinationBuffer.remaining() )
+        {
+            destinationBuffer.put( sourceBuffer );
+        }
+        else
+        {
+            while( destinationBuffer.hasRemaining() )
+            {
+                destinationBuffer.put( sourceBuffer.get() );
+            }
+        }
+    }
+
+    /**
      * Performs a relative bulk get on the specified byte buffer collection.
      * 
      * @param buffers

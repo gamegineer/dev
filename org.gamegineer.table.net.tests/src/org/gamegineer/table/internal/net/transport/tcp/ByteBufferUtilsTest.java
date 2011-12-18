@@ -134,6 +134,56 @@ public final class ByteBufferUtilsTest
     }
 
     /**
+     * Ensures the {@code fill} method correctly fills the destination buffer
+     * when the source buffer has more elements remaining than the destination
+     * buffer.
+     */
+    @Test
+    public void testFill_SourceBuffer_RemainingGreaterThanDestinationBuffer()
+    {
+        final byte[] inputValue = new byte[] {
+            0x00, 0x01, 0x02, 0x03
+        };
+        final byte[] expectedValue = new byte[] {
+            0x00, 0x01
+        };
+        final ByteBuffer sourceBuffer = ByteBuffer.wrap( inputValue );
+        final ByteBuffer destinationBuffer = ByteBuffer.allocate( expectedValue.length );
+
+        ByteBufferUtils.fill( destinationBuffer, sourceBuffer );
+        destinationBuffer.flip();
+        final byte[] actualValue = new byte[ destinationBuffer.remaining() ];
+        destinationBuffer.get( actualValue );
+
+        assertArrayEquals( expectedValue, actualValue );
+    }
+
+    /**
+     * Ensures the {@code fill} method correctly fills the destination buffer
+     * when the source buffer has fewer elements remaining than the destination
+     * buffer.
+     */
+    @Test
+    public void testFill_SourceBuffer_RemainingLessThanDestinationBuffer()
+    {
+        final byte[] inputValue = new byte[] {
+            0x00, 0x01
+        };
+        final byte[] expectedValue = new byte[] {
+            0x00, 0x01
+        };
+        final ByteBuffer sourceBuffer = ByteBuffer.wrap( inputValue );
+        final ByteBuffer destinationBuffer = ByteBuffer.allocate( expectedValue.length );
+
+        ByteBufferUtils.fill( destinationBuffer, sourceBuffer );
+        destinationBuffer.flip();
+        final byte[] actualValue = new byte[ destinationBuffer.remaining() ];
+        destinationBuffer.get( actualValue );
+
+        assertArrayEquals( expectedValue, actualValue );
+    }
+
+    /**
      * Ensures the {@code get} method returns the correct value when passed a
      * length that is equal to the remaining length of the byte buffer
      * collection.

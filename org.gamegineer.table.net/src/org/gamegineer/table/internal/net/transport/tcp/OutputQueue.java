@@ -142,44 +142,14 @@ final class OutputQueue
         final ByteBuffer lastBuffer = bufferQueue_.peekLast();
         if( (lastBuffer != null) && lastBuffer.hasRemaining() )
         {
-            fillBuffer( lastBuffer, incomingBuffer );
+            ByteBufferUtils.fill( lastBuffer, incomingBuffer );
         }
 
         while( incomingBuffer.hasRemaining() )
         {
             final ByteBuffer newBuffer = bufferPool_.takeByteBuffer();
-            fillBuffer( newBuffer, incomingBuffer );
+            ByteBufferUtils.fill( newBuffer, incomingBuffer );
             bufferQueue_.addLast( newBuffer );
-        }
-    }
-
-    /**
-     * Fills the destination buffer with the contents of the source buffer.
-     * 
-     * @param destinationBuffer
-     *        The destination buffer; must not be {@code null}.
-     * @param sourceBuffer
-     *        The source buffer; must not be {@code null}.
-     */
-    private static void fillBuffer(
-        /* @NonNull */
-        final ByteBuffer destinationBuffer,
-        /* @NonNull */
-        final ByteBuffer sourceBuffer )
-    {
-        assert destinationBuffer != null;
-        assert sourceBuffer != null;
-
-        if( sourceBuffer.remaining() <= destinationBuffer.remaining() )
-        {
-            destinationBuffer.put( sourceBuffer );
-        }
-        else
-        {
-            while( destinationBuffer.hasRemaining() )
-            {
-                destinationBuffer.put( sourceBuffer.get() );
-            }
         }
     }
 
