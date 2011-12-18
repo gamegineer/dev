@@ -106,6 +106,10 @@ final class InputQueue
             lastBuffer.position( lastBufferPosition ).limit( lastBufferLimit );
             return null;
         }
+        else if( lastBuffer.hasRemaining() )
+        {
+            lastBuffer.compact();
+        }
 
         final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteArray( bytes );
 
@@ -114,7 +118,6 @@ final class InputQueue
             final ByteBuffer buffer = bufferQueue_.peekFirst();
             if( buffer.hasRemaining() )
             {
-                buffer.compact();
                 break;
             }
 
@@ -145,7 +148,7 @@ final class InputQueue
         assert channel != null;
 
         ByteBuffer buffer = bufferQueue_.peekLast();
-        if( buffer == null )
+        if( (buffer == null) || !buffer.hasRemaining() )
         {
             buffer = bufferPool_.takeByteBuffer();
             bufferQueue_.addLast( buffer );

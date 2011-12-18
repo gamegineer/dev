@@ -91,35 +91,23 @@ final class OutputQueue
     {
         assert channel != null;
 
-        ByteBuffer buffer = null;
         int bytesWritten = 0;
 
-        while( true )
+        while( !bufferQueue_.isEmpty() )
         {
-            if( buffer == null )
+            final ByteBuffer buffer = bufferQueue_.removeFirst();
+            buffer.flip();
+
+            bytesWritten += channel.write( buffer );
+
+            if( buffer.hasRemaining() )
             {
-                if( bufferQueue_.isEmpty() )
-                {
-                    break;
-                }
-
-                buffer = bufferQueue_.removeFirst();
-                buffer.flip();
-            }
-
-            final int localBytesWritten = channel.write( buffer );
-            bytesWritten += localBytesWritten;
-
-            if( !buffer.hasRemaining() )
-            {
-                bufferPool_.returnByteBuffer( buffer );
-                buffer = null;
-            }
-
-            if( localBytesWritten == 0 )
-            {
+                buffer.compact();
+                bufferQueue_.addFirst( buffer );
                 break;
             }
+
+            bufferPool_.returnByteBuffer( buffer );
         }
 
         return bytesWritten;
