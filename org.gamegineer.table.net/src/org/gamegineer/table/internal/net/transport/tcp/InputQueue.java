@@ -42,7 +42,16 @@ final class InputQueue
     /** The buffer pool associated with the queue. */
     private final ByteBufferPool bufferPool_;
 
-    /** The queue of buffers associated with the queue waiting to be processed. */
+    /**
+     * The queue of buffers associated with the queue waiting to be processed.
+     * 
+     * <p>
+     * The buffers in the queue are oriented such that they are prepared for
+     * reading (i.e. dequeuing a message envelope). Before writing to a buffer,
+     * it must be compacted. Similarly, before returning a buffer to the queue
+     * that has been partially filled, it must be flipped.
+     * </p>
+     */
     private final Deque<ByteBuffer> bufferQueue_;
 
 
@@ -87,14 +96,9 @@ final class InputQueue
             return null;
         }
 
-        final int lastBufferPosition = lastBuffer.position();
-        final int lastBufferLimit = lastBuffer.limit();
-        lastBuffer.flip();
-
         final byte[] headerBytes = ByteBufferUtils.get( ByteBufferUtils.duplicate( bufferQueue_ ), MessageEnvelope.Header.LENGTH );
         if( headerBytes == null )
         {
-            lastBuffer.position( lastBufferPosition ).limit( lastBufferLimit );
             return null;
         }
 
@@ -103,15 +107,8 @@ final class InputQueue
         final byte[] bytes = ByteBufferUtils.get( bufferQueue_, length );
         if( bytes == null )
         {
-            lastBuffer.position( lastBufferPosition ).limit( lastBufferLimit );
             return null;
         }
-        else if( lastBuffer.hasRemaining() )
-        {
-            lastBuffer.compact();
-        }
-
-        final MessageEnvelope messageEnvelope = MessageEnvelope.fromByteArray( bytes );
 
         while( !bufferQueue_.isEmpty() )
         {
@@ -125,7 +122,7 @@ final class InputQueue
             bufferQueue_.removeFirst();
         }
 
-        return messageEnvelope;
+        return MessageEnvelope.fromByteArray( bytes );
     }
 
     /**
@@ -147,32 +144,49 @@ final class InputQueue
     {
         assert channel != null;
 
-        ByteBuffer buffer = bufferQueue_.peekLast();
-        if( (buffer == null) || !buffer.hasRemaining() )
-        {
-            buffer = bufferPool_.takeByteBuffer();
-            bufferQueue_.addLast( buffer );
-        }
+        // WRITE ORIENTATION                        READ ORIENTATION (default)
+        //
+        // |*|*|*|*|-|-|-|-|     ==== flip ===>     |*|*|*|*|-|-|-|-|
+        //         ^       ^     <== compact ==     ^       ^       ^
+        //        pos   lim/cap                    pos     lim     cap
+        //
 
         int bytesRead = 0;
-        while( true )
+
+        ByteBuffer buffer = bufferQueue_.peekLast();
+        if( buffer != null )
         {
-            final int localBytesRead = channel.read( buffer );
-            bytesRead += localBytesRead;
-            if( localBytesRead <= 0 )
+            if( buffer.limit() == buffer.capacity() ) // buffer is full
             {
-                break;
+                buffer = null;
             }
-
-            if( buffer.hasRemaining() )
+            else
             {
-                break;
+                buffer.compact(); // prepare buffer for writing
             }
-
-            buffer.flip();
-            buffer = bufferPool_.takeByteBuffer();
-            bufferQueue_.addLast( buffer );
         }
+
+        do
+        {
+            if( buffer == null )
+            {
+                buffer = bufferPool_.takeByteBuffer();
+                bufferQueue_.addLast( buffer );
+            }
+
+            bytesRead += channel.read( buffer );
+            buffer.flip(); // prepare buffer for reading
+
+            if( buffer.limit() == buffer.capacity() ) // buffer is full
+            {
+                buffer = null;
+            }
+            else if( buffer.limit() == 0 ) // buffer is empty
+            {
+                bufferQueue_.removeLast();
+            }
+
+        } while( buffer == null );
 
         return bytesRead;
     }
@@ -184,16 +198,6 @@ final class InputQueue
      */
     boolean isEmpty()
     {
-        final int bufferCount = bufferQueue_.size();
-        if( bufferCount == 0 )
-        {
-            return true;
-        }
-        else if( bufferCount == 1 )
-        {
-            return bufferQueue_.peekFirst().position() == 0;
-        }
-
-        return false;
+        return bufferQueue_.isEmpty();
     }
 }
