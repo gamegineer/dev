@@ -42,7 +42,16 @@ final class OutputQueue
     /** The buffer pool associated with the queue. */
     private final ByteBufferPool bufferPool_;
 
-    /** The queue of buffers associated with the queue waiting to be processed. */
+    /**
+     * The queue of buffers associated with the queue waiting to be processed.
+     * 
+     * <p>
+     * The buffers in the queue are oriented such that they are prepared for
+     * writing (i.e. enqueuing a message envelope). Before reading from a
+     * buffer, it must be flipped. Similarly, before returning a buffer to the
+     * queue that has been partially drained, it must be compacted.
+     * </p>
+     */
     private final Deque<ByteBuffer> bufferQueue_;
 
 
@@ -91,18 +100,25 @@ final class OutputQueue
     {
         assert channel != null;
 
+        // WRITE ORIENTATION (default)              READ ORIENTATION
+        //
+        // |*|*|*|*|-|-|-|-|     ==== flip ===>     |*|*|*|*|-|-|-|-|
+        //         ^       ^     <== compact ==     ^       ^       ^
+        //        pos   lim/cap                    pos     lim     cap
+        //
+
         int bytesWritten = 0;
 
         while( !bufferQueue_.isEmpty() )
         {
             final ByteBuffer buffer = bufferQueue_.removeFirst();
-            buffer.flip();
 
+            buffer.flip(); // prepare buffer for reading
             bytesWritten += channel.write( buffer );
 
             if( buffer.hasRemaining() )
             {
-                buffer.compact();
+                buffer.compact(); // prepare buffer for writing
                 bufferQueue_.addFirst( buffer );
                 break;
             }
