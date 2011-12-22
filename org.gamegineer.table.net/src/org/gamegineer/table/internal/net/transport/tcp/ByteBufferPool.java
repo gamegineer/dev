@@ -22,19 +22,30 @@
 package org.gamegineer.table.internal.net.transport.tcp;
 
 import java.nio.ByteBuffer;
-import net.jcip.annotations.Immutable;
+import java.util.ArrayDeque;
+import java.util.Queue;
+import net.jcip.annotations.NotThreadSafe;
 
 /**
  * A pool for sharing instances of the {@link java.nio.ByteBuffer} class.
  */
-@Immutable
+@NotThreadSafe
 final class ByteBufferPool
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The default capacity of all byte buffers created by this factory. */
+    /** The maximum amount of memory the pool may use in bytes. */
+    private static final int MAX_MEMORY_USAGE = 1024 * 1024;
+
+    /** The capacity of all byte buffers created by this pool. */
+    private final int byteBufferCapacity_;
+
+    /** The collection of byte buffers in the pool. */
+    private final Queue<ByteBuffer> byteBuffers_;
+
+    /** The capacity of the pool. */
     private final int capacity_;
 
 
@@ -45,16 +56,18 @@ final class ByteBufferPool
     /**
      * Initializes a new instance of the {@code ByteBufferPool} class.
      * 
-     * @param capacity
-     *        The capacity of all byte buffers created by this pool; must not be
-     *        negative.
+     * @param byteBufferCapacity
+     *        The capacity of all byte buffers created by this pool; must be
+     *        positive.
      */
     ByteBufferPool(
-        final int capacity )
+        final int byteBufferCapacity )
     {
-        assert capacity >= 0;
+        assert byteBufferCapacity > 0;
 
-        capacity_ = capacity;
+        byteBufferCapacity_ = byteBufferCapacity;
+        byteBuffers_ = new ArrayDeque<ByteBuffer>();
+        capacity_ = Math.max( 1, MAX_MEMORY_USAGE / byteBufferCapacity );
     }
 
 
@@ -74,7 +87,10 @@ final class ByteBufferPool
     {
         assert byteBuffer != null;
 
-        // do nothing
+        if( byteBuffers_.size() < capacity_ )
+        {
+            byteBuffers_.offer( byteBuffer );
+        }
     }
 
     /**
@@ -90,6 +106,13 @@ final class ByteBufferPool
     /* @NonNull */
     ByteBuffer takeByteBuffer()
     {
-        return ByteBuffer.allocate( capacity_ );
+        final ByteBuffer byteBuffer = byteBuffers_.poll();
+        if( byteBuffer != null )
+        {
+            byteBuffer.clear();
+            return byteBuffer;
+        }
+
+        return ByteBuffer.allocate( byteBufferCapacity_ );
     }
 }
