@@ -75,11 +75,11 @@ public final class ByteBufferPoolTest
     }
 
     /**
-     * Ensures the {@code takeByteBuffer} method resets an existing byte buffer
+     * Ensures the {@code takeByteBuffer} method clears an existing byte buffer
      * before returning it.
      */
     @Test
-    public void testTakeByteBuffer_ResetsExistingByteBuffer()
+    public void testTakeByteBuffer_ClearsExistingByteBuffer()
     {
         final ByteBuffer byteBuffer1 = byteBufferPool_.takeByteBuffer();
         byteBuffer1.position( byteBuffer1.limit() );
