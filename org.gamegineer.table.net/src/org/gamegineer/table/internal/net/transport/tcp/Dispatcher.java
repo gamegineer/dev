@@ -122,7 +122,7 @@ final class Dispatcher
     {
         assert transportLayer != null;
 
-        bufferPool_ = new ByteBufferPool( 16384 );
+        bufferPool_ = new ByteBufferPool( 4096 );
         eventDispatchTaskFuture_ = null;
         eventHandlerShutdownTimeout_ = 10000L;
         eventHandlers_ = new ArrayList<AbstractEventHandler>();
