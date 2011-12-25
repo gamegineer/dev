@@ -326,7 +326,7 @@
         </unzip>
 
         <!-- Create product archive. -->
-        <zip destfile="${buildDirectory}/${buildLabel}/product/${archivePrefix}-${buildVersion}.zip">
+        <zip destfile="${buildDirectory}/${buildLabel}/artifacts/${archivePrefix}-${buildVersion}.zip">
             <fileset dir="${buildDirectory}/${buildLabel}/product" />
         </zip>
     </target>
