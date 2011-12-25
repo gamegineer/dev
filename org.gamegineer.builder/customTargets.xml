@@ -290,6 +290,7 @@
     <!-- Steps to do to package the build results. -->
     <!-- ===================================================================== -->
     <target name="packageProduct">
+        <mkdir dir="${buildDirectory}/${buildLabel}/artifacts" />
         <mkdir dir="${buildDirectory}/${buildLabel}/product" />
 
         <!--
