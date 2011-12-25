@@ -28,7 +28,7 @@
     <tstamp>
         <format pattern="yyyyMMdd-HHmm" property="version.qualifier.timestamp" timezone="UTC" />
     </tstamp>
-    <property name="version.qualifier" value="${version.qualifier.timestamp}${version.qualifier.suffix}" />
+    <property name="version.qualifier" value="v${version.qualifier.timestamp}${version.qualifier.suffix}" />
 
     <!--
         Builds the entire Gamegineer workspace.
