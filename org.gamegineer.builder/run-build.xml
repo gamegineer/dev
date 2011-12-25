@@ -22,11 +22,13 @@
 <project name="gamegineer" default="build" basedir=".">
 
     <property environment="env" />
+    <property file="run-build.properties" />
 
     <!-- Generate version qualifier -->
     <tstamp>
-        <format pattern="'v'yyyyMMdd-HHmm" property="qualifier" timezone="UTC" />
+        <format pattern="yyyyMMdd-HHmm" property="version.qualifier.timestamp" timezone="UTC" />
     </tstamp>
+    <property name="version.qualifier" value="${version.qualifier.timestamp}${version.qualifier.suffix}" />
 
     <!--
         Builds the entire Gamegineer workspace.
@@ -42,11 +44,17 @@
     </target>
 
     <target name="before-build">
+        <!-- Update product verison -->
+        <replace
+        		file="product/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
+            	token="%version"
+            	value="${version.number}" />
+
         <!-- Update version qualifiers not managed by PDE Build -->
         <replace
         		file="product/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
-            	token="qualifier"
-            	value="${qualifier}" />
+            	token="%qualifier"
+            	value="${version.qualifier}" />
     </target>
 
     <target name="core-build">
@@ -56,7 +64,8 @@
                 jar="${env.ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher_1.0.201.R35x_v20090715.jar"
                 maxmemory="256m">
             <jvmarg value="-DbuildDirectory=${basedir}" />
-            <jvmarg value="-DforceContextQualifier=${qualifier}" />
+            <jvmarg value="-DbuildVersion=${version.number}" />
+            <jvmarg value="-DforceContextQualifier=${version.qualifier}" />
             <jvmarg value="-DJavaSE-1.6=${env.JAVA_HOME}/jre/lib/rt.jar:${env.JAVA_HOME}/jre/lib/jce.jar" />
             <arg value="-application" />
             <arg value="org.eclipse.ant.core.antRunner" />

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     customTargets.xml
-    Copyright 2008-2010 Gamegineer.org
+    Copyright 2008-2011 Gamegineer.org
     All rights reserved.
 
     This program is free software: you can redistribute it and/or modify
@@ -324,6 +324,11 @@
                 <exclude name="*.tests-*.zip" />
             </fileset>
         </unzip>
+
+        <!-- Create product archive. -->
+        <zip destfile="${buildDirectory}/${buildLabel}/product/${archivePrefix}-${buildVersion}.zip">
+            <fileset dir="${buildDirectory}/${buildLabel}/product" />
+        </zip>
     </target>
 
     <!-- ===================================================================== -->
