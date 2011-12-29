@@ -231,7 +231,7 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createFileMenu()
     {
-        final JMenu menu = new JMenu( NlsMessages.MenuBarView_file_text );
+        final JMenu menu = createTopLevelMenu( NlsMessages.MenuBarView_file_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_file_mnemonic ).getKeyCode() );
         menu.add( Actions.getOpenNewTableAction() );
         menu.add( Actions.getOpenTableAction() );
@@ -252,7 +252,7 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createHelpMenu()
     {
-        final JMenu menu = new JMenu( NlsMessages.MenuBarView_help_text );
+        final JMenu menu = createTopLevelMenu( NlsMessages.MenuBarView_help_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_help_mnemonic ).getKeyCode() );
         menu.add( Actions.getOpenAboutDialogAction() );
         return menu;
@@ -285,7 +285,7 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createNetworkMenu()
     {
-        final JMenu menu = new JMenu( NlsMessages.MenuBarView_network_text );
+        final JMenu menu = createTopLevelMenu( NlsMessages.MenuBarView_network_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_network_mnemonic ).getKeyCode() );
         menu.add( Actions.getHostTableNetworkAction() );
         menu.add( Actions.getJoinTableNetworkAction() );
@@ -322,7 +322,7 @@ final class MenuBarView
     /* @NonNull */
     private JMenu createTableMenu()
     {
-        final JMenu menu = new JMenu( NlsMessages.MenuBarView_table_text );
+        final JMenu menu = createTopLevelMenu( NlsMessages.MenuBarView_table_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_table_mnemonic ).getKeyCode() );
         menu.add( Actions.getAddCardPileAction() );
         menu.add( Actions.getRemoveCardPileAction() );
@@ -339,13 +339,33 @@ final class MenuBarView
     }
 
     /**
+     * Creates a top-level menu with the specified attributes.
+     * 
+     * @param text
+     *        The menu text; must not be {@code null}.
+     * 
+     * @return A new top-level menu; never {@code null}.
+     */
+    /* @NonNull */
+    private JMenu createTopLevelMenu(
+        /* @NonNull */
+        final String text )
+    {
+        assert text != null;
+
+        final JMenu menu = new JMenu( text );
+        menu.addMenuListener( MenuUtils.getDefaultMenuListener() );
+        return menu;
+    }
+
+    /**
      * Creates the view menu.
      * 
      * @return The view menu; never {@code null}.
      */
     private JMenu createViewMenu()
     {
-        final JMenu menu = new JMenu( NlsMessages.MenuBarView_view_text );
+        final JMenu menu = createTopLevelMenu( NlsMessages.MenuBarView_view_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.MenuBarView_view_mnemonic ).getKeyCode() );
         menu.add( Actions.getResetTableOriginAction() );
         return menu;

@@ -244,5 +244,7 @@ final class CardPilePopupMenu
         add( createLayoutMenu() );
         addSeparator();
         add( Actions.getRemoveCardPileAction() );
+
+        addPopupMenuListener( MenuUtils.getDefaultPopupMenuListener() );
     }
 }

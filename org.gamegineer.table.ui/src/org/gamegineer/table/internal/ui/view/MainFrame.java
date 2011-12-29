@@ -29,8 +29,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import javax.swing.Action;
 import javax.swing.JFrame;
@@ -72,6 +75,12 @@ public final class MainFrame
     /** The action mediator. */
     private final ActionMediator actionMediator_;
 
+    /** The asynchronous completion token for the action updater task. */
+    private Future<?> actionUpdaterTaskFuture_;
+
+    /** Indicates an action update is required. */
+    private final AtomicBoolean isActionUpdateRequired_;
+
     /** The main model listener for this view. */
     private IMainModelListener mainModelListener_;
 
@@ -108,6 +117,8 @@ public final class MainFrame
         assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
 
         actionMediator_ = new ActionMediator();
+        actionUpdaterTaskFuture_ = null;
+        isActionUpdateRequired_ = new AtomicBoolean( false );
         mainModelListener_ = null;
         model_ = new MainModel( advisor );
         mainView_ = new MainView( model_ );
@@ -135,6 +146,8 @@ public final class MainFrame
         SwingRealm.installSystemRealm();
 
         bindActions();
+        startActionUpdater();
+
         mainModelListener_ = new MainModelListener();
         model_.addMainModelListener( mainModelListener_ );
         tableModelListener_ = new TableModelListener();
@@ -274,6 +287,8 @@ public final class MainFrame
     public void dispose()
     {
         ViewUtils.disconnectTableNetwork( this, model_.getTableModel().getTableNetwork() );
+
+        stopActionUpdater();
 
         super.dispose();
     }
@@ -497,6 +512,8 @@ public final class MainFrame
         tableModelListener_ = null;
         model_.removeMainModelListener( mainModelListener_ );
         mainModelListener_ = null;
+
+        stopActionUpdater();
         actionMediator_.unbindAll();
 
         SwingRealm.uninstallSystemRealm();
@@ -570,6 +587,65 @@ public final class MainFrame
     }
 
     /**
+     * Starts the action updater task.
+     */
+    private void startActionUpdater()
+    {
+        assert actionUpdaterTaskFuture_ == null;
+
+        actionUpdaterTaskFuture_ = Activator.getDefault().getExecutorService().submit( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                try
+                {
+                    while( !Thread.interrupted() )
+                    {
+                        if( isActionUpdateRequired_.getAndSet( false ) )
+                        {
+                            try
+                            {
+                                SwingUtilities.invokeAndWait( new Runnable()
+                                {
+                                    @Override
+                                    public void run()
+                                    {
+                                        Actions.updateAll();
+                                    }
+                                } );
+                            }
+                            catch( final InvocationTargetException e )
+                            {
+                                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.MainFrame_actionUpdater_error, e );
+                            }
+                        }
+
+                        Thread.sleep( 250L );
+                    }
+                }
+                catch( final InterruptedException e )
+                {
+                    // cancelled
+                }
+            }
+        } );
+    }
+
+    /**
+     * Stops the action updater task.
+     */
+    private void stopActionUpdater()
+    {
+        if( actionUpdaterTaskFuture_ != null )
+        {
+            actionUpdaterTaskFuture_.cancel( true );
+            actionUpdaterTaskFuture_ = null;
+        }
+    }
+
+    /**
      * Updates the frame title based on the state of the model.
      */
     private void updateTitle()
@@ -610,12 +686,13 @@ public final class MainFrame
          * @see org.gamegineer.table.internal.ui.model.MainModelListener#mainModelStateChanged(org.gamegineer.table.internal.ui.model.MainModelEvent)
          */
         @Override
+        @SuppressWarnings( "synthetic-access" )
         public void mainModelStateChanged(
             final MainModelEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
-            Actions.updateAll();
+            isActionUpdateRequired_.set( true );
         }
     }
 

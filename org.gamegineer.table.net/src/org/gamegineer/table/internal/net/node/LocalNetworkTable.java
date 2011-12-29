@@ -41,9 +41,6 @@ import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.internal.net.Loggers;
 
-// FIXME: there's a huge performance hit now when we move card piles that contain a large
-// number of cards because a huge number of events get fired and then forked onto the NLT
-
 /**
  * Adapts a local table to {@link INetworkTable}.
  */

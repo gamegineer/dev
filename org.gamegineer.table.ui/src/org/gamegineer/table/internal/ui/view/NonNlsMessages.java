@@ -49,6 +49,9 @@ final class NonNlsMessages
 
     // --- MainFrame --------------------------------------------------------
 
+    /** An error occurred within the action updater task. */
+    public static String MainFrame_actionUpdater_error;
+
     /** An error occurred while opening the table. */
     public static String MainFrame_openTable_error;
 
