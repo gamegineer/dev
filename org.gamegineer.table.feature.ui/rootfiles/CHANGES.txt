@@ -1,12 +1,14 @@
 Gamegineer
 Version 0.10.0
-XX XX XXXX
+31 December 2011
 
 Defects closed:
-	None
+	* [#58] Transport layer messages larger than 16 kB are truncated
+	* [#60] Poor performance when moving a large card pile while connected to the table network
+	* [#62] Transport layer does not correctly handle partially-received incoming messages
 
 Enhancements closed:
 	None
 
 Tasks closed:
-	* [#57] Add support for transferring control of the table within the table network
+	None
