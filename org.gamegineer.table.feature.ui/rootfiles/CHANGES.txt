@@ -1,6 +1,6 @@
 Gamegineer
-Version 0.10.0
-31 December 2011
+Version 0.11.0
+XX XX XXXX
 
 Defects closed:
 	* [#58] Transport layer messages larger than 16 kB are truncated
