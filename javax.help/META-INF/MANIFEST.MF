@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ClassPath: lib/jh.jar
+Bundle-Localization: plugin
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundleName
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-SymbolicName: javax.help
+Bundle-Vendor: %bundleVendor
+Bundle-Version: 2.0.5
+Export-Package: javax.help;version="2.0.5",
+ javax.help.event;version="2.0.5",
+ javax.help.plaf;version="2.0.5",
+ javax.help.plaf.basic;version="2.0.5",
+ javax.help.plaf.gtk;version="2.0.5",
+ javax.help.resources;version="2.0.5",
+ javax.help.search;version="2.0.5",
+ javax.help.tagext;version="2.0.5"
