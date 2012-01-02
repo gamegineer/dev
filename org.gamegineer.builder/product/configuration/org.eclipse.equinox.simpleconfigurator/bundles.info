@@ -1,5 +1,6 @@
 #version=1
 com.ibm.icu,4.0.1.v20090822,plugins/com.ibm.icu_4.0.1.v20090822.jar,4,false
+javax.help,2.0.5,plugins/javax.help_2.0.5/,4,false
 net.jcip.annotations,1.0.0,plugins/net.jcip.annotations_1.0.0/,4,false
 org.apache.commons.cli,1.2.0,plugins/commons-cli-1.2.jar,4,false
 org.eclipse.core.databinding,1.2.0.M20090819-0800,plugins/org.eclipse.core.databinding_1.2.0.M20090819-0800.jar,4,false
