@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component
+		activate="activate"
+		deactivate="deactivate"
+		name="org.gamegineer.common.ui.help.helpSystem"
+		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+	<implementation
+			class="org.gamegineer.common.internal.ui.help.HelpSystem" />
+	<service>
+		<provide
+				interface="org.gamegineer.common.ui.help.IHelpSystem" />
+	</service>
+	<reference
+			bind="registerHelpSetProvider"
+			cardinality="0..n"
+			interface="org.gamegineer.common.ui.help.IHelpSetProvider"
+			name="helpSetProvider"
+			policy="dynamic"
+			unbind="unregisterHelpSetProvider" />
+</scr:component>
