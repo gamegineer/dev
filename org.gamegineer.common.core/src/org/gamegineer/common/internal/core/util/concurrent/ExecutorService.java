@@ -21,6 +21,7 @@
 
 package org.gamegineer.common.internal.core.util.concurrent;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -30,7 +31,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.internal.core.Loggers;
 
 /**
  * Implementation of {@link ExecutorService} that provides an executor service
@@ -84,6 +87,88 @@ public final class ExecutorService
         throws InterruptedException
     {
         return getActualExecutorService().awaitTermination( timeout, unit );
+    }
+
+    /**
+     * Creates a decorator for the specified {@link Callable} task that logs any
+     * uncaught exceptions on the task thread.
+     * 
+     * @param <T>
+     *        The result type of the task.
+     * 
+     * @param task
+     *        The task; must not be {@code null}.
+     * 
+     * @return A decorator for the specified task; never {@code null}.
+     */
+    /* @NonNull */
+    private static <T> Callable<T> createCallableDecorator(
+        /* @NonNull */
+        final Callable<T> task )
+    {
+        assert task != null;
+
+        return new Callable<T>()
+        {
+            @Override
+            public T call()
+                throws Exception
+            {
+                try
+                {
+                    return task.call();
+                }
+                catch( final RuntimeException e )
+                {
+                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ExecutorService_uncaughtException(), e );
+                    throw e;
+                }
+                catch( final Error e )
+                {
+                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ExecutorService_uncaughtException(), e );
+                    throw e;
+                }
+            }
+        };
+    }
+
+    /**
+     * Creates a decorator for the specified {@link Runnable} task that logs any
+     * uncaught exceptions on the task thread.
+     * 
+     * @param task
+     *        The task; must not be {@code null}.
+     * 
+     * @return A decorator for the specified task; never {@code null}.
+     */
+    /* @NonNull */
+    private static Runnable createRunnableDecorator(
+        /* @NonNull */
+        final Runnable task )
+    {
+        assert task != null;
+
+        return new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    task.run();
+                }
+                catch( final RuntimeException e )
+                {
+                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ExecutorService_uncaughtException(), e );
+                    throw e;
+                }
+                catch( final Error e )
+                {
+                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.ExecutorService_uncaughtException(), e );
+                    throw e;
+                }
+            }
+        };
     }
 
     /**
@@ -220,7 +305,9 @@ public final class ExecutorService
     public <T> Future<T> submit(
         final Callable<T> task )
     {
-        return getActualExecutorService().submit( task );
+        assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
+
+        return getActualExecutorService().submit( createCallableDecorator( task ) );
     }
 
     /*
@@ -230,7 +317,9 @@ public final class ExecutorService
     public Future<?> submit(
         final Runnable task )
     {
-        return getActualExecutorService().submit( task );
+        assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
+
+        return getActualExecutorService().submit( createRunnableDecorator( task ) );
     }
 
     /*
@@ -241,6 +330,8 @@ public final class ExecutorService
         final Runnable task,
         final T result )
     {
-        return getActualExecutorService().submit( task, result );
+        assertArgumentNotNull( task, "task" ); //$NON-NLS-1$
+
+        return getActualExecutorService().submit( createRunnableDecorator( task ), result );
     }
 }
