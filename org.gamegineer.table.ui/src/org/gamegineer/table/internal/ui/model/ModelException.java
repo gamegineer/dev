@@ -1,6 +1,6 @@
 /*
  * ModelException.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,9 +21,12 @@
 
 package org.gamegineer.table.internal.ui.model;
 
+import net.jcip.annotations.ThreadSafe;
+
 /**
  * A checked exception that indicates an error occurred within a model.
  */
+@ThreadSafe
 public final class ModelException
     extends Exception
 {

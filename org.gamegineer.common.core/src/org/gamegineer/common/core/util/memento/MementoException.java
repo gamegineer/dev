@@ -1,6 +1,6 @@
 /*
  * MementoException.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,13 +21,13 @@
 
 package org.gamegineer.common.core.util.memento;
 
-import net.jcip.annotations.NotThreadSafe;
+import net.jcip.annotations.ThreadSafe;
 
 /**
  * A checked exception that indicates a memento could not be created or
  * restored.
  */
-@NotThreadSafe
+@ThreadSafe
 public final class MementoException
     extends Exception
 {
