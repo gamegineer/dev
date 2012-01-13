@@ -1,6 +1,6 @@
 /*
  * ActivatorTest.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -81,13 +81,9 @@ public final class ActivatorTest
     /**
      * Ensures the {@code stop} method throws an exception when passed a {@code
      * null} bundle context.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
      */
     @Test( expected = NullPointerException.class )
     public void testStop_BundleContext_Null()
-        throws Exception
     {
         activator_.stop( null );
     }
