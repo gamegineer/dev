@@ -1,6 +1,6 @@
 /*
  * BundleSuiteBuilder.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -471,8 +471,8 @@ public final class BundleSuiteBuilder
     {
         assert hostBundle != null;
 
-        final TestSuite suite = new TestSuite();
         final Bundle targetBundle = (fragmentBundle != null) ? fragmentBundle : hostBundle;
+        final TestSuite suite = new TestSuite( targetBundle.getSymbolicName() );
         for( final String className : getTestClassNames( targetBundle ) )
         {
             suite.addTest( new JUnit4TestAdapter( hostBundle.loadClass( className ) ) );
