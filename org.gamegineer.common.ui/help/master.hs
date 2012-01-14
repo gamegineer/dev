@@ -34,7 +34,7 @@
 
 	<presentation default="true">
 		<name>main</name>
-		<size width="700" height="400" />
+		<size width="1024" height="768" />
 		<location x="200" y="200" />
 		<image>toplevelfolder</image>
 		<toolbar>
@@ -46,6 +46,8 @@
 			<helpaction>javax.help.SeparatorAction</helpaction>
 			<helpaction>javax.help.PrintAction</helpaction>
 			<helpaction>javax.help.PrintSetupAction</helpaction>
+			<helpaction>javax.help.SeparatorAction</helpaction>
+			<helpaction>javax.help.FavoritesAction</helpaction>
 		</toolbar>
 	</presentation>
 </helpset>
