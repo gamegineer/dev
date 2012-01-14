@@ -1,6 +1,6 @@
 /*
  * MainFrame.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -43,6 +43,7 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.common.core.util.IPredicate;
 import org.gamegineer.common.ui.databinding.swing.SwingRealm;
+import org.gamegineer.common.ui.help.IHelpSystem;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.Loggers;
@@ -159,6 +160,19 @@ public final class MainFrame
      */
     private void bindActions()
     {
+        actionMediator_.bindActionListener( Actions.getDisplayHelpAction(), new ActionListener()
+        {
+            public void actionPerformed(
+                @SuppressWarnings( "unused" )
+                final ActionEvent event )
+            {
+                final IHelpSystem helpSystem = Activator.getDefault().getHelpSystem();
+                if( helpSystem != null )
+                {
+                    helpSystem.displayHelp( MainFrame.this );
+                }
+            }
+        } );
         actionMediator_.bindActionListener( Actions.getExitAction(), new ActionListener()
         {
             @SuppressWarnings( "synthetic-access" )

@@ -1,6 +1,6 @@
 /*
  * Actions.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -377,6 +377,9 @@ final class Actions
 
     /** The identifier of the action used to disconnect a table network. */
     private static final String DISCONNECT_TABLE_NETWORK_ACTION_ID = "disconnectTableNetworkAction"; //$NON-NLS-1$
+
+    /** The identifier of the action used to display the help system. */
+    private static final String DISPLAY_HELP_ACTION_ID = "displayHelpAction"; //$NON-NLS-1$
 
     /** The identifier of the action used to exit the application. */
     private static final String EXIT_ACTION_ID = "exitAction"; //$NON-NLS-1$
@@ -1071,6 +1074,15 @@ final class Actions
             {
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.DisconnectTableNetworkAction_mnemonic ).getKeyCode() );
                 putValue( NAME, NlsMessages.DisconnectTableNetworkAction_text );
+            }
+        } );
+        actions.put( DISPLAY_HELP_ACTION_ID, new BasicAction()
+        {
+            private static final long serialVersionUID = 1L;
+
+            {
+                putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.DisplayHelpAction_mnemonic ).getKeyCode() );
+                putValue( NAME, NlsMessages.DisplayHelpAction_text );
             }
         } );
         actions.put( EXIT_ACTION_ID, new BasicAction()
@@ -1921,6 +1933,17 @@ final class Actions
     static BasicAction getDisconnectTableNetworkAction()
     {
         return actions_.get( DISCONNECT_TABLE_NETWORK_ACTION_ID );
+    }
+
+    /**
+     * Gets the display help action.
+     * 
+     * @return The display help action; never {@code null}.
+     */
+    /* @NonNull */
+    static BasicAction getDisplayHelpAction()
+    {
+        return actions_.get( DISPLAY_HELP_ACTION_ID );
     }
 
     /**

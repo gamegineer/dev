@@ -1,6 +1,6 @@
 /*
  * NlsMessages.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -566,6 +566,14 @@ final class NlsMessages
 
     /** The disconnect table network action text. */
     public static String DisconnectTableNetworkAction_text;
+
+    // --- DisplayHelpAction ------------------------------------------------
+
+    /** The display help action mnemonic. */
+    public static String DisplayHelpAction_mnemonic;
+
+    /** The display help action text. */
+    public static String DisplayHelpAction_text;
 
     // --- ExitAction -------------------------------------------------------
 

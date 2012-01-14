@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.ui.help.IHelpSystem;
 import org.gamegineer.table.core.ICardPileBaseDesignRegistry;
 import org.gamegineer.table.core.ICardSurfaceDesignRegistry;
 import org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry;
@@ -81,6 +82,10 @@ public final class Activator
     @GuardedBy( "lock_" )
     private ServiceTracker executorServiceTracker_;
 
+    /** The help system service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker helpSystemTracker_;
+
     /** The instance lock. */
     private final Object lock_;
 
@@ -110,6 +115,7 @@ public final class Activator
         cardSurfaceDesignRegistryTracker_ = null;
         cardSurfaceDesignUIRegistryTracker_ = null;
         executorServiceTracker_ = null;
+        helpSystemTracker_ = null;
         packageAdminTracker_ = null;
         preferencesServiceTracker_ = null;
     }
@@ -293,6 +299,29 @@ public final class Activator
     }
 
     /**
+     * Gets the help system service.
+     * 
+     * @return The help system service or {@code null} if no help system service
+     *         is available.
+     */
+    /* @Nullable */
+    public IHelpSystem getHelpSystem()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( helpSystemTracker_ == null )
+            {
+                helpSystemTracker_ = new ServiceTracker( bundleContext_, IHelpSystem.class.getName(), null );
+                helpSystemTracker_.open();
+            }
+
+            return (IHelpSystem)helpSystemTracker_.getService();
+        }
+    }
+
+    /**
      * Gets the package administration service.
      * 
      * @return The package administration service or {@code null} if no package
@@ -473,6 +502,11 @@ public final class Activator
             {
                 executorServiceTracker_.close();
                 executorServiceTracker_ = null;
+            }
+            if( helpSystemTracker_ != null )
+            {
+                helpSystemTracker_.close();
+                helpSystemTracker_ = null;
             }
             if( packageAdminTracker_ != null )
             {
