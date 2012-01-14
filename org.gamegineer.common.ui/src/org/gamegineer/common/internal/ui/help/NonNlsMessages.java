@@ -51,7 +51,7 @@ final class NonNlsMessages
     /** Failed to add the help set. */
     public static String HelpSystem_addHelpSet_failed;
 
-    /** The help broker is not availale. */
+    /** The help broker is not available. */
     public static String HelpSystem_displayHelp_helpBrokerNotAvailable;
 
     /** Failed to remove the help set. */
