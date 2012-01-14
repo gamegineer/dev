@@ -23,6 +23,13 @@
     </requires>
 
     <plugin
+            id="org.gamegineer.table.help.tests"
+            download-size="0"
+            install-size="0"
+            version="0.0.0"
+            unpack="true"
+            fragment="true" />
+    <plugin
             id="org.gamegineer.table.product.tests"
             download-size="0"
             install-size="0"

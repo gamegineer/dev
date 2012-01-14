@@ -25,6 +25,8 @@
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.feature.base.tests,org.gamegineer.table.feature.base.tests"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.feature.ui,org.gamegineer.table.feature.ui"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.feature.ui.tests,org.gamegineer.table.feature.ui.tests"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.help,org.gamegineer.table.help"/>
+<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.help.tests,org.gamegineer.table.help.tests"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.net,org.gamegineer.table.net"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.net.tests,org.gamegineer.table.net.tests"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.product,org.gamegineer.table.product"/>
