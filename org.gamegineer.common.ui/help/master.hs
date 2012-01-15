@@ -36,7 +36,6 @@
 		<name>main</name>
 		<size width="1024" height="768" />
 		<location x="200" y="200" />
-		<image>toplevelfolder</image>
 		<toolbar>
 			<helpaction>javax.help.BackAction</helpaction>
 			<helpaction>javax.help.ForwardAction</helpaction>
