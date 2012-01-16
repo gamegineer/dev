@@ -3,6 +3,13 @@
 <toc version="2.0">
 	<tocitem text="Gamegineer">
 		<tocitem target="overview" text="Gamegineer overview" />
+		<tocitem text="Menus">
+			<tocitem target="menus.file" text="File menu" />
+			<tocitem target="menus.view" text="View menu" />
+			<tocitem target="menus.table" text="Table menu" />
+			<tocitem target="menus.network" text="Network menu" />
+			<tocitem target="menus.help" text="Help menu" />
+		</tocitem>
 		<tocitem target="legal" text="Legal" />
 	</tocitem>
 </toc>
