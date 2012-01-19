@@ -46,15 +46,15 @@
     <target name="before-build">
         <!-- Update product verison -->
         <replace
-        		file="product/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
-            	token="%version"
-            	value="${version.number}" />
+                file="product/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
+                token="%version"
+                value="${version.number}" />
 
         <!-- Update version qualifiers not managed by PDE Build -->
         <replace
-        		file="product/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
-            	token="%qualifier"
-            	value="${version.qualifier}" />
+                file="product/configuration/org.eclipse.equinox.simpleconfigurator/bundles.info"
+                token="%qualifier"
+                value="${version.qualifier}" />
     </target>
 
     <target name="core-build">
