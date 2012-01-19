@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     run-build.xml
-    Copyright 2008-2011 Gamegineer.org
+    Copyright 2008-2012 Gamegineer.org
     All rights reserved.
 
     This program is free software: you can redistribute it and/or modify
@@ -59,10 +59,15 @@
 
     <target name="core-build">
         <java
+                classname="org.eclipse.core.launcher.Main"
                 failonerror="true"
                 fork="true"
-                jar="${env.ECLIPSE_HOME}/plugins/org.eclipse.equinox.launcher_1.0.201.R35x_v20090715.jar"
                 maxmemory="256m">
+            <classpath>
+                <fileset dir="${env.ECLIPSE_HOME}/plugins">
+                    <include name="org.eclipse.equinox.launcher_*.jar" />
+                </fileset>
+            </classpath>
             <jvmarg value="-DbuildDirectory=${basedir}" />
             <jvmarg value="-DbuildVersion=${version.number}" />
             <jvmarg value="-DforceContextQualifier=${version.qualifier}" />
