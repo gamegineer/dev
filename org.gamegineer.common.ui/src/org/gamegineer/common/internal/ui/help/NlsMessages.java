@@ -1,5 +1,5 @@
 /*
- * NonNlsMessages.java
+ * NlsMessages.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 6, 2012 at 10:30:50 PM.
+ * Created on Jan 21, 2012 at 10:20:31 PM.
  */
 
 package org.gamegineer.common.internal.ui.help;
@@ -25,43 +25,20 @@ import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * A utility class to manage non-localized messages for the package.
+ * A utility class to manage localized messages for the package.
  */
 @ThreadSafe
-final class NonNlsMessages
+final class NlsMessages
     extends NLS
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    // --- HelpSetProviderProxy ---------------------------------------------
-
-    /** The actual object is not available. */
-    public static String HelpSetProviderProxy_getActualHelpSetProvider_actualObjectNotAvailable;
-
-    /** The proxy has been disposed. */
-    public static String HelpSetProviderProxy_getActualHelpSetProvider_proxyDisposed;
-
     // --- HelpSystem -------------------------------------------------------
 
-    /** The master help set is missing. */
-    public static String HelpSystem_activate_masterHelpSetMissing;
-
-    /** Failed to add the help set. */
-    public static String HelpSystem_addHelpSet_failed;
-
-    /** The branding service is already bound. */
-    public static String HelpSystem_bindBranding_bound;
-
-    /** The help broker is not available. */
-    public static String HelpSystem_displayHelp_helpBrokerNotAvailable;
-
-    /** Failed to remove the help set. */
-    public static String HelpSystem_removeHelpSet_failed;
-
-    /** The branding service is not bound. */
-    public static String HelpSystem_unbindBranding_notBound;
+    /** The master help set title. */
+    public static String HelpSystem_masterHelpSet_title;
 
 
     // ======================================================================
@@ -69,18 +46,42 @@ final class NonNlsMessages
     // ======================================================================
 
     /**
-     * Initializes the {@code NonNlsMessages} class.
+     * Initializes the {@code NlsMessages} class.
      */
     static
     {
-        NLS.initializeMessages( NonNlsMessages.class.getName(), NonNlsMessages.class );
+        NLS.initializeMessages( NlsMessages.class.getName(), NlsMessages.class );
     }
 
     /**
-     * Initializes a new instance of the {@code NonNlsMessages} class.
+     * Initializes a new instance of the {@code NlsMessages} class.
      */
-    private NonNlsMessages()
+    private NlsMessages()
     {
         super();
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    // --- HelpSystem -------------------------------------------------------
+
+    /**
+     * Gets the formatted message for the master help set title.
+     * 
+     * @param name
+     *        The application name; must not be {@code null}.
+     * 
+     * @return The formatted message for the master help set title; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    static String HelpSystem_masterHelpSet_title(
+        /* @NonNull */
+        final String name )
+    {
+        return bind( HelpSystem_masterHelpSet_title, name );
     }
 }

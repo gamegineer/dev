@@ -11,6 +11,13 @@
 				interface="org.gamegineer.common.ui.help.IHelpSystem" />
 	</service>
 	<reference
+			bind="bindBranding"
+			cardinality="0..1"
+			interface="org.gamegineer.common.core.app.IBranding"
+			name="branding"
+			policy="static"
+			unbind="unbindBranding" />
+	<reference
 			bind="registerHelpSetProvider"
 			cardinality="0..n"
 			interface="org.gamegineer.common.ui.help.IHelpSetProvider"

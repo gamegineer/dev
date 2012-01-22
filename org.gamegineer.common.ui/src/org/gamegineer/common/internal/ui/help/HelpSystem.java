@@ -21,7 +21,9 @@
 
 package org.gamegineer.common.internal.ui.help;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -29,12 +31,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import javax.help.CSH;
-import javax.help.DefaultHelpBroker;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 import javax.help.HelpSetException;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.internal.ui.Activator;
 import org.gamegineer.common.internal.ui.Debug;
 import org.gamegineer.common.internal.ui.Loggers;
@@ -52,6 +54,10 @@ public final class HelpSystem
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The branding for the running application. */
+    @GuardedBy( "lock_" )
+    private IBranding branding_;
 
     /**
      * The collection of help set providers registered from the service
@@ -88,8 +94,11 @@ public final class HelpSystem
      */
     public HelpSystem()
     {
+        branding_ = null;
         helpSetProviderProxies_ = new HashMap<ServiceReference, HelpSetProviderProxy>();
         lock_ = new Object();
+        masterHelpBroker_ = null;
+        masterHelpSet_ = null;
     }
 
 
@@ -114,7 +123,6 @@ public final class HelpSystem
 
         final HelpSet masterHelpSet = new HelpSet( null, helpSetUrl );
         final HelpBroker masterHelpBroker = masterHelpSet.createHelpBroker();
-        ((DefaultHelpBroker)masterHelpBroker).getWindowPresentation().setDestroyOnExit( true );
 
         synchronized( lock_ )
         {
@@ -124,19 +132,11 @@ public final class HelpSystem
             masterHelpSet_ = masterHelpSet;
             masterHelpBroker_ = masterHelpBroker;
 
-            // FIXME: We need to be able to override the help set title programatically.
-            //
-            // We need something like an IHelpSystemConfigurer that can be used to set these values.
-            //
-            // Not sure if the configurer should be passed in via IHelpSystem API, or there
-            // should be a service reference to one and that we expect only one will be active
-            // in a deployment (i.e. only the product bundle should contribute a configurer).
-            // If there are multiple configurers, there might have to be an ID parameter associated
-            // with them, and we do something like look up the active product ID and use that
-            // to get the correct configurer.
-            //
-            // Need to be able to override help icon, as well.
-            masterHelpSet_.setTitle( "Help - Gamegineer" ); //$NON-NLS-1$
+            if( branding_ != null )
+            {
+                masterHelpSet_.setTitle( NlsMessages.HelpSystem_masterHelpSet_title( branding_.getName() ) );
+                // TODO: Need to be able to override help icon, as well.
+            }
 
             for( final HelpSetProviderProxy helpSetProviderProxy : helpSetProviderProxies_.values() )
             {
@@ -171,6 +171,30 @@ public final class HelpSystem
         catch( final HelpSetException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.HelpSystem_addHelpSet_failed, e );
+        }
+    }
+
+    /**
+     * Binds the application branding to this component.
+     * 
+     * @param branding
+     *        The application branding; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalStateException
+     *         If the application branding is already bound.
+     * @throws java.lang.NullPointerException
+     *         If {@code branding} is {@code null}.
+     */
+    public void bindBranding(
+        /* @NonNull */
+        final IBranding branding )
+    {
+        assertArgumentNotNull( branding, "branding" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            assertStateLegal( branding_ == null, NonNlsMessages.HelpSystem_bindBranding_bound );
+            branding_ = branding;
         }
     }
 
@@ -283,6 +307,30 @@ public final class HelpSystem
         catch( final HelpSetException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.HelpSystem_removeHelpSet_failed, e );
+        }
+    }
+
+    /**
+     * Unbinds the application branding from this component.
+     * 
+     * @param branding
+     *        The application branding; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code branding} is not currently bound.
+     * @throws java.lang.NullPointerException
+     *         If {@code branding} is {@code null}.
+     */
+    public void unbindBranding(
+        /* @NonNull */
+        final IBranding branding )
+    {
+        assertArgumentNotNull( branding, "branding" ); //$NON-NLS-1$
+
+        synchronized( lock_ )
+        {
+            assertArgumentLegal( branding_ == branding, "branding", NonNlsMessages.HelpSystem_unbindBranding_notBound ); //$NON-NLS-1$
+            branding_ = null;
         }
     }
 

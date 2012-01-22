@@ -8,7 +8,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.gamegineer.common.core
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.11.0.qualifier
-Export-Package: org.gamegineer.common.core.logging;version="0.11.0",
+Export-Package: org.gamegineer.common.core.app;version="0.11.0",
+ org.gamegineer.common.core.logging;version="0.11.0",
  org.gamegineer.common.core.runtime;version="0.11.0",
  org.gamegineer.common.core.security;version="0.11.0",
  org.gamegineer.common.core.util;version="0.11.0",

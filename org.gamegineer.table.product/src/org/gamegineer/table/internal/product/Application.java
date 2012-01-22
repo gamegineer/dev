@@ -29,13 +29,17 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.table.ui.ITableAdvisor;
 import org.gamegineer.table.ui.TableAdvisor;
 import org.gamegineer.table.ui.TableResult;
 import org.gamegineer.table.ui.TableUIFactory;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.framework.Version;
 
 /**
@@ -48,6 +52,9 @@ public final class Application
     // ======================================================================
     // Fields
     // ======================================================================
+
+    /** The registration token for the application branding service. */
+    private final AtomicReference<ServiceRegistration> brandingServiceRegistrationRef_;
 
     /**
      * A reference to the asynchronous completion token associated with the
@@ -65,6 +72,7 @@ public final class Application
      */
     public Application()
     {
+        brandingServiceRegistrationRef_ = new AtomicReference<ServiceRegistration>();
         futureRef_ = new AtomicReference<Future<TableResult>>();
     }
 
@@ -139,6 +147,21 @@ public final class Application
         return Version.emptyVersion;
     }
 
+    /**
+     * Publishes the branding service for the application.
+     * 
+     * @param context
+     *        The application context; must not be {@code null}.
+     */
+    private void publishBranding(
+        /* @NonNull */
+        final IApplicationContext context )
+    {
+        assert context != null;
+
+        brandingServiceRegistrationRef_.set( Activator.getDefault().getBundleContext().registerService( IBranding.class.getName(), new Branding( context ), null ) );
+    }
+
     /*
      * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
      */
@@ -148,6 +171,8 @@ public final class Application
         throws Exception
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
+
+        publishBranding( context );
 
         final ITableAdvisor advisor = createTableAdvisor( context );
         Loggers.getDefaultLogger().info( NonNlsMessages.Application_start_starting( advisor.getApplicationVersion() ) );
@@ -176,6 +201,7 @@ public final class Application
         finally
         {
             futureRef_.set( null );
+            unpublishBranding();
         }
     }
 
@@ -216,5 +242,119 @@ public final class Application
         @SuppressWarnings( "boxing" )
         final Integer exitCode = result.getExitCode();
         return exitCode;
+    }
+
+    /**
+     * Unpublishes the branding service for the application.
+     */
+    private void unpublishBranding()
+    {
+        final ServiceRegistration brandingServiceRegistration = brandingServiceRegistrationRef_.getAndSet( null );
+        if( brandingServiceRegistration != null )
+        {
+            brandingServiceRegistration.unregister();
+        }
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * Adapts an instance of {@link IApplicationContext} to {@link IBranding}.
+     */
+    @Immutable
+    private static final class Branding
+        implements IBranding
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The application context. */
+        private final IApplicationContext context_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code Branding} class.
+         * 
+         * @param context
+         *        The application context; must not be {@code null}.
+         */
+        Branding(
+            /* @NonNull */
+            final IApplicationContext context )
+        {
+            assert context != null;
+
+            context_ = context;
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.common.core.app.IBranding#getApplication()
+         */
+        @Override
+        public String getApplication()
+        {
+            return context_.getBrandingApplication();
+        }
+
+        /*
+         * @see org.gamegineer.common.core.app.IBranding#getBundle()
+         */
+        @Override
+        public Bundle getBundle()
+        {
+            return context_.getBrandingBundle();
+        }
+
+        /*
+         * @see org.gamegineer.common.core.app.IBranding#getDescription()
+         */
+        @Override
+        public String getDescription()
+        {
+            return context_.getBrandingDescription();
+        }
+
+        /*
+         * @see org.gamegineer.common.core.app.IBranding#getId()
+         */
+        @Override
+        public String getId()
+        {
+            return context_.getBrandingId();
+        }
+
+        /*
+         * @see org.gamegineer.common.core.app.IBranding#getName()
+         */
+        @Override
+        public String getName()
+        {
+            return context_.getBrandingName();
+        }
+
+        /*
+         * @see org.gamegineer.common.core.app.IBranding#getProperty(java.lang.String)
+         */
+        @Override
+        public String getProperty(
+            final String name )
+        {
+            assertArgumentNotNull( name, "name" ); //$NON-NLS-1$
+
+            return context_.getBrandingProperty( name );
+        }
     }
 }
