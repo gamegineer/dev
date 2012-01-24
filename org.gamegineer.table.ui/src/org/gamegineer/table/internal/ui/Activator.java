@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.ui.help.IHelpSystem;
 import org.gamegineer.table.core.ICardPileBaseDesignRegistry;
 import org.gamegineer.table.core.ICardSurfaceDesignRegistry;
@@ -53,6 +54,10 @@ public final class Activator
 
     /** The singleton instance of the bundle activator. */
     private static final AtomicReference<Activator> instance_ = new AtomicReference<Activator>();
+
+    /** The application branding service tracker. */
+    @GuardedBy( "lock_" )
+    private ServiceTracker brandingTracker_;
 
     /** The bundle context. */
     @GuardedBy( "lock_" )
@@ -108,6 +113,7 @@ public final class Activator
     public Activator()
     {
         lock_ = new Object();
+        brandingTracker_ = null;
         bundleContext_ = null;
         bundleImages_ = null;
         cardPileBaseDesignRegistryTracker_ = null;
@@ -124,6 +130,29 @@ public final class Activator
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the application branding service.
+     * 
+     * @return The application branding service or {@code null} if no
+     *         application branding service is available.
+     */
+    /* @Nullable */
+    public IBranding getBranding()
+    {
+        synchronized( lock_ )
+        {
+            assert bundleContext_ != null;
+
+            if( brandingTracker_ == null )
+            {
+                brandingTracker_ = new ServiceTracker( bundleContext_, IBranding.class.getName(), null );
+                brandingTracker_.open();
+            }
+
+            return (IBranding)brandingTracker_.getService();
+        }
+    }
 
     /**
      * Gets the bundle context.
@@ -473,6 +502,11 @@ public final class Activator
             assert bundleContext_ != null;
             bundleContext_ = null;
 
+            if( brandingTracker_ != null )
+            {
+                brandingTracker_.close();
+                brandingTracker_ = null;
+            }
             if( bundleImages_ != null )
             {
                 bundleImages_.dispose();

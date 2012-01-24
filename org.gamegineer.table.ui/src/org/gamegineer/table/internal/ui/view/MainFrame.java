@@ -30,7 +30,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -41,11 +41,12 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.core.util.IPredicate;
+import org.gamegineer.common.ui.app.BrandingUIUtils;
 import org.gamegineer.common.ui.databinding.swing.SwingRealm;
 import org.gamegineer.common.ui.help.IHelpSystem;
 import org.gamegineer.table.internal.ui.Activator;
-import org.gamegineer.table.internal.ui.BundleImages;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.model.FramePreferences;
@@ -315,24 +316,13 @@ public final class MainFrame
     /* @NonNull */
     private static List<Image> getApplicationIconImages()
     {
-        final String[] imagePaths = new String[] { //
-            BundleImages.APPLICATION_16, //
-            BundleImages.APPLICATION_32, //
-            BundleImages.APPLICATION_48, //
-            BundleImages.APPLICATION_64
-        };
-        final BundleImages bundleImages = Activator.getDefault().getBundleImages();
-        final List<Image> iconImages = new ArrayList<Image>();
-        for( final String imagePath : imagePaths )
+        final IBranding branding = Activator.getDefault().getBranding();
+        if( branding == null )
         {
-            final Image iconImage = bundleImages.getImage( imagePath );
-            if( iconImage != null )
-            {
-                iconImages.add( iconImage );
-            }
+            return Collections.<Image>emptyList();
         }
 
-        return iconImages;
+        return BrandingUIUtils.getWindowImages( branding );
     }
 
     /**

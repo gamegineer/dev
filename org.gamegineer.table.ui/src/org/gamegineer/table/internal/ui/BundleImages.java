@@ -1,6 +1,6 @@
 /*
  * BundleImages.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -55,18 +55,6 @@ public final class BundleImages
 
     /** The bundle-relative path to the role icons folder. */
     private static final String FOLDER_ROLES = FOLDER_ICONS + "/roles"; //$NON-NLS-1$
-
-    /** The bundle-relative path to the 16x16 application icon. */
-    public static final String APPLICATION_16 = FOLDER_ICONS + "/application-16.png"; //$NON-NLS-1$
-
-    /** The bundle-relative path to the 32x32 application icon. */
-    public static final String APPLICATION_32 = FOLDER_ICONS + "/application-32.png"; //$NON-NLS-1$
-
-    /** The bundle-relative path to the 48x48 application icon. */
-    public static final String APPLICATION_48 = FOLDER_ICONS + "/application-48.png"; //$NON-NLS-1$
-
-    /** The bundle-relative path to the 64x64 application icon. */
-    public static final String APPLICATION_64 = FOLDER_ICONS + "/application-64.png"; //$NON-NLS-1$
 
     /** The bundle-relative path to the green felt background image. */
     public static final String BACKGROUND_GREEN_FELT = FOLDER_BACKGROUNDS + "/green-felt.png"; //$NON-NLS-1$
