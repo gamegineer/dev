@@ -19,6 +19,9 @@
                 application="org.gamegineer.table.product.application"
                 description="%product.description"
                 name="%product.name">
+            <property
+                 name="windowImages"
+                 value="icons/application-16.png,icons/application-32.png,icons/application-48.png,icons/application-64.png" />
         </product>
     </extension>
 

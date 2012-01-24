@@ -24,22 +24,29 @@ package org.gamegineer.common.internal.ui.help;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import static org.gamegineer.common.core.runtime.Assert.assertStateLegal;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import javax.help.CSH;
+import javax.help.DefaultHelpBroker;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 import javax.help.HelpSetException;
+import javax.help.WindowPresentation;
+import javax.swing.JFrame;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.internal.ui.Activator;
 import org.gamegineer.common.internal.ui.Debug;
 import org.gamegineer.common.internal.ui.Loggers;
+import org.gamegineer.common.ui.app.BrandingUIUtils;
 import org.gamegineer.common.ui.help.IHelpSetProvider;
 import org.gamegineer.common.ui.help.IHelpSystem;
 import org.osgi.framework.ServiceReference;
@@ -135,7 +142,6 @@ public final class HelpSystem
             if( branding_ != null )
             {
                 masterHelpSet_.setTitle( NlsMessages.HelpSystem_masterHelpSet_title( branding_.getName() ) );
-                // TODO: Need to be able to override help icon, as well.
             }
 
             for( final HelpSetProviderProxy helpSetProviderProxy : helpSetProviderProxies_.values() )
@@ -243,6 +249,7 @@ public final class HelpSystem
         }
 
         listener.actionPerformed( new ActionEvent( activationObject, ActionEvent.ACTION_PERFORMED, null ) );
+        setMainWindowIcons();
     }
 
     /**
@@ -307,6 +314,56 @@ public final class HelpSystem
         catch( final HelpSetException e )
         {
             Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.HelpSystem_removeHelpSet_failed, e );
+        }
+    }
+
+    /**
+     * Sets the icons for the main help window.
+     */
+    private void setMainWindowIcons()
+    {
+        // HACK: This implementation is a total hack, but the JavaHelp API really provides
+        // no good way to set the main help window icons dynamically.  In addition, even
+        // t he support to declaratively set an icon doesn't provide support for multiple
+        // image resolutions, which has become more and more important on modern OSes that
+        // want icons larger than 32x32.
+
+        final IBranding branding;
+        final HelpBroker masterHelpBroker;
+        synchronized( lock_ )
+        {
+            branding = branding_;
+            masterHelpBroker = masterHelpBroker_;
+        }
+
+        if( (branding != null) && (masterHelpBroker != null) )
+        {
+            final List<Image> windowImages = BrandingUIUtils.getWindowImages( branding );
+            if( !windowImages.isEmpty() )
+            {
+                try
+                {
+                    final WindowPresentation windowPresentation = ((DefaultHelpBroker)masterHelpBroker).getWindowPresentation();
+                    if( windowPresentation != null )
+                    {
+                        final Field frameField = WindowPresentation.class.getDeclaredField( "frame" ); //$NON-NLS-1$
+                        frameField.setAccessible( true );
+                        final JFrame frame = (JFrame)frameField.get( windowPresentation );
+                        if( frame != null )
+                        {
+                            frame.setIconImages( windowImages );
+                        }
+                    }
+                }
+                catch( final NoSuchFieldException e )
+                {
+                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.HelpSystem_setMainWindowIcons_failed, e );
+                }
+                catch( final IllegalAccessException e )
+                {
+                    Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.HelpSystem_setMainWindowIcons_failed, e );
+                }
+            }
         }
     }
 

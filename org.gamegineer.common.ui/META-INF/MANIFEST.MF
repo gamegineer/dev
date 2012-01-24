@@ -8,7 +8,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.gamegineer.common.ui
 Bundle-Vendor: %bundleVendor
 Bundle-Version: 0.11.0.qualifier
-Export-Package: org.gamegineer.common.ui.databinding.dialog;version="0.11.0",
+Export-Package: org.gamegineer.common.ui.app;version="0.11.0",
+ org.gamegineer.common.ui.databinding.dialog;version="0.11.0",
  org.gamegineer.common.ui.databinding.swing;version="0.11.0",
  org.gamegineer.common.ui.databinding.wizard;version="0.11.0",
  org.gamegineer.common.ui.dialog;version="0.11.0",

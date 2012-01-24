@@ -16,11 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 6, 2012 at 10:30:50 PM.
+ * Created on Jan 23, 2012 at 7:51:22 PM.
  */
 
-package org.gamegineer.common.internal.ui.help;
+package org.gamegineer.common.ui.app;
 
+import java.net.URL;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 
@@ -35,36 +36,10 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
-    // --- HelpSetProviderProxy ---------------------------------------------
+    // --- BrandingUIUtils --------------------------------------------------
 
-    /** The actual object is not available. */
-    public static String HelpSetProviderProxy_getActualHelpSetProvider_actualObjectNotAvailable;
-
-    /** The proxy has been disposed. */
-    public static String HelpSetProviderProxy_getActualHelpSetProvider_proxyDisposed;
-
-    // --- HelpSystem -------------------------------------------------------
-
-    /** The master help set is missing. */
-    public static String HelpSystem_activate_masterHelpSetMissing;
-
-    /** Failed to add the help set. */
-    public static String HelpSystem_addHelpSet_failed;
-
-    /** The branding service is already bound. */
-    public static String HelpSystem_bindBranding_bound;
-
-    /** The help broker is not available. */
-    public static String HelpSystem_displayHelp_helpBrokerNotAvailable;
-
-    /** Failed to remove the help set. */
-    public static String HelpSystem_removeHelpSet_failed;
-
-    /** Failed to set the main window icons. */
-    public static String HelpSystem_setMainWindowIcons_failed;
-
-    /** The branding service is not bound. */
-    public static String HelpSystem_unbindBranding_notBound;
+    /** An error occurred while reading the image. */
+    public static String BrandingUIUtils_getImage_readError;
 
 
     // ======================================================================
@@ -85,5 +60,30 @@ final class NonNlsMessages
     private NonNlsMessages()
     {
         super();
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    // --- BrandingUIUtils --------------------------------------------------
+
+    /**
+     * Gets the formatted message indicating an error occurred while reading the
+     * specified image.
+     * 
+     * @param imageUrl
+     *        The URL of the image; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while reading
+     *         the specified image; never {@code null}.
+     */
+    /* @NonNull */
+    static String BrandingUIUtils_getImage_readError(
+        /* @NonNull */
+        final URL imageUrl )
+    {
+        return bind( BrandingUIUtils_getImage_readError, imageUrl );
     }
 }
