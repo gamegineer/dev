@@ -43,7 +43,6 @@ import javax.swing.JFrame;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.app.IBranding;
-import org.gamegineer.common.internal.ui.Activator;
 import org.gamegineer.common.internal.ui.Debug;
 import org.gamegineer.common.internal.ui.Loggers;
 import org.gamegineer.common.ui.app.BrandingUIUtils;
@@ -127,7 +126,7 @@ public final class HelpSystem
     public void activate()
         throws Exception
     {
-        final URL helpSetUrl = Activator.getDefault().getBundleContext().getBundle().getEntry( "/help/master.hs" ); //$NON-NLS-1$
+        final URL helpSetUrl = HelpSet.findHelpSet( getClass().getClassLoader(), "help/master.hs" ); //$NON-NLS-1$
         if( helpSetUrl == null )
         {
             throw new HelpSetException( NonNlsMessages.HelpSystem_activate_masterHelpSetMissing );
