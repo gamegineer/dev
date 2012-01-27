@@ -1,6 +1,6 @@
 /*
  * TableRunner.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -208,7 +208,7 @@ public final class TableRunner
                     stop( TableResult.OK );
                 }
             };
-            frame_ = new MainFrame( advisor_ );
+            frame_ = new MainFrame();
             frame_.addWindowListener( windowListener );
             frame_.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
             frame_.setVisible( true );

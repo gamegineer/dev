@@ -33,6 +33,7 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.gamegineer.common.core.app.BrandingUtils;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.table.ui.ITableAdvisor;
 import org.gamegineer.table.ui.TableAdvisor;
@@ -40,7 +41,6 @@ import org.gamegineer.table.ui.TableResult;
 import org.gamegineer.table.ui.TableUIFactory;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceRegistration;
-import org.osgi.framework.Version;
 
 /**
  * The entry point of the Gamegineer table application.
@@ -97,8 +97,7 @@ public final class Application
         assert context != null;
 
         final List<String> applicationArguments = parseApplicationArguments( (String[])context.getArguments().get( IApplicationContext.APPLICATION_ARGS ) );
-        final Version applicationVersion = parseApplicationVersion( (String)context.getBrandingBundle().getHeaders().get( org.osgi.framework.Constants.BUNDLE_VERSION ) );
-        return new TableAdvisor( applicationArguments, applicationVersion );
+        return new TableAdvisor( applicationArguments );
     }
 
     /**
@@ -123,43 +122,23 @@ public final class Application
     }
 
     /**
-     * Parses the specified application version string.
-     * 
-     * @param applicationVersionString
-     *        The application version string; may be {@code null}.
-     * 
-     * @return The application version; never {@code null}.
-     */
-    /* @NonNull */
-    private static Version parseApplicationVersion(
-        /* @Nullable */
-        final String applicationVersionString )
-    {
-        try
-        {
-            return Version.parseVersion( applicationVersionString );
-        }
-        catch( final IllegalArgumentException e )
-        {
-            Loggers.getDefaultLogger().log( Level.WARNING, NonNlsMessages.Application_parseApplicationVersion_error( applicationVersionString ), e );
-        }
-
-        return Version.emptyVersion;
-    }
-
-    /**
      * Publishes the branding service for the application.
      * 
      * @param context
      *        The application context; must not be {@code null}.
+     * 
+     * @return The branding service; never {@code null}.
      */
-    private void publishBranding(
+    /* @NonNull */
+    private IBranding publishBranding(
         /* @NonNull */
         final IApplicationContext context )
     {
         assert context != null;
 
-        brandingServiceRegistrationRef_.set( Activator.getDefault().getBundleContext().registerService( IBranding.class.getName(), new Branding( context ), null ) );
+        final IBranding branding = new Branding( context );
+        brandingServiceRegistrationRef_.set( Activator.getDefault().getBundleContext().registerService( IBranding.class.getName(), branding, null ) );
+        return branding;
     }
 
     /*
@@ -172,11 +151,10 @@ public final class Application
     {
         assertArgumentNotNull( context, "context" ); //$NON-NLS-1$
 
-        publishBranding( context );
+        final IBranding branding = publishBranding( context );
+        Loggers.getDefaultLogger().info( NonNlsMessages.Application_start_starting( BrandingUtils.getVersion( branding ) ) );
 
         final ITableAdvisor advisor = createTableAdvisor( context );
-        Loggers.getDefaultLogger().info( NonNlsMessages.Application_start_starting( advisor.getApplicationVersion() ) );
-
         final Future<TableResult> future = Activator.getDefault().getExecutorService().submit( TableUIFactory.createTableRunner( advisor ) );
         futureRef_.set( future );
 

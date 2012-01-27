@@ -1,6 +1,6 @@
 /*
  * AbstractTableAdvisorTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -102,15 +102,5 @@ public abstract class AbstractTableAdvisorTestCase
     public void testGetApplicationArguments_ReturnValue_NonNull()
     {
         assertNotNull( advisor_.getApplicationArguments() );
-    }
-
-    /**
-     * Ensures the {@code getApplicationVersion} method does not return {@code
-     * null}.
-     */
-    @Test
-    public void testGetVersion_ReturnValue_NonNull()
-    {
-        assertNotNull( advisor_.getApplicationVersion() );
     }
 }

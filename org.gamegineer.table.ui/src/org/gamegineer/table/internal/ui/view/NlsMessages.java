@@ -29,7 +29,6 @@ import org.gamegineer.table.internal.ui.Branding;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.PlayerRole;
 import org.gamegineer.table.net.TableNetworkError;
-import org.osgi.framework.Version;
 
 /**
  * A utility class to manage localized messages for the package.
@@ -930,18 +929,13 @@ final class NlsMessages
     /**
      * Gets the formatted message for the About dialog message.
      * 
-     * @param version
-     *        The application version; must not be {@code null}.
-     * 
      * @return The formatted message for the About dialog message; never {@code
      *         null}.
      */
     /* @NonNull */
-    static String AboutDialog_message(
-        /* @NonNull */
-        final Version version )
+    static String AboutDialog_message()
     {
-        return bind( AboutDialog_message, Branding.getName(), version.toString() );
+        return bind( AboutDialog_message, Branding.getName(), Branding.getVersion() );
     }
 
     /**

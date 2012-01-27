@@ -16,15 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Sep 18, 2009 at 11:17:23 PM.
+ * Created on Jan 26, 2012 at 8:47:46 PM.
  */
 
-package org.gamegineer.table.internal.product;
+package org.gamegineer.common.core.app;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
-import org.gamegineer.table.ui.TableResult;
-import org.osgi.framework.Version;
 
 /**
  * A utility class to manage non-localized messages for the package.
@@ -37,22 +35,10 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
-    // --- Application ------------------------------------------------------
+    // --- BrandingUtils ----------------------------------------------------
 
-    /** The application was cancelled. */
-    public static String Application_start_cancelled;
-
-    /** The application is starting. */
-    public static String Application_start_starting;
-
-    /** The application has stopped. */
-    public static String Application_start_stopped;
-
-    /** Failed to cancel the application task. */
-    public static String Application_stop_cancelFailed;
-
-    /** Attempting to stop the application. */
-    public static String Application_stop_stopping;
+    /** An error occurred while parsing the application version. */
+    public static String BrandingUtils_getVersion_parseError;
 
 
     // ======================================================================
@@ -83,36 +69,20 @@ final class NonNlsMessages
     // --- Application ------------------------------------------------------
 
     /**
-     * Gets the formatted message indicating the application is starting.
+     * Gets the formatted message indicating an error occurred while parsing the
+     * application version.
      * 
-     * @param version
-     *        The application version; must not be {@code null}.
+     * @param versionString
+     *        The application version string; must not be {@code null}.
      * 
-     * @return The formatted message indicating the application is starting;
-     *         never {@code null}.
+     * @return The formatted message indicating an error occurred while parsing
+     *         the application version; never {@code null}.
      */
     /* @NonNull */
-    static String Application_start_starting(
+    static String BrandingUtils_getVersion_parseError(
         /* @NonNull */
-        final Version version )
+        final String versionString )
     {
-        return bind( Application_start_starting, version.toString() );
-    }
-
-    /**
-     * Gets the formatted message indicating the application has stopped.
-     * 
-     * @param result
-     *        The table result; must not be {@code null}.
-     * 
-     * @return The formatted message indicating the application has stopped;
-     *         never {@code null}.
-     */
-    /* @NonNull */
-    static String Application_start_stopped(
-        /* @NonNull */
-        final TableResult result )
-    {
-        return bind( Application_start_stopped, result.toString() );
+        return bind( BrandingUtils_getVersion_parseError, versionString );
     }
 }

@@ -1,6 +1,6 @@
 /*
  * TableAdvisorAsTableAdvisorTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.ui;
 
 import java.util.ArrayList;
-import org.osgi.framework.Version;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.ui.TableAdvisor} class
@@ -56,6 +55,6 @@ public final class TableAdvisorAsTableAdvisorTest
     @Override
     protected ITableAdvisor createTableAdvisor()
     {
-        return new TableAdvisor( new ArrayList<String>(), Version.emptyVersion );
+        return new TableAdvisor( new ArrayList<String>() );
     }
 }

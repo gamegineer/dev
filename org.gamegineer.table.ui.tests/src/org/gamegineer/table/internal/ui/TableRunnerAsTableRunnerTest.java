@@ -1,6 +1,6 @@
 /*
  * TableRunnerAsTableRunnerTest.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.ui;
 
+import java.util.Collections;
 import org.gamegineer.table.ui.AbstractTableRunnerTestCase;
 import org.gamegineer.table.ui.ITableRunner;
 import org.gamegineer.table.ui.TableAdvisor;
@@ -55,6 +56,6 @@ public final class TableRunnerAsTableRunnerTest
     @Override
     protected ITableRunner createTableRunner()
     {
-        return new TableRunner( new TableAdvisor() );
+        return new TableRunner( new TableAdvisor( Collections.<String>emptyList() ) );
     }
 }

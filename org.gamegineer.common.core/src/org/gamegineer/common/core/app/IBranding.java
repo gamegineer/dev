@@ -23,10 +23,10 @@ package org.gamegineer.common.core.app;
 
 import org.osgi.framework.Bundle;
 
-// TODO: add a getVersion() method or a BrandingUtils class that has a getVersion(IBranding) method
-
 /**
  * A service that provides branding information for the running application.
+ * 
+ * @noextend This interface is not intended to be extended by clients.
  */
 public interface IBranding
 {

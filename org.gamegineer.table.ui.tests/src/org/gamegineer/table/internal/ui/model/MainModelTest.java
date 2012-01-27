@@ -1,6 +1,6 @@
 /*
  * MainModelTest.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,14 +21,12 @@
 
 package org.gamegineer.table.internal.ui.model;
 
-import static org.junit.Assert.assertNotNull;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.gamegineer.table.core.ITable;
-import org.gamegineer.table.ui.TableAdvisor;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -115,7 +113,7 @@ public final class MainModelTest
         throws Exception
     {
         niceMocksControl_ = EasyMock.createNiceControl();
-        model_ = new MainModel( new TableAdvisor() );
+        model_ = new MainModel();
     }
 
     /**
@@ -156,25 +154,6 @@ public final class MainModelTest
         model_.addMainModelListener( listener );
 
         model_.addMainModelListener( listener );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * table advisor.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Advisor_Null()
-    {
-        new MainModel( null );
-    }
-
-    /**
-     * Ensures the {@code getVersion} method does not return {@code null}.
-     */
-    @Test
-    public void testGetVersion_ReturnValue_NonNull()
-    {
-        assertNotNull( model_.getVersion() );
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * ITableAdvisor.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 package org.gamegineer.table.ui;
 
 import java.util.List;
-import org.osgi.framework.Version;
 
 /**
  * An advisor responsible for configuring the table based on application
@@ -44,12 +43,4 @@ public interface ITableAdvisor
      */
     /* @NonNull */
     public List<String> getApplicationArguments();
-
-    /**
-     * Gets the application version.
-     * 
-     * @return The application version; never {@code null}.
-     */
-    /* @NonNull */
-    public Version getApplicationVersion();
 }

@@ -25,8 +25,10 @@ import java.awt.Image;
 import java.util.Collections;
 import java.util.List;
 import net.jcip.annotations.ThreadSafe;
+import org.gamegineer.common.core.app.BrandingUtils;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.ui.app.BrandingUIUtils;
+import org.osgi.framework.Version;
 
 /**
  * A facade for simplified access to the application branding service.
@@ -78,6 +80,23 @@ public final class Branding
         }
 
         return NlsMessages.Branding_name_default;
+    }
+
+    /**
+     * Gets the branding version.
+     * 
+     * @return The branding version; never {@code null}.
+     */
+    /* @NonNull */
+    public static Version getVersion()
+    {
+        final IBranding branding = getDefault();
+        if( branding != null )
+        {
+            return BrandingUtils.getVersion( branding );
+        }
+
+        return Version.emptyVersion;
     }
 
     /**

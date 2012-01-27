@@ -1,6 +1,6 @@
 /*
  * TableAdvisorTest.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Test;
-import org.osgi.framework.Version;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.ui.TableAdvisor} class.
@@ -58,7 +57,7 @@ public final class TableAdvisorTest
     public void testConstructor_AppArgs_DeepCopy()
     {
         final List<String> appArgs = new ArrayList<String>();
-        final TableAdvisor tableAdvisor = new TableAdvisor( appArgs, Version.emptyVersion );
+        final TableAdvisor tableAdvisor = new TableAdvisor( appArgs );
 
         appArgs.add( "arg" ); //$NON-NLS-1$
 
@@ -72,7 +71,7 @@ public final class TableAdvisorTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_AppArgs_Illegal_ContainsNullElement()
     {
-        new TableAdvisor( Collections.<String>singletonList( null ), Version.emptyVersion );
+        new TableAdvisor( Collections.<String>singletonList( null ) );
     }
 
     /**
@@ -82,16 +81,6 @@ public final class TableAdvisorTest
     @Test( expected = NullPointerException.class )
     public void testConstructor_AppArgs_Null()
     {
-        new TableAdvisor( null, Version.emptyVersion );
-    }
-
-    /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * application version.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_AppVersion_Null()
-    {
-        new TableAdvisor( Collections.<String>emptyList(), null );
+        new TableAdvisor( null );
     }
 }

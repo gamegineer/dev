@@ -1,6 +1,6 @@
 /*
  * MainModel.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,8 +29,6 @@ import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.internal.ui.Loggers;
-import org.gamegineer.table.ui.ITableAdvisor;
-import org.osgi.framework.Version;
 
 /**
  * The top-level model.
@@ -41,9 +39,6 @@ public final class MainModel
     // ======================================================================
     // Fields
     // ======================================================================
-
-    /** The table advisor. */
-    private final ITableAdvisor advisor_;
 
     /** The collection of main model listeners. */
     private final CopyOnWriteArrayList<IMainModelListener> listeners_;
@@ -61,20 +56,9 @@ public final class MainModel
 
     /**
      * Initializes a new instance of the {@code MainModel} class.
-     * 
-     * @param advisor
-     *        The table advisor; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code advisor} is {@code null}.
      */
-    public MainModel(
-        /* @NonNull */
-        final ITableAdvisor advisor )
+    public MainModel()
     {
-        assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
-
-        advisor_ = advisor;
         listeners_ = new CopyOnWriteArrayList<IMainModelListener>();
         preferencesModel_ = new PreferencesModel();
         tableModel_ = new TableModel();
@@ -145,17 +129,6 @@ public final class MainModel
     public TableModel getTableModel()
     {
         return tableModel_;
-    }
-
-    /**
-     * Gets the model version.
-     * 
-     * @return The model version.
-     */
-    /* @NonNull */
-    public Version getVersion()
-    {
-        return advisor_.getApplicationVersion();
     }
 
     /**

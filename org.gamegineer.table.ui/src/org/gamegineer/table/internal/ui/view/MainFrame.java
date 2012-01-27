@@ -54,7 +54,6 @@ import org.gamegineer.table.internal.ui.model.ModelException;
 import org.gamegineer.table.internal.ui.model.TableModelEvent;
 import org.gamegineer.table.internal.ui.util.OptionDialogs;
 import org.gamegineer.table.internal.ui.util.swing.JFileChooser;
-import org.gamegineer.table.ui.ITableAdvisor;
 
 /**
  * The top-level frame.
@@ -101,24 +100,14 @@ public final class MainFrame
 
     /**
      * Initializes a new instance of the {@code MainFrame} class.
-     * 
-     * @param advisor
-     *        The table advisor; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code advisor} is {@code null}.
      */
-    public MainFrame(
-        /* @NonNull */
-        final ITableAdvisor advisor )
+    public MainFrame()
     {
-        assertArgumentNotNull( advisor, "advisor" ); //$NON-NLS-1$
-
         actionMediator_ = new ActionMediator();
         actionUpdaterTaskFuture_ = null;
         isActionUpdateRequired_ = new AtomicBoolean( false );
         mainModelListener_ = null;
-        model_ = new MainModel( advisor );
+        model_ = new MainModel();
         mainView_ = new MainView( model_ );
         menuBarView_ = new MenuBarView( model_ );
         tableModelListener_ = null;
@@ -185,14 +174,13 @@ public final class MainFrame
         } );
         actionMediator_.bindActionListener( Actions.getOpenAboutDialogAction(), new ActionListener()
         {
-            @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
                 JOptionPane.showMessageDialog( //
                     MainFrame.this, //
-                    NlsMessages.AboutDialog_message( model_.getVersion() ), //
+                    NlsMessages.AboutDialog_message(), //
                     NlsMessages.AboutDialog_title(), //
                     JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE );
             }
