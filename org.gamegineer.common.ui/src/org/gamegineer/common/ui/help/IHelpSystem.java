@@ -47,4 +47,13 @@ public interface IHelpSystem
     public void displayHelp(
         /* @NonNull */
         Object activationObject );
+
+    /**
+     * Shuts down the help system.
+     * 
+     * <p>
+     * This method should be called immediately before exiting the application.
+     * </p>
+     */
+    public void shutdown();
 }

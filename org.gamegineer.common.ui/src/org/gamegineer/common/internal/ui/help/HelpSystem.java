@@ -74,6 +74,10 @@ public final class HelpSystem
     @GuardedBy( "lock_" )
     private final Map<ServiceReference, HelpSetProviderProxy> helpSetProviderProxies_;
 
+    /** Indicates the help system has been shutdown. */
+    @GuardedBy( "lock_" )
+    private boolean isShutdown_;
+
     /** The instance lock. */
     private final Object lock_;
 
@@ -103,6 +107,7 @@ public final class HelpSystem
     {
         branding_ = null;
         helpSetProviderProxies_ = new HashMap<ServiceReference, HelpSetProviderProxy>();
+        isShutdown_ = false;
         lock_ = new Object();
         masterHelpBroker_ = null;
         masterHelpSet_ = null;
@@ -168,7 +173,7 @@ public final class HelpSystem
         {
             synchronized( lock_ )
             {
-                if( masterHelpSet_ != null )
+                if( (masterHelpSet_ != null) && !isShutdown_ )
                 {
                     masterHelpSet_.add( helpSetProvider.getHelpSet() );
                 }
@@ -237,6 +242,11 @@ public final class HelpSystem
         final ActionListener listener;
         synchronized( lock_ )
         {
+            if( isShutdown_ )
+            {
+                return;
+            }
+
             if( masterHelpBroker_ != null )
             {
                 listener = new CSH.DisplayHelpFromSource( masterHelpBroker_ );
@@ -294,19 +304,8 @@ public final class HelpSystem
         {
             synchronized( lock_ )
             {
-                if( masterHelpSet_ != null )
+                if( (masterHelpSet_ != null) && !isShutdown_ )
                 {
-                    // FIXME: this causes an annoying beep when exiting the application.
-                    //
-                    // caused by javax.help.plaf.basic.BasicSearchNavigatorUI:746
-                    //
-                    // when the help set is removed, the search is re-run, and for some reason,
-                    // BasicSearchNavigator emits a beep when the search is finished.
-                    //
-                    // we need to figure out how to disable this, at least when the user is
-                    // exiting the application (maybe add a new method to IHelpSystem, shutdown(),
-                    // that will destroy the master help set so we don't attempt to remove
-                    // contributed help sets during shutdown?)
                     masterHelpSet_.remove( helpSetProvider.getHelpSet() );
                 }
             }
@@ -364,6 +363,18 @@ public final class HelpSystem
                     Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.HelpSystem_setMainWindowIcons_failed, e );
                 }
             }
+        }
+    }
+
+    /*
+     * @see org.gamegineer.common.ui.help.IHelpSystem#shutdown()
+     */
+    @Override
+    public void shutdown()
+    {
+        synchronized( lock_ )
+        {
+            isShutdown_ = true;
         }
     }
 

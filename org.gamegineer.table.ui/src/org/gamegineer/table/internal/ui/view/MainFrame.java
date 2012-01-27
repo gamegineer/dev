@@ -289,6 +289,12 @@ public final class MainFrame
     @Override
     public void dispose()
     {
+        final IHelpSystem helpSystem = Activator.getDefault().getHelpSystem();
+        if( helpSystem != null )
+        {
+            helpSystem.shutdown();
+        }
+
         ViewUtils.disconnectTableNetwork( this, model_.getTableModel().getTableNetwork() );
 
         stopActionUpdater();
