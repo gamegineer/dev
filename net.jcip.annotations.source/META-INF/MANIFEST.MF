@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-Localization: plugin
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundleName
+Bundle-SymbolicName: net.jcip.annotations.source
+Bundle-Vendor: %bundleVendor
+Bundle-Version: 1.0.0
+Eclipse-SourceBundle: net.jcip.annotations;version="1.0.0";roots:="lib/jcip-annotationssrc"
