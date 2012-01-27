@@ -23,15 +23,12 @@ package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
@@ -41,12 +38,11 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.core.util.IPredicate;
-import org.gamegineer.common.ui.app.BrandingUIUtils;
 import org.gamegineer.common.ui.databinding.swing.SwingRealm;
 import org.gamegineer.common.ui.help.IHelpSystem;
 import org.gamegineer.table.internal.ui.Activator;
+import org.gamegineer.table.internal.ui.Branding;
 import org.gamegineer.table.internal.ui.Loggers;
 import org.gamegineer.table.internal.ui.action.ActionMediator;
 import org.gamegineer.table.internal.ui.model.FramePreferences;
@@ -194,7 +190,11 @@ public final class MainFrame
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
             {
-                JOptionPane.showMessageDialog( MainFrame.this, NlsMessages.AboutDialog_message( model_.getVersion() ), NlsMessages.AboutDialog_title, JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE );
+                JOptionPane.showMessageDialog( //
+                    MainFrame.this, //
+                    NlsMessages.AboutDialog_message( model_.getVersion() ), //
+                    NlsMessages.AboutDialog_title(), //
+                    JOptionPane.OK_OPTION | JOptionPane.INFORMATION_MESSAGE );
             }
         } );
         actionMediator_.bindActionListener( Actions.getOpenNewTableAction(), new ActionListener()
@@ -309,23 +309,6 @@ public final class MainFrame
     }
 
     /**
-     * Gets the collection of application icon images.
-     * 
-     * @return The collection of application icon images; never {@code null}.
-     */
-    /* @NonNull */
-    private static List<Image> getApplicationIconImages()
-    {
-        final IBranding branding = Activator.getDefault().getBranding();
-        if( branding == null )
-        {
-            return Collections.<Image>emptyList();
-        }
-
-        return BrandingUIUtils.getWindowImages( branding );
-    }
-
-    /**
      * Gets the file associated with the table.
      * 
      * @return The file associated with the table; never {@code null}.
@@ -364,7 +347,7 @@ public final class MainFrame
 
         setLocationByPlatform( true );
         setSize( 640, 480 );
-        setIconImages( getApplicationIconImages() );
+        setIconImages( Branding.getWindowImages() );
         updateTitle();
     }
 

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
-import org.gamegineer.table.internal.ui.util.CommonNlsMessages;
+import org.gamegineer.table.internal.ui.Branding;
 import org.gamegineer.table.net.IPlayer;
 import org.gamegineer.table.net.PlayerRole;
 import org.gamegineer.table.net.TableNetworkError;
@@ -941,7 +941,19 @@ final class NlsMessages
         /* @NonNull */
         final Version version )
     {
-        return bind( AboutDialog_message, version.toString() );
+        return bind( AboutDialog_message, Branding.getName(), version.toString() );
+    }
+
+    /**
+     * Gets the formatted message for the About dialog title.
+     * 
+     * @return The formatted message for the About dialog title; never {@code
+     *         null}.
+     */
+    /* @NonNull */
+    static String AboutDialog_title()
+    {
+        return bind( AboutDialog_title, Branding.getName() );
     }
 
     // --- MainFrame --------------------------------------------------------
@@ -977,7 +989,7 @@ final class NlsMessages
         /* @NonNull */
         final String tableName )
     {
-        return bind( MainFrame_title, tableName, CommonNlsMessages.Common_application_name );
+        return bind( MainFrame_title, tableName, Branding.getName() );
     }
 
     // --- MainView ---------------------------------------------------------
@@ -1011,6 +1023,20 @@ final class NlsMessages
             default:
                 return bind( MainView_tableNetworkDisconnected_error_generic, error );
         }
+    }
+
+    // --- OpenAboutDialogAction --------------------------------------------
+
+    /**
+     * Gets the formatted text for the open about dialog action.
+     * 
+     * @return The formatted text for the open about dialog action; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    static String OpenAboutDialogAction_text()
+    {
+        return bind( OpenAboutDialogAction_text, Branding.getName() );
     }
 
     // --- TableNetworkPlayerView -------------------------------------------

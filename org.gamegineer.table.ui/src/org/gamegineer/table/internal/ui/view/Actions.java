@@ -1137,7 +1137,7 @@ final class Actions
 
             {
                 putValue( MNEMONIC_KEY, KeyStroke.getKeyStroke( NlsMessages.OpenAboutDialogAction_mnemonic ).getKeyCode() );
-                putValue( NAME, NlsMessages.OpenAboutDialogAction_text );
+                putValue( NAME, NlsMessages.OpenAboutDialogAction_text() );
             }
         } );
         actions.put( OPEN_NEW_TABLE_ACTION_ID, new BasicAction()
