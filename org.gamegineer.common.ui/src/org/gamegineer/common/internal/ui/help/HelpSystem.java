@@ -88,12 +88,6 @@ public final class HelpSystem
     @GuardedBy( "lock_" )
     private HelpSet masterHelpSet_;
 
-    // FIXME: need to figure out how we're going to build help indexes automatically
-    // do we do it at runtime or at build time?  if at build time, it's probably something
-    // that has to be done in the build script, which means search index will not be
-    // available during development.  or we build a static empty search index that will
-    // be available during development, but build the real thing during build.
-
 
     // ======================================================================
     // Constructors
