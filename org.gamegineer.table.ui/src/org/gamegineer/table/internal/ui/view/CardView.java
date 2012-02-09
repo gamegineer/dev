@@ -47,9 +47,6 @@ final class CardView
     /** The card surface design user interface for the card back. */
     private final ICardSurfaceDesignUI backDesignUI_;
 
-    /** The current bounds of this view in table coordinates. */
-    private Rectangle bounds_;
-
     /** The card listener for this view. */
     private ICardListener cardListener_;
 
@@ -95,7 +92,6 @@ final class CardView
         assert faceDesignUI != null;
 
         backDesignUI_ = backDesignUI;
-        bounds_ = null;
         cardListener_ = null;
         cardModelListener_ = null;
         faceDesignUI_ = faceDesignUI;
@@ -107,19 +103,6 @@ final class CardView
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Invoked after the card location has changed.
-     */
-    private void cardLocationChanged()
-    {
-        if( isInitialized() )
-        {
-            final Rectangle newBounds = getBounds();
-            tableView_.repaintTable( newBounds.union( bounds_ ) );
-            bounds_ = newBounds;
-        }
-    }
 
     /**
      * Invoked after the card orientation has changed.
@@ -184,7 +167,6 @@ final class CardView
         assert !isInitialized();
 
         tableView_ = tableView;
-        bounds_ = getBounds();
         cardModelListener_ = new CardModelListener();
         model_.addCardModelListener( cardModelListener_ );
         cardListener_ = new CardListener();
@@ -269,25 +251,6 @@ final class CardView
         // ==================================================================
         // Methods
         // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.CardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
-         */
-        @Override
-        public void cardLocationChanged(
-            final CardEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    CardView.this.cardLocationChanged();
-                }
-            } );
-        }
 
         /*
          * @see org.gamegineer.table.core.CardListener#cardOrientationChanged(org.gamegineer.table.core.CardEvent)
