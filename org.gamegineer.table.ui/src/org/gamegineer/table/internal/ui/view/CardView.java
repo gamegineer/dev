@@ -1,6 +1,6 @@
 /*
  * CardView.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -163,9 +163,7 @@ final class CardView
     /* @NonNull */
     Rectangle getBounds()
     {
-        final Rectangle bounds = model_.getCard().getBounds();
-        bounds.grow( 2, 2 );
-        return bounds;
+        return model_.getCard().getBounds();
     }
 
     /**
