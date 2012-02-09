@@ -53,6 +53,18 @@ final class CardPileView
     // Fields
     // ======================================================================
 
+    /**
+     * The horizontal padding between the focus border and the card pile in
+     * table coordinates.
+     */
+    private static final int HORIZONTAL_PADDING = 2;
+
+    /**
+     * The vertical padding between the focus border and the card pile in table
+     * coordinates.
+     */
+    private static final int VERTICAL_PADDING = 2;
+
     /** The card pile base design user interface. */
     private final ICardPileBaseDesignUI baseDesignUI_;
 
@@ -230,7 +242,7 @@ final class CardPileView
     Rectangle getBounds()
     {
         final Rectangle bounds = model_.getCardPile().getBounds();
-        bounds.grow( 2, 2 );
+        bounds.grow( HORIZONTAL_PADDING, VERTICAL_PADDING );
         return bounds;
     }
 
@@ -310,11 +322,12 @@ final class CardPileView
         assert g != null;
         assert isInitialized();
 
+        final Rectangle viewBounds = getBounds();
+
         final List<ICard> cards = model_.getCardPile().getCards();
         if( cards.isEmpty() )
         {
-            final Rectangle cardPileBounds = model_.getCardPile().getBounds();
-            baseDesignUI_.getIcon().paintIcon( tableView_, g, cardPileBounds.x, cardPileBounds.y );
+            baseDesignUI_.getIcon().paintIcon( tableView_, g, viewBounds.x + HORIZONTAL_PADDING, viewBounds.y + VERTICAL_PADDING );
         }
         else
         {
@@ -330,7 +343,6 @@ final class CardPileView
 
         if( model_.isFocused() )
         {
-            final Rectangle viewBounds = getBounds();
             final Color oldColor = g.getColor();
             g.setColor( Color.GREEN );
             g.drawRect( viewBounds.x, viewBounds.y, viewBounds.width - 1, viewBounds.height - 1 );
