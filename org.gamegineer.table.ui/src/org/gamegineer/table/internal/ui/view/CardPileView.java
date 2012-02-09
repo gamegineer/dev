@@ -1,6 +1,6 @@
 /*
  * CardPileView.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -66,7 +66,7 @@ final class CardPileView
     private final Map<ICard, CardView> cardViews_;
 
     /** The dirty bounds of this view in table coordinates. */
-    private Rectangle dirtyBounds_;
+    private final Rectangle dirtyBounds_;
 
     /** The model associated with this view. */
     private final CardPileModel model_;
@@ -150,8 +150,10 @@ final class CardPileView
     {
         if( isInitialized() )
         {
-            dirtyBounds_.add( getBounds() );
+            final Rectangle viewBounds = getBounds();
+            dirtyBounds_.add( viewBounds );
             tableView_.repaintTable( getDirtyBounds() );
+            dirtyBounds_.setBounds( viewBounds );
         }
     }
 
@@ -334,8 +336,6 @@ final class CardPileView
             g.drawRect( viewBounds.x, viewBounds.y, viewBounds.width - 1, viewBounds.height - 1 );
             g.setColor( oldColor );
         }
-
-        dirtyBounds_.setBounds( getBounds() );
     }
 
     /**
