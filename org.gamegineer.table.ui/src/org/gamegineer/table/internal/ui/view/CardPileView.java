@@ -213,16 +213,14 @@ final class CardPileView
         assert card != null;
         assert isInitialized();
 
-        if( !cardViews_.containsKey( card ) )
-        {
-            final ICardSurfaceDesignUIRegistry cardSurfaceDesignUIRegistry = Activator.getDefault().getCardSurfaceDesignUIRegistry();
-            assert cardSurfaceDesignUIRegistry != null;
-            final ICardSurfaceDesignUI backDesignUI = cardSurfaceDesignUIRegistry.getCardSurfaceDesignUI( card.getBackDesign().getId() );
-            final ICardSurfaceDesignUI faceDesignUI = cardSurfaceDesignUIRegistry.getCardSurfaceDesignUI( card.getFaceDesign().getId() );
-            final CardView view = new CardView( model_.getCardModel( card ), backDesignUI, faceDesignUI );
-            cardViews_.put( card, view );
-            view.initialize( tableView_ ); // TODO: Change to accept CardPileView?
-        }
+        final ICardSurfaceDesignUIRegistry cardSurfaceDesignUIRegistry = Activator.getDefault().getCardSurfaceDesignUIRegistry();
+        assert cardSurfaceDesignUIRegistry != null;
+        final ICardSurfaceDesignUI backDesignUI = cardSurfaceDesignUIRegistry.getCardSurfaceDesignUI( card.getBackDesign().getId() );
+        final ICardSurfaceDesignUI faceDesignUI = cardSurfaceDesignUIRegistry.getCardSurfaceDesignUI( card.getFaceDesign().getId() );
+        final CardView view = new CardView( model_.getCardModel( card ), backDesignUI, faceDesignUI );
+        final CardView oldView = cardViews_.put( card, view );
+        assert oldView == null;
+        view.initialize( tableView_ ); // TODO: Change to accept CardPileView?
     }
 
     /**

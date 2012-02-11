@@ -915,15 +915,13 @@ final class TableView
     {
         assert cardPile != null;
 
-        if( !cardPileViews_.containsKey( cardPile ) )
-        {
-            final ICardPileBaseDesignUIRegistry cardPileBaseDesignUIRegistry = Activator.getDefault().getCardPileBaseDesignUIRegistry();
-            assert cardPileBaseDesignUIRegistry != null;
-            final ICardPileBaseDesignUI cardPileBaseDesignUI = cardPileBaseDesignUIRegistry.getCardPileBaseDesignUI( cardPile.getBaseDesign().getId() );
-            final CardPileView view = new CardPileView( model_.getCardPileModel( cardPile ), cardPileBaseDesignUI );
-            cardPileViews_.put( cardPile, view );
-            view.initialize( this );
-        }
+        final ICardPileBaseDesignUIRegistry cardPileBaseDesignUIRegistry = Activator.getDefault().getCardPileBaseDesignUIRegistry();
+        assert cardPileBaseDesignUIRegistry != null;
+        final ICardPileBaseDesignUI cardPileBaseDesignUI = cardPileBaseDesignUIRegistry.getCardPileBaseDesignUI( cardPile.getBaseDesign().getId() );
+        final CardPileView view = new CardPileView( model_.getCardPileModel( cardPile ), cardPileBaseDesignUI );
+        final CardPileView oldView = cardPileViews_.put( cardPile, view );
+        assert oldView == null;
+        view.initialize( this );
     }
 
     /**
