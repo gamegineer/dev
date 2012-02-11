@@ -23,6 +23,7 @@ package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -220,7 +221,7 @@ final class CardPileView
         final CardView view = new CardView( model_.getCardModel( card ), backDesignUI, faceDesignUI );
         final CardView oldView = cardViews_.put( card, view );
         assert oldView == null;
-        view.initialize( tableView_ ); // TODO: Change to accept CardPileView?
+        view.initialize( this );
     }
 
     /**
@@ -311,13 +312,18 @@ final class CardPileView
      * This method must only be called after the view is initialized.
      * </p>
      * 
+     * @param component
+     *        The component in which to paint; must not be {@code null}.
      * @param g
      *        The graphics context in which to paint; must not be {@code null}.
      */
     void paint(
         /* @NonNull */
+        final Component component,
+        /* @NonNull */
         final Graphics g )
     {
+        assert component != null;
         assert g != null;
         assert isInitialized();
 
@@ -326,7 +332,7 @@ final class CardPileView
         final List<ICard> cards = model_.getCardPile().getCards();
         if( cards.isEmpty() )
         {
-            baseDesignUI_.getIcon().paintIcon( tableView_, g, viewBounds.x + HORIZONTAL_PADDING, viewBounds.y + VERTICAL_PADDING );
+            baseDesignUI_.getIcon().paintIcon( component, g, viewBounds.x + HORIZONTAL_PADDING, viewBounds.y + VERTICAL_PADDING );
         }
         else
         {
@@ -335,7 +341,7 @@ final class CardPileView
                 final CardView cardView = cardViews_.get( card );
                 if( cardView != null )
                 {
-                    cardView.paint( g );
+                    cardView.paint( component, g );
                 }
             }
         }
@@ -347,6 +353,21 @@ final class CardPileView
             g.drawRect( viewBounds.x, viewBounds.y, viewBounds.width - 1, viewBounds.height - 1 );
             g.setColor( oldColor );
         }
+    }
+
+    /**
+     * Repaints the specified region of the card pile.
+     * 
+     * @param region
+     *        The region of the card pile to repaint in table coordinates.
+     */
+    void repaintCardPile(
+        /* @NonNull */
+        final Rectangle region )
+    {
+        assert region != null;
+
+        tableView_.repaintTable( region );
     }
 
     /**

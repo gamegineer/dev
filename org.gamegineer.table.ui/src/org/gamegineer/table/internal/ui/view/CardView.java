@@ -22,6 +22,7 @@
 package org.gamegineer.table.internal.ui.view;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import javax.swing.SwingUtilities;
@@ -53,14 +54,14 @@ final class CardView
     /** The card model listener for this view. */
     private ICardModelListener cardModelListener_;
 
+    /** The card pile view that owns this view. */
+    private CardPileView cardPileView_;
+
     /** The card surface design user interface for the card face. */
     private final ICardSurfaceDesignUI faceDesignUI_;
 
     /** The model associated with this view. */
     private final CardModel model_;
-
-    /** The table view that owns this view. */
-    private TableView tableView_;
 
 
     // ======================================================================
@@ -94,9 +95,9 @@ final class CardView
         backDesignUI_ = backDesignUI;
         cardListener_ = null;
         cardModelListener_ = null;
+        cardPileView_ = null;
         faceDesignUI_ = faceDesignUI;
         model_ = model;
-        tableView_ = null;
     }
 
 
@@ -111,7 +112,7 @@ final class CardView
     {
         if( isInitialized() )
         {
-            tableView_.repaintTable( getBounds() );
+            cardPileView_.repaintCardPile( getBounds() );
         }
     }
 
@@ -122,7 +123,7 @@ final class CardView
     {
         if( isInitialized() )
         {
-            tableView_.repaintTable( getBounds() );
+            cardPileView_.repaintCardPile( getBounds() );
         }
     }
 
@@ -156,23 +157,23 @@ final class CardView
      * This method must only be called when the view is uninitialized.
      * </p>
      * 
-     * @param tableView
-     *        The table view that owns this view; must not be {@code null}.
+     * @param cardPileView
+     *        The card pile view that owns this view; must not be {@code null}.
      */
     void initialize(
         /* @NonNull */
-        final TableView tableView )
+        final CardPileView cardPileView )
     {
-        assert tableView != null;
+        assert cardPileView != null;
         assert !isInitialized();
 
-        tableView_ = tableView;
+        cardPileView_ = cardPileView;
         cardModelListener_ = new CardModelListener();
         model_.addCardModelListener( cardModelListener_ );
         cardListener_ = new CardListener();
         model_.getCard().addCardListener( cardListener_ );
 
-        tableView_.repaintTable( getBounds() );
+        cardPileView_.repaintCardPile( getBounds() );
     }
 
     /**
@@ -183,7 +184,7 @@ final class CardView
      */
     private boolean isInitialized()
     {
-        return tableView_ != null;
+        return cardPileView_ != null;
     }
 
     /**
@@ -193,18 +194,23 @@ final class CardView
      * This method must only be called after the view is initialized.
      * </p>
      * 
+     * @param component
+     *        The component in which to paint; must not be {@code null}.
      * @param g
      *        The graphics context in which to paint; must not be {@code null}.
      */
     void paint(
         /* @NonNull */
+        final Component component,
+        /* @NonNull */
         final Graphics g )
     {
+        assert component != null;
         assert g != null;
         assert isInitialized();
 
         final Rectangle viewBounds = getBounds();
-        getActiveCardSurfaceDesignUI().getIcon().paintIcon( tableView_, g, viewBounds.x, viewBounds.y );
+        getActiveCardSurfaceDesignUI().getIcon().paintIcon( component, g, viewBounds.x, viewBounds.y );
     }
 
     /**
@@ -218,13 +224,13 @@ final class CardView
     {
         assert isInitialized();
 
-        tableView_.repaintTable( getBounds() );
+        cardPileView_.repaintCardPile( getBounds() );
 
         model_.getCard().removeCardListener( cardListener_ );
         cardListener_ = null;
         model_.removeCardModelListener( cardModelListener_ );
         cardModelListener_ = null;
-        tableView_ = null;
+        cardPileView_ = null;
     }
 
 

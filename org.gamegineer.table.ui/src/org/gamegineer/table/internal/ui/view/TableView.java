@@ -1148,7 +1148,7 @@ final class TableView
             {
                 if( clipBounds.intersects( view.getBounds() ) )
                 {
-                    view.paint( g );
+                    view.paint( this, g );
                 }
             }
         }
