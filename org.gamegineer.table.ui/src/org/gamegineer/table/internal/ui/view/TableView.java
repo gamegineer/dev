@@ -1,6 +1,6 @@
 /*
  * TableView.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,6 +41,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -832,8 +833,7 @@ final class TableView
     {
         assert cardPile != null;
 
-        final CardPileView view = createCardPileView( cardPile );
-        repaintTable( view.getDirtyBounds() );
+        createCardPileView( cardPile );
     }
 
     /**
@@ -848,12 +848,7 @@ final class TableView
     {
         assert cardPile != null;
 
-        final CardPileView view = cardPileViews_.remove( cardPile );
-        if( view != null )
-        {
-            repaintTable( view.getDirtyBounds() );
-            view.uninitialize();
-        }
+        deleteCardPileView( cardPile );
     }
 
     /**
@@ -908,27 +903,27 @@ final class TableView
     }
 
     /**
-     * Creates a card pile view for the specified card pile.
+     * Creates a card pile view for the specified card pile and adds it to the
+     * table view.
      * 
      * @param cardPile
      *        The card pile; must not be {@code null}.
-     * 
-     * @return The card pile view; never {@code null}.
      */
-    /* @NonNull */
-    private CardPileView createCardPileView(
+    private void createCardPileView(
         /* @NonNull */
         final ICardPile cardPile )
     {
         assert cardPile != null;
 
-        final ICardPileBaseDesignUIRegistry cardPileBaseDesignUIRegistry = Activator.getDefault().getCardPileBaseDesignUIRegistry();
-        assert cardPileBaseDesignUIRegistry != null;
-        final ICardPileBaseDesignUI cardPileBaseDesignUI = cardPileBaseDesignUIRegistry.getCardPileBaseDesignUI( cardPile.getBaseDesign().getId() );
-        final CardPileView view = new CardPileView( model_.getCardPileModel( cardPile ), cardPileBaseDesignUI );
-        cardPileViews_.put( cardPile, view );
-        view.initialize( this );
-        return view;
+        if( !cardPileViews_.containsKey( cardPile ) )
+        {
+            final ICardPileBaseDesignUIRegistry cardPileBaseDesignUIRegistry = Activator.getDefault().getCardPileBaseDesignUIRegistry();
+            assert cardPileBaseDesignUIRegistry != null;
+            final ICardPileBaseDesignUI cardPileBaseDesignUI = cardPileBaseDesignUIRegistry.getCardPileBaseDesignUI( cardPile.getBaseDesign().getId() );
+            final CardPileView view = new CardPileView( model_.getCardPileModel( cardPile ), cardPileBaseDesignUI );
+            cardPileViews_.put( cardPile, view );
+            view.initialize( this );
+        }
     }
 
     /**
@@ -1015,6 +1010,26 @@ final class TableView
                 mouseInputHandler_.mouseReleased( event );
             }
         };
+    }
+
+    /**
+     * Deletes the card pile view associated with the specified card pile and
+     * removes it from the table view.
+     * 
+     * @param cardPile
+     *        The card pile; must not be {@code null}.
+     */
+    private void deleteCardPileView(
+        /* @NonNull */
+        final ICardPile cardPile )
+    {
+        assert cardPile != null;
+
+        final CardPileView view = cardPileViews_.remove( cardPile );
+        if( view != null )
+        {
+            view.uninitialize();
+        }
     }
 
     /**
@@ -1191,11 +1206,10 @@ final class TableView
     @Override
     public void removeNotify()
     {
-        for( final CardPileView view : cardPileViews_.values() )
+        for( final ICardPile cardPile : new ArrayList<ICardPile>( cardPileViews_.keySet() ) )
         {
-            view.uninitialize();
+            deleteCardPileView( cardPile );
         }
-        cardPileViews_.clear();
 
         removeMouseMotionListener( mouseInputListener_ );
         removeMouseListener( mouseInputListener_ );

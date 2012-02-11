@@ -25,6 +25,7 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,11 +137,7 @@ final class CardPileView
 
         if( isInitialized() )
         {
-            if( !cardViews_.containsKey( card ) )
-            {
-                final CardView view = createCardView( card );
-                tableView_.repaintTable( view.getBounds() );
-            }
+            createCardView( card );
         }
     }
 
@@ -151,7 +148,7 @@ final class CardPileView
     {
         if( isInitialized() )
         {
-            tableView_.repaintTable( getDirtyBounds() );
+            tableView_.repaintTable( getBounds() );
         }
     }
 
@@ -164,7 +161,7 @@ final class CardPileView
         {
             final Rectangle viewBounds = getBounds();
             dirtyBounds_.add( viewBounds );
-            tableView_.repaintTable( getDirtyBounds() );
+            tableView_.repaintTable( dirtyBounds_ );
             dirtyBounds_.setBounds( viewBounds );
         }
     }
@@ -176,7 +173,7 @@ final class CardPileView
     {
         if( isInitialized() )
         {
-            tableView_.repaintTable( getDirtyBounds() );
+            tableView_.repaintTable( getBounds() );
         }
     }
 
@@ -194,17 +191,13 @@ final class CardPileView
 
         if( isInitialized() )
         {
-            final CardView view = cardViews_.remove( card );
-            if( view != null )
-            {
-                tableView_.repaintTable( view.getBounds() );
-                view.uninitialize();
-            }
+            deleteCardView( card );
         }
     }
 
     /**
-     * Creates a card view for the specified card.
+     * Creates a card view for the specified card and adds it to the card pile
+     * view.
      * 
      * <p>
      * This method must only be called after the view is initialized.
@@ -212,25 +205,49 @@ final class CardPileView
      * 
      * @param card
      *        The card; must not be {@code null}.
-     * 
-     * @return The card view; never {@code null}.
      */
-    /* @NonNull */
-    private CardView createCardView(
+    private void createCardView(
         /* @NonNull */
         final ICard card )
     {
         assert card != null;
         assert isInitialized();
 
-        final ICardSurfaceDesignUIRegistry cardSurfaceDesignUIRegistry = Activator.getDefault().getCardSurfaceDesignUIRegistry();
-        assert cardSurfaceDesignUIRegistry != null;
-        final ICardSurfaceDesignUI backDesignUI = cardSurfaceDesignUIRegistry.getCardSurfaceDesignUI( card.getBackDesign().getId() );
-        final ICardSurfaceDesignUI faceDesignUI = cardSurfaceDesignUIRegistry.getCardSurfaceDesignUI( card.getFaceDesign().getId() );
-        final CardView view = new CardView( model_.getCardModel( card ), backDesignUI, faceDesignUI );
-        cardViews_.put( card, view );
-        view.initialize( tableView_ ); // TODO: Change to accept CardPileView?
-        return view;
+        if( !cardViews_.containsKey( card ) )
+        {
+            final ICardSurfaceDesignUIRegistry cardSurfaceDesignUIRegistry = Activator.getDefault().getCardSurfaceDesignUIRegistry();
+            assert cardSurfaceDesignUIRegistry != null;
+            final ICardSurfaceDesignUI backDesignUI = cardSurfaceDesignUIRegistry.getCardSurfaceDesignUI( card.getBackDesign().getId() );
+            final ICardSurfaceDesignUI faceDesignUI = cardSurfaceDesignUIRegistry.getCardSurfaceDesignUI( card.getFaceDesign().getId() );
+            final CardView view = new CardView( model_.getCardModel( card ), backDesignUI, faceDesignUI );
+            cardViews_.put( card, view );
+            view.initialize( tableView_ ); // TODO: Change to accept CardPileView?
+        }
+    }
+
+    /**
+     * Deletes the card view associated with the specified card and removes it
+     * from the card pile view.
+     * 
+     * <p>
+     * This method must only be called after the view is initialized.
+     * </p>
+     * 
+     * @param card
+     *        The card; must not be {@code null}.
+     */
+    private void deleteCardView(
+        /* @NonNull */
+        final ICard card )
+    {
+        assert card != null;
+        assert isInitialized();
+
+        final CardView view = cardViews_.remove( card );
+        if( view != null )
+        {
+            view.uninitialize();
+        }
     }
 
     /**
@@ -244,24 +261,6 @@ final class CardPileView
         final Rectangle bounds = model_.getCardPile().getBounds();
         bounds.grow( HORIZONTAL_PADDING, VERTICAL_PADDING );
         return bounds;
-    }
-
-    /**
-     * Gets the dirty bounds of this view in table coordinates.
-     * 
-     * <p>
-     * The dirty bounds represents the largest region this view has occupied
-     * since the last paint operation. It is at least as large as the bounds
-     * returned from {@link #getBounds()}.
-     * </p>
-     * 
-     * @return The dirty bounds of this view in table coordinates; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    Rectangle getDirtyBounds()
-    {
-        return new Rectangle( dirtyBounds_ );
     }
 
     /**
@@ -292,6 +291,8 @@ final class CardPileView
         {
             createCardView( card );
         }
+
+        tableView_.repaintTable( dirtyBounds_ );
     }
 
     /**
@@ -361,11 +362,12 @@ final class CardPileView
     {
         assert isInitialized();
 
-        for( final CardView view : cardViews_.values() )
+        tableView_.repaintTable( dirtyBounds_ );
+
+        for( final ICard card : new ArrayList<ICard>( cardViews_.keySet() ) )
         {
-            view.uninitialize();
+            deleteCardView( card );
         }
-        cardViews_.clear();
 
         model_.getCardPile().removeCardPileListener( cardPileListener_ );
         cardPileListener_ = null;

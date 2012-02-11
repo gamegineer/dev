@@ -171,6 +171,8 @@ final class CardView
         model_.addCardModelListener( cardModelListener_ );
         cardListener_ = new CardListener();
         model_.getCard().addCardListener( cardListener_ );
+
+        tableView_.repaintTable( getBounds() );
     }
 
     /**
@@ -201,8 +203,8 @@ final class CardView
         assert g != null;
         assert isInitialized();
 
-        final Rectangle cardBounds = model_.getCard().getBounds();
-        getActiveCardSurfaceDesignUI().getIcon().paintIcon( tableView_, g, cardBounds.x, cardBounds.y );
+        final Rectangle viewBounds = getBounds();
+        getActiveCardSurfaceDesignUI().getIcon().paintIcon( tableView_, g, viewBounds.x, viewBounds.y );
     }
 
     /**
@@ -215,6 +217,8 @@ final class CardView
     void uninitialize()
     {
         assert isInitialized();
+
+        tableView_.repaintTable( getBounds() );
 
         model_.getCard().removeCardListener( cardListener_ );
         cardListener_ = null;
