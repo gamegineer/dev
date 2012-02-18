@@ -27,6 +27,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
@@ -127,7 +128,7 @@ public final class TableRunner
 
         try
         {
-            openFrameAsync();
+            openFrameAsyncAndWait();
 
             stopLatch_.await();
         }
@@ -139,7 +140,7 @@ public final class TableRunner
         {
             stateRef_.set( State.STOPPED );
 
-            closeFrameAsync();
+            closeFrameAsyncAndWait();
         }
 
         return resultRef_.get();
@@ -168,12 +169,19 @@ public final class TableRunner
 
     /**
      * Asynchronously closes the running frame on the Swing event dispatch
-     * thread.
+     * thread and waits for it to complete.
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting.
+     * @throws java.lang.reflect.InvocationTargetException
+     *         If an error occurs while closing the frame.
      */
-    private void closeFrameAsync()
+    private void closeFrameAsyncAndWait()
+        throws InvocationTargetException, InterruptedException
     {
-        safeSwingInvokeLater( new Runnable()
+        SwingUtilities.invokeAndWait( new Runnable()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
@@ -223,12 +231,20 @@ public final class TableRunner
     }
 
     /**
-     * Asynchronously opens a new frame on the Swing event dispatch thread.
+     * Asynchronously opens a new frame on the Swing event dispatch thread and
+     * waits for it to complete.
+     * 
+     * @throws java.lang.InterruptedException
+     *         If this thread is interrupted while waiting.
+     * @throws java.lang.reflect.InvocationTargetException
+     *         If an error occurs while opening the frame.
      */
-    private void openFrameAsync()
+    private void openFrameAsyncAndWait()
+        throws InvocationTargetException, InterruptedException
     {
-        safeSwingInvokeLater( new Runnable()
+        SwingUtilities.invokeAndWait( new Runnable()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
@@ -268,47 +284,6 @@ public final class TableRunner
         }
 
         return null;
-    }
-
-    /**
-     * Safely invokes the specified task asynchronously on the Swing event
-     * dispatch thread.
-     * 
-     * <p>
-     * This method is required only because
-     * {@link SwingUtilities#invokeLater(Runnable)} is not well-behaved if the
-     * thread is interrupted while it is executing. When interrupted, it simply
-     * swallows the {@code InterruptedException} and does not reset the thread
-     * interrupted status. This can lead to a situation where this task does not
-     * know that it's been cancelled in the event the interruption just happens
-     * to occur while {@code invokeLater} is executing.
-     * </p>
-     * 
-     * <p>
-     * Therefore, to work around this use case, we execute {@code invokeLater}
-     * on a thread other than the task's thread so it will never see the
-     * interruption caused by the executor service in the event of task
-     * cancellation.
-     * </p>
-     * 
-     * @param runnable
-     *        The task to execute on the Swing event dispatch thread; must not
-     *        be {@code null}.
-     */
-    private static void safeSwingInvokeLater(
-        /* @NonNull */
-        final Runnable runnable )
-    {
-        assert runnable != null;
-
-        final Runnable runnableProxy = new Runnable()
-        {
-            public void run()
-            {
-                SwingUtilities.invokeLater( runnable );
-            }
-        };
-        new Thread( runnableProxy, "TableRunner-SafeSwingInvokeLater" ).start(); //$NON-NLS-1$
     }
 
     /**
