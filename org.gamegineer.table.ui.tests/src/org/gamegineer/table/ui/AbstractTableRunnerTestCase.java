@@ -1,6 +1,6 @@
 /*
  * AbstractTableRunnerTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -98,7 +98,7 @@ public abstract class AbstractTableRunnerTestCase
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @Test( expected = IllegalStateException.class, timeout = 2000 )
+    @Test( expected = IllegalStateException.class, timeout = 10000 )
     public void testCall_NotPristine()
         throws Exception
     {
@@ -116,7 +116,7 @@ public abstract class AbstractTableRunnerTestCase
                 {
                     try
                     {
-                        firstTask.get( 500, TimeUnit.MILLISECONDS );
+                        firstTask.get( 500L, TimeUnit.MILLISECONDS );
                     }
                     catch( final TimeoutException e )
                     {
@@ -125,7 +125,7 @@ public abstract class AbstractTableRunnerTestCase
 
                     try
                     {
-                        secondTask.get( 500, TimeUnit.MILLISECONDS );
+                        secondTask.get( 500L, TimeUnit.MILLISECONDS );
                     }
                     catch( final TimeoutException e )
                     {
@@ -147,7 +147,7 @@ public abstract class AbstractTableRunnerTestCase
         finally
         {
             executor.shutdownNow();
-            assertTrue( executor.awaitTermination( 1, TimeUnit.SECONDS ) );
+            assertTrue( executor.awaitTermination( 1L, TimeUnit.SECONDS ) );
         }
     }
 }
