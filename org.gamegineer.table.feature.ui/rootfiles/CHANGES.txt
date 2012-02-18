@@ -1,14 +1,13 @@
 Gamegineer
 Version 0.11.0
-XX XX XXXX
+19 February 2012
 
 Defects closed:
-	* [#58] Transport layer messages larger than 16 kB are truncated
-	* [#60] Poor performance when moving a large card pile while connected to the table network
-	* [#62] Transport layer does not correctly handle partially-received incoming messages
+	* [#63] Focus rectangle redraw problem on network clients when stacked card pile is moved
+	* [#64] Race condition in TableRunner.call() may lead to lost user data
 
 Enhancements closed:
-	None
+    * [#61] Add help system
 
 Tasks closed:
 	None
