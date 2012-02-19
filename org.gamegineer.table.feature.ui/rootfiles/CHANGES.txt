@@ -1,13 +1,13 @@
 Gamegineer
-Version 0.11.0
-19 February 2012
+Version 0.12.0
+XX XX XXXX
 
 Defects closed:
-	* [#63] Focus rectangle redraw problem on network clients when stacked card pile is moved
-	* [#64] Race condition in TableRunner.call() may lead to lost user data
+    * [#63] Focus rectangle redraw problem on network clients when stacked card pile is moved
+    * [#64] Race condition in TableRunner.call() may lead to lost user data
 
 Enhancements closed:
     * [#61] Add help system
 
 Tasks closed:
-	None
+    None
