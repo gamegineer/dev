@@ -1,4 +1,4 @@
-#Thu Feb 23 21:01:49 EST 2012
+#Fri Feb 24 21:04:56 EST 2012
 /instance/org.eclipse.team.ui/org.eclipse.team.ui.first_time=false
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.product\:https\://bugs.eclipse.org/bugs=ACTF\!AJDT\!ALF\!ATF\!Albireo\!Amalgam\!Aperi\!Apogee\!AspectJ\!BIRT\!BPEL\!Babel\!Buckminster\!CDT\!Cobol\!Community\!Corona\!Cosmos\!DD\!DLTK\!DSDP\!Dali JPA Tools\!Dash\!Data Tools\!ECF\!EMF\!EMFT\!EPF\!EPP\!EPS(EclipseLink)\!ERCP\!Equinox\!GEF\!GMF\!GMT\!Hibachi\!Higgins\!Hyades\!IMP\!JDT\!JSR220-ORM\!JWT\!Java Server Faces\!Kepler\!Linux Distros\!M2M\!M2T\!MDDi\!MDT\!MTJ\!Maynstall\!Modeling\!Mylyn\!NAB\!Nebula\!OFMP\!OHF\!OSEE\!Orbit\!PDE\!PDT\!PTP\!Phoenix\!Photran\!Platform\!RAP\!Riena\!SOA\!SOC\!Spaces\!Subversive\!Swordfish\!TMF\!TPTP ASF\!TPTP Agent Controller\!TPTP Build to Manage\!TPTP Common Logging\!TPTP GLA\!TPTP Line Coverage\!TPTP Log Analyzer\!TPTP Probe Instrumentation\!TPTP Profiling\!TPTP Release Engineering\!TPTP Resource Monitoring\!TPTP Static Analysis\!TPTP Testing\!Target Management\!Tigerstripe\!TmL\!VE\!VTP\!Web Tools\!gEclipse\!z_Archived\!
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.version\:https\://bugs.eclipse.org/bugs\:TPTP\ Static\ Analysis=4.0\!4.0.1\!4.0.1.3\!4.0.2\!4.1\!4.2\!4.2.1\!4.2.1.1\!4.2.2\!4.3\!4.3.1\!4.4\!4.4.0.1\!4.4.0.2\!4.4.0.3\!4.4.1\!4.5\!future\!unspecified\!
@@ -305,7 +305,7 @@
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.unusedParameterWhenImplementingAbstract=enabled
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.component\:https\://bugs.eclipse.org/bugs\:NAB=Core\!MWT\!
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6
-/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.invalidJavadocTagsNotVisibleRef=disabled
+/instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.invalidJavadocTagsNotVisibleRef=enabled
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.insert_new_line_after_annotation=insert
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.target\:https\://bugs.eclipse.org/bugs\:MDT=---\!1.0.3\!1.0RC3\!1.0RC4\!1.0RC5\!2.0 M2\!2.0 M3\!2.0 M4\!2.0.2\!2.0.3\!2.2 M1\!2.2 M4\!2.2 M5\!RC\!M1\!M2\!M3\!M4\!M5\!M6\!M7\!0.7.0\!0.8.0\!0.9.0\!1.0.0\!1.0.1\!1.0.2\!1.1.0\!1.1.1\!1.2.0\!2.0.0\!2.0.1\!2.0.4\!2.0.5\!2.1.0\!2.1.1\!2.2.0\!2.3.0\!2.4\!2.4 M3\!2.4 M4\!2.4 M5\!3.0.0\!
 /instance/org.eclipse.core.runtime/content-types/org.eclipse.core.runtime.xml/file-extensions=launch
@@ -398,7 +398,7 @@
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.version\:https\://bugs.eclipse.org/bugs\:RAP=1.0\!unspecified\!
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.compiler.problem.unqualifiedFieldAccess=ignore
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.component\:https\://bugs.eclipse.org/bugs\:TPTP\ GLA=Documentation\!GLA.Model\!Monitor.Execution\!Monitor.UI.GLARules\!
-/configuration/org.eclipse.ui.ide/SHOW_WORKSPACE_SELECTION_DIALOG=true
+/configuration/org.eclipse.ui.ide/SHOW_WORKSPACE_SELECTION_DIALOG=false
 /instance/org.eclipse.jdt.core/org.eclipse.jdt.core.formatter.brace_position_for_anonymous_type_declaration=next_line
 /instance/org.eclipse.mylyn.java.ui/org.eclipse.mylyn.ui.first.run.0_4_9=false
 /instance/org.eclipse.mylyn.bugzilla.ui//org.eclipse.mylyn.bugzilla.values.version\:https\://bugs.eclipse.org/bugs\:BIRT=1.0.0\!1.0.1\!2.0.0\!2.0.1\!2.1.0\!2.1.1\!2.1.2\!2.1.3\!2.2.0\!2.2.1\!2.2.2\!2.3.0\!unspecified\!
