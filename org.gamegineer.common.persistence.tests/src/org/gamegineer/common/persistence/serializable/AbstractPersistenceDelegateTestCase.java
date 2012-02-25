@@ -1,6 +1,6 @@
 /*
  * AbstractPersistenceDelegateTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -55,8 +55,8 @@ public abstract class AbstractPersistenceDelegateTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractPersistenceDelegateTestCase} class.
+     * Initializes a new instance of the
+     * {@code AbstractPersistenceDelegateTestCase} class.
      */
     protected AbstractPersistenceDelegateTestCase()
     {
@@ -86,6 +86,7 @@ public abstract class AbstractPersistenceDelegateTestCase
      * @throws java.lang.NullPointerException
      *         If {@code expected} is {@code null}.
      */
+    @SuppressWarnings( "static-method" )
     protected void assertSubjectEquals(
         /* @NonNull */
         final Object expected,
@@ -178,8 +179,8 @@ public abstract class AbstractPersistenceDelegateTestCase
     /**
      * Creates the persistence delegate under test in the fixture.
      * 
-     * @return The persistence delegate under test in the fixture; never {@code
-     *         null}.
+     * @return The persistence delegate under test in the fixture; never
+     *         {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

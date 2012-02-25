@@ -595,7 +595,9 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
          * @param message
          *        The message; must not be {@code null}.
          */
-        @SuppressWarnings( "unused" )
+        @SuppressWarnings( {
+            "static-method", "unused"
+        } )
         private void handleMessage(
             /* @NonNull */
             final IRemoteNodeController<?> remoteNodeController,

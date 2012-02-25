@@ -1,6 +1,6 @@
 /*
  * AbstractWindow.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -186,6 +186,7 @@ public abstract class AbstractWindow<T extends Window>
      *         If {@code parent} is {@code null}.
      */
     /* @NonNull */
+    @SuppressWarnings( "static-method" )
     protected Component createContent(
         /* @NonNull */
         final Container parent )
@@ -312,6 +313,7 @@ public abstract class AbstractWindow<T extends Window>
      *         associated with the shell.
      */
     /* @Nullable */
+    @SuppressWarnings( "static-method" )
     protected LayoutManager getLayout()
     {
         return new BorderLayout();

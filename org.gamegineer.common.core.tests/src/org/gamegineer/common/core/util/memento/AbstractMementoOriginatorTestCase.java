@@ -1,6 +1,6 @@
 /*
  * AbstractMementoOriginatorTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -46,8 +46,8 @@ public abstract class AbstractMementoOriginatorTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractMementoOriginatorTestCase} class.
+     * Initializes a new instance of the
+     * {@code AbstractMementoOriginatorTestCase} class.
      */
     protected AbstractMementoOriginatorTestCase()
     {
@@ -77,6 +77,7 @@ public abstract class AbstractMementoOriginatorTestCase
      * @throws java.lang.NullPointerException
      *         If {@code expected} or {@code actual} is {@code null}.
      */
+    @SuppressWarnings( "static-method" )
     protected void assertMementoOriginatorEquals(
         /* @NonNull */
         final IMementoOriginator expected,

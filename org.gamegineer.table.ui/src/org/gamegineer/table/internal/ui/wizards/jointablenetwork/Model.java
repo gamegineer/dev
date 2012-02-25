@@ -1,6 +1,6 @@
 /*
  * Model.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -96,6 +96,7 @@ final class Model
      * @return A validator for the host name field; never {@code null}.
      */
     /* @NonNull */
+    @SuppressWarnings( "static-method" )
     IValidator getHostNameValidator()
     {
         return new IValidator()
@@ -143,6 +144,7 @@ final class Model
      * @return A validator for the player name field; never {@code null}.
      */
     /* @NonNull */
+    @SuppressWarnings( "static-method" )
     IValidator getPlayerNameValidator()
     {
         return new IValidator()
@@ -178,6 +180,7 @@ final class Model
      * @return A validator for the port field; never {@code null}.
      */
     /* @NonNull */
+    @SuppressWarnings( "static-method" )
     IValidator getPortValidator()
     {
         return new IValidator()

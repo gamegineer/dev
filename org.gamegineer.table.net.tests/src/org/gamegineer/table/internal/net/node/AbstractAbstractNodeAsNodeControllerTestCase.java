@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractNodeAsNodeControllerTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -57,8 +57,8 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractAbstractNodeAsNodeControllerTestCase} class.
+     * Initializes a new instance of the
+     * {@code AbstractAbstractNodeAsNodeControllerTestCase} class.
      */
     public AbstractAbstractNodeAsNodeControllerTestCase()
     {
@@ -128,8 +128,8 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
     /**
      * Creates a transport layer that will succeed when opened.
      * 
-     * @return A transport layer that will succeed when opened; never {@code
-     *         null}.
+     * @return A transport layer that will succeed when opened; never
+     *         {@code null}.
      */
     /* @NonNull */
     private static ITransportLayer createSuccessfulTransportLayer()
@@ -177,6 +177,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * @throws java.lang.Exception
      *         If an error occurs.
      */
+    @SuppressWarnings( "static-method" )
     @Test( expected = TableNetworkException.class )
     public void testConnect_TransportLayerOpenFailure_DoesNotInvokeConnected()
         throws Exception
@@ -202,6 +203,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * @throws java.lang.Exception
      *         If an error occurs.
      */
+    @SuppressWarnings( "static-method" )
     @Test( expected = TableNetworkException.class )
     public void testConnect_TransportLayerOpenFailure_InvokesConnecting()
         throws Exception
@@ -227,6 +229,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * @throws java.lang.Exception
      *         If an error occurs.
      */
+    @SuppressWarnings( "static-method" )
     @Test( expected = TableNetworkException.class )
     public void testConnect_TransportLayerOpenFailure_InvokesDispose()
         throws Exception
@@ -252,6 +255,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * @throws java.lang.Exception
      *         If an error occurs.
      */
+    @SuppressWarnings( "static-method" )
     @Test
     public void testConnect_TransportLayerOpenSuccess_InvokesConnected()
         throws Exception
@@ -272,6 +276,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * @throws java.lang.Exception
      *         If an error occurs.
      */
+    @SuppressWarnings( "static-method" )
     @Test
     public void testConnect_TransportLayerOpenSuccess_InvokesConnecting()
         throws Exception
@@ -316,6 +321,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * @throws java.lang.Exception
      *         If an error occurs.
      */
+    @SuppressWarnings( "static-method" )
     @Test
     public void testDisconnect_TransportLayerOpen_InvokesDisconnected()
         throws Exception
@@ -337,6 +343,7 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * @throws java.lang.Exception
      *         If an error occurs.
      */
+    @SuppressWarnings( "static-method" )
     @Test
     public void testDisconnect_TransportLayerOpen_InvokesDisconnecting()
         throws Exception

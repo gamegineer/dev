@@ -1,6 +1,6 @@
 /*
  * Authenticator.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -86,6 +86,7 @@ public final class Authenticator
      *         If an error occurs.
      */
     /* @NonNull */
+    @SuppressWarnings( "static-method" )
     public byte[] createChallenge()
         throws TableNetworkException
     {
@@ -114,6 +115,7 @@ public final class Authenticator
      *         If an error occurs.
      */
     /* @NonNull */
+    @SuppressWarnings( "static-method" )
     public byte[] createResponse(
         /* @NonNull */
         final byte[] challenge,
@@ -151,6 +153,7 @@ public final class Authenticator
      *         If an error occurs.
      */
     /* @NonNull */
+    @SuppressWarnings( "static-method" )
     public byte[] createSalt()
         throws TableNetworkException
     {

@@ -1,6 +1,6 @@
 /*
  * CardPilePopupMenu.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -66,7 +66,7 @@ final class CardPilePopupMenu
      * @return The add card menu; never {@code null}.
      */
     /* @NonNull */
-    private JMenu createAddCardMenu()
+    private static JMenu createAddCardMenu()
     {
         final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addCard_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addCard_mnemonic ).getKeyCode() );
@@ -84,7 +84,7 @@ final class CardPilePopupMenu
      * @return The add Clubs card menu; never {@code null}.
      */
     /* @NonNull */
-    private JMenu createAddClubsCardMenu()
+    private static JMenu createAddClubsCardMenu()
     {
         final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addClubsCard_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addClubsCard_mnemonic ).getKeyCode() );
@@ -110,7 +110,7 @@ final class CardPilePopupMenu
      * @return The add deck menu; never {@code null}.
      */
     /* @NonNull */
-    private JMenu createAddDeckMenu()
+    private static JMenu createAddDeckMenu()
     {
         final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addDeck_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addDeck_mnemonic ).getKeyCode() );
@@ -125,7 +125,7 @@ final class CardPilePopupMenu
      * @return The add Diamonds card menu; never {@code null}.
      */
     /* @NonNull */
-    private JMenu createAddDiamondsCardMenu()
+    private static JMenu createAddDiamondsCardMenu()
     {
         final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addDiamondsCard_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addDiamondsCard_mnemonic ).getKeyCode() );
@@ -151,7 +151,7 @@ final class CardPilePopupMenu
      * @return The add Hearts card menu; never {@code null}.
      */
     /* @NonNull */
-    private JMenu createAddHeartsCardMenu()
+    private static JMenu createAddHeartsCardMenu()
     {
         final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addHeartsCard_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addHeartsCard_mnemonic ).getKeyCode() );
@@ -177,7 +177,7 @@ final class CardPilePopupMenu
      * @return The add Spades card menu; never {@code null}.
      */
     /* @NonNull */
-    private JMenu createAddSpadesCardMenu()
+    private static JMenu createAddSpadesCardMenu()
     {
         final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addSpadesCard_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addSpadesCard_mnemonic ).getKeyCode() );
@@ -203,7 +203,7 @@ final class CardPilePopupMenu
      * @return The add Special card menu; never {@code null}.
      */
     /* @NonNull */
-    private JMenu createAddSpecialCardMenu()
+    private static JMenu createAddSpecialCardMenu()
     {
         final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_addSpecialCard_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_addSpecialCard_mnemonic ).getKeyCode() );
@@ -217,7 +217,7 @@ final class CardPilePopupMenu
      * @return The layout menu; never {@code null}.
      */
     /* @NonNull */
-    private JMenu createLayoutMenu()
+    private static JMenu createLayoutMenu()
     {
         final JMenu menu = new JMenu( NlsMessages.CardPilePopupMenu_layout_text );
         menu.setMnemonic( KeyStroke.getKeyStroke( NlsMessages.CardPilePopupMenu_layout_mnemonic ).getKeyCode() );

@@ -1,6 +1,6 @@
 /*
  * AbstractHandlerFactory.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -100,7 +100,7 @@ public abstract class AbstractHandlerFactory<T extends Handler>
      * @param properties
      *        The logging properties; must not be {@code null}.
      */
-    private void setEncoding(
+    private static void setEncoding(
         /* @NonNull */
         final Handler handler,
         /* @NonNull */
@@ -137,7 +137,7 @@ public abstract class AbstractHandlerFactory<T extends Handler>
      * @param properties
      *        The logging properties; must not be {@code null}.
      */
-    private void setFilter(
+    private static void setFilter(
         /* @NonNull */
         final Handler handler,
         /* @NonNull */
@@ -178,7 +178,7 @@ public abstract class AbstractHandlerFactory<T extends Handler>
      * @param properties
      *        The logging properties; must not be {@code null}.
      */
-    private void setFormatter(
+    private static void setFormatter(
         /* @NonNull */
         final Handler handler,
         /* @NonNull */
@@ -219,7 +219,7 @@ public abstract class AbstractHandlerFactory<T extends Handler>
      * @param properties
      *        The logging properties; must not be {@code null}.
      */
-    private void setLevel(
+    private static void setLevel(
         /* @NonNull */
         final Handler handler,
         /* @NonNull */

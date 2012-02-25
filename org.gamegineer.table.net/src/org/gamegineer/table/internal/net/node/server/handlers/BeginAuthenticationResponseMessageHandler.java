@@ -1,6 +1,6 @@
 /*
  * BeginAuthenticationResponseMessageHandler.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -58,8 +58,8 @@ public final class BeginAuthenticationResponseMessageHandler
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * BeginAuthenticationResponseMessageHandler} class.
+     * Initializes a new instance of the
+     * {@code BeginAuthenticationResponseMessageHandler} class.
      */
     private BeginAuthenticationResponseMessageHandler()
     {
@@ -134,7 +134,9 @@ public final class BeginAuthenticationResponseMessageHandler
      * @param message
      *        The message; must not be {@code null}.
      */
-    @SuppressWarnings( "unused" )
+    @SuppressWarnings( {
+        "static-method", "unused"
+    } )
     private void handleMessage(
         /* @NonNull */
         final IRemoteClientNodeController remoteNodeController,

@@ -1,6 +1,6 @@
 /*
  * Dispatcher.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -154,8 +154,8 @@ final class Dispatcher
     /**
      * Begins an asynchronous operation to close the dispatcher.
      * 
-     * @return An asynchronous completion token for the operation; never {@code
-     *         null}.
+     * @return An asynchronous completion token for the operation; never
+     *         {@code null}.
      */
     /* @NonNull */
     Future<Void> beginClose()
@@ -483,7 +483,7 @@ final class Dispatcher
      * @param eventHandler
      *        The event handler; must not be {@code null}.
      */
-    private void resumeSelection(
+    private static void resumeSelection(
         /* @NonNull */
         final AbstractEventHandler eventHandler )
     {
