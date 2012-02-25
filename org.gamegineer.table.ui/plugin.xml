@@ -4,11 +4,11 @@
 
     <extension-point
             id="cardPileBaseDesignUIs"
-            name="Card Pile Base Design User Interfaces"
+            name="%extensionPoint.cardPileBaseDesignUIs.name"
             schema="schema/cardPileBaseDesignUIs.exsd" />
     <extension-point
             id="cardSurfaceDesignUIs"
-            name="Card Surface Design User Interfaces"
+            name="%extensionPoint.cardSurfaceDesignUIs.name"
             schema="schema/cardSurfaceDesignUIs.exsd" />
 
     <extension

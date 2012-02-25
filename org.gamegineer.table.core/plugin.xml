@@ -4,11 +4,11 @@
 
     <extension-point
             id="cardPileBaseDesigns"
-            name="Card Pile BaseDesigns"
+            name="%extensionPoint.cardPileBaseDesigns.name"
             schema="schema/cardPileBaseDesigns.exsd" />
     <extension-point
             id="cardSurfaceDesigns"
-            name="Card Surface Designs"
+            name="%extensionPoint.cardSurfaceDesigns.name"
             schema="schema/cardSurfaceDesigns.exsd" />
 
     <extension
