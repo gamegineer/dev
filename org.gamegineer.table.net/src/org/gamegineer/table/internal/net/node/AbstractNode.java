@@ -1,6 +1,6 @@
 /*
  * AbstractNode.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -124,8 +124,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      *        The table network controller; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code nodeLayer} or {@code tableNetworkController} is {@code
-     *         null}.
+     *         If {@code nodeLayer} or {@code tableNetworkController} is
+     *         {@code null}.
      */
     protected AbstractNode(
         /* @NonNull */
@@ -293,8 +293,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      * </p>
      * 
      * @param tableManager
-     *        The table manager for the local network table; must not be {@code
-     *        null}.
+     *        The table manager for the local network table; must not be
+     *        {@code null}.
      * 
      * @return A decorator for the table manager used by the local network
      *         table; never {@code null}.
@@ -419,6 +419,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
      *        {@code null} if the table network node was disconnected normally.
      */
     protected void disconnecting(
+        /* @Nullable */
+        @SuppressWarnings( "unused" )
         final TableNetworkError error )
     {
         assert isNodeLayerThread();
@@ -631,8 +633,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
     /**
      * Indicates the table network is connected.
      * 
-     * @return {@code true} if the table network is connected; otherwise {@code
-     *         false}.
+     * @return {@code true} if the table network is connected; otherwise
+     *         {@code false}.
      */
     protected final boolean isConnected()
     {
@@ -1005,8 +1007,8 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code
-         * AbstractTransportLayerContext} class.
+         * Initializes a new instance of the
+         * {@code AbstractTransportLayerContext} class.
          */
         protected AbstractTransportLayerContext()
         {

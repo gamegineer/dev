@@ -1,6 +1,6 @@
 /*
  * ITableRunner.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,6 +51,7 @@ public interface ITableRunner
      * 
      * @see java.util.concurrent.Callable#call()
      */
+    @Override
     public TableResult call()
         throws Exception;
 }

@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteNodeTest.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -74,7 +74,6 @@ public final class AbstractRemoteNodeTest
      * @return A mock local node for use in the fixture; never {@code null}.
      */
     /* @NonNull */
-    @SuppressWarnings( "unchecked" )
     private static INode<IRemoteNode> createMockLocalNode()
     {
         final IMocksControl mocksControl = EasyMock.createControl();
@@ -158,7 +157,6 @@ public final class AbstractRemoteNodeTest
      * Ensures the constructor throws an exception when passed a {@code null}
      * node layer.
      */
-    @SuppressWarnings( "unchecked" )
     @Test( expected = NullPointerException.class )
     public void testConstructor_NodeLayer_Null()
     {

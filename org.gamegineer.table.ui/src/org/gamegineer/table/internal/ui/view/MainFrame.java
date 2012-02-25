@@ -148,6 +148,7 @@ public final class MainFrame
     {
         actionMediator_.bindActionListener( Actions.getDisplayHelpAction(), new ActionListener()
         {
+            @Override
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
@@ -161,6 +162,7 @@ public final class MainFrame
         } );
         actionMediator_.bindActionListener( Actions.getExitAction(), new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -174,6 +176,7 @@ public final class MainFrame
         } );
         actionMediator_.bindActionListener( Actions.getOpenAboutDialogAction(), new ActionListener()
         {
+            @Override
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
                 final ActionEvent event )
@@ -187,6 +190,7 @@ public final class MainFrame
         } );
         actionMediator_.bindActionListener( Actions.getOpenNewTableAction(), new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -197,6 +201,7 @@ public final class MainFrame
         } );
         actionMediator_.bindActionListener( Actions.getOpenTableAction(), new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 final ActionEvent event )
@@ -206,6 +211,7 @@ public final class MainFrame
         } );
         actionMediator_.bindActionListener( Actions.getSaveTableAction(), new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -216,6 +222,7 @@ public final class MainFrame
         } );
         actionMediator_.bindActionListener( Actions.getSaveTableAsAction(), new ActionListener()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void actionPerformed(
                 @SuppressWarnings( "unused" )
@@ -227,6 +234,7 @@ public final class MainFrame
 
         final IPredicate<Action> isTableDirtyPredicate = new IPredicate<Action>()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
                 @SuppressWarnings( "unused" )
@@ -237,6 +245,7 @@ public final class MainFrame
         };
         final IPredicate<Action> isTableEditablePredicate = new IPredicate<Action>()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public boolean evaluate(
                 @SuppressWarnings( "unused" )

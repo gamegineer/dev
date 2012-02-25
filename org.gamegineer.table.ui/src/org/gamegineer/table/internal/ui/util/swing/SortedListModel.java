@@ -1,6 +1,6 @@
 /*
  * SortedListModel.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -58,7 +58,7 @@ public final class SortedListModel
             final Object o1,
             final Object o2 )
         {
-            return ((Comparable)o1).compareTo( o2 );
+            return ((Comparable<Object>)o1).compareTo( o2 );
         }
     };
 
@@ -384,6 +384,7 @@ public final class SortedListModel
         /*
          * @see java.lang.Comparable#compareTo(java.lang.Object)
          */
+        @Override
         @SuppressWarnings( {
             "synthetic-access", "unchecked"
         } )
@@ -392,7 +393,7 @@ public final class SortedListModel
         {
             final Object element = unsortedListModel_.getElementAt( index_ );
             final Object otherElement = unsortedListModel_.getElementAt( other.getIndex() );
-            return ((Comparator)comparator_).compare( element, otherElement );
+            return ((Comparator<Object>)comparator_).compare( element, otherElement );
         }
 
         /**

@@ -179,8 +179,8 @@ final class CardView
     /**
      * Indicates this view has been initialized.
      * 
-     * @return {@code true} if this view has been initialized; otherwise {@code
-     *         false}.
+     * @return {@code true} if this view has been initialized; otherwise
+     *         {@code false}.
      */
     private boolean isInitialized()
     {
@@ -273,6 +273,7 @@ final class CardView
 
             SwingUtilities.invokeLater( new Runnable()
             {
+                @Override
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
@@ -292,6 +293,7 @@ final class CardView
 
             SwingUtilities.invokeLater( new Runnable()
             {
+                @Override
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {

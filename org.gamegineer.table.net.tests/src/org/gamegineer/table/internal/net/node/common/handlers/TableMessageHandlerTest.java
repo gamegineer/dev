@@ -1,6 +1,6 @@
 /*
  * TableMessageHandlerTest.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -88,7 +88,7 @@ public final class TableMessageHandlerTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings( "rawtypes" )
     @Test
     public void testHandleMessage_TableMessage()
         throws Exception

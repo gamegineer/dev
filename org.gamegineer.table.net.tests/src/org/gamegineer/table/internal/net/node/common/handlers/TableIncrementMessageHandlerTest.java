@@ -1,6 +1,6 @@
 /*
  * TableIncrementMessageHandlerTest.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,8 +56,8 @@ public final class TableIncrementMessageHandlerTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * TableIncrementMessageHandlerTest} class.
+     * Initializes a new instance of the
+     * {@code TableIncrementMessageHandlerTest} class.
      */
     public TableIncrementMessageHandlerTest()
     {
@@ -90,7 +90,7 @@ public final class TableIncrementMessageHandlerTest
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings( "rawtypes" )
     @Test
     public void testHandleMessage_TableIncrementMessage()
         throws Exception

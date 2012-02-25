@@ -1,6 +1,6 @@
 /*
  * AbstractLoggingComponentFactory.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -99,9 +99,9 @@ public abstract class AbstractLoggingComponentFactory<T>
      * @param component
      *        The logging component; must not be {@code null}.
      * @param instanceName
-     *        The instance name of the logging component; must not be {@code
-     *        null}. This name is used to discover the component's properties in
-     *        the specified logging properties.
+     *        The instance name of the logging component; must not be
+     *        {@code null}. This name is used to discover the component's
+     *        properties in the specified logging properties.
      * @param properties
      *        The logging properties; may be {@code null}.
      * 
@@ -194,8 +194,8 @@ public abstract class AbstractLoggingComponentFactory<T>
      * @param type
      *        The type of the logging component; must not be {@code null}.
      * @param name
-     *        The fully-qualified name of the component; must not be {@code
-     *        null}.
+     *        The fully-qualified name of the component; must not be
+     *        {@code null}.
      * @param properties
      *        The logging properties; may be {@code null}.
      * 
@@ -260,8 +260,8 @@ public abstract class AbstractLoggingComponentFactory<T>
      * @param typeName
      *        The component type name; must not be {@code null}.
      * @param type
-     *        The component type or one of its super types; must not be {@code
-     *        null}.
+     *        The component type or one of its super types; must not be
+     *        {@code null}.
      * 
      * @return A reference to the most appropriate component factory for the
      *         specified component type information; never {@code null}.
@@ -389,7 +389,7 @@ public abstract class AbstractLoggingComponentFactory<T>
      */
     @Override
     public final ComponentInstance newInstance(
-        @SuppressWarnings( "unchecked" )
+        @SuppressWarnings( "rawtypes" )
         final Dictionary componentProperties )
     {
         if( componentProperties == null )

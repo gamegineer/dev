@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteNode.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -208,6 +208,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      */
     protected void closed(
         /* @Nullable */
+        @SuppressWarnings( "unused" )
         final TableNetworkError error )
     {
         assert isNodeLayerThread();
@@ -556,7 +557,7 @@ public abstract class AbstractRemoteNode<LocalNodeType extends INode<RemoteNodeT
      * A message handler for the {@link ErrorMessage} class.
      */
     @Immutable
-    @SuppressWarnings( "unchecked" )
+    @SuppressWarnings( "rawtypes" )
     private static final class ErrorMessageHandler
         extends AbstractMessageHandler<IRemoteNodeController>
     {

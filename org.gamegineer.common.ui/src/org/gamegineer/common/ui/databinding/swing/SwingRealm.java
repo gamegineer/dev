@@ -1,6 +1,6 @@
 /*
  * SwingRealm.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -61,6 +61,7 @@ public final class SwingRealm
     {
         final Runnable safeRunnable = new Runnable()
         {
+            @Override
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
@@ -101,8 +102,8 @@ public final class SwingRealm
     /**
      * Gets the Swing realm for the system event dispatch thread.
      * 
-     * @return The Swing realm for the system event dispatch thread or {@code
-     *         null} if no system event dispatch thread is running.
+     * @return The Swing realm for the system event dispatch thread or
+     *         {@code null} if no system event dispatch thread is running.
      */
     /* @Nullable */
     public static SwingRealm getSystemRealm()

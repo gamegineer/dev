@@ -297,8 +297,8 @@ final class CardPileView
     /**
      * Indicates this view has been initialized.
      * 
-     * @return {@code true} if this view has been initialized; otherwise {@code
-     *         false}.
+     * @return {@code true} if this view has been initialized; otherwise
+     *         {@code false}.
      */
     private boolean isInitialized()
     {
@@ -435,6 +435,7 @@ final class CardPileView
 
             SwingUtilities.invokeLater( new Runnable()
             {
+                @Override
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
@@ -454,6 +455,7 @@ final class CardPileView
 
             SwingUtilities.invokeLater( new Runnable()
             {
+                @Override
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
@@ -473,6 +475,7 @@ final class CardPileView
 
             SwingUtilities.invokeLater( new Runnable()
             {
+                @Override
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
@@ -492,6 +495,7 @@ final class CardPileView
 
             SwingUtilities.invokeLater( new Runnable()
             {
+                @Override
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
@@ -537,6 +541,7 @@ final class CardPileView
 
             SwingUtilities.invokeLater( new Runnable()
             {
+                @Override
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
