@@ -17,6 +17,6 @@ Import-Package: net.jcip.annotations;version="1.0.0",
  org.gamegineer.common.core.util.memento;version="[0.12.0,0.13.0)",
  org.gamegineer.common.persistence.serializable;version="[0.12.0,0.13.0)",
  org.gamegineer.table.core;version="[0.12.0,0.13.0)",
- org.osgi.framework;version="1.5.0",
- org.osgi.util.tracker;version="1.4.0"
+ org.osgi.framework;version="1.6.0",
+ org.osgi.util.tracker;version="1.5.0"
 Service-Component: OSGI-INF/*PersistenceDelegates.xml
