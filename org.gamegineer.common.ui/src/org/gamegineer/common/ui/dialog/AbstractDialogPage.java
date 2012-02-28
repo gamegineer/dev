@@ -192,7 +192,6 @@ public abstract class AbstractDialogPage
      *         If {@code parent} is {@code null}.
      */
     /* @NonNull */
-    @SuppressWarnings( "static-method" )
     protected Component createContent(
         /* @NonNull */
         final Container parent )

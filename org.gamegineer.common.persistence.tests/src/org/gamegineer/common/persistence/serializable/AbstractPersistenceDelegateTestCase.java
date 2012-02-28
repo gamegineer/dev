@@ -86,7 +86,6 @@ public abstract class AbstractPersistenceDelegateTestCase
      * @throws java.lang.NullPointerException
      *         If {@code expected} is {@code null}.
      */
-    @SuppressWarnings( "static-method" )
     protected void assertSubjectEquals(
         /* @NonNull */
         final Object expected,

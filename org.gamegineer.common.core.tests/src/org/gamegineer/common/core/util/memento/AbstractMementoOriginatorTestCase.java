@@ -77,7 +77,6 @@ public abstract class AbstractMementoOriginatorTestCase
      * @throws java.lang.NullPointerException
      *         If {@code expected} or {@code actual} is {@code null}.
      */
-    @SuppressWarnings( "static-method" )
     protected void assertMementoOriginatorEquals(
         /* @NonNull */
         final IMementoOriginator expected,

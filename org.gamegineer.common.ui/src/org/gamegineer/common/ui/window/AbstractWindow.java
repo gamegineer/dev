@@ -186,7 +186,6 @@ public abstract class AbstractWindow<T extends Window>
      *         If {@code parent} is {@code null}.
      */
     /* @NonNull */
-    @SuppressWarnings( "static-method" )
     protected Component createContent(
         /* @NonNull */
         final Container parent )
@@ -313,7 +312,6 @@ public abstract class AbstractWindow<T extends Window>
      *         associated with the shell.
      */
     /* @Nullable */
-    @SuppressWarnings( "static-method" )
     protected LayoutManager getLayout()
     {
         return new BorderLayout();
