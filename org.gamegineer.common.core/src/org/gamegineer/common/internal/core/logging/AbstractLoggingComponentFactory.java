@@ -23,6 +23,7 @@ package org.gamegineer.common.internal.core.logging;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
@@ -223,8 +224,8 @@ public abstract class AbstractLoggingComponentFactory<T>
         final String typeName = name.substring( 0, index );
         final String instanceName = name.substring( index + 1 );
 
-        final ServiceReference serviceReference = findComponentFactory( typeName, type );
-        final ComponentFactory factory = (ComponentFactory)Activator.getDefault().getBundleContext().getService( serviceReference );
+        final ServiceReference<ComponentFactory> serviceReference = findComponentFactory( typeName, type );
+        final ComponentFactory factory = Activator.getDefault().getBundleContext().getService( serviceReference );
         if( factory == null )
         {
             throw new ComponentException( NonNlsMessages.AbstractLoggingComponentFactory_createNamedLoggingComponent_noComponentFactoryAvailable );
@@ -267,7 +268,7 @@ public abstract class AbstractLoggingComponentFactory<T>
      *         specified component type information; never {@code null}.
      */
     /* @NonNull */
-    private static ServiceReference findComponentFactory(
+    private static ServiceReference<ComponentFactory> findComponentFactory(
         /* @NonNull */
         final String typeName,
         /* @NonNull */
@@ -276,7 +277,7 @@ public abstract class AbstractLoggingComponentFactory<T>
         assert typeName != null;
         assert type != null;
 
-        ServiceReference serviceReference = getComponentFactory( typeName );
+        ServiceReference<ComponentFactory> serviceReference = getComponentFactory( typeName );
         if( serviceReference != null )
         {
             return serviceReference;
@@ -305,7 +306,7 @@ public abstract class AbstractLoggingComponentFactory<T>
      *         If an error occurs.
      */
     /* @Nullable */
-    private static ServiceReference getComponentFactory(
+    private static ServiceReference<ComponentFactory> getComponentFactory(
         /* @NonNull */
         final String typeName )
     {
@@ -314,13 +315,13 @@ public abstract class AbstractLoggingComponentFactory<T>
         try
         {
             final String filter = String.format( "(%1$s=%2$s)", ComponentConstants.COMPONENT_FACTORY, typeName ); //$NON-NLS-1$
-            final ServiceReference[] serviceReferences = Activator.getDefault().getBundleContext().getServiceReferences( ComponentFactory.class.getName(), filter );
-            if( (serviceReferences == null) || (serviceReferences.length == 0) )
+            final Collection<ServiceReference<ComponentFactory>> serviceReferences = Activator.getDefault().getBundleContext().getServiceReferences( ComponentFactory.class, filter );
+            if( serviceReferences.isEmpty() )
             {
                 return null;
             }
 
-            return serviceReferences[ 0 ];
+            return serviceReferences.iterator().next();
         }
         catch( final InvalidSyntaxException e )
         {

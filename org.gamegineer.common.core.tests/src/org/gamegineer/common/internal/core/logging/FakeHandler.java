@@ -1,6 +1,6 @@
 /*
  * FakeHandler.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -93,7 +93,7 @@ public final class FakeHandler
      *         factory; never {@code null}.
      */
     /* @NonNull */
-    public static ServiceRegistration registerComponentFactory()
+    public static ServiceRegistration<ComponentFactory> registerComponentFactory()
     {
         final ComponentFactory componentFactory = new AbstractHandlerFactory<FakeHandler>( FakeHandler.class )
         {
@@ -101,7 +101,7 @@ public final class FakeHandler
         };
         final Dictionary<String, Object> properties = new Hashtable<String, Object>();
         properties.put( ComponentConstants.COMPONENT_FACTORY, FakeHandler.class.getName() );
-        return Activator.getDefault().getBundleContext().registerService( ComponentFactory.class.getName(), componentFactory, properties );
+        return Activator.getDefault().getBundleContext().registerService( ComponentFactory.class, componentFactory, properties );
     }
 
     /**
@@ -112,7 +112,7 @@ public final class FakeHandler
      *         factory; never {@code null}.
      */
     /* @NonNull */
-    public static ServiceRegistration registerFailingComponentFactory()
+    public static ServiceRegistration<ComponentFactory> registerFailingComponentFactory()
     {
         final ComponentFactory componentFactory = new AbstractHandlerFactory<FakeHandler>( FakeHandler.class )
         {
@@ -126,6 +126,6 @@ public final class FakeHandler
         };
         final Dictionary<String, Object> properties = new Hashtable<String, Object>();
         properties.put( ComponentConstants.COMPONENT_FACTORY, FakeHandler.class.getName() );
-        return Activator.getDefault().getBundleContext().registerService( ComponentFactory.class.getName(), componentFactory, properties );
+        return Activator.getDefault().getBundleContext().registerService( ComponentFactory.class, componentFactory, properties );
     }
 }

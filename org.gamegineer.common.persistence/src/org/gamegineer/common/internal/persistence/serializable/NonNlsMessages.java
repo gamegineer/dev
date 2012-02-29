@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ package org.gamegineer.common.internal.persistence.serializable;
 
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
+import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.osgi.framework.ServiceReference;
 
 /**
@@ -106,7 +107,7 @@ final class NonNlsMessages
     /* @NonNull */
     static String PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators(
         /* @NonNull */
-        final ServiceReference persistenceDelegateReference )
+        final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
     {
         return bind( PersistenceDelegateRegistry_getDelegatorTypeNames_noDelegators, persistenceDelegateReference );
     }
@@ -150,7 +151,7 @@ final class NonNlsMessages
         /* @NonNull */
         final String typeName,
         /* @NonNull */
-        final ServiceReference persistenceDelegateReference )
+        final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
     {
         return bind( PersistenceDelegateRegistry_registerPersistenceDelegateFromServiceReference_registrationFailed, persistenceDelegateReference, typeName );
     }

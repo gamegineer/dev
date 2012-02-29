@@ -1,6 +1,6 @@
 /*
  * PersistenceDelegateProxy.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,7 +56,7 @@ final class PersistenceDelegateProxy
     private IPersistenceDelegate persistenceDelegate_;
 
     /** The service registry reference to the persistence delegate. */
-    private final ServiceReference persistenceDelegateReference_;
+    private final ServiceReference<IPersistenceDelegate> persistenceDelegateReference_;
 
 
     // ======================================================================
@@ -72,7 +72,7 @@ final class PersistenceDelegateProxy
      */
     PersistenceDelegateProxy(
         /* @NonNull */
-        final ServiceReference persistenceDelegateReference )
+        final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
     {
         assert persistenceDelegateReference != null;
 
@@ -135,7 +135,7 @@ final class PersistenceDelegateProxy
 
             if( persistenceDelegate_ == null )
             {
-                persistenceDelegate_ = (IPersistenceDelegate)Activator.getDefault().getBundleContext().getService( persistenceDelegateReference_ );
+                persistenceDelegate_ = Activator.getDefault().getBundleContext().getService( persistenceDelegateReference_ );
             }
 
             assertStateLegal( persistenceDelegate_ != null, NonNlsMessages.PersistenceDelegateProxy_getActualPersistenceDelegate_actualObjectNotAvailable );

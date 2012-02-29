@@ -47,7 +47,7 @@ final class HelpSetProviderProxy
     private IHelpSetProvider helpSetProvider_;
 
     /** The service registry reference to the help set provider. */
-    private final ServiceReference helpSetProviderReference_;
+    private final ServiceReference<IHelpSetProvider> helpSetProviderReference_;
 
     /** Indicates this instance has been disposed. */
     @GuardedBy( "lock_" )
@@ -70,7 +70,7 @@ final class HelpSetProviderProxy
      */
     HelpSetProviderProxy(
         /* @NonNull */
-        final ServiceReference helpSetProviderReference )
+        final ServiceReference<IHelpSetProvider> helpSetProviderReference )
     {
         assert helpSetProviderReference != null;
 
@@ -121,7 +121,7 @@ final class HelpSetProviderProxy
 
             if( helpSetProvider_ == null )
             {
-                helpSetProvider_ = (IHelpSetProvider)Activator.getDefault().getBundleContext().getService( helpSetProviderReference_ );
+                helpSetProvider_ = Activator.getDefault().getBundleContext().getService( helpSetProviderReference_ );
             }
 
             assertStateLegal( helpSetProvider_ != null, NonNlsMessages.HelpSetProviderProxy_getActualHelpSetProvider_actualObjectNotAvailable );

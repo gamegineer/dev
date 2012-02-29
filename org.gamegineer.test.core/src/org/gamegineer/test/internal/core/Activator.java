@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -52,7 +52,7 @@ public final class Activator
 
     /** The package administration service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker packageAdminTracker_;
+    private ServiceTracker<PackageAdmin, PackageAdmin> packageAdminTracker_;
 
 
     // ======================================================================
@@ -117,11 +117,11 @@ public final class Activator
 
             if( packageAdminTracker_ == null )
             {
-                packageAdminTracker_ = new ServiceTracker( bundleContext_, PackageAdmin.class.getName(), null );
+                packageAdminTracker_ = new ServiceTracker<PackageAdmin, PackageAdmin>( bundleContext_, PackageAdmin.class, null );
                 packageAdminTracker_.open();
             }
 
-            return (PackageAdmin)packageAdminTracker_.getService();
+            return packageAdminTracker_.getService();
         }
     }
 

@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -50,7 +50,7 @@ public final class Activator
 
     /** The executor service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker executorServiceTracker_;
+    private ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
 
     /** The instance lock. */
     private final Object lock_;
@@ -118,11 +118,11 @@ public final class Activator
 
             if( executorServiceTracker_ == null )
             {
-                executorServiceTracker_ = new ServiceTracker( bundleContext_, ExecutorService.class.getName(), null );
+                executorServiceTracker_ = new ServiceTracker<ExecutorService, ExecutorService>( bundleContext_, ExecutorService.class, null );
                 executorServiceTracker_.open();
             }
 
-            executorService = (ExecutorService)executorServiceTracker_.getService();
+            executorService = executorServiceTracker_.getService();
         }
 
         if( executorService == null )

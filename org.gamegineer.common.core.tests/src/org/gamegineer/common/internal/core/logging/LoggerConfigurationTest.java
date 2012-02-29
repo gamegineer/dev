@@ -1,6 +1,6 @@
 /*
  * LoggerConfigurationTest.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,6 +35,7 @@ import org.gamegineer.common.core.logging.LoggingServiceConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.ComponentFactory;
 
 /**
  * A fixture for testing the
@@ -153,7 +154,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetFilter_Configured()
     {
-        final ServiceRegistration serviceRegistration = FakeFilter.registerComponentFactory();
+        final ServiceRegistration<ComponentFactory> serviceRegistration = FakeFilter.registerComponentFactory();
         try
         {
             final FakeFilter filter = (FakeFilter)config_.getFilter( null );
@@ -221,7 +222,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetHandlers_Configured()
     {
-        final ServiceRegistration serviceRegistration = FakeHandler.registerComponentFactory();
+        final ServiceRegistration<ComponentFactory> serviceRegistration = FakeHandler.registerComponentFactory();
         try
         {
             final List<Handler> handlers = config_.getHandlers();
@@ -244,7 +245,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetHandlers_Configured_HandlerCreationFailed()
     {
-        final ServiceRegistration serviceRegistration = FakeHandler.registerFailingComponentFactory();
+        final ServiceRegistration<ComponentFactory> serviceRegistration = FakeHandler.registerFailingComponentFactory();
         try
         {
             final List<Handler> handlers = config_.getHandlers();
@@ -265,7 +266,7 @@ public final class LoggerConfigurationTest
     @Test
     public void testGetHandlers_Configured_IllegalHandler()
     {
-        final ServiceRegistration serviceRegistration = FakeHandler.registerComponentFactory();
+        final ServiceRegistration<ComponentFactory> serviceRegistration = FakeHandler.registerComponentFactory();
         try
         {
             final LoggerConfiguration config = new LoggerConfiguration( "logger.illegalHandler", properties_ ); //$NON-NLS-1$

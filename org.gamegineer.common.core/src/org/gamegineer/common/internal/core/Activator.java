@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,14 +51,14 @@ public final class Activator
 
     /** The debug options service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker debugOptionsTracker_;
+    private ServiceTracker<DebugOptions, DebugOptions> debugOptionsTracker_;
 
     /** The instance lock. */
     private final Object lock_;
 
     /** The logging service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker loggingServiceTracker_;
+    private ServiceTracker<ILoggingService, ILoggingService> loggingServiceTracker_;
 
 
     // ======================================================================
@@ -111,11 +111,11 @@ public final class Activator
 
             if( debugOptionsTracker_ == null )
             {
-                debugOptionsTracker_ = new ServiceTracker( bundleContext_, DebugOptions.class.getName(), null );
+                debugOptionsTracker_ = new ServiceTracker<DebugOptions, DebugOptions>( bundleContext_, DebugOptions.class, null );
                 debugOptionsTracker_.open();
             }
 
-            return (DebugOptions)debugOptionsTracker_.getService();
+            return debugOptionsTracker_.getService();
         }
     }
 
@@ -147,11 +147,11 @@ public final class Activator
 
             if( loggingServiceTracker_ == null )
             {
-                loggingServiceTracker_ = new ServiceTracker( bundleContext_, ILoggingService.class.getName(), null );
+                loggingServiceTracker_ = new ServiceTracker<ILoggingService, ILoggingService>( bundleContext_, ILoggingService.class, null );
                 loggingServiceTracker_.open();
             }
 
-            return (ILoggingService)loggingServiceTracker_.getService();
+            return loggingServiceTracker_.getService();
         }
     }
 

@@ -57,7 +57,7 @@ public final class Activator
 
     /** The application branding service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker brandingTracker_;
+    private ServiceTracker<IBranding, IBranding> brandingTracker_;
 
     /** The bundle context. */
     @GuardedBy( "lock_" )
@@ -69,38 +69,38 @@ public final class Activator
 
     /** The card pile base design registry service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker cardPileBaseDesignRegistryTracker_;
+    private ServiceTracker<ICardPileBaseDesignRegistry, ICardPileBaseDesignRegistry> cardPileBaseDesignRegistryTracker_;
 
     /** The card pile base design user interface registry service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker cardPileBaseDesignUIRegistryTracker_;
+    private ServiceTracker<ICardPileBaseDesignUIRegistry, ICardPileBaseDesignUIRegistry> cardPileBaseDesignUIRegistryTracker_;
 
     /** The card surface design registry service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker cardSurfaceDesignRegistryTracker_;
+    private ServiceTracker<ICardSurfaceDesignRegistry, ICardSurfaceDesignRegistry> cardSurfaceDesignRegistryTracker_;
 
     /** The card surface design user interface registry service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker cardSurfaceDesignUIRegistryTracker_;
+    private ServiceTracker<ICardSurfaceDesignUIRegistry, ICardSurfaceDesignUIRegistry> cardSurfaceDesignUIRegistryTracker_;
 
     /** The executor service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker executorServiceTracker_;
+    private ServiceTracker<ExecutorService, ExecutorService> executorServiceTracker_;
 
     /** The help system service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker helpSystemTracker_;
+    private ServiceTracker<IHelpSystem, IHelpSystem> helpSystemTracker_;
 
     /** The instance lock. */
     private final Object lock_;
 
     /** The package administration service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker packageAdminTracker_;
+    private ServiceTracker<PackageAdmin, PackageAdmin> packageAdminTracker_;
 
     /** The preferences service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker preferencesServiceTracker_;
+    private ServiceTracker<PreferencesService, PreferencesService> preferencesServiceTracker_;
 
 
     // ======================================================================
@@ -146,11 +146,11 @@ public final class Activator
 
             if( brandingTracker_ == null )
             {
-                brandingTracker_ = new ServiceTracker( bundleContext_, IBranding.class.getName(), null );
+                brandingTracker_ = new ServiceTracker<IBranding, IBranding>( bundleContext_, IBranding.class, null );
                 brandingTracker_.open();
             }
 
-            return (IBranding)brandingTracker_.getService();
+            return brandingTracker_.getService();
         }
     }
 
@@ -205,11 +205,11 @@ public final class Activator
 
             if( cardPileBaseDesignRegistryTracker_ == null )
             {
-                cardPileBaseDesignRegistryTracker_ = new ServiceTracker( bundleContext_, ICardPileBaseDesignRegistry.class.getName(), null );
+                cardPileBaseDesignRegistryTracker_ = new ServiceTracker<ICardPileBaseDesignRegistry, ICardPileBaseDesignRegistry>( bundleContext_, ICardPileBaseDesignRegistry.class, null );
                 cardPileBaseDesignRegistryTracker_.open();
             }
 
-            return (ICardPileBaseDesignRegistry)cardPileBaseDesignRegistryTracker_.getService();
+            return cardPileBaseDesignRegistryTracker_.getService();
         }
     }
 
@@ -229,11 +229,11 @@ public final class Activator
 
             if( cardPileBaseDesignUIRegistryTracker_ == null )
             {
-                cardPileBaseDesignUIRegistryTracker_ = new ServiceTracker( bundleContext_, ICardPileBaseDesignUIRegistry.class.getName(), null );
+                cardPileBaseDesignUIRegistryTracker_ = new ServiceTracker<ICardPileBaseDesignUIRegistry, ICardPileBaseDesignUIRegistry>( bundleContext_, ICardPileBaseDesignUIRegistry.class, null );
                 cardPileBaseDesignUIRegistryTracker_.open();
             }
 
-            return (ICardPileBaseDesignUIRegistry)cardPileBaseDesignUIRegistryTracker_.getService();
+            return cardPileBaseDesignUIRegistryTracker_.getService();
         }
     }
 
@@ -252,11 +252,11 @@ public final class Activator
 
             if( cardSurfaceDesignRegistryTracker_ == null )
             {
-                cardSurfaceDesignRegistryTracker_ = new ServiceTracker( bundleContext_, ICardSurfaceDesignRegistry.class.getName(), null );
+                cardSurfaceDesignRegistryTracker_ = new ServiceTracker<ICardSurfaceDesignRegistry, ICardSurfaceDesignRegistry>( bundleContext_, ICardSurfaceDesignRegistry.class, null );
                 cardSurfaceDesignRegistryTracker_.open();
             }
 
-            return (ICardSurfaceDesignRegistry)cardSurfaceDesignRegistryTracker_.getService();
+            return cardSurfaceDesignRegistryTracker_.getService();
         }
     }
 
@@ -276,11 +276,11 @@ public final class Activator
 
             if( cardSurfaceDesignUIRegistryTracker_ == null )
             {
-                cardSurfaceDesignUIRegistryTracker_ = new ServiceTracker( bundleContext_, ICardSurfaceDesignUIRegistry.class.getName(), null );
+                cardSurfaceDesignUIRegistryTracker_ = new ServiceTracker<ICardSurfaceDesignUIRegistry, ICardSurfaceDesignUIRegistry>( bundleContext_, ICardSurfaceDesignUIRegistry.class, null );
                 cardSurfaceDesignUIRegistryTracker_.open();
             }
 
-            return (ICardSurfaceDesignUIRegistry)cardSurfaceDesignUIRegistryTracker_.getService();
+            return cardSurfaceDesignUIRegistryTracker_.getService();
         }
     }
 
@@ -312,11 +312,11 @@ public final class Activator
 
             if( executorServiceTracker_ == null )
             {
-                executorServiceTracker_ = new ServiceTracker( bundleContext_, ExecutorService.class.getName(), null );
+                executorServiceTracker_ = new ServiceTracker<ExecutorService, ExecutorService>( bundleContext_, ExecutorService.class, null );
                 executorServiceTracker_.open();
             }
 
-            executorService = (ExecutorService)executorServiceTracker_.getService();
+            executorService = executorServiceTracker_.getService();
         }
 
         if( executorService == null )
@@ -342,11 +342,11 @@ public final class Activator
 
             if( helpSystemTracker_ == null )
             {
-                helpSystemTracker_ = new ServiceTracker( bundleContext_, IHelpSystem.class.getName(), null );
+                helpSystemTracker_ = new ServiceTracker<IHelpSystem, IHelpSystem>( bundleContext_, IHelpSystem.class, null );
                 helpSystemTracker_.open();
             }
 
-            return (IHelpSystem)helpSystemTracker_.getService();
+            return helpSystemTracker_.getService();
         }
     }
 
@@ -365,11 +365,11 @@ public final class Activator
 
             if( packageAdminTracker_ == null )
             {
-                packageAdminTracker_ = new ServiceTracker( bundleContext_, PackageAdmin.class.getName(), null );
+                packageAdminTracker_ = new ServiceTracker<PackageAdmin, PackageAdmin>( bundleContext_, PackageAdmin.class, null );
                 packageAdminTracker_.open();
             }
 
-            return (PackageAdmin)packageAdminTracker_.getService();
+            return packageAdminTracker_.getService();
         }
     }
 
@@ -388,11 +388,11 @@ public final class Activator
 
             if( preferencesServiceTracker_ == null )
             {
-                preferencesServiceTracker_ = new ServiceTracker( bundleContext_, PreferencesService.class.getName(), null );
+                preferencesServiceTracker_ = new ServiceTracker<PreferencesService, PreferencesService>( bundleContext_, PreferencesService.class, null );
                 preferencesServiceTracker_.open();
             }
 
-            return (PreferencesService)preferencesServiceTracker_.getService();
+            return preferencesServiceTracker_.getService();
         }
     }
 

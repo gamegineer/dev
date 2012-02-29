@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractHandlerFactoryTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,6 +33,7 @@ import java.util.logging.Level;
 import org.gamegineer.common.core.logging.LoggingServiceConstants;
 import org.junit.Test;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.ComponentFactory;
 
 /**
  * A fixture for testing the basic aspects of classes that extend the
@@ -60,8 +61,8 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
     // ======================================================================
 
     /**
-     * Initializes an instance of the {@code
-     * AbstractAbstractHandlerFactoryTestCase} class.
+     * Initializes an instance of the
+     * {@code AbstractAbstractHandlerFactoryTestCase} class.
      */
     protected AbstractAbstractHandlerFactoryTestCase()
     {
@@ -79,8 +80,8 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
      * @param propertyName
      *        The name of the logging property; must not be {@code null}.
      * 
-     * @return The map key for the specified logging property; never {@code
-     *         null}.
+     * @return The map key for the specified logging property; never
+     *         {@code null}.
      */
     /* @NonNull */
     private String getLoggingPropertyKey(
@@ -155,7 +156,7 @@ public abstract class AbstractAbstractHandlerFactoryTestCase<F extends AbstractH
     @Test
     public void testConfigureLoggingComponent_Filter_Legal()
     {
-        final ServiceRegistration serviceRegistration = FakeFilter.registerComponentFactory();
+        final ServiceRegistration<ComponentFactory> serviceRegistration = FakeFilter.registerComponentFactory();
         try
         {
             final String value = String.format( "%1$s.filterName", FakeFilter.class.getName() ); //$NON-NLS-1$

@@ -71,7 +71,7 @@ public final class HelpSystem
      * is the help set provider proxy.
      */
     @GuardedBy( "lock_" )
-    private final Map<ServiceReference, HelpSetProviderProxy> helpSetProviderProxies_;
+    private final Map<ServiceReference<IHelpSetProvider>, HelpSetProviderProxy> helpSetProviderProxies_;
 
     /** Indicates the help system has been shutdown. */
     @GuardedBy( "lock_" )
@@ -99,7 +99,7 @@ public final class HelpSystem
     public HelpSystem()
     {
         branding_ = null;
-        helpSetProviderProxies_ = new HashMap<ServiceReference, HelpSetProviderProxy>();
+        helpSetProviderProxies_ = new HashMap<ServiceReference<IHelpSetProvider>, HelpSetProviderProxy>();
         isShutdown_ = false;
         lock_ = new Object();
         masterHelpBroker_ = null;
@@ -267,7 +267,7 @@ public final class HelpSystem
      */
     public void registerHelpSetProvider(
         /* @NonNull */
-        final ServiceReference helpSetProviderReference )
+        final ServiceReference<IHelpSetProvider> helpSetProviderReference )
     {
         assertArgumentNotNull( helpSetProviderReference, "helpSetProviderReference" ); //$NON-NLS-1$
 
@@ -407,7 +407,7 @@ public final class HelpSystem
      */
     public void unregisterHelpSetProvider(
         /* @NonNull */
-        final ServiceReference helpSetProviderReference )
+        final ServiceReference<IHelpSetProvider> helpSetProviderReference )
     {
         assertArgumentNotNull( helpSetProviderReference, "helpSetProviderReference" ); //$NON-NLS-1$
 

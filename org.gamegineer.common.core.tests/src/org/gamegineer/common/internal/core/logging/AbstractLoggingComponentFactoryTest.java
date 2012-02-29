@@ -1,6 +1,6 @@
 /*
  * AbstractLoggingComponentFactoryTest.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,6 +32,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentException;
+import org.osgi.service.component.ComponentFactory;
 
 /**
  * A fixture for testing the
@@ -56,8 +57,8 @@ public final class AbstractLoggingComponentFactoryTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractLoggingComponentFactoryTest} class.
+     * Initializes a new instance of the
+     * {@code AbstractLoggingComponentFactoryTest} class.
      */
     public AbstractLoggingComponentFactoryTest()
     {
@@ -110,7 +111,7 @@ public final class AbstractLoggingComponentFactoryTest
     @Test
     public void testCreateNamedLoggingComponent_HappyPath()
     {
-        final ServiceRegistration serviceRegistration = FakeFilter.registerComponentFactory();
+        final ServiceRegistration<ComponentFactory> serviceRegistration = FakeFilter.registerComponentFactory();
         try
         {
             final String name = String.format( "%1$s.name", FakeFilter.class.getName() ); //$NON-NLS-1$

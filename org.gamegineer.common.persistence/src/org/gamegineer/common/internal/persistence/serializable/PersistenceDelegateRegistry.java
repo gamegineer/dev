@@ -1,6 +1,6 @@
 /*
  * PersistenceDelegateRegistry.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -62,7 +62,7 @@ public final class PersistenceDelegateRegistry
      * value is the persistence delegate proxy registration token.
      */
     @GuardedBy( "lock_" )
-    private final Map<ServiceReference, PersistenceDelegateProxyRegistration> persistenceDelegateProxyRegistrations_;
+    private final Map<ServiceReference<IPersistenceDelegate>, PersistenceDelegateProxyRegistration> persistenceDelegateProxyRegistrations_;
 
     /**
      * The collection of registered persistence delegates. The key is the type
@@ -83,7 +83,7 @@ public final class PersistenceDelegateRegistry
     public PersistenceDelegateRegistry()
     {
         lock_ = new Object();
-        persistenceDelegateProxyRegistrations_ = new HashMap<ServiceReference, PersistenceDelegateProxyRegistration>();
+        persistenceDelegateProxyRegistrations_ = new HashMap<ServiceReference<IPersistenceDelegate>, PersistenceDelegateProxyRegistration>();
         persistenceDelegates_ = new HashMap<String, IPersistenceDelegate>();
     }
 
@@ -97,17 +97,17 @@ public final class PersistenceDelegateRegistry
      * persistence delegate service reference.
      * 
      * @param persistenceDelegateReference
-     *        The persistence delegate service reference; must not be {@code
-     *        null}.
+     *        The persistence delegate service reference; must not be
+     *        {@code null}.
      * 
      * @return The collection of delegator type names associated with the
-     *         specified persistence delegate service reference; never {@code
-     *         null}.
+     *         specified persistence delegate service reference; never
+     *         {@code null}.
      */
     /* @NonNull */
     private static Set<String> getDelegatorTypeNames(
         /* @NonNull */
-        final ServiceReference persistenceDelegateReference )
+        final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
     {
         assert persistenceDelegateReference != null;
 
@@ -187,24 +187,24 @@ public final class PersistenceDelegateRegistry
      * 
      * <p>
      * This method attempts to register the persistence delegate associated with
-     * the specified service reference for each type specified in the {@code
-     * PersistenceDelegateRegistryConstants.PROPERTY_DELEGATORS} property of the
-     * service registration. If a persistence delegate has already been
+     * the specified service reference for each type specified in the
+     * {@code PersistenceDelegateRegistryConstants.PROPERTY_DELEGATORS} property
+     * of the service registration. If a persistence delegate has already been
      * registered for a type associated with the service registration, this
      * method logs the collision but otherwise continues on normally attempting
      * to register the persistence delegate for any remaining types.
      * </p>
      * 
      * @param persistenceDelegateReference
-     *        The persistence delegate service reference; must not be {@code
-     *        null}.
+     *        The persistence delegate service reference; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code persistenceDelegateReference} is {@code null}.
      */
     public void registerPersistenceDelegate(
         /* @NonNull */
-        final ServiceReference persistenceDelegateReference )
+        final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
     {
         assertArgumentNotNull( persistenceDelegateReference, "persistenceDelegateReference" ); //$NON-NLS-1$
 
@@ -291,15 +291,15 @@ public final class PersistenceDelegateRegistry
      * </p>
      * 
      * @param persistenceDelegateReference
-     *        The persistence delegate service reference; must not be {@code
-     *        null}.
+     *        The persistence delegate service reference; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code persistenceDelegateReference} is {@code null}.
      */
     public void unregisterPersistenceDelegate(
         /* @NonNull */
-        final ServiceReference persistenceDelegateReference )
+        final ServiceReference<IPersistenceDelegate> persistenceDelegateReference )
     {
         assertArgumentNotNull( persistenceDelegateReference, "persistenceDelegateReference" ); //$NON-NLS-1$
 
@@ -378,8 +378,8 @@ public final class PersistenceDelegateRegistry
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code
-         * PersistenceDelegateProxyRegistration} class.
+         * Initializes a new instance of the
+         * {@code PersistenceDelegateProxyRegistration} class.
          * 
          * @param typeNames
          *        The collection of type names under which the persistence

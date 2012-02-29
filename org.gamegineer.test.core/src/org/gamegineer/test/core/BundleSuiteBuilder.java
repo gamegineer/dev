@@ -95,7 +95,7 @@ public final class BundleSuiteBuilder
     {
         assert bundle != null;
 
-        final String classpath = (String)bundle.getHeaders().get( Constants.BUNDLE_CLASSPATH );
+        final String classpath = bundle.getHeaders().get( Constants.BUNDLE_CLASSPATH );
         if( classpath == null )
         {
             return Collections.emptyList();
@@ -221,8 +221,8 @@ public final class BundleSuiteBuilder
      * @param bundle
      *        The bundle in which to search; must not be {@code null}.
      * 
-     * @return A read-only collection of test class names found; never {@code
-     *         null}.
+     * @return A read-only collection of test class names found; never
+     *         {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -269,11 +269,11 @@ public final class BundleSuiteBuilder
      * @param bundle
      *        The bundle in which to search; must not be {@code null}.
      * @param path
-     *        The path to the JAR file in which to search; must not be {@code
-     *        null}.
+     *        The path to the JAR file in which to search; must not be
+     *        {@code null}.
      * 
-     * @return A read-only collection of test class names found; never {@code
-     *         null}.
+     * @return A read-only collection of test class names found; never
+     *         {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -327,8 +327,8 @@ public final class BundleSuiteBuilder
      * @param path
      *        The bundle directory in which to search; must not be {@code null}.
      * 
-     * @return A read-only collection of test class names found; never {@code
-     *         null}.
+     * @return A read-only collection of test class names found; never
+     *         {@code null}.
      */
     /* @NonNull */
     private static Collection<String> getTestClassNamesFromPath(

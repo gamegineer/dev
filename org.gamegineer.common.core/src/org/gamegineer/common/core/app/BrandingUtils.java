@@ -74,7 +74,7 @@ public final class BrandingUtils
         final Bundle brandingBundle = branding.getBundle();
         if( brandingBundle != null )
         {
-            final String versionString = (String)brandingBundle.getHeaders().get( org.osgi.framework.Constants.BUNDLE_VERSION );
+            final String versionString = brandingBundle.getHeaders().get( org.osgi.framework.Constants.BUNDLE_VERSION );
             try
             {
                 return Version.parseVersion( versionString );

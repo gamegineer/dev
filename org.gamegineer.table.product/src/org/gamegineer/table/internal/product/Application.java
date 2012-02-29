@@ -54,7 +54,7 @@ public final class Application
     // ======================================================================
 
     /** The registration token for the application branding service. */
-    private final AtomicReference<ServiceRegistration> brandingServiceRegistrationRef_;
+    private final AtomicReference<ServiceRegistration<IBranding>> brandingServiceRegistrationRef_;
 
     /**
      * A reference to the asynchronous completion token associated with the
@@ -72,7 +72,7 @@ public final class Application
      */
     public Application()
     {
-        brandingServiceRegistrationRef_ = new AtomicReference<ServiceRegistration>();
+        brandingServiceRegistrationRef_ = new AtomicReference<ServiceRegistration<IBranding>>();
         futureRef_ = new AtomicReference<Future<TableResult>>();
     }
 
@@ -137,7 +137,7 @@ public final class Application
         assert context != null;
 
         final IBranding branding = new Branding( context );
-        brandingServiceRegistrationRef_.set( Activator.getDefault().getBundleContext().registerService( IBranding.class.getName(), branding, null ) );
+        brandingServiceRegistrationRef_.set( Activator.getDefault().getBundleContext().registerService( IBranding.class, branding, null ) );
         return branding;
     }
 
@@ -227,7 +227,7 @@ public final class Application
      */
     private void unpublishBranding()
     {
-        final ServiceRegistration brandingServiceRegistration = brandingServiceRegistrationRef_.getAndSet( null );
+        final ServiceRegistration<IBranding> brandingServiceRegistration = brandingServiceRegistrationRef_.getAndSet( null );
         if( brandingServiceRegistration != null )
         {
             brandingServiceRegistration.unregister();

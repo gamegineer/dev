@@ -1,6 +1,6 @@
 /*
  * Activator.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -52,7 +52,7 @@ public final class Activator
 
     /** The Serializable persistence delegate registry service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker serializablePersistenceDelegateRegistryTracker_;
+    private ServiceTracker<org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry, org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry> serializablePersistenceDelegateRegistryTracker_;
 
 
     // ======================================================================
@@ -105,9 +105,9 @@ public final class Activator
     /**
      * Gets the Serializable persistence delegate registry service.
      * 
-     * @return The Serializable persistence delegate registry service or {@code
-     *         null} if no Serializable persistence delegate registry service is
-     *         available.
+     * @return The Serializable persistence delegate registry service or
+     *         {@code null} if no Serializable persistence delegate registry
+     *         service is available.
      */
     /* @Nullable */
     public org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry getSerializablePersistenceDelegateRegistry()
@@ -118,11 +118,11 @@ public final class Activator
 
             if( serializablePersistenceDelegateRegistryTracker_ == null )
             {
-                serializablePersistenceDelegateRegistryTracker_ = new ServiceTracker( bundleContext_, org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry.class.getName(), null );
+                serializablePersistenceDelegateRegistryTracker_ = new ServiceTracker<org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry, org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry>( bundleContext_, org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry.class, null );
                 serializablePersistenceDelegateRegistryTracker_.open();
             }
 
-            return (org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry)serializablePersistenceDelegateRegistryTracker_.getService();
+            return serializablePersistenceDelegateRegistryTracker_.getService();
         }
     }
 
