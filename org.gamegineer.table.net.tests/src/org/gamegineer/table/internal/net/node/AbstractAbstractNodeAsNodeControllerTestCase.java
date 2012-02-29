@@ -177,7 +177,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "static-method" )
     @Test( expected = TableNetworkException.class )
     public void testConnect_TransportLayerOpenFailure_DoesNotInvokeConnected()
         throws Exception
@@ -203,7 +202,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "static-method" )
     @Test( expected = TableNetworkException.class )
     public void testConnect_TransportLayerOpenFailure_InvokesConnecting()
         throws Exception
@@ -229,7 +227,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "static-method" )
     @Test( expected = TableNetworkException.class )
     public void testConnect_TransportLayerOpenFailure_InvokesDispose()
         throws Exception
@@ -255,7 +252,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "static-method" )
     @Test
     public void testConnect_TransportLayerOpenSuccess_InvokesConnected()
         throws Exception
@@ -276,7 +272,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "static-method" )
     @Test
     public void testConnect_TransportLayerOpenSuccess_InvokesConnecting()
         throws Exception
@@ -321,7 +316,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "static-method" )
     @Test
     public void testDisconnect_TransportLayerOpen_InvokesDisconnected()
         throws Exception
@@ -343,7 +337,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      * @throws java.lang.Exception
      *         If an error occurs.
      */
-    @SuppressWarnings( "static-method" )
     @Test
     public void testDisconnect_TransportLayerOpen_InvokesDisconnecting()
         throws Exception
