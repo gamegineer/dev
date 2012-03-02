@@ -39,10 +39,8 @@ import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.test.internal.core.Activator;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.Constants;
-import org.osgi.service.packageadmin.PackageAdmin;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -162,51 +160,6 @@ public final class BundleSuiteBuilder
         }
 
         return Collections.unmodifiableList( classpathEntries );
-    }
-
-    /**
-     * Gets the named fragment in the specified host bundle.
-     * 
-     * @param hostBundle
-     *        The host bundle; must not be {@code null}.
-     * @param fragmentName
-     *        The symbolic name of the fragment; must not be {@code null}.
-     * 
-     * @return The fragment or {@code null} if no such fragment exists within
-     *         the host bundle.
-     */
-    /* @Nullable */
-    private static Bundle getFragment(
-        /* @NonNull */
-        final Bundle hostBundle,
-        /* @NonNull */
-        final String fragmentName )
-    {
-        assert hostBundle != null;
-        assert fragmentName != null;
-
-        final PackageAdmin packageAdmin = Activator.getDefault().getPackageAdmin();
-        if( packageAdmin == null )
-        {
-            System.err.println( "no package administration service available" ); //$NON-NLS-1$
-            return null;
-        }
-
-        final Bundle[] fragments = packageAdmin.getFragments( hostBundle );
-        if( fragments == null )
-        {
-            return null;
-        }
-
-        for( final Bundle fragment : fragments )
-        {
-            if( fragmentName.equals( fragment.getSymbolicName() ) )
-            {
-                return fragment;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -429,7 +382,7 @@ public final class BundleSuiteBuilder
             throw new NullPointerException( "fragmentName" ); //$NON-NLS-1$
         }
 
-        final Bundle fragmentBundle = getFragment( hostBundle, fragmentName );
+        final Bundle fragmentBundle = TestCases.getFragment( hostBundle, fragmentName );
         if( fragmentBundle == null )
         {
             throw new IllegalArgumentException( String.format( "no such fragment '%1$s' in bundle '%2$s'", fragmentName, hostBundle.getSymbolicName() ) ); //$NON-NLS-1$

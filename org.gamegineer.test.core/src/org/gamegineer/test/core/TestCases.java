@@ -1,6 +1,6 @@
 /*
  * TestCases.java
- * Copyright 2008-2009 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,9 @@ package org.gamegineer.test.core;
 import java.io.File;
 import net.jcip.annotations.ThreadSafe;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.wiring.BundleRevision;
+import org.osgi.framework.wiring.BundleWire;
+import org.osgi.framework.wiring.BundleWiring;
 
 /**
  * A collection of useful methods for writing test cases in an OSGi environment.
@@ -47,6 +50,55 @@ public final class TestCases
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Gets the named fragment in the specified host bundle.
+     * 
+     * @param hostBundle
+     *        The host bundle; must not be {@code null}.
+     * @param fragmentName
+     *        The symbolic name of the fragment; must not be {@code null}.
+     * 
+     * @return The fragment or {@code null} if no such fragment exists within
+     *         the host bundle.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code hostBundle} or {@code fragmentName} is {@code null}.
+     */
+    /* @Nullable */
+    public static Bundle getFragment(
+        /* @NonNull */
+        final Bundle hostBundle,
+        /* @NonNull */
+        final String fragmentName )
+    {
+        if( hostBundle == null )
+        {
+            throw new NullPointerException( "hostBundle" ); //$NON-NLS-1$
+        }
+        if( fragmentName == null )
+        {
+            throw new NullPointerException( "fragmentName" ); //$NON-NLS-1$
+        }
+
+        final BundleWiring bundleWiring = hostBundle.adapt( BundleWiring.class );
+        if( bundleWiring == null )
+        {
+            System.err.println( "bundle wiring not available" ); //$NON-NLS-1$
+            return null;
+        }
+
+        for( final BundleWire bundleWire : bundleWiring.getProvidedWires( BundleRevision.HOST_NAMESPACE ) )
+        {
+            final Bundle fragment = bundleWire.getRequirerWiring().getBundle();
+            if( fragmentName.equals( fragment.getSymbolicName() ) )
+            {
+                return fragment;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Gets the temporary directory for the specified test case.

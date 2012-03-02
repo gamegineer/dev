@@ -26,8 +26,6 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.packageadmin.PackageAdmin;
-import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The bundle activator for the org.gamegineer.test.core bundle.
@@ -50,10 +48,6 @@ public final class Activator
     /** The instance lock. */
     private final Object lock_;
 
-    /** The package administration service tracker. */
-    @GuardedBy( "lock_" )
-    private ServiceTracker<PackageAdmin, PackageAdmin> packageAdminTracker_;
-
 
     // ======================================================================
     // Constructors
@@ -66,7 +60,6 @@ public final class Activator
     {
         lock_ = new Object();
         bundleContext_ = null;
-        packageAdminTracker_ = null;
     }
 
 
@@ -100,29 +93,6 @@ public final class Activator
         final Activator instance = instance_.get();
         assert instance != null;
         return instance;
-    }
-
-    /**
-     * Gets the package administration service.
-     * 
-     * @return The package administration service or {@code null} if no package
-     *         administration service is available.
-     */
-    /* @Nullable */
-    public PackageAdmin getPackageAdmin()
-    {
-        synchronized( lock_ )
-        {
-            assert bundleContext_ != null;
-
-            if( packageAdminTracker_ == null )
-            {
-                packageAdminTracker_ = new ServiceTracker<PackageAdmin, PackageAdmin>( bundleContext_, PackageAdmin.class, null );
-                packageAdminTracker_.open();
-            }
-
-            return packageAdminTracker_.getService();
-        }
     }
 
     /*
@@ -166,12 +136,6 @@ public final class Activator
         {
             assert bundleContext_ != null;
             bundleContext_ = null;
-
-            if( packageAdminTracker_ != null )
-            {
-                packageAdminTracker_.close();
-                packageAdminTracker_ = null;
-            }
         }
     }
 }
