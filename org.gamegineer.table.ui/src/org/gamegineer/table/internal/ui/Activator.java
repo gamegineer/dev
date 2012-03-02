@@ -35,7 +35,6 @@ import org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry;
 import org.gamegineer.table.ui.ICardSurfaceDesignUIRegistry;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.packageadmin.PackageAdmin;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 import org.osgi.service.prefs.PreferencesService;
@@ -94,10 +93,6 @@ public final class Activator
     /** The instance lock. */
     private final Object lock_;
 
-    /** The package administration service tracker. */
-    @GuardedBy( "lock_" )
-    private ServiceTracker<PackageAdmin, PackageAdmin> packageAdminTracker_;
-
     /** The preferences service tracker. */
     @GuardedBy( "lock_" )
     private ServiceTracker<PreferencesService, PreferencesService> preferencesServiceTracker_;
@@ -122,7 +117,6 @@ public final class Activator
         cardSurfaceDesignUIRegistryTracker_ = null;
         executorServiceTracker_ = null;
         helpSystemTracker_ = null;
-        packageAdminTracker_ = null;
         preferencesServiceTracker_ = null;
     }
 
@@ -351,29 +345,6 @@ public final class Activator
     }
 
     /**
-     * Gets the package administration service.
-     * 
-     * @return The package administration service or {@code null} if no package
-     *         administration service is available.
-     */
-    /* @Nullable */
-    public PackageAdmin getPackageAdmin()
-    {
-        synchronized( lock_ )
-        {
-            assert bundleContext_ != null;
-
-            if( packageAdminTracker_ == null )
-            {
-                packageAdminTracker_ = new ServiceTracker<PackageAdmin, PackageAdmin>( bundleContext_, PackageAdmin.class, null );
-                packageAdminTracker_.open();
-            }
-
-            return packageAdminTracker_.getService();
-        }
-    }
-
-    /**
      * Gets the preferences service.
      * 
      * @return The preferences service or {@code null} if no preferences service
@@ -541,11 +512,6 @@ public final class Activator
             {
                 helpSystemTracker_.close();
                 helpSystemTracker_ = null;
-            }
-            if( packageAdminTracker_ != null )
-            {
-                packageAdminTracker_.close();
-                packageAdminTracker_ = null;
             }
             if( preferencesServiceTracker_ != null )
             {

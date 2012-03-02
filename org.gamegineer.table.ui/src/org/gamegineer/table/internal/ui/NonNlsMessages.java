@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -89,9 +89,6 @@ final class NonNlsMessages
     /** The card pile base design name is missing. */
     public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingName;
 
-    /** No package administration service is available. */
-    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_noPackageAdminService;
-
     /**
      * An error occurred while parsing the card pile base design user interface
      * configuration element.
@@ -142,9 +139,6 @@ final class NonNlsMessages
 
     /** The card surface design name is missing. */
     public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingName;
-
-    /** No package administration service is available. */
-    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_noPackageAdminService;
 
     /**
      * An error occurred while parsing the card surface design user interface

@@ -1,6 +1,6 @@
 /*
  * CardPileBaseDesignUIRegistryExtensionPointAdapter.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -33,6 +33,7 @@ import javax.swing.Icon;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
+import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -46,7 +47,6 @@ import org.gamegineer.table.ui.ICardPileBaseDesignUI;
 import org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry;
 import org.gamegineer.table.ui.TableUIFactory;
 import org.osgi.framework.Bundle;
-import org.osgi.service.packageadmin.PackageAdmin;
 
 /**
  * A component that adapts card pile base design user interfaces published via
@@ -103,8 +103,8 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * CardPileBaseDesignUIRegistryExtensionPointAdapter} class.
+     * Initializes a new instance of the
+     * {@code CardPileBaseDesignUIRegistryExtensionPointAdapter} class.
      */
     public CardPileBaseDesignUIRegistryExtensionPointAdapter()
     {
@@ -247,20 +247,15 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapter
         {
             throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingIconPath );
         }
-        final PackageAdmin packageAdmin = Activator.getDefault().getPackageAdmin();
-        if( packageAdmin == null )
-        {
-            throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_noPackageAdminService );
-        }
-        final Bundle[] bundles = packageAdmin.getBundles( configurationElement.getNamespaceIdentifier(), null );
-        if( (bundles == null) || (bundles.length == 0) )
+        final Bundle bundle = ContributorFactoryOSGi.resolve( configurationElement.getContributor() );
+        if( bundle == null )
         {
             throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconBundleNotFound( configurationElement.getNamespaceIdentifier() ) );
         }
-        final URL iconUrl = FileLocator.find( bundles[ 0 ], new Path( iconPath ), null );
+        final URL iconUrl = FileLocator.find( bundle, new Path( iconPath ), null );
         if( iconUrl == null )
         {
-            throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconFileNotFound( bundles[ 0 ], iconPath ) );
+            throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconFileNotFound( bundle, iconPath ) );
         }
         final Icon icon = new IconProxy( iconUrl );
 

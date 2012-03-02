@@ -1,6 +1,6 @@
 /*
  * CardSurfaceDesignUIRegistryExtensionPointAdapterTest.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,9 @@ import static org.junit.Assert.assertTrue;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
+import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IContributor;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.gamegineer.table.core.CardSurfaceDesignId;
@@ -62,8 +64,8 @@ public final class CardSurfaceDesignUIRegistryExtensionPointAdapterTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * CardSurfaceDesignUIRegistryExtensionPointAdapterTest} class.
+     * Initializes a new instance of the
+     * {@code CardSurfaceDesignUIRegistryExtensionPointAdapterTest} class.
      */
     public CardSurfaceDesignUIRegistryExtensionPointAdapterTest()
     {
@@ -102,12 +104,14 @@ public final class CardSurfaceDesignUIRegistryExtensionPointAdapterTest
         final String expectedIconPath = "icons/cardSurfaces/back-blue.png"; //$NON-NLS-1$
         final IExtensionRegistry extensionRegistry = mocksControl_.createMock( IExtensionRegistry.class );
         final IExtension extension = mocksControl_.createMock( IExtension.class );
+        final IContributor contributor = ContributorFactoryOSGi.createContributor( Activator.getDefault().getBundleContext().getBundle() );
         final IConfigurationElement configurationElement = mocksControl_.createMock( IConfigurationElement.class );
         EasyMock.expect( configurationElement.getAttribute( "id" ) ).andReturn( expectedId.toString() ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( configurationElement.getAttribute( "name" ) ).andReturn( expectedName ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( configurationElement.getAttribute( "icon" ) ).andReturn( expectedIconPath ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( configurationElement.getNamespaceIdentifier() ).andReturn( BundleConstants.SYMBOLIC_NAME ).anyTimes();
         EasyMock.expect( configurationElement.getDeclaringExtension() ).andReturn( extension ).anyTimes();
+        EasyMock.expect( configurationElement.getContributor() ).andReturn( contributor ).anyTimes();
         EasyMock.expect( extension.getNamespaceIdentifier() ).andReturn( BundleConstants.SYMBOLIC_NAME ).anyTimes();
         EasyMock.expect( extension.getSimpleIdentifier() ).andReturn( "simple-id" ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( extension.getConfigurationElements() ).andReturn( new IConfigurationElement[] {
@@ -189,12 +193,14 @@ public final class CardSurfaceDesignUIRegistryExtensionPointAdapterTest
         final String expectedIconPath = "icons/cardSurfaces/back-blue.png"; //$NON-NLS-1$
         final IExtensionRegistry extensionRegistry = mocksControl_.createMock( IExtensionRegistry.class );
         final IExtension extension = mocksControl_.createMock( IExtension.class );
+        final IContributor contributor = ContributorFactoryOSGi.createContributor( Activator.getDefault().getBundleContext().getBundle() );
         final IConfigurationElement configurationElement = mocksControl_.createMock( IConfigurationElement.class );
         EasyMock.expect( configurationElement.getAttribute( "id" ) ).andReturn( expectedId.toString() ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( configurationElement.getAttribute( "name" ) ).andReturn( expectedName ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( configurationElement.getAttribute( "icon" ) ).andReturn( expectedIconPath ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( configurationElement.getNamespaceIdentifier() ).andReturn( BundleConstants.SYMBOLIC_NAME ).anyTimes();
         EasyMock.expect( configurationElement.getDeclaringExtension() ).andReturn( extension ).anyTimes();
+        EasyMock.expect( configurationElement.getContributor() ).andReturn( contributor ).anyTimes();
         EasyMock.expect( extension.getNamespaceIdentifier() ).andReturn( BundleConstants.SYMBOLIC_NAME ).anyTimes();
         EasyMock.expect( extension.getSimpleIdentifier() ).andReturn( "simple-id" ).anyTimes(); //$NON-NLS-1$
         EasyMock.expect( extension.getConfigurationElements() ).andReturn( new IConfigurationElement[] {
