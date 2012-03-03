@@ -6,7 +6,6 @@
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/javax.help.source,javax.help.source"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/net.jcip.annotations,net.jcip.annotations"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/net.jcip.annotations.source,net.jcip.annotations.source"/>
-<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.eclipse.test.patch,org.eclipse.test.patch"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.builder,org.gamegineer.builder"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.common.core,org.gamegineer.common.core"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.common.core.tests,org.gamegineer.common.core.tests"/>
