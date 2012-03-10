@@ -19,16 +19,36 @@
 
     Created on Mar 15, 2008 at 9:53:00 PM.
 -->
-<project name="gamegineer" default="build" basedir=".">
+<project name="gamegineer" default="build" basedir="." xmlns:antcontrib="antlib:net.sf.antcontrib">
 
     <property environment="env" />
     <property file="run-build.properties" />
+
+    <!-- Set up references to external tools -->
+    <property name="ant-contrib-home" value="${env.ANT_CONTRIB_LATEST_HOME}" />
+
+    <!-- Import external Ant libraries -->
+    <typedef resource="net/sf/antcontrib/antlib.xml" uri="antlib:net.sf.antcontrib">
+        <classpath>
+            <pathelement location="${ant-contrib-home}/ant-contrib.jar" />
+        </classpath>
+    </typedef>
 
     <!-- Generate version qualifier -->
     <tstamp>
         <format pattern="yyyyMMdd-HHmm" property="version.qualifier.timestamp" timezone="UTC" />
     </tstamp>
-    <property name="version.qualifier" value="v${version.qualifier.timestamp}${version.qualifier.suffix}" />
+    <antcontrib:if>
+        <length string="${version.qualifier.prefix}" when="gt" length="0" />
+        <antcontrib:then>
+            <property name="version.qualifier" value="${version.qualifier.prefix}-v${version.qualifier.timestamp}" />
+            <property name="build.version" value="${version.number}.${version.qualifier.prefix}" />
+        </antcontrib:then>
+        <antcontrib:else>
+            <property name="version.qualifier" value="v${version.qualifier.timestamp}" />
+            <property name="build.version" value="${version.number}" />
+        </antcontrib:else>
+    </antcontrib:if>
 
     <!--
         Builds the entire Gamegineer workspace.
@@ -69,7 +89,7 @@
                 </fileset>
             </classpath>
             <jvmarg value="-DbuildDirectory=${basedir}" />
-            <jvmarg value="-DbuildVersion=${version.number}" />
+            <jvmarg value="-DbuildVersion=${build.version}" />
             <jvmarg value="-DforceContextQualifier=${version.qualifier}" />
             <jvmarg value="-Djava-help-home=${java-help-home}" />
             <jvmarg value="-DJavaSE-1.6=${env.JAVA_HOME}/jre/lib/rt.jar:${env.JAVA_HOME}/jre/lib/jce.jar" />
