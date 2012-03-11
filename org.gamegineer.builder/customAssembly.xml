@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     customAssembly.xml
-    Copyright 2008-2010 Gamegineer.org
+    Copyright 2008-2012 Gamegineer.org
     All rights reserved.
 
     This program is free software: you can redistribute it and/or modify
@@ -19,17 +19,17 @@
 
     Created on Sep 9, 2010 at 10:37:26 PM.
 -->
-<project name="Build specific targets and properties" default="noDefault">
+<project name="customAssembly.template" default="noDefault">
 
     <!-- =====================================================================
-	    
-	    The Following Properties are available in all targets:
-		 - eclipse.base : the base folder everything will be collected into
-		 - eclipse.plugins : the plugins folder
-		 - eclipse.features: the features folder
-		 - archiveFullPath : the full path of the final archive once it is created
-		 
-		 ===================================================================== -->
+
+        The Following Properties are available in all targets:
+         - eclipse.base : the base folder everything will be collected into
+         - eclipse.plugins : the plugins folder
+         - eclipse.features: the features folder
+         - archiveFullPath : the full path of the final archive once it is created
+
+         ===================================================================== -->
 
     <!-- =====================================================================  -->
     <!-- Called after each invocation of the gather.bin.parts target on the     -->
@@ -54,7 +54,7 @@
 
     <!-- ===================================================================== -->
     <!-- Called just prior to signing a jar                                    -->
-    <!-- In addititon to the properties listed above:						   -->
+    <!-- In addititon to the properties listed above:                          -->
     <!--    - source : plugins or features directory                           -->
     <!--    - elementName: element being signed without .jar                   -->
     <!--                   (eg "org.eclipse.foo_1.0.0"                         -->
@@ -71,7 +71,7 @@
 
     <!-- ===================================================================== -->
     <!-- Called just before the archive file is built                          -->
-    <!-- In addititon to the properties listed above:						   -->
+    <!-- In addititon to the properties listed above:                          -->
     <!--    - rootFolder : the folder containing the root files                -->
     <!-- ===================================================================== -->
     <target name="pre.archive">
@@ -81,7 +81,7 @@
     <!-- Default target                                                        -->
     <!-- ===================================================================== -->
     <target name="noDefault">
-        <echo message="You must specify a target when invoking this file" />
+    	<echo message="You must specify a target when invoking this file" />
     </target>
 
 </project>

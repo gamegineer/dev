@@ -19,7 +19,7 @@
 
     Created on Mar 15, 2008 at 9:53:00 PM.
 -->
-<project name="Build specific targets and properties" default="noDefault">
+<project name="customTargets.template" default="noDefault">
 
     <property environment="env" />
 
@@ -256,9 +256,8 @@
         <!-- Install Eclipse Test Framework into workspace. -->
         <unzip src="${env.ECLIPSE_TEST_FRAMEWORK_HOME}/eclipse-test-framework-${eclipseBuildId}.zip" dest="${buildDirectory}/${buildLabel}/test-workspace/eclipse-test-framework" overwrite="true" />
         <makeurl file="${buildDirectory}/${buildLabel}/test-workspace/eclipse-test-framework" property="p2.repo" validate="false" />
-        <ant antfile="genericTargets.xml" dir="${buildDirectory}" target="runDirector">
+        <ant antfile="genericTargets.xml" dir="${eclipse.pdebuild.scripts}" target="runDirector">
             <property name="p2.director.extraArgs" value="-tag AddETF" />
-            <property name="p2.director.home" value="${env.ECLIPSE_HOME}" />
             <property name="p2.director.installPath" value="${buildDirectory}/${buildLabel}/test-workspace/eclipse" />
             <property name="p2.director.iu" value="org.eclipse.test.feature.group" />
             <property name="p2.director.profile" value="SDKProfile" />

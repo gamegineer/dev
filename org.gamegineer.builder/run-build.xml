@@ -27,6 +27,14 @@
     <!-- Set up references to external tools -->
     <property name="ant-contrib-home" value="${env.ANT_CONTRIB_LATEST_HOME}" />
 
+    <!-- Set up references to PDE Build scripts -->
+    <path id="eclipse.pdebuild.scripts.path">
+        <dirset dir="${env.ECLIPSE_HOME}/plugins">
+            <include name="org.eclipse.pde.build_*/scripts" />
+        </dirset>
+    </path>
+    <property name="eclipse.pdebuild.scripts" refid="eclipse.pdebuild.scripts.path" />
+
     <!-- Import external Ant libraries -->
     <typedef resource="net/sf/antcontrib/antlib.xml" uri="antlib:net.sf.antcontrib">
         <classpath>
@@ -96,7 +104,7 @@
             <arg value="-application" />
             <arg value="org.eclipse.ant.core.antRunner" />
             <arg value="-buildfile" />
-            <arg value="build.xml" />
+            <arg value="${eclipse.pdebuild.scripts}/build.xml" />
         </java>
     </target>
 
