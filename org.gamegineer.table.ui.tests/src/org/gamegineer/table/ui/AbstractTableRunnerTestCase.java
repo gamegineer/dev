@@ -147,7 +147,7 @@ public abstract class AbstractTableRunnerTestCase
         finally
         {
             executor.shutdownNow();
-            assertTrue( "executor did not shut down cleanly", executor.awaitTermination( 5L, TimeUnit.SECONDS ) ); //$NON-NLS-1$
+            assertTrue( "executor did not shut down cleanly", executor.awaitTermination( 10L, TimeUnit.SECONDS ) ); //$NON-NLS-1$
         }
     }
 }
