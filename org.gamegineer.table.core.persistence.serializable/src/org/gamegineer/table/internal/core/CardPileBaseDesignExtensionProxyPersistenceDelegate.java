@@ -1,6 +1,6 @@
 /*
  * CardPileBaseDesignExtensionProxyPersistenceDelegate.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,12 +38,11 @@ public final class CardPileBaseDesignExtensionProxyPersistenceDelegate
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * CardPileBaseDesignExtensionProxyPersistenceDelegate} class.
+     * Initializes a new instance of the
+     * {@code CardPileBaseDesignExtensionProxyPersistenceDelegate} class.
      */
     public CardPileBaseDesignExtensionProxyPersistenceDelegate()
     {
-        super();
     }
 
 

@@ -1,6 +1,6 @@
 /*
  * CardPiles.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -38,7 +38,6 @@ public final class CardPiles
      */
     private CardPiles()
     {
-        super();
     }
 
 
@@ -51,8 +50,8 @@ public final class CardPiles
      * table.
      * 
      * @param table
-     *        The table associated with the new card pile; must not be {@code
-     *        null}.
+     *        The table associated with the new card pile; must not be
+     *        {@code null}.
      * 
      * @return A new card pile; never {@code null}.
      * 

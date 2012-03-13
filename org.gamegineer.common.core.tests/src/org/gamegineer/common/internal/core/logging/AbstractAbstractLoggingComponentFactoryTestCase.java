@@ -1,6 +1,6 @@
 /*
  * AbstractAbstractLoggingComponentFactoryTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -61,12 +61,11 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractAbstractLoggingComponentFactoryTestCase} class.
+     * Initializes a new instance of the
+     * {@code AbstractAbstractLoggingComponentFactoryTestCase} class.
      */
     protected AbstractAbstractLoggingComponentFactoryTestCase()
     {
-        super();
     }
 
 
@@ -114,8 +113,8 @@ public abstract class AbstractAbstractLoggingComponentFactoryTestCase<F extends 
     /**
      * Gets the logging component type created by the factory.
      * 
-     * @return The logging component type created by the factory; never {@code
-     *         null}.
+     * @return The logging component type created by the factory; never
+     *         {@code null}.
      */
     /* @NonNull */
     protected abstract Class<? extends T> getLoggingComponentType();

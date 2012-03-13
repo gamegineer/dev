@@ -55,7 +55,6 @@ public final class HelloResponseMessageHandler
      */
     private HelloResponseMessageHandler()
     {
-        super();
     }
 
 

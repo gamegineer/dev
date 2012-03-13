@@ -1,6 +1,6 @@
 /*
  * AbstractNodeControllerTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -66,7 +66,6 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
      */
     protected AbstractNodeControllerTestCase()
     {
-        super();
     }
 
 
@@ -77,8 +76,8 @@ public abstract class AbstractNodeControllerTestCase<T extends INodeController>
     /**
      * Creates the table network node controller to be tested.
      * 
-     * @return The table network node controller to be tested; never {@code
-     *         null}.
+     * @return The table network node controller to be tested; never
+     *         {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

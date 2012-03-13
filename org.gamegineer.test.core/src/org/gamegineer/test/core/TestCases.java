@@ -43,7 +43,6 @@ public final class TestCases
      */
     private TestCases()
     {
-        super();
     }
 
 

@@ -40,7 +40,6 @@ public final class AllTests
      */
     public AllTests()
     {
-        super();
     }
 
 

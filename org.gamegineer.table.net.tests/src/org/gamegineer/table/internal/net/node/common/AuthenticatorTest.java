@@ -1,6 +1,6 @@
 /*
  * AuthenticatorTest.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -52,7 +52,6 @@ public final class AuthenticatorTest
      */
     public AuthenticatorTest()
     {
-        super();
     }
 
 
@@ -69,8 +68,8 @@ public final class AuthenticatorTest
      * @param actualPassword
      *        The actual password; must not be {@code null}.
      * 
-     * @return {@code true} if authentication is successful; otherwise {@code
-     *         false}.
+     * @return {@code true} if authentication is successful; otherwise
+     *         {@code false}.
      * 
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.

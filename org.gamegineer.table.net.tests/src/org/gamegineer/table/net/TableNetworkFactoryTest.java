@@ -1,6 +1,6 @@
 /*
  * TableNetworkFactoryTest.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,7 +39,6 @@ public final class TableNetworkFactoryTest
      */
     public TableNetworkFactoryTest()
     {
-        super();
     }
 
 
@@ -48,8 +47,8 @@ public final class TableNetworkFactoryTest
     // ======================================================================
 
     /**
-     * Ensures the {@code createTableNetwork} method does not return {@code
-     * null}.
+     * Ensures the {@code createTableNetwork} method does not return
+     * {@code null}.
      */
     @Test
     public void testCreateTableNetwork_ReturnValue_NonNull()

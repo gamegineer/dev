@@ -1,6 +1,6 @@
 /*
  * CardPile.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -750,8 +750,8 @@ final class CardPile
     /**
      * Gets the table context associated with the card pile.
      * 
-     * @return The table context associated with the card pile; never {@code
-     *         null}.
+     * @return The table context associated with the card pile; never
+     *         {@code null}.
      */
     /* @NonNull */
     TableContext getTableContext()
@@ -1163,7 +1163,6 @@ final class CardPile
          */
         CardRangeStrategy()
         {
-            super();
         }
 
 
@@ -1217,7 +1216,6 @@ final class CardPile
          */
         TranslationOffsetStrategy()
         {
-            super();
         }
 
 

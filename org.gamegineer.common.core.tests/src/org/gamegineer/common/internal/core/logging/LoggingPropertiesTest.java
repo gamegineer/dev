@@ -1,6 +1,6 @@
 /*
  * LoggingPropertiesTest.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -56,7 +56,6 @@ public final class LoggingPropertiesTest
      */
     public LoggingPropertiesTest()
     {
-        super();
     }
 
 
@@ -87,8 +86,8 @@ public final class LoggingPropertiesTest
     }
 
     /**
-     * Ensures the {@code getAncestorLoggerNames} method does not return {@code
-     * null} when there are no ancestors for the specified logger.
+     * Ensures the {@code getAncestorLoggerNames} method does not return
+     * {@code null} when there are no ancestors for the specified logger.
      */
     @Test
     public void testGetAncestorLoggerNames_ReturnValue_NonNull()

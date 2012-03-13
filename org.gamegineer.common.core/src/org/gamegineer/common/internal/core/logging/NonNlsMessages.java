@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -84,7 +84,6 @@ final class NonNlsMessages
      */
     private NonNlsMessages()
     {
-        super();
     }
 
 
@@ -119,8 +118,8 @@ final class NonNlsMessages
      *        The type name of the logging component; must not be {@code null}.
      * 
      * @return The formatted message indicating no component factory is
-     *         available for the specified logging component type; never {@code
-     *         null}.
+     *         available for the specified logging component type; never
+     *         {@code null}.
      */
     /* @NonNull */
     static String AbstractLoggingComponentFactory_findComponentFactory_noComponentFactoryAvailable(

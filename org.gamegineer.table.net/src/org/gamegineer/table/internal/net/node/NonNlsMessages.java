@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -135,7 +135,6 @@ final class NonNlsMessages
      */
     private NonNlsMessages()
     {
-        super();
     }
 
 
@@ -225,8 +224,8 @@ final class NonNlsMessages
      * received.
      * 
      * @param error
-     *        The table network error that was received; must not be {@code
-     *        null}.
+     *        The table network error that was received; must not be
+     *        {@code null}.
      * 
      * @return The formatted message indicating an uncorrelated error message
      *         was received; never {@code null}.

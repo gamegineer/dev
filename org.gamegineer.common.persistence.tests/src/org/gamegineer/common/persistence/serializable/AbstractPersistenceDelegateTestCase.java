@@ -60,7 +60,6 @@ public abstract class AbstractPersistenceDelegateTestCase
      */
     protected AbstractPersistenceDelegateTestCase()
     {
-        super();
     }
 
 

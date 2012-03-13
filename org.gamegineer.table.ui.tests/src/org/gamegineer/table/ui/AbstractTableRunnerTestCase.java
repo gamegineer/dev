@@ -57,7 +57,6 @@ public abstract class AbstractTableRunnerTestCase
      */
     protected AbstractTableRunnerTestCase()
     {
-        super();
     }
 
 

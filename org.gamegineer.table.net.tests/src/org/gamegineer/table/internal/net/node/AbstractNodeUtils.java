@@ -1,6 +1,6 @@
 /*
  * AbstractNodeUtils.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,7 +40,6 @@ public final class AbstractNodeUtils
      */
     private AbstractNodeUtils()
     {
-        super();
     }
 
 
@@ -59,8 +58,8 @@ public final class AbstractNodeUtils
      *        be {@code null}.
      * 
      * @return {@code true} if a remote node for the specified player is bound
-     *         to the specified local table network node; otherwise {@code
-     *         false}.
+     *         to the specified local table network node; otherwise
+     *         {@code false}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code node} or {@code playerName} is {@code null}.

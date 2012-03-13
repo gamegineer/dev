@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -287,7 +287,6 @@ final class NonNlsMessages
      */
     private NonNlsMessages()
     {
-        super();
     }
 
 
@@ -305,8 +304,8 @@ final class NonNlsMessages
      *        The card pile base design identifier; must not be {@code null}.
      * 
      * @return The formatted message indicating a card pile base design is
-     *         already registered for the specified identifier; never {@code
-     *         null}.
+     *         already registered for the specified identifier; never
+     *         {@code null}.
      */
     /* @NonNull */
     static String CardPileBaseDesignRegistry_registerCardPileBaseDesign_cardPileBaseDesign_registered(
@@ -344,8 +343,8 @@ final class NonNlsMessages
      *        The card pile base design identifier; must not be {@code null}.
      * 
      * @return The formatted message indicating an error occurred while parsing
-     *         the card pile base design configuration element; never {@code
-     *         null}.
+     *         the card pile base design configuration element; never
+     *         {@code null}.
      */
     /* @NonNull */
     static String CardPileBaseDesignRegistryExtensionPointAdapter_registerCardPileBaseDesign_parseError(
@@ -440,8 +439,8 @@ final class NonNlsMessages
      * @param attributeName
      *        The attribute name; must not be {@code null}.
      * 
-     * @return The formatted message indicating the attribute value is {@code
-     *         null}; never {@code null}.
+     * @return The formatted message indicating the attribute value is
+     *         {@code null}; never {@code null}.
      */
     /* @NonNull */
     static String MementoUtils_attributeValue_null(

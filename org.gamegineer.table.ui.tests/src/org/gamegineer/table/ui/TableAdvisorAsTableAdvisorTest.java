@@ -41,7 +41,6 @@ public final class TableAdvisorAsTableAdvisorTest
      */
     public TableAdvisorAsTableAdvisorTest()
     {
-        super();
     }
 
 

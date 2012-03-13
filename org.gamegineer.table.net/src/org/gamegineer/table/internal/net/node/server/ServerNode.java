@@ -1,6 +1,6 @@
 /*
  * ServerNode.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -93,8 +93,8 @@ public final class ServerNode
      *        The table network controller; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code nodeLayer} or {@code tableNetworkController} is {@code
-     *         null}.
+     *         If {@code nodeLayer} or {@code tableNetworkController} is
+     *         {@code null}.
      */
     private ServerNode(
         /* @NonNull */
@@ -319,8 +319,8 @@ public final class ServerNode
      * table.
      * 
      * @param table
-     *        The table used to specify the master table; must not be {@code
-     *        null}.
+     *        The table used to specify the master table; must not be
+     *        {@code null}.
      * 
      * @throws org.gamegineer.table.net.TableNetworkException
      *         If an error occurs.
@@ -497,7 +497,6 @@ public final class ServerNode
          */
         public Factory()
         {
-            super();
         }
 
 
@@ -535,7 +534,6 @@ public final class ServerNode
          */
         ServerTableManager()
         {
-            super();
         }
 
 

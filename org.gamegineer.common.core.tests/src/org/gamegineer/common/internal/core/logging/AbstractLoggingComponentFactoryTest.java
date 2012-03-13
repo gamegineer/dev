@@ -62,7 +62,6 @@ public final class AbstractLoggingComponentFactoryTest
      */
     public AbstractLoggingComponentFactoryTest()
     {
-        super();
     }
 
 

@@ -79,7 +79,6 @@ public final class LoggerConfigurationTest
      */
     public LoggerConfigurationTest()
     {
-        super();
     }
 
 

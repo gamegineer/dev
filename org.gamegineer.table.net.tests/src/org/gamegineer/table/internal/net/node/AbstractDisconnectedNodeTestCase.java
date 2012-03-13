@@ -1,6 +1,6 @@
 /*
  * AbstractDisconnectedNodeTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -58,12 +58,11 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractDisconnectedNodeTestCase} class.
+     * Initializes a new instance of the
+     * {@code AbstractDisconnectedNodeTestCase} class.
      */
     protected AbstractDisconnectedNodeTestCase()
     {
-        super();
     }
 
 
@@ -123,8 +122,8 @@ public abstract class AbstractDisconnectedNodeTestCase<T extends INode<RemoteNod
     /**
      * Gets the table network node under test in the fixture.
      * 
-     * @return The table network node under test in the fixture; never {@code
-     *         null}.
+     * @return The table network node under test in the fixture; never
+     *         {@code null}.
      */
     /* @NonNull */
     protected final T getNode()

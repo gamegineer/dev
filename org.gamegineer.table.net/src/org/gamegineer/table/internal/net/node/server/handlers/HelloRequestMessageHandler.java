@@ -61,7 +61,6 @@ public final class HelloRequestMessageHandler
      */
     private HelloRequestMessageHandler()
     {
-        super();
     }
 
 

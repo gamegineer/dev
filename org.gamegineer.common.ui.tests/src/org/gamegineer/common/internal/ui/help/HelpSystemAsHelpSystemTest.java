@@ -43,7 +43,6 @@ public final class HelpSystemAsHelpSystemTest
      */
     public HelpSystemAsHelpSystemTest()
     {
-        super();
     }
 
 

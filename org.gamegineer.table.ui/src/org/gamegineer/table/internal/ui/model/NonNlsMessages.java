@@ -1,6 +1,6 @@
 /*
  * NonNlsMessages.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -159,7 +159,6 @@ final class NonNlsMessages
      */
     private NonNlsMessages()
     {
-        super();
     }
 
 
@@ -174,8 +173,8 @@ final class NonNlsMessages
      * table memento.
      * 
      * @param file
-     *        The file from which the table memento is read; must not be {@code
-     *        null}.
+     *        The file from which the table memento is read; must not be
+     *        {@code null}.
      * 
      * @return The formatted message indicating an error occurred while reading
      *         the table memento; never {@code null}.

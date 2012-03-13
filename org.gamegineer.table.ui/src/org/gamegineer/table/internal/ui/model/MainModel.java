@@ -151,8 +151,8 @@ public final class MainModel
      * Opens an existing table from the specified file.
      * 
      * @param file
-     *        The file from which the table will be opened; must not be {@code
-     *        null}.
+     *        The file from which the table will be opened; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code file} is {@code null}.
@@ -210,8 +210,8 @@ public final class MainModel
      * Saves the current table to the specified file.
      * 
      * @param file
-     *        The file to which the table will be saved; must not be {@code
-     *        null}.
+     *        The file to which the table will be saved; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code file} is {@code null}.
@@ -259,7 +259,6 @@ public final class MainModel
          */
         TableModelListener()
         {
-            super();
         }
 
 

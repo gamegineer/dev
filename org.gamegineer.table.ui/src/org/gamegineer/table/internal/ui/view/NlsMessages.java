@@ -916,7 +916,6 @@ final class NlsMessages
      */
     private NlsMessages()
     {
-        super();
     }
 
 
@@ -929,8 +928,8 @@ final class NlsMessages
     /**
      * Gets the formatted message for the About dialog message.
      * 
-     * @return The formatted message for the About dialog message; never {@code
-     *         null}.
+     * @return The formatted message for the About dialog message; never
+     *         {@code null}.
      */
     /* @NonNull */
     static String AboutDialog_message()
@@ -941,8 +940,8 @@ final class NlsMessages
     /**
      * Gets the formatted message for the About dialog title.
      * 
-     * @return The formatted message for the About dialog title; never {@code
-     *         null}.
+     * @return The formatted message for the About dialog title; never
+     *         {@code null}.
      */
     /* @NonNull */
     static String AboutDialog_title()
@@ -1070,8 +1069,8 @@ final class NlsMessages
      * Gets the formatted text for an element in the players list.
      * 
      * @param player
-     *        The player associated with the list element; must not be {@code
-     *        null}.
+     *        The player associated with the list element; must not be
+     *        {@code null}.
      * 
      * @return The formatted text for an element in the players list; never
      *         {@code null}.

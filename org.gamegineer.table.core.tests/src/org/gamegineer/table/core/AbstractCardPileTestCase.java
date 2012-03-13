@@ -1,6 +1,6 @@
 /*
  * AbstractCardPileTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -72,7 +72,6 @@ public abstract class AbstractCardPileTestCase
      */
     protected AbstractCardPileTestCase()
     {
-        super();
     }
 
 
@@ -452,8 +451,8 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the card added event catches any exception thrown by the {@code
-     * cardAdded} method of a card pile listener.
+     * Ensures the card added event catches any exception thrown by the
+     * {@code cardAdded} method of a card pile listener.
      */
     @Test
     public void testCardAdded_CatchesListenerException()

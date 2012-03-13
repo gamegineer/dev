@@ -1,6 +1,6 @@
 /*
  * AbstractRemoteNodeControllerTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -61,12 +61,11 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractRemoteNodeControllerTestCase} class.
+     * Initializes a new instance of the
+     * {@code AbstractRemoteNodeControllerTestCase} class.
      */
     protected AbstractRemoteNodeControllerTestCase()
     {
-        super();
     }
 
 
@@ -224,8 +223,8 @@ public abstract class AbstractRemoteNodeControllerTestCase<T extends IRemoteNode
     }
 
     /**
-     * Ensures the {@code bind} method throws an exception when passed a {@code
-     * null} player name.
+     * Ensures the {@code bind} method throws an exception when passed a
+     * {@code null} player name.
      */
     @Test( expected = NullPointerException.class )
     public void testBind_PlayerName_Null()

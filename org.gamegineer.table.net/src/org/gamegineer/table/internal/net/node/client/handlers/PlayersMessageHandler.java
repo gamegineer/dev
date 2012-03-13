@@ -50,7 +50,6 @@ public final class PlayersMessageHandler
      */
     private PlayersMessageHandler()
     {
-        super();
     }
 
 

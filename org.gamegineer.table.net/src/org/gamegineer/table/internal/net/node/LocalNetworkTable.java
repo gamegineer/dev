@@ -1,6 +1,6 @@
 /*
  * LocalNetworkTable.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -314,7 +314,6 @@ final class LocalNetworkTable
          */
         CardListener()
         {
-            super();
         }
 
 
@@ -549,7 +548,6 @@ final class LocalNetworkTable
          */
         CardPileListener()
         {
-            super();
         }
 
 
@@ -914,7 +912,6 @@ final class LocalNetworkTable
          */
         TableListener()
         {
-            super();
         }
 
 

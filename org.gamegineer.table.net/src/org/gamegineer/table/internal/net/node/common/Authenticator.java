@@ -69,7 +69,6 @@ public final class Authenticator
      */
     public Authenticator()
     {
-        super();
     }
 
 

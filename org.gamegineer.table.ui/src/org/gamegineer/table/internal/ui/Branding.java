@@ -45,7 +45,6 @@ public final class Branding
      */
     private Branding()
     {
-        super();
     }
 
 

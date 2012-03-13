@@ -61,6 +61,5 @@ public final class BrandingUIConstants
      */
     private BrandingUIConstants()
     {
-        super();
     }
 }

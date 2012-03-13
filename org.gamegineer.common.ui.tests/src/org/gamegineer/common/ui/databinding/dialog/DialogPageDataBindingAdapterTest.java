@@ -1,6 +1,6 @@
 /*
  * DialogPageDataBindingAdapterTest.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,12 +39,11 @@ public final class DialogPageDataBindingAdapterTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * DialogPageDataBindingAdapterTest} class.
+     * Initializes a new instance of the
+     * {@code DialogPageDataBindingAdapterTest} class.
      */
     public DialogPageDataBindingAdapterTest()
     {
-        super();
     }
 
 

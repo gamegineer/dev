@@ -44,7 +44,6 @@ public final class SwingRealm
      */
     private SwingRealm()
     {
-        super();
     }
 
 

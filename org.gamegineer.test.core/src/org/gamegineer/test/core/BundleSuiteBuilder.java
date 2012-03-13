@@ -68,7 +68,6 @@ public final class BundleSuiteBuilder
      */
     private BundleSuiteBuilder()
     {
-        super();
     }
 
 

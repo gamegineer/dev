@@ -1,6 +1,6 @@
 /*
  * AbstractTableNetworkConfigurationTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -44,12 +44,11 @@ public abstract class AbstractTableNetworkConfigurationTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractTableNetworkConfigurationTestCase} class.
+     * Initializes a new instance of the
+     * {@code AbstractTableNetworkConfigurationTestCase} class.
      */
     protected AbstractTableNetworkConfigurationTestCase()
     {
-        super();
     }
 
 
@@ -93,8 +92,8 @@ public abstract class AbstractTableNetworkConfigurationTestCase
     }
 
     /**
-     * Ensures the {@code getLocalPlayerName} method does not return {@code
-     * null}.
+     * Ensures the {@code getLocalPlayerName} method does not return
+     * {@code null}.
      */
     @Test
     public void testGetLocalPlayerName_ReturnValue_NonNull()

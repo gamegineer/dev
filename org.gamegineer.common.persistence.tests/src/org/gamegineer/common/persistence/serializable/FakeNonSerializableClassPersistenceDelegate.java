@@ -1,6 +1,6 @@
 /*
  * FakeNonSerializableClassPersistenceDelegate.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,12 +36,11 @@ public final class FakeNonSerializableClassPersistenceDelegate
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * FakeNonSerializableClassPersistenceDelegate} class.
+     * Initializes a new instance of the
+     * {@code FakeNonSerializableClassPersistenceDelegate} class.
      */
     public FakeNonSerializableClassPersistenceDelegate()
     {
-        super();
     }
 
 

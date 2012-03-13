@@ -61,7 +61,6 @@ public final class CardPileIncrementMessageHandlerTest
      */
     public CardPileIncrementMessageHandlerTest()
     {
-        super();
     }
 
 

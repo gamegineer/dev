@@ -62,7 +62,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
      */
     public AbstractAbstractNodeAsNodeControllerTestCase()
     {
-        super();
     }
 
 
@@ -700,7 +699,6 @@ public abstract class AbstractAbstractNodeAsNodeControllerTestCase<T extends Abs
              */
             Factory()
             {
-                super();
             }
 
 

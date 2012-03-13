@@ -52,7 +52,6 @@ public final class BrandingUIUtils
      */
     private BrandingUIUtils()
     {
-        super();
     }
 
 

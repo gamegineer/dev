@@ -761,7 +761,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          */
         protected AbstractFactory()
         {
-            super();
         }
 
 
@@ -1012,7 +1011,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          */
         protected AbstractTransportLayerContext()
         {
-            super();
         }
 
 
@@ -1451,7 +1449,6 @@ public abstract class AbstractNode<RemoteNodeType extends IRemoteNode>
          */
         public TableManager()
         {
-            super();
         }
 
 

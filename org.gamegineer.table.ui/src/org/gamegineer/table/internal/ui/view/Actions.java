@@ -481,7 +481,6 @@ final class Actions
      */
     private Actions()
     {
-        super();
     }
 
 
@@ -1915,8 +1914,8 @@ final class Actions
     /**
      * Gets the cancel table network control request action.
      * 
-     * @return The cancel table network control request action; never {@code
-     *         null}.
+     * @return The cancel table network control request action; never
+     *         {@code null}.
      */
     /* @NonNull */
     static BasicAction getCancelTableNetworkControlRequestAction()
@@ -2125,8 +2124,8 @@ final class Actions
     /**
      * Gets the set accordian down card pile layout action.
      * 
-     * @return The set accordian down card pile layout action; never {@code
-     *         null}.
+     * @return The set accordian down card pile layout action; never
+     *         {@code null}.
      */
     /* @NonNull */
     static BasicAction getSetAccordianDownCardPileLayoutAction()
@@ -2137,8 +2136,8 @@ final class Actions
     /**
      * Gets the set accordian left card pile layout action.
      * 
-     * @return The set accordian left card pile layout action; never {@code
-     *         null}.
+     * @return The set accordian left card pile layout action; never
+     *         {@code null}.
      */
     /* @NonNull */
     static BasicAction getSetAccordianLeftCardPileLayoutAction()
@@ -2149,8 +2148,8 @@ final class Actions
     /**
      * Gets the set accordian right card pile layout action.
      * 
-     * @return The set accordian right card pile layout action; never {@code
-     *         null}.
+     * @return The set accordian right card pile layout action; never
+     *         {@code null}.
      */
     /* @NonNull */
     static BasicAction getSetAccordianRightCardPileLayoutAction()

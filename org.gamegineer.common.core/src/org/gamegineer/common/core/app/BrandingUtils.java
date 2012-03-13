@@ -44,7 +44,6 @@ public final class BrandingUtils
      */
     private BrandingUtils()
     {
-        super();
     }
 
 

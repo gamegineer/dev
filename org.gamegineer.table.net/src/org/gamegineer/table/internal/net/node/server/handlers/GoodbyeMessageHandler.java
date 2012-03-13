@@ -51,7 +51,6 @@ public final class GoodbyeMessageHandler
      */
     private GoodbyeMessageHandler()
     {
-        super();
     }
 
 

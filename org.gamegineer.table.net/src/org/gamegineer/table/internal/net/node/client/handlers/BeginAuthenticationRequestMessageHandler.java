@@ -52,12 +52,11 @@ public final class BeginAuthenticationRequestMessageHandler
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * BeginAuthenticationRequestMessageHandler} class.
+     * Initializes a new instance of the
+     * {@code BeginAuthenticationRequestMessageHandler} class.
      */
     private BeginAuthenticationRequestMessageHandler()
     {
-        super();
     }
 
 

@@ -56,7 +56,6 @@ public final class ActionMediatorTest
      */
     public ActionMediatorTest()
     {
-        super();
     }
 
 

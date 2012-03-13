@@ -170,8 +170,8 @@ final class TableView
      * Adds a new card to the focused card pile.
      * 
      * @param faceDesignId
-     *        The identifier of the design on the card face; must not be {@code
-     *        null}.
+     *        The identifier of the design on the card face; must not be
+     *        {@code null}.
      */
     private void addCard(
         /* @NonNull */
@@ -1332,7 +1332,6 @@ final class TableView
          */
         protected AbstractMouseInputHandler()
         {
-            super();
         }
 
 
@@ -1408,7 +1407,6 @@ final class TableView
          */
         DefaultMouseInputHandler()
         {
-            super();
         }
 
 
@@ -1672,8 +1670,8 @@ final class TableView
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code
-         * DraggingCardsMouseInputHandler} class.
+         * Initializes a new instance of the
+         * {@code DraggingCardsMouseInputHandler} class.
          */
         DraggingCardsMouseInputHandler()
         {
@@ -1793,8 +1791,8 @@ final class TableView
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code
-         * DraggingCardPileMouseInputHandler} class.
+         * Initializes a new instance of the
+         * {@code DraggingCardPileMouseInputHandler} class.
          */
         DraggingCardPileMouseInputHandler()
         {
@@ -1890,8 +1888,8 @@ final class TableView
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code
-         * DraggingTableMouseInputHandler} class.
+         * Initializes a new instance of the
+         * {@code DraggingTableMouseInputHandler} class.
          */
         DraggingTableMouseInputHandler()
         {
@@ -1977,7 +1975,6 @@ final class TableView
          */
         PopupMenuMouseInputHandler()
         {
-            super();
         }
 
 
@@ -2077,7 +2074,6 @@ final class TableView
          */
         TableListener()
         {
-            super();
         }
 
 
@@ -2142,7 +2138,6 @@ final class TableView
          */
         TableModelListener()
         {
-            super();
         }
 
 

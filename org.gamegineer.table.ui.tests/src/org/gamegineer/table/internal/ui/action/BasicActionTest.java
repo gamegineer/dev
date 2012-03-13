@@ -56,7 +56,6 @@ public final class BasicActionTest
      */
     public BasicActionTest()
     {
-        super();
     }
 
 

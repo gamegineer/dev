@@ -664,7 +664,6 @@ public final class MainFrame
          */
         MainModelListener()
         {
-            super();
         }
 
 
@@ -702,7 +701,6 @@ public final class MainFrame
          */
         TableModelListener()
         {
-            super();
         }
 
 

@@ -45,7 +45,6 @@ public final class TableRunnerAsTableRunnerTest
      */
     public TableRunnerAsTableRunnerTest()
     {
-        super();
     }
 
 

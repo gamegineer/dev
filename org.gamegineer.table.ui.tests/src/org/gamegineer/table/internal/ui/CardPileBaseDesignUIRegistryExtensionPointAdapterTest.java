@@ -69,7 +69,6 @@ public final class CardPileBaseDesignUIRegistryExtensionPointAdapterTest
      */
     public CardPileBaseDesignUIRegistryExtensionPointAdapterTest()
     {
-        super();
     }
 
 

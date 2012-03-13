@@ -56,7 +56,6 @@ public final class MainModelTest
      */
     public MainModelTest()
     {
-        super();
     }
 
 

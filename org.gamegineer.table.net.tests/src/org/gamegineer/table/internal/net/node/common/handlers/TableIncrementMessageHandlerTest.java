@@ -61,7 +61,6 @@ public final class TableIncrementMessageHandlerTest
      */
     public TableIncrementMessageHandlerTest()
     {
-        super();
     }
 
 

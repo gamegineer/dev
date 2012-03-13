@@ -50,7 +50,6 @@ public final class CancelControlRequestMessageHandler
      */
     private CancelControlRequestMessageHandler()
     {
-        super();
     }
 
 

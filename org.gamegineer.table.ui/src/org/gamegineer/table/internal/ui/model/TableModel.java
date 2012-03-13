@@ -1,6 +1,6 @@
 /*
  * TableModel.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -378,8 +378,8 @@ public final class TableModel
     /**
      * Indicates the table model is editable.
      * 
-     * @return {@code true} if the table model is editable; otherwise {@code
-     *         false}.
+     * @return {@code true} if the table model is editable; otherwise
+     *         {@code false}.
      */
     public boolean isEditable()
     {
@@ -421,8 +421,8 @@ public final class TableModel
      * Opens an existing table from the specified file.
      * 
      * @param file
-     *        The file from which the table will be opened; must not be {@code
-     *        null}.
+     *        The file from which the table will be opened; must not be
+     *        {@code null}.
      * 
      * @throws org.gamegineer.table.internal.ui.model.ModelException
      *         If an error occurs while opening the file.
@@ -517,8 +517,8 @@ public final class TableModel
      * Saves the table to the specified file.
      * 
      * @param file
-     *        The file to which the table will be saved; must not be {@code
-     *        null}.
+     *        The file to which the table will be saved; must not be
+     *        {@code null}.
      * 
      * @throws org.gamegineer.table.internal.ui.model.ModelException
      *         If an error occurs while saving the file.
@@ -707,7 +707,6 @@ public final class TableModel
          */
         CardPileModelListener()
         {
-            super();
         }
 
 
@@ -764,7 +763,6 @@ public final class TableModel
          */
         TableListener()
         {
-            super();
         }
 
 
@@ -842,7 +840,6 @@ public final class TableModel
          */
         TableNetworkListener()
         {
-            super();
         }
 
 

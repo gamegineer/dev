@@ -49,7 +49,6 @@ public final class MementoException
      */
     public MementoException()
     {
-        super();
     }
 
     /**

@@ -51,7 +51,6 @@ public final class GiveControlMessageHandler
      */
     private GiveControlMessageHandler()
     {
-        super();
     }
 
 

@@ -50,7 +50,6 @@ public final class TableIncrementMessageHandler
      */
     private TableIncrementMessageHandler()
     {
-        super();
     }
 
 

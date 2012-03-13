@@ -1,6 +1,6 @@
 /*
  * AbstractTableNetworkTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -61,7 +61,6 @@ public abstract class AbstractTableNetworkTestCase
      */
     protected AbstractTableNetworkTestCase()
     {
-        super();
     }
 
 
@@ -236,8 +235,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code host} method throws an exception when passed a {@code
-     * null} configuration.
+     * Ensures the {@code host} method throws an exception when passed a
+     * {@code null} configuration.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.
@@ -287,8 +286,8 @@ public abstract class AbstractTableNetworkTestCase
     }
 
     /**
-     * Ensures the {@code join} method throws an exception when passed a {@code
-     * null} configuration.
+     * Ensures the {@code join} method throws an exception when passed a
+     * {@code null} configuration.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

@@ -59,7 +59,6 @@ public final class TableMessageHandlerTest
      */
     public TableMessageHandlerTest()
     {
-        super();
     }
 
 

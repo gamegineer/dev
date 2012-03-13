@@ -1,6 +1,6 @@
 /*
  * DataBindingUtils.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,7 +40,6 @@ final class DataBindingUtils
      */
     private DataBindingUtils()
     {
-        super();
     }
 
 
@@ -92,8 +91,8 @@ final class DataBindingUtils
      *        The validation status to test or {@code null} if the status is not
      *        available.
      * @param isStatusStale
-     *        {@code true} if the validation status is stale; otherwise {@code
-     *        false}.
+     *        {@code true} if the validation status is stale; otherwise
+     *        {@code false}.
      * 
      * @return {@code true} if the specified validation status is fatal;
      *         otherwise {@code false}.

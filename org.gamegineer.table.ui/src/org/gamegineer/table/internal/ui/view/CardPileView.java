@@ -416,7 +416,6 @@ final class CardPileView
          */
         CardPileListener()
         {
-            super();
         }
 
 
@@ -522,7 +521,6 @@ final class CardPileView
          */
         CardPileModelListener()
         {
-            super();
         }
 
 

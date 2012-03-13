@@ -1,6 +1,6 @@
 /*
  * CardPileModel.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -192,8 +192,8 @@ public final class CardPileModel
      * @param card
      *        The card; must not be {@code null}.
      * 
-     * @return The card model associated with the specified card; never {@code
-     *         null}.
+     * @return The card model associated with the specified card; never
+     *         {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code card} does not exist in the card pile associated with
@@ -301,7 +301,6 @@ public final class CardPileModel
          */
         CardModelListener()
         {
-            super();
         }
 
 
@@ -339,7 +338,6 @@ public final class CardPileModel
          */
         CardPileListener()
         {
-            super();
         }
 
 

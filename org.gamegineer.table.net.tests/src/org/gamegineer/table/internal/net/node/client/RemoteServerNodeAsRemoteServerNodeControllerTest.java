@@ -1,6 +1,6 @@
 /*
  * RemoteServerNodeAsRemoteServerNodeControllerTest.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,12 +39,11 @@ public final class RemoteServerNodeAsRemoteServerNodeControllerTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * RemoteServerNodeAsRemoteServerNodeControllerTest} class.
+     * Initializes a new instance of the
+     * {@code RemoteServerNodeAsRemoteServerNodeControllerTest} class.
      */
     public RemoteServerNodeAsRemoteServerNodeControllerTest()
     {
-        super();
     }
 
 

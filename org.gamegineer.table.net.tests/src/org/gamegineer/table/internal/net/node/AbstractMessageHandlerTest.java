@@ -61,7 +61,6 @@ public final class AbstractMessageHandlerTest
      */
     public AbstractMessageHandlerTest()
     {
-        super();
     }
 
 
@@ -197,7 +196,6 @@ public final class AbstractMessageHandlerTest
          */
         FakeMessage()
         {
-            super();
         }
     }
 

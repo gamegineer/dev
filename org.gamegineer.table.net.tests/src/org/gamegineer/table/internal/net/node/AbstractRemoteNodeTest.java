@@ -60,7 +60,6 @@ public final class AbstractRemoteNodeTest
      */
     public AbstractRemoteNodeTest()
     {
-        super();
     }
 
 

@@ -61,7 +61,6 @@ public final class CardIncrementMessageHandlerTest
      */
     public CardIncrementMessageHandlerTest()
     {
-        super();
     }
 
 

@@ -1,6 +1,6 @@
 /*
  * FakePersistenceDelegate.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,6 +40,5 @@ public class FakePersistenceDelegate
      */
     public FakePersistenceDelegate()
     {
-        super();
     }
 }

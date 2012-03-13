@@ -40,7 +40,6 @@ public final class Loggers
      */
     private Loggers()
     {
-        super();
     }
 
 

@@ -49,7 +49,6 @@ public final class TableMessageHandler
      */
     private TableMessageHandler()
     {
-        super();
     }
 
 

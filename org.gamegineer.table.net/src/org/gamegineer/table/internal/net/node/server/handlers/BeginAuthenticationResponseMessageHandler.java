@@ -63,7 +63,6 @@ public final class BeginAuthenticationResponseMessageHandler
      */
     private BeginAuthenticationResponseMessageHandler()
     {
-        super();
     }
 
 

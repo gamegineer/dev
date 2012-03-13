@@ -1,6 +1,6 @@
 /*
  * AbstractCardPileBaseDesignRegistryTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -49,12 +49,11 @@ public abstract class AbstractCardPileBaseDesignRegistryTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractCardPileBaseDesignRegistryTestCase} class.
+     * Initializes a new instance of the
+     * {@code AbstractCardPileBaseDesignRegistryTestCase} class.
      */
     protected AbstractCardPileBaseDesignRegistryTestCase()
     {
-        super();
     }
 
 
@@ -65,8 +64,8 @@ public abstract class AbstractCardPileBaseDesignRegistryTestCase
     /**
      * Creates the card pile base design registry to be tested.
      * 
-     * @return The card pile base design registry to be tested; never {@code
-     *         null}.
+     * @return The card pile base design registry to be tested; never
+     *         {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

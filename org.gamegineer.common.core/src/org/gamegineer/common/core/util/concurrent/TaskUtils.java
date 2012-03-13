@@ -1,6 +1,6 @@
 /*
  * TaskUtils.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,7 +40,6 @@ public final class TaskUtils
      */
     private TaskUtils()
     {
-        super();
     }
 
 
@@ -55,10 +54,10 @@ public final class TaskUtils
      * Many of the Java concurrent programming framework task execution methods
      * may throw an {@code ExecutionException}. In such cases, the cause of the
      * execution exception will fall into one of three categories: a checked
-     * exception thrown by the task, a {@code RuntimeException}, or an {@code
-     * Error}. Developers are expected to test for known checked exceptions and
-     * re-throw them. Unknown causes are then passed to this method to be
-     * properly handled.
+     * exception thrown by the task, a {@code RuntimeException}, or an
+     * {@code Error}. Developers are expected to test for known checked
+     * exceptions and re-throw them. Unknown causes are then passed to this
+     * method to be properly handled.
      * </p>
      * 
      * <p>
@@ -85,8 +84,8 @@ public final class TaskUtils
      * </pre>
      * 
      * @param t
-     *        The unknown cause of a task execution exception; may be {@code
-     *        null}.
+     *        The unknown cause of a task execution exception; may be
+     *        {@code null}.
      * 
      * @return The unchecked exception which caused the task execution
      *         exception; never {@code null}.

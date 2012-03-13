@@ -1,6 +1,6 @@
 /*
  * ClientNode.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -104,8 +104,8 @@ public final class ClientNode
      *        The table network controller; must not be {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code nodeLayer} or {@code tableNetworkController} is {@code
-     *         null}.
+     *         If {@code nodeLayer} or {@code tableNetworkController} is
+     *         {@code null}.
      */
     private ClientNode(
         /* @NonNull */
@@ -431,7 +431,6 @@ public final class ClientNode
          */
         ClientTableManager()
         {
-            super();
         }
     }
 
@@ -551,7 +550,6 @@ public final class ClientNode
          */
         public Factory()
         {
-            super();
         }
 
 

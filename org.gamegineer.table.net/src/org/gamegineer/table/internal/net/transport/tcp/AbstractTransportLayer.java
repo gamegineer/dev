@@ -1,6 +1,6 @@
 /*
  * AbstractTransportLayer.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -383,8 +383,8 @@ abstract class AbstractTransportLayer
     /**
      * Gets the dispatcher associated with the transport layer.
      * 
-     * @return The dispatcher associated with the transport layer; never {@code
-     *         null}.
+     * @return The dispatcher associated with the transport layer; never
+     *         {@code null}.
      */
     /* @NonNull */
     final Dispatcher getDispatcher()
@@ -568,7 +568,6 @@ abstract class AbstractTransportLayer
          */
         AbstractFactory()
         {
-            super();
         }
 
 

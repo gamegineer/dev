@@ -50,7 +50,6 @@ public final class RequestControlMessageHandler
      */
     private RequestControlMessageHandler()
     {
-        super();
     }
 
 

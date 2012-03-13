@@ -45,7 +45,6 @@ public final class AbstractRemoteNodeAsServiceTest
      */
     public AbstractRemoteNodeAsServiceTest()
     {
-        super();
     }
 
 

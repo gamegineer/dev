@@ -43,7 +43,6 @@ public final class OptionDialogs
      */
     private OptionDialogs()
     {
-        super();
     }
 
 

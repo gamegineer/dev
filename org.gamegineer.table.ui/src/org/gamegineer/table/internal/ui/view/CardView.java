@@ -254,7 +254,6 @@ final class CardView
          */
         CardListener()
         {
-            super();
         }
 
 
@@ -319,7 +318,6 @@ final class CardView
          */
         CardModelListener()
         {
-            super();
         }
     }
 }

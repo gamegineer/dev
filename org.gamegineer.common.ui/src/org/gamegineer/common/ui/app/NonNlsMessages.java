@@ -59,7 +59,6 @@ final class NonNlsMessages
      */
     private NonNlsMessages()
     {
-        super();
     }
 
 

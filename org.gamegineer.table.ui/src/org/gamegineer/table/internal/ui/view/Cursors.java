@@ -1,6 +1,6 @@
 /*
  * Cursors.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -75,7 +75,6 @@ final class Cursors
      */
     private Cursors()
     {
-        super();
     }
 
 
@@ -87,8 +86,8 @@ final class Cursors
      * Creates a cursor with the specified image.
      * 
      * @param path
-     *        The bundle-relative path to the cursor image; must not be {@code
-     *        null}.
+     *        The bundle-relative path to the cursor image; must not be
+     *        {@code null}.
      * @param hotSpot
      *        The cursor hot spot; must not be {@code null}.
      * @param name

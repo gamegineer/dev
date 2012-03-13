@@ -55,7 +55,6 @@ public final class EndAuthenticationMessageHandler
      */
     private EndAuthenticationMessageHandler()
     {
-        super();
     }
 
 

@@ -1,6 +1,6 @@
 /*
  * AbstractPersistenceDelegateRegistryTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -50,12 +50,11 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractPersistenceDelegateRegistryTestCase} class.
+     * Initializes a new instance of the
+     * {@code AbstractPersistenceDelegateRegistryTestCase} class.
      */
     protected AbstractPersistenceDelegateRegistryTestCase()
     {
-        super();
     }
 
 
@@ -66,8 +65,8 @@ public abstract class AbstractPersistenceDelegateRegistryTestCase
     /**
      * Creates the persistence delegate registry to be tested.
      * 
-     * @return The persistence delegate registry to be tested; never {@code
-     *         null}.
+     * @return The persistence delegate registry to be tested; never
+     *         {@code null}.
      * 
      * @throws java.lang.Exception
      *         If an error occurs.

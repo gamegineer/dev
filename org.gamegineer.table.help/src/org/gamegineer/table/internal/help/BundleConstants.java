@@ -46,6 +46,5 @@ public final class BundleConstants
      */
     private BundleConstants()
     {
-        super();
     }
 }

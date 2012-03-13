@@ -1,6 +1,6 @@
 /*
  * SpringUtils.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -47,7 +47,6 @@ public final class SpringUtils
      */
     private SpringUtils()
     {
-        super();
     }
 
 
@@ -60,11 +59,11 @@ public final class SpringUtils
      * container.
      * 
      * <p>
-     * Aligns the first {@code rows} * {@code columns} components of {@code
-     * parent} in a grid. Each component in a column is as wide as the maximum
-     * preferred width of the components in that column. The height is similarly
-     * determined for each row. The parent is made just big enough to fit them
-     * all.
+     * Aligns the first {@code rows} * {@code columns} components of
+     * {@code parent} in a grid. Each component in a column is as wide as the
+     * maximum preferred width of the components in that column. The height is
+     * similarly determined for each row. The parent is made just big enough to
+     * fit them all.
      * </p>
      * 
      * @param parent
@@ -147,10 +146,10 @@ public final class SpringUtils
      * Builds a grid layout for the components of the specified container.
      * 
      * <p>
-     * Aligns the first {@code rows} * {@code columns} components of {@code
-     * parent} in a grid. Each component is as big as the maximum preferred
-     * width and height of the components. The parent is made just big enough to
-     * fit them all.
+     * Aligns the first {@code rows} * {@code columns} components of
+     * {@code parent} in a grid. Each component is as big as the maximum
+     * preferred width and height of the components. The parent is made just big
+     * enough to fit them all.
      * </p>
      * 
      * @param parent
@@ -262,8 +261,8 @@ public final class SpringUtils
      * @param columns
      *        The number of columns in the grid.
      * 
-     * @return The layout constraints for the specified grid cell; never {@code
-     *         null}.
+     * @return The layout constraints for the specified grid cell; never
+     *         {@code null}.
      */
     /* @NonNull */
     private static SpringLayout.Constraints getGridCellConstraints(

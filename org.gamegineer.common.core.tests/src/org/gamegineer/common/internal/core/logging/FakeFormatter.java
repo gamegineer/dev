@@ -1,6 +1,6 @@
 /*
  * FakeFormatter.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,7 +41,6 @@ public final class FakeFormatter
      */
     public FakeFormatter()
     {
-        super();
     }
 
 

@@ -48,7 +48,6 @@ public final class ModelException
      */
     public ModelException()
     {
-        super();
     }
 
     /**

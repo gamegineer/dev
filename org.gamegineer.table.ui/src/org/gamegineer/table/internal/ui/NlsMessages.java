@@ -68,6 +68,5 @@ final class NlsMessages
      */
     private NlsMessages()
     {
-        super();
     }
 }

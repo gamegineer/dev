@@ -49,7 +49,6 @@ public abstract class AbstractHelpSystemTestCase
      */
     protected AbstractHelpSystemTestCase()
     {
-        super();
     }
 
 

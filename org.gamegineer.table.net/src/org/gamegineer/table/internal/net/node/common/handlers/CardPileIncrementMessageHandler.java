@@ -50,7 +50,6 @@ public final class CardPileIncrementMessageHandler
      */
     private CardPileIncrementMessageHandler()
     {
-        super();
     }
 
 

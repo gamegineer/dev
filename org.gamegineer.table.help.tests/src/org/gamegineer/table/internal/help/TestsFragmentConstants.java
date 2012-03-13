@@ -46,6 +46,5 @@ public final class TestsFragmentConstants
      */
     private TestsFragmentConstants()
     {
-        super();
     }
 }

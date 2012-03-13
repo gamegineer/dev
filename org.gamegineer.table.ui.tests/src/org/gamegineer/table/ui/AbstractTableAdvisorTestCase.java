@@ -50,7 +50,6 @@ public abstract class AbstractTableAdvisorTestCase
      */
     protected AbstractTableAdvisorTestCase()
     {
-        super();
     }
 
 

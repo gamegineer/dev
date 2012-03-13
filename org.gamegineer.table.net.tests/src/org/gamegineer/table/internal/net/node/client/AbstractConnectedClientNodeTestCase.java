@@ -1,6 +1,6 @@
 /*
  * AbstractConnectedClientNodeTestCase.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -43,12 +43,11 @@ public abstract class AbstractConnectedClientNodeTestCase<T extends IClientNode>
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * AbstractConnectedClientNodeTestCase} class.
+     * Initializes a new instance of the
+     * {@code AbstractConnectedClientNodeTestCase} class.
      */
     protected AbstractConnectedClientNodeTestCase()
     {
-        super();
     }
 
 
