@@ -30,13 +30,6 @@
             unpack="true"
             fragment="true" />
     <plugin
-            id="org.gamegineer.table.core.persistence.serializable.tests"
-            download-size="0"
-            install-size="0"
-            version="0.0.0"
-            unpack="true"
-            fragment="true" />
-    <plugin
             id="org.gamegineer.table.net.tests"
             download-size="0"
             install-size="0"

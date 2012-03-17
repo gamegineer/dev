@@ -19,11 +19,12 @@
  * Created on Aug 18, 2010 at 10:41:32 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.persistence.serializable;
 
 import java.io.IOException;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
+import org.gamegineer.table.internal.core.CardPileBaseDesignExtensionProxy;
 
 /**
  * A persistence delegate for the {@code CardPileBaseDesignExtensionProxy}

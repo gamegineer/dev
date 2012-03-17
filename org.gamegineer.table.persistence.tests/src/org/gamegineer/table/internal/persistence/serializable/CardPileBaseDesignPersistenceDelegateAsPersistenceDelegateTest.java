@@ -1,5 +1,5 @@
 /*
- * CardPileLayoutPersistenceDelegateAsPersistenceDelegateTest.java
+ * CardPileBaseDesignPersistenceDelegateAsPersistenceDelegateTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,23 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 9, 2010 at 9:30:34 PM.
+ * Created on Apr 28, 2010 at 10:32:09 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.internal.persistence.serializable;
 
+import static org.junit.Assert.assertEquals;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
+import org.gamegineer.table.core.CardPileBaseDesigns;
+import org.gamegineer.table.internal.core.CardPileBaseDesign;
+import org.gamegineer.table.internal.persistence.serializable.CardPileBaseDesignPersistenceDelegate;
+import org.gamegineer.table.internal.persistence.serializable.CardPileBaseDesignProxy;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.core.CardPileLayoutPersistenceDelegate} class to
- * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.persistence.serializable.CardPileBaseDesignPersistenceDelegate}
+ * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegate}
  * interface.
  */
-public final class CardPileLayoutPersistenceDelegateAsPersistenceDelegateTest
+public final class CardPileBaseDesignPersistenceDelegateAsPersistenceDelegateTest
     extends AbstractPersistenceDelegateTestCase
 {
     // ======================================================================
@@ -41,9 +46,10 @@ public final class CardPileLayoutPersistenceDelegateAsPersistenceDelegateTest
 
     /**
      * Initializes a new instance of the
-     * {@code CardPileLayoutPersistenceDelegateAsPersistenceDelegateTest} class.
+     * {@code CardPileBaseDesignPersistenceDelegateAsPersistenceDelegateTest}
+     * class.
      */
-    public CardPileLayoutPersistenceDelegateAsPersistenceDelegateTest()
+    public CardPileBaseDesignPersistenceDelegateAsPersistenceDelegateTest()
     {
     }
 
@@ -53,12 +59,26 @@ public final class CardPileLayoutPersistenceDelegateAsPersistenceDelegateTest
     // ======================================================================
 
     /*
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#assertSubjectEquals(java.lang.Object, java.lang.Object)
+     */
+    @Override
+    protected void assertSubjectEquals(
+        final Object expected,
+        final Object actual )
+    {
+        final CardPileBaseDesign expectedCardPileBaseDesign = (CardPileBaseDesign)expected;
+        final CardPileBaseDesign actualCardPileBaseDesign = (CardPileBaseDesign)actual;
+        assertEquals( expectedCardPileBaseDesign.getId(), actualCardPileBaseDesign.getId() );
+        assertEquals( expectedCardPileBaseDesign.getSize(), actualCardPileBaseDesign.getSize() );
+    }
+
+    /*
      * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createPersistenceDelegate()
      */
     @Override
     protected IPersistenceDelegate createPersistenceDelegate()
     {
-        return new CardPileLayoutPersistenceDelegate();
+        return new CardPileBaseDesignPersistenceDelegate();
     }
 
     /*
@@ -67,7 +87,7 @@ public final class CardPileLayoutPersistenceDelegateAsPersistenceDelegateTest
     @Override
     protected Object createSubject()
     {
-        return CardPileLayout.STACKED;
+        return CardPileBaseDesigns.createUniqueCardPileBaseDesign();
     }
 
     /*
@@ -77,6 +97,7 @@ public final class CardPileLayoutPersistenceDelegateAsPersistenceDelegateTest
     protected void registerPersistenceDelegates(
         final IPersistenceDelegateRegistry persistenceDelegateRegistry )
     {
-        persistenceDelegateRegistry.registerPersistenceDelegate( CardPileLayout.class, new CardPileLayoutPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardPileBaseDesign.class, new CardPileBaseDesignPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardPileBaseDesignProxy.class, new CardPileBaseDesignPersistenceDelegate() );
     }
 }

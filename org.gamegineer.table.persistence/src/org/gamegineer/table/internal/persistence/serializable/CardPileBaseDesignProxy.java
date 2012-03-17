@@ -1,6 +1,6 @@
 /*
  * CardPileBaseDesignProxy.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,13 +19,14 @@
  * Created on Apr 27, 2010 at 10:35:29 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.persistence.serializable;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardPileBaseDesignId;
+import org.gamegineer.table.internal.core.CardPileBaseDesign;
 
 /**
  * A serializable proxy for the {@code CardPileBaseDesign} class.

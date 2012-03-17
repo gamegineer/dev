@@ -1,6 +1,6 @@
 /*
  * CardSurfaceDesignProxy.java
- * Copyright 2008-2010 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,13 +19,14 @@
  * Created on May 8, 2010 at 9:13:57 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.persistence.serializable;
 
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardSurfaceDesignId;
+import org.gamegineer.table.internal.core.CardSurfaceDesign;
 
 /**
  * A serializable proxy for the {@code CardSurfaceDesign} class.

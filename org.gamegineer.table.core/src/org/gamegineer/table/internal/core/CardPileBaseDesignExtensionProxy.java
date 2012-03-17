@@ -1,6 +1,6 @@
 /*
  * CardPileBaseDesignExtensionProxy.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import net.jcip.annotations.Immutable;
 import org.eclipse.core.runtime.IExtension;
@@ -55,8 +56,8 @@ public final class CardPileBaseDesignExtensionProxy
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * CardPileBaseDesignExtensionProxy} class.
+     * Initializes a new instance of the
+     * {@code CardPileBaseDesignExtensionProxy} class.
      * 
      * @param extension
      *        The extension that contributed this card pile base design; must
@@ -73,9 +74,9 @@ public final class CardPileBaseDesignExtensionProxy
      * @throws java.lang.IllegalArgumentException
      *         If {@code width} or {@code height} is negative.
      * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
+     *         If {@code extension} or {@code id} is {@code null}.
      */
-    CardPileBaseDesignExtensionProxy(
+    public CardPileBaseDesignExtensionProxy(
         /* @NonNull */
         final IExtension extension,
         /* @NonNull */
@@ -83,7 +84,7 @@ public final class CardPileBaseDesignExtensionProxy
         final int width,
         final int height )
     {
-        assert extension != null;
+        assertArgumentNotNull( extension, "extension" ); //$NON-NLS-1$
 
         extensionNamespaceId_ = extension.getNamespaceIdentifier();
         extensionSimpleId_ = extension.getSimpleIdentifier();
@@ -102,7 +103,7 @@ public final class CardPileBaseDesignExtensionProxy
      *         never {@code null}.
      */
     /* @NonNull */
-    ICardPileBaseDesign getDelegate()
+    public ICardPileBaseDesign getDelegate()
     {
         return delegate_;
     }

@@ -1,5 +1,5 @@
 /*
- * CardPileBaseDesignPersistenceDelegate.java
+ * CardOrientationPersistenceDelegate.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,20 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Apr 27, 2010 at 10:35:43 PM.
+ * Created on May 9, 2010 at 9:36:35 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.persistence.serializable;
 
-import java.io.IOException;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
 
 /**
- * A persistence delegate for the {@code CardPileBaseDesign} class.
+ * A persistence delegate for the {@code CardOrientation} class.
  */
 @Immutable
-public final class CardPileBaseDesignPersistenceDelegate
+public final class CardOrientationPersistenceDelegate
     extends AbstractPersistenceDelegate
 {
     // ======================================================================
@@ -38,30 +37,9 @@ public final class CardPileBaseDesignPersistenceDelegate
 
     /**
      * Initializes a new instance of the
-     * {@code CardPileBaseDesignPersistenceDelegate} class.
+     * {@code CardOrientationPersistenceDelegate} class.
      */
-    public CardPileBaseDesignPersistenceDelegate()
+    public CardOrientationPersistenceDelegate()
     {
-    }
-
-
-    // ======================================================================
-    // Methods
-    // ======================================================================
-
-    /*
-     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
-     */
-    @Override
-    public Object replaceObject(
-        final Object obj )
-        throws IOException
-    {
-        if( obj instanceof CardPileBaseDesign )
-        {
-            return new CardPileBaseDesignProxy( (CardPileBaseDesign)obj );
-        }
-
-        return super.replaceObject( obj );
     }
 }

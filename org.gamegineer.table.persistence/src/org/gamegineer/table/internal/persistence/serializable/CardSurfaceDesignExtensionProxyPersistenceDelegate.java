@@ -1,5 +1,5 @@
 /*
- * CardSurfaceDesignPersistenceDelegate.java
+ * CardSurfaceDesignExtensionProxyPersistenceDelegate.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,20 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 8, 2010 at 9:14:08 PM.
+ * Created on Aug 18, 2010 at 11:37:10 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.persistence.serializable;
 
 import java.io.IOException;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
+import org.gamegineer.table.internal.core.CardSurfaceDesignExtensionProxy;
 
 /**
- * A persistence delegate for the {@code CardSurfaceDesign} class.
+ * A persistence delegate for the {@code CardSurfaceDesignExtensionProxy} class.
  */
 @Immutable
-public final class CardSurfaceDesignPersistenceDelegate
+public final class CardSurfaceDesignExtensionProxyPersistenceDelegate
     extends AbstractPersistenceDelegate
 {
     // ======================================================================
@@ -38,9 +39,9 @@ public final class CardSurfaceDesignPersistenceDelegate
 
     /**
      * Initializes a new instance of the
-     * {@code CardSurfaceDesignPersistenceDelegate} class.
+     * {@code CardSurfaceDesignExtensionProxyPersistenceDelegate} class.
      */
-    public CardSurfaceDesignPersistenceDelegate()
+    public CardSurfaceDesignExtensionProxyPersistenceDelegate()
     {
     }
 
@@ -57,9 +58,9 @@ public final class CardSurfaceDesignPersistenceDelegate
         final Object obj )
         throws IOException
     {
-        if( obj instanceof CardSurfaceDesign )
+        if( obj instanceof CardSurfaceDesignExtensionProxy )
         {
-            return new CardSurfaceDesignProxy( (CardSurfaceDesign)obj );
+            return ((CardSurfaceDesignExtensionProxy)obj).getDelegate();
         }
 
         return super.replaceObject( obj );

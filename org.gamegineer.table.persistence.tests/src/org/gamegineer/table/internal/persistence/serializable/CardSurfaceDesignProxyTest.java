@@ -19,13 +19,14 @@
  * Created on May 8, 2010 at 9:14:44 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.persistence.serializable;
 
+import org.gamegineer.table.internal.persistence.serializable.CardSurfaceDesignProxy;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.CardSurfaceDesignProxy} class.
+ * {@link org.gamegineer.table.internal.persistence.serializable.CardSurfaceDesignProxy} class.
  */
 public final class CardSurfaceDesignProxyTest
 {

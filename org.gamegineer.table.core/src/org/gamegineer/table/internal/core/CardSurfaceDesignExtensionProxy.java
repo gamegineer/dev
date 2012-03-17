@@ -1,6 +1,6 @@
 /*
  * CardSurfaceDesignExtensionProxy.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 package org.gamegineer.table.internal.core;
 
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import net.jcip.annotations.Immutable;
 import org.eclipse.core.runtime.IExtension;
@@ -73,9 +74,9 @@ public final class CardSurfaceDesignExtensionProxy
      * @throws java.lang.IllegalArgumentException
      *         If {@code width} or {@code height} is negative.
      * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
+     *         If {@code extension} or {@code id} is {@code null}.
      */
-    CardSurfaceDesignExtensionProxy(
+    public CardSurfaceDesignExtensionProxy(
         /* @NonNull */
         final IExtension extension,
         /* @NonNull */
@@ -83,7 +84,7 @@ public final class CardSurfaceDesignExtensionProxy
         final int width,
         final int height )
     {
-        assert extension != null;
+        assertArgumentNotNull( extension, "extension" ); //$NON-NLS-1$
 
         extensionNamespaceId_ = extension.getNamespaceIdentifier();
         extensionSimpleId_ = extension.getSimpleIdentifier();
@@ -102,7 +103,7 @@ public final class CardSurfaceDesignExtensionProxy
      *         {@code null}.
      */
     /* @NonNull */
-    ICardSurfaceDesign getDelegate()
+    public ICardSurfaceDesign getDelegate()
     {
         return delegate_;
     }

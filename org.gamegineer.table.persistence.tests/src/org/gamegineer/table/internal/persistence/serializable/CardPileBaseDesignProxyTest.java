@@ -19,13 +19,14 @@
  * Created on Apr 28, 2010 at 10:17:04 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.persistence.serializable;
 
+import org.gamegineer.table.internal.persistence.serializable.CardPileBaseDesignProxy;
 import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.CardPileBaseDesignProxy} class.
+ * {@link org.gamegineer.table.internal.persistence.serializable.CardPileBaseDesignProxy} class.
  */
 public final class CardPileBaseDesignProxyTest
 {

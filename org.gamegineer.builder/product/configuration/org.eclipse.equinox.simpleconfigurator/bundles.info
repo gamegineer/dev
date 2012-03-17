@@ -18,7 +18,6 @@ org.gamegineer.common.core,%version.%qualifier,plugins/org.gamegineer.common.cor
 org.gamegineer.common.persistence,%version.%qualifier,plugins/org.gamegineer.common.persistence_%version.%qualifier.jar,4,false
 org.gamegineer.common.ui,%version.%qualifier,plugins/org.gamegineer.common.ui_%version.%qualifier.jar,4,false
 org.gamegineer.table.core,%version.%qualifier,plugins/org.gamegineer.table.core_%version.%qualifier.jar,4,false
-org.gamegineer.table.core.persistence.serializable,%version.%qualifier,plugins/org.gamegineer.table.core.persistence.serializable_%version.%qualifier.jar,4,false
 org.gamegineer.table.help,%version.%qualifier,plugins/org.gamegineer.table.help_%version.%qualifier.jar,4,false
 org.gamegineer.table.net,%version.%qualifier,plugins/org.gamegineer.table.net_%version.%qualifier.jar,4,false
 org.gamegineer.table.persistence,%version.%qualifier,plugins/org.gamegineer.table.persistence_%version.%qualifier.jar,4,false

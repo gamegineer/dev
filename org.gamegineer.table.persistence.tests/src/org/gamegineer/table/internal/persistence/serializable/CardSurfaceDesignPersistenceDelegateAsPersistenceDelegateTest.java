@@ -1,5 +1,5 @@
 /*
- * CardOrientationPersistenceDelegateAsPersistenceDelegateTest.java
+ * CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,23 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 9, 2010 at 9:37:46 PM.
+ * Created on May 8, 2010 at 9:14:35 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.internal.persistence.serializable;
 
+import static org.junit.Assert.assertEquals;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
+import org.gamegineer.table.core.CardSurfaceDesigns;
+import org.gamegineer.table.internal.core.CardSurfaceDesign;
+import org.gamegineer.table.internal.persistence.serializable.CardSurfaceDesignPersistenceDelegate;
+import org.gamegineer.table.internal.persistence.serializable.CardSurfaceDesignProxy;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.core.CardOrientationPersistenceDelegate} class to
- * ensure it does not violate the contract of the
+ * {@link org.gamegineer.table.internal.persistence.serializable.CardSurfaceDesignPersistenceDelegate}
+ * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegate}
  * interface.
  */
-public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
+public final class CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest
     extends AbstractPersistenceDelegateTestCase
 {
     // ======================================================================
@@ -41,10 +46,10 @@ public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
 
     /**
      * Initializes a new instance of the
-     * {@code CardOrientationPersistenceDelegateAsPersistenceDelegateTest}
+     * {@code CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest}
      * class.
      */
-    public CardOrientationPersistenceDelegateAsPersistenceDelegateTest()
+    public CardSurfaceDesignPersistenceDelegateAsPersistenceDelegateTest()
     {
     }
 
@@ -54,12 +59,26 @@ public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
     // ======================================================================
 
     /*
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#assertSubjectEquals(java.lang.Object, java.lang.Object)
+     */
+    @Override
+    protected void assertSubjectEquals(
+        final Object expected,
+        final Object actual )
+    {
+        final CardSurfaceDesign expectedCardSurfaceDesign = (CardSurfaceDesign)expected;
+        final CardSurfaceDesign actualCardSurfaceDesign = (CardSurfaceDesign)actual;
+        assertEquals( expectedCardSurfaceDesign.getId(), actualCardSurfaceDesign.getId() );
+        assertEquals( expectedCardSurfaceDesign.getSize(), actualCardSurfaceDesign.getSize() );
+    }
+
+    /*
      * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase#createPersistenceDelegate()
      */
     @Override
     protected IPersistenceDelegate createPersistenceDelegate()
     {
-        return new CardOrientationPersistenceDelegate();
+        return new CardSurfaceDesignPersistenceDelegate();
     }
 
     /*
@@ -68,7 +87,7 @@ public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
     @Override
     protected Object createSubject()
     {
-        return CardOrientation.FACE_UP;
+        return CardSurfaceDesigns.createUniqueCardSurfaceDesign();
     }
 
     /*
@@ -78,6 +97,7 @@ public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
     protected void registerPersistenceDelegates(
         final IPersistenceDelegateRegistry persistenceDelegateRegistry )
     {
-        persistenceDelegateRegistry.registerPersistenceDelegate( CardOrientation.class, new CardOrientationPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardSurfaceDesign.class, new CardSurfaceDesignPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardSurfaceDesignProxy.class, new CardSurfaceDesignPersistenceDelegate() );
     }
 }

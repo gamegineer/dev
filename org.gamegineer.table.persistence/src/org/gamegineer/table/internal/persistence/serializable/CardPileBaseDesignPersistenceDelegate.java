@@ -1,5 +1,5 @@
 /*
- * CardOrientationPersistenceDelegate.java
+ * CardPileBaseDesignPersistenceDelegate.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,19 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 9, 2010 at 9:36:35 PM.
+ * Created on Apr 27, 2010 at 10:35:43 PM.
  */
 
-package org.gamegineer.table.core;
+package org.gamegineer.table.internal.persistence.serializable;
 
+import java.io.IOException;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
+import org.gamegineer.table.internal.core.CardPileBaseDesign;
 
 /**
- * A persistence delegate for the {@code CardOrientation} class.
+ * A persistence delegate for the {@code CardPileBaseDesign} class.
  */
 @Immutable
-public final class CardOrientationPersistenceDelegate
+public final class CardPileBaseDesignPersistenceDelegate
     extends AbstractPersistenceDelegate
 {
     // ======================================================================
@@ -37,9 +39,30 @@ public final class CardOrientationPersistenceDelegate
 
     /**
      * Initializes a new instance of the
-     * {@code CardOrientationPersistenceDelegate} class.
+     * {@code CardPileBaseDesignPersistenceDelegate} class.
      */
-    public CardOrientationPersistenceDelegate()
+    public CardPileBaseDesignPersistenceDelegate()
     {
+    }
+
+
+    // ======================================================================
+    // Methods
+    // ======================================================================
+
+    /*
+     * @see org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate#replaceObject(java.lang.Object)
+     */
+    @Override
+    public Object replaceObject(
+        final Object obj )
+        throws IOException
+    {
+        if( obj instanceof CardPileBaseDesign )
+        {
+            return new CardPileBaseDesignProxy( (CardPileBaseDesign)obj );
+        }
+
+        return super.replaceObject( obj );
     }
 }

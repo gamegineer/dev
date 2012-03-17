@@ -18,8 +18,6 @@
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.common.ui,org.gamegineer.common.ui"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.common.ui.tests,org.gamegineer.common.ui.tests"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.core,org.gamegineer.table.core"/>
-<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.core.persistence.serializable,org.gamegineer.table.core.persistence.serializable"/>
-<project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.core.persistence.serializable.tests,org.gamegineer.table.core.persistence.serializable.tests"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.core.tests,org.gamegineer.table.core.tests"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.feature.base,org.gamegineer.table.feature.base"/>
 <project reference="0.9.3,https://gamegineer.svn.sourceforge.net/svnroot/gamegineer/dev/trunk/org.gamegineer.table.feature.base.tests,org.gamegineer.table.feature.base.tests"/>
