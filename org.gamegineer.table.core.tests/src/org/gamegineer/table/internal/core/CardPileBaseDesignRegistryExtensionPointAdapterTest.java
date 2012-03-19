@@ -171,16 +171,6 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapterTest
     }
 
     /**
-     * Ensures the constructor throws an exception when passed a {@code null}
-     * extension.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testConstructor_Extension_Null()
-    {
-        new CardPileBaseDesignExtensionProxy( null, CardPileBaseDesignId.fromString( "id" ), 0, 0 ); //$NON-NLS-1$
-    }
-
-    /**
      * Ensures the {@code removed(IExtension)} method unregisters all card pile
      * base designs associated with the specified extensions from the card pile
      * base design registry.

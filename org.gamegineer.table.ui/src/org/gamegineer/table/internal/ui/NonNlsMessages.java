@@ -75,19 +75,19 @@ final class NonNlsMessages
     public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
 
     /** The bundle hosting the card pile base design icon was not found. */
-    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconBundleNotFound;
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUIRegistration_iconBundleNotFound;
 
     /** The card pile base design icon file was not found. */
-    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconFileNotFound;
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUIRegistration_iconFileNotFound;
 
     /** The card pile base design icon path is missing. */
-    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingIconPath;
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUIRegistration_missingIconPath;
 
     /** The card pile base design identifier is missing. */
-    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingId;
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUIRegistration_missingId;
 
     /** The card pile base design name is missing. */
-    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_missingName;
+    public static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUIRegistration_missingName;
 
     /**
      * An error occurred while parsing the card pile base design user interface
@@ -126,19 +126,19 @@ final class NonNlsMessages
     public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
 
     /** The bundle hosting the card surface design icon was not found. */
-    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconBundleNotFound;
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUIRegistration_iconBundleNotFound;
 
     /** The card surface design icon file was not found. */
-    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconFileNotFound;
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUIRegistration_iconFileNotFound;
 
     /** The card surface design icon path is missing. */
-    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingIconPath;
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUIRegistration_missingIconPath;
 
     /** The card surface design identifier is missing. */
-    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingId;
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUIRegistration_missingId;
 
     /** The card surface design name is missing. */
-    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_missingName;
+    public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUIRegistration_missingName;
 
     /**
      * An error occurred while parsing the card surface design user interface
@@ -258,11 +258,11 @@ final class NonNlsMessages
      *         base design icon file was not found; never {@code null}.
      */
     /* @NonNull */
-    static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconBundleNotFound(
+    static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUIRegistration_iconBundleNotFound(
         /* @NonNull */
         final String name )
     {
-        return bind( CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconBundleNotFound, name );
+        return bind( CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUIRegistration_iconBundleNotFound, name );
     }
 
     /**
@@ -280,13 +280,13 @@ final class NonNlsMessages
      *         file was not found; never {@code null}.
      */
     /* @NonNull */
-    static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconFileNotFound(
+    static String CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUIRegistration_iconFileNotFound(
         /* @NonNull */
         final Bundle bundle,
         /* @NonNull */
         final String path )
     {
-        return bind( CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUI_iconFileNotFound, bundle.getSymbolicName(), path );
+        return bind( CardPileBaseDesignUIRegistryExtensionPointAdapter_createCardPileBaseDesignUIRegistration_iconFileNotFound, bundle.getSymbolicName(), path );
     }
 
     /**
@@ -361,11 +361,11 @@ final class NonNlsMessages
      *         surface design icon file was not found; never {@code null}.
      */
     /* @NonNull */
-    static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconBundleNotFound(
+    static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUIRegistration_iconBundleNotFound(
         /* @NonNull */
         final String name )
     {
-        return bind( CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconBundleNotFound, name );
+        return bind( CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUIRegistration_iconBundleNotFound, name );
     }
 
     /**
@@ -383,13 +383,13 @@ final class NonNlsMessages
      *         file was not found; never {@code null}.
      */
     /* @NonNull */
-    static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconFileNotFound(
+    static String CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUIRegistration_iconFileNotFound(
         /* @NonNull */
         final Bundle bundle,
         /* @NonNull */
         final String path )
     {
-        return bind( CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUI_iconFileNotFound, bundle.getSymbolicName(), path );
+        return bind( CardSurfaceDesignUIRegistryExtensionPointAdapter_createCardSurfaceDesignUIRegistration_iconFileNotFound, bundle.getSymbolicName(), path );
     }
 
     /**

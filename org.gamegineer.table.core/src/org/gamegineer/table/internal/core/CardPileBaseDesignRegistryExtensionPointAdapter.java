@@ -1,6 +1,6 @@
 /*
  * CardPileBaseDesignRegistryExtensionPointAdapter.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -36,12 +37,14 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.gamegineer.table.core.CardPileBaseDesignId;
+import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.core.ICardPileBaseDesignRegistry;
+import org.gamegineer.table.core.TableFactory;
 
 /**
- * A component that adapts card pile base designs published via the {@code
- * org.gamegineer.table.core.cardPileBaseDesigns} extension point to the card
- * pile base design registry.
+ * A component that adapts card pile base designs published via the
+ * {@code org.gamegineer.table.core.cardPileBaseDesigns} extension point to the
+ * card pile base design registry.
  */
 @ThreadSafe
 public final class CardPileBaseDesignRegistryExtensionPointAdapter
@@ -69,16 +72,16 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
      */
     private static final String ATTR_WIDTH = "width"; //$NON-NLS-1$
 
+    /**
+     * The collection of card pile base design registrations contributed from
+     * the extension registry.
+     */
+    @GuardedBy( "lock_" )
+    private Collection<CardPileBaseDesignRegistration> cardPileBaseDesignRegistrations_;
+
     /** The card pile base design registry service. */
     @GuardedBy( "lock_" )
     private ICardPileBaseDesignRegistry cardPileBaseDesignRegistry_;
-
-    /**
-     * The collection of card pile base designs created from the extension
-     * registry.
-     */
-    @GuardedBy( "lock_" )
-    private Collection<CardPileBaseDesignExtensionProxy> cardPileBaseDesigns_;
 
     /** The extension registry service. */
     @GuardedBy( "lock_" )
@@ -93,15 +96,15 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * CardPileBaseDesignRegistryExtensionPointAdapter} class.
+     * Initializes a new instance of the
+     * {@code CardPileBaseDesignRegistryExtensionPointAdapter} class.
      */
     public CardPileBaseDesignRegistryExtensionPointAdapter()
     {
-        lock_ = new Object();
+        cardPileBaseDesignRegistrations_ = new ArrayList<CardPileBaseDesignRegistration>();
         cardPileBaseDesignRegistry_ = null;
-        cardPileBaseDesigns_ = new ArrayList<CardPileBaseDesignExtensionProxy>();
         extensionRegistry_ = null;
+        lock_ = new Object();
     }
 
 
@@ -152,8 +155,8 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
      * Binds the card pile base design registry service to this component.
      * 
      * @param cardPileBaseDesignRegistry
-     *        The card pile base design registry service; must not be {@code
-     *        null}.
+     *        The card pile base design registry service; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.IllegalStateException
      *         If the card pile base design registry is already bound.
@@ -198,20 +201,20 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
     }
 
     /**
-     * Creates a card pile base design based on the specified extension
-     * configuration element.
+     * Creates a card pile base design registration based on the specified
+     * extension configuration element.
      * 
      * @param configurationElement
      *        The extension configuration element; must not be {@code null}.
      * 
-     * @return A card pile base design; never {@code null}.
+     * @return A card pile base design registration; never {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the configuration element represents an illegal card pile base
      *         design.
      */
     /* @NonNull */
-    private static CardPileBaseDesignExtensionProxy createCardPileBaseDesign(
+    private static CardPileBaseDesignRegistration createCardPileBaseDesignRegistration(
         /* @NonNull */
         final IConfigurationElement configurationElement )
     {
@@ -226,7 +229,7 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
         }
         catch( final NumberFormatException e )
         {
-            throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseWidthError, e );
+            throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesignRegistration_parseWidthError, e );
         }
 
         final int height;
@@ -236,10 +239,10 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
         }
         catch( final NumberFormatException e )
         {
-            throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseHeightError, e );
+            throw new IllegalArgumentException( NonNlsMessages.CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesignRegistration_parseHeightError, e );
         }
 
-        return new CardPileBaseDesignExtensionProxy( configurationElement.getDeclaringExtension(), id, width, height );
+        return new CardPileBaseDesignRegistration( configurationElement.getDeclaringExtension(), id, width, height );
     }
 
     /**
@@ -255,32 +258,33 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
     }
 
     /**
-     * Indicates the specified card pile base design was contributed by the
-     * specified extension.
+     * Indicates the specified card pile base design registration was
+     * contributed by the specified extension.
      * 
-     * @param cardPileBaseDesign
-     *        The card pile base design; must not be {@code null}.
+     * @param cardPileBaseDesignRegistration
+     *        The card pile base design registration; must not be {@code null}.
      * @param extension
      *        The extension; must not be {@code null}.
      * 
-     * @return {@code true} if the specified card pile base design was
-     *         contributed by the specified extension; otherwise {@code false}.
+     * @return {@code true} if the specified card pile base design registration
+     *         was contributed by the specified extension; otherwise
+     *         {@code false}.
      */
-    private static boolean isCardPileBaseDesignContributedByExtension(
+    private static boolean isCardPileBaseDesignRegistrationContributedByExtension(
         /* @NonNull */
-        final CardPileBaseDesignExtensionProxy cardPileBaseDesign,
+        final CardPileBaseDesignRegistration cardPileBaseDesignRegistration,
         /* @NonNull */
         final IExtension extension )
     {
-        assert cardPileBaseDesign != null;
+        assert cardPileBaseDesignRegistration != null;
         assert extension != null;
 
-        if( !cardPileBaseDesign.getExtensionNamespaceId().equals( extension.getNamespaceIdentifier() ) )
+        if( !cardPileBaseDesignRegistration.getExtensionNamespaceId().equals( extension.getNamespaceIdentifier() ) )
         {
             return false;
         }
 
-        final String extensionSimpleId = cardPileBaseDesign.getExtensionSimpleId();
+        final String extensionSimpleId = cardPileBaseDesignRegistration.getExtensionSimpleId();
         return (extensionSimpleId == null) || extensionSimpleId.equals( extension.getSimpleIdentifier() );
     }
 
@@ -297,10 +301,10 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
     {
         assert configurationElement != null;
 
-        final CardPileBaseDesignExtensionProxy cardPileBaseDesign;
+        final CardPileBaseDesignRegistration cardPileBaseDesignRegistration;
         try
         {
-            cardPileBaseDesign = createCardPileBaseDesign( configurationElement );
+            cardPileBaseDesignRegistration = createCardPileBaseDesignRegistration( configurationElement );
         }
         catch( final IllegalArgumentException e )
         {
@@ -310,8 +314,8 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            cardPileBaseDesignRegistry_.registerCardPileBaseDesign( cardPileBaseDesign );
-            cardPileBaseDesigns_.add( cardPileBaseDesign );
+            cardPileBaseDesignRegistry_.registerCardPileBaseDesign( cardPileBaseDesignRegistration.getCardPileBaseDesign() );
+            cardPileBaseDesignRegistrations_.add( cardPileBaseDesignRegistration );
         }
     }
 
@@ -357,8 +361,8 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
      * Unbinds the card pile base design registry service from this component.
      * 
      * @param cardPileBaseDesignRegistry
-     *        The card pile base design registry service; must not be {@code
-     *        null}.
+     *        The card pile base design registry service; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code cardPileBaseDesignRegistry} is not currently bound.
@@ -410,12 +414,12 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
     {
         assert Thread.holdsLock( lock_ );
 
-        for( final CardPileBaseDesignExtensionProxy cardPileBaseDesign : cardPileBaseDesigns_ )
+        for( final CardPileBaseDesignRegistration cardPileBaseDesignRegistration : cardPileBaseDesignRegistrations_ )
         {
-            cardPileBaseDesignRegistry_.unregisterCardPileBaseDesign( cardPileBaseDesign );
+            cardPileBaseDesignRegistry_.unregisterCardPileBaseDesign( cardPileBaseDesignRegistration.getCardPileBaseDesign() );
         }
 
-        cardPileBaseDesigns_.clear();
+        cardPileBaseDesignRegistrations_.clear();
     }
 
     /**
@@ -433,15 +437,123 @@ public final class CardPileBaseDesignRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            for( final Iterator<CardPileBaseDesignExtensionProxy> iterator = cardPileBaseDesigns_.iterator(); iterator.hasNext(); )
+            for( final Iterator<CardPileBaseDesignRegistration> iterator = cardPileBaseDesignRegistrations_.iterator(); iterator.hasNext(); )
             {
-                final CardPileBaseDesignExtensionProxy cardPileBaseDesign = iterator.next();
-                if( isCardPileBaseDesignContributedByExtension( cardPileBaseDesign, extension ) )
+                final CardPileBaseDesignRegistration cardPileBaseDesignRegistration = iterator.next();
+                if( isCardPileBaseDesignRegistrationContributedByExtension( cardPileBaseDesignRegistration, extension ) )
                 {
-                    cardPileBaseDesignRegistry_.unregisterCardPileBaseDesign( cardPileBaseDesign );
+                    cardPileBaseDesignRegistry_.unregisterCardPileBaseDesign( cardPileBaseDesignRegistration.getCardPileBaseDesign() );
                     iterator.remove();
                 }
             }
+        }
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * Describes a card pile base design that was registered from an extension.
+     */
+    @Immutable
+    private static final class CardPileBaseDesignRegistration
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The card pile base design contributed by the extension. */
+        private final ICardPileBaseDesign cardPileBaseDesign_;
+
+        /** The namespace identifier of the contributing extension. */
+        private final String extensionNamespaceId_;
+
+        /** The simple identifier of the contributing extension. */
+        private final String extensionSimpleId_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the
+         * {@code CardPileBaseDesignRegistration} class.
+         * 
+         * @param extension
+         *        The extension that contributed the card pile base design; must
+         *        not be {@code null}.
+         * @param id
+         *        The card pile base design identifier; must not be {@code null}
+         *        .
+         * @param width
+         *        The card pile base design width in table coordinates; must not
+         *        be negative.
+         * @param height
+         *        The card pile base design height in table coordinates; must
+         *        not be negative.
+         * 
+         * @throws java.lang.IllegalArgumentException
+         *         If {@code width} or {@code height} is negative.
+         * @throws java.lang.NullPointerException
+         *         If {@code id} is {@code null}.
+         */
+        CardPileBaseDesignRegistration(
+            /* @NonNull */
+            final IExtension extension,
+            /* @NonNull */
+            final CardPileBaseDesignId id,
+            final int width,
+            final int height )
+        {
+            assert extension != null;
+
+            cardPileBaseDesign_ = TableFactory.createCardPileBaseDesign( id, width, height );
+            extensionNamespaceId_ = extension.getNamespaceIdentifier();
+            extensionSimpleId_ = extension.getSimpleIdentifier();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Gets the card pile base design contributed by the extension.
+         * 
+         * @return The card pile base design contributed by the extension; never
+         *         {@code null}.
+         */
+        /* @NonNull */
+        ICardPileBaseDesign getCardPileBaseDesign()
+        {
+            return cardPileBaseDesign_;
+        }
+
+        /**
+         * Gets the namespace identifier of the contributing extension.
+         * 
+         * @return The namespace identifier of the contributing extension; never
+         *         {@code null}.
+         */
+        /* @NonNull */
+        String getExtensionNamespaceId()
+        {
+            return extensionNamespaceId_;
+        }
+
+        /**
+         * Gets the simple identifier of the contributing extension.
+         * 
+         * @return The simple identifier of the contributing extension; may be
+         *         {@code null}.
+         */
+        /* @Nullable */
+        String getExtensionSimpleId()
+        {
+            return extensionSimpleId_;
         }
     }
 }

@@ -149,13 +149,13 @@ final class NonNlsMessages
      * An error occurred while parsing the height attribute of a card pile base
      * design configuration element.
      */
-    public static String CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseHeightError;
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesignRegistration_parseHeightError;
 
     /**
      * An error occurred while parsing the width attribute of a card pile base
      * design configuration element.
      */
-    public static String CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesign_parseWidthError;
+    public static String CardPileBaseDesignRegistryExtensionPointAdapter_createCardPileBaseDesignRegistration_parseWidthError;
 
     /**
      * An error occurred while parsing the card pile base design configuration
@@ -199,13 +199,13 @@ final class NonNlsMessages
      * An error occurred while parsing the height attribute of a card surface
      * design configuration element.
      */
-    public static String CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseHeightError;
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesignRegistration_parseHeightError;
 
     /**
      * An error occurred while parsing the width attribute of a card surface
      * design configuration element.
      */
-    public static String CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseWidthError;
+    public static String CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesignRegistration_parseWidthError;
 
     /**
      * An error occurred while parsing the card surface design configuration

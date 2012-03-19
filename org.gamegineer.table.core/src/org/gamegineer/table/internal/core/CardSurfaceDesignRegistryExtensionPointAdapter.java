@@ -1,6 +1,6 @@
 /*
  * CardSurfaceDesignRegistryExtensionPointAdapter.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -36,12 +37,14 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.gamegineer.table.core.CardSurfaceDesignId;
+import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.core.ICardSurfaceDesignRegistry;
+import org.gamegineer.table.core.TableFactory;
 
 /**
- * A component that adapts card surface designs published via the {@code
- * org.gamegineer.table.core.cardSurfaceDesigns} extension point to the card
- * surface design registry.
+ * A component that adapts card surface designs published via the
+ * {@code org.gamegineer.table.core.cardSurfaceDesigns} extension point to the
+ * card surface design registry.
  */
 @ThreadSafe
 public final class CardSurfaceDesignRegistryExtensionPointAdapter
@@ -69,16 +72,16 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
      */
     private static final String ATTR_WIDTH = "width"; //$NON-NLS-1$
 
+    /**
+     * The collection of card surface design registrations contributed from the
+     * extension registry.
+     */
+    @GuardedBy( "lock_" )
+    private Collection<CardSurfaceDesignRegistration> cardSurfaceDesignRegistrations_;
+
     /** The card surface design registry service. */
     @GuardedBy( "lock_" )
     private ICardSurfaceDesignRegistry cardSurfaceDesignRegistry_;
-
-    /**
-     * The collection of card surface designs created from the extension
-     * registry.
-     */
-    @GuardedBy( "lock_" )
-    private Collection<CardSurfaceDesignExtensionProxy> cardSurfaceDesigns_;
 
     /** The extension registry service. */
     @GuardedBy( "lock_" )
@@ -93,15 +96,15 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code
-     * CardSurfaceDesignRegistryExtensionPointAdapter} class.
+     * Initializes a new instance of the
+     * {@code CardSurfaceDesignRegistryExtensionPointAdapter} class.
      */
     public CardSurfaceDesignRegistryExtensionPointAdapter()
     {
-        lock_ = new Object();
+        cardSurfaceDesignRegistrations_ = new ArrayList<CardSurfaceDesignRegistration>();
         cardSurfaceDesignRegistry_ = null;
-        cardSurfaceDesigns_ = new ArrayList<CardSurfaceDesignExtensionProxy>();
         extensionRegistry_ = null;
+        lock_ = new Object();
     }
 
 
@@ -198,20 +201,20 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
     }
 
     /**
-     * Creates a card surface design based on the specified extension
-     * configuration element.
+     * Creates a card surface design registration based on the specified
+     * extension configuration element.
      * 
      * @param configurationElement
      *        The extension configuration element; must not be {@code null}.
      * 
-     * @return A card surface design; never {@code null}.
+     * @return A card surface design registration; never {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If the configuration element represents an illegal card surface
      *         design.
      */
     /* @NonNull */
-    private static CardSurfaceDesignExtensionProxy createCardSurfaceDesign(
+    private static CardSurfaceDesignRegistration createCardSurfaceDesignRegistration(
         /* @NonNull */
         final IConfigurationElement configurationElement )
     {
@@ -226,7 +229,7 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
         }
         catch( final NumberFormatException e )
         {
-            throw new IllegalArgumentException( NonNlsMessages.CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseWidthError, e );
+            throw new IllegalArgumentException( NonNlsMessages.CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesignRegistration_parseWidthError, e );
         }
 
         final int height;
@@ -236,10 +239,10 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
         }
         catch( final NumberFormatException e )
         {
-            throw new IllegalArgumentException( NonNlsMessages.CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesign_parseHeightError, e );
+            throw new IllegalArgumentException( NonNlsMessages.CardSurfaceDesignRegistryExtensionPointAdapter_createCardSurfaceDesignRegistration_parseHeightError, e );
         }
 
-        return new CardSurfaceDesignExtensionProxy( configurationElement.getDeclaringExtension(), id, width, height );
+        return new CardSurfaceDesignRegistration( configurationElement.getDeclaringExtension(), id, width, height );
     }
 
     /**
@@ -255,32 +258,33 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
     }
 
     /**
-     * Indicates the specified card surface design was contributed by the
-     * specified extension.
+     * Indicates the specified card surface design registration was contributed
+     * by the specified extension.
      * 
-     * @param cardSurfaceDesign
-     *        The card surface design; must not be {@code null}.
+     * @param cardSurfaceDesignRegistration
+     *        The card surface design registration; must not be {@code null}.
      * @param extension
      *        The extension; must not be {@code null}.
      * 
-     * @return {@code true} if the specified card surface design was contributed
-     *         by the specified extension; otherwise {@code false}.
+     * @return {@code true} if the specified card surface design registration
+     *         was contributed by the specified extension; otherwise
+     *         {@code false}.
      */
-    private static boolean isCardSurfaceDesignContributedByExtension(
+    private static boolean isCardSurfaceDesignRegistrationContributedByExtension(
         /* @NonNull */
-        final CardSurfaceDesignExtensionProxy cardSurfaceDesign,
+        final CardSurfaceDesignRegistration cardSurfaceDesignRegistration,
         /* @NonNull */
         final IExtension extension )
     {
-        assert cardSurfaceDesign != null;
+        assert cardSurfaceDesignRegistration != null;
         assert extension != null;
 
-        if( !cardSurfaceDesign.getExtensionNamespaceId().equals( extension.getNamespaceIdentifier() ) )
+        if( !cardSurfaceDesignRegistration.getExtensionNamespaceId().equals( extension.getNamespaceIdentifier() ) )
         {
             return false;
         }
 
-        final String extensionSimpleId = cardSurfaceDesign.getExtensionSimpleId();
+        final String extensionSimpleId = cardSurfaceDesignRegistration.getExtensionSimpleId();
         return (extensionSimpleId == null) || extensionSimpleId.equals( extension.getSimpleIdentifier() );
     }
 
@@ -297,10 +301,10 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
     {
         assert configurationElement != null;
 
-        final CardSurfaceDesignExtensionProxy cardSurfaceDesign;
+        final CardSurfaceDesignRegistration cardSurfaceDesignRegistration;
         try
         {
-            cardSurfaceDesign = createCardSurfaceDesign( configurationElement );
+            cardSurfaceDesignRegistration = createCardSurfaceDesignRegistration( configurationElement );
         }
         catch( final IllegalArgumentException e )
         {
@@ -310,8 +314,8 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            cardSurfaceDesignRegistry_.registerCardSurfaceDesign( cardSurfaceDesign );
-            cardSurfaceDesigns_.add( cardSurfaceDesign );
+            cardSurfaceDesignRegistry_.registerCardSurfaceDesign( cardSurfaceDesignRegistration.getCardSurfaceDesign() );
+            cardSurfaceDesignRegistrations_.add( cardSurfaceDesignRegistration );
         }
     }
 
@@ -410,12 +414,12 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
     {
         assert Thread.holdsLock( lock_ );
 
-        for( final CardSurfaceDesignExtensionProxy cardSurfaceDesign : cardSurfaceDesigns_ )
+        for( final CardSurfaceDesignRegistration cardSurfaceDesignRegistration : cardSurfaceDesignRegistrations_ )
         {
-            cardSurfaceDesignRegistry_.unregisterCardSurfaceDesign( cardSurfaceDesign );
+            cardSurfaceDesignRegistry_.unregisterCardSurfaceDesign( cardSurfaceDesignRegistration.getCardSurfaceDesign() );
         }
 
-        cardSurfaceDesigns_.clear();
+        cardSurfaceDesignRegistrations_.clear();
     }
 
     /**
@@ -433,15 +437,122 @@ public final class CardSurfaceDesignRegistryExtensionPointAdapter
 
         synchronized( lock_ )
         {
-            for( final Iterator<CardSurfaceDesignExtensionProxy> iterator = cardSurfaceDesigns_.iterator(); iterator.hasNext(); )
+            for( final Iterator<CardSurfaceDesignRegistration> iterator = cardSurfaceDesignRegistrations_.iterator(); iterator.hasNext(); )
             {
-                final CardSurfaceDesignExtensionProxy cardSurfaceDesign = iterator.next();
-                if( isCardSurfaceDesignContributedByExtension( cardSurfaceDesign, extension ) )
+                final CardSurfaceDesignRegistration cardSurfaceDesignRegistration = iterator.next();
+                if( isCardSurfaceDesignRegistrationContributedByExtension( cardSurfaceDesignRegistration, extension ) )
                 {
-                    cardSurfaceDesignRegistry_.unregisterCardSurfaceDesign( cardSurfaceDesign );
+                    cardSurfaceDesignRegistry_.unregisterCardSurfaceDesign( cardSurfaceDesignRegistration.getCardSurfaceDesign() );
                     iterator.remove();
                 }
             }
+        }
+    }
+
+
+    // ======================================================================
+    // Nested Types
+    // ======================================================================
+
+    /**
+     * Describes a card surface design that was registered from an extension.
+     */
+    @Immutable
+    private static final class CardSurfaceDesignRegistration
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The card surface design contributed by the extension. */
+        private final ICardSurfaceDesign cardSurfaceDesign_;
+
+        /** The namespace identifier of the contributing extension. */
+        private final String extensionNamespaceId_;
+
+        /** The simple identifier of the contributing extension. */
+        private final String extensionSimpleId_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the
+         * {@code CardSurfaceDesignRegistration} class.
+         * 
+         * @param extension
+         *        The extension that contributed the card surface design; must
+         *        not be {@code null}.
+         * @param id
+         *        The card surface design identifier; must not be {@code null}.
+         * @param width
+         *        The card surface design width in table coordinates; must not
+         *        be negative.
+         * @param height
+         *        The card surface design height in table coordinates; must not
+         *        be negative.
+         * 
+         * @throws java.lang.IllegalArgumentException
+         *         If {@code width} or {@code height} is negative.
+         * @throws java.lang.NullPointerException
+         *         If {@code id} is {@code null}.
+         */
+        CardSurfaceDesignRegistration(
+            /* @NonNull */
+            final IExtension extension,
+            /* @NonNull */
+            final CardSurfaceDesignId id,
+            final int width,
+            final int height )
+        {
+            assert extension != null;
+
+            cardSurfaceDesign_ = TableFactory.createCardSurfaceDesign( id, width, height );
+            extensionNamespaceId_ = extension.getNamespaceIdentifier();
+            extensionSimpleId_ = extension.getSimpleIdentifier();
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /**
+         * Gets the card surface design contributed by the extension.
+         * 
+         * @return The card surface design contributed by the extension; never
+         *         {@code null}.
+         */
+        /* @NonNull */
+        ICardSurfaceDesign getCardSurfaceDesign()
+        {
+            return cardSurfaceDesign_;
+        }
+
+        /**
+         * Gets the namespace identifier of the contributing extension.
+         * 
+         * @return The namespace identifier of the contributing extension; never
+         *         {@code null}.
+         */
+        /* @NonNull */
+        String getExtensionNamespaceId()
+        {
+            return extensionNamespaceId_;
+        }
+
+        /**
+         * Gets the simple identifier of the contributing extension.
+         * 
+         * @return The simple identifier of the contributing extension; may be
+         *         {@code null}.
+         */
+        /* @Nullable */
+        String getExtensionSimpleId()
+        {
+            return extensionSimpleId_;
         }
     }
 }
