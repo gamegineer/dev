@@ -6,10 +6,10 @@ Bundle-Name: %bundleName
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-SymbolicName: org.gamegineer.table.persistence.tests
 Bundle-Vendor: %bundleVendor
-Bundle-Version: 0.12.0.qualifier
-Fragment-Host: org.gamegineer.table.persistence;bundle-version="0.12.0"
+Bundle-Version: 0.13.0.qualifier
+Fragment-Host: org.gamegineer.table.persistence;bundle-version="0.13.0"
 Import-Package: junit.framework;version="4.8.2",
  org.easymock;version="3.0.0",
- org.gamegineer.test.core;version="[0.12.0,0.13.0)",
+ org.gamegineer.test.core;version="[0.13.0,0.14.0)",
  org.junit;version="4.8.2"
 Require-Bundle: org.eclipse.equinox.registry;bundle-version="3.5.101"
