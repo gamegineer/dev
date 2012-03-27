@@ -24,12 +24,9 @@ package org.gamegineer.table.core;
 import static org.gamegineer.table.core.Assert.assertCardEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,20 +36,14 @@ import org.junit.Test;
  * {@link org.gamegineer.table.core.ICard} interface.
  */
 public abstract class AbstractCardTestCase
-    extends AbstractMementoOriginatorTestCase
+    extends AbstractComponentTestCase<ICard>
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The card under test in the fixture. */
-    private ICard card_;
-
     /** The mocks control for use in the fixture. */
     private IMocksControl mocksControl_;
-
-    /** The table for use in the fixture. */
-    private ITable table_;
 
 
     // ======================================================================
@@ -84,47 +75,28 @@ public abstract class AbstractCardTestCase
         assertCardEquals( expectedCard, actualCard );
     }
 
-    /**
-     * Creates the card to be tested.
-     * 
-     * @param table
-     *        The fixture table; must not be {@code null}.
-     * 
-     * @return The card to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     * @throws java.lang.NullPointerException
-     *         If {@code table} is {@code null}.
-     */
-    /* @NonNull */
-    protected abstract ICard createCard(
-        /* @NonNull */
-        final ITable table )
-        throws Exception;
-
     /*
      * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#createMementoOriginator()
      */
     @Override
     protected IMementoOriginator createMementoOriginator()
     {
-        card_.setLocation( new Point( 0, 0 ) );
-        card_.setOrientation( CardOrientation.BACK_UP );
-        return card_;
+        final ICard card = getCard();
+        card.setLocation( new Point( 0, 0 ) );
+        card.setOrientation( CardOrientation.BACK_UP );
+        return card;
     }
 
     /**
-     * Creates the table for use in the fixture.
+     * Gets the card under test in the fixture.
      * 
-     * @return The table for use in the fixture; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * @return The card under test in the fixture; never {@code null}.
      */
     /* @NonNull */
-    protected abstract ITable createTable()
-        throws Exception;
+    protected final ICard getCard()
+    {
+        return getComponent();
+    }
 
     /*
      * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#initializeMementoOriginator(org.gamegineer.common.core.util.memento.IMementoOriginator)
@@ -139,7 +111,7 @@ public abstract class AbstractCardTestCase
     }
 
     /*
-     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#setUp()
+     * @see org.gamegineer.table.core.AbstractComponentTestCase#setUp()
      */
     @Before
     @Override
@@ -147,13 +119,10 @@ public abstract class AbstractCardTestCase
         throws Exception
     {
         mocksControl_ = EasyMock.createControl();
-        table_ = createTable();
-        assertNotNull( table_ );
-        card_ = createCard( table_ );
-        assertNotNull( card_ );
-        card_.setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
 
         super.setUp();
+
+        getCard().setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
     }
 
     /**
@@ -163,7 +132,7 @@ public abstract class AbstractCardTestCase
     @Test( expected = NullPointerException.class )
     public void testAddCardListener_Listener_Null()
     {
-        card_.addCardListener( null );
+        getCard().addCardListener( null );
     }
 
     /**
@@ -174,9 +143,9 @@ public abstract class AbstractCardTestCase
     public void testAddCardListener_Listener_Present()
     {
         final ICardListener listener = EasyMock.createMock( ICardListener.class );
-        card_.addCardListener( listener );
+        getCard().addCardListener( listener );
 
-        card_.addCardListener( listener );
+        getCard().addCardListener( listener );
     }
 
     /**
@@ -192,10 +161,10 @@ public abstract class AbstractCardTestCase
         final ICardListener listener2 = mocksControl_.createMock( ICardListener.class );
         listener2.cardLocationChanged( EasyMock.notNull( CardEvent.class ) );
         mocksControl_.replay();
-        card_.addCardListener( listener1 );
-        card_.addCardListener( listener2 );
+        getCard().addCardListener( listener1 );
+        getCard().addCardListener( listener2 );
 
-        card_.setLocation( new Point( 1010, 2020 ) );
+        getCard().setLocation( new Point( 1010, 2020 ) );
 
         mocksControl_.verify();
     }
@@ -213,10 +182,10 @@ public abstract class AbstractCardTestCase
         final ICardListener listener2 = mocksControl_.createMock( ICardListener.class );
         listener2.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
         mocksControl_.replay();
-        card_.addCardListener( listener1 );
-        card_.addCardListener( listener2 );
+        getCard().addCardListener( listener1 );
+        getCard().addCardListener( listener2 );
 
-        card_.setOrientation( card_.getOrientation().inverse() );
+        getCard().setOrientation( getCard().getOrientation().inverse() );
 
         mocksControl_.verify();
     }
@@ -235,10 +204,10 @@ public abstract class AbstractCardTestCase
         final ICardListener listener2 = mocksControl_.createMock( ICardListener.class );
         listener2.cardSurfaceDesignsChanged( EasyMock.notNull( CardEvent.class ) );
         mocksControl_.replay();
-        card_.addCardListener( listener1 );
-        card_.addCardListener( listener2 );
+        getCard().addCardListener( listener1 );
+        getCard().addCardListener( listener2 );
 
-        card_.setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ), CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ) );
+        getCard().setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ), CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ) );
 
         mocksControl_.verify();
     }
@@ -250,12 +219,12 @@ public abstract class AbstractCardTestCase
     @Test
     public void testFlip_BackUp()
     {
-        card_.setOrientation( CardOrientation.BACK_UP );
-        assertEquals( CardOrientation.BACK_UP, card_.getOrientation() );
+        getCard().setOrientation( CardOrientation.BACK_UP );
+        assertEquals( CardOrientation.BACK_UP, getCard().getOrientation() );
 
-        card_.flip();
+        getCard().flip();
 
-        assertEquals( CardOrientation.FACE_UP, card_.getOrientation() );
+        assertEquals( CardOrientation.FACE_UP, getCard().getOrientation() );
     }
 
     /**
@@ -265,12 +234,12 @@ public abstract class AbstractCardTestCase
     @Test
     public void testFlip_FaceUp()
     {
-        card_.setOrientation( CardOrientation.FACE_UP );
-        assertEquals( CardOrientation.FACE_UP, card_.getOrientation() );
+        getCard().setOrientation( CardOrientation.FACE_UP );
+        assertEquals( CardOrientation.FACE_UP, getCard().getOrientation() );
 
-        card_.flip();
+        getCard().flip();
 
-        assertEquals( CardOrientation.BACK_UP, card_.getOrientation() );
+        assertEquals( CardOrientation.BACK_UP, getCard().getOrientation() );
     }
 
     /**
@@ -282,9 +251,9 @@ public abstract class AbstractCardTestCase
         final ICardListener listener = mocksControl_.createMock( ICardListener.class );
         listener.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
         mocksControl_.replay();
-        card_.addCardListener( listener );
+        getCard().addCardListener( listener );
 
-        card_.flip();
+        getCard().flip();
 
         mocksControl_.verify();
     }
@@ -295,48 +264,7 @@ public abstract class AbstractCardTestCase
     @Test
     public void testGetBackDesign_ReturnValue_NonNull()
     {
-        assertNotNull( card_.getBackDesign() );
-    }
-
-    /**
-     * Ensures the {@code getBounds} method returns a copy of the bounds.
-     */
-    @Test
-    public void testGetBounds_ReturnValue_Copy()
-    {
-        final Rectangle bounds = card_.getBounds();
-        final Rectangle expectedBounds = new Rectangle( bounds );
-
-        bounds.setBounds( 1010, 2020, 101, 202 );
-
-        assertEquals( expectedBounds, card_.getBounds() );
-
-    }
-
-    /**
-     * Ensures the {@code getBounds} method does not return {@code null}.
-     */
-    @Test
-    public void testGetBounds_ReturnValue_NonNull()
-    {
-        assertNotNull( card_.getBounds() );
-    }
-
-    /**
-     * Ensures the {@code getBounds} method returns the correct value after a
-     * translation.
-     */
-    @Test
-    public void testGetBounds_Translate()
-    {
-        final Point expectedLocation = new Point( 1010, 2020 );
-        final Rectangle expectedBounds = card_.getBounds();
-        expectedBounds.setLocation( expectedLocation );
-        card_.setLocation( expectedLocation );
-
-        final Rectangle actualBounds = card_.getBounds();
-
-        assertEquals( expectedBounds, actualBounds );
+        assertNotNull( getCard().getBackDesign() );
     }
 
     /**
@@ -345,45 +273,7 @@ public abstract class AbstractCardTestCase
     @Test
     public void testGetFaceDesign_ReturnValue_NonNull()
     {
-        assertNotNull( card_.getFaceDesign() );
-    }
-
-    /**
-     * Ensures the {@code getLocation} method returns a copy of the location.
-     */
-    @Test
-    public void testGetLocation_ReturnValue_Copy()
-    {
-        final Point location = card_.getLocation();
-        final Point expectedLocation = new Point( location );
-
-        location.setLocation( 1010, 2020 );
-
-        assertEquals( expectedLocation, card_.getLocation() );
-    }
-
-    /**
-     * Ensures the {@code getLocation} method does not return {@code null}.
-     */
-    @Test
-    public void testGetLocation_ReturnValue_NonNull()
-    {
-        assertNotNull( card_.getLocation() );
-    }
-
-    /**
-     * Ensures the {@code getLocation} method returns the correct value after a
-     * translation.
-     */
-    @Test
-    public void testGetLocation_Translate()
-    {
-        final Point expectedLocation = new Point( 1010, 2020 );
-        card_.setLocation( expectedLocation );
-
-        final Point actualLocation = card_.getLocation();
-
-        assertEquals( expectedLocation, actualLocation );
+        assertNotNull( getCard().getFaceDesign() );
     }
 
     /**
@@ -392,46 +282,7 @@ public abstract class AbstractCardTestCase
     @Test
     public void testGetOrientation_ReturnValue_NonNull()
     {
-        assertNotNull( card_.getOrientation() );
-    }
-
-    /**
-     * Ensures the {@code getSize} method returns a copy of the size.
-     */
-    @Test
-    public void testGetSize_ReturnValue_Copy()
-    {
-        final Dimension size = card_.getSize();
-        final Dimension expectedSize = new Dimension( size );
-
-        size.setSize( 101, 202 );
-
-        assertEquals( expectedSize, card_.getSize() );
-    }
-
-    /**
-     * Ensures the {@code getSize} method does not return {@code null}.
-     */
-    @Test
-    public void testGetSize_ReturnValue_NonNull()
-    {
-        assertNotNull( card_.getSize() );
-    }
-
-    /**
-     * Ensures the {@code getSize} method returns the correct value after a
-     * translation.
-     */
-    @Test
-    public void testGetSize_Translate()
-    {
-        final Point expectedLocation = new Point( 1010, 2020 );
-        final Dimension expectedSize = card_.getSize();
-        card_.setLocation( expectedLocation );
-
-        final Dimension actualSize = card_.getSize();
-
-        assertEquals( expectedSize, actualSize );
+        assertNotNull( getCard().getOrientation() );
     }
 
     /**
@@ -441,7 +292,7 @@ public abstract class AbstractCardTestCase
     @Test( expected = IllegalArgumentException.class )
     public void testRemoveCardListener_Listener_Absent()
     {
-        card_.removeCardListener( EasyMock.createMock( ICardListener.class ) );
+        getCard().removeCardListener( EasyMock.createMock( ICardListener.class ) );
     }
 
     /**
@@ -451,7 +302,7 @@ public abstract class AbstractCardTestCase
     @Test( expected = NullPointerException.class )
     public void testRemoveCardListener_Listener_Null()
     {
-        card_.removeCardListener( null );
+        getCard().removeCardListener( null );
     }
 
     /**
@@ -464,11 +315,11 @@ public abstract class AbstractCardTestCase
         final ICardListener listener = mocksControl_.createMock( ICardListener.class );
         listener.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
         mocksControl_.replay();
-        card_.addCardListener( listener );
-        card_.flip();
+        getCard().addCardListener( listener );
+        getCard().flip();
 
-        card_.removeCardListener( listener );
-        card_.flip();
+        getCard().removeCardListener( listener );
+        getCard().flip();
 
         mocksControl_.verify();
     }
@@ -483,36 +334,11 @@ public abstract class AbstractCardTestCase
         final ICardListener listener = mocksControl_.createMock( ICardListener.class );
         listener.cardLocationChanged( EasyMock.notNull( CardEvent.class ) );
         mocksControl_.replay();
-        card_.addCardListener( listener );
+        getCard().addCardListener( listener );
 
-        card_.setLocation( new Point( 1010, 2020 ) );
+        getCard().setLocation( new Point( 1010, 2020 ) );
 
         mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code setLocation} method makes a copy of the location.
-     */
-    @Test
-    public void testSetLocation_Location_Copy()
-    {
-        final Point expectedLocation = new Point( 1010, 2020 );
-        final Point location = new Point( expectedLocation );
-
-        card_.setLocation( location );
-        location.setLocation( 1, 2 );
-
-        assertEquals( expectedLocation, card_.getLocation() );
-    }
-
-    /**
-     * Ensures the {@code setLocation} method throws an exception when passed a
-     * {@code null} location.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetLocation_Location_Null()
-    {
-        card_.setLocation( null );
     }
 
     /**
@@ -525,9 +351,9 @@ public abstract class AbstractCardTestCase
         final ICardListener listener = mocksControl_.createMock( ICardListener.class );
         listener.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
         mocksControl_.replay();
-        card_.addCardListener( listener );
+        getCard().addCardListener( listener );
 
-        card_.setOrientation( card_.getOrientation().inverse() );
+        getCard().setOrientation( getCard().getOrientation().inverse() );
 
         mocksControl_.verify();
     }
@@ -539,7 +365,7 @@ public abstract class AbstractCardTestCase
     @Test( expected = NullPointerException.class )
     public void testSetOrientation_Orientation_Null()
     {
-        card_.setOrientation( null );
+        getCard().setOrientation( null );
     }
 
     /**
@@ -549,7 +375,7 @@ public abstract class AbstractCardTestCase
     @Test( expected = NullPointerException.class )
     public void testSetSurfaceDesigns_BackDesign_Null()
     {
-        card_.setSurfaceDesigns( null, CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
+        getCard().setSurfaceDesigns( null, CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
     }
 
     /**
@@ -559,7 +385,7 @@ public abstract class AbstractCardTestCase
     @Test( expected = NullPointerException.class )
     public void testSetSurfaceDesigns_FaceDesign_Null()
     {
-        card_.setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), null );
+        getCard().setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), null );
     }
 
     /**
@@ -574,7 +400,7 @@ public abstract class AbstractCardTestCase
         final ICardSurfaceDesign backDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign( width, height );
         final ICardSurfaceDesign faceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign( 2 * width, 2 * height );
 
-        card_.setSurfaceDesigns( backDesign, faceDesign );
+        getCard().setSurfaceDesigns( backDesign, faceDesign );
     }
 
     /**
@@ -587,9 +413,9 @@ public abstract class AbstractCardTestCase
         final ICardListener listener = mocksControl_.createMock( ICardListener.class );
         listener.cardSurfaceDesignsChanged( EasyMock.notNull( CardEvent.class ) );
         mocksControl_.replay();
-        card_.addCardListener( listener );
+        getCard().addCardListener( listener );
 
-        card_.setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ), CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ) );
+        getCard().setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ), CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ) );
 
         mocksControl_.verify();
     }

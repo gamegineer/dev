@@ -1,6 +1,6 @@
 /*
  * ICard.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import org.gamegineer.common.core.util.memento.IMementoOriginator;
-
 /**
  * A card.
  * 
@@ -34,7 +29,7 @@ import org.gamegineer.common.core.util.memento.IMementoOriginator;
  * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface ICard
-    extends IMementoOriginator
+    extends IComponent
 {
     // ======================================================================
     // Methods
@@ -69,15 +64,6 @@ public interface ICard
     public ICardSurfaceDesign getBackDesign();
 
     /**
-     * Gets the bounds of this card in table coordinates.
-     * 
-     * @return The bounds of this card in table coordinates; never {@code null}
-     *         .
-     */
-    /* @NonNull */
-    public Rectangle getBounds();
-
-    /**
      * Gets the card pile that contains this card.
      * 
      * @return The card pile that contains this card or {@code null} if this
@@ -95,29 +81,12 @@ public interface ICard
     public ICardSurfaceDesign getFaceDesign();
 
     /**
-     * Gets the location of this card in table coordinates.
-     * 
-     * @return The location of this card in table coordinates; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    public Point getLocation();
-
-    /**
      * Gets the orientation of this card.
      * 
      * @return The orientation of this card; never {@code null}.
      */
     /* @NonNull */
     public CardOrientation getOrientation();
-
-    /**
-     * Gets the size of this card in table coordinates.
-     * 
-     * @return The size of this card in table coordinates; never {@code null}.
-     */
-    /* @NonNull */
-    public Dimension getSize();
 
     /**
      * Removes the specified card listener from this card.
@@ -133,20 +102,6 @@ public interface ICard
     public void removeCardListener(
         /* @NonNull */
         ICardListener listener );
-
-    /**
-     * Sets the location of this card in table coordinates.
-     * 
-     * @param location
-     *        The location of this card in table coordinates; must not be
-     *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code location} is {@code null}.
-     */
-    public void setLocation(
-        /* @NonNull */
-        Point location );
 
     /**
      * Sets the orientation of this card.

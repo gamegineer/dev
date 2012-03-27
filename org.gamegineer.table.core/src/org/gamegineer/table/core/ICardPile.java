@@ -1,6 +1,6 @@
 /*
  * ICardPile.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,11 +21,8 @@
 
 package org.gamegineer.table.core;
 
-import java.awt.Dimension;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.List;
-import org.gamegineer.common.core.util.memento.IMementoOriginator;
 
 /**
  * A card pile.
@@ -35,7 +32,7 @@ import org.gamegineer.common.core.util.memento.IMementoOriginator;
  * @noimplement This interface is not intended to be implemented by clients.
  */
 public interface ICardPile
-    extends IMementoOriginator
+    extends IContainer
 {
     // ======================================================================
     // Methods
@@ -48,8 +45,8 @@ public interface ICardPile
      *        The card; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code card} is already contained in a card pile or if {@code
-     *         card} was created by a table different from the table that
+     *         If {@code card} is already contained in a card pile or if
+     *         {@code card} was created by a table different from the table that
      *         created this card pile.
      * @throws java.lang.NullPointerException
      *         If {@code card} is {@code null}.
@@ -110,22 +107,13 @@ public interface ICardPile
     public Point getBaseLocation();
 
     /**
-     * Gets the bounds of this card pile in table coordinates.
-     * 
-     * @return The bounds of this card pile in table coordinates; never {@code
-     *         null} .
-     */
-    /* @NonNull */
-    public Rectangle getBounds();
-
-    /**
      * Gets the card in this card at the specified index.
      * 
      * @param index
      *        The card index.
      * 
-     * @return The card in this card pile at the specified index; never {@code
-     *         null}.
+     * @return The card in this card pile at the specified index; never
+     *         {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code index} is less than zero or greater than or equal to
@@ -159,8 +147,8 @@ public interface ICardPile
      * @param location
      *        The location in table coordinates; must not be {@code null}.
      * 
-     * @return The card in this card pile at the specified location or {@code
-     *         null} if no card in this card pile is at that location.
+     * @return The card in this card pile at the specified location or
+     *         {@code null} if no card in this card pile is at that location.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code location} is {@code null}.
@@ -211,24 +199,6 @@ public interface ICardPile
      */
     /* @NonNull */
     public CardPileLayout getLayout();
-
-    /**
-     * Gets the location of this card pile in table coordinates.
-     * 
-     * @return The location of this card pile in table coordinates; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    public Point getLocation();
-
-    /**
-     * Gets the size of this card pile in table coordinates.
-     * 
-     * @return The size of this card pile in table coordinates; never {@code
-     *         null}.
-     */
-    /* @NonNull */
-    public Dimension getSize();
 
     /**
      * Gets the table that contains this card pile.
@@ -321,8 +291,8 @@ public interface ICardPile
      * Sets the layout of cards within this card pile.
      * 
      * @param layout
-     *        The layout of cards within this card pile; must not be {@code
-     *        null}.
+     *        The layout of cards within this card pile; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
      *         If {@code layout} is {@code null}.
@@ -330,18 +300,4 @@ public interface ICardPile
     public void setLayout(
         /* @NonNull */
         CardPileLayout layout );
-
-    /**
-     * Sets the location of this card pile in table coordinates.
-     * 
-     * @param location
-     *        The location of this card pile in table coordinates; must not be
-     *        {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code location} is {@code null}.
-     */
-    public void setLocation(
-        /* @NonNull */
-        Point location );
 }

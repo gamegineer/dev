@@ -1,5 +1,5 @@
 /*
- * CardAsCardTest.java
+ * AbstractContainerTestCase.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,31 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 11, 2009 at 9:53:43 PM.
+ * Created on Mar 26, 2012 at 8:31:54 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.core;
 
-import org.gamegineer.table.core.AbstractCardTestCase;
-import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ITable;
+import org.junit.Before;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.internal.core.Card}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.ICard} interface.
+ * A fixture for testing the basic aspects of classes that implement the
+ * {@link org.gamegineer.table.core.IContainer} interface.
+ * 
+ * @param <T>
+ *        The type of the container.
  */
-public final class CardAsCardTest
-    extends AbstractCardTestCase
+public abstract class AbstractContainerTestCase<T extends IContainer>
+    extends AbstractComponentTestCase<T>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardAsCardTest} class.
+     * Initializes a new instance of the {@code AbstractContainerTestCase}
+     * class.
      */
-    public CardAsCardTest()
+    protected AbstractContainerTestCase()
     {
     }
 
@@ -49,22 +50,25 @@ public final class CardAsCardTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.core.AbstractComponentTestCase#createComponent(org.gamegineer.table.core.ITable)
+    /**
+     * Gets the container under test in the fixture.
+     * 
+     * @return The container under test in the fixture; never {@code null}.
      */
-    @Override
-    protected ICard createComponent(
-        final ITable table )
+    /* @NonNull */
+    protected final T getContainer()
     {
-        return new Card( ((Table)table).getTableContext() );
+        return getComponent();
     }
 
     /*
-     * @see org.gamegineer.table.core.AbstractComponentTestCase#createTable()
+     * @see org.gamegineer.table.core.AbstractComponentTestCase#setUp()
      */
+    @Before
     @Override
-    protected ITable createTable()
+    public void setUp()
+        throws Exception
     {
-        return new Table();
+        super.setUp();
     }
 }

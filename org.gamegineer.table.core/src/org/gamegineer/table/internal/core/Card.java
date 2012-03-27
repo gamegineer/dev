@@ -1,6 +1,6 @@
 /*
  * Card.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -113,8 +113,8 @@ final class Card
      * Initializes a new instance of the {@code Card} class.
      * 
      * @param tableContext
-     *        The table context associated with the card; must not be {@code
-     *        null}.
+     *        The table context associated with the card; must not be
+     *        {@code null}.
      */
     Card(
         /* @NonNull */
@@ -318,7 +318,7 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.ICard#getBounds()
+     * @see org.gamegineer.table.core.IComponent#getBounds()
      */
     @Override
     public Rectangle getBounds()
@@ -369,7 +369,7 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.ICard#getLocation()
+     * @see org.gamegineer.table.core.IComponent#getLocation()
      */
     @Override
     public Point getLocation()
@@ -414,7 +414,7 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.ICard#getSize()
+     * @see org.gamegineer.table.core.IComponent#getSize()
      */
     @Override
     public Dimension getSize()
@@ -475,7 +475,7 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.ICard#setLocation(java.awt.Point)
+     * @see org.gamegineer.table.core.IComponent#setLocation(java.awt.Point)
      */
     @Override
     public void setLocation(

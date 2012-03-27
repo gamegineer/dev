@@ -485,7 +485,7 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#getBounds()
+     * @see org.gamegineer.table.core.IComponent#getBounds()
      */
     @Override
     public Rectangle getBounds()
@@ -702,7 +702,7 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#getLocation()
+     * @see org.gamegineer.table.core.IComponent#getLocation()
      */
     @Override
     public Point getLocation()
@@ -722,7 +722,7 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#getSize()
+     * @see org.gamegineer.table.core.IComponent#getSize()
      */
     @Override
     public Dimension getSize()
@@ -1002,7 +1002,7 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#setLocation(java.awt.Point)
+     * @see org.gamegineer.table.core.IComponent#setLocation(java.awt.Point)
      */
     @Override
     public void setLocation(

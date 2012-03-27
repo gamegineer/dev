@@ -50,17 +50,17 @@ public final class CardPileAsCardPileTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractCardPileTestCase#createCardPile(org.gamegineer.table.core.ITable)
+     * @see org.gamegineer.table.core.AbstractComponentTestCase#createComponent(org.gamegineer.table.core.ITable)
      */
     @Override
-    protected ICardPile createCardPile(
+    protected ICardPile createComponent(
         final ITable table )
     {
         return new CardPile( ((Table)table).getTableContext() );
     }
 
     /*
-     * @see org.gamegineer.table.core.AbstractCardPileTestCase#createTable()
+     * @see org.gamegineer.table.core.AbstractComponentTestCase#createTable()
      */
     @Override
     protected ITable createTable()
