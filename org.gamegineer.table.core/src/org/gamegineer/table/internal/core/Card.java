@@ -38,6 +38,7 @@ import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.CardSurfaceDesignId;
+import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardListener;
 import org.gamegineer.table.core.ICardPile;
@@ -172,27 +173,6 @@ final class Card
     }
 
     /**
-     * Fires a card location changed event.
-     */
-    private void fireCardLocationChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final CardEvent event = new CardEvent( this );
-        for( final ICardListener listener : listeners_ )
-        {
-            try
-            {
-                listener.cardLocationChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Card_cardLocationChanged_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
      * Fires a card orientation changed event.
      */
     private void fireCardOrientationChanged()
@@ -230,6 +210,27 @@ final class Card
             catch( final RuntimeException e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Card_cardSurfaceDesignsChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a component bounds changed event.
+     */
+    private void fireComponentBoundsChanged()
+    {
+        assert !getLock().isHeldByCurrentThread();
+
+        final ComponentEvent event = new ComponentEvent( this );
+        for( final ICardListener listener : listeners_ )
+        {
+            try
+            {
+                listener.componentBoundsChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Card_componentBoundsChanged_unexpectedException, e );
             }
         }
     }
@@ -499,7 +500,7 @@ final class Card
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                fireCardLocationChanged();
+                fireComponentBoundsChanged();
             }
         } );
     }

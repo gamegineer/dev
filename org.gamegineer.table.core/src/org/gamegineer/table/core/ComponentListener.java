@@ -1,5 +1,5 @@
 /*
- * CardEvent.java
+ * ComponentListener.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,49 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 24, 2009 at 9:14:12 PM.
+ * Created on Mar 27, 2012 at 8:49:54 PM.
  */
 
 package org.gamegineer.table.core;
 
-import net.jcip.annotations.ThreadSafe;
+import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
+import net.jcip.annotations.Immutable;
 
 /**
- * An event fired by a card.
+ * Default implementation of {@link IComponentListener}.
  * 
- * @noextend This class is not intended to be subclassed by clients.
+ * <p>
+ * All methods of this class do nothing.
+ * </p>
  */
-@ThreadSafe
-public class CardEvent
-    extends ComponentEvent
+@Immutable
+public class ComponentListener
+    implements IComponentListener
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** Serializable class version number. */
-    private static final long serialVersionUID = 2812928653096081948L;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardEvent} class.
-     * 
-     * @param source
-     *        The card that fired the event; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code source} is {@code null}.
+     * Initializes a new instance of the {@code ComponentListener} class.
      */
-    public CardEvent(
-        /* @NonNull */
-        @SuppressWarnings( "hiding" )
-        final ICard source )
+    public ComponentListener()
     {
-        super( source );
     }
 
 
@@ -67,13 +52,14 @@ public class CardEvent
     // ======================================================================
 
     /**
-     * Gets the card that fired the event.
+     * This implementation does nothing.
      * 
-     * @return The card that fired the event; never {@code null}.
+     * @see org.gamegineer.table.core.IComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
      */
-    /* @NonNull */
-    public final ICard getCard()
+    @Override
+    public void componentBoundsChanged(
+        final ComponentEvent event )
     {
-        return (ICard)getComponent();
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
     }
 }

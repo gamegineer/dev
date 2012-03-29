@@ -26,6 +26,8 @@ import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
 import org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +49,9 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     /** The component under test in the fixture. */
     private T component_;
 
+    /** The mocks control for use in the fixture. */
+    private IMocksControl mocksControl_;
+
     /** The table for use in the fixture. */
     private ITable table_;
 
@@ -67,6 +72,23 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Adds the specified component listener to the specified component.
+     * 
+     * @param component
+     *        The component; must not be {@code null}.
+     * @param listener
+     *        The component listener; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code component} or {@code listener} is {@code null}.
+     */
+    protected abstract void addComponentListener(
+        /* @NonNull */
+        T component,
+        /* @NonNull */
+        IComponentListener listener );
 
     /**
      * Creates the component to be tested.
@@ -131,12 +153,34 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     public void setUp()
         throws Exception
     {
+        mocksControl_ = EasyMock.createControl();
         table_ = createTable();
         assertNotNull( table_ );
         component_ = createComponent( table_ );
         assertNotNull( component_ );
 
         super.setUp();
+    }
+
+    /**
+     * Ensures the component bounds changed event catches any exception thrown
+     * by the {@code componentBoundsChanged} method of a component listener.
+     */
+    @Test
+    public void testComponentBoundsChanged_CatchesListenerException()
+    {
+        final IComponentListener listener1 = mocksControl_.createMock( IComponentListener.class );
+        listener1.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final IComponentListener listener2 = mocksControl_.createMock( IComponentListener.class );
+        listener2.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        addComponentListener( component_, listener1 );
+        addComponentListener( component_, listener2 );
+
+        component_.setLocation( new Point( 1010, 2020 ) );
+
+        mocksControl_.verify();
     }
 
     /**
@@ -255,6 +299,23 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
         final Dimension actualSize = component_.getSize();
 
         assertEquals( expectedSize, actualSize );
+    }
+
+    /**
+     * Ensures the {@code setLocation} method fires a component bounds changed
+     * event.
+     */
+    @Test
+    public void testSetLocation_FiresComponentBoundsChangedEvent()
+    {
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        addComponentListener( component_, listener );
+
+        component_.setLocation( new Point( 1010, 2020 ) );
+
+        mocksControl_.verify();
     }
 
     /**

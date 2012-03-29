@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.CardEvent;
+import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.internal.ui.Loggers;
 
@@ -175,19 +176,6 @@ public final class CardModel
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.core.CardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardLocationChanged(
-            final CardEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            fireCardChanged();
-        }
-
-        /*
          * @see org.gamegineer.table.core.CardListener#cardOrientationChanged(org.gamegineer.table.core.CardEvent)
          */
         @Override
@@ -207,6 +195,19 @@ public final class CardModel
         @SuppressWarnings( "synthetic-access" )
         public void cardSurfaceDesignsChanged(
             final CardEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            fireCardChanged();
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentBoundsChanged(
+            final ComponentEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 

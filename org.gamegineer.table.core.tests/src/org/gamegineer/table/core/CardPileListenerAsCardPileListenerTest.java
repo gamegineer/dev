@@ -47,10 +47,10 @@ public final class CardPileListenerAsCardPileListenerTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractCardPileListenerTestCase#createCardPileListener()
+     * @see org.gamegineer.table.core.AbstractComponentListenerTestCase#createComponentListener()
      */
     @Override
-    protected ICardPileListener createCardPileListener()
+    protected ICardPileListener createComponentListener()
     {
         return new CardPileListener();
     }

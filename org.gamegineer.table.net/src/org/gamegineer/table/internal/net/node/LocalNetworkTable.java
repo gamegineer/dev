@@ -32,6 +32,7 @@ import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
+import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardListener;
 import org.gamegineer.table.core.ICardPile;
@@ -322,28 +323,6 @@ final class LocalNetworkTable
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
-         */
-        @Override
-        public void cardLocationChanged(
-            final CardEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            // do nothing
-
-            // In the current implementation, handling this event is unnecessary because a
-            // card can only be moved by moving a card pile that contains the card. Thus,
-            // when the corresponding card pile bounds changed event is fired, it will
-            // automatically set the new card location when the card pile location is changed.
-            //
-            // If we send both the card pile bounds changed event and the card location
-            // changed event over the network, the card movement on remote tables will appear
-            // "jumpy" because two ICard.setLocation() calls will be made that may be a few
-            // pixels off.
-        }
-
-        /*
          * @see org.gamegineer.table.core.ICardListener#cardOrientationChanged(org.gamegineer.table.core.CardEvent)
          */
         @Override
@@ -432,6 +411,28 @@ final class LocalNetworkTable
                 tableManager_.incrementCardState( LocalNetworkTable.this, cardPileIndex, cardIndex, cardIncrement );
             }
         }
+
+        /*
+         * @see org.gamegineer.table.core.IComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        public void componentBoundsChanged(
+            final ComponentEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            // do nothing
+
+            // In the current implementation, handling this event is unnecessary because a
+            // card can only be moved by moving a card pile that contains the card. Thus,
+            // when the corresponding card pile bounds changed event is fired, it will
+            // automatically set the new card location when the card pile location is changed.
+            //
+            // If we send both the card pile bounds changed event and the card location
+            // changed event over the network, the card movement on remote tables will appear
+            // "jumpy" because two ICard.setLocation() calls will be made that may be a few
+            // pixels off.
+        }
     }
 
     /**
@@ -475,27 +476,6 @@ final class LocalNetworkTable
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
-         */
-        @Override
-        public void cardLocationChanged(
-            @SuppressWarnings( "unused" )
-            final CardEvent event )
-        {
-            // do nothing
-
-            // In the current implementation, handling this event is unnecessary because a
-            // card can only be moved by moving a card pile that contains the card. Thus,
-            // when the corresponding card pile bounds changed event is fired, it will
-            // automatically set the new card location when the card pile location is changed.
-            //
-            // If we send both the card pile bounds changed event and the card location
-            // changed event over the network, the card movement on remote tables will appear
-            // "jumpy" because two ICard.setLocation() calls will be made that may be a few
-            // pixels off.
-        }
-
-        /*
          * @see org.gamegineer.table.core.ICardListener#cardOrientationChanged(org.gamegineer.table.core.CardEvent)
          */
         @Override
@@ -529,6 +509,27 @@ final class LocalNetworkTable
                     actualCardListener_.cardSurfaceDesignsChanged( event );
                 }
             } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        public void componentBoundsChanged(
+            @SuppressWarnings( "unused" )
+            final ComponentEvent event )
+        {
+            // do nothing
+
+            // In the current implementation, handling this event is unnecessary because a
+            // card can only be moved by moving a card pile that contains the card. Thus,
+            // when the corresponding card pile bounds changed event is fired, it will
+            // automatically set the new card location when the card pile location is changed.
+            //
+            // If we send both the card pile bounds changed event and the card location
+            // changed event over the network, the card movement on remote tables will appear
+            // "jumpy" because two ICard.setLocation() calls will be made that may be a few
+            // pixels off.
         }
     }
 
@@ -639,46 +640,6 @@ final class LocalNetworkTable
         }
 
         /*
-         * @see org.gamegineer.table.core.ICardPileListener#cardPileBoundsChanged(org.gamegineer.table.core.CardPileEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardPileBoundsChanged(
-            final CardPileEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-            assert nodeLayer_.isNodeLayerThread();
-
-            if( ignoreEvents_ )
-            {
-                return;
-            }
-
-            int cardPileIndex = -1;
-            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
-            getTableLock().lock();
-            try
-            {
-                final ICardPile cardPile = event.getCardPile();
-                final ITable table = cardPile.getTable();
-                if( table != null )
-                {
-                    cardPileIndex = table.getCardPileIndex( cardPile );
-                    cardPileIncrement.setBaseLocation( cardPile.getBaseLocation() );
-                }
-            }
-            finally
-            {
-                getTableLock().unlock();
-            }
-
-            if( cardPileIndex != -1 )
-            {
-                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
-            }
-        }
-
-        /*
          * @see org.gamegineer.table.core.ICardPileListener#cardPileLayoutChanged(org.gamegineer.table.core.CardPileEvent)
          */
         @Override
@@ -750,6 +711,46 @@ final class LocalNetworkTable
                 {
                     cardPileIndex = table.getCardPileIndex( cardPile );
                     cardPileIncrement.setRemovedCardCount( 1 );
+                }
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
+
+            if( cardPileIndex != -1 )
+            {
+                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+            }
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentBoundsChanged(
+            final ComponentEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
+
+            if( ignoreEvents_ )
+            {
+                return;
+            }
+
+            int cardPileIndex = -1;
+            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+            getTableLock().lock();
+            try
+            {
+                final ICardPile cardPile = (ICardPile)event.getComponent(); // FIXME: remove cast
+                final ITable table = cardPile.getTable();
+                if( table != null )
+                {
+                    cardPileIndex = table.getCardPileIndex( cardPile );
+                    cardPileIncrement.setBaseLocation( cardPile.getBaseLocation() );
                 }
             }
             finally
@@ -842,24 +843,6 @@ final class LocalNetworkTable
         }
 
         /*
-         * @see org.gamegineer.table.core.ICardPileListener#cardPileBoundsChanged(org.gamegineer.table.core.CardPileEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardPileBoundsChanged(
-            final CardPileEvent event )
-        {
-            syncExec( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    actualCardPileListener_.cardPileBoundsChanged( event );
-                }
-            } );
-        }
-
-        /*
          * @see org.gamegineer.table.core.ICardPileListener#cardPileLayoutChanged(org.gamegineer.table.core.CardPileEvent)
          */
         @Override
@@ -891,6 +874,24 @@ final class LocalNetworkTable
                 public void run()
                 {
                     actualCardPileListener_.cardRemoved( event );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentBoundsChanged(
+            final ComponentEvent event )
+        {
+            syncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualCardPileListener_.componentBoundsChanged( event );
                 }
             } );
         }

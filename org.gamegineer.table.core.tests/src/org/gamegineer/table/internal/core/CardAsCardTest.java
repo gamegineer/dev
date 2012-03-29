@@ -22,7 +22,10 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.AbstractCardTestCase;
+import org.gamegineer.table.core.CardListener;
+import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ICard;
+import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.ITable;
 
 /**
@@ -48,6 +51,25 @@ public final class CardAsCardTest
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.core.AbstractComponentTestCase#addComponentListener(org.gamegineer.table.core.IComponent, org.gamegineer.table.core.IComponentListener)
+     */
+    @Override
+    protected void addComponentListener(
+        final ICard component,
+        final IComponentListener listener )
+    {
+        component.addCardListener( new CardListener()
+        {
+            @Override
+            public void componentBoundsChanged(
+                final ComponentEvent event )
+            {
+                listener.componentBoundsChanged( event );
+            }
+        } );
+    }
 
     /*
      * @see org.gamegineer.table.core.AbstractComponentTestCase#createComponent(org.gamegineer.table.core.ITable)

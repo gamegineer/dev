@@ -42,6 +42,7 @@ import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.CardPileLayout;
+import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardPileBaseDesign;
@@ -240,7 +241,7 @@ final class CardPile
 
                     if( cardPileBoundsChanged )
                     {
-                        fireCardPileBoundsChanged();
+                        fireComponentBoundsChanged();
                     }
                 }
             } );
@@ -330,27 +331,6 @@ final class CardPile
     }
 
     /**
-     * Fires a card pile bounds changed event.
-     */
-    private void fireCardPileBoundsChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final CardPileEvent event = new CardPileEvent( this );
-        for( final ICardPileListener listener : listeners_ )
-        {
-            try
-            {
-                listener.cardPileBoundsChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_cardPileBoundsChanged_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
      * Fires a card pile layout changed event.
      */
     private void fireCardPileLayoutChanged()
@@ -398,6 +378,27 @@ final class CardPile
             catch( final RuntimeException e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_cardRemoved_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a component bounds changed event.
+     */
+    private void fireComponentBoundsChanged()
+    {
+        assert !getLock().isHeldByCurrentThread();
+
+        final ComponentEvent event = new ComponentEvent( this );
+        for( final ICardPileListener listener : listeners_ )
+        {
+            try
+            {
+                listener.componentBoundsChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentBoundsChanged_unexpectedException, e );
             }
         }
     }
@@ -884,7 +885,7 @@ final class CardPile
 
                     if( cardPileBoundsChanged )
                     {
-                        fireCardPileBoundsChanged();
+                        fireComponentBoundsChanged();
                     }
                 }
             } );
@@ -995,7 +996,7 @@ final class CardPile
 
                 if( cardPileBoundsChanged )
                 {
-                    fireCardPileBoundsChanged();
+                    fireComponentBoundsChanged();
                 }
             }
         } );
@@ -1138,7 +1139,7 @@ final class CardPile
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                fireCardPileBoundsChanged();
+                fireComponentBoundsChanged();
             }
         } );
     }

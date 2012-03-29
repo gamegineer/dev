@@ -44,12 +44,6 @@ final class NonNlsMessages
 
     /**
      * An unexpected exception was thrown from
-     * ICardListener.cardLocationChanged().
-     */
-    public static String Card_cardLocationChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
      * ICardListener.cardOrientationChanged().
      */
     public static String Card_cardOrientationChanged_unexpectedException;
@@ -59,6 +53,12 @@ final class NonNlsMessages
      * ICardListener.cardSurfaceDesignsChanged().
      */
     public static String Card_cardSurfaceDesignsChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IComponentListener.componentBoundsChanged().
+     */
+    public static String Card_componentBoundsChanged_unexpectedException;
 
     /** The card listener is not registered. */
     public static String Card_removeCardListener_listener_notRegistered;
@@ -91,18 +91,18 @@ final class NonNlsMessages
 
     /**
      * An unexpected exception was thrown from
-     * ICardPileListener.cardPileBoundsChanged().
-     */
-    public static String CardPile_cardPileBoundsChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
      * ICardPileListener.cardPileLayoutChanged().
      */
     public static String CardPile_cardPileLayoutChanged_unexpectedException;
 
     /** An unexpected exception was thrown from ICardPileListener.cardRemoved(). */
     public static String CardPile_cardRemoved_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IComponentListener.componentBoundsChanged().
+     */
+    public static String CardPile_componentBoundsChanged_unexpectedException;
 
     /** The card index is out of range. */
     public static String CardPile_getCardFromIndex_index_outOfRange;

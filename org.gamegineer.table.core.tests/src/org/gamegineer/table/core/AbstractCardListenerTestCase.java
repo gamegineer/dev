@@ -21,8 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import static org.junit.Assert.assertNotNull;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -30,15 +28,8 @@ import org.junit.Test;
  * {@link org.gamegineer.table.core.ICardListener} interface.
  */
 public abstract class AbstractCardListenerTestCase
+    extends AbstractComponentListenerTestCase<ICardListener>
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The card listener under test in the fixture. */
-    private ICardListener listener_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -57,39 +48,14 @@ public abstract class AbstractCardListenerTestCase
     // ======================================================================
 
     /**
-     * Creates the card listener to be tested.
+     * Gets the card listener under test in the fixture.
      * 
-     * @return The card listener to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * @return The card listener under test in the fixture; never {@code null}.
      */
     /* @NonNull */
-    protected abstract ICardListener createCardListener()
-        throws Exception;
-
-    /**
-     * Sets up the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Before
-    public void setUp()
-        throws Exception
+    protected final ICardListener getCardListener()
     {
-        listener_ = createCardListener();
-        assertNotNull( listener_ );
-    }
-
-    /**
-     * Ensures the {@code cardLocationChanged} method throws an exception when
-     * passed a {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCardLocationChanged_Event_Null()
-    {
-        listener_.cardLocationChanged( null );
+        return getComponentListener();
     }
 
     /**
@@ -99,7 +65,7 @@ public abstract class AbstractCardListenerTestCase
     @Test( expected = NullPointerException.class )
     public void testCardOrientationChanged_Event_Null()
     {
-        listener_.cardOrientationChanged( null );
+        getCardListener().cardOrientationChanged( null );
     }
 
     /**
@@ -109,6 +75,6 @@ public abstract class AbstractCardListenerTestCase
     @Test( expected = NullPointerException.class )
     public void testCardSurfaceDesignsChanged_Event_Null()
     {
-        listener_.cardSurfaceDesignsChanged( null );
+        getCardListener().cardSurfaceDesignsChanged( null );
     }
 }

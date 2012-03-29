@@ -22,7 +22,10 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.AbstractCardPileTestCase;
+import org.gamegineer.table.core.CardPileListener;
+import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.ITable;
 
 /**
@@ -48,6 +51,25 @@ public final class CardPileAsCardPileTest
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.core.AbstractComponentTestCase#addComponentListener(org.gamegineer.table.core.IComponent, org.gamegineer.table.core.IComponentListener)
+     */
+    @Override
+    protected void addComponentListener(
+        final ICardPile component,
+        final IComponentListener listener )
+    {
+        component.addCardPileListener( new CardPileListener()
+        {
+            @Override
+            public void componentBoundsChanged(
+                final ComponentEvent event )
+            {
+                listener.componentBoundsChanged( event );
+            }
+        } );
+    }
 
     /*
      * @see org.gamegineer.table.core.AbstractComponentTestCase#createComponent(org.gamegineer.table.core.ITable)

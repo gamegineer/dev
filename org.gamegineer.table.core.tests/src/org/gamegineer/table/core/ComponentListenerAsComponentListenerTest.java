@@ -1,5 +1,5 @@
 /*
- * CardListenerAsCardListenerTest.java
+ * ComponentListenerAsComponentListenerTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,28 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 2, 2011 at 8:09:58 PM.
+ * Created on Mar 27, 2012 at 9:04:45 PM.
  */
 
 package org.gamegineer.table.core;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.core.CardListener}
+ * A fixture for testing the {@link org.gamegineer.table.core.ComponentListener}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.ICardListener} interface.
+ * {@link org.gamegineer.table.core.IComponentListener} interface.
  */
-public final class CardListenerAsCardListenerTest
-    extends AbstractCardListenerTestCase
+public final class ComponentListenerAsComponentListenerTest
+    extends AbstractComponentListenerTestCase<ComponentListener>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardListenerAsCardListenerTest}
-     * class.
+     * Initializes a new instance of the
+     * {@code ComponentListenerAsComponentListenerTest} class.
      */
-    public CardListenerAsCardListenerTest()
+    public ComponentListenerAsComponentListenerTest()
     {
     }
 
@@ -50,8 +50,8 @@ public final class CardListenerAsCardListenerTest
      * @see org.gamegineer.table.core.AbstractComponentListenerTestCase#createComponentListener()
      */
     @Override
-    protected ICardListener createComponentListener()
+    protected ComponentListener createComponentListener()
     {
-        return new CardListener();
+        return new ComponentListener();
     }
 }

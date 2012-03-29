@@ -21,8 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import static org.junit.Assert.assertNotNull;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -30,15 +28,8 @@ import org.junit.Test;
  * {@link org.gamegineer.table.core.ICardPileListener} interface.
  */
 public abstract class AbstractCardPileListenerTestCase
+    extends AbstractComponentListenerTestCase<ICardPileListener>
 {
-    // ======================================================================
-    // Fields
-    // ======================================================================
-
-    /** The card pile listener under test in the fixture. */
-    private ICardPileListener listener_;
-
-
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -57,29 +48,15 @@ public abstract class AbstractCardPileListenerTestCase
     // ======================================================================
 
     /**
-     * Creates the card pile listener to be tested.
+     * Gets the card pile listener under test in the fixture.
      * 
-     * @return The card pile listener to be tested; never {@code null}.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
+     * @return The card pile listener under test in the fixture; never
+     *         {@code null}.
      */
     /* @NonNull */
-    protected abstract ICardPileListener createCardPileListener()
-        throws Exception;
-
-    /**
-     * Sets up the test fixture.
-     * 
-     * @throws java.lang.Exception
-     *         If an error occurs.
-     */
-    @Before
-    public void setUp()
-        throws Exception
+    protected final ICardPileListener getCardPileListener()
     {
-        listener_ = createCardPileListener();
-        assertNotNull( listener_ );
+        return getComponentListener();
     }
 
     /**
@@ -89,7 +66,7 @@ public abstract class AbstractCardPileListenerTestCase
     @Test( expected = NullPointerException.class )
     public void testCardAdded_Event_Null()
     {
-        listener_.cardAdded( null );
+        getCardPileListener().cardAdded( null );
     }
 
     /**
@@ -99,17 +76,7 @@ public abstract class AbstractCardPileListenerTestCase
     @Test( expected = NullPointerException.class )
     public void testCardPileBaseDesignChanged_Event_Null()
     {
-        listener_.cardPileBaseDesignChanged( null );
-    }
-
-    /**
-     * Ensures the {@code cardPileBoundsChanged} method throws an exception when
-     * passed a {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCardPileBoundsChanged_Event_Null()
-    {
-        listener_.cardPileBoundsChanged( null );
+        getCardPileListener().cardPileBaseDesignChanged( null );
     }
 
     /**
@@ -119,7 +86,7 @@ public abstract class AbstractCardPileListenerTestCase
     @Test( expected = NullPointerException.class )
     public void testCardPileLayoutChanged_Event_Null()
     {
-        listener_.cardPileLayoutChanged( null );
+        getCardPileListener().cardPileLayoutChanged( null );
     }
 
     /**
@@ -129,6 +96,6 @@ public abstract class AbstractCardPileListenerTestCase
     @Test( expected = NullPointerException.class )
     public void testCardRemoved_Event_Null()
     {
-        listener_.cardRemoved( null );
+        getCardPileListener().cardRemoved( null );
     }
 }

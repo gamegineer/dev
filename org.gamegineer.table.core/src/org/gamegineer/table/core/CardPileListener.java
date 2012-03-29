@@ -33,6 +33,7 @@ import net.jcip.annotations.Immutable;
  */
 @Immutable
 public class CardPileListener
+    extends ComponentListener
     implements ICardPileListener
 {
     // ======================================================================
@@ -70,18 +71,6 @@ public class CardPileListener
      */
     @Override
     public void cardPileBaseDesignChanged(
-        final CardPileEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-    }
-
-    /**
-     * This implementation does nothing.
-     * 
-     * @see org.gamegineer.table.core.ICardPileListener#cardPileBoundsChanged(org.gamegineer.table.core.CardPileEvent)
-     */
-    @Override
-    public void cardPileBoundsChanged(
         final CardPileEvent event )
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$

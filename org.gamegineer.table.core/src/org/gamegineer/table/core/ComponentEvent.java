@@ -1,5 +1,5 @@
 /*
- * CardEvent.java
+ * ComponentEvent.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,28 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 24, 2009 at 9:14:12 PM.
+ * Created on Mar 27, 2012 at 8:44:53 PM.
  */
 
 package org.gamegineer.table.core;
 
+import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * An event fired by a card.
+ * An event fired by a table component.
  * 
  * @noextend This class is not intended to be subclassed by clients.
  */
 @ThreadSafe
-public class CardEvent
-    extends ComponentEvent
+public class ComponentEvent
+    extends EventObject
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = 2812928653096081948L;
+    private static final long serialVersionUID = 2992004706733067598L;
 
 
     // ======================================================================
@@ -45,18 +46,18 @@ public class CardEvent
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardEvent} class.
+     * Initializes a new instance of the {@code ComponentEvent} class.
      * 
      * @param source
-     *        The card that fired the event; must not be {@code null}.
+     *        The component that fired the event; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code source} is {@code null}.
      */
-    public CardEvent(
+    public ComponentEvent(
         /* @NonNull */
         @SuppressWarnings( "hiding" )
-        final ICard source )
+        final IComponent source )
     {
         super( source );
     }
@@ -67,13 +68,13 @@ public class CardEvent
     // ======================================================================
 
     /**
-     * Gets the card that fired the event.
+     * Gets the component that fired the event.
      * 
-     * @return The card that fired the event; never {@code null}.
+     * @return The component that fired the event; never {@code null}.
      */
     /* @NonNull */
-    public final ICard getCard()
+    public final IComponent getComponent()
     {
-        return (ICard)getComponent();
+        return (IComponent)getSource();
     }
 }

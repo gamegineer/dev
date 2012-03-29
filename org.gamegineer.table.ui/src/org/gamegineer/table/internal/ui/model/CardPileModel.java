@@ -32,6 +32,7 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
+import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.internal.ui.Loggers;
@@ -377,19 +378,6 @@ public final class CardPileModel
         }
 
         /*
-         * @see org.gamegineer.table.core.CardPileListener#cardPileBoundsChanged(org.gamegineer.table.core.CardPileEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardPileBoundsChanged(
-            final CardPileEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            fireCardPileChanged();
-        }
-
-        /*
          * @see org.gamegineer.table.core.CardPileListener#cardPileLayoutChanged(org.gamegineer.table.core.CardPileEvent)
          */
         @Override
@@ -420,6 +408,19 @@ public final class CardPileModel
                     cardModel.removeCardModelListener( cardModelListener_ );
                 }
             }
+
+            fireCardPileChanged();
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentBoundsChanged(
+            final ComponentEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
             fireCardPileChanged();
         }

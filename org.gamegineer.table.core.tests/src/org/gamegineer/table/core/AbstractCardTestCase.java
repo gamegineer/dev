@@ -149,27 +149,6 @@ public abstract class AbstractCardTestCase
     }
 
     /**
-     * Ensures the card location changed event catches any exception thrown by
-     * the {@code cardLocationChanged} method of a card listener.
-     */
-    @Test
-    public void testCardLocationChanged_CatchesListenerException()
-    {
-        final ICardListener listener1 = mocksControl_.createMock( ICardListener.class );
-        listener1.cardLocationChanged( EasyMock.notNull( CardEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ICardListener listener2 = mocksControl_.createMock( ICardListener.class );
-        listener2.cardLocationChanged( EasyMock.notNull( CardEvent.class ) );
-        mocksControl_.replay();
-        getCard().addCardListener( listener1 );
-        getCard().addCardListener( listener2 );
-
-        getCard().setLocation( new Point( 1010, 2020 ) );
-
-        mocksControl_.verify();
-    }
-
-    /**
      * Ensures the card orientation changed event catches any exception thrown
      * by the {@code cardOrientationChanged} method of a card listener.
      */
@@ -320,23 +299,6 @@ public abstract class AbstractCardTestCase
 
         getCard().removeCardListener( listener );
         getCard().flip();
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code setLocation} method fires a card location changed
-     * event.
-     */
-    @Test
-    public void testSetLocation_FiresCardLocationChangedEvent()
-    {
-        final ICardListener listener = mocksControl_.createMock( ICardListener.class );
-        listener.cardLocationChanged( EasyMock.notNull( CardEvent.class ) );
-        mocksControl_.replay();
-        getCard().addCardListener( listener );
-
-        getCard().setLocation( new Point( 1010, 2020 ) );
 
         mocksControl_.verify();
     }

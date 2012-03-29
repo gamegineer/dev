@@ -1,6 +1,6 @@
 /*
  * ICardPileListener.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import java.util.EventListener;
-
 /**
  * The listener interface for use by clients to be notified of changes to the
  * card pile state.
@@ -30,7 +28,7 @@ import java.util.EventListener;
  * @noextend This interface is not intended to be extended by clients.
  */
 public interface ICardPileListener
-    extends EventListener
+    extends IComponentListener
 {
     // ======================================================================
     // Methods
@@ -59,19 +57,6 @@ public interface ICardPileListener
      *         If {@code event} is {@code null}.
      */
     public void cardPileBaseDesignChanged(
-        /* @NonNull */
-        CardPileEvent event );
-
-    /**
-     * Invoked after the card pile bounds have changed.
-     * 
-     * @param event
-     *        The event describing the card pile; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
-     */
-    public void cardPileBoundsChanged(
         /* @NonNull */
         CardPileEvent event );
 

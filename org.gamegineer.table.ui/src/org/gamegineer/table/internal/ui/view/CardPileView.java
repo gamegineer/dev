@@ -35,6 +35,7 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
+import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPileListener;
 import org.gamegineer.table.internal.ui.Activator;
@@ -154,20 +155,6 @@ final class CardPileView
     }
 
     /**
-     * Invoked after the card pile bounds have changed.
-     */
-    private void cardPileBoundsChanged()
-    {
-        if( isInitialized() )
-        {
-            final Rectangle viewBounds = getBounds();
-            dirtyBounds_.add( viewBounds );
-            tableView_.repaintTable( dirtyBounds_ );
-            dirtyBounds_.setBounds( viewBounds );
-        }
-    }
-
-    /**
      * Invoked after the card pile model has gained or lost the logical focus.
      */
     private void cardPileModelFocusChanged()
@@ -193,6 +180,20 @@ final class CardPileView
         if( isInitialized() )
         {
             deleteCardView( card );
+        }
+    }
+
+    /**
+     * Invoked after the component bounds have changed.
+     */
+    private void componentBoundsChanged()
+    {
+        if( isInitialized() )
+        {
+            final Rectangle viewBounds = getBounds();
+            dirtyBounds_.add( viewBounds );
+            tableView_.repaintTable( dirtyBounds_ );
+            dirtyBounds_.setBounds( viewBounds );
         }
     }
 
@@ -464,26 +465,6 @@ final class CardPileView
         }
 
         /*
-         * @see org.gamegineer.table.core.CardPileListener#cardPileBoundsChanged(org.gamegineer.table.core.CardPileEvent)
-         */
-        @Override
-        public void cardPileBoundsChanged(
-            final CardPileEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    CardPileView.this.cardPileBoundsChanged();
-                }
-            } );
-        }
-
-        /*
          * @see org.gamegineer.table.core.CardPileListener#cardRemoved(org.gamegineer.table.core.CardPileContentChangedEvent)
          */
         @Override
@@ -499,6 +480,26 @@ final class CardPileView
                 public void run()
                 {
                     CardPileView.this.cardRemoved( event.getCard() );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        public void componentBoundsChanged(
+            final ComponentEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    CardPileView.this.componentBoundsChanged();
                 }
             } );
         }

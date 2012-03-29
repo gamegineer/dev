@@ -1,5 +1,5 @@
 /*
- * CardListenerAsCardListenerTest.java
+ * IComponentListener.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,42 +16,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 2, 2011 at 8:09:58 PM.
+ * Created on Mar 27, 2012 at 8:41:47 PM.
  */
 
 package org.gamegineer.table.core;
 
+import java.util.EventListener;
+
 /**
- * A fixture for testing the {@link org.gamegineer.table.core.CardListener}
- * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.ICardListener} interface.
+ * The listener interface for use by clients to be notified of changes to the
+ * table component state.
+ * 
+ * @noextend This interface is not intended to be extended by clients.
  */
-public final class CardListenerAsCardListenerTest
-    extends AbstractCardListenerTestCase
+public interface IComponentListener
+    extends EventListener
 {
-    // ======================================================================
-    // Constructors
-    // ======================================================================
-
-    /**
-     * Initializes a new instance of the {@code CardListenerAsCardListenerTest}
-     * class.
-     */
-    public CardListenerAsCardListenerTest()
-    {
-    }
-
-
     // ======================================================================
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.core.AbstractComponentListenerTestCase#createComponentListener()
+    /**
+     * Invoked after the component bounds have changed.
+     * 
+     * @param event
+     *        The event describing the component; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
      */
-    @Override
-    protected ICardListener createComponentListener()
-    {
-        return new CardListener();
-    }
+    public void componentBoundsChanged(
+        /* @NonNull */
+        ComponentEvent event );
 }

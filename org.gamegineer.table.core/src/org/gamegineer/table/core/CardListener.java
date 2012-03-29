@@ -33,6 +33,7 @@ import net.jcip.annotations.Immutable;
  */
 @Immutable
 public class CardListener
+    extends ComponentListener
     implements ICardListener
 {
     // ======================================================================
@@ -50,18 +51,6 @@ public class CardListener
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * This implementation does nothing.
-     * 
-     * @see org.gamegineer.table.core.ICardListener#cardLocationChanged(org.gamegineer.table.core.CardEvent)
-     */
-    @Override
-    public void cardLocationChanged(
-        final CardEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-    }
 
     /**
      * This implementation does nothing.
