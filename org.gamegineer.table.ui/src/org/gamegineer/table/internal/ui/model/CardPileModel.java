@@ -30,11 +30,12 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.internal.ui.Loggers;
 
 /**
@@ -97,9 +98,9 @@ public final class CardPileModel
 
         cardPile_.addCardPileListener( new CardPileListener() );
 
-        for( final ICard card : cardPile.getCards() )
+        for( final IComponent component : cardPile.getComponents() )
         {
-            createCardModel( card );
+            createCardModel( (ICard)component ); // FIXME: remove cast
         }
     }
 
@@ -347,24 +348,6 @@ public final class CardPileModel
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.core.CardPileListener#cardAdded(org.gamegineer.table.core.CardPileContentChangedEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardAdded(
-            final CardPileContentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            synchronized( lock_ )
-            {
-                createCardModel( event.getCard() );
-            }
-
-            fireCardPileChanged();
-        }
-
-        /*
          * @see org.gamegineer.table.core.CardPileListener#cardPileBaseDesignChanged(org.gamegineer.table.core.CardPileEvent)
          */
         @Override
@@ -391,22 +374,18 @@ public final class CardPileModel
         }
 
         /*
-         * @see org.gamegineer.table.core.CardPileListener#cardRemoved(org.gamegineer.table.core.CardPileContentChangedEvent)
+         * @see org.gamegineer.table.core.CardPileListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
-        public void cardRemoved(
-            final CardPileContentChangedEvent event )
+        public void componentAdded(
+            final ContainerContentChangedEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
             synchronized( lock_ )
             {
-                final CardModel cardModel = cardModels_.remove( event.getCard() );
-                if( cardModel != null )
-                {
-                    cardModel.removeCardModelListener( cardModelListener_ );
-                }
+                createCardModel( (ICard)event.getComponent() ); // FIXME: remove cast
             }
 
             fireCardPileChanged();
@@ -421,6 +400,28 @@ public final class CardPileModel
             final ComponentEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            fireCardPileChanged();
+        }
+
+        /*
+         * @see org.gamegineer.table.core.CardPileListener#componentRemoved(org.gamegineer.table.core.ContainerContentChangedEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentRemoved(
+            final ContainerContentChangedEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            synchronized( lock_ )
+            {
+                final CardModel cardModel = cardModels_.remove( event.getComponent() );
+                if( cardModel != null )
+                {
+                    cardModel.removeCardModelListener( cardModelListener_ );
+                }
+            }
 
             fireCardPileChanged();
         }

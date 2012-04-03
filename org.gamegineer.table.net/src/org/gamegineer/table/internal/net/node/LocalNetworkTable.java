@@ -30,13 +30,14 @@ import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardEvent;
-import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardListener;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardPileListener;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
@@ -209,9 +210,9 @@ final class LocalNetworkTable
             {
                 cardPile.addCardPileListener( cardPileListener_ );
 
-                for( final ICard card : cardPile.getCards() )
+                for( final IComponent component : cardPile.getComponents() )
                 {
-                    card.addCardListener( cardListener_ );
+                    ((ICard)component).addCardListener( cardListener_ ); // FIXME: remove cast
                 }
             }
         }
@@ -282,9 +283,9 @@ final class LocalNetworkTable
             {
                 cardPile.removeCardPileListener( cardPileListener_ );
 
-                for( final ICard card : cardPile.getCards() )
+                for( final IComponent component : cardPile.getComponents() )
                 {
-                    card.removeCardListener( cardListener_ );
+                    ((ICard)component).removeCardListener( cardListener_ ); // FIXME: remove cast
                 }
             }
         }
@@ -350,7 +351,7 @@ final class LocalNetworkTable
                     final ITable table = cardPile.getTable();
                     if( table != null )
                     {
-                        cardIndex = cardPile.getCardIndex( card );
+                        cardIndex = cardPile.getComponentIndex( card );
                         cardPileIndex = table.getCardPileIndex( cardPile );
                         cardIncrement.setOrientation( card.getOrientation() );
                     }
@@ -395,7 +396,7 @@ final class LocalNetworkTable
                     final ITable table = cardPile.getTable();
                     if( table != null )
                     {
-                        cardIndex = cardPile.getCardIndex( card );
+                        cardIndex = cardPile.getComponentIndex( card );
                         cardPileIndex = table.getCardPileIndex( cardPile );
                         cardIncrement.setSurfaceDesigns( card.getBackDesign(), card.getFaceDesign() );
                     }
@@ -557,49 +558,6 @@ final class LocalNetworkTable
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.core.ICardPileListener#cardAdded(org.gamegineer.table.core.CardPileContentChangedEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardAdded(
-            final CardPileContentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-            assert nodeLayer_.isNodeLayerThread();
-
-            final ICard card = event.getCard();
-            card.addCardListener( cardListener_ );
-
-            if( ignoreEvents_ )
-            {
-                return;
-            }
-
-            int cardPileIndex = -1;
-            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
-            getTableLock().lock();
-            try
-            {
-                final ICardPile cardPile = event.getCardPile();
-                final ITable table = cardPile.getTable();
-                if( table != null )
-                {
-                    cardPileIndex = table.getCardPileIndex( cardPile );
-                    cardPileIncrement.setAddedCardMementos( Collections.singletonList( event.getCard().createMemento() ) );
-                }
-            }
-            finally
-            {
-                getTableLock().unlock();
-            }
-
-            if( cardPileIndex != -1 )
-            {
-                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
-            }
-        }
-
-        /*
          * @see org.gamegineer.table.core.ICardPileListener#cardPileBaseDesignChanged(org.gamegineer.table.core.CardPileEvent)
          */
         @Override
@@ -680,20 +638,18 @@ final class LocalNetworkTable
         }
 
         /*
-         * @see org.gamegineer.table.core.ICardPileListener#cardRemoved(org.gamegineer.table.core.CardPileContentChangedEvent)
+         * @see org.gamegineer.table.core.IContainerListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
          */
         @Override
-        @SuppressWarnings( {
-            "boxing", "synthetic-access"
-        } )
-        public void cardRemoved(
-            final CardPileContentChangedEvent event )
+        @SuppressWarnings( "synthetic-access" )
+        public void componentAdded(
+            final ContainerContentChangedEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
             assert nodeLayer_.isNodeLayerThread();
 
-            final ICard card = event.getCard();
-            card.removeCardListener( cardListener_ );
+            final ICard card = (ICard)event.getComponent(); // FIXME: remove cast
+            card.addCardListener( cardListener_ );
 
             if( ignoreEvents_ )
             {
@@ -705,12 +661,12 @@ final class LocalNetworkTable
             getTableLock().lock();
             try
             {
-                final ICardPile cardPile = event.getCardPile();
+                final ICardPile cardPile = (ICardPile)event.getContainer(); // FIXME: remove cast
                 final ITable table = cardPile.getTable();
                 if( table != null )
                 {
                     cardPileIndex = table.getCardPileIndex( cardPile );
-                    cardPileIncrement.setRemovedCardCount( 1 );
+                    cardPileIncrement.setAddedCardMementos( Collections.singletonList( card.createMemento() ) );
                 }
             }
             finally
@@ -751,6 +707,51 @@ final class LocalNetworkTable
                 {
                     cardPileIndex = table.getCardPileIndex( cardPile );
                     cardPileIncrement.setBaseLocation( cardPile.getBaseLocation() );
+                }
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
+
+            if( cardPileIndex != -1 )
+            {
+                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+            }
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IContainerListener#componentRemoved(org.gamegineer.table.core.ContainerContentChangedEvent)
+         */
+        @Override
+        @SuppressWarnings( {
+            "boxing", "synthetic-access"
+        } )
+        public void componentRemoved(
+            final ContainerContentChangedEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
+
+            final ICard card = (ICard)event.getComponent(); // FIXME: remove cast
+            card.removeCardListener( cardListener_ );
+
+            if( ignoreEvents_ )
+            {
+                return;
+            }
+
+            int cardPileIndex = -1;
+            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+            getTableLock().lock();
+            try
+            {
+                final ICardPile cardPile = (ICardPile)event.getContainer(); // FIXME: remove cast
+                final ITable table = cardPile.getTable();
+                if( table != null )
+                {
+                    cardPileIndex = table.getCardPileIndex( cardPile );
+                    cardPileIncrement.setRemovedCardCount( 1 );
                 }
             }
             finally
@@ -807,24 +808,6 @@ final class LocalNetworkTable
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.core.ICardPileListener#cardAdded(org.gamegineer.table.core.CardPileContentChangedEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardAdded(
-            final CardPileContentChangedEvent event )
-        {
-            syncExec( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    actualCardPileListener_.cardAdded( event );
-                }
-            } );
-        }
-
-        /*
          * @see org.gamegineer.table.core.ICardPileListener#cardPileBaseDesignChanged(org.gamegineer.table.core.CardPileEvent)
          */
         @Override
@@ -861,19 +844,19 @@ final class LocalNetworkTable
         }
 
         /*
-         * @see org.gamegineer.table.core.ICardPileListener#cardRemoved(org.gamegineer.table.core.CardPileContentChangedEvent)
+         * @see org.gamegineer.table.core.IContainerListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
-        public void cardRemoved(
-            final CardPileContentChangedEvent event )
+        public void componentAdded(
+            final ContainerContentChangedEvent event )
         {
             syncExec( new Runnable()
             {
                 @Override
                 public void run()
                 {
-                    actualCardPileListener_.cardRemoved( event );
+                    actualCardPileListener_.componentAdded( event );
                 }
             } );
         }
@@ -892,6 +875,24 @@ final class LocalNetworkTable
                 public void run()
                 {
                     actualCardPileListener_.componentBoundsChanged( event );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IContainerListener#componentRemoved(org.gamegineer.table.core.ContainerContentChangedEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentRemoved(
+            final ContainerContentChangedEvent event )
+        {
+            syncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualCardPileListener_.componentRemoved( event );
                 }
             } );
         }
@@ -937,9 +938,9 @@ final class LocalNetworkTable
                 final ICardPile cardPile = event.getCardPile();
                 cardPile.addCardPileListener( cardPileListener_ );
 
-                for( final ICard card : cardPile.getCards() )
+                for( final IComponent component : cardPile.getComponents() )
                 {
-                    card.addCardListener( cardListener_ );
+                    ((ICard)component).addCardListener( cardListener_ ); // FIXME: remove cast
                 }
             }
             finally
@@ -975,9 +976,9 @@ final class LocalNetworkTable
             try
             {
                 final ICardPile cardPile = event.getCardPile();
-                for( final ICard card : cardPile.getCards() )
+                for( final IComponent component : cardPile.getComponents() )
                 {
-                    card.removeCardListener( cardListener_ );
+                    ((ICard)component).removeCardListener( cardListener_ ); // FIXME: remove cast
                 }
 
                 cardPile.removeCardPileListener( cardPileListener_ );

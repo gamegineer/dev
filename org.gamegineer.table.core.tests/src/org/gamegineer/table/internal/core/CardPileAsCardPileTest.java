@@ -22,10 +22,18 @@
 package org.gamegineer.table.internal.core;
 
 import org.gamegineer.table.core.AbstractCardPileTestCase;
+import org.gamegineer.table.core.CardListener;
 import org.gamegineer.table.core.CardPileListener;
+import org.gamegineer.table.core.CardPiles;
+import org.gamegineer.table.core.Cards;
 import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.ContainerContentChangedEvent;
+import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
+import org.gamegineer.table.core.IContainer;
+import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.ITable;
 
 /**
@@ -72,6 +80,51 @@ public final class CardPileAsCardPileTest
     }
 
     /*
+     * @see org.gamegineer.table.core.AbstractContainerTestCase#addContainerListener(org.gamegineer.table.core.IContainer, org.gamegineer.table.core.IContainerListener)
+     */
+    @Override
+    protected void addContainerListener(
+        final ICardPile container,
+        final IContainerListener listener )
+    {
+        container.addCardPileListener( new CardPileListener()
+        {
+            @Override
+            public void componentAdded(
+                final ContainerContentChangedEvent event )
+            {
+                listener.componentAdded( event );
+            }
+
+            @Override
+            public void componentRemoved(
+                final ContainerContentChangedEvent event )
+            {
+                listener.componentRemoved( event );
+            }
+        } );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractContainerTestCase#addUniqueComponentListener(org.gamegineer.table.core.IComponent, org.gamegineer.table.core.IComponentListener)
+     */
+    @Override
+    protected void addUniqueComponentListener(
+        final IComponent component,
+        final IComponentListener listener )
+    {
+        ((ICard)component).addCardListener( new CardListener()
+        {
+            @Override
+            public void componentBoundsChanged(
+                final ComponentEvent event )
+            {
+                listener.componentBoundsChanged( event );
+            }
+        } );
+    }
+
+    /*
      * @see org.gamegineer.table.core.AbstractComponentTestCase#createComponent(org.gamegineer.table.core.ITable)
      */
     @Override
@@ -88,5 +141,34 @@ public final class CardPileAsCardPileTest
     protected ITable createTable()
     {
         return new Table();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractContainerTestCase#createUniqueComponent(org.gamegineer.table.core.ITable)
+     */
+    @Override
+    protected IComponent createUniqueComponent(
+        final ITable table )
+    {
+        return Cards.createUniqueCard( table );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractContainerTestCase#createUniqueContainer(org.gamegineer.table.core.ITable)
+     */
+    @Override
+    protected IContainer createUniqueContainer(
+        final ITable table )
+    {
+        return CardPiles.createUniqueCardPile( table );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractContainerTestCase#createUniqueTable()
+     */
+    @Override
+    protected ITable createUniqueTable()
+    {
+        return createTable();
     }
 }

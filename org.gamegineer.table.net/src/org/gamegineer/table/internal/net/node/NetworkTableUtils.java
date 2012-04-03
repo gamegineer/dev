@@ -105,15 +105,15 @@ public final class NetworkTableUtils
             if( cardPileIncrement.getRemovedCardCount() != null )
             {
                 final int removedCardCount = cardPileIncrement.getRemovedCardCount();
-                if( removedCardCount == cardPile.getCardCount() )
+                if( removedCardCount == cardPile.getComponentCount() )
                 {
-                    cardPile.removeCards();
+                    cardPile.removeComponents();
                 }
                 else
                 {
                     for( int index = 0; index < removedCardCount; ++index )
                     {
-                        cardPile.removeCard();
+                        cardPile.removeComponent();
                     }
                 }
             }
@@ -133,7 +133,7 @@ public final class NetworkTableUtils
                         Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.NetworkTableUtils_incrementCardPileState_setCardStateFailed, e );
                     }
 
-                    cardPile.addCard( card );
+                    cardPile.addComponent( card );
                 }
             }
         }
@@ -179,7 +179,7 @@ public final class NetworkTableUtils
         try
         {
             final ICardPile cardPile = table.getCardPile( cardPileIndex );
-            final ICard card = cardPile.getCard( cardIndex );
+            final ICard card = (ICard)cardPile.getComponent( cardIndex ); // FIXME: remove cast
 
             if( (cardIncrement.getBackDesign() != null) && (cardIncrement.getFaceDesign() != null) )
             {

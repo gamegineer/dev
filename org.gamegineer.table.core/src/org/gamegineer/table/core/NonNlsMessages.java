@@ -35,10 +35,10 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
-    // --- CardPileContentChangedEvent --------------------------------------
+    // --- ContainerContentChangedEvent --------------------------------------
 
-    /** The card index is negative. */
-    public static String CardPileContentChangedEvent_ctor_cardIndex_negative;
+    /** The component index is negative. */
+    public static String ContainerContentChangedEvent_ctor_componentIndex_negative;
 
     // --- TableContentChangedEvent -----------------------------------------
 

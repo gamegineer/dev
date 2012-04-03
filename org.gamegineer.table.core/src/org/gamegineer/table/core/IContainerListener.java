@@ -1,5 +1,5 @@
 /*
- * IComponentListener.java
+ * IContainerListener.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 27, 2012 at 8:41:47 PM.
+ * Created on Mar 29, 2012 at 8:17:29 PM.
  */
 
 package org.gamegineer.table.core;
@@ -25,11 +25,11 @@ import java.util.EventListener;
 
 /**
  * The listener interface for use by clients to be notified of changes to the
- * component state.
+ * container state.
  * 
  * @noextend This interface is not intended to be extended by clients.
  */
-public interface IComponentListener
+public interface IContainerListener
     extends EventListener
 {
     // ======================================================================
@@ -37,15 +37,30 @@ public interface IComponentListener
     // ======================================================================
 
     /**
-     * Invoked after the component bounds have changed.
+     * Invoked after a component has been added to the container.
      * 
      * @param event
-     *        The event describing the component; must not be {@code null}.
+     *        The event describing the added component; must not be {@code null}
+     *        .
      * 
      * @throws java.lang.NullPointerException
      *         If {@code event} is {@code null}.
      */
-    public void componentBoundsChanged(
+    public void componentAdded(
         /* @NonNull */
-        ComponentEvent event );
+        ContainerContentChangedEvent event );
+
+    /**
+     * Invoked after a component has been removed from the container.
+     * 
+     * @param event
+     *        The event describing the removed component; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void componentRemoved(
+        /* @NonNull */
+        ContainerContentChangedEvent event );
 }

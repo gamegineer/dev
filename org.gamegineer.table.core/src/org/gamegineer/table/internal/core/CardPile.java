@@ -39,14 +39,16 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardPileBaseDesignId;
-import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.CardPileLayout;
 import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.core.ICardPileListener;
+import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 
 /**
@@ -157,15 +159,15 @@ final class CardPile
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#addCard(org.gamegineer.table.core.ICard)
+     * @see org.gamegineer.table.core.IContainer#addComponent(org.gamegineer.table.core.IComponent)
      */
     @Override
-    public void addCard(
-        final ICard card )
+    public void addComponent(
+        final IComponent component )
     {
-        assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
+        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
 
-        addCards( Collections.singletonList( card ) );
+        addComponents( Collections.singletonList( component ) );
     }
 
     /*
@@ -180,13 +182,13 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#addCards(java.util.List)
+     * @see org.gamegineer.table.core.IContainer#addComponents(java.util.List)
      */
     @Override
-    public void addCards(
-        final List<ICard> cards )
+    public void addComponents(
+        final List<IComponent> components )
     {
-        assertArgumentNotNull( cards, "cards" ); //$NON-NLS-1$
+        assertArgumentNotNull( components, "components" ); //$NON-NLS-1$
 
         final List<Card> addedCards = new ArrayList<Card>();
         final int firstCardIndex;
@@ -198,18 +200,18 @@ final class CardPile
             final Rectangle oldBounds = getBounds();
             firstCardIndex = cards_.size();
 
-            for( final ICard card : cards )
+            for( final IComponent component : components )
             {
-                final Card typedCard = (Card)card;
+                final Card typedCard = (Card)component;
                 if( typedCard == null )
                 {
-                    throw new IllegalArgumentException( NonNlsMessages.CardPile_addCards_cards_containsNullElement );
+                    throw new IllegalArgumentException( NonNlsMessages.CardPile_addComponents_components_containsNullElement );
                 }
-                assertArgumentLegal( typedCard.getCardPile() == null, "cards", NonNlsMessages.CardPile_addCards_cards_containsOwnedCard ); //$NON-NLS-1$
-                assertArgumentLegal( typedCard.getTableContext() == tableContext_, "cards", NonNlsMessages.CardPile_addCards_cards_containsCardCreatedByDifferentTable ); //$NON-NLS-1$
+                assertArgumentLegal( typedCard.getCardPile() == null, "components", NonNlsMessages.CardPile_addComponents_components_containsOwnedComponent ); //$NON-NLS-1$
+                assertArgumentLegal( typedCard.getTableContext() == tableContext_, "components", NonNlsMessages.CardPile_addComponents_components_containsComponentCreatedByDifferentTable ); //$NON-NLS-1$
 
                 final Point cardLocation = new Point( baseLocation_ );
-                final Dimension cardOffset = getCardOffsetAt( cards_.size() );
+                final Dimension cardOffset = getComponentOffsetAt( cards_.size() );
                 cardLocation.translate( cardOffset.width, cardOffset.height );
                 typedCard.setCardPile( this );
                 typedCard.setLocation( cardLocation );
@@ -236,7 +238,7 @@ final class CardPile
                     int cardIndex = firstCardIndex;
                     for( final ICard card : addedCards )
                     {
-                        fireCardAdded( card, cardIndex++ );
+                        fireComponentAdded( card, cardIndex++ );
                     }
 
                     if( cardPileBoundsChanged )
@@ -276,37 +278,6 @@ final class CardPile
         }
 
         return Collections.unmodifiableMap( memento );
-    }
-
-    /**
-     * Fires a card added event.
-     * 
-     * @param card
-     *        The added card; must not be {@code null}.
-     * @param cardIndex
-     *        The index of the added card; must not be negative.
-     */
-    private void fireCardAdded(
-        /* @NonNull */
-        final ICard card,
-        final int cardIndex )
-    {
-        assert card != null;
-        assert cardIndex >= 0;
-        assert !getLock().isHeldByCurrentThread();
-
-        final CardPileContentChangedEvent event = new CardPileContentChangedEvent( this, card, cardIndex );
-        for( final ICardPileListener listener : listeners_ )
-        {
-            try
-            {
-                listener.cardAdded( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_cardAdded_unexpectedException, e );
-            }
-        }
     }
 
     /**
@@ -352,32 +323,32 @@ final class CardPile
     }
 
     /**
-     * Fires a card removed event.
+     * Fires a component added event.
      * 
-     * @param card
-     *        The removed card; must not be {@code null}.
-     * @param cardIndex
-     *        The index of the removed card; must not be negative.
+     * @param component
+     *        The added component; must not be {@code null}.
+     * @param componentIndex
+     *        The index of the added component; must not be negative.
      */
-    private void fireCardRemoved(
+    private void fireComponentAdded(
         /* @NonNull */
-        final ICard card,
-        final int cardIndex )
+        final IComponent component,
+        final int componentIndex )
     {
-        assert card != null;
-        assert cardIndex >= 0;
+        assert component != null;
+        assert componentIndex >= 0;
         assert !getLock().isHeldByCurrentThread();
 
-        final CardPileContentChangedEvent event = new CardPileContentChangedEvent( this, card, cardIndex );
+        final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, component, componentIndex );
         for( final ICardPileListener listener : listeners_ )
         {
             try
             {
-                listener.cardRemoved( event );
+                listener.componentAdded( event );
             }
             catch( final RuntimeException e )
             {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_cardRemoved_unexpectedException, e );
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentAdded_unexpectedException, e );
             }
         }
     }
@@ -399,6 +370,37 @@ final class CardPile
             catch( final RuntimeException e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentBoundsChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a component removed event.
+     * 
+     * @param component
+     *        The removed component; must not be {@code null}.
+     * @param componentIndex
+     *        The index of the removed component; must not be negative.
+     */
+    private void fireComponentRemoved(
+        /* @NonNull */
+        final IComponent component,
+        final int componentIndex )
+    {
+        assert component != null;
+        assert componentIndex >= 0;
+        assert !getLock().isHeldByCurrentThread();
+
+        final ContainerContentChangedEvent event = new ContainerContentChangedEvent( this, component, componentIndex );
+        for( final ICardPileListener listener : listeners_ )
+        {
+            try
+            {
+                listener.componentRemoved( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentRemoved_unexpectedException, e );
             }
         }
     }
@@ -445,7 +447,7 @@ final class CardPile
         final List<Object> cardMementos = MementoUtils.getAttribute( memento, CARDS_MEMENTO_ATTRIBUTE_NAME, List.class );
         for( final Object cardMemento : cardMementos )
         {
-            cardPile.addCard( Card.fromMemento( tableContext, cardMemento ) );
+            cardPile.addComponent( Card.fromMemento( tableContext, cardMemento ) );
         }
 
         return cardPile;
@@ -510,16 +512,16 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#getCard(int)
+     * @see org.gamegineer.table.core.IContainer#getComponent(int)
      */
     @Override
-    public ICard getCard(
+    public IComponent getComponent(
         final int index )
     {
         getLock().lock();
         try
         {
-            assertArgumentLegal( (index >= 0) && (index < cards_.size()), "index", NonNlsMessages.CardPile_getCardFromIndex_index_outOfRange ); //$NON-NLS-1$
+            assertArgumentLegal( (index >= 0) && (index < cards_.size()), "index", NonNlsMessages.CardPile_getComponentFromIndex_index_outOfRange ); //$NON-NLS-1$
 
             return cards_.get( index );
         }
@@ -530,10 +532,10 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#getCard(java.awt.Point)
+     * @see org.gamegineer.table.core.IContainer#getComponent(java.awt.Point)
      */
     @Override
-    public ICard getCard(
+    public IComponent getComponent(
         final Point location )
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
@@ -541,7 +543,7 @@ final class CardPile
         getLock().lock();
         try
         {
-            final int index = getCardIndex( location );
+            final int index = getComponentIndex( location );
             return (index != -1) ? cards_.get( index ) : null;
         }
         finally
@@ -551,10 +553,10 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#getCardCount()
+     * @see org.gamegineer.table.core.IContainer#getComponentCount()
      */
     @Override
-    public int getCardCount()
+    public int getComponentCount()
     {
         getLock().lock();
         try
@@ -568,44 +570,47 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#getCardIndex(org.gamegineer.table.core.ICard)
+     * @see org.gamegineer.table.core.IContainer#getComponentIndex(org.gamegineer.table.core.IComponent)
      */
     @Override
-    public int getCardIndex(
-        final ICard card )
+    public int getComponentIndex(
+        final IComponent component )
     {
-        assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
+        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
 
         final int index;
         getLock().lock();
         try
         {
-            index = cards_.indexOf( card );
+            index = cards_.indexOf( component );
         }
         finally
         {
             getLock().unlock();
         }
 
-        assertArgumentLegal( index != -1, "card", NonNlsMessages.CardPile_getCardIndex_card_notOwned ); //$NON-NLS-1$
+        assertArgumentLegal( index != -1, "component", NonNlsMessages.CardPile_getComponentIndex_component_notOwned ); //$NON-NLS-1$
         return index;
     }
 
     /**
-     * Gets the index of the card in this card pile at the specified location.
+     * Gets the index of the component in this container at the specified
+     * location.
      * 
      * <p>
-     * This method follows the same rules defined by {@link #getCard(Point)}.
+     * This method follows the same rules defined by
+     * {@link #getComponent(Point)}.
      * </p>
      * 
      * @param location
      *        The location in table coordinates; must not be {@code null}.
      * 
-     * @return The index of the card in this card pile at the specified location
-     *         or -1 if no card in this card pile is at that location.
+     * @return The index of the component in this container at the specified
+     *         location or -1 if no component in this container is at that
+     *         location.
      */
     @GuardedBy( "getLock()" )
-    private int getCardIndex(
+    private int getComponentIndex(
         /* @NonNull */
         final Point location )
     {
@@ -626,21 +631,21 @@ final class CardPile
     }
 
     /**
-     * Gets the offset from the card pile base location in table coordinates of
-     * the card at the specified index.
+     * Gets the offset from the container base location in table coordinates of
+     * the component at the specified index.
      * 
      * @param index
-     *        The card index; must be non-negative.
+     *        The component index; must be non-negative.
      * 
-     * @return The offset from the card pile base location in table coordinates
-     *         of the card at the specified index; never {@code null}.
+     * @return The offset from the container base location in table coordinates
+     *         of the component at the specified index; never {@code null}.
      * 
      * @throws java.lang.IllegalStateException
      *         If an unknown layout is active.
      */
     @GuardedBy( "getLock()" )
     /* @NonNull */
-    private Dimension getCardOffsetAt(
+    private Dimension getComponentOffsetAt(
         final int index )
     {
         assert index >= 0;
@@ -665,24 +670,33 @@ final class CardPile
                 return new Dimension( ACCORDIAN_LEVEL_OFFSET.width * index, 0 );
         }
 
-        throw new IllegalStateException( NonNlsMessages.CardPile_getCardOffsetAt_unknownLayout );
+        throw new IllegalStateException( NonNlsMessages.CardPile_getComponentOffsetAt_unknownLayout );
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#getCards()
+     * @see org.gamegineer.table.core.IContainer#getComponents()
      */
     @Override
-    public List<ICard> getCards()
+    public List<IComponent> getComponents()
     {
         getLock().lock();
         try
         {
-            return new ArrayList<ICard>( cards_ );
+            return new ArrayList<IComponent>( cards_ );
         }
         finally
         {
             getLock().unlock();
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#getContainer()
+     */
+    @Override
+    public IContainer getContainer()
+    {
+        return null;
     }
 
     /*
@@ -761,12 +775,12 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#removeCard()
+     * @see org.gamegineer.table.core.IContainer#removeComponent()
      */
     @Override
-    public ICard removeCard()
+    public IComponent removeComponent()
     {
-        final CardRangeStrategy cardRangeStrategy = new CardRangeStrategy()
+        final ComponentRangeStrategy componentRangeStrategy = new ComponentRangeStrategy()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
@@ -775,9 +789,9 @@ final class CardPile
                 return cards_.isEmpty() ? 0 : cards_.size() - 1;
             }
         };
-        final List<ICard> cards = removeCards( cardRangeStrategy );
-        assert cards.size() <= 1;
-        return cards.isEmpty() ? null : cards.get( 0 );
+        final List<IComponent> components = removeComponents( componentRangeStrategy );
+        assert components.size() <= 1;
+        return components.isEmpty() ? null : components.get( 0 );
     }
 
     /*
@@ -792,58 +806,58 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#removeCards()
+     * @see org.gamegineer.table.core.IContainer#removeComponents()
      */
     @Override
-    public List<ICard> removeCards()
+    public List<IComponent> removeComponents()
     {
-        return removeCards( new CardRangeStrategy() );
+        return removeComponents( new ComponentRangeStrategy() );
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#removeCards(java.awt.Point)
+     * @see org.gamegineer.table.core.IContainer#removeComponents(java.awt.Point)
      */
     @Override
-    public List<ICard> removeCards(
+    public List<IComponent> removeComponents(
         final Point location )
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        final CardRangeStrategy cardRangeStrategy = new CardRangeStrategy()
+        final ComponentRangeStrategy componentRangeStrategy = new ComponentRangeStrategy()
         {
             @Override
             @SuppressWarnings( "synthetic-access" )
             int getLowerIndex()
             {
-                final int cardIndex = getCardIndex( location );
-                return (cardIndex != -1) ? cardIndex : cards_.size();
+                final int componentIndex = getComponentIndex( location );
+                return (componentIndex != -1) ? componentIndex : cards_.size();
             }
         };
-        return removeCards( cardRangeStrategy );
+        return removeComponents( componentRangeStrategy );
     }
 
     /**
-     * Removes all cards from this card pile in the specified range.
+     * Removes all components from this container in the specified range.
      * 
-     * @param cardRangeStrategy
-     *        The strategy used to determine the range of cards to remove; must
-     *        not be {@code null}. The strategy will be invoked while the card
-     *        pile instance lock is held.
+     * @param componentRangeStrategy
+     *        The strategy used to determine the range of components to remove;
+     *        must not be {@code null}. The strategy will be invoked while the
+     *        table lock is held.
      * 
-     * @return The collection of cards removed from this card pile; never
-     *         {@code null}. The cards are returned in order from the card
-     *         nearest the bottom of the card pile to the card nearest the top
-     *         of the card pile.
+     * @return The collection of components removed from this container; never
+     *         {@code null}. The components are returned in order from the
+     *         component nearest the bottom of the container to the component
+     *         nearest the top of the container.
      */
     /* @NonNull */
-    private List<ICard> removeCards(
+    private List<IComponent> removeComponents(
         /* @NonNull */
-        final CardRangeStrategy cardRangeStrategy )
+        final ComponentRangeStrategy componentRangeStrategy )
     {
-        assert cardRangeStrategy != null;
+        assert componentRangeStrategy != null;
 
         final List<Card> removedCards = new ArrayList<Card>();
-        final int upperCardIndex = cardRangeStrategy.getUpperIndex() - 1;
+        final int upperCardIndex = componentRangeStrategy.getUpperIndex() - 1;
         final boolean cardPileBoundsChanged;
 
         getLock().lock();
@@ -851,7 +865,7 @@ final class CardPile
         {
             final Rectangle oldBounds = getBounds();
 
-            removedCards.addAll( cards_.subList( cardRangeStrategy.getLowerIndex(), cardRangeStrategy.getUpperIndex() ) );
+            removedCards.addAll( cards_.subList( componentRangeStrategy.getLowerIndex(), componentRangeStrategy.getUpperIndex() ) );
             cards_.removeAll( removedCards );
             for( final Card card : removedCards )
             {
@@ -880,7 +894,7 @@ final class CardPile
                     int cardIndex = upperCardIndex;
                     for( final ICard card : reversedRemovedCards )
                     {
-                        fireCardRemoved( card, cardIndex-- );
+                        fireComponentRemoved( card, cardIndex-- );
                     }
 
                     if( cardPileBoundsChanged )
@@ -891,7 +905,7 @@ final class CardPile
             } );
         }
 
-        return new ArrayList<ICard>( removedCards );
+        return new ArrayList<IComponent>( removedCards );
     }
 
     /*
@@ -972,7 +986,7 @@ final class CardPile
                 for( int index = 0, size = cards_.size(); index < size; ++index )
                 {
                     cardLocation.setLocation( baseLocation_ );
-                    final Dimension cardOffset = getCardOffsetAt( index );
+                    final Dimension cardOffset = getComponentOffsetAt( index );
                     cardLocation.translate( cardOffset.width, cardOffset.height );
                     cards_.get( index ).setLocation( cardLocation );
                 }
@@ -1041,8 +1055,8 @@ final class CardPile
             setBaseLocation( cardPile.getBaseLocation() );
             setLayout( cardPile.getLayout() );
 
-            removeCards();
-            addCards( cardPile.removeCards() );
+            removeComponents();
+            addComponents( cardPile.removeComponents() );
         }
         finally
         {
@@ -1150,19 +1164,20 @@ final class CardPile
     // ======================================================================
 
     /**
-     * A strategy to calculate a contiguous range of cards in a card pile.
+     * A strategy to calculate a contiguous range of components in a card pile.
      */
     @Immutable
-    private class CardRangeStrategy
+    private class ComponentRangeStrategy
     {
         // ==================================================================
         // Constructors
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code CardRangeStrategy} class.
+         * Initializes a new instance of the {@code ComponentRangeStrategy}
+         * class.
          */
-        CardRangeStrategy()
+        ComponentRangeStrategy()
         {
         }
 
@@ -1172,13 +1187,13 @@ final class CardPile
         // ==================================================================
 
         /**
-         * Gets the lower index of the card range, inclusive.
+         * Gets the lower index of the component range, inclusive.
          * 
          * <p>
          * The default implementation returns 0.
          * </p>
          * 
-         * @return The lower index of the card range, inclusive.
+         * @return The lower index of the component range, inclusive.
          */
         int getLowerIndex()
         {
@@ -1186,13 +1201,14 @@ final class CardPile
         }
 
         /**
-         * Gets the upper index of the card range, exclusive.
+         * Gets the upper index of the component range, exclusive.
          * 
          * <p>
-         * The default implementation returns the size of the card collection.
+         * The default implementation returns the size of the component
+         * collection.
          * </p>
          * 
-         * @return The upper index of the card range, exclusive.
+         * @return The upper index of the component range, exclusive.
          */
         @SuppressWarnings( "synthetic-access" )
         int getUpperIndex()

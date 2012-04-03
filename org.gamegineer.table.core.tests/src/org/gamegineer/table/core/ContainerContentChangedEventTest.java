@@ -1,5 +1,5 @@
 /*
- * CardPileContentChangedEventTest.java
+ * ContainerContentChangedEventTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 8, 2011 at 8:29:21 PM.
+ * Created on Mar 29, 2012 at 8:45:15 PM.
  */
 
 package org.gamegineer.table.core;
@@ -28,16 +28,16 @@ import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.core.CardPileContentChangedEvent} class.
+ * {@link org.gamegineer.table.core.ContainerContentChangedEvent} class.
  */
-public final class CardPileContentChangedEventTest
+public final class ContainerContentChangedEventTest
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
-    /** The card pile content changed event under test in the fixture. */
-    private CardPileContentChangedEvent event_;
+    /** The container content changed event under test in the fixture. */
+    private ContainerContentChangedEvent event_;
 
 
     // ======================================================================
@@ -45,10 +45,10 @@ public final class CardPileContentChangedEventTest
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileContentChangedEventTest}
-     * class.
+     * Initializes a new instance of the
+     * {@code ContainerContentChangedEventTest} class.
      */
-    public CardPileContentChangedEventTest()
+    public ContainerContentChangedEventTest()
     {
     }
 
@@ -67,27 +67,27 @@ public final class CardPileContentChangedEventTest
     public void setUp()
         throws Exception
     {
-        event_ = new CardPileContentChangedEvent( EasyMock.createMock( ICardPile.class ), EasyMock.createMock( ICard.class ), 0 );
+        event_ = new ContainerContentChangedEvent( EasyMock.createMock( IContainer.class ), EasyMock.createMock( IComponent.class ), 0 );
     }
 
     /**
      * Ensures the constructor throws an exception when passed a {@code null}
-     * card.
+     * component.
      */
     @Test( expected = NullPointerException.class )
-    public void testConstructor_Card_Null()
+    public void testConstructor_Component_Null()
     {
-        new CardPileContentChangedEvent( EasyMock.createMock( ICardPile.class ), null, 0 );
+        new ContainerContentChangedEvent( EasyMock.createMock( IContainer.class ), null, 0 );
     }
 
     /**
-     * Ensures the constructor throws an exception when passed an illegal card
-     * index that is negative.
+     * Ensures the constructor throws an exception when passed an illegal
+     * component index that is negative.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testConstructor_CardIndex_Illegal_Negative()
+    public void testConstructor_ComponentIndex_Illegal_Negative()
     {
-        new CardPileContentChangedEvent( EasyMock.createMock( ICardPile.class ), EasyMock.createMock( ICard.class ), -1 );
+        new ContainerContentChangedEvent( EasyMock.createMock( IContainer.class ), EasyMock.createMock( IComponent.class ), -1 );
     }
 
     /**
@@ -97,15 +97,15 @@ public final class CardPileContentChangedEventTest
     @Test( expected = IllegalArgumentException.class )
     public void testConstructor_Source_Null()
     {
-        new CardPileContentChangedEvent( null, EasyMock.createMock( ICard.class ), 0 );
+        new ContainerContentChangedEvent( null, EasyMock.createMock( IComponent.class ), 0 );
     }
 
     /**
-     * Ensures the {@code getCard} method does not return {@code null}.
+     * Ensures the {@code getComponent} method does not return {@code null}.
      */
     @Test
-    public void testGetCard_ReturnValue_NonNull()
+    public void testGetComponent_ReturnValue_NonNull()
     {
-        assertNotNull( event_.getCard() );
+        assertNotNull( event_.getComponent() );
     }
 }

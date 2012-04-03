@@ -21,7 +21,21 @@
 
 package org.gamegineer.table.core;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import org.easymock.Capture;
+import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
 import org.junit.Before;
+import org.junit.Test;
 
 /**
  * A fixture for testing the basic aspects of classes that implement the
@@ -33,6 +47,14 @@ import org.junit.Before;
 public abstract class AbstractContainerTestCase<T extends IContainer>
     extends AbstractComponentTestCase<T>
 {
+    // ======================================================================
+    // Fields
+    // ======================================================================
+
+    /** The mocks control for use in the fixture. */
+    private IMocksControl mocksControl_;
+
+
     // ======================================================================
     // Constructors
     // ======================================================================
@@ -49,6 +71,105 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Adds the specified container listener to the specified container.
+     * 
+     * @param container
+     *        The container; must not be {@code null}.
+     * @param listener
+     *        The container listener; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code container} or {@code listener} is {@code null}.
+     */
+    protected abstract void addContainerListener(
+        /* @NonNull */
+        T container,
+        /* @NonNull */
+        IContainerListener listener );
+
+    /**
+     * Adds the specified component listener to the specified component created
+     * by the {@link #createUniqueComponent} method.
+     * 
+     * @param component
+     *        The component; must not be {@code null}.
+     * @param listener
+     *        The component listener; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code component} or {@code listener} is {@code null}.
+     */
+    protected abstract void addUniqueComponentListener(
+        /* @NonNull */
+        IComponent component,
+        /* @NonNull */
+        IComponentListener listener );
+
+    /**
+     * Creates a new component with unique attributes using the fixture table.
+     * 
+     * @return A new component; never {@code null}.
+     */
+    /* @NonNull */
+    protected final IComponent createUniqueComponent()
+    {
+        return createUniqueComponent( getTable() );
+    }
+
+    /**
+     * Creates a new component with unique attributes using the specified table.
+     * 
+     * @param table
+     *        The table used to create the new component; must not be
+     *        {@code null}.
+     * 
+     * @return A new component; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code table} is {@code null}.
+     */
+    /* @NonNull */
+    protected abstract IComponent createUniqueComponent(
+        /* @NonNull */
+        ITable table );
+
+    /**
+     * Creates a new container with unique attributes using the fixture table.
+     * 
+     * @return A new container; never {@code null}.
+     */
+    /* @NonNull */
+    protected final IContainer createUniqueContainer()
+    {
+        return createUniqueContainer( getTable() );
+    }
+
+    /**
+     * Creates a new container with unique attributes using the specified table.
+     * 
+     * @param table
+     *        The table used to create the new container; must not be
+     *        {@code null}.
+     * 
+     * @return A new container; never {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code table} is {@code null}.
+     */
+    /* @NonNull */
+    protected abstract IContainer createUniqueContainer(
+        /* @NonNull */
+        ITable table );
+
+    /**
+     * Creates a new table with unique attributes.
+     * 
+     * @return A new table; never {@code null}.
+     */
+    /* @NonNull */
+    protected abstract ITable createUniqueTable();
 
     /**
      * Gets the container under test in the fixture.
@@ -69,6 +190,731 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
     public void setUp()
         throws Exception
     {
+        mocksControl_ = EasyMock.createControl();
+
         super.setUp();
+    }
+
+    /**
+     * Ensures the {@code addComponent} method adds a component to the
+     * container.
+     */
+    @Test
+    public void testAddComponent_AddsComponent()
+    {
+        final IComponent component = createUniqueComponent();
+
+        getContainer().addComponent( component );
+
+        final List<IComponent> components = getContainer().getComponents();
+        assertSame( component, components.get( components.size() - 1 ) );
+        assertSame( getContainer(), component.getContainer() );
+    }
+
+    /**
+     * Ensures the {@code addComponent} method throws an exception when passed
+     * an illegal component that was created by a different table.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddComponent_Component_Illegal_CreatedByDifferentTable()
+    {
+        final ITable otherTable = createUniqueTable();
+        final IComponent otherComponent = createUniqueComponent( otherTable );
+
+        getContainer().addComponent( otherComponent );
+    }
+
+    /**
+     * Ensures the {@code addComponent} method throws an exception when passed
+     * an illegal component that is already contained in a container.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddComponent_Component_Illegal_Owned()
+    {
+        final IContainer otherContainer = createUniqueContainer();
+        final IComponent component = createUniqueComponent();
+        otherContainer.addComponent( component );
+
+        getContainer().addComponent( component );
+    }
+
+    /**
+     * Ensures the {@code addComponent} method throws an exception when passed a
+     * {@code null} component.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testAddComponent_Component_Null()
+    {
+        getContainer().addComponent( null );
+    }
+
+    /**
+     * Ensures the {@code addComponent} method changes the location the
+     * component to reflect the container location.
+     */
+    @Test
+    public void testAddComponent_ChangesComponentLocation()
+    {
+        final IComponent component = createUniqueComponent();
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        addUniqueComponentListener( component, listener );
+
+        getContainer().addComponent( component );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code addComponent} method changes the container bounds.
+     */
+    @Test( timeout = 1000 )
+    public void testAddComponent_ChangesContainerBounds()
+    {
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        addComponentListener( getContainer(), listener );
+        final Rectangle originalContainerBounds = getContainer().getBounds();
+
+        do
+        {
+            getContainer().addComponent( createUniqueComponent() );
+
+        } while( originalContainerBounds.equals( getContainer().getBounds() ) );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code addComponent} method fires a component added event.
+     */
+    @Test
+    public void testAddComponent_FiresComponentAddedEvent()
+    {
+        final IComponent component = createUniqueComponent();
+        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
+        final Capture<ContainerContentChangedEvent> eventCapture = new Capture<ContainerContentChangedEvent>();
+        listener.componentAdded( EasyMock.capture( eventCapture ) );
+        mocksControl_.replay();
+        addContainerListener( getContainer(), listener );
+
+        getContainer().addComponent( component );
+
+        mocksControl_.verify();
+        assertSame( getContainer(), eventCapture.getValue().getContainer() );
+        assertSame( component, eventCapture.getValue().getComponent() );
+        assertEquals( 0, eventCapture.getValue().getComponentIndex() );
+    }
+
+    /**
+     * Ensures the {@code addComponents} method adds components to the
+     * container.
+     */
+    @Test
+    public void testAddComponents_AddsComponents()
+    {
+        final IComponent component1 = createUniqueComponent();
+        final IComponent component2 = createUniqueComponent();
+
+        getContainer().addComponents( Arrays.asList( component1, component2 ) );
+
+        final List<IComponent> components = getContainer().getComponents();
+        assertSame( component1, components.get( 0 ) );
+        assertSame( getContainer(), component1.getContainer() );
+        assertSame( component2, components.get( 1 ) );
+        assertSame( getContainer(), component2.getContainer() );
+    }
+
+    /**
+     * Ensures the {@code addComponents} method throws an exception when passed
+     * an illegal component collection that contains at least one component that
+     * was created by a different table.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddComponents_Components_Illegal_ContainsComponentCreatedByDifferentTable()
+    {
+        final ITable otherTable = createUniqueTable();
+        final IComponent otherComponent = createUniqueComponent( otherTable );
+
+        getContainer().addComponents( Arrays.asList( createUniqueComponent(), otherComponent ) );
+    }
+
+    /**
+     * Ensures the {@code addComponents} method throws an exception when passed
+     * an illegal component collection that contains at least one component
+     * already contained in a container.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddComponents_Components_Illegal_ContainsOwnedComponent()
+    {
+        final IContainer otherContainer = createUniqueContainer();
+        final IComponent component = createUniqueComponent();
+        otherContainer.addComponent( component );
+
+        getContainer().addComponents( Arrays.asList( createUniqueComponent(), component ) );
+    }
+
+    /**
+     * Ensures the {@code addComponents} method throws an exception when passed
+     * an illegal component collection that contains a {@code null} element.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddComponents_Components_Illegal_ContainsNullElement()
+    {
+        getContainer().addComponents( Collections.<IComponent>singletonList( null ) );
+    }
+
+    /**
+     * Ensures the {@code addComponents} method throws an exception when passed
+     * a {@code null} component collection.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testAddComponents_Components_Null()
+    {
+        getContainer().addComponents( null );
+    }
+
+    /**
+     * Ensures the {@code addComponents} method changes the location of the
+     * components to reflect the container location.
+     */
+    @Test
+    public void testAddComponents_ChangesComponentLocation()
+    {
+        final IComponent component = createUniqueComponent();
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        addUniqueComponentListener( component, listener );
+
+        getContainer().addComponents( Collections.singletonList( component ) );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code addComponents} method changes the container bounds.
+     */
+    @Test( timeout = 1000 )
+    public void testAddComponents_ChangesContainerBounds()
+    {
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        addComponentListener( getContainer(), listener );
+        final Rectangle originalContainerBounds = getContainer().getBounds();
+
+        do
+        {
+            getContainer().addComponents( Collections.singletonList( createUniqueComponent() ) );
+
+        } while( originalContainerBounds.equals( getContainer().getBounds() ) );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code addComponents} method fires a component added event.
+     */
+    @Test
+    public void testAddComponents_FiresComponentAddedEvent()
+    {
+        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
+        listener.componentAdded( EasyMock.notNull( ContainerContentChangedEvent.class ) );
+        EasyMock.expectLastCall().times( 2 );
+        mocksControl_.replay();
+        addContainerListener( getContainer(), listener );
+
+        getContainer().addComponents( Arrays.asList( createUniqueComponent(), createUniqueComponent() ) );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the component added event catches any exception thrown by the
+     * {@code componentAdded} method of a container listener.
+     */
+    @Test
+    public void testComponentAdded_CatchesListenerException()
+    {
+        final IContainerListener listener1 = mocksControl_.createMock( IContainerListener.class );
+        listener1.componentAdded( EasyMock.notNull( ContainerContentChangedEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final IContainerListener listener2 = mocksControl_.createMock( IContainerListener.class );
+        listener2.componentAdded( EasyMock.notNull( ContainerContentChangedEvent.class ) );
+        mocksControl_.replay();
+        addContainerListener( getContainer(), listener1 );
+        addContainerListener( getContainer(), listener2 );
+
+        getContainer().addComponent( createUniqueComponent() );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the component removed event catches any exception thrown by the
+     * {@code componentRemoved} method of a container listener.
+     */
+    @Test
+    public void testComponentRemoved_CatchesListenerException()
+    {
+        getContainer().addComponent( createUniqueComponent() );
+        final IContainerListener listener1 = mocksControl_.createMock( IContainerListener.class );
+        listener1.componentRemoved( EasyMock.notNull( ContainerContentChangedEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final IContainerListener listener2 = mocksControl_.createMock( IContainerListener.class );
+        listener2.componentRemoved( EasyMock.notNull( ContainerContentChangedEvent.class ) );
+        mocksControl_.replay();
+        addContainerListener( getContainer(), listener1 );
+        addContainerListener( getContainer(), listener2 );
+
+        getContainer().removeComponent();
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code getComponent(int)} method throws an exception when
+     * passed an illegal index greater than the maximum legal value.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testGetComponentFromIndex_Index_Illegal_GreaterThanMaximumLegalValue()
+    {
+        getContainer().getComponent( 0 );
+    }
+
+    /**
+     * Ensures the {@code getComponent(int)} method throws an exception when
+     * passed an illegal index less than the minimum legal value.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testGetComponentFromIndex_Index_Illegal_LessThanMinimumLegalValue()
+    {
+        getContainer().getComponent( -1 );
+    }
+
+    /**
+     * Ensures the {@code getComponent(int)} method returns the correct
+     * component when passed a legal index.
+     */
+    @Test
+    public void testGetComponentFromIndex_Index_Legal()
+    {
+        final IComponent expectedValue = createUniqueComponent();
+        getContainer().addComponent( expectedValue );
+
+        final IComponent actualValue = getContainer().getComponent( 0 );
+
+        assertSame( expectedValue, actualValue );
+    }
+
+    /**
+     * Ensures the {@code getComponent(Point)} method returns {@code null} when
+     * a component is absent at the specified location.
+     */
+    @Test
+    public void testGetComponentFromLocation_Location_ComponentAbsent()
+    {
+        assertNull( getContainer().getComponent( new Point( 0, 0 ) ) );
+    }
+
+    /**
+     * Ensures the {@code getComponent(Point)} method returns the top-most
+     * component when multiple components are present at the specified location.
+     */
+    @Test
+    public void testGetComponentFromLocation_Location_ComponentPresent_MultipleComponents()
+    {
+        final IComponent initialComponent = createUniqueComponent();
+        getContainer().addComponent( initialComponent );
+        final IComponent expectedComponent = createUniqueComponent();
+        getContainer().addComponent( expectedComponent );
+
+        final IComponent actualComponent = getContainer().getComponent( new Point( 0, 0 ) );
+
+        assertSame( expectedComponent, actualComponent );
+    }
+
+    /**
+     * Ensures the {@code getComponent(Point)} method returns the appropriate
+     * component when a single component is present at the specified location.
+     */
+    @Test
+    public void testGetComponentFromLocation_Location_ComponentPresent_SingleComponent()
+    {
+        final IComponent expectedComponent = createUniqueComponent();
+        getContainer().addComponent( expectedComponent );
+
+        final IComponent actualComponent = getContainer().getComponent( new Point( 0, 0 ) );
+
+        assertSame( expectedComponent, actualComponent );
+    }
+
+    /**
+     * Ensures the {@code getComponent(Point)} method throws an exception when
+     * passed a {@code null} location.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetComponentFromLocation_Location_Null()
+    {
+        getContainer().getComponent( null );
+    }
+
+    /**
+     * Ensures the {@code getComponentCount} method returns the correct value.
+     */
+    @Test
+    public void testGetComponentCount()
+    {
+        getContainer().addComponent( createUniqueComponent() );
+        getContainer().addComponent( createUniqueComponent() );
+        getContainer().addComponent( createUniqueComponent() );
+
+        final int actualValue = getContainer().getComponentCount();
+
+        assertEquals( 3, actualValue );
+    }
+
+    /**
+     * Ensures the {@code getComponentIndex} method throws an exception when
+     * passed a component that is absent from the component collection.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testGetComponentIndex_Component_Absent()
+    {
+        getContainer().getComponentIndex( createUniqueComponent() );
+    }
+
+    /**
+     * Ensures the {@code getComponentIndex} method throws an exception when
+     * passed a {@code null} component.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetComponentIndex_Component_Null()
+    {
+        getContainer().getComponentIndex( null );
+    }
+
+    /**
+     * Ensures the {@code getComponentIndex} method returns the correct value
+     * when passed a component present in the component collection.
+     */
+    @Test
+    public void testGetComponentIndex_Component_Present()
+    {
+        final IComponent component = createUniqueComponent();
+        getContainer().addComponent( createUniqueComponent() );
+        getContainer().addComponent( component );
+        getContainer().addComponent( createUniqueComponent() );
+
+        final int actualValue = getContainer().getComponentIndex( component );
+
+        assertEquals( 1, actualValue );
+    }
+
+    /**
+     * Ensures the {@code getComponents} method returns a copy of the component
+     * collection.
+     */
+    @Test
+    public void testGetComponents_ReturnValue_Copy()
+    {
+        final List<IComponent> components = getContainer().getComponents();
+        final int expectedComponentsSize = components.size();
+
+        getContainer().addComponent( createUniqueComponent() );
+
+        assertEquals( expectedComponentsSize, components.size() );
+    }
+
+    /**
+     * Ensures the {@code getComponents} method does not return {@code null}.
+     */
+    @Test
+    public void testGetComponents_ReturnValue_NonNull()
+    {
+        assertNotNull( getContainer().getComponents() );
+    }
+
+    /**
+     * Ensures the {@code removeComponent} method does not fire a component
+     * removed event when the container is empty.
+     */
+    @Test
+    public void testRemoveComponent_Empty_DoesNotFireComponentRemovedEvent()
+    {
+        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
+        mocksControl_.replay();
+        addContainerListener( getContainer(), listener );
+
+        getContainer().removeComponent();
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code removeComponent} method returns {@code null} when the
+     * container is empty.
+     */
+    @Test
+    public void testRemoveComponent_Empty_DoesNotRemoveComponent()
+    {
+        final IComponent component = getContainer().removeComponent();
+
+        assertNull( component );
+    }
+
+    /**
+     * Ensures the {@code removeComponent} method changes the container bounds
+     * when the container is not empty.
+     */
+    @Test( timeout = 1000 )
+    public void testRemoveComponent_NotEmpty_ChangesContainerBounds()
+    {
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        EasyMock.expectLastCall().times( 2 );
+        mocksControl_.replay();
+        addComponentListener( getContainer(), listener );
+        final Rectangle originalContainerBounds = getContainer().getBounds();
+
+        do
+        {
+            getContainer().addComponent( createUniqueComponent() );
+
+        } while( originalContainerBounds.equals( getContainer().getBounds() ) );
+        getContainer().removeComponent();
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code removeComponent} method fires a component removed
+     * event when the container is not empty.
+     */
+    @Test
+    public void testRemoveComponent_NotEmpty_FiresComponentRemovedEvent()
+    {
+        final IComponent component = createUniqueComponent();
+        getContainer().addComponent( component );
+        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
+        final Capture<ContainerContentChangedEvent> eventCapture = new Capture<ContainerContentChangedEvent>();
+        listener.componentRemoved( EasyMock.capture( eventCapture ) );
+        mocksControl_.replay();
+        addContainerListener( getContainer(), listener );
+
+        getContainer().removeComponent();
+
+        mocksControl_.verify();
+        assertSame( getContainer(), eventCapture.getValue().getContainer() );
+        assertSame( component, eventCapture.getValue().getComponent() );
+        assertEquals( 0, eventCapture.getValue().getComponentIndex() );
+    }
+
+    /**
+     * Ensures the {@code removeComponent} method removes the component at the
+     * top of the container when the container is not empty.
+     */
+    @Test
+    public void testRemoveComponent_NotEmpty_RemovesComponent()
+    {
+        final IComponent expectedComponent = createUniqueComponent();
+        getContainer().addComponent( expectedComponent );
+
+        final IComponent actualComponent = getContainer().removeComponent();
+
+        assertSame( expectedComponent, actualComponent );
+        assertEquals( 0, getContainer().getComponentCount() );
+        assertNull( actualComponent.getContainer() );
+    }
+
+    /**
+     * Ensures the {@code removeComponents()} method does not fire a component
+     * removed event when the container is empty.
+     */
+    @Test
+    public void testRemoveComponents_Empty_DoesNotFireComponentRemovedEvent()
+    {
+        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
+        mocksControl_.replay();
+        addContainerListener( getContainer(), listener );
+
+        getContainer().removeComponents();
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code removeComponents()} method returns an empty collection
+     * when the container is empty.
+     */
+    @Test
+    public void testRemoveComponents_Empty_DoesNotRemoveComponents()
+    {
+        final List<IComponent> components = getContainer().removeComponents();
+
+        assertNotNull( components );
+        assertEquals( 0, components.size() );
+    }
+
+    /**
+     * Ensures the {@code removeComponents()} method changes the container
+     * bounds when the container is not empty.
+     */
+    @Test( timeout = 1000 )
+    public void testRemoveComponents_NotEmpty_ChangesContainerBounds()
+    {
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        EasyMock.expectLastCall().times( 2 );
+        mocksControl_.replay();
+        addComponentListener( getContainer(), listener );
+        final Rectangle originalContainerBounds = getContainer().getBounds();
+
+        do
+        {
+            getContainer().addComponent( createUniqueComponent() );
+
+        } while( originalContainerBounds.equals( getContainer().getBounds() ) );
+        getContainer().removeComponents();
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code removeComponents()} method fires a component removed
+     * event when the container is not empty.
+     */
+    @Test
+    public void testRemoveComponents_NotEmpty_FiresComponentRemovedEvent()
+    {
+        final List<IComponent> components = Arrays.asList( createUniqueComponent(), createUniqueComponent() );
+        getContainer().addComponents( components );
+        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
+        final Capture<ContainerContentChangedEvent> eventCapture1 = new Capture<ContainerContentChangedEvent>();
+        listener.componentRemoved( EasyMock.capture( eventCapture1 ) );
+        final Capture<ContainerContentChangedEvent> eventCapture2 = new Capture<ContainerContentChangedEvent>();
+        listener.componentRemoved( EasyMock.capture( eventCapture2 ) );
+        mocksControl_.replay();
+        addContainerListener( getContainer(), listener );
+
+        getContainer().removeComponents();
+
+        mocksControl_.verify();
+        assertSame( getContainer(), eventCapture1.getValue().getContainer() );
+        assertSame( components.get( 1 ), eventCapture1.getValue().getComponent() );
+        assertEquals( 1, eventCapture1.getValue().getComponentIndex() );
+        assertSame( getContainer(), eventCapture2.getValue().getContainer() );
+        assertSame( components.get( 0 ), eventCapture2.getValue().getComponent() );
+        assertEquals( 0, eventCapture2.getValue().getComponentIndex() );
+    }
+
+    /**
+     * Ensures the {@code removeComponents()} method removes all components in
+     * the container when the container is not empty.
+     */
+    @Test
+    public void testRemoveComponents_NotEmpty_RemovesAllComponents()
+    {
+        final List<IComponent> expectedComponents = new ArrayList<IComponent>();
+        expectedComponents.add( createUniqueComponent() );
+        expectedComponents.add( createUniqueComponent() );
+        expectedComponents.add( createUniqueComponent() );
+        getContainer().addComponents( expectedComponents );
+
+        final List<IComponent> actualComponents = getContainer().removeComponents();
+
+        assertEquals( expectedComponents, actualComponents );
+        assertEquals( 0, getContainer().getComponentCount() );
+        for( final IComponent actualComponent : actualComponents )
+        {
+            assertNull( actualComponent.getContainer() );
+        }
+    }
+
+    /**
+     * Ensures the {@code removeComponents(Point)} method does not fire a
+     * component removed event when a component is absent at the specified
+     * location.
+     */
+    @Test
+    public void testRemoveComponentsFromPoint_Location_ComponentAbsent_DoesNotFireComponentRemovedEvent()
+    {
+        final IContainerListener listener = mocksControl_.createMock( IContainerListener.class );
+        mocksControl_.replay();
+        addContainerListener( getContainer(), listener );
+
+        getContainer().removeComponents( new Point( 0, 0 ) );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code removeComponents(Point)} method returns an empty
+     * collection when a component is absent at the specified location.
+     */
+    @Test
+    public void testRemoveComponentsFromPoint_Location_ComponentAbsent_DoesNotRemoveComponents()
+    {
+        final List<IComponent> components = getContainer().removeComponents( new Point( 0, 0 ) );
+
+        assertNotNull( components );
+        assertEquals( 0, components.size() );
+    }
+
+    /**
+     * Ensures the {@code removeComponents(Point)} method changes the container
+     * bounds when a component is present at the specified location.
+     */
+    @Test
+    public void testRemoveComponentsFromPoint_Location_ComponentPresent_ChangesContainerBounds()
+    {
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        EasyMock.expectLastCall().times( 2 );
+        mocksControl_.replay();
+        addComponentListener( getContainer(), listener );
+        final Rectangle originalContainerBounds = getContainer().getBounds();
+
+        do
+        {
+            getContainer().addComponent( createUniqueComponent() );
+
+        } while( originalContainerBounds.equals( getContainer().getBounds() ) );
+        final List<IComponent> components = getContainer().getComponents();
+        getContainer().removeComponents( components.get( components.size() - 1 ).getLocation() );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code removeComponents(Point)} method throws an exception
+     * when passed a {@code null} location.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testRemoveComponentsFromPoint_Location_Null()
+    {
+        getContainer().removeComponents( null );
+    }
+
+    /**
+     * Ensures the {@code setLocation} method changes the location of all child
+     * components to reflect the new container location.
+     */
+    @Test
+    public void testSetLocation_ChangesChildComponentLocation()
+    {
+        final IComponent component = createUniqueComponent();
+        getContainer().addComponent( component );
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        addUniqueComponentListener( component, listener );
+
+        getContainer().setLocation( new Point( 1010, 2020 ) );
+
+        mocksControl_.verify();
     }
 }

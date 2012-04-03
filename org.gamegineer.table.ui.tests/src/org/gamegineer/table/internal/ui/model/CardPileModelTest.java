@@ -179,7 +179,7 @@ public final class CardPileModelTest
     public void testCardModel_CardChanged_FiresCardPileChangedEvent()
     {
         final ICard card = Cards.createUniqueCard( model_.getCardPile().getTable() );
-        model_.getCardPile().addCard( card );
+        model_.getCardPile().addComponent( card );
         final ICardPileModelListener listener = mocksControl_.createMock( ICardPileModelListener.class );
         listener.cardPileChanged( EasyMock.notNull( CardPileModelEvent.class ) );
         mocksControl_.replay();

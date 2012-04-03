@@ -43,6 +43,7 @@ import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardListener;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardSurfaceDesign;
+import org.gamegineer.table.core.IContainer;
 
 /**
  * Implementation of {@link org.gamegineer.table.core.ICard}.
@@ -350,6 +351,15 @@ final class Card
         {
             getLock().unlock();
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#getContainer()
+     */
+    @Override
+    public IContainer getContainer()
+    {
+        return getCardPile();
     }
 
     /*

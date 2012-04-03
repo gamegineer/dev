@@ -71,17 +71,20 @@ final class NonNlsMessages
     /** The card pile listener is already registered. */
     public static String CardPile_addCardPileListener_listener_registered;
 
-    /** The card collection contains a card created by a different table. */
-    public static String CardPile_addCards_cards_containsCardCreatedByDifferentTable;
+    /**
+     * The component collection contains a component created by a different
+     * table.
+     */
+    public static String CardPile_addComponents_components_containsComponentCreatedByDifferentTable;
 
-    /** The card collection contains a {@code null} element. */
-    public static String CardPile_addCards_cards_containsNullElement;
+    /** The component collection contains a {@code null} element. */
+    public static String CardPile_addComponents_components_containsNullElement;
 
-    /** The card collection contains a card already contained in a card pile. */
-    public static String CardPile_addCards_cards_containsOwnedCard;
-
-    /** An unexpected exception was thrown from ICardPileListener.cardAdded(). */
-    public static String CardPile_cardAdded_unexpectedException;
+    /**
+     * The component collection contains a component already contained in a
+     * container.
+     */
+    public static String CardPile_addComponents_components_containsOwnedComponent;
 
     /**
      * An unexpected exception was thrown from
@@ -95,8 +98,11 @@ final class NonNlsMessages
      */
     public static String CardPile_cardPileLayoutChanged_unexpectedException;
 
-    /** An unexpected exception was thrown from ICardPileListener.cardRemoved(). */
-    public static String CardPile_cardRemoved_unexpectedException;
+    /**
+     * An unexpected exception was thrown from
+     * IContainerListener.componentAdded().
+     */
+    public static String CardPile_componentAdded_unexpectedException;
 
     /**
      * An unexpected exception was thrown from
@@ -104,14 +110,20 @@ final class NonNlsMessages
      */
     public static String CardPile_componentBoundsChanged_unexpectedException;
 
-    /** The card index is out of range. */
-    public static String CardPile_getCardFromIndex_index_outOfRange;
+    /**
+     * An unexpected exception was thrown from
+     * IContainerListener.componentRemoved().
+     */
+    public static String CardPile_componentRemoved_unexpectedException;
 
-    /** The card is not contained in the card pile. */
-    public static String CardPile_getCardIndex_card_notOwned;
+    /** The component index is out of range. */
+    public static String CardPile_getComponentFromIndex_index_outOfRange;
+
+    /** The component is not contained in the container. */
+    public static String CardPile_getComponentIndex_component_notOwned;
 
     /** An unknown layout is active. */
-    public static String CardPile_getCardOffsetAt_unknownLayout;
+    public static String CardPile_getComponentOffsetAt_unknownLayout;
 
     /** The card pile listener is not registered. */
     public static String CardPile_removeCardPileListener_listener_notRegistered;

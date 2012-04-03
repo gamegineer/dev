@@ -113,12 +113,12 @@ public final class Assert
             assertEquals( expected.getBaseLocation(), actual.getBaseLocation() );
             assertEquals( expected.getLayout(), actual.getLayout() );
 
-            final List<ICard> expectedCards = expected.getCards();
-            final List<ICard> actualCards = actual.getCards();
-            assertEquals( expectedCards.size(), actualCards.size() );
-            for( int index = 0, size = expectedCards.size(); index < size; ++index )
+            final List<IComponent> expectedComponents = expected.getComponents();
+            final List<IComponent> actualComponents = actual.getComponents();
+            assertEquals( expectedComponents.size(), actualComponents.size() );
+            for( int index = 0, size = expectedComponents.size(); index < size; ++index )
             {
-                assertCardEquals( expectedCards.get( index ), actualCards.get( index ) );
+                assertCardEquals( (ICard)expectedComponents.get( index ), (ICard)actualComponents.get( index ) ); // FIXME: remove cast
             }
         }
     }

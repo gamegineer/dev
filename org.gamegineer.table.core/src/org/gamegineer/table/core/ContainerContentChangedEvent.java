@@ -1,6 +1,6 @@
 /*
- * CardPileContentChangedEvent.java
- * Copyright 2008-2011 Gamegineer.org
+ * ContainerContentChangedEvent.java
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 10, 2010 at 10:13:08 PM.
+ * Created on Mar 29, 2012 at 8:21:16 PM.
  */
 
 package org.gamegineer.table.core;
@@ -26,27 +26,27 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * An event used to notify listeners that the content of a card pile has
+ * An event used to notify listeners that the content of a container has
  * changed.
  * 
  * @noextend This class is not intended to be subclassed by clients.
  */
 @ThreadSafe
-public class CardPileContentChangedEvent
-    extends CardPileEvent
+public class ContainerContentChangedEvent
+    extends ContainerEvent
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = -2958345168587653231L;
+    private static final long serialVersionUID = 3818840808151909032L;
 
-    /** The card associated with the event. */
-    private final ICard card_;
+    /** The component associated with the event. */
+    private final IComponent component_;
 
-    /** The index of the card associated with the event. */
-    private final int cardIndex_;
+    /** The index of the component associated with the event. */
+    private final int componentIndex_;
 
 
     // ======================================================================
@@ -54,37 +54,37 @@ public class CardPileContentChangedEvent
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileContentChangedEvent}
+     * Initializes a new instance of the {@code ContainerContentChangedEvent}
      * class.
      * 
      * @param source
-     *        The card pile that fired the event; must not be {@code null}.
-     * @param card
-     *        The card associated with the event; must not be {@code null}.
-     * @param cardIndex
-     *        The index of the card associated with the event.
+     *        The container that fired the event; must not be {@code null}.
+     * @param component
+     *        The component associated with the event; must not be {@code null}.
+     * @param componentIndex
+     *        The index of the component associated with the event.
      * 
      * @throws java.lang.IllegalArgumentException
-     *         If {@code source} is {@code null} or if {@code cardIndex} is
+     *         If {@code source} is {@code null} or if {@code componentIndex} is
      *         negative.
      * @throws java.lang.NullPointerException
-     *         If {@code card} is {@code null}.
+     *         If {@code component} is {@code null}.
      */
-    public CardPileContentChangedEvent(
+    public ContainerContentChangedEvent(
         /* @NonNull */
         @SuppressWarnings( "hiding" )
-        final ICardPile source,
+        final IContainer source,
         /* @NonNull */
-        final ICard card,
-        final int cardIndex )
+        final IComponent component,
+        final int componentIndex )
     {
         super( source );
 
-        assertArgumentNotNull( card, "card" ); //$NON-NLS-1$
-        assertArgumentLegal( cardIndex >= 0, "cardIndex", NonNlsMessages.CardPileContentChangedEvent_ctor_cardIndex_negative ); //$NON-NLS-1$
+        assertArgumentNotNull( component, "component" ); //$NON-NLS-1$
+        assertArgumentLegal( componentIndex >= 0, "componentIndex", NonNlsMessages.ContainerContentChangedEvent_ctor_componentIndex_negative ); //$NON-NLS-1$
 
-        card_ = card;
-        cardIndex_ = cardIndex;
+        component_ = component;
+        componentIndex_ = componentIndex;
     }
 
 
@@ -93,23 +93,23 @@ public class CardPileContentChangedEvent
     // ======================================================================
 
     /**
-     * Gets the card associated with the event.
+     * Gets the component associated with the event.
      * 
-     * @return The card associated with the event; never {@code null}.
+     * @return The component associated with the event; never {@code null}.
      */
     /* @NonNull */
-    public final ICard getCard()
+    public final IComponent getComponent()
     {
-        return card_;
+        return component_;
     }
 
     /**
-     * Gets the index of the card associated with the event.
+     * Gets the index of the component associated with the event.
      * 
-     * @return The index of the card associated with the event.
+     * @return The index of the component associated with the event.
      */
-    public final int getCardIndex()
+    public final int getComponentIndex()
     {
-        return cardIndex_;
+        return componentIndex_;
     }
 }

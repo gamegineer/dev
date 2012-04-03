@@ -126,7 +126,7 @@ public abstract class AbstractTableTestCase
     {
         final ITable table = (ITable)mementoOriginator;
         final ICardPile cardPile = CardPiles.createUniqueCardPile( table );
-        cardPile.addCard( Cards.createUniqueCard( table ) );
+        cardPile.addComponent( Cards.createUniqueCard( table ) );
         table.addCardPile( cardPile );
     }
 

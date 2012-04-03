@@ -21,6 +21,9 @@
 
 package org.gamegineer.table.core;
 
+import java.awt.Point;
+import java.util.List;
+
 /**
  * A table component that can contain other table components.
  * 
@@ -34,4 +37,159 @@ public interface IContainer
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /**
+     * Adds the specified component to the top of this container.
+     * 
+     * @param component
+     *        The component; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code component} is already contained in a container or if
+     *         {@code component} was created by a table other than the table
+     *         that created this container.
+     * @throws java.lang.NullPointerException
+     *         If {@code component} is {@code null}.
+     */
+    public void addComponent(
+        /* @NonNull */
+        IComponent component );
+
+    /**
+     * Adds the specified collection of components to the top of this container.
+     * 
+     * @param components
+     *        The collection of components to be added to this container; must
+     *        not be {@code null}. The components are added to the top of this
+     *        container in the order they appear in the collection.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code components} contains a {@code null} element; if any
+     *         component is already contained in a container; or if any
+     *         component was created by a table other than the table that
+     *         created this container.
+     * @throws java.lang.NullPointerException
+     *         If {@code components} is {@code null}.
+     */
+    public void addComponents(
+        /* @NonNull */
+        List<IComponent> components );
+
+    /**
+     * Gets the component in this container at the specified index.
+     * 
+     * @param index
+     *        The component index.
+     * 
+     * @return The component in this container at the specified index; never
+     *         {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code index} is less than zero or greater than or equal to
+     *         the component count.
+     */
+    /* @NonNull */
+    public IComponent getComponent(
+        int index );
+
+    /**
+     * Gets the component in this container at the specified location.
+     * 
+     * <p>
+     * If two or more components occupy the specified location, the top-most
+     * component will be returned.
+     * </p>
+     * 
+     * <p>
+     * Note that the returned component may have been moved by the time this
+     * method returns to the caller. Therefore, callers should not cache the
+     * results of this method for an extended period of time.
+     * </p>
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * 
+     * @return The component in this container at the specified location or
+     *         {@code null} if no component in this container is at that
+     *         location.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code location} is {@code null}.
+     */
+    /* @Nullable */
+    public IComponent getComponent(
+        /* @NonNull */
+        Point location );
+
+    /**
+     * Gets the count of components in this container.
+     * 
+     * @return The count of components in this container.
+     */
+    public int getComponentCount();
+
+    /**
+     * Gets the index of the specified component in this container.
+     * 
+     * @param component
+     *        The component; must not be {@code null}.
+     * 
+     * @return The index of the specified component in this container.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code component} is not contained in this container.
+     * @throws java.lang.NullPointerException
+     *         If {@code component} is {@code null}.
+     */
+    public int getComponentIndex(
+        /* @NonNull */
+        IComponent component );
+
+    /**
+     * Gets the collection of components in this container.
+     * 
+     * @return The collection of components in this container; never
+     *         {@code null}. The components are returned in order from the
+     *         component at the bottom of the container to the component at the
+     *         top of the container.
+     */
+    /* @NonNull */
+    public List<IComponent> getComponents();
+
+    /**
+     * Removes the component at the top of this container.
+     * 
+     * @return The component that was removed or {@code null} if this container
+     *         is empty.
+     */
+    /* @Nullable */
+    public IComponent removeComponent();
+
+    /**
+     * Removes all components in this container.
+     * 
+     * @return The collection of components removed from this container; never
+     *         {@code null}. The components are returned in order from the
+     *         component at the bottom of the container to the component at the
+     *         top of the container.
+     */
+    /* @NonNull */
+    public List<IComponent> removeComponents();
+
+    /**
+     * Removes all components in this container from the component at the
+     * specified location to the top-most component.
+     * 
+     * @param location
+     *        The location in table coordinates; must not be {@code null}.
+     * 
+     * @return The collection of components removed from this container; never
+     *         {@code null}. The components are returned in order from the
+     *         component at the specified location to the component at the top
+     *         of the container.
+     */
+    /* @NonNull */
+    public List<IComponent> removeComponents(
+        /* @NonNull */
+        Point location );
 }

@@ -33,11 +33,12 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.CardPileContentChangedEvent;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPileListener;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
 import org.gamegineer.table.internal.ui.model.CardPileModelEvent;
@@ -126,24 +127,6 @@ final class CardPileView
     // ======================================================================
 
     /**
-     * Invoked when a new card is added to the card pile.
-     * 
-     * @param card
-     *        The added card; must not be {@code null}.
-     */
-    private void cardAdded(
-        /* @NonNull */
-        final ICard card )
-    {
-        assert card != null;
-
-        if( isInitialized() )
-        {
-            createCardView( card );
-        }
-    }
-
-    /**
      * Invoked after the card pile base design has changed.
      */
     private void cardPileBaseDesignChanged()
@@ -166,20 +149,20 @@ final class CardPileView
     }
 
     /**
-     * Invoked when a card is removed from the card pile.
+     * Invoked when a new component is added to the container.
      * 
-     * @param card
-     *        The removed card; must not be {@code null}.
+     * @param component
+     *        The added component; must not be {@code null}.
      */
-    private void cardRemoved(
+    private void componentAdded(
         /* @NonNull */
-        final ICard card )
+        final IComponent component )
     {
-        assert card != null;
+        assert component != null;
 
         if( isInitialized() )
         {
-            deleteCardView( card );
+            createCardView( (ICard)component ); // FIXME: remove cast
         }
     }
 
@@ -194,6 +177,24 @@ final class CardPileView
             dirtyBounds_.add( viewBounds );
             tableView_.repaintTable( dirtyBounds_ );
             dirtyBounds_.setBounds( viewBounds );
+        }
+    }
+
+    /**
+     * Invoked when a component is removed from the container.
+     * 
+     * @param component
+     *        The removed component; must not be {@code null}.
+     */
+    private void componentRemoved(
+        /* @NonNull */
+        final IComponent component )
+    {
+        assert component != null;
+
+        if( isInitialized() )
+        {
+            deleteCardView( (ICard)component ); // FIXME: remove cast
         }
     }
 
@@ -287,9 +288,9 @@ final class CardPileView
         cardPileListener_ = new CardPileListener();
         model_.getCardPile().addCardPileListener( cardPileListener_ );
 
-        for( final ICard card : model_.getCardPile().getCards() )
+        for( final IComponent component : model_.getCardPile().getComponents() )
         {
-            createCardView( card );
+            createCardView( (ICard)component ); // FIXME: remove cast
         }
 
         tableView_.repaintTable( dirtyBounds_ );
@@ -313,36 +314,36 @@ final class CardPileView
      * This method must only be called after the view is initialized.
      * </p>
      * 
-     * @param component
+     * @param c
      *        The component in which to paint; must not be {@code null}.
      * @param g
      *        The graphics context in which to paint; must not be {@code null}.
      */
     void paint(
         /* @NonNull */
-        final Component component,
+        final Component c,
         /* @NonNull */
         final Graphics g )
     {
-        assert component != null;
+        assert c != null;
         assert g != null;
         assert isInitialized();
 
         final Rectangle viewBounds = getBounds();
 
-        final List<ICard> cards = model_.getCardPile().getCards();
-        if( cards.isEmpty() )
+        final List<IComponent> components = model_.getCardPile().getComponents();
+        if( components.isEmpty() )
         {
-            baseDesignUI_.getIcon().paintIcon( component, g, viewBounds.x + HORIZONTAL_PADDING, viewBounds.y + VERTICAL_PADDING );
+            baseDesignUI_.getIcon().paintIcon( c, g, viewBounds.x + HORIZONTAL_PADDING, viewBounds.y + VERTICAL_PADDING );
         }
         else
         {
-            for( final ICard card : cards )
+            for( final IComponent component : components )
             {
-                final CardView cardView = cardViews_.get( card );
+                final CardView cardView = cardViews_.get( component );
                 if( cardView != null )
                 {
-                    cardView.paint( component, g );
+                    cardView.paint( c, g );
                 }
             }
         }
@@ -425,26 +426,6 @@ final class CardPileView
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.core.CardPileListener#cardAdded(org.gamegineer.table.core.CardPileContentChangedEvent)
-         */
-        @Override
-        public void cardAdded(
-            final CardPileContentChangedEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    CardPileView.this.cardAdded( event.getCard() );
-                }
-            } );
-        }
-
-        /*
          * @see org.gamegineer.table.core.CardPileListener#cardPileBaseDesignChanged(org.gamegineer.table.core.CardPileEvent)
          */
         @Override
@@ -465,11 +446,11 @@ final class CardPileView
         }
 
         /*
-         * @see org.gamegineer.table.core.CardPileListener#cardRemoved(org.gamegineer.table.core.CardPileContentChangedEvent)
+         * @see org.gamegineer.table.core.CardPileListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
          */
         @Override
-        public void cardRemoved(
-            final CardPileContentChangedEvent event )
+        public void componentAdded(
+            final ContainerContentChangedEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
@@ -479,7 +460,7 @@ final class CardPileView
                 @SuppressWarnings( "synthetic-access" )
                 public void run()
                 {
-                    CardPileView.this.cardRemoved( event.getCard() );
+                    CardPileView.this.componentAdded( event.getComponent() );
                 }
             } );
         }
@@ -500,6 +481,26 @@ final class CardPileView
                 public void run()
                 {
                     CardPileView.this.componentBoundsChanged();
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.CardPileListener#componentRemoved(org.gamegineer.table.core.ContainerContentChangedEvent)
+         */
+        @Override
+        public void componentRemoved(
+            final ContainerContentChangedEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    CardPileView.this.componentRemoved( event.getComponent() );
                 }
             } );
         }

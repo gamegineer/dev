@@ -70,6 +70,7 @@ import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.core.ICardPileBaseDesignRegistry;
 import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.core.ICardSurfaceDesignRegistry;
+import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.ITableListener;
 import org.gamegineer.table.core.TableContentChangedEvent;
 import org.gamegineer.table.internal.ui.Activator;
@@ -188,7 +189,7 @@ final class TableView
             final ICardSurfaceDesign faceDesign = cardSurfaceDesignRegistry.getCardSurfaceDesign( faceDesignId );
             final ICard card = model_.getTable().createCard();
             card.setSurfaceDesigns( backDesign, faceDesign );
-            cardPile.addCard( card );
+            cardPile.addComponent( card );
         }
     }
 
@@ -609,7 +610,7 @@ final class TableView
                     return false;
                 }
 
-                if( cardPile.getCardCount() == 0 )
+                if( cardPile.getComponentCount() == 0 )
                 {
                     return false;
                 }
@@ -1046,10 +1047,10 @@ final class TableView
         final ICardPile cardPile = model_.getFocusedCardPile();
         if( cardPile != null )
         {
-            final List<ICard> cards = cardPile.getCards();
-            if( !cards.isEmpty() )
+            final List<IComponent> components = cardPile.getComponents();
+            if( !components.isEmpty() )
             {
-                cards.get( cards.size() - 1 ).flip();
+                ((ICard)components.get( components.size() - 1 )).flip(); // FIXME: remove cast
             }
         }
     }
@@ -1170,7 +1171,7 @@ final class TableView
         final ICardPile cardPile = model_.getFocusedCardPile();
         if( cardPile != null )
         {
-            cardPile.removeCards();
+            cardPile.removeComponents();
         }
     }
 
@@ -1194,7 +1195,7 @@ final class TableView
         final ICardPile cardPile = model_.getFocusedCardPile();
         if( cardPile != null )
         {
-            cardPile.removeCard();
+            cardPile.removeComponent();
         }
     }
 
@@ -1695,17 +1696,17 @@ final class TableView
             sourceCardPile_ = model_.getTable().getCardPile( mouseLocation );
             if( sourceCardPile_ != null )
             {
-                final List<ICard> draggedCards = sourceCardPile_.removeCards( mouseLocation );
-                if( !draggedCards.isEmpty() )
+                final List<IComponent> draggedComponents = sourceCardPile_.removeComponents( mouseLocation );
+                if( !draggedComponents.isEmpty() )
                 {
-                    final Point draggedCardsBaseLocation = draggedCards.get( 0 ).getLocation();
+                    final Point draggedCardsBaseLocation = draggedComponents.get( 0 ).getLocation();
                     mobileCardPileBaseLocationOffset_.setSize( draggedCardsBaseLocation.x - mouseLocation.x, draggedCardsBaseLocation.y - mouseLocation.y );
                     mobileCardPile_ = model_.getTable().createCardPile();
                     mobileCardPile_.setBaseDesign( sourceCardPile_.getBaseDesign() );
                     mobileCardPile_.setBaseLocation( draggedCardsBaseLocation );
                     mobileCardPile_.setLayout( sourceCardPile_.getLayout() );
                     model_.getTable().addCardPile( mobileCardPile_ );
-                    mobileCardPile_.addCards( draggedCards );
+                    mobileCardPile_.addComponents( draggedComponents );
                     model_.setFocus( mobileCardPile_ );
                 }
                 else
@@ -1757,7 +1758,7 @@ final class TableView
                 final Point mouseLocation = getMouseLocation( event );
                 final ICardPile cardPile = model_.getTable().getCardPile( mouseLocation );
                 final ICardPile targetCardPile = (cardPile != null) ? cardPile : sourceCardPile_;
-                targetCardPile.addCards( mobileCardPile_.removeCards() );
+                targetCardPile.addComponents( mobileCardPile_.removeComponents() );
                 model_.setFocus( targetCardPile );
 
                 setMouseInputHandler( DefaultMouseInputHandler.class, null );

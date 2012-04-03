@@ -50,6 +50,15 @@ public interface IComponent
     public Rectangle getBounds();
 
     /**
+     * Gets the container that contains this component.
+     * 
+     * @return The container that contains this component or {@code null} if
+     *         this component is not contained in a container.
+     */
+    /* @Nullable */
+    public IContainer getContainer();
+
+    /**
      * Gets the location of this component in table coordinates.
      * 
      * @return The location of this component in table coordinates; never

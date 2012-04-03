@@ -1,5 +1,5 @@
 /*
- * ComponentEvent.java
+ * ContainerEvent.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Mar 27, 2012 at 8:44:53 PM.
+ * Created on Mar 29, 2012 at 8:18:46 PM.
  */
 
 package org.gamegineer.table.core;
@@ -25,12 +25,12 @@ import java.util.EventObject;
 import net.jcip.annotations.ThreadSafe;
 
 /**
- * An event fired by a component.
+ * An event fired by a container.
  * 
  * @noextend This class is not intended to be subclassed by clients.
  */
 @ThreadSafe
-public class ComponentEvent
+public class ContainerEvent
     extends EventObject
 {
     // ======================================================================
@@ -38,7 +38,7 @@ public class ComponentEvent
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = 2992004706733067598L;
+    private static final long serialVersionUID = -3356087700212900227L;
 
 
     // ======================================================================
@@ -46,18 +46,18 @@ public class ComponentEvent
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code ComponentEvent} class.
+     * Initializes a new instance of the {@code ContainerEvent} class.
      * 
      * @param source
-     *        The component that fired the event; must not be {@code null}.
+     *        The container that fired the event; must not be {@code null}.
      * 
      * @throws java.lang.IllegalArgumentException
      *         If {@code source} is {@code null}.
      */
-    public ComponentEvent(
+    public ContainerEvent(
         /* @NonNull */
         @SuppressWarnings( "hiding" )
-        final IComponent source )
+        final IContainer source )
     {
         super( source );
     }
@@ -68,13 +68,13 @@ public class ComponentEvent
     // ======================================================================
 
     /**
-     * Gets the component that fired the event.
+     * Gets the container that fired the event.
      * 
-     * @return The component that fired the event; never {@code null}.
+     * @return The container that fired the event; never {@code null}.
      */
     /* @NonNull */
-    public final IComponent getComponent()
+    public final IContainer getContainer()
     {
-        return (IComponent)getSource();
+        return (IContainer)getSource();
     }
 }

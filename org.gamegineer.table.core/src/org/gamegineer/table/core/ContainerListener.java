@@ -1,5 +1,5 @@
 /*
- * CardPileListener.java
+ * ContainerListener.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Aug 3, 2011 at 8:22:10 PM.
+ * Created on Mar 29, 2012 at 8:48:39 PM.
  */
 
 package org.gamegineer.table.core;
@@ -25,25 +25,24 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import net.jcip.annotations.Immutable;
 
 /**
- * Default implementation of {@link ICardPileListener}.
+ * Default implementation of {@link IContainerListener}.
  * 
  * <p>
  * All methods of this class do nothing.
  * </p>
  */
 @Immutable
-public class CardPileListener
-    extends ComponentListener
-    implements ICardPileListener
+public class ContainerListener
+    implements IContainerListener
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardPileListener} class.
+     * Initializes a new instance of the {@code ContainerListener} class.
      */
-    public CardPileListener()
+    public ContainerListener()
     {
     }
 
@@ -51,30 +50,6 @@ public class CardPileListener
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * This implementation does nothing.
-     * 
-     * @see org.gamegineer.table.core.ICardPileListener#cardPileBaseDesignChanged(org.gamegineer.table.core.CardPileEvent)
-     */
-    @Override
-    public void cardPileBaseDesignChanged(
-        final CardPileEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-    }
-
-    /**
-     * This implementation does nothing.
-     * 
-     * @see org.gamegineer.table.core.ICardPileListener#cardPileLayoutChanged(org.gamegineer.table.core.CardPileEvent)
-     */
-    @Override
-    public void cardPileLayoutChanged(
-        final CardPileEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-    }
 
     /**
      * This implementation does nothing.

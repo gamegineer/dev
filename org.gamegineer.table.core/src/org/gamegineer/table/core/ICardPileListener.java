@@ -28,24 +28,11 @@ package org.gamegineer.table.core;
  * @noextend This interface is not intended to be extended by clients.
  */
 public interface ICardPileListener
-    extends IComponentListener
+    extends IComponentListener, IContainerListener
 {
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Invoked after a card has been added to the card pile.
-     * 
-     * @param event
-     *        The event describing the added card; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
-     */
-    public void cardAdded(
-        /* @NonNull */
-        CardPileContentChangedEvent event );
 
     /**
      * Invoked after the card pile base design has changed.
@@ -72,17 +59,4 @@ public interface ICardPileListener
     public void cardPileLayoutChanged(
         /* @NonNull */
         CardPileEvent event );
-
-    /**
-     * Invoked after a card has been removed from the card pile.
-     * 
-     * @param event
-     *        The event describing the removed card; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code event} is {@code null}.
-     */
-    public void cardRemoved(
-        /* @NonNull */
-        CardPileContentChangedEvent event );
 }
