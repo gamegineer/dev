@@ -231,6 +231,14 @@ final class NonNlsMessages
     /** The extension registry service is not bound. */
     public static String CardSurfaceDesignRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
 
+    // --- ComponentSurfaceDesign -------------------------------------------
+
+    /** The component surface design height must not be negative. */
+    public static String ComponentSurfaceDesign_ctor_height_negative;
+
+    /** The component surface design width must not be negative. */
+    public static String ComponentSurfaceDesign_ctor_width_negative;
+
     // --- MementoUtils -----------------------------------------------------
 
     /** The required attribute is absent. */
