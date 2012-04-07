@@ -31,7 +31,7 @@ import org.gamegineer.test.core.AbstractEquatableTestCase;
  * does not violate the contract of the equatable interface.
  */
 public final class CardPileBaseDesignIdAsEquatableTest
-    extends AbstractEquatableTestCase
+    extends AbstractEquatableTestCase<CardPileBaseDesignId>
 {
     // ======================================================================
     // Constructors
@@ -54,7 +54,7 @@ public final class CardPileBaseDesignIdAsEquatableTest
      * @see org.gamegineer.test.core.AbstractEquatableTestCase#createReferenceInstance()
      */
     @Override
-    protected Object createReferenceInstance()
+    protected CardPileBaseDesignId createReferenceInstance()
     {
         return CardPileBaseDesignId.fromString( "id" ); //$NON-NLS-1$
     }
@@ -63,9 +63,9 @@ public final class CardPileBaseDesignIdAsEquatableTest
      * @see org.gamegineer.test.core.AbstractEquatableTestCase#createUnequalInstances()
      */
     @Override
-    protected Collection<Object> createUnequalInstances()
+    protected Collection<CardPileBaseDesignId> createUnequalInstances()
     {
-        final Collection<Object> others = new ArrayList<Object>();
+        final Collection<CardPileBaseDesignId> others = new ArrayList<CardPileBaseDesignId>();
         others.add( CardPileBaseDesignId.fromString( "-" ) ); //$NON-NLS-1$
         return others;
     }

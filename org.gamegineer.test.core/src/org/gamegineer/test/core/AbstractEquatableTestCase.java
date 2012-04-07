@@ -39,15 +39,18 @@ import org.junit.Test;
  * implementations of {@link java.lang.Object#equals(Object)} and
  * {@link java.lang.Object#hashCode()}.
  * </p>
+ * 
+ * @param <T>
+ *        The type of the object.
  */
-public abstract class AbstractEquatableTestCase
+public abstract class AbstractEquatableTestCase<T>
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** The reference instance for use in the fixture. */
-    private Object reference_;
+    private T reference_;
 
 
     // ======================================================================
@@ -81,7 +84,7 @@ public abstract class AbstractEquatableTestCase
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract Object createReferenceInstance()
+    protected abstract T createReferenceInstance()
         throws Exception;
 
     /**
@@ -101,7 +104,7 @@ public abstract class AbstractEquatableTestCase
      *         If an error occurs.
      */
     /* @NonNull */
-    protected abstract Collection<Object> createUnequalInstances()
+    protected abstract Collection<T> createUnequalInstances()
         throws Exception;
 
     /**
@@ -129,12 +132,12 @@ public abstract class AbstractEquatableTestCase
     public void testCreateUnequalInstances()
         throws Exception
     {
-        final Collection<Object> others = createUnequalInstances();
+        final Collection<T> others = createUnequalInstances();
 
         assertNotNull( others );
         assertFalse( "unequal instances collection must not be empty", others.isEmpty() ); //$NON-NLS-1$
         assertFalse( "unequal instances collection must not contain a null element", others.contains( null ) ); //$NON-NLS-1$
-        for( final Object other : others )
+        for( final T other : others )
         {
             assertEquals( "same instance appears multiple times in the unequal instances collection", 1, Collections.frequency( others, other ) ); //$NON-NLS-1$
         }

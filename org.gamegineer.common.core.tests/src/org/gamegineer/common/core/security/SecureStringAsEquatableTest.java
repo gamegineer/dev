@@ -31,7 +31,7 @@ import org.gamegineer.test.core.AbstractEquatableTestCase;
  * does not violate the contract of the equatable interface.
  */
 public final class SecureStringAsEquatableTest
-    extends AbstractEquatableTestCase
+    extends AbstractEquatableTestCase<SecureString>
 {
     // ======================================================================
     // Constructors
@@ -54,7 +54,7 @@ public final class SecureStringAsEquatableTest
      * @see org.gamegineer.test.core.AbstractEquatableTestCase#createReferenceInstance()
      */
     @Override
-    protected Object createReferenceInstance()
+    protected SecureString createReferenceInstance()
         throws Exception
     {
         return new SecureString( "password".toCharArray() ); //$NON-NLS-1$
@@ -64,10 +64,10 @@ public final class SecureStringAsEquatableTest
      * @see org.gamegineer.test.core.AbstractEquatableTestCase#createUnequalInstances()
      */
     @Override
-    protected Collection<Object> createUnequalInstances()
+    protected Collection<SecureString> createUnequalInstances()
         throws Exception
     {
-        final Collection<Object> others = new ArrayList<Object>();
+        final Collection<SecureString> others = new ArrayList<SecureString>();
         others.add( new SecureString( "PASSWORD".toCharArray() ) ); //$NON-NLS-1$
         return others;
     }
