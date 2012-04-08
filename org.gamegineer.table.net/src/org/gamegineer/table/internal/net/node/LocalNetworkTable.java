@@ -437,105 +437,6 @@ final class LocalNetworkTable
     }
 
     /**
-     * A proxy for instances of {@link IComponentListener} that ensures all
-     * methods are called on the associated node layer thread.
-     */
-    @Immutable
-    private final class ComponentListenerProxy
-        implements IComponentListener
-    {
-        // ==================================================================
-        // Fields
-        // ==================================================================
-
-        /** The actual component listener. */
-        private IComponentListener actualComponentListener_;
-
-
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code ComponentListenerProxy}
-         * class.
-         * 
-         * @param actualComponentListener
-         *        The actual component listener; must not be {@code null}.
-         */
-        ComponentListenerProxy(
-            /* @NonNull */
-            final IComponentListener actualComponentListener )
-        {
-            assert actualComponentListener != null;
-
-            actualComponentListener_ = actualComponentListener;
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.IComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        public void componentBoundsChanged(
-            @SuppressWarnings( "unused" )
-            final ComponentEvent event )
-        {
-            // do nothing
-
-            // In the current implementation, handling this event is unnecessary because a
-            // card can only be moved by moving a card pile that contains the card. Thus,
-            // when the corresponding card pile bounds changed event is fired, it will
-            // automatically set the new card location when the card pile location is changed.
-            //
-            // If we send both the card pile bounds changed event and the card location
-            // changed event over the network, the card movement on remote tables will appear
-            // "jumpy" because two ICard.setLocation() calls will be made that may be a few
-            // pixels off.
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IComponentListener#componentOrientationChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void componentOrientationChanged(
-            final ComponentEvent event )
-        {
-            syncExec( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    actualComponentListener_.componentOrientationChanged( event );
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.IComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void componentSurfaceDesignChanged(
-            final ComponentEvent event )
-        {
-            syncExec( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    actualComponentListener_.componentSurfaceDesignChanged( event );
-                }
-            } );
-        }
-    }
-
-    /**
      * A card pile listener for the local table adapter.
      */
     @Immutable
@@ -954,6 +855,105 @@ final class LocalNetworkTable
                 public void run()
                 {
                     actualCardPileListener_.componentSurfaceDesignChanged( event );
+                }
+            } );
+        }
+    }
+
+    /**
+     * A proxy for instances of {@link IComponentListener} that ensures all
+     * methods are called on the associated node layer thread.
+     */
+    @Immutable
+    private final class ComponentListenerProxy
+        implements IComponentListener
+    {
+        // ==================================================================
+        // Fields
+        // ==================================================================
+
+        /** The actual component listener. */
+        private IComponentListener actualComponentListener_;
+
+
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ComponentListenerProxy}
+         * class.
+         * 
+         * @param actualComponentListener
+         *        The actual component listener; must not be {@code null}.
+         */
+        ComponentListenerProxy(
+            /* @NonNull */
+            final IComponentListener actualComponentListener )
+        {
+            assert actualComponentListener != null;
+
+            actualComponentListener_ = actualComponentListener;
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.IComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        public void componentBoundsChanged(
+            @SuppressWarnings( "unused" )
+            final ComponentEvent event )
+        {
+            // do nothing
+
+            // In the current implementation, handling this event is unnecessary because a
+            // card can only be moved by moving a card pile that contains the card. Thus,
+            // when the corresponding card pile bounds changed event is fired, it will
+            // automatically set the new card location when the card pile location is changed.
+            //
+            // If we send both the card pile bounds changed event and the card location
+            // changed event over the network, the card movement on remote tables will appear
+            // "jumpy" because two ICard.setLocation() calls will be made that may be a few
+            // pixels off.
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IComponentListener#componentOrientationChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentOrientationChanged(
+            final ComponentEvent event )
+        {
+            syncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualComponentListener_.componentOrientationChanged( event );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.IComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentSurfaceDesignChanged(
+            final ComponentEvent event )
+        {
+            syncExec( new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    actualComponentListener_.componentSurfaceDesignChanged( event );
                 }
             } );
         }
