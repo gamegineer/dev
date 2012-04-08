@@ -28,9 +28,9 @@ import java.awt.Rectangle;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
-import org.gamegineer.table.core.ICardListener;
+import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.internal.ui.model.CardModel;
 import org.gamegineer.table.internal.ui.model.ICardModelListener;
 import org.gamegineer.table.ui.ICardSurfaceDesignUI;
@@ -48,14 +48,14 @@ final class CardView
     /** The card surface design user interface for the card back. */
     private final ICardSurfaceDesignUI backDesignUI_;
 
-    /** The card listener for this view. */
-    private ICardListener cardListener_;
-
     /** The card model listener for this view. */
     private ICardModelListener cardModelListener_;
 
     /** The card pile view that owns this view. */
     private CardPileView cardPileView_;
+
+    /** The component listener for this view. */
+    private IComponentListener componentListener_;
 
     /** The card surface design user interface for the card face. */
     private final ICardSurfaceDesignUI faceDesignUI_;
@@ -93,9 +93,9 @@ final class CardView
         assert faceDesignUI != null;
 
         backDesignUI_ = backDesignUI;
-        cardListener_ = null;
         cardModelListener_ = null;
         cardPileView_ = null;
+        componentListener_ = null;
         faceDesignUI_ = faceDesignUI;
         model_ = model;
     }
@@ -106,9 +106,9 @@ final class CardView
     // ======================================================================
 
     /**
-     * Invoked after the card orientation has changed.
+     * Invoked after the component orientation has changed.
      */
-    private void cardOrientationChanged()
+    private void componentOrientationChanged()
     {
         if( isInitialized() )
         {
@@ -117,9 +117,9 @@ final class CardView
     }
 
     /**
-     * Invoked after the card surface designs have changed.
+     * Invoked after a component surface design has changed.
      */
-    private void cardSurfaceDesignsChanged()
+    private void componentSurfaceDesignChanged()
     {
         if( isInitialized() )
         {
@@ -170,8 +170,8 @@ final class CardView
         cardPileView_ = cardPileView;
         cardModelListener_ = new CardModelListener();
         model_.addCardModelListener( cardModelListener_ );
-        cardListener_ = new CardListener();
-        model_.getCard().addCardListener( cardListener_ );
+        componentListener_ = new ComponentListener();
+        model_.getCard().addComponentListener( componentListener_ );
 
         cardPileView_.repaintCardPile( getBounds() );
     }
@@ -226,8 +226,8 @@ final class CardView
 
         cardPileView_.repaintCardPile( getBounds() );
 
-        model_.getCard().removeCardListener( cardListener_ );
-        cardListener_ = null;
+        model_.getCard().removeComponentListener( componentListener_ );
+        componentListener_ = null;
         model_.removeCardModelListener( cardModelListener_ );
         cardModelListener_ = null;
         cardPileView_ = null;
@@ -237,70 +237,6 @@ final class CardView
     // ======================================================================
     // Nested Types
     // ======================================================================
-
-    /**
-     * A card listener for the card view.
-     */
-    @Immutable
-    private final class CardListener
-        extends org.gamegineer.table.core.CardListener
-    {
-        // ==================================================================
-        // Constructors
-        // ==================================================================
-
-        /**
-         * Initializes a new instance of the {@code CardListener} class.
-         */
-        CardListener()
-        {
-        }
-
-
-        // ==================================================================
-        // Methods
-        // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.CardListener#cardOrientationChanged(org.gamegineer.table.core.CardEvent)
-         */
-        @Override
-        public void cardOrientationChanged(
-            final CardEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    CardView.this.cardOrientationChanged();
-                }
-            } );
-        }
-
-        /*
-         * @see org.gamegineer.table.core.CardListener#cardSurfaceDesignsChanged(org.gamegineer.table.core.CardEvent)
-         */
-        @Override
-        public void cardSurfaceDesignsChanged(
-            final CardEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    CardView.this.cardSurfaceDesignsChanged();
-                }
-            } );
-        }
-    }
 
     /**
      * A card model listener for the card view.
@@ -318,6 +254,70 @@ final class CardView
          */
         CardModelListener()
         {
+        }
+    }
+
+    /**
+     * A component listener for the card view.
+     */
+    @Immutable
+    private final class ComponentListener
+        extends org.gamegineer.table.core.ComponentListener
+    {
+        // ==================================================================
+        // Constructors
+        // ==================================================================
+
+        /**
+         * Initializes a new instance of the {@code ComponentListener} class.
+         */
+        ComponentListener()
+        {
+        }
+
+
+        // ==================================================================
+        // Methods
+        // ==================================================================
+
+        /*
+         * @see org.gamegineer.table.core.ComponentListener#componentOrientationChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        public void componentOrientationChanged(
+            final ComponentEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    CardView.this.componentOrientationChanged();
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        public void componentSurfaceDesignChanged(
+            final ComponentEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    CardView.this.componentSurfaceDesignChanged();
+                }
+            } );
         }
     }
 }

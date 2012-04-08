@@ -90,24 +90,6 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
         IContainerListener listener );
 
     /**
-     * Adds the specified component listener to the specified component created
-     * by the {@link #createUniqueComponent} method.
-     * 
-     * @param component
-     *        The component; must not be {@code null}.
-     * @param listener
-     *        The component listener; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code component} or {@code listener} is {@code null}.
-     */
-    protected abstract void addUniqueComponentListener(
-        /* @NonNull */
-        IComponent component,
-        /* @NonNull */
-        IComponentListener listener );
-
-    /**
      * Creates a new component with unique attributes using the fixture table.
      * 
      * @return A new component; never {@code null}.
@@ -259,7 +241,7 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
-        addUniqueComponentListener( component, listener );
+        component.addComponentListener( listener );
 
         getContainer().addComponent( component );
 
@@ -275,7 +257,7 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
-        addComponentListener( getContainer(), listener );
+        getContainer().addComponentListener( listener );
         final Rectangle originalContainerBounds = getContainer().getBounds();
 
         do
@@ -387,7 +369,7 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
-        addUniqueComponentListener( component, listener );
+        component.addComponentListener( listener );
 
         getContainer().addComponents( Collections.singletonList( component ) );
 
@@ -403,7 +385,7 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
-        addComponentListener( getContainer(), listener );
+        getContainer().addComponentListener( listener );
         final Rectangle originalContainerBounds = getContainer().getBounds();
 
         do
@@ -677,7 +659,7 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         EasyMock.expectLastCall().times( 2 );
         mocksControl_.replay();
-        addComponentListener( getContainer(), listener );
+        getContainer().addComponentListener( listener );
         final Rectangle originalContainerBounds = getContainer().getBounds();
 
         do
@@ -770,7 +752,7 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         EasyMock.expectLastCall().times( 2 );
         mocksControl_.replay();
-        addComponentListener( getContainer(), listener );
+        getContainer().addComponentListener( listener );
         final Rectangle originalContainerBounds = getContainer().getBounds();
 
         do
@@ -875,7 +857,7 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         EasyMock.expectLastCall().times( 2 );
         mocksControl_.replay();
-        addComponentListener( getContainer(), listener );
+        getContainer().addComponentListener( listener );
         final Rectangle originalContainerBounds = getContainer().getBounds();
 
         do
@@ -911,7 +893,7 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
-        addUniqueComponentListener( component, listener );
+        component.addComponentListener( listener );
 
         getContainer().setLocation( new Point( 1010, 2020 ) );
 

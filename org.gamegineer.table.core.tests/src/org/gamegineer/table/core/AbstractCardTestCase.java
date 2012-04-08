@@ -126,72 +126,6 @@ public abstract class AbstractCardTestCase
     }
 
     /**
-     * Ensures the {@code addCardListener} method throws an exception when
-     * passed a {@code null} listener.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testAddCardListener_Listener_Null()
-    {
-        getCard().addCardListener( null );
-    }
-
-    /**
-     * Ensures the {@code addCardListener} method throws an exception when
-     * passed a listener that is present in the card listener collection.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testAddCardListener_Listener_Present()
-    {
-        final ICardListener listener = EasyMock.createMock( ICardListener.class );
-        getCard().addCardListener( listener );
-
-        getCard().addCardListener( listener );
-    }
-
-    /**
-     * Ensures the card orientation changed event catches any exception thrown
-     * by the {@code cardOrientationChanged} method of a card listener.
-     */
-    @Test
-    public void testCardOrientationChanged_CatchesListenerException()
-    {
-        final ICardListener listener1 = mocksControl_.createMock( ICardListener.class );
-        listener1.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ICardListener listener2 = mocksControl_.createMock( ICardListener.class );
-        listener2.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
-        mocksControl_.replay();
-        getCard().addCardListener( listener1 );
-        getCard().addCardListener( listener2 );
-
-        getCard().setOrientation( getCard().getOrientation().inverse() );
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the card surface designs changed event catches any exception
-     * thrown by the {@code cardSurfaceDesignsChanged} method of a card
-     * listener.
-     */
-    @Test
-    public void testCardSurfaceDesignsChanged_CatchesListenerException()
-    {
-        final ICardListener listener1 = mocksControl_.createMock( ICardListener.class );
-        listener1.cardSurfaceDesignsChanged( EasyMock.notNull( CardEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ICardListener listener2 = mocksControl_.createMock( ICardListener.class );
-        listener2.cardSurfaceDesignsChanged( EasyMock.notNull( CardEvent.class ) );
-        mocksControl_.replay();
-        getCard().addCardListener( listener1 );
-        getCard().addCardListener( listener2 );
-
-        getCard().setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ), CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ) );
-
-        mocksControl_.verify();
-    }
-
-    /**
      * Ensures the {@code flip} method correctly changes the card orientation
      * when the card back is initially up.
      */
@@ -222,15 +156,16 @@ public abstract class AbstractCardTestCase
     }
 
     /**
-     * Ensures the {@code flip} method fires a card orientation changed event.
+     * Ensures the {@code flip} method fires a component orientation changed
+     * event.
      */
     @Test
-    public void testFlip_FiresCardOrientationChangedEvent()
+    public void testFlip_FiresComponentOrientationChangedEvent()
     {
-        final ICardListener listener = mocksControl_.createMock( ICardListener.class );
-        listener.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
-        getCard().addCardListener( listener );
+        getCard().addComponentListener( listener );
 
         getCard().flip();
 
@@ -265,55 +200,16 @@ public abstract class AbstractCardTestCase
     }
 
     /**
-     * Ensures the {@code removeCardListener} method throws an exception when
-     * passed a listener that is absent from the card listener collection.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testRemoveCardListener_Listener_Absent()
-    {
-        getCard().removeCardListener( EasyMock.createMock( ICardListener.class ) );
-    }
-
-    /**
-     * Ensures the {@code removeCardListener} method throws an exception when
-     * passed a {@code null} listener.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testRemoveCardListener_Listener_Null()
-    {
-        getCard().removeCardListener( null );
-    }
-
-    /**
-     * Ensures the {@code removeCardListener} removes a listener that is present
-     * in the card listener collection.
-     */
-    @Test
-    public void testRemoveCardListener_Listener_Present()
-    {
-        final ICardListener listener = mocksControl_.createMock( ICardListener.class );
-        listener.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
-        mocksControl_.replay();
-        getCard().addCardListener( listener );
-        getCard().flip();
-
-        getCard().removeCardListener( listener );
-        getCard().flip();
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code setOrientation} method fires a card orientation
+     * Ensures the {@code setOrientation} method fires a component orientation
      * changed event.
      */
     @Test
-    public void testSetOrientation_FiresCardOrientationChangedEvent()
+    public void testSetOrientation_FiresComponentOrientationChangedEvent()
     {
-        final ICardListener listener = mocksControl_.createMock( ICardListener.class );
-        listener.cardOrientationChanged( EasyMock.notNull( CardEvent.class ) );
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
-        getCard().addCardListener( listener );
+        getCard().addComponentListener( listener );
 
         getCard().setOrientation( getCard().getOrientation().inverse() );
 
@@ -366,16 +262,16 @@ public abstract class AbstractCardTestCase
     }
 
     /**
-     * Ensures the {@code setSurfaceDesigns} method fires a card surface designs
-     * changed event.
+     * Ensures the {@code setSurfaceDesigns} method fires a component surface
+     * design changed event.
      */
     @Test
-    public void testSetSurfaceDesigns_FiresCardSurfaceDesignsChangedEvent()
+    public void testSetSurfaceDesigns_FiresComponentSurfaceDesignChangedEvent()
     {
-        final ICardListener listener = mocksControl_.createMock( ICardListener.class );
-        listener.cardSurfaceDesignsChanged( EasyMock.notNull( CardEvent.class ) );
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentSurfaceDesignChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
-        getCard().addCardListener( listener );
+        getCard().addComponentListener( listener );
 
         getCard().setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ), CardSurfaceDesigns.createUniqueCardSurfaceDesign( 10, 10 ) );
 

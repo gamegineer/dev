@@ -21,17 +21,14 @@
 
 package org.gamegineer.table.internal.core;
 
+import java.lang.reflect.Method;
 import org.gamegineer.table.core.AbstractCardPileTestCase;
-import org.gamegineer.table.core.CardListener;
 import org.gamegineer.table.core.CardPileListener;
 import org.gamegineer.table.core.CardPiles;
 import org.gamegineer.table.core.Cards;
-import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
-import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponent;
-import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.IContainerListener;
 import org.gamegineer.table.core.ITable;
@@ -61,25 +58,6 @@ public final class CardPileAsCardPileTest
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.AbstractComponentTestCase#addComponentListener(org.gamegineer.table.core.IComponent, org.gamegineer.table.core.IComponentListener)
-     */
-    @Override
-    protected void addComponentListener(
-        final ICardPile component,
-        final IComponentListener listener )
-    {
-        component.addCardPileListener( new CardPileListener()
-        {
-            @Override
-            public void componentBoundsChanged(
-                final ComponentEvent event )
-            {
-                listener.componentBoundsChanged( event );
-            }
-        } );
-    }
-
-    /*
      * @see org.gamegineer.table.core.AbstractContainerTestCase#addContainerListener(org.gamegineer.table.core.IContainer, org.gamegineer.table.core.IContainerListener)
      */
     @Override
@@ -101,25 +79,6 @@ public final class CardPileAsCardPileTest
                 final ContainerContentChangedEvent event )
             {
                 listener.componentRemoved( event );
-            }
-        } );
-    }
-
-    /*
-     * @see org.gamegineer.table.core.AbstractContainerTestCase#addUniqueComponentListener(org.gamegineer.table.core.IComponent, org.gamegineer.table.core.IComponentListener)
-     */
-    @Override
-    protected void addUniqueComponentListener(
-        final IComponent component,
-        final IComponentListener listener )
-    {
-        ((ICard)component).addCardListener( new CardListener()
-        {
-            @Override
-            public void componentBoundsChanged(
-                final ComponentEvent event )
-            {
-                listener.componentBoundsChanged( event );
             }
         } );
     }
@@ -170,5 +129,62 @@ public final class CardPileAsCardPileTest
     protected ITable createUniqueTable()
     {
         return createTable();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractComponentTestCase#fireComponentBoundsChanged(org.gamegineer.table.core.IComponent)
+     */
+    @Override
+    protected void fireComponentBoundsChanged(
+        final ICardPile component )
+    {
+        try
+        {
+            final Method method = CardPile.class.getDeclaredMethod( "fireComponentBoundsChanged" ); //$NON-NLS-1$
+            method.setAccessible( true );
+            method.invoke( component );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractComponentTestCase#fireComponentOrientationChanged(org.gamegineer.table.core.IComponent)
+     */
+    @Override
+    protected void fireComponentOrientationChanged(
+        final ICardPile component )
+    {
+        try
+        {
+            final Method method = CardPile.class.getDeclaredMethod( "fireComponentOrientationChanged" ); //$NON-NLS-1$
+            method.setAccessible( true );
+            method.invoke( component );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.AbstractComponentTestCase#fireComponentSurfaceDesignChanged(org.gamegineer.table.core.IComponent)
+     */
+    @Override
+    protected void fireComponentSurfaceDesignChanged(
+        final ICardPile component )
+    {
+        try
+        {
+            final Method method = CardPile.class.getDeclaredMethod( "fireComponentSurfaceDesignChanged" ); //$NON-NLS-1$
+            method.setAccessible( true );
+            method.invoke( component );
+        }
+        catch( final Exception e )
+        {
+            throw new AssertionError( e );
+        }
     }
 }

@@ -107,4 +107,24 @@ public abstract class AbstractComponentListenerTestCase<T extends IComponentList
     {
         listener_.componentBoundsChanged( null );
     }
+
+    /**
+     * Ensures the {@code componentOrientationChanged} method throws an
+     * exception when passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testComponentOrientationChanged_Event_Null()
+    {
+        listener_.componentOrientationChanged( null );
+    }
+
+    /**
+     * Ensures the {@code componentSurfaceDesignChanged} method throws an
+     * exception when passed a {@code null} event.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testComponentSurfaceDesignChanged_Event_Null()
+    {
+        listener_.componentSurfaceDesignChanged( null );
+    }
 }

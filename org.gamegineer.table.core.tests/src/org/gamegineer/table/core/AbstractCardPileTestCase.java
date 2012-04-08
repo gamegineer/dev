@@ -411,10 +411,10 @@ public abstract class AbstractCardPileTestCase
     {
         final ICard card = Cards.createUniqueCard( getTable() );
         getCardPile().addComponent( card );
-        final ICardListener listener = mocksControl_.createMock( ICardListener.class );
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
-        card.addCardListener( listener );
+        card.addComponentListener( listener );
 
         getCardPile().setBaseLocation( new Point( 1010, 2020 ) );
 

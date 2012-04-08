@@ -48,4 +48,30 @@ public interface IComponentListener
     public void componentBoundsChanged(
         /* @NonNull */
         ComponentEvent event );
+
+    /**
+     * Invoked after the component orientation has changed.
+     * 
+     * @param event
+     *        The event describing the component; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void componentOrientationChanged(
+        /* @NonNull */
+        ComponentEvent event );
+
+    /**
+     * Invoked after a component surface design has changed.
+     * 
+     * @param event
+     *        The event describing the component; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code event} is {@code null}.
+     */
+    public void componentSurfaceDesignChanged(
+        /* @NonNull */
+        ComponentEvent event );
 }

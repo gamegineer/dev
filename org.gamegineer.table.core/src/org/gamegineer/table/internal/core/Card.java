@@ -35,14 +35,13 @@ import java.util.logging.Level;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
-import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ICardListener;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardSurfaceDesign;
+import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IContainer;
 
 /**
@@ -92,8 +91,8 @@ final class Card
     @GuardedBy( "getLock()" )
     private ICardSurfaceDesign faceDesign_;
 
-    /** The collection of card listeners. */
-    private final CopyOnWriteArrayList<ICardListener> listeners_;
+    /** The collection of component listeners. */
+    private final CopyOnWriteArrayList<IComponentListener> listeners_;
 
     /** The card location in table coordinates. */
     @GuardedBy( "getLock()" )
@@ -127,7 +126,7 @@ final class Card
         backDesign_ = DEFAULT_SURFACE_DESIGN;
         cardPile_ = null;
         faceDesign_ = DEFAULT_SURFACE_DESIGN;
-        listeners_ = new CopyOnWriteArrayList<ICardListener>();
+        listeners_ = new CopyOnWriteArrayList<IComponentListener>();
         location_ = new Point( 0, 0 );
         orientation_ = CardOrientation.FACE_UP;
         tableContext_ = tableContext;
@@ -139,14 +138,14 @@ final class Card
     // ======================================================================
 
     /*
-     * @see org.gamegineer.table.core.ICard#addCardListener(org.gamegineer.table.core.ICardListener)
+     * @see org.gamegineer.table.core.IComponent#addComponentListener(org.gamegineer.table.core.IComponentListener)
      */
     @Override
-    public void addCardListener(
-        final ICardListener listener )
+    public void addComponentListener(
+        final IComponentListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Card_addCardListener_listener_registered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.Card_addComponentListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -174,48 +173,6 @@ final class Card
     }
 
     /**
-     * Fires a card orientation changed event.
-     */
-    private void fireCardOrientationChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final CardEvent event = new CardEvent( this );
-        for( final ICardListener listener : listeners_ )
-        {
-            try
-            {
-                listener.cardOrientationChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Card_cardOrientationChanged_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
-     * Fires a card surface designs changed event.
-     */
-    private void fireCardSurfaceDesignsChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final CardEvent event = new CardEvent( this );
-        for( final ICardListener listener : listeners_ )
-        {
-            try
-            {
-                listener.cardSurfaceDesignsChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Card_cardSurfaceDesignsChanged_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
      * Fires a component bounds changed event.
      */
     private void fireComponentBoundsChanged()
@@ -223,7 +180,7 @@ final class Card
         assert !getLock().isHeldByCurrentThread();
 
         final ComponentEvent event = new ComponentEvent( this );
-        for( final ICardListener listener : listeners_ )
+        for( final IComponentListener listener : listeners_ )
         {
             try
             {
@@ -232,6 +189,48 @@ final class Card
             catch( final RuntimeException e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Card_componentBoundsChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a component orientation changed event.
+     */
+    private void fireComponentOrientationChanged()
+    {
+        assert !getLock().isHeldByCurrentThread();
+
+        final ComponentEvent event = new ComponentEvent( this );
+        for( final IComponentListener listener : listeners_ )
+        {
+            try
+            {
+                listener.componentOrientationChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Card_componentOrientationChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a component surface design changed event.
+     */
+    private void fireComponentSurfaceDesignChanged()
+    {
+        assert !getLock().isHeldByCurrentThread();
+
+        final ComponentEvent event = new ComponentEvent( this );
+        for( final IComponentListener listener : listeners_ )
+        {
+            try
+            {
+                listener.componentSurfaceDesignChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Card_componentSurfaceDesignChanged_unexpectedException, e );
             }
         }
     }
@@ -453,14 +452,14 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.ICard#removeCardListener(org.gamegineer.table.core.ICardListener)
+     * @see org.gamegineer.table.core.IComponent#removeComponentListener(org.gamegineer.table.core.IComponentListener)
      */
     @Override
-    public void removeCardListener(
-        final ICardListener listener )
+    public void removeComponentListener(
+        final IComponentListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.Card_removeCardListener_listener_notRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.Card_removeComponentListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /**
@@ -565,7 +564,7 @@ final class Card
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                fireCardOrientationChanged();
+                fireComponentOrientationChanged();
             }
         } );
     }
@@ -599,7 +598,7 @@ final class Card
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                fireCardSurfaceDesignsChanged();
+                fireComponentSurfaceDesignChanged();
             }
         } );
     }

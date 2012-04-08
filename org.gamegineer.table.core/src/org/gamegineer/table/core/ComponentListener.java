@@ -62,4 +62,28 @@ public class ComponentListener
     {
         assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
     }
+
+    /**
+     * This implementation does nothing.
+     * 
+     * @see org.gamegineer.table.core.IComponentListener#componentOrientationChanged(org.gamegineer.table.core.ComponentEvent)
+     */
+    @Override
+    public void componentOrientationChanged(
+        final ComponentEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+    }
+
+    /**
+     * This implementation does nothing.
+     * 
+     * @see org.gamegineer.table.core.IComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
+     */
+    @Override
+    public void componentSurfaceDesignChanged(
+        final ComponentEvent event )
+    {
+        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+    }
 }

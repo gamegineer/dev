@@ -27,7 +27,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.CardEvent;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.internal.ui.Loggers;
@@ -71,7 +70,7 @@ public final class CardModel
         card_ = card;
         listeners_ = new CopyOnWriteArrayList<ICardModelListener>();
 
-        card_.addCardListener( new CardListener() );
+        card_.addComponentListener( new ComponentListener() );
     }
 
 
@@ -153,20 +152,20 @@ public final class CardModel
     // ======================================================================
 
     /**
-     * A card listener for the card model.
+     * A component listener for the card model.
      */
     @Immutable
-    private final class CardListener
-        extends org.gamegineer.table.core.CardListener
+    private final class ComponentListener
+        extends org.gamegineer.table.core.ComponentListener
     {
         // ==================================================================
         // Constructors
         // ==================================================================
 
         /**
-         * Initializes a new instance of the {@code CardListener} class.
+         * Initializes a new instance of the {@code ComponentListener} class.
          */
-        CardListener()
+        ComponentListener()
         {
         }
 
@@ -176,37 +175,37 @@ public final class CardModel
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.core.CardListener#cardOrientationChanged(org.gamegineer.table.core.CardEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardOrientationChanged(
-            final CardEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            fireCardChanged();
-        }
-
-        /*
-         * @see org.gamegineer.table.core.CardListener#cardSurfaceDesignsChanged(org.gamegineer.table.core.CardEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardSurfaceDesignsChanged(
-            final CardEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            fireCardChanged();
-        }
-
-        /*
          * @see org.gamegineer.table.core.ComponentListener#componentBoundsChanged(org.gamegineer.table.core.ComponentEvent)
          */
         @Override
         @SuppressWarnings( "synthetic-access" )
         public void componentBoundsChanged(
+            final ComponentEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            fireCardChanged();
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ComponentListener#componentOrientationChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentOrientationChanged(
+            final ComponentEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            fireCardChanged();
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentSurfaceDesignChanged(
             final ComponentEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$

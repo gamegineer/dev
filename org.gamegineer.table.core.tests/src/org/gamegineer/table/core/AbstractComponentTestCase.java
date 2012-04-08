@@ -74,23 +74,6 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     // ======================================================================
 
     /**
-     * Adds the specified component listener to the specified component.
-     * 
-     * @param component
-     *        The component; must not be {@code null}.
-     * @param listener
-     *        The component listener; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code component} or {@code listener} is {@code null}.
-     */
-    protected abstract void addComponentListener(
-        /* @NonNull */
-        T component,
-        /* @NonNull */
-        IComponentListener listener );
-
-    /**
      * Creates the component to be tested.
      * 
      * @param table
@@ -120,6 +103,46 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     /* @NonNull */
     protected abstract ITable createTable()
         throws Exception;
+
+    /**
+     * Fires a component bounds changed event for the specified component.
+     * 
+     * @param component
+     *        The component; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code component} is {@code null}.
+     */
+    protected abstract void fireComponentBoundsChanged(
+        /* @NonNull */
+        T component );
+
+    /**
+     * Fires a component orientation changed event for the specified component.
+     * 
+     * @param component
+     *        The component; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code component} is {@code null}.
+     */
+    protected abstract void fireComponentOrientationChanged(
+        /* @NonNull */
+        T component );
+
+    /**
+     * Fires a component surface design changed event for the specified
+     * component.
+     * 
+     * @param component
+     *        The component; must not be {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code component} is {@code null}.
+     */
+    protected abstract void fireComponentSurfaceDesignChanged(
+        /* @NonNull */
+        T component );
 
     /**
      * Gets the component under test in the fixture.
@@ -163,6 +186,29 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     }
 
     /**
+     * Ensures the {@code addComponentListener} method throws an exception when
+     * passed a {@code null} listener.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testAddComponentListener_Listener_Null()
+    {
+        component_.addComponentListener( null );
+    }
+
+    /**
+     * Ensures the {@code addComponentListener} method throws an exception when
+     * passed a listener that is present in the component listener collection.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testAddComponentListener_Listener_Present()
+    {
+        final IComponentListener listener = EasyMock.createMock( IComponentListener.class );
+        component_.addComponentListener( listener );
+
+        component_.addComponentListener( listener );
+    }
+
+    /**
      * Ensures the component bounds changed event catches any exception thrown
      * by the {@code componentBoundsChanged} method of a component listener.
      */
@@ -175,10 +221,54 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
         final IComponentListener listener2 = mocksControl_.createMock( IComponentListener.class );
         listener2.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
-        addComponentListener( component_, listener1 );
-        addComponentListener( component_, listener2 );
+        component_.addComponentListener( listener1 );
+        component_.addComponentListener( listener2 );
 
-        component_.setLocation( new Point( 1010, 2020 ) );
+        fireComponentBoundsChanged( component_ );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the component orientation changed event catches any exception
+     * thrown by the {@code componentOrientationChanged} method of a component
+     * listener.
+     */
+    @Test
+    public void testComponentOrientationChanged_CatchesListenerException()
+    {
+        final IComponentListener listener1 = mocksControl_.createMock( IComponentListener.class );
+        listener1.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final IComponentListener listener2 = mocksControl_.createMock( IComponentListener.class );
+        listener2.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        component_.addComponentListener( listener1 );
+        component_.addComponentListener( listener2 );
+
+        fireComponentOrientationChanged( component_ );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the component surface designs changed event catches any exception
+     * thrown by the {@code componentSurfaceDesignChanged} method of a component
+     * listener.
+     */
+    @Test
+    public void testComponentSurfaceDesignChanged_CatchesListenerException()
+    {
+        final IComponentListener listener1 = mocksControl_.createMock( IComponentListener.class );
+        listener1.componentSurfaceDesignChanged( EasyMock.notNull( ComponentEvent.class ) );
+        EasyMock.expectLastCall().andThrow( new RuntimeException() );
+        final IComponentListener listener2 = mocksControl_.createMock( IComponentListener.class );
+        listener2.componentSurfaceDesignChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        component_.addComponentListener( listener1 );
+        component_.addComponentListener( listener2 );
+
+        fireComponentSurfaceDesignChanged( component_ );
 
         mocksControl_.verify();
     }
@@ -195,7 +285,6 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
         bounds.setBounds( 1010, 2020, 101, 202 );
 
         assertEquals( expectedBounds, component_.getBounds() );
-
     }
 
     /**
@@ -302,6 +391,46 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     }
 
     /**
+     * Ensures the {@code removeComponentListener} method throws an exception
+     * when passed a listener that is absent from the component listener
+     * collection.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testRemoveComponentListener_Listener_Absent()
+    {
+        component_.removeComponentListener( EasyMock.createMock( IComponentListener.class ) );
+    }
+
+    /**
+     * Ensures the {@code removeComponentListener} method throws an exception
+     * when passed a {@code null} listener.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testRemoveComponentListener_Listener_Null()
+    {
+        component_.removeComponentListener( null );
+    }
+
+    /**
+     * Ensures the {@code removeComponentListener} removes a listener that is
+     * present in the component listener collection.
+     */
+    @Test
+    public void testRemoveComponentListener_Listener_Present()
+    {
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        component_.addComponentListener( listener );
+        fireComponentOrientationChanged( component_ );
+
+        component_.removeComponentListener( listener );
+        fireComponentOrientationChanged( component_ );
+
+        mocksControl_.verify();
+    }
+
+    /**
      * Ensures the {@code setLocation} method fires a component bounds changed
      * event.
      */
@@ -311,7 +440,7 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
         final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
         listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
-        addComponentListener( component_, listener );
+        component_.addComponentListener( listener );
 
         component_.setLocation( new Point( 1010, 2020 ) );
 

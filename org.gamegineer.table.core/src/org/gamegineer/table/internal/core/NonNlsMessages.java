@@ -40,20 +40,8 @@ final class NonNlsMessages
 
     // --- Card -------------------------------------------------------------
 
-    /** The card listener is already registered. */
-    public static String Card_addCardListener_listener_registered;
-
-    /**
-     * An unexpected exception was thrown from
-     * ICardListener.cardOrientationChanged().
-     */
-    public static String Card_cardOrientationChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
-     * ICardListener.cardSurfaceDesignsChanged().
-     */
-    public static String Card_cardSurfaceDesignsChanged_unexpectedException;
+    /** The component listener is already registered. */
+    public static String Card_addComponentListener_listener_registered;
 
     /**
      * An unexpected exception was thrown from
@@ -61,8 +49,20 @@ final class NonNlsMessages
      */
     public static String Card_componentBoundsChanged_unexpectedException;
 
-    /** The card listener is not registered. */
-    public static String Card_removeCardListener_listener_notRegistered;
+    /**
+     * An unexpected exception was thrown from
+     * IComponentListener.componentOrientationChanged().
+     */
+    public static String Card_componentOrientationChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IComponentListener.componentSurfaceDesignChanged().
+     */
+    public static String Card_componentSurfaceDesignChanged_unexpectedException;
+
+    /** The component listener is not registered. */
+    public static String Card_removeComponentListener_listener_notRegistered;
 
     /** The face design size is not equal to the back design size. */
     public static String Card_setSurfaceDesigns_faceDesign_sizeNotEqual;
@@ -71,6 +71,9 @@ final class NonNlsMessages
 
     /** The card pile listener is already registered. */
     public static String CardPile_addCardPileListener_listener_registered;
+
+    /** The component listener is already registered. */
+    public static String CardPile_addComponentListener_listener_registered;
 
     /**
      * The component collection contains a component created by a different
@@ -113,9 +116,21 @@ final class NonNlsMessages
 
     /**
      * An unexpected exception was thrown from
+     * IComponentListener.componentOrientationChanged().
+     */
+    public static String CardPile_componentOrientationChanged_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
      * IContainerListener.componentRemoved().
      */
     public static String CardPile_componentRemoved_unexpectedException;
+
+    /**
+     * An unexpected exception was thrown from
+     * IComponentListener.componentSurfaceDesignChanged().
+     */
+    public static String CardPile_componentSurfaceDesignChanged_unexpectedException;
 
     /** The component index is out of range. */
     public static String CardPile_getComponentFromIndex_index_outOfRange;
@@ -128,6 +143,9 @@ final class NonNlsMessages
 
     /** The card pile listener is not registered. */
     public static String CardPile_removeCardPileListener_listener_notRegistered;
+
+    /** The component listener is not registered. */
+    public static String CardPile_removeComponentListener_listener_notRegistered;
 
     // --- CardPileBaseDesign -----------------------------------------------
 

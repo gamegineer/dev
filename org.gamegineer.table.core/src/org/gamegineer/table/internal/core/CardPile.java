@@ -48,6 +48,7 @@ import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.core.ICardPileListener;
 import org.gamegineer.table.core.IComponent;
+import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 
@@ -109,6 +110,9 @@ final class CardPile
     @GuardedBy( "getLock()" )
     private final List<Card> cards_;
 
+    /** The collection of component listeners. */
+    private final CopyOnWriteArrayList<IComponentListener> componentListeners_;
+
     /** The card pile layout. */
     @GuardedBy( "getLock()" )
     private CardPileLayout layout_;
@@ -147,6 +151,7 @@ final class CardPile
         baseDesign_ = DEFAULT_BASE_DESIGN;
         baseLocation_ = new Point( 0, 0 );
         cards_ = new ArrayList<Card>();
+        componentListeners_ = new CopyOnWriteArrayList<IComponentListener>();
         layout_ = CardPileLayout.STACKED;
         listeners_ = new CopyOnWriteArrayList<ICardPileListener>();
         table_ = null;
@@ -157,6 +162,17 @@ final class CardPile
     // ======================================================================
     // Methods
     // ======================================================================
+
+    /*
+     * @see org.gamegineer.table.core.ICardPile#addCardPileListener(org.gamegineer.table.core.ICardPileListener)
+     */
+    @Override
+    public void addCardPileListener(
+        final ICardPileListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.CardPile_addCardPileListener_listener_registered ); //$NON-NLS-1$
+    }
 
     /*
      * @see org.gamegineer.table.core.IContainer#addComponent(org.gamegineer.table.core.IComponent)
@@ -171,14 +187,14 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#addCardPileListener(org.gamegineer.table.core.ICardPileListener)
+     * @see org.gamegineer.table.core.IComponent#addComponentListener(org.gamegineer.table.core.IComponentListener)
      */
     @Override
-    public void addCardPileListener(
-        final ICardPileListener listener )
+    public void addComponentListener(
+        final IComponentListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.addIfAbsent( listener ), "listener", NonNlsMessages.CardPile_addCardPileListener_listener_registered ); //$NON-NLS-1$
+        assertArgumentLegal( componentListeners_.addIfAbsent( listener ), "listener", NonNlsMessages.CardPile_addComponentListener_listener_registered ); //$NON-NLS-1$
     }
 
     /*
@@ -361,6 +377,17 @@ final class CardPile
         assert !getLock().isHeldByCurrentThread();
 
         final ComponentEvent event = new ComponentEvent( this );
+        for( final IComponentListener listener : componentListeners_ )
+        {
+            try
+            {
+                listener.componentBoundsChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentBoundsChanged_unexpectedException, e );
+            }
+        }
         for( final ICardPileListener listener : listeners_ )
         {
             try
@@ -370,6 +397,28 @@ final class CardPile
             catch( final RuntimeException e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentBoundsChanged_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a component orientation changed event.
+     */
+    @SuppressWarnings( "unused" )
+    private void fireComponentOrientationChanged()
+    {
+        assert !getLock().isHeldByCurrentThread();
+
+        final ComponentEvent event = new ComponentEvent( this );
+        for( final IComponentListener listener : componentListeners_ )
+        {
+            try
+            {
+                listener.componentOrientationChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentOrientationChanged_unexpectedException, e );
             }
         }
     }
@@ -401,6 +450,28 @@ final class CardPile
             catch( final RuntimeException e )
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentRemoved_unexpectedException, e );
+            }
+        }
+    }
+
+    /**
+     * Fires a component surface design changed event.
+     */
+    @SuppressWarnings( "unused" )
+    private void fireComponentSurfaceDesignChanged()
+    {
+        assert !getLock().isHeldByCurrentThread();
+
+        final ComponentEvent event = new ComponentEvent( this );
+        for( final IComponentListener listener : componentListeners_ )
+        {
+            try
+            {
+                listener.componentSurfaceDesignChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentSurfaceDesignChanged_unexpectedException, e );
             }
         }
     }
@@ -775,6 +846,17 @@ final class CardPile
     }
 
     /*
+     * @see org.gamegineer.table.core.ICardPile#removeCardPileListener(org.gamegineer.table.core.ICardPileListener)
+     */
+    @Override
+    public void removeCardPileListener(
+        final ICardPileListener listener )
+    {
+        assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
+        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.CardPile_removeCardPileListener_listener_notRegistered ); //$NON-NLS-1$
+    }
+
+    /*
      * @see org.gamegineer.table.core.IContainer#removeComponent()
      */
     @Override
@@ -795,14 +877,14 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#removeCardPileListener(org.gamegineer.table.core.ICardPileListener)
+     * @see org.gamegineer.table.core.IComponent#removeComponentListener(org.gamegineer.table.core.IComponentListener)
      */
     @Override
-    public void removeCardPileListener(
-        final ICardPileListener listener )
+    public void removeComponentListener(
+        final IComponentListener listener )
     {
         assertArgumentNotNull( listener, "listener" ); //$NON-NLS-1$
-        assertArgumentLegal( listeners_.remove( listener ), "listener", NonNlsMessages.CardPile_removeCardPileListener_listener_notRegistered ); //$NON-NLS-1$
+        assertArgumentLegal( componentListeners_.remove( listener ), "listener", NonNlsMessages.CardPile_removeComponentListener_listener_notRegistered ); //$NON-NLS-1$
     }
 
     /*

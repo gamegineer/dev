@@ -41,6 +41,21 @@ public interface IComponent
     // ======================================================================
 
     /**
+     * Adds the specified component listener to this component.
+     * 
+     * @param listener
+     *        The component listener; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code listener} is already a registered component listener.
+     * @throws java.lang.NullPointerException
+     *         If {@code listener} is {@code null}.
+     */
+    public void addComponentListener(
+        /* @NonNull */
+        IComponentListener listener );
+
+    /**
      * Gets the bounds of this component in table coordinates.
      * 
      * @return The bounds of this component in table coordinates; never
@@ -75,6 +90,21 @@ public interface IComponent
      */
     /* @NonNull */
     public Dimension getSize();
+
+    /**
+     * Removes the specified component listener from this component.
+     * 
+     * @param listener
+     *        The component listener; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code listener} is not a registered component listener.
+     * @throws java.lang.NullPointerException
+     *         If {@code listener} is {@code null}.
+     */
+    public void removeComponentListener(
+        /* @NonNull */
+        IComponentListener listener );
 
     /**
      * Sets the location of this component in table coordinates.

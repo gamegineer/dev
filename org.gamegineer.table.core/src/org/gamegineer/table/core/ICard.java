@@ -36,21 +36,6 @@ public interface ICard
     // ======================================================================
 
     /**
-     * Adds the specified card listener to this card.
-     * 
-     * @param listener
-     *        The card listener; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is already a registered card listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
-     */
-    public void addCardListener(
-        /* @NonNull */
-        ICardListener listener );
-
-    /**
      * Flips this card.
      */
     public void flip();
@@ -87,21 +72,6 @@ public interface ICard
      */
     /* @NonNull */
     public CardOrientation getOrientation();
-
-    /**
-     * Removes the specified card listener from this card.
-     * 
-     * @param listener
-     *        The card listener; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code listener} is not a registered card listener.
-     * @throws java.lang.NullPointerException
-     *         If {@code listener} is {@code null}.
-     */
-    public void removeCardListener(
-        /* @NonNull */
-        ICardListener listener );
 
     /**
      * Sets the orientation of this card.
