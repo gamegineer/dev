@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component
+		activate="activate"
+		deactivate="deactivate"
+		name="org.gamegineer.table.core.componentSurfaceDesignRegistryExtensionPointAdapter"
+		xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+	<implementation
+			class="org.gamegineer.table.internal.core.ComponentSurfaceDesignRegistryExtensionPointAdapter" />
+	<reference
+			bind="bindComponentSurfaceDesignRegistry"
+			cardinality="1..1"
+			interface="org.gamegineer.table.core.IComponentSurfaceDesignRegistry"
+			name="componentSurfaceDesignRegistry"
+			policy="static"
+			unbind="unbindComponentSurfaceDesignRegistry" />
+	<reference
+			bind="bindExtensionRegistry"
+			cardinality="1..1"
+			interface="org.eclipse.core.runtime.IExtensionRegistry"
+			name="extensionRegistry"
+			policy="static"
+			unbind="unbindExtensionRegistry" />
+</scr:component>
