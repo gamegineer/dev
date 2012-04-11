@@ -33,7 +33,6 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ICard;
@@ -127,17 +126,6 @@ final class CardPileView
     // ======================================================================
 
     /**
-     * Invoked after the card pile base design has changed.
-     */
-    private void cardPileBaseDesignChanged()
-    {
-        if( isInitialized() )
-        {
-            tableView_.repaintTable( getBounds() );
-        }
-    }
-
-    /**
      * Invoked after the card pile model has gained or lost the logical focus.
      */
     private void cardPileModelFocusChanged()
@@ -195,6 +183,17 @@ final class CardPileView
         if( isInitialized() )
         {
             deleteCardView( (ICard)component ); // FIXME: remove cast
+        }
+    }
+
+    /**
+     * Invoked after a component surface design has changed.
+     */
+    private void componentSurfaceDesignChanged()
+    {
+        if( isInitialized() )
+        {
+            tableView_.repaintTable( getBounds() );
         }
     }
 
@@ -426,26 +425,6 @@ final class CardPileView
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.core.CardPileListener#cardPileBaseDesignChanged(org.gamegineer.table.core.CardPileEvent)
-         */
-        @Override
-        public void cardPileBaseDesignChanged(
-            final CardPileEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            SwingUtilities.invokeLater( new Runnable()
-            {
-                @Override
-                @SuppressWarnings( "synthetic-access" )
-                public void run()
-                {
-                    CardPileView.this.cardPileBaseDesignChanged();
-                }
-            } );
-        }
-
-        /*
          * @see org.gamegineer.table.core.CardPileListener#componentAdded(org.gamegineer.table.core.ContainerContentChangedEvent)
          */
         @Override
@@ -501,6 +480,26 @@ final class CardPileView
                 public void run()
                 {
                     CardPileView.this.componentRemoved( event.getComponent() );
+                }
+            } );
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        public void componentSurfaceDesignChanged(
+            final ComponentEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            SwingUtilities.invokeLater( new Runnable()
+            {
+                @Override
+                @SuppressWarnings( "synthetic-access" )
+                public void run()
+                {
+                    CardPileView.this.componentSurfaceDesignChanged();
                 }
             } );
         }

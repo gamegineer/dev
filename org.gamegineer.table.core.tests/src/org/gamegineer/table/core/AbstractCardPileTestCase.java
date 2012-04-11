@@ -158,28 +158,6 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the card pile base design changed event catches any exception
-     * thrown by the {@code cardPileBaseDesignChanged} method of a card pile
-     * listener.
-     */
-    @Test
-    public void testCardPileBaseDesignChanged_CatchesListenerException()
-    {
-        final ICardPileListener listener1 = mocksControl_.createMock( ICardPileListener.class );
-        listener1.cardPileBaseDesignChanged( EasyMock.notNull( CardPileEvent.class ) );
-        EasyMock.expectLastCall().andThrow( new RuntimeException() );
-        final ICardPileListener listener2 = mocksControl_.createMock( ICardPileListener.class );
-        listener2.cardPileBaseDesignChanged( EasyMock.notNull( CardPileEvent.class ) );
-        mocksControl_.replay();
-        getCardPile().addCardPileListener( listener1 );
-        getCardPile().addCardPileListener( listener2 );
-
-        getCardPile().setBaseDesign( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
-
-        mocksControl_.verify();
-    }
-
-    /**
      * Ensures the card pile layout changed event catches any exception thrown
      * by the {@code cardPileLayoutChanged} method of a card pile listener.
      */
@@ -376,16 +354,19 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code setBaseDesign} method fires a card pile base design
+     * Ensures the {@code setBaseDesign} method fires a component surface design
      * changed event.
      */
     @Test
-    public void testSetBaseDesign_FiresCardPileBaseDesignChangedEvent()
+    public void testSetBaseDesign_FiresComponentSurfaceDesignChangedEvent()
     {
-        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
-        listener.cardPileBaseDesignChanged( EasyMock.notNull( CardPileEvent.class ) );
+        final IComponentListener componentListener = mocksControl_.createMock( IComponentListener.class );
+        componentListener.componentSurfaceDesignChanged( EasyMock.notNull( CardPileEvent.class ) );
+        final ICardPileListener cardPileListener = mocksControl_.createMock( ICardPileListener.class );
+        cardPileListener.componentSurfaceDesignChanged( EasyMock.notNull( CardPileEvent.class ) );
         mocksControl_.replay();
-        getCardPile().addCardPileListener( listener );
+        getCardPile().addComponentListener( componentListener );
+        getCardPile().addCardPileListener( cardPileListener );
 
         getCardPile().setBaseDesign( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
 
@@ -422,16 +403,19 @@ public abstract class AbstractCardPileTestCase
     }
 
     /**
-     * Ensures the {@code setBaseLocation} method fires a card pile bounds
+     * Ensures the {@code setBaseLocation} method fires a component bounds
      * changed event.
      */
     @Test
-    public void testSetBaseLocation_FiresCardPileBoundsChangedEvent()
+    public void testSetBaseLocation_FiresComponentBoundsChangedEvent()
     {
-        final ICardPileListener listener = mocksControl_.createMock( ICardPileListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        final IComponentListener componentListener = mocksControl_.createMock( IComponentListener.class );
+        componentListener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        final ICardPileListener cardPileListener = mocksControl_.createMock( ICardPileListener.class );
+        cardPileListener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
         mocksControl_.replay();
-        getCardPile().addCardPileListener( listener );
+        getCardPile().addComponentListener( componentListener );
+        getCardPile().addCardPileListener( cardPileListener );
 
         getCardPile().setBaseLocation( new Point( 1010, 2020 ) );
 

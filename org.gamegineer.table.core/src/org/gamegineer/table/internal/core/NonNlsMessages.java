@@ -92,12 +92,6 @@ final class NonNlsMessages
 
     /**
      * An unexpected exception was thrown from
-     * ICardPileListener.cardPileBaseDesignChanged().
-     */
-    public static String CardPile_cardPileBaseDesignChanged_unexpectedException;
-
-    /**
-     * An unexpected exception was thrown from
      * ICardPileListener.cardPileLayoutChanged().
      */
     public static String CardPile_cardPileLayoutChanged_unexpectedException;

@@ -55,18 +55,6 @@ public class CardPileListener
     /**
      * This implementation does nothing.
      * 
-     * @see org.gamegineer.table.core.ICardPileListener#cardPileBaseDesignChanged(org.gamegineer.table.core.CardPileEvent)
-     */
-    @Override
-    public void cardPileBaseDesignChanged(
-        final CardPileEvent event )
-    {
-        assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-    }
-
-    /**
-     * This implementation does nothing.
-     * 
      * @see org.gamegineer.table.core.ICardPileListener#cardPileLayoutChanged(org.gamegineer.table.core.CardPileEvent)
      */
     @Override

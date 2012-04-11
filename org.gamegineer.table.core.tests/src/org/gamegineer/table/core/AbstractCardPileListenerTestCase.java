@@ -60,16 +60,6 @@ public abstract class AbstractCardPileListenerTestCase
     }
 
     /**
-     * Ensures the {@code cardPileBaseDesignChanged} method throws an exception
-     * when passed a {@code null} event.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCardPileBaseDesignChanged_Event_Null()
-    {
-        getCardPileListener().cardPileBaseDesignChanged( null );
-    }
-
-    /**
      * Ensures the {@code cardPileLayoutChanged} method throws an exception when
      * passed a {@code null} event.
      */

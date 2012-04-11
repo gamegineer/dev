@@ -297,27 +297,6 @@ final class CardPile
     }
 
     /**
-     * Fires a card pile base design changed event.
-     */
-    private void fireCardPileBaseDesignChanged()
-    {
-        assert !getLock().isHeldByCurrentThread();
-
-        final CardPileEvent event = new CardPileEvent( this );
-        for( final ICardPileListener listener : listeners_ )
-        {
-            try
-            {
-                listener.cardPileBaseDesignChanged( event );
-            }
-            catch( final RuntimeException e )
-            {
-                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_cardPileBaseDesignChanged_unexpectedException, e );
-            }
-        }
-    }
-
-    /**
      * Fires a card pile layout changed event.
      */
     private void fireCardPileLayoutChanged()
@@ -421,6 +400,17 @@ final class CardPile
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentOrientationChanged_unexpectedException, e );
             }
         }
+        for( final ICardPileListener listener : listeners_ )
+        {
+            try
+            {
+                listener.componentOrientationChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentOrientationChanged_unexpectedException, e );
+            }
+        }
     }
 
     /**
@@ -457,13 +447,23 @@ final class CardPile
     /**
      * Fires a component surface design changed event.
      */
-    @SuppressWarnings( "unused" )
     private void fireComponentSurfaceDesignChanged()
     {
         assert !getLock().isHeldByCurrentThread();
 
         final ComponentEvent event = new ComponentEvent( this );
         for( final IComponentListener listener : componentListeners_ )
+        {
+            try
+            {
+                listener.componentSurfaceDesignChanged( event );
+            }
+            catch( final RuntimeException e )
+            {
+                Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.CardPile_componentSurfaceDesignChanged_unexpectedException, e );
+            }
+        }
+        for( final ICardPileListener listener : listeners_ )
         {
             try
             {
@@ -1015,7 +1015,7 @@ final class CardPile
             @SuppressWarnings( "synthetic-access" )
             public void run()
             {
-                fireCardPileBaseDesignChanged();
+                fireComponentSurfaceDesignChanged();
             }
         } );
     }

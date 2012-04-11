@@ -348,19 +348,6 @@ public final class CardPileModel
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.core.CardPileListener#cardPileBaseDesignChanged(org.gamegineer.table.core.CardPileEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardPileBaseDesignChanged(
-            final CardPileEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-
-            fireCardPileChanged();
-        }
-
-        /*
          * @see org.gamegineer.table.core.CardPileListener#cardPileLayoutChanged(org.gamegineer.table.core.CardPileEvent)
          */
         @Override
@@ -405,6 +392,19 @@ public final class CardPileModel
         }
 
         /*
+         * @see org.gamegineer.table.core.ComponentListener#componentOrientationChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentOrientationChanged(
+            final ComponentEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+
+            fireCardPileChanged();
+        }
+
+        /*
          * @see org.gamegineer.table.core.CardPileListener#componentRemoved(org.gamegineer.table.core.ContainerContentChangedEvent)
          */
         @Override
@@ -422,6 +422,19 @@ public final class CardPileModel
                     cardModel.removeCardModelListener( cardModelListener_ );
                 }
             }
+
+            fireCardPileChanged();
+        }
+
+        /*
+         * @see org.gamegineer.table.core.ComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
+         */
+        @Override
+        @SuppressWarnings( "synthetic-access" )
+        public void componentSurfaceDesignChanged(
+            final ComponentEvent event )
+        {
+            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
 
             fireCardPileChanged();
         }

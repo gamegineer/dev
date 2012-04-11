@@ -460,46 +460,6 @@ final class LocalNetworkTable
         // ==================================================================
 
         /*
-         * @see org.gamegineer.table.core.ICardPileListener#cardPileBaseDesignChanged(org.gamegineer.table.core.CardPileEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardPileBaseDesignChanged(
-            final CardPileEvent event )
-        {
-            assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
-            assert nodeLayer_.isNodeLayerThread();
-
-            if( ignoreEvents_ )
-            {
-                return;
-            }
-
-            int cardPileIndex = -1;
-            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
-            getTableLock().lock();
-            try
-            {
-                final ICardPile cardPile = event.getCardPile();
-                final ITable table = cardPile.getTable();
-                if( table != null )
-                {
-                    cardPileIndex = table.getCardPileIndex( cardPile );
-                    cardPileIncrement.setBaseDesign( cardPile.getBaseDesign() );
-                }
-            }
-            finally
-            {
-                getTableLock().unlock();
-            }
-
-            if( cardPileIndex != -1 )
-            {
-                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
-            }
-        }
-
-        /*
          * @see org.gamegineer.table.core.ICardPileListener#cardPileLayoutChanged(org.gamegineer.table.core.CardPileEvent)
          */
         @Override
@@ -683,12 +643,40 @@ final class LocalNetworkTable
          * @see org.gamegineer.table.core.IComponentListener#componentSurfaceDesignChanged(org.gamegineer.table.core.ComponentEvent)
          */
         @Override
+        @SuppressWarnings( "synthetic-access" )
         public void componentSurfaceDesignChanged(
             final ComponentEvent event )
         {
             assertArgumentNotNull( event, "event" ); //$NON-NLS-1$
+            assert nodeLayer_.isNodeLayerThread();
 
-            // TODO
+            if( ignoreEvents_ )
+            {
+                return;
+            }
+
+            int cardPileIndex = -1;
+            final CardPileIncrement cardPileIncrement = new CardPileIncrement();
+            getTableLock().lock();
+            try
+            {
+                final ICardPile cardPile = (ICardPile)event.getComponent(); // FIXME: remove cast
+                final ITable table = cardPile.getTable();
+                if( table != null )
+                {
+                    cardPileIndex = table.getCardPileIndex( cardPile );
+                    cardPileIncrement.setBaseDesign( cardPile.getBaseDesign() );
+                }
+            }
+            finally
+            {
+                getTableLock().unlock();
+            }
+
+            if( cardPileIndex != -1 )
+            {
+                tableManager_.incrementCardPileState( LocalNetworkTable.this, cardPileIndex, cardPileIncrement );
+            }
         }
     }
 
@@ -732,24 +720,6 @@ final class LocalNetworkTable
         // ==================================================================
         // Methods
         // ==================================================================
-
-        /*
-         * @see org.gamegineer.table.core.ICardPileListener#cardPileBaseDesignChanged(org.gamegineer.table.core.CardPileEvent)
-         */
-        @Override
-        @SuppressWarnings( "synthetic-access" )
-        public void cardPileBaseDesignChanged(
-            final CardPileEvent event )
-        {
-            syncExec( new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    actualCardPileListener_.cardPileBaseDesignChanged( event );
-                }
-            } );
-        }
 
         /*
          * @see org.gamegineer.table.core.ICardPileListener#cardPileLayoutChanged(org.gamegineer.table.core.CardPileEvent)
