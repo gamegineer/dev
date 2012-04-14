@@ -64,6 +64,9 @@ final class NonNlsMessages
     /** The component listener is not registered. */
     public static String Card_removeComponentListener_listener_notRegistered;
 
+    /** The orientation is illegal. */
+    public static String Card_setOrientation_orientation_illegal;
+
     /** The face design size is not equal to the back design size. */
     public static String Card_setSurfaceDesigns_faceDesign_sizeNotEqual;
 
@@ -140,6 +143,9 @@ final class NonNlsMessages
 
     /** The component listener is not registered. */
     public static String CardPile_removeComponentListener_listener_notRegistered;
+
+    /** The orientation is illegal. */
+    public static String CardPile_setOrientation_orientation_illegal;
 
     // --- CardPileBaseDesign -----------------------------------------------
 

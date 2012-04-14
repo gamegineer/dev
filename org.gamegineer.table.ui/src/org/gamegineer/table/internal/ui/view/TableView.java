@@ -1050,7 +1050,8 @@ final class TableView
             final List<IComponent> components = cardPile.getComponents();
             if( !components.isEmpty() )
             {
-                ((ICard)components.get( components.size() - 1 )).flip(); // FIXME: remove cast
+                final IComponent component = components.get( components.size() - 1 );
+                component.setOrientation( component.getOrientation().inverse() );
             }
         }
     }

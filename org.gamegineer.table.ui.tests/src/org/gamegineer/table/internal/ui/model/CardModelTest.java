@@ -146,7 +146,7 @@ public final class CardModelTest
         mocksControl_.replay();
         model_.addCardModelListener( listener );
 
-        model_.getCard().flip();
+        model_.getCard().setOrientation( model_.getCard().getOrientation().inverse() );
 
         mocksControl_.verify();
     }

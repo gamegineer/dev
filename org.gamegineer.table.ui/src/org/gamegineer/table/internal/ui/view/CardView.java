@@ -136,7 +136,7 @@ final class CardView
     /* @NonNull */
     private ICardSurfaceDesignUI getActiveCardSurfaceDesignUI()
     {
-        return (model_.getCard().getOrientation() == CardOrientation.BACK_UP) ? backDesignUI_ : faceDesignUI_;
+        return (model_.getCard().getOrientation() == CardOrientation.BACK) ? backDesignUI_ : faceDesignUI_;
     }
 
     /**

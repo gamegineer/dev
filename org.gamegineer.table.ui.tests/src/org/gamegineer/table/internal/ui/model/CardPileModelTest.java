@@ -185,7 +185,7 @@ public final class CardPileModelTest
         mocksControl_.replay();
         model_.addCardPileModelListener( listener );
 
-        card.flip();
+        card.setOrientation( card.getOrientation().inverse() );
 
         mocksControl_.verify();
     }

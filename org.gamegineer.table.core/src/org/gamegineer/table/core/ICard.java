@@ -36,11 +36,6 @@ public interface ICard
     // ======================================================================
 
     /**
-     * Flips this card.
-     */
-    public void flip();
-
-    /**
      * Gets the design on the back of this card.
      * 
      * @return The design on the back of this card; never {@code null}.
@@ -64,27 +59,6 @@ public interface ICard
      */
     /* @NonNull */
     public ICardSurfaceDesign getFaceDesign();
-
-    /**
-     * Gets the orientation of this card.
-     * 
-     * @return The orientation of this card; never {@code null}.
-     */
-    /* @NonNull */
-    public CardOrientation getOrientation();
-
-    /**
-     * Sets the orientation of this card.
-     * 
-     * @param orientation
-     *        The orientation of this card; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code orientation} is {@code null}.
-     */
-    public void setOrientation(
-        /* @NonNull */
-        CardOrientation orientation );
 
     /**
      * Sets the surface designs of this card.

@@ -1,5 +1,5 @@
 /*
- * CardOrientationTest.java
+ * CardPileOrientationTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 11, 2009 at 11:13:44 PM.
+ * Created on Apr 12, 2012 at 8:02:46 PM.
  */
 
 package org.gamegineer.table.core;
@@ -25,19 +25,19 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 /**
- * A fixture for testing the {@link org.gamegineer.table.core.CardOrientation}
- * enumeration.
+ * A fixture for testing the
+ * {@link org.gamegineer.table.core.CardPileOrientation} enumeration.
  */
-public final class CardOrientationTest
+public final class CardPileOrientationTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardOrientationTest} class.
+     * Initializes a new instance of the {@code CardPileOrientationTest} class.
      */
-    public CardOrientationTest()
+    public CardPileOrientationTest()
     {
     }
 
@@ -48,22 +48,12 @@ public final class CardOrientationTest
 
     /**
      * Ensures the {@code inverse} method returns the correct value for the
-     * {@link CardOrientation#BACK} value.
+     * {@link CardPileOrientation#DEFAULT} value.
      */
     @Test
-    public void testInverse_Back()
+    public void testInverse_Default()
     {
-        assertEquals( CardOrientation.FACE, CardOrientation.BACK.inverse() );
-    }
-
-    /**
-     * Ensures the {@code inverse} method returns the correct value for the
-     * {@link CardOrientation#FACE} value.
-     */
-    @Test
-    public void testInverse_Face()
-    {
-        assertEquals( CardOrientation.BACK, CardOrientation.FACE.inverse() );
+        assertEquals( CardPileOrientation.DEFAULT, CardPileOrientation.DEFAULT.inverse() );
     }
 
     /**
@@ -72,7 +62,7 @@ public final class CardOrientationTest
     @Test
     public void testInverse_NoUnsupportedValues()
     {
-        for( final CardOrientation orientation : CardOrientation.values( CardOrientation.class ) )
+        for( final CardPileOrientation orientation : CardPileOrientation.values( CardPileOrientation.class ) )
         {
             orientation.inverse();
         }

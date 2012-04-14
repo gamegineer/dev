@@ -27,6 +27,8 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +43,9 @@ import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.CardPileLayout;
+import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
@@ -97,6 +101,9 @@ final class CardPile
 
     /** The offset of each stack level in table coordinates. */
     private static final Dimension STACK_LEVEL_OFFSET = new Dimension( 2, 1 );
+
+    /** The collection of supported card pile orientations. */
+    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardPileOrientation.values( CardPileOrientation.class ) ) );
 
     /** The design of the card pile base. */
     @GuardedBy( "getLock()" )
@@ -383,7 +390,6 @@ final class CardPile
     /**
      * Fires a component orientation changed event.
      */
-    @SuppressWarnings( "unused" )
     private void fireComponentOrientationChanged()
     {
         assert !getLock().isHeldByCurrentThread();
@@ -808,12 +814,30 @@ final class CardPile
     }
 
     /*
+     * @see org.gamegineer.table.core.IComponent#getOrientation()
+     */
+    @Override
+    public ComponentOrientation getOrientation()
+    {
+        return CardPileOrientation.DEFAULT;
+    }
+
+    /*
      * @see org.gamegineer.table.core.IComponent#getSize()
      */
     @Override
     public Dimension getSize()
     {
         return getBounds().getSize();
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#getSupportedOrientations()
+     */
+    @Override
+    public Collection<ComponentOrientation> getSupportedOrientations()
+    {
+        return SUPPORTED_ORIENTATIONS;
     }
 
     /*
@@ -1144,6 +1168,27 @@ final class CardPile
         {
             getLock().unlock();
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#setOrientation(org.gamegineer.table.core.ComponentOrientation)
+     */
+    @Override
+    public void setOrientation(
+        final ComponentOrientation orientation )
+    {
+        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
+        assertArgumentLegal( orientation instanceof CardPileOrientation, "orientation", NonNlsMessages.CardPile_setOrientation_orientation_illegal ); //$NON-NLS-1$
+
+        tableContext_.addEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireComponentOrientationChanged();
+            }
+        } );
     }
 
     /**

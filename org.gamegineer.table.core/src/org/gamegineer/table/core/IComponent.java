@@ -24,6 +24,7 @@ package org.gamegineer.table.core;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Collection;
 import org.gamegineer.common.core.util.memento.IMementoOriginator;
 
 /**
@@ -83,6 +84,14 @@ public interface IComponent
     public Point getLocation();
 
     /**
+     * Gets the orientation of this component.
+     * 
+     * @return The orientation of this component; never {@code null}.
+     */
+    /* @NonNull */
+    public ComponentOrientation getOrientation();
+
+    /**
      * Gets the size of this component in table coordinates.
      * 
      * @return The size of this component in table coordinates; never
@@ -90,6 +99,17 @@ public interface IComponent
      */
     /* @NonNull */
     public Dimension getSize();
+
+    /**
+     * Gets an immutable view of the collection of supported orientations for
+     * this component.
+     * 
+     * @return An immutable view of the collection of supported orientations for
+     *         this component; never {@code null}. The returned collection is
+     *         guaranteed to not be empty.
+     */
+    /* @NonNull */
+    public Collection<ComponentOrientation> getSupportedOrientations();
 
     /**
      * Removes the specified component listener from this component.
@@ -119,4 +139,20 @@ public interface IComponent
     public void setLocation(
         /* @NonNull */
         Point location );
+
+    /**
+     * Sets the orientation of this card.
+     * 
+     * @param orientation
+     *        The orientation of this card; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code orientation} is not a legal orientation for this
+     *         component.
+     * @throws java.lang.NullPointerException
+     *         If {@code orientation} is {@code null}.
+     */
+    public void setOrientation(
+        /* @NonNull */
+        ComponentOrientation orientation );
 }

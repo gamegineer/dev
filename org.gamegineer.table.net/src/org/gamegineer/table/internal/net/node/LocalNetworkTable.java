@@ -29,6 +29,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
@@ -375,7 +376,7 @@ final class LocalNetworkTable
                     {
                         cardIndex = cardPile.getComponentIndex( card );
                         cardPileIndex = table.getCardPileIndex( cardPile );
-                        cardIncrement.setOrientation( card.getOrientation() );
+                        cardIncrement.setOrientation( (CardOrientation)card.getOrientation() ); // FIXME: remove cast
                     }
                 }
             }

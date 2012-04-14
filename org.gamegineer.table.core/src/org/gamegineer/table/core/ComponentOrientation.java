@@ -1,5 +1,5 @@
 /*
- * CardOrientation.java
+ * ComponentOrientation.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,32 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 11, 2009 at 9:35:50 PM.
+ * Created on Apr 3, 2012 at 7:42:29 PM.
  */
 
 package org.gamegineer.table.core;
 
 import net.jcip.annotations.Immutable;
+import org.gamegineer.common.core.util.ExtensibleEnum;
 
 /**
- * Enumerates the possible orientations of a card.
+ * Superclass for all component orientation enum constants.
  */
 @Immutable
-public final class CardOrientation
-    extends ComponentOrientation
+public abstract class ComponentOrientation
+    extends ExtensibleEnum
 {
     // ======================================================================
     // Fields
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = 2260531739748011721L;
-
-    /** The card back orientation. */
-    public static final CardOrientation BACK = new CardOrientation( "back", 0 ); //$NON-NLS-1$
-
-    /** The card face orientation. */
-    public static final CardOrientation FACE = new CardOrientation( "face", 1 ); //$NON-NLS-1$
+    private static final long serialVersionUID = 1323430882724950747L;
 
 
     // ======================================================================
@@ -49,7 +44,7 @@ public final class CardOrientation
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardOrientation} class.
+     * Initializes a new instance of the {@code ComponentOrientation} class.
      * 
      * @param name
      *        The name of the enum constant; must not be {@code null}.
@@ -61,7 +56,7 @@ public final class CardOrientation
      * @throws java.lang.NullPointerException
      *         If {@code name} is {@code null}.
      */
-    private CardOrientation(
+    protected ComponentOrientation(
         /* @NonNull */
         final String name,
         final int ordinal )
@@ -74,21 +69,16 @@ public final class CardOrientation
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.core.ComponentOrientation#inverse()
+    /**
+     * Gets the inverse of this component orientation.
+     * 
+     * <p>
+     * If the component orientation has no inverse, it should return a reference
+     * to itself.
+     * </p>
+     * 
+     * @return The inverse of this component orientation; never {@code null}.
      */
-    @Override
-    public ComponentOrientation inverse()
-    {
-        if( this == BACK )
-        {
-            return FACE;
-        }
-        else if( this == FACE )
-        {
-            return BACK;
-        }
-
-        throw new AssertionError( String.format( "unknown card orientation (%s)", name() ) ); //$NON-NLS-1$
-    }
+    /* @NonNull */
+    public abstract ComponentOrientation inverse();
 }

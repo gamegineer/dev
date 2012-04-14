@@ -1,5 +1,5 @@
 /*
- * CardOrientationTest.java
+ * CardOrientationAsExtensibleEnumTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,28 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 11, 2009 at 11:13:44 PM.
+ * Created on Apr 12, 2012 at 8:01:41 PM.
  */
 
 package org.gamegineer.table.core;
 
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import org.gamegineer.common.core.util.AbstractExtensibleEnumTestCase;
+import org.gamegineer.common.core.util.ExtensibleEnum;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.core.CardOrientation}
- * enumeration.
+ * class to ensure it does not violate the contract of the
+ * {@link org.gamegineer.common.core.util.ExtensibleEnum} class
  */
-public final class CardOrientationTest
+public final class CardOrientationAsExtensibleEnumTest
+    extends AbstractExtensibleEnumTestCase
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardOrientationTest} class.
+     * Initializes a new instance of the
+     * {@code CardOrientationAsExtensibleEnumTest} class.
      */
-    public CardOrientationTest()
+    public CardOrientationAsExtensibleEnumTest()
     {
     }
 
@@ -46,35 +49,12 @@ public final class CardOrientationTest
     // Methods
     // ======================================================================
 
-    /**
-     * Ensures the {@code inverse} method returns the correct value for the
-     * {@link CardOrientation#BACK} value.
+    /*
+     * @see org.gamegineer.common.core.util.AbstractExtensibleEnumTestCase#getType()
      */
-    @Test
-    public void testInverse_Back()
+    @Override
+    protected Class<? extends ExtensibleEnum> getType()
     {
-        assertEquals( CardOrientation.FACE, CardOrientation.BACK.inverse() );
-    }
-
-    /**
-     * Ensures the {@code inverse} method returns the correct value for the
-     * {@link CardOrientation#FACE} value.
-     */
-    @Test
-    public void testInverse_Face()
-    {
-        assertEquals( CardOrientation.BACK, CardOrientation.FACE.inverse() );
-    }
-
-    /**
-     * Ensures the {@code inverse} method supports all known enumeration values.
-     */
-    @Test
-    public void testInverse_NoUnsupportedValues()
-    {
-        for( final CardOrientation orientation : CardOrientation.values( CardOrientation.class ) )
-        {
-            orientation.inverse();
-        }
+        return CardOrientation.class;
     }
 }

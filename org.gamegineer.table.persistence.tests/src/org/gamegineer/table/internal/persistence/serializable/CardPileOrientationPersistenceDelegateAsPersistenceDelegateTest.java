@@ -1,5 +1,5 @@
 /*
- * CardOrientationPersistenceDelegateAsPersistenceDelegateTest.java
+ * CardPileOrientationPersistenceDelegateAsPersistenceDelegateTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 9, 2010 at 9:37:46 PM.
+ * Created on Apr 12, 2012 at 9:00:57 PM.
  */
 
 package org.gamegineer.table.internal.persistence.serializable;
@@ -24,16 +24,16 @@ package org.gamegineer.table.internal.persistence.serializable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegateTestCase;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegate;
 import org.gamegineer.common.persistence.serializable.IPersistenceDelegateRegistry;
-import org.gamegineer.table.core.CardOrientation;
+import org.gamegineer.table.core.CardPileOrientation;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.persistence.serializable.CardOrientationPersistenceDelegate}
+ * {@link org.gamegineer.table.internal.persistence.serializable.CardPileOrientationPersistenceDelegate}
  * class to ensure it does not violate the contract of the
  * {@link org.gamegineer.common.persistence.serializable.IPersistenceDelegate}
  * interface.
  */
-public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
+public final class CardPileOrientationPersistenceDelegateAsPersistenceDelegateTest
     extends AbstractPersistenceDelegateTestCase
 {
     // ======================================================================
@@ -42,10 +42,10 @@ public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
 
     /**
      * Initializes a new instance of the
-     * {@code CardOrientationPersistenceDelegateAsPersistenceDelegateTest}
+     * {@code CardPileOrientationPersistenceDelegateAsPersistenceDelegateTest}
      * class.
      */
-    public CardOrientationPersistenceDelegateAsPersistenceDelegateTest()
+    public CardPileOrientationPersistenceDelegateAsPersistenceDelegateTest()
     {
     }
 
@@ -60,7 +60,7 @@ public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
     @Override
     protected IPersistenceDelegate createPersistenceDelegate()
     {
-        return new CardOrientationPersistenceDelegate();
+        return new CardPileOrientationPersistenceDelegate();
     }
 
     /*
@@ -69,7 +69,7 @@ public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
     @Override
     protected Object createSubject()
     {
-        return CardOrientation.FACE;
+        return CardPileOrientation.DEFAULT;
     }
 
     /*
@@ -79,6 +79,6 @@ public final class CardOrientationPersistenceDelegateAsPersistenceDelegateTest
     protected void registerPersistenceDelegates(
         final IPersistenceDelegateRegistry persistenceDelegateRegistry )
     {
-        persistenceDelegateRegistry.registerPersistenceDelegate( CardOrientation.class, new CardOrientationPersistenceDelegate() );
+        persistenceDelegateRegistry.registerPersistenceDelegate( CardPileOrientation.class, new CardPileOrientationPersistenceDelegate() );
     }
 }

@@ -26,6 +26,8 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +40,7 @@ import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ICardSurfaceDesign;
@@ -75,6 +78,9 @@ final class Card
 
     /** The name of the memento attribute that stores the card orientation. */
     private static final String ORIENTATION_MEMENTO_ATTRIBUTE_NAME = "orientation"; //$NON-NLS-1$
+
+    /** The collection of supported card orientations. */
+    private static final Collection<ComponentOrientation> SUPPORTED_ORIENTATIONS = Collections.unmodifiableCollection( Arrays.<ComponentOrientation>asList( CardOrientation.values( CardOrientation.class ) ) );
 
     /** The design on the back of the card. */
     @GuardedBy( "getLock()" )
@@ -128,7 +134,7 @@ final class Card
         faceDesign_ = DEFAULT_SURFACE_DESIGN;
         listeners_ = new CopyOnWriteArrayList<IComponentListener>();
         location_ = new Point( 0, 0 );
-        orientation_ = CardOrientation.FACE_UP;
+        orientation_ = CardOrientation.FACE;
         tableContext_ = tableContext;
     }
 
@@ -232,23 +238,6 @@ final class Card
             {
                 Loggers.getDefaultLogger().log( Level.SEVERE, NonNlsMessages.Card_componentSurfaceDesignChanged_unexpectedException, e );
             }
-        }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ICard#flip()
-     */
-    @Override
-    public void flip()
-    {
-        getLock().lock();
-        try
-        {
-            setOrientation( orientation_.inverse() );
-        }
-        finally
-        {
-            getLock().unlock();
         }
     }
 
@@ -407,10 +396,10 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.ICard#getOrientation()
+     * @see org.gamegineer.table.core.IComponent#getOrientation()
      */
     @Override
-    public CardOrientation getOrientation()
+    public ComponentOrientation getOrientation()
     {
         getLock().lock();
         try
@@ -438,6 +427,15 @@ final class Card
         {
             getLock().unlock();
         }
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#getSupportedOrientations()
+     */
+    @Override
+    public Collection<ComponentOrientation> getSupportedOrientations()
+    {
+        return SUPPORTED_ORIENTATIONS;
     }
 
     /**
@@ -540,18 +538,19 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.ICard#setOrientation(org.gamegineer.table.core.CardOrientation)
+     * @see org.gamegineer.table.core.IComponent#setOrientation(org.gamegineer.table.core.ComponentOrientation)
      */
     @Override
     public void setOrientation(
-        final CardOrientation orientation )
+        final ComponentOrientation orientation )
     {
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
+        assertArgumentLegal( orientation instanceof CardOrientation, "orientation", NonNlsMessages.Card_setOrientation_orientation_illegal ); //$NON-NLS-1$
 
         getLock().lock();
         try
         {
-            orientation_ = orientation;
+            orientation_ = (CardOrientation)orientation;
         }
         finally
         {

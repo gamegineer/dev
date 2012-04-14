@@ -22,7 +22,6 @@
 package org.gamegineer.table.core;
 
 import static org.gamegineer.table.core.Assert.assertCardEquals;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Point;
 import org.easymock.EasyMock;
@@ -83,7 +82,7 @@ public abstract class AbstractCardTestCase
     {
         final ICard card = getCard();
         card.setLocation( new Point( 0, 0 ) );
-        card.setOrientation( CardOrientation.BACK_UP );
+        card.setOrientation( CardOrientation.BACK );
         return card;
     }
 
@@ -107,7 +106,7 @@ public abstract class AbstractCardTestCase
     {
         final ICard card = (ICard)mementoOriginator;
         card.setLocation( new Point( Integer.MAX_VALUE, Integer.MIN_VALUE ) );
-        card.setOrientation( CardOrientation.FACE_UP );
+        card.setOrientation( CardOrientation.FACE );
     }
 
     /*
@@ -126,53 +125,6 @@ public abstract class AbstractCardTestCase
     }
 
     /**
-     * Ensures the {@code flip} method correctly changes the card orientation
-     * when the card back is initially up.
-     */
-    @Test
-    public void testFlip_BackUp()
-    {
-        getCard().setOrientation( CardOrientation.BACK_UP );
-        assertEquals( CardOrientation.BACK_UP, getCard().getOrientation() );
-
-        getCard().flip();
-
-        assertEquals( CardOrientation.FACE_UP, getCard().getOrientation() );
-    }
-
-    /**
-     * Ensures the {@code flip} method correctly changes the card orientation
-     * when the card face is initially up.
-     */
-    @Test
-    public void testFlip_FaceUp()
-    {
-        getCard().setOrientation( CardOrientation.FACE_UP );
-        assertEquals( CardOrientation.FACE_UP, getCard().getOrientation() );
-
-        getCard().flip();
-
-        assertEquals( CardOrientation.BACK_UP, getCard().getOrientation() );
-    }
-
-    /**
-     * Ensures the {@code flip} method fires a component orientation changed
-     * event.
-     */
-    @Test
-    public void testFlip_FiresComponentOrientationChangedEvent()
-    {
-        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
-        mocksControl_.replay();
-        getCard().addComponentListener( listener );
-
-        getCard().flip();
-
-        mocksControl_.verify();
-    }
-
-    /**
      * Ensures the {@code getBackDesign} method does not return {@code null}.
      */
     @Test
@@ -188,42 +140,6 @@ public abstract class AbstractCardTestCase
     public void testGetFaceDesign_ReturnValue_NonNull()
     {
         assertNotNull( getCard().getFaceDesign() );
-    }
-
-    /**
-     * Ensures the {@code getOrientation} method does not return {@code null}.
-     */
-    @Test
-    public void testGetOrientation_ReturnValue_NonNull()
-    {
-        assertNotNull( getCard().getOrientation() );
-    }
-
-    /**
-     * Ensures the {@code setOrientation} method fires a component orientation
-     * changed event.
-     */
-    @Test
-    public void testSetOrientation_FiresComponentOrientationChangedEvent()
-    {
-        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
-        mocksControl_.replay();
-        getCard().addComponentListener( listener );
-
-        getCard().setOrientation( getCard().getOrientation().inverse() );
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code setOrientation} method throws an exception when passed
-     * a {@code null} orientation.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetOrientation_Orientation_Null()
-    {
-        getCard().setOrientation( null );
     }
 
     /**

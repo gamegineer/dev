@@ -1,5 +1,5 @@
 /*
- * CardOrientation.java
+ * CardPileOrientation.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Oct 11, 2009 at 9:35:50 PM.
+ * Created on Apr 6, 2012 at 9:43:13 PM.
  */
 
 package org.gamegineer.table.core;
@@ -24,10 +24,10 @@ package org.gamegineer.table.core;
 import net.jcip.annotations.Immutable;
 
 /**
- * Enumerates the possible orientations of a card.
+ * Enumerates the possible orientations of a card pile.
  */
 @Immutable
-public final class CardOrientation
+public final class CardPileOrientation
     extends ComponentOrientation
 {
     // ======================================================================
@@ -35,13 +35,10 @@ public final class CardOrientation
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = 2260531739748011721L;
+    private static final long serialVersionUID = -3829915723798616585L;
 
-    /** The card back orientation. */
-    public static final CardOrientation BACK = new CardOrientation( "back", 0 ); //$NON-NLS-1$
-
-    /** The card face orientation. */
-    public static final CardOrientation FACE = new CardOrientation( "face", 1 ); //$NON-NLS-1$
+    /** The default card pile orientation. */
+    public static final CardPileOrientation DEFAULT = new CardPileOrientation( "default", 0 ); //$NON-NLS-1$
 
 
     // ======================================================================
@@ -49,7 +46,7 @@ public final class CardOrientation
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardOrientation} class.
+     * Initializes a new instance of the {@code CardPileOrientation} class.
      * 
      * @param name
      *        The name of the enum constant; must not be {@code null}.
@@ -61,7 +58,7 @@ public final class CardOrientation
      * @throws java.lang.NullPointerException
      *         If {@code name} is {@code null}.
      */
-    private CardOrientation(
+    private CardPileOrientation(
         /* @NonNull */
         final String name,
         final int ordinal )
@@ -80,15 +77,11 @@ public final class CardOrientation
     @Override
     public ComponentOrientation inverse()
     {
-        if( this == BACK )
+        if( this == DEFAULT )
         {
-            return FACE;
-        }
-        else if( this == FACE )
-        {
-            return BACK;
+            return DEFAULT;
         }
 
-        throw new AssertionError( String.format( "unknown card orientation (%s)", name() ) ); //$NON-NLS-1$
+        throw new AssertionError( String.format( "unknown card pile orientation (%s)", name() ) ); //$NON-NLS-1$
     }
 }

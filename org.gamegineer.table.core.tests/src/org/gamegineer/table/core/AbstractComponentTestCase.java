@@ -21,7 +21,9 @@
 
 package org.gamegineer.table.core;
 
+import static org.gamegineer.test.core.Assert.assertImmutableCollection;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -352,6 +354,15 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     }
 
     /**
+     * Ensures the {@code getOrientation} method does not return {@code null}.
+     */
+    @Test
+    public void testGetOrientation_ReturnValue_NonNull()
+    {
+        assertNotNull( component_.getOrientation() );
+    }
+
+    /**
      * Ensures the {@code getSize} method returns a copy of the size.
      */
     @Test
@@ -388,6 +399,36 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
         final Dimension actualSize = component_.getSize();
 
         assertEquals( expectedSize, actualSize );
+    }
+
+    /**
+     * Ensures the {@code getSupportedOrientations} method returns an immutable
+     * collection.
+     */
+    @Test
+    public void testGetSupportedOrientations_ReturnValue_Immutable()
+    {
+        assertImmutableCollection( component_.getSupportedOrientations() );
+    }
+
+    /**
+     * Ensures the {@code getSupportedOrientations} method does not return an
+     * empty collection.
+     */
+    @Test
+    public void testGetSupportedOrientations_ReturnValue_NonEmpty()
+    {
+        assertFalse( component_.getSupportedOrientations().isEmpty() );
+    }
+
+    /**
+     * Ensures the {@code getSupportedOrientations} method does not return
+     * {@code null}.
+     */
+    @Test
+    public void testGetSupportedOrientations_ReturnValue_NonNull()
+    {
+        assertNotNull( component_.getSupportedOrientations() );
     }
 
     /**
@@ -470,5 +511,53 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     public void testSetLocation_Location_Null()
     {
         component_.setLocation( null );
+    }
+
+    /**
+     * Ensures the {@code setOrientation} method fires a component orientation
+     * changed event.
+     */
+    @Test
+    public void testSetOrientation_FiresComponentOrientationChangedEvent()
+    {
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentOrientationChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        component_.addComponentListener( listener );
+
+        component_.setOrientation( component_.getOrientation().inverse() );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code setOrientation} method throws an exception when passed
+     * an illegal orientation.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testSetOrientation_Orientation_Illegal()
+    {
+        final ComponentOrientation unknownOrientation = new ComponentOrientation( "unknown", 0 ) //$NON-NLS-1$
+        {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public ComponentOrientation inverse()
+            {
+                return this;
+            }
+        };
+
+        component_.setOrientation( unknownOrientation );
+    }
+
+    /**
+     * Ensures the {@code setOrientation} method throws an exception when passed
+     * a {@code null} orientation.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetOrientation_Orientation_Null()
+    {
+        component_.setOrientation( null );
     }
 }
