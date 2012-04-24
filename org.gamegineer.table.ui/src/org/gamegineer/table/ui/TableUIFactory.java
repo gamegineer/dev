@@ -26,8 +26,10 @@ import javax.swing.Icon;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.CardSurfaceDesignId;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.internal.ui.CardPileBaseDesignUI;
 import org.gamegineer.table.internal.ui.CardSurfaceDesignUI;
+import org.gamegineer.table.internal.ui.ComponentSurfaceDesignUI;
 import org.gamegineer.table.internal.ui.TableRunner;
 
 /**
@@ -104,6 +106,34 @@ public final class TableUIFactory
         final Icon icon )
     {
         return new CardSurfaceDesignUI( id, name, icon );
+    }
+
+    /**
+     * Creates a new component surface design user interface.
+     * 
+     * @param id
+     *        The component surface design identifier; must not be {@code null}.
+     * @param name
+     *        The component surface design name; must not be {@code null}.
+     * @param icon
+     *        The component surface design icon; must not be {@code null}.
+     * 
+     * @return A new component surface design user interface; never {@code null}
+     *         .
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code id}, {@code name}, or {@code icon} is {@code null}.
+     */
+    /* @NonNull */
+    public static IComponentSurfaceDesignUI createComponentSurfaceDesignUI(
+        /* @NonNull */
+        final ComponentSurfaceDesignId id,
+        /* @NonNull */
+        final String name,
+        /* @NonNull */
+        final Icon icon )
+    {
+        return new ComponentSurfaceDesignUI( id, name, icon );
     }
 
     /**

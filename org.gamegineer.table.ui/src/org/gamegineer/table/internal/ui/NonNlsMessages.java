@@ -26,6 +26,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.eclipse.osgi.util.NLS;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.CardSurfaceDesignId;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.osgi.framework.Bundle;
 
 /**
@@ -151,6 +152,61 @@ final class NonNlsMessages
 
     /** The extension registry service is not bound. */
     public static String CardSurfaceDesignUIRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
+
+    // --- ComponentSurfaceDesignUIRegistry ---------------------------------
+
+    /**
+     * A component surface design user interface is already registered for the
+     * specified identifier.
+     */
+    public static String ComponentSurfaceDesignUIRegistry_registerComponentSurfaceDesignUI_componentSurfaceDesignUI_registered;
+
+    /**
+     * The component surface design user interface is not registered for the
+     * specified identifier.
+     */
+    public static String ComponentSurfaceDesignUIRegistry_unregisterComponentSurfaceDesignUI_componentSurfaceDesignUI_unregistered;
+
+    // --- ComponentSurfaceDesignUIRegistryExtensionPointAdapter ------------
+
+    /**
+     * The component surface design user interface registry service is already
+     * bound.
+     */
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_bindComponentSurfaceDesignUIRegistry_bound;
+
+    /** The extension registry service is already bound. */
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_bindExtensionRegistry_bound;
+
+    /** The bundle hosting the component surface design icon was not found. */
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_iconBundleNotFound;
+
+    /** The component surface design icon file was not found. */
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_iconFileNotFound;
+
+    /** The component surface design icon path is missing. */
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_missingIconPath;
+
+    /** The component surface design identifier is missing. */
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_missingId;
+
+    /** The component surface design name is missing. */
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_missingName;
+
+    /**
+     * An error occurred while parsing the component surface design user
+     * interface configuration element.
+     */
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_registerComponentSurfaceDesignUI_parseError;
+
+    /**
+     * The component surface design user interface registry service is not
+     * bound.
+     */
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_unbindComponentSurfaceDesignUIRegistry_notBound;
+
+    /** The extension registry service is not bound. */
+    public static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_unbindExtensionRegistry_notBound;
 
     // --- TableRunner ------------------------------------------------------
 
@@ -409,5 +465,108 @@ final class NonNlsMessages
         final String cardSurfaceDesignId )
     {
         return bind( CardSurfaceDesignUIRegistryExtensionPointAdapter_registerCardSurfaceDesignUI_parseError, cardSurfaceDesignId );
+    }
+
+    // --- ComponentSurfaceDesignUIRegistry ---------------------------------
+
+    /**
+     * Gets the formatted message indicating a component surface design user
+     * interface is already registered for the specified identifier.
+     * 
+     * @param componentSurfaceDesignId
+     *        The component surface design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating a component surface design user
+     *         interface is already registered for the specified identifier;
+     *         never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentSurfaceDesignUIRegistry_registerComponentSurfaceDesignUI_componentSurfaceDesignUI_registered(
+        /* @NonNull */
+        final ComponentSurfaceDesignId componentSurfaceDesignId )
+    {
+        return bind( ComponentSurfaceDesignUIRegistry_registerComponentSurfaceDesignUI_componentSurfaceDesignUI_registered, componentSurfaceDesignId );
+    }
+
+    /**
+     * Gets the formatted message indicating the component surface design user
+     * interface is not registered for the specified identifier.
+     * 
+     * @param componentSurfaceDesignId
+     *        The component surface design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the component surface design
+     *         user interface is not registered for the specified identifier;
+     *         never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentSurfaceDesignUIRegistry_unregisterComponentSurfaceDesignUI_componentSurfaceDesignUI_unregistered(
+        /* @NonNull */
+        final ComponentSurfaceDesignId componentSurfaceDesignId )
+    {
+        return bind( ComponentSurfaceDesignUIRegistry_unregisterComponentSurfaceDesignUI_componentSurfaceDesignUI_unregistered, componentSurfaceDesignId );
+    }
+
+    // --- ComponentSurfaceDesignUIRegistryExtensionPointAdapter ------------
+
+    /**
+     * Gets the formatted message indicating the bundle hosting the component
+     * surface design icon file was not found.
+     * 
+     * @param name
+     *        The bundle name; must not be {@code null}.
+     * 
+     * @return The formatted message indicating the bundle hosting the component
+     *         surface design icon file was not found; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_iconBundleNotFound(
+        /* @NonNull */
+        final String name )
+    {
+        return bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_iconBundleNotFound, name );
+    }
+
+    /**
+     * Gets the formatted message indicating the component surface design icon
+     * file was not found.
+     * 
+     * @param bundle
+     *        The bundle hosting the component surface design icon file; must
+     *        not be {@code null}.
+     * @param path
+     *        The bundle path of the component surface design icon file; must
+     *        not be {@code null}.
+     * 
+     * @return The formatted message indicating the component surface design
+     *         icon file was not found; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_iconFileNotFound(
+        /* @NonNull */
+        final Bundle bundle,
+        /* @NonNull */
+        final String path )
+    {
+        return bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_createComponentSurfaceDesignUIRegistration_iconFileNotFound, bundle.getSymbolicName(), path );
+    }
+
+    /**
+     * Gets the formatted message indicating an error occurred while parsing the
+     * component surface design user interface configuration element.
+     * 
+     * @param componentSurfaceDesignId
+     *        The component surface design identifier; must not be {@code null}.
+     * 
+     * @return The formatted message indicating an error occurred while parsing
+     *         the component surface design user interface configuration
+     *         element; never {@code null}.
+     */
+    /* @NonNull */
+    static String ComponentSurfaceDesignUIRegistryExtensionPointAdapter_registerComponentSurfaceDesignUI_parseError(
+        /* @NonNull */
+        final String componentSurfaceDesignId )
+    {
+        return bind( ComponentSurfaceDesignUIRegistryExtensionPointAdapter_registerComponentSurfaceDesignUI_parseError, componentSurfaceDesignId );
     }
 }

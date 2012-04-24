@@ -25,6 +25,7 @@ import javax.swing.Icon;
 import org.easymock.EasyMock;
 import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.CardSurfaceDesignId;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.junit.Test;
 
 /**
@@ -107,6 +108,36 @@ public final class TableUIFactoryTest
     public void testCreateCardSurfaceDesignUI_Name_Null()
     {
         TableUIFactory.createCardSurfaceDesignUI( CardSurfaceDesignId.fromString( "id" ), null, EasyMock.createMock( Icon.class ) ); //$NON-NLS-1$
+    }
+
+    /**
+     * Ensures the {@code createComponentSurfaceDesignUI} method throws an
+     * exception when passed a {@code null} icon.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateComponentSurfaceDesignUI_Icon_Null()
+    {
+        TableUIFactory.createComponentSurfaceDesignUI( ComponentSurfaceDesignId.fromString( "id" ), "name", null ); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /**
+     * Ensures the {@code createComponentSurfaceDesignUI} method throws an
+     * exception when passed a {@code null} identifier.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateComponentSurfaceDesignUI_Id_Null()
+    {
+        TableUIFactory.createComponentSurfaceDesignUI( null, "name", EasyMock.createMock( Icon.class ) ); //$NON-NLS-1$
+    }
+
+    /**
+     * Ensures the {@code createComponentSurfaceDesignUI} method throws an
+     * exception when passed a {@code null} name.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testCreateComponentSurfaceDesignUI_Name_Null()
+    {
+        TableUIFactory.createComponentSurfaceDesignUI( ComponentSurfaceDesignId.fromString( "id" ), null, EasyMock.createMock( Icon.class ) ); //$NON-NLS-1$
     }
 
     /**

@@ -45,6 +45,12 @@ public final class BundleConstants
      */
     public static final String CARD_SURFACE_DESIGN_UIS_EXTENSION_POINT_SIMPLE_ID = "cardSurfaceDesignUIs"; //$NON-NLS-1$
 
+    /**
+     * The simple identifier of the component surface design user interfaces
+     * extension point.
+     */
+    public static final String COMPONENT_SURFACE_DESIGN_UIS_EXTENSION_POINT_SIMPLE_ID = "componentSurfaceDesignUIs"; //$NON-NLS-1$
+
     /** The symbolic name of the bundle. */
     public static final String SYMBOLIC_NAME = "org.gamegineer.table.ui"; //$NON-NLS-1$
 
@@ -59,6 +65,12 @@ public final class BundleConstants
      * extension point.
      */
     public static final String CARD_SURFACE_DESIGN_UIS_EXTENSION_POINT_UNIQUE_ID = SYMBOLIC_NAME + "." + CARD_SURFACE_DESIGN_UIS_EXTENSION_POINT_SIMPLE_ID; //$NON-NLS-1$
+
+    /**
+     * The unique identifier of the component surface design user interfaces
+     * extension point.
+     */
+    public static final String COMPONENT_SURFACE_DESIGN_UIS_EXTENSION_POINT_UNIQUE_ID = SYMBOLIC_NAME + "." + COMPONENT_SURFACE_DESIGN_UIS_EXTENSION_POINT_SIMPLE_ID; //$NON-NLS-1$
 
 
     // ======================================================================
