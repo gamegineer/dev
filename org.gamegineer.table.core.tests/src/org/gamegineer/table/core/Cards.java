@@ -46,8 +46,7 @@ public final class Cards
     // ======================================================================
 
     /**
-     * Creates a new card with unique back and face designs for the specified
-     * table.
+     * Creates a new card with unique surface designs for the specified table.
      * 
      * @param table
      *        The table associated with the new card; must not be {@code null}.
@@ -63,7 +62,8 @@ public final class Cards
         final ITable table )
     {
         final ICard card = table.createCard();
-        card.setSurfaceDesigns( CardSurfaceDesigns.createUniqueCardSurfaceDesign(), CardSurfaceDesigns.createUniqueCardSurfaceDesign() );
+        card.setSurfaceDesign( CardOrientation.BACK, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+        card.setSurfaceDesign( CardOrientation.FACE, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         return card;
     }
 }

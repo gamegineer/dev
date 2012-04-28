@@ -69,7 +69,7 @@ public final class CardPileOrientationPersistenceDelegateAsPersistenceDelegateTe
     @Override
     protected Object createSubject()
     {
-        return CardPileOrientation.DEFAULT;
+        return CardPileOrientation.BASE;
     }
 
     /*

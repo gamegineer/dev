@@ -26,6 +26,8 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.util.logging.Level;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
+import org.gamegineer.table.core.CardOrientation;
+import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.ITable;
@@ -89,7 +91,7 @@ public final class NetworkTableUtils
 
             if( cardPileIncrement.getBaseDesign() != null )
             {
-                cardPile.setBaseDesign( cardPileIncrement.getBaseDesign() );
+                cardPile.setSurfaceDesign( CardPileOrientation.BASE, cardPileIncrement.getBaseDesign() );
             }
 
             if( cardPileIncrement.getBaseLocation() != null )
@@ -181,9 +183,14 @@ public final class NetworkTableUtils
             final ICardPile cardPile = table.getCardPile( cardPileIndex );
             final ICard card = (ICard)cardPile.getComponent( cardIndex ); // FIXME: remove cast
 
-            if( (cardIncrement.getBackDesign() != null) && (cardIncrement.getFaceDesign() != null) )
+            if( cardIncrement.getBackDesign() != null )
             {
-                card.setSurfaceDesigns( cardIncrement.getBackDesign(), cardIncrement.getFaceDesign() );
+                card.setSurfaceDesign( CardOrientation.BACK, cardIncrement.getBackDesign() );
+            }
+
+            if( cardIncrement.getFaceDesign() != null )
+            {
+                card.setSurfaceDesign( CardOrientation.FACE, cardIncrement.getFaceDesign() );
             }
 
             if( cardIncrement.getLocation() != null )

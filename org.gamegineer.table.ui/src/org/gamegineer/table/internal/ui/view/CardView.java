@@ -30,10 +30,11 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentEvent;
+import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.internal.ui.model.CardModel;
 import org.gamegineer.table.internal.ui.model.ICardModelListener;
-import org.gamegineer.table.ui.ICardSurfaceDesignUI;
+import org.gamegineer.table.ui.IComponentSurfaceDesignUI;
 
 /**
  * A view of a card.
@@ -45,8 +46,8 @@ final class CardView
     // Fields
     // ======================================================================
 
-    /** The card surface design user interface for the card back. */
-    private final ICardSurfaceDesignUI backDesignUI_;
+    /** The component surface design user interface for the card back. */
+    private final IComponentSurfaceDesignUI backDesignUI_;
 
     /** The card model listener for this view. */
     private ICardModelListener cardModelListener_;
@@ -57,8 +58,8 @@ final class CardView
     /** The component listener for this view. */
     private IComponentListener componentListener_;
 
-    /** The card surface design user interface for the card face. */
-    private final ICardSurfaceDesignUI faceDesignUI_;
+    /** The component surface design user interface for the card face. */
+    private final IComponentSurfaceDesignUI faceDesignUI_;
 
     /** The model associated with this view. */
     private final CardModel model_;
@@ -74,19 +75,19 @@ final class CardView
      * @param model
      *        The model associated with this view; must not be {@code null}.
      * @param backDesignUI
-     *        The card surface design user interface for the card back; must not
-     *        be {@code null}.
+     *        The component surface design user interface for the card back;
+     *        must not be {@code null}.
      * @param faceDesignUI
-     *        The card surface design user interface for the card face; must not
-     *        be {@code null}.
+     *        The component surface design user interface for the card face;
+     *        must not be {@code null}.
      */
     CardView(
         /* @NonNull */
         final CardModel model,
         /* @NonNull */
-        final ICardSurfaceDesignUI backDesignUI,
+        final IComponentSurfaceDesignUI backDesignUI,
         /* @NonNull */
-        final ICardSurfaceDesignUI faceDesignUI )
+        final IComponentSurfaceDesignUI faceDesignUI )
     {
         assert model != null;
         assert backDesignUI != null;
@@ -128,15 +129,25 @@ final class CardView
     }
 
     /**
-     * Gets the active card surface design user interface.
+     * Gets the active component surface design user interface.
      * 
-     * @return The active card surface design user interface; never {@code null}
-     *         .
+     * @return The active component surface design user interface; never
+     *         {@code null}.
      */
     /* @NonNull */
-    private ICardSurfaceDesignUI getActiveCardSurfaceDesignUI()
+    private IComponentSurfaceDesignUI getActiveComponentSurfaceDesignUI()
     {
-        return (model_.getCard().getOrientation() == CardOrientation.BACK) ? backDesignUI_ : faceDesignUI_;
+        final ComponentOrientation orientation = model_.getCard().getOrientation();
+        if( orientation == CardOrientation.BACK )
+        {
+            return backDesignUI_;
+        }
+        else if( orientation == CardOrientation.FACE )
+        {
+            return faceDesignUI_;
+        }
+
+        throw new AssertionError( "unknown card orientation" ); //$NON-NLS-1$
     }
 
     /**
@@ -210,7 +221,7 @@ final class CardView
         assert isInitialized();
 
         final Rectangle viewBounds = getBounds();
-        getActiveCardSurfaceDesignUI().getIcon().paintIcon( component, g, viewBounds.x, viewBounds.y );
+        getActiveComponentSurfaceDesignUI().getIcon().paintIcon( component, g, viewBounds.x, viewBounds.y );
     }
 
     /**

@@ -107,6 +107,27 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
         throws Exception;
 
     /**
+     * Creates a component orientation that is guaranteed to be illegal for all
+     * components.
+     * 
+     * @return An illegal component orientation; never {@code null}.
+     */
+    /* @NonNull */
+    private static ComponentOrientation createIllegalOrientation()
+    {
+        return new ComponentOrientation( "illegal", 0 ) //$NON-NLS-1$
+        {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public ComponentOrientation inverse()
+            {
+                return this;
+            }
+        };
+    }
+
+    /**
      * Fires a component bounds changed event for the specified component.
      * 
      * @param component
@@ -276,6 +297,25 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     }
 
     /**
+     * Ensures the {@code getBounds} method returns the bounds of the surface
+     * associated with the current orientation.
+     */
+    @Test
+    public void testGetBounds_MatchesCurrentOrientationSurface()
+    {
+        int length = 0;
+        for( final ComponentOrientation orientation : component_.getSupportedOrientations() )
+        {
+            length += 10;
+            component_.setSurfaceDesign( orientation, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign( length, length ) );
+            component_.setOrientation( orientation );
+            final Rectangle bounds = component_.getBounds();
+            assertEquals( length, bounds.height );
+            assertEquals( length, bounds.width );
+        }
+    }
+
+    /**
      * Ensures the {@code getBounds} method returns a copy of the bounds.
      */
     @Test
@@ -363,6 +403,25 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     }
 
     /**
+     * Ensures the {@code getSize} method returns the size of the surface
+     * associated with the current orientation.
+     */
+    @Test
+    public void testGetSize_MatchesCurrentOrientationSurface()
+    {
+        int length = 0;
+        for( final ComponentOrientation orientation : component_.getSupportedOrientations() )
+        {
+            length += 10;
+            component_.setSurfaceDesign( orientation, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign( length, length ) );
+            component_.setOrientation( orientation );
+            final Dimension size = component_.getSize();
+            assertEquals( length, size.height );
+            assertEquals( length, size.width );
+        }
+    }
+
+    /**
      * Ensures the {@code getSize} method returns a copy of the size.
      */
     @Test
@@ -429,6 +488,38 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     public void testGetSupportedOrientations_ReturnValue_NonNull()
     {
         assertNotNull( component_.getSupportedOrientations() );
+    }
+
+    /**
+     * Ensures the {@code getSurfaceDesign} method throws an exception when
+     * passed an illegal orientation.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testGetSurfaceDesign_Orientation_Illegal()
+    {
+        component_.getSurfaceDesign( createIllegalOrientation() );
+    }
+
+    /**
+     * Ensures the {@code getSurfaceDesign} method throws an exception when
+     * passed a {@code null} orientation.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testGetSurfaceDesign_Orientation_Null()
+    {
+        component_.getSurfaceDesign( null );
+    }
+
+    /**
+     * Ensures the {@code getSurfaceDesign} method does not return {@code null}.
+     */
+    @Test
+    public void testGetSurfaceDesign_ReturnValue_NonNull()
+    {
+        for( final ComponentOrientation orientation : component_.getSupportedOrientations() )
+        {
+            assertNotNull( component_.getSurfaceDesign( orientation ) );
+        }
     }
 
     /**
@@ -537,18 +628,7 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     @Test( expected = IllegalArgumentException.class )
     public void testSetOrientation_Orientation_Illegal()
     {
-        final ComponentOrientation unknownOrientation = new ComponentOrientation( "unknown", 0 ) //$NON-NLS-1$
-        {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public ComponentOrientation inverse()
-            {
-                return this;
-            }
-        };
-
-        component_.setOrientation( unknownOrientation );
+        component_.setOrientation( createIllegalOrientation() );
     }
 
     /**
@@ -559,5 +639,52 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     public void testSetOrientation_Orientation_Null()
     {
         component_.setOrientation( null );
+    }
+
+    /**
+     * Ensures the {@code setSurfaceDesign} method fires a component surface
+     * design changed event.
+     */
+    @Test
+    public void testSetSurfaceDesign_FiresComponentSurfaceDesignChangedEvent()
+    {
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentSurfaceDesignChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        component_.addComponentListener( listener );
+
+        component_.setSurfaceDesign( component_.getOrientation(), ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code setSurfaceDesign} method throws an exception when
+     * passed an illegal orientation.
+     */
+    @Test( expected = IllegalArgumentException.class )
+    public void testSetSurfaceDesign_Orientation_Illegal()
+    {
+        component_.setSurfaceDesign( createIllegalOrientation(), EasyMock.createMock( IComponentSurfaceDesign.class ) );
+    }
+
+    /**
+     * Ensures the {@code setSurfaceDesign} method throws an exception when
+     * passed a {@code null} orientation.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetSurfaceDesign_Orientation_Null()
+    {
+        component_.setSurfaceDesign( null, EasyMock.createMock( IComponentSurfaceDesign.class ) );
+    }
+
+    /**
+     * Ensures the {@code setSurfaceDesign} method throws an exception when
+     * passed a {@code null} surface design.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetSurfaceDesign_SurfaceDesign_Null()
+    {
+        component_.setSurfaceDesign( component_.getOrientation(), null );
     }
 }

@@ -1,5 +1,5 @@
 /*
- * CardPileBaseDesignRegistryAsCardPileBaseDesignRegistryTest.java
+ * ComponentSurfaceDesignProxyTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,32 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on Jan 19, 2010 at 11:39:33 PM.
+ * Created on Apr 26, 2012 at 9:58:34 PM.
  */
 
-package org.gamegineer.table.internal.core;
+package org.gamegineer.table.internal.persistence.serializable;
 
-import org.gamegineer.table.core.AbstractCardPileBaseDesignRegistryTestCase;
-import org.gamegineer.table.core.ICardPileBaseDesignRegistry;
+import org.junit.Test;
 
 /**
  * A fixture for testing the
- * {@link org.gamegineer.table.internal.core.CardPileBaseDesignRegistry} class
- * to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.ICardPileBaseDesignRegistry} interface.
+ * {@link org.gamegineer.table.internal.persistence.serializable.ComponentSurfaceDesignProxy}
+ * class.
  */
-public final class CardPileBaseDesignRegistryAsCardPileBaseDesignRegistryTest
-    extends AbstractCardPileBaseDesignRegistryTestCase
+public final class ComponentSurfaceDesignProxyTest
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the
-     * {@code CardPileBaseDesignRegistryAsCardPileBaseDesignRegistryTest} class.
+     * Initializes a new instance of the {@code ComponentSurfaceDesignProxyTest}
+     * class.
      */
-    public CardPileBaseDesignRegistryAsCardPileBaseDesignRegistryTest()
+    public ComponentSurfaceDesignProxyTest()
     {
     }
 
@@ -50,12 +47,13 @@ public final class CardPileBaseDesignRegistryAsCardPileBaseDesignRegistryTest
     // Methods
     // ======================================================================
 
-    /*
-     * @see org.gamegineer.table.core.cardpilebasedesignregistry.AbstractCardPileBaseDesignRegistryTestCase#createCardPileBaseDesignRegistry()
+    /**
+     * Ensures the constructor throws an exception when passed a {@code null}
+     * component surface design.
      */
-    @Override
-    protected ICardPileBaseDesignRegistry createCardPileBaseDesignRegistry()
+    @Test( expected = NullPointerException.class )
+    public void testConstructor_ComponentSurfaceDesign_Null()
     {
-        return new CardPileBaseDesignRegistry();
+        new ComponentSurfaceDesignProxy( null );
     }
 }

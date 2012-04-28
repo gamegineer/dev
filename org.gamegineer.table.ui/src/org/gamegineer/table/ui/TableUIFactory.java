@@ -24,11 +24,7 @@ package org.gamegineer.table.ui;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import javax.swing.Icon;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.core.CardPileBaseDesignId;
-import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
-import org.gamegineer.table.internal.ui.CardPileBaseDesignUI;
-import org.gamegineer.table.internal.ui.CardSurfaceDesignUI;
 import org.gamegineer.table.internal.ui.ComponentSurfaceDesignUI;
 import org.gamegineer.table.internal.ui.TableRunner;
 
@@ -53,60 +49,6 @@ public final class TableUIFactory
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates a new card pile base design user interface.
-     * 
-     * @param id
-     *        The card pile base design identifier; must not be {@code null}.
-     * @param name
-     *        The card pile base design name; must not be {@code null}.
-     * @param icon
-     *        The card pile base design icon; must not be {@code null}.
-     * 
-     * @return A new card pile base design user interface; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id}, {@code name}, or {@code icon} is {@code null}.
-     */
-    /* @NonNull */
-    public static ICardPileBaseDesignUI createCardPileBaseDesignUI(
-        /* @NonNull */
-        final CardPileBaseDesignId id,
-        /* @NonNull */
-        final String name,
-        /* @NonNull */
-        final Icon icon )
-    {
-        return new CardPileBaseDesignUI( id, name, icon );
-    }
-
-    /**
-     * Creates a new card surface design user interface.
-     * 
-     * @param id
-     *        The card surface design identifier; must not be {@code null}.
-     * @param name
-     *        The card surface design name; must not be {@code null}.
-     * @param icon
-     *        The card surface design icon; must not be {@code null}.
-     * 
-     * @return A new card surface design user interface; never {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code id}, {@code name}, or {@code icon} is {@code null}.
-     */
-    /* @NonNull */
-    public static ICardSurfaceDesignUI createCardSurfaceDesignUI(
-        /* @NonNull */
-        final CardSurfaceDesignId id,
-        /* @NonNull */
-        final String name,
-        /* @NonNull */
-        final Icon icon )
-    {
-        return new CardSurfaceDesignUI( id, name, icon );
-    }
 
     /**
      * Creates a new component surface design user interface.

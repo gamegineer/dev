@@ -1,5 +1,5 @@
 /*
- * CardAsCardTest.java
+ * CardAsComponentTest.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -21,27 +21,30 @@
 
 package org.gamegineer.table.internal.core;
 
+import static org.gamegineer.table.core.Assert.assertComponentEquals;
+import java.awt.Point;
 import java.lang.reflect.Method;
-import org.gamegineer.table.core.AbstractCardTestCase;
-import org.gamegineer.table.core.ICard;
+import org.gamegineer.common.core.util.memento.IMementoOriginator;
+import org.gamegineer.table.core.AbstractComponentTestCase;
+import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ITable;
 
 /**
  * A fixture for testing the {@link org.gamegineer.table.internal.core.Card}
  * class to ensure it does not violate the contract of the
- * {@link org.gamegineer.table.core.ICard} interface.
+ * {@link org.gamegineer.table.core.IComponent} interface.
  */
-public final class CardAsCardTest
-    extends AbstractCardTestCase
+public final class CardAsComponentTest
+    extends AbstractComponentTestCase<Card>
 {
     // ======================================================================
     // Constructors
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardAsCardTest} class.
+     * Initializes a new instance of the {@code CardAsComponentTest} class.
      */
-    public CardAsCardTest()
+    public CardAsComponentTest()
     {
     }
 
@@ -51,13 +54,38 @@ public final class CardAsCardTest
     // ======================================================================
 
     /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#assertMementoOriginatorEquals(org.gamegineer.common.core.util.memento.IMementoOriginator, org.gamegineer.common.core.util.memento.IMementoOriginator)
+     */
+    @Override
+    protected void assertMementoOriginatorEquals(
+        final IMementoOriginator expected,
+        final IMementoOriginator actual )
+    {
+        final Card expectedCard = (Card)expected;
+        final Card actualCard = (Card)actual;
+        assertComponentEquals( expectedCard, actualCard );
+    }
+
+    /*
      * @see org.gamegineer.table.core.AbstractComponentTestCase#createComponent(org.gamegineer.table.core.ITable)
      */
     @Override
-    protected ICard createComponent(
+    protected Card createComponent(
         final ITable table )
     {
         return new Card( ((Table)table).getTableContext() );
+    }
+
+    /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#createMementoOriginator()
+     */
+    @Override
+    protected IMementoOriginator createMementoOriginator()
+    {
+        final Card card = getComponent();
+        card.setLocation( new Point( 0, 0 ) );
+        card.setOrientation( CardOrientation.BACK );
+        return card;
     }
 
     /*
@@ -74,7 +102,7 @@ public final class CardAsCardTest
      */
     @Override
     protected void fireComponentBoundsChanged(
-        final ICard component )
+        final Card component )
     {
         try
         {
@@ -93,7 +121,7 @@ public final class CardAsCardTest
      */
     @Override
     protected void fireComponentOrientationChanged(
-        final ICard component )
+        final Card component )
     {
         try
         {
@@ -112,7 +140,7 @@ public final class CardAsCardTest
      */
     @Override
     protected void fireComponentSurfaceDesignChanged(
-        final ICard component )
+        final Card component )
     {
         try
         {
@@ -124,5 +152,17 @@ public final class CardAsCardTest
         {
             throw new AssertionError( e );
         }
+    }
+
+    /*
+     * @see org.gamegineer.common.core.util.memento.AbstractMementoOriginatorTestCase#initializeMementoOriginator(org.gamegineer.common.core.util.memento.IMementoOriginator)
+     */
+    @Override
+    protected void initializeMementoOriginator(
+        final IMementoOriginator mementoOriginator )
+    {
+        final Card card = (Card)mementoOriginator;
+        card.setLocation( new Point( Integer.MAX_VALUE, Integer.MIN_VALUE ) );
+        card.setOrientation( CardOrientation.FACE );
     }
 }

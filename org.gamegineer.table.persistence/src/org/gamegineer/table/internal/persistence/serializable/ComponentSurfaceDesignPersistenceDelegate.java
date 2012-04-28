@@ -1,5 +1,5 @@
 /*
- * CardSurfaceDesignPersistenceDelegate.java
+ * ComponentSurfaceDesignPersistenceDelegate.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 8, 2010 at 9:14:08 PM.
+ * Created on Apr 26, 2012 at 9:54:17 PM.
  */
 
 package org.gamegineer.table.internal.persistence.serializable;
@@ -24,13 +24,13 @@ package org.gamegineer.table.internal.persistence.serializable;
 import java.io.IOException;
 import net.jcip.annotations.Immutable;
 import org.gamegineer.common.persistence.serializable.AbstractPersistenceDelegate;
-import org.gamegineer.table.internal.core.CardSurfaceDesign;
+import org.gamegineer.table.internal.core.ComponentSurfaceDesign;
 
 /**
- * A persistence delegate for the {@code CardSurfaceDesign} class.
+ * A persistence delegate for the {@code ComponentSurfaceDesign} class.
  */
 @Immutable
-public final class CardSurfaceDesignPersistenceDelegate
+public final class ComponentSurfaceDesignPersistenceDelegate
     extends AbstractPersistenceDelegate
 {
     // ======================================================================
@@ -39,9 +39,9 @@ public final class CardSurfaceDesignPersistenceDelegate
 
     /**
      * Initializes a new instance of the
-     * {@code CardSurfaceDesignPersistenceDelegate} class.
+     * {@code ComponentSurfaceDesignPersistenceDelegate} class.
      */
-    public CardSurfaceDesignPersistenceDelegate()
+    public ComponentSurfaceDesignPersistenceDelegate()
     {
     }
 
@@ -58,9 +58,9 @@ public final class CardSurfaceDesignPersistenceDelegate
         final Object obj )
         throws IOException
     {
-        if( obj instanceof CardSurfaceDesign )
+        if( obj instanceof ComponentSurfaceDesign )
         {
-            return new CardSurfaceDesignProxy( (CardSurfaceDesign)obj );
+            return new ComponentSurfaceDesignProxy( (ComponentSurfaceDesign)obj );
         }
 
         return super.replaceObject( obj );

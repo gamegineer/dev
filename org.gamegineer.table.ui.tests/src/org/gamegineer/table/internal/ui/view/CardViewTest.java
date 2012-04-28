@@ -24,14 +24,15 @@ package org.gamegineer.table.internal.ui.view;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Rectangle;
-import org.gamegineer.table.core.CardSurfaceDesigns;
+import org.gamegineer.table.core.CardOrientation;
+import org.gamegineer.table.core.ComponentSurfaceDesigns;
 import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ICardSurfaceDesign;
+import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.CardModel;
-import org.gamegineer.table.ui.CardSurfaceDesignUIs;
-import org.gamegineer.table.ui.ICardSurfaceDesignUI;
+import org.gamegineer.table.ui.ComponentSurfaceDesignUIs;
+import org.gamegineer.table.ui.IComponentSurfaceDesignUI;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,10 +47,10 @@ public final class CardViewTest
     // ======================================================================
 
     /**
-     * The card surface design user interface for the card back for use in the
-     * test fixture.
+     * The component surface design user interface for the card back for use in
+     * the test fixture.
      */
-    private ICardSurfaceDesignUI backDesignUI_;
+    private IComponentSurfaceDesignUI backDesignUI_;
 
     /** A card model for use in the test fixture. */
     private CardModel cardModel_;
@@ -58,10 +59,10 @@ public final class CardViewTest
     private CardView cardView_;
 
     /**
-     * The card surface design user interface for the card face for use in the
-     * test fixture.
+     * The component surface design user interface for the card face for use in
+     * the test fixture.
      */
-    private ICardSurfaceDesignUI faceDesignUI_;
+    private IComponentSurfaceDesignUI faceDesignUI_;
 
 
     // ======================================================================
@@ -91,12 +92,13 @@ public final class CardViewTest
         throws Exception
     {
         final ITable table = TableFactory.createTable();
-        final ICardSurfaceDesign backDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
-        backDesignUI_ = CardSurfaceDesignUIs.createCardSurfaceDesignUI( backDesign );
-        final ICardSurfaceDesign faceDesign = CardSurfaceDesigns.createUniqueCardSurfaceDesign();
-        faceDesignUI_ = CardSurfaceDesignUIs.createCardSurfaceDesignUI( faceDesign );
+        final IComponentSurfaceDesign backDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
+        backDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( backDesign );
+        final IComponentSurfaceDesign faceDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
+        faceDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( faceDesign );
         final ICard card = table.createCard();
-        card.setSurfaceDesigns( backDesign, faceDesign );
+        card.setSurfaceDesign( CardOrientation.BACK, backDesign );
+        card.setSurfaceDesign( CardOrientation.FACE, faceDesign );
         cardModel_ = new CardModel( card );
         cardView_ = new CardView( cardModel_, backDesignUI_, faceDesignUI_ );
     }
@@ -113,7 +115,6 @@ public final class CardViewTest
         bounds.setBounds( 1010, 2020, 101, 202 );
 
         assertEquals( expectedBounds, cardView_.getBounds() );
-
     }
 
     /**

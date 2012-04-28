@@ -1,6 +1,6 @@
 /*
  * CardPileIncrement.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.List;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardPileLayout;
-import org.gamegineer.table.core.ICardPileBaseDesign;
+import org.gamegineer.table.core.IComponentSurfaceDesign;
 
 /**
  * An incremental change to the state of a card pile.
@@ -57,7 +57,7 @@ public final class CardPileIncrement
      * 
      * @serial The new design of the card pile base.
      */
-    private ICardPileBaseDesign baseDesign_;
+    private IComponentSurfaceDesign baseDesign_;
 
     /**
      * The new card pile base location or {@code null} if unchanged.
@@ -125,7 +125,7 @@ public final class CardPileIncrement
      *         unchanged.
      */
     /* @Nullable */
-    public ICardPileBaseDesign getBaseDesign()
+    public IComponentSurfaceDesign getBaseDesign()
     {
         return baseDesign_;
     }
@@ -190,7 +190,7 @@ public final class CardPileIncrement
      */
     public void setBaseDesign(
         /* @Nullable */
-        final ICardPileBaseDesign baseDesign )
+        final IComponentSurfaceDesign baseDesign )
     {
         baseDesign_ = baseDesign;
     }

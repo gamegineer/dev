@@ -16,22 +16,6 @@
        </property>
 	</scr:component>
 	<scr:component
-			name="org.gamegineer.table.persistence.serializable.cardPileBaseDesignPersistenceDelegate"
-			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
-		<implementation
-				class="org.gamegineer.table.internal.persistence.serializable.CardPileBaseDesignPersistenceDelegate" />
-		<service>
-			<provide
-					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
-		</service>
-		<property
-				name="delegators"
-				type="String">
-			org.gamegineer.table.internal.core.CardPileBaseDesign
-			org.gamegineer.table.internal.persistence.serializable.CardPileBaseDesignProxy
-		</property>
-	</scr:component>
-	<scr:component
 			name="org.gamegineer.table.persistence.serializable.cardPileLayoutPersistenceDelegate"
 			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 		<implementation
@@ -46,11 +30,26 @@
 			org.gamegineer.table.core.CardPileLayout
        </property>
 	</scr:component>
+    <scr:component
+            name="org.gamegineer.table.persistence.serializable.cardPileOrientationPersistenceDelegate"
+            xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+        <implementation
+                class="org.gamegineer.table.internal.persistence.serializable.CardPileOrientationPersistenceDelegate" />
+        <service>
+            <provide
+                    interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
+        </service>
+        <property
+                name="delegators"
+                type="String">
+            org.gamegineer.table.core.CardPileOrientation
+       </property>
+    </scr:component>
 	<scr:component
-			name="org.gamegineer.table.persistence.serializable.cardSurfaceDesignPersistenceDelegate"
+			name="org.gamegineer.table.persistence.serializable.componentSurfaceDesignPersistenceDelegate"
 			xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
 		<implementation
-				class="org.gamegineer.table.internal.persistence.serializable.CardSurfaceDesignPersistenceDelegate" />
+				class="org.gamegineer.table.internal.persistence.serializable.ComponentSurfaceDesignPersistenceDelegate" />
 		<service>
 			<provide
 					interface="org.gamegineer.common.persistence.serializable.IPersistenceDelegate" />
@@ -58,8 +57,8 @@
 		<property
 				name="delegators"
 				type="String">
-			org.gamegineer.table.internal.core.CardSurfaceDesign
-			org.gamegineer.table.internal.persistence.serializable.CardSurfaceDesignProxy
+			org.gamegineer.table.internal.core.ComponentSurfaceDesign
+			org.gamegineer.table.internal.persistence.serializable.ComponentSurfaceDesignProxy
 		</property>
 	</scr:component>
 </root>

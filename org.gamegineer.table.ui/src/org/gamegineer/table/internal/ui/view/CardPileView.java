@@ -33,6 +33,7 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
+import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ICard;
@@ -42,9 +43,8 @@ import org.gamegineer.table.internal.ui.Activator;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
 import org.gamegineer.table.internal.ui.model.CardPileModelEvent;
 import org.gamegineer.table.internal.ui.model.ICardPileModelListener;
-import org.gamegineer.table.ui.ICardPileBaseDesignUI;
-import org.gamegineer.table.ui.ICardSurfaceDesignUI;
-import org.gamegineer.table.ui.ICardSurfaceDesignUIRegistry;
+import org.gamegineer.table.ui.IComponentSurfaceDesignUI;
+import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 
 /**
  * A view of a card pile.
@@ -68,8 +68,8 @@ final class CardPileView
      */
     private static final int VERTICAL_PADDING = 2;
 
-    /** The card pile base design user interface. */
-    private final ICardPileBaseDesignUI baseDesignUI_;
+    /** The component surface design user interface for the card pile base. */
+    private final IComponentSurfaceDesignUI baseDesignUI_;
 
     /** The card pile listener for this view. */
     private ICardPileListener cardPileListener_;
@@ -100,14 +100,14 @@ final class CardPileView
      * @param model
      *        The model associated with this view; must not be {@code null}.
      * @param baseDesignUI
-     *        The card pile base design user interface; must not be {@code null}
-     *        .
+     *        The component surface design user interface for the card pile
+     *        base; must not be {@code null}.
      */
     CardPileView(
         /* @NonNull */
         final CardPileModel model,
         /* @NonNull */
-        final ICardPileBaseDesignUI baseDesignUI )
+        final IComponentSurfaceDesignUI baseDesignUI )
     {
         assert model != null;
         assert baseDesignUI != null;
@@ -215,10 +215,10 @@ final class CardPileView
         assert card != null;
         assert isInitialized();
 
-        final ICardSurfaceDesignUIRegistry cardSurfaceDesignUIRegistry = Activator.getDefault().getCardSurfaceDesignUIRegistry();
-        assert cardSurfaceDesignUIRegistry != null;
-        final ICardSurfaceDesignUI backDesignUI = cardSurfaceDesignUIRegistry.getCardSurfaceDesignUI( card.getBackDesign().getId() );
-        final ICardSurfaceDesignUI faceDesignUI = cardSurfaceDesignUIRegistry.getCardSurfaceDesignUI( card.getFaceDesign().getId() );
+        final IComponentSurfaceDesignUIRegistry componentSurfaceDesignUIRegistry = Activator.getDefault().getComponentSurfaceDesignUIRegistry();
+        assert componentSurfaceDesignUIRegistry != null;
+        final IComponentSurfaceDesignUI backDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( card.getSurfaceDesign( CardOrientation.BACK ).getId() );
+        final IComponentSurfaceDesignUI faceDesignUI = componentSurfaceDesignUIRegistry.getComponentSurfaceDesignUI( card.getSurfaceDesign( CardOrientation.FACE ).getId() );
         final CardView view = new CardView( model_.getCardModel( card ), backDesignUI, faceDesignUI );
         final CardView oldView = cardViews_.put( card, view );
         assert oldView == null;

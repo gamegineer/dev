@@ -36,14 +36,6 @@ public interface ICard
     // ======================================================================
 
     /**
-     * Gets the design on the back of this card.
-     * 
-     * @return The design on the back of this card; never {@code null}.
-     */
-    /* @NonNull */
-    public ICardSurfaceDesign getBackDesign();
-
-    /**
      * Gets the card pile that contains this card.
      * 
      * @return The card pile that contains this card or {@code null} if this
@@ -51,32 +43,4 @@ public interface ICard
      */
     /* @Nullable */
     public ICardPile getCardPile();
-
-    /**
-     * Gets the design on the face of this card.
-     * 
-     * @return The design on the face of this card; never {@code null}.
-     */
-    /* @NonNull */
-    public ICardSurfaceDesign getFaceDesign();
-
-    /**
-     * Sets the surface designs of this card.
-     * 
-     * @param backDesign
-     *        The design on the back of the card; must not be {@code null}.
-     * @param faceDesign
-     *        The design on the face of the card; must not be {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code backDesign} and {@code faceDesign} do not have the same
-     *         size.
-     * @throws java.lang.NullPointerException
-     *         If {@code backDesign} or {@code faceDesign} is {@code null}.
-     */
-    public void setSurfaceDesigns(
-        /* @NonNull */
-        ICardSurfaceDesign backDesign,
-        /* @NonNull */
-        ICardSurfaceDesign faceDesign );
 }

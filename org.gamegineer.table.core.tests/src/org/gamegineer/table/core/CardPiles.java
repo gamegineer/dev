@@ -46,7 +46,7 @@ public final class CardPiles
     // ======================================================================
 
     /**
-     * Creates a new card pile with a unique base design for the specified
+     * Creates a new card pile with unique surface designs for the specified
      * table.
      * 
      * @param table
@@ -64,7 +64,7 @@ public final class CardPiles
         final ITable table )
     {
         final ICardPile cardPile = table.createCardPile();
-        cardPile.setBaseDesign( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
+        cardPile.setSurfaceDesign( CardPileOrientation.BASE, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
         return cardPile;
     }
 }

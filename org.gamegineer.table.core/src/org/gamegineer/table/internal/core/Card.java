@@ -38,13 +38,13 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
 import org.gamegineer.table.core.CardOrientation;
-import org.gamegineer.table.core.CardSurfaceDesignId;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.ICardSurfaceDesign;
 import org.gamegineer.table.core.IComponentListener;
+import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.IContainer;
 
 /**
@@ -65,7 +65,7 @@ final class Card
     private static final String BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME = "backDesign"; //$NON-NLS-1$
 
     /** The default card surface design. */
-    private static final CardSurfaceDesign DEFAULT_SURFACE_DESIGN = new CardSurfaceDesign( CardSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Card.DEFAULT_SURFACE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
+    private static final IComponentSurfaceDesign DEFAULT_SURFACE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.Card.DEFAULT_SURFACE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
 
     /**
      * The name of the memento attribute that stores the design on the face of
@@ -84,7 +84,7 @@ final class Card
 
     /** The design on the back of the card. */
     @GuardedBy( "getLock()" )
-    private ICardSurfaceDesign backDesign_;
+    private IComponentSurfaceDesign backDesign_;
 
     /**
      * The card pile that contains this card or {@code null} if this card is not
@@ -95,7 +95,7 @@ final class Card
 
     /** The design on the face of the card. */
     @GuardedBy( "getLock()" )
-    private ICardSurfaceDesign faceDesign_;
+    private IComponentSurfaceDesign faceDesign_;
 
     /** The collection of component listeners. */
     private final CopyOnWriteArrayList<IComponentListener> listeners_;
@@ -270,11 +270,12 @@ final class Card
 
         final Card card = new Card( tableContext );
 
-        final ICardSurfaceDesign backDesign = MementoUtils.getAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
-        final ICardSurfaceDesign faceDesign = MementoUtils.getAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardSurfaceDesign.class );
+        final IComponentSurfaceDesign backDesign = MementoUtils.getAttribute( memento, BACK_DESIGN_MEMENTO_ATTRIBUTE_NAME, IComponentSurfaceDesign.class );
+        final IComponentSurfaceDesign faceDesign = MementoUtils.getAttribute( memento, FACE_DESIGN_MEMENTO_ATTRIBUTE_NAME, IComponentSurfaceDesign.class );
         try
         {
-            card.setSurfaceDesigns( backDesign, faceDesign );
+            card.setSurfaceDesign( CardOrientation.BACK, backDesign );
+            card.setSurfaceDesign( CardOrientation.FACE, faceDesign );
         }
         catch( final IllegalArgumentException e )
         {
@@ -291,23 +292,6 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.ICard#getBackDesign()
-     */
-    @Override
-    public ICardSurfaceDesign getBackDesign()
-    {
-        getLock().lock();
-        try
-        {
-            return backDesign_;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
      * @see org.gamegineer.table.core.IComponent#getBounds()
      */
     @Override
@@ -316,7 +300,7 @@ final class Card
         getLock().lock();
         try
         {
-            return new Rectangle( location_, backDesign_.getSize() );
+            return new Rectangle( location_, getSize() );
         }
         finally
         {
@@ -348,23 +332,6 @@ final class Card
     public IContainer getContainer()
     {
         return getCardPile();
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ICard#getFaceDesign()
-     */
-    @Override
-    public ICardSurfaceDesign getFaceDesign()
-    {
-        getLock().lock();
-        try
-        {
-            return faceDesign_;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
     }
 
     /*
@@ -421,7 +388,18 @@ final class Card
         getLock().lock();
         try
         {
-            return backDesign_.getSize();
+            if( orientation_ == CardOrientation.BACK )
+            {
+                return backDesign_.getSize();
+            }
+            else if( orientation_ == CardOrientation.FACE )
+            {
+                return faceDesign_.getSize();
+            }
+            else
+            {
+                throw new AssertionError( "unknown card orientation" ); //$NON-NLS-1$
+            }
         }
         finally
         {
@@ -436,6 +414,36 @@ final class Card
     public Collection<ComponentOrientation> getSupportedOrientations()
     {
         return SUPPORTED_ORIENTATIONS;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#getSurfaceDesign(org.gamegineer.table.core.ComponentOrientation)
+     */
+    @Override
+    public IComponentSurfaceDesign getSurfaceDesign(
+        final ComponentOrientation orientation )
+    {
+        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
+        assertArgumentLegal( orientation instanceof CardOrientation, "orientation", NonNlsMessages.Card_orientation_illegal ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            if( orientation == CardOrientation.BACK )
+            {
+                return backDesign_;
+            }
+            else if( orientation == CardOrientation.FACE )
+            {
+                return faceDesign_;
+            }
+
+            throw new AssertionError( "unknown card orientation" ); //$NON-NLS-1$
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /**
@@ -527,7 +535,8 @@ final class Card
         {
             final Card card = fromMemento( tableContext_, memento );
 
-            setSurfaceDesigns( card.getBackDesign(), card.getFaceDesign() );
+            setSurfaceDesign( CardOrientation.BACK, card.getSurfaceDesign( CardOrientation.BACK ) );
+            setSurfaceDesign( CardOrientation.FACE, card.getSurfaceDesign( CardOrientation.FACE ) );
             setLocation( card.getLocation() );
             setOrientation( card.getOrientation() );
         }
@@ -545,7 +554,7 @@ final class Card
         final ComponentOrientation orientation )
     {
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
-        assertArgumentLegal( orientation instanceof CardOrientation, "orientation", NonNlsMessages.Card_setOrientation_orientation_illegal ); //$NON-NLS-1$
+        assertArgumentLegal( orientation instanceof CardOrientation, "orientation", NonNlsMessages.Card_orientation_illegal ); //$NON-NLS-1$
 
         getLock().lock();
         try
@@ -569,22 +578,32 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.ICard#setSurfaceDesigns(org.gamegineer.table.core.ICardSurfaceDesign, org.gamegineer.table.core.ICardSurfaceDesign)
+     * @see org.gamegineer.table.core.IComponent#setSurfaceDesign(org.gamegineer.table.core.ComponentOrientation, org.gamegineer.table.core.IComponentSurfaceDesign)
      */
     @Override
-    public void setSurfaceDesigns(
-        final ICardSurfaceDesign backDesign,
-        final ICardSurfaceDesign faceDesign )
+    public void setSurfaceDesign(
+        final ComponentOrientation orientation,
+        final IComponentSurfaceDesign surfaceDesign )
     {
-        assertArgumentNotNull( backDesign, "backDesign" ); //$NON-NLS-1$
-        assertArgumentNotNull( faceDesign, "faceDesign" ); //$NON-NLS-1$
-        assertArgumentLegal( faceDesign.getSize().equals( backDesign.getSize() ), "faceDesign", NonNlsMessages.Card_setSurfaceDesigns_faceDesign_sizeNotEqual ); //$NON-NLS-1$
+        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
+        assertArgumentLegal( orientation instanceof CardOrientation, "orientation", NonNlsMessages.Card_orientation_illegal ); //$NON-NLS-1$
+        assertArgumentNotNull( surfaceDesign, "surfaceDesign" ); //$NON-NLS-1$
 
         getLock().lock();
         try
         {
-            backDesign_ = backDesign;
-            faceDesign_ = faceDesign;
+            if( orientation == CardOrientation.BACK )
+            {
+                backDesign_ = surfaceDesign;
+            }
+            else if( orientation == CardOrientation.FACE )
+            {
+                faceDesign_ = surfaceDesign;
+            }
+            else
+            {
+                throw new AssertionError( "unknown card orientation" ); //$NON-NLS-1$
+            }
         }
         finally
         {

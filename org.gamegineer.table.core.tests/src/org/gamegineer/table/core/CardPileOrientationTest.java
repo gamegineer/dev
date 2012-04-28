@@ -48,12 +48,12 @@ public final class CardPileOrientationTest
 
     /**
      * Ensures the {@code inverse} method returns the correct value for the
-     * {@link CardPileOrientation#DEFAULT} value.
+     * {@link CardPileOrientation#BASE} value.
      */
     @Test
-    public void testInverse_Default()
+    public void testInverse_Base()
     {
-        assertEquals( CardPileOrientation.DEFAULT, CardPileOrientation.DEFAULT.inverse() );
+        assertEquals( CardPileOrientation.BASE, CardPileOrientation.BASE.inverse() );
     }
 
     /**

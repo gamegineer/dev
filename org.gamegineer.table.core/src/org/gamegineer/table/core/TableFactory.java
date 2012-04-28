@@ -24,8 +24,6 @@ package org.gamegineer.table.core;
 import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import net.jcip.annotations.ThreadSafe;
-import org.gamegineer.table.internal.core.CardPileBaseDesign;
-import org.gamegineer.table.internal.core.CardSurfaceDesign;
 import org.gamegineer.table.internal.core.ComponentSurfaceDesign;
 import org.gamegineer.table.internal.core.Table;
 
@@ -50,120 +48,6 @@ public final class TableFactory
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Creates a new card pile base design.
-     * 
-     * @param id
-     *        The card pile base design identifier; must not be {@code null}.
-     * @param size
-     *        The card pile base design size in table coordinates; no component
-     *        may be negative.
-     * 
-     * @return A new card pile base design; never {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If any component of {@code size} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code id} or {@code size} is {@code null}.
-     */
-    /* @NonNull */
-    public static ICardPileBaseDesign createCardPileBaseDesign(
-        /* @NonNull */
-        final CardPileBaseDesignId id,
-        /* @NonNull */
-        final Dimension size )
-    {
-        assertArgumentNotNull( size, "size" ); //$NON-NLS-1$
-
-        return createCardPileBaseDesign( id, size.width, size.height );
-    }
-
-    /**
-     * Creates a new card pile base design.
-     * 
-     * @param id
-     *        The card pile base design identifier; must not be {@code null}.
-     * @param width
-     *        The card pile base design width in table coordinates; must not be
-     *        negative.
-     * @param height
-     *        The card pile base design height in table coordinates; must not be
-     *        negative.
-     * 
-     * @return A new card pile base design; never {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code width} or {@code height} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
-     */
-    /* @NonNull */
-    public static ICardPileBaseDesign createCardPileBaseDesign(
-        /* @NonNull */
-        final CardPileBaseDesignId id,
-        final int width,
-        final int height )
-    {
-        return new CardPileBaseDesign( id, width, height );
-    }
-
-    /**
-     * Creates a new card surface design.
-     * 
-     * @param id
-     *        The card surface design identifier; must not be {@code null}.
-     * @param size
-     *        The card surface design size in table coordinates; no component
-     *        may be negative.
-     * 
-     * @return A new card surface design; never {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If any component of {@code size} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code id} or {@code size} is {@code null}.
-     */
-    /* @NonNull */
-    public static ICardSurfaceDesign createCardSurfaceDesign(
-        /* @NonNull */
-        final CardSurfaceDesignId id,
-        /* @NonNull */
-        final Dimension size )
-    {
-        assertArgumentNotNull( size, "size" ); //$NON-NLS-1$
-
-        return createCardSurfaceDesign( id, size.width, size.height );
-    }
-
-    /**
-     * Creates a new card surface design.
-     * 
-     * @param id
-     *        The card surface design identifier; must not be {@code null}.
-     * @param width
-     *        The card surface design width in table coordinates; must not be
-     *        negative.
-     * @param height
-     *        The card surface design height in table coordinates; must not be
-     *        negative.
-     * 
-     * @return A new card surface design; never {@code null}.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code width} or {@code height} is negative.
-     * @throws java.lang.NullPointerException
-     *         If {@code id} is {@code null}.
-     */
-    /* @NonNull */
-    public static ICardSurfaceDesign createCardSurfaceDesign(
-        /* @NonNull */
-        final CardSurfaceDesignId id,
-        final int width,
-        final int height )
-    {
-        return new CardSurfaceDesign( id, width, height );
-    }
 
     /**
      * Creates a new component surface design.

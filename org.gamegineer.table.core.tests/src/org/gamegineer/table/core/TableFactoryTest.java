@@ -48,189 +48,99 @@ public final class TableFactoryTest
     // ======================================================================
 
     /**
-     * Ensures the {@code createCardPileBaseDesign(CardPileBaseDesignId,
+     * Ensures the {@code createComponentSurfaceDesign(ComponentSurfaceDesignId,
      * Dimension)} method throws an exception when passed a negative height.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testCreateCardPileBaseDesignFromSize_Height_Negative()
+    public void testCreateComponentSurfaceDesignFromSize_Height_Negative()
     {
-        TableFactory.createCardPileBaseDesign( CardPileBaseDesignId.fromString( "id" ), new Dimension( 0, -1 ) ); //$NON-NLS-1$
+        TableFactory.createComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), new Dimension( 0, -1 ) ); //$NON-NLS-1$
     }
 
     /**
-     * Ensures the {@code createCardPileBaseDesign(CardPileBaseDesignId,
+     * Ensures the {@code createComponentSurfaceDesign(ComponentSurfaceDesignId,
      * Dimension)} method throws an exception when passed a {@code null}
      * identifier.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateCardPileBaseDesignFromSize_Id_Null()
+    public void testCreateComponentSurfaceDesignFromSize_Id_Null()
     {
-        TableFactory.createCardPileBaseDesign( null, new Dimension( 0, 0 ) );
+        TableFactory.createComponentSurfaceDesign( null, new Dimension( 0, 0 ) );
     }
 
     /**
-     * Ensures the {@code createCardPileBaseDesign(CardPileBaseDesignId,
+     * Ensures the {@code createComponentSurfaceDesign(ComponentSurfaceDesignId,
      * Dimension)} method does not return {@code null}.
      */
     @Test
-    public void testCreateCardPileBaseDesignFromSize_ReturnValue_NonNull()
+    public void testCreateComponentSurfaceDesignFromSize_ReturnValue_NonNull()
     {
-        assertNotNull( TableFactory.createCardPileBaseDesign( CardPileBaseDesignId.fromString( "id" ), new Dimension( 0, 0 ) ) ); //$NON-NLS-1$
+        assertNotNull( TableFactory.createComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), new Dimension( 0, 0 ) ) ); //$NON-NLS-1$
     }
 
     /**
-     * Ensures the {@code createCardPileBaseDesign(CardPileBaseDesignId,
+     * Ensures the {@code createComponentSurfaceDesign(ComponentSurfaceDesignId,
      * Dimension)} method throws an exception when passed a {@code null} size.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateCardPileBaseDesignFromSize_Size_Null()
+    public void testCreateComponentSurfaceDesignFromSize_Size_Null()
     {
-        TableFactory.createCardPileBaseDesign( CardPileBaseDesignId.fromString( "id" ), null ); //$NON-NLS-1$
+        TableFactory.createComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), null ); //$NON-NLS-1$
     }
 
     /**
-     * Ensures the {@code createCardPileBaseDesign(CardPileBaseDesignId,
+     * Ensures the {@code createComponentSurfaceDesign(ComponentSurfaceDesignId,
      * Dimension)} method throws an exception when passed a negative width.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testCreateCardPileBaseDesignFromSize_Width_Negative()
+    public void testCreateComponentSurfaceDesignFromSize_Width_Negative()
     {
-        TableFactory.createCardPileBaseDesign( CardPileBaseDesignId.fromString( "id" ), new Dimension( -1, 0 ) ); //$NON-NLS-1$
+        TableFactory.createComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), new Dimension( -1, 0 ) ); //$NON-NLS-1$
     }
 
     /**
-     * Ensures the {@code createCardPileBaseDesign(CardPileBaseDesignId,
-     * Integer, Integer)} method throws an exception when passed a negative
-     * height.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testCreateCardPileBaseDesignFromWidthHeight_Height_Negative()
-    {
-        TableFactory.createCardPileBaseDesign( CardPileBaseDesignId.fromString( "id" ), 0, -1 ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code createCardPileBaseDesign(CardPileBaseDesignId,
-     * Integer, Integer)} method throws an exception when passed a {@code null}
-     * identifier.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateCardPileBaseDesignFromWidthHeight_Id_Null()
-    {
-        TableFactory.createCardPileBaseDesign( null, 0, 0 );
-    }
-
-    /**
-     * Ensures the {@code createCardPileBaseDesign(CardPileBaseDesignId,
-     * Integer, Integer)} method does not return {@code null}.
-     */
-    @Test
-    public void testCreateCardPileBaseDesignFromWidthHeight_ReturnValue_NonNull()
-    {
-        assertNotNull( TableFactory.createCardPileBaseDesign( CardPileBaseDesignId.fromString( "id" ), 0, 0 ) ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code createCardPileBaseDesign(CardPileBaseDesignId,
-     * Integer, Integer)} method throws an exception when passed a negative
-     * width.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testCreateCardPileBaseDesignFromWidthHeight_Width_Negative()
-    {
-        TableFactory.createCardPileBaseDesign( CardPileBaseDesignId.fromString( "id" ), -1, 0 ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code createCardSurfaceDesign(CardSurfaceDesignId,
-     * Dimension)} method throws an exception when passed a negative height.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testCreateCardSurfaceDesignFromSize_Height_Negative()
-    {
-        TableFactory.createCardSurfaceDesign( CardSurfaceDesignId.fromString( "id" ), new Dimension( 0, -1 ) ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code createCardSurfaceDesign(CardSurfaceDesignId,
-     * Dimension)} method throws an exception when passed a {@code null}
-     * identifier.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateCardSurfaceDesignFromSize_Id_Null()
-    {
-        TableFactory.createCardSurfaceDesign( null, new Dimension( 0, 0 ) );
-    }
-
-    /**
-     * Ensures the {@code createCardSurfaceDesign(CardSurfaceDesignId,
-     * Dimension)} method does not return {@code null}.
-     */
-    @Test
-    public void testCreateCardSurfaceDesignFromSize_ReturnValue_NonNull()
-    {
-        assertNotNull( TableFactory.createCardSurfaceDesign( CardSurfaceDesignId.fromString( "id" ), new Dimension( 0, 0 ) ) ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code createCardSurfaceDesign(CardSurfaceDesignId,
-     * Dimension)} method throws an exception when passed a {@code null} size.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testCreateCardSurfaceDesignFromSize_Size_Null()
-    {
-        TableFactory.createCardSurfaceDesign( CardSurfaceDesignId.fromString( "id" ), null ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code createCardSurfaceDesign(CardSurfaceDesignId,
-     * Dimension)} method throws an exception when passed a negative width.
-     */
-    @Test( expected = IllegalArgumentException.class )
-    public void testCreateCardSurfaceDesignFromSize_Width_Negative()
-    {
-        TableFactory.createCardSurfaceDesign( CardSurfaceDesignId.fromString( "id" ), new Dimension( -1, 0 ) ); //$NON-NLS-1$
-    }
-
-    /**
-     * Ensures the {@code createCardSurfaceDesign(CardSurfaceDesignId, Integer,
+     * Ensures the
+     * {@code createComponentSurfaceDesign(ComponentSurfaceDesignId, Integer,
      * Integer)} method throws an exception when passed a negative height.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testCreateCardSurfaceDesignFromWidthHeight_Height_Negative()
+    public void testCreateComponentSurfaceDesignFromWidthHeight_Height_Negative()
     {
-        TableFactory.createCardSurfaceDesign( CardSurfaceDesignId.fromString( "id" ), 0, -1 ); //$NON-NLS-1$
+        TableFactory.createComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), 0, -1 ); //$NON-NLS-1$
     }
 
     /**
-     * Ensures the {@code createCardSurfaceDesign(CardSurfaceDesignId, Integer,
+     * Ensures the
+     * {@code createComponentSurfaceDesign(ComponentSurfaceDesignId, Integer,
      * Integer)} method throws an exception when passed a {@code null}
      * identifier.
      */
     @Test( expected = NullPointerException.class )
-    public void testCreateCardSurfaceDesignFromWidthHeight_Id_Null()
+    public void testCreateComponentSurfaceDesignFromWidthHeight_Id_Null()
     {
-        TableFactory.createCardSurfaceDesign( null, 0, 0 );
+        TableFactory.createComponentSurfaceDesign( null, 0, 0 );
     }
 
     /**
-     * Ensures the {@code createCardSurfaceDesign(CardSurfaceDesignId, Integer,
+     * Ensures the
+     * {@code createComponentSurfaceDesign(ComponentSurfaceDesignId, Integer,
      * Integer)} method does not return {@code null}.
      */
     @Test
-    public void testCreateCardSurfaceDesignFromWidthHeight_ReturnValue_NonNull()
+    public void testCreateComponentSurfaceDesignFromWidthHeight_ReturnValue_NonNull()
     {
-        assertNotNull( TableFactory.createCardSurfaceDesign( CardSurfaceDesignId.fromString( "id" ), 0, 0 ) ); //$NON-NLS-1$
+        assertNotNull( TableFactory.createComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), 0, 0 ) ); //$NON-NLS-1$
     }
 
     /**
-     * Ensures the {@code createCardSurfaceDesign(CardSurfaceDesignId, Integer,
+     * Ensures the
+     * {@code createComponentSurfaceDesign(ComponentSurfaceDesignId, Integer,
      * Integer)} method throws an exception when passed a negative width.
      */
     @Test( expected = IllegalArgumentException.class )
-    public void testCreateCardSurfaceDesignFromWidthHeight_Width_Negative()
+    public void testCreateComponentSurfaceDesignFromWidthHeight_Width_Negative()
     {
-        TableFactory.createCardSurfaceDesign( CardSurfaceDesignId.fromString( "id" ), -1, 0 ); //$NON-NLS-1$
+        TableFactory.createComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "id" ), -1, 0 ); //$NON-NLS-1$
     }
 
     /**

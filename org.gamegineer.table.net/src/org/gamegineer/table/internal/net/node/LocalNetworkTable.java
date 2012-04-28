@@ -31,6 +31,7 @@ import net.jcip.annotations.Immutable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardOrientation;
 import org.gamegineer.table.core.CardPileEvent;
+import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ICard;
@@ -421,7 +422,8 @@ final class LocalNetworkTable
                     {
                         cardIndex = cardPile.getComponentIndex( card );
                         cardPileIndex = table.getCardPileIndex( cardPile );
-                        cardIncrement.setSurfaceDesigns( card.getBackDesign(), card.getFaceDesign() );
+                        cardIncrement.setBackDesign( card.getSurfaceDesign( CardOrientation.BACK ) );
+                        cardIncrement.setFaceDesign( card.getSurfaceDesign( CardOrientation.FACE ) );
                     }
                 }
             }
@@ -666,7 +668,7 @@ final class LocalNetworkTable
                 if( table != null )
                 {
                     cardPileIndex = table.getCardPileIndex( cardPile );
-                    cardPileIncrement.setBaseDesign( cardPile.getBaseDesign() );
+                    cardPileIncrement.setBaseDesign( cardPile.getSurfaceDesign( CardPileOrientation.BASE ) );
                 }
             }
             finally

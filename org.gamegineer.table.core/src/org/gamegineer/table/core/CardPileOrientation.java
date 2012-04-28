@@ -37,8 +37,8 @@ public final class CardPileOrientation
     /** Serializable class version number. */
     private static final long serialVersionUID = -3829915723798616585L;
 
-    /** The default card pile orientation. */
-    public static final CardPileOrientation DEFAULT = new CardPileOrientation( "default", 0 ); //$NON-NLS-1$
+    /** The card pile base orientation. */
+    public static final CardPileOrientation BASE = new CardPileOrientation( "base", 0 ); //$NON-NLS-1$
 
 
     // ======================================================================
@@ -77,9 +77,9 @@ public final class CardPileOrientation
     @Override
     public ComponentOrientation inverse()
     {
-        if( this == DEFAULT )
+        if( this == BASE )
         {
-            return DEFAULT;
+            return BASE;
         }
 
         throw new AssertionError( String.format( "unknown card pile orientation (%s)", name() ) ); //$NON-NLS-1$

@@ -1,6 +1,6 @@
 /*
  * CardIncrement.java
- * Copyright 2008-2011 Gamegineer.org
+ * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,12 +21,11 @@
 
 package org.gamegineer.table.internal.net.node;
 
-import static org.gamegineer.common.core.runtime.Assert.assertArgumentLegal;
 import java.awt.Point;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
 import org.gamegineer.table.core.CardOrientation;
-import org.gamegineer.table.core.ICardSurfaceDesign;
+import org.gamegineer.table.core.IComponentSurfaceDesign;
 
 /**
  * An incremental change to the state of a card.
@@ -47,14 +46,14 @@ public final class CardIncrement
      * 
      * @serial The new design on the back of the card.
      */
-    private ICardSurfaceDesign backDesign_;
+    private IComponentSurfaceDesign backDesign_;
 
     /**
      * The new design on the face of the card or {@code null} if unchanged.
      * 
      * @serial The new design on the face of the card.
      */
-    private ICardSurfaceDesign faceDesign_;
+    private IComponentSurfaceDesign faceDesign_;
 
     /**
      * The new card location or {@code null} if unchanged.
@@ -98,7 +97,7 @@ public final class CardIncrement
      *         back design is unchanged.
      */
     /* @Nullable */
-    public ICardSurfaceDesign getBackDesign()
+    public IComponentSurfaceDesign getBackDesign()
     {
         return backDesign_;
     }
@@ -110,7 +109,7 @@ public final class CardIncrement
      *         face design is unchanged.
      */
     /* @Nullable */
-    public ICardSurfaceDesign getFaceDesign()
+    public IComponentSurfaceDesign getFaceDesign()
     {
         return faceDesign_;
     }
@@ -141,6 +140,34 @@ public final class CardIncrement
     }
 
     /**
+     * Sets the new design on the back of the card.
+     * 
+     * @param backDesign
+     *        The new design on the back of the card or {@code null} if the back
+     *        design is unchanged.
+     */
+    public void setBackDesign(
+        /* @Nullable */
+        final IComponentSurfaceDesign backDesign )
+    {
+        backDesign_ = backDesign;
+    }
+
+    /**
+     * Sets the new design on the face of the card.
+     * 
+     * @param faceDesign
+     *        The new design on the face of the card or {@code null} if the face
+     *        design is unchanged.
+     */
+    public void setFaceDesign(
+        /* @Nullable */
+        final IComponentSurfaceDesign faceDesign )
+    {
+        faceDesign_ = faceDesign;
+    }
+
+    /**
      * Sets the new card location.
      * 
      * @param location
@@ -167,32 +194,5 @@ public final class CardIncrement
         final CardOrientation orientation )
     {
         orientation_ = orientation;
-    }
-
-    /**
-     * Sets the new card surface designs.
-     * 
-     * @param backDesign
-     *        The new design on the back of the card or {@code null} if the back
-     *        design is unchanged.
-     * @param faceDesign
-     *        The new design on the face of the card or {@code null} if the face
-     *        design is unchanged.
-     * 
-     * @throws java.lang.IllegalArgumentException
-     *         If {@code backDesign} is {@code null} and {@code faceDesign} is
-     *         not {@code null}; or if {@code backDesign} is not {@code null}
-     *         and {@code faceDesign} is {@code null}.
-     */
-    public void setSurfaceDesigns(
-        /* @Nullable */
-        final ICardSurfaceDesign backDesign,
-        /* @Nullable */
-        final ICardSurfaceDesign faceDesign )
-    {
-        assertArgumentLegal( (backDesign != null) ? (faceDesign != null) : (faceDesign == null), "faceDesign" ); //$NON-NLS-1$
-
-        backDesign_ = backDesign;
-        faceDesign_ = faceDesign;
     }
 }

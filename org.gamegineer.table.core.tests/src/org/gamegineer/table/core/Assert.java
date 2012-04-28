@@ -23,6 +23,7 @@ package org.gamegineer.table.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import java.util.List;
 import net.jcip.annotations.ThreadSafe;
 
@@ -47,40 +48,6 @@ public final class Assert
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Asserts that two cards are equal.
-     * 
-     * @param expected
-     *        The expected value; may be {@code null}.
-     * @param actual
-     *        The actual value; may be {@code null}.
-     * 
-     * @throws java.lang.AssertionError
-     *         If the two values are not equal.
-     */
-    public static void assertCardEquals(
-        /* @Nullable */
-        final ICard expected,
-        /* @Nullable */
-        final ICard actual )
-    {
-        if( expected == null )
-        {
-            assertNull( actual );
-        }
-        else if( actual == null )
-        {
-            assertNull( expected );
-        }
-        else
-        {
-            assertEquals( expected.getBackDesign(), actual.getBackDesign() );
-            assertEquals( expected.getFaceDesign(), actual.getFaceDesign() );
-            assertEquals( expected.getLocation(), actual.getLocation() );
-            assertEquals( expected.getOrientation(), actual.getOrientation() );
-        }
-    }
 
     /**
      * Asserts that two card piles are equal.
@@ -109,17 +76,87 @@ public final class Assert
         }
         else
         {
-            assertEquals( expected.getBaseDesign(), actual.getBaseDesign() );
+            assertComponentEquals( expected, actual );
             assertEquals( expected.getBaseLocation(), actual.getBaseLocation() );
             assertEquals( expected.getLayout(), actual.getLayout() );
+        }
+    }
 
-            final List<IComponent> expectedComponents = expected.getComponents();
-            final List<IComponent> actualComponents = actual.getComponents();
-            assertEquals( expectedComponents.size(), actualComponents.size() );
-            for( int index = 0, size = expectedComponents.size(); index < size; ++index )
+    /**
+     * Asserts that two components are equal.
+     * 
+     * @param expected
+     *        The expected value; may be {@code null}.
+     * @param actual
+     *        The actual value; may be {@code null}.
+     * 
+     * @throws java.lang.AssertionError
+     *         If the two values are not equal.
+     */
+    public static void assertComponentEquals(
+        /* @Nullable */
+        final IComponent expected,
+        /* @Nullable */
+        final IComponent actual )
+    {
+        if( expected == null )
+        {
+            assertNull( actual );
+        }
+        else if( actual == null )
+        {
+            assertNull( expected );
+        }
+        else
+        {
+            assertEquals( expected.getBounds(), actual.getBounds() );
+            assertEquals( expected.getOrientation(), actual.getOrientation() );
+
+            assertEquals( expected.getSupportedOrientations(), actual.getSupportedOrientations() );
+            for( final ComponentOrientation orientation : expected.getSupportedOrientations() )
             {
-                assertCardEquals( (ICard)expectedComponents.get( index ), (ICard)actualComponents.get( index ) ); // FIXME: remove cast
+                assertEquals( expected.getSurfaceDesign( orientation ), actual.getSurfaceDesign( orientation ) );
             }
+
+            if( expected instanceof IContainer )
+            {
+                assertTrue( actual instanceof IContainer );
+                assertContainerEquals( (IContainer)expected, (IContainer)actual );
+            }
+            else if( actual instanceof IContainer )
+            {
+                assertTrue( expected instanceof IContainer );
+                assertContainerEquals( (IContainer)expected, (IContainer)actual );
+            }
+        }
+    }
+
+    /**
+     * Asserts that two containers are equal.
+     * 
+     * @param expected
+     *        The expected value; must not be {@code null}.
+     * @param actual
+     *        The actual value; must not be {@code null}.
+     * 
+     * @throws java.lang.AssertionError
+     *         If the two values are not equal.
+     */
+    private static void assertContainerEquals(
+        /* @NonNull */
+        final IContainer expected,
+        /* @NonNull */
+        final IContainer actual )
+    {
+        assert expected != null;
+        assert actual != null;
+
+        final List<IComponent> expectedComponents = expected.getComponents();
+        final List<IComponent> actualComponents = actual.getComponents();
+        assertEquals( expectedComponents.size(), actualComponents.size() );
+        for( int index = 0, size = expectedComponents.size(); index < size; ++index )
+        {
+            assertComponentEquals( expectedComponents.get( index ), actualComponents.get( index ) );
         }
     }
 

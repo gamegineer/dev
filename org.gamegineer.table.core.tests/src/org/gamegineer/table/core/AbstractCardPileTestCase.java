@@ -131,7 +131,7 @@ public abstract class AbstractCardPileTestCase
 
         super.setUp();
 
-        getCardPile().setBaseDesign( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
+        getCardPile().setSurfaceDesign( CardPileOrientation.BASE, ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign() );
     }
 
     /**
@@ -176,15 +176,6 @@ public abstract class AbstractCardPileTestCase
         getCardPile().setLayout( CardPileLayout.ACCORDIAN_DOWN );
 
         mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code getBaseDesign} method does not return {@code null}.
-     */
-    @Test
-    public void testGetBaseDesign_ReturnValue_NonNull()
-    {
-        assertNotNull( getCardPile().getBaseDesign() );
     }
 
     /**
@@ -351,36 +342,6 @@ public abstract class AbstractCardPileTestCase
         {
             assertNull( actualComponent.getContainer() );
         }
-    }
-
-    /**
-     * Ensures the {@code setBaseDesign} method fires a component surface design
-     * changed event.
-     */
-    @Test
-    public void testSetBaseDesign_FiresComponentSurfaceDesignChangedEvent()
-    {
-        final IComponentListener componentListener = mocksControl_.createMock( IComponentListener.class );
-        componentListener.componentSurfaceDesignChanged( EasyMock.notNull( CardPileEvent.class ) );
-        final ICardPileListener cardPileListener = mocksControl_.createMock( ICardPileListener.class );
-        cardPileListener.componentSurfaceDesignChanged( EasyMock.notNull( CardPileEvent.class ) );
-        mocksControl_.replay();
-        getCardPile().addComponentListener( componentListener );
-        getCardPile().addCardPileListener( cardPileListener );
-
-        getCardPile().setBaseDesign( CardPileBaseDesigns.createUniqueCardPileBaseDesign() );
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code setBaseDesign} method throws an exception when passed
-     * a {@code null} base design.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetBaseDesign_BaseDesign_Null()
-    {
-        getCardPile().setBaseDesign( null );
     }
 
     /**

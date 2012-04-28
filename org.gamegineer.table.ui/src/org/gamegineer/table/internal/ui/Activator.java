@@ -29,10 +29,8 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.app.IBranding;
 import org.gamegineer.common.ui.help.IHelpSystem;
-import org.gamegineer.table.core.ICardPileBaseDesignRegistry;
-import org.gamegineer.table.core.ICardSurfaceDesignRegistry;
-import org.gamegineer.table.ui.ICardPileBaseDesignUIRegistry;
-import org.gamegineer.table.ui.ICardSurfaceDesignUIRegistry;
+import org.gamegineer.table.core.IComponentSurfaceDesignRegistry;
+import org.gamegineer.table.ui.IComponentSurfaceDesignUIRegistry;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
@@ -66,21 +64,13 @@ public final class Activator
     @GuardedBy( "lock_" )
     private BundleImages bundleImages_;
 
-    /** The card pile base design registry service tracker. */
+    /** The component surface design registry service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker<ICardPileBaseDesignRegistry, ICardPileBaseDesignRegistry> cardPileBaseDesignRegistryTracker_;
+    private ServiceTracker<IComponentSurfaceDesignRegistry, IComponentSurfaceDesignRegistry> componentSurfaceDesignRegistryTracker_;
 
-    /** The card pile base design user interface registry service tracker. */
+    /** The component surface design user interface registry service tracker. */
     @GuardedBy( "lock_" )
-    private ServiceTracker<ICardPileBaseDesignUIRegistry, ICardPileBaseDesignUIRegistry> cardPileBaseDesignUIRegistryTracker_;
-
-    /** The card surface design registry service tracker. */
-    @GuardedBy( "lock_" )
-    private ServiceTracker<ICardSurfaceDesignRegistry, ICardSurfaceDesignRegistry> cardSurfaceDesignRegistryTracker_;
-
-    /** The card surface design user interface registry service tracker. */
-    @GuardedBy( "lock_" )
-    private ServiceTracker<ICardSurfaceDesignUIRegistry, ICardSurfaceDesignUIRegistry> cardSurfaceDesignUIRegistryTracker_;
+    private ServiceTracker<IComponentSurfaceDesignUIRegistry, IComponentSurfaceDesignUIRegistry> componentSurfaceDesignUIRegistryTracker_;
 
     /** The executor service tracker. */
     @GuardedBy( "lock_" )
@@ -111,10 +101,8 @@ public final class Activator
         brandingTracker_ = null;
         bundleContext_ = null;
         bundleImages_ = null;
-        cardPileBaseDesignRegistryTracker_ = null;
-        cardPileBaseDesignUIRegistryTracker_ = null;
-        cardSurfaceDesignRegistryTracker_ = null;
-        cardSurfaceDesignUIRegistryTracker_ = null;
+        componentSurfaceDesignRegistryTracker_ = null;
+        componentSurfaceDesignUIRegistryTracker_ = null;
         executorServiceTracker_ = null;
         helpSystemTracker_ = null;
         preferencesServiceTracker_ = null;
@@ -185,96 +173,49 @@ public final class Activator
     }
 
     /**
-     * Gets the card pile base design registry service.
+     * Gets the component surface design registry service.
      * 
-     * @return The card pile base design registry service or {@code null} if no
-     *         card pile base design registry service is available.
+     * @return The component surface design registry service or {@code null} if
+     *         no component surface design registry service is available.
      */
     /* @Nullable */
-    public ICardPileBaseDesignRegistry getCardPileBaseDesignRegistry()
+    public IComponentSurfaceDesignRegistry getComponentSurfaceDesignRegistry()
     {
         synchronized( lock_ )
         {
             assert bundleContext_ != null;
 
-            if( cardPileBaseDesignRegistryTracker_ == null )
+            if( componentSurfaceDesignRegistryTracker_ == null )
             {
-                cardPileBaseDesignRegistryTracker_ = new ServiceTracker<ICardPileBaseDesignRegistry, ICardPileBaseDesignRegistry>( bundleContext_, ICardPileBaseDesignRegistry.class, null );
-                cardPileBaseDesignRegistryTracker_.open();
+                componentSurfaceDesignRegistryTracker_ = new ServiceTracker<IComponentSurfaceDesignRegistry, IComponentSurfaceDesignRegistry>( bundleContext_, IComponentSurfaceDesignRegistry.class, null );
+                componentSurfaceDesignRegistryTracker_.open();
             }
 
-            return cardPileBaseDesignRegistryTracker_.getService();
+            return componentSurfaceDesignRegistryTracker_.getService();
         }
     }
 
     /**
-     * Gets the card pile base design user interface registry service.
+     * Gets the component surface design user interface registry service.
      * 
-     * @return The card pile base design user interface registry service or
-     *         {@code null} if no card pile base design user interface registry
-     *         service is available.
+     * @return The component surface design user interface registry service or
+     *         {@code null} if no component surface design user interface
+     *         registry service is available.
      */
     /* @Nullable */
-    public ICardPileBaseDesignUIRegistry getCardPileBaseDesignUIRegistry()
+    public IComponentSurfaceDesignUIRegistry getComponentSurfaceDesignUIRegistry()
     {
         synchronized( lock_ )
         {
             assert bundleContext_ != null;
 
-            if( cardPileBaseDesignUIRegistryTracker_ == null )
+            if( componentSurfaceDesignUIRegistryTracker_ == null )
             {
-                cardPileBaseDesignUIRegistryTracker_ = new ServiceTracker<ICardPileBaseDesignUIRegistry, ICardPileBaseDesignUIRegistry>( bundleContext_, ICardPileBaseDesignUIRegistry.class, null );
-                cardPileBaseDesignUIRegistryTracker_.open();
+                componentSurfaceDesignUIRegistryTracker_ = new ServiceTracker<IComponentSurfaceDesignUIRegistry, IComponentSurfaceDesignUIRegistry>( bundleContext_, IComponentSurfaceDesignUIRegistry.class, null );
+                componentSurfaceDesignUIRegistryTracker_.open();
             }
 
-            return cardPileBaseDesignUIRegistryTracker_.getService();
-        }
-    }
-
-    /**
-     * Gets the card surface design registry service.
-     * 
-     * @return The card surface design registry service or {@code null} if no
-     *         card surface design registry service is available.
-     */
-    /* @Nullable */
-    public ICardSurfaceDesignRegistry getCardSurfaceDesignRegistry()
-    {
-        synchronized( lock_ )
-        {
-            assert bundleContext_ != null;
-
-            if( cardSurfaceDesignRegistryTracker_ == null )
-            {
-                cardSurfaceDesignRegistryTracker_ = new ServiceTracker<ICardSurfaceDesignRegistry, ICardSurfaceDesignRegistry>( bundleContext_, ICardSurfaceDesignRegistry.class, null );
-                cardSurfaceDesignRegistryTracker_.open();
-            }
-
-            return cardSurfaceDesignRegistryTracker_.getService();
-        }
-    }
-
-    /**
-     * Gets the card surface design user interface registry service.
-     * 
-     * @return The card surface design user interface registry service or
-     *         {@code null} if no card surface design user interface registry
-     *         service is available.
-     */
-    /* @Nullable */
-    public ICardSurfaceDesignUIRegistry getCardSurfaceDesignUIRegistry()
-    {
-        synchronized( lock_ )
-        {
-            assert bundleContext_ != null;
-
-            if( cardSurfaceDesignUIRegistryTracker_ == null )
-            {
-                cardSurfaceDesignUIRegistryTracker_ = new ServiceTracker<ICardSurfaceDesignUIRegistry, ICardSurfaceDesignUIRegistry>( bundleContext_, ICardSurfaceDesignUIRegistry.class, null );
-                cardSurfaceDesignUIRegistryTracker_.open();
-            }
-
-            return cardSurfaceDesignUIRegistryTracker_.getService();
+            return componentSurfaceDesignUIRegistryTracker_.getService();
         }
     }
 
@@ -483,25 +424,15 @@ public final class Activator
                 bundleImages_.dispose();
                 bundleImages_ = null;
             }
-            if( cardPileBaseDesignRegistryTracker_ != null )
+            if( componentSurfaceDesignRegistryTracker_ != null )
             {
-                cardPileBaseDesignRegistryTracker_.close();
-                cardPileBaseDesignRegistryTracker_ = null;
+                componentSurfaceDesignRegistryTracker_.close();
+                componentSurfaceDesignRegistryTracker_ = null;
             }
-            if( cardPileBaseDesignUIRegistryTracker_ != null )
+            if( componentSurfaceDesignUIRegistryTracker_ != null )
             {
-                cardPileBaseDesignUIRegistryTracker_.close();
-                cardPileBaseDesignUIRegistryTracker_ = null;
-            }
-            if( cardSurfaceDesignRegistryTracker_ != null )
-            {
-                cardSurfaceDesignRegistryTracker_.close();
-                cardSurfaceDesignRegistryTracker_ = null;
-            }
-            if( cardSurfaceDesignUIRegistryTracker_ != null )
-            {
-                cardSurfaceDesignUIRegistryTracker_.close();
-                cardSurfaceDesignUIRegistryTracker_ = null;
+                componentSurfaceDesignUIRegistryTracker_.close();
+                componentSurfaceDesignUIRegistryTracker_ = null;
             }
             if( executorServiceTracker_ != null )
             {

@@ -53,14 +53,6 @@ public interface ICardPile
         ICardPileListener listener );
 
     /**
-     * Gets the base design of this card pile.
-     * 
-     * @return The base design of this card pile; never {@code null}.
-     */
-    /* @NonNull */
-    public ICardPileBaseDesign getBaseDesign();
-
-    /**
      * Gets the base location of this card pile in table coordinates.
      * 
      * @return The base location of this card pile in table coordinates; never
@@ -100,19 +92,6 @@ public interface ICardPile
     public void removeCardPileListener(
         /* @NonNull */
         ICardPileListener listener );
-
-    /**
-     * Sets the base design of this card pile.
-     * 
-     * @param baseDesign
-     *        The base design of this card pile; must not be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code baseDesign} is {@code null}.
-     */
-    public void setBaseDesign(
-        /* @NonNull */
-        ICardPileBaseDesign baseDesign );
 
     /**
      * Sets the base location of this card pile in table coordinates.

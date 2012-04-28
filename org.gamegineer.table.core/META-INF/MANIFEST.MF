@@ -17,7 +17,5 @@ Import-Package: net.jcip.annotations;version="1.0.0",
  org.gamegineer.common.core.util.memento;version="[0.13.0,0.14.0)",
  org.osgi.framework;version="1.6.0"
 Require-Bundle: org.eclipse.equinox.registry;bundle-version="3.5.101"
-Service-Component: OSGI-INF/cardPileBaseDesignRegistry.xml,
- OSGI-INF/cardPileBaseDesignRegistryExtensionPointAdapter.xml,
- OSGI-INF/cardSurfaceDesignRegistry.xml,
- OSGI-INF/cardSurfaceDesignRegistryExtensionPointAdapter.xml
+Service-Component: OSGI-INF/componentSurfaceDesignRegistry.xml,
+ OSGI-INF/componentSurfaceDesignRegistryExtensionPointAdapter.xml

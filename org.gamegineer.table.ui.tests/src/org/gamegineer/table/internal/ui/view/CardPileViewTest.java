@@ -24,14 +24,15 @@ package org.gamegineer.table.internal.ui.view;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.awt.Rectangle;
-import org.gamegineer.table.core.CardPileBaseDesigns;
+import org.gamegineer.table.core.CardPileOrientation;
+import org.gamegineer.table.core.ComponentSurfaceDesigns;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.ICardPileBaseDesign;
+import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.ITable;
 import org.gamegineer.table.core.TableFactory;
 import org.gamegineer.table.internal.ui.model.CardPileModel;
-import org.gamegineer.table.ui.CardPileBaseDesignUIs;
-import org.gamegineer.table.ui.ICardPileBaseDesignUI;
+import org.gamegineer.table.ui.ComponentSurfaceDesignUIs;
+import org.gamegineer.table.ui.IComponentSurfaceDesignUI;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,8 +46,8 @@ public final class CardPileViewTest
     // Fields
     // ======================================================================
 
-    /** The card pile base design user interface. */
-    private ICardPileBaseDesignUI cardPileBaseDesignUI_;
+    /** The component surface design user interface for the card pile base. */
+    private IComponentSurfaceDesignUI baseDesignUI_;
 
     /** A card pile model for use in the test fixture. */
     private CardPileModel cardPileModel_;
@@ -82,12 +83,12 @@ public final class CardPileViewTest
         throws Exception
     {
         final ITable table = TableFactory.createTable();
-        final ICardPileBaseDesign cardPileBaseDesign = CardPileBaseDesigns.createUniqueCardPileBaseDesign();
-        cardPileBaseDesignUI_ = CardPileBaseDesignUIs.createCardPileBaseDesignUI( cardPileBaseDesign );
+        final IComponentSurfaceDesign baseDesign = ComponentSurfaceDesigns.createUniqueComponentSurfaceDesign();
+        baseDesignUI_ = ComponentSurfaceDesignUIs.createComponentSurfaceDesignUI( baseDesign );
         final ICardPile cardPile = table.createCardPile();
-        cardPile.setBaseDesign( cardPileBaseDesign );
+        cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
         cardPileModel_ = new CardPileModel( cardPile );
-        cardPileView_ = new CardPileView( cardPileModel_, cardPileBaseDesignUI_ );
+        cardPileView_ = new CardPileView( cardPileModel_, baseDesignUI_ );
     }
 
     /**
@@ -102,7 +103,6 @@ public final class CardPileViewTest
         bounds.setBounds( 1010, 2020, 101, 202 );
 
         assertEquals( expectedBounds, cardPileView_.getBounds() );
-
     }
 
     /**

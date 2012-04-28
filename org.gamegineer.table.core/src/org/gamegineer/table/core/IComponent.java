@@ -112,6 +112,27 @@ public interface IComponent
     public Collection<ComponentOrientation> getSupportedOrientations();
 
     /**
+     * Gets the design on the surface of this component associated with the
+     * specified orientation.
+     * 
+     * @param orientation
+     *        The surface orientation; must not be {@code null}.
+     * 
+     * @return The design on the surface of this component associated with the
+     *         specified orientation; never {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code orientation} is not a legal orientation for this
+     *         component.
+     * @throws java.lang.NullPointerException
+     *         If {@code orientation} is {@code null}.
+     */
+    /* @NonNull */
+    public IComponentSurfaceDesign getSurfaceDesign(
+        /* @NonNull */
+        ComponentOrientation orientation );
+
+    /**
      * Removes the specified component listener from this component.
      * 
      * @param listener
@@ -155,4 +176,26 @@ public interface IComponent
     public void setOrientation(
         /* @NonNull */
         ComponentOrientation orientation );
+
+    /**
+     * Sets the design on the surface of this component associated with the
+     * specified orientation.
+     * 
+     * @param orientation
+     *        The surface orientation; must not be {@code null}.
+     * @param surfaceDesign
+     *        The design on the surface of this component associated with the
+     *        specified orientation; must not be {@code null}.
+     * 
+     * @throws java.lang.IllegalArgumentException
+     *         If {@code orientation} is not a legal orientation for this
+     *         component.
+     * @throws java.lang.NullPointerException
+     *         If {@code orientation} or {@code surfaceDesign} is {@code null}.
+     */
+    public void setSurfaceDesign(
+        /* @NonNull */
+        ComponentOrientation orientation,
+        /* @NonNull */
+        IComponentSurfaceDesign surfaceDesign );
 }

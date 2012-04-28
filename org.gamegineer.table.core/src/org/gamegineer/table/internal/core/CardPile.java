@@ -40,19 +40,19 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.Immutable;
 import net.jcip.annotations.ThreadSafe;
 import org.gamegineer.common.core.util.memento.MementoException;
-import org.gamegineer.table.core.CardPileBaseDesignId;
 import org.gamegineer.table.core.CardPileEvent;
 import org.gamegineer.table.core.CardPileLayout;
 import org.gamegineer.table.core.CardPileOrientation;
 import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ContainerContentChangedEvent;
 import org.gamegineer.table.core.ICard;
 import org.gamegineer.table.core.ICardPile;
-import org.gamegineer.table.core.ICardPileBaseDesign;
 import org.gamegineer.table.core.ICardPileListener;
 import org.gamegineer.table.core.IComponent;
 import org.gamegineer.table.core.IComponentListener;
+import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.IContainer;
 import org.gamegineer.table.core.ITable;
 
@@ -92,7 +92,7 @@ final class CardPile
     private static final int CARDS_PER_STACK_LEVEL = 10;
 
     /** The default card pile base design. */
-    private static final CardPileBaseDesign DEFAULT_BASE_DESIGN = new CardPileBaseDesign( CardPileBaseDesignId.fromString( "org.gamegineer.table.internal.core.CardPile.DEFAULT_BASE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
+    private static final IComponentSurfaceDesign DEFAULT_BASE_DESIGN = new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( "org.gamegineer.table.internal.core.CardPile.DEFAULT_BASE_DESIGN" ), 0, 0 ); //$NON-NLS-1$
 
     /**
      * The name of the memento attribute that stores the card pile layout.
@@ -107,7 +107,7 @@ final class CardPile
 
     /** The design of the card pile base. */
     @GuardedBy( "getLock()" )
-    private ICardPileBaseDesign baseDesign_;
+    private IComponentSurfaceDesign baseDesign_;
 
     /** The location of the card pile base in table coordinates. */
     @GuardedBy( "getLock()" )
@@ -511,8 +511,8 @@ final class CardPile
 
         final CardPile cardPile = new CardPile( tableContext );
 
-        final ICardPileBaseDesign baseDesign = MementoUtils.getAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, ICardPileBaseDesign.class );
-        cardPile.setBaseDesign( baseDesign );
+        final IComponentSurfaceDesign baseDesign = MementoUtils.getAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, IComponentSurfaceDesign.class );
+        cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
 
         final Point location = MementoUtils.getAttribute( memento, BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
         cardPile.setLocation( location );
@@ -528,23 +528,6 @@ final class CardPile
         }
 
         return cardPile;
-    }
-
-    /*
-     * @see org.gamegineer.table.core.ICardPile#getBaseDesign()
-     */
-    @Override
-    public ICardPileBaseDesign getBaseDesign()
-    {
-        getLock().lock();
-        try
-        {
-            return baseDesign_;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
     }
 
     /*
@@ -819,7 +802,7 @@ final class CardPile
     @Override
     public ComponentOrientation getOrientation()
     {
-        return CardPileOrientation.DEFAULT;
+        return CardPileOrientation.BASE;
     }
 
     /*
@@ -838,6 +821,32 @@ final class CardPile
     public Collection<ComponentOrientation> getSupportedOrientations()
     {
         return SUPPORTED_ORIENTATIONS;
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#getSurfaceDesign(org.gamegineer.table.core.ComponentOrientation)
+     */
+    @Override
+    public IComponentSurfaceDesign getSurfaceDesign(
+        final ComponentOrientation orientation )
+    {
+        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
+        assertArgumentLegal( orientation instanceof CardPileOrientation, "orientation", NonNlsMessages.CardPile_orientation_illegal ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            if( orientation == CardPileOrientation.BASE )
+            {
+                return baseDesign_;
+            }
+
+            throw new AssertionError( "unknown card pile orientation" ); //$NON-NLS-1$
+        }
+        finally
+        {
+            getLock().unlock();
+        }
     }
 
     /*
@@ -1015,36 +1024,6 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#setBaseDesign(org.gamegineer.table.core.ICardPileBaseDesign)
-     */
-    @Override
-    public void setBaseDesign(
-        final ICardPileBaseDesign baseDesign )
-    {
-        assertArgumentNotNull( baseDesign, "baseDesign" ); //$NON-NLS-1$
-
-        getLock().lock();
-        try
-        {
-            baseDesign_ = baseDesign;
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-
-        tableContext_.addEventNotification( new Runnable()
-        {
-            @Override
-            @SuppressWarnings( "synthetic-access" )
-            public void run()
-            {
-                fireComponentSurfaceDesignChanged();
-            }
-        } );
-    }
-
-    /*
      * @see org.gamegineer.table.core.ICardPile#setBaseLocation(java.awt.Point)
      */
     @Override
@@ -1157,7 +1136,7 @@ final class CardPile
         {
             final CardPile cardPile = fromMemento( tableContext_, memento );
 
-            setBaseDesign( cardPile.getBaseDesign() );
+            setSurfaceDesign( CardPileOrientation.BASE, cardPile.getSurfaceDesign( CardPileOrientation.BASE ) );
             setBaseLocation( cardPile.getBaseLocation() );
             setLayout( cardPile.getLayout() );
 
@@ -1178,7 +1157,7 @@ final class CardPile
         final ComponentOrientation orientation )
     {
         assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
-        assertArgumentLegal( orientation instanceof CardPileOrientation, "orientation", NonNlsMessages.CardPile_setOrientation_orientation_illegal ); //$NON-NLS-1$
+        assertArgumentLegal( orientation instanceof CardPileOrientation, "orientation", NonNlsMessages.CardPile_orientation_illegal ); //$NON-NLS-1$
 
         tableContext_.addEventNotification( new Runnable()
         {
@@ -1187,6 +1166,46 @@ final class CardPile
             public void run()
             {
                 fireComponentOrientationChanged();
+            }
+        } );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#setSurfaceDesign(org.gamegineer.table.core.ComponentOrientation, org.gamegineer.table.core.IComponentSurfaceDesign)
+     */
+    @Override
+    public void setSurfaceDesign(
+        final ComponentOrientation orientation,
+        final IComponentSurfaceDesign surfaceDesign )
+    {
+        assertArgumentNotNull( orientation, "orientation" ); //$NON-NLS-1$
+        assertArgumentLegal( orientation instanceof CardPileOrientation, "orientation", NonNlsMessages.CardPile_orientation_illegal ); //$NON-NLS-1$
+        assertArgumentNotNull( surfaceDesign, "surfaceDesign" ); //$NON-NLS-1$
+
+        getLock().lock();
+        try
+        {
+            if( orientation == CardPileOrientation.BASE )
+            {
+                baseDesign_ = surfaceDesign;
+            }
+            else
+            {
+                throw new AssertionError( "unknown card pile orientation" ); //$NON-NLS-1$
+            }
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+
+        tableContext_.addEventNotification( new Runnable()
+        {
+            @Override
+            @SuppressWarnings( "synthetic-access" )
+            public void run()
+            {
+                fireComponentSurfaceDesignChanged();
             }
         } );
     }

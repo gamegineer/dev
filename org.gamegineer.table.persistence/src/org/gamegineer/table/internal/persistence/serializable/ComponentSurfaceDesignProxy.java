@@ -1,5 +1,5 @@
 /*
- * CardSurfaceDesignProxy.java
+ * ComponentSurfaceDesignProxy.java
  * Copyright 2008-2012 Gamegineer.org
  * All rights reserved.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Created on May 8, 2010 at 9:13:57 PM.
+ * Created on Apr 26, 2012 at 9:54:25 PM.
  */
 
 package org.gamegineer.table.internal.persistence.serializable;
@@ -25,14 +25,14 @@ import static org.gamegineer.common.core.runtime.Assert.assertArgumentNotNull;
 import java.awt.Dimension;
 import java.io.Serializable;
 import net.jcip.annotations.NotThreadSafe;
-import org.gamegineer.table.core.CardSurfaceDesignId;
-import org.gamegineer.table.internal.core.CardSurfaceDesign;
+import org.gamegineer.table.core.ComponentSurfaceDesignId;
+import org.gamegineer.table.internal.core.ComponentSurfaceDesign;
 
 /**
- * A serializable proxy for the {@code CardSurfaceDesign} class.
+ * A serializable proxy for the {@code ComponentSurfaceDesign} class.
  */
 @NotThreadSafe
-public final class CardSurfaceDesignProxy
+public final class ComponentSurfaceDesignProxy
     implements Serializable
 {
     // ======================================================================
@@ -40,24 +40,24 @@ public final class CardSurfaceDesignProxy
     // ======================================================================
 
     /** Serializable class version number. */
-    private static final long serialVersionUID = 2089743515488679664L;
+    private static final long serialVersionUID = 3381623697729837412L;
 
     /**
-     * The card surface design height in table coordinates.
+     * The component surface design height in table coordinates.
      * 
      * @serial
      */
     private int height_;
 
     /**
-     * The card surface design identifier.
+     * The component surface design identifier.
      * 
      * @serial
      */
     private String id_;
 
     /**
-     * The card surface design width in table coordinates.
+     * The component surface design width in table coordinates.
      * 
      * @serial
      */
@@ -69,10 +69,11 @@ public final class CardSurfaceDesignProxy
     // ======================================================================
 
     /**
-     * Initializes a new instance of the {@code CardSurfaceDesignProxy} class.
+     * Initializes a new instance of the {@code ComponentSurfaceDesignProxy}
+     * class.
      */
     @SuppressWarnings( "unused" )
-    private CardSurfaceDesignProxy()
+    private ComponentSurfaceDesignProxy()
     {
         height_ = 0;
         id_ = null;
@@ -80,23 +81,24 @@ public final class CardSurfaceDesignProxy
     }
 
     /**
-     * Initializes a new instance of the {@code CardSurfaceDesignProxy} class
-     * from the specified {@code CardSurfaceDesign} instance.
+     * Initializes a new instance of the {@code ComponentSurfaceDesignProxy}
+     * class from the specified {@code ComponentSurfaceDesign} instance.
      * 
-     * @param cardSurfaceDesign
-     *        The {@code CardSurfaceDesign} instance; must not be {@code null}.
+     * @param componentSurfaceDesign
+     *        The {@code ComponentSurfaceDesign} instance; must not be
+     *        {@code null}.
      * 
      * @throws java.lang.NullPointerException
-     *         If {@code cardSurfaceDesign} is {@code null}.
+     *         If {@code componentSurfaceDesign} is {@code null}.
      */
-    public CardSurfaceDesignProxy(
+    public ComponentSurfaceDesignProxy(
         /* @NonNull */
-        final CardSurfaceDesign cardSurfaceDesign )
+        final ComponentSurfaceDesign componentSurfaceDesign )
     {
-        assertArgumentNotNull( cardSurfaceDesign, "cardSurfaceDesign" ); //$NON-NLS-1$
+        assertArgumentNotNull( componentSurfaceDesign, "componentSurfaceDesign" ); //$NON-NLS-1$
 
-        id_ = cardSurfaceDesign.getId().toString();
-        final Dimension size = cardSurfaceDesign.getSize();
+        id_ = componentSurfaceDesign.getId().toString();
+        final Dimension size = componentSurfaceDesign.getSize();
         height_ = size.height;
         width_ = size.width;
     }
@@ -116,6 +118,6 @@ public final class CardSurfaceDesignProxy
     /* @NonNull */
     private Object readResolve()
     {
-        return new CardSurfaceDesign( CardSurfaceDesignId.fromString( id_ ), width_, height_ );
+        return new ComponentSurfaceDesign( ComponentSurfaceDesignId.fromString( id_ ), width_, height_ );
     }
 }
