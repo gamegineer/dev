@@ -34,13 +34,4 @@ public interface ICard
     // ======================================================================
     // Methods
     // ======================================================================
-
-    /**
-     * Gets the card pile that contains this card.
-     * 
-     * @return The card pile that contains this card or {@code null} if this
-     *         card is not contained in a card pile.
-     */
-    /* @Nullable */
-    public ICardPile getCardPile();
 }

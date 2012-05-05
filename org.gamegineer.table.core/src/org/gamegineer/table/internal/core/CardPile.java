@@ -230,7 +230,7 @@ final class CardPile
                 {
                     throw new IllegalArgumentException( NonNlsMessages.CardPile_addComponents_components_containsNullElement );
                 }
-                assertArgumentLegal( typedCard.getCardPile() == null, "components", NonNlsMessages.CardPile_addComponents_components_containsOwnedComponent ); //$NON-NLS-1$
+                assertArgumentLegal( typedCard.getContainer() == null, "components", NonNlsMessages.CardPile_addComponents_components_containsOwnedComponent ); //$NON-NLS-1$
                 assertArgumentLegal( typedCard.getTableContext() == tableContext_, "components", NonNlsMessages.CardPile_addComponents_components_containsComponentCreatedByDifferentTable ); //$NON-NLS-1$
 
                 final Point cardLocation = new Point( baseLocation_ );

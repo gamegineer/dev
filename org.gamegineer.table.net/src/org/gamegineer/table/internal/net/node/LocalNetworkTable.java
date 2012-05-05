@@ -369,7 +369,7 @@ final class LocalNetworkTable
             try
             {
                 final ICard card = (ICard)event.getComponent(); // FIXME: remove cast
-                final ICardPile cardPile = card.getCardPile();
+                final ICardPile cardPile = (ICardPile)card.getContainer(); // FIXME: remove cast
                 if( cardPile != null )
                 {
                     final ITable table = cardPile.getTable();
@@ -414,7 +414,7 @@ final class LocalNetworkTable
             try
             {
                 final ICard card = (ICard)event.getComponent(); // FIXME: remove cast
-                final ICardPile cardPile = card.getCardPile();
+                final ICardPile cardPile = (ICardPile)card.getContainer(); // FIXME: remove cast
                 if( cardPile != null )
                 {
                     final ITable table = cardPile.getTable();

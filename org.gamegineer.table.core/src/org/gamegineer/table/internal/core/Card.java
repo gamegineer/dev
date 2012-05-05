@@ -42,7 +42,6 @@ import org.gamegineer.table.core.ComponentEvent;
 import org.gamegineer.table.core.ComponentOrientation;
 import org.gamegineer.table.core.ComponentSurfaceDesignId;
 import org.gamegineer.table.core.ICard;
-import org.gamegineer.table.core.ICardPile;
 import org.gamegineer.table.core.IComponentListener;
 import org.gamegineer.table.core.IComponentSurfaceDesign;
 import org.gamegineer.table.core.IContainer;
@@ -309,10 +308,10 @@ final class Card
     }
 
     /*
-     * @see org.gamegineer.table.core.ICard#getCardPile()
+     * @see org.gamegineer.table.core.IComponent#getContainer()
      */
     @Override
-    public ICardPile getCardPile()
+    public IContainer getContainer()
     {
         getLock().lock();
         try
@@ -323,15 +322,6 @@ final class Card
         {
             getLock().unlock();
         }
-    }
-
-    /*
-     * @see org.gamegineer.table.core.IComponent#getContainer()
-     */
-    @Override
-    public IContainer getContainer()
-    {
-        return getCardPile();
     }
 
     /*
