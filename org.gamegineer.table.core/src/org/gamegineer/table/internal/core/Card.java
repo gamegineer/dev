@@ -370,6 +370,15 @@ final class Card
     }
 
     /*
+     * @see org.gamegineer.table.core.IComponent#getOrigin()
+     */
+    @Override
+    public Point getOrigin()
+    {
+        return getLocation();
+    }
+
+    /*
      * @see org.gamegineer.table.core.IComponent#getSize()
      */
     @Override
@@ -565,6 +574,16 @@ final class Card
                 fireComponentOrientationChanged();
             }
         } );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#setOrigin(java.awt.Point)
+     */
+    @Override
+    public void setOrigin(
+        final Point origin )
+    {
+        setLocation( origin );
     }
 
     /*

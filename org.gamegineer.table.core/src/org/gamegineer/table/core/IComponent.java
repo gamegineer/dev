@@ -77,6 +77,11 @@ public interface IComponent
     /**
      * Gets the location of this component in table coordinates.
      * 
+     * <p>
+     * The location represents the position of the top-left corner of the
+     * component.
+     * </p>
+     * 
      * @return The location of this component in table coordinates; never
      *         {@code null}.
      */
@@ -90,6 +95,22 @@ public interface IComponent
      */
     /* @NonNull */
     public ComponentOrientation getOrientation();
+
+    /**
+     * Gets the origin of this component in table coordinates.
+     * 
+     * <p>
+     * The origin represents the position that remains unchanged when the
+     * component orientation (or some other attribute that affects the component
+     * size) is changed. The origin may or may not occupy the same position as
+     * the location.
+     * </p>
+     * 
+     * @return The origin of this component in table coordinates; never
+     *         {@code null}.
+     */
+    /* @NonNull */
+    public Point getOrigin();
 
     /**
      * Gets the size of this component in table coordinates.
@@ -176,6 +197,20 @@ public interface IComponent
     public void setOrientation(
         /* @NonNull */
         ComponentOrientation orientation );
+
+    /**
+     * Sets the origin of this component in table coordinates.
+     * 
+     * @param origin
+     *        The origin of this component in table coordinates; must not be
+     *        {@code null}.
+     * 
+     * @throws java.lang.NullPointerException
+     *         If {@code origin} is {@code null}.
+     */
+    public void setOrigin(
+        /* @NonNull */
+        Point origin );
 
     /**
      * Sets the design on the surface of this component associated with the

@@ -94,14 +94,14 @@ public final class NetworkTableUtils
                 cardPile.setSurfaceDesign( CardPileOrientation.BASE, cardPileIncrement.getBaseDesign() );
             }
 
-            if( cardPileIncrement.getBaseLocation() != null )
-            {
-                cardPile.setBaseLocation( cardPileIncrement.getBaseLocation() );
-            }
-
             if( cardPileIncrement.getLayout() != null )
             {
                 cardPile.setLayout( cardPileIncrement.getLayout() );
+            }
+
+            if( cardPileIncrement.getOrigin() != null )
+            {
+                cardPile.setOrigin( cardPileIncrement.getOrigin() );
             }
 
             if( cardPileIncrement.getRemovedCardCount() != null )

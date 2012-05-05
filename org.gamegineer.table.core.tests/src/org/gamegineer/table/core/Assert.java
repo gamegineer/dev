@@ -77,7 +77,6 @@ public final class Assert
         else
         {
             assertComponentEquals( expected, actual );
-            assertEquals( expected.getBaseLocation(), actual.getBaseLocation() );
             assertEquals( expected.getLayout(), actual.getLayout() );
         }
     }
@@ -111,6 +110,7 @@ public final class Assert
         {
             assertEquals( expected.getBounds(), actual.getBounds() );
             assertEquals( expected.getOrientation(), actual.getOrientation() );
+            assertEquals( expected.getOrigin(), actual.getOrigin() );
 
             assertEquals( expected.getSupportedOrientations(), actual.getSupportedOrientations() );
             for( final ComponentOrientation orientation : expected.getSupportedOrientations() )

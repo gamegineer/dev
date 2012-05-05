@@ -241,7 +241,7 @@ public final class TableModelTest
         niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
-        cardPile.setBaseLocation( new Point( 1000, 1000 ) );
+        cardPile.setLocation( new Point( 1000, 1000 ) );
 
         niceMocksControl_.verify();
     }
@@ -260,7 +260,7 @@ public final class TableModelTest
         niceMocksControl_.replay();
         model_.addTableModelListener( listener );
 
-        cardPile.setBaseLocation( new Point( 1000, 1000 ) );
+        cardPile.setLocation( new Point( 1000, 1000 ) );
 
         niceMocksControl_.verify();
     }

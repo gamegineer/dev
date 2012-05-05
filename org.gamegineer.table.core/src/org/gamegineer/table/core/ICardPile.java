@@ -21,8 +21,6 @@
 
 package org.gamegineer.table.core;
 
-import java.awt.Point;
-
 /**
  * A card pile.
  * 
@@ -51,15 +49,6 @@ public interface ICardPile
     public void addCardPileListener(
         /* @NonNull */
         ICardPileListener listener );
-
-    /**
-     * Gets the base location of this card pile in table coordinates.
-     * 
-     * @return The base location of this card pile in table coordinates; never
-     *         {@code null}.
-     */
-    /* @NonNull */
-    public Point getBaseLocation();
 
     /**
      * Gets the layout of cards within this card pile.
@@ -92,20 +81,6 @@ public interface ICardPile
     public void removeCardPileListener(
         /* @NonNull */
         ICardPileListener listener );
-
-    /**
-     * Sets the base location of this card pile in table coordinates.
-     * 
-     * @param baseLocation
-     *        The base location of this card pile in table coordinates; must not
-     *        be {@code null}.
-     * 
-     * @throws java.lang.NullPointerException
-     *         If {@code baseLocation} is {@code null}.
-     */
-    public void setBaseLocation(
-        /* @NonNull */
-        Point baseLocation );
 
     /**
      * Sets the layout of cards within this card pile.

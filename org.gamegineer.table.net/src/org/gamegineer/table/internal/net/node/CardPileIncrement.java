@@ -60,18 +60,18 @@ public final class CardPileIncrement
     private IComponentSurfaceDesign baseDesign_;
 
     /**
-     * The new card pile base location or {@code null} if unchanged.
-     * 
-     * @serial The new card pile base location.
-     */
-    private Point baseLocation_;
-
-    /**
      * The new card pile layout or {@code null} if unchanged.
      * 
      * @serial The new card pile layout.
      */
     private CardPileLayout layout_;
+
+    /**
+     * The new card pile origin or {@code null} if unchanged.
+     * 
+     * @serial The new card pile origin.
+     */
+    private Point origin_;
 
     /**
      * The count of cards removed from the top of the card pile or {@code null}
@@ -93,8 +93,8 @@ public final class CardPileIncrement
     {
         addedCardMementos_ = null;
         baseDesign_ = null;
-        baseLocation_ = null;
         layout_ = null;
+        origin_ = null;
         removedCardCount_ = null;
     }
 
@@ -131,18 +131,6 @@ public final class CardPileIncrement
     }
 
     /**
-     * Gets the new card pile base location.
-     * 
-     * @return The new card pile base location or {@code null} if unchanged. The
-     *         returned value is not a copy and must not be modified.
-     */
-    /* @Nullable */
-    public Point getBaseLocation()
-    {
-        return baseLocation_;
-    }
-
-    /**
      * Gets the new card pile layout.
      * 
      * @return The new card pile layout or {@code null} if unchanged.
@@ -151,6 +139,18 @@ public final class CardPileIncrement
     public CardPileLayout getLayout()
     {
         return layout_;
+    }
+
+    /**
+     * Gets the new card pile origin.
+     * 
+     * @return The new card pile origin or {@code null} if unchanged. The
+     *         returned value is not a copy and must not be modified.
+     */
+    /* @Nullable */
+    public Point getOrigin()
+    {
+        return origin_;
     }
 
     /**
@@ -196,21 +196,6 @@ public final class CardPileIncrement
     }
 
     /**
-     * Sets the new card pile base location.
-     * 
-     * @param baseLocation
-     *        The new card pile base location or {@code null} if unchanged. No
-     *        copy is made of the specified value and it must not be modified
-     *        after calling this method.
-     */
-    public void setBaseLocation(
-        /* @Nullable */
-        final Point baseLocation )
-    {
-        baseLocation_ = baseLocation;
-    }
-
-    /**
      * Sets the new card pile layout.
      * 
      * @param layout
@@ -221,6 +206,21 @@ public final class CardPileIncrement
         final CardPileLayout layout )
     {
         layout_ = layout;
+    }
+
+    /**
+     * Sets the new card pile origin.
+     * 
+     * @param origin
+     *        The new card pile origin or {@code null} if unchanged. No copy is
+     *        made of the specified value and it must not be modified after
+     *        calling this method.
+     */
+    public void setOrigin(
+        /* @Nullable */
+        final Point origin )
+    {
+        origin_ = origin;
     }
 
     /**

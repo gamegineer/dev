@@ -403,6 +403,44 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     }
 
     /**
+     * Ensures the {@code getOrigin} method returns a copy of the origin.
+     */
+    @Test
+    public void testGetOrigin_ReturnValue_Copy()
+    {
+        final Point origin = component_.getOrigin();
+        final Point expectedOrigin = new Point( origin );
+
+        origin.setLocation( 1010, 2020 );
+
+        assertEquals( expectedOrigin, component_.getOrigin() );
+    }
+
+    /**
+     * Ensures the {@code getOrigin} method does not return {@code null}.
+     */
+    @Test
+    public void testGetOrigin_ReturnValue_NonNull()
+    {
+        assertNotNull( component_.getOrigin() );
+    }
+
+    /**
+     * Ensures the {@code getOrigin} method returns the correct value after a
+     * translation.
+     */
+    @Test
+    public void testGetOrigin_Translate()
+    {
+        final Point expectedOrigin = new Point( 1010, 2020 );
+        component_.setOrigin( expectedOrigin );
+
+        final Point actualOrigin = component_.getOrigin();
+
+        assertEquals( expectedOrigin, actualOrigin );
+    }
+
+    /**
      * Ensures the {@code getSize} method returns the size of the surface
      * associated with the current orientation.
      */
@@ -639,6 +677,48 @@ public abstract class AbstractComponentTestCase<T extends IComponent>
     public void testSetOrientation_Orientation_Null()
     {
         component_.setOrientation( null );
+    }
+
+    /**
+     * Ensures the {@code setOrigin} method fires a component bounds changed
+     * event.
+     */
+    @Test
+    public void testSetOrigin_FiresComponentBoundsChangedEvent()
+    {
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        component_.addComponentListener( listener );
+
+        component_.setOrigin( new Point( 1010, 2020 ) );
+
+        mocksControl_.verify();
+    }
+
+    /**
+     * Ensures the {@code setOrigin} method makes a copy of the origin.
+     */
+    @Test
+    public void testSetOrigin_Origin_Copy()
+    {
+        final Point expectedOrigin = new Point( 1010, 2020 );
+        final Point origin = new Point( expectedOrigin );
+
+        component_.setOrigin( origin );
+        origin.setLocation( 1, 2 );
+
+        assertEquals( expectedOrigin, component_.getOrigin() );
+    }
+
+    /**
+     * Ensures the {@code setOrigin} method throws an exception when passed a
+     * {@code null} origin.
+     */
+    @Test( expected = NullPointerException.class )
+    public void testSetOrigin_Origin_Null()
+    {
+        component_.setOrigin( null );
     }
 
     /**

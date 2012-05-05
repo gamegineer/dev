@@ -899,4 +899,23 @@ public abstract class AbstractContainerTestCase<T extends IContainer>
 
         mocksControl_.verify();
     }
+
+    /**
+     * Ensures the {@code setOrigin} method changes the location of all child
+     * components to reflect the new container origin.
+     */
+    @Test
+    public void testSetOrigin_ChangesChildComponentLocation()
+    {
+        final IComponent component = createUniqueComponent();
+        getContainer().addComponent( component );
+        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
+        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
+        mocksControl_.replay();
+        component.addComponentListener( listener );
+
+        getContainer().setOrigin( new Point( 1010, 2020 ) );
+
+        mocksControl_.verify();
+    }
 }

@@ -77,12 +77,6 @@ final class CardPile
     private static final String BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME = "baseDesign"; //$NON-NLS-1$
 
     /**
-     * The name of the memento attribute that stores the location of the card
-     * pile base.
-     */
-    private static final String BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME = "baseLocation"; //$NON-NLS-1$
-
-    /**
      * The name of the memento attribute that stores the collection of cards in
      * the card pile.
      */
@@ -99,6 +93,9 @@ final class CardPile
      */
     private static final String LAYOUT_MEMENTO_ATTRIBUTE_NAME = "layout"; //$NON-NLS-1$
 
+    /** The name of the memento attribute that stores the card pile origin. */
+    private static final String ORIGIN_MEMENTO_ATTRIBUTE_NAME = "origin"; //$NON-NLS-1$
+
     /** The offset of each stack level in table coordinates. */
     private static final Dimension STACK_LEVEL_OFFSET = new Dimension( 2, 1 );
 
@@ -108,10 +105,6 @@ final class CardPile
     /** The design of the card pile base. */
     @GuardedBy( "getLock()" )
     private IComponentSurfaceDesign baseDesign_;
-
-    /** The location of the card pile base in table coordinates. */
-    @GuardedBy( "getLock()" )
-    private final Point baseLocation_;
 
     /** The collection of cards in this card pile ordered from bottom to top. */
     @GuardedBy( "getLock()" )
@@ -126,6 +119,10 @@ final class CardPile
 
     /** The collection of card pile listeners. */
     private final CopyOnWriteArrayList<ICardPileListener> listeners_;
+
+    /** The card pile origin in table coordinates. */
+    @GuardedBy( "getLock()" )
+    private final Point origin_;
 
     /**
      * The table that contains this card pile or {@code null} if this card pile
@@ -156,11 +153,11 @@ final class CardPile
         assert tableContext != null;
 
         baseDesign_ = DEFAULT_BASE_DESIGN;
-        baseLocation_ = new Point( 0, 0 );
         cards_ = new ArrayList<Card>();
         componentListeners_ = new CopyOnWriteArrayList<IComponentListener>();
         layout_ = CardPileLayout.STACKED;
         listeners_ = new CopyOnWriteArrayList<ICardPileListener>();
+        origin_ = new Point( 0, 0 );
         table_ = null;
         tableContext_ = tableContext;
     }
@@ -233,7 +230,7 @@ final class CardPile
                 assertArgumentLegal( typedCard.getContainer() == null, "components", NonNlsMessages.CardPile_addComponents_components_containsOwnedComponent ); //$NON-NLS-1$
                 assertArgumentLegal( typedCard.getTableContext() == tableContext_, "components", NonNlsMessages.CardPile_addComponents_components_containsComponentCreatedByDifferentTable ); //$NON-NLS-1$
 
-                final Point cardLocation = new Point( baseLocation_ );
+                final Point cardLocation = new Point( origin_ );
                 final Dimension cardOffset = getComponentOffsetAt( cards_.size() );
                 cardLocation.translate( cardOffset.width, cardOffset.height );
                 typedCard.setCardPile( this );
@@ -285,8 +282,8 @@ final class CardPile
         try
         {
             memento.put( BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, baseDesign_ );
-            memento.put( BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, new Point( baseLocation_ ) );
             memento.put( LAYOUT_MEMENTO_ATTRIBUTE_NAME, layout_ );
+            memento.put( ORIGIN_MEMENTO_ATTRIBUTE_NAME, new Point( origin_ ) );
 
             final List<Object> cardMementos = new ArrayList<Object>( cards_.size() );
             for( final ICard card : cards_ )
@@ -514,7 +511,7 @@ final class CardPile
         final IComponentSurfaceDesign baseDesign = MementoUtils.getAttribute( memento, BASE_DESIGN_MEMENTO_ATTRIBUTE_NAME, IComponentSurfaceDesign.class );
         cardPile.setSurfaceDesign( CardPileOrientation.BASE, baseDesign );
 
-        final Point location = MementoUtils.getAttribute( memento, BASE_LOCATION_MEMENTO_ATTRIBUTE_NAME, Point.class );
+        final Point location = MementoUtils.getAttribute( memento, ORIGIN_MEMENTO_ATTRIBUTE_NAME, Point.class );
         cardPile.setLocation( location );
 
         final CardPileLayout layout = MementoUtils.getAttribute( memento, LAYOUT_MEMENTO_ATTRIBUTE_NAME, CardPileLayout.class );
@@ -531,23 +528,6 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#getBaseLocation()
-     */
-    @Override
-    public Point getBaseLocation()
-    {
-        getLock().lock();
-        try
-        {
-            return new Point( baseLocation_ );
-        }
-        finally
-        {
-            getLock().unlock();
-        }
-    }
-
-    /*
      * @see org.gamegineer.table.core.IComponent#getBounds()
      */
     @Override
@@ -558,7 +538,7 @@ final class CardPile
         {
             if( cards_.isEmpty() )
             {
-                return new Rectangle( baseLocation_, baseDesign_.getSize() );
+                return new Rectangle( origin_, baseDesign_.getSize() );
             }
 
             final Rectangle topCardBounds = cards_.get( cards_.size() - 1 ).getBounds();
@@ -806,6 +786,23 @@ final class CardPile
     }
 
     /*
+     * @see org.gamegineer.table.core.IComponent#getOrigin()
+     */
+    @Override
+    public Point getOrigin()
+    {
+        getLock().lock();
+        try
+        {
+            return new Point( origin_ );
+        }
+        finally
+        {
+            getLock().unlock();
+        }
+    }
+
+    /*
      * @see org.gamegineer.table.core.IComponent#getSize()
      */
     @Override
@@ -1024,26 +1021,6 @@ final class CardPile
     }
 
     /*
-     * @see org.gamegineer.table.core.ICardPile#setBaseLocation(java.awt.Point)
-     */
-    @Override
-    public void setBaseLocation(
-        final Point baseLocation )
-    {
-        assertArgumentNotNull( baseLocation, "baseLocation" ); //$NON-NLS-1$
-
-        translateBaseLocation( new TranslationOffsetStrategy()
-        {
-            @Override
-            Dimension getOffset()
-            {
-                final Point oldBaseLocation = getBaseLocation();
-                return new Dimension( baseLocation.x - oldBaseLocation.x, baseLocation.y - oldBaseLocation.y );
-            }
-        } );
-    }
-
-    /*
      * @see org.gamegineer.table.core.ICardPile#setLayout(org.gamegineer.table.core.CardPileLayout)
      */
     @Override
@@ -1070,7 +1047,7 @@ final class CardPile
                 final Point cardLocation = new Point();
                 for( int index = 0, size = cards_.size(); index < size; ++index )
                 {
-                    cardLocation.setLocation( baseLocation_ );
+                    cardLocation.setLocation( origin_ );
                     final Dimension cardOffset = getComponentOffsetAt( index );
                     cardLocation.translate( cardOffset.width, cardOffset.height );
                     cards_.get( index ).setLocation( cardLocation );
@@ -1110,7 +1087,7 @@ final class CardPile
     {
         assertArgumentNotNull( location, "location" ); //$NON-NLS-1$
 
-        translateBaseLocation( new TranslationOffsetStrategy()
+        translateOrigin( new TranslationOffsetStrategy()
         {
             @Override
             Dimension getOffset()
@@ -1137,7 +1114,7 @@ final class CardPile
             final CardPile cardPile = fromMemento( tableContext_, memento );
 
             setSurfaceDesign( CardPileOrientation.BASE, cardPile.getSurfaceDesign( CardPileOrientation.BASE ) );
-            setBaseLocation( cardPile.getBaseLocation() );
+            setOrigin( cardPile.getOrigin() );
             setLayout( cardPile.getLayout() );
 
             removeComponents();
@@ -1166,6 +1143,26 @@ final class CardPile
             public void run()
             {
                 fireComponentOrientationChanged();
+            }
+        } );
+    }
+
+    /*
+     * @see org.gamegineer.table.core.IComponent#setOrigin(java.awt.Point)
+     */
+    @Override
+    public void setOrigin(
+        final Point origin )
+    {
+        assertArgumentNotNull( origin, "origin" ); //$NON-NLS-1$
+
+        translateOrigin( new TranslationOffsetStrategy()
+        {
+            @Override
+            Dimension getOffset()
+            {
+                final Point oldOrigin = getOrigin();
+                return new Dimension( origin.x - oldOrigin.x, origin.y - oldOrigin.y );
             }
         } );
     }
@@ -1246,8 +1243,8 @@ final class CardPile
         {
             sb.append( "baseDesign_=" ); //$NON-NLS-1$
             sb.append( baseDesign_ );
-            sb.append( ", baseLocation_=" ); //$NON-NLS-1$
-            sb.append( baseLocation_ );
+            sb.append( ", origin_=" ); //$NON-NLS-1$
+            sb.append( origin_ );
             sb.append( ", cards_.size()=" ); //$NON-NLS-1$
             sb.append( cards_.size() );
             sb.append( ", layout_=" ); //$NON-NLS-1$
@@ -1263,14 +1260,14 @@ final class CardPile
     }
 
     /**
-     * Translates the card pile base location by the specified amount.
+     * Translates the card pile origin by the specified amount.
      * 
      * @param translationOffsetStrategy
-     *        The strategy used to calculate the amount to translate the base
-     *        location; must not be {@code null}. The strategy will be invoked
-     *        while the card pile instance lock is held.
+     *        The strategy used to calculate the amount to translate the origin;
+     *        must not be {@code null}. The strategy will be invoked while the
+     *        card pile instance lock is held.
      */
-    private void translateBaseLocation(
+    private void translateOrigin(
         /* @NonNull */
         final TranslationOffsetStrategy translationOffsetStrategy )
     {
@@ -1280,7 +1277,7 @@ final class CardPile
         try
         {
             final Dimension offset = translationOffsetStrategy.getOffset();
-            baseLocation_.translate( offset.width, offset.height );
+            origin_.translate( offset.width, offset.height );
             for( final ICard card : cards_ )
             {
                 final Point cardLocation = card.getLocation();

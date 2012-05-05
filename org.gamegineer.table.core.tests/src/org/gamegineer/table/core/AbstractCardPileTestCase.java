@@ -90,8 +90,8 @@ public abstract class AbstractCardPileTestCase
     protected IMementoOriginator createMementoOriginator()
     {
         final ICardPile cardPile = getCardPile();
-        cardPile.setBaseLocation( new Point( 0, 0 ) );
         cardPile.setLayout( CardPileLayout.STACKED );
+        cardPile.setOrigin( new Point( 0, 0 ) );
         return cardPile;
     }
 
@@ -114,8 +114,8 @@ public abstract class AbstractCardPileTestCase
         final IMementoOriginator mementoOriginator )
     {
         final ICardPile cardPile = (ICardPile)mementoOriginator;
-        cardPile.setBaseLocation( new Point( Integer.MAX_VALUE, Integer.MIN_VALUE ) );
         cardPile.setLayout( CardPileLayout.ACCORDIAN_DOWN );
+        cardPile.setOrigin( new Point( Integer.MAX_VALUE, Integer.MIN_VALUE ) );
         cardPile.addComponent( createUniqueComponent() );
     }
 
@@ -176,45 +176,6 @@ public abstract class AbstractCardPileTestCase
         getCardPile().setLayout( CardPileLayout.ACCORDIAN_DOWN );
 
         mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code getBaseLocation} method returns a copy of the base
-     * location.
-     */
-    @Test
-    public void testGetBaseLocation_ReturnValue_Copy()
-    {
-        final Point baseLocation = getCardPile().getBaseLocation();
-        final Point expectedBaseLocation = new Point( baseLocation );
-
-        baseLocation.setLocation( 1010, 2020 );
-
-        assertEquals( expectedBaseLocation, getCardPile().getBaseLocation() );
-    }
-
-    /**
-     * Ensures the {@code getBaseLocation} method does not return {@code null}.
-     */
-    @Test
-    public void testGetBaseLocation_ReturnValue_NonNull()
-    {
-        assertNotNull( getCardPile().getBaseLocation() );
-    }
-
-    /**
-     * Ensures the {@code getBaseLocation} method returns the correct value
-     * after a translation.
-     */
-    @Test
-    public void testGetBaseLocation_Translate()
-    {
-        final Point expectedBaseLocation = new Point( 1010, 2020 );
-        getCardPile().setBaseLocation( expectedBaseLocation );
-
-        final Point actualBaseLocation = getCardPile().getBaseLocation();
-
-        assertEquals( expectedBaseLocation, actualBaseLocation );
     }
 
     /**
@@ -342,71 +303,6 @@ public abstract class AbstractCardPileTestCase
         {
             assertNull( actualComponent.getContainer() );
         }
-    }
-
-    /**
-     * Ensures the {@code setBaseLocation} method changes the location of all
-     * child cards to reflect the new card pile base location.
-     */
-    @Test
-    public void testSetBaseLocation_ChangesChildCardLocation()
-    {
-        final ICard card = Cards.createUniqueCard( getTable() );
-        getCardPile().addComponent( card );
-        final IComponentListener listener = mocksControl_.createMock( IComponentListener.class );
-        listener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
-        mocksControl_.replay();
-        card.addComponentListener( listener );
-
-        getCardPile().setBaseLocation( new Point( 1010, 2020 ) );
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code setBaseLocation} method fires a component bounds
-     * changed event.
-     */
-    @Test
-    public void testSetBaseLocation_FiresComponentBoundsChangedEvent()
-    {
-        final IComponentListener componentListener = mocksControl_.createMock( IComponentListener.class );
-        componentListener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
-        final ICardPileListener cardPileListener = mocksControl_.createMock( ICardPileListener.class );
-        cardPileListener.componentBoundsChanged( EasyMock.notNull( ComponentEvent.class ) );
-        mocksControl_.replay();
-        getCardPile().addComponentListener( componentListener );
-        getCardPile().addCardPileListener( cardPileListener );
-
-        getCardPile().setBaseLocation( new Point( 1010, 2020 ) );
-
-        mocksControl_.verify();
-    }
-
-    /**
-     * Ensures the {@code setBaseLocation} method makes a copy of the base
-     * location.
-     */
-    @Test
-    public void testSetBaseLocation_BaseLocation_Copy()
-    {
-        final Point expectedBaseLocation = new Point( 1010, 2020 );
-        final Point baseLocation = new Point( expectedBaseLocation );
-
-        getCardPile().setBaseLocation( baseLocation );
-        baseLocation.setLocation( 1, 2 );
-
-        assertEquals( expectedBaseLocation, getCardPile().getBaseLocation() );
-    }
-
-    /**
-     * Ensures the {@code setBaseLocation} method throws an exception when
-     * passed a {@code null} base location.
-     */
-    @Test( expected = NullPointerException.class )
-    public void testSetBaseLocation_BaseLocation_Null()
-    {
-        getCardPile().setBaseLocation( null );
     }
 
     /**

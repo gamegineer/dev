@@ -1658,10 +1658,9 @@ final class TableView
         private ICardPile mobileCardPile_;
 
         /**
-         * The offset between the mouse pointer and the mobile card pile base
-         * location.
+         * The offset between the mouse pointer and the mobile card pile origin.
          */
-        private final Dimension mobileCardPileBaseLocationOffset_;
+        private final Dimension mobileCardPileOriginOffset_;
 
         /** The card pile that is the source of the cards being dragged. */
         private ICardPile sourceCardPile_;
@@ -1677,7 +1676,7 @@ final class TableView
          */
         DraggingCardsMouseInputHandler()
         {
-            mobileCardPileBaseLocationOffset_ = new Dimension( 0, 0 );
+            mobileCardPileOriginOffset_ = new Dimension( 0, 0 );
         }
 
 
@@ -1700,11 +1699,11 @@ final class TableView
                 final List<IComponent> draggedComponents = sourceCardPile_.removeComponents( mouseLocation );
                 if( !draggedComponents.isEmpty() )
                 {
-                    final Point draggedCardsBaseLocation = draggedComponents.get( 0 ).getLocation();
-                    mobileCardPileBaseLocationOffset_.setSize( draggedCardsBaseLocation.x - mouseLocation.x, draggedCardsBaseLocation.y - mouseLocation.y );
+                    final Point draggedCardsOrigin = draggedComponents.get( 0 ).getLocation();
+                    mobileCardPileOriginOffset_.setSize( draggedCardsOrigin.x - mouseLocation.x, draggedCardsOrigin.y - mouseLocation.y );
                     mobileCardPile_ = model_.getTable().createCardPile();
                     mobileCardPile_.setSurfaceDesign( CardPileOrientation.BASE, sourceCardPile_.getSurfaceDesign( CardPileOrientation.BASE ) );
-                    mobileCardPile_.setBaseLocation( draggedCardsBaseLocation );
+                    mobileCardPile_.setOrigin( draggedCardsOrigin );
                     mobileCardPile_.setLayout( sourceCardPile_.getLayout() );
                     model_.getTable().addCardPile( mobileCardPile_ );
                     mobileCardPile_.addComponents( draggedComponents );
@@ -1728,7 +1727,7 @@ final class TableView
         void deactivate()
         {
             mobileCardPile_ = null;
-            mobileCardPileBaseLocationOffset_.setSize( 0, 0 );
+            mobileCardPileOriginOffset_.setSize( 0, 0 );
             sourceCardPile_ = null;
         }
 
@@ -1740,8 +1739,8 @@ final class TableView
             final MouseEvent event )
         {
             final Point location = getMouseLocation( event );
-            location.translate( mobileCardPileBaseLocationOffset_.width, mobileCardPileBaseLocationOffset_.height );
-            mobileCardPile_.setBaseLocation( location );
+            location.translate( mobileCardPileOriginOffset_.width, mobileCardPileOriginOffset_.height );
+            mobileCardPile_.setOrigin( location );
         }
 
         /*

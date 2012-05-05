@@ -571,7 +571,7 @@ final class LocalNetworkTable
                 if( table != null )
                 {
                     cardPileIndex = table.getCardPileIndex( cardPile );
-                    cardPileIncrement.setBaseLocation( cardPile.getBaseLocation() );
+                    cardPileIncrement.setOrigin( cardPile.getOrigin() );
                 }
             }
             finally
