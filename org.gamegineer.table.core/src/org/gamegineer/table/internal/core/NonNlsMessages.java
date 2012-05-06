@@ -36,6 +36,14 @@ final class NonNlsMessages
     // Fields
     // ======================================================================
 
+    // --- AccordianContainerLayout -----------------------------------------
+
+    /**
+     * The offset in the y-direction is zero when the offset in the x-direction
+     * is zero.
+     */
+    public static String AccordianContainerLayout_ctor_offsetY_zero;
+
     // --- Card -------------------------------------------------------------
 
     /** The component listener is already registered. */
@@ -212,6 +220,17 @@ final class NonNlsMessages
 
     /** The memento is of the wrong type. */
     public static String MementoUtils_memento_wrongType;
+
+    // --- StackedContainerLayout -------------------------------------------
+
+    /** The components per stack level count is not positive. */
+    public static String StackedContainerLayout_ctor_componentsPerStackLevel_notPositive;
+
+    /** The stack level offset in the x-direction is not positive. */
+    public static String StackedContainerLayout_ctor_stackLevelOffsetX_notPositive;
+
+    /** The stack level offset in the y-direction is not positive. */
+    public static String StackedContainerLayout_ctor_stackLevelOffsetY_notPositive;
 
     // --- Table ------------------------------------------------------------
 
